@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{419c45e8-5823-40c9-9baf-fd0c1a0f5ed9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>nos_snapshot_xml_test</RootNamespace>
+    <AssemblyName>NakedObjects.Snapshot.Xml.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <Name>NakedObjects.Snapshot.Xml.Test</Name>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\nos_snapshot_xml_test.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <DocumentationFile>bin\Release\nos_snapshot_xml_test.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <DocumentationFile>bin\Debug\nos_snapshot_xml_test.XML</DocumentationFile>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <DocumentationFile>bin\Release\nos_snapshot_xml_test.XML</DocumentationFile>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets" Condition="Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')" />
+  <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft F#\v4.0\Microsoft.FSharp.Targets" Condition="(!Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')) And (Exists('$(MSBuildExtensionsPath32)\..\Microsoft F#\v4.0\Microsoft.FSharp.Targets'))" />
+  <Import Project="$(MSBuildExtensionsPath32)\FSharp\1.0\Microsoft.FSharp.Targets" Condition="(!Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')) And (!Exists('$(MSBuildExtensionsPath32)\..\Microsoft F#\v4.0\Microsoft.FSharp.Targets')) And (Exists('$(MSBuildExtensionsPath32)\FSharp\1.0\Microsoft.FSharp.Targets'))" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <ItemGroup>
+    <Compile Include="XmlTestData.fs" />
+    <Compile Include="XmlSnapshotService.fs" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.Core.csproj">
+      <Name>NakedObjects.Reflector.Core</Name>
+      <Project>{91153c56-313c-426e-8b0d-43fa39bd567a}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="FSharp.Core" />
+    <Reference Include="NakedObjects.Attributes">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Helpers">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.PMResources">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Types">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj">
+      <Name>NakedObjects.Architecture</Name>
+      <Project>{bf6d9655-b873-4980-ace7-a122ea45f045}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Bootstrap\NakedObjects.Bootstrap.csproj">
+      <Name>NakedObjects.Bootstrap</Name>
+      <Project>{027c99e2-2ad7-4700-a871-de543c9d83c8}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj">
+      <Name>NakedObjects.Core</Name>
+      <Project>{3f1e438c-020c-4751-a65a-63c2990d8278}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Persistor\NakedObjects.Persistor.csproj">
+      <Name>NakedObjects.Persistor</Name>
+      <Project>{26de3ad7-424b-4246-89c3-db675be02628}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Snapshot.Xml.Test.Data\NakedObjects.Snapshot.Xml.Test.Data.csproj">
+      <Name>NakedObjects.Snapshot.Xml.Test.Data</Name>
+      <Project>{80269255-d420-463d-92da-6cd1137c4633}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Snapshot.Xml\NakedObjects.Snapshot.Xml.csproj">
+      <Name>NakedObjects.Snapshot.Xml</Name>
+      <Project>{3eacb1f7-b711-4adc-86fa-db80724603f3}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Xat\NakedObjects.Xat.csproj">
+      <Name>NakedObjects.Xat</Name>
+      <Project>{c818dfd4-6020-419a-8274-f59803956180}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	     Other similar extension points exist, see Microsoft.Common.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+</Project>

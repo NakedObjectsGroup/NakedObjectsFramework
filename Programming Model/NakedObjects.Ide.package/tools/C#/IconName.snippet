@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>IconName</Title>
+      <Author>Naked Objects Group</Author>
+      <Description>Adds an IconName method, to specify an icon for the class</Description>
+      <HelpUrl>www.nakedobjects.net</HelpUrl>
+      <SnippetTypes />
+      <Keywords />
+      <Shortcut>icon</Shortcut>
+    </Header>
+    <Snippet>
+      <References />
+      <Imports>
+        <Import>
+          <Namespace>NakedObjects</Namespace>
+        </Import>
+      </Imports>
+      <Declarations>
+        <Literal Editable="true" xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+          <ID>iconName</ID>
+          <Type></Type>
+          <ToolTip>Not case sensitive; extension not required.</ToolTip>
+          <Default>iconName</Default>
+          <Function></Function>
+        </Literal>
+      </Declarations>
+      <Code Language="CSharp" Kind="method decl" Delimiter="$"><![CDATA[public string IconName()
+	{
+		return "$iconName$";
+	}]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

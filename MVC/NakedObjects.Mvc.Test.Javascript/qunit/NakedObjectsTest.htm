@@ -1,0 +1,731 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+					"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <!-- saved from url=(0027)http://mvc.nakedobjects.net/ -->
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-2.0.3.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery.ui/1.10.3/jQuery-ui.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery.Validate/1.11.1/jQuery.Validate.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/mvc/3.0/jquery.validate.unobtrusive.js"></script>
+    <link rel="stylesheet" href="qunit.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="qunit.js"></script>
+    <script type="text/javascript" src="jquery.mockjax.js"></script>
+    <script type="text/javascript" src="jquery.address-1.6.js"></script>
+    <script type="text/javascript" src="jquery.json-2.2.js"></script>
+    <script type="text/javascript" src="jstorage.js"></script>
+    <script type="text/javascript" src="NakedObjectsTestHelpers.js"></script>
+    <script type="text/javascript" src="NakedObjects-Ajax.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            module("focusOnFirst Tests");
+
+            test("nofocusOnFirst", function () {
+                expect(1);
+                var hadFocus = setupForFocusOnFirst("input", "text");
+                equal(hadFocus.test1, false, "don't expect test1 to have focus");
+            });
+
+            test("nofocusOnFirstDiv", function () {
+                expect(2);
+                var hadFocus = setupForFocusOnFirst("div");
+                equal(hadFocus.test1, false, "don't expect test1 to have focus");
+                nakedObjects.focusOnFirst();
+                equal(hadFocus.test1, false, "don't expect test1 to have focus");
+            });
+
+            test("focusOnFirstTextInput", function () {
+                expect(2);
+                var hadFocus = setupForFocusOnFirst("input", "text");
+                equal(hadFocus.test1, false, "don't expect test1 to have focus");
+                nakedObjects.focusOnFirst();
+                ok(hadFocus.test1, "expect test1 to have focus");
+            });
+
+            test("focusOnFirstCheckboxInput", function () {
+                expect(2);
+                var hadFocus = setupForFocusOnFirst("input", "checkbox");
+                equal(hadFocus.test1, false, "don't expect test1 to have focus");
+                nakedObjects.focusOnFirst();
+                ok(hadFocus.test1, "expect test1 to have focus");
+            });
+
+            test("focusOnFirstSelectInput", function () {
+                expect(2);
+                var hadFocus = setupForFocusOnFirst("select");
+                equal(hadFocus.test1, false, "don't expect test1 to have focus");
+                nakedObjects.focusOnFirst();
+                ok(hadFocus.test1, "expect test1 to have focus");
+            });
+
+            test("focusOnFirstTextAreaInput", function () {
+                expect(2);
+                var hadFocus = setupForFocusOnFirst("textarea");
+                equal(hadFocus.test1, false, "don't expect test1 to have focus");
+                nakedObjects.focusOnFirst();
+                ok(hadFocus.test1, "expect test1 to have focus");
+            });
+
+            test("focusOnFirstTextInputActionDialog", function () {
+                expect(2);
+                var hadFocus = setupForFocusOnFirstWithForm("ActionDialog", "OK", "anything");
+                equal(hadFocus.test1, false, "don't expect test1 to have focus");
+                nakedObjects.focusOnFirst();
+                ok(hadFocus.test1, "expect test1 to have focus");
+            });
+
+            test("focusOnFirstTextInputObjectEdit", function () {
+                expect(2);
+                var hadFocus = setupForFocusOnFirstWithForm("ObjectEdit", "Save", "anything");
+                equal(hadFocus.test1, false, "don't expect test1 to have focus");
+                nakedObjects.focusOnFirst();
+                ok(hadFocus.test1, "expect test1 to have focus");
+            });
+
+            test("focusOnFirstTextInputActionDialogError", function () {
+                expect(3);
+                var hadFocus = setupForFocusOnFirstWithForm("ActionDialog", "OK", "input-validation-error");
+                equal(hadFocus.test1, false, "don't expect test1 to have focus");
+                equal(hadFocus.test2, false, "don't expect test2 to have focus");
+                nakedObjects.focusOnFirst();
+
+                ok(hadFocus.test2, "expect test2 to have focus");
+            });
+
+            test("focusOnFirstTextInputObjectEditError", function () {
+                expect(3);
+                var hadFocus = setupForFocusOnFirstWithForm("ObjectEdit", "Save", "input-validation-error");
+                equal(hadFocus.test1, false, "don't expect test1 to have focus");
+                equal(hadFocus.test2, false, "don't expect test2 to have focus");
+                nakedObjects.focusOnFirst();
+
+                ok(hadFocus.test2, "expect test2 to have focus");
+            });
+
+            module("checkForEnter Tests");
+
+            test("checkForEnterOnButton", function () {
+                stop();
+
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+                $("#redisplayCollection").keydown(nakedObjects.checkForEnter);
+
+                var event = $.Event("keydown");
+                event.keyCode = 13;
+
+                var clicked = false;
+
+                $("#redisplayCollection").click(function (eventObject) {
+                    clicked = true;
+                    return false;
+                });
+
+                $("#redisplayCollection").trigger(event);
+
+                setTimeout(function () {
+                    start();
+                    expect(1);
+                    ok(clicked, "button should be clicked");
+                }, 1000);
+            });
+
+            test("checkForEnterOnFormWithOK", function () {
+                stop();
+
+                var html = $("<div><form><input id='testinput' type='text'></input><button class='nof-ok'/></form></div>");
+                $("div#testHtml > div").replaceWith(html);
+                $("#testinput").keydown(nakedObjects.checkForEnter);
+
+                var event = $.Event("keydown");
+                event.keyCode = 13;
+
+                var clicked = false;
+                var focus = false;
+
+                $("button.nof-ok").click(function () {
+                    clicked = true;
+                    return false;
+                });
+
+                $("button.nof-ok").focus(function () {
+                    focus = true;
+                    return false;
+                });
+
+                $("#testinput").trigger(event);
+
+                setTimeout(function () {
+                    start();
+                    expect(1);//2
+                    ok(clicked, "button should be clicked");
+                    //ok(focus, "button should have focus");
+                }, 1000);
+            });
+
+
+            test("checkForEnterOnFormWithSubmit", function () {
+                stop();
+
+                var html = $("<div><form><input id='testinput' type='text'></input><button class='Submit' type='submit'/></form></div>");
+                $("div#testHtml > div").replaceWith(html);
+                $("#testinput").keydown(nakedObjects.checkForEnter);
+
+                var event = $.Event("keydown");
+                event.keyCode = 13;
+
+                var clicked = false;
+                var focus = false;
+
+                $("button.Submit").click(function () {
+                    clicked = true;
+                    return false;
+                });
+
+                $("button.Submit").focus(function () {
+                    focus = true;
+                    return false;
+                });
+
+                $("#testinput").trigger(event);
+
+                setTimeout(function () {
+                    start();
+                    expect(1);//2
+                    ok(clicked, "button should be clicked");
+                    //ok(focus, "button should have focus");
+                }, 1000);
+            });
+
+            test("checkForEnterOnFormWithTwoSubmits", function () {
+                stop();
+
+                var html = $("<div><form><input id='testinput' type='text'></input><button class='Submit1' type='submit' name='something'/><button class='Submit' type='submit'/></form></div>");
+                $("div#testHtml > div").replaceWith(html);
+                $("#testinput").keydown(nakedObjects.checkForEnter);
+
+                var event = $.Event("keydown");
+                event.keyCode = 13;
+
+                var clicked = false;
+                var focus = false;
+
+                $("button.Submit").click(function () {
+                    clicked = true;
+                    return false;
+                });
+
+                $("button.Submit").focus(function () {
+                    focus = true;
+                    return false;
+                });
+
+                $("button.Submit1").click(function () {
+                    ok(false, "submit with name should not be clicked");
+                    return false;
+                });
+
+                $("button.Submit1").focus(function () {
+                    ok(false, "submit with name should not be focused");
+                    return false;
+                });
+
+
+                $("#testinput").trigger(event);
+
+                setTimeout(function () {
+                    start();
+                    expect(1);//2
+                    ok(clicked, "button should be clicked");
+                    //ok(focus, "button should have focus");
+                }, 1000);
+            });
+
+            test("checkForEnterOnFormWithBoth", function () {
+                stop();
+
+                var html = $("<div><form><input id='testinput' type='text'></input><button class='Submit' type='submit'/><button class='nof-ok'/></form></div>");
+                $("div#testHtml > div").replaceWith(html);
+                $("#testinput").keydown(nakedObjects.checkForEnter);
+
+                var event = $.Event("keydown");
+                event.keyCode = 13;
+
+                var clicked = false;
+                var focus = false;
+
+                $("button.nof-ok").click(function () {
+                    clicked = true;
+                    return false;
+                });
+
+                $("button.nof-ok").focus(function () {
+                    focus = true;
+                    return false;
+                });
+
+                $("button.Submit").click(function () {
+                    ok(false, "submit should not be clicked");
+                    return false;
+                });
+
+                $("button.Submit").focus(function () {
+                    ok(false, "submit should not be focused");
+                    return false;
+                });
+
+                $("#testinput").trigger(event);
+
+                setTimeout(function () {
+                    start();
+                    expect(1);//2
+                    ok(clicked, "button should be clicked");
+                    //ok(focus, "button should have focus");
+                }, 1000);
+            });
+
+            module("clearHistory Tests");
+
+            test("clearHistory", function () {
+                stop();
+
+                var html = $("<div class='nof-history'>" +
+								"<div class='nof-object'><img alt='Obj1' src='' /><a href=''>Obj1 Title</a></div>" +
+								"<div class='nof-object'><img alt='Obj2' src='' /><a href=''>Obj2 Title</a></div>" +
+								"<form action='/clearHistory/test' class='nof-action' method='post'>" +
+									"<div>" +
+										"<input id='ClearHistory-displayFormats' name='ClearHistory-displayFormats' type='hidden' value='' />" +
+										"<button name='' title='Clear' type='submit' value='clearAll=False'>Clear</button>" +
+									"</div>" +
+								"</form>" +
+							"</div>");
+
+                $("div#testHtml > div").replaceWith(html);
+                $("div#testHtml form").submit(nakedObjects.clearHistory);
+                $("div#testHtml form").submit();
+
+                setTimeout(function () {
+                    start();
+                    expect(4);
+                    ok($("div#testHtml div.nof-object").length == 1, "should be only one div.Object in cleared html");
+                    equal($("div#testHtml div.nof-object:first img").attr("alt"), "Obj3", "history not replaced");
+                    ok($("div#testHtml button").length == 1, "button should not be cleared");
+                    equal($("div#testHtml button").attr("value"), "clearAll=False", "clear all still false");
+                }, 1000);
+            });
+
+            test("clearAllHistory", function () {
+                stop();
+
+                var html = $("<div class='nof-history'>" +
+								"<div class='nof-object'><img alt='Obj1' src='' /><a href=''>Obj1 Title</a></div>" +
+								"<div class='nof-object'><img alt='Obj2' src='' /><a href=''>Obj2 Title</a></div>" +
+								"<form action='/clearHistory/test' class='nof-action' method='post'>" +
+									"<div>" +
+										"<input id='ClearHistory-collectionFormats' name='ClearHistory-collectionFormats' type='hidden' value='' />" +
+										"<button name='' title='Clear' type='submit' value='clearAll=True'>Clear</button>" +
+									"</div>" +
+								"</form>" +
+							"</div>");
+
+                $("div#testHtml > div").replaceWith(html);
+                $("div#testHtml form").submit(nakedObjects.clearHistory);
+                $("div#testHtml form").submit();
+
+                setTimeout(function () {
+                    start();
+                    expect(2);
+                    ok($("div#testHtml div.nof-object").length == 0, "all history should be cleared");
+                    ok($("div#testHtml button").length == 0, "button should be cleared");
+                }, 1000);
+            });
+
+
+
+
+            module("redisplayCollection Tests");
+
+            test("redisplayCollection list", function () {
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                redisplayCollectionList(getEvent("Redisplay", "Items=list"));
+            });
+
+
+
+            test("redisplayCollection table", function () {
+
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                redisplayCollectionTable(getEvent("Redisplay", "Items=table"));
+            });
+
+
+
+            test("redisplayCollection summary", function () {
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                redisplayCollectionSummary(getEvent("Redisplay", "Items=summary"));
+            });
+
+
+
+            module("updatePageFromAction Tests");
+
+            test("updatePageFromAction ", function () {
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                updatePageFromActionTest(getEvent("InvokeAction", "action=action"));
+            });
+
+
+
+            test("updatePageFromLink", function () {
+                stop();
+
+                var page = $("<div><div id='main' class='main-content'><a href='/updatePageFromAction/action/test' method='post'><div id='oldmain'></div></a></div></div>");
+
+                $("div#testHtml > div").replaceWith(page);
+                $("div#testHtml a").click(nakedObjects.updatePageFromLink);
+
+                $("div#testHtml a").click();
+
+                setTimeout(function () {
+                    start();
+                    expect(1);
+                    ok($("div#testHtml div#newmain").length == 1, "not new html");
+                }, 1000);
+            });
+
+            test("updatePageFromLinkTransient", function () {
+                stop();
+
+                $.jStorage.set("transient:" + 1, "<div><div id='main' class='main-content'><div id='cachedmain'></div></div>");
+
+                var page = $("<div><div id='main' class='main-content'><a href='/Transient?id=1' method='post'><div id='oldmain'></div></a></div></div>");
+
+                $("div#testHtml > div").replaceWith(page);
+                $("div#testHtml a").click(nakedObjects.updatePageFromLink);
+
+                $("div#testHtml a").click();
+
+                setTimeout(function () {
+                    start();
+                    expect(1);
+                    ok($("div#testHtml div#cachedmain").length == 1, "not new html");
+                }, 1000);
+            });
+
+            test("updatePageFromAction Finder", function () {
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                updateTestwithSubmenu("Finder", getEvent("Finder", "aValue"));
+            });
+
+            test("updatePageFromAction Selector", function () {
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                updateTestwithSubmenu("Selector", getEvent("Selector", "aValue"));
+            });
+
+            test("updatePageFromAction ActionAsFinder", function () {
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                updateTestwithSubmenu("ActionAsFinder", getEvent("ActionAsFinder", "aValue"));
+            });
+
+            test("updatePageFromAction InvokeActionAsFinder", function () {
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                updateTestwithSubmenu("InvokeActionAsFinder", getEvent("InvokeActionAsFinder", "aValue"));
+            });
+
+            test("updatePageFromAction InvokeActionAsSave", function () {
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                updateTestwithSubmenu("InvokeActionAsSave", getEvent("InvokeActionAsSave", "aValue"));
+            });
+
+            test("updateDialogFromAction Finder", function () {
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                updateDialogwithSubmenu("Finder", getEvent("Finder", "aValue"));
+            });
+
+            test("updateDialogFromAction Selector", function () {
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                updateDialogwithSubmenu("Selector", getEvent("Selector", "aValue"));
+            });
+
+            test("updateDialogFromAction ActionAsFinder", function () {
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                updateDialogwithSubmenu("ActionAsFinder", getEvent("ActionAsFinder", "aValue"));
+            });
+
+            test("updateDialogFromAction InvokeActionAsFinder", function () {
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                updateDialogwithSubmenu("InvokeActionAsFinder", getEvent("InvokeActionAsFinder", "aValue"));
+            });
+
+            test("updateDialogFromAction InvokeActionAsSave", function () {
+                var html = $("<div><button id='redisplayCollection'/></div>");
+                $("div#testHtml > div").replaceWith(html);
+
+                updateDialogwithSubmenu("InvokeActionAsSave", getEvent("InvokeActionAsSave", "aValue"));
+            });
+
+            module("updateTitle Tests");
+
+            // update tests for new code
+
+            test("updateTitle", function () {
+                ok(document.title !== "New Title", "title should not be New Title");
+                nakedObjects.updateTitle("<title>New Title</title>");
+                ok(document.title === "New Title", "title should be New Title");
+            });
+
+            test("doNotUpdateTitle", function () {
+                ok(document.title !== "Another Title", "title should not be Another Title");
+                nakedObjects.updateTitle("<body>Another Title</body>");
+                ok(document.title !== "Another Title", "title should not be Another Title");
+            });
+
+            test("updateTitleTrim", function () {
+                ok(document.title !== "Last Title", "title should not be Last Title");
+                nakedObjects.updateTitle("<title>\n   Last Title\n     </title>");
+                ok(document.title === "Last Title", "title should be Last Title");
+            });
+
+            module("isValid Tests");
+
+            test("isValidProperty", function () {
+                stop();
+
+                $("div#testHtml > div").replaceWith($("<div/>"));
+
+                var draggable = $("<div><a href='/Test?id=1' ></a></div>");
+                var droppableElements = $("<div class='nof-object'><form action='/Test?id=2'><div id='Class-Property' class='nof-property'  ><div class='nof-object' data-validate='Ajax/ValidateProperty'></div></div></form></div>");
+
+                var droppable = droppableElements.find("div.nof-object");
+
+                $.ui.ddmanager.current = { options: { scope: "" }, currentItem: $(droppable) };
+
+                ok(!$(droppable).hasClass("nof-validdrop"), "should be not yet valid");
+
+                nakedObjects.isValid(draggable, droppable);
+
+                setTimeout(function () {
+                    start();
+                    expect(2);
+                    ok($(droppable).hasClass("nof-validdrop"), "should be valid");
+                }, 1000);
+            });
+
+            // fix on server
+
+            test("isNotValidProperty", function () {
+                stop();
+
+                $("div#testHtml > div").replaceWith($("<div/>"));
+
+                var draggable = $("<div><a href='/Test?id=1' ></a></div>");
+                var droppableElements = $("<div class='nof-object'><form action='/Test?id=2'><div id='Class-Property' class='nof-property' ><div class='nof-object' data-validate='Ajax/ValidatePropertyFail'></div></div></form></div>");
+
+                var droppable = droppableElements.find("div.nof-object");
+
+                $.ui.ddmanager.current = { options: { scope: "" }, currentItem: $(droppable) };
+
+                ok(!$(droppable).hasClass("nof-validdrop"), "should be not yet valid");
+
+                nakedObjects.isValid(draggable, droppable);
+
+                setTimeout(function () {
+                    start();
+                    expect(2);
+                    ok(!$(droppable).hasClass("nof-validdrop"), "should not be valid");
+                }, 1000);
+            });
+
+
+            test("isValidParameter", function () {
+                stop();
+
+                $("div#testHtml > div").replaceWith($("<div/>"));
+
+                var draggable = $("<div><a href='/Test?id=1' ></a></div>");
+                var droppableElements = $("<div class='nof-object'><form action='/Test?id=2'><div id='Class-Parameter' class='nof-parameter'><div class='nof-object' data-validate='Ajax/ValidateParameter'></div></div></form></div>");
+
+                var droppable = droppableElements.find("div.nof-object");
+
+                $.ui.ddmanager.current = { options: { scope: "" }, currentItem: $(droppable) };
+
+                ok(!$(droppable).hasClass("nof-validdrop"), "should be not yet valid");
+
+                nakedObjects.isValid(draggable, droppable);
+
+                setTimeout(function () {
+                    start();
+                    expect(2);
+                    ok($(droppable).hasClass("nof-validdrop"), "should be valid");
+                }, 1000);
+            });
+
+
+            test("isNotValidParameter", function () {
+                stop();
+
+                $("div#testHtml > div").replaceWith($("<div/>"));
+
+
+                var draggable = $("<div><a href='/Test?id=1' ></a></div>");
+                var droppableElements = $("<div class='nof-object'><form action='/Test?id=2'><div id='Class-Parameter' class='nof-parameter'><div class='nof-object' data-validate='Ajax/ValidateParameterFail'></div></div></form></div>");
+
+                var droppable = droppableElements.find("div.nof-object");
+
+                $.ui.ddmanager.current = { options: { scope: "" }, currentItem: $(droppable) };
+
+                ok(!$(droppable).hasClass("nof-validdrop"), "should be not yet valid");
+
+                nakedObjects.isValid(draggable, droppable);
+
+                setTimeout(function () {
+                    start();
+                    expect(2);
+                    ok(!$(droppable).hasClass("nof-validdrop"), "should not be valid");
+                }, 1000);
+            });
+
+            module("updateChoices Tests");
+
+
+            test("updateChoices", function () {
+                stop();
+
+                $("div#testHtml > div").replaceWith($("<div/>"));
+
+                $("div#testHtml > div").append($('<form class="Edit" method="post" action="/Address/Edit"/>'));
+                $("form.Edit").append($('<div id="Address-PropertyList" class="PropertyList" data-choices-parameters="Address-CountryRegion-Select" data-choices="/Ajax/GetPropertyChoices"/>'));
+                $("div#Address-PropertyList").append($('<div class="Object"><select class="valid" id="Address-CountryRegion-Select" name="Address-CountryRegion-Select" title=""><option selected="selected" value="0">0</option></select></div>'));
+                $("div#Address-PropertyList").append($('<div class="Object"><select class="valid" id="Address-StateProvince-Select" name="Address-StateProvince-Select" title=""><option selected="selected" value="0">0</option></select></div>'));
+
+
+                $("select#Address-CountryRegion-Select").change(nakedObjects.updateChoices);
+                $("select#Address-CountryRegion-Select").val("0");
+                $("select#Address-CountryRegion-Select").change();
+
+                setTimeout(function () {
+                    start();
+                    expect(8);
+
+                    equal($("select#Address-CountryRegion-Select option").length, 3, "should be 3 options");
+                    equal($("select#Address-CountryRegion-Select option")[1].value, "1", "should be 1");
+                    equal($("select#Address-CountryRegion-Select option")[2].value, "2", "should be 2");
+
+                    equal($("select#Address-StateProvince-Select option").length, 3, "should be 3 options");
+                    equal($("select#Address-StateProvince-Select option")[1].value, "3", "should be 3");
+                    equal($("select#Address-StateProvince-Select option")[2].value, "4", "should be 4");
+
+                }, 1000);
+            });
+
+            test("updateChoicesUnchanged", function () {
+                stop();
+
+                $("div#testHtml > div").replaceWith($("<div/>"));
+
+                $("div#testHtml > div").append($('<form class="Edit" method="post" action="/Address/Edit"/>'));
+                $("form.Edit").append($('<div id="Address-PropertyList" class="PropertyList" data-choices-parameters="Address-CountryRegion-Select" data-choices="/Ajax/GetPropertyChoicesUnchanged"/>'));
+                $("div#Address-PropertyList").append($('<div class="Object"><select class="valid" id="Address-CountryRegion-Select" name="Address-CountryRegion-Select" title=""><option></option><option value="0">0</option></select></div>'));
+                $("div#Address-PropertyList").append($('<div class="Object"><select class="valid" id="Address-StateProvince-Select" name="Address-StateProvince-Select" title=""><option></option><option value="0">0</option></select></div>'));
+
+
+                $("select#Address-CountryRegion-Select").change(nakedObjects.updateChoices);
+                $("select#Address-CountryRegion-Select").change();
+
+                setTimeout(function () {
+                    start();
+                    expect(4);
+
+                    equal($("select#Address-CountryRegion-Select option").length, 2, "should be 2 options");
+                    equal($("select#Address-CountryRegion-Select option")[1].value, "0", "should be 0");
+
+
+                    equal($("select#Address-StateProvince-Select option").length, 2, "should be 2 options");
+                    equal($("select#Address-StateProvince-Select option")[1].value, "0", "should be 0");
+
+
+                }, 1000);
+            });
+
+            test("updateChoicesEmpty", function () {
+                stop();
+
+                $("div#testHtml > div").replaceWith($("<div/>"));
+
+                $("div#testHtml > div").append($('<form class="Edit" method="post" action="/Address/Edit"/>'));
+                $("form.Edit").append($('<div id="Address-PropertyList" class="PropertyList" data-choices-parameters="Address-CountryRegion-Select" data-choices="/Ajax/GetPropertyChoicesEmpty"/>'));
+                $("div#Address-PropertyList").append($('<div class="Object"><select class="valid" id="Address-CountryRegion-Select" name="Address-CountryRegion-Select" title=""><option></option><option value="0">0</option></select></div>'));
+                $("div#Address-PropertyList").append($('<div class="Object"><select class="valid" id="Address-StateProvince-Select" name="Address-StateProvince-Select" title=""><option></option><option value="0">0</option></select></div>'));
+
+
+                $("select#Address-CountryRegion-Select").change(nakedObjects.updateChoices);
+                $("select#Address-CountryRegion-Select").change();
+
+                setTimeout(function () {
+                    start();
+                    expect(4);
+
+                    equal($("select#Address-CountryRegion-Select option").length, 2, "should be 2 options");
+                    equal($("select#Address-CountryRegion-Select option")[1].value, "0", "should be 0");
+
+
+                    equal($("select#Address-StateProvince-Select option").length, 2, "should be 2 options");
+                    equal($("select#Address-StateProvince-Select option")[1].value, "0", "should be 0");
+
+
+                }, 1000);
+            });
+
+
+
+            module("finished");
+
+            test("finished", function () {
+                document.title = "finished";
+            });
+
+        });
+
+    </script>
+</head>
+<body>
+    <h1 id="qunit-header">
+        Naked Objects QUnit Tests</h1>
+    <h2 id="qunit-banner">
+    </h2>
+    <h2 id="qunit-userAgent">
+    </h2>
+    <ol id="qunit-tests">
+    </ol>
+    <div id="testHtml">
+        <div>
+        </div>
+    </div>
+</body>
+</html>

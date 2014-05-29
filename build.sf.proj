@@ -1,0 +1,132 @@
+<Project ToolsVersion="4.0" DefaultTargets="SurfacePackage"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <PropertyGroup>
+    <SurfacePath>Surface</SurfacePath>
+    <NOSF>NakedObjects.Surface</NOSF>
+    <NOSF4>NakedObjects.Surface.Nof4</NOSF4>
+    <BuiltPackagesPath>build\packages</BuiltPackagesPath>
+    <InstalledPackagesPath>packages</InstalledPackagesPath>
+    <PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
+    <Nuget>..\.nuget\nuget.exe</Nuget>
+    <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
+  </PropertyGroup>
+
+  <Import Project="$(CommunityTargets)"/>
+
+  <PropertyGroup Condition="'$(Configuration)'==''">
+    <Configuration>Debug</Configuration>
+    <Platform>x86</Platform>
+  </PropertyGroup>
+
+  <Target Name="Config">
+    <CreateItem Include="$(Configuration)">
+      <Output TaskParameter="Include" ItemName="Configuration" />
+    </CreateItem>
+  </Target>
+
+  <ItemGroup>
+    <SurfaceApiFiles Include="$(SurfacePath)\$(NOSF)\*.csproj"/>
+    <SurfaceNof4Files Include="$(SurfacePath)\$(NOSF4)\*.csproj"/>
+  </ItemGroup>
+
+  <Target Name="Clean" DependsOnTargets="Config">
+
+    <MSBuild Projects="@(SurfaceApiFiles)" Targets="Clean"/>
+    <MSBuild Projects="@(SurfaceNof4Files)" Targets="Clean"/>
+
+    <RemoveDir Directories="$(SurfacePath)\$(NOSF).package\lib"/>
+    <RemoveDir Directories="$(SurfacePath)\$(NOSF).package\content"/>
+    <RemoveDir Directories="$(SurfacePath)\$(NOSF).package\src"/>
+    <RemoveDir Directories="$(SurfacePath)\$(NOSF4).package\lib"/>
+    <RemoveDir Directories="$(SurfacePath)\$(NOSF4).package\content"/>
+    <RemoveDir Directories="$(SurfacePath)\$(NOSF4).package\src"/>
+
+    <ItemGroup>
+      <OldPackages Include="$(SurfacePath)\$(NOSF).package\*.nupkg"/>
+      <OldPackages Include="$(SurfacePath)\$(NOSF4).package\*.nupkg"/>
+      <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOSF).package\**\*.*"/>
+      <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOSF4).package\**\*.*"/>
+      <OldCode Include="$(SurfacePath)\$(NOSF)\bin\**\*.dll"/>
+      <OldCode Include="$(SurfacePath)\$(NOSF)\obj\**\*.*"/>
+      <OldCode Include="$(SurfacePath)\$(NOSF4)\bin\**\*.dll"/>
+      <OldCode Include="$(SurfacePath)\$(NOSF4)\obj\**\*.*"/>     
+    </ItemGroup>
+
+    <Delete Files="@(OldPackages)"/>
+    <Delete Files="@(OldPackageFiles)"/>
+    <Delete Files="@(OldCode)" ContinueOnError="true"/>
+  </Target>
+
+  <Target Name="Init" DependsOnTargets="Config" >
+    <MakeDir Directories="$(PackageSourcePath)"/>
+    <MakeDir Directories="$(BuiltPackagesPath)"/>
+  </Target>
+
+  <ItemGroup>
+    <PackageCongfigFiles Include="$(SurfacePath)\$(NOSF)\packages.config"/>
+    <PackageCongfigFiles Include="$(SurfacePath)\$(NOSF4)\packages.config"/>
+  </ItemGroup>
+
+  <Target Name="RestorePackage"  Returns="%(PackageCongfigFiles.Identity)" DependsOnTargets="Init">
+    <Exec Command='".nuget/nuget.exe" restore "@(PackageCongfigFiles)" -PackagesDirectory packages'  IgnoreExitCode="True"  />
+  </Target>
+
+  <Target Name="RestoreSolutionPackages" DependsOnTargets="Init">
+    <PropertyGroup>
+      <NuGetToolsPath>..\.nuget</NuGetToolsPath>
+      <PackagesConfig>$(NuGetToolsPath)\packages.config</PackagesConfig>
+      <PackagesDir>$(SolutionDir)packages</PackagesDir>
+      <SolutionRestoreCommand>"$(NugetToolsPath)\nuget.exe" install "$(PackagesConfig)" -o "$(InstalledPackagesPath)"</SolutionRestoreCommand>
+    </PropertyGroup>
+    <Exec Command="$(SolutionRestoreCommand)" Condition="Exists('$(PackagesConfig)')"/>
+  </Target>
+
+  <Target Name="Surface" DependsOnTargets="RestoreSolutionPackages;RestorePackage">
+   
+    <MSBuild Projects="@(SurfaceApiFiles)"  Properties="Configuration=%(Configuration.Identity)">
+      <Output TaskParameter="TargetOutputs" ItemName="SurfaceApiArtifacts"/>
+    </MSBuild>
+
+    <Copy SourceFiles="@(SurfaceApiArtifacts)" DestinationFolder="$(SurfacePath)\$(NOSF).package\lib\net451" />
+
+    <MSBuild Projects="@(SurfaceNof4Files)" Properties="Configuration=%(Configuration.Identity)">
+      <Output TaskParameter="TargetOutputs" ItemName="SurfaceNof4Artifacts"/>
+    </MSBuild>
+
+    <Copy SourceFiles="@(SurfaceNof4Artifacts)" DestinationFolder="$(SurfacePath)\$(NOSF).Nof4.package\lib\net451"/>
+
+    <ItemGroup>
+      <SurfaceApiPdb Include="$(SurfacePath)\$(NOSF)\bin\%(Configuration.Identity)\$(NOSF).pdb"/>
+      <SurfaceNof4Pdb Include="$(SurfacePath)\$(NOSF).Nof4\bin\%(Configuration.Identity)\$(NOSF).Nof4.pdb"/>
+    </ItemGroup>
+
+    <Copy SourceFiles="@(SurfaceApiPdb)" DestinationFolder="$(SurfacePath)\$(NOSF).package\lib\net451" />
+    <Copy SourceFiles="@(SurfaceNof4Pdb)" DestinationFolder="$(SurfacePath)\$(NOSF).Nof4.package\lib\net451" />
+
+    <ItemGroup>
+      <SurfaceApiSrc Include="$(SurfacePath)\*$(NOSF)\**\*.cs"/>
+      <SurfaceNof4Src Include="$(SurfacePath)\*$(NOSF).Nof4\**\*.cs"/>
+    </ItemGroup>
+
+    <Copy SourceFiles="@(SurfaceApiSrc)" DestinationFolder="$(SurfacePath)\$(NOSF).package\src\%(RecursiveDir)" />
+    <Copy SourceFiles="@(SurfaceNof4Src)" DestinationFolder="$(SurfacePath)\$(NOSF).Nof4.package\src\%(RecursiveDir)" />
+  </Target>
+
+  <Target Name="SurfacePackage" DependsOnTargets="Surface">
+    <Exec WorkingDirectory="$(SurfacePath)\$(NOSF).package" Command="..\$(Nuget) pack $(NOSF).nuspec -Symbols" />
+    <ItemGroup>
+      <SurfaceApiPackage Include="$(SurfacePath)\$(NOSF).package\*.nupkg"/>
+    </ItemGroup>
+
+    <Exec WorkingDirectory="$(SurfacePath)\$(NOSF).Nof4.package" Command="..\$(Nuget) pack $(NOSF).Nof4.nuspec -Symbols" />
+    <ItemGroup>
+      <SurfaceNof4Package Include="$(SurfacePath)\$(NOSF).Nof4.package\*.nupkg"/>
+    </ItemGroup>
+
+    <Copy SourceFiles="@(SurfaceApiPackage)" DestinationFolder="$(PackageSourcePath)" />
+    <Copy SourceFiles="@(SurfaceApiPackage)" DestinationFolder="$(BuiltPackagesPath)" />
+    <Copy SourceFiles="@(SurfaceNof4Package)" DestinationFolder="$(PackageSourcePath)" />
+    <Copy SourceFiles="@(SurfaceNof4Package)" DestinationFolder="$(BuiltPackagesPath)" />
+
+  </Target>
+</Project>

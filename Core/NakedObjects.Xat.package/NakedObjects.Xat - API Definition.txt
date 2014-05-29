@@ -1,0 +1,19 @@
+This document defines the API for the NakedObjects.Xat package (as used for Semantic Versioning).
+
+The API comprises:
+
+- NakedObjects.Xat.AcceptanceTestCase 
+- NakedObjects.Xat.Database.DatabaseUtils
+- NakedObjects.Xat.XatUtils
+- All of the interfaces defined directly in the NakedObjects.Xat namespace (e.g. ITestAction)
+
+Note that, currently, the generic interfaces (in namespace NakedObjects.Xat.Generic) do not yet form part of the stable API and are not intended for use.
+
+Dependencies:
+
+NakedObjects.Xat is dependent on NakedObjects.Framework  -  so changes to that API should be reflected in major/minor version number of this package.
+
+Current version: 4.1
+
+
+Changes since previous version:

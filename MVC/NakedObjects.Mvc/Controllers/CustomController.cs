@@ -1,0 +1,426 @@
+﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
+// All Rights Reserved. This code released under the terms of the 
+// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Web.Mvc;
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Reflect;
+using NakedObjects.Web.Mvc.Html;
+using NakedObjects.Web.Mvc.Models;
+
+namespace NakedObjects.Web.Mvc.Controllers {
+    public abstract class CustomController : NakedObjectsController {
+        public IDomainObjectContainer Container { set; protected get; }
+
+        #region Actions
+
+        #region Invoke Action - return result
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Return result and update valid bool to indicate if
+        ///     parameters valid.
+        /// </summary>
+        protected T InvokeAction<T>(object domainObject, string actionName, FormCollection parameters, out bool valid) {
+            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
+            INakedObjectAction action = nakedObject.GetActionLeafNode(actionName);
+            return InvokeAction<T>(nakedObject, action, parameters, out valid);
+        }
+
+        #region Invoke Action - func lambda 
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Return result and update valid bool to indicate if
+        ///     parameters valid.
+        /// </summary>
+        protected TResult InvokeAction<TTarget, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TResult>>> expression, FormCollection parameters, out bool valid) {
+            return InvokeAction<TResult>(FrameworkHelper.GetNakedObject(domainObject), expression, parameters, out valid);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Return result and update valid bool to indicate if
+        ///     parameters valid.
+        /// </summary>
+        protected TResult InvokeAction<TTarget, TParm, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm, TResult>>> expression, FormCollection parameters, out bool valid) {
+            return InvokeAction<TResult>(FrameworkHelper.GetNakedObject(domainObject), expression, parameters, out valid);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Return result and update valid bool to indicate if
+        ///     parameters valid.
+        /// </summary>
+        protected TResult InvokeAction<TTarget, TParm1, TParm2, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TResult>>> expression, FormCollection parameters, out bool valid) {
+            return InvokeAction<TResult>(FrameworkHelper.GetNakedObject(domainObject), expression, parameters, out valid);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Return result and update valid bool to indicate if
+        ///     parameters valid.
+        /// </summary>
+        protected TResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TResult>>> expression, FormCollection parameters, out bool valid) {
+            return InvokeAction<TResult>(FrameworkHelper.GetNakedObject(domainObject), expression, parameters, out valid);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Return result and update valid bool to indicate if
+        ///     parameters valid.
+        /// </summary>
+        protected TResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TParm4, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression, FormCollection parameters, out bool valid) {
+            return InvokeAction<TResult>(FrameworkHelper.GetNakedObject(domainObject), expression, parameters, out valid);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Invoke Action - return View 
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction(object domainObject, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
+            return InvokeAction(nakedObject, actionName, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        #region Invoke Action - action lambda 
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<TTarget>(TTarget domainObject, Expression<Func<TTarget, Action>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(domainObject, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<TTarget, TParm>(TTarget domainObject, Expression<Func<TTarget, Action<TParm>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(domainObject, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<TTarget, TParm1, TParm2>(TTarget domainObject, Expression<Func<TTarget, Action<TParm1, TParm2>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(domainObject, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<TTarget, TParm1, TParm2, TParm3>(TTarget domainObject, Expression<Func<TTarget, Action<TParm1, TParm2, TParm3>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(domainObject, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TParm4>(TTarget domainObject, Expression<Func<TTarget, Action<TParm1, TParm2, TParm3, TParm4>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(domainObject, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        #endregion
+
+        #region Invoke Action - func lambda
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<TTarget, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(domainObject, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<TTarget, TParm, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(domainObject, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<TTarget, TParm1, TParm2, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(domainObject, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(domainObject, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TParm4, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(domainObject, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Invoke Action with Object Id - return view
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction(string objectId, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            INakedObject nakedObject = FrameworkHelper.GetNakedObjectFromId(objectId);
+            return InvokeAction(nakedObject, actionName, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        #region Invoke Action - action lambda 
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<T>(string objectId, Expression<Func<T, Action>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(objectId, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<T, TParm>(string objectId, Expression<Func<T, Action<TParm>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(objectId, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<T, TParm1, TParm2>(string objectId, Expression<Func<T, Action<TParm1, TParm2>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(objectId, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<T, TParm1, TParm2, TParm3>(string objectId, Expression<Func<T, Action<TParm1, TParm2, TParm3>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(objectId, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<T, TParm1, TParm2, TParm3, TParm4>(string objectId, Expression<Func<T, Action<TParm1, TParm2, TParm3, TParm4>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(objectId, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        #endregion
+
+        #region Invoke Action - func lambda
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<T, TResult>(string objectId, Expression<Func<T, Func<TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(objectId, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<T, TParm, TResult>(string objectId, Expression<Func<T, Func<TParm, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(objectId, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<T, TParm1, TParm2, TResult>(string objectId, Expression<Func<T, Func<TParm1, TParm2, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(objectId, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<T, TParm1, TParm2, TParm3, TResult>(string objectId, Expression<Func<T, Func<TParm1, TParm2, TParm3, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(objectId, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        /// <summary>
+        ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
+        /// </summary>
+        protected ViewResult InvokeAction<T, TParm1, TParm2, TParm3, TParm4, TResult>(string objectId, Expression<Func<T, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            return InvokeAction(objectId, (LambdaExpression) expression, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        #endregion
+
+        #endregion
+
+        /// <summary>
+        ///     Ensures that parameters in an action dialog contain default values specified in the Model.
+        ///     Should be called in a Controller method that sets up a view that will contain an action dialog.
+        /// </summary>
+        /// <example>
+        ///     SetUpDefaultParameters(customer, "CreateNewAddress")
+        /// </example>
+        protected void SetUpDefaultParameters(object domainObject, string actionName) {
+            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
+            INakedObjectAction findOrder = nakedObject.Specification.GetObjectActions().Single(x => x.Id == actionName);
+            SetDefaults(nakedObject, findOrder);
+        }
+
+        #endregion
+
+        #region Saving objects
+
+        /// <summary>
+        ///     Apply changes from form and attempt to save. Go to indicated View based on result of save
+        /// </summary>
+        protected ActionResult SaveObject(FormCollection form, string id, string viewNameForFailure, string viewNameForSuccess, object modelForSuccessViewIfDifferent = null) {
+            object obj = FrameworkHelper.GetObjectFromId(id); //Assuming id is for a transient, this will re-create a transient of same type
+
+            if (SaveObject(form, ref obj)) {
+                return View(viewNameForSuccess, modelForSuccessViewIfDifferent ?? obj);
+            }
+
+            return View(viewNameForFailure, obj);
+        }
+
+        /// <summary>
+        ///     Creates and populates the values in a transient object from a form
+        /// </summary>
+        /// <param name="form">Form to populate from</param>
+        protected T RecreateTransient<T>(FormCollection form) where T : new() {
+            var obj = Container.NewTransientInstance<T>();
+            INakedObject naked = FrameworkHelper.GetNakedObject(obj);
+            RefreshTransient(naked, form);
+            return obj;
+        }
+
+        /// <summary>
+        ///     Apply changes from form and attempt to save
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="form"></param>
+        /// <param name="obj"></param>
+        /// <returns>true if changes in form are valid and object saved</returns>
+        protected bool SaveObject<T>(FormCollection form, ref T obj) {
+            INakedObject naked = FrameworkHelper.GetNakedObject(obj);
+            bool result = false;
+
+            if (ValidateChanges(naked, new ObjectAndControlData() {Form = form})) {
+                if (ApplyChanges(naked, new ObjectAndControlData() { Form = form })) {
+                    result = true;
+                }
+            }
+            obj = naked.GetDomainObject<T>();
+            return result;
+        }
+
+        #endregion
+
+        #region Static: Getting objects
+
+        /// <summary>
+        ///     If id is null or empty use creator function to create and return a new object otherwise
+        ///     returns the domain object that has the specified objectId (typically extracted from the URL).
+        /// </summary>
+        protected static T GetOrCreateFromId<T>(string id, Func<T> creator) {
+            if (string.IsNullOrEmpty(id)) {
+                return creator();
+            }
+
+            return GetObjectFromId<T>(id);
+        }
+
+        /// <summary>
+        ///     Returns the domain object that has the specified objectId (typically extracted from the URL)
+        /// </summary>
+        protected static T GetObjectFromId<T>(string objectId) {
+            return FrameworkHelper.GetNakedObjectFromId(objectId).GetDomainObject<T>();
+        }
+
+        /// <summary>
+        ///     Obtains the Id for the specified object
+        /// </summary>
+        protected static string GetIdFromObject(object domainObject) {
+            return FrameworkHelper.GetObjectId(domainObject);
+        }
+
+        #endregion
+
+        #region private
+
+        private ViewResult InvokeAction(object domainObject, LambdaExpression expression, FormCollection parameters, string viewNameForFailure, string viewNameForSuccess) {
+            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
+            MethodInfo methodInfo = GetAction(expression);
+            return InvokeAction(nakedObject, methodInfo.Name, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        private ViewResult InvokeAction(string objectId, LambdaExpression expression, FormCollection parameters, string viewNameForFailure, string viewNameForSuccess) {
+            INakedObject nakedObject = FrameworkHelper.GetNakedObjectFromId(objectId);
+            MethodInfo methodInfo = GetAction(expression);
+            return InvokeAction(nakedObject, methodInfo.Name, parameters, viewNameForFailure, viewNameForSuccess);
+        }
+
+        private T InvokeAction<T>(INakedObject nakedObject, LambdaExpression expression, FormCollection parameters, out bool valid) {
+            MethodInfo methodInfo = GetAction(expression);
+            INakedObjectAction nakedObjectAction = nakedObject.Specification.GetObjectActions().Single(a => a.Id == methodInfo.Name);
+            return InvokeAction<T>(nakedObject, nakedObjectAction, parameters, out valid);
+        }
+
+        private T InvokeAction<T>(INakedObject nakedObject, INakedObjectAction action, FormCollection parameters, out bool valid) {
+            if (ActionExecutingAsContributed(action, nakedObject)) {
+                if (action.ParameterCount == 1) {
+                    // contributed action being invoked with a single parm that is the current target
+                    // no dialog - go straight through 
+                    INakedObject result = action.Execute(nakedObject, new[] {nakedObject});
+                    valid = true;
+                    return result.GetDomainObject<T>();
+                }
+                if (action.ParameterCount > 1) {
+                    // contributed action being invoked with multiple parms - populate first that match the target 
+                    INakedObjectActionParameter parmToPopulate = action.Parameters.FirstOrDefault(p => nakedObject.Specification.IsOfType(p.Specification));
+                    if (parmToPopulate != null) {
+                        ViewData[IdHelper.GetParameterInputId(action, parmToPopulate)] = FrameworkHelper.GetObjectId(nakedObject.Object);
+                    }
+                }
+            }
+
+            if (ValidateParameters(nakedObject, action, new ObjectAndControlData {Form = parameters})) {
+                IEnumerable<INakedObject> parms = GetParameterValues(action, new ObjectAndControlData {Form = parameters});
+                INakedObject result = action.Execute(nakedObject, parms.ToArray());
+                valid = true;
+                return result.GetDomainObject<T>();
+            }
+
+            valid = false;
+            return default(T);
+        }
+
+
+        private ViewResult InvokeAction(INakedObject nakedObject, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
+            bool valid;
+            var result = InvokeAction<object>(nakedObject.Object, actionName, parameters, out valid);
+            return View(valid ? viewNameForSuccess : viewNameForFailure, result ?? nakedObject.GetDomainObject());
+        }
+
+        private static MethodInfo GetAction(LambdaExpression expression)
+        {
+            if (expression == null)
+            {
+                throw new ArgumentNullException("expression");
+            }
+
+            if (expression.Body.NodeType != ExpressionType.Convert)
+            {
+                throw new ArgumentException("must be method");
+            }
+            Expression actionExpr = ((MethodCallExpression) (((UnaryExpression) expression.Body).Operand)).Object;
+            return (MethodInfo) ((ConstantExpression) actionExpr).Value;
+        }
+
+        #endregion
+    }
+}

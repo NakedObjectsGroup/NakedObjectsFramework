@@ -1,0 +1,13 @@
+Existing files updated:
+
+App_Start\RunWeb
+
+Previous files removed:
+
+None
+
+New files added:
+
+Views\Shared\ScalarView.aspx
+Views\Shared\ScalarView.cshtml
+

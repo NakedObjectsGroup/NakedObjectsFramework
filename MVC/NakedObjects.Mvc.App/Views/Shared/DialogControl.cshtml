@@ -1,0 +1,22 @@
+@using NakedObjects.Resources
+@using NakedObjects.Web.Mvc.Html
+@model global::NakedObjects.Web.Mvc.Models.FindViewModel
+
+@(Html.Object(Html.ObjectTitle(Model.ContextObject).ToString(), IdHelper.ViewAction, Model.ContextObject))
+@(Html.ObjectActionName(Model.ContextAction.Name))
+@Html.ValidationSummary(true, MvcUi.ActionError)
+@(Html.UserMessages())
+@{
+    using (Html.BeginForm(IdHelper.ActionAction + "/" + Model.ContextAction.Id,
+        Html.TypeName(Model.ContextObject).ToString(),
+        new {id = Html.GetObjectId(Model.ContextObject).ToString()},
+        FormMethod.Post,
+        new {@class = Model.DialogClass(), enctype = "multipart/form-data"})) {
+        @(Html.ParameterList(Model.ContextObject, Model.TargetObject, Model.ContextAction, Model.TargetAction, Model.PropertyName, Model.ActionResult))
+
+        if (Html.ObjectIsNotPersistent(Model.ContextObject)) {
+            @(Html.PropertyListEditHidden(Model.ContextObject))
+        }
+    }
+}
+@(Html.CancelButton(Model))

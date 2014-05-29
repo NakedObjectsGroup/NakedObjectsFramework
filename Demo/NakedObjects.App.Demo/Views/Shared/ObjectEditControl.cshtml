@@ -1,0 +1,33 @@
+@using NakedObjects.Resources
+@using NakedObjects.Util
+@using NakedObjects.Web.Mvc.Html
+@using NakedObjects.Web.Mvc.Models
+@model object
+
+@if (Model is FindViewModel) {
+    var fvm = (FindViewModel) Model;
+
+
+    @Html.ValidationSummary(true, MvcUi.EditError)
+    @Html.UserMessages()
+    using (Html.BeginForm(IdHelper.EditAction,
+        Html.TypeName(fvm.ContextObject).ToString(),
+        new {id = Html.GetObjectId(fvm.ContextObject).ToString()},
+        FormMethod.Post,
+        new {@class = IdHelper.EditName})) {
+        @(Html.PropertyListEdit(fvm.ContextObject, fvm.TargetObject, fvm.TargetAction, fvm.PropertyName, fvm.ActionResult))
+    }
+}
+else {
+    <div class="transient">UNSAVED - @(NameUtils.NaturalName(Html.TypeName().ToString()))</div>
+    @(Html.ValidationSummary(true, MvcUi.EditError))
+    @(Html.UserMessages())
+    using (Html.BeginForm(IdHelper.EditAction,
+        Html.TypeName(Model).ToString(),
+        new {id = Html.GetObjectId(Model).ToString()},
+        FormMethod.Post,
+        new {@class = IdHelper.EditName})) {
+        @(Html.PropertyListEdit(Model))
+    }
+} 
+@(Html.CancelButton(Model))

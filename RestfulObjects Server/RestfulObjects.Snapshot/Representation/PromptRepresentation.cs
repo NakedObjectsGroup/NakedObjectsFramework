@@ -1,0 +1,101 @@
+// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
+// All Rights Reserved. This code released under the terms of the 
+// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Runtime.Serialization;
+using NakedObjects.Surface;
+using NakedObjects.Surface.Context;
+using NakedObjects.Surface.Utility;
+using RestfulObjects.Snapshot.Constants;
+using RestfulObjects.Snapshot.Utility;
+
+namespace RestfulObjects.Snapshot.Representations {
+    [DataContract]
+    public class PromptRepresentation : Representation {
+        protected PromptRepresentation(PropertyContextSurface propertyContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+            : base(flags) {
+            SetScalars(propertyContext.Property.Id);
+            SetChoices(listContext, propertyContext, req);
+            SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(req, propertyContext));
+            SetLinks(req, listContext.ElementType, new ObjectRelType(RelValues.Up, new UriMtHelper(req, propertyContext.Target)));
+            SetExtensions();
+            SetHeader(listContext.IsListOfServices);
+        }
+
+        protected PromptRepresentation(ParameterContextSurface parmContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags)
+            : base(flags) {
+            SetScalars(parmContext.Id);
+            SetChoices(listContext, parmContext, req);
+            SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(req, parmContext));
+            var helper = new UriMtHelper(req, parmContext.Target);
+            ObjectRelType parentRelType = parmContext.Target.Specification.IsService() ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
+            SetLinks(req, listContext.ElementType, parentRelType);
+            SetExtensions();
+            SetHeader(listContext.IsListOfServices);
+        }
+
+        [DataMember(Name = JsonPropertyNames.Id)]
+        public string Id { get; set; }
+
+        [DataMember(Name = JsonPropertyNames.Links)]
+        public LinkRepresentation[] Links { get; set; }
+
+        [DataMember(Name = JsonPropertyNames.Extensions)]
+        public MapRepresentation Extensions { get; set; }
+
+        [DataMember(Name = JsonPropertyNames.Choices)]
+        public object[] Choices { get; set; }
+
+        private void SetChoices(ListContextSurface listContext, PropertyContextSurface propertyContext, HttpRequestMessage req) {
+            Choices = listContext.List.Select(c => RestUtils.GetChoiceValue(req, c, propertyContext.Property, Flags)).ToArray();
+        }
+
+        private void SetChoices(ListContextSurface listContext, ParameterContextSurface paramContext, HttpRequestMessage req) {
+            Choices = listContext.List.Select(c => RestUtils.GetChoiceValue(req, c, paramContext.Parameter, Flags)).ToArray();
+        }
+
+        private void SetScalars(string id) {
+            Id = id;
+        }
+
+        private void SetExtensions() {
+            Extensions = new MapRepresentation();
+        }
+
+        private void SetLinks(HttpRequestMessage req, INakedObjectSpecificationSurface spec, RelType parentRelType) {
+            var tempLinks = new List<LinkRepresentation> {
+                LinkRepresentation.Create(parentRelType, Flags),
+                LinkRepresentation.Create(SelfRelType, Flags)
+            };
+
+            if (Flags.FormalDomainModel) {
+                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, spec)), Flags));
+            }
+
+            Links = tempLinks.ToArray();
+        }
+
+
+        private void SetHeader(bool isListOfServices) {
+            caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
+        }
+
+        private LinkRepresentation CreateObjectLink(HttpRequestMessage req, INakedObjectSurface no) {
+            var helper = new UriMtHelper(req, no);
+            var rt = new ObjectRelType(RelValues.Element, helper);
+
+            return LinkRepresentation.Create(rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
+        }
+
+        public static PromptRepresentation Create(PropertyContextSurface propertyContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags) {
+            return new PromptRepresentation(propertyContext, listContext, req, flags);
+        }
+
+        public static Representation Create(ParameterContextSurface parmContext, ListContextSurface listContext, HttpRequestMessage req, RestControlFlags flags) {
+            return new PromptRepresentation(parmContext, listContext, req, flags);
+        }
+    }
+}

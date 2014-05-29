@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{233B2E95-FC9E-4E1B-9909-D3CBC81D3F1E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NakedObjects.Reflector.Security.Wif</RootNamespace>
+    <AssemblyName>NakedObjects.Authorisation.Wif</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Architecture">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Architecture.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Async">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Attributes">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Bootstrap">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Bootstrap.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Core">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.FWResources">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.FWResources.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Helpers">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Persistor">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Persistor.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Persistor.Entity">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.PMResources">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Reflector.Core">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Reflector.DotNet">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Reflector.DotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Snapshot.Xml">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Types">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="claimsauthorizationmanager\NakedObjectsClaimsAuthorizationManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="wif\WifAuthorizationInstaller.cs" />
+    <Compile Include="wif\WifAuthorizationManager.cs" />
+    <Compile Include="wif\WifAuthorizer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

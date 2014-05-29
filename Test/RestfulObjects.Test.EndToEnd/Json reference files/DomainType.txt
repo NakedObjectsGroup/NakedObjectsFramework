@@ -1,0 +1,51 @@
+{
+  "name": "RestfulObjects.Test.Data.MostSimple",
+  "domainType": "MostSimple",
+  "friendlyName": "Most Simple",
+  "pluralName": "Most Simples",
+  "description": "",
+  "isService": false,
+  "extensions": {},
+  "links": [
+    {
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
+    }
+  ],
+  "members": [
+    {
+      "rel": "urn:org.restfulobjects:rels/property",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple/properties/Id"
+    }
+  ],
+  "typeActions": [
+    {
+      "id": "isSubtypeOf",
+      "arguments": {
+        "subtype": {
+          "href": null
+        }
+      },
+      "rel": "urn:org.restfulobjects:rels/invoke;typeaction=\"isSubtypeOf\"",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/type-action-result\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple/type-actions/isSubtypeOf/invoke"
+    },
+    {
+      "id": "isSupertypeOf",
+      "arguments": {
+        "supertype": {
+          "href": null
+        }
+      },
+      "rel": "urn:org.restfulobjects:rels/invoke;typeaction=\"isSupertypeOf\"",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/type-action-result\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple/type-actions/isSupertypeOf/invoke"
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+<Project ToolsVersion="4.0" DefaultTargets="WebTest"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+ 
+  <PropertyGroup>
+    <TestPath>Test</TestPath>
+    <NOPM>NakedObjects.ProgrammingModel</NOPM>
+    <BuiltPackagesPath>build\packages</BuiltPackagesPath>
+    <InstalledPackagesPath>packages</InstalledPackagesPath>
+    <TestResultsPath>test-results</TestResultsPath>
+    <PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
+    <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
+    <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
+    <Nuget>..\.nuget\nuget.exe</Nuget>
+    <WorkingDir>build\working</WorkingDir>
+    <IISTransientPath>\\Saturn\UnitTestTransient</IISTransientPath>
+    <IISRestPath>\\Saturn\UnitTestRest</IISRestPath>
+    <IISAjaxPath>\\Saturn\UnitTestAjax</IISAjaxPath>
+  </PropertyGroup>
+
+  <Import Project="$(CommunityTargets)"/>
+  <UsingTask TaskName="NUnit" AssemblyFile="$(CommunityTasks)" />
+  
+  <Choose>
+    <When Condition="Exists('C:\Program Files (x86)')">
+      <PropertyGroup> 
+        <MSTestPath>C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE</MSTestPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <MSTestPath>C:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE</MSTestPath>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <PropertyGroup Condition=" '$(Configuration)'=='' ">
+    <Configuration>Debug</Configuration>
+    <Platform>x86</Platform>
+  </PropertyGroup>
+
+  <Target Name="Config">
+    <CreateItem Include="$(Configuration)">
+      <Output TaskParameter="Include" ItemName="Configuration" />
+    </CreateItem>
+  </Target>
+
+  <ItemGroup>
+    <Files Include="$(TestPath)\NakedObjects.Helpers.Test\*.csproj"/>
+    <Files Include="$(TestPath)\NakedObjects.SystemTest\*.csproj"/>
+    <Files Include="$(TestPath)\RestfulObjects.Test.EndToEnd\RestfulObjects.Test.EndToEnd.csproj"/>
+    <Files Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test\NakedObjects.Mvc.Selenium.Test.csproj"/>
+    <Files Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Helpers\NakedObjects.Mvc.Selenium.Test.Helpers.csproj"/>
+    <Files Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\NakedObjects.Mvc.Selenium.Test.Data.csproj"/>
+    <Files Include="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj"/>
+    <Files Include="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"/>
+    
+  </ItemGroup>
+  
+  <Target Name="Clean" DependsOnTargets="Config">
+    <MSBuild Projects="@(Files)" Targets="Clean"/>
+    <ItemGroup>
+      <OldCode Include="$(TestPath)\NakedObjects.Helpers.Test\bin\**\*.dll"/>
+      <OldCode Include="$(TestPath)\NakedObjects.Helpers.Test\obj\**\*.*"/>
+      <OldCode Include="$(TestPath)\RestfulObjects.Test.EndToEnd\bin\**\*.dll"/>
+      <OldCode Include="$(TestPath)\RestfulObjects.Test.EndToEnd\obj\**\*.*"/>
+      <OldCode Include="$(TestPath)\NakedObjects.SystemTest\bin\**\*.dll"/>
+      <OldCode Include="$(TestPath)\NakedObjects.SystemTest\obj\**\*.*"/>  
+      <OldCode Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test\bin\**\*.dll"/>
+      <OldCode Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test\obj\**\*.*"/>
+      <OldCode Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Helpers\bin\**\*.dll"/>
+      <OldCode Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Helpers\obj\**\*.*"/>
+      <OldCode Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\bin\**\*.dll"/>
+      <OldCode Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\obj\**\*.*"/>
+      <OldCode Include="$(TestPath)\NakedObjects.Test.App\bin\**\*.dll"/>
+      <OldCode Include="$(TestPath)\NakedObjects.Test.Ap\obj\**\*.*"/>
+      <OldCode Include="$(TestPath)\RestfulObjects.Test.App\bin\**\*.dll"/>
+      <OldCode Include="$(TestPath)\RestfulObjects.Test.Ap\obj\**\*.*"/>
+      <OldTests Include="$(TestResultsPath)\NakedObjects.Helpers.Test.trx"/>
+      <OldTests Include="$(TestResultsPath)\NakedObjects.SystemTest.trx"/>
+      <OldTests Include="$(TestResultsPath)\RestfulObjects.Test.EndToEnd.trx"/>
+      <OldTests Include="$(TestResultsPath)\NakedObjects.Mvc.Selenium.Test.trx"/>
+      <OldTests Include="$(TestResultsPath)\NakedObjects.Mvc.Selenium.ReTest.trx"/>
+      <OldDeployment Include="$(IISTransientPath)\**\*.*"/>
+      <OldDeployment Include="$(IISRestPath)\**\*.*"/>
+      <OldDeployment Include="$(IISAjaxPath)\**\*.*"/>
+    </ItemGroup>
+
+    <Delete Files="@(OldCode)" ContinueOnError="true"/>
+    <Delete Files="@(OldTests)" ContinueOnError="true"/>
+    <RemoveDir Directories="$(WorkingDir)" ContinueOnError="true" />
+    <Delete Files="@(OldDeployment)" ContinueOnError="true"/>
+  </Target>
+
+  <Target Name="Init" DependsOnTargets="Config">
+    <MakeDir Directories="$(TestResultsPath)"/>
+    <MakeDir Directories="$(WorkingDir)" />
+  </Target>
+
+  <ItemGroup>
+    <PackageCongfigFiles Include="$(TestPath)\NakedObjects.Helpers.Test\packages.config"/>
+    <PackageCongfigFiles Include="$(TestPath)\NakedObjects.SystemTest\packages.config"/>
+    <PackageCongfigFiles Include="$(TestPath)\RestfulObjects.Test.EndToEnd\packages.config"/>
+    <PackageCongfigFiles Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test\packages.config"/>
+    <PackageCongfigFiles Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Helpers\packages.config"/>
+    <PackageCongfigFiles Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\packages.config"/>
+    <PackageCongfigFiles Include="$(TestPath)\NakedObjects.Test.App\packages.config"/>
+    <PackageCongfigFiles Include="$(TestPath)\RestfulObjects.Test.App\packages.config"/>
+  </ItemGroup>
+
+  <Target Name="RestorePackage"  Returns="%(PackageCongfigFiles.Identity)" DependsOnTargets="Init">
+    <Exec Command='".nuget/nuget.exe" restore "@(PackageCongfigFiles)" -PackagesDirectory packages'  IgnoreExitCode="True"/>
+  </Target>
+
+  <Target Name="RestoreSolutionPackages" DependsOnTargets="Init">
+    <PropertyGroup>
+      <NuGetToolsPath>..\.nuget</NuGetToolsPath>
+      <PackagesConfig>$(NuGetToolsPath)\packages.config</PackagesConfig>
+      <PackagesDir>$(SolutionDir)packages</PackagesDir>
+      <SolutionRestoreCommand>"$(Nuget)" install "$(PackagesConfig)" -o "$(InstalledPackagesPath)"</SolutionRestoreCommand>
+    </PropertyGroup>
+    <Exec Command="$(SolutionRestoreCommand)" Condition="Exists('$(PackagesConfig)')"/>
+  </Target>
+
+  <Target Name="BuildTests" DependsOnTargets="RestoreSolutionPackages;RestorePackage">
+    <MSBuild Projects="@(Files)"  Properties="Configuration=%(Configuration.Identity)"/>
+  </Target>
+
+  <Target Name="Deploy" DependsOnTargets="BuildTests">
+    <PropertyGroup>
+      <WebProjectTransientOutputDir>$(WorkingDir)\bin\%(Configuration.Identity)\UnitTestTransient</WebProjectTransientOutputDir>
+      <RestOutputDir>$(WorkingDir)\bin\%(Configuration.Identity)\UnitTest</RestOutputDir>
+      <WebProjectAjaxOutputDir>$(WorkingDir)\bin\%(Configuration.Identity)\UnitTestAjax</WebProjectAjaxOutputDir>
+    </PropertyGroup>
+    
+    <MSBuild Projects="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\NakedObjects.Mvc.Selenium.Test.Data.csproj"
+						 Targets="_CopyWebApplication"
+						 Properties="ReferencePath=$(RefPath);WebProjectOutputDir=..\..\$(WebProjectTransientOutputDir)\;OutDir=..\..\$(WebProjectTransientOutputDir)\;Configuration=%(Configuration.Identity)" />
+
+    <ItemGroup>
+      <MvcAppTransient Include="$(WebProjectTransientOutputDir)\**\*.*"/>
+      <MvcAppLibTransient Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\bin\*.dll"/>
+    </ItemGroup>
+
+    <Copy SourceFiles="@(MvcAppLibTransient)" DestinationFolder="$(IISTransientPath)\bin" />
+    <Copy SourceFiles="@(MvcAppTransient)" DestinationFolder="$(IISTransientPath)\%(RecursiveDir)"/>
+
+    <MSBuild Projects="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"
+           Targets="ResolveReferences;_CopyWebApplication"
+           Properties="WebProjectOutputDir=..\..\$(RestOutputDir)\;OutDir=..\..\$(RestOutputDir)\;Configuration=%(Configuration.Identity)" />
+    
+    <ItemGroup>
+      <RestApp Include="$(RestOutputDir)\**\*.*"/>
+      <RestAppLib Include="$(TestPath)\RestfulObjects.Test.App\bin\*.dll"/>
+    </ItemGroup>
+
+    <Copy SourceFiles="@(RestApp)" DestinationFolder="$(IISRestPath)\%(RecursiveDir)"/>
+    <Copy SourceFiles="@(RestAppLib)" DestinationFolder="$(IISRestPath)\bin" SkipUnchangedFiles="true" />
+
+    <MSBuild Projects="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj"
+            Targets="_CopyWebApplication"
+            Properties="WebProjectOutputDir=..\..\$(WebProjectAjaxOutputDir)\;OutDir=..\..\$(WebProjectAjaxOutputDir)\;Configuration=%(Configuration.Identity)" />
+
+    <ItemGroup>
+      <MvcAppAjax Include="$(WebProjectAjaxOutputDir)\**\*.*"/>
+      <MvcAppLib Include="$(TestPath)\NakedObjects.Test.App\bin\*.dll"/>
+    </ItemGroup>
+
+    <Copy SourceFiles="@(MvcAppAjax)" DestinationFolder="$(IISAjaxPath)\%(RecursiveDir)"/>
+    <Copy SourceFiles="@(MvcAppLib)" DestinationFolder="$(IISAjaxPath)\bin" SkipUnchangedFiles="true" />
+         
+  </Target> 
+  
+  <Target Name="SystemTest" DependsOnTargets="BuildTests">
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.Helpers.Test\bin\%(Configuration.Identity)\NakedObjects.Helpers.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Helpers.Test.trx' />
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.SystemTest\bin\%(Configuration.Identity)\NakedObjects.SystemTest.dll" /resultsfile:$(TestResultsPath)\NakedObjects.SystemTest.trx' />
+  </Target>
+
+  <Target Name="EndToEndTest" DependsOnTargets="SystemTest;Deploy">
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\RestfulObjects.Test.EndToEnd\bin\%(Configuration.Identity)\RestfulObjects.Test.EndToEnd.dll" /resultsfile:$(TestResultsPath)\RestfulObjects.Test.EndToEnd.trx' />
+  </Target>
+
+  <Target Name="WebTest" DependsOnTargets="EndToEndTest">
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.Mvc.Selenium.Test\bin\%(Configuration.Identity)\NakedObjects.Mvc.Selenium.Test.dll" /resultsfile:test-results\NakedObjects.Mvc.Selenium.Test.trx' IgnoreExitCode="True"/>
+
+    <XmlQuery XmlFileName="test-results\NakedObjects.Mvc.Selenium.Test.trx" XPath="//*[@outcome='Failed']/@testName">
+      <Output TaskParameter="Values" ItemName="Tests" />
+    </XmlQuery>
+
+    <PropertyGroup>
+      <FailedTests>@(Tests->'/test:%(FileName)', ' ')</FailedTests>
+      <FailedTestsTrim>$(FailedTests.Replace(" ", ""))</FailedTestsTrim>
+    </PropertyGroup>
+
+    <Message Text="Found: @(Tests->'/test:%(FileName)', ' ')"/>
+
+    <Exec Command='"$(MSTestPath)\MSTest.exe" $(FailedTests)  /testcontainer:"$(TestPath)\\NakedObjects.Mvc.Selenium.Test\bin\%(Configuration.Identity)\NakedObjects.Mvc.Selenium.Test.dll" /resultsfile:test-results\NakedObjects.Mvc.Selenium.ReTest.trx' Condition="'$(FailedTestsTrim)'!=''"/>
+
+  </Target>
+
+</Project>

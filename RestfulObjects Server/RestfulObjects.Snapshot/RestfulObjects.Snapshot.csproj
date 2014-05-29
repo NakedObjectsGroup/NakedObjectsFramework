@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6F3B3F67-FD4B-4DDF-BA3A-3FC9FCC4953A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RestfulObjects.Snapshot</RootNamespace>
+    <AssemblyName>RestfulObjects.Snapshot</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging, Version=2.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Surface">
+      <HintPath>..\..\packages\NakedObjects.Surface.3.0.0-beta2\lib\net451\NakedObjects.Surface.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constants\JsonPropertyNames.cs" />
+    <Compile Include="Constants\PredefinedTypeExtensions.cs" />
+    <Compile Include="Constants\RelParamValues.cs" />
+    <Compile Include="Constants\PredefinedType.cs" />
+    <Compile Include="Constants\WellKnownIds.cs" />
+    <Compile Include="Exception\PreconditionHeaderMissingNOSException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelTypes\ChoiceRelType.cs" />
+    <Compile Include="RelTypes\CollectionValueRelType.cs" />
+    <Compile Include="RelTypes\PromptRelType.cs" />
+    <Compile Include="RelTypes\AttachmentRelType.cs" />
+    <Compile Include="RelTypes\ServiceRelType.cs" />
+    <Compile Include="RelTypes\ValueRelType.cs" />
+    <Compile Include="RelTypes\DefaultRelType.cs" />
+    <Compile Include="Strategies\AbstractStrategy.cs" />
+    <Compile Include="Representation\ActionResultRepresentation.cs" />
+    <Compile Include="Representation\ArgumentsRepresentation.cs" />
+    <Compile Include="Representation\AttachmentRepresentation.cs" />
+    <Compile Include="Representation\CollectionTypeRepresentation.cs" />
+    <Compile Include="Representation\ActionTypeRepresentation.cs" />
+    <Compile Include="Representation\CollectionValueRepresentation.cs" />
+    <Compile Include="Strategies\ActionRepresentationStrategy.cs" />
+    <Compile Include="Strategies\CollectionRepresentationStrategy.cs" />
+    <Compile Include="Strategies\PropertyRepresentationStrategy.cs" />
+    <Compile Include="Strategies\MemberRepresentationStrategy.cs" />
+    <Compile Include="Representation\NullRepresentation.cs" />
+    <Compile Include="Representation\PromptRepresentation.cs" />
+    <Compile Include="RelTypes\RelMethod.cs" />
+    <Compile Include="Representation\ScalarRepresentation.cs" />
+    <Compile Include="Representation\RefValueRepresentation.cs" />
+    <Compile Include="Representation\OptionalProperty.cs" />
+    <Compile Include="Representation\TypeActionInvokeRepresentation.cs" />
+    <Compile Include="Representation\ParameterTypeRepresentation.cs" />
+    <Compile Include="Representation\PropertyTypeRepresentation.cs" />
+    <Compile Include="Representation\MemberTypeRepresentation.cs" />
+    <Compile Include="Representation\DomainTypeRepresentation.cs" />
+    <Compile Include="Representation\ErrorRepresentation.cs" />
+    <Compile Include="Representation\InlineActionRepresentation.cs" />
+    <Compile Include="Representation\ActionRepresentation.cs" />
+    <Compile Include="Representation\VersionRepresentation.cs" />
+    <Compile Include="Representation\MapRepresentation.cs" />
+    <Compile Include="Representation\UserRepresentation.cs" />
+    <Compile Include="Representation\CollectionRepresentation.cs" />
+    <Compile Include="Representation\IRepresentation.cs" />
+    <Compile Include="Representation\LinkRepresentation.cs" />
+    <Compile Include="Representation\InlineMemberAbstractRepresentation.cs" />
+    <Compile Include="Representation\MemberAbstractRepresentation.cs" />
+    <Compile Include="Representation\ListRepresentation.cs" />
+    <Compile Include="Representation\ObjectRepresentation.cs" />
+    <Compile Include="Representation\ParameterRepresentation.cs" />
+    <Compile Include="Representation\InlineCollectionRepresentation.cs" />
+    <Compile Include="Representation\InlinePropertyRepresentation.cs" />
+    <Compile Include="Representation\PropertyRepresentation.cs" />
+    <Compile Include="Representation\Representation.cs" />
+    <Compile Include="Representation\HomePageRepresentation.cs" />
+    <Compile Include="RelTypes\ActionResultRelType.cs" />
+    <Compile Include="Exception\BadPersistArgumentsException.cs" />
+    <Compile Include="RelTypes\ObjectsRelType.cs" />
+    <Compile Include="Constants\MemberTypes.cs" />
+    <Compile Include="Utility\RestControlFlags.cs" />
+    <Compile Include="RelTypes\TypeActionInvokeRelType.cs" />
+    <Compile Include="RelTypes\ParamTypeRelType.cs" />
+    <Compile Include="Constants\ResultTypes.cs" />
+    <Compile Include="Utility\TypeActionInvokeContext.cs" />
+    <Compile Include="RelTypes\TypeActionRelType.cs" />
+    <Compile Include="Exception\TypeActionResourceNotFoundException.cs" />
+    <Compile Include="RelTypes\TypeMemberRelType.cs" />
+    <Compile Include="RelTypes\DomainTypeRelType.cs" />
+    <Compile Include="RelTypes\TypesRelType.cs" />
+    <Compile Include="RelTypes\VersionRelType.cs" />
+    <Compile Include="RelTypes\HomePageRelType.cs" />
+    <Compile Include="RelTypes\IconRelType.cs" />
+    <Compile Include="RelTypes\InvokeRelType.cs" />
+    <Compile Include="RelTypes\ListRelType.cs" />
+    <Compile Include="RelTypes\MemberRelType.cs" />
+    <Compile Include="RelTypes\ObjectRelType.cs" />
+    <Compile Include="RelTypes\RelType.cs" />
+    <Compile Include="Constants\RelValues.cs" />
+    <Compile Include="Constants\RepresentationTypes.cs" />
+    <Compile Include="Utility\RestUtils.cs" />
+    <Compile Include="Utility\RestSnapshot.cs" />
+    <Compile Include="Constants\SegmentValues.cs" />
+    <Compile Include="Utility\UriMtHelper.cs" />
+    <Compile Include="RelTypes\UserRelType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

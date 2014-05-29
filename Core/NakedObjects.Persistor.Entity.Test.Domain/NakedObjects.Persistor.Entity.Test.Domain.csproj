@@ -1,0 +1,397 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0205FC6A-B2C4-43B9-BEAF-7760E58D4320}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AdventureWorksModel</RootNamespace>
+    <AssemblyName>NakedObjects.Persistor.Entity.Test.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PlatformTarget>x86</PlatformTarget>
+    <StartupObject />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>default</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>default</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Attributes">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="Domain.edmx" />
+    <None Include="App.Config" />
+    <None Include="Domain.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Domain.Context.cs</LastGenOutput>
+      <DependentUpon>Domain.edmx</DependentUpon>
+    </None>
+    <None Include="Domain.edmx.diagram">
+      <DependentUpon>Domain.edmx</DependentUpon>
+    </None>
+    <None Include="Domain.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Domain.edmx</DependentUpon>
+      <LastGenOutput>Domain.cs</LastGenOutput>
+    </None>
+    <None Include="Domain.Types.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Domain.Types.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Address.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AddressType.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AWBuildVersion.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfMaterial.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Contact.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ContactCreditCard.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ContactType.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CountryRegion.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CountryRegionCurrency.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CreditCard.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Culture.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Currency.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CurrencyRate.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Customer.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerAddress.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseLog.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Department.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Document.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Domain.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Domain.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Domain.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Domain.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Domain.Types.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Employee.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeAddress.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeDepartmentHistory.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeePayHistory.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorLog.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Illustration.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Individual.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="JobCandidate.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Location.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductCategory.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductCostHistory.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductDescription.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductDocument.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductInventory.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductListPriceHistory.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductModel.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductModelIllustration.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductModelProductDescriptionCulture.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductPhoto.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductProductPhoto.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductReview.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductSubcategory.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductVendor.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PurchaseOrderDetail.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PurchaseOrderHeader.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalesOrderDetail.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalesOrderHeader.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalesOrderHeaderSalesReason.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalesPerson.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalesPersonQuotaHistory.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalesReason.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalesTaxRate.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalesTerritory.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalesTerritoryHistory.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScrapReason.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Shift.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShipMethod.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShoppingCartItem.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpecialOffer.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpecialOfferProduct.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StateProvince.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Store.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StoreContact.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TransactionHistory.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TransactionHistoryArchive.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UnitMeasure.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Vendor.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorAddress.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VendorContact.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOrder.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WorkOrderRouting.cs">
+      <DependentUpon>Domain.Types.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

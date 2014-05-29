@@ -1,0 +1,91 @@
+﻿<!-- This document defines the various Html elements that may appear on generic Naked Objects MVC pages -->
+
+<div class="Object">  <!-- No ID -->
+       <img src="pathToIcon"/> <!-- Optional-->
+       <!-- Object's title plain text or as a link-->
+</div>
+
+<div class="Value">value</div>
+
+<div class="Property" id="ObjectType-PropertyName"><label>Property's given Name</label>
+    <!-- Object (typically as link)-->
+    <!-- Value -->
+    <!-- Input -->
+    <!-- Select --> 
+    <!-- Object list-->
+    <!-- Validation message -->
+</div>
+
+<div class="ValidationMessage">Text</div><!-- No ID -->
+
+<div class="PropertyList" id="ObjectType-PropertyList">
+     <!-- Property* -->
+</div>
+
+<div class="ObjectList">  <!-- No ID -->
+       <!-- Object*-->
+       <!-- Action Remove (only when containing object is in edit mode) -->
+       <!-- Action ViewAsTable -->
+       <!-- Action Collapse -->
+</div>
+
+<div class="Action" id="ObjectType-MethodName"><a href="">Action's given Name</a></div>
+
+<div class="Action" title="ActionName" ><a href="">Action Name</a></div>
+<!-- Title is used instead of id because there may be many occurrences of e.g. an Edit action on a page -->
+
+ <div class=Dialog id="ObjectType-ActionName-Dialog">
+    <!--Object-->
+    <p>Action Name</p> 
+    <form action="" method="post">
+        <!-- ParameterList -->
+        <input type="submit" value="OK" />
+    </form>
+    <div class="Action" id="Div7"><a href="">Cancel</a></div>
+ </div>
+
+<div class="ParameterList" id="ObjectType-ActionName-ParameterList">
+     <!-- Parameter* -->
+</div>
+
+<div class="Parameter" id="ObjectType-ActionName-ParameterName"><label>Parameter's given Name</label>
+    <!-- Object (typically as link)-->
+    <!-- Value -->
+    <!-- Input -->
+    <!-- Select --> 
+    <!-- Object list-->
+    <!-- Validation message -->
+</div>
+
+<div class="Menu" id="ObjectType-Menu">
+    <label>Menu Name  -  by default the given name of the object (or service) type.  Or just 'Actions' or 'Menu'</label>
+    <!-- Action* -->
+    <!-- Menu* -->
+</div>
+
+<div class="Service" id="ServiceType">
+    <label>Service's given name</label>
+    <!-- Action* -->
+    <!-- Menu* -->
+</div>
+
+<div class="ServiceList">
+    <!-- Service* -->
+</div>
+
+<div class="FormView" id="ObjectType-ObjectView">
+    <!--Object-->
+    <!--PropertyList-->
+    <!--Menu-->
+    <!--Action (including generic actions such as Edit)-->
+</div>
+
+<form class="EditView" id="ObjectType-EditView">
+    <!--Object (with 'Edit' appended to title)-->
+    <!--PropertyList-->
+     <input type="submit" value="Save" />
+    <p>To cancel edit  -  use Back button on browser</p>
+</form>
+
+
+

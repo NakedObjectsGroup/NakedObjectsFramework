@@ -1,0 +1,406 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{61777AD0-7308-4878-87DE-D64FAD45C373}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>web_mvc_viewer_test</RootNamespace>
+    <AssemblyName>NakedObjects.Mvc.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <WebGreaseLibPath>..\..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Helpers\CollectionMementoTest.cs" />
+    <Compile Include="Helpers\EncryptionTest.cs" />
+    <Compile Include="Helpers\DummyOid.cs" />
+    <Compile Include="Helpers\SessionCacheTest.cs" />
+    <Compile Include="Helpers\CustomHtmlHelperTest.cs" />
+    <Compile Include="Helpers\NofFrameworkHelperTest.cs" />
+    <Compile Include="Helpers\NofHtmlHelperTest.cs" />
+    <Compile Include="Helpers\ObjectCacheTest.cs" />
+    <Compile Include="Helpers\SystemHelperTest.cs" />
+    <Compile Include="Routing\RoutingTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq, Version=4.1.1308.2321, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Moq.4.1.1308.2321\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Architecture">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Architecture.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Async, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Attributes">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Bootstrap">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Bootstrap.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Core">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.FWResources">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.FWResources.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Persistor">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Persistor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Persistor.Entity">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.PMResources">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Reflector.Core">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Reflector.DotNet">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Reflector.DotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Snapshot.Xml">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Types">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Xat">
+      <HintPath>..\..\packages\NakedObjects.Xat.6.0.0-beta2\lib\net451\NakedObjects.Xat.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Web.Optimization.1.1.1\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Mvc.App.Test\NakedObjects.Mvc.App.Test.csproj">
+      <Project>{79D2FD11-7410-4668-8848-DDF52F23C6FA}</Project>
+      <Name>NakedObjects.Mvc.App.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Mvc.Test.Data\NakedObjects.Mvc.Test.Data.csproj">
+      <Project>{86F1438E-5127-48EA-8931-9A53ED108327}</Project>
+      <Name>NakedObjects.Mvc.Test.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Mvc\NakedObjects.Mvc.csproj">
+      <Project>{6D3572F4-855C-47C9-A273-9C5B08AA008D}</Project>
+      <Name>NakedObjects.Mvc</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Custom Html reference files\CollectionWithInclusions.htm" />
+    <Content Include="Custom Html reference files\DisabledAction.htm" />
+    <Content Include="Custom Html reference files\DisabledTestIntEdit.htm" />
+    <Content Include="Custom Html reference files\FourRefParametersActionWithParameters.htm" />
+    <Content Include="Custom Html reference files\FourRefParametersFunctionWithParameters.htm" />
+    <Content Include="Custom Html reference files\FourValueParametersActionWithParameters.htm" />
+    <Content Include="Custom Html reference files\FourValueParametersFunctionWithParameters.htm" />
+    <Content Include="Custom Html reference files\NoValueParameterFunctionAsDialog.htm" />
+    <Content Include="Custom Html reference files\OneCollectionParameterActionAsDialog.htm" />
+    <Content Include="Custom Html reference files\OneCollectionParameterFunction.htm" />
+    <Content Include="Custom Html reference files\OneCollectionParameterAction.htm" />
+    <Content Include="Custom Html reference files\FourRefParametersEditAction.htm" />
+    <Content Include="Custom Html reference files\NoParameterEditAction.htm" />
+    <Content Include="Custom Html reference files\OneCollectionParameterFunctionAsDialog.htm" />
+    <Content Include="Custom Html reference files\OneRefParameterActionAsDialog.htm" />
+    <Content Include="Custom Html reference files\OneRefParameterActionAsDialogDisabled.htm" />
+    <Content Include="Custom Html reference files\OneRefParameterActionDisabled.htm" />
+    <Content Include="Custom Html reference files\OneRefParameterActionWithParameter.htm" />
+    <Content Include="Custom Html reference files\OneRefParameterFunctionAsDialog.htm" />
+    <Content Include="Custom Html reference files\OneRefParameterFunctionWithParameter.htm" />
+    <Content Include="Custom Html reference files\OneRefParameterPopulatedActionAsDialog.htm" />
+    <Content Include="Custom Html reference files\OneValueParameterActionasDialog.htm" />
+    <Content Include="Custom Html reference files\OneValueParameterActionWithParameter.htm" />
+    <Content Include="Custom Html reference files\OneValueParameterFunctionAsDialog.htm" />
+    <Content Include="Custom Html reference files\OneValueParameterFunctionWithParameter.htm" />
+    <Content Include="Custom Html reference files\RefPropertyStringEditExistingValue.htm" />
+    <Content Include="Custom Html reference files\ServiceWithCustomItems.htm" />
+    <Content Include="Custom Html reference files\MenuWithOnlyCustomItems.htm" />
+    <Content Include="Custom Html reference files\MenuWithCustomItems.htm" />
+    <Content Include="Custom Html reference files\PropertyListEditWithInclusions.htm" />
+    <Content Include="Custom Html reference files\PropertyListEditWithExclusions.htm" />
+    <Content Include="Custom Html reference files\PropertyListEditTable.htm" />
+    <Content Include="Custom Html reference files\PropertyListEditList.htm" />
+    <Content Include="Custom Html reference files\PropertyListWithInclusions.htm" />
+    <Content Include="Custom Html reference files\PropertyListList.htm" />
+    <Content Include="Custom Html reference files\PropertyListTable.htm" />
+    <Content Include="Custom Html reference files\PropertyListWithExclusions.htm" />
+    <Content Include="Custom Html reference files\TestDateTime.htm" />
+    <Content Include="Custom Html reference files\TestInlineEdit.htm" />
+    <Content Include="Custom Html reference files\TestIntDefault.htm" />
+    <Content Include="Custom Html reference files\TestIntEditDisabled.htm" />
+    <Content Include="Custom Html reference files\TestIntEditHidden.htm" />
+    <Content Include="Custom Html reference files\TestIntViewDisabled.htm" />
+    <Content Include="Custom Html reference files\TestIntViewHidden.htm" />
+    <Content Include="Custom Html reference files\TestRefEditOther.htm" />
+    <Content Include="Custom Html reference files\TestIntEdit.htm" />
+    <Content Include="Custom Html reference files\TestRefEdit.htm" />
+    <Content Include="Custom Html reference files\TestStringEdit.htm" />
+    <Content Include="Custom Html reference files\TestRefView.htm" />
+    <Content Include="Custom Html reference files\TestStringView.htm" />
+    <Content Include="Custom Html reference files\CustomHelperTestAsDialog.htm" />
+    <Content Include="Custom Html reference files\SingleServiceMenu.htm" />
+    <Content Include="Custom Html reference files\TestIntView.htm" />
+    <Content Include="Custom Html reference files\ThreeRefParametersActionWithParameters.htm" />
+    <Content Include="Custom Html reference files\ThreeRefParametersFunctionWithParameters.htm" />
+    <Content Include="Custom Html reference files\ThreeValueParametersActionWithParameters.htm" />
+    <Content Include="Custom Html reference files\ThreeValueParametersFunctionWithParameters.htm" />
+    <Content Include="Custom Html reference files\TwoRefParametersActionWithParameters.htm" />
+    <Content Include="Custom Html reference files\TwoRefParametersFunctionWithParameters.htm" />
+    <Content Include="Custom Html reference files\TwoValueParametersActionWithParameters.htm" />
+    <Content Include="Custom Html reference files\TwoValueParametersFunction.htm" />
+    <Content Include="Custom Html reference files\TwoValueParametersAction.htm" />
+    <Content Include="Custom Html reference files\TwoRefParametersFunction.htm" />
+    <Content Include="Custom Html reference files\TwoRefParametersAction.htm" />
+    <Content Include="Custom Html reference files\ThreeValueParametersFunction.htm" />
+    <Content Include="Custom Html reference files\ThreeValueParametersAction.htm" />
+    <Content Include="Custom Html reference files\ThreeRefParametersFunction.htm" />
+    <Content Include="Custom Html reference files\ThreeRefParametersAction.htm" />
+    <Content Include="Custom Html reference files\OneValueParameterFunction.htm" />
+    <Content Include="Custom Html reference files\OneValueParameterAction.htm" />
+    <Content Include="Custom Html reference files\OneRefParameterFunction.htm" />
+    <Content Include="Custom Html reference files\OneRefParameterAction.htm" />
+    <Content Include="Custom Html reference files\NoValueParameterFunction.htm" />
+    <Content Include="Custom Html reference files\NoParameterAction.htm" />
+    <Content Include="Custom Html reference files\FourValueParametersFunction.htm" />
+    <Content Include="Custom Html reference files\FourValueParametersAction.htm" />
+    <Content Include="Custom Html reference files\FourRefParametersFunction.htm" />
+    <Content Include="Custom Html reference files\FourRefParametersAction.htm" />
+    <Content Include="Custom Html reference files\TwoValueParametersFunctionWithParameters.htm" />
+    <Content Include="Generated Html reference files\AutoCompleteParameter.htm" />
+    <Content Include="Generated Html reference files\AutoCompleteParameterWithDefault.htm" />
+    <Content Include="Generated Html reference files\AutoCompleteParameterWithExistingValues.htm" />
+    <Content Include="Generated Html reference files\AutoCompleteProperty.htm" />
+    <Content Include="Generated Html reference files\BoolParameter.htm" />
+    <Content Include="Generated Html reference files\BoolPropertyEdit.htm" />
+    <Content Include="Generated Html reference files\BoolPropertyView.htm" />
+    <Content Include="Generated Html reference files\ChoicesParameterAlternativeSyntax.htm" />
+    <Content Include="Generated Html reference files\ChoicesParameterAlternativeSyntaxWithDefault.htm" />
+    <Content Include="Generated Html reference files\ChoicesParameterWithDefault.htm" />
+    <Content Include="Generated Html reference files\ChoicesProperty.htm" />
+    <Content Include="Generated Html reference files\ClientValidationHtml.htm" />
+    <Content Include="Generated Html reference files\ClientValidationHtmlDialog.htm" />
+    <Content Include="Generated Html reference files\CollectionListViewForEagerlyCollectionTableView.htm" />
+    <Content Include="Generated Html reference files\CollectionListViewForEmptyCollection.htm" />
+    <Content Include="Generated Html reference files\CollectionListViewForOneElementCollection.htm" />
+    <Content Include="Generated Html reference files\CollectionListViewForOneElementCollectionNoPage.htm" />
+    <Content Include="Generated Html reference files\CollectionListViewForOneElementCollectionNoPageTableView.htm" />
+    <Content Include="Generated Html reference files\CollectionListViewForOneElementCollectionPage1.htm" />
+    <Content Include="Generated Html reference files\CollectionListViewForOneElementCollectionPage1TableView.htm" />
+    <Content Include="Generated Html reference files\CollectionListViewForOneElementCollectionPage2.htm" />
+    <Content Include="Generated Html reference files\CollectionListViewForOneElementCollectionPage2TableView.htm" />
+    <Content Include="Generated Html reference files\CollectionListViewForOneElementCollectionTableView.htm" />
+    <Content Include="Generated Html reference files\CollectionListViewForOneElementCollectionWithMultiline.htm" />
+    <Content Include="Generated Html reference files\CollectionListViewForOneElementCollectionWithMultilineTableView.htm" />
+    <Content Include="Generated Html reference files\CollectionViewForEmptyCollection.htm" />
+    <Content Include="Generated Html reference files\CollectionViewForOneElementCollection.htm" />
+    <Content Include="Custom Html reference files\CollectionWithExclusions.htm" />
+    <Content Include="Generated Html reference files\ChoicesParameter.htm" />
+    <Content Include="Generated Html reference files\CollectionViewForOneElementCollectionPage2.htm" />
+    <Content Include="Generated Html reference files\CollectionViewForOneElementCollectionPage1.htm" />
+    <Content Include="Generated Html reference files\CollectionViewForOneElementCollectionNoPage.htm" />
+    <Content Include="Generated Html reference files\Cancel.htm" />
+    <Content Include="Generated Html reference files\CollectionViewForOneElementCollectionWithMultiline.htm" />
+    <Content Include="Generated Html reference files\DialogWithAjaxDisabled.htm" />
+    <Content Include="Generated Html reference files\DuplicateAction.htm" />
+    <Content Include="Generated Html reference files\EmptyEnumerableParameter.htm" />
+    <Content Include="Generated Html reference files\EmptyQueryableParameter.htm" />
+    <Content Include="Generated Html reference files\EnumerableParameter.htm" />
+    <Content Include="Generated Html reference files\EnumParameter.htm" />
+    <Content Include="Generated Html reference files\EnumParameterAnnotation.htm" />
+    <Content Include="Generated Html reference files\EnumParameterAnnotationChoices.htm" />
+    <Content Include="Generated Html reference files\EnumParameterChoices.htm" />
+    <Content Include="Generated Html reference files\EnumParameterWithDefault.htm" />
+    <Content Include="Generated Html reference files\EnumProperty.htm" />
+    <Content Include="Generated Html reference files\EnumPropertyView.htm" />
+    <Content Include="Generated Html reference files\HistoryWithCount.htm" />
+    <Content Include="Generated Html reference files\MultilineFieldView.htm" />
+    <Content Include="Generated Html reference files\MultipleChoicesParameterBounded.htm" />
+    <Content Include="Generated Html reference files\MultipleChoicesParameterDomainObject.htm" />
+    <Content Include="Generated Html reference files\MultipleChoicesParameterDomainObject2.htm" />
+    <Content Include="Generated Html reference files\MultipleChoicesParameterString.htm" />
+    <Content Include="Generated Html reference files\NotPersistedPropertyList.htm" />
+    <Content Include="Generated Html reference files\ObjectActionsTestNotContributed1.htm" />
+    <Content Include="Generated Html reference files\ObjectActionsTestNotContributed2.htm" />
+    <Content Include="Generated Html reference files\ObjectActionsWithConcurrency.htm" />
+    <Content Include="Generated Html reference files\ObjectWithUploads.htm" />
+    <Content Include="Generated Html reference files\ParameterEditForCollection.htm" />
+    <Content Include="Generated Html reference files\PasswordField.htm" />
+    <Content Include="Generated Html reference files\PasswordParameter.htm" />
+    <Content Include="Generated Html reference files\ObjectForEnumerable.htm" />
+    <Content Include="Generated Html reference files\ObjectForQueryable.htm" />
+    <Content Include="Generated Html reference files\History.htm" />
+    <Content Include="Generated Html reference files\ParameterEditCollection.htm" />
+    <Content Include="Generated Html reference files\GenericEditActionWithController.htm" />
+    <Content Include="Generated Html reference files\GenericEditAction.htm" />
+    <Content Include="Generated Html reference files\NotPersistedMenu.htm" />
+    <Content Include="Generated Html reference files\NotPersistedWithoutButton.htm" />
+    <Content Include="Generated Html reference files\DisplayName.htm" />
+    <Content Include="Generated Html reference files\MultilineParameter.htm" />
+    <Content Include="Generated Html reference files\MultilineField.htm" />
+    <Content Include="Generated Html reference files\NotPersistedWithButton.htm" />
+    <Content Include="Generated Html reference files\ObjectEditFieldsWithInlineObject.htm" />
+    <Content Include="Generated Html reference files\ParameterEditWithInlineObject.htm" />
+    <Content Include="Generated Html reference files\ObjectEditFieldsWithTableCollectionAndRemove.htm" />
+    <Content Include="Generated Html reference files\ObjectEditFieldsWithListCollectionAndRemove.htm" />
+    <Content Include="Generated Html reference files\QueryableListViewForEmptyCollection.htm" />
+    <Content Include="Generated Html reference files\QueryableListViewForEmptyCollectionTableView.htm" />
+    <Content Include="Generated Html reference files\QueryableListViewForOneElementCollection.htm" />
+    <Content Include="Generated Html reference files\QueryableListViewForOneElementCollectionTableView.htm" />
+    <Content Include="Generated Html reference files\QueryableListViewForOneElementCollectionWithMultiline.htm" />
+    <Content Include="Generated Html reference files\QueryableListViewForOneElementCollectionWithMultilineTableView.htm" />
+    <Content Include="Generated Html reference files\QueryableListViewForPagedCollection.htm" />
+    <Content Include="Generated Html reference files\QueryableListViewForPagedCollectionPage1.htm" />
+    <Content Include="Generated Html reference files\QueryableListViewForPagedCollectionPage1TableView.htm" />
+    <Content Include="Generated Html reference files\QueryableListViewForPagedCollectionPage2.htm" />
+    <Content Include="Generated Html reference files\QueryableListViewForPagedCollectionPage2TableView.htm" />
+    <Content Include="Generated Html reference files\QueryableListViewForPagedCollectionTableView.htm" />
+    <Content Include="Generated Html reference files\QueryableParameter.htm" />
+    <Content Include="Generated Html reference files\QueryableViewForEmptyCollection.htm" />
+    <Content Include="Generated Html reference files\QueryableViewForOneElementCollection.htm" />
+    <Content Include="Generated Html reference files\QueryableViewForOneElementCollectionWithMultiline.htm" />
+    <Content Include="Generated Html reference files\QueryableViewForPagedCollection.htm" />
+    <Content Include="Generated Html reference files\QueryableViewForPagedCollectionPage1.htm" />
+    <Content Include="Generated Html reference files\QueryableViewForPagedCollectionPage2.htm" />
+    <Content Include="Generated Html reference files\SystemMenu.htm" />
+    <Content Include="Generated Html reference files\GenericActionWithController.htm" />
+    <Content Include="Generated Html reference files\NofValidationSummary.htm" />
+    <Content Include="Generated Html reference files\ObjectEditFieldsWithSummaryCollectionForTransient.htm" />
+    <Content Include="Generated Html reference files\ObjectWithImage.htm" />
+    <Content Include="Generated Html reference files\ParameterEditWithActionAsFind.htm" />
+    <Content Include="Generated Html reference files\ParameterEditWithSelection.htm" />
+    <Content Include="Generated Html reference files\ObjectEditFieldsWithActionAsFind.htm" />
+    <Content Include="Generated Html reference files\Object.htm" />
+    <Content Include="Generated Html reference files\ObjectEditFieldsWithFinder.htm" />
+    <Content Include="Generated Html reference files\ObjectEditFieldsWithListCollection.htm" />
+    <Content Include="Generated Html reference files\ObjectFieldsWithListCollection.htm" />
+    <Content Include="Generated Html reference files\ElementDefinitions.htm" />
+    <Content Include="Generated Html reference files\GenericAction.htm" />
+    <Content Include="Generated Html reference files\ObjectActions.htm" />
+    <Content Include="Generated Html reference files\ObjectEditFieldsWithSummaryCollection.htm" />
+    <Content Include="Generated Html reference files\ObjectEditFieldsWithTableCollection.htm" />
+    <Content Include="Generated Html reference files\ObjectFieldsWithSummaryCollection.htm" />
+    <Content Include="Generated Html reference files\ObjectFieldsWithTableCollection.htm" />
+    <Content Include="Generated Html reference files\ObjectLinkAndIcon.htm" />
+    <Content Include="Generated Html reference files\OptionsViewForAction.htm" />
+    <Content Include="Generated Html reference files\OptionsViewForObject.htm" />
+    <Content Include="Generated Html reference files\ParameterEdit.htm" />
+    <Content Include="Generated Html reference files\ParameterEditWithFinders.htm" />
+    <Content Include="Generated Html reference files\ServiceList.htm" />
+    <Content Include="Generated Html reference files\TabbedHistory.htm" />
+    <Content Include="Generated Html reference files\TabbedHistoryWithCount.htm" />
+    <Content Include="Generated Html reference files\TransientWithCollection.htm" />
+    <Content Include="Generated Html reference files\ViewModel.htm" />
+    <Content Include="Generated Html reference files\ViewModelActions.htm" />
+    <Content Include="Generated Html reference files\ViewModelProperties.htm" />
+    <Content Include="Generated Html reference files\ViewModelPropertiesEdit.htm" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

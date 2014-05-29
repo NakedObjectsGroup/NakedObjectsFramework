@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NakedObjects.Ide</id>
+    <version>4.6.0</version>
+    <authors>Naked Objects Group Ltd</authors>
+    <owners>Naked Objects Group Ltd</owners>
+    <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
+    <projectUrl>http://nakedobjects.codeplex.com/</projectUrl>
+    <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Naked Objects IDE. Installs C# Code Snippets and Item Templates that are useful when
+    creating a domain object model that will be run with Naked Objects. Also PowerShell scripts for building the framework from source.</description>
+	<tags>naked objects nakedobjects</tags>
+  </metadata>
+</package>

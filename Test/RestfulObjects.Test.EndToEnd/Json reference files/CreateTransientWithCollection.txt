@@ -1,0 +1,215 @@
+{
+  "result": {
+    "title": "0",
+    "links": [
+      {
+        "rel": "describedby",
+        "method": "GET",
+        "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection"
+      },
+      {
+        "arguments": {
+          "members": {
+            "Id": {
+              "value": 0
+            }
+          }
+        },
+        "rel": "urn:org.restfulobjects:rels/persist",
+        "method": "POST",
+        "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8",
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithCollection"
+      }
+    ],
+    "extensions": {
+      "friendlyName": "With Collection",
+      "description": "",
+      "pluralName": "With Collections",
+      "domainType": "WithCollection",
+      "isService": false
+    },
+    "members": {
+      "AnEmptyCollection": {
+        "disabledReason": "Field not editable",
+        "size": 0,
+        "memberType": "collection",
+        "id": "AnEmptyCollection",
+        "links": [
+          {
+            "rel": "describedby",
+            "method": "GET",
+            "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
+            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/AnEmptyCollection"
+          }
+        ],
+        "extensions": {
+          "friendlyName": "An Empty Collection",
+          "description": "an empty collection for testing",
+          "memberOrder": 2,
+          "returnType": "list",
+          "elementType": "MostSimple",
+          "pluralName": "Most Simples"
+        }
+      },
+      "AnEmptySet": {
+        "disabledReason": "Field not editable",
+        "size": 0,
+        "memberType": "collection",
+        "id": "AnEmptySet",
+        "links": [
+          {
+            "rel": "describedby",
+            "method": "GET",
+            "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
+            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/AnEmptySet"
+          }
+        ],
+        "extensions": {
+          "friendlyName": "An Empty Set",
+          "description": "an empty set for testing",
+          "memberOrder": 2,
+          "returnType": "set",
+          "elementType": "MostSimple",
+          "pluralName": "Most Simples"
+        }
+      },
+      "ACollection": {
+        "disabledReason": "Field not editable",
+        "size": 2,
+        "memberType": "collection",
+        "id": "ACollection",
+        "links": [
+          {
+            "rel": "describedby",
+            "method": "GET",
+            "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
+            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/ACollection"
+          }
+        ],
+        "extensions": {
+          "friendlyName": "A Collection",
+          "description": "",
+          "memberOrder": 0,
+          "returnType": "list",
+          "elementType": "MostSimple",
+          "pluralName": "Most Simples",
+          "x-ro-nof-presentationHint": "class7 class8"
+        }
+      },
+      "ACollectionViewModels": {
+        "disabledReason": "Field not editable",
+        "size": 2,
+        "memberType": "collection",
+        "id": "ACollectionViewModels",
+        "links": [
+          {
+            "rel": "describedby",
+            "method": "GET",
+            "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
+            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/ACollectionViewModels"
+          }
+        ],
+        "extensions": {
+          "friendlyName": "A Collection View Models",
+          "description": "",
+          "memberOrder": 0,
+          "returnType": "list",
+          "elementType": "MostSimpleViewModel",
+          "pluralName": "Most Simple View Models"
+        }
+      },
+      "ADisabledCollection": {
+        "disabledReason": "Field not editable",
+        "size": 2,
+        "memberType": "collection",
+        "id": "ADisabledCollection",
+        "links": [
+          {
+            "rel": "describedby",
+            "method": "GET",
+            "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
+            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/ADisabledCollection"
+          }
+        ],
+        "extensions": {
+          "friendlyName": "A Disabled Collection",
+          "description": "",
+          "memberOrder": 0,
+          "returnType": "list",
+          "elementType": "MostSimple",
+          "pluralName": "Most Simples"
+        }
+      },
+      "ASet": {
+        "disabledReason": "Field not editable",
+        "size": 2,
+        "memberType": "collection",
+        "id": "ASet",
+        "links": [
+          {
+            "rel": "describedby",
+            "method": "GET",
+            "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
+            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/ASet"
+          }
+        ],
+        "extensions": {
+          "friendlyName": "A Set",
+          "description": "",
+          "memberOrder": 0,
+          "returnType": "set",
+          "elementType": "MostSimple",
+          "pluralName": "Most Simples"
+        }
+      },
+      "AnEagerCollection": {
+        "disabledReason": "Field not editable",
+        "size": 2,
+        "memberType": "collection",
+        "id": "AnEagerCollection",
+        "links": [
+          {
+            "rel": "describedby",
+            "method": "GET",
+            "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
+            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/AnEagerCollection"
+          }
+        ],
+        "extensions": {
+          "friendlyName": "An Eager Collection",
+          "description": "",
+          "memberOrder": 0,
+          "returnType": "list",
+          "elementType": "MostSimple",
+          "pluralName": "Most Simples"
+        }
+      },
+      "Id": {
+        "value": 0,
+        "hasChoices": false,
+        "memberType": "property",
+        "id": "Id",
+        "links": [
+          {
+            "rel": "describedby",
+            "method": "GET",
+            "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/properties/Id"
+          }
+        ],
+        "extensions": {
+          "friendlyName": "Id",
+          "description": "",
+          "optional": false,
+          "memberOrder": 0,
+          "returnType": "number",
+          "format": "integer"
+        }
+      }
+    }
+  },
+  "links": [],
+  "extensions": {},
+  "resultType": "object"
+}

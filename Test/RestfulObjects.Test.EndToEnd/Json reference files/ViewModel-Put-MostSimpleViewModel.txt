@@ -1,0 +1,70 @@
+{
+  "instanceId": "123",
+  "domainType": "MostSimpleViewModel",
+  "title": "123",
+  "links": [
+    {
+      "rel": "describedby",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimpleViewModel"
+    },
+    {
+      "arguments": {
+        "Id": {
+          "value": null
+        }
+      },
+      "rel": "urn:org.restfulobjects:rels/update",
+      "method": "PUT",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimpleViewModel\"",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimpleViewModel/123"
+    }
+  ],
+  "extensions": {
+    "friendlyName": "Most Simple View Model",
+    "description": "",
+    "pluralName": "Most Simple View Models",
+    "domainType": "MostSimpleViewModel",
+    "isService": false
+  },
+  "members": {
+    "Id": {
+      "value": 123,
+      "hasChoices": false,
+      "memberType": "property",
+      "id": "Id",
+      "links": [
+        {
+          "rel": "urn:org.restfulobjects:rels/details;property=\"Id\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimpleViewModel/123/properties/Id"
+        },
+        {
+          "rel": "describedby",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimpleViewModel/properties/Id"
+        },
+        {
+          "arguments": {
+            "value": null
+          },
+          "rel": "urn:org.restfulobjects:rels/modify;property=\"Id\"",
+          "method": "PUT",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimpleViewModel/123/properties/Id"
+        }
+      ],
+      "extensions": {
+        "friendlyName": "Id",
+        "description": "",
+        "optional": false,
+        "memberOrder": 0,
+        "returnType": "number",
+        "format": "integer"
+      }
+    }
+  }
+}

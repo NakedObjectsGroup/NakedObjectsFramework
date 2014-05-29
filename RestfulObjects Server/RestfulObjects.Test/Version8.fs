@@ -1,0 +1,77 @@
+﻿module Version8
+open NUnit.Framework
+open RestfulObjects.Mvc
+open NakedObjects.Surface
+open System.Net
+open System.Net.Http
+open System.Net.Http.Headers
+open System.IO
+open Newtonsoft.Json.Linq
+open System.Web
+open System
+open RestfulObjects.Snapshot.Utility 
+open RestfulObjects.Snapshot.Constants
+open System.Web.Http
+open System.Collections.Generic
+open System.Linq
+open RestTestFunctions
+// open System.Json
+
+let capabilities =  TObjectJson([TProperty("protoPersistentObjects", TObjectVal("yes"));
+                                 TProperty("deleteObjects", TObjectVal("no"));                               
+                                 TProperty("validateOnly", TObjectVal("yes"));                              
+                                 TProperty("domainModel", TObjectVal("selectable"));
+                                 TProperty("inlinedMemberRepresentations", TObjectVal("yes"));
+                                 TProperty("blobsClobs", TObjectVal("attachments"))])
+
+let links = TArray([ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.Version  RepresentationTypes.Version ""); 
+                     TObjectJson(makeGetLinkProp RelValues.Up   SegmentValues.HomePage RepresentationTypes.HomePage "") ])
+     
+let expected = [ TProperty(JsonPropertyNames.Links, links); 
+                 TProperty(JsonPropertyNames.SpecVersion, TObjectVal("1.1")); 
+                 TProperty(JsonPropertyNames.ImplVersion, TObjectVal("1.5.0")); 
+                 TProperty(JsonPropertyNames.OptionalCapabilities, capabilities);
+                 TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ] 
+
+
+let GetVersion(api : RestfulObjectsControllerBase) =     
+        let url = testRoot + SegmentValues.Version
+        let args = CreateReservedArgs ""
+        api.Request <- jsonGetMsg(url)
+        let result = api.GetVersion(args)
+        let jsonResult = readSnapshotToJson result
+        let parsedResult = JObject.Parse(jsonResult)
+
+        Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+        Assert.AreEqual(new typeType(RepresentationTypes.Version), result.Content.Headers.ContentType)
+        assertNonExpiringCache result 
+        compareObject expected parsedResult  
+
+let GetVersionWithMediaType(api : RestfulObjectsControllerBase) =       
+        let url = testRoot + SegmentValues.Version
+        let msg = jsonGetMsg(url)
+        let args = CreateReservedArgs ""
+        msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue ("profile", (makeProfile RepresentationTypes.Version)))
+        api.Request <- msg
+        let result = api.GetVersion(args)
+        let jsonResult = readSnapshotToJson result
+        let parsedResult = JObject.Parse(jsonResult)
+
+        Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+        Assert.AreEqual(new typeType(RepresentationTypes.Version), result.Content.Headers.ContentType)
+        assertNonExpiringCache result 
+        compareObject expected parsedResult  
+
+// 406   
+let NotAcceptableGetVersion(api : RestfulObjectsControllerBase) = 
+    let url = testRoot + SegmentValues.Version
+    let msg = jsonGetMsg(url)
+    let args = CreateReservedArgs ""
+    msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue ("profile", (makeProfile RepresentationTypes.User)))
+
+    try 
+        api.Request <- msg
+        let result = api.GetVersion(args)
+        Assert.Fail("expect exception")
+    with 
+        | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)

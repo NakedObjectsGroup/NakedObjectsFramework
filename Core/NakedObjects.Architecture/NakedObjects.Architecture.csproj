@@ -1,0 +1,557 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <SchemaVersion>2.0</SchemaVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>NakedObjects.Architecture</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>NakedObjects.Architecture</RootNamespace>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <ProjectGuid>{BF6D9655-B873-4980-ACE7-A122EA45F045}</ProjectGuid>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging, Version=2.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Helpers">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Types">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="adapter\IEntryTextParser.cs" />
+    <Compile Include="adapter\IEncodedToStrings.cs" />
+    <Compile Include="adapter\INakedObject.cs" />
+    <Compile Include="adapter\IOid.cs" />
+    <Compile Include="adapter\Persistable.cs" />
+    <Compile Include="adapter\ResolveException.cs" />
+    <Compile Include="adapter\StringDecoderHelper.cs" />
+    <Compile Include="adapter\StringEncoderHelper.cs" />
+    <Compile Include="adapter\value\IArrayValueFacet.cs" />
+    <Compile Include="adapter\value\IEnumValueFacet.cs" />
+    <Compile Include="adapter\value\IFileAttachmentValueFacet.cs" />
+    <Compile Include="adapter\value\IGuidValueFacet.cs" />
+    <Compile Include="adapter\value\ISbyteValueFacet.cs" />
+    <Compile Include="adapter\value\IDecimalValueFacet.cs" />
+    <Compile Include="adapter\value\IBooleanValueFacet.cs" />
+    <Compile Include="adapter\value\IByteValueFacet.cs" />
+    <Compile Include="adapter\value\ICharValueFacet.cs" />
+    <Compile Include="adapter\value\IColorValueFacet.cs" />
+    <Compile Include="adapter\value\IDateValueFacet.cs" />
+    <Compile Include="adapter\value\IDoubleFloatingPointValueFacet.cs" />
+    <Compile Include="adapter\value\IFloatingPointValueFacet.cs" />
+    <Compile Include="adapter\value\IImageValueFacet.cs" />
+    <Compile Include="adapter\value\IIntegerValueFacet.cs" />
+    <Compile Include="adapter\value\ILongValueFacet.cs" />
+    <Compile Include="adapter\value\IMoneyValueFacet.cs" />
+    <Compile Include="adapter\value\IMultilineStringValueFacet.cs" />
+    <Compile Include="adapter\value\IShortValueFacet.cs" />
+    <Compile Include="adapter\value\IStringValueFacet.cs" />
+    <Compile Include="adapter\value\ITimeValueFacet.cs" />
+    <Compile Include="adapter\value\IUnsignedIntegerValueFacet.cs" />
+    <Compile Include="adapter\value\IUnsignedLongValueFacet.cs" />
+    <Compile Include="adapter\value\IUnsignedShortValueFacet.cs" />
+    <Compile Include="adapter\IVersion.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="attributes\FacetsAttribute.cs" />
+    <Compile Include="exceptions\InvalidEntryException.cs" />
+    <Compile Include="exceptions\NakedObjectApplicationException.cs" />
+    <Compile Include="exceptions\NakedObjectException.cs" />
+    <Compile Include="facets\actcoll\table\ITableViewFacet.cs" />
+    <Compile Include="facets\actcoll\table\TableViewFacetAbstract.cs" />
+    <Compile Include="facets\actcoll\typeof\ITypeOfFacet.cs" />
+    <Compile Include="facets\actcoll\typeof\TypeOfFacetAbstract.cs" />
+    <Compile Include="facets\actions\choices\IActionChoicesFacet.cs" />
+    <Compile Include="facets\actions\choices\ActionChoicesFacetAbstract.cs" />
+    <Compile Include="facets\actions\choices\ActionChoicesFacetNone.cs" />
+    <Compile Include="facets\actions\contributed\ExcludeFromFindMenuFacetImpl.cs" />
+    <Compile Include="facets\actions\contributed\NotContributedActionFacetImpl.cs" />
+    <Compile Include="facets\actions\contributed\ExcludeFromFindMenuFacetAbstract.cs" />
+    <Compile Include="facets\actions\contributed\NotContributedActionFacetAbstract.cs" />
+    <Compile Include="facets\actions\contributed\IExcludeFromFindMenuFacet.cs" />
+    <Compile Include="facets\actions\contributed\INotContributedActionFacet.cs" />
+    <Compile Include="facets\actions\defaults\IActionDefaultsFacet.cs" />
+    <Compile Include="facets\actions\defaults\ActionDefaultsFacetAbstract.cs" />
+    <Compile Include="facets\actions\defaults\ActionDefaultsFacetNone.cs" />
+    <Compile Include="facets\actions\executed\AjaxFacetAbstract.cs" />
+    <Compile Include="facets\actions\executed\AjaxFacetImpl.cs" />
+    <Compile Include="facets\actions\executed\IAjaxFacet.cs" />
+    <Compile Include="facets\actions\executed\ExecutedControlMethodFacetAbstract.cs" />
+    <Compile Include="facets\actions\executed\IExecutedFacet.cs" />
+    <Compile Include="facets\actions\executed\IExecutedControlMethodFacet.cs" />
+    <Compile Include="facets\actions\executed\ExecutedFacetAbstract.cs" />
+    <Compile Include="facets\actions\executed\ExecutedFacetAtDefault.cs" />
+    <Compile Include="facets\actions\invoke\IActionInvocationFacet.cs" />
+    <Compile Include="facets\actions\invoke\ActionInvocationFacetAbstract.cs" />
+    <Compile Include="facets\actions\pagesize\IPageSizeFacet.cs" />
+    <Compile Include="facets\actions\pagesize\PageSizeFacetAbstract.cs" />
+    <Compile Include="facets\actions\pagesize\PageSizeFacetDefault.cs" />
+    <Compile Include="facets\actions\potency\IIdempotentFacet.cs" />
+    <Compile Include="facets\actions\potency\IdempotentFacetAbstract.cs" />
+    <Compile Include="facets\actions\potency\IdempotentFacetImpl.cs" />
+    <Compile Include="facets\actions\potency\QueryOnlyFacetAbstract.cs" />
+    <Compile Include="facets\actions\potency\QueryOnlyFacetImpl.cs" />
+    <Compile Include="facets\actions\potency\IQueryOnlyFacet.cs" />
+    <Compile Include="facets\actions\validate\ActionArgumentsInvalidException.cs" />
+    <Compile Include="facets\actions\validate\IActionValidationFacet.cs" />
+    <Compile Include="facets\actions\validate\ActionValidationFacetAbstract.cs" />
+    <Compile Include="facets\actions\validate\IActionParameterValidationFacet.cs" />
+    <Compile Include="facets\actions\validate\ActionParameterValidationFacetAbstract.cs" />
+    <Compile Include="facets\collections\modify\ICollectionFacet.cs" />
+    <Compile Include="facets\collections\modify\CollectionFacetAbstract.cs" />
+    <Compile Include="facets\collections\modify\ICollectionResetFacet.cs" />
+    <Compile Include="facets\disable\IDisabledFacet.cs" />
+    <Compile Include="facets\disable\DisabledFacetAbstract.cs" />
+    <Compile Include="facets\disable\DisabledFacetAlways.cs" />
+    <Compile Include="facets\disable\DisabledFacetImpl.cs" />
+    <Compile Include="facets\disable\IDisableForContextFacet.cs" />
+    <Compile Include="facets\disable\DisableForContextFacetAbstract.cs" />
+    <Compile Include="facets\disable\IDisableForSessionFacet.cs" />
+    <Compile Include="facets\disable\DisableForSessionFacetAbstract.cs" />
+    <Compile Include="facets\disable\DisableForSessionFacetNone.cs" />
+    <Compile Include="facets\IFacet.cs" />
+    <Compile Include="facets\FacetAbstract.cs" />
+    <Compile Include="facets\IFacetFactory.cs" />
+    <Compile Include="facets\FacetFactoryAbstract.cs" />
+    <Compile Include="facets\IFacetFactorySet.cs" />
+    <Compile Include="facets\IFacetFilter.cs" />
+    <Compile Include="facets\FacetFilters.cs" />
+    <Compile Include="facets\IFacetHolder.cs" />
+    <Compile Include="facets\FacetHolderImpl.cs" />
+    <Compile Include="facets\FacetUtils.cs" />
+    <Compile Include="facets\hide\IHiddenFacet.cs" />
+    <Compile Include="facets\hide\HiddenFacetAbstract.cs" />
+    <Compile Include="facets\hide\HiddenFacetImpl.cs" />
+    <Compile Include="facets\hide\IHideForContextFacet.cs" />
+    <Compile Include="facets\hide\HideForContextFacetAbstract.cs" />
+    <Compile Include="facets\hide\IHideForSessionFacet.cs" />
+    <Compile Include="facets\hide\HideForSessionFacetAbstract.cs" />
+    <Compile Include="facets\hide\HideForSessionFacetNone.cs" />
+    <Compile Include="facets\IIdentifier.cs" />
+    <Compile Include="facets\IInterfaceBasedFacetFactory.cs" />
+    <Compile Include="facets\IMarkerFacet.cs" />
+    <Compile Include="facets\MarkerFacetAbstract.cs" />
+    <Compile Include="facets\IMethodFilteringFacetFactory.cs" />
+    <Compile Include="facets\IMethodRemover.cs" />
+    <Compile Include="facets\MethodRemoverConstants.cs" />
+    <Compile Include="facets\IMultipleValueFacet.cs" />
+    <Compile Include="facets\MultipleValueFacetAbstract.cs" />
+    <Compile Include="facets\IMultiTypedFacet.cs" />
+    <Compile Include="facets\NamedAndDescribedFacetHolderImpl.cs" />
+    <Compile Include="facets\naming\describedas\IDescribedAsFacet.cs" />
+    <Compile Include="facets\naming\describedas\DescribedAsFacetAbstract.cs" />
+    <Compile Include="facets\naming\describedas\DescribedAsFacetNone.cs" />
+    <Compile Include="facets\naming\named\INamedFacet.cs" />
+    <Compile Include="facets\naming\named\NamedFacetAbstract.cs" />
+    <Compile Include="facets\naming\named\NamedFacetImpl.cs" />
+    <Compile Include="facets\naming\named\NamedFacetNone.cs" />
+    <Compile Include="facets\object\aggregated\ComplexTypeFacetAbstract.cs" />
+    <Compile Include="facets\object\aggregated\IComplexTypeFacet.cs" />
+    <Compile Include="facets\object\bounded\IBoundedFacet.cs" />
+    <Compile Include="facets\object\bounded\BoundedFacetAbstract.cs" />
+    <Compile Include="facets\object\bounded\BoundedFacetImpl.cs" />
+    <Compile Include="facets\object\callbacks\ICallbackFacet.cs" />
+    <Compile Include="facets\object\callbacks\CallbackFacetAbstract.cs" />
+    <Compile Include="facets\object\callbacks\ICallbackWithExceptionFacet.cs" />
+    <Compile Include="facets\object\callbacks\CallbackWithExceptionFacetAbstract.cs" />
+    <Compile Include="facets\object\callbacks\ICreatedCallbackFacet.cs" />
+    <Compile Include="facets\object\callbacks\CreatedCallbackFacetAbstract.cs" />
+    <Compile Include="facets\object\callbacks\IDeletedCallbackFacet.cs" />
+    <Compile Include="facets\object\callbacks\DeletedCallbackFacetAbstract.cs" />
+    <Compile Include="facets\object\callbacks\IDeletingCallbackFacet.cs" />
+    <Compile Include="facets\object\callbacks\DeletingCallbackFacetAbstract.cs" />
+    <Compile Include="facets\object\callbacks\ILoadedCallbackFacet.cs" />
+    <Compile Include="facets\object\callbacks\LoadedCallbackFacetAbstract.cs" />
+    <Compile Include="facets\object\callbacks\ILoadingCallbackFacet.cs" />
+    <Compile Include="facets\object\callbacks\LoadingCallbackFacetAbstract.cs" />
+    <Compile Include="facets\object\callbacks\IOnPersistingErrorCallbackFacet.cs" />
+    <Compile Include="facets\object\callbacks\OnPersistingErrorCallbackFacetAbstract.cs" />
+    <Compile Include="facets\object\callbacks\IOnUpdatingErrorCallbackFacet.cs" />
+    <Compile Include="facets\object\callbacks\OnUpdatingErrorCallbackFacetAbstract.cs" />
+    <Compile Include="facets\object\callbacks\IPersistedCallbackFacet.cs" />
+    <Compile Include="facets\object\callbacks\PersistedCallbackFacetAbstract.cs" />
+    <Compile Include="facets\object\callbacks\IPersistingCallbackFacet.cs" />
+    <Compile Include="facets\object\callbacks\PersistingCallbackFacetAbstract.cs" />
+    <Compile Include="facets\object\callbacks\IUpdatedCallbackFacet.cs" />
+    <Compile Include="facets\object\callbacks\UpdatedCallbackFacetAbstract.cs" />
+    <Compile Include="facets\object\callbacks\IUpdatingCallbackFacet.cs" />
+    <Compile Include="facets\object\callbacks\UpdatingCallbackFacetAbstract.cs" />
+    <Compile Include="facets\object\defaults\IDefaultedFacet.cs" />
+    <Compile Include="facets\object\ebc\IEqualByContentFacet.cs" />
+    <Compile Include="facets\object\ebc\EqualByContentFacetAbstract.cs" />
+    <Compile Include="facets\object\encodeable\IEncodeableFacet.cs" />
+    <Compile Include="facets\object\viewmodel\ViewModelFacetAbstract.cs" />
+    <Compile Include="facets\object\viewmodel\IViewModelFacet.cs" />
+    <Compile Include="facets\password\IPasswordFacet.cs" />
+    <Compile Include="facets\password\PasswordFacetAbstract.cs" />
+    <Compile Include="facets\autocomplete\IAutoCompleteFacet.cs" />
+    <Compile Include="facets\autocomplete\AutoCompleteFacetAbstract.cs" />
+    <Compile Include="facets\presentation\IPresentationHintFacet.cs" />
+    <Compile Include="facets\presentation\PresentationHintFacetAbstract.cs" />
+    <Compile Include="facets\properties\eagerly\IEagerlyFacet.cs" />
+    <Compile Include="facets\properties\enum\IEnumFacet.cs" />
+    <Compile Include="facets\properties\enum\EnumFacetAbstract.cs" />
+    <Compile Include="facets\object\facets\IFacetsFacet.cs" />
+    <Compile Include="facets\object\facets\FacetsFacetAbstract.cs" />
+    <Compile Include="facets\object\ident\icon\IIconFacet.cs" />
+    <Compile Include="facets\object\ident\icon\IconFacetAbstract.cs" />
+    <Compile Include="facets\object\ident\plural\IPluralFacet.cs" />
+    <Compile Include="facets\object\ident\plural\PluralFacetAbstract.cs" />
+    <Compile Include="facets\object\ident\title\ITitleFacet.cs" />
+    <Compile Include="facets\object\ident\title\TitleFacetAbstract.cs" />
+    <Compile Include="facets\object\ident\title\TitleFacetNone.cs" />
+    <Compile Include="facets\object\immutable\IImmutableFacet.cs" />
+    <Compile Include="facets\object\immutable\ImmutableFacetAbstract.cs" />
+    <Compile Include="facets\object\immutable\ImmutableFacetImpl.cs" />
+    <Compile Include="facets\object\immutable\ImmutableFacetNever.cs" />
+    <Compile Include="facets\object\key\IKeyFacet.cs" />
+    <Compile Include="facets\object\key\KeyFacetAbstract.cs" />
+    <Compile Include="facets\object\notpersistable\ProgramPersistableOnlyFacetAbstract.cs" />
+    <Compile Include="facets\object\notpersistable\IProgramPersistableOnlyFacet.cs" />
+    <Compile Include="facets\object\fromstream\IFromStreamFacet.cs" />
+    <Compile Include="facets\object\parseable\IParseableFacet.cs" />
+    <Compile Include="facets\object\typicallength\ITypicalLengthFacet.cs" />
+    <Compile Include="facets\object\typicallength\TypicalLengthFacetAbstract.cs" />
+    <Compile Include="facets\object\typicallength\TypicalLengthFacetInferred.cs" />
+    <Compile Include="facets\object\typicallength\TypicalLengthFacetZero.cs" />
+    <Compile Include="facets\object\validate\ValidateProgrammaticUpdatesFacetImpl.cs" />
+    <Compile Include="facets\object\validate\IValidateProgrammaticUpdatesFacet.cs" />
+    <Compile Include="facets\object\validate\ValidateProgrammaticUpdatesFacetAbstract.cs" />
+    <Compile Include="facets\object\value\IAggregatedFacet.cs" />
+    <Compile Include="facets\object\value\AggregatedFacetAlways.cs" />
+    <Compile Include="facets\object\value\EqualByContentFacetViaValueSemantics.cs" />
+    <Compile Include="facets\object\value\ImmutableFacetViaValueSemantics.cs" />
+    <Compile Include="facets\object\value\IValueFacet.cs" />
+    <Compile Include="facets\ordering\actionorder\IActionOrderFacet.cs" />
+    <Compile Include="facets\ordering\actionorder\ActionOrderFacetAbstract.cs" />
+    <Compile Include="facets\ordering\fieldorder\IFieldOrderFacet.cs" />
+    <Compile Include="facets\ordering\fieldorder\FieldOrderFacetAbstract.cs" />
+    <Compile Include="facets\ordering\memberorder\IMemberOrderFacet.cs" />
+    <Compile Include="facets\ordering\memberorder\MemberOrderFacetAbstract.cs" />
+    <Compile Include="facets\propcoll\notpersisted\INotPersistedFacet.cs" />
+    <Compile Include="facets\propcoll\notpersisted\NotPersistedFacetAbstract.cs" />
+    <Compile Include="facets\properties\access\IPropertyAccessorFacet.cs" />
+    <Compile Include="facets\properties\access\PropertyAccessorFacetAbstract.cs" />
+    <Compile Include="facets\properties\choices\IPropertyChoicesFacet.cs" />
+    <Compile Include="facets\properties\choices\PropertyChoicesFacetAbstract.cs" />
+    <Compile Include="facets\properties\defaults\IPropertyDefaultFacet.cs" />
+    <Compile Include="facets\properties\defaults\PropertyDefaultFacetAbstract.cs" />
+    <Compile Include="facets\properties\defaults\PropertyDefaultFacetNone.cs" />
+    <Compile Include="facets\properties\modify\IPropertyClearFacet.cs" />
+    <Compile Include="facets\properties\modify\PropertyClearFacetAbstract.cs" />
+    <Compile Include="facets\properties\modify\IPropertyInitializationFacet.cs" />
+    <Compile Include="facets\properties\modify\PropertyInitializationFacetAbstract.cs" />
+    <Compile Include="facets\propparam\modify\INullableFacet.cs" />
+    <Compile Include="facets\propparam\modify\NullableFacetAlways.cs" />
+    <Compile Include="facets\properties\modify\IPropertySetterFacet.cs" />
+    <Compile Include="facets\properties\modify\PropertySetterFacetAbstract.cs" />
+    <Compile Include="facets\properties\set\IIsASetFacet.cs" />
+    <Compile Include="facets\properties\set\IsASetFacet.cs" />
+    <Compile Include="facets\properties\validate\IPropertyValidateFacet.cs" />
+    <Compile Include="facets\properties\validate\PropertyValidateFacetAbstract.cs" />
+    <Compile Include="facets\properties\validate\PropertyValidateFacetNone.cs" />
+    <Compile Include="facets\properties\concurrency\IConcurrencyCheckFacet.cs" />
+    <Compile Include="facets\properties\concurrency\ConcurrencyCheckFacetAbstract.cs" />
+    <Compile Include="facets\IPropertyOrCollectionIdentifyingFacetFactory.cs" />
+    <Compile Include="facets\propparam\multiline\IMultiLineFacet.cs" />
+    <Compile Include="facets\propparam\multiline\MultiLineFacetAbstract.cs" />
+    <Compile Include="facets\propparam\multiline\MultiLineFacetNone.cs" />
+    <Compile Include="facets\propparam\validate\mandatory\OptionalFacetDefault.cs" />
+    <Compile Include="facets\propparam\validate\mandatory\InvalidMandatoryException.cs" />
+    <Compile Include="facets\propparam\validate\mandatory\IMandatoryFacet.cs" />
+    <Compile Include="facets\propparam\validate\mandatory\MandatoryFacetAbstract.cs" />
+    <Compile Include="facets\propparam\validate\mandatory\MandatoryFacetDefault.cs" />
+    <Compile Include="facets\propparam\validate\mask\InvalidMaskException.cs" />
+    <Compile Include="facets\propparam\validate\mask\IMaskFacet.cs" />
+    <Compile Include="facets\propparam\validate\mask\MaskFacetAbstract.cs" />
+    <Compile Include="facets\propparam\validate\maxlength\InvalidMaxLengthException.cs" />
+    <Compile Include="facets\propparam\validate\maxlength\IMaxLengthFacet.cs" />
+    <Compile Include="facets\propparam\validate\maxlength\MaxLengthFacetAbstract.cs" />
+    <Compile Include="facets\propparam\validate\maxlength\MaxLengthFacetZero.cs" />
+    <Compile Include="facets\propparam\validate\range\InvalidRangeException.cs" />
+    <Compile Include="facets\propparam\validate\range\IRangeFacet.cs" />
+    <Compile Include="facets\propparam\validate\range\RangeFacetAbstract.cs" />
+    <Compile Include="facets\propparam\validate\regex\InvalidRegExException.cs" />
+    <Compile Include="facets\propparam\validate\regex\IRegExFacet.cs" />
+    <Compile Include="facets\propparam\validate\regex\RegExFacetAbstract.cs" />
+    <Compile Include="facets\ISingleClassValueFacet.cs" />
+    <Compile Include="facets\SingleClassValueFacetAbstract.cs" />
+    <Compile Include="facets\ISingleIntValueFacet.cs" />
+    <Compile Include="facets\SingleIntValueFacetAbstract.cs" />
+    <Compile Include="facets\ISingleStringValueFacet.cs" />
+    <Compile Include="facets\SingleStringValueFacetAbstract.cs" />
+    <Compile Include="facets\ISingleValueFacet.cs" />
+    <Compile Include="facets\SingleValueFacetAbstract.cs" />
+    <Compile Include="facets\ISingleWhenValueFacet.cs" />
+    <Compile Include="facets\SingleWhenValueFacetAbstract.cs" />
+    <Compile Include="interactions\DisabledException.cs" />
+    <Compile Include="interactions\IDisablingInteractionAdvisor.cs" />
+    <Compile Include="interactions\HiddenException.cs" />
+    <Compile Include="interactions\IHidingInteractionAdvisor.cs" />
+    <Compile Include="interactions\InteractionBuffer.cs" />
+    <Compile Include="interactions\InteractionContext.cs" />
+    <Compile Include="interactions\InteractionException.cs" />
+    <Compile Include="interactions\InteractionType.cs" />
+    <Compile Include="interactions\InteractionUtils.cs" />
+    <Compile Include="interactions\InvalidException.cs" />
+    <Compile Include="interactions\IValidatingInteractionAdvisor.cs" />
+    <Compile Include="capabilities\IDefaultsProvider.cs" />
+    <Compile Include="capabilities\IEncoderDecoder.cs" />
+    <Compile Include="capabilities\IFromStream.cs" />
+    <Compile Include="capabilities\IParser.cs" />
+    <Compile Include="capabilities\IValueSemanticsProvider.cs" />
+    <Compile Include="capabilities\ValueSemanticsProviderImpl.cs" />
+    <Compile Include="noa\NakedObjectSystemException.cs" />
+    <Compile Include="noa\NakedObjectDomainException.cs" />
+    <Compile Include="noa\IRequiresSetup.cs" />
+    <Compile Include="persist\ConcurrencyException.cs" />
+    <Compile Include="persist\DataUpdateException.cs" />
+    <Compile Include="persist\IExecutionContext.cs" />
+    <Compile Include="persist\IIdentityMap.cs" />
+    <Compile Include="persist\INakedObjectManager.cs" />
+    <Compile Include="persist\INakedObjectPersistor.cs" />
+    <Compile Include="persist\INakedObjectTransactionManager.cs" />
+    <Compile Include="persist\NotPersistableException.cs" />
+    <Compile Include="persist\FindObjectException.cs" />
+    <Compile Include="persist\ObjectPersistenceException.cs" />
+    <Compile Include="persist\IOidGenerator.cs" />
+    <Compile Include="persist\IPersistenceCommand.cs" />
+    <Compile Include="reflect\Allow.cs" />
+    <Compile Include="reflect\Do.cs" />
+    <Compile Include="reflect\IConsent.cs" />
+    <Compile Include="reflect\ConsentAbstract.cs" />
+    <Compile Include="reflect\IContainerInjector.cs" />
+    <Compile Include="reflect\INakedObjectValidation.cs" />
+    <Compile Include="reflect\InitiatedBy.cs" />
+    <Compile Include="reflect\INakedObjectAction.cs" />
+    <Compile Include="reflect\NakedObjectActionContext.cs" />
+    <Compile Include="reflect\INakedObjectActionParameter.cs" />
+    <Compile Include="reflect\INakedObjectActionParameterFilter.cs" />
+    <Compile Include="reflect\NakedObjectActionType.cs" />
+    <Compile Include="reflect\INakedObjectAssociation.cs" />
+    <Compile Include="reflect\NakedObjectAssociationAbstract.cs" />
+    <Compile Include="reflect\INakedObjectFeature.cs" />
+    <Compile Include="reflect\NakedObjectFeatureType.cs" />
+    <Compile Include="reflect\NakedObjectFeatureUtils.cs" />
+    <Compile Include="reflect\INakedObjectMember.cs" />
+    <Compile Include="reflect\NakedObjectMemberAbstract.cs" />
+    <Compile Include="reflect\INakedObjectReflector.cs" />
+    <Compile Include="reflect\INakedObjectReflectorAware.cs" />
+    <Compile Include="reflect\IOneToManyFeature.cs" />
+    <Compile Include="resolveStateMachine\Events.cs" />
+    <Compile Include="resolveStateMachine\IResolveEvent.cs" />
+    <Compile Include="resolveStateMachine\IResolveState.cs" />
+    <Compile Include="resolveStateMachine\IResolveStateMachine.cs" />
+    <Compile Include="resolveStateMachine\ResolveStateMachine.cs" />
+    <Compile Include="resolveStateMachine\StateHelperUtils.cs" />
+    <Compile Include="resolveStateMachine\States.cs" />
+    <Compile Include="resolveStateMachine\TransientReferenceException.cs" />
+    <Compile Include="attributes\DefaultedAttribute.cs" />
+    <Compile Include="attributes\EncodeableAttribute.cs" />
+    <Compile Include="attributes\EqualByContentAttribute.cs" />
+    <Compile Include="attributes\ParseableAttribute.cs" />
+    <Compile Include="attributes\ValueAttribute.cs" />
+    <Compile Include="security\IAuthorisationManager.cs" />
+    <Compile Include="security\NullAuthorisationManager.cs" />
+    <Compile Include="services\ServiceWrapper.cs" />
+    <Compile Include="util\CallbackUtils.cs" />
+    <Compile Include="util\IdentifierUtils.cs" />
+    <Compile Include="util\MimeUtils.cs" />
+    <Compile Include="util\NullUtils.cs" />
+    <Compile Include="reflect\IOneToManyAssociation.cs" />
+    <Compile Include="reflect\IOneToOneAssociation.cs" />
+    <Compile Include="reflect\IOneToOneFeature.cs" />
+    <Compile Include="reflect\IParseableEntryActionParameter.cs" />
+    <Compile Include="reflect\Target.cs" />
+    <Compile Include="reflect\Veto.cs" />
+    <Compile Include="reflect\When.cs" />
+    <Compile Include="reflect\Where.cs" />
+    <Compile Include="security\IAuthenticationRequest.cs" />
+    <Compile Include="security\IAuthenticator.cs" />
+    <Compile Include="security\IConnectionManager.cs" />
+    <Compile Include="security\ISession.cs" />
+    <Compile Include="security\IAuthenticationManager.cs" />
+    <Compile Include="spec\IActionContainer.cs" />
+    <Compile Include="spec\IDefaultProvider.cs" />
+    <Compile Include="spec\IPropertyContainer.cs" />
+    <Compile Include="spec\IHierarchical.cs" />
+    <Compile Include="spec\INakedObjectSpecification.cs" />
+    <Compile Include="spec\INamedAndDescribed.cs" />
+    <Compile Include="spec\INamedAndDescribedFacetHolder.cs" />
+    <Compile Include="spec\SpecificationFacets.cs" />
+    <Compile Include="util\AdapterUtils.cs" />
+    <Compile Include="util\CollectionUtils.cs" />
+    <Compile Include="util\HashCodeUtils.cs" />
+    <Compile Include="util\QueryableList.cs" />
+    <Compile Include="util\QueryableUtils.cs" />
+    <Compile Include="util\TypeNameUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="facets\naming\iconname\" />
+    <Folder Include="facets\properties\autocomplete\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.FWResources\NakedObjects.FWResources.csproj">
+      <Project>{7494A00E-6A3F-4BDE-84FF-20AA538ED575}</Project>
+      <Name>NakedObjects.FWResources</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
+</Project>

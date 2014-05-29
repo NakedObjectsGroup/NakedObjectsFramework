@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EC9AF8ED-FC49-4E1B-8E45-3450641AE561}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NakedObjects.Surface</RootNamespace>
+    <AssemblyName>NakedObjects.Surface</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Context\ActionContextSurface.cs" />
+    <Compile Include="Context\ContextSurface.cs" />
+    <Compile Include="Context\ActionResultContextSurface.cs" />
+    <Compile Include="Context\Cause.cs" />
+    <Compile Include="Context\ActionTypeContextSurface.cs" />
+    <Compile Include="Context\ChoiceContextSurface.cs" />
+    <Compile Include="Context\ListContextSurface.cs" />
+    <Compile Include="Context\ParameterTypeContextSurface.cs" />
+    <Compile Include="Context\PropertyTypeContextSurface.cs" />
+    <Compile Include="Context\ObjectContextSurface.cs" />
+    <Compile Include="Exception\ActionResourceNotFoundNOSException.cs" />
+    <Compile Include="Exception\BadArgumentsNOSException.cs" />
+    <Compile Include="Exception\BadRequestNOSException.cs" />
+    <Compile Include="Exception\CollectionResourceNotFoundNOSException.cs" />
+    <Compile Include="Exception\PreconditionFailedNOSException.cs" />
+    <Compile Include="Exception\TypeActionParameterResourceNotFoundNOSException.cs" />
+    <Compile Include="Exception\TypeActionResourceNotFoundNOSException.cs" />
+    <Compile Include="Exception\TypeCollectionResourceNotFoundNOSException.cs" />
+    <Compile Include="Exception\TypePropertyResourceNotFoundNOSException.cs" />
+    <Compile Include="Exception\TypeResourceNotFoundNOSException.cs" />
+    <Compile Include="Exception\GeneralErrorNOSException.cs" />
+    <Compile Include="Exception\NotAllowedNOSException.cs" />
+    <Compile Include="Exception\ObjectResourceNotFoundNOSException.cs" />
+    <Compile Include="Exception\PropertyResourceNotFoundNOSException.cs" />
+    <Compile Include="Exception\ResourceNotFoundNOSException.cs" />
+    <Compile Include="Exception\ServiceResourceNotFoundNOSException.cs" />
+    <Compile Include="Exception\WithContextNOSException.cs" />
+    <Compile Include="Interface\ArgumentContext.cs" />
+    <Compile Include="Interface\ArgumentsContext.cs" />
+    <Compile Include="Interface\AttachmentContext.cs" />
+    <Compile Include="Interface\IConsentSurface.cs" />
+    <Compile Include="Interface\INakedObjectSurface.cs" />
+    <Compile Include="Interface\INakedObjectActionSurface.cs" />
+    <Compile Include="Interface\INakedObjectActionParameterSurface.cs" />
+    <Compile Include="Interface\INakedObjectAssociationSurface.cs" />
+    <Compile Include="Interface\INakedObjectMemberSurface.cs" />
+    <Compile Include="Interface\INakedObjectSpecificationSurface.cs" />
+    <Compile Include="Interface\INakedObjectsSurface.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Context\ParameterContextSurface.cs" />
+    <Compile Include="Context\PropertyContextSurface.cs" />
+    <Compile Include="Exception\NakedObjectsSurfaceException.cs" />
+    <Compile Include="Interface\ISurfaceHolder.cs" />
+    <Compile Include="Interface\LinkObjectId.cs" />
+    <Compile Include="Interface\IOidSurface.cs" />
+    <Compile Include="Interface\IScalarPropertyHolder.cs" />
+    <Compile Include="Interface\IVersionSurface.cs" />
+    <Compile Include="Utility\NakedObjectsSurfaceExtensions.cs" />
+    <Compile Include="Interface\ScalarProperty.cs" />
+    <Compile Include="Interface\ScalarPropertyHolder.cs" />
+    <Compile Include="Interface\UserCredentials.cs" />
+    <Compile Include="Utility\ILogWrapper.cs" />
+    <Compile Include="Utility\IOidStrategy.cs" />
+    <Compile Include="Utility\LogWrapper.cs" />
+    <Compile Include="Utility\OidStrategyHolder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,14 @@
+This document defines the API for the NakedObjects.ProgrammingModel package
+
+
+The API for this package comprises the signature of every class and interface defined in it  -  since they are all intended to be used by the application programmer.
+
+Note that this includes both the interfaces defined in the NakedObjects.Api.dll, and the interfaces and classes defined in NakedObjects.Helpers.Api
+
+Dependencies:  NakedObjects.Ide.  However, since that package does not have an API, version changes on the Ide will not impact the ProgrammingModel
+
+Current version:  5.0
+
+Changes from previous version:
+
+- Deletion of previously obsoleted attributes, and methods on helper classes

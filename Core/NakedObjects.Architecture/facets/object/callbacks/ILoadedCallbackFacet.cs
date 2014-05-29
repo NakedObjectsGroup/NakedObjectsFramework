@@ -1,0 +1,17 @@
+// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
+// All Rights Reserved. This code released under the terms of the 
+// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
+namespace NakedObjects.Architecture.Facets.Objects.Callbacks {
+    /// <summary>
+    ///     Represents the mechanism to inform the object that it has just been loaded from the object store
+    /// </summary>
+    /// <para>
+    ///     In the standard Naked Objects Programming Model, this is represented by a <c>Loaded</c> method.
+    /// </para>
+    /// <seealso cref="ILoadingCallbackFacet" />
+    /// <seealso cref="ICreatedCallbackFacet" />
+    public interface ILoadedCallbackFacet : ICallbackFacet {}
+
+    // Copyright (c) Naked Objects Group Ltd.
+}

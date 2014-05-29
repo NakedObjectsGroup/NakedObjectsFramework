@@ -1,0 +1,33 @@
+﻿namespace NakedObjects.Surface {
+    public enum ScalarProperty {
+        IsTransient,
+        TitleString,
+        Name,
+        Description,
+        IsMandatory,
+        MaxLength,
+        Pattern,
+        Number,
+        IsQueryOnly,
+        IsIdempotent,
+        IsCollection,
+        IsObject,
+        IsParseable,
+        IsQueryable,
+        IsService,
+        IsVoid,
+        IsDateTime,
+        FullName,
+        SingularName,
+        PluralName, 
+        MemberOrder, 
+        IsASet,
+        IsAggregated,
+        IsInline, 
+        Mask,
+        ExtensionData,
+        IsImage,
+        IsFileAttachment,
+        AutoCompleteMinLength
+    }
+}

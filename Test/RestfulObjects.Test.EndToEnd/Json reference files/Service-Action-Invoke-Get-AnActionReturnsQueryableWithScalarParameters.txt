@@ -1,0 +1,47 @@
+{
+  "result": {
+    "links": [
+      {
+        "rel": "urn:org.restfulobjects:rels/element-type",
+        "method": "GET",
+        "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
+      }
+    ],
+    "extensions": {},
+    "value": [
+      {
+        "title": "1",
+        "rel": "urn:org.restfulobjects:rels/element",
+        "method": "GET",
+        "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+      },
+      {
+        "title": "2",
+        "rel": "urn:org.restfulobjects:rels/element",
+        "method": "GET",
+        "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/2"
+      }
+    ]
+  },
+  "links": [
+    {
+      "arguments": {
+        "parm1": {
+          "value": 100
+        },
+        "parm2": {
+          "value": "fred"
+        }
+      },
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8; x-ro-element-type=\"MostSimple\"",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnActionReturnsQueryableWithScalarParameters/invoke"
+    }
+  ],
+  "extensions": {},
+  "resultType": "list"
+}

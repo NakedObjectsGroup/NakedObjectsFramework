@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{37a192da-4bca-43be-8635-209d5de8ec95}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>nof_authorisation_wif_test</RootNamespace>
+    <AssemblyName>NakedObjects.Authorisation.Wif.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <Name>NakedObjects.Authorisation.Wif.Test</Name>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\nof_authorisation_wif_test.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <DocumentationFile>bin\Release\nof_authorisation_wif_test.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets" Condition="Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')" />
+  <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft F#\v4.0\Microsoft.FSharp.Targets" Condition="(!Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')) And (Exists('$(MSBuildExtensionsPath32)\..\Microsoft F#\v4.0\Microsoft.FSharp.Targets'))" />
+  <Import Project="$(MSBuildExtensionsPath32)\FSharp\1.0\Microsoft.FSharp.Targets" Condition="(!Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')) And (!Exists('$(MSBuildExtensionsPath32)\..\Microsoft F#\v4.0\Microsoft.FSharp.Targets')) And (Exists('$(MSBuildExtensionsPath32)\FSharp\1.0\Microsoft.FSharp.Targets'))" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <ItemGroup>
+    <Compile Include="WifAuthorisationTest.fs" />
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="FSharp.Core" />
+    <Reference Include="NakedObjects.Architecture">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Architecture.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Async">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Async.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Attributes">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Bootstrap">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Bootstrap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Core">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.FWResources">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.FWResources.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Helpers">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Persistor">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Persistor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Persistor.Entity">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.PMResources">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Reflector.Core">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Reflector.DotNet">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Reflector.DotNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Snapshot.Xml">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Types">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <ProjectReference Include="..\NakedObjects.Authorisation.Wif\NakedObjects.Authorisation.Wif.csproj">
+      <Name>NakedObjects.Authorisation.Wif</Name>
+      <Project>{233b2e95-fc9e-4e1b-9909-d3cbc81d3f1e}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	     Other similar extension points exist, see Microsoft.Common.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+</Project>

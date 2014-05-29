@@ -1,0 +1,52 @@
+{
+  "id": "ADisabledCollectionAction",
+  "parameters": {},
+  "extensions": {
+    "friendlyName": "A Disabled Collection Action",
+    "description": "",
+    "hasParams": false,
+    "memberOrder": 0,
+    "returnType": "list",
+    "elementType": "MostSimple",
+    "pluralName": "Most Simples"
+  },
+  "links": [
+    {
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/ADisabledCollectionAction"
+    },
+    {
+      "rel": "up",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionService\"",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService"
+    },
+    {
+      "arguments": {},
+      "rel": "urn:org.restfulobjects:rels/invoke;action=\"ADisabledCollectionAction\"",
+      "method": "POST",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/ADisabledCollectionAction/invoke"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/return-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/list"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/element-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
+    },
+    {
+      "rel": "describedby",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionService/actions/ADisabledCollectionAction"
+    }
+  ]
+}

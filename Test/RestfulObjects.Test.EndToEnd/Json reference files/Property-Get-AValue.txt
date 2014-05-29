@@ -1,0 +1,43 @@
+{
+  "value": 100,
+  "hasChoices": false,
+  "id": "AValue",
+  "links": [
+    {
+      "rel": "up",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithValue\"",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1"
+    },
+    {
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/AValue"
+    },
+    {
+      "rel": "describedby",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithValue/properties/AValue"
+    },
+    {
+      "arguments": {
+        "value": null
+      },
+      "rel": "urn:org.restfulobjects:rels/modify;property=\"AValue\"",
+      "method": "PUT",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/1/properties/AValue"
+    }
+  ],
+  "extensions": {
+    "friendlyName": "A Value",
+    "description": "",
+    "optional": false,
+    "memberOrder": 0,
+    "returnType": "number",
+    "format": "integer",
+    "x-ro-nof-presentationHint": "class3 class4"
+  }
+}

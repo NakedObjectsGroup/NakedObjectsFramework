@@ -1,0 +1,69 @@
+{
+  "id": "AnActionWithDateTimeParm",
+  "parameters": {
+    "parm": {
+      "links": [
+        {
+          "rel": "describedby",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithDateTimeParm/params/parm"
+        }
+      ],
+      "extensions": {
+        "friendlyName": "Parm",
+        "description": "",
+        "optional": false,
+        "returnType": "string",
+        "format": "date-time",
+        "maxLength": 0,
+        "pattern": "",
+        "x-ro-nof-mask": "d"
+      }
+    }
+  },
+  "extensions": {
+    "friendlyName": "An Action With Date Time Parm",
+    "description": "",
+    "hasParams": true,
+    "memberOrder": 0
+  },
+  "links": [
+    {
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithDateTimeParm"
+    },
+    {
+      "rel": "up",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionObject\"",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1"
+    },
+    {
+      "arguments": {
+        "parm": {
+          "value": null
+        }
+      },
+      "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithDateTimeParm\"",
+      "method": "POST",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithDateTimeParm/invoke"
+    },
+    {
+      "rel": "describedby",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithDateTimeParm"
+    },
+    {
+      "id": "parm",
+      "rel": "urn:org.restfulobjects:rels/action-param",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithDateTimeParm/params/parm"
+    }
+  ]
+}

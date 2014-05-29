@@ -1,0 +1,37 @@
+{
+  "id": "AnActionReturnsVoid",
+  "parameters": {},
+  "extensions": {
+    "friendlyName": "An Action Returns Void",
+    "description": "",
+    "hasParams": false,
+    "memberOrder": 0
+  },
+  "links": [
+    {
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnActionReturnsVoid"
+    },
+    {
+      "rel": "up",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionService\"",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService"
+    },
+    {
+      "arguments": {},
+      "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsVoid\"",
+      "method": "POST",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnActionReturnsVoid/invoke"
+    },
+    {
+      "rel": "describedby",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionService/actions/AnActionReturnsVoid"
+    }
+  ]
+}

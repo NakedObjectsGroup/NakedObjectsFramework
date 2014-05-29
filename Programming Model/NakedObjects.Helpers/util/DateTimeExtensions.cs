@@ -1,0 +1,232 @@
+// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
+// All Rights Reserved. This code released under the terms of the 
+// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
+using System;
+using System.Globalization;
+
+namespace NakedObjects {
+    /// <summary>
+    ///     Helper class with DateTime extension methods for common date operations.
+    /// </summary>
+    /// <seealso cref="Calendar" />
+    public static class DateTimeExtensions {
+        #region StartOfPeriod
+
+        /// <summary>
+        ///     First day of the week of the passed in date
+        /// </summary>
+        /// <remarks>
+        ///     Uses <see cref="CultureInfo.CurrentCulture" /> to determine first day of week
+        /// </remarks>
+        public static DateTime StartOfWeek(this DateTime referenceDate) {
+            DayOfWeek currentDOW = CultureInfo.CurrentCulture.Calendar.GetDayOfWeek(referenceDate.Date);
+            return referenceDate.Date.Subtract(new TimeSpan((int) currentDOW, 0, 0, 0));
+        }
+
+        /// <summary>
+        ///     First day of the month of the passed in date
+        /// </summary>
+        public static DateTime StartOfMonth(this DateTime referenceDate) {
+            return new DateTime(referenceDate.Year, referenceDate.Month, 1);
+        }
+
+        /// <summary>
+        ///     First day of the year of the passed in date
+        /// </summary>
+        public static DateTime StartOfYear(this DateTime referenceDate) {
+            return new DateTime(referenceDate.Year, 1, 1);
+        }
+
+        #endregion
+
+        #region EndOfPeriod
+
+        /// <summary>
+        ///     Last day of the week of the passed in date
+        /// </summary>
+        /// <remarks>
+        ///     Uses <see cref="CultureInfo.CurrentCulture" /> to determine <i>first</i> day of week
+        ///     and then assumes 7 day week
+        /// </remarks>
+        public static DateTime EndOfWeek(this DateTime referenceDate) {
+            return StartOfWeek(referenceDate).AddDays(6);
+        }
+
+        /// <summary>
+        ///     Last day of the month of the passed in date
+        /// </summary>
+        public static DateTime EndOfMonth(this DateTime referenceDate) {
+            return StartOfMonth(referenceDate.Date.AddMonths(1)).AddDays(-1);
+        }
+
+        /// <summary>
+        ///     Last day of the year of the passed in date
+        /// </summary>
+        public static DateTime EndOfYear(this DateTime referenceDate) {
+            return StartOfYear(referenceDate.Date.AddYears(1)).AddDays(-1);
+        }
+
+        #endregion
+
+        #region CompareToToday
+
+        /// <summary>
+        ///     Check if date is after today ignoring time
+        /// </summary>
+        public static bool IsAfterToday(this DateTime referenceDate) {
+            return referenceDate.Date > DateTime.Now.Date;
+        }
+
+        /// <summary>
+        ///     Check if date is before today ignoring time
+        /// </summary>
+        public static bool IsBeforeToday(this DateTime referenceDate) {
+            return referenceDate.Date < DateTime.Now.Date;
+        }
+
+        /// <summary>
+        ///     Check if date is today ignoring time
+        /// </summary>
+        public static bool IsToday(this DateTime referenceDate) {
+            return referenceDate.Date == DateTime.Now.Date;
+        }
+
+        /// <summary>
+        ///     Check if date is after today ignoring time
+        /// </summary>
+        public static bool IsAfterToday(this DateTime? referenceDate) {
+            return referenceDate.HasValue && referenceDate.Value.IsAfterToday();
+        }
+
+        /// <summary>
+        ///     Check if date is before today ignoring time
+        /// </summary>
+        public static bool IsBeforeToday(this DateTime? referenceDate) {
+            return referenceDate.HasValue && referenceDate.Value.IsBeforeToday();
+        }
+
+        /// <summary>
+        ///     Check if date is today ignoring time
+        /// </summary>
+        public static bool IsToday(this DateTime? referenceDate) {
+            return referenceDate.HasValue && referenceDate.Value.IsToday();
+        }
+
+        #endregion
+
+        #region IsSameDayAs
+
+        /// <summary>
+        ///     Check if two dates are the same ignoring time
+        /// </summary>
+        public static bool IsSameDayAs(this DateTime referenceDate, DateTime? otherDate) {
+            return otherDate.HasValue && referenceDate.Date == otherDate.Value.Date;
+        }
+
+        /// <summary>
+        ///     Check if two dates are the same ignoring time
+        /// </summary>
+        public static bool IsSameDayAs(this DateTime? referenceDate, DateTime? otherDate) {
+            return referenceDate.HasValue && referenceDate.Value.IsSameDayAs(otherDate);
+        }
+
+        #endregion
+
+        #region IsSameWeekAs
+
+        /// <summary>
+        ///     Check if two dates are in the same week ignoring time
+        /// </summary>
+        /// <remarks>
+        ///     Uses <see cref="CultureInfo.CurrentCulture" /> to determine week
+        /// </remarks>
+        public static bool IsSameWeekAs(this DateTime referenceDate, DateTime? otherDate) {
+            return otherDate.HasValue && StartOfWeek(referenceDate) == StartOfWeek(otherDate.Value);
+        }
+
+        /// <summary>
+        ///     Check if two dates are in the same week ignoring time
+        /// </summary>
+        /// <remarks>
+        ///     Uses <see cref="CultureInfo.CurrentCulture" /> to determine week
+        /// </remarks>
+        public static bool IsSameWeekAs(this DateTime? referenceDate, DateTime? otherDate) {
+            return referenceDate.HasValue && referenceDate.Value.IsSameWeekAs(otherDate);
+        }
+
+        #endregion
+
+        #region IsSameMonthAs
+
+        /// <summary>
+        ///     Check if two dates are in the same month ignoring time
+        /// </summary>
+        public static bool IsSameMonthAs(this DateTime referenceDate, DateTime? otherDate) {
+            return otherDate.HasValue && StartOfMonth(referenceDate) == StartOfMonth(otherDate.Value);
+        }
+
+        /// <summary>
+        ///     Check if two dates are in the same month ignoring time
+        /// </summary>
+        public static bool IsSameMonthAs(this DateTime? referenceDate, DateTime? otherDate) {
+            return referenceDate.HasValue && referenceDate.Value.IsSameMonthAs(otherDate);
+        }
+
+        #endregion
+
+        #region IsSameYearAs
+
+        /// <summary>
+        ///     Check if two dates are in the same year ignoring time
+        /// </summary>
+        public static bool IsSameYearAs(this DateTime referenceDate, DateTime? otherDate) {
+            return otherDate.HasValue && referenceDate.Date.Year == otherDate.Value.Date.Year;
+        }
+
+        /// <summary>
+        ///     Check if two dates are in the same year ignoring time
+        /// </summary>
+        public static bool IsSameYearAs(this DateTime? referenceDate, DateTime? otherDate) {
+            return referenceDate.HasValue && referenceDate.Value.IsSameYearAs(otherDate);
+        }
+
+        #endregion
+
+        #region IsAtLeastADayBefore
+
+        /// <summary>
+        ///     Check if otherDate is before referenceDate ignoring time
+        /// </summary>
+        public static bool IsAtLeastADayBefore(this DateTime referenceDate, DateTime? otherDate) {
+            return otherDate.HasValue && otherDate.Value.Date < referenceDate.Date;
+        }
+
+        /// <summary>
+        ///     Check if otherDate is before referenceDate ignoring time
+        /// </summary>
+        public static bool IsAtLeastADayBefore(this DateTime? referenceDate, DateTime? otherDate) {
+            return referenceDate.HasValue && referenceDate.Value.IsAtLeastADayBefore(otherDate);
+        }
+
+        #endregion
+
+        #region IsAtLeastADayAfter
+
+        /// <summary>
+        ///     Check if otherDate is after referenceDate ignoring time
+        /// </summary>
+        public static bool IsAtLeastADayAfter(this DateTime referenceDate, DateTime? otherDate) {
+            return otherDate.HasValue && otherDate.Value.Date > referenceDate.Date;
+        }
+
+        /// <summary>
+        ///     Check if otherDate is after referenceDate ignoring time
+        /// </summary>
+        public static bool IsAtLeastADayAfter(this DateTime? referenceDate, DateTime? otherDate) {
+            return referenceDate.HasValue && referenceDate.Value.IsAtLeastADayAfter(otherDate);
+        }
+
+        #endregion
+    }
+}

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NakedObjects.ProgrammingModel</id>
+    <version>6.0.0</version>
+    <authors>Naked Objects Group Ltd</authors>
+    <owners>Naked Objects Group Ltd</owners>
+    <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
+    <projectUrl>http://nakedobjects.codeplex.com/</projectUrl>
+    <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Naked Objects Programming Model. Add to a Model project (a C# or VB class library) for useful Attributes and Helper classes.</description>
+	<tags>naked objects nakedobjects</tags>
+</metadata>
+</package>

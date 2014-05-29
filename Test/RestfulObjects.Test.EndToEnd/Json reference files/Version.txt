@@ -1,0 +1,27 @@
+{
+  "specVersion": "1.1",
+  "implVersion": "1.5.0",
+  "links": [
+    {
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/version\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/version"
+    },
+    {
+      "rel": "up",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/homepage\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest"
+    }
+  ],
+  "extensions": {},
+  "optionalCapabilities": {
+    "protoPersistentObjects": "yes",
+    "deleteObjects": "no",
+    "validateOnly": "yes",
+    "domainModel": "selectable",
+    "blobsClobs": "attachments",
+    "inlinedMemberRepresentations": "yes"
+  }
+}

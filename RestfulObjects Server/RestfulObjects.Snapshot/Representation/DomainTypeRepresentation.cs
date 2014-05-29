@@ -1,0 +1,110 @@
+// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
+// All Rights Reserved. This code released under the terms of the 
+// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Runtime.Serialization;
+using NakedObjects.Surface;
+using NakedObjects.Surface.Utility;
+using RestfulObjects.Snapshot.Constants;
+using RestfulObjects.Snapshot.Utility;
+
+namespace RestfulObjects.Snapshot.Representations {
+    [DataContract]
+    public class DomainTypeRepresentation : Representation {
+        protected DomainTypeRepresentation(HttpRequestMessage req, INakedObjectSpecificationSurface spec, RestControlFlags flags) : base(flags) {
+            var helper = new UriMtHelper(req, spec);
+            SelfRelType = new DomainTypeRelType(RelValues.Self, helper);
+            SetScalars(spec);
+            SetLinks(helper);
+            SetMembers(spec, req);
+            SetTypeActions(spec, req);
+            SetExtensions();
+            SetHeader();
+        }
+
+        [DataMember(Name = JsonPropertyNames.Name)]
+        public string Name { get; set; }
+
+        [DataMember(Name = JsonPropertyNames.DomainType)]
+        public string DomainType { get; set; }
+
+        [DataMember(Name = JsonPropertyNames.FriendlyName)]
+        public string FriendlyName { get; set; }
+
+        [DataMember(Name = JsonPropertyNames.PluralName)]
+        public string PluralName { get; set; }
+
+        [DataMember(Name = JsonPropertyNames.Description)]
+        public string Description { get; set; }
+
+        [DataMember(Name = JsonPropertyNames.IsService)]
+        public bool IsService { get; set; }
+
+        [DataMember(Name = JsonPropertyNames.Extensions)]
+        public MapRepresentation Extensions { get; set; }
+
+        [DataMember(Name = JsonPropertyNames.Links)]
+        public LinkRepresentation[] Links { get; set; }
+
+        [DataMember(Name = JsonPropertyNames.Members)]
+        public LinkRepresentation[] Members { get; set; }
+
+        [DataMember(Name = JsonPropertyNames.TypeActions)]
+        public LinkRepresentation[] TypeActions { get; set; }
+
+        private void SetHeader() {
+            caching = CacheType.NonExpiring;
+        }
+
+        private void SetLinks(UriMtHelper helper) {
+            Links = new List<LinkRepresentation> {
+                LinkRepresentation.Create(SelfRelType, Flags)
+                // temp disable icons 
+                //LinkRepresentation.Create(new IconRelType(helper), Flags) 
+            }.ToArray();
+        }
+
+        private void SetScalars(INakedObjectSpecificationSurface spec) {
+            Name = spec.FullName();
+            DomainType = spec.DomainTypeName();
+            FriendlyName = spec.SingularName();
+            PluralName = spec.PluralName();
+            Description = spec.Description();
+            IsService = spec.IsService();
+        }
+
+        private void SetTypeActions(INakedObjectSpecificationSurface spec, HttpRequestMessage req) {
+            TypeActions = new[] {
+                LinkRepresentation.Create(new TypeActionRelType(new UriMtHelper(req, spec), WellKnownIds.IsSubtypeOf), Flags,
+                                          new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSubtypeOf),
+                                          new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object))))))),
+                LinkRepresentation.Create(new TypeActionRelType(new UriMtHelper(req, spec), WellKnownIds.IsSupertypeOf), Flags,
+                                          new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSupertypeOf),
+                                          new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object)))))))
+            };
+        }
+
+        private void SetMembers(INakedObjectSpecificationSurface spec, HttpRequestMessage req) {
+            INakedObjectAssociationSurface[] properties = spec.Properties.Where(p => !p.IsCollection()).ToArray();
+            INakedObjectAssociationSurface[] collections = spec.Properties.Where(p => p.IsCollection()).ToArray();
+            INakedObjectActionSurface[] actions = spec.GetActionLeafNodes();
+
+            IEnumerable<LinkRepresentation> propertyMembers = properties.Select(p => LinkRepresentation.Create(new TypeMemberRelType(RelValues.Property, new UriMtHelper(req, new PropertyTypeContextSurface {Property = p, OwningSpecification = spec})), Flags));
+            IEnumerable<LinkRepresentation> collectionMembers = collections.Select(c => LinkRepresentation.Create(new TypeMemberRelType(RelValues.Collection, new UriMtHelper(req, new PropertyTypeContextSurface {Property = c, OwningSpecification = spec})), Flags));
+            IEnumerable<LinkRepresentation> actionMembers = actions.Select(a => LinkRepresentation.Create(new TypeMemberRelType(RelValues.Action, new UriMtHelper(req, new ActionTypeContextSurface {ActionContext = new ActionContextSurface {Action = a}, OwningSpecification = spec})), Flags));
+
+            Members = propertyMembers.Union(collectionMembers).Union(actionMembers).ToArray();
+        }
+
+        private void SetExtensions() {
+            Extensions = new MapRepresentation();
+        }
+
+        public static DomainTypeRepresentation Create(HttpRequestMessage req, INakedObjectSpecificationSurface spec, RestControlFlags flags) {
+            return new DomainTypeRepresentation(req, spec, flags);
+        }
+    }
+}

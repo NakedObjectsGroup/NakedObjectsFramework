@@ -1,0 +1,53 @@
+{
+  "value": {
+    "title": "1",
+    "rel": "urn:org.restfulobjects:rels/value;property=\"MostSimple\"",
+    "method": "GET",
+    "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
+    "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+  },
+  "hasChoices": false,
+  "id": "MostSimple",
+  "links": [
+    {
+      "rel": "up",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"VerySimple\"",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/1"
+    },
+    {
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/1/properties/MostSimple"
+    },
+    {
+      "rel": "describedby",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/VerySimple/properties/MostSimple"
+    },
+    {
+      "arguments": {
+        "value": null
+      },
+      "rel": "urn:org.restfulobjects:rels/modify;property=\"MostSimple\"",
+      "method": "PUT",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/1/properties/MostSimple"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/clear;property=\"MostSimple\"",
+      "method": "DELETE",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/1/properties/MostSimple"
+    }
+  ],
+  "extensions": {
+    "friendlyName": "Most Simple",
+    "description": "",
+    "optional": true,
+    "memberOrder": 0,
+    "returnType": "MostSimple"
+  }
+}

@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A3921997-B0F2-4DA2-8433-E82581ACFA07}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NakedObjects.SystemTest</RootNamespace>
+    <AssemblyName>NakedObjects.SystemTest</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="NakedObjects.Architecture, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Architecture.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Async">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Attributes">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Bootstrap">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Bootstrap.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Core">
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.FWResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.FWResources.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Helpers">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Persistor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Persistor.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Persistor.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.PMResources">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Reflector.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Reflector.DotNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Reflector.DotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Xat, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.Xat.6.0.0-beta2\lib\net451\NakedObjects.Xat.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractSystemTest.cs" />
+    <Compile Include="Attributes\TestValidateProgrammaticUpdatesAttribute.cs" />
+    <Compile Include="Attributes\TestDefaultValueAttribute.cs" />
+    <Compile Include="Attributes\TestExcludeFromFindMenuAttribute.cs" />
+    <Compile Include="Attributes\TestNotContributedActionAttribute.cs" />
+    <Compile Include="Attributes\TestRangeAttribute.cs" />
+    <Compile Include="Attributes\TestStringLengthAttribute.cs" />
+    <Compile Include="Attributes\TestDisplayNameAttribute.cs" />
+    <Compile Include="Attributes\TestDescriptionAttribute.cs" />
+    <Compile Include="Attributes\TestDescribedAsAttribute.cs" />
+    <Compile Include="Attributes\TestDisabledAttribute.cs" />
+    <Compile Include="Attributes\TestHiddenAttribute.cs" />
+    <Compile Include="Attributes\TestIconNameAttribute.cs" />
+    <Compile Include="Attributes\TestImmutableAttribute.cs" />
+    <Compile Include="Audit\TestAuditManager.cs" />
+    <Compile Include="Authorization\TestCustomAuthorizerInstallerUsersAndRoles.cs" />
+    <Compile Include="Authorization\TestAttributeAuthorizationUsersAndRoles.cs" />
+    <Compile Include="Authorization\TestCustomAuthorizerInstaller1.cs" />
+    <Compile Include="Authorization\TestCustomAuthorizerInstaller2.cs" />
+    <Compile Include="Authorization\TestCustomAuthorizerInstaller3.cs" />
+    <Compile Include="Authorization\TestCustomAuthorizationManager.cs" />
+    <Compile Include="Attributes\TestKeyAttribute.cs" />
+    <Compile Include="Methods\TestAutoCompleteMethod.cs" />
+    <Compile Include="Other\EnumTest.cs" />
+    <Compile Include="Other\TestParentChildPersistence.cs" />
+    <Compile Include="Attributes\TestMemberOrderAttribute.cs" />
+    <Compile Include="Attributes\TestTitleAttribute.cs" />
+    <Compile Include="Injection\TestInjection.cs" />
+    <Compile Include="Methods\TestDisableDefault.cs" />
+    <Compile Include="Methods\TestHideDefault.cs" />
+    <Compile Include="Methods\TestRemoveFrom.cs" />
+    <Compile Include="Methods\TestAddTo.cs" />
+    <Compile Include="Methods\TestSaving.cs" />
+    <Compile Include="Methods\TestSaved.cs" />
+    <Compile Include="Methods\TestToString.cs" />
+    <Compile Include="Methods\TestDeleted.cs" />
+    <Compile Include="Methods\TestDeleting.cs" />
+    <Compile Include="Methods\TestUpdating.cs" />
+    <Compile Include="Methods\TestPersisted.cs" />
+    <Compile Include="Methods\TestUpdated.cs" />
+    <Compile Include="Methods\TestPersisting.cs" />
+    <Compile Include="Methods\TestClearMethod.cs" />
+    <Compile Include="Methods\TestCreated.cs" />
+    <Compile Include="Methods\TestDefaultMethod.cs" />
+    <Compile Include="Methods\TestChoicesMethod.cs" />
+    <Compile Include="Attributes\TestMetadataTypeAttribute.cs" />
+    <Compile Include="Methods\TestDisableMethod.cs" />
+    <Compile Include="Methods\TestHideMethod.cs" />
+    <Compile Include="Methods\TestModifyMethod.cs" />
+    <Compile Include="Methods\TestTitleMethod.cs" />
+    <Compile Include="Methods\TestValidationMethod.cs" />
+    <Compile Include="Persistence\TransactionsInRelationToLifecycleMethods.cs" />
+    <Compile Include="Repositories\TestSimpleRepository.cs" />
+    <Compile Include="Attributes\TestMaskAttribute.cs" />
+    <Compile Include="Attributes\TestMaxLengthAttribute.cs" />
+    <Compile Include="Attributes\TestNamedAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Attributes\TestRegExAttribute.cs" />
+    <Compile Include="XATs\TestFailureScenarios.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Finder\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

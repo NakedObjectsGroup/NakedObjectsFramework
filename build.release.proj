@@ -1,0 +1,123 @@
+<Project ToolsVersion="4.0" DefaultTargets="CreateCodeZip"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	
+	<PropertyGroup>
+		<PMPath>Programming Model</PMPath>
+		<CorePath>Core</CorePath>
+		<MVCPath>MVC</MVCPath>
+    <BATPath>Batch</BATPath>
+		<SamplesPath>Samples</SamplesPath>
+		<TestPath>Test</TestPath>
+		<SurfacePath>Surface</SurfacePath>
+		<DemoPath>Demo</DemoPath>
+    <ROPath>RestfulObjects Server</ROPath>
+
+		<NOIDE>NakedObjects.Ide</NOIDE>
+		<NOPM>NakedObjects.ProgrammingModel</NOPM>
+		<NOCore>NakedObjects.Core</NOCore>
+		<NOMVC>NakedObjects.Mvc</NOMVC>
+    <NOBAT>NakedObjects.Batch</NOBAT>
+		<NOX>NakedObjects.Xat</NOX>
+		<NOS>NakedObjects.Sample</NOS>
+		<NOSEL>NakedObjects.Mvc.Selenium</NOSEL>
+		<NOSF>NakedObjects.Surface</NOSF>
+		<NOWIF>NakedObjects.Authorisation.Wif</NOWIF>
+		<NOXS>NakedObjects.Snapshot.Xml</NOXS>
+    <ROMVC>RestfulObjects.Mvc</ROMVC>
+    <ROSVR>RestfulObjects.Server</ROSVR>
+      
+		<BuiltPackagesPath>build\packages</BuiltPackagesPath>
+		<InstalledPackagesPath>packages</InstalledPackagesPath>
+    <ReleasePath>build\release</ReleasePath>
+		<PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
+    <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
+		<Nuget>..\.nuget\nuget.exe</Nuget>
+	</PropertyGroup>
+
+  <Import Project="$(CommunityTargets)"/>
+
+  <PropertyGroup Condition=" '$(Configuration)'=='' ">
+		<Configuration>Debug</Configuration>
+		<Platform>x86</Platform>
+	</PropertyGroup>
+
+  <Target Name="Config">
+    <CreateItem Include="$(Configuration)">
+      <Output TaskParameter="Include" ItemName="Configuration" />
+    </CreateItem>
+  </Target>
+  
+	<Target Name="Clean" DependsOnTargets="Config">
+
+		<RemoveDir Directories="$(SamplesPath)\$(NOS).Icons.package\lib"/>
+		<RemoveDir Directories="$(SamplesPath)\$(NOS).Icons.package\src"/>
+    <RemoveDir Directories="$(SamplesPath)\$(NOS).Icons.package\content"/>
+
+    <ItemGroup>
+			<OldPackages Include="$(SamplesPath)\$(NOS).Icons.package\*.nupkg"/>
+      <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOS).Icons.package\**\*.*"/>
+		</ItemGroup>
+
+		<Delete Files="@(OldPackages)"/>
+		<Delete Files="@(OldPackageFiles)"/>
+	</Target>
+
+  <Target Name="Init" DependsOnTargets="Config">
+    <MakeDir Directories="$(PackageSourcePath)"/>
+    <MakeDir Directories="$(BuiltPackagesPath)"/>
+  </Target>
+  
+  <ItemGroup>
+    <PackageCongfigFiles Include="$(PMPath)\**\packages.config" Exclude="$(PMPath)\NakedObjects.Helpers.Test\packages.config"/>
+  </ItemGroup>
+
+  <Target Name="SamplesPackage" DependsOnTargets="Init">
+    <ItemGroup>
+      <IconFiles Include="$(MVCPath)\$(NOMVC).App\Images\*.png" />
+    </ItemGroup>
+    
+    <Copy SourceFiles="@(IconFiles)" DestinationFolder="$(SamplesPath)\$(NOS).Icons.package\content\Images" />
+    <Exec WorkingDirectory="$(SamplesPath)\$(NOS).Icons.package" Command="..\$(Nuget) pack $(NOS).Icons.nuspec"/>
+    <ItemGroup>
+      <SamplesPackage Include="$(SamplesPath)\$(NOS).Icons.package\*.nupkg"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(SamplesPackage)" DestinationFolder="$(PackageSourcePath)" />
+    <Copy SourceFiles="@(SamplesPackage)" DestinationFolder="$(BuiltPackagesPath)" />
+  </Target>
+
+  <Target Name="CreateCodeZip"  DependsOnTargets="SamplesPackage">
+
+    <ItemGroup>
+      <Source Include="*$(PMPath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
+      <Source Include="*$(PMPath)\templates*\**\*.*" />
+      <Source Include="*$(CorePath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
+      <Source Include="*$(MVCPath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
+      <Source Include="*$(SamplesPath)\AdventureworksModel\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
+      <Source Include="*$(SamplesPath)\NakedObjects.Sample.Icons.package\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
+      <Source Include="*$(TestPath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
+      <Source Include="*$(SurfacePath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
+      <Source Include="*$(ROPath)\RestfulObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
+      <Source Include="*$(BATPath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
+
+      <Source Include="*.nuget\**\*.*" />
+      <Source Include="Core.sln;MVC.sln;ProgrammingModel.sln;Surface.sln;ROServer.sln;build.*.proj" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(Source)" DestinationFolder="$(ReleasePath)\src\%(RecursiveDir)" Condition=" '$(Targets)'!='Clean' "/>
+  </Target>
+
+  <Target Name="ReleasePackages" DependsOnTargets="CreateCodeZip">
+    <ItemGroup>
+      <Packages Include="$(BuiltPackagesPath)\*.nupkg" Exclude="$(BuiltPackagesPath)\*.symbols.nupkg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackagesToDelete Include="\\Saturn\Packages\NakedObjects.*.nupkg" />
+    </ItemGroup>
+
+    <Delete Files="@(PackagesToDelete)" />
+
+    <Copy SourceFiles="@(Packages)" DestinationFolder="\\Saturn\Packages" />
+
+  </Target>
+
+</Project>

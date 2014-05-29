@@ -1,0 +1,40 @@
+{
+  "links": [
+    {
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/list\"; charset=utf-8; x-ro-element-type=\"Object\"",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services"
+    },
+    {
+      "rel": "up",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/homepage\"; charset=utf-8",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest"
+    }
+  ],
+  "extensions": {},
+  "value": [
+    {
+      "title": "Rest Data Repository",
+      "rel": "urn:org.restfulobjects:rels/service;serviceId=\"RestDataRepository\"",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"RestDataRepository\"",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/RestDataRepository"
+    },
+    {
+      "title": "With Action Service",
+      "rel": "urn:org.restfulobjects:rels/service;serviceId=\"WithActionService\"",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionService\"",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService"
+    },
+    {
+      "title": "Contributor Service",
+      "rel": "urn:org.restfulobjects:rels/service;serviceId=\"ContributorService\"",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"ContributorService\"",
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/ContributorService"
+    }
+  ]
+}

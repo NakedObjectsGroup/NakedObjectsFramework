@@ -1,0 +1,17 @@
+{
+  "result": {
+    "value": 999,
+    "links": [
+      {
+        "rel": "urn:org.restfulobjects:rels/return-type",
+        "method": "GET",
+        "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/integer"
+      }
+    ],
+    "extensions": {}
+  },
+  "links": [],
+  "extensions": {},
+  "resultType": "scalar"
+}

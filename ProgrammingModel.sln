@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Helpers", "Programming Model\NakedObjects.Helpers\NakedObjects.Helpers.csproj", "{8B62CB10-ECD9-4814-9211-D252E5B5D48B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Attributes", "Programming Model\NakedObjects.Attributes\NakedObjects.Attributes.csproj", "{8879084C-BD4A-4AD0-9418-A2C1DFB617D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.PMResources", "Programming Model\NakedObjects.PMResources\NakedObjects.PMResources.csproj", "{69D471E4-1471-4DFA-B199-EB3EA5757A1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Types", "Programming Model\NakedObjects.Types\NakedObjects.Types.csproj", "{F67B7823-5A02-41E0-B0AF-08AC438AA882}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FAF45D98-C6D6-48FF-A4F2-05BBE3A555E4}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{39EBF706-CB34-4F21-B00A-A7851955E391}"
+	ProjectSection(SolutionItems) = preProject
+		Build.proj = Build.proj
+		.build\MSBuild.Community.Tasks.dll = .build\MSBuild.Community.Tasks.dll
+		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = development.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B62CB10-ECD9-4814-9211-D252E5B5D48B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B62CB10-ECD9-4814-9211-D252E5B5D48B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B62CB10-ECD9-4814-9211-D252E5B5D48B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8B62CB10-ECD9-4814-9211-D252E5B5D48B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B62CB10-ECD9-4814-9211-D252E5B5D48B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B62CB10-ECD9-4814-9211-D252E5B5D48B}.Release|x86.ActiveCfg = Release|Any CPU
+		{8879084C-BD4A-4AD0-9418-A2C1DFB617D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8879084C-BD4A-4AD0-9418-A2C1DFB617D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8879084C-BD4A-4AD0-9418-A2C1DFB617D1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8879084C-BD4A-4AD0-9418-A2C1DFB617D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8879084C-BD4A-4AD0-9418-A2C1DFB617D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8879084C-BD4A-4AD0-9418-A2C1DFB617D1}.Release|x86.ActiveCfg = Release|Any CPU
+		{69D471E4-1471-4DFA-B199-EB3EA5757A1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69D471E4-1471-4DFA-B199-EB3EA5757A1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69D471E4-1471-4DFA-B199-EB3EA5757A1B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{69D471E4-1471-4DFA-B199-EB3EA5757A1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69D471E4-1471-4DFA-B199-EB3EA5757A1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69D471E4-1471-4DFA-B199-EB3EA5757A1B}.Release|x86.ActiveCfg = Release|Any CPU
+		{F67B7823-5A02-41E0-B0AF-08AC438AA882}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F67B7823-5A02-41E0-B0AF-08AC438AA882}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F67B7823-5A02-41E0-B0AF-08AC438AA882}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F67B7823-5A02-41E0-B0AF-08AC438AA882}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F67B7823-5A02-41E0-B0AF-08AC438AA882}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F67B7823-5A02-41E0-B0AF-08AC438AA882}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

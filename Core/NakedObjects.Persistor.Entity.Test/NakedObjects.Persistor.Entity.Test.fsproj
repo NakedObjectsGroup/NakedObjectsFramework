@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{f0c4dd78-2cd8-4eb9-a3b1-158e8315d4ee}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>nof_persistor_entity_test</RootNamespace>
+    <AssemblyName>NakedObjects.Persistor.Entity.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <Name>NakedObjects.Persistor.Entity.Test</Name>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProgramFiles32 Condition="Exists('$(PROGRAMFILES) (x86)')">$(PROGRAMFILES) (x86)</ProgramFiles32>
+    <ProgramFiles32 Condition="$(ProgramFiles32) == ''">$(PROGRAMFILES)</ProgramFiles32>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets" Condition="Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')" />
+  <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft F#\v4.0\Microsoft.FSharp.Targets" Condition="(!Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')) And (Exists('$(MSBuildExtensionsPath32)\..\Microsoft F#\v4.0\Microsoft.FSharp.Targets'))" />
+  <Import Project="$(MSBuildExtensionsPath32)\FSharp\1.0\Microsoft.FSharp.Targets" Condition="(!Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')) And (!Exists('$(MSBuildExtensionsPath32)\..\Microsoft F#\v4.0\Microsoft.FSharp.Targets')) And (Exists('$(MSBuildExtensionsPath32)\FSharp\1.0\Microsoft.FSharp.Targets'))" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
+  <ItemGroup>
+    <Compile Include="TestTypes.fs" />
+    <Compile Include="TestCode.fs" />
+    <Compile Include="DomainTestCode.fs" />
+    <Compile Include="DomainTest.fs" />
+    <Compile Include="DomainNoProxiesTest.fs" />
+    <Compile Include="CodeOnlyTestCode.fs" />
+    <Compile Include="CodeOnlyTest.fs" />
+    <Compile Include="ModelTestCode.fs" />
+    <Compile Include="ModelTest.fs" />
+    <Compile Include="MultiDatabaseTestCode.fs" />
+    <Compile Include="AMultiDatabaseTest.fs" />
+    <Compile Include="SystemTestCode.fs" />
+    <Compile Include="DomainSystemTest.fs" />
+    <Compile Include="ModelSystemTest.fs" />
+    <Compile Include="CodeSystemTest.fs" />
+    <Compile Include="EntityTestSuite.fs" />
+    <Content Include="NakedObjects.Persistor.Entity.Test.dll.config" />
+    <None Include="packages.config" />
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharp.PowerPack">
+      <HintPath>..\..\packages\FSPowerPack.Core.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharp.PowerPack.Linq">
+      <HintPath>..\..\packages\FSPowerPack.Linq.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharp.PowerPack.Metadata">
+      <HintPath>..\..\packages\FSPowerPack.Metadata.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.Metadata.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharp.PowerPack.Parallel.Seq">
+      <HintPath>..\..\packages\FSPowerPack.Parallel.Seq.Community.3.0.0.0\Lib\Net40\FSharp.PowerPack.Parallel.Seq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="FSharp.Core" />
+    <Reference Include="NakedObjects.Attributes">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Helpers">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.PMResources">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Types">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.ServiceModel" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj">
+      <Name>NakedObjects.Architecture</Name>
+      <Project>{bf6d9655-b873-4980-ace7-a122ea45f045}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Bootstrap\NakedObjects.Bootstrap.csproj">
+      <Name>NakedObjects.Bootstrap</Name>
+      <Project>{027c99e2-2ad7-4700-a871-de543c9d83c8}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj">
+      <Name>NakedObjects.Core</Name>
+      <Project>{3f1e438c-020c-4751-a65a-63c2990d8278}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.CodeOnly\NakedObjects.Persistor.Entity.Test.CodeOnly.csproj">
+      <Name>NakedObjects.Persistor.Entity.Test.CodeOnly</Name>
+      <Project>{55cc4d02-0ee3-481e-8938-6743c2e29fcd}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.Domain\NakedObjects.Persistor.Entity.Test.Domain.csproj">
+      <Name>NakedObjects.Persistor.Entity.Test.Domain</Name>
+      <Project>{0205fc6a-b2c4-43b9-beaf-7760e58d4320}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.ModelFirst\NakedObjects.Persistor.Entity.Test.ModelFirst.csproj">
+      <Name>NakedObjects.Persistor.Entity.Test.ModelFirst</Name>
+      <Project>{4e38bdd7-d725-4b31-8809-b03e2f121004}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj">
+      <Name>NakedObjects.Persistor.Entity</Name>
+      <Project>{3e188cc2-9f88-47f1-a197-22518958ae25}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Persistor.Test.Data\NakedObjects.Persistor.Test.Data.csproj">
+      <Name>NakedObjects.Persistor.Test.Data</Name>
+      <Project>{25f3de0c-94da-4b32-95e5-ba4bb90dd79b}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Persistor.Test\NakedObjects.Persistor.Test.csproj">
+      <Name>NakedObjects.Persistor.Test</Name>
+      <Project>{55b3b255-ef04-411d-9b07-c1e4f6fb5441}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Persistor\NakedObjects.Persistor.csproj">
+      <Name>NakedObjects.Persistor</Name>
+      <Project>{26de3ad7-424b-4246-89c3-db675be02628}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.Core.csproj">
+      <Name>NakedObjects.Reflector.Core</Name>
+      <Project>{91153c56-313c-426e-8b0d-43fa39bd567a}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Reflector.DotNet\NakedObjects.Reflector.DotNet.csproj">
+      <Name>NakedObjects.Reflector.DotNet</Name>
+      <Project>{47d00690-5b24-42d3-a9a7-c87469b6a088}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Xat\NakedObjects.Xat.csproj">
+      <Name>NakedObjects.Xat</Name>
+      <Project>{c818dfd4-6020-419a-8274-f59803956180}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	     Other similar extension points exist, see Microsoft.Common.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+</Project>

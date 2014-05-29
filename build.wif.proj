@@ -1,0 +1,143 @@
+<Project ToolsVersion="4.0" DefaultTargets="WifPackageTest"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <CorePath>Core</CorePath>
+    <NOWIF>NakedObjects.Authorisation.Wif</NOWIF>
+    <BuiltPackagesPath>build\packages</BuiltPackagesPath>
+    <InstalledPackagesPath>packages</InstalledPackagesPath>
+    <TestResultsPath>test-results</TestResultsPath>
+    <PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
+    <Nuget>..\.nuget\nuget.exe</Nuget>
+    <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
+    <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
+    <NUnitVer>2.6.3</NUnitVer>
+  </PropertyGroup>
+
+  <Import Project="$(CommunityTargets)"/>
+  <UsingTask TaskName="NUnit" AssemblyFile="$(CommunityTasks)" />
+
+  <Choose>
+    <When Condition="Exists('C:\Program Files (x86)')">
+      <PropertyGroup>
+        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>     
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <PropertyGroup Condition="'$(Configuration)'==''">
+    <Configuration>Debug</Configuration>
+    <Platform>x86</Platform>
+  </PropertyGroup>
+
+  <Target Name="Config">
+    <CreateItem Include="$(Configuration)">
+      <Output TaskParameter="Include" ItemName="Configuration" />
+    </CreateItem>
+  </Target>
+
+  <ItemGroup>
+    <WifFiles Include="$(CorePath)\$(NOWIF)\*.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <WifTFiles Include="$(CorePath)\$(NOWIF).Test\*.fsproj"/>
+  </ItemGroup>
+
+  <Target Name="Clean" DependsOnTargets="Config">
+
+    <MSBuild Projects="@(WifFiles)" Targets="Clean"/>
+    <MSBuild Projects="@(WifTFiles)" Targets="Clean"/>
+
+    <RemoveDir Directories="$(CorePath)\$(NOWIF).package\lib"/>
+    <RemoveDir Directories="$(CorePath)\$(NOWIF).package\content"/>
+    <RemoveDir Directories="$(CorePath)\$(NOWIF).package\src"/>
+
+    <ItemGroup>
+      <OldPackages Include="$(CorePath)\$(NOWIF).package\*.nupkg"/>
+      <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOWIF).package\**\*.*"/>
+      <OldCode Include="$(CorePath)\$(NOWIF)\bin\**\*.dll"/>
+      <OldCode Include="$(CorePath)\$(NOWIF)\obj\**\*.*"/>
+      <OldCode Include="$(CorePath)\$(NOWIF).Test\bin\**\*.dll"/>
+      <OldCode Include="$(CorePath)\$(NOWIF).Test\obj\**\*.*"/>
+      <OldTests Include="$(TestResultsPath)\$(NOWIF).Test.xml"/>
+    </ItemGroup>
+
+    <Delete Files="@(OldPackages)"/>
+    <Delete Files="@(OldPackageFiles)"/>
+    <Delete Files="@(OldCode)" ContinueOnError="true"/>
+    <Delete Files="@(OldTests)" ContinueOnError="true"/>
+  </Target>
+
+  <Target Name="Init" DependsOnTargets="Config" >
+    <MakeDir Directories="$(TestResultsPath)"/>
+    <MakeDir Directories="$(PackageSourcePath)"/>
+    <MakeDir Directories="$(BuiltPackagesPath)"/>
+    <MakeDir Directories="$(ReleasePath)"/>
+  </Target>
+
+  <ItemGroup>
+    <PackageCongfigFiles Include="$(CorePath)\$(NOWIF)\packages.config"/>
+    <PackageCongfigFiles Include="$(CorePath)\$(NOWIF).Test\packages.config"/>
+  </ItemGroup>
+
+  <Target Name="RestorePackage"  Returns="%(PackageCongfigFiles.Identity)" DependsOnTargets="Init">
+    <Exec Command='".nuget/nuget.exe" restore "@(PackageCongfigFiles)" -PackagesDirectory packages'  IgnoreExitCode="True"  />
+  </Target>
+
+  <Target Name="RestoreSolutionPackages" DependsOnTargets="Init">
+    <PropertyGroup>
+      <NuGetToolsPath>..\.nuget</NuGetToolsPath>
+      <PackagesConfig>$(NuGetToolsPath)\packages.config</PackagesConfig>
+      <PackagesDir>$(SolutionDir)packages</PackagesDir>
+      <SolutionRestoreCommand>"$(NugetToolsPath)\nuget.exe" install "$(PackagesConfig)" -o "$(InstalledPackagesPath)"</SolutionRestoreCommand>
+    </PropertyGroup>
+    <Exec Command="$(SolutionRestoreCommand)" Condition="Exists('$(PackagesConfig)')"/>
+    <Exec WorkingDirectory="$(CorePath)" Command="$(Nuget) install Nunit.Runners  -o ..\$(InstalledPackagesPath)"/>
+  </Target>
+
+  <Target Name="Wif" DependsOnTargets="RestoreSolutionPackages;RestorePackage">
+
+    <MSBuild Projects="@(WifFiles)"  Properties="Configuration=%(Configuration.Identity)">
+      <Output TaskParameter="TargetOutputs" ItemName="WifArtifacts"/>
+    </MSBuild>
+    <Copy SourceFiles="@(WifArtifacts)" DestinationFolder="$(CorePath)\$(NOWIF).package\lib\net451" />
+
+    <ItemGroup>
+      <WifPdb Include="$(CorePath)\$(NOWIF)\bin\%(Configuration.Identity)\$(NOWIF).pdb"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(WifPdb)" DestinationFolder="$(CorePath)\$(NOWIF).package\lib\net451" />
+
+    <ItemGroup>
+      <WifSrc Include="$(CorePath)\$(NOWIF)\**\*.cs"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(WifSrc)" DestinationFolder="$(CorePath)\$(NOWIF).package\src\%(RecursiveDir)" />
+  </Target>
+
+  <Target Name="WifTest" DependsOnTargets="Wif">
+    <MSBuild Projects="@(WifTFiles)" Properties="Configuration=%(Configuration.Identity)"/>
+    <NUnit Assemblies="$(CorePath)\$(NOWIF).Test\bin\%(Configuration.Identity)\$(NOWIF).Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\$(NOWIF).Test.xml" />
+  </Target>
+
+  <Target Name="WifPackage" >
+    <Exec WorkingDirectory="$(CorePath)\$(NOWIF).package" Command="..\$(Nuget) pack $(NOWIF).nuspec -Symbols" />
+    <ItemGroup>
+      <WifPackage Include="$(CorePath)\$(NOWIF).package\*.nupkg"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(WifPackage)" DestinationFolder="$(PackageSourcePath)" />
+    <Copy SourceFiles="@(WifPackage)" DestinationFolder="$(BuiltPackagesPath)" />
+  </Target>
+
+  <Target Name="WifPackageTest" DependsOnTargets="WifTest">
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="WifPackage"/>
+  </Target>
+
+  <Target Name="WifPackageNoTest" DependsOnTargets="Wif">
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="WifPackage"/>
+  </Target>
+ 
+</Project>
