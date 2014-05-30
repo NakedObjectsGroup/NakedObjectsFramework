@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Keywords />
+      <Title>Result Interface Association</Title>
+      <Author>Naked Objects Group</Author>
+      <Description>Code to support an association defined by a 'Result' Interface (one that only has one implementation)</Description>
+      <HelpUrl>www.nakedobjects.net</HelpUrl>
+      <Shortcut>resultia</Shortcut>
+    </Header>
+    <Snippet>
+      <References />
+      <Imports />
+      <Declarations>
+        <Literal Editable="true">
+          <ID>Name</ID>
+          <ToolTip>The name for the property holding the associated object</ToolTip>
+          <Default>PropertyName</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>Repository</ID>
+          <ToolTip>Repository that can find objects of the required type</ToolTip>
+          <Default>Repository</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>FindById</ID>
+          <ToolTip>Repository method for findng object by its ID</ToolTip>
+          <Default>FindById</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Literal Editable="true">
+          <ID>Id</ID>
+          <ToolTip>Property or function on the interface type that returns the integer Id value</ToolTip>
+          <Default>Id</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Object Editable="true">
+          <ID>InterfaceType</ID>
+          <ToolTip>The Interface defining the type of object to be associated</ToolTip>
+          <Default>IType</Default>
+          <Function>
+          </Function>
+          <Type>
+          </Type>
+        </Object>
+      </Declarations>
+      <Code Language="csharp" Kind="method decl" Delimiter="$"><![CDATA[
+#region $Name$ Property of type $InterfaceType$ ('Result' interface)
+
+	[Hidden()]
+	public virtual int $Name$Id {get; set;}
+
+
+	private $InterfaceType$ _$Name$;
+
+	[NotPersisted()]
+	public $InterfaceType$ $Name$
+	{
+		get
+		{
+			if (_$Name$ == null && $Name$Id > 0)
+			{
+				_$Name$ = $Repository$.$FindById$($Name$Id);
+			}
+			return _$Name$;
+		}
+		set
+		{
+			_$Name$ = value;
+			if (value == null)
+			{
+				$Name$Id = 0;
+			}
+			else
+			{
+				$Name$Id = value.Id;
+			}
+		}
+
+	}
+#endregion
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

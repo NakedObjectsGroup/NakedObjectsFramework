@@ -1,0 +1,42 @@
+﻿<div class="object-properties" ng-class="object.color">
+    <div class="properties">
+        <div class="property" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name">{{property.title}}:</div>
+            <div ng-switch-when="ref" class="property-reference clickable-area" ng-class="property.color">
+                <a href="{{property.href}}">
+                    <span></span>
+                    {{property.value}}
+                </a>
+            </div>
+
+            <div ng-switch-when="scalar" ng-switch="property.returnType">
+
+                <div ng-switch-when="string" ng-switch="property.format">
+                    <div ng-switch-when="date-time" class='property-value'>{{property.value}}</div>
+                    <div ng-switch-when="blob" class='property-reference clickable-area' ng-model="$parent.property.attachment" nog-attachment></div>
+                    <div ng-switch-default class='property-value'>{{property.value}}</div>
+                </div>
+
+                <div ng-switch-when="boolean">
+                    <input type="checkbox" onclick="return false" ng-checked="property.value"/>
+                </div>
+
+                <div ng-switch-default>
+                    <div class='property-value'>{{property.value}}</div>
+                </div>
+            </div>
+            
+
+        </div>
+
+        <div class="property" ng-repeat="collection in object.collections">
+
+            <div class='property-name'>{{collection.title}}:</div>
+            <div class='property-collection clickable-area'>
+                <a href='{{collection.href}}'><span></span><i class='icon-plus' />{{collection.size}}-{{collection.pluralName}}</a>
+            </div>
+        </div>
+
+    </div>
+</div>

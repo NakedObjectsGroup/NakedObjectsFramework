@@ -1,0 +1,93 @@
+﻿<div class="object-properties" ng-class="object.color">
+    <a href='{{object.cancelEdit}}' class="cancel icon-cancel"></a>
+    <input class="save" type="submit" value="Save" ng-click="object.doSave()">
+    <div class="properties edit">
+        <div class="property" id="{{property.argId}}" ng-repeat="property in object.properties" ng-switch="property.type">
+
+            <div class="property-name">{{property.title}}:</div>
+
+            <div ng-switch-when="ref" ng-switch="property.isEditable">
+
+                <div ng-switch-when="false" class="property-value" ng-class="property.color">
+                    <span></span>{{property.value}}
+                </div>
+
+                <div ng-switch-when="true" class='property-value input-control text' ng-switch="property.hasChoices">
+                    <input type='hidden' value='{{property.reference}}' ng-model="property.reference" />
+
+                    <div ng-switch-when="false" ng-switch="property.hasConditionalChoices">
+
+                        <input ng-switch-when="false" type='text' ng-model="$parent.property.choice" select="property.prompt(request)" nog-autocomplete />
+
+                        <select ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" nog-conditionalchoices />
+
+                    </div>
+
+                    <select ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices" />
+
+                    <div class='error'>{{property.message}}</div>
+                </div>
+            </div>
+            <div ng-switch-when="scalar" ng-switch="property.isEditable">
+
+                <div ng-switch-when="false" ng-switch="property.returnType">
+
+                    <div ng-switch-when="string" ng-switch="property.format">
+                        <div ng-switch-when="date-time" class='property-value'>{{property.value }}</div>
+                        <div ng-switch-when="blob" class='property-reference clickable-area' ng-model="$parent.property.attachment"  nog-attachment></div>
+                        <div ng-switch-default class='property-value'>{{property.value}}</div>
+                    </div>
+
+                    <div ng-switch-when="boolean">
+                        <input type="checkbox" onclick=" return false " ng-checked="property.value" />
+                    </div>
+
+                    <div ng-switch-default>
+                        <div class='property-value'>{{property.value}}</div>
+                    </div>
+                </div>
+
+                <div ng-switch-when="true" class='property-value input-control text' ng-switch="property.hasChoices">
+
+                    <div ng-switch-when="false" ng-switch="property.hasConditionalChoices">
+
+                        <div ng-switch-when="false" ng-switch="property.returnType">
+
+                            <div ng-switch-when="string" ng-switch="property.format">
+                                <div ng-switch-when="date-time">
+                                    <input type='text' ng-model="$parent.property.value" nog-datepicker />
+                                </div>
+                                <div ng-switch-when="blob" class='property-reference clickable-area' ng-model="$parent.property.attachment" nog-attachment></div>
+                                <input ng-switch-default type='text' placeholder='{{property.value}}' ng-model="property.value" />
+                            </div>
+
+                            <div ng-switch-when="boolean">
+                                <input type="checkbox" ng-model="property.value" />
+                            </div>
+
+                            <div ng-switch-default>
+                                <input type='text' placeholder='{{property.value}}' ng-model="property.value" />
+                            </div>
+
+                        </div>
+
+                        <select ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" nog-conditionalchoices />
+
+                    </div>
+                    <select ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices" />
+
+                    <div class='error'>{{property.message}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="property" ng-repeat="collection in object.collections">
+
+            <div class='property-name'>{{collection.title}}:</div>
+            <div class='property-collection'>
+                <span></span>{{collection.size}}-{{collection.pluralName}}
+            </div>
+        </div>
+
+    </div>
+</div>

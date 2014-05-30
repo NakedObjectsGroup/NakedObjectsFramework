@@ -1,0 +1,10 @@
+﻿<div  ng-class="object.color">
+    <div class="actions" ng-repeat="action in object.actions">
+        <div class="action-button clickable-area">
+            <a class="action" href="{{action.href}}">
+                <span></span>
+                {{action.title}}
+            </a>
+        </div>
+    </div>
+</div>

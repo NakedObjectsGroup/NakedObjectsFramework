@@ -1,0 +1,8 @@
+﻿<a class="home icon-home" title="Home" href="{{appBar.goHome}}" />
+<a class="back icon-arrow-left-3" title="Back"  ng-click="appBar.goBack()"   />
+<a class="forward icon-arrow-right-3" title="Forward"  ng-click="appBar.goForward()" />
+<a class="refresh icon-loop disabled" title="Refresh" />
+<a class="edit icon-pencil" title="Edit"  href="{{appBar.doEdit}}"  ng-class="{disabled : appBar.hideEdit}" />
+<a class="help icon-help disabled" title="Help" />
+<span>{{appBar.loading}}</span>
+<a style="display: none" /> 

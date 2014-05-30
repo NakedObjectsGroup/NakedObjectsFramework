@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Keywords />
+      <Title>Polymorphic Property</Title>
+      <Author>Naked Objects Group</Author>
+      <Description>Code to support a single association defined by a 'role' Interface (one with mutiple implementations)</Description>
+      <HelpUrl>www.nakedobjects.net</HelpUrl>
+      <Shortcut>polyprop</Shortcut>
+    </Header>
+    <Snippet>
+      <References />
+      <Imports />
+      <Declarations>
+        <Literal Editable="true">
+          <ID>Name</ID>
+          <ToolTip>The name for the property holding the associated object</ToolTip>
+          <Default>PropertyName</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Object Editable="true">
+          <ID>Role</ID>
+          <ToolTip>The (Role) Interface defining the type of object to be associated</ToolTip>
+          <Default>IRole</Default>
+          <Function>
+          </Function>
+          <Type>
+          </Type>
+        </Object>
+        <Object Editable="true">
+          <ID>ThisType</ID>
+          <ToolTip>The type of the object that holds the polymorphic association</ToolTip>
+          <Default>ThisType</Default>
+          <Function>
+          </Function>
+          <Type>
+          </Type>
+        </Object>
+      </Declarations>
+      <Code Language="csharp" Kind="method decl" Delimiter="$"><![CDATA[#region $Name$ Property of type $Role$ ('role' interface)
+  
+        //TODO:  Create a type '$ThisType$$Name$Link', which can either inherit from PolymorphicLink<$Role$, $ThisType$>
+      //or otherwise implement IPolymorphicLink<$Role$, $ThisType$>.
+
+        [Hidden]
+        public virtual $ThisType$$Name$Link $Name$Link { get; set; }
+
+        private $Role$ _$Name$;
+
+        [NotPersisted]
+        public $Role$ $Name$
+        {
+            get
+            {
+                if (_$Name$ == null) {
+                    _$Name$ = PolymorphicNavigator.RoleObjectFromLink(ref _$Name$, $Name$Link, this);
+                }
+                return _$Name$;
+            }
+            set
+            {
+                _$Name$ = value;
+            }
+        }
+
+        //Called automatically by framework if the user modifies the value.
+        public void Modify$Name$($Role$ value) {
+            _$Name$ = value;
+            if (Container.IsPersistent(this)) {
+                $Name$Link = PolymorphicNavigator.UpdateAddOrDeleteLink(_$Name$, $Name$Link, this);
+            }
+        }
+  
+        //TODO:  Move this method into LifeCycle Methods region, or add code into existing Persisting method
+        public void Persisting()
+        {
+            $Name$Link = PolymorphicNavigator.NewTransientLink<$ThisType$$Name$Link, $Role$, $ThisType$>(_$Name$, this);
+        }
+        #endregion
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

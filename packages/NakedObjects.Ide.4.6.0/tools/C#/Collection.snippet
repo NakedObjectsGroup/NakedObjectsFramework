@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Keywords />
+      <Title>Collection</Title>
+      <Author>Naked Objects Group</Author>
+      <Description>Adds a virtual collection</Description>
+      <HelpUrl>www.nakedobjects.net</HelpUrl>
+      <Shortcut>coll</Shortcut>
+    </Header>
+    <Snippet>
+      <References />
+      <Imports />
+      <Declarations>
+        <Literal Editable="true">
+          <ID>Name</ID>
+          <ToolTip>Enter the name for the collection</ToolTip>
+          <Default>Name</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Object Editable="true">
+          <ID>Type</ID>
+          <ToolTip>The type of object to be contained in the collection</ToolTip>
+          <Default>Type</Default>
+          <Function>
+          </Function>
+          <Type>
+          </Type>
+        </Object>
+      </Declarations>
+      <Code Language="csharp" Kind="method decl" Delimiter="$"><![CDATA[#region $Name$ (collection)
+        private ICollection<$Type$> _$Name$ = new List<$Type$>();
+
+        public virtual ICollection<$Type$> $Name$ {
+            get {
+                return _$Name$;
+            }
+            set {
+                _$Name$ = value;
+            }
+        }
+
+        public void AddTo$Name$($Type$ value) {
+            if (!(_$Name$.Contains(value))) {
+                _$Name$.Add(value);
+            }
+        }
+
+        public void RemoveFrom$Name$($Type$ value) {
+            if (_$Name$.Contains(value)) {
+                _$Name$.Remove(value);
+            }
+        }
+
+        public IList<$Type$> Choices0RemoveFrom$Name$() {
+            return _$Name$.ToList();
+        }
+        #endregion
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

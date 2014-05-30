@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Spiro.Models</id>
+    <version>0.9.0-beta</version>
+    <title>Spiro - Single Page Interface for Restful Objects</title>
+    <authors>Naked Objects Group Ltd</authors>
+    <owners>Naked Objects Group Ltd</owners>
+    <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
+    <projectUrl>http://restfulobjects.codeplex.com/</projectUrl>
+    <iconUrl>http://www.nakedobjects.net/images/RestfulObjectsLogo.jpg</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Includes both TypeScript source and compiled JavaScript</summary>
+    <description>A library for building Single Page Apps that connect with a Restful Objects server</description>
+    <tags>restfulobjects restful objects nakedobjects naked javascript angularjs</tags>
+    <dependencies>
+      <dependency id="jQuery" version="2.0.3" />
+      <dependency id="underscore.js" version="1.5.1" />
+      <dependency id="jquery.TypeScript.DefinitelyTyped" version="0.2.0" />
+      <dependency id="underscore.TypeScript.DefinitelyTyped" version="0.1.5" />
+    </dependencies>
+  </metadata>
+</package>
