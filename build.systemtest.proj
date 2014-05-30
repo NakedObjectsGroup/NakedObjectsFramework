@@ -1,6 +1,8 @@
 <Project ToolsVersion="4.0" DefaultTargets="WebTest"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
  
   <PropertyGroup>
+    <SpModel>Spiro.Models</SpModel>
+    <SpModern>Spiro.Modern</SpModern>
     <TestPath>Test</TestPath>
     <NOPM>NakedObjects.ProgrammingModel</NOPM>
     <BuiltPackagesPath>build\packages</BuiltPackagesPath>
@@ -14,6 +16,7 @@
     <IISTransientPath>\\Saturn\UnitTestTransient</IISTransientPath>
     <IISRestPath>\\Saturn\UnitTestRest</IISRestPath>
     <IISAjaxPath>\\Saturn\UnitTestAjax</IISAjaxPath>
+    <IISNgPath>\\Saturn\UnitTestSpiroNg</IISNgPath>
   </PropertyGroup>
 
   <Import Project="$(CommunityTargets)"/>
@@ -52,33 +55,22 @@
     <Files Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\NakedObjects.Mvc.Selenium.Test.Data.csproj"/>
     <Files Include="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj"/>
     <Files Include="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"/>
-    
+    <Files Include="$(TestPath)\Spiro.Angular.Selenium.Test\Spiro.Angular.Selenium.Test.csproj"/>
+    <Files Include="$(TestPath)\Spiro.Modern.Test\Spiro.Modern.Test.csproj"/>
   </ItemGroup>
   
   <Target Name="Clean" DependsOnTargets="Config">
     <MSBuild Projects="@(Files)" Targets="Clean"/>
     <ItemGroup>
-      <OldCode Include="$(TestPath)\NakedObjects.Helpers.Test\bin\**\*.dll"/>
-      <OldCode Include="$(TestPath)\NakedObjects.Helpers.Test\obj\**\*.*"/>
-      <OldCode Include="$(TestPath)\RestfulObjects.Test.EndToEnd\bin\**\*.dll"/>
-      <OldCode Include="$(TestPath)\RestfulObjects.Test.EndToEnd\obj\**\*.*"/>
-      <OldCode Include="$(TestPath)\NakedObjects.SystemTest\bin\**\*.dll"/>
-      <OldCode Include="$(TestPath)\NakedObjects.SystemTest\obj\**\*.*"/>  
-      <OldCode Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test\bin\**\*.dll"/>
-      <OldCode Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test\obj\**\*.*"/>
-      <OldCode Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Helpers\bin\**\*.dll"/>
-      <OldCode Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Helpers\obj\**\*.*"/>
-      <OldCode Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\bin\**\*.dll"/>
-      <OldCode Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\obj\**\*.*"/>
-      <OldCode Include="$(TestPath)\NakedObjects.Test.App\bin\**\*.dll"/>
-      <OldCode Include="$(TestPath)\NakedObjects.Test.Ap\obj\**\*.*"/>
-      <OldCode Include="$(TestPath)\RestfulObjects.Test.App\bin\**\*.dll"/>
-      <OldCode Include="$(TestPath)\RestfulObjects.Test.Ap\obj\**\*.*"/>
+      <OldCode Include="$(TestPath)\*\bin\**\*.dll"/>
+      <OldCode Include="$(TestPath)\*\obj\**\*.*"/> 
       <OldTests Include="$(TestResultsPath)\NakedObjects.Helpers.Test.trx"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.SystemTest.trx"/>
       <OldTests Include="$(TestResultsPath)\RestfulObjects.Test.EndToEnd.trx"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Mvc.Selenium.Test.trx"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Mvc.Selenium.ReTest.trx"/>
+      <OldTests Include="$(TestResultsPath)\Spiro.Modern.Test.xml"/>
+      <OldTests Include="$(TestResultsPath)\Spiro.Angular.Selenium.Test.xml"/>
       <OldDeployment Include="$(IISTransientPath)\**\*.*"/>
       <OldDeployment Include="$(IISRestPath)\**\*.*"/>
       <OldDeployment Include="$(IISAjaxPath)\**\*.*"/>
@@ -96,14 +88,7 @@
   </Target>
 
   <ItemGroup>
-    <PackageCongfigFiles Include="$(TestPath)\NakedObjects.Helpers.Test\packages.config"/>
-    <PackageCongfigFiles Include="$(TestPath)\NakedObjects.SystemTest\packages.config"/>
-    <PackageCongfigFiles Include="$(TestPath)\RestfulObjects.Test.EndToEnd\packages.config"/>
-    <PackageCongfigFiles Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test\packages.config"/>
-    <PackageCongfigFiles Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Helpers\packages.config"/>
-    <PackageCongfigFiles Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\packages.config"/>
-    <PackageCongfigFiles Include="$(TestPath)\NakedObjects.Test.App\packages.config"/>
-    <PackageCongfigFiles Include="$(TestPath)\RestfulObjects.Test.App\packages.config"/>
+    <PackageCongfigFiles Include="$(TestPath)\*\packages.config"/>
   </ItemGroup>
 
   <Target Name="RestorePackage"  Returns="%(PackageCongfigFiles.Identity)" DependsOnTargets="Init">
@@ -166,16 +151,33 @@
 
     <Copy SourceFiles="@(MvcAppAjax)" DestinationFolder="$(IISAjaxPath)\%(RecursiveDir)"/>
     <Copy SourceFiles="@(MvcAppLib)" DestinationFolder="$(IISAjaxPath)\bin" SkipUnchangedFiles="true" />
+    
+    <PropertyGroup>
+      <SpiroNgOutputDir>build\working\bin\%(Configuration.Identity)\UnitTestNg</SpiroNgOutputDir>
+    </PropertyGroup>
+
+    <MSBuild Projects="$(SpModern).Test\$(SpModern).Test.csproj"
+						 Targets="ResolveReferences;_CopyWebApplication"
+						 Properties="WebProjectOutputDir=..\$(SpiroNgOutputDir)\;OutDir=..\$(SpiroNgOutputDir)\;Configuration=%(Configuration.Identity)" />
+
+    <ItemGroup>
+      <SpiroNgApp Include="$(SpiroNgOutputDir)\**\*.*"/>
+    </ItemGroup>
+
+    <Copy SourceFiles="@(SpiroNgApp)" DestinationFolder="$(IISNgPath)\%(RecursiveDir)"/>
+
          
   </Target> 
   
   <Target Name="SystemTest" DependsOnTargets="BuildTests">
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.Helpers.Test\bin\%(Configuration.Identity)\NakedObjects.Helpers.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Helpers.Test.trx' />
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.SystemTest\bin\%(Configuration.Identity)\NakedObjects.SystemTest.dll" /resultsfile:$(TestResultsPath)\NakedObjects.SystemTest.trx' />
+    <Exec Command='karma start' />
   </Target>
 
   <Target Name="EndToEndTest" DependsOnTargets="SystemTest;Deploy">
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\RestfulObjects.Test.EndToEnd\bin\%(Configuration.Identity)\RestfulObjects.Test.EndToEnd.dll" /resultsfile:$(TestResultsPath)\RestfulObjects.Test.EndToEnd.trx' />
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"Spiro.Angular.Selenium.Test\bin\%(Configuration.Identity)\Spiro.Angular.Selenium.Test.dll" /resultsfile:$(TestResultsPath)\Spiro.Angular.Selenium.Test.trx' />
   </Target>
 
   <Target Name="WebTest" DependsOnTargets="EndToEndTest">
