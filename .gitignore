@@ -1,0 +1,9 @@
+*.user
+*.suo
+/packages
+/test-results
+/build
+/coverage
+/bin
+/bld
+UpgradeLog.htm

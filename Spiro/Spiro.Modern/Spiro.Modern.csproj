@@ -2,11 +2,11 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <ProjectGuid>{389A8683-9036-47AF-A9F0-F209C82B5943}</ProjectGuid>
+    <ProjectGuid>{CC50CB80-3FF4-4A90-8AA0-A38A05EAFB51}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <OutputPath>bin</OutputPath>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
@@ -15,19 +15,16 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Content\partials\actions.html" />
     <Content Include="Content\partials\appbar.html" />
-    <Content Include="Content\partials\nestedCollectionTable.html" />
     <Content Include="Content\partials\dialog.html" />
     <Content Include="Content\partials\editProperties.html" />
     <Content Include="Content\partials\error.html" />
     <Content Include="Content\partials\errorPage.html" />
     <Content Include="Content\partials\nestedCollection.html" />
+    <Content Include="Content\partials\nestedCollectionTable.html" />
     <Content Include="Content\partials\nestedObject.html" />
     <Content Include="Content\partials\object.html" />
     <Content Include="Content\partials\objectPage.html" />
@@ -110,147 +107,51 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
-    <TypeScriptCompile Include="Scripts\spiro.config.ts" />
-    <TypeScriptCompile Include="Scripts\spiro.angular.services.navigation.simple.ts" />
-    <TypeScriptCompile Include="Scripts\spiro.angular.services.navigation.browser.ts" />
-    <Content Include="Scripts\spiro.angular.services.navigation.simple.js">
-      <DependentUpon>spiro.angular.services.navigation.simple.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.services.navigation.browser.js">
-      <DependentUpon>spiro.angular.services.navigation.browser.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.config.js">
-      <DependentUpon>spiro.config.ts</DependentUpon>
-    </Content>
     <Content Include="Scripts\jasmine\jasmine-html.js" />
     <Content Include="Scripts\jasmine\jasmine.js" />
-    <Content Include="fonts\iconFont.eot" />
-    <Content Include="fonts\iconFont.ttf" />
-    <Content Include="fonts\iconFont.woff" />
-    <Content Include="Scripts\spiro.config.js.map">
-      <DependentUpon>spiro.config.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\angular.min.js.map" />
-    <Content Include="Scripts\angular-touch.min.js.map" />
-    <Content Include="Scripts\angular-route.min.js.map" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.js" />
     <Content Include="Scripts\jquery-ui-1.10.3.min.js" />
-    <Content Include="Scripts\spiro.angular.app.js.map">
-      <DependentUpon>spiro.angular.app.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Scripts\spiro.angular.config.ts" />
-    <Content Include="Scripts\spiro.angular.config.js">
-      <DependentUpon>spiro.angular.config.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.config.js.map">
-      <DependentUpon>spiro.angular.config.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.controllers.js.map">
-      <DependentUpon>spiro.angular.controllers.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.directives.js.map">
-      <DependentUpon>spiro.angular.directives.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.services.color.js.map">
-      <DependentUpon>spiro.angular.services.color.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.services.context.js.map">
-      <DependentUpon>spiro.angular.services.context.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.services.handlers.js.map">
-      <DependentUpon>spiro.angular.services.handlers.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.services.mask.js.map">
-      <DependentUpon>spiro.angular.services.mask.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.services.representationhandlers.js.map">
-      <DependentUpon>spiro.angular.services.representationhandlers.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.services.representationloader.js.map">
-      <DependentUpon>spiro.angular.services.representationloader.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.services.urlhelper.js.map">
-      <DependentUpon>spiro.angular.services.urlhelper.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.services.viewmodelfactory.js.map">
-      <DependentUpon>spiro.angular.services.viewmodelfactory.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.viewmodels.js.map">
-      <DependentUpon>spiro.angular.viewmodels.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.models.helpers.js.map">
-      <DependentUpon>spiro.models.helpers.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.models.js">
-      <DependentUpon>spiro.models.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.models.shims.js.map">
-      <DependentUpon>spiro.models.shims.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.models.js.map">
-      <DependentUpon>spiro.models.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\underscore.min.map" />
     <TypeScriptCompile Include="Scripts\spiro.angular.app.ts" />
-    <Content Include="Scripts\spiro.angular.app.js">
-      <DependentUpon>spiro.angular.app.ts</DependentUpon>
-    </Content>
+    <TypeScriptCompile Include="Scripts\spiro.angular.config.ts" />
     <TypeScriptCompile Include="Scripts\spiro.angular.controllers.ts" />
-    <Content Include="Scripts\spiro.angular.controllers.js">
-      <DependentUpon>spiro.angular.controllers.ts</DependentUpon>
-    </Content>
     <TypeScriptCompile Include="Scripts\spiro.angular.directives.ts" />
-    <Content Include="Scripts\spiro.angular.directives.js">
-      <DependentUpon>spiro.angular.directives.ts</DependentUpon>
-    </Content>
     <TypeScriptCompile Include="Scripts\spiro.angular.services.color.ts" />
-    <Content Include="Scripts\spiro.angular.services.color.js">
-      <DependentUpon>spiro.angular.services.color.ts</DependentUpon>
-    </Content>
     <TypeScriptCompile Include="Scripts\spiro.angular.services.context.ts" />
-    <Content Include="Scripts\spiro.angular.services.context.js">
-      <DependentUpon>spiro.angular.services.context.ts</DependentUpon>
-    </Content>
     <TypeScriptCompile Include="Scripts\spiro.angular.services.handlers.ts" />
-    <Content Include="Scripts\spiro.angular.services.handlers.js">
-      <DependentUpon>spiro.angular.services.handlers.ts</DependentUpon>
-    </Content>
     <TypeScriptCompile Include="Scripts\spiro.angular.services.mask.ts" />
-    <Content Include="Scripts\spiro.angular.services.mask.js">
-      <DependentUpon>spiro.angular.services.mask.ts</DependentUpon>
-    </Content>
+    <TypeScriptCompile Include="Scripts\spiro.angular.services.navigation.browser.ts" />
+    <TypeScriptCompile Include="Scripts\spiro.angular.services.navigation.simple.ts" />
     <TypeScriptCompile Include="Scripts\spiro.angular.services.representationhandlers.ts" />
-    <Content Include="Scripts\spiro.angular.services.representationhandlers.js">
-      <DependentUpon>spiro.angular.services.representationhandlers.ts</DependentUpon>
-    </Content>
     <TypeScriptCompile Include="Scripts\spiro.angular.services.representationloader.ts" />
-    <Content Include="Scripts\spiro.angular.services.representationloader.js">
-      <DependentUpon>spiro.angular.services.representationloader.ts</DependentUpon>
-    </Content>
     <TypeScriptCompile Include="Scripts\spiro.angular.services.urlhelper.ts" />
-    <Content Include="Scripts\spiro.angular.services.urlhelper.js">
-      <DependentUpon>spiro.angular.services.urlhelper.ts</DependentUpon>
-    </Content>
     <TypeScriptCompile Include="Scripts\spiro.angular.services.viewmodelfactory.ts" />
-    <Content Include="Scripts\spiro.angular.services.viewmodelfactory.js">
-      <DependentUpon>spiro.angular.services.viewmodelfactory.ts</DependentUpon>
-    </Content>
     <TypeScriptCompile Include="Scripts\spiro.angular.viewmodels.ts" />
-    <Content Include="Scripts\spiro.angular.viewmodels.js">
-      <DependentUpon>spiro.angular.viewmodels.ts</DependentUpon>
-    </Content>
+    <TypeScriptCompile Include="Scripts\spiro.config.ts" />
     <TypeScriptCompile Include="Scripts\spiro.models.helpers.ts" />
-    <Content Include="Scripts\spiro.models.helpers.js">
-      <DependentUpon>spiro.models.helpers.ts</DependentUpon>
-    </Content>
     <TypeScriptCompile Include="Scripts\spiro.models.shims.ts" />
-    <Content Include="Scripts\spiro.models.shims.js">
-      <DependentUpon>spiro.models.shims.ts</DependentUpon>
-    </Content>
     <TypeScriptCompile Include="Scripts\spiro.models.ts" />
+    <Content Include="Scripts\spiro.angular.app.js" />
+    <Content Include="Scripts\spiro.angular.config.js" />
+    <Content Include="Scripts\spiro.angular.controllers.js" />
+    <Content Include="Scripts\spiro.angular.directives.js" />
+    <Content Include="Scripts\spiro.angular.services.color.js" />
+    <Content Include="Scripts\spiro.angular.services.context.js" />
+    <Content Include="Scripts\spiro.angular.services.handlers.js" />
+    <Content Include="Scripts\spiro.angular.services.mask.js" />
+    <Content Include="Scripts\spiro.angular.services.navigation.browser.js" />
+    <Content Include="Scripts\spiro.angular.services.navigation.simple.js" />
+    <Content Include="Scripts\spiro.angular.services.representationhandlers.js" />
+    <Content Include="Scripts\spiro.angular.services.representationloader.js" />
+    <Content Include="Scripts\spiro.angular.services.urlhelper.js" />
+    <Content Include="Scripts\spiro.angular.services.viewmodelfactory.js" />
+    <Content Include="Scripts\spiro.angular.viewmodels.js" />
+    <Content Include="Scripts\spiro.config.js" />
+    <Content Include="Scripts\spiro.models.helpers.js" />
+    <Content Include="Scripts\spiro.models.js" />
+    <Content Include="Scripts\spiro.models.shims.js" />
     <Content Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <Content Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <Content Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
@@ -265,41 +166,51 @@
     <Content Include="Scripts\underscore.js" />
     <Content Include="Scripts\underscore.min.js" />
     <Content Include="Scripts\_references.js" />
-    <TypeScriptCompile Include="Tests\specs\controllers.ts" />
     <Content Include="SpiroReadMe.txt" />
-    <Content Include="Tests\specs\controllers.js">
-      <DependentUpon>controllers.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Tests\specs\services.ts" />
-    <Content Include="Tests\specs\services.js">
-      <DependentUpon>services.ts</DependentUpon>
-    </Content>
+    <Content Include="Tests\specs\controllers.js" />
+    <Content Include="Tests\specs\controllers.ts" />
+    <Content Include="Tests\specs\services.js" />
+    <Content Include="Tests\specs\services.ts" />
     <Content Include="web.config" />
-    <Content Include="Scripts\jquery-2.0.3.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="fonts\iconFont.eot" />
+    <Content Include="fonts\iconFont.ttf" />
+    <Content Include="fonts\iconFont.woff" />
     <Content Include="packages.config" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular-touch.min.js.map" />
+    <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\jasmine\MIT.LICENSE" />
-    <Content Include="Scripts\spiro.angular.services.navigation.simple.js.map">
-      <DependentUpon>spiro.angular.services.navigation.simple.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\spiro.angular.services.navigation.browser.js.map">
-      <DependentUpon>spiro.angular.services.navigation.browser.ts</DependentUpon>
-    </Content>
+    <Content Include="Scripts\jquery-2.0.3.min.map" />
+    <Content Include="Tests\specs\controllers.js.map" />
+    <Content Include="Tests\specs\services.js.map" />
+    <Content Include="Scripts\spiro.angular.services.representationhandlers.js.map" />
+    <Content Include="Scripts\spiro.angular.services.representationloader.js.map" />
+    <Content Include="Scripts\spiro.angular.services.urlhelper.js.map" />
+    <Content Include="Scripts\spiro.angular.app.js.map" />
+    <Content Include="Scripts\spiro.angular.config.js.map" />
+    <Content Include="Scripts\spiro.angular.controllers.js.map" />
+    <Content Include="Scripts\spiro.angular.directives.js.map" />
+    <Content Include="Scripts\spiro.angular.services.color.js.map" />
+    <Content Include="Scripts\spiro.angular.services.context.js.map" />
+    <Content Include="Scripts\spiro.angular.services.handlers.js.map" />
+    <Content Include="Scripts\spiro.angular.services.mask.js.map" />
+    <Content Include="Scripts\spiro.angular.services.navigation.browser.js.map" />
+    <Content Include="Scripts\spiro.angular.services.navigation.simple.js.map" />
+    <Content Include="Scripts\spiro.angular.services.viewmodelfactory.js.map" />
+    <Content Include="Scripts\spiro.angular.viewmodels.js.map" />
+    <Content Include="Scripts\spiro.config.js.map" />
+    <Content Include="Scripts\spiro.models.helpers.js.map" />
+    <Content Include="Scripts\spiro.models.js.map" />
+    <Content Include="Scripts\spiro.models.shims.js.map" />
+    <Content Include="Scripts\underscore.min.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
     <None Include="web.Release.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -314,12 +225,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>52824</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost:49998/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -334,15 +244,6 @@
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
-    <NoWarn>2008</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptTarget>ES5</TypeScriptTarget>
-    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
-    <TypeScriptSourceMap>true</TypeScriptSourceMap>
-    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptTarget>ES5</TypeScriptTarget>
@@ -351,11 +252,4 @@
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
 </Project>

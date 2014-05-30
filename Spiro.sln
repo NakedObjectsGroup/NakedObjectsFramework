@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{CE1D54
 		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spiro.Modern", "Spiro\Spiro.Modern\Spiro.Modern.csproj", "{389A8683-9036-47AF-A9F0-F209C82B5943}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spiro.Modern", "Spiro\Spiro.Modern\Spiro.Modern.csproj", "{CC50CB80-3FF4-4A90-8AA0-A38A05EAFB51}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -23,17 +23,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{389A8683-9036-47AF-A9F0-F209C82B5943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{389A8683-9036-47AF-A9F0-F209C82B5943}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{389A8683-9036-47AF-A9F0-F209C82B5943}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{389A8683-9036-47AF-A9F0-F209C82B5943}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{389A8683-9036-47AF-A9F0-F209C82B5943}.Release|Any CPU.Build.0 = Release|Any CPU
-		{389A8683-9036-47AF-A9F0-F209C82B5943}.Release|x86.ActiveCfg = Release|Any CPU
+		{CC50CB80-3FF4-4A90-8AA0-A38A05EAFB51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC50CB80-3FF4-4A90-8AA0-A38A05EAFB51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC50CB80-3FF4-4A90-8AA0-A38A05EAFB51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC50CB80-3FF4-4A90-8AA0-A38A05EAFB51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
