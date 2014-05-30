@@ -1,0 +1,4 @@
+﻿<div class="object-view" ng-class="backgroundColor" ng-swipe-right="$broadcast('back')" ng-swipe-left="$broadcast('forward')">
+    <div class="error-pane"  ng-controller="ErrorController" ng-include="errorTemplate"></div>
+    <div class="app-bar"  ng-controller="AppBarController" ng-include="appBar.template"></div>
+</div>
