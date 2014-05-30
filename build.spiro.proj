@@ -3,7 +3,8 @@
 	
 	<PropertyGroup>
     <SpiroPath>Spiro</SpiroPath>
-    <SpModel>Spiro.Models</SpModel>
+    <SpiroModels>Spiro.Models</SpiroModels>
+    <SpiroNg>spiro.angulars</SpiroNg>
     <SpModern>Spiro.Modern</SpModern>
 		<BuiltPackagesPath>build\packages</BuiltPackagesPath>
 		<InstalledPackagesPath>packages</InstalledPackagesPath>
@@ -52,13 +53,13 @@
 
     <MSBuild Projects="@(SpiroFiles)" Targets="Clean"/>
     
-    <RemoveDir Directories="$(SpiroPath)\$(SpModel).package\content"/>
+    <RemoveDir Directories="$(SpiroPath)\$(SpiroModels).package\content"/>
     <RemoveDir Directories="$(SpiroPath)\$(SpModern).package\content"/>
   
     <ItemGroup>
-      <OldPackages Include="$(SpiroPath)\$(SpModel).package\*.nupkg"/>
+      <OldPackages Include="$(SpiroPath)\$(SpiroModels).package\*.nupkg"/>
       <OldPackages Include="$(SpiroPath)\$(SpModern).package\*.nupkg"/>
-      <OldPackageFiles Include="$(InstalledPackagesPath)\$(SpModel).package\**\*.*"/>
+      <OldPackageFiles Include="$(InstalledPackagesPath)\$(SpiroModels).package\**\*.*"/>
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(SpModern).package\**\*.*"/>
     </ItemGroup>
 
@@ -100,12 +101,12 @@
 	<Target Name="SpiroPackage" DependsOnTargets="Spiro">
 
     <ItemGroup>
-      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpModel).helpers.ts"/>
-      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpModel).helpers.js"/>
-      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpModel).shims.ts"/>
-      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpModel).shims.js"/>
-      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpModel).ts"/>
-      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpModel).js"/>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpiroModels).helpers.ts"/>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpiroModels).helpers.js"/>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpiroModels).shims.ts"/>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpiroModels).shims.js"/>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpiroModels).ts"/>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpiroModels).js"/>
       <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.config.ts"/>
       <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.config.js"/>
     </ItemGroup>
@@ -114,49 +115,21 @@
 			<SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Content*\partials\*.*"/>
       <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Content*\spiro-modern.css"/>
       <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\fonts*\*.*"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.app.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.app.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.controllers.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.controllers.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.directives.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.directives.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.color.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.color.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.context.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.context.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.handlers.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.handlers.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.mask.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.mask.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.representationhandlers.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.representationhandlers.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.representationloader.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.representationloader.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.urlhelper.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.urlhelper.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.viewmodelfactory.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.viewmodelfactory.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.navigation.browser.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.navigation.browser.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.navigation.simple.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.services.navigation.simple.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.viewmodels.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.viewmodels.js"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.config.ts"/>
-      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.config.js"/>
+      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.*.ts"/>
+      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.*.js"/>
       <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\index.html"/>
       <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\SpiroReadme.txt"/>
       
     </ItemGroup>
 
-		<Copy SourceFiles="@(SpiroSrcFiles)" DestinationFolder="$(SpiroPath)\$(SpModel).package\content\%(RecursiveDir)" />
+		<Copy SourceFiles="@(SpiroSrcFiles)" DestinationFolder="$(SpiroPath)\$(SpiroModels).package\content\%(RecursiveDir)" />
     <Copy SourceFiles="@(SpiroNgSrcFiles)" DestinationFolder="$(SpiroPath)\$(SpModern).package\content\%(RecursiveDir)" />
 		
-		<Exec WorkingDirectory="$(SpiroPath)\$(SpModel).package" Command="..\$(Nuget) pack $(SpModel).nuspec" />
+		<Exec WorkingDirectory="$(SpiroPath)\$(SpiroModels).package" Command="..\$(Nuget) pack $(SpiroModels).nuspec" />
     <Exec WorkingDirectory="$(SpiroPath)\$(SpModern).package" Command="..\$(Nuget) pack $(SpModern).nuspec" />
     
 		<ItemGroup>
-			<SpiroPackage Include="$(SpiroPath)\$(SpModel).package\*.nupkg; $(SpModern).package\*.nupkg"/>
+			<SpiroPackage Include="$(SpiroPath)\$(SpiroModels).package\*.nupkg; $(SpiroPath)\$(SpModern).package\*.nupkg"/>
 		</ItemGroup>
 
 		<Copy SourceFiles="@(SpiroPackage)" DestinationFolder="$(BuiltPackagesPath)" />

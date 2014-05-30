@@ -1,9 +1,11 @@
 *.user
 *.suo
+*.nupkg
 /packages
 /test-results
 /build
 /coverage
 /bin
+/obj
 /bld
 UpgradeLog.htm
