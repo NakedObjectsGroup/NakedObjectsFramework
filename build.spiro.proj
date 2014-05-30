@@ -98,7 +98,11 @@
 		</MSBuild>
 	</Target>
 
-	<Target Name="SpiroPackage" DependsOnTargets="Spiro">
+  <Target Name="SpiroTest" DependsOnTargets="Spiro">
+    <Exec Command='karma start' />
+  </Target>
+  
+	<Target Name="SpiroPackage" DependsOnTargets="SpiroTest">
 
     <ItemGroup>
       <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpiroModels).helpers.ts"/>

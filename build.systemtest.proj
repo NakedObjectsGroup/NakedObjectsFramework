@@ -172,7 +172,6 @@
   <Target Name="SystemTest" DependsOnTargets="BuildTests">
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.Helpers.Test\bin\%(Configuration.Identity)\NakedObjects.Helpers.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Helpers.Test.trx' />
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.SystemTest\bin\%(Configuration.Identity)\NakedObjects.SystemTest.dll" /resultsfile:$(TestResultsPath)\NakedObjects.SystemTest.trx' />
-    <Exec Command='karma start' />
   </Target>
 
   <Target Name="EndToEndTest" DependsOnTargets="SystemTest;Deploy">
