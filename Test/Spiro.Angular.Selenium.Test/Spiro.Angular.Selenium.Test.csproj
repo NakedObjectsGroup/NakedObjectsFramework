@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2BBC0E62-47DE-4782-8793-71D99163CCAF}</ProjectGuid>
+    <ProjectGuid>{838745C1-F097-41F7-B3C5-28513023C9A0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Spiro.Angular.Selenium.Test</RootNamespace>

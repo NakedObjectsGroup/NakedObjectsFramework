@@ -5,7 +5,7 @@
 /test-results
 /build
 /coverage
-/bin
-/obj
-/bld
+**/bin
+**/obj
+**/bld
 UpgradeLog.htm
