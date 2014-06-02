@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -170,7 +169,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 wait.Until(d => d.FindElements(By.CssSelector(".actions-pane .actions")).Count > 0);
             }
             else {
-                throw new ObjectNotFoundException(string.Format("service not found {0}", serviceName));
+                throw new NotFoundException(string.Format("service not found {0}", serviceName));
             }
         }
 
