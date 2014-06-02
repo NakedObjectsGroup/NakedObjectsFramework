@@ -176,6 +176,7 @@
     <Content Include="scripts\angular-touch.min.js.map" />
     <Content Include="scripts\jquery-2.0.3.min.map" />
     <Content Include="scripts\underscore.min.map" />
+    <None Include="test.pubxml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

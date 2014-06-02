@@ -159,9 +159,11 @@
 
     <ItemGroup>
       <SpiroNgApp Include="$(SpiroNgOutputDir)\**\*.*"/>
+      <SpiroNgLib Include="$(TestPath)\$(SpModern).Test\bin\*.dll"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(SpiroNgApp)" DestinationFolder="$(IISNgPath)\%(RecursiveDir)"/>
+    <Copy SourceFiles="@(SpiroNgLib)" DestinationFolder="$(IISNgPath)\bin" SkipUnchangedFiles="true" />
        
   </Target> 
   
