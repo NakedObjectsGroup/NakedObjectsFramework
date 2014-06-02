@@ -172,7 +172,7 @@
 
   <Target Name="EndToEndTest" DependsOnTargets="SystemTest;Deploy">
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\RestfulObjects.Test.EndToEnd\bin\%(Configuration.Identity)\RestfulObjects.Test.EndToEnd.dll" /resultsfile:$(TestResultsPath)\RestfulObjects.Test.EndToEnd.trx' />
-    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"Spiro.Angular.Selenium.Test\bin\%(Configuration.Identity)\Spiro.Angular.Selenium.Test.dll" /resultsfile:$(TestResultsPath)\Spiro.Angular.Selenium.Test.trx' />
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\Spiro.Angular.Selenium.Test\bin\%(Configuration.Identity)\Spiro.Angular.Selenium.Test.dll" /resultsfile:$(TestResultsPath)\Spiro.Angular.Selenium.Test.trx' />
   </Target>
 
   <Target Name="WebTest" DependsOnTargets="EndToEndTest">
@@ -189,7 +189,7 @@
 
     <Message Text="Found: @(Tests->'/test:%(FileName)', ' ')"/>
 
-    <Exec Command='"$(MSTestPath)\MSTest.exe" $(FailedTests)  /testcontainer:"$(TestPath)\\NakedObjects.Mvc.Selenium.Test\bin\%(Configuration.Identity)\NakedObjects.Mvc.Selenium.Test.dll" /resultsfile:test-results\NakedObjects.Mvc.Selenium.ReTest.trx' Condition="'$(FailedTestsTrim)'!=''"/>
+    <Exec Command='"$(MSTestPath)\MSTest.exe" $(FailedTests)  /testcontainer:"$(TestPath)\NakedObjects.Mvc.Selenium.Test\bin\%(Configuration.Identity)\NakedObjects.Mvc.Selenium.Test.dll" /resultsfile:test-results\NakedObjects.Mvc.Selenium.ReTest.trx' Condition="'$(FailedTestsTrim)'!=''"/>
 
   </Target>
 
