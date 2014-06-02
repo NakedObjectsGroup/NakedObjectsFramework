@@ -101,7 +101,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void AttachmentProperty() {
             br.Navigate().GoToUrl(product968Url);
 
-            wait.Until(d => d.FindElements(By.ClassName("property")).Count == 25);
+            wait.Until(d => d.FindElements(By.ClassName("property")).Count == 26);
             wait.Until(d => d.FindElements(By.CssSelector("div.property  a > img")).Count == 1);
 
             Assert.AreEqual(25053, br.FindElements(By.CssSelector("div.property  a > img")).Single().GetAttribute("src").Length, "expect data in data uri"); 

@@ -14,17 +14,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
             Click(br.FindElement(By.ClassName("home")));
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == 12);
+            wait.Until(d => d.FindElements(By.ClassName("service")).Count == 10);
         }
 
         [TestMethod]
         public virtual void BackAndForward() {
             br.Navigate().GoToUrl(url);
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == 12);
+            wait.Until(d => d.FindElements(By.ClassName("service")).Count == 10);
             GoToServiceFromHomePage("Customers");
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
             Click(br.FindElement(By.ClassName("back")));
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == 12);
+            wait.Until(d => d.FindElements(By.ClassName("service")).Count == 10);
             Click(br.FindElement(By.ClassName("forward")));
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
         }

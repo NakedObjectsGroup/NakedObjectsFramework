@@ -161,7 +161,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
 
         protected virtual void GoToServiceFromHomePage(string serviceName) {
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == 12);
+            wait.Until(d => d.FindElements(By.ClassName("service")).Count == 10);
             ReadOnlyCollection<IWebElement> services = br.FindElements(By.CssSelector("div.service > a"));
             IWebElement service = services.FirstOrDefault(s => s.Text == serviceName);
             if (service != null) {
