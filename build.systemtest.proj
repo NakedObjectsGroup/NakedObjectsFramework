@@ -114,6 +114,7 @@
       <WebProjectTransientOutputDir>$(WorkingDir)\bin\%(Configuration.Identity)\UnitTestTransient</WebProjectTransientOutputDir>
       <RestOutputDir>$(WorkingDir)\bin\%(Configuration.Identity)\UnitTest</RestOutputDir>
       <WebProjectAjaxOutputDir>$(WorkingDir)\bin\%(Configuration.Identity)\UnitTestAjax</WebProjectAjaxOutputDir>
+      <SpiroNgOutputDir>$(WorkingDir)\bin\%(Configuration.Identity)\UnitTestNg</SpiroNgOutputDir>
     </PropertyGroup>
     
     <MSBuild Projects="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\NakedObjects.Mvc.Selenium.Test.Data.csproj"
@@ -151,12 +152,8 @@
 
     <Copy SourceFiles="@(MvcAppAjax)" DestinationFolder="$(IISAjaxPath)\%(RecursiveDir)"/>
     <Copy SourceFiles="@(MvcAppLib)" DestinationFolder="$(IISAjaxPath)\bin" SkipUnchangedFiles="true" />
-    
-    <PropertyGroup>
-      <SpiroNgOutputDir>build\working\bin\%(Configuration.Identity)\UnitTestNg</SpiroNgOutputDir>
-    </PropertyGroup>
 
-    <MSBuild Projects="$(SpModern).Test\$(SpModern).Test.csproj"
+    <MSBuild Projects="$(TestPath)\$(SpModern).Test\$(SpModern).Test.csproj"
 						 Targets="ResolveReferences;_CopyWebApplication"
 						 Properties="WebProjectOutputDir=..\$(SpiroNgOutputDir)\;OutDir=..\$(SpiroNgOutputDir)\;Configuration=%(Configuration.Identity)" />
 
@@ -165,8 +162,7 @@
     </ItemGroup>
 
     <Copy SourceFiles="@(SpiroNgApp)" DestinationFolder="$(IISNgPath)\%(RecursiveDir)"/>
-
-         
+       
   </Target> 
   
   <Target Name="SystemTest" DependsOnTargets="BuildTests">
