@@ -155,7 +155,7 @@
 
     <MSBuild Projects="$(TestPath)\$(SpModern).Test\$(SpModern).Test.csproj"
 						 Targets="ResolveReferences;_CopyWebApplication"
-						 Properties="WebProjectOutputDir=..\$(SpiroNgOutputDir)\;OutDir=..\$(SpiroNgOutputDir)\;Configuration=%(Configuration.Identity)" />
+						 Properties="WebProjectOutputDir=..\..\$(SpiroNgOutputDir)\;OutDir=..\..\$(SpiroNgOutputDir)\;Configuration=%(Configuration.Identity)" />
 
     <ItemGroup>
       <SpiroNgApp Include="$(SpiroNgOutputDir)\**\*.*"/>
