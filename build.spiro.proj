@@ -99,7 +99,7 @@
 	</Target>
 
   <Target Name="SpiroTest" DependsOnTargets="Spiro">
-    <Exec Command='karma start' />
+    <Exec Command='karma start Spiro/karma.conf.js' />
   </Target>
   
 	<Target Name="SpiroPackage" DependsOnTargets="SpiroTest">
