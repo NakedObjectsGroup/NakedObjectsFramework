@@ -161,7 +161,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void RefChoicesParmKeepsValue() {
             br.Navigate().GoToUrl(productServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 10);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[2]); // list products by sub cat
