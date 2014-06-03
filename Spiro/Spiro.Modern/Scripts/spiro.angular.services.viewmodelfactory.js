@@ -78,16 +78,15 @@ var Spiro;
 
                 if (parmViewModel.hasChoices || parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
                     if (parmViewModel.isMultipleChoices) {
+                        var search = parmViewModel.getMemento();
                         parmViewModel.setSelectedChoice = function () {
-                            var search = parmViewModel.getMemento();
-
                             _.forEach(parmViewModel.multiChoices, function (c) {
                                 context.setSelectedChoice(id, search, c);
                             });
                         };
                     } else {
                         parmViewModel.setSelectedChoice = function () {
-                            context.setSelectedChoice(id, parmViewModel.choice.search, parmViewModel.choice);
+                            context.setSelectedChoice(id, parmViewModel.getMemento(), parmViewModel.choice);
                         };
                     }
 
