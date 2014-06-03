@@ -129,7 +129,7 @@ describe('Services', function () {
                     expect(collectionViewModel).toHaveBeenCalledWith(testObject);
 
                     expect($scope.collection).toEqual(testViewModel);
-                    expect($scope.collectionTemplate).toEqual("/Content/partials/nestedCollection.html");
+                    expect($scope.collectionTemplate).toEqual("Content/partials/nestedCollection.html");
                 });
             });
 
@@ -202,7 +202,7 @@ describe('Services', function () {
                     expect(collectionViewModel).toHaveBeenCalledWith(testDetails);
 
                     expect($scope.collection).toEqual(testViewModel);
-                    expect($scope.collectionTemplate).toEqual("/Content/partials/nestedCollection.html");
+                    expect($scope.collectionTemplate).toEqual("Content/partials/nestedCollection.html");
                 });
 
             });
@@ -283,7 +283,7 @@ describe('Services', function () {
                         expect(dialogViewModel).toHaveBeenCalledWith(testDetails, jasmine.any(Function));
 
                         expect($scope.dialog).toEqual(testViewModel);
-                        expect($scope.dialogTemplate).toEqual("/Content/partials/dialog.html");
+                        expect($scope.dialogTemplate).toEqual("Content/partials/dialog.html");
                     });
 
                 });
@@ -309,7 +309,7 @@ describe('Services', function () {
                         expect(dialogViewModel).toHaveBeenCalledWith(testDetails, jasmine.any(Function));
 
                         expect($scope.dialog).toEqual(testViewModel);
-                        expect($scope.dialogTemplate).toEqual("/Content/partials/dialog.html");
+                        expect($scope.dialogTemplate).toEqual("Content/partials/dialog.html");
                     });
 
                 });
@@ -553,7 +553,7 @@ describe('Services', function () {
                     expect(setNestedObject).toHaveBeenCalledWith(testTarget);
 
                     expect($scope.result).toEqual(testViewModel);
-                    expect($scope.nestedTemplate).toEqual("/Content/partials/nestedObject.html");
+                    expect($scope.nestedTemplate).toEqual("Content/partials/nestedObject.html");
                 });
 
 
@@ -621,7 +621,7 @@ describe('Services', function () {
                     expect(setNestedObject).toHaveBeenCalledWith(testObject);
 
                     expect($scope.result).toEqual(testViewModel);
-                    expect($scope.nestedTemplate).toEqual("/Content/partials/nestedObject.html");
+                    expect($scope.nestedTemplate).toEqual("Content/partials/nestedObject.html");
                 });
 
             });
@@ -684,7 +684,7 @@ describe('Services', function () {
                     expect(setNestedObject).toHaveBeenCalledWith(testObject);
 
                     expect($scope.result).toEqual(testViewModel);
-                    expect($scope.nestedTemplate).toEqual("/Content/partials/nestedObject.html");
+                    expect($scope.nestedTemplate).toEqual("Content/partials/nestedObject.html");
                 });
 
             });
@@ -876,8 +876,8 @@ describe('Services', function () {
                         expect(setNestedObject).toHaveBeenCalledWith(null);
 
                         expect($scope.object).toEqual(testViewModel);
-                        expect($scope.actionTemplate).toEqual("/Content/partials/actions.html");
-                        expect($scope.propertiesTemplate).toEqual("/Content/partials/viewProperties.html");
+                        expect($scope.actionTemplate).toEqual("Content/partials/actions.html");
+                        expect($scope.propertiesTemplate).toEqual("Content/partials/viewProperties.html");
                     });
                 });
 
@@ -909,7 +909,7 @@ describe('Services', function () {
 
                         expect($scope.object).toEqual(testViewModel);
                         expect($scope.actionTemplate).toEqual("");
-                        expect($scope.propertiesTemplate).toEqual("/Content/partials/editProperties.html");
+                        expect($scope.propertiesTemplate).toEqual("Content/partials/editProperties.html");
                     });
                 });
             });
@@ -955,7 +955,7 @@ describe('Services', function () {
 
             it('should set a error data', function () {
                 expect($scope.error).toBeDefined();
-                expect($scope.errorTemplate).toEqual("/Content/partials/error.html");
+                expect($scope.errorTemplate).toEqual("Content/partials/error.html");
             });
 
         });
@@ -966,7 +966,7 @@ describe('Services', function () {
             function expectAppBarData() {
                 expect($scope.appBar).toBeDefined();
                 expect($scope.appBar.goHome).toEqual("#/");
-                expect($scope.appBar.template).toEqual("/Content/partials/appbar.html");
+                expect($scope.appBar.template).toEqual("Content/partials/appbar.html");
                 expect($scope.appBar.goBack).toBeDefined();
                 expect($scope.appBar.goForward).toBeDefined();
             }

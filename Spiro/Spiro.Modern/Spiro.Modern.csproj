@@ -168,9 +168,9 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="SpiroReadMe.txt" />
     <Content Include="Tests\specs\controllers.js" />
-    <Content Include="Tests\specs\controllers.ts" />
+    <TypeScriptCompile Include="Tests\specs\controllers.ts" />
     <Content Include="Tests\specs\services.js" />
-    <Content Include="Tests\specs\services.ts" />
+    <TypeScriptCompile Include="Tests\specs\services.ts" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
