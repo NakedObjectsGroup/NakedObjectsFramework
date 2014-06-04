@@ -8,6 +8,20 @@ describe('Controllers', function () {
 
     beforeEach(module('app'));
 
+    describe('BackgroundController', function () {
+        var handleBackground;
+
+        beforeEach(inject(function ($rootScope, $controller, handlers) {
+            $scope = $rootScope.$new();
+            handleBackground = spyOn(handlers, 'handleBackground');
+            ctrl = $controller('BackgroundController', { $scope: $scope, handlers: handlers });
+        }));
+
+        it('should call the handler', function () {
+            expect(handleBackground).toHaveBeenCalledWith($scope);
+        });
+    });
+
     describe('ServicesController', function () {
         var handleServices;
 
@@ -38,15 +52,41 @@ describe('Controllers', function () {
 
     describe('ObjectController', function () {
         var handleObject;
+        var handleEditObject;
 
         beforeEach(inject(function ($rootScope, $controller, handlers) {
             $scope = $rootScope.$new();
             handleObject = spyOn(handlers, 'handleObject');
-            ctrl = $controller('ObjectController', { $scope: $scope, handlers: handlers });
+            handleEditObject = spyOn(handlers, 'handleEditObject');
         }));
 
-        it('should call the handler', function () {
-            expect(handleObject).toHaveBeenCalledWith($scope);
+        describe('if edit mode', function () {
+            beforeEach(inject(function ($routeParams, $controller, handlers) {
+                $routeParams.editMode = "test";
+                ctrl = $controller('ObjectController', { $scope: $scope, handlers: handlers });
+            }));
+
+            it('should not call the view handler', function () {
+                expect(handleObject).wasNotCalled();
+            });
+
+            it('should call the edit handler', function () {
+                expect(handleEditObject).toHaveBeenCalledWith($scope);
+            });
+        });
+
+        describe('if not edit mode', function () {
+            beforeEach(inject(function ($controller, handlers) {
+                ctrl = $controller('ObjectController', { $scope: $scope, handlers: handlers });
+            }));
+
+            it('should not call the edit handler', function () {
+                expect(handleEditObject).wasNotCalled();
+            });
+
+            it('should call the view handler', function () {
+                expect(handleObject).toHaveBeenCalledWith($scope);
+            });
         });
     });
 
