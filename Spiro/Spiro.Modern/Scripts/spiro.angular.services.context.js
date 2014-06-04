@@ -26,6 +26,7 @@ var Spiro;
             };
 
             // exposed for testing
+            // tested
             context.getService = function (type) {
                 var delay = $q.defer();
 
@@ -44,13 +45,13 @@ var Spiro;
                 return delay.promise;
             };
 
+            // tested
             context.getHome = function () {
                 var delay = $q.defer();
 
                 if (currentHome) {
                     delay.resolve(currentHome);
                 } else {
-                    //var home = new HomePageRepresentation();
                     repLoader.populate(new Spiro.HomePageRepresentation()).then(function (home) {
                         currentHome = home;
                         delay.resolve(home);
@@ -64,6 +65,7 @@ var Spiro;
 
             var currentServices = null;
 
+            // tested
             context.getServices = function () {
                 var delay = $q.defer();
 
@@ -86,6 +88,7 @@ var Spiro;
 
             var currentObject = null;
 
+            // tested
             context.getObject = function (type, id) {
                 var delay = $q.defer();
 
@@ -110,6 +113,7 @@ var Spiro;
 
             var currentNestedObject = null;
 
+            // tested
             context.getNestedObject = function (type, id) {
                 var delay = $q.defer();
 
@@ -146,6 +150,7 @@ var Spiro;
 
             var currentCollection = null;
 
+            // tested
             context.getCollection = function () {
                 var delay = $q.defer();
                 delay.resolve(currentCollection);
@@ -158,6 +163,7 @@ var Spiro;
 
             var currentTransient = null;
 
+            // tested
             context.getTransientObject = function () {
                 var delay = $q.defer();
                 delay.resolve(currentTransient);

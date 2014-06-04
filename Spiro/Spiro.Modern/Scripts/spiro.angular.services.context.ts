@@ -52,6 +52,7 @@ module Spiro.Angular {
         };
 
         // exposed for testing
+        // tested
         context.getService = function (type: string): ng.IPromise<DomainObjectRepresentation> {
             var delay = $q.defer<DomainObjectRepresentation>();
 
@@ -68,7 +69,7 @@ module Spiro.Angular {
             return delay.promise;
         };
 
-
+        // tested
         context.getHome = () => {
             var delay = $q.defer<HomePageRepresentation>();
 
@@ -76,7 +77,6 @@ module Spiro.Angular {
                 delay.resolve(currentHome);
             }
             else {
-                //var home = new HomePageRepresentation();
                 repLoader.populate<HomePageRepresentation>(new HomePageRepresentation()).then((home: HomePageRepresentation) => {
                     currentHome = home;
                     delay.resolve(home);
@@ -88,6 +88,7 @@ module Spiro.Angular {
 
         var currentServices: DomainServicesRepresentation = null;
 
+        // tested
         context.getServices = function () {
             var delay = $q.defer<DomainServicesRepresentation>();
 
@@ -111,6 +112,7 @@ module Spiro.Angular {
 
         var currentObject: DomainObjectRepresentation = null;
 
+        // tested
         context.getObject = function (type: string, id?: string) {
             var delay = $q.defer<DomainObjectRepresentation>();
 
@@ -132,6 +134,7 @@ module Spiro.Angular {
 
         var currentNestedObject: DomainObjectRepresentation = null;
 
+        // tested
         context.getNestedObject = (type: string, id: string) => {
             var delay = $q.defer<DomainObjectRepresentation>();
 
@@ -162,6 +165,7 @@ module Spiro.Angular {
 
         var currentCollection: ListRepresentation = null;
 
+        // tested
         context.getCollection = () => {
             var delay = $q.defer<ListRepresentation>();
             delay.resolve(currentCollection);
@@ -172,6 +176,7 @@ module Spiro.Angular {
 
         var currentTransient: DomainObjectRepresentation = null;
 
+        // tested
         context.getTransientObject = () => {
             var delay = $q.defer<DomainObjectRepresentation>();
             delay.resolve(currentTransient);
