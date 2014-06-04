@@ -306,21 +306,38 @@ describe('Controllers', () => {
 
 	});
 
-	describe('ErrorController', () => {
+    describe('TransientObjectController', () => {
 
-		var handleError;
+		var handleTransientObject;
 
 		beforeEach(inject(($rootScope, $controller, handlers: Spiro.Angular.IHandlers) => {
 			$scope = $rootScope.$new();
-			handleError = spyOn(handlers, 'handleError');
-			ctrl = $controller('ErrorController', { $scope: $scope, handlers: handlers });
+			handleTransientObject = spyOn(handlers, 'handleTransientObject');
+            ctrl = $controller('TransientObjectController', { $scope: $scope, handlers: handlers });
 		}));
 
 		it('should call the handler', () => {
-			expect(handleError).toHaveBeenCalledWith($scope);
+			expect(handleTransientObject).toHaveBeenCalledWith($scope);
 		});
 
-	});
+    });
+
+    describe('ErrorController', () => {
+
+        var handleError;
+
+        beforeEach(inject(($rootScope, $controller, handlers: Spiro.Angular.IHandlers) => {
+            $scope = $rootScope.$new();
+            handleError = spyOn(handlers, 'handleError');
+            ctrl = $controller('ErrorController', { $scope: $scope, handlers: handlers });
+        }));
+
+        it('should call the handler', () => {
+            expect(handleError).toHaveBeenCalledWith($scope);
+        });
+
+    });
+
 
 	describe('AppBarController', () => {
 

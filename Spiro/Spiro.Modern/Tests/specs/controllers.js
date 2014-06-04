@@ -267,6 +267,20 @@ describe('Controllers', function () {
         });
     });
 
+    describe('TransientObjectController', function () {
+        var handleTransientObject;
+
+        beforeEach(inject(function ($rootScope, $controller, handlers) {
+            $scope = $rootScope.$new();
+            handleTransientObject = spyOn(handlers, 'handleTransientObject');
+            ctrl = $controller('TransientObjectController', { $scope: $scope, handlers: handlers });
+        }));
+
+        it('should call the handler', function () {
+            expect(handleTransientObject).toHaveBeenCalledWith($scope);
+        });
+    });
+
     describe('ErrorController', function () {
         var handleError;
 
