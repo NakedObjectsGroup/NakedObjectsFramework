@@ -499,7 +499,7 @@ describe('context Service', function () {
         var localContext;
         var result;
 
-        beforeEach(inject(function ($rootScope, $routeParams, context, repLoader) {
+        beforeEach(inject(function ($rootScope, $routeParams, context) {
             localContext = context;
         }));
 

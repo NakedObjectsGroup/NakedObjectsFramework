@@ -44,15 +44,14 @@ module Spiro.Angular {
             return sid ? sid === type : (object.domainType() == type && object.instanceId() === id);
         }
 
-        // exposed for testing
+        // exposed for test mocking
         context.getDomainObject = (type: string, id: string): ng.IPromise<DomainObjectRepresentation> => {
             var object = new DomainObjectRepresentation();
             object.hateoasUrl = appPath + "/objects/" + type + "/" + id;
             return repLoader.populate<DomainObjectRepresentation>(object);
         };
 
-        // exposed for testing
-        // tested
+        // exposed for test mocking
         context.getService = function (type: string): ng.IPromise<DomainObjectRepresentation> {
             var delay = $q.defer<DomainObjectRepresentation>();
 
@@ -195,6 +194,7 @@ module Spiro.Angular {
 
         context.getSelectedChoice = (parm: string, search: string) => selectedChoice[parm] ? selectedChoice[parm][search] : null;
 
+        // tested
         context.setSelectedChoice = (parm: string, search: string, cvm: ChoiceViewModel) => {
             selectedChoice[parm] = selectedChoice[parm] || {};
             selectedChoice[parm][search] = selectedChoice[parm][search] || [];

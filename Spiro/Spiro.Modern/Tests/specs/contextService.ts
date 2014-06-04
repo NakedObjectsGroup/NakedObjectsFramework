@@ -528,7 +528,7 @@ describe('context Service', () => {
         var localContext: Spiro.Angular.IContext;
         var result: Spiro.Angular.ChoiceViewModel[];
 
-        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.IContext, repLoader: Spiro.Angular.IRepLoader) => {       
+        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.IContext) => {       
             localContext = context;
         }));
 

@@ -1,4 +1,4 @@
-/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
+﻿/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/spiro.angular.services.handlers.ts" />
@@ -1047,7 +1047,7 @@ describe('handlers Service', function () {
             var testObject = new Spiro.ErrorRepresentation();
             var setInvokeUpdateError;
 
-            beforeEach(inject(function ($rootScope, $routeParams, repHandlers, repLoader, context) {
+            beforeEach(inject(function ($rootScope, $routeParams, repHandlers, repLoader) {
                 populate = spyOnPromiseFail(repLoader, 'populate', testObject);
                 setInvokeUpdateError = spyOn(repHandlers, 'setInvokeUpdateError');
                 repHandlers.invokeAction($scope, testAction, testViewModel);
@@ -1087,7 +1087,7 @@ describe('handlers Service', function () {
         var setProperty;
         var set;
 
-        beforeEach(inject(function ($rootScope, repLoader) {
+        beforeEach(inject(function ($rootScope) {
             testUpdate.setProperty = function () {
             };
 
@@ -1114,7 +1114,7 @@ describe('handlers Service', function () {
 
                 location = $location;
                 cacheFactory = $cacheFactory;
-                testCache.remove = function (url) {
+                testCache.remove = function () {
                 };
 
                 populate = spyOnPromise(repLoader, 'populate', testUpdatedObject);

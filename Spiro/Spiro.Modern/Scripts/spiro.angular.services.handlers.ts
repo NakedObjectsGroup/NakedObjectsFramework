@@ -31,11 +31,11 @@ module Spiro.Angular {
         handleAppBar($scope): void;
     }
 
-    app.service("handlers", function ($routeParams: ISpiroRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, urlHelper: IUrlHelper, color : IColor, repHandlers : IRepHandlers, navigation : INavigation,  $route) {
+    app.service("handlers", function ($routeParams: ISpiroRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, urlHelper: IUrlHelper, color : IColor, repHandlers : IRepHandlers, navigation : INavigation) {
 
         var handlers = <IHandlers>this;
 
-        handlers.handleBackground = function ($scope) {
+        handlers.handleBackground = $scope => {
             $scope.backgroundColor = color.toColorFromHref($location.absUrl());
             $scope.closeNestedObject = urlHelper.toAppUrl($location.path(), ["property", "collectionItem", "resultObject"]);
             $scope.closeCollection = urlHelper.toAppUrl($location.path(), ["collection", "resultCollection"]);
@@ -44,52 +44,52 @@ module Spiro.Angular {
 
         
 
-// tested
-        handlers.handleCollectionResult = function($scope) {
+        // tested
+        handlers.handleCollectionResult = $scope => {
             context.getCollection().
-                then(function (list: ListRepresentation) {
-                    setNestedCollection($scope, list);
-                }, function(error) {
-                    setError(error);
-                });
+                then((list: ListRepresentation) => {
+                setNestedCollection($scope, list);
+            }, error => {
+                setError(error);
+            });
         };
 
         // tested
-        handlers.handleCollection = function ($scope) {
+        handlers.handleCollection = $scope => {
             context.getObject($routeParams.dt, $routeParams.id).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
                     var collectionDetails = object.collectionMember($routeParams.collection).getDetails();
                     return repLoader.populate(collectionDetails);
                 }).
-                then(function (details: CollectionRepresentation) {
-                    setNestedCollection($scope, details);
-                }, function (error) {
-                    setError(error);
-                });
+                then((details: CollectionRepresentation) => {
+                setNestedCollection($scope, details);
+            }, error => {
+                setError(error);
+            });
         };
 
         // tested
-        handlers.handleActionDialog = function ($scope) {
+        handlers.handleActionDialog = $scope => {
            
             context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
                     var actionTarget = object.actionMember(urlHelper.action()).getDetails();
                     return repLoader.populate(actionTarget);
                 }).
-                then(function (action: ActionRepresentation) {
-                    if (action.extensions().hasParams) {      
-                        $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(repHandlers.invokeAction, $scope, action));
-                        $scope.dialogTemplate = dialogTemplate;
-                    }
-                }, function (error) {
-                    setError(error);
-                });
+                then((action: ActionRepresentation) => {
+                if (action.extensions().hasParams) {      
+                    $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(repHandlers.invokeAction, $scope, action));
+                    $scope.dialogTemplate = dialogTemplate;
+                }
+            }, error => {
+                setError(error);
+            });
         };
 
         // tested
-        handlers.handleActionResult = function ($scope) {
+        handlers.handleActionResult = $scope => {
             context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
                     var action = object.actionMember(urlHelper.action());
 
                     if (action.extensions().hasParams) {
@@ -100,98 +100,98 @@ module Spiro.Angular {
                     var actionTarget = action.getDetails();
                     return repLoader.populate(actionTarget);
                 }).
-                then(function (action: ActionRepresentation) {
+                then((action: ActionRepresentation) => {
                     var result = action.getInvoke();
                     return repLoader.populate(result, true);
                 }).
-                then(function (result: ActionResultRepresentation) {
-                    repHandlers.setResult(result);
-                }, function (error) {
-                    if (error) {
-                        setError(error);
-                    }
-                    // otherwise just action with parms 
-                });
+                then((result: ActionResultRepresentation) => {
+                repHandlers.setResult(result);
+            }, error => {
+                if (error) {
+                    setError(error);
+                }
+                // otherwise just action with parms 
+            });
         };
 
         // tested
-        handlers.handleProperty = function ($scope) {
+        handlers.handleProperty = $scope => {
             context.getObject($routeParams.dt, $routeParams.id).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
                     var propertyDetails = object.propertyMember($routeParams.property).getDetails();
                     return repLoader.populate(propertyDetails);
                 }).
-                then(function (details: PropertyRepresentation) {
+                then((details: PropertyRepresentation) => {
                     var target = details.value().link().getTarget();
                     return repLoader.populate(target);
                 }).
-                then(function (object: DomainObjectRepresentation) {
-                    setNestedObject(object, $scope);
-                }, function (error) {
-                    setError(error);
-                });
+                then((object: DomainObjectRepresentation) => {
+                setNestedObject(object, $scope);
+            }, error => {
+                setError(error);
+            });
         };
 
         //tested
-        handlers.handleCollectionItem = function ($scope) {
+        handlers.handleCollectionItem = $scope => {
             var collectionItemTypeKey = $routeParams.collectionItem.split("/");
             var collectionItemType = collectionItemTypeKey[0];
             var collectionItemKey = collectionItemTypeKey[1];
 
             context.getNestedObject(collectionItemType, collectionItemKey).
-                then(function (object: DomainObjectRepresentation) {
-                    setNestedObject(object, $scope);
-                }, function (error) {
-                    setError(error);
-                });
+                then((object: DomainObjectRepresentation) => {
+                setNestedObject(object, $scope);
+            }, error => {
+                setError(error);
+            });
         };
 
         // tested
-        handlers.handleServices = function ($scope) {       
+        handlers.handleServices = $scope => {       
             context.getServices().
-                then(function (services: DomainServicesRepresentation) {
-                    $scope.services = viewModelFactory.servicesViewModel(services);
-                    $scope.servicesTemplate = servicesTemplate;
-                    context.setObject(null);
-                    context.setNestedObject(null);
-                }, function (error) {
-                    setError(error);
-                });
+                then((services: DomainServicesRepresentation) => {
+                $scope.services = viewModelFactory.servicesViewModel(services);
+                $scope.servicesTemplate = servicesTemplate;
+                context.setObject(null);
+                context.setNestedObject(null);
+            }, error => {
+                setError(error);
+            });
         };
 
         // tested
-       handlers.handleService = function ($scope) {      
-            context.getObject($routeParams.sid).
-                then(function (service: DomainObjectRepresentation) {
-                    $scope.object = viewModelFactory.serviceViewModel(service);
-                    $scope.serviceTemplate = serviceTemplate;
-                    $scope.actionTemplate = actionTemplate;           
-                }, function (error) {
-                    setError(error);
-                });
+       handlers.handleService = $scope => {      
+           context.getObject($routeParams.sid).
+               then((service: DomainObjectRepresentation) => {
+               $scope.object = viewModelFactory.serviceViewModel(service);
+               $scope.serviceTemplate = serviceTemplate;
+               $scope.actionTemplate = actionTemplate;           
+           }, error => {
+               setError(error);
+           });
 
-        };
+       };
 
         // tested
-        handlers.handleResult = function ($scope) {
+        handlers.handleResult = $scope => {
            
             var result = $routeParams.resultObject.split("-");
             var dt = result[0];
             var id = result[1];
 
             context.getNestedObject(dt, id).
-                then(function (object: DomainObjectRepresentation) {
-                    $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
-                    $scope.nestedTemplate = nestedObjectTemplate;
-                    context.setNestedObject(object);
-                }, function (error) {
-                    setError(error);
-                });
+                then((object: DomainObjectRepresentation) => {
+                $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
+                $scope.nestedTemplate = nestedObjectTemplate;
+                context.setNestedObject(object);
+            }, error => {
+                setError(error);
+            });
 
         };
 
         // tested
-        handlers.handleError = function ($scope) {          
+        handlers.handleError = $scope => {          
             var error = context.getError();
             if (error) {
                 var evm = viewModelFactory.errorViewModel(error);
@@ -201,7 +201,7 @@ module Spiro.Angular {
         };
 
         // tested
-        handlers.handleAppBar = function ($scope) {
+        handlers.handleAppBar = $scope => {
 
             $scope.appBar = {};
 
@@ -226,11 +226,11 @@ module Spiro.Angular {
 
             $scope.appBar.goHome = "#/";
 
-            $scope.appBar.goBack = function () {
+            $scope.appBar.goBack = () => {
                 navigation.back();      
             };
 
-            $scope.appBar.goForward = function () {
+            $scope.appBar.goForward = () => {
                 navigation.forward();
             };
 
@@ -240,89 +240,89 @@ module Spiro.Angular {
 
             if ($routeParams.dt && $routeParams.id) {
                 context.getObject($routeParams.dt, $routeParams.id).
-                    then(function (object: DomainObjectRepresentation) {
+                    then((object: DomainObjectRepresentation) => {
 
-                        var pms = <PropertyMember[]>  _.toArray(object.propertyMembers());
+                    var pms = <PropertyMember[]>  _.toArray(object.propertyMembers());
 
-                        var anyEditableField = _.any(pms, (pm : PropertyMember) => !pm.disabledReason());
+                    var anyEditableField = _.any(pms, (pm : PropertyMember) => !pm.disabledReason());
 
-                        $scope.appBar.hideEdit = !(object) || $routeParams.editMode || !anyEditableField;
+                    $scope.appBar.hideEdit = !(object) || $routeParams.editMode || !anyEditableField;
 
-                        // rework to use viewmodel code
+                    // rework to use viewmodel code
                        
-                        $scope.appBar.doEdit = urlHelper.toAppUrl($location.path()) + "?editMode=true";
-                    });
+                    $scope.appBar.doEdit = urlHelper.toAppUrl($location.path()) + "?editMode=true";
+                });
             }
         };
 
         //tested
-        handlers.handleObject = function ($scope) {
+        handlers.handleObject = $scope => {
         
             context.getObject($routeParams.dt, $routeParams.id).
-                then(function (object: DomainObjectRepresentation) {
-                    context.setNestedObject(null);
-                    $scope.object = viewModelFactory.domainObjectViewModel(object);
-                    $scope.objectTemplate = objectTemplate;
-                    $scope.actionTemplate = actionTemplate;
-                    $scope.propertiesTemplate = viewPropertiesTemplate;
-                }, function (error) {
-                    setError(error);
-                });
+                then((object: DomainObjectRepresentation) => {
+                context.setNestedObject(null);
+                $scope.object = viewModelFactory.domainObjectViewModel(object);
+                $scope.objectTemplate = objectTemplate;
+                $scope.actionTemplate = actionTemplate;
+                $scope.propertiesTemplate = viewPropertiesTemplate;
+            }, error => {
+                setError(error);
+            });
 
         };
 
-        handlers.handleTransientObject = function ($scope) {
+        handlers.handleTransientObject = $scope => {
 
             context.getTransientObject().
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
 
-                    if (object) {
+                if (object) {
 
-                        $scope.backgroundColor = color.toColorFromType(object.domainType());
+                    $scope.backgroundColor = color.toColorFromType(object.domainType());
 
-                        context.setNestedObject(null);
-                        var obj = viewModelFactory.domainObjectViewModel(object, null, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.saveObject, $scope, object));
-                        obj.cancelEdit =  urlHelper.toAppUrl(context.getPreviousUrl()); 
+                    context.setNestedObject(null);
+                    var obj = viewModelFactory.domainObjectViewModel(object, null, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.saveObject, $scope, object));
+                    obj.cancelEdit =  urlHelper.toAppUrl(context.getPreviousUrl()); 
 
-                        $scope.object = obj;
-                        $scope.objectTemplate = objectTemplate;
-                        $scope.actionTemplate = "";
-                        $scope.propertiesTemplate = editPropertiesTemplate;
+                    $scope.object = obj;
+                    $scope.objectTemplate = objectTemplate;
+                    $scope.actionTemplate = "";
+                    $scope.propertiesTemplate = editPropertiesTemplate;
 
-                    }
-                    else {
-                        // transient has disappeared - return to previous page 
-                        //parent.history.back();
-                        navigation.back();
-                    }
+                }
+                else {
+                    // transient has disappeared - return to previous page 
+                    //parent.history.back();
+                    navigation.back();
+                }
 
-                }, function (error) {
-                    setError(error);
-                });
+            }, error => {
+                setError(error);
+            });
         };
 
 
         // tested
-        handlers.handleEditObject = function ($scope) {
+        handlers.handleEditObject = $scope => {
 
             context.getObject($routeParams.dt, $routeParams.id).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
 
-                    var detailPromises = _.map(object.propertyMembers(), (pm: PropertyMember) => { return repLoader.populate(pm.getDetails()); });
+                var detailPromises = _.map(object.propertyMembers(), (pm: PropertyMember) => { return repLoader.populate(pm.getDetails()); });
 
-                    $q.all(detailPromises).then(function (details: PropertyRepresentation[]) {
-                        context.setNestedObject(null);
-                        $scope.object = viewModelFactory.domainObjectViewModel(object, details, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.updateObject, $scope, object));
-                        $scope.objectTemplate = objectTemplate;
-                        $scope.actionTemplate = "";
-                        $scope.propertiesTemplate = editPropertiesTemplate;
-                    }, function (error) {
-                            setError(error);
-                        });
-
-                }, function (error) {
+                $q.all(detailPromises).then((details: PropertyRepresentation[]) => {
+                    context.setNestedObject(null);
+                    $scope.object = viewModelFactory.domainObjectViewModel(object, details, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.updateObject, $scope, object));
+                    $scope.objectTemplate = objectTemplate;
+                    $scope.actionTemplate = "";
+                    $scope.propertiesTemplate = editPropertiesTemplate;
+                }, error => {
                     setError(error);
                 });
+
+            }, error => {
+                setError(error);
+            });
         };
 
         // helper functions 

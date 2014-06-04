@@ -18,15 +18,14 @@ var Spiro;
                 return sid ? sid === type : (object.domainType() == type && object.instanceId() === id);
             }
 
-            // exposed for testing
+            // exposed for test mocking
             context.getDomainObject = function (type, id) {
                 var object = new Spiro.DomainObjectRepresentation();
                 object.hateoasUrl = Spiro.appPath + "/objects/" + type + "/" + id;
                 return repLoader.populate(object);
             };
 
-            // exposed for testing
-            // tested
+            // exposed for test mocking
             context.getService = function (type) {
                 var delay = $q.defer();
 
@@ -190,6 +189,7 @@ var Spiro;
                 return selectedChoice[parm] ? selectedChoice[parm][search] : null;
             };
 
+            // tested
             context.setSelectedChoice = function (parm, search, cvm) {
                 selectedChoice[parm] = selectedChoice[parm] || {};
                 selectedChoice[parm][search] = selectedChoice[parm][search] || [];

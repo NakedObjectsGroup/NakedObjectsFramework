@@ -1,4 +1,4 @@
-/// <reference path="typings/angularjs/angular.d.ts" />
+﻿/// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/underscore/underscore.d.ts" />
 /// <reference path="spiro.models.ts" />
 /// <reference path="spiro.angular.viewmodels.ts" />
@@ -12,7 +12,7 @@
 var Spiro;
 (function (Spiro) {
     (function (Angular) {
-        Angular.app.service("handlers", function ($routeParams, $location, $q, $cacheFactory, repLoader, context, viewModelFactory, urlHelper, color, repHandlers, navigation, $route) {
+        Angular.app.service("handlers", function ($routeParams, $location, $q, $cacheFactory, repLoader, context, viewModelFactory, urlHelper, color, repHandlers, navigation) {
             var handlers = this;
 
             handlers.handleBackground = function ($scope) {
