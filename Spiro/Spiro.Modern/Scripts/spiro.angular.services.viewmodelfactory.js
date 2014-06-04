@@ -315,7 +315,7 @@ var Spiro;
                 }
             }
 
-            function createFromDetails(collectionRep, populateItems, $scope) {
+            function createFromDetails(collectionRep, populateItems) {
                 var collectionViewModel = new Angular.CollectionViewModel();
                 var links = collectionRep.value().models;
 

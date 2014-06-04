@@ -29,7 +29,7 @@ module Spiro.Angular {
 
         var viewModelFactory = <IViewModelFactory>this;
 
-        viewModelFactory.errorViewModel = function(errorRep: ErrorRepresentation) {
+        viewModelFactory.errorViewModel = (errorRep: ErrorRepresentation) => {
             var errorViewModel = new ErrorViewModel();
             errorViewModel.message = errorRep.message() || "An Error occurred";
             var stackTrace = errorRep.stacktrace();
@@ -38,7 +38,7 @@ module Spiro.Angular {
             return errorViewModel;
         };
 
-        viewModelFactory.linkViewModel = function(linkRep: Link) {
+        viewModelFactory.linkViewModel = (linkRep: Link) => {
             var linkViewModel = new LinkViewModel();
             linkViewModel.title = linkRep.title();
             linkViewModel.href = urlHelper.toAppUrl(linkRep.href());
@@ -46,7 +46,7 @@ module Spiro.Angular {
             return linkViewModel;
         };
 
-        viewModelFactory.itemViewModel = function(linkRep: Link, parentHref: string, index: number) {
+        viewModelFactory.itemViewModel = (linkRep: Link, parentHref: string, index: number) => {
             var itemViewModel = new ItemViewModel();
             itemViewModel.title = linkRep.title();
             itemViewModel.href = urlHelper.toItemUrl(parentHref, linkRep.href());
@@ -55,7 +55,7 @@ module Spiro.Angular {
             return itemViewModel;
         };
 
-        viewModelFactory.parameterViewModel = function(parmRep: Parameter, id: string, previousValue: string): any {
+        viewModelFactory.parameterViewModel = (parmRep: Parameter, id: string, previousValue: string): any => {
             var parmViewModel = new ParameterViewModel();
 
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
@@ -154,7 +154,7 @@ module Spiro.Angular {
                     }
                 }
                 // clear any previous 
-               context.clearSelectedChoice(parmViewModel.id);
+                context.clearSelectedChoice(parmViewModel.id);
                
             } else {
                 if (parmRep.extensions().returnType === "boolean") {
@@ -176,14 +176,14 @@ module Spiro.Angular {
             return parmViewModel;
         };
 
-        viewModelFactory.actionViewModel = function(actionRep: ActionMember) {
+        viewModelFactory.actionViewModel = (actionRep: ActionMember) => {
             var actionViewModel = new ActionViewModel();
             actionViewModel.title = actionRep.extensions().friendlyName;
             actionViewModel.href = urlHelper.toActionUrl(actionRep.detailsLink().href());
             return actionViewModel;
         };
 
-        viewModelFactory.dialogViewModel = function(actionRep: ActionRepresentation, invoke: (dvm: DialogViewModel) => void) {
+        viewModelFactory.dialogViewModel = (actionRep: ActionRepresentation, invoke: (dvm: DialogViewModel) => void) => {
             var dialogViewModel = new DialogViewModel();
             var parameters = actionRep.parameters();
             var parms = urlHelper.actionParms();
@@ -210,7 +210,7 @@ module Spiro.Angular {
             return dialogViewModel;
         };
 
-        viewModelFactory.propertyViewModel = function(propertyRep: PropertyMember, id: string, propertyDetails?: PropertyRepresentation) {
+        viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, propertyDetails?: PropertyRepresentation) => {
             var propertyViewModel = new PropertyViewModel();
             propertyViewModel.title = propertyRep.extensions().friendlyName;
             propertyViewModel.value = propertyRep.isScalar() ? propertyRep.value().scalar() : propertyRep.value().toString();
@@ -316,7 +316,7 @@ module Spiro.Angular {
                 return _.map(links, (link) => {
                     var ivm = viewModelFactory.itemViewModel(link, href, i++);
                     var tempTgt = link.getTarget();
-                    repLoader.populate<DomainObjectRepresentation>(tempTgt).then(function (obj: DomainObjectRepresentation) {
+                    repLoader.populate<DomainObjectRepresentation>(tempTgt).then((obj: DomainObjectRepresentation) => {
                         ivm.target = viewModelFactory.domainObjectViewModel(obj);
 
                         if (!cvm.header) {
@@ -331,7 +331,7 @@ module Spiro.Angular {
             }
         }
 
-        function createFromDetails(collectionRep: CollectionRepresentation, populateItems?: boolean, $scope?: any) {
+        function createFromDetails(collectionRep: CollectionRepresentation, populateItems?: boolean) {
             var collectionViewModel = new CollectionViewModel();
             var links = collectionRep.value().models;
 
@@ -359,7 +359,7 @@ module Spiro.Angular {
             return collectionViewModel;
         }
 
-        viewModelFactory.collectionViewModel = function (collection: any, populateItems?: boolean) {
+        viewModelFactory.collectionViewModel = (collection: any, populateItems?: boolean) => {
             if (collection instanceof CollectionMember) {
                 return create(<CollectionMember>collection);
             }
@@ -372,7 +372,7 @@ module Spiro.Angular {
             return null;
         };
 
-        viewModelFactory.servicesViewModel = function (servicesRep: DomainServicesRepresentation) {
+        viewModelFactory.servicesViewModel = (servicesRep: DomainServicesRepresentation) => {
             var servicesViewModel = new ServicesViewModel();
 
             // filter out contributed action services 
@@ -387,7 +387,7 @@ module Spiro.Angular {
             return servicesViewModel;
         };
 
-        viewModelFactory.serviceViewModel = function (serviceRep: DomainObjectRepresentation) {
+        viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation) => {
             var serviceViewModel = new ServiceViewModel();
             var actions = serviceRep.actionMembers();
             serviceViewModel.serviceId = serviceRep.serviceId();
@@ -400,7 +400,7 @@ module Spiro.Angular {
             return serviceViewModel;
         };
 
-        viewModelFactory.domainObjectViewModel = function (objectRep: DomainObjectRepresentation, details?: PropertyRepresentation[], save?: (ovm: DomainObjectViewModel) => void) {
+        viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, details?: PropertyRepresentation[], save?: (ovm: DomainObjectViewModel) => void) => {
             var objectViewModel = new DomainObjectViewModel();
             var isTransient = !!objectRep.persistLink();
 

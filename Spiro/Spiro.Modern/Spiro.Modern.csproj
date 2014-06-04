@@ -168,15 +168,18 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="SpiroReadMe.txt" />
     <TypeScriptCompile Include="Tests\specs\colorService.ts" />
+    <Content Include="Tests\specs\colorService.js" />
     <Content Include="Tests\specs\contextService.js" />
     <Content Include="Tests\specs\controllers.js" />
     <TypeScriptCompile Include="Tests\specs\controllers.ts" />
     <TypeScriptCompile Include="Tests\specs\handlersService.ts" />
     <TypeScriptCompile Include="Tests\specs\helpers.ts" />
     <TypeScriptCompile Include="Tests\specs\maskService.ts" />
+    <TypeScriptCompile Include="Tests\specs\viewModelFactoryService.ts" />
     <Content Include="Tests\specs\handlersService.js" />
     <Content Include="Tests\specs\helpers.js" />
     <TypeScriptCompile Include="Tests\specs\contextService.ts" />
+    <Content Include="Tests\specs\maskService.js" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +216,8 @@
     <Content Include="Tests\specs\handlersService.js.map" />
     <Content Include="Tests\specs\helpers.js.map" />
     <Content Include="Tests\specs\contextService.js.map" />
+    <Content Include="Tests\specs\colorService.js.map" />
+    <Content Include="Tests\specs\maskService.js.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
