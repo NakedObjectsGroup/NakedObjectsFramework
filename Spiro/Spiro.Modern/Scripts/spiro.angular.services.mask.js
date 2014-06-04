@@ -7,14 +7,10 @@ var Spiro;
 (function (Spiro) {
     (function (Angular) {
         Angular.app.service('mask', function () {
-            var color = this;
+            var mask = this;
 
-            color.toLocalFilter = function (remoteMask) {
-                if (Angular.maskMap) {
-                    return Angular.maskMap[remoteMask];
-                }
-
-                return null;
+            mask.toLocalFilter = function (remoteMask) {
+                return Angular.maskMap ? Angular.maskMap[remoteMask] : null;
             };
         });
     })(Spiro.Angular || (Spiro.Angular = {}));

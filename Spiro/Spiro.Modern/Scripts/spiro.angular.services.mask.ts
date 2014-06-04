@@ -13,14 +13,10 @@ module Spiro.Angular {
 
     app.service('mask', function () {
 
-        var color = <IMask>this;
+        var mask = <IMask>this;
 
-        color.toLocalFilter = function (remoteMask: string) {
-            if (maskMap) {
-                return maskMap[remoteMask]; 
-            }
-
-            return null;
+        mask.toLocalFilter = (remoteMask: string) => {
+            return maskMap ? maskMap[remoteMask] : null;
         }
 
     });

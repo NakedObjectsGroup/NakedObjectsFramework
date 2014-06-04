@@ -10,12 +10,12 @@ var Spiro;
             var color = this;
 
             function hashCode(toHash) {
-                var hash = 0, i, char;
+                var hash = 0, i, chr;
                 if (toHash.length == 0)
                     return hash;
                 for (i = 0; i < toHash.length; i++) {
-                    char = toHash.charCodeAt(i);
-                    hash = ((hash << 5) - hash) + char;
+                    chr = toHash.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + chr;
                     hash = hash & hash; // Convert to 32bit integer
                 }
                 return hash;
@@ -23,14 +23,14 @@ var Spiro;
             ;
 
             function getColorMapValues(dt) {
-                var color = dt ? Angular.colorMap[dt] : Angular.defaultColor;
-                if (!color) {
+                var clr = dt ? Angular.colorMap[dt] : Angular.defaultColor;
+                if (!clr) {
                     var hash = Math.abs(hashCode(dt));
                     var index = hash % 18;
-                    color = Angular.defaultColorArray[index];
-                    Angular.colorMap[dt] = color;
+                    clr = Angular.defaultColorArray[index];
+                    Angular.colorMap[dt] = clr;
                 }
-                return color;
+                return clr;
             }
 
             function typeFromUrl(url) {
