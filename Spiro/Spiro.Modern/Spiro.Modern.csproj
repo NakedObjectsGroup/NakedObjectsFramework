@@ -167,10 +167,14 @@
     <Content Include="Scripts\underscore.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="SpiroReadMe.txt" />
+    <Content Include="Tests\specs\contextService.js" />
     <Content Include="Tests\specs\controllers.js" />
     <TypeScriptCompile Include="Tests\specs\controllers.ts" />
-    <Content Include="Tests\specs\services.js" />
-    <TypeScriptCompile Include="Tests\specs\services.ts" />
+    <TypeScriptCompile Include="Tests\specs\handlersService.ts" />
+    <TypeScriptCompile Include="Tests\specs\helpers.ts" />
+    <Content Include="Tests\specs\handlersService.js" />
+    <Content Include="Tests\specs\helpers.js" />
+    <TypeScriptCompile Include="Tests\specs\contextService.ts" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -184,7 +188,6 @@
     <Content Include="Scripts\jasmine\MIT.LICENSE" />
     <Content Include="Scripts\jquery-2.0.3.min.map" />
     <Content Include="Tests\specs\controllers.js.map" />
-    <Content Include="Tests\specs\services.js.map" />
     <Content Include="Scripts\spiro.angular.services.representationhandlers.js.map" />
     <Content Include="Scripts\spiro.angular.services.representationloader.js.map" />
     <Content Include="Scripts\spiro.angular.services.urlhelper.js.map" />
@@ -205,6 +208,9 @@
     <Content Include="Scripts\spiro.models.js.map" />
     <Content Include="Scripts\spiro.models.shims.js.map" />
     <Content Include="Scripts\underscore.min.map" />
+    <Content Include="Tests\specs\handlersService.js.map" />
+    <Content Include="Tests\specs\helpers.js.map" />
+    <Content Include="Tests\specs\contextService.js.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
