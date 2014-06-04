@@ -3,12 +3,12 @@ module Spiro.Angular {
 
     // Custom configuration for a particular implementation - example config included for 'Adventurework' application. 
 
-    export interface ColorMapInterface {
+    export interface IColorMapInterface {
         [index: string]: string;
     }
 
     // map of domain classes to colors  
-    export var colorMap : ColorMapInterface = {
+    export var colorMap : IColorMapInterface = {
         "AdventureWorksModel.CustomerRepository": "redLight",
         "AdventureWorksModel.Store": "red",
         "AdventureWorksModel.Individual": "red",

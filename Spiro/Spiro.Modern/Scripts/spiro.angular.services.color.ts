@@ -43,6 +43,7 @@ module Spiro.Angular {
             return (results && results.length > 2) ? results[2] : "";
         }
 
+        // tested
         color.toColorFromHref = (href: string): string => {
             var type = typeFromUrl(href);
             return "bg-color-" + getColorMapValues(type);

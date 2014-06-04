@@ -43,7 +43,8 @@ module.exports = function(config) {
       'Spiro.Modern/Tests/specs/helpers.js',
       'Spiro.Modern/Tests/specs/controllers.js',
       'Spiro.Modern/Tests/specs/contextService.js',
-      'Spiro.Modern/Tests/specs/handlersService.js'
+      'Spiro.Modern/Tests/specs/handlersService.js',
+      'Spiro.Modern/Tests/specs/colorService.js'
       
     ],
 

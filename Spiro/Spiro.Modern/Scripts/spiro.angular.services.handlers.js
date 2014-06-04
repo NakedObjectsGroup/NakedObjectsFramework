@@ -224,6 +224,7 @@ var Spiro;
                 });
             };
 
+            // tested
             handlers.handleTransientObject = function ($scope) {
                 context.getTransientObject().then(function (object) {
                     if (object) {

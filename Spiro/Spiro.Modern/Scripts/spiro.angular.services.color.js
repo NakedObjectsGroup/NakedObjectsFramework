@@ -39,6 +39,7 @@ var Spiro;
                 return (results && results.length > 2) ? results[2] : "";
             }
 
+            // tested
             color.toColorFromHref = function (href) {
                 var type = typeFromUrl(href);
                 return "bg-color-" + getColorMapValues(type);

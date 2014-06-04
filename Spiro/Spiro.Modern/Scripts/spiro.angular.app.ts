@@ -30,7 +30,7 @@ module Spiro.Angular {
    
     export var app = angular.module('app', ['ngRoute', 'ngTouch']);
 
-    app.config(function ($routeProvider: ng.route.IRouteProvider) {
+    app.config(($routeProvider: ng.route.IRouteProvider) => {
         $routeProvider.
             when('/services', {
                 templateUrl: servicesPageTemplate, 

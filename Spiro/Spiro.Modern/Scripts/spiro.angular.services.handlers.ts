@@ -268,6 +268,7 @@ module Spiro.Angular {
 
         };
 
+        // tested
         handlers.handleTransientObject = $scope => {
 
             context.getTransientObject().

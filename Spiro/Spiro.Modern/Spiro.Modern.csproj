@@ -167,6 +167,7 @@
     <Content Include="Scripts\underscore.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="SpiroReadMe.txt" />
+    <TypeScriptCompile Include="Tests\specs\colorService.ts" />
     <Content Include="Tests\specs\contextService.js" />
     <Content Include="Tests\specs\controllers.js" />
     <TypeScriptCompile Include="Tests\specs\controllers.ts" />
