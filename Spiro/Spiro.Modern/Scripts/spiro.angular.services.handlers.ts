@@ -9,7 +9,6 @@
 /// <reference path="spiro.angular.services.context.ts" />
 /// <reference path="spiro.angular.services.viewmodelfactory.ts" />
 /// <reference path="spiro.angular.services.navigation.browser.ts" />
-
 module Spiro.Angular {
 
 

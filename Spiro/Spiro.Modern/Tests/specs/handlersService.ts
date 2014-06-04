@@ -848,6 +848,104 @@ describe('handlers Service', () => {
         });
     });
 
+    describe('handleTransientObject', () => {
+        var getTransientObject;
+
+        describe('if transient is found', () => {
+
+            var testObject = new Spiro.DomainObjectRepresentation();
+            var testViewModel = { test: testObject };
+
+            var objectViewModel;
+            var setNestedObject;
+
+            var propertyMem = new Spiro.PropertyMember({}, testObject);
+            var propertyRep = new Spiro.PropertyRepresentation();
+
+            var populate;
+
+            beforeEach(inject(($rootScope, $routeParams, $q, repLoader: Spiro.Angular.IRepLoader, handlers: Spiro.Angular.IHandlers, context: Spiro.Angular.IContext, viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+                $scope = $rootScope.$new();
+
+                getTransientObject = spyOnPromise(context, 'getTransientObject', testObject);
+
+                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
+                setNestedObject = spyOn(context, 'setNestedObject');
+
+                spyOn(testObject, 'propertyMembers').andReturn([propertyMem]);
+                spyOn(propertyMem, 'getDetails').andReturn(propertyRep);
+                spyOn(testObject, 'domainType').andReturn("test");
+
+                spyOnPromise($q, 'all', [propertyRep]);
+
+                populate = spyOnPromise(repLoader, "populate", propertyRep);
+
+                handlers.handleTransientObject($scope);
+            }));
+
+
+            it('should update the scope', () => {
+                expect(getTransientObject).toHaveBeenCalled();
+                expect(objectViewModel).toHaveBeenCalledWith(testObject, null, jasmine.any(Function));
+                expect(setNestedObject).toHaveBeenCalledWith(null);
+
+                expect($scope.object).toEqual(testViewModel);
+                expect($scope.actionTemplate).toEqual("");
+                expect($scope.propertiesTemplate).toEqual("Content/partials/editProperties.html");
+            });
+
+
+        });
+
+        describe('if transient is not found', () => {
+
+            var testObject = null;
+            var nav;
+         
+            beforeEach(inject(($rootScope, $routeParams, $q, repLoader: Spiro.Angular.IRepLoader, handlers: Spiro.Angular.IHandlers, context: Spiro.Angular.IContext, navigation: Spiro.Angular.INavigation) => {
+                $scope = $rootScope.$new();
+
+                getTransientObject = spyOnPromise(context, 'getTransientObject', testObject);
+                nav = spyOn(navigation, 'back');
+            
+                handlers.handleTransientObject($scope);
+            }));
+
+            it('should navigate back', () => {
+                expect(getTransientObject).toHaveBeenCalled();
+                expect(nav).toHaveBeenCalled();
+            });
+
+
+        });
+
+
+        describe('if it has an error', () => {
+
+            var testObject = new Spiro.ErrorRepresentation();
+            var setError;
+
+            beforeEach(inject(($rootScope, $routeParams, handlers: Spiro.Angular.IHandlers, context: Spiro.Angular.IContext) => {
+                $scope = $rootScope.$new();
+
+                getTransientObject = spyOnPromiseFail(context, 'getTransientObject', testObject);
+                setError = spyOn(context, 'setError');
+
+                handlers.handleTransientObject($scope);
+            }));
+
+            it('should update the context', () => {
+                expect(getTransientObject).toHaveBeenCalledWith();
+                expect(setError).toHaveBeenCalledWith(testObject);
+
+                expect($scope.object).toBeUndefined();
+                expect($scope.actionTemplate).toBeUndefined();
+                expect($scope.propertiesTemplate).toBeUndefined();
+            });
+        });
+    });
+
+
     describe('handleError', () => {
 
         beforeEach(inject(($rootScope, handlers: Spiro.Angular.IHandlers, context: Spiro.Angular.IContext) => {
@@ -870,7 +968,7 @@ describe('handlers Service', () => {
 
         var navService: Spiro.Angular.INavigation;
 
-        beforeEach(inject(($rootScope, handlers: Spiro.Angular.IHandlers, $location: ng.ILocationService, urlHelper: Spiro.Angular.IUrlHelper, color: Spiro.Angular.IColor,  navigation: Spiro.Angular.INavigation) => {
+        beforeEach(inject(($rootScope, handlers: Spiro.Angular.IHandlers, $location: ng.ILocationService, urlHelper: Spiro.Angular.IUrlHelper, color: Spiro.Angular.IColor, navigation: Spiro.Angular.INavigation) => {
             $scope = $rootScope.$new();
             navService = navigation;
 
@@ -1355,12 +1453,12 @@ describe('handlers Service', () => {
         describe('if error is errorRep', () => {
 
             var testError = new Spiro.ErrorRepresentation();
-            
+
             var error;
             var path;
             var errorPath;
 
-            beforeEach(inject((repHandlers: Spiro.Angular.IRepHandlers,$location: ng.ILocationService, context : Spiro.Angular.IContext, urlHelper : Spiro.Angular.IUrlHelper) => {
+            beforeEach(inject((repHandlers: Spiro.Angular.IRepHandlers, $location: ng.ILocationService, context: Spiro.Angular.IContext, urlHelper: Spiro.Angular.IUrlHelper) => {
                 error = spyOn(context, 'setError');
                 path = spyOn($location, 'path');
                 errorPath = spyOn(urlHelper, 'toErrorPath').andReturn("apath");

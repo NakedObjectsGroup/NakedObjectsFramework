@@ -1,16 +1,16 @@
-﻿/// <reference path="typings/angularjs/angular.d.ts" />
-/// <reference path="typings/underscore/underscore.d.ts" />
-/// <reference path="spiro.models.ts" />
-/// <reference path="spiro.angular.viewmodels.ts" />
-/// <reference path="spiro.angular.app.ts" />
-/// <reference path="spiro.angular.services.color.ts" />
-/// <reference path="spiro.angular.services.representationloader.ts" />
-/// <reference path="spiro.angular.services.urlhelper.ts" />
-/// <reference path="spiro.angular.services.context.ts" />
-/// <reference path="spiro.angular.services.viewmodelfactory.ts" />
-/// <reference path="spiro.angular.services.navigation.browser.ts" />
 var Spiro;
 (function (Spiro) {
+    /// <reference path="typings/angularjs/angular.d.ts" />
+    /// <reference path="typings/underscore/underscore.d.ts" />
+    /// <reference path="spiro.models.ts" />
+    /// <reference path="spiro.angular.viewmodels.ts" />
+    /// <reference path="spiro.angular.app.ts" />
+    /// <reference path="spiro.angular.services.color.ts" />
+    /// <reference path="spiro.angular.services.representationloader.ts" />
+    /// <reference path="spiro.angular.services.urlhelper.ts" />
+    /// <reference path="spiro.angular.services.context.ts" />
+    /// <reference path="spiro.angular.services.viewmodelfactory.ts" />
+    /// <reference path="spiro.angular.services.navigation.browser.ts" />
     (function (Angular) {
         Angular.app.service("handlers", function ($routeParams, $location, $q, $cacheFactory, repLoader, context, viewModelFactory, urlHelper, color, repHandlers, navigation) {
             var handlers = this;

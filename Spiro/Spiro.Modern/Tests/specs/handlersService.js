@@ -1,4 +1,4 @@
-﻿/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
+/// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/spiro.angular.services.handlers.ts" />
@@ -755,6 +755,94 @@ describe('handlers Service', function () {
 
             it('should update the context', function () {
                 expect(getObject).toHaveBeenCalledWith("test", "1");
+                expect(setError).toHaveBeenCalledWith(testObject);
+
+                expect($scope.object).toBeUndefined();
+                expect($scope.actionTemplate).toBeUndefined();
+                expect($scope.propertiesTemplate).toBeUndefined();
+            });
+        });
+    });
+
+    describe('handleTransientObject', function () {
+        var getTransientObject;
+
+        describe('if transient is found', function () {
+            var testObject = new Spiro.DomainObjectRepresentation();
+            var testViewModel = { test: testObject };
+
+            var objectViewModel;
+            var setNestedObject;
+
+            var propertyMem = new Spiro.PropertyMember({}, testObject);
+            var propertyRep = new Spiro.PropertyRepresentation();
+
+            var populate;
+
+            beforeEach(inject(function ($rootScope, $routeParams, $q, repLoader, handlers, context, viewModelFactory) {
+                $scope = $rootScope.$new();
+
+                getTransientObject = spyOnPromise(context, 'getTransientObject', testObject);
+
+                objectViewModel = spyOn(viewModelFactory, 'domainObjectViewModel').andReturn(testViewModel);
+                setNestedObject = spyOn(context, 'setNestedObject');
+
+                spyOn(testObject, 'propertyMembers').andReturn([propertyMem]);
+                spyOn(propertyMem, 'getDetails').andReturn(propertyRep);
+                spyOn(testObject, 'domainType').andReturn("test");
+
+                spyOnPromise($q, 'all', [propertyRep]);
+
+                populate = spyOnPromise(repLoader, "populate", propertyRep);
+
+                handlers.handleTransientObject($scope);
+            }));
+
+            it('should update the scope', function () {
+                expect(getTransientObject).toHaveBeenCalled();
+                expect(objectViewModel).toHaveBeenCalledWith(testObject, null, jasmine.any(Function));
+                expect(setNestedObject).toHaveBeenCalledWith(null);
+
+                expect($scope.object).toEqual(testViewModel);
+                expect($scope.actionTemplate).toEqual("");
+                expect($scope.propertiesTemplate).toEqual("Content/partials/editProperties.html");
+            });
+        });
+
+        describe('if transient is not found', function () {
+            var testObject = null;
+            var nav;
+
+            beforeEach(inject(function ($rootScope, $routeParams, $q, repLoader, handlers, context, navigation) {
+                $scope = $rootScope.$new();
+
+                getTransientObject = spyOnPromise(context, 'getTransientObject', testObject);
+                nav = spyOn(navigation, 'back');
+
+                handlers.handleTransientObject($scope);
+            }));
+
+            it('should navigate back', function () {
+                expect(getTransientObject).toHaveBeenCalled();
+                expect(nav).toHaveBeenCalled();
+            });
+        });
+
+        describe('if it has an error', function () {
+            var testObject = new Spiro.ErrorRepresentation();
+            var setError;
+
+            beforeEach(inject(function ($rootScope, $routeParams, handlers, context) {
+                $scope = $rootScope.$new();
+
+                getTransientObject = spyOnPromiseFail(context, 'getTransientObject', testObject);
+                setError = spyOn(context, 'setError');
+
+                handlers.handleTransientObject($scope);
+            }));
+
+            it('should update the context', function () {
+                expect(getTransientObject).toHaveBeenCalledWith();
                 expect(setError).toHaveBeenCalledWith(testObject);
 
                 expect($scope.object).toBeUndefined();
