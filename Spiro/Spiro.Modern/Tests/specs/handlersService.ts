@@ -866,6 +866,33 @@ describe('handlers Service', () => {
 
     });
 
+    describe('handleBackground', () => {
+
+        var navService: Spiro.Angular.INavigation;
+
+        beforeEach(inject(($rootScope, handlers: Spiro.Angular.IHandlers, $location: ng.ILocationService, urlHelper: Spiro.Angular.IUrlHelper, color: Spiro.Angular.IColor,  navigation: Spiro.Angular.INavigation) => {
+            $scope = $rootScope.$new();
+            navService = navigation;
+
+            spyOn(color, 'toColorFromHref').andReturn("acolor");
+            spyOn(urlHelper, 'toAppUrl').andReturn("aurl");
+            spyOn(navigation, 'push');
+
+            handlers.handleBackground($scope);
+        }));
+
+
+        it('should set scope variables', () => {
+            expect($scope.backgroundColor).toEqual("acolor");
+            expect($scope.closeNestedObject).toEqual("aurl");
+            expect($scope.closeCollection).toEqual("aurl");
+            expect(navService.push).toHaveBeenCalled();
+        });
+
+
+    });
+
+
     describe('handleAppBar', () => {
 
 
@@ -1315,7 +1342,6 @@ describe('handlers Service', () => {
                 repHandlers.setInvokeUpdateError($scope, errorMap, vms, testViewModel);
             }));
 
-
             it('should set the parameters and error', () => {
                 expect(vms[0].value).toBe("1");
                 expect(vms[0].message).toBe("a reason");
@@ -1326,26 +1352,30 @@ describe('handlers Service', () => {
             });
         });
 
-        // todo fix
+        describe('if error is errorRep', () => {
 
-        //describe('if error is errorRep', function () {
+            var testError = new Spiro.ErrorRepresentation();
+            
+            var error;
+            var path;
+            var errorPath;
 
-        //    var testError = new Spiro.ErrorRepresentation();
-        //    var testErrorViewModel = new Spiro.Angular.ErrorViewModel();
-        //    var errorViewModel;
+            beforeEach(inject((repHandlers: Spiro.Angular.IRepHandlers,$location: ng.ILocationService, context : Spiro.Angular.IContext, urlHelper : Spiro.Angular.IUrlHelper) => {
+                error = spyOn(context, 'setError');
+                path = spyOn($location, 'path');
+                errorPath = spyOn(urlHelper, 'toErrorPath').andReturn("apath");
 
-        //    beforeEach(inject(function (repHandlers: Spiro.Angular.IRepHandlers, viewModelFactory: Spiro.Angular.IViewModelFactory) {
-        //        errorViewModel = spyOn(viewModelFactory, 'errorViewModel').andReturn(testErrorViewModel);
-        //        repHandlers.setInvokeUpdateError($scope, testError, [], testViewModel);
-        //    }));
+                repHandlers.setInvokeUpdateError($scope, testError, [], testViewModel);
+            }));
 
-        //    it('should set the scope ', function () {
-        //        expect(errorViewModel).toHaveBeenCalledWith(testError);
-        //        expect($scope.error).toBe(testErrorViewModel);
-        //        expect($scope.dialogTemplate).toBe("Content/partials/error.html");
-        //    });
+            it('should set the location path', () => {
+                expect(error).toHaveBeenCalledWith(testError);
+                expect(path).toHaveBeenCalledWith("apath");
+                expect(errorPath).toHaveBeenCalled();
 
-        //});
+            });
+
+        });
 
         describe('if error is string', () => {
 

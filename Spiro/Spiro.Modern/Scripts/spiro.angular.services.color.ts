@@ -7,8 +7,8 @@
 module Spiro.Angular {
 
     export interface IColor {
-        toColorFromHref(href: string)
-        toColorFromType(type : string);
+        toColorFromHref(href: string) : string;
+        toColorFromType(type : string) : string;
     }
 
     app.service('color', function () {
@@ -43,13 +43,11 @@ module Spiro.Angular {
             return (results && results.length > 2) ? results[2] : "";
         }
 
-        color.toColorFromHref = function (href: string) {
+        color.toColorFromHref = (href: string): string => {
             var type = typeFromUrl(href);
             return "bg-color-" + getColorMapValues(type);
         }
 
-        color.toColorFromType = function (type : string) {
-            return "bg-color-" + getColorMapValues(type);
-        }
+        color.toColorFromType = (type: string): string => "bg-color-" + getColorMapValues(type);
     });
 }

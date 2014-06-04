@@ -15,6 +15,7 @@ var Spiro;
         Angular.app.service("handlers", function ($routeParams, $location, $q, $cacheFactory, repLoader, context, viewModelFactory, urlHelper, color, repHandlers, navigation) {
             var handlers = this;
 
+            // tested
             handlers.handleBackground = function ($scope) {
                 $scope.backgroundColor = color.toColorFromHref($location.absUrl());
                 $scope.closeNestedObject = urlHelper.toAppUrl($location.path(), ["property", "collectionItem", "resultObject"]);

@@ -779,6 +779,28 @@ describe('handlers Service', function () {
         });
     });
 
+    describe('handleBackground', function () {
+        var navService;
+
+        beforeEach(inject(function ($rootScope, handlers, $location, urlHelper, color, navigation) {
+            $scope = $rootScope.$new();
+            navService = navigation;
+
+            spyOn(color, 'toColorFromHref').andReturn("acolor");
+            spyOn(urlHelper, 'toAppUrl').andReturn("aurl");
+            spyOn(navigation, 'push');
+
+            handlers.handleBackground($scope);
+        }));
+
+        it('should set scope variables', function () {
+            expect($scope.backgroundColor).toEqual("acolor");
+            expect($scope.closeNestedObject).toEqual("aurl");
+            expect($scope.closeCollection).toEqual("aurl");
+            expect(navService.push).toHaveBeenCalled();
+        });
+    });
+
     describe('handleAppBar', function () {
         function expectAppBarData() {
             expect($scope.appBar).toBeDefined();
@@ -1198,21 +1220,28 @@ describe('handlers Service', function () {
             });
         });
 
-        // todo fix
-        //describe('if error is errorRep', function () {
-        //    var testError = new Spiro.ErrorRepresentation();
-        //    var testErrorViewModel = new Spiro.Angular.ErrorViewModel();
-        //    var errorViewModel;
-        //    beforeEach(inject(function (repHandlers: Spiro.Angular.IRepHandlers, viewModelFactory: Spiro.Angular.IViewModelFactory) {
-        //        errorViewModel = spyOn(viewModelFactory, 'errorViewModel').andReturn(testErrorViewModel);
-        //        repHandlers.setInvokeUpdateError($scope, testError, [], testViewModel);
-        //    }));
-        //    it('should set the scope ', function () {
-        //        expect(errorViewModel).toHaveBeenCalledWith(testError);
-        //        expect($scope.error).toBe(testErrorViewModel);
-        //        expect($scope.dialogTemplate).toBe("Content/partials/error.html");
-        //    });
-        //});
+        describe('if error is errorRep', function () {
+            var testError = new Spiro.ErrorRepresentation();
+
+            var error;
+            var path;
+            var errorPath;
+
+            beforeEach(inject(function (repHandlers, $location, context, urlHelper) {
+                error = spyOn(context, 'setError');
+                path = spyOn($location, 'path');
+                errorPath = spyOn(urlHelper, 'toErrorPath').andReturn("apath");
+
+                repHandlers.setInvokeUpdateError($scope, testError, [], testViewModel);
+            }));
+
+            it('should set the location path', function () {
+                expect(error).toHaveBeenCalledWith(testError);
+                expect(path).toHaveBeenCalledWith("apath");
+                expect(errorPath).toHaveBeenCalled();
+            });
+        });
+
         describe('if error is string', function () {
             var errorMessage = 'an error message';
 
