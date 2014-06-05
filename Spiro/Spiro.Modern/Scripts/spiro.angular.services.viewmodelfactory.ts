@@ -11,7 +11,7 @@ module Spiro.Angular {
     export interface IViewModelFactory {
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         linkViewModel(linkRep: Link): LinkViewModel;
-        itemViewModel(linkRep: Link, parentHref: string, index: number): ItemViewModel;
+        itemViewModel(linkRep: Link, parentHref: string): ItemViewModel;
         parameterViewModel(parmRep: Parameter, id: string, previousValue: string): ParameterViewModel;
         actionViewModel(actionRep: ActionMember): ActionViewModel;
         dialogViewModel(actionRep: ActionRepresentation, invoke: (dvm: DialogViewModel) => void): DialogViewModel;
@@ -29,6 +29,7 @@ module Spiro.Angular {
 
         var viewModelFactory = <IViewModelFactory>this;
 
+        // tested
         viewModelFactory.errorViewModel = (errorRep: ErrorRepresentation) => {
             var errorViewModel = new ErrorViewModel();
             errorViewModel.message = errorRep.message() || "An Error occurred";
@@ -38,6 +39,7 @@ module Spiro.Angular {
             return errorViewModel;
         };
 
+        // tested
         viewModelFactory.linkViewModel = (linkRep: Link) => {
             var linkViewModel = new LinkViewModel();
             linkViewModel.title = linkRep.title();
@@ -46,7 +48,7 @@ module Spiro.Angular {
             return linkViewModel;
         };
 
-        viewModelFactory.itemViewModel = (linkRep: Link, parentHref: string, index: number) => {
+        viewModelFactory.itemViewModel = (linkRep: Link, parentHref: string) => {
             var itemViewModel = new ItemViewModel();
             itemViewModel.title = linkRep.title();
             itemViewModel.href = urlHelper.toItemUrl(parentHref, linkRep.href());
@@ -311,10 +313,9 @@ module Spiro.Angular {
 
         function getItems(cvm : CollectionViewModel, links: Spiro.Link[], href: string, populateItems?: boolean) {
 
-            var i = 0;
             if (populateItems) {
                 return _.map(links, (link) => {
-                    var ivm = viewModelFactory.itemViewModel(link, href, i++);
+                    var ivm = viewModelFactory.itemViewModel(link, href);
                     var tempTgt = link.getTarget();
                     repLoader.populate<DomainObjectRepresentation>(tempTgt).then((obj: DomainObjectRepresentation) => {
                         ivm.target = viewModelFactory.domainObjectViewModel(obj);
@@ -327,7 +328,7 @@ module Spiro.Angular {
                     return ivm;
                 });
             } else {
-                return _.map(links, (link) => { return viewModelFactory.itemViewModel(link, href, i++); });
+                return _.map(links, (link) => { return viewModelFactory.itemViewModel(link, href); });
             }
         }
 

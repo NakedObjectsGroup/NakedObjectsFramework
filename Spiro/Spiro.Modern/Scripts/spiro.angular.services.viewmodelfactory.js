@@ -12,6 +12,7 @@ var Spiro;
         Angular.app.service('viewModelFactory', function ($q, $location, $filter, urlHelper, repLoader, color, context, repHandlers, mask) {
             var viewModelFactory = this;
 
+            // tested
             viewModelFactory.errorViewModel = function (errorRep) {
                 var errorViewModel = new Angular.ErrorViewModel();
                 errorViewModel.message = errorRep.message() || "An Error occurred";
@@ -21,6 +22,7 @@ var Spiro;
                 return errorViewModel;
             };
 
+            // tested
             viewModelFactory.linkViewModel = function (linkRep) {
                 var linkViewModel = new Angular.LinkViewModel();
                 linkViewModel.title = linkRep.title();
@@ -29,7 +31,7 @@ var Spiro;
                 return linkViewModel;
             };
 
-            viewModelFactory.itemViewModel = function (linkRep, parentHref, index) {
+            viewModelFactory.itemViewModel = function (linkRep, parentHref) {
                 var itemViewModel = new Angular.ItemViewModel();
                 itemViewModel.title = linkRep.title();
                 itemViewModel.href = urlHelper.toItemUrl(parentHref, linkRep.href());
@@ -292,10 +294,9 @@ var Spiro;
             }
 
             function getItems(cvm, links, href, populateItems) {
-                var i = 0;
                 if (populateItems) {
                     return _.map(links, function (link) {
-                        var ivm = viewModelFactory.itemViewModel(link, href, i++);
+                        var ivm = viewModelFactory.itemViewModel(link, href);
                         var tempTgt = link.getTarget();
                         repLoader.populate(tempTgt).then(function (obj) {
                             ivm.target = viewModelFactory.domainObjectViewModel(obj);
@@ -310,7 +311,7 @@ var Spiro;
                     });
                 } else {
                     return _.map(links, function (link) {
-                        return viewModelFactory.itemViewModel(link, href, i++);
+                        return viewModelFactory.itemViewModel(link, href);
                     });
                 }
             }
