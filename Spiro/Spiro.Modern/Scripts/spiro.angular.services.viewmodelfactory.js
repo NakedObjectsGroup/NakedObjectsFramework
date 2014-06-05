@@ -397,6 +397,7 @@ var Spiro;
                 return serviceViewModel;
             };
 
+            // tested
             viewModelFactory.domainObjectViewModel = function (objectRep, details, save) {
                 var objectViewModel = new Angular.DomainObjectViewModel();
                 var isTransient = !!objectRep.persistLink();

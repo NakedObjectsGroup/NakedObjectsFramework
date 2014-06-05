@@ -410,6 +410,7 @@ module Spiro.Angular {
             return serviceViewModel;
         };
 
+        // tested
         viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, details?: PropertyRepresentation[], save?: (ovm: DomainObjectViewModel) => void) => {
             var objectViewModel = new DomainObjectViewModel();
             var isTransient = !!objectRep.persistLink();

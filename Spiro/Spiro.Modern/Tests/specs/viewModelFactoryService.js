@@ -234,5 +234,52 @@ describe('viewModelFactory Service', function () {
             });
         });
     });
+
+    describe("create object view model", function () {
+        var resultVm;
+        var rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://objects/AdventureWorksModel.Product/1" };
+
+        var rawObject = { domainType: "an object", links: [rawSelfLink], title: "a title", extensions: { friendlyName: "a name" } };
+
+        describe('from populated rep', function () {
+            beforeEach(inject(function (viewModelFactory) {
+                resultVm = viewModelFactory.domainObjectViewModel(new Spiro.DomainObjectRepresentation(rawObject));
+            }));
+
+            it('creates a object view model', function () {
+                expect(resultVm.domainType).toBe("an object");
+                expect(resultVm.title).toBe("a title");
+                expect(resultVm.actions.length).toBe(0);
+                expect(resultVm.properties.length).toBe(0);
+                expect(resultVm.collections.length).toBe(0);
+                expect(resultVm.color).toBe("bg-color-red");
+                expect(resultVm.href).toBe("#/objects/AdventureWorksModel.Product/1");
+                expect(resultVm.cancelEdit).toBe("#/objects/AdventureWorksModel.Product/1");
+            });
+        });
+
+        describe('from transient populated rep', function () {
+            beforeEach(inject(function (viewModelFactory) {
+                var rawPersistLink = { rel: "urn:org.restfulobjects:rels/persist", href: "http://objects/AdventureWorksModel.Product" };
+                rawObject.links.pop();
+                rawObject.links.push(rawPersistLink);
+                var doRep = new Spiro.DomainObjectRepresentation(rawObject);
+                doRep.hateoasUrl = "http://objects/AdventureWorksModel.Product";
+
+                resultVm = viewModelFactory.domainObjectViewModel(doRep);
+            }));
+
+            it('creates a object view model', function () {
+                expect(resultVm.domainType).toBe("an object");
+                expect(resultVm.title).toBe("Unsaved a name");
+                expect(resultVm.actions.length).toBe(0);
+                expect(resultVm.properties.length).toBe(0);
+                expect(resultVm.collections.length).toBe(0);
+                expect(resultVm.color).toBe("bg-color-red");
+                expect(resultVm.href).toBe("#/objects/AdventureWorksModel.Product");
+                expect(resultVm.cancelEdit).toBe("");
+            });
+        });
+    });
 });
 //# sourceMappingURL=viewModelFactoryService.js.map
