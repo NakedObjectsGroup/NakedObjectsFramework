@@ -380,6 +380,7 @@ module Spiro.Angular {
             return null;
         };
 
+        // tested
         viewModelFactory.servicesViewModel = (servicesRep: DomainServicesRepresentation) => {
             var servicesViewModel = new ServicesViewModel();
 
@@ -395,6 +396,7 @@ module Spiro.Angular {
             return servicesViewModel;
         };
 
+        // tested
         viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation) => {
             var serviceViewModel = new ServiceViewModel();
             var actions = serviceRep.actionMembers();

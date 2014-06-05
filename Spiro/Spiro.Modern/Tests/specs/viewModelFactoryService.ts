@@ -225,16 +225,49 @@ describe('viewModelFactory Service', () => {
                 expect(resultVm.pluralName).toBe("Objects");
             });
         });
+    });
+
+    describe("create services view model", () => {
+        var resultVm: Spiro.Angular.ServicesViewModel;
+        var rawServices = { value : [] };
 
 
+        describe('from populated rep', () => {
+
+            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+                resultVm = viewModelFactory.servicesViewModel(new Spiro.DomainServicesRepresentation(rawServices));
+            }));
+
+            it('creates a services view model', () => {
+                expect(resultVm.title).toBe("Services");
+                expect(resultVm.color).toBe("bg-color-darkBlue");
+                expect(resultVm.items.length).toBe(0);
+            });
+        });        
 
     });
 
+    describe("create service view model", () => {
+        var resultVm: Spiro.Angular.ServiceViewModel;
+        var rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://services/AdventureWorksModel.ProductRepository" };
 
+        var rawService = { serviceId : "a service", value: [] , links : [rawSelfLink],title : "a title" };
 
+        describe('from populated rep', () => {
 
+            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+                resultVm = viewModelFactory.serviceViewModel(new Spiro.DomainObjectRepresentation(rawService));
+            }));
 
+            it('creates a service view model', () => {
+                expect(resultVm.serviceId).toBe("a service");
+                expect(resultVm.title).toBe("a title");
+                expect(resultVm.actions.length).toBe(0);
+                expect(resultVm.color).toBe("bg-color-greenLight");
+                expect(resultVm.href).toBe("#/services/AdventureWorksModel.ProductRepository");
+                
+            });
+        });
+    });
 
-
-  
 }); 

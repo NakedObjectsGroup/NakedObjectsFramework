@@ -364,6 +364,7 @@ var Spiro;
                 return null;
             };
 
+            // tested
             viewModelFactory.servicesViewModel = function (servicesRep) {
                 var servicesViewModel = new Angular.ServicesViewModel();
 
@@ -381,6 +382,7 @@ var Spiro;
                 return servicesViewModel;
             };
 
+            // tested
             viewModelFactory.serviceViewModel = function (serviceRep) {
                 var serviceViewModel = new Angular.ServiceViewModel();
                 var actions = serviceRep.actionMembers();
