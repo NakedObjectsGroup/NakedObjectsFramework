@@ -380,7 +380,7 @@ describe('viewModelFactory Service', () => {
             });
         });
 
-        describe('from populated rep with prompt', () => {
+        describe('from populated rep with prompt autocomplete', () => {
 
             beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
                 var rawPromptLink = {
@@ -412,7 +412,38 @@ describe('viewModelFactory Service', () => {
             });
         });
 
+        describe('from populated rep with prompt conditional choices', () => {
 
+            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+                var rawPromptLink = {
+                    rel: "urn:org.restfulobjects:rels/prompt",
+                    href: "http://services/AdventureWorksModel.ProductRepository/prompt",
+                    arguments: { "parm": { value: null } },
+                    extensions: { minLength: 0 },
+                    type: 'application/json; profile = "urn:org.restfulobjects:repr-types/prompt"'
+                };
+
+                rawParameter.choices = null;
+                rawParameter.default = 1;
+                rawParameter.links.pop();
+                rawParameter.links.push(rawPromptLink);
+
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction)), "", "");
+            }));
+
+            it('creates a parameter view model with prompt', () => {
+
+
+                expect(resultVm.choices.length).toBe(0);
+                expect(resultVm.hasChoices).toBe(false);
+                expect(resultVm.hasPrompt).toBe(false);
+                expect(resultVm.hasConditionalChoices).toBe(true);
+                expect(resultVm.isMultipleChoices).toBe(false);
+                expect(resultVm.choice.value).toBe("1");
+                expect(resultVm.value).toBeUndefined();
+
+            });
+        });
 
     });
 

@@ -41,6 +41,7 @@ var Spiro;
                 return itemViewModel;
             };
 
+            // tested
             viewModelFactory.parameterViewModel = function (parmRep, id, previousValue) {
                 var parmViewModel = new Angular.ParameterViewModel();
 

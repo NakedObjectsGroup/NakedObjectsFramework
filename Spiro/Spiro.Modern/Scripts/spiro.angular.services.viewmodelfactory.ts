@@ -58,6 +58,7 @@ module Spiro.Angular {
             return itemViewModel;
         };
 
+        // tested
         viewModelFactory.parameterViewModel = (parmRep: Parameter, id: string, previousValue: string) => {
             var parmViewModel = new ParameterViewModel();
 
