@@ -58,7 +58,7 @@ module Spiro.Angular {
             return itemViewModel;
         };
 
-        viewModelFactory.parameterViewModel = (parmRep: Parameter, id: string, previousValue: string): any => {
+        viewModelFactory.parameterViewModel = (parmRep: Parameter, id: string, previousValue: string) => {
             var parmViewModel = new ParameterViewModel();
 
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";

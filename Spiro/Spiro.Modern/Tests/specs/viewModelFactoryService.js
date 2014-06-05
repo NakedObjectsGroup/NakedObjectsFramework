@@ -281,5 +281,57 @@ describe('viewModelFactory Service', function () {
             });
         });
     });
+
+    describe("create parameter view model", function () {
+        var resultVm;
+
+        var rawParameter = { extensions: { friendlyName: "a parm" }, links: [] };
+        var rawAction = {};
+
+        describe('from populated rep', function () {
+            beforeEach(inject(function (viewModelFactory) {
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction)), "", "pv");
+            }));
+
+            it('creates a parameter view model', function () {
+                expect(resultVm.type).toBe("ref");
+                expect(resultVm.title).toBe("a parm");
+                expect(resultVm.dflt).toBe("");
+                expect(resultVm.message).toBe("");
+                expect(resultVm.mask).toBeUndefined();
+                expect(resultVm.id).toBe("");
+                expect(resultVm.argId).toBe("");
+                expect(resultVm.returnType).toBeUndefined();
+                expect(resultVm.format).toBeUndefined();
+                expect(resultVm.reference).toBe("");
+
+                expect(resultVm.choices.length).toBe(0);
+                expect(resultVm.hasChoices).toBe(false);
+                expect(resultVm.hasPrompt).toBe(false);
+                expect(resultVm.hasConditionalChoices).toBe(false);
+                expect(resultVm.isMultipleChoices).toBe(false);
+                expect(resultVm.value).toBe("pv");
+            });
+        });
+
+        describe('from populated rep with scalar choices', function () {
+            beforeEach(inject(function (viewModelFactory) {
+                rawParameter.choices = [1, 2, 3];
+                rawParameter.default = 1;
+
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction)), "", "");
+            }));
+
+            it('creates a parameter view model', function () {
+                expect(resultVm.choices.length).toBe(3);
+                expect(resultVm.hasChoices).toBe(true);
+                expect(resultVm.hasPrompt).toBe(false);
+                expect(resultVm.hasConditionalChoices).toBe(false);
+                expect(resultVm.isMultipleChoices).toBe(false);
+                expect(resultVm.choice.value).toBe("1");
+                expect(resultVm.value).toBeUndefined();
+            });
+        });
+    });
 });
 //# sourceMappingURL=viewModelFactoryService.js.map
