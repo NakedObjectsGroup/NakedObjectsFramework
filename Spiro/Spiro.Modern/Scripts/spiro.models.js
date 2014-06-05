@@ -513,7 +513,6 @@ var Spiro;
         };
 
         Parameter.prototype.getPrompts = function () {
-            //  var arguments = this.promptLink().arguments;
             return this.promptLink().getTarget();
         };
 

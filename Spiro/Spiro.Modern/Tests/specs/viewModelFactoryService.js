@@ -322,10 +322,38 @@ describe('viewModelFactory Service', function () {
                 resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction)), "", "");
             }));
 
-            it('creates a parameter view model', function () {
+            it('creates a parameter view model with choices', function () {
                 expect(resultVm.choices.length).toBe(3);
                 expect(resultVm.hasChoices).toBe(true);
                 expect(resultVm.hasPrompt).toBe(false);
+                expect(resultVm.hasConditionalChoices).toBe(false);
+                expect(resultVm.isMultipleChoices).toBe(false);
+                expect(resultVm.choice.value).toBe("1");
+                expect(resultVm.value).toBeUndefined();
+            });
+        });
+
+        describe('from populated rep with prompt', function () {
+            beforeEach(inject(function (viewModelFactory) {
+                var rawPromptLink = {
+                    rel: "urn:org.restfulobjects:rels/prompt",
+                    href: "http://services/AdventureWorksModel.ProductRepository/prompt",
+                    arguments: { "x-ro-searchTerm": { value: null } },
+                    extensions: { minLength: 0 },
+                    type: 'application/json; profile = "urn:org.restfulobjects:repr-types/prompt"'
+                };
+
+                rawParameter.choices = null;
+                rawParameter.default = 1;
+                rawParameter.links.push(rawPromptLink);
+
+                resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction)), "", "");
+            }));
+
+            it('creates a parameter view model with prompt', function () {
+                expect(resultVm.choices.length).toBe(0);
+                expect(resultVm.hasChoices).toBe(false);
+                expect(resultVm.hasPrompt).toBe(true);
                 expect(resultVm.hasConditionalChoices).toBe(false);
                 expect(resultVm.isMultipleChoices).toBe(false);
                 expect(resultVm.choice.value).toBe("1");

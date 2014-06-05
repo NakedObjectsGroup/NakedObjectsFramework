@@ -549,8 +549,6 @@ module Spiro {
         }
 
         getPrompts(): PromptRepresentation {
-          //  var arguments = this.promptLink().arguments;
-
             return <PromptRepresentation> this.promptLink().getTarget();
         }
 
