@@ -299,6 +299,7 @@ module Spiro.Angular {
             return propertyViewModel;
         };
 
+        // tested
         function create(collectionRep: CollectionMember) {
             var collectionViewModel = new CollectionViewModel();
 
@@ -335,6 +336,7 @@ module Spiro.Angular {
             }
         }
 
+        // tested
         function createFromDetails(collectionRep: CollectionRepresentation, populateItems?: boolean) {
             var collectionViewModel = new CollectionViewModel();
             var links = collectionRep.value().models;
@@ -351,6 +353,7 @@ module Spiro.Angular {
             return collectionViewModel;
         }
 
+        // tested
         function createFromList(listRep: ListRepresentation, populateItems?: boolean) {
             var collectionViewModel = new CollectionViewModel();
             var links = listRep.value().models;
@@ -363,6 +366,7 @@ module Spiro.Angular {
             return collectionViewModel;
         }
 
+        // tested
         viewModelFactory.collectionViewModel = (collection: any, populateItems?: boolean) => {
             if (collection instanceof CollectionMember) {
                 return create(<CollectionMember>collection);

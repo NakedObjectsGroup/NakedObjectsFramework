@@ -141,5 +141,60 @@ describe('viewModelFactory Service', function () {
             });
         });
     });
+
+    describe('create collectionViewModel', function () {
+        var resultVm;
+        var rawDetailsLink = { rel: "urn:org.restfulobjects:rels/details", href: "http://objects/AdventureWorksModel.Product/1/collections/acollection" };
+        var rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://objects/AdventureWorksModel.Product/1/collections/acollection" };
+
+        var rawCollection = { size: 0, extensions: { friendlyName: "a title", pluralName: "somethings", elementType: "AdventureWorksModel.Product" }, links: [rawDetailsLink] };
+
+        describe('from collection member rep', function () {
+            beforeEach(inject(function (viewModelFactory) {
+                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionMember(rawCollection, {}));
+            }));
+
+            it('creates a dialog view model', function () {
+                expect(resultVm.title).toBe("a title");
+                expect(resultVm.size).toBe(0);
+                expect(resultVm.href).toBe("#/objects/AdventureWorksModel.Product/1?collection=acollection");
+                expect(resultVm.color).toBe("bg-color-orangeDark");
+                expect(resultVm.items.length).toBe(0);
+                expect(resultVm.pluralName).toBe("somethings");
+            });
+        });
+
+        describe('from collection details rep', function () {
+            beforeEach(inject(function (viewModelFactory) {
+                rawCollection.value = [];
+                rawCollection.links.push(rawSelfLink);
+
+                resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionRepresentation(rawCollection));
+            }));
+
+            it('creates a dialog view model', function () {
+                expect(resultVm.title).toBe("a title");
+                expect(resultVm.size).toBe(0);
+                expect(resultVm.href).toBe("#/objects/AdventureWorksModel.Product/1?collection=acollection");
+                expect(resultVm.color).toBe("bg-color-orangeDark");
+                expect(resultVm.items.length).toBe(0);
+                expect(resultVm.pluralName).toBe("somethings");
+            });
+        });
+
+        describe('from list rep', function () {
+            beforeEach(inject(function (viewModelFactory) {
+                var rawList = { value: [], links: [rawSelfLink] };
+
+                resultVm = viewModelFactory.collectionViewModel(new Spiro.ListRepresentation(rawList));
+            }));
+
+            it('creates a dialog view model', function () {
+                expect(resultVm.size).toBe(0);
+                expect(resultVm.items.length).toBe(0);
+                expect(resultVm.pluralName).toBe("Objects");
+            });
+        });
+    });
 });
 //# sourceMappingURL=viewModelFactoryService.js.map
