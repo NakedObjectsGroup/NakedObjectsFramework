@@ -31,6 +31,7 @@ var Spiro;
                 return linkViewModel;
             };
 
+            // tested
             viewModelFactory.itemViewModel = function (linkRep, parentHref) {
                 var itemViewModel = new Angular.ItemViewModel();
                 itemViewModel.title = linkRep.title();
@@ -158,6 +159,7 @@ var Spiro;
                 return parmViewModel;
             };
 
+            // tested
             viewModelFactory.actionViewModel = function (actionRep) {
                 var actionViewModel = new Angular.ActionViewModel();
                 actionViewModel.title = actionRep.extensions().friendlyName;
@@ -165,6 +167,7 @@ var Spiro;
                 return actionViewModel;
             };
 
+            // tested
             viewModelFactory.dialogViewModel = function (actionRep, invoke) {
                 var dialogViewModel = new Angular.DialogViewModel();
                 var parameters = actionRep.parameters();

@@ -48,6 +48,7 @@ module Spiro.Angular {
             return linkViewModel;
         };
 
+        // tested
         viewModelFactory.itemViewModel = (linkRep: Link, parentHref: string) => {
             var itemViewModel = new ItemViewModel();
             itemViewModel.title = linkRep.title();
@@ -178,6 +179,7 @@ module Spiro.Angular {
             return parmViewModel;
         };
 
+        // tested
         viewModelFactory.actionViewModel = (actionRep: ActionMember) => {
             var actionViewModel = new ActionViewModel();
             actionViewModel.title = actionRep.extensions().friendlyName;
@@ -185,6 +187,7 @@ module Spiro.Angular {
             return actionViewModel;
         };
 
+        // tested
         viewModelFactory.dialogViewModel = (actionRep: ActionRepresentation, invoke: (dvm: DialogViewModel) => void) => {
             var dialogViewModel = new DialogViewModel();
             var parameters = actionRep.parameters();
