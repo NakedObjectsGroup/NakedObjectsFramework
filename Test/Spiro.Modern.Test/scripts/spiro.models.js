@@ -151,6 +151,10 @@ var Spiro;
                     return v.toString();
                 });
 
+                if (ss.length == 0) {
+                    return "";
+                }
+
                 return _.reduce(ss, function (m, s) {
                     return m + "-" + s;
                 });
@@ -513,7 +517,6 @@ var Spiro;
         };
 
         Parameter.prototype.getPrompts = function () {
-            //  var arguments = this.promptLink().arguments;
             return this.promptLink().getTarget();
         };
 

@@ -4,14 +4,35 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
     [TestClass]
-    public abstract class DialogTests : SpiroTest {
+    public abstract class DialogTests : SpiroTest
+    {
+
+        private const int CustomersFindCustomerByAccountNumber = 0;
+
+        private const int OrdersOrdersByValue = 3;
+
+        private const int StoresSearchForOrders = 4;
+
+        private const int SalesListAccountsForSalesPerson = 2;
+
+        private const int ProductsFindProductByName = 0;
+        private const int ProductsFindProductByNumber = 1;
+        private const int ProductsListProductsBySubcategory = 2;
+        private const int ProductsListProductsBySubcategories = 3;
+        private const int ProductsFindByProductLineAndClass = 4;
+        private const int ProductsFindByProductLinesAndClasses = 5;
+        private const int ProductsFindProduct = 6;
+        private const int ProductsFindProductsByCategory = 7;
        
+
         [TestMethod]
         public virtual void ChoicesParm() {
             br.Navigate().GoToUrl(orderServiceUrl);
@@ -21,7 +42,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             var showList = new Action<string, string>((type, test) => {
                 // click on action to open dialog 
-                Click(br.FindElements(By.ClassName("action"))[3]); // orders by value
+                Click(br.FindElements(By.ClassName("action"))[OrdersOrdersByValue]); // orders by value
 
                 wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
                 string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
@@ -84,7 +105,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == 6);
 
             // click on action to open dialog 
-            Click(br.FindElements(By.ClassName("action"))[3]); // orders by value
+            Click(br.FindElements(By.ClassName("action"))[OrdersOrdersByValue]); // orders by value
 
             wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
             string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
@@ -111,7 +132,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
 
             // click on action to open dialog 
-            Click(br.FindElements(By.ClassName("action"))[0]); // find customer by account number
+            Click(br.FindElements(By.ClassName("action"))[CustomersFindCustomerByAccountNumber]); // find customer by account number
 
             wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
             string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
@@ -135,7 +156,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
 
             // click on action to open dialog 
-            Click(br.FindElements(By.CssSelector("div.action-button a"))[4]); // Search for orders
+            Click(br.FindElements(By.CssSelector("div.action-button a"))[StoresSearchForOrders]); // Search for orders
 
             wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
             string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
@@ -164,7 +185,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
 
             // click on action to open dialog 
-            Click(br.FindElements(By.ClassName("action"))[2]); // list products by sub cat
+            Click(br.FindElements(By.ClassName("action"))[ProductsListProductsBySubcategory]); // list products by sub cat
 
             wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
             string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
@@ -184,6 +205,189 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Forks", br.FindElement(By.CssSelector("option[selected=selected]")).Text);
         }
 
+       
+        [TestMethod]
+        public virtual void MultipleRefChoicesDefaults()
+        {
+            br.Navigate().GoToUrl(productServiceUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+
+            // click on action to open dialog 
+            Click(br.FindElements(By.ClassName("action"))[ProductsListProductsBySubcategories]); // list products by sub cat
+
+            wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
+            string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+
+            Assert.AreEqual("List Products By Sub Categories", title);
+
+            var selected = br.FindElements(By.CssSelector("option[selected=selected]"));
+
+            Assert.AreEqual(2, selected.Count);
+            Assert.AreEqual("Mountain Bikes", selected.First().Text);
+            Assert.AreEqual("Touring Bikes", selected.Last().Text);
+
+            Click(br.FindElement(By.ClassName("show")));
+
+            wait.Until(d => d.FindElement(By.ClassName("list-view")));
+
+            string topItem = br.FindElement(By.CssSelector("div.list-item > a")).Text;
+
+            Assert.AreEqual("Mountain-100 Black, 38", topItem);
+
+            selected = br.FindElements(By.CssSelector("option[selected=selected]"));
+
+            Assert.AreEqual(2, selected.Count);
+            Assert.AreEqual("Mountain Bikes", selected.First().Text);
+            Assert.AreEqual("Touring Bikes", selected.Last().Text);
+        }
+
+        [TestMethod]
+        public virtual void MultipleRefChoicesChangeDefaults()
+        {
+            br.Navigate().GoToUrl(productServiceUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+
+            // click on action to open dialog 
+            Click(br.FindElements(By.ClassName("action"))[ProductsListProductsBySubcategories]); // list products by sub cat
+
+            wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
+            string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+
+            Assert.AreEqual("List Products By Sub Categories", title);
+
+
+            br.FindElement(By.CssSelector(".parameter-value  select")).SendKeys("HandleBars");
+            IKeyboard kb = ((IHasInputDevices)br).Keyboard;
+
+            kb.PressKey(Keys.Control);
+            br.FindElement(By.CssSelector(".parameter-value  select option[value='5']")).Click();
+            kb.ReleaseKey(Keys.Control);
+
+
+            Click(br.FindElement(By.ClassName("show")));
+
+            wait.Until(d => d.FindElement(By.ClassName("list-view")));
+
+            string topItem = br.FindElement(By.CssSelector("div.list-item > a")).Text;
+
+            Assert.AreEqual("Front Brakes", topItem);
+
+            var selected = br.FindElements(By.CssSelector("option[selected=selected]"));
+
+            Assert.AreEqual(2, selected.Count);
+            Assert.AreEqual("Handlebars", selected.First().Text);
+            Assert.AreEqual("Brakes", selected.Last().Text);
+        }
+
+
+
+
+        [TestMethod]
+        public virtual void ChoicesDefaults()
+        {
+            br.Navigate().GoToUrl(productServiceUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+
+            // click on action to open dialog 
+            Click(br.FindElements(By.ClassName("action"))[ProductsFindByProductLineAndClass]); // find by product line and class
+
+            wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
+            string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+
+            Assert.AreEqual("Find By Product Line And Class", title);
+  
+            Assert.AreEqual("M", br.FindElement(By.CssSelector("div#productline option[selected=selected]")).Text);
+            Assert.AreEqual("H", br.FindElement(By.CssSelector("div#productclass option[selected=selected]")).Text);
+
+            Click(br.FindElement(By.ClassName("show")));
+
+            wait.Until(d => d.FindElement(By.ClassName("list-view")));
+
+            string topItem = br.FindElement(By.CssSelector("div.list-item > a")).Text;
+
+            Assert.AreEqual("Mountain-300 Black, 38", topItem);
+
+            Assert.AreEqual("M", br.FindElement(By.CssSelector("div#productline option[selected=selected]")).Text);
+            Assert.AreEqual("H", br.FindElement(By.CssSelector("div#productclass option[selected=selected]")).Text);
+
+        }
+
+        [TestMethod]
+        public virtual void ChoicesChangeDefaults()
+        {
+            br.Navigate().GoToUrl(productServiceUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+
+            // click on action to open dialog 
+            Click(br.FindElements(By.ClassName("action"))[ProductsFindByProductLineAndClass]); // find by product line and class
+
+            wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
+            string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+
+            Assert.AreEqual("Find By Product Line And Class", title);
+
+            br.FindElement(By.CssSelector("div#productline .parameter-value  select")).SendKeys("R");
+            br.FindElement(By.CssSelector("div#productclass .parameter-value  select")).SendKeys("L");
+
+            Click(br.FindElement(By.ClassName("show")));
+
+            wait.Until(d => d.FindElement(By.ClassName("list-view")));
+
+            string topItem = br.FindElement(By.CssSelector("div.list-item > a")).Text;
+
+            Assert.AreEqual("HL Road Frame - Black, 58", topItem);
+
+            Assert.AreEqual("R", br.FindElement(By.CssSelector("div#productline option[selected=selected]")).Text);
+            Assert.AreEqual("L", br.FindElement(By.CssSelector("div#productclass option[selected=selected]")).Text);
+
+        }
+
+        [TestMethod]
+        public virtual void ConditionalChoicesDefaults()
+        {
+            br.Navigate().GoToUrl(productServiceUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+
+            // click on action to open dialog 
+            Click(br.FindElements(By.ClassName("action"))[ProductsFindProductsByCategory]); 
+
+            wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
+            string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+
+            Assert.AreEqual("Find Products By Category", title);
+
+            Assert.AreEqual("Bikes", br.FindElement(By.CssSelector("div#categories option[selected=selected]")).Text);
+
+
+            var slct = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
+
+            Assert.AreEqual(2, slct.AllSelectedOptions.Count);
+            Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
+            Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
+
+            Click(br.FindElement(By.ClassName("show")));
+
+            wait.Until(d => d.FindElement(By.ClassName("list-view")));
+
+            string topItem = br.FindElement(By.CssSelector("div.list-item > a")).Text;
+
+            Assert.AreEqual("Road-150 Red, 62", topItem);
+
+            Assert.AreEqual("Bikes", br.FindElement(By.CssSelector("div#categories option[selected=selected]")).Text);
+
+            slct = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
+
+            Assert.AreEqual(2, slct.AllSelectedOptions.Count);
+            Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
+            Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
+        }
+
+
         [TestMethod]
         public virtual void AutoCompleteParmKeepsValue() {
             br.Navigate().GoToUrl(salesServiceUrl);
@@ -191,7 +395,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == 5);
 
             // click on action to open dialog 
-            Click(br.FindElements(By.ClassName("action"))[2]); // list accounts for sales person 
+            Click(br.FindElements(By.ClassName("action"))[SalesListAccountsForSalesPerson]); // list accounts for sales person 
 
             wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
             string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;

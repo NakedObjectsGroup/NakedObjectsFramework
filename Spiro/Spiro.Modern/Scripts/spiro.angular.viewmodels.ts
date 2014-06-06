@@ -119,6 +119,10 @@ module Spiro.Angular {
                         return c.search;
                     });
 
+                    if (ss.length === 0) {
+                        return "";
+                    }
+
                     return _.reduce(ss, (m: string, s) => {
                         return m + "-" + s;
                     });

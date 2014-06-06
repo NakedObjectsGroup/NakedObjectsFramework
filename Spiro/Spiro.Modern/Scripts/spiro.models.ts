@@ -192,6 +192,10 @@ module Spiro {
                     return v.toString();
                 });
 
+                if (ss.length == 0) {
+                    return "";
+                }
+
                 return _.reduce(ss, (m : string , s : string) => {
                     return m + "-" + s;
                 });

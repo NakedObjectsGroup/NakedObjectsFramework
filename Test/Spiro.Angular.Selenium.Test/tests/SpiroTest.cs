@@ -58,7 +58,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class SpiroTest {
         #region overhead
 
-        protected const string url = "http://mvc.nakedobjects.net:1081/UnitTestSpiroNg/index.html";
+        protected const string url = "http://localhost:49998/index.html";
         protected const string server = @"Saturn\SqlExpress";
         protected const string database = "AdventureWorks";
         protected const string backup = "AdventureWorks";
