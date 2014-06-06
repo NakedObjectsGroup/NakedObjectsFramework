@@ -5,6 +5,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Permissions;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -387,9 +388,50 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
         }
 
+        [TestMethod]
+        public virtual void ConditionalChoicesChangeDefaults()
+        {
+            br.Navigate().GoToUrl(productServiceUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+
+            // click on action to open dialog 
+            Click(br.FindElements(By.ClassName("action"))[ProductsFindProductsByCategory]);
+
+            wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
+            string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+
+            Assert.AreEqual("Find Products By Category", title);
+
+            Assert.AreEqual("Bikes", br.FindElement(By.CssSelector("div#categories option[selected=selected]")).Text);
+
+
+            var slct = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
+
+            Assert.AreEqual(2, slct.AllSelectedOptions.Count);
+            Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
+            Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
+
+            Click(br.FindElement(By.ClassName("show")));
+
+            wait.Until(d => d.FindElement(By.ClassName("list-view")));
+
+            string topItem = br.FindElement(By.CssSelector("div.list-item > a")).Text;
+
+            Assert.AreEqual("Road-150 Red, 62", topItem);
+
+            Assert.AreEqual("Bikes", br.FindElement(By.CssSelector("div#categories option[selected=selected]")).Text);
+
+            slct = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
+
+            Assert.AreEqual(2, slct.AllSelectedOptions.Count);
+            Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
+            Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
+        }
+
 
         [TestMethod]
-        public virtual void AutoCompleteParmKeepsValue() {
+        public virtual void AutoCompleteParmShow() {
             br.Navigate().GoToUrl(salesServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == 5);
@@ -414,6 +456,112 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("Rachel Valdez", br.FindElement(By.CssSelector(".parameter-value input[type='text']")).GetAttribute("value"));
         }
+
+        [TestMethod]
+        public virtual void AutoCompleteParmGo()
+        {
+            br.Navigate().GoToUrl(salesServiceUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 5);
+
+            // click on action to open dialog 
+            Click(br.FindElements(By.ClassName("action"))[SalesListAccountsForSalesPerson]); // list accounts for sales person 
+
+            wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
+            string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+
+            Assert.AreEqual("List Accounts For Sales Person", title);
+
+            br.FindElement(By.CssSelector(".parameter-value input[type='text']")).SendKeys("Valdez");
+
+            wait.Until(d => d.FindElement(By.ClassName("ui-menu-item")));
+
+            Click(br.FindElement(By.CssSelector(".ui-menu-item a")));
+
+            Click(br.FindElement(By.ClassName("go")));
+
+            wait.Until(d => d.FindElement(By.ClassName("list-view")));
+
+            try
+            {
+                br.FindElement(By.CssSelector(".parameter-value input[type='text']"));
+                // found so it fails
+                Assert.Fail();
+            }
+            catch 
+            {
+                // all OK 
+            }
+
+            
+        }
+
+
+        [TestMethod]
+        public virtual void AutoCompleteParmDefault()
+        {
+            br.Navigate().GoToUrl(productServiceUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+
+            // click on action to open dialog 
+            Click(br.FindElements(By.ClassName("action"))[ProductsFindProduct]); // list accounts for sales person 
+
+            wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
+            string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+
+            Assert.AreEqual("Find Product", title);
+
+            Assert.AreEqual("Adjustable Race", br.FindElement(By.CssSelector(".parameter-value input[type='text']")).GetAttribute("value"));
+
+            Click(br.FindElement(By.ClassName("show")));
+
+            wait.Until(d => d.FindElement(By.ClassName("nested-object")));
+
+            Assert.AreEqual("Adjustable Race", br.FindElement(By.CssSelector(".nested-object .title")).Text);
+
+            Assert.AreEqual("Adjustable Race", br.FindElement(By.CssSelector(".parameter-value input[type='text']")).GetAttribute("value"));
+        }
+
+        [TestMethod]
+        public virtual void AutoCompleteParmShowSingleItem()
+        {
+            br.Navigate().GoToUrl(productServiceUrl);
+
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+
+            // click on action to open dialog 
+            Click(br.FindElements(By.ClassName("action"))[ProductsFindProduct]); // list accounts for sales person 
+
+            wait.Until(d => d.FindElement(By.ClassName("action-dialog")));
+            string title = br.FindElement(By.CssSelector("div.action-dialog > div.title")).Text;
+
+            Assert.AreEqual("Find Product", title);
+
+            var acElem = br.FindElement(By.CssSelector(".parameter-value input[type='text']"));
+
+           
+
+            for (int i = 0; i < 15; i++) {
+                acElem.SendKeys(Keys.Backspace);
+            }
+
+            acElem.SendKeys("BB");
+
+            wait.Until(d => d.FindElement(By.ClassName("ui-menu-item")));
+
+            Click(br.FindElement(By.CssSelector(".ui-menu-item a")));
+
+            Click(br.FindElement(By.ClassName("show")));
+
+            wait.Until(d => d.FindElement(By.ClassName("nested-object")));
+
+            Assert.AreEqual("BB Ball Bearing", br.FindElement(By.CssSelector(".nested-object .title")).Text);
+
+            Assert.AreEqual("BB Ball Bearing", br.FindElement(By.CssSelector(".parameter-value input[type='text']")).GetAttribute("value"));
+        }
+
+
     }
 
     #region browsers specific subclasses

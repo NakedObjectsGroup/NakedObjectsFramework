@@ -97,12 +97,10 @@ module Spiro.Angular {
             }
 
             if (parmViewModel.hasChoices || parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
-
                 
-                if (parmViewModel.isMultipleChoices) {
-                    var search = parmViewModel.getMemento();
+                if (parmViewModel.isMultipleChoices) {                
                     parmViewModel.setSelectedChoice = () => {
-                        
+                        var search = parmViewModel.getMemento();
                         _.forEach(parmViewModel.multiChoices, (c) => {
                             context.setSelectedChoice(id, search, c);
                         });  
