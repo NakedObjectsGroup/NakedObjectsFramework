@@ -23,7 +23,6 @@ module Spiro.Angular {
             } else {
                 parent.history.back(1);
             }
-
         };
 
         nav.forward = () => {
