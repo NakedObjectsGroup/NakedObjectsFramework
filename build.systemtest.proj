@@ -70,7 +70,7 @@
       <OldTests Include="$(TestResultsPath)\NakedObjects.Mvc.Selenium.Test.trx"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Mvc.Selenium.ReTest.trx"/>
       <OldTests Include="$(TestResultsPath)\Spiro.Modern.Test.xml"/>
-      <OldTests Include="$(TestResultsPath)\Spiro.Angular.Selenium.Test.xml"/>
+      <OldTests Include="$(TestResultsPath)\Spiro.Angular.Selenium.Test.trx"/>
       <OldDeployment Include="$(IISTransientPath)\**\*.*"/>
       <OldDeployment Include="$(IISRestPath)\**\*.*"/>
       <OldDeployment Include="$(IISAjaxPath)\**\*.*"/>
