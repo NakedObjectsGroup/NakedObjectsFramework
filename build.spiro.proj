@@ -10,6 +10,7 @@
 		<InstalledPackagesPath>packages</InstalledPackagesPath>
 		<ReleasePath>build\release</ReleasePath>
 		<TestResultsPath>test-results</TestResultsPath>
+    <CoveragePath>coverage</CoveragePath>
 		<PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
 		<Nuget>..\.nuget\nuget.exe</Nuget>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
@@ -61,10 +62,13 @@
       <OldPackages Include="$(SpiroPath)\$(SpModern).package\*.nupkg"/>
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(SpiroModels).package\**\*.*"/>
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(SpModern).package\**\*.*"/>
+      <OldTests Include="$(TestResultsPath)\Karma*.xml"/>
+      <OldTests Include="$(CoveragePath)\**\*.xml"/>
     </ItemGroup>
 
     <Delete Files="@(OldPackages)"/>
     <Delete Files="@(OldPackageFiles)"/>
+    <Delete Files="@(OldTests)" ContinueOnError="true"/>
   </Target>
 
   <Target Name="Init" DependsOnTargets="Config" >
