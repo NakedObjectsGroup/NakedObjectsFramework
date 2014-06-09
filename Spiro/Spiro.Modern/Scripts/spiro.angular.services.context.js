@@ -13,6 +13,14 @@ var Spiro;
 
             var currentHome = null;
 
+            function getAppPath() {
+                if (Spiro.appPath.charAt(Spiro.appPath.length - 1) == '/') {
+                    return Spiro.appPath.length > 1 ? Spiro.appPath.substring(0, Spiro.appPath.length - 2) : "";
+                }
+
+                return Spiro.appPath;
+            }
+
             function isSameObject(object, type, id) {
                 var sid = object.serviceId();
                 return sid ? sid === type : (object.domainType() == type && object.instanceId() === id);
@@ -21,7 +29,7 @@ var Spiro;
             // exposed for test mocking
             context.getDomainObject = function (type, id) {
                 var object = new Spiro.DomainObjectRepresentation();
-                object.hateoasUrl = Spiro.appPath + "/objects/" + type + "/" + id;
+                object.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
                 return repLoader.populate(object);
             };
 
@@ -120,7 +128,7 @@ var Spiro;
                     delay.resolve(currentNestedObject);
                 } else {
                     var domainObjectRepresentation = new Spiro.DomainObjectRepresentation();
-                    domainObjectRepresentation.hateoasUrl = Spiro.appPath + "/objects/" + type + "/" + id;
+                    domainObjectRepresentation.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
 
                     repLoader.populate(domainObjectRepresentation).then(function (dor) {
                         currentNestedObject = dor;

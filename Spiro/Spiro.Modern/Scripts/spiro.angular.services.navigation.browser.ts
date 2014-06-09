@@ -16,10 +16,11 @@ module Spiro.Angular {
         var nav = <INavigation>this;
 
         nav.back = () => {
-            parent.history.back(1);
-
+            
             if ($routeParams.resultObject || $routeParams.resultCollection) {
                 // looking at an action result = so go back two 
+                parent.history.back(2);
+            } else {
                 parent.history.back(1);
             }
 

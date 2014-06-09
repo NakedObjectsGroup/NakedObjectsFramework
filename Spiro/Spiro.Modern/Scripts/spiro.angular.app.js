@@ -5,25 +5,34 @@
 var Spiro;
 (function (Spiro) {
     (function (Angular) {
-        // templates
-        Angular.nestedCollectionTemplate = Spiro.svrPath + "Content/partials/nestedCollection.html";
-        Angular.nestedCollectionTableTemplate = Spiro.svrPath + "Content/partials/nestedCollectionTable.html";
-        Angular.nestedObjectTemplate = Spiro.svrPath + "Content/partials/nestedObject.html";
-        Angular.dialogTemplate = Spiro.svrPath + "Content/partials/dialog.html";
-        Angular.servicesTemplate = Spiro.svrPath + "Content/partials/services.html";
-        Angular.serviceTemplate = Spiro.svrPath + "Content/partials/service.html";
-        Angular.actionTemplate = Spiro.svrPath + "Content/partials/actions.html";
-        Angular.errorTemplate = Spiro.svrPath + "Content/partials/error.html";
-        Angular.appBarTemplate = Spiro.svrPath + "Content/partials/appbar.html";
-        Angular.objectTemplate = Spiro.svrPath + "Content/partials/object.html";
-        Angular.viewPropertiesTemplate = Spiro.svrPath + "Content/partials/viewProperties.html";
-        Angular.editPropertiesTemplate = Spiro.svrPath + "Content/partials/editProperties.html";
+        function getSvrPath() {
+            var trimmedPath = Spiro.svrPath.trim();
 
-        var servicesPageTemplate = Spiro.svrPath + 'Content/partials/servicesPage.html';
-        var servicePageTemplate = Spiro.svrPath + 'Content/partials/servicePage.html';
-        var objectPageTemplate = Spiro.svrPath + 'Content/partials/objectPage.html';
-        var transientObjectPageTemplate = Spiro.svrPath + 'Content/partials/transientObjectPage.html';
-        var errorPageTemplate = Spiro.svrPath + 'Content/partials/errorPage.html';
+            if (trimmedPath.length == 0 || trimmedPath.charAt(Spiro.svrPath.length - 1) == '/') {
+                return trimmedPath;
+            }
+            return trimmedPath + '/';
+        }
+
+        // templates
+        Angular.nestedCollectionTemplate = getSvrPath() + "Content/partials/nestedCollection.html";
+        Angular.nestedCollectionTableTemplate = getSvrPath() + "Content/partials/nestedCollectionTable.html";
+        Angular.nestedObjectTemplate = getSvrPath() + "Content/partials/nestedObject.html";
+        Angular.dialogTemplate = getSvrPath() + "Content/partials/dialog.html";
+        Angular.servicesTemplate = getSvrPath() + "Content/partials/services.html";
+        Angular.serviceTemplate = getSvrPath() + "Content/partials/service.html";
+        Angular.actionTemplate = getSvrPath() + "Content/partials/actions.html";
+        Angular.errorTemplate = getSvrPath() + "Content/partials/error.html";
+        Angular.appBarTemplate = getSvrPath() + "Content/partials/appbar.html";
+        Angular.objectTemplate = getSvrPath() + "Content/partials/object.html";
+        Angular.viewPropertiesTemplate = getSvrPath() + "Content/partials/viewProperties.html";
+        Angular.editPropertiesTemplate = getSvrPath() + "Content/partials/editProperties.html";
+
+        var servicesPageTemplate = getSvrPath() + 'Content/partials/servicesPage.html';
+        var servicePageTemplate = getSvrPath() + 'Content/partials/servicePage.html';
+        var objectPageTemplate = getSvrPath() + 'Content/partials/objectPage.html';
+        var transientObjectPageTemplate = getSvrPath() + 'Content/partials/transientObjectPage.html';
+        var errorPageTemplate = getSvrPath() + 'Content/partials/errorPage.html';
 
         /* Declare app level module */
         Angular.app = angular.module('app', ['ngRoute', 'ngTouch']);

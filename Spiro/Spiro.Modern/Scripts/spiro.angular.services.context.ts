@@ -39,6 +39,14 @@ module Spiro.Angular {
 
         var currentHome: HomePageRepresentation = null;
 
+        function getAppPath() {
+            if (appPath.charAt(appPath.length - 1) == '/') {
+                return appPath.length > 1 ? appPath.substring(0, appPath.length - 2) : "";
+            }
+
+            return appPath;
+        }
+
         function isSameObject(object: DomainObjectRepresentation, type: string, id?: string) {
             var sid = object.serviceId();
             return sid ? sid === type : (object.domainType() == type && object.instanceId() === id);
@@ -47,7 +55,7 @@ module Spiro.Angular {
         // exposed for test mocking
         context.getDomainObject = (type: string, id: string): ng.IPromise<DomainObjectRepresentation> => {
             var object = new DomainObjectRepresentation();
-            object.hateoasUrl = appPath + "/objects/" + type + "/" + id;
+            object.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
             return repLoader.populate<DomainObjectRepresentation>(object);
         };
 
@@ -142,7 +150,7 @@ module Spiro.Angular {
             }
             else {
                 var domainObjectRepresentation = new DomainObjectRepresentation();
-                domainObjectRepresentation.hateoasUrl = appPath + "/objects/" + type + "/" + id;
+                domainObjectRepresentation.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
 
                 repLoader.populate<DomainObjectRepresentation>(domainObjectRepresentation).
                     then((dor: DomainObjectRepresentation) => {
