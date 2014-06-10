@@ -121,9 +121,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             // set product category and sub category
 
-            Assert.AreEqual("Bikes", br.FindElement(By.CssSelector("#productcategory  select option[selected=selected]")).Text);
-            Assert.AreEqual(4, br.FindElements(By.CssSelector("#productcategory  select option")).Count);
-            Assert.AreEqual(4, br.FindElements(By.CssSelector("#productsubcategory  select option")).Count);
+            Assert.AreEqual("", br.FindElement(By.CssSelector("#productcategory  select option[selected=selected]")).Text);
+            Assert.AreEqual(5, br.FindElements(By.CssSelector("#productcategory  select option")).Count);
+            Assert.AreEqual(0, br.FindElements(By.CssSelector("#productsubcategory  select option")).Count);
 
             br.FindElement(By.CssSelector("#productcategory  select")).SendKeys("Clothing" + Keys.Tab);
 
