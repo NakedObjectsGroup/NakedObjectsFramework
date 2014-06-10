@@ -157,8 +157,7 @@ namespace NakedObjects.Services {
         }
 
         protected virtual object FindByKeyGeneric<TActual>(object id) where TActual : class {
-            string keyName = Container.GetSingleKey(typeof (TActual)).Name;
-            return Container.Instances<TActual>().FindByKey(keyName, id);
+            return Container.FindByKey<TActual>(id);
         }
 
         #region Convert between Type and string representation (code) for Type

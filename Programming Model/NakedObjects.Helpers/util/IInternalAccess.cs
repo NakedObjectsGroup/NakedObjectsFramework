@@ -13,5 +13,6 @@ using System.Runtime.CompilerServices;
 namespace NakedObjects.UtilInternal {
     internal interface IInternalAccess {
         PropertyInfo[] GetKeys(Type type);
+        object FindByKeys(Type type, object[] keys);
     }
 }

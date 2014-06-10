@@ -62,7 +62,6 @@
     <Compile Include="Services\PolymorphicNavigator.cs" />
     <Compile Include="Services\SimpleRepository.cs" />
     <Compile Include="Util\ViewModel.cs" />
-    <Compile Include="DynamicLinq\Dynamic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\IInternalAccess.cs" />
     <Compile Include="Util\AttributeUtils.cs" />

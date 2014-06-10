@@ -82,7 +82,7 @@
       <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Async.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Attributes">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0-beta2\lib\net40\NakedObjects.Attributes.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Bootstrap">
@@ -95,7 +95,7 @@
       <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.FWResources.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Helpers">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0-beta2\lib\net40\NakedObjects.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Persistor">
@@ -105,7 +105,7 @@
       <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta2\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.PMResources">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0-beta2\lib\net40\NakedObjects.PMResources.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Reflector.Core">
@@ -122,7 +122,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Types">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.5.7.0\lib\net40\NakedObjects.Types.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0-beta2\lib\net40\NakedObjects.Types.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">

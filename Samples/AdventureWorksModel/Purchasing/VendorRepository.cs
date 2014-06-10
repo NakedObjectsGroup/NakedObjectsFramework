@@ -20,9 +20,8 @@ namespace AdventureWorksModel {
         #region FindVendorByName
 
         [TableView(true, "AccountNumber", "ActiveFlag", "PreferredVendorStatus")]
-        public IQueryable<Vendor> FindVendorByName(string name)
-        {
-            return FindByTitle<Vendor>(name).OrderBy(x => x.Name);
+        public IQueryable<Vendor> FindVendorByName(string name) {
+            return Container.Instances<Vendor>().Where(v => v.Name == name).OrderBy(v => v.Name);
         }
 
         #endregion;
@@ -32,8 +31,8 @@ namespace AdventureWorksModel {
         [QueryOnly]
         public Vendor FindVendorByAccountNumber(string accountNumber) {
             IQueryable<Vendor> query = from obj in Instances<Vendor>()
-                                       where obj.AccountNumber == accountNumber
-                                       select obj;
+                where obj.AccountNumber == accountNumber
+                select obj;
 
             return SingleObjectWarnIfNoMatch(query);
         }
@@ -47,27 +46,11 @@ namespace AdventureWorksModel {
             return Random<Vendor>();
         }
 
-        public IQueryable<Vendor> AllVendorsWithWebAddresses()
-        {
+        public IQueryable<Vendor> AllVendorsWithWebAddresses() {
             return from obj in Instances<Vendor>()
-                                       where obj.PurchasingWebServiceURL != null
-                                       orderby obj.Name
-                                       select obj;
-        }
-
-        #endregion
-
-        #region Query Vendors
-
-        public IQueryable<Vendor> QueryVendors([Optionally, TypicalLength(40)] string whereClause,
-                                          [Optionally, TypicalLength(40)] string orderByClause,
-                                          bool descending) {
-            return DynamicQuery<Vendor>(whereClause, orderByClause, descending);
-        }
-
-
-        public virtual string ValidateQueryVendors(string whereClause, string orderByClause, bool descending) {
-            return ValidateDynamicQuery<Vendor>(whereClause, orderByClause, descending);
+                where obj.PurchasingWebServiceURL != null
+                orderby obj.Name
+                select obj;
         }
 
         #endregion

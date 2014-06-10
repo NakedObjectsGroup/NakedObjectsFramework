@@ -8,9 +8,9 @@ using System.ComponentModel;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
+using NakedObjects.Util;
 
 namespace AdventureWorksModel {
-
     public enum ProductLineEnum {
         R,
         M,
@@ -31,17 +31,24 @@ namespace AdventureWorksModel {
         [TableView(true, "ProductNumber", "ProductSubcategory", "ListPrice"), MemberOrder(1)]
         public IQueryable<Product> FindProductByName(string searchString) {
             return from obj in Instances<Product>()
-                   where obj.Name.ToUpper().Contains(searchString.ToUpper())
-                   orderby obj.Name
-                   select obj;
+                where obj.Name.ToUpper().Contains(searchString.ToUpper())
+                orderby obj.Name
+                select obj;
         }
 
         #endregion
 
         #region FindProduct
+
         [QueryOnly]
         public Product FindProduct(Product product) {
             return product;
+        }
+
+        [QueryOnly]
+        public Product FindProductByKey(string key)
+        {
+            return Container.FindByKey<Product>(int.Parse(key));
         }
 
         public Product Default0FindProduct() {
@@ -50,20 +57,21 @@ namespace AdventureWorksModel {
 
         public virtual IQueryable<Product> AutoComplete0FindProduct(string name) {
             return from obj in Instances<Product>()
-                   where obj.Name.ToUpper().Contains(name.ToUpper())
-                   orderby obj.Name
-                   select obj;
-        } 
-        #endregion   
+                where obj.Name.ToUpper().Contains(name.ToUpper())
+                orderby obj.Name
+                select obj;
+        }
+
+        #endregion
 
         #region ListProductsBySubCategory
 
         [TableView(true, "ProductNumber", "ListPrice"), MemberOrder(3)]
         public IQueryable<Product> ListProductsBySubCategory(ProductSubcategory subCategory) {
             return from obj in Instances<Product>()
-                   where obj.ProductSubcategory.ProductSubcategoryID == subCategory.ProductSubcategoryID
-                   orderby obj.Name
-                   select obj;
+                where obj.ProductSubcategory.ProductSubcategoryID == subCategory.ProductSubcategoryID
+                orderby obj.Name
+                select obj;
         }
 
         public virtual ProductSubcategory Default0ListProductsBySubCategory() {
@@ -73,7 +81,8 @@ namespace AdventureWorksModel {
         #endregion
 
         #region ListProductsBySubcategories
-		[MemberOrder(4)]
+
+        [MemberOrder(4)]
         [QueryOnly]
         public IList<Product> ListProductsBySubCategories(IEnumerable<ProductSubcategory> subCategories) {
             return QueryableOfProductsBySubcat(subCategories).ToList();
@@ -89,10 +98,10 @@ namespace AdventureWorksModel {
         private IQueryable<Product> QueryableOfProductsBySubcat(IEnumerable<ProductSubcategory> subCategories) {
             IEnumerable<int> subCatIds = subCategories.Select(x => x.ProductSubcategoryID);
             IQueryable<Product> q = from p in Instances<Product>()
-                                    from sc in subCatIds
-                                    where p.ProductSubcategory.ProductSubcategoryID == sc
-                                    orderby p.Name
-                                    select p;
+                from sc in subCatIds
+                where p.ProductSubcategory.ProductSubcategoryID == sc
+                orderby p.Name
+                select p;
             return q;
         }
 
@@ -110,8 +119,8 @@ namespace AdventureWorksModel {
         [QueryOnly, MemberOrder(2)]
         public Product FindProductByNumber(string number) {
             IQueryable<Product> query = from obj in Instances<Product>()
-                                        where obj.ProductNumber == number
-                                        select obj;
+                where obj.ProductNumber == number
+                select obj;
 
             return SingleObjectWarnIfNoMatch(query);
         }
@@ -119,6 +128,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region FindProductsByCategory
+
         public IQueryable<Product> FindProductsByCategory(IEnumerable<ProductCategory> categories, IEnumerable<ProductSubcategory> subcategories) {
             return QueryableOfProductsBySubcat(subcategories);
         }
@@ -129,14 +139,14 @@ namespace AdventureWorksModel {
 
         public IQueryable<ProductSubcategory> Choices1FindProductsByCategory(IEnumerable<ProductCategory> categories) {
             if (categories != null) {
-                var catIds = categories.Select(c => c.ProductCategoryID);
+                IEnumerable<int> catIds = categories.Select(c => c.ProductCategoryID);
 
                 return from psc in Instances<ProductSubcategory>()
-                       from cid in catIds
-                       where psc.ProductCategory.ProductCategoryID == cid
-                       select psc;
+                    from cid in catIds
+                    where psc.ProductCategory.ProductCategoryID == cid
+                    select psc;
             }
-            return new ProductSubcategory[] { }.AsQueryable();
+            return new ProductSubcategory[] {}.AsQueryable();
         }
 
         public IList<ProductCategory> Default0FindProductsByCategory() {
@@ -150,53 +160,44 @@ namespace AdventureWorksModel {
                 IEnumerable<int> ids = pcs.Select(c => c.ProductCategoryID);
 
                 return (from psc in Instances<ProductSubcategory>()
-                        from cid in ids
-                        where psc.ProductCategory.ProductCategoryID == cid
-                        select psc).OrderBy(psc => psc.ProductSubcategoryID).Take(2).ToList();
+                    from cid in ids
+                    where psc.ProductCategory.ProductCategoryID == cid
+                    select psc).OrderBy(psc => psc.ProductSubcategoryID).Take(2).ToList();
             }
             return new List<ProductSubcategory>();
-        } 
-
+        }
 
         #endregion
-  
+
         #region RandomProduct
+
         [QueryOnly]
         public Product RandomProduct() {
             return Random<Product>();
-        } 
-        #endregion
-
-        #region QueryProducts
-        public IQueryable<Product> QueryProducts([Optionally, TypicalLength(40)] string whereClause,
-                                                 [Optionally, TypicalLength(40)] string orderByClause,
-                                                 bool descending) {
-            IQueryable<Product> q = DynamicQuery<Product>(whereClause, orderByClause, descending);
-            return q;
         }
 
-        public virtual string ValidateQueryProducts(string whereClause, string orderByClause, bool descending) {
-            return ValidateDynamicQuery<Product>(whereClause, orderByClause, descending);
-        } 
         #endregion
 
         #region NewProduct
+
         public virtual Product NewProduct() {
             return Container.NewTransientInstance<Product>();
-        } 
+        }
+
         #endregion
 
         #region FindByProductLinesAndClasses
+
         public IQueryable<Product> FindByProductLinesAndClasses(IEnumerable<ProductLineEnum> productLine, IEnumerable<ProductClassEnum> productClass) {
             IQueryable<Product> products = Container.Instances<Product>();
 
             foreach (ProductLineEnum pl in productLine) {
-                string pls = Enum.GetName(typeof(ProductLineEnum), pl);
+                string pls = Enum.GetName(typeof (ProductLineEnum), pl);
                 products = products.Where(p => p.ProductLine == pls);
             }
 
             foreach (ProductClassEnum pc in productClass) {
-                string pcs = Enum.GetName(typeof(ProductClassEnum), pc);
+                string pcs = Enum.GetName(typeof (ProductClassEnum), pc);
                 products = products.Where(p => p.Class == pcs);
             }
 
@@ -205,18 +206,20 @@ namespace AdventureWorksModel {
 
 
         public virtual IList<ProductLineEnum> Default0FindByProductLinesAndClasses() {
-            return new List<ProductLineEnum> { ProductLineEnum.M, ProductLineEnum.S };
+            return new List<ProductLineEnum> {ProductLineEnum.M, ProductLineEnum.S};
         }
 
         public virtual IList<ProductClassEnum> Default1FindByProductLinesAndClasses() {
-            return new List<ProductClassEnum>() { ProductClassEnum.H };
-        } 
+            return new List<ProductClassEnum> {ProductClassEnum.H};
+        }
+
         #endregion
 
         #region FindByProductLineAndClass
+
         public IQueryable<Product> FindByProductLineAndClass(ProductLineEnum productLine, ProductClassEnum productClass) {
-            string pls = Enum.GetName(typeof(ProductLineEnum), productLine);
-            string pcs = Enum.GetName(typeof(ProductClassEnum), productLine);
+            string pls = Enum.GetName(typeof (ProductLineEnum), productLine);
+            string pcs = Enum.GetName(typeof (ProductClassEnum), productLine);
 
             return Container.Instances<Product>().Where(p => p.ProductLine == pls && p.Class == pcs);
         }
@@ -227,7 +230,8 @@ namespace AdventureWorksModel {
 
         public virtual ProductClassEnum Default1FindByProductLineAndClass() {
             return ProductClassEnum.H;
-        } 
+        }
+
         #endregion
     }
 }

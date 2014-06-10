@@ -84,43 +84,17 @@ namespace NakedObjects.Services {
         }
 
         [MemberOrder(Sequence = "4")]
-        public IQueryable<T> FindByTitle(string partialTitleString) {
-            return FindByTitle<T>(partialTitleString);
-        }
-
-        [MemberOrder(Sequence = "5")]
         public T FindByKey(int key) {
             PropertyInfo keyProperty = Container.GetSingleKey(typeof (T));
             if (keyProperty.PropertyType != typeof (int)) {
                 throw new DomainException(string.Format(ProgrammingModel.NoIntegerKey, typeof (T)));
             }
-            T result = Container.Instances<T>().FindByKey(keyProperty.Name, key);
+            T result = Container.FindByKey<T>(key);
             if (result == null) {
                 WarnUser(ProgrammingModel.NoMatchSingular);
             }
             return result;
         }
-
-        #region FindByDynamicQuery
-
-        [MemberOrder(Sequence = "6")]
-        public IQueryable<T> FindByDynamicQuery(string whereClause,
-                                                [Optionally] string orderByClause,
-                                                bool descending) {
-            return DynamicQuery<T>(whereClause, orderByClause, descending);
-        }
-
-        public bool Default2FindByDynamicQuery() {
-            return false;
-        }
-
-        public string ValidateFindByDynamicQuery(string whereClause,
-                                                 string orderByClause,
-                                                 bool descending) {
-            return ValidateDynamicQuery<T>(whereClause, orderByClause, descending);
-        }
-
-        #endregion
 
         #endregion
     }

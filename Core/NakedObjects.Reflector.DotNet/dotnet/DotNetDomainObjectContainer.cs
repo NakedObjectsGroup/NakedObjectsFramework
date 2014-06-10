@@ -136,6 +136,10 @@ namespace NakedObjects.Reflector.DotNet {
             return NakedObjectsContext.ObjectPersistor.GetKeys(type);
         }
 
+        public object FindByKeys(Type type, object[] keys) {
+            return NakedObjectsContext.ObjectPersistor.FindByKeys(type, keys).GetDomainObject();
+        }
+
         private static INakedObject AdapterFor(object obj) {
             return PersistorUtils.CreateAdapter(obj);
         }

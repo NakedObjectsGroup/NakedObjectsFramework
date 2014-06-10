@@ -70,8 +70,8 @@ namespace NakedObjects.EntityObjectStore {
         #endregion
 
         protected object FindByKeyGeneric<TActual>(object id) where TActual : class {
-            string keyName = Container.GetSingleKey(typeof (TActual)).Name;
-            return Container.Instances<TActual>().FindByKey(keyName, id);
+         
+            return Container.FindByKey<TActual>(id);
         }
 
         private T FindByKey<T>(Type type, object id) {

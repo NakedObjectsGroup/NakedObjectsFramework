@@ -109,7 +109,7 @@ namespace NakedObjects.Services {
 
         protected object FindByKeyGeneric<TActual>(object id) where TActual : class {
             string keyName = Container.GetSingleKey(typeof (TActual)).Name;
-            return Container.Instances<TActual>().FindByKey(keyName, id);
+            return Container.FindByKey<TActual>(id);
         }
 
         private T FindByKey<T>(Type type, object id) {
@@ -127,7 +127,7 @@ namespace NakedObjects.Services {
         }
 
         protected object FindByKeysGeneric<TActual>(Dictionary<string, object> keyDict) where TActual : class {
-            return Container.Instances<TActual>().FindByKeys(keyDict);
+            return Container.FindByKeys<TActual>(keyDict.Values.ToArray());
         }
 
         private T FindByKeys<T>(Type type, Dictionary<string, object> keyDict) {

@@ -22,7 +22,6 @@ namespace NakedObjects.SystemTest.Methods {
             public void TearDown() {
                 CleanupNakedObjectsFramework();
                 rep = null;
-                results = null;
                 obj = null;
                 prop1 = null;
             }
@@ -40,25 +39,10 @@ namespace NakedObjects.SystemTest.Methods {
             #endregion
 
             private ITestService rep;
-            private ITestCollection results;
             private ITestObject obj;
             private ITestProperty prop1;
 
-            [TestMethod]
-            public virtual void FindByTitleDoesNotWorkOnToString() {
-                rep = GetTestService("Object2s");
-                obj = rep.GetAction("New Instance").InvokeReturnObject();
-                obj.Save();
-                ITestAction findByTitle = rep.GetAction("Find By Title");
-
-                results = findByTitle.InvokeReturnCollection("F");
-                results.AssertCountIs(0);
-
-                obj.GetPropertyByName("Prop1").SetValue("Foo");
-
-                results = findByTitle.InvokeReturnCollection("F");
-                results.AssertCountIs(0);
-            }
+          
 
             [TestMethod]
             public virtual void ToStringRecognisedAsATitle() {

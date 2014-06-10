@@ -24,7 +24,6 @@ namespace NakedObjects.SystemTest.Attributes {
                 CleanupNakedObjectsFramework();
 
                 rep = null;
-                results = null;
                 obj = null;
                 prop1 = null;
             }
@@ -54,48 +53,12 @@ namespace NakedObjects.SystemTest.Attributes {
             #endregion
 
             private ITestService rep;
-            private ITestCollection results;
             private ITestObject obj;
             private ITestProperty prop1;
 
-            [TestMethod]
-            public virtual void FindByTitleDoesNotWorkWithReferenceProperty() {
-                TitleAttributeOnReferencePropertyThatHasATitleAttribute(); //To set up the object
+           
 
-                ITestService rep8 = GetTestService("Object8s");
-                ITestAction findByTitle = rep8.GetAction("Find By Title");
-
-                results = findByTitle.InvokeReturnCollection("F");
-                results.AssertCountIs(0);
-            }
-
-            [TestMethod]
-            public virtual void FindByTitleForAttributeOnString() {
-                rep = GetTestService("Object1s");
-                obj = rep.GetAction("New Instance").InvokeReturnObject();
-                obj.GetPropertyByName("Prop1").SetValue("Foo");
-                obj.Save();
-
-                ITestAction findByTitle = rep.GetAction("Find By Title");
-
-                results = findByTitle.InvokeReturnCollection("F");
-                results.AssertCountIs(1);
-                results.ElementAt(0).AssertTitleEquals("Foo");
-
-                results = findByTitle.InvokeReturnCollection("B");
-                results.AssertCountIs(0);
-            }
-
-            [TestMethod]
-            public virtual void FindByTitleWhenPropertyWithTitleAttributeIsEmpty() {
-                rep = GetTestService("Object1s");
-                obj = rep.GetAction("New Instance").InvokeReturnObject();
-                obj.Save();
-                ITestAction findByTitle = rep.GetAction("Find By Title");
-
-                results = findByTitle.InvokeReturnCollection("F");
-                results.AssertCountIs(0);
-            }
+     
 
             [TestMethod]
             public virtual void ObjectWithTitleAttributeOnString() {
@@ -173,10 +136,7 @@ namespace NakedObjects.SystemTest.Attributes {
                 obj.Save();
                 obj.AssertTitleEquals("Foo");
 
-                ITestAction findByTitle = rep.GetAction("Find By Title");
-                results = findByTitle.InvokeReturnCollection("F");
-                results.AssertCountIs(1);
-                results.ElementAt(0).AssertTitleEquals("Foo");
+           
             }
 
             [TestMethod]
@@ -191,10 +151,7 @@ namespace NakedObjects.SystemTest.Attributes {
                 obj.Save();
                 obj.AssertTitleEquals("Foo");
 
-                ITestAction findByTitle = rep.GetAction("Find By Title");
-                results = findByTitle.InvokeReturnCollection("F");
-                results.AssertCountIs(1);
-                results.ElementAt(0).AssertTitleEquals("Foo");
+              
             }
         }
 

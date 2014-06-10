@@ -9,7 +9,6 @@ using NakedObjects;
 using NakedObjects.Services;
 
 namespace AdventureWorksModel {
-
     [DisplayName("Customers")]
     public class CustomerRepository : AbstractFactoryAndRepository {
         #region Injected Services
@@ -27,9 +26,9 @@ namespace AdventureWorksModel {
         [MemberOrder(10), QueryOnly]
         public Customer FindCustomerByAccountNumber([DefaultValue("AW")] string accountNumber) {
             IQueryable<Customer> query = from obj in Instances<Customer>()
-                                         where obj.AccountNumber == accountNumber
-                                         orderby obj.AccountNumber
-                                         select obj;
+                where obj.AccountNumber == accountNumber
+                orderby obj.AccountNumber
+                select obj;
 
             return SingleObjectWarnIfNoMatch(query);
         }
@@ -49,8 +48,8 @@ namespace AdventureWorksModel {
         [TableView(true, "StoreName", "SalesPerson")] //Table view == List View
         public IQueryable<Store> FindStoreByName(string name) {
             return from obj in Instances<Store>()
-                   where obj.Name.ToUpper().Contains(name.ToUpper())
-                   select obj;
+                where obj.Name.ToUpper().Contains(name.ToUpper())
+                select obj;
         }
 
         [MemberOrder(40, Name = "Stores")]
@@ -65,18 +64,6 @@ namespace AdventureWorksModel {
             return Random<Store>();
         }
 
-
-        [MemberOrder(80, Name = "Stores")]
-        public IQueryable<Store> QueryStores([Optionally, TypicalLength(40)] string whereClause,
-                                             [Optionally, TypicalLength(40)] string orderByClause,
-                                             bool descending) {
-            return DynamicQuery<Store>(whereClause, orderByClause, descending);
-        }
-
-        public virtual string ValidateQueryStores(string whereClause, string orderByClause, bool descending) {
-            return ValidateDynamicQuery<Store>(whereClause, orderByClause, descending);
-        }
-
         #endregion
 
         #region Individuals Menu
@@ -87,10 +74,10 @@ namespace AdventureWorksModel {
             IQueryable<Contact> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
 
             return from indv in Instances<Individual>()
-                   from contact in matchingContacts
-                   where indv.Contact.ContactID == contact.ContactID
-                   orderby indv.Contact.LastName, indv.Contact.LastName
-                   select indv;
+                from contact in matchingContacts
+                where indv.Contact.ContactID == contact.ContactID
+                orderby indv.Contact.LastName, indv.Contact.LastName
+                select indv;
         }
 
         [MemberOrder(50, Name = "Individuals")]
@@ -111,19 +98,6 @@ namespace AdventureWorksModel {
         [MemberOrder(70, Name = "Individuals"), QueryOnly]
         public Individual RandomIndividual() {
             return Random<Individual>();
-        }
-
-        [MemberOrder(90, Name = "Individuals")]
-        [PageSize(10)]
-        public IQueryable<Individual> QueryIndividuals([Optionally, TypicalLength(40)] string whereClause,
-                                                       [Optionally, TypicalLength(40)] string orderByClause,
-                                                       bool descending) {
-            return DynamicQuery<Individual>(whereClause, orderByClause, descending);
-        }
-
-
-        public virtual string ValidateQueryIndividuals(string whereClause, string orderByClause, bool descending) {
-            return ValidateDynamicQuery<Individual>(whereClause, orderByClause, descending);
         }
 
         #endregion

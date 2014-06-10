@@ -127,6 +127,10 @@ namespace NakedObjects {
                 return type.GetProperties().Where(p => p.GetCustomAttribute<KeyAttribute>() != null).ToArray();
             }
 
+            public object FindByKeys(Type type, object[] keys) {
+                throw new NotImplementedException();
+            }
+
             #endregion
         }
 
@@ -210,22 +214,6 @@ namespace NakedObjects {
             catch (DomainException) {
                 // expected
             }
-        }
-
-        [TestMethod]
-        public void TestFindByKey() {
-            var container = new TestContainer();
-            TestKey testKey = container.Instances<TestKey>().FindByKey("AName", 1);
-            Assert.AreEqual(testKey.AName, 1);
-            Assert.AreSame(typeof (TestKey), testKey.GetType());
-        }
-
-        [TestMethod]
-        public void TestFindByStringKey() {
-            var container = new TestContainer();
-            TestStringKey testKey = container.Instances<TestStringKey>().FindByKey("AName", "aName");
-            Assert.AreEqual(testKey.AName, "aName");
-            Assert.AreSame(typeof (TestStringKey), testKey.GetType());
         }
 
         #endregion

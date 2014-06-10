@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic;
 using System.Reflection;
 using System.Security.Principal;
 using NakedObjects.Resources;
@@ -43,7 +42,7 @@ namespace NakedObjects.Services {
         ///     'No matching object found' if the IQueryable has a Count of 0.
         /// </summary>
         protected T SingleObjectWarnIfNoMatch<T>(IQueryable<T> query) {
-            if (query.Count() == 0) {
+            if (!query.Any()) {
                 WarnUser(ProgrammingModel.NoMatchSingular);
                 return default(T);
             }
@@ -61,66 +60,14 @@ namespace NakedObjects.Services {
             return query.OrderBy(n => "").Skip(random).FirstOrDefault();
         }
 
-        protected IQueryable<T> FindByTitle<T>(string partialTitleString) where T : class {
-            PropertyInfo titleProperty = typeof (T).GetProperties().Where(x => x.GetCustomAttribute<TitleAttribute>() != null).SingleOrDefault();
-            if (titleProperty == null) {
-                WarnUser(string.Format(ProgrammingModel.NoTitleAnnotation, typeof (T)));
-            }
-            else {
-                if (titleProperty.PropertyType == typeof (string)) {
-                    string query = string.Format(@"{0} != null && {0}.ToUpper().Contains(""{1}"".ToUpper())", titleProperty.Name, partialTitleString);
-                    return Instances<T>().Where(query);
-                }
-                WarnUser(string.Format(ProgrammingModel.TitlePropertyWrongType, titleProperty.Name, typeof (T)));
-            }
-            return new List<T>().AsQueryable();
-        }
-
-        protected IQueryable<T> DynamicQuery<T>(string whereClause, string orderByClause, bool descending) where T : class {
-            string message = ValidateDynamicQuery<T>(whereClause, orderByClause, descending);
-            if (message != null) {
-                WarnUser(message);
-                return null;
-            }
-            return CreateDynamicQuery<T>(whereClause, orderByClause, descending);
-        }
+       
 
         protected IQueryable FindByTitleAndType(Type type, string partialTitleString) {
             MethodInfo m = GetType().GetMethod("FindByTitle", BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(type);
             return (IQueryable) m.Invoke(this, new object[] {partialTitleString});
         }
 
-        protected IQueryable DynamicQueryWithType(Type type, string whereClause, string orderByClause, bool descending) {
-            MethodInfo m = GetType().GetMethod("DynamicQuery", BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(type);
-            return (IQueryable) m.Invoke(this, new object[] {whereClause, orderByClause, descending});
-        }
-
-        private IQueryable<T> CreateDynamicQuery<T>(string whereClause, string orderByClause, bool descending) where T : class {
-            IQueryable<T> q = Instances<T>();
-            if (!string.IsNullOrEmpty(whereClause)) {
-                q = q.Where(whereClause);
-            }
-            if (!string.IsNullOrEmpty(orderByClause)) {
-                q = q.OrderBy(orderByClause + (descending ? " descending" : string.Empty));
-            }
-            return q;
-        }
-
-        protected string ValidateDynamicQuery<T>(string whereClause, string orderByClause, bool descending) where T : class {
-            try {
-                CreateDynamicQuery<T>(whereClause, orderByClause, descending);
-            }
-            catch (ParseException e) {
-                return e.Message;
-            }
-            return null;
-        }
-
-        protected string ValidateDynamicQueryWithType(Type type, string whereClause, string orderByClause, bool descending) {
-            MethodInfo m = GetType().GetMethod("ValidateDynamicQuery", BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(type);
-            return (string) m.Invoke(this, new object[] {whereClause, orderByClause, descending});
-        }
-
+      
         #region Container Helper Methods
 
         // This field is not persisted, nor displayed to the user.

@@ -26,7 +26,7 @@ namespace AdventureWorksModel {
         public WorkOrder CreateNewWorkOrder(Product product) {
             var wo = NewTransientInstance<WorkOrder>();
             wo.Product = product;
-            //MakePersistent();
+
             return wo;
         }
 
@@ -35,36 +35,20 @@ namespace AdventureWorksModel {
             return Container.Instances<Product>().Where(p => p.Name.Contains(name));
         }
 
-
         #region CurrentWorkOrders
 
         [TableView(true, "Product", "OrderQty", "StartDate")]
-        public IQueryable<WorkOrder> WorkOrders(Product product, bool currentOrdersOnly)
-        {
+        public IQueryable<WorkOrder> WorkOrders(Product product, bool currentOrdersOnly) {
             return from obj in Instances<WorkOrder>()
-                                          where obj.Product.ProductID == product.ProductID &&
-                                                (currentOrdersOnly == false || obj.EndDate == null)
-                                          select obj;
+                where obj.Product.ProductID == product.ProductID &&
+                      (currentOrdersOnly == false || obj.EndDate == null)
+                select obj;
         }
 
 
         [PageSize(20)]
         public IQueryable<Product> AutoComplete0WorkOrders([MinLength(2)] string name) {
             return Container.Instances<Product>().Where(p => p.Name.Contains(name));
-        }
-
-        #endregion
-
-        #region Query Work Orders
-
-        public IQueryable<WorkOrder> QueryWorkOrders([Optionally, TypicalLength(40)] string whereClause,
-                                                [Optionally, TypicalLength(40)] string orderByClause,
-                                                bool descending) {
-            return DynamicQuery<WorkOrder>(whereClause, orderByClause, descending);
-        }
-
-        public virtual string ValidateQueryWorkOrders(string whereClause, string orderByClause, bool descending) {
-            return ValidateDynamicQuery<WorkOrder>(whereClause, orderByClause, descending);
         }
 
         #endregion
