@@ -25,6 +25,8 @@
     <WarningLevel>3</WarningLevel>
     <DocumentationFile>bin\Debug\web_rest_test.XML</DocumentationFile>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
