@@ -45,16 +45,6 @@ namespace NakedObjects.Xat {
             return wrappedObject.GetAction(name, subMenu, parameterTypes);
         }
 
-        [Obsolete("Use GetAction, specifying contributor as the 'subMenu' parameter")]
-        public ITestAction GetContributedAction(string name, string contributor) {
-            return wrappedObject.GetAction(name, contributor);
-        }
-
-        [Obsolete("Use GetAction, specifying contributor as the 'subMenu' parameter")]
-        public ITestAction GetContributedAction(string name, string contributor, params Type[] parameterTypes) {
-            return wrappedObject.GetAction(name, contributor, parameterTypes);
-        }
-
         public string GetObjectActionOrder() {
             return wrappedObject.GetObjectActionOrder();
         }

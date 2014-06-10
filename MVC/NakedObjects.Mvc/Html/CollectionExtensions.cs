@@ -16,12 +16,6 @@ namespace NakedObjects.Web.Mvc.Html {
     public static class CollectionExtensions {
         #region all
 
-        [Obsolete("Use Collection helper that takes an Action instead - it will render columns based on TableView annotation")]
-        public static MvcHtmlString Collection(this HtmlHelper html, IEnumerable collection, string defaultTo = IdHelper.ListDisplayFormat) {
-            string displayType = DefaultFormat(html, defaultTo);
-            return displayType == IdHelper.TableDisplayFormat ? CollectionTableInternal(html, collection) : CollectionListInternal(html, collection);
-        }
-
         public static MvcHtmlString Collection(this HtmlHelper html, IEnumerable collection, INakedObjectAction action, string defaultTo = IdHelper.ListDisplayFormat) {
             bool renderEagerly = CommonHtmlHelper.RenderEagerly(action);
             string displayType = DefaultFormat(html, renderEagerly ? IdHelper.TableDisplayFormat : defaultTo);
@@ -32,17 +26,6 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObject adapter = FrameworkHelper.GetNakedObject(domainObject);
             IEnumerable<INakedObject> collections = adapter.Specification.Properties.Where(obj => obj.IsCollection).Select(a => a.GetNakedObject(adapter));
             return collections.Select(c => html.Collection(c.GetAsEnumerable(), null, defaultTo)).ToArray();
-        }
-
-
-        [Obsolete("Use Collection helper that takes an Action instead - it will render columns based on TableView annotation")]
-        public static MvcHtmlString CollectionTable(this HtmlHelper html, IEnumerable collection) {
-            return html.Collection(collection, IdHelper.TableDisplayFormat);
-        }
-
-        [Obsolete("Use Collection helper that takes an Action instead - it will render columns based on TableView annotation")]
-        public static MvcHtmlString CollectionList(this HtmlHelper html, IEnumerable collection) {
-            return html.Collection(collection);
         }
 
         public static MvcHtmlString CollectionTable(this HtmlHelper html, IEnumerable collection, INakedObjectAction action) {

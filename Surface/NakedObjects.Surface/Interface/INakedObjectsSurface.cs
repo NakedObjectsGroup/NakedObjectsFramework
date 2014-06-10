@@ -26,8 +26,7 @@ namespace NakedObjects.Surface {
         ActionContextSurface GetObjectAction(LinkObjectId objectId, string actionName);
         PropertyContextSurface PutProperty(LinkObjectId objectId, string propertyName, ArgumentContext argument);
         PropertyContextSurface DeleteProperty(LinkObjectId objectId, string propertyName, ArgumentContext argument);
-        PropertyContextSurface AddToCollection(LinkObjectId objectId, string propertyName, ArgumentContext argument);
-        PropertyContextSurface DeleteFromCollection(LinkObjectId objectId, string propertyName, ArgumentContext argument);
+     
         ActionResultContextSurface ExecuteObjectAction(LinkObjectId objectId, string actionName, ArgumentsContext arguments);
         ActionResultContextSurface ExecuteServiceAction(LinkObjectId serviceName, string actionName, ArgumentsContext arguments);
         ObjectContextSurface GetImage(string imageId);

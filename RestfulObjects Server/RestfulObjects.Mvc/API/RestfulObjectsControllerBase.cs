@@ -49,17 +49,6 @@ namespace RestfulObjects.Mvc {
             set { RestControlFlags.ConfiguredPageSize = value; }
         }
 
-        [Obsolete("To change the form of the instance identifier, register an implementation of NakedObjects.IKeyCodeMapper")]
-        public static string KeySeparator {
-            get { return LinkObjectId.KeySeparator; }
-            set {
-                // validate 
-                if (!value.Contains("/")) {
-                    LinkObjectId.KeySeparator = value;
-                }
-            }
-        }
-
         public static bool AcceptHeaderStrict {
             get { return RestSnapshot.AcceptHeaderStrict; }
             set { RestSnapshot.AcceptHeaderStrict = value; }
@@ -202,19 +191,19 @@ namespace RestfulObjects.Mvc {
                 routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Collections + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute(
-                name: "DeleteCollection",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
-                defaults: new {controller = "RestfulObjects", action = "DeleteCollection"},
-                constraints: new {httpMethod = new HttpMethodConstraint("DELETE")}
-                );
+            //routes.MapHttpRoute(
+            //    name: "DeleteCollection",
+            //    routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
+            //    defaults: new {controller = "RestfulObjects", action = "DeleteCollection"},
+            //    constraints: new {httpMethod = new HttpMethodConstraint("DELETE")}
+            //    );
 
-            routes.MapHttpRoute(
-                name: "PostCollection",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
-                defaults: new {controller = "RestfulObjects", action = "PostCollection"},
-                constraints: new {httpMethod = new HttpMethodConstraint("POST")}
-                );
+            //routes.MapHttpRoute(
+            //    name: "PostCollection",
+            //    routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
+            //    defaults: new {controller = "RestfulObjects", action = "PostCollection"},
+            //    constraints: new {httpMethod = new HttpMethodConstraint("POST")}
+            //    );
 
 
             routes.MapHttpRoute(
@@ -657,25 +646,25 @@ namespace RestfulObjects.Mvc {
             });
         }
 
-        public virtual HttpResponseMessage PostCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
-            return InitAndHandleErrors(() => {
-                HandleReadOnlyRequest();
-                Tuple<ArgumentContext, RestControlFlags> args = ProcessArgument(argument);
-                PropertyContextSurface context = Surface.AddToCollection(new LinkObjectId(domainType, instanceId), propertyName, args.Item1);
-                VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(context, Request, args.Item2), args.Item2.ValidateOnly);
-            });
-        }
+        //public virtual HttpResponseMessage PostCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
+        //    return InitAndHandleErrors(() => {
+        //        HandleReadOnlyRequest();
+        //        Tuple<ArgumentContext, RestControlFlags> args = ProcessArgument(argument);
+        //        PropertyContextSurface context = Surface.AddToCollection(new LinkObjectId(domainType, instanceId), propertyName, args.Item1);
+        //        VerifyNoError(context);
+        //        return SnapshotOrNoContent(new RestSnapshot(context, Request, args.Item2), args.Item2.ValidateOnly);
+        //    });
+        //}
 
-        public virtual HttpResponseMessage DeleteCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
-            return InitAndHandleErrors(() => {
-                HandleReadOnlyRequest();
-                Tuple<ArgumentContext, RestControlFlags> args = ProcessArgument(argument);
-                PropertyContextSurface context = Surface.DeleteFromCollection(new LinkObjectId(domainType, instanceId), propertyName, args.Item1);
-                VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(context, Request, args.Item2), args.Item2.ValidateOnly);
-            });
-        }
+        //public virtual HttpResponseMessage DeleteCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
+        //    return InitAndHandleErrors(() => {
+        //        HandleReadOnlyRequest();
+        //        Tuple<ArgumentContext, RestControlFlags> args = ProcessArgument(argument);
+        //        PropertyContextSurface context = Surface.DeleteFromCollection(new LinkObjectId(domainType, instanceId), propertyName, args.Item1);
+        //        VerifyNoError(context);
+        //        return SnapshotOrNoContent(new RestSnapshot(context, Request, args.Item2), args.Item2.ValidateOnly);
+        //    });
+        //}
 
         public virtual HttpResponseMessage GetInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {

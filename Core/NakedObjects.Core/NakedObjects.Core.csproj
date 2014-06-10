@@ -164,7 +164,6 @@
     <Compile Include="persist\AdapterException.cs" />
     <Compile Include="persist\CollectionMemento.cs" />
     <Compile Include="persist\CollectionMementoHelper.cs" />
-    <Compile Include="persist\IDependencyInjector.cs" />
     <Compile Include="persist\EntityOid.cs" />
     <Compile Include="persist\NakedObjectPersistorAbstract.cs" />
     <Compile Include="persist\PersistorUtils.cs" />

@@ -109,7 +109,6 @@
     <Compile Include="EntityObjectStore\EntityOidGenerator.cs" />
     <Compile Include="EntityObjectStore\EntityPersistAlgorithm.cs" />
     <Compile Include="EntityObjectStore\EntityPersistorInstaller.cs" />
-    <Compile Include="EntityObjectStore\EntitySqlObjectFinder.cs" />
     <Compile Include="EntityObjectStore\EntityUtils.cs" />
     <Compile Include="EntityObjectStore\ObjectContextUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -619,28 +619,28 @@ type Nof4Tests() = class
     member x.GetDisabledCollectionProperty() = ObjectCollection17.GetDisabledCollectionProperty x.API 
     [<Test>]
     member x.GetCollectionValue() = ObjectCollection17.GetCollectionValue x.API 
-    [<Test>]    
-    member x.AddToAndDeleteFromCollectionProperty() = ObjectCollection17.AddToAndDeleteFromCollectionProperty x.API 
-    [<Test>]    
-    member x.AddToAndDeleteFromCollectionPropertyViewModel() = ObjectCollection17.AddToAndDeleteFromCollectionPropertyViewModel x.API 
-    [<Test>]    
-    member x.AddToAndDeleteFromSetCollectionProperty() = ObjectCollection17.AddToAndDeleteFromSetCollectionProperty x.API 
-    [<Test>]    
-    member x.AddToAndDeleteFromCollectionPropertyConcurrencySuccess() = ObjectCollection17.AddToAndDeleteFromCollectionPropertyConcurrencySuccess x.API 
-    [<Test>]    
-    member x.AddToAndDeleteFromSetCollectionPropertyConcurrencySuccess() = ObjectCollection17.AddToAndDeleteFromSetCollectionPropertyConcurrencySuccess x.API 
-    [<Test>]    
-    member x.AddToCollectionPropertyConcurrencyFail() = ObjectCollection17.AddToCollectionPropertyConcurrencyFail x.API 
-    [<Test>]    
-    member x.AddToCollectionPropertyMissingIfMatchHeader() = ObjectCollection17.AddToCollectionPropertyMissingIfMatchHeader x.API 
-    [<Test>]    
-    member x.DeleteFromCollectionPropertyConcurrencyFail() = ObjectCollection17.DeleteFromCollectionPropertyConcurrencyFail x.API 
-    [<Test>]    
-    member x.DeleteFromCollectionPropertyMissingIfMatchHeader() = ObjectCollection17.DeleteFromCollectionPropertyMissingIfMatchHeader x.API 
-    [<Test>]    
-    member x.AddToCollectionPropertyValidateOnly() = ObjectCollection17.AddToCollectionPropertyValidateOnly x.API 
-    [<Test>]    
-    member x.DeleteFromCollectionPropertyValidateOnly() = ObjectCollection17.DeleteFromCollectionPropertyValidateOnly x.API 
+//    [<Test>]    
+//    member x.AddToAndDeleteFromCollectionProperty() = ObjectCollection17.AddToAndDeleteFromCollectionProperty x.API 
+//    [<Test>]    
+//    member x.AddToAndDeleteFromCollectionPropertyViewModel() = ObjectCollection17.AddToAndDeleteFromCollectionPropertyViewModel x.API 
+//    [<Test>]    
+//    member x.AddToAndDeleteFromSetCollectionProperty() = ObjectCollection17.AddToAndDeleteFromSetCollectionProperty x.API 
+//    [<Test>]    
+//    member x.AddToAndDeleteFromCollectionPropertyConcurrencySuccess() = ObjectCollection17.AddToAndDeleteFromCollectionPropertyConcurrencySuccess x.API 
+//    [<Test>]    
+//    member x.AddToAndDeleteFromSetCollectionPropertyConcurrencySuccess() = ObjectCollection17.AddToAndDeleteFromSetCollectionPropertyConcurrencySuccess x.API 
+//    [<Test>]    
+//    member x.AddToCollectionPropertyConcurrencyFail() = ObjectCollection17.AddToCollectionPropertyConcurrencyFail x.API 
+//    [<Test>]    
+//    member x.AddToCollectionPropertyMissingIfMatchHeader() = ObjectCollection17.AddToCollectionPropertyMissingIfMatchHeader x.API 
+//    [<Test>]    
+//    member x.DeleteFromCollectionPropertyConcurrencyFail() = ObjectCollection17.DeleteFromCollectionPropertyConcurrencyFail x.API 
+//    [<Test>]    
+//    member x.DeleteFromCollectionPropertyMissingIfMatchHeader() = ObjectCollection17.DeleteFromCollectionPropertyMissingIfMatchHeader x.API 
+//    [<Test>]    
+//    member x.AddToCollectionPropertyValidateOnly() = ObjectCollection17.AddToCollectionPropertyValidateOnly x.API 
+//    [<Test>]    
+//    member x.DeleteFromCollectionPropertyValidateOnly() = ObjectCollection17.DeleteFromCollectionPropertyValidateOnly x.API 
     [<Test>]
     member x.GetInvalidCollection() = ObjectCollection17.GetInvalidCollection x.API 
     [<Test>]
@@ -653,102 +653,102 @@ type Nof4Tests() = class
     member x.GetErrorValueCollection() = ObjectCollection17.GetErrorValueCollection x.API 
     [<Test>]
     member x.GetCollectionAsProperty() = ObjectCollection17.GetCollectionAsProperty x.API 
-    [<Test>]
-    
-    member x.AddToCollectionMissingArgs() = ObjectCollection17.AddToCollectionMissingArgs x.API 
-    [<Test>]
-    
-    member x.AddToCollectionMalformedArgs() = ObjectCollection17.AddToCollectionMalformedArgs x.API 
-    [<Test>]
-    
-    member x.AddToCollectionInvalidArgs() = ObjectCollection17.AddToCollectionInvalidArgs x.API 
-    [<Test>]
-    
-    member x.AddToCollectionDisabledValue() = ObjectCollection17.AddToCollectionDisabledValue x.API 
-    [<Test>]
-    
-    member x.AddToCollectionInvisibleValue() = ObjectCollection17.AddToCollectionInvisibleValue x.API 
-    [<Test>]
-    
-    member x.AddToCollectionImmutableObject() = ObjectCollection17.AddToCollectionImmutableObject x.API 
-    [<Test>]
-    
-    member x.AddToCollectionInvalidArgsName() = ObjectCollection17.AddToCollectionInvalidArgsName x.API 
-    [<Test>]
-        
-    member x.NotAcceptableAddCollectionWrongMediaType() = ObjectCollection17.NotAcceptableAddCollectionWrongMediaType x.API 
-    [<Test>]
-    
-    member x.AddToCollectionMissingArgsValidateOnly() = ObjectCollection17.AddToCollectionMissingArgsValidateOnly x.API 
-    [<Test>]
-    
-    member x.AddToCollectionMalformedArgsValidateOnly() = ObjectCollection17.AddToCollectionMalformedArgsValidateOnly x.API 
-    [<Test>]
-    
-    member x.AddToCollectionInvalidArgsValidateOnly() = ObjectCollection17.AddToCollectionInvalidArgsValidateOnly x.API 
-    [<Test>]
-    
-    member x.AddToCollectionDisabledValueValidateOnly() = ObjectCollection17.AddToCollectionDisabledValueValidateOnly x.API 
-    [<Test>]
-    
-    member x.AddToCollectionInvisibleValueValidateOnly() = ObjectCollection17.AddToCollectionInvisibleValueValidateOnly x.API 
-    [<Test>]
-    
-    member x.AddToCollectionImmutableObjectValidateOnly() = ObjectCollection17.AddToCollectionImmutableObjectValidateOnly x.API 
-    [<Test>]
-    
-    member x.AddToCollectionInvalidArgsNameValidateOnly() = ObjectCollection17.AddToCollectionInvalidArgsNameValidateOnly x.API   
-    [<Test>]
-    
-    member x.AddToCollectionInternalError() = ObjectCollection17.AddToCollectionInternalError x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionMissingArgs() = ObjectCollection17.DeleteFromCollectionMissingArgs x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionMalformedArgs() = ObjectCollection17.DeleteFromCollectionMalformedArgs x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionInvalidArgs() = ObjectCollection17.DeleteFromCollectionInvalidArgs x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionDisabledValue() = ObjectCollection17.DeleteFromCollectionDisabledValue x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionInvisibleValue() = ObjectCollection17.DeleteFromCollectionInvisibleValue x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionImmutableObject() = ObjectCollection17.DeleteFromCollectionImmutableObject x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionInvalidArgsName() = ObjectCollection17.DeleteFromCollectionInvalidArgsName x.API 
-    [<Test>]
-        
-    member x.NotAcceptableDeleteFromCollectionWrongMediaType() = ObjectCollection17.NotAcceptableDeleteFromCollectionWrongMediaType x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionMissingArgsValidateOnly() = ObjectCollection17.DeleteFromCollectionMissingArgsValidateOnly x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionMalformedArgsValidateOnly() = ObjectCollection17.DeleteFromCollectionMalformedArgsValidateOnly x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionInvalidArgsValidateOnly() = ObjectCollection17.DeleteFromCollectionInvalidArgsValidateOnly x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionDisabledValueValidateOnly() = ObjectCollection17.DeleteFromCollectionDisabledValueValidateOnly x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionInvisibleValueValidateOnly() = ObjectCollection17.DeleteFromCollectionInvisibleValueValidateOnly x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionImmutableObjectValidateOnly() = ObjectCollection17.DeleteFromCollectionImmutableObjectValidateOnly x.API 
-    [<Test>]
-    
-    member x.DeleteFromCollectionInvalidArgsNameValidateOnly() = ObjectCollection17.DeleteFromCollectionInvalidArgsNameValidateOnly x.API  
-    [<Test>]
-    
-    member x.DeleteFromCollectionInternalError() = ObjectCollection17.DeleteFromCollectionInternalError x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionMissingArgs() = ObjectCollection17.AddToCollectionMissingArgs x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionMalformedArgs() = ObjectCollection17.AddToCollectionMalformedArgs x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionInvalidArgs() = ObjectCollection17.AddToCollectionInvalidArgs x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionDisabledValue() = ObjectCollection17.AddToCollectionDisabledValue x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionInvisibleValue() = ObjectCollection17.AddToCollectionInvisibleValue x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionImmutableObject() = ObjectCollection17.AddToCollectionImmutableObject x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionInvalidArgsName() = ObjectCollection17.AddToCollectionInvalidArgsName x.API 
+//    [<Test>]
+//        
+//    member x.NotAcceptableAddCollectionWrongMediaType() = ObjectCollection17.NotAcceptableAddCollectionWrongMediaType x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionMissingArgsValidateOnly() = ObjectCollection17.AddToCollectionMissingArgsValidateOnly x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionMalformedArgsValidateOnly() = ObjectCollection17.AddToCollectionMalformedArgsValidateOnly x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionInvalidArgsValidateOnly() = ObjectCollection17.AddToCollectionInvalidArgsValidateOnly x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionDisabledValueValidateOnly() = ObjectCollection17.AddToCollectionDisabledValueValidateOnly x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionInvisibleValueValidateOnly() = ObjectCollection17.AddToCollectionInvisibleValueValidateOnly x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionImmutableObjectValidateOnly() = ObjectCollection17.AddToCollectionImmutableObjectValidateOnly x.API 
+//    [<Test>]
+//    
+//    member x.AddToCollectionInvalidArgsNameValidateOnly() = ObjectCollection17.AddToCollectionInvalidArgsNameValidateOnly x.API   
+//    [<Test>]
+//    
+//    member x.AddToCollectionInternalError() = ObjectCollection17.AddToCollectionInternalError x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionMissingArgs() = ObjectCollection17.DeleteFromCollectionMissingArgs x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionMalformedArgs() = ObjectCollection17.DeleteFromCollectionMalformedArgs x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionInvalidArgs() = ObjectCollection17.DeleteFromCollectionInvalidArgs x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionDisabledValue() = ObjectCollection17.DeleteFromCollectionDisabledValue x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionInvisibleValue() = ObjectCollection17.DeleteFromCollectionInvisibleValue x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionImmutableObject() = ObjectCollection17.DeleteFromCollectionImmutableObject x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionInvalidArgsName() = ObjectCollection17.DeleteFromCollectionInvalidArgsName x.API 
+//    [<Test>]
+//        
+//    member x.NotAcceptableDeleteFromCollectionWrongMediaType() = ObjectCollection17.NotAcceptableDeleteFromCollectionWrongMediaType x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionMissingArgsValidateOnly() = ObjectCollection17.DeleteFromCollectionMissingArgsValidateOnly x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionMalformedArgsValidateOnly() = ObjectCollection17.DeleteFromCollectionMalformedArgsValidateOnly x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionInvalidArgsValidateOnly() = ObjectCollection17.DeleteFromCollectionInvalidArgsValidateOnly x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionDisabledValueValidateOnly() = ObjectCollection17.DeleteFromCollectionDisabledValueValidateOnly x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionInvisibleValueValidateOnly() = ObjectCollection17.DeleteFromCollectionInvisibleValueValidateOnly x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionImmutableObjectValidateOnly() = ObjectCollection17.DeleteFromCollectionImmutableObjectValidateOnly x.API 
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionInvalidArgsNameValidateOnly() = ObjectCollection17.DeleteFromCollectionInvalidArgsNameValidateOnly x.API  
+//    [<Test>]
+//    
+//    member x.DeleteFromCollectionInternalError() = ObjectCollection17.DeleteFromCollectionInternalError x.API 
     // ObjectAction18
     [<Test>]
     member x.GetActionPropertyObject() = ObjectAction18.GetActionPropertyObject x.API

@@ -117,10 +117,4 @@ namespace NakedObjects.Security {
                 FirstOrDefault();
         }
     }
-
-    [Obsolete("Spelling has changed from 's' to 'z'")]
-    public class CustomAuthorisationManager : CustomAuthorizationManager {
-        public CustomAuthorisationManager(ITypeAuthorizer<object> defaultAuthorizer, params object[] typeAuthorizers)
-            : base(defaultAuthorizer, typeAuthorizers) {}
-    }
 }

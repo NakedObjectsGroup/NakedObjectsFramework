@@ -23,6 +23,4 @@ namespace NakedObjects.Reflector.Security.Wif {
         #endregion
     }
 
-    [Obsolete]
-    public class WifAuthorisationInstaller : WifAuthorizationInstaller {}
 }

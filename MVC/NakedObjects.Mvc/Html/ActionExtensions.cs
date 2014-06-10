@@ -149,29 +149,6 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.ObjectActionAsString(linkText, actionName, controller, classAttribute, name, routeValueDictionary);
         }
 
-        /// <summary>
-        ///     Post to identified action and controller
-        /// </summary>
-        [Obsolete("Use ControllerAction")]
-        public static MvcHtmlString GenericAction(this HtmlHelper html, string linkText, string actionName, string controller) {
-            return html.ControllerAction(linkText, actionName, controller);
-        }
-
-        /// <summary>
-        ///     Post to identified action on model
-        /// </summary>
-        [Obsolete("Use ControllerAction")]
-        public static MvcHtmlString GenericAction(this HtmlHelper html, string linkText, string actionName, object model) {
-            return html.ControllerAction(linkText, actionName, null, model);
-        }
-
-        /// <summary>
-        ///     Post to identified action and controller with route values
-        /// </summary>
-        [Obsolete("Use ControllerAction")]
-        public static MvcHtmlString GenericAction(this HtmlHelper html, string linkText, string actionName, string controller, RouteValueDictionary routeValueDictionary) {
-            return html.ControllerAction(linkText, actionName, controller, routeValueDictionary);
-        }
 
         #endregion
 

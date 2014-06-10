@@ -92,10 +92,6 @@ namespace NakedObjects.EntityObjectStore {
             NotPersistedTypes = types;
         }
 
-        [Obsolete("Renamed to UsingCodeFirstContext")]
-        public ContextInstaller AddCodeFirstDbContextConstructor(Func<DbContext> f) {
-            return UsingCodeFirstContext(f);
-        }
 
         /// <summary>
         ///     Call for each code first context in solution.

@@ -172,28 +172,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return MapErrors(() => ChangeProperty(GetObjectAsNakedObject(objectId), propertyName, argument));
         }
 
-        [Obsolete]
-        public PropertyContextSurface AddToCollection(LinkObjectId objectId, string propertyName, ArgumentContext argument) {
-            return MapErrors<PropertyContextSurface>(() => {
-                var context = new ObjectContext(GetObjectAsNakedObject(objectId)) {
-                    ErrorCause = Cause.Disabled,
-                    Reason = "Always Disabled"
-                };
-                throw new BadArgumentsNOSException("Always disabled", new[] {context.ToObjectContextSurface(this)});
-            });
-        }
-
-        [Obsolete]
-        public PropertyContextSurface DeleteFromCollection(LinkObjectId objectId, string propertyName, ArgumentContext argument) {
-            return MapErrors<PropertyContextSurface>(() => {
-                var context = new ObjectContext(GetObjectAsNakedObject(objectId)) {
-                    ErrorCause = Cause.Disabled,
-                    Reason = "Always Disabled"
-                };
-                throw new BadArgumentsNOSException("Always disabled", new[] { context.ToObjectContextSurface(this) });
-            });
-        }
-
+       
         public ActionResultContextSurface ExecuteObjectAction(LinkObjectId objectId, string actionName, ArgumentsContext arguments) {
             return MapErrors(() => {
                 ActionContext actionContext = GetInvokeActionOnObject(objectId, actionName);

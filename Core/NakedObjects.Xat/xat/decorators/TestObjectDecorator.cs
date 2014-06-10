@@ -43,16 +43,6 @@ namespace NakedObjects.Xat {
             throw new NotImplementedException();
         }
 
-        [Obsolete("Use GetAction, specifying contributor as the 'subMenu' parameter")]
-        public ITestAction GetContributedAction(string name, string contributor) {
-            throw new NotImplementedException();
-        }
-
-        [Obsolete("Use GetAction, specifying contributor as the 'subMenu' parameter")]
-        public ITestAction GetContributedAction(string name, string contributor, params Type[] parameterTypes) {
-            throw new NotImplementedException();
-        }
-
         public string GetObjectActionOrder() {
             throw new NotImplementedException();
         }

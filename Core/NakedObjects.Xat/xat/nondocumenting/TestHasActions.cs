@@ -65,20 +65,6 @@ namespace NakedObjects.Xat {
             return actions.Single();
         }
 
-        [Obsolete("Use GetAction, specifying contributor as the 'subMenu' parameter")]
-        public ITestAction GetContributedAction(string actionName, string contributor) {
-            ITestAction[] actions = Actions.Where(x => x.Name == actionName && x.SubMenu == contributor).ToArray();
-            AssertErrors(actions, actionName, string.Format(" contributed by '{0}'", contributor));
-            return actions.Single();
-        }
-
-        [Obsolete("Use GetAction, specifying contributor as the 'subMenu' parameter")]
-        public ITestAction GetContributedAction(string name, string contributor, params Type[] parameterTypes) {
-            ITestAction[] actions = Actions.Where(x => x.Name == name && x.SubMenu == contributor && x.MatchParameters(parameterTypes)).ToArray();
-            AssertErrors(actions, name, string.Format(" (with specified parameters) contributed by '{0}'", contributor));
-            return actions.Single();
-        }
-
         public virtual string GetObjectActionOrder() {
             INakedObjectSpecification specification = NakedObject.Specification;
             INakedObjectAction[] actions = specification.GetObjectActions();

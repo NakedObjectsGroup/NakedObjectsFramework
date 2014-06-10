@@ -21,12 +21,6 @@ namespace NakedObjects.Xat {
         /// </summary>
         ITestAction GetAction(string name, string subMenu, params Type[] parameterTypes);
 
-        [Obsolete("Use GetAction, specifying contributor as the 'subMenu' parameter")]
-        ITestAction GetContributedAction(string name, string contributor);
-
-        [Obsolete("Use GetAction, specifying contributor as the 'subMenu' parameter")]
-        ITestAction GetContributedAction(string name, string contributor, params Type[] parameterTypes);
-
         string GetObjectActionOrder();
 
         /// <summary>
