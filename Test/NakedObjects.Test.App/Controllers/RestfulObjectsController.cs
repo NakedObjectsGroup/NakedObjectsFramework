@@ -116,15 +116,15 @@ namespace NakedObjects.Test.App.Controllers {
             return base.DeleteProperty(domainType, instanceId, propertyName, arguments);
         }
 
-        [HttpPost]
-        public override HttpResponseMessage PostCollection(string domainType, string instanceId, string propertyName, [ModelBinder(typeof (SingleValueArgumentBinder))] SingleValueArgument argument) {
-            return base.PostCollection(domainType, instanceId, propertyName, argument);
-        }
+        //[HttpPost]
+        //public override HttpResponseMessage PostCollection(string domainType, string instanceId, string propertyName, [ModelBinder(typeof (SingleValueArgumentBinder))] SingleValueArgument argument) {
+        //    return base.PostCollection(domainType, instanceId, propertyName, argument);
+        //}
 
-        [HttpDelete]
-        public override HttpResponseMessage DeleteCollection(string domainType, string instanceId, string propertyName, [ModelBinder(typeof (SingleValueArgumentUrlBinder))] SingleValueArgument argument) {
-            return base.DeleteCollection(domainType, instanceId, propertyName, argument);
-        }
+        //[HttpDelete]
+        //public override HttpResponseMessage DeleteCollection(string domainType, string instanceId, string propertyName, [ModelBinder(typeof (SingleValueArgumentUrlBinder))] SingleValueArgument argument) {
+        //    return base.DeleteCollection(domainType, instanceId, propertyName, argument);
+        //}
 
         [HttpGet]
         public override HttpResponseMessage GetInvoke(string domainType, string instanceId, string actionName, [ModelBinder(typeof (ArgumentMapUrlBinder))] ArgumentMap arguments) {
