@@ -16,7 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
 
-      'Spiro.Modern/Scripts/jquery-2.0.3.js',
+      'Spiro.Modern/Scripts/jquery-2.1.1.js',
       'Spiro.Modern/Scripts/underscore.js',
       'Spiro.Modern/Scripts/angular.js',
       'Spiro.Modern/Scripts/angular-route.js',
