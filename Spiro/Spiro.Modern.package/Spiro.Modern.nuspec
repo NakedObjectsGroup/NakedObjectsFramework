@@ -18,11 +18,7 @@
       <dependency id="AngularJS.Route" version="1.2.16" />
       <dependency id="AngularJS.Touch" version="1.2.16" />  
       <dependency id="angularjs.TypeScript.DefinitelyTyped" version="0.2.2" />
-      <dependency id="jQuery" version="2.0.3" />
-      <dependency id="underscore.js" version="1.5.1" />
-      <dependency id="jQuery.UI.Combined" version="1.10.3" />
-      <dependency id="jquery.TypeScript.DefinitelyTyped" version="0.2.0" />
-      <dependency id="underscore.TypeScript.DefinitelyTyped" version="0.1.5" />
+      <dependency id="jQuery.UI.Combined" version="1.10.4" />
       <dependency id="Spiro.Models" version="0.9.0-beta" />
     </dependencies>
   </metadata>

@@ -319,13 +319,15 @@
     <Content Include="Images\tab-close-hover.png" />
     <Content Include="Images\tab-close.png" />
     <Content Include="Images\Table.png" />
-    <Content Include="Scripts\jquery-2.1.0.js" />
-    <Content Include="Scripts\jquery-2.1.0.min.js" />
+    <None Include="Scripts\jquery-2.1.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-2.1.1.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.map" />
     <Content Include="Scripts\jquery.address-1.6.js" />
     <Content Include="Scripts\jquery.json-2.2.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -356,7 +358,6 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
-    <Content Include="Scripts\jquery-2.1.0.min.map" />
     <Content Include="Views\Shared\ViewModel.cshtml" />
     <Content Include="Views\Shared\StandaloneTable.cshtml" />
     <Content Include="Views\Shared\ScalarView.cshtml" />

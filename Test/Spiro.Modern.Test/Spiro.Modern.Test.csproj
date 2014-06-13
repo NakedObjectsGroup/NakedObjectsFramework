@@ -113,10 +113,11 @@
     <Content Include="fonts\iconFont.ttf" />
     <Content Include="fonts\iconFont.eot" />
     <None Include="scripts\jquery-2.0.3.intellisense.js" />
-    <Content Include="scripts\jquery-2.0.3.js" />
-    <Content Include="scripts\jquery-2.0.3.min.js" />
-    <Content Include="scripts\jquery-ui-1.10.3.js" />
-    <Content Include="scripts\jquery-ui-1.10.3.min.js" />
+    <None Include="scripts\jquery-2.1.1-vsdoc.js" />
+    <Content Include="scripts\jquery-2.1.1.js" />
+    <Content Include="scripts\jquery-2.1.1.min.js" />
+    <Content Include="scripts\jquery-ui-1.10.4.js" />
+    <Content Include="scripts\jquery-ui-1.10.4.min.js" />
     <Content Include="scripts\spiro.angular.app.js" />
     <Content Include="scripts\spiro.angular.app.ts" />
     <Content Include="scripts\spiro.angular.config.js" />
@@ -162,10 +163,9 @@
     <Content Include="scripts\typings\angularjs\angular-scenario.d.ts" />
     <Content Include="scripts\typings\angularjs\angular.d.ts" />
     <Content Include="scripts\typings\jquery\jquery.d.ts" />
-    <Content Include="scripts\typings\underscore\underscore-typed.d.ts" />
     <Content Include="scripts\typings\underscore\underscore.d.ts" />
+    <Content Include="scripts\underscore-min.js" />
     <Content Include="scripts\underscore.js" />
-    <Content Include="scripts\underscore.min.js" />
     <Content Include="SpiroReadme.txt" />
     <Content Include="web.config" />
   </ItemGroup>
@@ -174,8 +174,8 @@
     <Content Include="packages.config" />
     <Content Include="scripts\angular-route.min.js.map" />
     <Content Include="scripts\angular-touch.min.js.map" />
-    <Content Include="scripts\jquery-2.0.3.min.map" />
-    <Content Include="scripts\underscore.min.map" />
+    <Content Include="scripts\jquery-2.1.1.min.map" />
+    <Content Include="scripts\underscore-min.map" />
     <None Include="test.pubxml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
