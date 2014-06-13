@@ -45,11 +45,7 @@ namespace AdventureWorksModel {
             return product;
         }
 
-        [QueryOnly]
-        [MemberOrder(10)]
-        public Product FindProductByKey(string key) {
-            return Container.FindByKey<Product>(int.Parse(key));
-        }
+        
 
         public Product Default0FindProduct() {
             return Instances<Product>().First();
@@ -233,5 +229,12 @@ namespace AdventureWorksModel {
         }
 
         #endregion
+
+        [QueryOnly]
+        [MemberOrder(10)]
+        public Product FindProductByKey(string key)
+        {
+            return Container.FindByKey<Product>(int.Parse(key));
+        }
     }
 }
