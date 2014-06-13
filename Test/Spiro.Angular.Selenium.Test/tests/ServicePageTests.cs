@@ -12,7 +12,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class ServicePageTests : SpiroTest {
         [TestMethod]
         public virtual void MenuBar() {
-            br.Navigate().GoToUrl(customerServiceUrl);
+            br.Navigate().GoToUrl(CustomerServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("app-bar")).Count == 1);
 
@@ -26,9 +26,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void Actions() {
-            br.Navigate().GoToUrl(customerServiceUrl);
+            br.Navigate().GoToUrl(CustomerServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
 
             Assert.AreEqual("Find Customer By Account Number", actions[0].Text);
@@ -46,9 +46,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void DialogAction() {
-            br.Navigate().GoToUrl(customerServiceUrl);
+            br.Navigate().GoToUrl(CustomerServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
 
             // click on action to open dialog 
@@ -75,9 +75,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void DialogActionShow() {
-            br.Navigate().GoToUrl(customerServiceUrl);
+            br.Navigate().GoToUrl(CustomerServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
 
             var showObject = new Action(() => {
                 // click on action to open dialog 
@@ -135,9 +135,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void DialogActionGo() {
-            br.Navigate().GoToUrl(customerServiceUrl);
+            br.Navigate().GoToUrl(CustomerServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[0]); // Find customer by account number
@@ -169,9 +169,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ObjectAction() {
-            br.Navigate().GoToUrl(customerServiceUrl);
+            br.Navigate().GoToUrl(CustomerServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
 
             IWebElement action = br.FindElements(By.ClassName("action"))[9];
 
@@ -196,9 +196,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ObjectActionExpand() {
-            br.Navigate().GoToUrl(customerServiceUrl);
+            br.Navigate().GoToUrl(CustomerServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
             IWebElement action = br.FindElements(By.ClassName("action"))[9];
 
             // click on action to get object 
@@ -214,9 +214,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void CollectionAction() {
-            br.Navigate().GoToUrl(orderServiceUrl);
+            br.Navigate().GoToUrl(OrderServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 6);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
 
             // click on action to get collection 
@@ -240,11 +240,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void CollectionActionSelectItem() {
-            br.Navigate().GoToUrl(orderServiceUrl);
+            br.Navigate().GoToUrl(OrderServiceUrl);
 
 
             var selectItem = new Action(() => {
-                wait.Until(d => d.FindElements(By.ClassName("action")).Count == 6);
+                wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
                 ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
 
                 // click on action to get object 
@@ -301,9 +301,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void CollectionActionSelectItemExpand() {
-            br.Navigate().GoToUrl(orderServiceUrl);
+            br.Navigate().GoToUrl(OrderServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 6);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
 
             // click on action to get object 

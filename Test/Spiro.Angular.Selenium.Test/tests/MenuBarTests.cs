@@ -10,23 +10,23 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class MenuBarTests : SpiroTest {
         [TestMethod]
         public virtual void Home() {
-            br.Navigate().GoToUrl(customerServiceUrl);
+            br.Navigate().GoToUrl(CustomerServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
             Click(br.FindElement(By.ClassName("home")));
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == 10);
+            wait.Until(d => d.FindElements(By.ClassName("service")).Count == ServicesCount);
         }
 
         [TestMethod]
         public virtual void BackAndForward() {
-            br.Navigate().GoToUrl(url);
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == 10);
+            br.Navigate().GoToUrl(Url);
+            wait.Until(d => d.FindElements(By.ClassName("service")).Count == ServicesCount);
             GoToServiceFromHomePage("Customers");
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
             Click(br.FindElement(By.ClassName("back")));
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == 10);
+            wait.Until(d => d.FindElements(By.ClassName("service")).Count == ServicesCount);
             Click(br.FindElement(By.ClassName("forward")));
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
         }
 
 

@@ -15,9 +15,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
        
         [TestMethod]
         public virtual void ObjectEditChangeScalar() {
-            br.Navigate().GoToUrl(product469Url);
+            br.Navigate().GoToUrl(Product469Url);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 7);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
 
             wait.Until(d => d.FindElement(By.ClassName("edit")).Displayed);
 
@@ -45,9 +45,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectEditChangeDateTime()
         {
-            br.Navigate().GoToUrl(product469Url);
+            br.Navigate().GoToUrl(Product469Url);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 7);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
 
             wait.Until(d => d.FindElement(By.ClassName("edit")).Displayed);
 
@@ -79,9 +79,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectEditChangeChoices()
         {
-            br.Navigate().GoToUrl(product469Url);
+            br.Navigate().GoToUrl(Product469Url);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 7);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
 
             wait.Until(d => d.FindElement(By.ClassName("edit")).Displayed);
 
@@ -109,9 +109,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectEditChangeConditionalChoices()
         {
-            br.Navigate().GoToUrl(product469Url);
+            br.Navigate().GoToUrl(Product469Url);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 7);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
 
             wait.Until(d => d.FindElement(By.ClassName("edit")).Displayed);
 
@@ -133,7 +133,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Click(br.FindElement(By.ClassName("save")));
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 7);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductActions);
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
 
@@ -186,7 +186,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
-            br.Navigate().GoToUrl(url);
+            br.Navigate().GoToUrl(Url);
         }
 
         [TestCleanup]

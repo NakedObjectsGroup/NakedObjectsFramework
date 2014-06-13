@@ -58,20 +58,33 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class SpiroTest {
         #region overhead
 
-        protected const string url = "http://mvc.nakedobjects.net:1081/UnitTestSpiroNg/index.html";
-        protected const string server = @"Saturn\SqlExpress";
-        protected const string database = "AdventureWorks";
-        protected const string backup = "AdventureWorks";
+        protected const string Url = "http://mvc.nakedobjects.net:1081/UnitTestSpiroNg/index.html";
+        protected const string Server = @"Saturn\SqlExpress";
+        protected const string Database = "AdventureWorks";
+        protected const string Backup = "AdventureWorks";
 
-        protected const string customerServiceUrl = url + "#/services/AdventureWorksModel.CustomerRepository";
-        protected const string orderServiceUrl = url + "#/services/AdventureWorksModel.OrderRepository";
-        protected const string productServiceUrl = url + "#/services/AdventureWorksModel.ProductRepository";
-        protected const string salesServiceUrl = url + "#/services/AdventureWorksModel.SalesRepository";
 
-        protected const string store555Url = url + "#/objects/AdventureWorksModel.Store/555";
-        protected const string product968Url = url + "#/objects/AdventureWorksModel.Product/968";
-        protected const string product469Url = url + "#/objects/AdventureWorksModel.Product/469";
 
+        protected const string CustomerServiceUrl = Url + "#/services/AdventureWorksModel.CustomerRepository";
+        protected const string OrderServiceUrl = Url + "#/services/AdventureWorksModel.OrderRepository";
+        protected const string ProductServiceUrl = Url + "#/services/AdventureWorksModel.ProductRepository";
+        protected const string SalesServiceUrl = Url + "#/services/AdventureWorksModel.SalesRepository";
+
+        protected const int ServicesCount = 10;
+
+        protected const int CustomerServiceActions = 11;
+        protected const int OrderServiceActions = 5;
+        protected const int ProductServiceActions = 11;
+        protected const int SalesServiceActions = 4;
+
+
+        protected const string Store555Url = Url + "#/objects/AdventureWorksModel.Store/555";
+        protected const string Product968Url = Url + "#/objects/AdventureWorksModel.Product/968";
+        protected const string Product469Url = Url + "#/objects/AdventureWorksModel.Product/469";
+
+        protected const int StoreActions = 8;
+        protected const int ProductActions = 7;
+        protected const int ProductProperties = 26;
 
         //protected const string url = "http://localhost:53103/";
         //protected const string server = @".\SQLEXPRESS";

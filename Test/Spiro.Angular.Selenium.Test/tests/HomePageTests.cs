@@ -11,13 +11,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class HomePageTests : SpiroTest {
         [TestMethod]
         public virtual void HomePage() {
-            bool found = wait.Until(d => d.FindElements(By.ClassName("service")).Count == 10);
+            bool found = wait.Until(d => d.FindElements(By.ClassName("service")).Count == ServicesCount);
             Assert.IsTrue(found, "Services not found on home page");
         }
 
         [TestMethod]
         public virtual void Services() {
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == 10);
+            wait.Until(d => d.FindElements(By.ClassName("service")).Count == ServicesCount);
 
             ReadOnlyCollection<IWebElement> services = br.FindElements(By.ClassName("service"));
 
@@ -31,8 +31,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Vendors", services[7].Text);
             Assert.AreEqual("Purchase Orders", services[8].Text);
             Assert.AreEqual("Work Orders", services[9].Text);
-            //Assert.AreEqual("Orders", services[10].Text);
-            //Assert.AreEqual("Customers", services[11].Text);
         }
 
         [TestMethod]
@@ -67,7 +65,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
-            br.Navigate().GoToUrl(url);
+            br.Navigate().GoToUrl(Url);
         }
 
         [TestCleanup]
@@ -86,7 +84,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitFirefoxDriver();
-            br.Navigate().GoToUrl(url);
+            br.Navigate().GoToUrl(Url);
         }
 
         [TestCleanup]
@@ -106,7 +104,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitChromeDriver();
-            br.Navigate().GoToUrl(url);
+            br.Navigate().GoToUrl(Url);
         }
 
         [TestCleanup]

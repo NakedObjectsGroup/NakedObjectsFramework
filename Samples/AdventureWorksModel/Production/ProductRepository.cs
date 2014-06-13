@@ -46,8 +46,8 @@ namespace AdventureWorksModel {
         }
 
         [QueryOnly]
-        public Product FindProductByKey(string key)
-        {
+        [MemberOrder(10)]
+        public Product FindProductByKey(string key) {
             return Container.FindByKey<Product>(int.Parse(key));
         }
 

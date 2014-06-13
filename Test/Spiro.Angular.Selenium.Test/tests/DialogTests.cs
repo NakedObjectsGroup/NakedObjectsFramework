@@ -5,7 +5,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Permissions;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -36,9 +35,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ChoicesParm() {
-            br.Navigate().GoToUrl(orderServiceUrl);
+            br.Navigate().GoToUrl(OrderServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 6);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
 
             var showList = new Action<string, string>((type, test) => {
@@ -101,9 +100,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ScalarChoicesParmKeepsValue() {
-            br.Navigate().GoToUrl(orderServiceUrl);
+            br.Navigate().GoToUrl(OrderServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 6);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == OrderServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[OrdersOrdersByValue]); // orders by value
@@ -128,9 +127,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ScalarParmKeepsValue() {
-            br.Navigate().GoToUrl(customerServiceUrl);
+            br.Navigate().GoToUrl(CustomerServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[CustomersFindCustomerByAccountNumber]); // find customer by account number
@@ -151,9 +150,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void DateTimeParmKeepsValue() {
-            br.Navigate().GoToUrl(store555Url);
+            br.Navigate().GoToUrl(Store555Url);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 8);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == StoreActions);
 
 
             // click on action to open dialog 
@@ -181,9 +180,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void RefChoicesParmKeepsValue() {
-            br.Navigate().GoToUrl(productServiceUrl);
+            br.Navigate().GoToUrl(ProductServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[ProductsListProductsBySubcategory]); // list products by sub cat
@@ -210,9 +209,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void MultipleRefChoicesDefaults()
         {
-            br.Navigate().GoToUrl(productServiceUrl);
+            br.Navigate().GoToUrl(ProductServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[ProductsListProductsBySubcategories]); // list products by sub cat
@@ -246,9 +245,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void MultipleRefChoicesChangeDefaults()
         {
-            br.Navigate().GoToUrl(productServiceUrl);
+            br.Navigate().GoToUrl(ProductServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[ProductsListProductsBySubcategories]); // list products by sub cat
@@ -288,9 +287,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ChoicesDefaults()
         {
-            br.Navigate().GoToUrl(productServiceUrl);
+            br.Navigate().GoToUrl(ProductServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[ProductsFindByProductLineAndClass]); // find by product line and class
@@ -319,9 +318,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ChoicesChangeDefaults()
         {
-            br.Navigate().GoToUrl(productServiceUrl);
+            br.Navigate().GoToUrl(ProductServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[ProductsFindByProductLineAndClass]); // find by product line and class
@@ -350,9 +349,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ConditionalChoicesDefaults()
         {
-            br.Navigate().GoToUrl(productServiceUrl);
+            br.Navigate().GoToUrl(ProductServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[ProductsFindProductsByCategory]); 
@@ -391,9 +390,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ConditionalChoicesChangeDefaults()
         {
-            br.Navigate().GoToUrl(productServiceUrl);
+            br.Navigate().GoToUrl(ProductServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[ProductsFindProductsByCategory]);
@@ -432,9 +431,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void AutoCompleteParmShow() {
-            br.Navigate().GoToUrl(salesServiceUrl);
+            br.Navigate().GoToUrl(SalesServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 5);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == SalesServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[SalesListAccountsForSalesPerson]); // list accounts for sales person 
@@ -460,9 +459,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void AutoCompleteParmGo()
         {
-            br.Navigate().GoToUrl(salesServiceUrl);
+            br.Navigate().GoToUrl(SalesServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 5);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == SalesServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[SalesListAccountsForSalesPerson]); // list accounts for sales person 
@@ -500,9 +499,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void AutoCompleteParmDefault()
         {
-            br.Navigate().GoToUrl(productServiceUrl);
+            br.Navigate().GoToUrl(ProductServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[ProductsFindProduct]); // list accounts for sales person 
@@ -526,9 +525,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void AutoCompleteParmShowSingleItem()
         {
-            br.Navigate().GoToUrl(productServiceUrl);
+            br.Navigate().GoToUrl(ProductServiceUrl);
 
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == 11);
+            wait.Until(d => d.FindElements(By.ClassName("action")).Count == ProductServiceActions);
 
             // click on action to open dialog 
             Click(br.FindElements(By.ClassName("action"))[ProductsFindProduct]); // list accounts for sales person 
