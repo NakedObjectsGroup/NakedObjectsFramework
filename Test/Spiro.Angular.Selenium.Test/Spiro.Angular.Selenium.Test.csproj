@@ -76,6 +76,12 @@
     <Content Include="drivers\chromedriver.exe" />
     <Content Include="drivers\IEDriverServer.exe" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Mvc.Selenium.Test.Helpers\NakedObjects.Mvc.Selenium.Test.Helpers.csproj">
+      <Project>{78A4F8FA-8BA0-4F2F-89BA-3BD6104A2BA0}</Project>
+      <Name>NakedObjects.Mvc.Selenium.Test.Helpers</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

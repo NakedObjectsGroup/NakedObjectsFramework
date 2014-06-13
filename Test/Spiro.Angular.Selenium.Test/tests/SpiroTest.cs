@@ -98,7 +98,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {
-            // DatabaseUtils.RestoreDatabase(database, backup, server);
+             DatabaseUtils.RestoreDatabase(Database, Backup, Server);
         }
 
         public virtual void CleanUpTest() {
