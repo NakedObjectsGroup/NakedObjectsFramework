@@ -36,12 +36,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Throw Domain Exception", actions[2].Text);
             Assert.AreEqual("Find Individual Customer By Name", actions[3].Text);
             Assert.AreEqual("Create New Individual Customer", actions[4].Text);
-            Assert.AreEqual("Random Individual", actions[5].Text);
-            Assert.AreEqual("Query Individuals", actions[6].Text);
-            Assert.AreEqual("Find Store By Name", actions[7].Text);
-            Assert.AreEqual("Create New Store Customer", actions[8].Text);
-            Assert.AreEqual("Random Store", actions[9].Text);
-            Assert.AreEqual("Query Stores", actions[10].Text);
+            Assert.AreEqual("Random Individual", actions[5].Text);          
+            Assert.AreEqual("Find Store By Name", actions[6].Text);
+            Assert.AreEqual("Create New Store Customer", actions[7].Text);
+            Assert.AreEqual("Random Store", actions[8].Text);            
         }
 
         [TestMethod]
@@ -173,7 +171,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
 
-            IWebElement action = br.FindElements(By.ClassName("action"))[9];
+            IWebElement action = br.FindElements(By.ClassName("action"))[8];
 
             // click on action to get object 
             Click(action); // random store 
@@ -199,7 +197,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.Navigate().GoToUrl(CustomerServiceUrl);
 
             wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
-            IWebElement action = br.FindElements(By.ClassName("action"))[9];
+            IWebElement action = br.FindElements(By.ClassName("action"))[8];
 
             // click on action to get object 
             Click(action); // random store 
