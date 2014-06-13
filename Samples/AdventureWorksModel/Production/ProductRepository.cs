@@ -41,6 +41,7 @@ namespace AdventureWorksModel {
         #region FindProduct
 
         [QueryOnly]
+        [MemberOrder(7)]
         public Product FindProduct(Product product) {
             return product;
         }
@@ -125,6 +126,7 @@ namespace AdventureWorksModel {
 
         #region FindProductsByCategory
 
+        [MemberOrder(8)]
         public IQueryable<Product> FindProductsByCategory(IEnumerable<ProductCategory> categories, IEnumerable<ProductSubcategory> subcategories) {
             return QueryableOfProductsBySubcat(subcategories);
         }
@@ -168,6 +170,7 @@ namespace AdventureWorksModel {
         #region RandomProduct
 
         [QueryOnly]
+        [MemberOrder(10)]
         public Product RandomProduct() {
             return Random<Product>();
         }
@@ -176,6 +179,7 @@ namespace AdventureWorksModel {
 
         #region NewProduct
 
+        [MemberOrder(9)]
         public virtual Product NewProduct() {
             return Container.NewTransientInstance<Product>();
         }
@@ -184,6 +188,7 @@ namespace AdventureWorksModel {
 
         #region FindByProductLinesAndClasses
 
+        [MemberOrder(6)]
         public IQueryable<Product> FindByProductLinesAndClasses(IEnumerable<ProductLineEnum> productLine, IEnumerable<ProductClassEnum> productClass) {
             IQueryable<Product> products = Container.Instances<Product>();
 
@@ -213,6 +218,7 @@ namespace AdventureWorksModel {
 
         #region FindByProductLineAndClass
 
+        [MemberOrder(5)]
         public IQueryable<Product> FindByProductLineAndClass(ProductLineEnum productLine, ProductClassEnum productClass) {
             string pls = Enum.GetName(typeof (ProductLineEnum), productLine);
             string pcs = Enum.GetName(typeof (ProductClassEnum), productLine);
@@ -231,7 +237,7 @@ namespace AdventureWorksModel {
         #endregion
 
         [QueryOnly]
-        [MemberOrder(10)]
+        [MemberOrder(11)]
         public Product FindProductByKey(string key)
         {
             return Container.FindByKey<Product>(int.Parse(key));
