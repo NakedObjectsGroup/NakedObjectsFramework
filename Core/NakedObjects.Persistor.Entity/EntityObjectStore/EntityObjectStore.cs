@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.Entity.Core;
-using System.Data.Entity.Core.EntityClient;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
@@ -816,7 +815,6 @@ namespace NakedObjects.EntityObjectStore {
             private readonly ISet<INakedObject> persistedNakedObjects = new HashSet<INakedObject>();
             private readonly IDictionary<Type, StructuralType> typeToStructuralType = new Dictionary<Type, StructuralType>();
             private List<INakedObject> coUpdating;
-            private EntityConnection connection;
             private List<INakedObject> updatingNakedObjects;
 
             private LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes) {
@@ -915,7 +913,6 @@ namespace NakedObjects.EntityObjectStore {
                 return false;
             }
 
-
             private bool IsOwnedOrBaseTypeIsOwned(Type type) {
                 if (IsAlwaysUnrecognised(type)) {
                     return false;
@@ -998,10 +995,6 @@ namespace NakedObjects.EntityObjectStore {
             }
 
             public void Dispose() {
-                if (connection != null) {
-                    connection.Dispose();
-                    connection = null;
-                }
                 WrappedObjectContext.Dispose();
                 baseTypeMap.Clear();
             }
