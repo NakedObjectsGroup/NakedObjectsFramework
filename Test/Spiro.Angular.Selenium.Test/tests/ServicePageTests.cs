@@ -165,7 +165,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public virtual void ObjectAction() {
             br.Navigate().GoToUrl(CustomerServiceUrl);
 
@@ -192,7 +192,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             });
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public virtual void ObjectActionExpand() {
             br.Navigate().GoToUrl(CustomerServiceUrl);
 
