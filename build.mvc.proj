@@ -139,6 +139,7 @@
 		<ItemGroup>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Content*\NakedObjects.css"/>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\application-logo.png"/>
+			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\checked.png"/>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\concurrency-error.png"/>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\default.png"/>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\First-disabled.png"/>
@@ -156,8 +157,9 @@
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\SubMenuPointer.png"/>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\system-error.png"/>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\Table.png"/>
-      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\tab-close.png"/>
-      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\tab-close-hover.png"/>
+      			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\tab-close.png"/>
+      			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\tab-close-hover.png"/>
+			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\unchecked.png"/>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\nakedobjects.ico"/>
 
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Controllers*\*.*" Exclude="**\RestfulObjectsController.cs;**\AccountController.cs"/>

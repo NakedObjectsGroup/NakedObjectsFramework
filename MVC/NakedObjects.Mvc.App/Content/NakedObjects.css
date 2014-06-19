@@ -41,6 +41,9 @@ ul
 /* Base Colors and Fonts  - End */
 
 /* Primary Layout  -  Start */
+.site-title {
+    line-height: 1.6em;
+}
 .page
 {
 /* width: 90%; */
@@ -605,7 +608,7 @@ border-bottom:1px solid white;
 background-color:#9dbdd9;
 height:30px;
 }
-.nof-property label {
+.nof-property .nof-label {
 display: table-cell;
 background-color:#87a8c3;
 text-align:right;
@@ -623,6 +626,12 @@ vertical-align:middle;
 padding:3px;
 border-bottom:1px solid white;
 }
+/*Match size of images for checkbox to size for browser-rendered editable checkbox*/
+.nof-property .nof-value img {
+    height: 13px;
+}
+
+
 /* Drag and drop */
 .nof-property div.nof-object.nof-validdrop.nof-withindrop {
 background-color:#00cc00;
@@ -696,7 +705,7 @@ width:540px;
 width:540px;
 background-color:#b4d3ee;
 }
-.nof-parameter .nof-actiondialog label {
+.nof-parameter .nof-actiondialog .nof-label {
 background-color:#87a8c3;
 color: white;
 border-bottom:0;
@@ -722,7 +731,7 @@ display: table-row;
 border-bottom:1px solid white;
 height:30px;
 }
-.nof-parameter label {
+.nof-parameter .nof-label {
 display: table-cell;
 background-color:#A5DE8A; /* Dark-Green background */
 text-align:right;
@@ -1084,34 +1093,3 @@ display: none; /*Hide the Find menu always*/
 } 
 /*End - Special treatment for editable view models*/
 
-/*NOF 6.0 - New styling*/
-.body-content, .content-wrapper {
-    padding-top: 30px;
-    margin: auto;
-    max-width: 1170px;
-}
-
-*,
-*:before,
-*:after {
-  -webkit-box-sizing: content-box;
-     -moz-box-sizing: content-box;
-          box-sizing: content-box;
-}
-
-.nof-tab, .nof-tab:after,
-.nof-tab form, .nof-tab form:after,
-.nof-tab form button, .nof-tab form button:after  {
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-}
-
-button[title="OK"],  button[title="Apply"], button[title="Edit"],  button[title="Save"] ,  button[name="Cancel"]{
-background-color: #d3dce0;
-padding: 7px;
-margin-right: 8px;
-margin-top: 8px;
-border: none;
-font-size: 12px;
-}
