@@ -59,6 +59,10 @@
 
     <ItemGroup>
       <OldPackages Include="$(CorePath)\$(NOWIF).package\*.nupkg"/>
+
+      <OldPackages Include="$(PackageSourcePath)\$(NOWIF)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(NOWIF)*.nupkg"/>
+      
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOWIF).package\**\*.*"/>
       <OldCode Include="$(CorePath)\$(NOWIF)\bin\**\*.dll"/>
       <OldCode Include="$(CorePath)\$(NOWIF)\obj\**\*.*"/>

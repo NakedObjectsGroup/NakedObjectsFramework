@@ -54,6 +54,8 @@
    
 		<ItemGroup>
 			<OldPackages Include="$(PMPath)\$(NOPM).package\*.nupkg"/>
+      <OldPackages Include="$(PackageSourcePath)\$(NOPM)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(NOPM)*.nupkg"/>
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOPM).package\**\*.*"/>
 		</ItemGroup>
 

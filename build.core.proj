@@ -91,6 +91,10 @@
     <ItemGroup>
       <OldPackages Include="$(CorePath)\$(NOCore).package\*.nupkg"/>
       <OldPackages Include="$(CorePath)\$(NOX).package\*.nupkg"/>
+      <OldPackages Include="$(PackageSourcePath)\$(NOCore)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(NOCore)*.nupkg"/>
+      <OldPackages Include="$(PackageSourcePath)\$(NOX)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(NOX)*.nupkg"/>
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOCore).package\**\*.*"/>
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOX).package\**\*.*"/>
       <OldCode Include="$(CorePath)\**\bin\**\*.dll"/>

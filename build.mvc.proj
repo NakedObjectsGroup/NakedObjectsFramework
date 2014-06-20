@@ -76,6 +76,9 @@
    
     <ItemGroup>
       <OldPackages Include="$(MVCPath)\$(NOMVC)-*.package\*.nupkg"/>
+      <OldPackages Include="$(PackageSourcePath)\$(NOMVC)-*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(NOMVC)-*.nupkg"/>
+      
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOMVC)-*.package\**\*.*"/>
       <OldCode Include="$(MVCPath)\**\bin\**\*.dll"/>
       <OldCode Include="$(MVCPath)\**\obj\**\*.*"/>

@@ -44,6 +44,13 @@
     <ItemGroup>
       <OldPackages Include="$(SurfacePath)\$(NOSF).package\*.nupkg"/>
       <OldPackages Include="$(SurfacePath)\$(NOSF4).package\*.nupkg"/>
+
+      <OldPackages Include="$(PackageSourcePath)\$(NOSF)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(NOSF)*.nupkg"/>
+      <OldPackages Include="$(PackageSourcePath)\$(NOSF4)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(NOSF4)*.nupkg"/>
+      
+      
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOSF).package\**\*.*"/>
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOSF4).package\**\*.*"/>
       <OldCode Include="$(SurfacePath)\$(NOSF)\bin\**\*.dll"/>

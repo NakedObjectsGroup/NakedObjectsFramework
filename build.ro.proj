@@ -67,6 +67,11 @@
     <ItemGroup>
       <OldPackages Include="$(ROPath)\$(ROMVC).package\*.nupkg"/>
       <OldPackages Include="$(ROPath)\$(ROSVR).package\*.nupkg"/>
+      <OldPackages Include="$(PackageSourcePath)\$(ROMVC)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(ROMVC)*.nupkg"/>
+      <OldPackages Include="$(PackageSourcePath)\$(ROSVR)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(ROSVR)*.nupkg"/>
+      
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(ROMVC).package\**\*.*"/>
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(ROSVR).package\**\*.*"/>
       <OldCode Include="$(ROPath)\**\bin\**\*.dll"/>

@@ -54,6 +54,9 @@
 
     <ItemGroup>
 			<OldPackages Include="$(SamplesPath)\$(NOS).Icons.package\*.nupkg"/>
+      <OldPackages Include="$(PackageSourcePath)\$(NOS)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(NOS)*.nupkg"/>
+      
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOS).Icons.package\**\*.*"/>
 		</ItemGroup>
 

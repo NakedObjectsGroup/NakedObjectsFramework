@@ -37,6 +37,8 @@
    
     <ItemGroup>
       <OldPackages Include="$(BATPath)\$(NOBAT).package\*.nupkg"/>
+      <OldPackages Include="$(PackageSourcePath)\$(NOBAT)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(NOBAT)*.nupkg"/>
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOBAT).package\**\*.*"/>
       <OldCode Include="$(BATPath)\$(NOBAT)\bin\**\*.dll"/>
       <OldCode Include="$(BATPath)\$(NOBAT)\obj\**\*.*"/>

@@ -60,6 +60,13 @@
     <ItemGroup>
       <OldPackages Include="$(SpiroPath)\$(SpiroModels).package\*.nupkg"/>
       <OldPackages Include="$(SpiroPath)\$(SpModern).package\*.nupkg"/>
+
+      <OldPackages Include="$(PackageSourcePath)\$(SpiroModels)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(SpiroModels)*.nupkg"/>
+      <OldPackages Include="$(PackageSourcePath)\$(SpModern)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(SpModern)*.nupkg"/>
+      
+      
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(SpiroModels).package\**\*.*"/>
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(SpModern).package\**\*.*"/>
       <OldTests Include="$(TestResultsPath)\Karma*.xml"/>

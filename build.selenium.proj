@@ -37,6 +37,8 @@
 
     <ItemGroup>
       <OldPackages Include="$(TestPath)\$(NOSEL).package\*.nupkg"/>
+      <OldPackages Include="$(PackageSourcePath)\$(NOSEL)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(NOSEL)*.nupkg"/>
       <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOSEL).package\**\*.*"/>
       <OldCode Include="$(TestPath)\$(NOSEL).Test.Helpers\bin\**\*.dll"/>
       <OldCode Include="$(TestPath)\$(NOSEL).Test.Helpers\obj\**\*.*"/>

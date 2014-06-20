@@ -3,9 +3,7 @@
 	<PropertyGroup>
 		<DemoPath>Demo</DemoPath>
 		<NOPM>NakedObjects.ProgrammingModel</NOPM>
-		<BuiltPackagesPath>build\packages</BuiltPackagesPath>
 		<InstalledPackagesPath>packages</InstalledPackagesPath>
-		<PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
     <WorkingDir>build\working</WorkingDir>
 		<Nuget>..\.nuget\nuget.exe</Nuget>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
