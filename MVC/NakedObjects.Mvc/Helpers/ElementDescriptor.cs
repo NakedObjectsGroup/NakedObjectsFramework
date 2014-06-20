@@ -12,7 +12,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public string Label { get; set; }
         public string Value { get; set; }
         public IDictionary<string, object> Attributes { get; set; }
-        public IEnumerable<ElementDescriptor> Children { get; set; }
+        public IList<ElementDescriptor> Children { get; set; }
 
         public static TagBuilder BuildElementSet(IEnumerable<ElementDescriptor> elements) {
             var fieldSet = new TagBuilder("div") {InnerHtml = Environment.NewLine};

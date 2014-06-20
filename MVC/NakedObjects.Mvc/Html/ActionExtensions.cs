@@ -984,7 +984,7 @@ namespace NakedObjects.Web.Mvc.Html {
         // non lambda 
         public static MvcHtmlString ObjectActionAsDialog(this HtmlHelper html, object model, string id) {
             INakedObject nakedObject = FrameworkHelper.GetNakedObject(model);
-            INakedObjectAction action = GetObjectAndContributedActions(nakedObject).Where(a => a.Id == id).SingleOrDefault();
+            INakedObjectAction action = GetObjectAndContributedActions(nakedObject).SingleOrDefault(a => a.Id == id);
             return action == null ? MvcHtmlString.Create("") : html.ObjectActionAsDialog(new ActionContext(nakedObject, action));
         }
 
