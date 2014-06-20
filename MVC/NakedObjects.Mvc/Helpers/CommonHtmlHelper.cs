@@ -902,7 +902,10 @@ namespace NakedObjects.Web.Mvc.Html {
 
                 if (withSelection) {
                     var cbTag = new TagBuilder("td");
-                    cbTag.InnerHtml += html.CheckBox(FrameworkHelper.GetObjectId(item), defaultChecked, new {id = IdHelper.Checkbox + index++, @class = IdHelper.CheckboxClass});
+                    int i = index++;
+                    string id = "checkbox" + i;
+                    string label = GetLabelTag(true, (i + 1).ToString(), () => id);
+                    cbTag.InnerHtml += (label + html.CheckBox(FrameworkHelper.GetObjectId(item), defaultChecked, new {id}));
                     row.InnerHtml += cbTag.ToString();
                 }
 
@@ -953,10 +956,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 if (isSelection) {
                     var cbTag = new TagBuilder("th");
                     cbTag.InnerHtml += html.CheckBox(IdHelper.CheckboxAll, defaultChecked);
-                    var labelTag = new TagBuilder("label");
-                    labelTag.MergeAttribute("for", IdHelper.CheckboxAll);
-                    labelTag.InnerHtml += MvcUi.All;
-                    cbTag.InnerHtml += labelTag;
+                    cbTag.InnerHtml += GetLabelTag(true, MvcUi.All, () => IdHelper.CheckboxAll);
                     row1.InnerHtml += cbTag.ToString();
                 }
 
@@ -1185,9 +1185,9 @@ namespace NakedObjects.Web.Mvc.Html {
                             title = title.Substring(0, length > 0 ? length : 1) + elipsis;
                         }
                     }
-                    else {
-                        return html.GetTextControl(id, numberOfLines, width, 0, title, new RouteValueDictionary(new {@readonly = "readonly"}));
-                    }
+                    //else {
+                    //    return html.GetTextControl(id, numberOfLines, width, 0, title, new RouteValueDictionary(new {@readonly = "readonly"}));
+                    //}
                 }
             }
 
@@ -1206,8 +1206,26 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GetBooleanFieldValue(this HtmlHelper html, INakedObjectAssociation assoc, INakedObject valueNakedObject) {
-            var isChecked = valueNakedObject.GetDomainObject<bool>();
-            return html.CheckBox(assoc.Id, isChecked, new {disabled = "disabled"}).ToString();
+            var state = valueNakedObject.GetDomainObject<bool?>();
+            string src = "Images/unset.png";
+            string alt = MvcUi.TriState_NotSet;
+
+            if (state.HasValue) {
+                if (state.Value) {
+                    src = "Images/checked.png";
+                    alt = MvcUi.TriState_True;
+                }
+                else {
+                    src = "Images/unchecked.png";
+                    alt = MvcUi.TriState_False;
+                }
+            }
+
+            var tag = new TagBuilder("img");
+            tag.MergeAttribute("src", src);
+            tag.MergeAttribute("alt", alt);
+
+            return tag.ToString();
         }
 
         private static string GetFileFieldValue(this HtmlHelper html, PropertyContext propertyContext) {
@@ -1567,25 +1585,36 @@ namespace NakedObjects.Web.Mvc.Html {
             return GetChoicesSet(nakedObjects, existingNakedObject);
         }
 
-        private static string GetLabel(PropertyContext propertyContext) {
-            var tag = new TagBuilder("label");
-            tag.SetInnerText(propertyContext.Property.Name + ":");
-            if (propertyContext.IsPropertyEdit) {
-                tag.MergeAttribute("for", propertyContext.GetFieldInputId());
+        private static string GetLabelTag(bool isEdit, string name, Func<string> getInputId) {
+            var divTag = new TagBuilder("div");
+            divTag.AddCssClass(IdHelper.Label);
+
+            if (isEdit) {
+                var labelTag = new TagBuilder("label");
+                labelTag.MergeAttribute("for", getInputId());
+                labelTag.SetInnerText(name + ":");
+                divTag.InnerHtml = labelTag.ToString();
             }
-            return tag.ToString();
+            else {
+                divTag.SetInnerText(name + ":");
+            }
+
+            return divTag.ToString();
+        }
+
+        private static string GetLabel(PropertyContext propertyContext) {
+            bool isAutoComplete = propertyContext.IsEdit && propertyContext.Property is IOneToOneAssociation && ((IOneToOneAssociation) propertyContext.Property).IsAutoCompleteEnabled;
+            Func<string> propId = isAutoComplete ? (Func<string>) propertyContext.GetAutoCompleteFieldId : propertyContext.GetFieldInputId;
+            return GetLabelTag(propertyContext.IsPropertyEdit || isAutoComplete, propertyContext.Property.Name, propId);
         }
 
         private static string GetLabel(ParameterContext parameterContext) {
-            if (!parameterContext.IsHidden) {
-                var tag = new TagBuilder("label");
-                tag.SetInnerText(parameterContext.Parameter.Name + ":");
-                if (parameterContext.IsParameterEdit) {
-                    tag.MergeAttribute("for", parameterContext.GetParameterInputId());
-                }
-                return tag.ToString();
+            if (parameterContext.IsHidden) {
+                return "";
             }
-            return "";
+            bool isAutoComplete = parameterContext.Parameter.IsAutoCompleteEnabled;
+            Func<string> parmId = isAutoComplete ? (Func<string>) parameterContext.GetParameterAutoCompleteId : parameterContext.GetParameterInputId;
+            return GetLabelTag(parameterContext.IsParameterEdit || isAutoComplete, parameterContext.Parameter.Name, parmId);
         }
 
         internal static string GetSubmitButton(string classAttribute, string label, string name, RouteValueDictionary data) {
@@ -1904,7 +1933,14 @@ namespace NakedObjects.Web.Mvc.Html {
 
             if (propertyContext.Property.IsVisible(NakedObjectsContext.Session, propertyContext.Target)) {
                 string value = html.GetFieldValue(propertyContext, inTable);
-                tag.AddCssClass(propertyContext.Property.Specification.IsParseable ? IdHelper.ValueName : IdHelper.ObjectName);
+                string cls = propertyContext.Property.Specification.IsParseable ? IdHelper.ValueName : IdHelper.ObjectName;
+                var multiLineFacet = propertyContext.Property.GetFacet<IMultiLineFacet>();
+
+                if (multiLineFacet != null && multiLineFacet.NumberOfLines > 1) {
+                    cls += (" " + IdHelper.MultilineDisplayFormat);
+                }
+
+                tag.AddCssClass(cls);
                 tag.MergeAttribute("title", tooltip);
                 if (!propertyContext.Property.Specification.IsParseable && addIcon) {
                     tag.InnerHtml += html.ObjectIcon(propertyContext.Property.GetNakedObject(propertyContext.Target));

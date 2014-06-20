@@ -36,6 +36,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public const string ServicesContainerName = "nof-servicelist";
         public const string FieldContainerName = "nof-propertylist";
         public const string FieldName = "nof-property";
+        public const string Label = "nof-label";
         public const string MenuContainerName = "nof-menu";
         public const string ActionContainerName = "nof-actions";
         public const string ActionName = "nof-action";
@@ -79,6 +80,8 @@ namespace NakedObjects.Web.Mvc.Html {
         public const string TableDisplayFormat = "table";
         public const string ListDisplayFormat = "list";
         public const string SummaryDisplayFormat = "summary";
+        public const string MultilineDisplayFormat = "multiline";
+
         public const string Checkbox = "checkbox";
         public const string CheckboxAll = "checkboxAll";
 
