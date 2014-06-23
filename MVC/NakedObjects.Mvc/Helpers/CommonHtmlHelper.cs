@@ -26,6 +26,7 @@ using NakedObjects.Architecture.Facets.Objects.Ident.Title;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Facets.Objects.TypicalLength;
 using NakedObjects.Architecture.Facets.Password;
+using NakedObjects.Architecture.Facets.Propcoll.NotCounted;
 using NakedObjects.Architecture.Facets.Properties.Choices;
 using NakedObjects.Architecture.Facets.Properties.Eagerly;
 using NakedObjects.Architecture.Facets.Properties.Enums;
@@ -1848,7 +1849,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             GetTableColumnInfo(propertyContext.Feature, out filterFunc, out orderFunc, out withTitle);
 
-            return (any ? html.GetCollectionDisplayLinks(propertyContext) : string.Empty) +
+            return (any ? html.GetCollectionDisplayLinks(propertyContext) : GetCollectionTitle(propertyContext, 0)) +
                    html.CollectionTable(collectionNakedObject, linkFunc, filterFunc, orderFunc, false, false, withTitle);
         }
 
@@ -1873,7 +1874,14 @@ namespace NakedObjects.Web.Mvc.Html {
             return eagerlyFacet != null && eagerlyFacet.What == Do.Rendering;
         }
 
+        internal static bool DoNotCount(IFacetHolder holder) {
+            return holder.ContainsFacet<INotCountedFacet>();
+        }
+
         private static string GetCollectionAsSummary(this HtmlHelper html, PropertyContext propertyContext) {
+            if (DoNotCount(propertyContext.Property)) {
+                return html.GetCollectionDisplayLinks(propertyContext);
+            }
             int count = ((IOneToManyAssociation) propertyContext.Property).Count(propertyContext.Target);
             return (count > 0 ? html.GetCollectionDisplayLinks(propertyContext) : string.Empty) + GetCollectionTitle(propertyContext, count);
         }
@@ -1882,7 +1890,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObject collectionNakedObject = propertyContext.GetValue();
             bool any = collectionNakedObject.GetAsEnumerable().Any();
             Func<INakedObject, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
-            return (any ? html.GetCollectionDisplayLinks(propertyContext) : string.Empty) +
+            return (any ? html.GetCollectionDisplayLinks(propertyContext) : GetCollectionTitle(propertyContext, 0)) +
                    html.CollectionTable(collectionNakedObject, linkFunc, x => false, null, false, false, true);
         }
 

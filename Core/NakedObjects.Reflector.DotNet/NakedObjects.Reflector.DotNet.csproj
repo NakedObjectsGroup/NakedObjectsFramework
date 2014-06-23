@@ -169,6 +169,7 @@
     <Compile Include="facets\autocomplete\AutoCompleteFacetViaMethod.cs" />
     <Compile Include="facets\presentation\PresentationHintAnnotationFacetFactory.cs" />
     <Compile Include="facets\presentation\PresentationHintFacetAnnotation.cs" />
+    <Compile Include="facets\propcoll\notcounted\NotCountedFacetAnnotation.cs" />
     <Compile Include="facets\properties\eagerly\EagerlyAnnotationFacetFactory.cs" />
     <Compile Include="facets\properties\eagerly\EagerlyFacetAnnotation.cs" />
     <Compile Include="facets\properties\enum\EnumFacetFactory.cs" />

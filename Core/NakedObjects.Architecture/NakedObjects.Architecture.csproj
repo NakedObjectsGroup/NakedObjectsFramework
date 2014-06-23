@@ -301,6 +301,8 @@
     <Compile Include="facets\autocomplete\AutoCompleteFacetAbstract.cs" />
     <Compile Include="facets\presentation\IPresentationHintFacet.cs" />
     <Compile Include="facets\presentation\PresentationHintFacetAbstract.cs" />
+    <Compile Include="facets\propcoll\notcounted\INotCountedFacet.cs" />
+    <Compile Include="facets\propcoll\notcounted\NotCountedFacetAbstract.cs" />
     <Compile Include="facets\properties\eagerly\IEagerlyFacet.cs" />
     <Compile Include="facets\properties\enum\IEnumFacet.cs" />
     <Compile Include="facets\properties\enum\EnumFacetAbstract.cs" />
