@@ -12,12 +12,12 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.DatabaseHelpers;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Services;
 using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
-using NakedObjects.Xat.Database;
 using NUnit.Framework;
 using System.Linq;
 

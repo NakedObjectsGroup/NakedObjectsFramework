@@ -483,10 +483,14 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         private static void CheckProxies(object objectToCheck) {
-            if (EnforceProxies) {
-                Assert.AssertTrue(string.Format(Resources.NakedObjects.NoProxyMessage, objectToCheck.GetType(), Resources.NakedObjects.ProxyExplanation), TypeUtils.IsEntityProxy(objectToCheck.GetType()));
-                Assert.AssertTrue(string.Format(Resources.NakedObjects.NoChangeTrackerMessage, objectToCheck.GetType(), Resources.NakedObjects.ProxyExplanation), objectToCheck is IEntityWithChangeTracker);
+            var objectType = objectToCheck.GetType();
+            if (!EnforceProxies || TypeUtils.IsSystem(objectType) || TypeUtils.IsMicrosoft(objectType)) {
+                // may be using types provided by System or Microsoft (eg Authentication User). 
+                // No point enforcing proxying on them. 
+                return;
             }
+            Assert.AssertTrue(string.Format(Resources.NakedObjects.NoProxyMessage, objectToCheck.GetType(), Resources.NakedObjects.ProxyExplanation), TypeUtils.IsEntityProxy(objectToCheck.GetType()));
+            Assert.AssertTrue(string.Format(Resources.NakedObjects.NoChangeTrackerMessage, objectToCheck.GetType(), Resources.NakedObjects.ProxyExplanation), objectToCheck is IEntityWithChangeTracker);
         }
 
         private void LoadObject(object domainObject, LocalContext context) {

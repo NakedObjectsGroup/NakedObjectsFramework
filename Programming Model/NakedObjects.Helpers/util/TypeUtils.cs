@@ -17,6 +17,7 @@ namespace NakedObjects.Util {
     /// </summary>
     public static class TypeUtils {
         private const string SystemTypePrefix = "System.";
+        private const string MicrosoftTypePrefix = "Microsoft.";
         private const string NakedObjectsTypePrefix = "NakedObjects.";
         private const string NakedObjectsProxyPrefix = "NakedObjects.Proxy.";
         private const string EntityProxyPrefix = "System.Data.Entity.DynamicProxies.";
@@ -140,11 +141,19 @@ namespace NakedObjects.Util {
         }
 
         public static bool IsSystem(Type type) {
-            return IsSystem(type.FullName ?? "") && !IsEntityProxy(type);
+            return IsSystem(type.FullName ?? "");
+        }
+
+        public static bool IsMicrosoft(Type type) {
+            return IsMicrosoft(type.FullName ?? "");
         }
 
         public static bool IsSystem(string typeName) {
-            return typeName.StartsWith(SystemTypePrefix);
+            return typeName.StartsWith(SystemTypePrefix) && !IsEntityProxy(typeName);
+        }
+
+        public static bool IsMicrosoft(string typeName) {
+            return typeName.StartsWith(MicrosoftTypePrefix);
         }
 
         public static bool IsNakedObjectsProxy(Type type) {

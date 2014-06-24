@@ -10,6 +10,7 @@ using System.Linq;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using MvcTestApp.Tests.Util;
+using NakedObjects.DatabaseHelpers;
 using NakedObjects.Mvc.App.Controllers;
 using NUnit.Framework;
 using NakedObjects.Architecture.Adapter;
@@ -27,7 +28,6 @@ using NakedObjects.Web.Mvc;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Xat;
-using NakedObjects.Xat.Database;
 
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]

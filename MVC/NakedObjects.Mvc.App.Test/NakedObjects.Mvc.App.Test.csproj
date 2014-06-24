@@ -172,6 +172,10 @@
       <Project>{FDDBA108-8B58-40C6-A375-FFB92B1933DD}</Project>
       <Name>AdventureWorksModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Test\NakedObjects.DatabaseHelpers\NakedObjects.DatabaseHelpers.csproj">
+      <Project>{DDE874EE-B28B-4577-A28A-6D35690D6310}</Project>
+      <Name>NakedObjects.DatabaseHelpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Mvc.App\NakedObjects.Mvc.App.csproj">
       <Project>{696EF7AD-FCC5-4C33-800C-189E159A7472}</Project>
       <Name>NakedObjects.Mvc.App</Name>

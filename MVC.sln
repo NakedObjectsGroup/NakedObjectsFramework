@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{D26083
 		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.DatabaseHelpers", "Test\NakedObjects.DatabaseHelpers\NakedObjects.DatabaseHelpers.csproj", "{DDE874EE-B28B-4577-A28A-6D35690D6310}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = development.vsmdi
@@ -88,6 +90,12 @@ Global
 		{7F2767F4-0F98-47FA-BE56-9EB5AC3CEB2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F2767F4-0F98-47FA-BE56-9EB5AC3CEB2B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F2767F4-0F98-47FA-BE56-9EB5AC3CEB2B}.Release|x86.ActiveCfg = Release|Any CPU
+		{DDE874EE-B28B-4577-A28A-6D35690D6310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDE874EE-B28B-4577-A28A-6D35690D6310}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDE874EE-B28B-4577-A28A-6D35690D6310}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DDE874EE-B28B-4577-A28A-6D35690D6310}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDE874EE-B28B-4577-A28A-6D35690D6310}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDE874EE-B28B-4577-A28A-6D35690D6310}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

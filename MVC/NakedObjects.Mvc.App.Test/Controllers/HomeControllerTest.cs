@@ -9,13 +9,13 @@ using MvcTestApp.Tests.Util;
 using NakedObjects.Boot;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.DatabaseHelpers;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Mvc.App.Controllers;
 using NakedObjects.Web.Mvc;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Xat;
-using NakedObjects.Xat.Database;
 using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Controllers {
