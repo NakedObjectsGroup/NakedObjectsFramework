@@ -102,6 +102,10 @@
     <Compile Include="StandaloneCollectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.DatabaseHelpers\NakedObjects.DatabaseHelpers.csproj">
+      <Project>{DDE874EE-B28B-4577-A28A-6D35690D6310}</Project>
+      <Name>NakedObjects.DatabaseHelpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Mvc.Selenium.Test.Helpers\NakedObjects.Mvc.Selenium.Test.Helpers.csproj">
       <Project>{78A4F8FA-8BA0-4F2F-89BA-3BD6104A2BA0}</Project>
       <Name>NakedObjects.Mvc.Selenium.Test.Helpers</Name>

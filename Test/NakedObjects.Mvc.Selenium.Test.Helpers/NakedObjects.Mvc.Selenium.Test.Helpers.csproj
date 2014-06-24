@@ -80,7 +80,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeHelpers.cs" />
   </ItemGroup>

@@ -7,6 +7,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.DatabaseHelpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 

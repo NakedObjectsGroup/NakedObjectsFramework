@@ -47,6 +47,7 @@
   </Target>
 
   <ItemGroup>
+    <Files Include="$(TestPath)\NakedObjects.DatabaseHelpers\*.csproj"/>
     <Files Include="$(TestPath)\NakedObjects.Helpers.Test\*.csproj"/>
     <Files Include="$(TestPath)\NakedObjects.SystemTest\*.csproj"/>
     <Files Include="$(TestPath)\RestfulObjects.Test.EndToEnd\RestfulObjects.Test.EndToEnd.csproj"/>
