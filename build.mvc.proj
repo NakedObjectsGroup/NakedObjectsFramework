@@ -1,6 +1,5 @@
 <Project ToolsVersion="4.0" DefaultTargets="MVCPackageTest"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\MicrosoftAjax\ajaxmin.tasks" />
-
+ 
   <PropertyGroup>
     <MVCPath>MVC</MVCPath>
     <SamplesPath>Samples</SamplesPath>
@@ -12,7 +11,6 @@
     <Nuget>..\.nuget\nuget.exe</Nuget>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
     <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
-    <AjaxMinTasks>$(InstalledPackagesPath)\.build\MSBuild.Community.Tasks.dll</AjaxMinTasks>
     <NUnitVer>2.6.3</NUnitVer>
   </PropertyGroup>
 
@@ -125,21 +123,6 @@
   <Target Name="CopyMVC">
 
 		<ItemGroup>
-			<JsToMin Include="$(MVCPath)\$(NOMVC).App\Scripts\NakedObjects-*.js"  Exclude="$(MVCPath)\$(NOMVC).App\Scripts\*.min.js" />
-		</ItemGroup>
-
-		<ItemGroup>
-			<CssToMin Include="$(MVCPath)\$(NOMVC).App\Content\NakedObjects.css"  Exclude="$(MVCPath)\$(NOMVC).App\Content\*.min.css" />
-		</ItemGroup>
-
-		<AjaxMin JsSourceFiles="@(JsToMin)"
-							JsSourceExtensionPattern="\.js$"
-							JsTargetExtension=".min.js"
-							CssSourceFiles="@(CssToMin)"
-							CssSourceExtensionPattern="\.css$"
-							CssTargetExtension=".min.css" />
-
-		<ItemGroup>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Content*\NakedObjects.css"/>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\application-logo.png"/>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\checked.png"/>
@@ -160,8 +143,8 @@
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\SubMenuPointer.png"/>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\system-error.png"/>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\Table.png"/>
-      			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\tab-close.png"/>
-      			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\tab-close-hover.png"/>
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\tab-close.png"/>
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\tab-close-hover.png"/>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\unchecked.png"/>
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Images*\nakedobjects.ico"/>
 

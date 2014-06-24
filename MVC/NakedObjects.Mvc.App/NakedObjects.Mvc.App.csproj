@@ -432,7 +432,6 @@
     <Content Include="Scripts\jstorage.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\NakedObjects-Ajax.js" />
-    <Content Include="Scripts\NakedObjects-Ajax.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\ui\i18n\jquery.ui.datepicker-en-GB.js" />
