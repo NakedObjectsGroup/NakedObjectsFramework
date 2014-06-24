@@ -475,16 +475,19 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static List<ElementDescriptor> GetChildElements(this HtmlHelper html, IEnumerable actionResult, ActionContext targetActionContext, ActionContext actionContext, string propertyName, Func<object, bool> actionResultFilter) {
             List<ElementDescriptor> childElements;
-            List<object> result = actionResult.Cast<object>().ToList();
+           
             if (actionResult == null) {
                 List<ElementDescriptor> paramElements = html.ActionParameterFields(targetActionContext).ToList();
                 childElements = html.GetActionDialog(targetActionContext, actionContext, paramElements, propertyName).InList();
             }
-            else if (result.Count() == 1 && actionResultFilter(result.First())) {
-                childElements = html.GetSubEditObject(targetActionContext, actionContext, result.First(), propertyName).InList();
-            }
             else {
-                childElements = html.SelectionView(actionContext.Target.Object, propertyName, result).InList();
+                List<object> result = actionResult.Cast<object>().ToList();
+                if (result.Count() == 1 && actionResultFilter(result.First())) {
+                    childElements = html.GetSubEditObject(targetActionContext, actionContext, result.First(), propertyName).InList();
+                }
+                else {
+                    childElements = html.SelectionView(actionContext.Target.Object, propertyName, actionResult).InList();
+                }
             }
             return childElements;
         }
