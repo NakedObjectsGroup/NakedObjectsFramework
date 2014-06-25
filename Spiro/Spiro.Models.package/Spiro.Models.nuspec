@@ -16,7 +16,7 @@
     <dependencies>
       <dependency id="jQuery" version="2.1.1" />
       <dependency id="underscore.js" version="1.6.0" />
-      <dependency id="jquery.TypeScript.DefinitelyTyped" version="0.8.9" />
+      <dependency id="jquery.TypeScript.DefinitelyTyped" version="1.1.8" />
       <dependency id="underscore.TypeScript.DefinitelyTyped" version="0.4.1" />
     </dependencies>
   </metadata>
