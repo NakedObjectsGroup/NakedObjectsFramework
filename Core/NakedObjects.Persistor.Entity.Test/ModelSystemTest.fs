@@ -33,27 +33,24 @@ type ModelSystemTests() =
     member x.TearDownTest() = 
         x.CleanupNakedObjectsFramework()
 
-    override x.MenuServices 
-        with get() : IServicesInstaller  =
-            let service = new SimpleRepository<Person>() 
-            box (new ServicesInstaller([|(box service)|])) :?> IServicesInstaller
+    override x.MenuServices = 
+        let service = new SimpleRepository<Person>()
+        box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller 
         
-    override x.Persistor
-        with get() : IObjectPersistorInstaller = 
-            let inst = new EntityPersistorInstaller()
-            inst.EnforceProxies <- false
-            box (inst) :?> IObjectPersistorInstaller
-                    
+    override x.Persistor = 
+        let inst = new EntityPersistorInstaller()
+        inst.EnforceProxies <- false
+        inst.ForceContextSet()
+        box inst :?> IObjectPersistorInstaller
    
-     
     member x.CreatePerson() = 
-       let setter (p : Person) =
-           p.Id <- x.GetNextPersonID()
-           p.ComplexProperty.Firstname <- uniqueName()
-           p.ComplexProperty.Surname <- uniqueName()
-           p.ComplexProperty_1.s1 <- uniqueName()
-           p.ComplexProperty_1.s2 <- uniqueName()     
-       SystemTestCode.CreateAndSetup<Person> setter 
+        let setter (p : Person) = 
+            p.Id <- x.GetNextPersonID()
+            p.ComplexProperty.Firstname <- uniqueName()
+            p.ComplexProperty.Surname <- uniqueName()
+            p.ComplexProperty_1.s1 <- uniqueName()
+            p.ComplexProperty_1.s2 <- uniqueName()
+        SystemTestCode.CreateAndSetup<Person> setter 
       
     member x.GetPersonDomainObject() = 
        let pp = NakedObjectsContext.ObjectPersistor.Instances<Person>()

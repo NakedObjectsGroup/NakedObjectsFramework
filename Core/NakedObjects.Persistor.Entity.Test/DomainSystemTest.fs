@@ -23,46 +23,43 @@ type DomainSystemTests() =
     inherit  NakedObjects.Xat.AcceptanceTestCase()    
 
     [<SetUp>]
-    member x.SetupTest() =  
-        x.InitializeNakedObjectsFramework()
+    member x.SetupTest() = x.InitializeNakedObjectsFramework()
    
-    
     [<TearDown>]
-    member x.TearDownTest() = 
-        x.CleanupNakedObjectsFramework();
+    member x.TearDownTest() = x.CleanupNakedObjectsFramework()
 
-    override x.MenuServices 
-        with get() : IServicesInstaller  =
-            let service = new SimpleRepository<ScrapReason>() 
-            box (new ServicesInstaller([|(box service)|])) :?> IServicesInstaller
+    override x.MenuServices = 
+        let service = new SimpleRepository<ScrapReason>()
+        box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller
         
-    override x.Persistor
-        with get() : IObjectPersistorInstaller = 
-            box (new EntityPersistorInstaller()) :?> IObjectPersistorInstaller
+    override x.Persistor = 
+        let epi = new EntityPersistorInstaller()
+        epi.ForceContextSet()
+        box epi :?> IObjectPersistorInstaller
        
-      
-     
+    
     member x.GetScrapReasonDomainObject() = 
-       let srs = NakedObjectsContext.ObjectPersistor.Instances<ScrapReason>()
-       query <@ srs |> Seq.filter (fun s -> s.ScrapReasonID = 2s) |> Seq.head @>
-       //srs |> Seq.filter (fun s -> s.ScrapReasonID = 2s) |> Seq.head
-
+        let srs = NakedObjectsContext.ObjectPersistor.Instances<ScrapReason>()
+        query <@ srs
+                 |> Seq.filter (fun s -> s.ScrapReasonID = 2s)
+                 |> Seq.head @>
+    
     member x.CreatePC() = 
-       let setter (pc : ProductCategory) = 
-           pc.Name <- uniqueName()
-           pc.ModifiedDate <- DateTime.Now   
-           pc.ProductCategoryID <- 1      
-           pc.rowguid <- Guid.NewGuid() 
-       SystemTestCode.CreateAndSetup<ProductCategory> setter 
-     
+        let setter (pc : ProductCategory) = 
+            pc.Name <- uniqueName()
+            pc.ModifiedDate <- DateTime.Now
+            pc.ProductCategoryID <- 1
+            pc.rowguid <- Guid.NewGuid()
+        SystemTestCode.CreateAndSetup<ProductCategory> setter
+    
     member x.CreatePSC() = 
-       let setter (psc : ProductSubcategory) = 
-           psc.Name <- uniqueName()
-           psc.ModifiedDate <- DateTime.Now   
-           psc.ProductSubcategoryID <- 1      
-           psc.rowguid <- Guid.NewGuid() 
-       SystemTestCode.CreateAndSetup<ProductSubcategory> setter 
-                 
+        let setter (psc : ProductSubcategory) = 
+            psc.Name <- uniqueName()
+            psc.ModifiedDate <- DateTime.Now
+            psc.ProductSubcategoryID <- 1
+            psc.rowguid <- Guid.NewGuid()
+        SystemTestCode.CreateAndSetup<ProductSubcategory> setter
+
     [<Test>]
     member x.GetService() = 
         let srService = NakedObjectsContext.ObjectPersistor.GetService("repository#AdventureWorksModel.ScrapReason")
