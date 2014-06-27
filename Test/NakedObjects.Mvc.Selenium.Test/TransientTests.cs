@@ -121,14 +121,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             // Collection List
             br.ViewAsList("Person-Pets");
-            Assert.AreEqual("nof-collection-list", br.GetInternalCollection("Person-Pets").FindElement(By.TagName("div")).GetAttribute("class"));
+            Assert.AreEqual("nof-collection-list", br.GetInternalCollection("Person-Pets").FindElements(By.TagName("div"))[1].GetAttribute("class"));
             IWebElement table = br.GetInternalCollection("Person-Pets").FindElement(By.TagName("table"));
             Assert.AreEqual(2, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual("Sky", table.FindElement(By.ClassName("nof-object")).Text);
 
             // Collection Table
             br.ViewAsTable("Person-Pets");
-            Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Person-Pets").FindElement(By.TagName("div")).GetAttribute("class"));
+            Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Person-Pets").FindElements(By.TagName("div"))[1].GetAttribute("class"));
             table = br.GetInternalCollection("Person-Pets").FindElement(By.TagName("table"));
             Assert.AreEqual(3, table.FindElements(By.TagName("tr")).Count); //First row is header
             Assert.AreEqual("Sky", table.FindElements(By.TagName("tr"))[1].FindElements(By.TagName("td"))[0].Text);

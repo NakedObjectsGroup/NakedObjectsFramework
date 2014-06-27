@@ -504,9 +504,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         private static void AssertIsCollection(IWebElement collection) {
-            IWebElement subDiv = collection.FindElements(By.TagName("div")).First();
-            Assert.IsTrue(subDiv.GetAttribute("class").StartsWith("nof-collection"), "Selected Div is not a Collection");
+            try {
+                collection.FindElement(By.CssSelector("div.nof-collection-table, div.nof-collection-list, div.nof-collection-summary"));
+            }
+            catch (NoSuchElementException) {
+                Assert.Fail("Selected Div is not a Collection");
+            }
         }
+
 
         public static IWebElement ViewAsTable(this IWebDriver webDriver, string collectionId) {
             return ViewAs(webDriver, collectionId, "nof-table");
@@ -531,7 +536,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         public static IWebElement AssertSummaryEquals(this IWebElement collection, string expected) {
             AssertIsCollection(collection);
-            Assert.IsTrue(collection.FindElement(By.TagName("div")).GetAttribute("class") == "nof-collection-summary", "Collection is not in Summary view");
+            Assert.IsTrue(collection.FindElements(By.TagName("div"))[1].GetAttribute("class") == "nof-collection-summary", "Collection is not in Summary view");
             Assert.AreEqual(expected, collection.FindElement(By.CssSelector("div.nof-object")).Text);
             return collection;
         }

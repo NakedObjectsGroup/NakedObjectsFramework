@@ -39,12 +39,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual(4, table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th")).Count);
             Assert.AreEqual(4, table.FindElements(By.TagName("tr"))[1].FindElements(By.TagName("td")).Count);
 
-            Assert.AreEqual("All", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th"))[0].Text);
+            Assert.AreEqual("All:", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th"))[0].Text);
             Assert.AreEqual("Description", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th"))[1].Text);
             Assert.AreEqual("Category", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th"))[2].Text);
             Assert.AreEqual("Discount Pct", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th"))[3].Text);
 
-            Assert.AreEqual("", table.FindElements(By.TagName("tr"))[1].FindElements(By.TagName("td"))[0].Text);
+            Assert.AreEqual("1:", table.FindElements(By.TagName("tr"))[1].FindElements(By.TagName("td"))[0].Text);
             Assert.AreEqual("No Discount", table.FindElements(By.TagName("tr"))[1].FindElements(By.TagName("td"))[1].Text);
             Assert.AreEqual("No Discount", table.FindElements(By.TagName("tr"))[1].FindElements(By.TagName("td"))[2].Text);
             Assert.AreEqual("0.00 %", table.FindElements(By.TagName("tr"))[1].FindElements(By.TagName("td"))[3].Text);

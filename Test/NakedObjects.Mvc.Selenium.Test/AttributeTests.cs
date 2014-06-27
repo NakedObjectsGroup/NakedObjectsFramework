@@ -32,15 +32,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public void DoMultiLineInViewMode() {
             Login();
             FindCustomerByAccountNumber("AW00000206");
-            IWebElement demog = br.GetField("Store-FormattedDemographics").FindElement(By.TagName("textarea"));
+            IWebElement demog = br.GetField("Store-FormattedDemographics").FindElement(By.CssSelector("div.multiline"));
 
-            Assert.AreEqual("Store-FormattedDemographics-Input", demog.GetAttribute("id"));
-            string value = demog.GetAttribute("readOnly");
-            Assert.IsTrue(value == "readonly" || value == "true"); // different browsers 
-            Assert.AreEqual("10", demog.GetAttribute("rows"));
-            Assert.AreEqual("500", demog.GetAttribute("cols"));
+            Assert.AreEqual("AnnualSales: 800000 AnnualRevenue: 80000 BankName: Primary International BusinessType: BM YearOpened: 1994 Specialty: Road SquareFeet: 20000 Brands: AW Internet: DSL NumberEmployees: 18", demog.Text);
         }
-
 
         public abstract void MultiLineInEditMode();
 

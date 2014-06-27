@@ -37,7 +37,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.ClickTabLink(0);
 
             // rendered eagerly 
-            Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Store-Addresses").FindElement(By.TagName("div")).GetAttribute("class"));
+            Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Store-Addresses").FindElements(By.TagName("div"))[1].GetAttribute("class"));
             IWebElement table = br.GetInternalCollection("Store-Addresses").FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
@@ -48,14 +48,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             // Collection List
             br.ViewAsList("Store-Addresses");
-            Assert.AreEqual("nof-collection-list", br.GetInternalCollection("Store-Addresses").FindElement(By.TagName("div")).GetAttribute("class"));
+            Assert.AreEqual("nof-collection-list", br.GetInternalCollection("Store-Addresses").FindElements(By.TagName("div"))[1].GetAttribute("class"));
             table = br.GetInternalCollection("Store-Addresses").FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElement(By.ClassName("nof-object")).Text);
 
             // Collection Table
             br.ViewAsTable("Store-Addresses");
-            Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Store-Addresses").FindElement(By.TagName("div")).GetAttribute("class"));
+            Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Store-Addresses").FindElements(By.TagName("div"))[1].GetAttribute("class"));
             table = br.GetInternalCollection("Store-Addresses").FindElement(By.TagName("table"));
             Assert.AreEqual(1, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual("Main Office: 2575 Rocky Mountain Ave. ...", table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("td"))[0].Text);
