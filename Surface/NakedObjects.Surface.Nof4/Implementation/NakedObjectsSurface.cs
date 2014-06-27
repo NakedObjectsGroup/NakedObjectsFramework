@@ -295,37 +295,33 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
 
             private INakedObject[] GetConditionalList(INakedObject nakedObject, ArgumentsContext arguments) {
-                if (!arguments.Values.Any()) {
-                    throw new BadRequestNOSException("Missing or malformed conditional argument");
-                }
+                
                 Tuple<string, INakedObjectSpecification>[] expectedParms = GetChoicesParameters();
                 IDictionary<string, object> actualParms = arguments.Values;
 
                 string[] expectedParmNames = expectedParms.Select(t => t.Item1).ToArray();
                 string[] actualParmNames = actualParms.Keys.ToArray();
 
-                if (expectedParmNames.Count() != actualParmNames.Count()) {
+                if (expectedParmNames.Count() < actualParmNames.Count()) {
                     throw new BadRequestNOSException("Wrong number of conditional arguments");
                 }
 
-                if (!expectedParmNames.All(actualParmNames.Contains)) {
+                if (!actualParmNames.All(expectedParmNames.Contains)) {
                     throw new BadRequestNOSException("Unrecognised conditional argument(s)");
                 }
 
+                Func<Tuple<string, INakedObjectSpecification>, object> getValue = ep => {
+                    if (actualParms.ContainsKey(ep.Item1)) {
+                        return actualParms[ep.Item1];
+                    }
+                    return ep.Item2.IsParseable ? "" : null;
+                };
+
                 var matchedParms = expectedParms.ToDictionary(ep => ep.Item1, ep => new {
                     expectedType = ep.Item2,
-                    value = actualParms[ep.Item1],
-                    actualType = actualParms[ep.Item1] == null ? null : NakedObjectsContext.Reflector.LoadSpecification(actualParms[ep.Item1].GetType())
+                    value = getValue(ep),
+                    actualType = getValue(ep) == null ? null : NakedObjectsContext.Reflector.LoadSpecification(getValue(ep).GetType())
                 });
-
-                List<ContextSurface> mErrors = matchedParms.Select(mp => new ChoiceContextSurface(mp.Key, new NakedObjectSpecificationWrapper(mp.Value.expectedType, surface)) {
-                    Reason = CheckForMissingArgument(mp.Key, mp.Value.value, mp.Value.expectedType),
-                    ProposedValue = mp.Value.value
-                }).Cast<ContextSurface>().ToList();
-
-                if (mErrors.Any(e => !string.IsNullOrEmpty(e.Reason))) {
-                    throw new BadRequestNOSException("Missing conditional argument(s)", mErrors);
-                }
 
                 var errors = new List<ContextSurface>();
 
@@ -333,9 +329,10 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
                 foreach (var ep in expectedParms) {
                     string key = ep.Item1;
-                    object value = actualParms[key];
-                    INakedObjectSpecification expectedType = ep.Item2;
-                    INakedObjectSpecification actualType = matchedParms[ep.Item1].actualType;
+                    var mp = matchedParms[key];
+                    object value = mp.value;
+                    INakedObjectSpecification expectedType = mp.expectedType;
+                    INakedObjectSpecification actualType = mp.actualType;
 
                     if (expectedType.IsParseable && actualType.IsParseable) {
                         string rawValue = value.ToString();
@@ -354,7 +351,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                             });
                         }
                     }
-                    else if (!actualType.IsOfType(expectedType)) {
+                    else if (actualType != null && !actualType.IsOfType(expectedType)) {
                         errors.Add(new ChoiceContextSurface(key, new NakedObjectSpecificationWrapper(expectedType, surface)) {
                             Reason = string.Format("Argument is of wrong type is {0} expect {1}", actualType.FullName, expectedType.FullName),
                             ProposedValue = actualParms[ep.Item1]
@@ -364,7 +361,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                         mappedArguments[key] = PersistorUtils.CreateAdapter(value);
 
                         errors.Add(new ChoiceContextSurface(key, new NakedObjectSpecificationWrapper(expectedType, surface)) {
-                            ProposedValue = actualParms[ep.Item1]
+                            ProposedValue = getValue(ep)
                         });
                     }
                 }

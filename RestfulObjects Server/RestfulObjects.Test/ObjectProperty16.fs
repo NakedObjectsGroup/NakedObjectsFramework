@@ -944,11 +944,21 @@ let InvokeConditionalChoicesReferenceErrorNoParm(api : RestfulObjectsControllerB
 
         let result = api.GetPropertyPrompt(oType, oid, pid, args)
         let jsonResult = readSnapshotToJson result
-        
-        Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-        //Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
-        Assert.AreEqual("199 RestfulObjects \"Missing or malformed conditional argument\"", result.Headers.Warning.ToString())
-        Assert.AreEqual("", jsonResult)
+        let parsedResult = JObject.Parse(jsonResult)
+        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+
+        let expected =  [ TProperty(JsonPropertyNames.Id, TObjectVal("AConditionalChoicesReference")); 
+                          TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl  RepresentationTypes.Object oType);
+                                                                      TObjectJson(makeGetLinkProp RelValues.Self prurl RepresentationTypes.Prompt ""); 
+                                                                      TObjectJson( makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "")]));
+                          TProperty(JsonPropertyNames.Choices, TArray([ ])); 
+                          TProperty(JsonPropertyNames.Extensions, TObjectJson([]))] 
+
+        Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+        Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
+        assertTransactionalCache  result 
+        //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
+        compareObject expected parsedResult
 
 let InvokeConditionalChoicesReferenceErrorUnrecognisedParm(api : RestfulObjectsControllerBase) = 
         let oType = ttc "RestfulObjects.Test.Data.WithReference"
@@ -1060,11 +1070,25 @@ let InvokeConditionalChoicesValueErrorMissingParm(api : RestfulObjectsController
 
         let result = api.GetPropertyPrompt(oType, oid, pid, args)
         let jsonResult = readSnapshotToJson result
-        
-        Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-        //Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
-        Assert.AreEqual("199 RestfulObjects \"Wrong number of conditional arguments\"", result.Headers.Warning.ToString())
-        Assert.AreEqual("", jsonResult)
+        let parsedResult = JObject.Parse(jsonResult)
+
+        let roType = ttc "integer"
+    
+        let expected =  [ TProperty(JsonPropertyNames.Id, TObjectVal("AConditionalChoicesValue")); 
+                          TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl  RepresentationTypes.Object oType);
+                                                                      TObjectJson(makeGetLinkProp RelValues.Self prurl RepresentationTypes.Prompt ""); 
+                                                                      TObjectJson( makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "")]));
+                          TProperty(JsonPropertyNames.Choices, TArray([ TObjectVal(100); TObjectVal(0) ])); 
+                          TProperty(JsonPropertyNames.Extensions, TObjectJson([]))] 
+
+
+        let ds = parsedResult.ToString()
+
+        Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+        Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
+        assertTransactionalCache  result 
+        //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
+        compareObject expected parsedResult
 
 let GetReferencePropertyViewModel(api : RestfulObjectsControllerBase) = 
         let oType = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"

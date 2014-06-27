@@ -229,7 +229,7 @@ namespace RestfulObjects.Test.Data {
         }
 
         public virtual IList<int> Choices0AnActionWithValueParametersWithConditionalChoices(int parm3, string parm4) {
-            return new[] {parm3, int.Parse(parm4)};
+            return new[] {parm3, parm4 == null ? 0 : int.Parse(parm4)};
         }
 
         public virtual IList<string> Choices1AnActionWithValueParametersWithConditionalChoices(int parm3, string parm4) {

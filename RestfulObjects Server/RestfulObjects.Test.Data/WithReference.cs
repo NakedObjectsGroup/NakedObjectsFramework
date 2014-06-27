@@ -51,7 +51,10 @@ namespace RestfulObjects.Test.Data {
         public virtual MostSimple AConditionalChoicesReference { get; set; }
 
         public virtual MostSimple[] ChoicesAConditionalChoicesReference(MostSimple aReference) {
-            return Container.Instances<MostSimple>().Where(ms => ms.Id != aReference.Id).ToArray();
+            if (aReference != null) {
+                return Container.Instances<MostSimple>().Where(ms => ms.Id != aReference.Id).ToArray();
+            }
+            return new MostSimple[]{};
         }
 
         [Eagerly(Do.Rendering)]

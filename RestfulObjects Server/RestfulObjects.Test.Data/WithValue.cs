@@ -63,7 +63,7 @@ namespace RestfulObjects.Test.Data {
         public virtual int AConditionalChoicesValue { get; set; }
 
         public virtual int[] ChoicesAConditionalChoicesValue(int aValue, string aStringValue) {
-            return new[] {  aValue, int.Parse(aStringValue)  };
+            return new[] {  aValue, aStringValue == null ? 0 : int.Parse(aStringValue)  };
         }
     }
 }

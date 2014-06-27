@@ -1990,17 +1990,31 @@ let VerifyInvokeValueParmWithConditionalChoicesMissingParm refType oType oid f (
         let ourl = sprintf "%s/%s" refType oid      
         let prurl = sprintf "%s/actions/%s/params/%s/prompt" ourl pid pmid0
 
-        let parms =  new JObject (new JProperty("avalue",  new JObject(new JProperty("value", 100))));
+        let parms =  new JObject (new JProperty("parm3",  new JObject(new JProperty("value", 100))));
 
         let args = CreateArgMap parms
 
         api.Request <-  jsonGetMsg(sprintf "http://localhost/%s" prurl)
         let result = f(oType, ktc "1", pid, pmid0, args)
         let jsonResult = readSnapshotToJson result
-       
-        Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-        Assert.AreEqual("199 RestfulObjects \"Wrong number of conditional arguments\"", result.Headers.Warning.ToString())
-        Assert.AreEqual("", jsonResult)
+      
+        let parsedResult = JObject.Parse(jsonResult)
+           
+        let choiceRel = RelValues.Choice + makeParm RelParamValues.Action pid + makeParm RelParamValues.Param pmid0
+     
+        let expected =  [ TProperty(JsonPropertyNames.Id, TObjectVal(pmid0)); 
+                          TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl  RepresentationTypes.Object oType);
+                                                                      TObjectJson(makeGetLinkProp RelValues.Self prurl RepresentationTypes.Prompt ""); 
+                                                                      TObjectJson( makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType1) RepresentationTypes.DomainType "")]));
+                          TProperty(JsonPropertyNames.Choices, TArray([ TObjectVal(100); TObjectVal(0) ])); 
+                          TProperty(JsonPropertyNames.Extensions, TObjectJson([]))] 
+
+
+        Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+        Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
+        assertTransactionalCache  result 
+        //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
+        compareObject expected parsedResult
  
 let InvokeValueParmWithConditionalChoicesObjectErrorMissingParm(api : RestfulObjectsControllerBase) =
         let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
