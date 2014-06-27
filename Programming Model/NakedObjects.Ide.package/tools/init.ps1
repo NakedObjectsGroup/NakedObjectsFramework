@@ -259,8 +259,8 @@ param($rootPath, $toolsPath, $package, $project)
 						if ($verbose) {
 							"Processing path " + $hintPath
 						}
-
-						if ($hintPath -like "*\" + $PackageName + ".*" ) {
+						
+						if ($hintPath -match "\\" + $PackageName + "\.[0-9]+\.[0-9]+\..*\\lib" ) {
 
 							if ($verbose){
 								"Found path" + $hintPath
