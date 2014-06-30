@@ -49,6 +49,21 @@
     </PropertyGroup>
     <Exec Command="$(SolutionRestoreCommand)" Condition="Exists('$(PackagesConfig)')"/>
   </Target>
+
+  <Target Name="CleanOldCode" >
+    <ItemGroup>
+      <OldCode Include="$(PMPath)\NakedObjects.Attributes\bin\**\*.dll"/>
+      <OldCode Include="$(PMPath)\NakedObjects.Attributes\obj\**\*.*"/>
+      <OldCode Include="$(PMPath)\NakedObjects.PMResources\bin\**\*.dll"/>
+      <OldCode Include="$(PMPath)\NakedObjects.PMResources\obj\**\*.*"/>
+      <OldCode Include="$(PMPath)\NakedObjects.Types\bin\**\*.dll"/>
+      <OldCode Include="$(PMPath)\NakedObjects.Types\obj\**\*.*"/>
+      <OldCode Include="$(PMPath)\NakedObjects.Helpers\bin\**\*.dll"/>
+      <OldCode Include="$(PMPath)\NakedObjects.Helpers\obj\**\*.*"/>
+    </ItemGroup>
+
+    <Delete Files="@(OldCode)" ContinueOnError="true"/>
+  </Target>
   
 	<Target Name="ProgrammingModel" DependsOnTargets="RestoreSolutionPackages;RestorePackage">
 
@@ -69,7 +84,7 @@
 
     <MSBuild Projects="@(PMFiles)" Targets="Clean"/>
     
-    <MSBuild Projects="$(MSBuildProjectFile)" Targets="CleanOldCode" Properties="Call=2"/>
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="CleanOldCode"/>
     
     <MSBuild Projects="@(PMFiles)" Properties="Configuration=%(Configuration.Identity);TargetFrameworkVersion=v4.0" >
       <Output TaskParameter="TargetOutputs" ItemName="ProgrammingModelArtifacts40"/>
