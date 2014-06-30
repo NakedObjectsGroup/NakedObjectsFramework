@@ -99,7 +99,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {
-           //  DatabaseUtils.RestoreDatabase(Database, Backup, Server);
+             DatabaseUtils.RestoreDatabase(Database, Backup, Server);
         }
 
         public virtual void CleanUpTest() {
