@@ -83,7 +83,7 @@
       <Package Include="$(PMPath)\$(NOIDE).package\*.nupkg"/>
     </ItemGroup>
 
-    <Exec Command="appveyor PushArtifact -Path %(Package.FullPath)"/>
+    <Exec Command="appveyor PushArtifact -Path '%(Package.FullPath)'"/>
 
     <Copy SourceFiles="@(Package)" DestinationFolder="$(BuiltPackagesPath)" />
   </Target>
