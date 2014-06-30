@@ -5,7 +5,6 @@
 		<NOPM>NakedObjects.ProgrammingModel</NOPM>
 		<BuiltPackagesPath>build\packages</BuiltPackagesPath>
 		<InstalledPackagesPath>packages</InstalledPackagesPath>
-		<PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
 	</PropertyGroup>
 
@@ -29,42 +28,7 @@
     <PMFiles Include="$(PMPath)\NakedObjects.Helpers\*.csproj"/>
   </ItemGroup>
 
-  <Target Name="CleanOldCode" >
-    <ItemGroup>
-      <OldCode Include="$(PMPath)\NakedObjects.Attributes\bin\**\*.dll"/>
-      <OldCode Include="$(PMPath)\NakedObjects.Attributes\obj\**\*.*"/>
-      <OldCode Include="$(PMPath)\NakedObjects.PMResources\bin\**\*.dll"/>
-      <OldCode Include="$(PMPath)\NakedObjects.PMResources\obj\**\*.*"/>
-      <OldCode Include="$(PMPath)\NakedObjects.Types\bin\**\*.dll"/>
-      <OldCode Include="$(PMPath)\NakedObjects.Types\obj\**\*.*"/>
-      <OldCode Include="$(PMPath)\NakedObjects.Helpers\bin\**\*.dll"/>
-      <OldCode Include="$(PMPath)\NakedObjects.Helpers\obj\**\*.*"/>
-    </ItemGroup>
-
-    <Delete Files="@(OldCode)" ContinueOnError="true"/>
-  </Target>
-  
-	<Target Name="Clean" DependsOnTargets="Config">
-
-    <MSBuild Projects="@(PMFiles)" Targets="Clean"/>
-
-		<RemoveDir Directories="$(PMPath)\$(NOPM).package\lib"/>
-		<RemoveDir Directories="$(PMPath)\$(NOPM).package\src"/>	
-   
-		<ItemGroup>
-			<OldPackages Include="$(PMPath)\$(NOPM).package\*.nupkg"/>
-      <OldPackages Include="$(PackageSourcePath)\$(NOPM)*.nupkg"/>
-      <OldPackages Include="$(BuiltPackagesPath)\$(NOPM)*.nupkg"/>
-      <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOPM).package\**\*.*"/>
-		</ItemGroup>
-
-		<Delete Files="@(OldPackages)"/>
-		<Delete Files="@(OldPackageFiles)"/>
-    <MSBuild Projects="$(MSBuildProjectFile)" Targets="CleanOldCode" Properties="Call=1"/>
-	</Target>
-
   <Target Name="Init" DependsOnTargets="Config">
-    <MakeDir Directories="$(PackageSourcePath)"/>
     <MakeDir Directories="$(BuiltPackagesPath)"/>
   </Target>
   
@@ -139,7 +103,8 @@
 			<PMPackage Include="$(PMPath)\$(NOPM).package\*.nupkg"/>
 		</ItemGroup>
 
-		<Copy SourceFiles="@(PMPackage)" DestinationFolder="$(PackageSourcePath)" />
+    <Exec Command="appveyor PushArtifact -Path %(PMPackage.Filename).nupkg"/>
+  
 		<Copy SourceFiles="@(PMPackage)" DestinationFolder="$(BuiltPackagesPath)" />
   </Target>
 

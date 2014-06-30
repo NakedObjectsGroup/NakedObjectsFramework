@@ -7,7 +7,6 @@
     <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
     <TestResultsPath>test-results</TestResultsPath>
-    <PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
     <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
     <NUnitVer>2.6.3</NUnitVer>
@@ -74,52 +73,11 @@
     <FWTFiles Include="$(CorePath)\NakedObjects.TestSystem\*.csproj"/>
   </ItemGroup>
 
-  <Target Name="Clean" DependsOnTargets="Config">
-
-    <MSBuild Projects="@(FWFiles)" Targets="Clean"/>
-    <MSBuild Projects="@(XatFiles)" Targets="Clean"/>
-    <MSBuild Projects="@(FWTFiles)" Targets="Clean"/>
-
-    <RemoveDir Directories="$(CorePath)\$(NOCore).package\lib"/>
-    <RemoveDir Directories="$(CorePath)\$(NOCore).package\content"/>
-    <RemoveDir Directories="$(CorePath)\$(NOCore).package\src"/>
-    <RemoveDir Directories="$(CorePath)\$(NOX).package\lib"/>
-    <RemoveDir Directories="$(CorePath)\$(NOX).package\content"/>
-    <RemoveDir Directories="$(CorePath)\$(NOX).package\src"/>
-
-    <ItemGroup>
-      <OldPackages Include="$(CorePath)\$(NOCore).package\*.nupkg"/>
-      <OldPackages Include="$(CorePath)\$(NOX).package\*.nupkg"/>
-      <OldPackages Include="$(PackageSourcePath)\$(NOCore)*.nupkg"/>
-      <OldPackages Include="$(BuiltPackagesPath)\$(NOCore)*.nupkg"/>
-      <OldPackages Include="$(PackageSourcePath)\$(NOX)*.nupkg"/>
-      <OldPackages Include="$(BuiltPackagesPath)\$(NOX)*.nupkg"/>
-      <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOCore).package\**\*.*"/>
-      <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOX).package\**\*.*"/>
-      <OldCode Include="$(CorePath)\**\bin\**\*.dll"/>
-      <OldCode Include="$(CorePath)\**\obj\**\*.*"/>
-      <OldTests Include="$(TestResultsPath)\NakedObjects.Architecture.Test.xml"/>
-      <OldTests Include="$(TestResultsPath)\NakedObjects.Bootstrap.Test.xml"/>
-      <OldTests Include="$(TestResultsPath)\NakedObjects.Core.Test.xml"/>
-      <OldTests Include="$(TestResultsPath)\NakedObjects.Persistor.Test.xml"/>
-      <OldTests Include="$(TestResultsPath)\NakedObjects.Persistor.Entity.Test.xml"/>
-      <OldTests Include="$(TestResultsPath)\NakedObjects.Reflector.Core.Test.xml"/>
-      <OldTests Include="$(TestResultsPath)\NakedObjects.Reflector.Dotnet.Test.xml"/>
-      <OldTests Include="$(TestResultsPath)\NakedObjects.Snapshot.Xml.Test.xml"/>
-    </ItemGroup>
-
-    <Delete Files="@(OldPackages)"/>
-    <Delete Files="@(OldPackageFiles)"/>
-    <Delete Files="@(OldCode)" ContinueOnError="true"/>
-    <Delete Files="@(OldTests)" ContinueOnError="true"/>
-  </Target>
-
+  
 
   <Target Name="Init" DependsOnTargets="Config" >
     <MakeDir Directories="$(TestResultsPath)"/>
-    <MakeDir Directories="$(PackageSourcePath)"/>
     <MakeDir Directories="$(BuiltPackagesPath)"/>
-    <MakeDir Directories="$(ReleasePath)"/>
   </Target>
 
   <ItemGroup>
@@ -227,7 +185,8 @@
       <FWPackage Include="$(CorePath)\NakedObjects.*.package\*.nupkg"/>
     </ItemGroup>
 
-    <Copy SourceFiles="@(FWPackage)" DestinationFolder="$(PackageSourcePath)"/>
+    <Exec Command="appveyor PushArtifact -Path %(FWPackage.Filename).nupkg"/>
+
     <Copy SourceFiles="@(FWPackage)" DestinationFolder="$(BuiltPackagesPath)"/>
   </Target>
 
