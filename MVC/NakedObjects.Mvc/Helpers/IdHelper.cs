@@ -241,12 +241,16 @@ namespace NakedObjects.Web.Mvc.Html {
             return GetObjectId(owner) + sep + action.Id + sep + DialogName;
         }
 
+        private static string EnsureEndsWithColon(string id) {
+            return id.EndsWith(":") ? id : id + ":";
+        }
+
         public static string GetSubMenuId(INakedObject owner, INakedObjectAction action) {
-            return GetObjectId(owner) + sep + action.Id.Split('.').Last();
+            return EnsureEndsWithColon(GetObjectId(owner) + sep + action.Id.Split('.').Last());
         }
 
         public static string GetSubMenuId(INakedObject owner, INakedObject service) {
-            return GetObjectId(owner) + sep + service.Specification.UniqueShortName();
+            return EnsureEndsWithColon(GetObjectId(owner) + sep + service.Specification.UniqueShortName());
         }
 
         public static string GetFindMenuId(INakedObject nakedObject, INakedObjectAction action, string propertyName) {
