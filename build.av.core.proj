@@ -185,7 +185,7 @@
       <FWPackage Include="$(CorePath)\NakedObjects.*.package\*.nupkg"/>
     </ItemGroup>
 
-    <Exec Command="appveyor PushArtifact -Path '%(FWPackage.FullPath)'"/>
+    <Exec Command="appveyor PushArtifact '%(FWPackage.FullPath)'"/>
 
     <Copy SourceFiles="@(FWPackage)" DestinationFolder="$(BuiltPackagesPath)"/>
   </Target>
