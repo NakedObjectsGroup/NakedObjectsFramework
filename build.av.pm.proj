@@ -118,7 +118,7 @@
 			<PMPackage Include="$(PMPath)\$(NOPM).package\*.nupkg"/>
 		</ItemGroup>
 
-    <Exec Command="appveyor PushArtifact -Path %(PMPackage.Filename).nupkg"/>
+    <Exec Command="appveyor PushArtifact -Path %(PMPackage.FullPath)"/>
   
 		<Copy SourceFiles="@(PMPackage)" DestinationFolder="$(BuiltPackagesPath)" />
   </Target>
