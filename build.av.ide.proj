@@ -85,7 +85,7 @@
       <Package Include="$(PMPath)\$(NOIDE).package\*.nupkg"/>
     </ItemGroup>
 
-    <Exec Command="appveyor PushArtifact $(Package)"/>
+    <Exec Command="appveyor PushArtifact -Path %(Package.Filename)"/>
 
   </Target>
 
