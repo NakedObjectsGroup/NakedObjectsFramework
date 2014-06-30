@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="SpiroPackageTest"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	
+	<PropertyGroup>
+    <SpiroPath>Spiro</SpiroPath>
+    <SpiroModels>Spiro.Models</SpiroModels>
+    <SpiroNg>spiro.angulars</SpiroNg>
+    <SpModern>Spiro.Modern</SpModern>
+		<BuiltPackagesPath>build\packages</BuiltPackagesPath>
+		<InstalledPackagesPath>packages</InstalledPackagesPath>
+		<ReleasePath>build\release</ReleasePath>
+		<TestResultsPath>test-results</TestResultsPath>
+    <CoveragePath>coverage</CoveragePath>
+    <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
+    <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+
+  <Import Project="$(CommunityTargets)"/>
+  
+	<Choose>
+		<When Condition="Exists('C:\Program Files (x86)')">
+			<PropertyGroup>
+				<ToolsPath>C:\Program Files (x86)</ToolsPath>		
+				<MSTestPath>C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE</MSTestPath>
+			</PropertyGroup>
+		</When>
+		<Otherwise>
+			<PropertyGroup>
+				<ToolsPath>C:\Program Files</ToolsPath>
+				<MSTestPath>C:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE</MSTestPath>
+			</PropertyGroup>
+		</Otherwise>
+	</Choose>
+
+	<PropertyGroup Condition="'$(Configuration)'==''">
+		<Configuration>Debug</Configuration>
+		<Platform>x86</Platform>
+	</PropertyGroup>
+
+  <Target Name="Config">
+    <CreateItem Include="$(Configuration)">
+      <Output TaskParameter="Include" ItemName="Configuration" />
+    </CreateItem>
+  </Target>
+
+  <ItemGroup>
+    <SpiroFiles Include="$(SpiroPath)\$(SpModern)/$(SpModern).csproj"/>
+  </ItemGroup>
+
+  <Target Name="Clean" DependsOnTargets="Config">
+
+    <MSBuild Projects="@(SpiroFiles)" Targets="Clean"/>
+    
+    <RemoveDir Directories="$(SpiroPath)\$(SpiroModels).package\content"/>
+    <RemoveDir Directories="$(SpiroPath)\$(SpModern).package\content"/>
+  
+    <ItemGroup>
+      <OldPackages Include="$(SpiroPath)\$(SpiroModels).package\*.nupkg"/>
+      <OldPackages Include="$(SpiroPath)\$(SpModern).package\*.nupkg"/>
+
+      <OldPackages Include="$(PackageSourcePath)\$(SpiroModels)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(SpiroModels)*.nupkg"/>
+      <OldPackages Include="$(PackageSourcePath)\$(SpModern)*.nupkg"/>
+      <OldPackages Include="$(BuiltPackagesPath)\$(SpModern)*.nupkg"/>
+      
+      
+      <OldPackageFiles Include="$(InstalledPackagesPath)\$(SpiroModels).package\**\*.*"/>
+      <OldPackageFiles Include="$(InstalledPackagesPath)\$(SpModern).package\**\*.*"/>
+      <OldTests Include="$(TestResultsPath)\Karma*.xml"/>
+      <OldTests Include="$(CoveragePath)\**\*.xml"/>
+    </ItemGroup>
+
+    <Delete Files="@(OldPackages)"/>
+    <Delete Files="@(OldPackageFiles)"/>
+    <Delete Files="@(OldTests)" ContinueOnError="true"/>
+  </Target>
+
+  <Target Name="Init" DependsOnTargets="Config" >
+    <MakeDir Directories="$(PackageSourcePath)"/>
+    <MakeDir Directories="$(BuiltPackagesPath)"/>
+    <MakeDir Directories="$(ReleasePath)"/>
+  </Target>
+
+  <ItemGroup>
+    <PackageCongfigFiles Include="$(SpModern)\packages.config" />
+  </ItemGroup>
+
+  <Target Name="RestorePackage"  Returns="%(PackageCongfigFiles.Identity)" DependsOnTargets="Init">
+    <Exec Command='nuget restore "@(PackageCongfigFiles)" -PackagesDirectory packages'  IgnoreExitCode="True"  />
+  </Target>
+
+  <Target Name="RestoreSolutionPackages" DependsOnTargets="Init">
+    <PropertyGroup>
+      <NuGetToolsPath>..\.nuget</NuGetToolsPath>
+      <PackagesConfig>$(NuGetToolsPath)\packages.config</PackagesConfig>
+      <PackagesDir>$(SolutionDir)packages</PackagesDir>
+      <SolutionRestoreCommand>'nuget install "$(PackagesConfig)" -o "$(InstalledPackagesPath)"</SolutionRestoreCommand>
+    </PropertyGroup>
+    <Exec Command="$(SolutionRestoreCommand)" Condition="Exists('$(PackagesConfig)')"/>
+  </Target>
+  
+	<Target Name="Spiro" DependsOnTargets="RestoreSolutionPackages; RestorePackage">
+    
+		<MSBuild Projects="@(SpiroFiles)" Targets="$(Targets)" Properties="Configuration=%(Configuration.Identity)">
+			<Output TaskParameter="TargetOutputs" ItemName="Artifacts"/>
+		</MSBuild>
+	</Target>
+
+  <Target Name="SpiroTest" DependsOnTargets="Spiro">
+    <Exec Command='karma start Spiro/karma.conf.js' />
+  </Target>
+  
+	<Target Name="SpiroPackage" >
+
+    <ItemGroup>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpiroModels).helpers.ts"/>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpiroModels).helpers.js"/>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpiroModels).shims.ts"/>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpiroModels).shims.js"/>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpiroModels).ts"/>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\$(SpiroModels).js"/>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.config.ts"/>
+      <SpiroSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.config.js"/>
+    </ItemGroup>
+      
+		<ItemGroup>
+			<SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Content*\partials\*.*"/>
+      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Content*\spiro-modern.css"/>
+      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\fonts*\*.*"/>
+      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.*.ts"/>
+      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\Scripts*\spiro.angular.*.js"/>
+      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\index.html"/>
+      <SpiroNgSrcFiles Include="$(SpiroPath)\$(SpModern)\SpiroReadme.txt"/>
+      
+    </ItemGroup>
+
+		<Copy SourceFiles="@(SpiroSrcFiles)" DestinationFolder="$(SpiroPath)\$(SpiroModels).package\content\%(RecursiveDir)" />
+    <Copy SourceFiles="@(SpiroNgSrcFiles)" DestinationFolder="$(SpiroPath)\$(SpModern).package\content\%(RecursiveDir)" />
+		
+		<Exec WorkingDirectory="$(SpiroPath)\$(SpiroModels).package" Command="nuget pack $(SpiroModels).nuspec" />
+    <Exec WorkingDirectory="$(SpiroPath)\$(SpModern).package" Command="nuget pack $(SpModern).nuspec" />
+    
+		<ItemGroup>
+			<Spiro1Package Include="$(SpiroPath)\$(SpiroModels).package\*.nupkg"/>
+      <Spiro2Package Include="$(SpiroPath)\$(SpModern).package\*.nupkg"/>
+		</ItemGroup>
+
+
+    <Exec Command='appveyor PushArtifact "%(Spiro1Package.FullPath)"'/>
+    <Exec Command='appveyor PushArtifact "%(Spiro2Package.FullPath)"'/>
+		<Copy SourceFiles="@(Spiro1Package)" DestinationFolder="$(BuiltPackagesPath)" />
+    <Copy SourceFiles="@(Spiro2Package)" DestinationFolder="$(BuiltPackagesPath)" />
+  
+  </Target>
+
+  <Target Name="SpiroPackageTest" DependsOnTargets="SpiroTest">
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="SpiroPackage"/>
+  </Target>
+
+  <Target Name="SpiroPackageNoTest" DependsOnTargets="Spiro">
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="SpiroPackage"/>
+  </Target>
+  
+</Project>

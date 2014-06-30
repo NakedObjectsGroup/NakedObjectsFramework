@@ -182,12 +182,15 @@
     <Exec WorkingDirectory="$(CorePath)\$(NOX).package" Command="nuget pack $(NOX).nuspec -Symbols"/>
 
     <ItemGroup>
-      <FWPackage Include="$(CorePath)\NakedObjects.*.package\*.nupkg"/>
+      <CorePackage Include="$(CorePath)\$(NOCore).package\*.nupkg"/>
+      <XatPackage Include="$(CorePath)\$(NOX).package\*.nupkg"/>
     </ItemGroup>
 
-    <Exec Command="appveyor PushArtifact '%(FWPackage.FullPath)'"/>
+    <Exec Command='appveyor PushArtifact "%(CorePackage.FullPath)"'/>
+    <Exec Command='appveyor PushArtifact "%(XatPackage.FullPath)"'/>
 
-    <Copy SourceFiles="@(FWPackage)" DestinationFolder="$(BuiltPackagesPath)"/>
+    <Copy SourceFiles="@(CorePackage)" DestinationFolder="$(BuiltPackagesPath)"/>
+    <Copy SourceFiles="@(XatPackage)" DestinationFolder="$(BuiltPackagesPath)"/>
   </Target>
 
   <Target Name="FrameworkPackageTest" DependsOnTargets="FrameworkTest">

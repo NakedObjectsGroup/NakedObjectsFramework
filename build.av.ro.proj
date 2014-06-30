@@ -1,0 +1,194 @@
+<Project ToolsVersion="4.0" DefaultTargets="RestfulObjectsPackageTest"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+ 
+  <PropertyGroup>
+    <ROPath>RestfulObjects Server</ROPath>
+    <ROMVC>RestfulObjects.Mvc</ROMVC>
+    <ROSVR>RestfulObjects.Server</ROSVR>
+    <BuiltPackagesPath>build\packages</BuiltPackagesPath>
+    <InstalledPackagesPath>packages</InstalledPackagesPath>
+    <TestResultsPath>test-results</TestResultsPath>
+    <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
+    <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
+    <NUnitVer>2.6.3</NUnitVer>
+  </PropertyGroup>
+
+  <Import Project="$(CommunityTargets)"/>
+  <UsingTask TaskName="Zip" AssemblyFile="$(CommunityTasks)"/>
+  <UsingTask TaskName="NUnit" AssemblyFile="$(CommunityTasks)" />
+  <UsingTask TaskName="FileUpdate" AssemblyFile="$(CommunityTasks)" />
+
+  <Choose>
+    <When Condition="Exists('C:\Program Files (x86)')">
+      <PropertyGroup>
+        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>       
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>       
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <PropertyGroup Condition="'$(Configuration)'==''">
+    <Configuration>Debug</Configuration>
+    <Platform>x86</Platform>
+  </PropertyGroup>
+
+  <Target Name="Config">
+    <CreateItem Include="$(Configuration)">
+      <Output TaskParameter="Include" ItemName="Configuration" />
+    </CreateItem>
+  </Target>
+
+  <ItemGroup>
+    <Files Include="$(ROPath)\RestfulObjects.Snapshot\RestfulObjects.Snapshot.csproj"/>
+    <Files Include="$(ROPath)\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj"/>
+    <Files Include="$(ROPath)\RestfulObjects.Mvc.App\RestfulObjects.Mvc.App.csproj"/>
+    <Files Include="$(ROPath)\RestfulObjects.Bootstrap\RestfulObjects.Bootstrap.csproj"/>
+    <Files Include="$(ROPath)\RestfulObjects.Test.Data\RestfulObjects.Test.Data.csproj"/>
+    <Files Include="$(ROPath)\RestfulObjects.Test\RestfulObjects.Test.fsproj"/>
+    <Files Include="$(ROPath)\RestfulObjects.Test.Nof4\RestfulObjects.Test.Nof4.fsproj"/>
+  </ItemGroup>
+
+  <Target Name="Init" DependsOnTargets="Config" >
+    <MakeDir Directories="$(TestResultsPath)"/>
+    <MakeDir Directories="$(BuiltPackagesPath)"/>
+  </Target>
+
+  <ItemGroup>
+    <PackageCongfigFiles Include="$(ROPath)\**\packages.config"/>
+  </ItemGroup>
+
+  <Target Name="RestorePackage"  Returns="%(PackageCongfigFiles.Identity)" DependsOnTargets="Init">
+    <Exec Command='nuget restore "@(PackageCongfigFiles)" -PackagesDirectory packages'  IgnoreExitCode="True"  />
+  </Target>
+
+  <Target Name="RestoreSolutionPackages" DependsOnTargets="Init">
+    <PropertyGroup>
+      <NuGetToolsPath>..\.nuget</NuGetToolsPath>
+      <PackagesConfig>$(NuGetToolsPath)\packages.config</PackagesConfig>
+      <PackagesDir>$(SolutionDir)packages</PackagesDir>
+      <SolutionRestoreCommand>'nuget install "$(PackagesConfig)" -o "$(InstalledPackagesPath)"'</SolutionRestoreCommand>
+    </PropertyGroup>
+    <Exec Command="$(SolutionRestoreCommand)" Condition="Exists('$(PackagesConfig)')"/>
+    <Exec WorkingDirectory="$(ROPath)" Command="nuget install Nunit.Runners  -o ..\$(InstalledPackagesPath)"/>
+  </Target>
+
+  <Target Name="RestfulObjects" DependsOnTargets="RestoreSolutionPackages;RestorePackage">
+    <MSBuild Projects="@(Files)" Properties="Configuration=%(Configuration.Identity)">
+      <Output TaskParameter="TargetOutputs" ItemName="Artifacts"/>
+    </MSBuild>
+  </Target>
+
+  <Target Name="RestfulObjectsTest" DependsOnTargets="RestfulObjects">
+    <NUnit Assemblies="$(ROPath)\RestfulObjects.Test.Nof4\bin\%(Configuration.Identity)\RestfulObjects.Test.Nof4.dll" ToolPath="$(NUnitPath)" ContinueOnError="false"  Force32Bit="true"  OutputXmlFile="$(TestResultsPath)\RestfulObjects.Test.Nof4.xml" />
+  </Target>
+
+  <Target Name="RestfulObjectsMvcPackage" DependsOnTargets="RestfulObjects" >
+    <ItemGroup>
+      <RestApiLib Include="$(ROPath)\RestfulObjects.Snapshot\bin\%(Configuration.Identity)\RestfulObjects.Snapshot.dll"/>
+      <RestApiLib Include="$(ROPath)\RestfulObjects.Mvc\bin\%(Configuration.Identity)\RestfulObjects.Mvc.dll"/>
+
+      <RestApiLib Include="$(ROPath)\RestfulObjects.Snapshot\bin\%(Configuration.Identity)\RestfulObjects.Snapshot.pdb"/>
+      <RestApiLib Include="$(ROPath)\RestfulObjects.Mvc\bin\%(Configuration.Identity)\RestfulObjects.Mvc.pdb"/>
+    </ItemGroup>
+
+    <Copy SourceFiles="@(RestApiLib)" DestinationFolder="$(ROPath)\$(ROMVC).package\lib\net451" />
+
+    <ItemGroup>
+      <RestApiSrc Include="*$(ROPath)\RestfulObjects.Snapshot\**\*.cs" />
+      <RestApiSrc Include="*$(ROPath)\RestfulObjects.Mvc\**\*.cs" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(RestApiSrc)" DestinationFolder="$(ROPath)\$(ROMVC).package\src\%(RecursiveDir)" />
+
+    <ItemGroup>
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\BasicAuthenticationHandler.cs"/>
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestDependencyResolver.cs"/>
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestConfig.cs"/>
+      <!--<RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Web.config.transform"/>-->
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Controllers*\RestfulObjectsController.cs"/>
+    </ItemGroup>
+
+    <Copy SourceFiles="@(RestSrcFiles)" DestinationFolder="$(ROPath)\$(ROMVC).package\content\%(RecursiveDir)" />
+
+    <ItemGroup>
+      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\BasicAuthenticationHandler.cs"/>
+      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestConfig.cs"/>
+      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestDependencyResolver.cs"/>
+      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\Controllers*\RestfulObjectsController.cs"/>
+    </ItemGroup>
+
+    <FileUpdate Files="@(ToUpdateRo)"
+							 RegEx= 'MvcTestApp\.'
+							 ReplacementText ='$rootnamespace$.'/>
+
+    <Move SourceFiles="@(ToUpdateRo)" DestinationFiles="$(ROPath)\$(ROMVC).package\content\%(RecursiveDir)%(Filename)%(Extension).pp" />
+
+    <Exec WorkingDirectory="$(ROPath)\$(ROMVC).package" Command="nuget pack $(ROMVC).nuspec -Symbols" />
+    <ItemGroup>
+      <RestApiPackage Include="$(ROPath)\$(ROMVC).package\*.nupkg"/>
+    </ItemGroup>
+
+    <Exec Command='appveyor PushArtifact "%(RestApiPackage.FullPath)"'/>
+
+    <Copy SourceFiles="@(RestApiPackage)" DestinationFolder="$(BuiltPackagesPath)" />
+   
+  </Target>
+
+  <Target Name="RestfulObjectsServerPackage" DependsOnTargets="RestfulObjects">
+    <ItemGroup>
+      <ROSLib Include="$(ROPath)\RestfulObjects.Bootstrap\bin\%(Configuration.Identity)\RestfulObjects.Bootstrap.dll"/>
+      <ROSLib Include="$(ROPath)\RestfulObjects.Bootstrap\bin\%(Configuration.Identity)\RestfulObjects.Bootstrap.pdb"/>
+    </ItemGroup>
+
+    <Copy SourceFiles="@(ROSLib)" DestinationFolder="$(ROPath)\$(ROSVR).package\lib\net451" />
+
+    <ItemGroup>
+      <ROSSrc Include="*$(ROPath)\RestfulObjects.Bootstrap\**\*.cs" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(ROSSrc)" DestinationFolder="$(ROPath)\$(ROSVR).package\src\%(RecursiveDir)" />
+
+    <ItemGroup>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RunWeb.cs.pp"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsStart.cs"/>
+    </ItemGroup>
+
+    <Copy SourceFiles="@(ROSSrcFiles)" DestinationFolder="$(ROPath)\$(ROSVR).package\content\%(RecursiveDir)" />
+
+    <ItemGroup>
+      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\RestfulObjectsStart.cs"/>
+    </ItemGroup>
+
+    <FileUpdate Files="@(ROSUpdate)"
+							 RegEx= 'MvcTestApp\.'
+							 ReplacementText ='$rootnamespace$.'/>
+
+    <Move SourceFiles="@(ROSUpdate)" DestinationFiles="$(ROPath)\$(ROSVR).package\content\%(RecursiveDir)%(Filename)%(Extension).pp"/>
+
+    <Exec WorkingDirectory="$(ROPath)\$(ROSVR).package" Command="nuget pack $(ROSVR).nuspec -Symbols" />
+    <ItemGroup>
+      <ROSPackage Include="$(ROPath)\$(ROSVR).package\*.nupkg"/>
+    </ItemGroup>
+
+    <Exec Command='appveyor PushArtifact "%(ROSPackage.FullPath)"'/> 
+    <Copy SourceFiles="@(ROSPackage)" DestinationFolder="$(BuiltPackagesPath)"/>
+    
+  </Target>
+
+  <Target Name="RestfulObjectsPackage" DependsOnTargets="RestfulObjectsServerPackage;RestfulObjectsMvcPackage"/>
+
+  <Target Name="RestfulObjectsPackageTest" DependsOnTargets="RestfulObjectsTest">
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="RestfulObjectsPackage"/>
+  </Target>
+
+  <Target Name="RestfulObjectsPackageNoTest" DependsOnTargets="RestfulObjects">
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="RestfulObjectsPackage"/>
+  </Target>
+  
+  
+  
+  
+</Project>
