@@ -29,20 +29,6 @@
     <MakeDir Directories="$(BuiltPackagesPath)"/>
   </Target>
 
-  <Target Name="Clean" DependsOnTargets="Config">
-    <ItemGroup>
-      <OldPackages Include="$(PMPath)\$(NOIDE).package\*.nupkg"/>
-      <OldPackages Include="$(PackageSourcePath)\$(NOIDE)*.nupkg"/>
-      <OldPackages Include="$(BuiltPackagesPath)\$(NOIDE)*.nupkg"/>
-      <OldZips Include="$(PMPath)\**\*.zip"/>
-      <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOIDE).package\**\*.*"/>   
-    </ItemGroup>
-
-    <Delete Files="@(OldPackages)"/>
-    <Delete Files="@(OldZips)"/>
-    <Delete Files="@(OldPackageFiles)"/>
-  </Target>
-
   <Target Name="RestoreSolutionPackages" DependsOnTargets="Init">
     <PropertyGroup>
       <NuGetToolsPath>..\.nuget</NuGetToolsPath>
@@ -99,8 +85,8 @@
       <Package Include="$(PMPath)\$(NOIDE).package\*.nupkg"/>
     </ItemGroup>
 
-    <Copy SourceFiles="@(Package)" DestinationFolder="$(PackageSourcePath)"/>
-    <Copy SourceFiles="@(Package)" DestinationFolder="$(BuiltPackagesPath)"/>
+    <Exec Command="appveyor PushArtifact $(Package)"/>
+
   </Target>
 
 </Project>
