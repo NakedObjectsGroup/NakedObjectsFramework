@@ -19,7 +19,6 @@ open TestTypes
 open TestCode
 open System.Collections
 open Microsoft.FSharp.Linq
-open Microsoft.FSharp.Linq.Query
 open System.Data.Entity.Core.Objects
 
 let PocoConfig = 
@@ -73,7 +72,7 @@ let CanSaveTransientObjectWithScalarProperties persistor  =
 let GetOrigAndReplProductCategories persistor  = 
     let psc = First<ProductSubcategory> persistor 
     let origPc = psc.ProductCategory
-    let replPc = query <@ persistor.GetInstances<ProductCategory>() |>  Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID)  |> Seq.head @>    
+    let replPc =  persistor.GetInstances<ProductCategory>() |>  Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID)  |> Seq.head     
     //let replPc = persistor.GetInstances<ProductCategory>() |>  Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID)  |> Seq.head 
     (psc, origPc, replPc)
 
@@ -82,7 +81,7 @@ let GetOrigAndReplProductCategoriesWithResolve persistor  =
     persistor.EndTransaction()
     persistor.ResolveImmediately(GetOrAddAdapterForTest psc null) 
     let origPc = psc.ProductCategory
-    let replPc = query <@  persistor.GetInstances<ProductCategory>() |>  Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head  @>
+    let replPc =   persistor.GetInstances<ProductCategory>() |>  Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head  
     //let replPc = persistor.GetInstances<ProductCategory>() |>  Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head  
     (psc, origPc, replPc)
    
@@ -143,7 +142,7 @@ let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies persis
     Assert.IsFalse(EntityUtils.IsEntityProxy(pc.GetType()))
     psc.ProductCategory <- pc  
     CreateAndEndTransaction persistor psc
-    let proxiedpsc = query <@  persistor.GetInstances<ProductSubcategory>() |> Seq.filter (fun i -> i.Name = psc.Name) |> Seq.head @> 
+    let proxiedpsc =   persistor.GetInstances<ProductSubcategory>() |> Seq.filter (fun i -> i.Name = psc.Name) |> Seq.head  
     //let proxiedpsc =  persistor.GetInstances<ProductSubcategory>() |> Seq.filter (fun i -> i.Name = psc.Name) |> Seq.head
     
     Assert.IsTrue(EntityUtils.IsEntityProxy(proxiedpsc.GetType()))
@@ -158,7 +157,7 @@ let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmNoProxies pers
     psc.ProductCategory <- pc  
     pc.ProductSubcategories.Add psc
     CreateAndEndTransaction persistor psc
-    let proxiedpsc = query <@ persistor.GetInstances<ProductSubcategory>() |> Seq.filter (fun i -> i.Name = psc.Name) |> Seq.head @>
+    let proxiedpsc =  persistor.GetInstances<ProductSubcategory>() |> Seq.filter (fun i -> i.Name = psc.Name) |> Seq.head 
     //let proxiedpsc = persistor.GetInstances<ProductSubcategory>() |> Seq.filter (fun i -> i.Name = psc.Name) |> Seq.head 
     Assert.IsFalse(EntityUtils.IsEntityProxy(proxiedpsc.GetType()))
     let proxiedpc = proxiedpsc.ProductCategory 
@@ -366,7 +365,7 @@ let CanUpdatePersistentObjectWithScalarPropertiesAbort persistor  =
     SaveWithNoEndTransaction persistor sr0   
     persistor.AbortTransaction()  
     persistor.EndTransaction()
-    let sr1 = query <@ persistor.GetInstances<ScrapReason>() |> Seq.filter (fun i -> i.ScrapReasonID = sr0.ScrapReasonID) @> |> Seq.head    
+    let sr1 =  persistor.GetInstances<ScrapReason>() |> Seq.filter (fun i -> i.ScrapReasonID = sr0.ScrapReasonID)  |> Seq.head    
     //let sr1 =  persistor.GetInstances<ScrapReason>() |> Seq.filter (fun i -> i.ScrapReasonID = sr0.ScrapReasonID) |> Seq.head    
     
     Assert.AreEqual(origName, sr1.Name)
@@ -452,7 +451,7 @@ let CanContainerInjectionCalledForGetInstance persistor =
     Assert.IsTrue(injectedObjects.Contains(sr))   
 
 let noEntryFor (persistor : EntityObjectStore) (p : Product) (so: SpecialOffer) = 
-        let hasEntry = query <@ persistor.GetInstances<SpecialOfferProduct>() |> Seq.exists (fun i -> i.Product.ProductID = p.ProductID && i.SpecialOffer.SpecialOfferID = so.SpecialOfferID)@>
+        let hasEntry =  persistor.GetInstances<SpecialOfferProduct>() |> Seq.exists (fun i -> i.Product.ProductID = p.ProductID && i.SpecialOffer.SpecialOfferID = so.SpecialOfferID)
         //let hasEntry = persistor.GetInstances<SpecialOfferProduct>() |> Seq.exists (fun i -> i.Product.ProductID = p.ProductID && i.SpecialOffer.SpecialOfferID = so.SpecialOfferID)
         not (hasEntry)
 

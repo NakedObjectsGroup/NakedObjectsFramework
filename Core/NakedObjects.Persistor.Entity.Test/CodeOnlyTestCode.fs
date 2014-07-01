@@ -20,13 +20,10 @@ open TestTypes
 open TestCode
 open NakedObjects.Reflector.Peer
 open NakedObjects.Architecture.Facets.Objects.Callbacks
-open Microsoft.FSharp.Linq
-open Microsoft.FSharp.Linq.Query
 open System.Data.Entity.Core.Objects
 open System.Data.Entity.ModelConfiguration
-open Microsoft.FSharp.Linq.QuotationEvaluation
 open Microsoft.FSharp.Quotations
-open System.Linq.Expressions
+
 
 
 let categorySetter codeOnlyPersistor (c : Category)  = 
@@ -50,21 +47,21 @@ let assemblyName = "NakedObjects.Persistor.Entity.Test.CodeOnly"
 
 let datasourceName = ".\SQLEXPRESS"
 
-let ToLinq (exp : Expr<'a -> 'b>) =
-    let linq = exp.ToLinqExpression()
-    let call = linq :?> MethodCallExpression
-    let lambda = call.Arguments.[0] :?> LambdaExpression
-    Expression.Lambda<Func<'a, 'b>>(lambda.Body, lambda.Parameters) 
+//let ToLinq (exp : Expr<'a -> 'b>) =
+//    let linq = exp.ToLinqExpression()
+//    let call = linq :?> MethodCallExpression
+//    let lambda = call.Arguments.[0] :?> LambdaExpression
+//    Expression.Lambda<Func<'a, 'b>>(lambda.Body, lambda.Parameters) 
 
 type TestConfigClass() as x = 
     inherit EntityTypeConfiguration<CountryCode>()
-        do
-            let expr = <@ fun (cc : CountryCode) -> cc.Code @>
-            let linq = expr |> ToLinq
-            let sink = x.HasKey(linq)
-            let expr = <@ fun (cc : CountryCode) -> cc.Name @>
-            let linq = expr |> ToLinq
-            let sink = x.Property(linq).IsRequired() 
+        do        
+            let qexpr  = <@ Func<CountryCode, string>(fun (cc : CountryCode ) -> cc.Code)  @>
+            let expr = Microsoft.FSharp.Linq.RuntimeHelpers.LeafExpressionConverter.QuotationToLambdaExpression (qexpr)      
+            let sink = x.HasKey(expr)
+            let qexpr  = <@ Func<CountryCode, string>(fun (cc : CountryCode ) -> cc.Name)  @>
+            let expr = Microsoft.FSharp.Linq.RuntimeHelpers.LeafExpressionConverter.QuotationToLambdaExpression (qexpr)      
+            let sink = x.Property(expr).IsRequired() 
             ()
 
 let seedCodeFirstDatabase  (context : CodeFirstContext) =
@@ -258,7 +255,7 @@ let CanUpdatePersistentObjectWithScalarPropertiesAbort codeOnlyPersistor  =
 let CanUpdatePersistentObjectWithReferenceProperties (codeOnlyPersistor:EntityObjectStore)  =      
     let person = First<Person> codeOnlyPersistor
     let origFav = person.Favourite
-    let replFav = query <@ codeOnlyPersistor.GetInstances<Product>() |>  Seq.filter (fun i -> i.ID <> origFav.ID) |> Seq.head   @>  
+    let replFav = codeOnlyPersistor.GetInstances<Product>() |>  Seq.filter (fun i -> i.ID <> origFav.ID) |> Seq.head  
     //let replFav = codeOnlyPersistor.GetInstances<Product>() |>  Seq.filter (fun i -> i.ID <> origFav.ID) |> Seq.head   
 
     let setFavouriteAndSave f =
@@ -271,7 +268,7 @@ let CanUpdatePersistentObjectWithReferenceProperties (codeOnlyPersistor:EntityOb
 let CanUpdatePersistentObjectWithReferencePropertiesAbort (codeOnlyPersistor:EntityObjectStore)  =      
     let person = First<Person> codeOnlyPersistor
     let origFav = person.Favourite
-    let replFav = query <@  codeOnlyPersistor.GetInstances<Product>() |>  Seq.filter (fun i -> i.ID <> origFav.ID) |> Seq.head  @>    
+    let replFav =  codeOnlyPersistor.GetInstances<Product>() |>  Seq.filter (fun i -> i.ID <> origFav.ID) |> Seq.head  
     //let replFav = codeOnlyPersistor.GetInstances<Product>() |>  Seq.filter (fun i -> i.ID <> origFav.ID) |> Seq.head      
 
     person.Favourite <- replFav
@@ -376,7 +373,7 @@ let CanGetInternationalSubclassClassByType (codeOnlyPersistor:EntityObjectStore)
   
 let CanNavigateToSubclass (codeOnlyPersistor:EntityObjectStore) = 
     let getPersonWithName name =
-        query <@  codeOnlyPersistor.GetInstances<Person>() |> Seq.filter (fun i -> i.Name = name) |> Seq.head @>
+        codeOnlyPersistor.GetInstances<Person>() |> Seq.filter (fun i -> i.Name = name) |> Seq.head 
         //codeOnlyPersistor.GetInstances<Person>() |> Seq.filter (fun i -> i.Name = name) |> Seq.head 
 
     let p1 = getPersonWithName "Ted"
@@ -444,7 +441,7 @@ let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies codeOn
     c.Products.Add(pr)   
     pr.Owningcategory <- c   
     CreateAndEndTransaction codeOnlyPersistor c
-    let proxiedc = query <@  codeOnlyPersistor.GetInstances<Category>() |> Seq.filter (fun i -> i.Name = c.Name) |> Seq.head @>
+    let proxiedc =  codeOnlyPersistor.GetInstances<Category>() |> Seq.filter (fun i -> i.Name = c.Name) |> Seq.head
     //let proxiedc = codeOnlyPersistor.GetInstances<Category>() |> Seq.filter (fun i -> i.Name = c.Name) |> Seq.head 
     Assert.IsTrue(EntityUtils.IsEntityProxy(proxiedc.GetType()))
     let proxiedpr = proxiedc.Products |> Seq.head

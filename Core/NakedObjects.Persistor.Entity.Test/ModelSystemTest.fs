@@ -17,8 +17,7 @@ open NakedObjects
 open TestCode
 open System.Collections.Generic
 open NakedObjects.Architecture.Util
-open Microsoft.FSharp.Linq
-open Microsoft.FSharp.Linq.Query
+
 
 [<TestFixture>]
 type ModelSystemTests() =
@@ -54,11 +53,11 @@ type ModelSystemTests() =
       
     member x.GetPersonDomainObject() = 
        let pp = NakedObjectsContext.ObjectPersistor.Instances<Person>()
-       query <@ pp |> Seq.filter (fun p -> p.Id = 1) |> Seq.head @>    
+       pp |> Seq.filter (fun p -> p.Id = 1) |> Seq.head     
           
     member x.GetNextPersonID() = 
        let pp = NakedObjectsContext.ObjectPersistor.Instances<Person>()
-       query <@ (pp |> Seq.map (fun i -> i.Id) |> Seq.max) @>  + 1 
+       (pp |> Seq.map (fun i -> i.Id) |> Seq.max)   + 1 
             
     [<Test>]
     member x.GetService() = 
@@ -68,7 +67,7 @@ type ModelSystemTests() =
     [<Test>]
     member x.GetCollectionDirectly() = 
         let pp = NakedObjectsContext.ObjectPersistor.Instances<Person>()
-        Assert.Greater(query<@  pp |> Seq.length @>, 0)   
+        Assert.Greater(pp |> Seq.length , 0)   
                          
     [<Test>]
     member x.GetInstanceDirectly() = 

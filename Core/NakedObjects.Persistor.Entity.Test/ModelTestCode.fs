@@ -11,8 +11,6 @@ open System
 open NakedObjects
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Architecture.Reflect
-open Microsoft.FSharp.Linq
-open Microsoft.FSharp.Linq.Query
 open System.Data.Entity.Core.Objects
 
 let ModelConfig = 
