@@ -81,7 +81,7 @@
   </Target>
 
   <ItemGroup>
-    <PackageCongfigFiles Include="$(CorePath)\**\packages.config"   Exclude="$(CorePath)\NakedObjects.SystemTest\packages.config"/>
+    <PackageCongfigFiles Include="$(CorePath)\**\packages.config"   Exclude="$(CorePath)\NakedObjects.SystemTest\packages.config; $(CorePath)\NakedObjects.Authorisation.Wif*\packages.config;"/>
   </ItemGroup>
 
   <Target Name="RestorePackage"  Returns="%(PackageCongfigFiles.Identity)" DependsOnTargets="Init">

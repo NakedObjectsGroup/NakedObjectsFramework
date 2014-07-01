@@ -46,11 +46,14 @@
     <Files Include="$(ROPath)\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj"/>
     <Files Include="$(ROPath)\RestfulObjects.Mvc.App\RestfulObjects.Mvc.App.csproj"/>
     <Files Include="$(ROPath)\RestfulObjects.Bootstrap\RestfulObjects.Bootstrap.csproj"/>
-    <Files Include="$(ROPath)\RestfulObjects.Test.Data\RestfulObjects.Test.Data.csproj"/>
-    <Files Include="$(ROPath)\RestfulObjects.Test\RestfulObjects.Test.fsproj"/>
-    <Files Include="$(ROPath)\RestfulObjects.Test.Nof4\RestfulObjects.Test.Nof4.fsproj"/>
   </ItemGroup>
 
+  <ItemGroup>
+    <TFiles Include="$(ROPath)\RestfulObjects.Test.Data\RestfulObjects.Test.Data.csproj"/>
+    <TFiles Include="$(ROPath)\RestfulObjects.Test\RestfulObjects.Test.fsproj"/>
+    <TFiles Include="$(ROPath)\RestfulObjects.Test.Nof4\RestfulObjects.Test.Nof4.fsproj"/>
+  </ItemGroup>
+  
   <Target Name="Init" DependsOnTargets="Config" >
     <MakeDir Directories="$(TestResultsPath)"/>
     <MakeDir Directories="$(BuiltPackagesPath)"/>
@@ -82,6 +85,8 @@
   </Target>
 
   <Target Name="RestfulObjectsTest" DependsOnTargets="RestfulObjects">
+    <MSBuild Projects="@(TFiles)" Properties="Configuration=%(Configuration.Identity)"/>
+    
     <NUnit Assemblies="$(ROPath)\RestfulObjects.Test.Nof4\bin\%(Configuration.Identity)\RestfulObjects.Test.Nof4.dll" ToolPath="$(NUnitPath)" ContinueOnError="false"  Force32Bit="true"  OutputXmlFile="$(TestResultsPath)\RestfulObjects.Test.Nof4.xml" />
   </Target>
 
