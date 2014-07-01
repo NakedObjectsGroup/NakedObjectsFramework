@@ -86,8 +86,8 @@
 
   <Target Name="RestfulObjectsTest" DependsOnTargets="RestfulObjects">
     <MSBuild Projects="@(TFiles)" Properties="Configuration=%(Configuration.Identity)"/>
-    
-    <NUnit Assemblies="$(ROPath)\RestfulObjects.Test.Nof4\bin\%(Configuration.Identity)\RestfulObjects.Test.Nof4.dll" ToolPath="$(NUnitPath)" ContinueOnError="false"  Force32Bit="true"  OutputXmlFile="$(TestResultsPath)\RestfulObjects.Test.Nof4.xml" />
+
+    <Exec Command='nunit-console "$(ROPath)\RestfulObjects.Test.Nof4\bin\%(Configuration.Identity)\RestfulObjects.Test.Nof4.dll"'/>
   </Target>
 
   <Target Name="RestfulObjectsMvcPackage" DependsOnTargets="RestfulObjects" >
