@@ -49,7 +49,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         [Test]
         public void TestEntryWithShortFormat() {
-            const string entry = "21/5/07 10:30";
+            var dt = new DateTime(2007, 5, 21, 10, 30, 0);
+            string entry = dt.ToString("g");
             const int year = 2007;
             const int month = 5;
             const int day = 21;
@@ -65,7 +66,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         [Test]
         public void TestEntryWithMediumFormat() {
-            AssertEntry("21-May-2007 10:30", 2007, 5, 21, 10, 30, 0);
+            var dt = new DateTime(2007, 5, 21, 10, 30, 0);
+            string entry = dt.ToString("f");
+            // "21-May-2007 10:30"
+            AssertEntry(entry, 2007, 5, 21, 10, 30, 0);
         }
 
         [Test]
@@ -76,7 +80,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         [Test]
         public void TestEntryWithLongISOFormat() {
-            AssertEntry("2007-05-21 10:30", 2007, 5, 21, 10, 30, 0);
+            var dt = new DateTime(2007, 5, 21, 10, 30, 0);
+            dt = dt.ToUniversalTime();
+            string entry = dt.ToString("u");
+            AssertEntry(entry, 2007, 5, 21, 10, 30, 0);
         }
 
         [Test]
