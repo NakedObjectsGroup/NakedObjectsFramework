@@ -91,7 +91,8 @@
 
   <Target Name="WifTest" DependsOnTargets="Wif">
     <MSBuild Projects="@(WifTFiles)" Properties="Configuration=%(Configuration.Identity)"/>
-    <NUnit Assemblies="$(CorePath)\$(NOWIF).Test\bin\%(Configuration.Identity)\$(NOWIF).Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\$(NOWIF).Test.xml" />
+    
+    <Exec Command='nunit-console "$(CorePath)\$(NOWIF).Test\bin\%(Configuration.Identity)\$(NOWIF).Test.dll"'/>
   </Target>
 
   <Target Name="WifPackage" >

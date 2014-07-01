@@ -160,20 +160,12 @@
 
     <Copy SourceFiles="$(CorePath)\NakedObjects.Persistor.Entity.Test\NakedObjects.Persistor.Entity.Test.dll.config" DestinationFolder="$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)" />
 
-    <!--<NUnit Assemblies="$(CorePath)\NakedObjects.Architecture.Test\bin\%(Configuration.Identity)\NakedObjects.Architecture.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Architecture.Test.xml" />
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Bootstrap.Test\bin\%(Configuration.Identity)\NakedObjects.Bootstrap.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Bootstrap.Test.xml" />
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Core.Test.xml" />
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Persistor.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Persistor.Test.xml" />
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Persistor.Entity.Test.xml" />
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Reflector.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Reflector.Core.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Reflector.Core.Test.xml" />
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Reflector.Dotnet.Test\bin\%(Configuration.Identity)\NakedObjects.Reflector.Dotnet.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Reflector.Dotnet.Test.xml" />
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Snapshot.Xml.Test\bin\%(Configuration.Identity)\NakedObjects.Snapshot.Xml.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Snapshot.Xml.Test.xml" />-->
-
+   
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Architecture.Test\bin\%(Configuration.Identity)\NakedObjects.Architecture.Test.dll"'/>
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Bootstrap.Test\bin\%(Configuration.Identity)\NakedObjects.Bootstrap.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Test.dll"'/>
-    <Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll"'/>
+    <!--<Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll"'/>-->
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Reflector.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Reflector.Core.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Reflector.Dotnet.Test\bin\%(Configuration.Identity)\NakedObjects.Reflector.Dotnet.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Snapshot.Xml.Test\bin\%(Configuration.Identity)\NakedObjects.Snapshot.Xml.Test.dll"'/>
