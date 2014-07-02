@@ -50,11 +50,12 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         protected override IObjectPersistorInstaller Persistor {
-            get { return new EntityPersistorInstaller(); }
+            get {
+                var installer = new EntityPersistorInstaller();
+                installer.ForceContextSet();
+                return installer;
+            }
         }
-
-      
-
 
         [TestFixtureSetUp]
         public void SetupFixture() {

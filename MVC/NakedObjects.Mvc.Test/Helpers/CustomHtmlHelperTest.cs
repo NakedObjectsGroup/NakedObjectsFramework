@@ -73,9 +73,9 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         private static void CheckResults(string resultsFile, string s) {
-            //string actionView = GetTestData(resultsFile).StripWhiteSpace();
-            //Assert.AreEqual(actionView, s.StripWhiteSpace());
-            WriteTestData(resultsFile, s);
+            string actionView = GetTestData(resultsFile).StripWhiteSpace();
+            Assert.AreEqual(actionView, s.StripWhiteSpace());
+            //WriteTestData(resultsFile, s);
         }
 
 
