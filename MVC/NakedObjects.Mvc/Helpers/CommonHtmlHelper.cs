@@ -913,7 +913,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     int i = index++;
                     string id = "checkbox" + i;
                     string label = GetLabelTag(true, (i + 1).ToString(CultureInfo.InvariantCulture), () => id);
-                    cbTag.InnerHtml += (label + html.CheckBox(FrameworkHelper.GetObjectId(item), defaultChecked, new {id}));
+                    cbTag.InnerHtml += (label + html.CheckBox(FrameworkHelper.GetObjectId(item), defaultChecked, new {id, @class = IdHelper.CheckboxClass}));
                     row.InnerHtml += cbTag.ToString();
                 }
 
