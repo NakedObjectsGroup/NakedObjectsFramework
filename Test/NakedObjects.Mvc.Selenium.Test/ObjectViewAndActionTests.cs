@@ -70,7 +70,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             // Collection Table
             // br.ViewAsTable("Product-ProductInventory");
-            Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Product-ProductInventory").FindElement(By.TagName("div")).GetAttribute("class"));
+            Assert.AreEqual("nof-collection-table", br.GetInternalCollection("Product-ProductInventory").FindElements(By.TagName("div"))[1].GetAttribute("class"));
             IWebElement table = br.GetInternalCollection("Product-ProductInventory").FindElement(By.TagName("table"));
             Assert.AreEqual(3, table.FindElements(By.TagName("tr")).Count);
             Assert.AreEqual(4, table.FindElements(By.TagName("tr"))[0].FindElements(By.TagName("th")).Count);
