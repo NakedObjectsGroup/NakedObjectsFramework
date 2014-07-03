@@ -18,6 +18,11 @@ open System.Web.Http
 open NakedObjects.Core.Context
 open NakedObjects.Core.Util
 
+let api = 
+    let api = new RestfulObjectsControllerBase()
+    api.Surface <- new NakedObjects.Surface.Nof4.Implementation.NakedObjectsSurface(new NakedObjects.Surface.Nof4.Utility.ExternalOid())
+    api
+
 
 [<TestFixture>]
 type Nof4Tests() = class      
@@ -66,2145 +71,2140 @@ type Nof4Tests() = class
         with get() : IFixturesInstaller = 
             box (new FixturesInstaller([| box (new RestDataFixtureUnitTests()) |])) :?> IFixturesInstaller 
 
-    member x.API = 
-        let api = new RestfulObjectsControllerBase()
-        api.Surface <-  new NakedObjects.Surface.Nof4.Implementation.NakedObjectsSurface(new NakedObjects.Surface.Nof4.Utility.ExternalOid())  
-        api
-
     // HomePage5
     [<Test>] 
-    member x.GetHomePage() = HomePage5.GetHomePage x.API
+    member x.GetHomePage() = HomePage5.GetHomePage api
     [<Test>] 
-    member x.GetHomePageSimple() = HomePage5.GetHomePageSimple x.API
+    member x.GetHomePageSimple() = HomePage5.GetHomePageSimple api
     [<Test>] 
-    member x.GetHomePageFormal() = HomePage5.GetHomePageFormal x.API
+    member x.GetHomePageFormal() = HomePage5.GetHomePageFormal api
     [<Test>] 
-    member x.GetHomePageWithMediaType() = HomePage5.GetHomePageWithMediaType x.API
+    member x.GetHomePageWithMediaType() = HomePage5.GetHomePageWithMediaType api
     [<Test>] 
-    member x.NotAcceptableGetHomePage() = HomePage5.NotAcceptableGetHomePage x.API
+    member x.NotAcceptableGetHomePage() = HomePage5.NotAcceptableGetHomePage api
     [<Test>] 
-    member x.InvalidDomainModelGetHomePage() = HomePage5.InvalidDomainModelGetHomePage x.API
+    member x.InvalidDomainModelGetHomePage() = HomePage5.InvalidDomainModelGetHomePage api
     // User6
     [<Test>] 
-    member x.GetUser() = User6.GetUser x.API
+    member x.GetUser() = User6.GetUser api
     [<Test>] 
-    member x.GetUserWithMediaType() = User6.GetUserWithMediaType x.API 
+    member x.GetUserWithMediaType() = User6.GetUserWithMediaType api 
     [<Test>] 
-    member x.NotAcceptableGetUser() = User6.NotAcceptableGetUser x.API
+    member x.NotAcceptableGetUser() = User6.NotAcceptableGetUser api
     // DomainServices7
     [<Test>] 
-    member x.GetDomainServices() = DomainServices7.GetDomainServices x.API 
+    member x.GetDomainServices() = DomainServices7.GetDomainServices api 
     [<Test>] 
-    member x.GetDomainServicesFormal() = DomainServices7.GetDomainServicesFormal x.API 
+    member x.GetDomainServicesFormal() = DomainServices7.GetDomainServicesFormal api 
     [<Test>] 
-    member x.GetDomainServicesWithMediaType() = DomainServices7.GetDomainServicesWithMediaType x.API 
+    member x.GetDomainServicesWithMediaType() = DomainServices7.GetDomainServicesWithMediaType api 
     [<Test>] 
-    member x.NotAcceptableGetDomainServices() = DomainServices7.NotAcceptableGetDomainServices x.API 
+    member x.NotAcceptableGetDomainServices() = DomainServices7.NotAcceptableGetDomainServices api 
     // Version8
     [<Test>] 
-    member x.GetVersion() = Version8.GetVersion x.API 
+    member x.GetVersion() = Version8.GetVersion api 
     [<Test>] 
-    member x.GetVersionWithMediaType() = Version8.GetVersionWithMediaType x.API 
+    member x.GetVersionWithMediaType() = Version8.GetVersionWithMediaType api 
     [<Test>] 
-    member x.NotAcceptableGetVersion() = Version8.NotAcceptableGetVersion x.API 
+    member x.NotAcceptableGetVersion() = Version8.NotAcceptableGetVersion api 
     //Objects9
     [<Test>]
-    member x.GetMostSimpleTransientObject() = Objects9.GetMostSimpleTransientObject x.API  
+    member x.GetMostSimpleTransientObject() = Objects9.GetMostSimpleTransientObject api  
     [<Test>]
-    member x.GetMostSimpleTransientObjectSimpleOnly() = Objects9.GetMostSimpleTransientObjectSimpleOnly x.API  
+    member x.GetMostSimpleTransientObjectSimpleOnly() = Objects9.GetMostSimpleTransientObjectSimpleOnly api  
     [<Test>]
-    member x.GetMostSimpleTransientObjectFormalOnly() = Objects9.GetMostSimpleTransientObjectFormalOnly x.API  
+    member x.GetMostSimpleTransientObjectFormalOnly() = Objects9.GetMostSimpleTransientObjectFormalOnly api  
     [<Test>]
-    member x.PersistMostSimpleTransientObject() = Objects9.PersistMostSimpleTransientObject x.API  
+    member x.PersistMostSimpleTransientObject() = Objects9.PersistMostSimpleTransientObject api  
     [<Test>]
-    member x.PersistMostSimpleTransientObjectSimpleOnly() = Objects9.PersistMostSimpleTransientObjectSimpleOnly x.API  
+    member x.PersistMostSimpleTransientObjectSimpleOnly() = Objects9.PersistMostSimpleTransientObjectSimpleOnly api  
     [<Test>]
-    member x.PersistMostSimpleTransientObjectFormalOnly() = Objects9.PersistMostSimpleTransientObjectFormalOnly x.API  
+    member x.PersistMostSimpleTransientObjectFormalOnly() = Objects9.PersistMostSimpleTransientObjectFormalOnly api  
     [<Test>]
-    member x.PersistMostSimpleTransientObjectValidateOnly() = Objects9.PersistMostSimpleTransientObjectValidateOnly x.API  
+    member x.PersistMostSimpleTransientObjectValidateOnly() = Objects9.PersistMostSimpleTransientObjectValidateOnly api  
     [<Test>]
-    member x.GetWithValueTransientObject() = Objects9.GetWithValueTransientObject x.API  
+    member x.GetWithValueTransientObject() = Objects9.GetWithValueTransientObject api  
     [<Test>]
-    member x.GetWithReferenceTransientObject() = Objects9.GetWithReferenceTransientObject x.API  
+    member x.GetWithReferenceTransientObject() = Objects9.GetWithReferenceTransientObject api  
     [<Test>]
-    member x.GetWithCollectionTransientObject() = Objects9.GetWithCollectionTransientObject x.API  
+    member x.GetWithCollectionTransientObject() = Objects9.GetWithCollectionTransientObject api  
     [<Test>]
-    member x.PersistWithValueTransientObject() = Objects9.PersistWithValueTransientObject x.API  
+    member x.PersistWithValueTransientObject() = Objects9.PersistWithValueTransientObject api  
     [<Test>]
-    member x.PersistWithValueTransientObjectFormalOnly() = Objects9.PersistWithValueTransientObjectFormalOnly x.API  
+    member x.PersistWithValueTransientObjectFormalOnly() = Objects9.PersistWithValueTransientObjectFormalOnly api  
     [<Test>]
-    member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.API  
+    member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject api  
     [<Test>]
-    member x.PersistWithCollectionTransientObject() = Objects9.PersistWithCollectionTransientObject x.API  
+    member x.PersistWithCollectionTransientObject() = Objects9.PersistWithCollectionTransientObject api  
     [<Test>]
-    member x.PersistWithValueTransientObjectValidateOnly() = Objects9.PersistWithValueTransientObjectValidateOnly x.API  
+    member x.PersistWithValueTransientObjectValidateOnly() = Objects9.PersistWithValueTransientObjectValidateOnly api  
     [<Test>]
-    member x.PersistWithReferenceTransientObjectValidateOnly() = Objects9.PersistWithReferenceTransientObjectValidateOnly x.API  
+    member x.PersistWithReferenceTransientObjectValidateOnly() = Objects9.PersistWithReferenceTransientObjectValidateOnly api  
     [<Test>]
-    member x.PersistWithCollectionTransientObjectValidateOnly() = Objects9.PersistWithCollectionTransientObjectValidateOnly x.API  
+    member x.PersistWithCollectionTransientObjectValidateOnly() = Objects9.PersistWithCollectionTransientObjectValidateOnly api  
     [<Test>]
-    member x.PersistWithValueTransientObjectValidateOnlyFail() = Objects9.PersistWithValueTransientObjectValidateOnlyFail x.API  
+    member x.PersistWithValueTransientObjectValidateOnlyFail() = Objects9.PersistWithValueTransientObjectValidateOnlyFail api  
     [<Test>]
-    member x.PersistWithReferenceTransientObjectValidateOnlyFail() = Objects9.PersistWithReferenceTransientObjectValidateOnlyFail x.API  
+    member x.PersistWithReferenceTransientObjectValidateOnlyFail() = Objects9.PersistWithReferenceTransientObjectValidateOnlyFail api  
     [<Test>]
-    member x.PersistWithCollectionTransientObjectValidateOnlyFail() = Objects9.PersistWithCollectionTransientObjectValidateOnlyFail x.API  
+    member x.PersistWithCollectionTransientObjectValidateOnlyFail() = Objects9.PersistWithCollectionTransientObjectValidateOnlyFail api  
     [<Test>]
-    member x.PersistWithValueTransientObjectValidateOnlySimpleOnlyFail() = Objects9.PersistWithValueTransientObjectValidateOnlySimpleOnlyFail x.API  
+    member x.PersistWithValueTransientObjectValidateOnlySimpleOnlyFail() = Objects9.PersistWithValueTransientObjectValidateOnlySimpleOnlyFail api  
     [<Test>]
-    member x.PersistWithValueTransientObjectValidateOnlyFormalOnlyFail() = Objects9.PersistWithValueTransientObjectValidateOnlyFormalOnlyFail x.API  
+    member x.PersistWithValueTransientObjectValidateOnlyFormalOnlyFail() = Objects9.PersistWithValueTransientObjectValidateOnlyFormalOnlyFail api  
     [<Test>]
-    member x.PersistWithValueTransientObjectFail() = Objects9.PersistWithValueTransientObjectFail x.API  
+    member x.PersistWithValueTransientObjectFail() = Objects9.PersistWithValueTransientObjectFail api  
     [<Test>]
-    member x.PersistWithValueTransientObjectFailInvalid() = Objects9.PersistWithValueTransientObjectFailInvalid x.API 
+    member x.PersistWithValueTransientObjectFailInvalid() = Objects9.PersistWithValueTransientObjectFailInvalid api 
     [<Test>]
-    member x.PersistWithReferenceTransientObjectFail() = Objects9.PersistWithReferenceTransientObjectFail x.API  
+    member x.PersistWithReferenceTransientObjectFail() = Objects9.PersistWithReferenceTransientObjectFail api  
     [<Test>]
-    member x.PersistWithReferenceTransientObjectFailInvalid() = Objects9.PersistWithReferenceTransientObjectFailInvalid x.API  
+    member x.PersistWithReferenceTransientObjectFailInvalid() = Objects9.PersistWithReferenceTransientObjectFailInvalid api  
     [<Test>]
-    member x.PersistWithCollectionTransientObjectFail() = Objects9.PersistWithCollectionTransientObjectFail x.API  
+    member x.PersistWithCollectionTransientObjectFail() = Objects9.PersistWithCollectionTransientObjectFail api  
     [<Test>]
-    member x.PersistMostSimpleTransientObjectMissingArgs() = Objects9.PersistMostSimpleTransientObjectMissingArgs x.API  
+    member x.PersistMostSimpleTransientObjectMissingArgs() = Objects9.PersistMostSimpleTransientObjectMissingArgs api  
     [<Test>]
-    member x.PersistMostSimpleTransientObjectMissingArgsValidateOnly() = Objects9.PersistMostSimpleTransientObjectMissingArgsValidateOnly x.API  
+    member x.PersistMostSimpleTransientObjectMissingArgsValidateOnly() = Objects9.PersistMostSimpleTransientObjectMissingArgsValidateOnly api  
     [<Test>]
-    member x.PersistMostSimpleTransientObjectMissingMemberArgs() = Objects9.PersistMostSimpleTransientObjectMissingMemberArgs x.API  
+    member x.PersistMostSimpleTransientObjectMissingMemberArgs() = Objects9.PersistMostSimpleTransientObjectMissingMemberArgs api  
     [<Test>]    
-    member x.PersistMostSimpleTransientObjectNullDomainType() = Objects9.PersistMostSimpleTransientObjectNullDomainType x.API  
+    member x.PersistMostSimpleTransientObjectNullDomainType() = Objects9.PersistMostSimpleTransientObjectNullDomainType api  
     [<Test>]   
-    member x.PersistMostSimpleTransientObjectEmptyDomainType() = Objects9.PersistMostSimpleTransientObjectEmptyDomainType x.API   
+    member x.PersistMostSimpleTransientObjectEmptyDomainType() = Objects9.PersistMostSimpleTransientObjectEmptyDomainType api   
     [<Test>]
-    member x.PersistMostSimpleTransientObjectMalformedMemberArgs() = Objects9.PersistMostSimpleTransientObjectMalformedMemberArgs x.API  
+    member x.PersistMostSimpleTransientObjectMalformedMemberArgs() = Objects9.PersistMostSimpleTransientObjectMalformedMemberArgs api  
     [<Test>]
-    member x.PersistUnknownTypeTransientObject() = Objects9.PersistUnknownTypeTransientObject x.API
+    member x.PersistUnknownTypeTransientObject() = Objects9.PersistUnknownTypeTransientObject api
     [<Test>]
-    member x.PersistNoKeyTransientObject() = Objects9.PersistNoKeyTransientObject x.API
+    member x.PersistNoKeyTransientObject() = Objects9.PersistNoKeyTransientObject api
     // Error10
     [<Test>]
-    member x.Error() = Error10.Error x.API 
+    member x.Error() = Error10.Error api 
     [<Test>]
-    member x.NotAcceptableError() = Error10.NotAcceptableError x.API 
+    member x.NotAcceptableError() = Error10.NotAcceptableError api 
     // DomainObject14
     [<Test>]
-    member x.GetMostSimpleObject() = DomainObject14.GetMostSimpleObject x.API  
+    member x.GetMostSimpleObject() = DomainObject14.GetMostSimpleObject api  
     [<Test>]
-    member x.GetWithAttachmentsObject() = DomainObject14.GetWithAttachmentsObject x.API  
+    member x.GetWithAttachmentsObject() = DomainObject14.GetWithAttachmentsObject api  
     [<Test>]
-    member x.GetMostSimpleObjectConfiguredSelectable() = DomainObject14.GetMostSimpleObjectConfiguredSelectable x.API  
+    member x.GetMostSimpleObjectConfiguredSelectable() = DomainObject14.GetMostSimpleObjectConfiguredSelectable api  
     [<Test>]
-    member x.GetMostSimpleObjectConfiguredNone() = DomainObject14.GetMostSimpleObjectConfiguredNone x.API  
+    member x.GetMostSimpleObjectConfiguredNone() = DomainObject14.GetMostSimpleObjectConfiguredNone api  
     [<Test>]
-    member x.GetMostSimpleObjectFormalOnly() = DomainObject14.GetMostSimpleObjectFormalOnly x.API  
+    member x.GetMostSimpleObjectFormalOnly() = DomainObject14.GetMostSimpleObjectFormalOnly api  
     [<Test>]
-    member x.GetMostSimpleObjectConfiguredFormalOnly() = DomainObject14.GetMostSimpleObjectConfiguredFormalOnly x.API 
+    member x.GetMostSimpleObjectConfiguredFormalOnly() = DomainObject14.GetMostSimpleObjectConfiguredFormalOnly api 
     [<Test>]
-    member x.GetMostSimpleObjectConfiguredSimpleOnly() = DomainObject14.GetMostSimpleObjectConfiguredSimpleOnly x.API 
+    member x.GetMostSimpleObjectConfiguredSimpleOnly() = DomainObject14.GetMostSimpleObjectConfiguredSimpleOnly api 
     [<Test>]
-    member x.GetMostSimpleObjectConfiguredCaching() = DomainObject14.GetMostSimpleObjectConfiguredCaching x.API 
+    member x.GetMostSimpleObjectConfiguredCaching() = DomainObject14.GetMostSimpleObjectConfiguredCaching api 
     [<Test>]
-    member x.GetMostSimpleObjectConfiguredOverrides() = DomainObject14.GetMostSimpleObjectConfiguredOverrides x.API 
+    member x.GetMostSimpleObjectConfiguredOverrides() = DomainObject14.GetMostSimpleObjectConfiguredOverrides api 
     [<Test>]
-    member x.GetMostSimpleObjectSimpleOnly() = DomainObject14.GetMostSimpleObjectSimpleOnly x.API 
+    member x.GetMostSimpleObjectSimpleOnly() = DomainObject14.GetMostSimpleObjectSimpleOnly api 
     [<Test>]
-    member x.GetWithDateTimeKeyObject() = DomainObject14.GetWithDateTimeKeyObject x.API  
+    member x.GetWithDateTimeKeyObject() = DomainObject14.GetWithDateTimeKeyObject api  
     [<Test>]
-    member x.GetVerySimpleEagerObject() = DomainObject14.GetVerySimpleEagerObject x.API  
+    member x.GetVerySimpleEagerObject() = DomainObject14.GetVerySimpleEagerObject api  
     [<Test>]
-    member x.GetWithValueObject() = DomainObject14.GetWithValueObject x.API 
+    member x.GetWithValueObject() = DomainObject14.GetWithValueObject api 
     [<Test>]
-    member x.GetWithScalarsObject() = DomainObject14.GetWithScalarsObject x.API 
+    member x.GetWithScalarsObject() = DomainObject14.GetWithScalarsObject api 
     [<Test>]
-    member x.GetWithValueObjectUserAuth() = DomainObject14.GetWithValueObjectUserAuth x.API 
+    member x.GetWithValueObjectUserAuth() = DomainObject14.GetWithValueObjectUserAuth api 
     [<Test>]
-    member x.GetWithValueObjectWithMediaType() = DomainObject14.GetWithValueObjectWithMediaType x.API 
+    member x.GetWithValueObjectWithMediaType() = DomainObject14.GetWithValueObjectWithMediaType api 
     [<Test>]
-    member x.GetMostSimpleObjectWithDomainTypeSimple() = DomainObject14.GetMostSimpleObjectWithDomainTypeSimple x.API 
+    member x.GetMostSimpleObjectWithDomainTypeSimple() = DomainObject14.GetMostSimpleObjectWithDomainTypeSimple api 
     [<Test>]
-    member x.GetMostSimpleObjectWithDomainTypeFormal() = DomainObject14.GetMostSimpleObjectWithDomainTypeFormal x.API 
+    member x.GetMostSimpleObjectWithDomainTypeFormal() = DomainObject14.GetMostSimpleObjectWithDomainTypeFormal api 
     [<Test>]
-    member x.GetWithValueObjectWithDomainTypeNoProfileSimple() = DomainObject14.GetWithValueObjectWithDomainTypeNoProfileSimple x.API 
+    member x.GetWithValueObjectWithDomainTypeNoProfileSimple() = DomainObject14.GetWithValueObjectWithDomainTypeNoProfileSimple api 
     [<Test>]
-    member x.GetWithValueObjectWithDomainTypeNoProfileFormal() = DomainObject14.GetWithValueObjectWithDomainTypeNoProfileFormal x.API 
+    member x.GetWithValueObjectWithDomainTypeNoProfileFormal() = DomainObject14.GetWithValueObjectWithDomainTypeNoProfileFormal api 
     [<Test>]
-    member x.GetRedirectedObject() = DomainObject14.GetRedirectedObject x.API 
+    member x.GetRedirectedObject() = DomainObject14.GetRedirectedObject api 
     [<Test>]
-    member x.PutWithValueObject() = DomainObject14.PutWithValueObject x.API 
+    member x.PutWithValueObject() = DomainObject14.PutWithValueObject api 
     [<Test>]
-    member x.PutWithValueObjectValidateOnly() = DomainObject14.PutWithValueObjectValidateOnly x.API 
+    member x.PutWithValueObjectValidateOnly() = DomainObject14.PutWithValueObjectValidateOnly api 
     [<Test>]
-    member x.PutWithValueObjectConcurrencySuccess() = DomainObject14.PutWithValueObjectConcurrencySuccess x.API 
+    member x.PutWithValueObjectConcurrencySuccess() = DomainObject14.PutWithValueObjectConcurrencySuccess api 
     [<Test>]
-    member x.PutWithScalarsObject() = DomainObject14.PutWithScalarsObject x.API
+    member x.PutWithScalarsObject() = DomainObject14.PutWithScalarsObject api
     [<Test>]
-    member x.PutWithValueObjectConcurrencyFail() = DomainObject14.PutWithValueObjectConcurrencyFail x.API 
+    member x.PutWithValueObjectConcurrencyFail() = DomainObject14.PutWithValueObjectConcurrencyFail api 
     [<Test>]
-    member x.PutWithValueObjectMissingIfMatch() = DomainObject14.PutWithValueObjectMissingIfMatch x.API 
+    member x.PutWithValueObjectMissingIfMatch() = DomainObject14.PutWithValueObjectMissingIfMatch api 
     [<Test>]
-    member x.PutWithReferenceObject() = DomainObject14.PutWithReferenceObject x.API 
+    member x.PutWithReferenceObject() = DomainObject14.PutWithReferenceObject api 
     [<Test>]
-    member x.PutWithReferenceObjectValidateOnly() = DomainObject14.PutWithReferenceObjectValidateOnly x.API 
+    member x.PutWithReferenceObjectValidateOnly() = DomainObject14.PutWithReferenceObjectValidateOnly api 
     [<Test>]
-    member x.GetWithActionObject() = DomainObject14.GetWithActionObject x.API  
+    member x.GetWithActionObject() = DomainObject14.GetWithActionObject api  
     [<Test>]
-    member x.GetWithActionObjectSimpleOnly() = DomainObject14.GetWithActionObjectSimpleOnly x.API   
+    member x.GetWithActionObjectSimpleOnly() = DomainObject14.GetWithActionObjectSimpleOnly api   
     [<Test>]
-    member x.GetWithActionObjectFormalOnly() = DomainObject14.GetWithActionObjectFormalOnly x.API        
+    member x.GetWithActionObjectFormalOnly() = DomainObject14.GetWithActionObjectFormalOnly api        
     [<Test>]
-    member x.GetWithReferenceObject() = DomainObject14.GetWithReferenceObject x.API 
+    member x.GetWithReferenceObject() = DomainObject14.GetWithReferenceObject api 
     [<Test>]
-    member x.GetWithCollectionObject() = DomainObject14.GetWithCollectionObject x.API 
+    member x.GetWithCollectionObject() = DomainObject14.GetWithCollectionObject api 
     [<Test>]
-    member x.GetWithCollectionObjectFormalOnly() = DomainObject14.GetWithCollectionObjectFormalOnly x.API 
+    member x.GetWithCollectionObjectFormalOnly() = DomainObject14.GetWithCollectionObjectFormalOnly api 
     [<Test>]
-    member x.GetWithCollectionObjectSimpleOnly() = DomainObject14.GetWithCollectionObjectSimpleOnly x.API 
+    member x.GetWithCollectionObjectSimpleOnly() = DomainObject14.GetWithCollectionObjectSimpleOnly api 
     [<Test>]
-    member x.InvalidGetObject() = DomainObject14.InvalidGetObject x.API 
+    member x.InvalidGetObject() = DomainObject14.InvalidGetObject api 
     [<Test>]
-    member x.NotFoundGetObject() = DomainObject14.NotFoundGetObject x.API 
+    member x.NotFoundGetObject() = DomainObject14.NotFoundGetObject api 
     [<Test>]    
-    member x.NotAcceptableGetObjectWrongMediaType() = DomainObject14.NotAcceptableGetObjectWrongMediaType x.API 
+    member x.NotAcceptableGetObjectWrongMediaType() = DomainObject14.NotAcceptableGetObjectWrongMediaType api 
     [<Test>]    
-    member x.GetObjectIgnoreWrongDomainType() = DomainObject14.GetObjectIgnoreWrongDomainType x.API 
+    member x.GetObjectIgnoreWrongDomainType() = DomainObject14.GetObjectIgnoreWrongDomainType api 
     [<Test>]
-    member x.PutWithValueObjectMissingArgs() = DomainObject14.PutWithValueObjectMissingArgs x.API 
+    member x.PutWithValueObjectMissingArgs() = DomainObject14.PutWithValueObjectMissingArgs api 
     [<Test>]
-    member x.PutWithValueObjectMissingArgsValidateOnly() = DomainObject14.PutWithValueObjectMissingArgsValidateOnly x.API 
+    member x.PutWithValueObjectMissingArgsValidateOnly() = DomainObject14.PutWithValueObjectMissingArgsValidateOnly api 
     [<Test>]
-    member x.PutWithValueObjectMalformedArgs() = DomainObject14.PutWithValueObjectMalformedArgs x.API 
+    member x.PutWithValueObjectMalformedArgs() = DomainObject14.PutWithValueObjectMalformedArgs api 
     [<Test>]
-    member x.PutWithValueObjectMalformedDateTimeArgs() = DomainObject14.PutWithValueObjectMalformedDateTimeArgs x.API 
+    member x.PutWithValueObjectMalformedDateTimeArgs() = DomainObject14.PutWithValueObjectMalformedDateTimeArgs api 
     [<Test>]
-    member x.PutWithValueObjectMalformedArgsValidateOnly() = DomainObject14.PutWithValueObjectMalformedArgsValidateOnly x.API 
+    member x.PutWithValueObjectMalformedArgsValidateOnly() = DomainObject14.PutWithValueObjectMalformedArgsValidateOnly api 
     [<Test>]
-    member x.PutWithValueObjectInvalidArgsValue() = DomainObject14.PutWithValueObjectInvalidArgsValue x.API 
+    member x.PutWithValueObjectInvalidArgsValue() = DomainObject14.PutWithValueObjectInvalidArgsValue api 
     [<Test>]
-    member x.PutWithValueObjectInvalidArgsValueValidateOnly() = DomainObject14.PutWithValueObjectInvalidArgsValueValidateOnly x.API 
+    member x.PutWithValueObjectInvalidArgsValueValidateOnly() = DomainObject14.PutWithValueObjectInvalidArgsValueValidateOnly api 
     [<Test>]
-    member x.PutWithReferenceObjectInvalidArgsValue() = DomainObject14.PutWithReferenceObjectInvalidArgsValue x.API 
+    member x.PutWithReferenceObjectInvalidArgsValue() = DomainObject14.PutWithReferenceObjectInvalidArgsValue api 
     
     [<Test>]
-    member x.PutWithReferenceObjectNotFoundArgsValue() = DomainObject14.PutWithReferenceObjectNotFoundArgsValue x.API 
+    member x.PutWithReferenceObjectNotFoundArgsValue() = DomainObject14.PutWithReferenceObjectNotFoundArgsValue api 
 
     [<Test>]
-    member x.PutWithReferenceObjectInvalidArgsValueValidateOnly() = DomainObject14.PutWithReferenceObjectInvalidArgsValueValidateOnly x.API 
+    member x.PutWithReferenceObjectInvalidArgsValueValidateOnly() = DomainObject14.PutWithReferenceObjectInvalidArgsValueValidateOnly api 
     [<Test>]
-    member x.PutWithReferenceObjectMalformedArgs() = DomainObject14.PutWithReferenceObjectMalformedArgs x.API 
+    member x.PutWithReferenceObjectMalformedArgs() = DomainObject14.PutWithReferenceObjectMalformedArgs api 
     [<Test>]
-    member x.PutWithReferenceObjectMalformedArgsValidateOnly() = DomainObject14.PutWithReferenceObjectMalformedArgsValidateOnly x.API 
+    member x.PutWithReferenceObjectMalformedArgsValidateOnly() = DomainObject14.PutWithReferenceObjectMalformedArgsValidateOnly api 
     [<Test>]
-    member x.PutWithValueObjectDisabledValue() = DomainObject14.PutWithValueObjectDisabledValue x.API 
+    member x.PutWithValueObjectDisabledValue() = DomainObject14.PutWithValueObjectDisabledValue api 
     [<Test>]
-    member x.PutWithValueObjectDisabledValueValidateOnly() = DomainObject14.PutWithValueObjectDisabledValueValidateOnly x.API 
+    member x.PutWithValueObjectDisabledValueValidateOnly() = DomainObject14.PutWithValueObjectDisabledValueValidateOnly api 
     [<Test>]
-    member x.PutWithReferenceObjectDisabledValue() = DomainObject14.PutWithReferenceObjectDisabledValue x.API 
+    member x.PutWithReferenceObjectDisabledValue() = DomainObject14.PutWithReferenceObjectDisabledValue api 
     [<Test>]
-    member x.PutWithReferenceObjectDisabledValueValidateOnly() = DomainObject14.PutWithReferenceObjectDisabledValueValidateOnly x.API 
+    member x.PutWithReferenceObjectDisabledValueValidateOnly() = DomainObject14.PutWithReferenceObjectDisabledValueValidateOnly api 
     [<Test>]
-    member x.PutWithValueObjectInvisibleValue() = DomainObject14.PutWithValueObjectInvisibleValue x.API 
+    member x.PutWithValueObjectInvisibleValue() = DomainObject14.PutWithValueObjectInvisibleValue api 
     [<Test>]
-    member x.PutWithReferenceObjectInvisibleValue() = DomainObject14.PutWithReferenceObjectInvisibleValue x.API 
+    member x.PutWithReferenceObjectInvisibleValue() = DomainObject14.PutWithReferenceObjectInvisibleValue api 
     [<Test>]
-    member x.PutWithValueObjectInvisibleValueValidateOnly() = DomainObject14.PutWithValueObjectInvisibleValueValidateOnly x.API 
+    member x.PutWithValueObjectInvisibleValueValidateOnly() = DomainObject14.PutWithValueObjectInvisibleValueValidateOnly api 
     [<Test>]
-    member x.PutWithReferenceObjectInvisibleValueValidateOnly() = DomainObject14.PutWithReferenceObjectInvisibleValueValidateOnly x.API 
+    member x.PutWithReferenceObjectInvisibleValueValidateOnly() = DomainObject14.PutWithReferenceObjectInvisibleValueValidateOnly api 
     [<Test>]
-    member x.PutWithValueImmutableObject() = DomainObject14.PutWithValueImmutableObject x.API 
+    member x.PutWithValueImmutableObject() = DomainObject14.PutWithValueImmutableObject api 
     [<Test>]
-    member x.PutWithReferenceImmutableObject() = DomainObject14.PutWithReferenceImmutableObject x.API 
+    member x.PutWithReferenceImmutableObject() = DomainObject14.PutWithReferenceImmutableObject api 
     [<Test>]
-    member x.PutWithValueImmutableObjectValidateOnly() = DomainObject14.PutWithValueImmutableObjectValidateOnly x.API 
+    member x.PutWithValueImmutableObjectValidateOnly() = DomainObject14.PutWithValueImmutableObjectValidateOnly api 
     [<Test>]
-    member x.PutWithReferenceImmutableObjectValidateOnly() = DomainObject14.PutWithReferenceImmutableObjectValidateOnly x.API 
+    member x.PutWithReferenceImmutableObjectValidateOnly() = DomainObject14.PutWithReferenceImmutableObjectValidateOnly api 
     [<Test>]
-    member x.PutWithValueObjectInvalidArgsName() = DomainObject14.PutWithValueObjectInvalidArgsName x.API 
+    member x.PutWithValueObjectInvalidArgsName() = DomainObject14.PutWithValueObjectInvalidArgsName api 
     [<Test>]
-    member x.PutWithValueObjectInvalidArgsNameValidateOnly() = DomainObject14.PutWithValueObjectInvalidArgsNameValidateOnly x.API 
+    member x.PutWithValueObjectInvalidArgsNameValidateOnly() = DomainObject14.PutWithValueObjectInvalidArgsNameValidateOnly api 
     [<Test>]   
-    member x.NotAcceptablePutObjectWrongMediaType() = DomainObject14.NotAcceptablePutObjectWrongMediaType x.API  
+    member x.NotAcceptablePutObjectWrongMediaType() = DomainObject14.NotAcceptablePutObjectWrongMediaType api  
     [<Test>]
-    member x.PutWithValueInternalError() = DomainObject14.PutWithValueInternalError x.API 
+    member x.PutWithValueInternalError() = DomainObject14.PutWithValueInternalError api 
     [<Test>]
-    member x.PutWithReferenceInternalError() = DomainObject14.PutWithReferenceInternalError x.API 
+    member x.PutWithReferenceInternalError() = DomainObject14.PutWithReferenceInternalError api 
     [<Test>]
-    member x.PutWithValueObjectFailCrossValidation() = DomainObject14.PutWithValueObjectFailCrossValidation x.API 
+    member x.PutWithValueObjectFailCrossValidation() = DomainObject14.PutWithValueObjectFailCrossValidation api 
     [<Test>]
-    member x.PutWithValueObjectFailCrossValidationValidateOnly() = DomainObject14.PutWithValueObjectFailCrossValidationValidateOnly x.API 
+    member x.PutWithValueObjectFailCrossValidationValidateOnly() = DomainObject14.PutWithValueObjectFailCrossValidationValidateOnly api 
     [<Test>]
-    member x.PutWithReferenceObjectFailsCrossValidation() = DomainObject14.PutWithReferenceObjectFailsCrossValidation x.API 
+    member x.PutWithReferenceObjectFailsCrossValidation() = DomainObject14.PutWithReferenceObjectFailsCrossValidation api 
     [<Test>]
-    member x.PutWithReferenceObjectFailsCrossValidationValidateOnly() = DomainObject14.PutWithReferenceObjectFailsCrossValidationValidateOnly x.API
+    member x.PutWithReferenceObjectFailsCrossValidationValidateOnly() = DomainObject14.PutWithReferenceObjectFailsCrossValidationValidateOnly api
     [<Test>]
-    member x.ObjectNotFoundWrongKey() = DomainObject14.ObjectNotFoundWrongKey x.API 
+    member x.ObjectNotFoundWrongKey() = DomainObject14.ObjectNotFoundWrongKey api 
     [<Test>]
-    member x.ObjectNotFoundWrongType() = DomainObject14.ObjectNotFoundWrongType x.API 
+    member x.ObjectNotFoundWrongType() = DomainObject14.ObjectNotFoundWrongType api 
     [<Test>] 
     [<Ignore>] // no longer fails no sure if an issue - seems no reason to make fail ? 
-    member x.ObjectNotFoundAbstractType() = DomainObject14.ObjectNotFoundAbstractType x.API  
+    member x.ObjectNotFoundAbstractType() = DomainObject14.ObjectNotFoundAbstractType api  
     // view models
     [<Test>]
-    member x.GetMostSimpleViewModel() = DomainObject14.GetMostSimpleViewModel x.API  
+    member x.GetMostSimpleViewModel() = DomainObject14.GetMostSimpleViewModel api  
     [<Test>]
-    member x.GetWithValueViewModel() = DomainObject14.GetWithValueViewModel x.API  
+    member x.GetWithValueViewModel() = DomainObject14.GetWithValueViewModel api  
     [<Test>]
-    member x.GetWithReferenceViewModel() = DomainObject14.GetWithReferenceViewModel x.API
+    member x.GetWithReferenceViewModel() = DomainObject14.GetWithReferenceViewModel api
     [<Test>]
-    member x.GetWithNestedViewModel() = DomainObject14.GetWithNestedViewModel x.API
+    member x.GetWithNestedViewModel() = DomainObject14.GetWithNestedViewModel api
     [<Test>]
-    member x.PutWithReferenceViewModel() = DomainObject14.PutWithReferenceViewModel x.API
+    member x.PutWithReferenceViewModel() = DomainObject14.PutWithReferenceViewModel api
     [<Test>]
-    member x.PutWithNestedViewModel() = DomainObject14.PutWithNestedViewModel x.API
+    member x.PutWithNestedViewModel() = DomainObject14.PutWithNestedViewModel api
     [<Test>]
-    member x.PutWithValueViewModel() = DomainObject14.PutWithValueViewModel x.API
+    member x.PutWithValueViewModel() = DomainObject14.PutWithValueViewModel api
     // DomainService15
     [<Test>] 
-    member x.GetService() = DomainService15.GetService x.API 
+    member x.GetService() = DomainService15.GetService api 
     [<Test>] 
-    member x.GetContributorService() = DomainService15.GetContributorService x.API 
+    member x.GetContributorService() = DomainService15.GetContributorService api 
     [<Test>] 
-    member x.GetServiceSimpleOnly() = DomainService15.GetServiceSimpleOnly x.API 
+    member x.GetServiceSimpleOnly() = DomainService15.GetServiceSimpleOnly api 
     [<Test>] 
-    member x.GetServiceFormalOnly() = DomainService15.GetServiceFormalOnly x.API 
+    member x.GetServiceFormalOnly() = DomainService15.GetServiceFormalOnly api 
     [<Test>] 
-    member x.GetServiceWithMediaType() = DomainService15.GetServiceWithMediaType x.API 
+    member x.GetServiceWithMediaType() = DomainService15.GetServiceWithMediaType api 
     [<Test>]
-    member x.GetWithActionService() = DomainService15.GetWithActionService x.API   
+    member x.GetWithActionService() = DomainService15.GetWithActionService api   
     [<Test>]
-    member x.InvalidGetService() = DomainService15.InvalidGetService x.API 
+    member x.InvalidGetService() = DomainService15.InvalidGetService api 
     [<Test>]
-    member x.NotFoundGetService() = DomainService15.NotFoundGetService x.API 
+    member x.NotFoundGetService() = DomainService15.NotFoundGetService api 
     [<Test>]   
-    member x.NotAcceptableGetServiceWrongMediaType() = DomainService15.NotAcceptableGetServiceWrongMediaType x.API 
+    member x.NotAcceptableGetServiceWrongMediaType() = DomainService15.NotAcceptableGetServiceWrongMediaType api 
     // ObjectProperty16
     [<Test>]
-    member x.GetValueProperty() = ObjectProperty16.GetValueProperty x.API 
+    member x.GetValueProperty() = ObjectProperty16.GetValueProperty api 
     [<Test>]
-    member x.GetFileAttachmentProperty() = ObjectProperty16.GetFileAttachmentProperty x.API 
+    member x.GetFileAttachmentProperty() = ObjectProperty16.GetFileAttachmentProperty api 
     [<Test>]
-    member x.GetImageAttachmentProperty() = ObjectProperty16.GetImageAttachmentProperty x.API 
+    member x.GetImageAttachmentProperty() = ObjectProperty16.GetImageAttachmentProperty api 
     [<Test>]
-    member x.GetFileAttachmentValue() = ObjectProperty16.GetFileAttachmentValue x.API 
+    member x.GetFileAttachmentValue() = ObjectProperty16.GetFileAttachmentValue api 
     [<Test>]
-    member x.GetAttachmentValueWrongMediaType() = ObjectProperty16.GetAttachmentValueWrongMediaType x.API 
+    member x.GetAttachmentValueWrongMediaType() = ObjectProperty16.GetAttachmentValueWrongMediaType api 
     [<Test>]
-    member x.GetImageAttachmentValue() = ObjectProperty16.GetImageAttachmentValue x.API 
+    member x.GetImageAttachmentValue() = ObjectProperty16.GetImageAttachmentValue api 
     [<Test>]
-    member x.GetValuePropertyViewModel() = ObjectProperty16.GetValuePropertyViewModel x.API 
+    member x.GetValuePropertyViewModel() = ObjectProperty16.GetValuePropertyViewModel api 
     [<Test>]
-    member x.GetEnumValueProperty() = ObjectProperty16.GetEnumValueProperty x.API 
+    member x.GetEnumValueProperty() = ObjectProperty16.GetEnumValueProperty api 
     [<Test>]
-    member x.GetValuePropertyUserAuth() = ObjectProperty16.GetValuePropertyUserAuth x.API     
+    member x.GetValuePropertyUserAuth() = ObjectProperty16.GetValuePropertyUserAuth api     
     [<Test>]
-    member x.GetValuePropertyFormalOnly() = ObjectProperty16.GetValuePropertyFormalOnly x.API 
+    member x.GetValuePropertyFormalOnly() = ObjectProperty16.GetValuePropertyFormalOnly api 
     [<Test>]
-    member x.GetValuePropertySimpleOnly() = ObjectProperty16.GetValuePropertySimpleOnly x.API 
+    member x.GetValuePropertySimpleOnly() = ObjectProperty16.GetValuePropertySimpleOnly api 
     [<Test>]
-    member x.GetStringValueProperty() = ObjectProperty16.GetStringValueProperty x.API 
+    member x.GetStringValueProperty() = ObjectProperty16.GetStringValueProperty api 
     [<Test>]
-    member x.GetBlobValueProperty() = ObjectProperty16.GetBlobValueProperty x.API 
+    member x.GetBlobValueProperty() = ObjectProperty16.GetBlobValueProperty api 
     [<Test>]
-    member x.GetClobValueProperty() = ObjectProperty16.GetClobValueProperty x.API 
+    member x.GetClobValueProperty() = ObjectProperty16.GetClobValueProperty api 
     [<Test>]
-    member x.GetValuePropertyWithMediaType() = ObjectProperty16.GetValuePropertyWithMediaType x.API 
+    member x.GetValuePropertyWithMediaType() = ObjectProperty16.GetValuePropertyWithMediaType api 
     [<Test>]
-    member x.GetChoicesValueProperty() = ObjectProperty16.GetChoicesValueProperty x.API 
+    member x.GetChoicesValueProperty() = ObjectProperty16.GetChoicesValueProperty api 
     [<Test>]
-    member x.GetDisabledValueProperty() = ObjectProperty16.GetDisabledValueProperty x.API 
+    member x.GetDisabledValueProperty() = ObjectProperty16.GetDisabledValueProperty api 
     [<Test>]
-    member x.GetUserDisabledValueProperty() = ObjectProperty16.GetUserDisabledValueProperty x.API 
+    member x.GetUserDisabledValueProperty() = ObjectProperty16.GetUserDisabledValueProperty api 
     [<Test>]
-    member x.GetUserDisabledValuePropertyAuthorised() = ObjectProperty16.GetUserDisabledValuePropertyAuthorised x.API 
+    member x.GetUserDisabledValuePropertyAuthorised() = ObjectProperty16.GetUserDisabledValuePropertyAuthorised api 
     [<Test>]
-    member x.GetReferenceProperty() = ObjectProperty16.GetReferenceProperty x.API 
+    member x.GetReferenceProperty() = ObjectProperty16.GetReferenceProperty api 
     [<Test>]
-    member x.GetAutoCompleteProperty() = ObjectProperty16.GetAutoCompleteProperty x.API 
+    member x.GetAutoCompleteProperty() = ObjectProperty16.GetAutoCompleteProperty api 
     [<Test>]
-    member x.InvokeAutoComplete() = ObjectProperty16.InvokeAutoComplete x.API 
+    member x.InvokeAutoComplete() = ObjectProperty16.InvokeAutoComplete api 
 
     [<Test>]
-    member x.InvokeAutoCompleteErrorNoParm() = ObjectProperty16.InvokeAutoCompleteErrorNoParm x.API 
+    member x.InvokeAutoCompleteErrorNoParm() = ObjectProperty16.InvokeAutoCompleteErrorNoParm api 
     [<Test>]
-    member x.InvokeAutoCompleteErrorMalformedParm() = ObjectProperty16.InvokeAutoCompleteErrorMalformedParm x.API 
+    member x.InvokeAutoCompleteErrorMalformedParm() = ObjectProperty16.InvokeAutoCompleteErrorMalformedParm api 
     [<Test>]
-    member x.InvokeAutoCompleteErrorUnrecognisedParm() = ObjectProperty16.InvokeAutoCompleteErrorUnrecognisedParm x.API 
-
-
-    [<Test>]
-    member x.InvokeConditionalChoicesReference() = ObjectProperty16.InvokeConditionalChoicesReference x.API 
-
-    [<Test>]
-    member x.InvokeConditionalChoicesReferenceErrorMalformedParm() = ObjectProperty16.InvokeConditionalChoicesReferenceErrorMalformedParm x.API 
-    [<Test>]
-    member x.InvokeConditionalChoicesReferenceErrorNoParm() = ObjectProperty16.InvokeConditionalChoicesReferenceErrorNoParm x.API 
-    [<Test>]
-    member x.InvokeConditionalChoicesReferenceErrorUnrecognisedParm() = ObjectProperty16.InvokeConditionalChoicesReferenceErrorUnrecognisedParm x.API 
+    member x.InvokeAutoCompleteErrorUnrecognisedParm() = ObjectProperty16.InvokeAutoCompleteErrorUnrecognisedParm api 
 
 
     [<Test>]
-    member x.InvokeConditionalChoicesValue() = ObjectProperty16.InvokeConditionalChoicesValue x.API 
+    member x.InvokeConditionalChoicesReference() = ObjectProperty16.InvokeConditionalChoicesReference api 
 
     [<Test>]
-    member x.InvokeConditionalChoicesValueErrorMalformedParm() = ObjectProperty16.InvokeConditionalChoicesValueErrorMalformedParm x.API 
+    member x.InvokeConditionalChoicesReferenceErrorMalformedParm() = ObjectProperty16.InvokeConditionalChoicesReferenceErrorMalformedParm api 
     [<Test>]
-    member x.InvokeConditionalChoicesValueErrorMissingParm() = ObjectProperty16.InvokeConditionalChoicesValueErrorMissingParm x.API 
+    member x.InvokeConditionalChoicesReferenceErrorNoParm() = ObjectProperty16.InvokeConditionalChoicesReferenceErrorNoParm api 
+    [<Test>]
+    member x.InvokeConditionalChoicesReferenceErrorUnrecognisedParm() = ObjectProperty16.InvokeConditionalChoicesReferenceErrorUnrecognisedParm api 
+
 
     [<Test>]
-    member x.GetReferencePropertyViewModel() = ObjectProperty16.GetReferencePropertyViewModel x.API 
+    member x.InvokeConditionalChoicesValue() = ObjectProperty16.InvokeConditionalChoicesValue api 
+
     [<Test>]
-    member x.GetDisabledReferenceProperty() = ObjectProperty16.GetDisabledReferenceProperty x.API 
+    member x.InvokeConditionalChoicesValueErrorMalformedParm() = ObjectProperty16.InvokeConditionalChoicesValueErrorMalformedParm api 
     [<Test>]
-    member x.GetChoicesReferenceProperty() = ObjectProperty16.GetChoicesReferenceProperty x.API 
+    member x.InvokeConditionalChoicesValueErrorMissingParm() = ObjectProperty16.InvokeConditionalChoicesValueErrorMissingParm api 
+
     [<Test>]
-    member x.GetInvalidProperty() = ObjectProperty16.GetInvalidProperty x.API 
+    member x.GetReferencePropertyViewModel() = ObjectProperty16.GetReferencePropertyViewModel api 
     [<Test>]
-    member x.GetNotFoundProperty() = ObjectProperty16.GetNotFoundProperty x.API 
+    member x.GetDisabledReferenceProperty() = ObjectProperty16.GetDisabledReferenceProperty api 
     [<Test>]
-    member x.GetHiddenValueProperty() = ObjectProperty16.GetHiddenValueProperty x.API
+    member x.GetChoicesReferenceProperty() = ObjectProperty16.GetChoicesReferenceProperty api 
     [<Test>]
-    member x.GetUserHiddenValueProperty() = ObjectProperty16.GetUserHiddenValueProperty x.API  
+    member x.GetInvalidProperty() = ObjectProperty16.GetInvalidProperty api 
     [<Test>]
-    member x.GetHiddenReferenceProperty() = ObjectProperty16.GetHiddenReferenceProperty x.API 
+    member x.GetNotFoundProperty() = ObjectProperty16.GetNotFoundProperty api 
+    [<Test>]
+    member x.GetHiddenValueProperty() = ObjectProperty16.GetHiddenValueProperty api
+    [<Test>]
+    member x.GetUserHiddenValueProperty() = ObjectProperty16.GetUserHiddenValueProperty api  
+    [<Test>]
+    member x.GetHiddenReferenceProperty() = ObjectProperty16.GetHiddenReferenceProperty api 
     [<Test>]    
-    member x.NotAcceptableGetPropertyWrongMediaType() = ObjectProperty16.NotAcceptableGetPropertyWrongMediaType x.API 
+    member x.NotAcceptableGetPropertyWrongMediaType() = ObjectProperty16.NotAcceptableGetPropertyWrongMediaType api 
     [<Test>]
-    member x.GetErrorValueProperty() = ObjectProperty16.GetErrorValueProperty x.API 
+    member x.GetErrorValueProperty() = ObjectProperty16.GetErrorValueProperty api 
     [<Test>]
-    member x.GetErrorReferenceProperty() = ObjectProperty16.GetErrorReferenceProperty x.API 
+    member x.GetErrorReferenceProperty() = ObjectProperty16.GetErrorReferenceProperty api 
     [<Test>]
-    member x.GetPropertyAsCollection() = ObjectProperty16.GetPropertyAsCollection x.API 
+    member x.GetPropertyAsCollection() = ObjectProperty16.GetPropertyAsCollection api 
     [<Test>]
-    member x.PutValuePropertySuccess() = ObjectProperty16.PutValuePropertySuccess x.API 
+    member x.PutValuePropertySuccess() = ObjectProperty16.PutValuePropertySuccess api 
     [<Test>]
-    member x.PutDateTimeValuePropertySuccess() = ObjectProperty16.PutDateTimeValuePropertySuccess x.API 
+    member x.PutDateTimeValuePropertySuccess() = ObjectProperty16.PutDateTimeValuePropertySuccess api 
     [<Test>]
-    member x.PutValuePropertyConcurrencySuccess() = ObjectProperty16.PutValuePropertyConcurrencySuccess x.API 
+    member x.PutValuePropertyConcurrencySuccess() = ObjectProperty16.PutValuePropertyConcurrencySuccess api 
     [<Test>]
-    member x.PutValuePropertyConcurrencyFail() = ObjectProperty16.PutValuePropertyConcurrencyFail x.API 
+    member x.PutValuePropertyConcurrencyFail() = ObjectProperty16.PutValuePropertyConcurrencyFail api 
     [<Test>]
-    member x.PutValuePropertyMissingIfMatch() = ObjectProperty16.PutValuePropertyMissingIfMatch x.API 
+    member x.PutValuePropertyMissingIfMatch() = ObjectProperty16.PutValuePropertyMissingIfMatch api 
     [<Test>]
-    member x.PutUserDisabledValuePropertySuccess() = ObjectProperty16.PutUserDisabledValuePropertySuccess x.API 
+    member x.PutUserDisabledValuePropertySuccess() = ObjectProperty16.PutUserDisabledValuePropertySuccess api 
     [<Test>]
-    member x.PutValuePropertySuccessValidateOnly() = ObjectProperty16.PutValuePropertySuccessValidateOnly x.API 
+    member x.PutValuePropertySuccessValidateOnly() = ObjectProperty16.PutValuePropertySuccessValidateOnly api 
     [<Test>]
-    member x.PutClobPropertyBadRequest() = ObjectProperty16.PutClobPropertyBadRequest x.API 
+    member x.PutClobPropertyBadRequest() = ObjectProperty16.PutClobPropertyBadRequest api 
     [<Test>]
-    member x.PutBlobPropertyBadRequest() = ObjectProperty16.PutBlobPropertyBadRequest x.API 
+    member x.PutBlobPropertyBadRequest() = ObjectProperty16.PutBlobPropertyBadRequest api 
     [<Test>]
-    member x.DeleteValuePropertySuccess() = ObjectProperty16.DeleteValuePropertySuccess x.API 
+    member x.DeleteValuePropertySuccess() = ObjectProperty16.DeleteValuePropertySuccess api 
     [<Test>]
-    member x.DeleteValuePropertySuccessValidateOnly() = ObjectProperty16.DeleteValuePropertySuccessValidateOnly x.API 
+    member x.DeleteValuePropertySuccessValidateOnly() = ObjectProperty16.DeleteValuePropertySuccessValidateOnly api 
     [<Test>]
-    member x.PutNullValuePropertySuccess() = ObjectProperty16.PutNullValuePropertySuccess x.API 
+    member x.PutNullValuePropertySuccess() = ObjectProperty16.PutNullValuePropertySuccess api 
     [<Test>]
-    member x.PutNullValuePropertySuccessValidateOnly() = ObjectProperty16.PutNullValuePropertySuccessValidateOnly x.API 
+    member x.PutNullValuePropertySuccessValidateOnly() = ObjectProperty16.PutNullValuePropertySuccessValidateOnly api 
     [<Test>]
-    member x.PutReferencePropertySuccess() = ObjectProperty16.PutReferencePropertySuccess x.API 
+    member x.PutReferencePropertySuccess() = ObjectProperty16.PutReferencePropertySuccess api 
     [<Test>]
-    member x.PutReferencePropertySuccessValidateOnly() = ObjectProperty16.PutReferencePropertySuccessValidateOnly x.API 
+    member x.PutReferencePropertySuccessValidateOnly() = ObjectProperty16.PutReferencePropertySuccessValidateOnly api 
     [<Test>]
-    member x.DeleteReferencePropertySuccess() = ObjectProperty16.DeleteReferencePropertySuccess x.API 
+    member x.DeleteReferencePropertySuccess() = ObjectProperty16.DeleteReferencePropertySuccess api 
     [<Test>]
-    member x.DeleteReferencePropertySuccessValidateOnly() = ObjectProperty16.DeleteReferencePropertySuccessValidateOnly x.API 
+    member x.DeleteReferencePropertySuccessValidateOnly() = ObjectProperty16.DeleteReferencePropertySuccessValidateOnly api 
     [<Test>]
-    member x.PutNullReferencePropertySuccess() = ObjectProperty16.PutNullReferencePropertySuccess x.API 
+    member x.PutNullReferencePropertySuccess() = ObjectProperty16.PutNullReferencePropertySuccess api 
     [<Test>]
-    member x.PutNullReferencePropertySuccessValidateOnly() = ObjectProperty16.PutNullReferencePropertySuccessValidateOnly x.API 
+    member x.PutNullReferencePropertySuccessValidateOnly() = ObjectProperty16.PutNullReferencePropertySuccessValidateOnly api 
     [<Test>]
-    member x.PutWithValuePropertyMissingArgs() = ObjectProperty16.PutWithValuePropertyMissingArgs x.API 
+    member x.PutWithValuePropertyMissingArgs() = ObjectProperty16.PutWithValuePropertyMissingArgs api 
     [<Test>]
-    member x.PutWithValuePropertyMalformedArgs() = ObjectProperty16.PutWithValuePropertyMalformedArgs x.API 
+    member x.PutWithValuePropertyMalformedArgs() = ObjectProperty16.PutWithValuePropertyMalformedArgs api 
     [<Test>]
-    member x.PutWithValuePropertyInvalidArgsValue() = ObjectProperty16.PutWithValuePropertyInvalidArgsValue x.API 
+    member x.PutWithValuePropertyInvalidArgsValue() = ObjectProperty16.PutWithValuePropertyInvalidArgsValue api 
     [<Test>]
-    member x.PutWithReferencePropertyFailCrossValidation() = ObjectProperty16.PutWithReferencePropertyFailCrossValidation x.API 
+    member x.PutWithReferencePropertyFailCrossValidation() = ObjectProperty16.PutWithReferencePropertyFailCrossValidation api 
 
     [<Test>]
-    member x.PutWithReferencePropertyMalformedArgs() = ObjectProperty16.PutWithReferencePropertyMalformedArgs x.API 
+    member x.PutWithReferencePropertyMalformedArgs() = ObjectProperty16.PutWithReferencePropertyMalformedArgs api 
 
     [<Test>]
-    member x.PutWithValuePropertyFailCrossValidation() = ObjectProperty16.PutWithValuePropertyFailCrossValidation x.API 
+    member x.PutWithValuePropertyFailCrossValidation() = ObjectProperty16.PutWithValuePropertyFailCrossValidation api 
     [<Test>]
-    member x.PutWithReferencePropertyInvalidArgsValue() = ObjectProperty16.PutWithReferencePropertyInvalidArgsValue x.API 
+    member x.PutWithReferencePropertyInvalidArgsValue() = ObjectProperty16.PutWithReferencePropertyInvalidArgsValue api 
     [<Test>]
-    member x.PutWithValuePropertyDisabledValue() = ObjectProperty16.PutWithValuePropertyDisabledValue x.API 
+    member x.PutWithValuePropertyDisabledValue() = ObjectProperty16.PutWithValuePropertyDisabledValue api 
     [<Test>]
-    member x.PutWithValuePropertyUserDisabledValue() = ObjectProperty16.PutWithValuePropertyUserDisabledValue x.API 
+    member x.PutWithValuePropertyUserDisabledValue() = ObjectProperty16.PutWithValuePropertyUserDisabledValue api 
     [<Test>]
-    member x.PutWithReferencePropertyDisabledValue() = ObjectProperty16.PutWithReferencePropertyDisabledValue x.API 
+    member x.PutWithReferencePropertyDisabledValue() = ObjectProperty16.PutWithReferencePropertyDisabledValue api 
     [<Test>]
-    member x.PutWithValuePropertyInvisibleValue() = ObjectProperty16.PutWithValuePropertyInvisibleValue x.API 
+    member x.PutWithValuePropertyInvisibleValue() = ObjectProperty16.PutWithValuePropertyInvisibleValue api 
     [<Test>]
-    member x.PutWithReferencePropertyInvisibleValue() = ObjectProperty16.PutWithReferencePropertyInvisibleValue x.API 
+    member x.PutWithReferencePropertyInvisibleValue() = ObjectProperty16.PutWithReferencePropertyInvisibleValue api 
     [<Test>]
-    member x.PutWithValuePropertyOnImmutableObject() = ObjectProperty16.PutWithValuePropertyOnImmutableObject x.API 
+    member x.PutWithValuePropertyOnImmutableObject() = ObjectProperty16.PutWithValuePropertyOnImmutableObject api 
     [<Test>]
-    member x.PutWithReferencePropertyOnImmutableObject() = ObjectProperty16.PutWithReferencePropertyOnImmutableObject x.API 
+    member x.PutWithReferencePropertyOnImmutableObject() = ObjectProperty16.PutWithReferencePropertyOnImmutableObject api 
     [<Test>]
-    member x.PutWithValuePropertyInvalidArgsName() = ObjectProperty16.PutWithValuePropertyInvalidArgsName x.API 
+    member x.PutWithValuePropertyInvalidArgsName() = ObjectProperty16.PutWithValuePropertyInvalidArgsName api 
     [<Test>]    
-    member x.NotAcceptablePutPropertyWrongMediaType() = ObjectProperty16.NotAcceptablePutPropertyWrongMediaType x.API 
+    member x.NotAcceptablePutPropertyWrongMediaType() = ObjectProperty16.NotAcceptablePutPropertyWrongMediaType api 
     [<Test>]
-    member x.PutWithValuePropertyMissingArgsValidateOnly() = ObjectProperty16.PutWithValuePropertyMissingArgsValidateOnly x.API 
+    member x.PutWithValuePropertyMissingArgsValidateOnly() = ObjectProperty16.PutWithValuePropertyMissingArgsValidateOnly api 
     [<Test>]
-    member x.PutWithValuePropertyMalformedArgsValidateOnly() = ObjectProperty16.PutWithValuePropertyMalformedArgsValidateOnly x.API 
+    member x.PutWithValuePropertyMalformedArgsValidateOnly() = ObjectProperty16.PutWithValuePropertyMalformedArgsValidateOnly api 
     [<Test>]
-    member x.PutWithValuePropertyInvalidArgsValueValidateOnly() = ObjectProperty16.PutWithValuePropertyInvalidArgsValueValidateOnly x.API 
+    member x.PutWithValuePropertyInvalidArgsValueValidateOnly() = ObjectProperty16.PutWithValuePropertyInvalidArgsValueValidateOnly api 
     [<Test>]
-    member x.PutWithReferencePropertyFailCrossValidationValidateOnly() = ObjectProperty16.PutWithReferencePropertyFailCrossValidationValidateOnly x.API 
+    member x.PutWithReferencePropertyFailCrossValidationValidateOnly() = ObjectProperty16.PutWithReferencePropertyFailCrossValidationValidateOnly api 
     [<Test>]
-    member x.PutWithValuePropertyFailCrossValidationValidateOnly() = ObjectProperty16.PutWithValuePropertyFailCrossValidationValidateOnly x.API 
+    member x.PutWithValuePropertyFailCrossValidationValidateOnly() = ObjectProperty16.PutWithValuePropertyFailCrossValidationValidateOnly api 
     [<Test>]
-    member x.PutWithReferencePropertyInvalidArgsValueValidateOnly() = ObjectProperty16.PutWithReferencePropertyInvalidArgsValueValidateOnly x.API 
+    member x.PutWithReferencePropertyInvalidArgsValueValidateOnly() = ObjectProperty16.PutWithReferencePropertyInvalidArgsValueValidateOnly api 
     [<Test>]
-    member x.PutWithValuePropertyDisabledValueValidateOnly() = ObjectProperty16.PutWithValuePropertyDisabledValueValidateOnly x.API 
+    member x.PutWithValuePropertyDisabledValueValidateOnly() = ObjectProperty16.PutWithValuePropertyDisabledValueValidateOnly api 
     [<Test>]
-    member x.PutWithReferencePropertyDisabledValueValidateOnly() = ObjectProperty16.PutWithReferencePropertyDisabledValueValidateOnly x.API 
+    member x.PutWithReferencePropertyDisabledValueValidateOnly() = ObjectProperty16.PutWithReferencePropertyDisabledValueValidateOnly api 
     [<Test>]
-    member x.PutWithValuePropertyInvisibleValueValidateOnly() = ObjectProperty16.PutWithValuePropertyInvisibleValueValidateOnly x.API 
+    member x.PutWithValuePropertyInvisibleValueValidateOnly() = ObjectProperty16.PutWithValuePropertyInvisibleValueValidateOnly api 
     [<Test>]
-    member x.PutWithReferencePropertyInvisibleValueValidateOnly() = ObjectProperty16.PutWithReferencePropertyInvisibleValueValidateOnly x.API 
+    member x.PutWithReferencePropertyInvisibleValueValidateOnly() = ObjectProperty16.PutWithReferencePropertyInvisibleValueValidateOnly api 
     [<Test>]
-    member x.PutWithValuePropertyOnImmutableObjectValidateOnly() = ObjectProperty16.PutWithValuePropertyOnImmutableObjectValidateOnly x.API 
+    member x.PutWithValuePropertyOnImmutableObjectValidateOnly() = ObjectProperty16.PutWithValuePropertyOnImmutableObjectValidateOnly api 
     [<Test>]
-    member x.PutWithReferencePropertyOnImmutableObjectValidateOnly() = ObjectProperty16.PutWithReferencePropertyOnImmutableObjectValidateOnly x.API 
+    member x.PutWithReferencePropertyOnImmutableObjectValidateOnly() = ObjectProperty16.PutWithReferencePropertyOnImmutableObjectValidateOnly api 
     [<Test>]
-    member x.PutWithValuePropertyInvalidArgsNameValidateOnly() = ObjectProperty16.PutWithValuePropertyInvalidArgsNameValidateOnly x.API   
+    member x.PutWithValuePropertyInvalidArgsNameValidateOnly() = ObjectProperty16.PutWithValuePropertyInvalidArgsNameValidateOnly api   
     [<Test>]
-    member x.PutWithValuePropertyInternalError() = ObjectProperty16.PutWithValuePropertyInternalError x.API 
+    member x.PutWithValuePropertyInternalError() = ObjectProperty16.PutWithValuePropertyInternalError api 
     [<Test>]
-    member x.PutWithReferencePropertyInternalError() = ObjectProperty16.PutWithReferencePropertyInternalError x.API 
+    member x.PutWithReferencePropertyInternalError() = ObjectProperty16.PutWithReferencePropertyInternalError api 
     [<Test>]
-    member x.DeleteValuePropertyDisabledValueValidateOnly() = ObjectProperty16.DeleteValuePropertyDisabledValueValidateOnly x.API 
+    member x.DeleteValuePropertyDisabledValueValidateOnly() = ObjectProperty16.DeleteValuePropertyDisabledValueValidateOnly api 
     [<Test>]
-    member x.DeleteReferencePropertyDisabledValueValidateOnly() = ObjectProperty16.DeleteReferencePropertyDisabledValueValidateOnly x.API 
+    member x.DeleteReferencePropertyDisabledValueValidateOnly() = ObjectProperty16.DeleteReferencePropertyDisabledValueValidateOnly api 
     [<Test>]
-    member x.DeleteValuePropertyInvisibleValueValidateOnly() = ObjectProperty16.DeleteValuePropertyInvisibleValueValidateOnly x.API 
+    member x.DeleteValuePropertyInvisibleValueValidateOnly() = ObjectProperty16.DeleteValuePropertyInvisibleValueValidateOnly api 
     [<Test>]
-    member x.DeleteReferencePropertyInvisibleValueValidateOnly() = ObjectProperty16.DeleteReferencePropertyInvisibleValueValidateOnly x.API 
+    member x.DeleteReferencePropertyInvisibleValueValidateOnly() = ObjectProperty16.DeleteReferencePropertyInvisibleValueValidateOnly api 
     [<Test>]
-    member x.DeleteValuePropertyOnImmutableObjectValidateOnly() = ObjectProperty16.DeleteValuePropertyOnImmutableObjectValidateOnly x.API 
+    member x.DeleteValuePropertyOnImmutableObjectValidateOnly() = ObjectProperty16.DeleteValuePropertyOnImmutableObjectValidateOnly api 
     [<Test>]
-    member x.DeleteReferencePropertyOnImmutableObjectValidateOnly() = ObjectProperty16.DeleteReferencePropertyOnImmutableObjectValidateOnly x.API 
+    member x.DeleteReferencePropertyOnImmutableObjectValidateOnly() = ObjectProperty16.DeleteReferencePropertyOnImmutableObjectValidateOnly api 
     [<Test>]
-    member x.DeleteValuePropertyInvalidArgsNameValidateOnly() = ObjectProperty16.DeleteValuePropertyInvalidArgsNameValidateOnly x.API 
+    member x.DeleteValuePropertyInvalidArgsNameValidateOnly() = ObjectProperty16.DeleteValuePropertyInvalidArgsNameValidateOnly api 
     [<Test>]
-    member x.DeleteValuePropertyDisabledValue() = ObjectProperty16.DeleteValuePropertyDisabledValue x.API 
+    member x.DeleteValuePropertyDisabledValue() = ObjectProperty16.DeleteValuePropertyDisabledValue api 
     [<Test>]
-    member x.DeleteReferencePropertyDisabledValue() = ObjectProperty16.DeleteReferencePropertyDisabledValue x.API 
+    member x.DeleteReferencePropertyDisabledValue() = ObjectProperty16.DeleteReferencePropertyDisabledValue api 
     [<Test>]
-    member x.DeleteValuePropertyInvisibleValue() = ObjectProperty16.DeleteValuePropertyInvisibleValue x.API 
+    member x.DeleteValuePropertyInvisibleValue() = ObjectProperty16.DeleteValuePropertyInvisibleValue api 
     [<Test>]
-    member x.DeleteReferencePropertyInvisibleValue() = ObjectProperty16.DeleteReferencePropertyInvisibleValue x.API 
+    member x.DeleteReferencePropertyInvisibleValue() = ObjectProperty16.DeleteReferencePropertyInvisibleValue api 
     [<Test>]
-    member x.DeleteValuePropertyOnImmutableObject() = ObjectProperty16.DeleteValuePropertyOnImmutableObject x.API 
+    member x.DeleteValuePropertyOnImmutableObject() = ObjectProperty16.DeleteValuePropertyOnImmutableObject api 
     [<Test>]
-    member x.DeleteReferencePropertyOnImmutableObject() = ObjectProperty16.DeleteReferencePropertyOnImmutableObject x.API 
+    member x.DeleteReferencePropertyOnImmutableObject() = ObjectProperty16.DeleteReferencePropertyOnImmutableObject api 
     [<Test>]
-    member x.DeleteValuePropertyInvalidArgsName() = ObjectProperty16.DeleteValuePropertyInvalidArgsName x.API 
+    member x.DeleteValuePropertyInvalidArgsName() = ObjectProperty16.DeleteValuePropertyInvalidArgsName api 
     [<Test>]    
-    member x.NotAcceptableDeletePropertyWrongMediaType() = ObjectProperty16.NotAcceptableDeletePropertyWrongMediaType x.API 
+    member x.NotAcceptableDeletePropertyWrongMediaType() = ObjectProperty16.NotAcceptableDeletePropertyWrongMediaType api 
     [<Test>]
-    member x.DeleteValuePropertyInternalError() = ObjectProperty16.DeleteValuePropertyInternalError x.API 
+    member x.DeleteValuePropertyInternalError() = ObjectProperty16.DeleteValuePropertyInternalError api 
     [<Test>]
-    member x.DeleteReferencePropertyInternalError() = ObjectProperty16.DeleteReferencePropertyInternalError x.API 
+    member x.DeleteReferencePropertyInternalError() = ObjectProperty16.DeleteReferencePropertyInternalError api 
     [<Test>]
-    member x.PropertyNotFound() = ObjectProperty16.PropertyNotFound x.API 
+    member x.PropertyNotFound() = ObjectProperty16.PropertyNotFound api 
     // ObjectCollection17
     [<Test>]
-    member x.GetCollectionProperty() = ObjectCollection17.GetCollectionProperty x.API 
+    member x.GetCollectionProperty() = ObjectCollection17.GetCollectionProperty api 
     [<Test>]
-    member x.GetCollectionPropertyViewModel() = ObjectCollection17.GetCollectionPropertyViewModel x.API 
+    member x.GetCollectionPropertyViewModel() = ObjectCollection17.GetCollectionPropertyViewModel api 
     [<Test>]
-    member x.GetCollectionPropertyFormalOnly() = ObjectCollection17.GetCollectionPropertyFormalOnly x.API 
+    member x.GetCollectionPropertyFormalOnly() = ObjectCollection17.GetCollectionPropertyFormalOnly api 
     [<Test>]
-    member x.GetCollectionPropertySimpleOnly() = ObjectCollection17.GetCollectionPropertySimpleOnly x.API 
+    member x.GetCollectionPropertySimpleOnly() = ObjectCollection17.GetCollectionPropertySimpleOnly api 
     [<Test>]
-    member x.GetCollectionSetProperty() = ObjectCollection17.GetCollectionSetProperty x.API 
+    member x.GetCollectionSetProperty() = ObjectCollection17.GetCollectionSetProperty api 
     [<Test>]
-    member x.GetCollectionSetPropertyFormalOnly() = ObjectCollection17.GetCollectionSetPropertyFormalOnly x.API 
+    member x.GetCollectionSetPropertyFormalOnly() = ObjectCollection17.GetCollectionSetPropertyFormalOnly api 
     [<Test>]
-    member x.GetCollectionSetPropertySimpleOnly() = ObjectCollection17.GetCollectionSetPropertySimpleOnly x.API 
+    member x.GetCollectionSetPropertySimpleOnly() = ObjectCollection17.GetCollectionSetPropertySimpleOnly api 
     [<Test>]
-    member x.GetCollectionPropertyWithMediaType() = ObjectCollection17.GetCollectionPropertyWithMediaType x.API 
+    member x.GetCollectionPropertyWithMediaType() = ObjectCollection17.GetCollectionPropertyWithMediaType api 
     [<Test>]
-    member x.GetDisabledCollectionProperty() = ObjectCollection17.GetDisabledCollectionProperty x.API 
+    member x.GetDisabledCollectionProperty() = ObjectCollection17.GetDisabledCollectionProperty api 
     [<Test>]
-    member x.GetCollectionValue() = ObjectCollection17.GetCollectionValue x.API 
+    member x.GetCollectionValue() = ObjectCollection17.GetCollectionValue api 
 //    [<Test>]    
-//    member x.AddToAndDeleteFromCollectionProperty() = ObjectCollection17.AddToAndDeleteFromCollectionProperty x.API 
+//    member x.AddToAndDeleteFromCollectionProperty() = ObjectCollection17.AddToAndDeleteFromCollectionProperty api 
 //    [<Test>]    
-//    member x.AddToAndDeleteFromCollectionPropertyViewModel() = ObjectCollection17.AddToAndDeleteFromCollectionPropertyViewModel x.API 
+//    member x.AddToAndDeleteFromCollectionPropertyViewModel() = ObjectCollection17.AddToAndDeleteFromCollectionPropertyViewModel api 
 //    [<Test>]    
-//    member x.AddToAndDeleteFromSetCollectionProperty() = ObjectCollection17.AddToAndDeleteFromSetCollectionProperty x.API 
+//    member x.AddToAndDeleteFromSetCollectionProperty() = ObjectCollection17.AddToAndDeleteFromSetCollectionProperty api 
 //    [<Test>]    
-//    member x.AddToAndDeleteFromCollectionPropertyConcurrencySuccess() = ObjectCollection17.AddToAndDeleteFromCollectionPropertyConcurrencySuccess x.API 
+//    member x.AddToAndDeleteFromCollectionPropertyConcurrencySuccess() = ObjectCollection17.AddToAndDeleteFromCollectionPropertyConcurrencySuccess api 
 //    [<Test>]    
-//    member x.AddToAndDeleteFromSetCollectionPropertyConcurrencySuccess() = ObjectCollection17.AddToAndDeleteFromSetCollectionPropertyConcurrencySuccess x.API 
+//    member x.AddToAndDeleteFromSetCollectionPropertyConcurrencySuccess() = ObjectCollection17.AddToAndDeleteFromSetCollectionPropertyConcurrencySuccess api 
 //    [<Test>]    
-//    member x.AddToCollectionPropertyConcurrencyFail() = ObjectCollection17.AddToCollectionPropertyConcurrencyFail x.API 
+//    member x.AddToCollectionPropertyConcurrencyFail() = ObjectCollection17.AddToCollectionPropertyConcurrencyFail api 
 //    [<Test>]    
-//    member x.AddToCollectionPropertyMissingIfMatchHeader() = ObjectCollection17.AddToCollectionPropertyMissingIfMatchHeader x.API 
+//    member x.AddToCollectionPropertyMissingIfMatchHeader() = ObjectCollection17.AddToCollectionPropertyMissingIfMatchHeader api 
 //    [<Test>]    
-//    member x.DeleteFromCollectionPropertyConcurrencyFail() = ObjectCollection17.DeleteFromCollectionPropertyConcurrencyFail x.API 
+//    member x.DeleteFromCollectionPropertyConcurrencyFail() = ObjectCollection17.DeleteFromCollectionPropertyConcurrencyFail api 
 //    [<Test>]    
-//    member x.DeleteFromCollectionPropertyMissingIfMatchHeader() = ObjectCollection17.DeleteFromCollectionPropertyMissingIfMatchHeader x.API 
+//    member x.DeleteFromCollectionPropertyMissingIfMatchHeader() = ObjectCollection17.DeleteFromCollectionPropertyMissingIfMatchHeader api 
 //    [<Test>]    
-//    member x.AddToCollectionPropertyValidateOnly() = ObjectCollection17.AddToCollectionPropertyValidateOnly x.API 
+//    member x.AddToCollectionPropertyValidateOnly() = ObjectCollection17.AddToCollectionPropertyValidateOnly api 
 //    [<Test>]    
-//    member x.DeleteFromCollectionPropertyValidateOnly() = ObjectCollection17.DeleteFromCollectionPropertyValidateOnly x.API 
+//    member x.DeleteFromCollectionPropertyValidateOnly() = ObjectCollection17.DeleteFromCollectionPropertyValidateOnly api 
     [<Test>]
-    member x.GetInvalidCollection() = ObjectCollection17.GetInvalidCollection x.API 
+    member x.GetInvalidCollection() = ObjectCollection17.GetInvalidCollection api 
     [<Test>]
-    member x.GetNotFoundCollection() = ObjectCollection17.GetNotFoundCollection x.API 
+    member x.GetNotFoundCollection() = ObjectCollection17.GetNotFoundCollection api 
     [<Test>]
-    member x.GetHiddenValueCollection() = ObjectCollection17.GetHiddenValueCollection x.API  
+    member x.GetHiddenValueCollection() = ObjectCollection17.GetHiddenValueCollection api  
     [<Test>]    
-    member x.NotAcceptableGetCollectionWrongMediaType() = ObjectCollection17.NotAcceptableGetCollectionWrongMediaType x.API 
+    member x.NotAcceptableGetCollectionWrongMediaType() = ObjectCollection17.NotAcceptableGetCollectionWrongMediaType api 
     [<Test>]
-    member x.GetErrorValueCollection() = ObjectCollection17.GetErrorValueCollection x.API 
+    member x.GetErrorValueCollection() = ObjectCollection17.GetErrorValueCollection api 
     [<Test>]
-    member x.GetCollectionAsProperty() = ObjectCollection17.GetCollectionAsProperty x.API 
+    member x.GetCollectionAsProperty() = ObjectCollection17.GetCollectionAsProperty api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionMissingArgs() = ObjectCollection17.AddToCollectionMissingArgs x.API 
+//    member x.AddToCollectionMissingArgs() = ObjectCollection17.AddToCollectionMissingArgs api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionMalformedArgs() = ObjectCollection17.AddToCollectionMalformedArgs x.API 
+//    member x.AddToCollectionMalformedArgs() = ObjectCollection17.AddToCollectionMalformedArgs api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionInvalidArgs() = ObjectCollection17.AddToCollectionInvalidArgs x.API 
+//    member x.AddToCollectionInvalidArgs() = ObjectCollection17.AddToCollectionInvalidArgs api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionDisabledValue() = ObjectCollection17.AddToCollectionDisabledValue x.API 
+//    member x.AddToCollectionDisabledValue() = ObjectCollection17.AddToCollectionDisabledValue api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionInvisibleValue() = ObjectCollection17.AddToCollectionInvisibleValue x.API 
+//    member x.AddToCollectionInvisibleValue() = ObjectCollection17.AddToCollectionInvisibleValue api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionImmutableObject() = ObjectCollection17.AddToCollectionImmutableObject x.API 
+//    member x.AddToCollectionImmutableObject() = ObjectCollection17.AddToCollectionImmutableObject api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionInvalidArgsName() = ObjectCollection17.AddToCollectionInvalidArgsName x.API 
+//    member x.AddToCollectionInvalidArgsName() = ObjectCollection17.AddToCollectionInvalidArgsName api 
 //    [<Test>]
 //        
-//    member x.NotAcceptableAddCollectionWrongMediaType() = ObjectCollection17.NotAcceptableAddCollectionWrongMediaType x.API 
+//    member x.NotAcceptableAddCollectionWrongMediaType() = ObjectCollection17.NotAcceptableAddCollectionWrongMediaType api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionMissingArgsValidateOnly() = ObjectCollection17.AddToCollectionMissingArgsValidateOnly x.API 
+//    member x.AddToCollectionMissingArgsValidateOnly() = ObjectCollection17.AddToCollectionMissingArgsValidateOnly api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionMalformedArgsValidateOnly() = ObjectCollection17.AddToCollectionMalformedArgsValidateOnly x.API 
+//    member x.AddToCollectionMalformedArgsValidateOnly() = ObjectCollection17.AddToCollectionMalformedArgsValidateOnly api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionInvalidArgsValidateOnly() = ObjectCollection17.AddToCollectionInvalidArgsValidateOnly x.API 
+//    member x.AddToCollectionInvalidArgsValidateOnly() = ObjectCollection17.AddToCollectionInvalidArgsValidateOnly api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionDisabledValueValidateOnly() = ObjectCollection17.AddToCollectionDisabledValueValidateOnly x.API 
+//    member x.AddToCollectionDisabledValueValidateOnly() = ObjectCollection17.AddToCollectionDisabledValueValidateOnly api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionInvisibleValueValidateOnly() = ObjectCollection17.AddToCollectionInvisibleValueValidateOnly x.API 
+//    member x.AddToCollectionInvisibleValueValidateOnly() = ObjectCollection17.AddToCollectionInvisibleValueValidateOnly api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionImmutableObjectValidateOnly() = ObjectCollection17.AddToCollectionImmutableObjectValidateOnly x.API 
+//    member x.AddToCollectionImmutableObjectValidateOnly() = ObjectCollection17.AddToCollectionImmutableObjectValidateOnly api 
 //    [<Test>]
 //    
-//    member x.AddToCollectionInvalidArgsNameValidateOnly() = ObjectCollection17.AddToCollectionInvalidArgsNameValidateOnly x.API   
+//    member x.AddToCollectionInvalidArgsNameValidateOnly() = ObjectCollection17.AddToCollectionInvalidArgsNameValidateOnly api   
 //    [<Test>]
 //    
-//    member x.AddToCollectionInternalError() = ObjectCollection17.AddToCollectionInternalError x.API 
+//    member x.AddToCollectionInternalError() = ObjectCollection17.AddToCollectionInternalError api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionMissingArgs() = ObjectCollection17.DeleteFromCollectionMissingArgs x.API 
+//    member x.DeleteFromCollectionMissingArgs() = ObjectCollection17.DeleteFromCollectionMissingArgs api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionMalformedArgs() = ObjectCollection17.DeleteFromCollectionMalformedArgs x.API 
+//    member x.DeleteFromCollectionMalformedArgs() = ObjectCollection17.DeleteFromCollectionMalformedArgs api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionInvalidArgs() = ObjectCollection17.DeleteFromCollectionInvalidArgs x.API 
+//    member x.DeleteFromCollectionInvalidArgs() = ObjectCollection17.DeleteFromCollectionInvalidArgs api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionDisabledValue() = ObjectCollection17.DeleteFromCollectionDisabledValue x.API 
+//    member x.DeleteFromCollectionDisabledValue() = ObjectCollection17.DeleteFromCollectionDisabledValue api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionInvisibleValue() = ObjectCollection17.DeleteFromCollectionInvisibleValue x.API 
+//    member x.DeleteFromCollectionInvisibleValue() = ObjectCollection17.DeleteFromCollectionInvisibleValue api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionImmutableObject() = ObjectCollection17.DeleteFromCollectionImmutableObject x.API 
+//    member x.DeleteFromCollectionImmutableObject() = ObjectCollection17.DeleteFromCollectionImmutableObject api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionInvalidArgsName() = ObjectCollection17.DeleteFromCollectionInvalidArgsName x.API 
+//    member x.DeleteFromCollectionInvalidArgsName() = ObjectCollection17.DeleteFromCollectionInvalidArgsName api 
 //    [<Test>]
 //        
-//    member x.NotAcceptableDeleteFromCollectionWrongMediaType() = ObjectCollection17.NotAcceptableDeleteFromCollectionWrongMediaType x.API 
+//    member x.NotAcceptableDeleteFromCollectionWrongMediaType() = ObjectCollection17.NotAcceptableDeleteFromCollectionWrongMediaType api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionMissingArgsValidateOnly() = ObjectCollection17.DeleteFromCollectionMissingArgsValidateOnly x.API 
+//    member x.DeleteFromCollectionMissingArgsValidateOnly() = ObjectCollection17.DeleteFromCollectionMissingArgsValidateOnly api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionMalformedArgsValidateOnly() = ObjectCollection17.DeleteFromCollectionMalformedArgsValidateOnly x.API 
+//    member x.DeleteFromCollectionMalformedArgsValidateOnly() = ObjectCollection17.DeleteFromCollectionMalformedArgsValidateOnly api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionInvalidArgsValidateOnly() = ObjectCollection17.DeleteFromCollectionInvalidArgsValidateOnly x.API 
+//    member x.DeleteFromCollectionInvalidArgsValidateOnly() = ObjectCollection17.DeleteFromCollectionInvalidArgsValidateOnly api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionDisabledValueValidateOnly() = ObjectCollection17.DeleteFromCollectionDisabledValueValidateOnly x.API 
+//    member x.DeleteFromCollectionDisabledValueValidateOnly() = ObjectCollection17.DeleteFromCollectionDisabledValueValidateOnly api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionInvisibleValueValidateOnly() = ObjectCollection17.DeleteFromCollectionInvisibleValueValidateOnly x.API 
+//    member x.DeleteFromCollectionInvisibleValueValidateOnly() = ObjectCollection17.DeleteFromCollectionInvisibleValueValidateOnly api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionImmutableObjectValidateOnly() = ObjectCollection17.DeleteFromCollectionImmutableObjectValidateOnly x.API 
+//    member x.DeleteFromCollectionImmutableObjectValidateOnly() = ObjectCollection17.DeleteFromCollectionImmutableObjectValidateOnly api 
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionInvalidArgsNameValidateOnly() = ObjectCollection17.DeleteFromCollectionInvalidArgsNameValidateOnly x.API  
+//    member x.DeleteFromCollectionInvalidArgsNameValidateOnly() = ObjectCollection17.DeleteFromCollectionInvalidArgsNameValidateOnly api  
 //    [<Test>]
 //    
-//    member x.DeleteFromCollectionInternalError() = ObjectCollection17.DeleteFromCollectionInternalError x.API 
+//    member x.DeleteFromCollectionInternalError() = ObjectCollection17.DeleteFromCollectionInternalError api 
     // ObjectAction18
     [<Test>]
-    member x.GetActionPropertyObject() = ObjectAction18.GetActionPropertyObject x.API
+    member x.GetActionPropertyObject() = ObjectAction18.GetActionPropertyObject api
     [<Test>]
-    member x.GetActionPropertyService() = ObjectAction18.GetActionPropertyService x.API  
+    member x.GetActionPropertyService() = ObjectAction18.GetActionPropertyService api  
     [<Test>]
-    member x.GetActionContributedService() = ObjectAction18.GetActionContributedService x.API  
+    member x.GetActionContributedService() = ObjectAction18.GetActionContributedService api  
     [<Test>]
-    member x.GetActionPropertyViewModel() = ObjectAction18.GetActionPropertyViewModel x.API  
+    member x.GetActionPropertyViewModel() = ObjectAction18.GetActionPropertyViewModel api  
 
     [<Test>]
-    member x.GetActionPropertyDateTimeViewModel() = ObjectAction18.GetActionPropertyDateTimeViewModel x.API
+    member x.GetActionPropertyDateTimeViewModel() = ObjectAction18.GetActionPropertyDateTimeViewModel api
     [<Test>]
-    member x.GetActionPropertyDateTimeService() = ObjectAction18.GetActionPropertyDateTimeService x.API  
+    member x.GetActionPropertyDateTimeService() = ObjectAction18.GetActionPropertyDateTimeService api  
     [<Test>]
-    member x.GetActionPropertyDateTimeObject() = ObjectAction18.GetActionPropertyDateTimeObject x.API  
+    member x.GetActionPropertyDateTimeObject() = ObjectAction18.GetActionPropertyDateTimeObject api  
  
     [<Test>]
-    member x.GetActionPropertyCollectionViewModel() = ObjectAction18.GetActionPropertyCollectionViewModel x.API
+    member x.GetActionPropertyCollectionViewModel() = ObjectAction18.GetActionPropertyCollectionViewModel api
     [<Test>]
-    member x.GetActionPropertyCollectionService() = ObjectAction18.GetActionPropertyCollectionService x.API  
+    member x.GetActionPropertyCollectionService() = ObjectAction18.GetActionPropertyCollectionService api  
     [<Test>]
-    member x.GetActionPropertyCollectionObject() = ObjectAction18.GetActionPropertyCollectionObject x.API 
+    member x.GetActionPropertyCollectionObject() = ObjectAction18.GetActionPropertyCollectionObject api 
 
 
 
     [<Test>]
-    member x.GetOverloadedActionPropertyObject() = ObjectAction18.GetOverloadedActionPropertyObject x.API
+    member x.GetOverloadedActionPropertyObject() = ObjectAction18.GetOverloadedActionPropertyObject api
     [<Test>]
-    member x.GetOverloadedActionPropertyService() = ObjectAction18.GetOverloadedActionPropertyService x.API  
+    member x.GetOverloadedActionPropertyService() = ObjectAction18.GetOverloadedActionPropertyService api  
     [<Test>]
-    member x.GetOverloadedActionPropertyViewModel() = ObjectAction18.GetOverloadedActionPropertyViewModel x.API  
+    member x.GetOverloadedActionPropertyViewModel() = ObjectAction18.GetOverloadedActionPropertyViewModel api  
 
     [<Test>]
-    member x.GetUserDisabledActionPropertyObject() = ObjectAction18.GetUserDisabledActionPropertyObject x.API
+    member x.GetUserDisabledActionPropertyObject() = ObjectAction18.GetUserDisabledActionPropertyObject api
     [<Test>]
-    member x.GetUserDisabledActionPropertyService() = ObjectAction18.GetUserDisabledActionPropertyService x.API 
+    member x.GetUserDisabledActionPropertyService() = ObjectAction18.GetUserDisabledActionPropertyService api 
     [<Test>]
-    member x.GetUserDisabledActionPropertyViewModel() = ObjectAction18.GetUserDisabledActionPropertyViewModel x.API 
+    member x.GetUserDisabledActionPropertyViewModel() = ObjectAction18.GetUserDisabledActionPropertyViewModel api 
     [<Test>]
-    member x.GetActionPropertyQueryOnlyObject() = ObjectAction18.GetActionPropertyQueryOnlyObject x.API
+    member x.GetActionPropertyQueryOnlyObject() = ObjectAction18.GetActionPropertyQueryOnlyObject api
     [<Test>]
-    member x.GetActionPropertyQueryOnlyService() = ObjectAction18.GetActionPropertyQueryOnlyService x.API   
+    member x.GetActionPropertyQueryOnlyService() = ObjectAction18.GetActionPropertyQueryOnlyService api   
     [<Test>]
-    member x.GetActionPropertyQueryOnlyViewModel() = ObjectAction18.GetActionPropertyQueryOnlyViewModel x.API   
+    member x.GetActionPropertyQueryOnlyViewModel() = ObjectAction18.GetActionPropertyQueryOnlyViewModel api   
     [<Test>]
-    member x.GetActionPropertyIdempotentObject() = ObjectAction18.GetActionPropertyIdempotentObject x.API
+    member x.GetActionPropertyIdempotentObject() = ObjectAction18.GetActionPropertyIdempotentObject api
     [<Test>]
-    member x.GetActionPropertyIdempotentService() = ObjectAction18.GetActionPropertyIdempotentService x.API 
+    member x.GetActionPropertyIdempotentService() = ObjectAction18.GetActionPropertyIdempotentService api 
     [<Test>]
-    member x.GetActionPropertyIdempotentViewModel() = ObjectAction18.GetActionPropertyIdempotentViewModel x.API 
+    member x.GetActionPropertyIdempotentViewModel() = ObjectAction18.GetActionPropertyIdempotentViewModel api 
     [<Test>]
-    member x.GetActionPropertyWithOptObject() = ObjectAction18.GetActionPropertyWithOptObject x.API
+    member x.GetActionPropertyWithOptObject() = ObjectAction18.GetActionPropertyWithOptObject api
     [<Test>]
-    member x.GetActionPropertyWithOptService() = ObjectAction18.GetActionPropertyWithOptService x.API  
+    member x.GetActionPropertyWithOptService() = ObjectAction18.GetActionPropertyWithOptService api  
     [<Test>]
-    member x.GetActionPropertyWithOptViewModel() = ObjectAction18.GetActionPropertyWithOptViewModel x.API  
+    member x.GetActionPropertyWithOptViewModel() = ObjectAction18.GetActionPropertyWithOptViewModel api  
     [<Test>]
-    member x.GetActionPropertyWithOptObjectSimpleOnly() = ObjectAction18.GetActionPropertyWithOptObjectSimpleOnly x.API
+    member x.GetActionPropertyWithOptObjectSimpleOnly() = ObjectAction18.GetActionPropertyWithOptObjectSimpleOnly api
     [<Test>]
-    member x.GetActionPropertyWithOptServiceSimpleOnly() = ObjectAction18.GetActionPropertyWithOptServiceSimpleOnly x.API   
+    member x.GetActionPropertyWithOptServiceSimpleOnly() = ObjectAction18.GetActionPropertyWithOptServiceSimpleOnly api   
     [<Test>]
-    member x.GetActionPropertyWithOptViewModelSimpleOnly() = ObjectAction18.GetActionPropertyWithOptViewModelSimpleOnly x.API   
+    member x.GetActionPropertyWithOptViewModelSimpleOnly() = ObjectAction18.GetActionPropertyWithOptViewModelSimpleOnly api   
     [<Test>]
-    member x.GetActionPropertyWithOptObjectFormalOnly() = ObjectAction18.GetActionPropertyWithOptObjectFormalOnly x.API
+    member x.GetActionPropertyWithOptObjectFormalOnly() = ObjectAction18.GetActionPropertyWithOptObjectFormalOnly api
     [<Test>]
-    member x.GetActionPropertyWithOptServiceFormalOnly() = ObjectAction18.GetActionPropertyWithOptServiceFormalOnly x.API 
+    member x.GetActionPropertyWithOptServiceFormalOnly() = ObjectAction18.GetActionPropertyWithOptServiceFormalOnly api 
     [<Test>]
-    member x.GetActionPropertyWithOptViewModelFormalOnly() = ObjectAction18.GetActionPropertyWithOptViewModelFormalOnly x.API 
+    member x.GetActionPropertyWithOptViewModelFormalOnly() = ObjectAction18.GetActionPropertyWithOptViewModelFormalOnly api 
     [<Test>]
-    member x.GetActionPropertyObjectWithMediaType() = ObjectAction18.GetActionPropertyObjectWithMediaType x.API
+    member x.GetActionPropertyObjectWithMediaType() = ObjectAction18.GetActionPropertyObjectWithMediaType api
     [<Test>]
-    member x.GetActionPropertyServiceWithMediaType() = ObjectAction18.GetActionPropertyServiceWithMediaType x.API  
+    member x.GetActionPropertyServiceWithMediaType() = ObjectAction18.GetActionPropertyServiceWithMediaType api  
     [<Test>]
-    member x.GetActionPropertyViewModelWithMediaType() = ObjectAction18.GetActionPropertyViewModelWithMediaType x.API  
+    member x.GetActionPropertyViewModelWithMediaType() = ObjectAction18.GetActionPropertyViewModelWithMediaType api  
     [<Test>]
-    member x.GetScalarActionObject() = ObjectAction18.GetScalarActionObject x.API 
+    member x.GetScalarActionObject() = ObjectAction18.GetScalarActionObject api 
     [<Test>]
-    member x.GetScalarActionService() = ObjectAction18.GetScalarActionService x.API 
+    member x.GetScalarActionService() = ObjectAction18.GetScalarActionService api 
     [<Test>]
-    member x.GetScalarActionViewModel() = ObjectAction18.GetScalarActionViewModel x.API 
+    member x.GetScalarActionViewModel() = ObjectAction18.GetScalarActionViewModel api 
     [<Test>]
-    member x.GetActionWithValueParmObject() = ObjectAction18.GetActionWithValueParmObject x.API
+    member x.GetActionWithValueParmObject() = ObjectAction18.GetActionWithValueParmObject api
     [<Test>]
-    member x.GetActionWithValueParmService() = ObjectAction18.GetActionWithValueParmService x.API 
+    member x.GetActionWithValueParmService() = ObjectAction18.GetActionWithValueParmService api 
     [<Test>]
-    member x.GetActionWithValueParmViewModel() = ObjectAction18.GetActionWithValueParmViewModel x.API 
+    member x.GetActionWithValueParmViewModel() = ObjectAction18.GetActionWithValueParmViewModel api 
     [<Test>]
-    member x.GetActionWithValueParmWithChoicesObject() = ObjectAction18.GetActionWithValueParmWithChoicesObject x.API
+    member x.GetActionWithValueParmWithChoicesObject() = ObjectAction18.GetActionWithValueParmWithChoicesObject api
     [<Test>]
-    member x.GetActionWithValueParmWithChoicesService() = ObjectAction18.GetActionWithValueParmWithChoicesService x.API 
+    member x.GetActionWithValueParmWithChoicesService() = ObjectAction18.GetActionWithValueParmWithChoicesService api 
     [<Test>]
-    member x.GetActionWithValueParmWithChoicesViewModel() = ObjectAction18.GetActionWithValueParmWithChoicesViewModel x.API 
+    member x.GetActionWithValueParmWithChoicesViewModel() = ObjectAction18.GetActionWithValueParmWithChoicesViewModel api 
     [<Test>]
-    member x.GetActionWithValueParmWithDefaultObject() = ObjectAction18.GetActionWithValueParmWithDefaultObject x.API
+    member x.GetActionWithValueParmWithDefaultObject() = ObjectAction18.GetActionWithValueParmWithDefaultObject api
     [<Test>]
-    member x.GetActionWithValueParmWithDefaultService() = ObjectAction18.GetActionWithValueParmWithDefaultService x.API    
+    member x.GetActionWithValueParmWithDefaultService() = ObjectAction18.GetActionWithValueParmWithDefaultService api    
     [<Test>]
-    member x.GetActionWithValueParmWithDefaultViewModel() = ObjectAction18.GetActionWithValueParmWithDefaultViewModel x.API    
+    member x.GetActionWithValueParmWithDefaultViewModel() = ObjectAction18.GetActionWithValueParmWithDefaultViewModel api    
     [<Test>]
-    member x.GetActionWithReferenceParmObject() = ObjectAction18.GetActionWithReferenceParmObject x.API
+    member x.GetActionWithReferenceParmObject() = ObjectAction18.GetActionWithReferenceParmObject api
     [<Test>]
-    member x.GetActionWithReferenceParmService() = ObjectAction18.GetActionWithReferenceParmService x.API   
+    member x.GetActionWithReferenceParmService() = ObjectAction18.GetActionWithReferenceParmService api   
     [<Test>]
-    member x.GetActionWithReferenceParmViewModel() = ObjectAction18.GetActionWithReferenceParmViewModel x.API   
+    member x.GetActionWithReferenceParmViewModel() = ObjectAction18.GetActionWithReferenceParmViewModel api   
     [<Test>]
-    member x.GetActionWithReferenceParmWithChoicesObject() = ObjectAction18.GetActionWithReferenceParmWithChoicesObject x.API
+    member x.GetActionWithReferenceParmWithChoicesObject() = ObjectAction18.GetActionWithReferenceParmWithChoicesObject api
     [<Test>]
-    member x.GetActionWithReferenceParmWithChoicesService() = ObjectAction18.GetActionWithReferenceParmWithChoicesService x.API   
+    member x.GetActionWithReferenceParmWithChoicesService() = ObjectAction18.GetActionWithReferenceParmWithChoicesService api   
     [<Test>]
-    member x.GetActionWithReferenceParmWithChoicesViewModel() = ObjectAction18.GetActionWithReferenceParmWithChoicesViewModel x.API   
+    member x.GetActionWithReferenceParmWithChoicesViewModel() = ObjectAction18.GetActionWithReferenceParmWithChoicesViewModel api   
 
     [<Test>]
-    member x.GetActionWithReferenceParmsWithAutoCompleteObject() = ObjectAction18.GetActionWithReferenceParmsWithAutoCompleteObject x.API
+    member x.GetActionWithReferenceParmsWithAutoCompleteObject() = ObjectAction18.GetActionWithReferenceParmsWithAutoCompleteObject api
     [<Test>]
-    member x.GetActionWithReferenceParmsWithAutoCompleteService() = ObjectAction18.GetActionWithReferenceParmsWithAutoCompleteService x.API   
+    member x.GetActionWithReferenceParmsWithAutoCompleteService() = ObjectAction18.GetActionWithReferenceParmsWithAutoCompleteService api   
     [<Test>]
-    member x.GetActionWithReferenceParmsWithAutoCompleteViewModel() = ObjectAction18.GetActionWithReferenceParmsWithAutoCompleteViewModel x.API   
+    member x.GetActionWithReferenceParmsWithAutoCompleteViewModel() = ObjectAction18.GetActionWithReferenceParmsWithAutoCompleteViewModel api   
 
     [<Test>]
-    member x.InvokeParmWithAutoCompleteObject() = ObjectAction18.InvokeParmWithAutoCompleteObject x.API
+    member x.InvokeParmWithAutoCompleteObject() = ObjectAction18.InvokeParmWithAutoCompleteObject api
     [<Test>]
-    member x.InvokeParmWithAutoCompleteService() = ObjectAction18.InvokeParmWithAutoCompleteService x.API   
+    member x.InvokeParmWithAutoCompleteService() = ObjectAction18.InvokeParmWithAutoCompleteService api   
     [<Test>]
-    member x.InvokeParmWithAutoCompleteViewModel() = ObjectAction18.InvokeParmWithAutoCompleteViewModel x.API 
+    member x.InvokeParmWithAutoCompleteViewModel() = ObjectAction18.InvokeParmWithAutoCompleteViewModel api 
 
     [<Test>]
-    member x.InvokeParmWithAutoCompleteObjectErrorNoParm() = ObjectAction18.InvokeParmWithAutoCompleteObjectErrorNoParm x.API
+    member x.InvokeParmWithAutoCompleteObjectErrorNoParm() = ObjectAction18.InvokeParmWithAutoCompleteObjectErrorNoParm api
     [<Test>]
-    member x.InvokeParmWithAutoCompleteServiceErrorNoParm() = ObjectAction18.InvokeParmWithAutoCompleteServiceErrorNoParm x.API   
+    member x.InvokeParmWithAutoCompleteServiceErrorNoParm() = ObjectAction18.InvokeParmWithAutoCompleteServiceErrorNoParm api   
     [<Test>]
-    member x.InvokeParmWithAutoCompleteViewModelErrorNoParm() = ObjectAction18.InvokeParmWithAutoCompleteViewModelErrorNoParm x.API 
+    member x.InvokeParmWithAutoCompleteViewModelErrorNoParm() = ObjectAction18.InvokeParmWithAutoCompleteViewModelErrorNoParm api 
 
     [<Test>]
-    member x.InvokeParmWithAutoCompleteObjectErrorMalformedParm() = ObjectAction18.InvokeParmWithAutoCompleteObjectErrorMalformedParm x.API
+    member x.InvokeParmWithAutoCompleteObjectErrorMalformedParm() = ObjectAction18.InvokeParmWithAutoCompleteObjectErrorMalformedParm api
     [<Test>]
-    member x.InvokeParmWithAutoCompleteServiceErrorMalformedParm() = ObjectAction18.InvokeParmWithAutoCompleteServiceErrorMalformedParm x.API   
+    member x.InvokeParmWithAutoCompleteServiceErrorMalformedParm() = ObjectAction18.InvokeParmWithAutoCompleteServiceErrorMalformedParm api   
     [<Test>]
-    member x.InvokeParmWithAutoCompleteViewModelErrorMalformedParm() = ObjectAction18.InvokeParmWithAutoCompleteViewModelErrorMalformedParm x.API 
+    member x.InvokeParmWithAutoCompleteViewModelErrorMalformedParm() = ObjectAction18.InvokeParmWithAutoCompleteViewModelErrorMalformedParm api 
 
     [<Test>]
-    member x.InvokeParmWithAutoCompleteObjectErrorUnrecognisedParm() = ObjectAction18.InvokeParmWithAutoCompleteObjectErrorUnrecognisedParm x.API
+    member x.InvokeParmWithAutoCompleteObjectErrorUnrecognisedParm() = ObjectAction18.InvokeParmWithAutoCompleteObjectErrorUnrecognisedParm api
     [<Test>]
-    member x.InvokeParmWithAutoCompleteServiceErrorUnrecognisedParm() = ObjectAction18.InvokeParmWithAutoCompleteServiceErrorUnrecognisedParm x.API   
+    member x.InvokeParmWithAutoCompleteServiceErrorUnrecognisedParm() = ObjectAction18.InvokeParmWithAutoCompleteServiceErrorUnrecognisedParm api   
     [<Test>]
-    member x.InvokeParmWithAutoCompleteViewModelErrorUnrecognisedParm() = ObjectAction18.InvokeParmWithAutoCompleteViewModelErrorUnrecognisedParm x.API 
-
-
+    member x.InvokeParmWithAutoCompleteViewModelErrorUnrecognisedParm() = ObjectAction18.InvokeParmWithAutoCompleteViewModelErrorUnrecognisedParm api 
 
 
 
 
-    [<Test>]
-    member x.InvokeParmWithConditionalChoicesObject() = ObjectAction18.InvokeParmWithConditionalChoicesObject x.API
-    [<Test>]
-    member x.InvokeParmWithConditionalChoicesService() = ObjectAction18.InvokeParmWithConditionalChoicesService x.API   
-    [<Test>]
-    member x.InvokeParmWithConditionalChoicesViewModel() = ObjectAction18.InvokeParmWithConditionalChoicesViewModel x.API 
+
 
     [<Test>]
-    member x.InvokeParmWithConditionalChoicesObjectErrorMalformedParm() = ObjectAction18.InvokeParmWithConditionalChoicesObjectErrorMalformedParm x.API
+    member x.InvokeParmWithConditionalChoicesObject() = ObjectAction18.InvokeParmWithConditionalChoicesObject api
     [<Test>]
-    member x.InvokeParmWithConditionalChoicesServiceErrorMalformedParm() = ObjectAction18.InvokeParmWithConditionalChoicesServiceErrorMalformedParm x.API   
+    member x.InvokeParmWithConditionalChoicesService() = ObjectAction18.InvokeParmWithConditionalChoicesService api   
     [<Test>]
-    member x.InvokeParmWithConditionalChoicesViewModelErrorMalformedParm() = ObjectAction18.InvokeParmWithConditionalChoicesViewModelErrorMalformedParm x.API 
+    member x.InvokeParmWithConditionalChoicesViewModel() = ObjectAction18.InvokeParmWithConditionalChoicesViewModel api 
 
     [<Test>]
-    member x.InvokeValueParmWithConditionalChoicesObjectErrorMissingParm() = ObjectAction18.InvokeValueParmWithConditionalChoicesObjectErrorMissingParm x.API
+    member x.InvokeParmWithConditionalChoicesObjectErrorMalformedParm() = ObjectAction18.InvokeParmWithConditionalChoicesObjectErrorMalformedParm api
     [<Test>]
-    member x.InvokeValueParmWithConditionalChoicesServiceErrorMissingParm() = ObjectAction18.InvokeValueParmWithConditionalChoicesServiceErrorMissingParm x.API   
+    member x.InvokeParmWithConditionalChoicesServiceErrorMalformedParm() = ObjectAction18.InvokeParmWithConditionalChoicesServiceErrorMalformedParm api   
     [<Test>]
-    member x.InvokeValueParmWithConditionalChoicesViewModelErrorMissingParm() = ObjectAction18.InvokeValueParmWithConditionalChoicesViewModelErrorMissingParm x.API 
+    member x.InvokeParmWithConditionalChoicesViewModelErrorMalformedParm() = ObjectAction18.InvokeParmWithConditionalChoicesViewModelErrorMalformedParm api 
 
     [<Test>]
-    member x.InvokeValueParmWithConditionalChoicesObject() = ObjectAction18.InvokeValueParmWithConditionalChoicesObject x.API
+    member x.InvokeValueParmWithConditionalChoicesObjectErrorMissingParm() = ObjectAction18.InvokeValueParmWithConditionalChoicesObjectErrorMissingParm api
     [<Test>]
-    member x.InvokeValueParmWithConditionalChoicesService() = ObjectAction18.InvokeValueParmWithConditionalChoicesService x.API   
+    member x.InvokeValueParmWithConditionalChoicesServiceErrorMissingParm() = ObjectAction18.InvokeValueParmWithConditionalChoicesServiceErrorMissingParm api   
     [<Test>]
-    member x.InvokeValueParmWithConditionalChoicesViewModel() = ObjectAction18.InvokeValueParmWithConditionalChoicesViewModel x.API 
+    member x.InvokeValueParmWithConditionalChoicesViewModelErrorMissingParm() = ObjectAction18.InvokeValueParmWithConditionalChoicesViewModelErrorMissingParm api 
+
+    [<Test>]
+    member x.InvokeValueParmWithConditionalChoicesObject() = ObjectAction18.InvokeValueParmWithConditionalChoicesObject api
+    [<Test>]
+    member x.InvokeValueParmWithConditionalChoicesService() = ObjectAction18.InvokeValueParmWithConditionalChoicesService api   
+    [<Test>]
+    member x.InvokeValueParmWithConditionalChoicesViewModel() = ObjectAction18.InvokeValueParmWithConditionalChoicesViewModel api 
 
     
     [<Test>]
-    member x.GetActionWithReferenceParmWithDefaultObject() = ObjectAction18.GetActionWithReferenceParmWithDefaultObject x.API
+    member x.GetActionWithReferenceParmWithDefaultObject() = ObjectAction18.GetActionWithReferenceParmWithDefaultObject api
     [<Test>]
-    member x.GetActionWithReferenceParmWithDefaultService() = ObjectAction18.GetActionWithReferenceParmWithDefaultService x.API  
+    member x.GetActionWithReferenceParmWithDefaultService() = ObjectAction18.GetActionWithReferenceParmWithDefaultService api  
     [<Test>]
-    member x.GetActionWithReferenceParmWithDefaultViewModel() = ObjectAction18.GetActionWithReferenceParmWithDefaultViewModel x.API  
+    member x.GetActionWithReferenceParmWithDefaultViewModel() = ObjectAction18.GetActionWithReferenceParmWithDefaultViewModel api  
     [<Test>]
-    member x.GetActionWithChoicesAndDefaultObject() = ObjectAction18.GetActionWithChoicesAndDefaultObject x.API
+    member x.GetActionWithChoicesAndDefaultObject() = ObjectAction18.GetActionWithChoicesAndDefaultObject api
     [<Test>]
-    member x.GetActionWithChoicesAndDefaultService() = ObjectAction18.GetActionWithChoicesAndDefaultService x.API   
+    member x.GetActionWithChoicesAndDefaultService() = ObjectAction18.GetActionWithChoicesAndDefaultService api   
     [<Test>]
-    member x.GetActionWithChoicesAndDefaultViewModel() = ObjectAction18.GetActionWithChoicesAndDefaultViewModel x.API   
+    member x.GetActionWithChoicesAndDefaultViewModel() = ObjectAction18.GetActionWithChoicesAndDefaultViewModel api   
     [<Test>]
-    member x.GetContributedActionOnContributee() = ObjectAction18.GetContributedActionOnContributee x.API 
+    member x.GetContributedActionOnContributee() = ObjectAction18.GetContributedActionOnContributee api 
     [<Test>]
-    member x.GetContributedActionOnContributeeOnBaseClass() = ObjectAction18.GetContributedActionOnContributeeBaseClass x.API 
+    member x.GetContributedActionOnContributeeOnBaseClass() = ObjectAction18.GetContributedActionOnContributeeBaseClass api 
     [<Test>]
-    member x.GetContributedActionOnContributeeWithRef() = ObjectAction18.GetContributedActionOnContributeeWithRef x.API 
+    member x.GetContributedActionOnContributeeWithRef() = ObjectAction18.GetContributedActionOnContributeeWithRef api 
     [<Test>]
-    member x.GetContributedActionOnContributeeWithValue() = ObjectAction18.GetContributedActionOnContributeeWithValue x.API 
+    member x.GetContributedActionOnContributeeWithValue() = ObjectAction18.GetContributedActionOnContributeeWithValue api 
     [<Test>]
-    member x.GetContributedActionOnContributer() = ObjectAction18.GetContributedActionOnContributer x.API 
+    member x.GetContributedActionOnContributer() = ObjectAction18.GetContributedActionOnContributer api 
     [<Test>]
-    member x.GetContributedActionOnContributerOnBaseClass() = ObjectAction18.GetContributedActionOnContributerBaseClass x.API 
+    member x.GetContributedActionOnContributerOnBaseClass() = ObjectAction18.GetContributedActionOnContributerBaseClass api 
     [<Test>]
-    member x.GetContributedActionOnContributerWithRef() = ObjectAction18.GetContributedActionOnContributerWithRef x.API 
+    member x.GetContributedActionOnContributerWithRef() = ObjectAction18.GetContributedActionOnContributerWithRef api 
     [<Test>]
-    member x.GetContributedActionOnContributerWithValue() = ObjectAction18.GetContributedActionOnContributerWithValue x.API 
+    member x.GetContributedActionOnContributerWithValue() = ObjectAction18.GetContributedActionOnContributerWithValue api 
     [<Test>]
-    member x.GetInvalidActionPropertyObject() = ObjectAction18.GetInvalidActionPropertyObject x.API
+    member x.GetInvalidActionPropertyObject() = ObjectAction18.GetInvalidActionPropertyObject api
     [<Test>]
-    member x.GetInvalidActionPropertyService() = ObjectAction18.GetInvalidActionPropertyService x.API   
+    member x.GetInvalidActionPropertyService() = ObjectAction18.GetInvalidActionPropertyService api   
     [<Test>]
-    member x.GetInvalidActionPropertyViewModel() = ObjectAction18.GetInvalidActionPropertyViewModel x.API   
+    member x.GetInvalidActionPropertyViewModel() = ObjectAction18.GetInvalidActionPropertyViewModel api   
     [<Test>]
-    member x.GetNotFoundActionPropertyObject() = ObjectAction18.GetNotFoundActionPropertyObject x.API
+    member x.GetNotFoundActionPropertyObject() = ObjectAction18.GetNotFoundActionPropertyObject api
     [<Test>]
-    member x.GetNotFoundActionPropertyService() = ObjectAction18.GetNotFoundActionPropertyService x.API 
+    member x.GetNotFoundActionPropertyService() = ObjectAction18.GetNotFoundActionPropertyService api 
     [<Test>]
-    member x.GetNotFoundActionPropertyViewModel() = ObjectAction18.GetNotFoundActionPropertyViewModel x.API 
+    member x.GetNotFoundActionPropertyViewModel() = ObjectAction18.GetNotFoundActionPropertyViewModel api 
     [<Test>]
-    member x.GetUserDisabledActionObject() = ObjectAction18.GetUserDisabledActionObject x.API 
+    member x.GetUserDisabledActionObject() = ObjectAction18.GetUserDisabledActionObject api 
     [<Test>]
-    member x.GetUserDisabledActionService() = ObjectAction18.GetUserDisabledActionService x.API  
+    member x.GetUserDisabledActionService() = ObjectAction18.GetUserDisabledActionService api  
     [<Test>]
-    member x.GetUserDisabledActionViewModel() = ObjectAction18.GetUserDisabledActionViewModel x.API  
+    member x.GetUserDisabledActionViewModel() = ObjectAction18.GetUserDisabledActionViewModel api  
     [<Test>]
-    member x.GetHiddenActionPropertyObject() = ObjectAction18.GetHiddenActionPropertyObject x.API
+    member x.GetHiddenActionPropertyObject() = ObjectAction18.GetHiddenActionPropertyObject api
     [<Test>]
-    member x.GetHiddenActionPropertyService() = ObjectAction18.GetHiddenActionPropertyService x.API   
+    member x.GetHiddenActionPropertyService() = ObjectAction18.GetHiddenActionPropertyService api   
     [<Test>]
-    member x.GetHiddenActionPropertyViewModel() = ObjectAction18.GetHiddenActionPropertyViewModel x.API   
+    member x.GetHiddenActionPropertyViewModel() = ObjectAction18.GetHiddenActionPropertyViewModel api   
     [<Test>]   
-    member x.NotAcceptableGetActionWrongMediaTypeObject() = ObjectAction18.NotAcceptableGetActionWrongMediaTypeObject x.API   
+    member x.NotAcceptableGetActionWrongMediaTypeObject() = ObjectAction18.NotAcceptableGetActionWrongMediaTypeObject api   
     [<Test>]   
-    member x.NotAcceptableGetActionWrongMediaTypeService() = ObjectAction18.NotAcceptableGetActionWrongMediaTypeService x.API 
+    member x.NotAcceptableGetActionWrongMediaTypeService() = ObjectAction18.NotAcceptableGetActionWrongMediaTypeService api 
     [<Test>]   
-    member x.NotAcceptableGetActionWrongMediaTypeViewModel() = ObjectAction18.NotAcceptableGetActionWrongMediaTypeViewModel x.API 
+    member x.NotAcceptableGetActionWrongMediaTypeViewModel() = ObjectAction18.NotAcceptableGetActionWrongMediaTypeViewModel api 
     [<Test>]
-    member x.GetQueryActionObject() = ObjectAction18.GetQueryActionObject x.API
+    member x.GetQueryActionObject() = ObjectAction18.GetQueryActionObject api
     [<Test>]
-    member x.GetQueryActionService() = ObjectAction18.GetQueryActionService x.API  
+    member x.GetQueryActionService() = ObjectAction18.GetQueryActionService api  
     [<Test>]
-    member x.GetQueryActionViewModel() = ObjectAction18.GetQueryActionViewModel x.API  
+    member x.GetQueryActionViewModel() = ObjectAction18.GetQueryActionViewModel api  
     [<Test>]
-    member x.GetQueryActionWithParmsObject() = ObjectAction18.GetQueryActionWithParmsObject x.API
+    member x.GetQueryActionWithParmsObject() = ObjectAction18.GetQueryActionWithParmsObject api
     [<Test>]
-    member x.GetQueryActionWithParmsService() = ObjectAction18.GetQueryActionWithParmsService x.API
+    member x.GetQueryActionWithParmsService() = ObjectAction18.GetQueryActionWithParmsService api
     [<Test>]
-    member x.GetQueryActionWithParmsViewModel() = ObjectAction18.GetQueryActionWithParmsViewModel x.API
+    member x.GetQueryActionWithParmsViewModel() = ObjectAction18.GetQueryActionWithParmsViewModel api
     [<Test>]
-    member x.GetCollectionActionObject() = ObjectAction18.GetCollectionActionObject x.API 
+    member x.GetCollectionActionObject() = ObjectAction18.GetCollectionActionObject api 
     [<Test>]
-    member x.GetCollectionActionService() = ObjectAction18.GetCollectionActionService x.API 
+    member x.GetCollectionActionService() = ObjectAction18.GetCollectionActionService api 
     [<Test>]
-    member x.GetCollectionActionViewModel() = ObjectAction18.GetCollectionActionViewModel x.API 
+    member x.GetCollectionActionViewModel() = ObjectAction18.GetCollectionActionViewModel api 
     [<Test>]
-    member x.GetCollectionActionWithParmsObject() = ObjectAction18.GetCollectionActionWithParmsObject x.API 
+    member x.GetCollectionActionWithParmsObject() = ObjectAction18.GetCollectionActionWithParmsObject api 
     [<Test>]
-    member x.GetCollectionActionWithParmsService() = ObjectAction18.GetCollectionActionWithParmsService x.API  
+    member x.GetCollectionActionWithParmsService() = ObjectAction18.GetCollectionActionWithParmsService api  
     [<Test>]
-    member x.GetCollectionActionWithParmsViewModel() = ObjectAction18.GetCollectionActionWithParmsViewModel x.API  
+    member x.GetCollectionActionWithParmsViewModel() = ObjectAction18.GetCollectionActionWithParmsViewModel api  
     [<Test>]
-    member x.GetCollectionActionWithParmsObjectFormalOnly() = ObjectAction18.GetCollectionActionWithParmsObjectFormalOnly x.API 
+    member x.GetCollectionActionWithParmsObjectFormalOnly() = ObjectAction18.GetCollectionActionWithParmsObjectFormalOnly api 
     [<Test>]
-    member x.GetCollectionActionWithParmsServiceFormalOnly() = ObjectAction18.GetCollectionActionWithParmsServiceFormalOnly x.API  
+    member x.GetCollectionActionWithParmsServiceFormalOnly() = ObjectAction18.GetCollectionActionWithParmsServiceFormalOnly api  
     [<Test>]
-    member x.GetCollectionActionWithParmsViewModelFormalOnly() = ObjectAction18.GetCollectionActionWithParmsViewModelFormalOnly x.API  
+    member x.GetCollectionActionWithParmsViewModelFormalOnly() = ObjectAction18.GetCollectionActionWithParmsViewModelFormalOnly api  
     [<Test>]
-    member x.GetCollectionActionWithParmsObjectSimpleOnly() = ObjectAction18.GetCollectionActionWithParmsObjectSimpleOnly x.API 
+    member x.GetCollectionActionWithParmsObjectSimpleOnly() = ObjectAction18.GetCollectionActionWithParmsObjectSimpleOnly api 
     [<Test>]
-    member x.GetCollectionActionWithParmsServiceSimpleOnly() = ObjectAction18.GetCollectionActionWithParmsServiceSimpleOnly x.API
+    member x.GetCollectionActionWithParmsServiceSimpleOnly() = ObjectAction18.GetCollectionActionWithParmsServiceSimpleOnly api
     [<Test>]
-    member x.GetCollectionActionWithParmsViewModelSimpleOnly() = ObjectAction18.GetCollectionActionWithParmsViewModelSimpleOnly x.API
+    member x.GetCollectionActionWithParmsViewModelSimpleOnly() = ObjectAction18.GetCollectionActionWithParmsViewModelSimpleOnly api
 
     [<Test>]
-    member x.ActionNotFound() = ObjectAction18.ActionNotFound x.API       
+    member x.ActionNotFound() = ObjectAction18.ActionNotFound api       
     // ObjectActionInvoke19
     [<Test>]
-    member x.PostInvokeActionReturnObjectObject() = ObjectActionInvoke19.PostInvokeActionReturnObjectObject x.API
+    member x.PostInvokeActionReturnObjectObject() = ObjectActionInvoke19.PostInvokeActionReturnObjectObject api
     [<Test>]
-    member x.PostInvokeActionReturnObjectService() = ObjectActionInvoke19.PostInvokeActionReturnObjectService x.API  
+    member x.PostInvokeActionReturnObjectService() = ObjectActionInvoke19.PostInvokeActionReturnObjectService api  
     [<Test>]
-    member x.PostInvokeActionReturnObjectViewModel() = ObjectActionInvoke19.PostInvokeActionReturnObjectViewModel x.API
+    member x.PostInvokeActionReturnObjectViewModel() = ObjectActionInvoke19.PostInvokeActionReturnObjectViewModel api
    
     [<Test>]
-    member x.PostInvokeOverloadedActionReturnObjectObject() = ObjectActionInvoke19.PostInvokeOverloadedActionReturnObjectObject x.API
+    member x.PostInvokeOverloadedActionReturnObjectObject() = ObjectActionInvoke19.PostInvokeOverloadedActionReturnObjectObject api
     [<Test>]
-    member x.PostInvokeOverloadedActionReturnObjectService() = ObjectActionInvoke19.PostInvokeOverloadedActionReturnObjectService x.API  
+    member x.PostInvokeOverloadedActionReturnObjectService() = ObjectActionInvoke19.PostInvokeOverloadedActionReturnObjectService api  
     [<Test>]
-    member x.PostInvokeOverloadedActionReturnObjectViewModel() = ObjectActionInvoke19.PostInvokeOverloadedActionReturnObjectViewModel x.API
+    member x.PostInvokeOverloadedActionReturnObjectViewModel() = ObjectActionInvoke19.PostInvokeOverloadedActionReturnObjectViewModel api
 
 
 
     [<Test>]
-    member x.PostInvokeActionContributedService() = ObjectActionInvoke19.PostInvokeActionContributedService x.API  
+    member x.PostInvokeActionContributedService() = ObjectActionInvoke19.PostInvokeActionContributedService api  
 
 
     [<Test>]
-    member x.PostInvokeActionReturnRedirectedObjectObject() = ObjectActionInvoke19.PostInvokeActionReturnRedirectedObjectObject x.API
+    member x.PostInvokeActionReturnRedirectedObjectObject() = ObjectActionInvoke19.PostInvokeActionReturnRedirectedObjectObject api
     [<Test>]
-    member x.PostInvokeActionReturnRedirectedObjectService() = ObjectActionInvoke19.PostInvokeActionReturnRedirectedObjectService x.API  
+    member x.PostInvokeActionReturnRedirectedObjectService() = ObjectActionInvoke19.PostInvokeActionReturnRedirectedObjectService api  
     [<Test>]
-    member x.PostInvokeActionReturnRedirectedObjectViewModel() = ObjectActionInvoke19.PostInvokeActionReturnRedirectedObjectViewModel x.API
+    member x.PostInvokeActionReturnRedirectedObjectViewModel() = ObjectActionInvoke19.PostInvokeActionReturnRedirectedObjectViewModel api
 
 
     [<Test>]
-    member x.PostInvokeActionReturnViewModelObject() = ObjectActionInvoke19.PostInvokeActionReturnViewModelObject x.API
+    member x.PostInvokeActionReturnViewModelObject() = ObjectActionInvoke19.PostInvokeActionReturnViewModelObject api
     [<Test>]
-    member x.PostInvokeActionReturnViewModelService() = ObjectActionInvoke19.PostInvokeActionReturnViewModelService x.API  
+    member x.PostInvokeActionReturnViewModelService() = ObjectActionInvoke19.PostInvokeActionReturnViewModelService api  
     [<Test>]
-    member x.PostInvokeActionReturnViewModelViewModel() = ObjectActionInvoke19.PostInvokeActionReturnViewModelViewModel x.API
+    member x.PostInvokeActionReturnViewModelViewModel() = ObjectActionInvoke19.PostInvokeActionReturnViewModelViewModel api
 
 
     [<Test>]
-    member x.PostInvokeUserDisabledActionReturnObjectObject() = ObjectActionInvoke19.PostInvokeUserDisabledActionReturnObjectObject x.API
+    member x.PostInvokeUserDisabledActionReturnObjectObject() = ObjectActionInvoke19.PostInvokeUserDisabledActionReturnObjectObject api
     [<Test>]
-    member x.PostInvokeUserDisabledActionReturnObjectService() = ObjectActionInvoke19.PostInvokeUserDisabledActionReturnObjectService x.API   
+    member x.PostInvokeUserDisabledActionReturnObjectService() = ObjectActionInvoke19.PostInvokeUserDisabledActionReturnObjectService api   
     [<Test>]
-    member x.PostInvokeUserDisabledActionReturnObjectViewModel() = ObjectActionInvoke19.PostInvokeUserDisabledActionReturnObjectViewModel x.API   
+    member x.PostInvokeUserDisabledActionReturnObjectViewModel() = ObjectActionInvoke19.PostInvokeUserDisabledActionReturnObjectViewModel api   
     [<Test>]
-    member x.PostInvokeActionReturnNullObjectObject() = ObjectActionInvoke19.PostInvokeActionReturnNullObjectObject x.API
+    member x.PostInvokeActionReturnNullObjectObject() = ObjectActionInvoke19.PostInvokeActionReturnNullObjectObject api
     [<Test>]
-    member x.PostInvokeActionReturnNullObjectService() = ObjectActionInvoke19.PostInvokeActionReturnNullObjectService x.API   
+    member x.PostInvokeActionReturnNullObjectService() = ObjectActionInvoke19.PostInvokeActionReturnNullObjectService api   
     [<Test>]
-    member x.PostInvokeActionReturnNullObjectViewModel() = ObjectActionInvoke19.PostInvokeActionReturnNullObjectViewModel x.API   
+    member x.PostInvokeActionReturnNullObjectViewModel() = ObjectActionInvoke19.PostInvokeActionReturnNullObjectViewModel api   
 
     [<Test>]
-    member x.PostInvokeActionReturnNullViewModelObject() = ObjectActionInvoke19.PostInvokeActionReturnNullViewModelObject x.API
+    member x.PostInvokeActionReturnNullViewModelObject() = ObjectActionInvoke19.PostInvokeActionReturnNullViewModelObject api
     [<Test>]
-    member x.PostInvokeActionReturnNullViewModelService() = ObjectActionInvoke19.PostInvokeActionReturnNullViewModelService x.API   
+    member x.PostInvokeActionReturnNullViewModelService() = ObjectActionInvoke19.PostInvokeActionReturnNullViewModelService api   
     [<Test>]
-    member x.PostInvokeActionReturnNullViewModelViewModel() = ObjectActionInvoke19.PostInvokeActionReturnNullViewModelViewModel x.API   
-
-
-    [<Test>]
-    member x.PostInvokeActionReturnObjectObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnObjectObjectValidateOnly x.API
-    [<Test>]
-    member x.PostInvokeActionReturnObjectServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnObjectServiceValidateOnly x.API  
-    [<Test>]
-    member x.PostInvokeActionReturnObjectViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnObjectViewModelValidateOnly x.API  
-
-    [<Test>]
-    member x.PutInvokeActionReturnObjectObject() = ObjectActionInvoke19.PutInvokeActionReturnObjectObject x.API
-    [<Test>]
-    member x.PutInvokeActionReturnObjectService() = ObjectActionInvoke19.PutInvokeActionReturnObjectService x.API   
-    [<Test>]
-    member x.PutInvokeActionReturnObjectViewModel() = ObjectActionInvoke19.PutInvokeActionReturnObjectViewModel x.API   
-
-    [<Test>]
-    member x.PutInvokeActionReturnViewModelObject() = ObjectActionInvoke19.PutInvokeActionReturnViewModelObject x.API
-    [<Test>]
-    member x.PutInvokeActionReturnViewModelService() = ObjectActionInvoke19.PutInvokeActionReturnViewModelService x.API   
-    [<Test>]
-    member x.PutInvokeActionReturnViewModelViewModel() = ObjectActionInvoke19.PutInvokeActionReturnViewModelViewModel x.API   
+    member x.PostInvokeActionReturnNullViewModelViewModel() = ObjectActionInvoke19.PostInvokeActionReturnNullViewModelViewModel api   
 
 
     [<Test>]
-    member x.PutInvokeActionReturnNullObjectObject() = ObjectActionInvoke19.PutInvokeActionReturnNullObjectObject x.API
+    member x.PostInvokeActionReturnObjectObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnObjectObjectValidateOnly api
     [<Test>]
-    member x.PutInvokeActionReturnNullObjectService() = ObjectActionInvoke19.PutInvokeActionReturnNullObjectService x.API  
+    member x.PostInvokeActionReturnObjectServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnObjectServiceValidateOnly api  
     [<Test>]
-    member x.PutInvokeActionReturnNullObjectViewModel() = ObjectActionInvoke19.PutInvokeActionReturnNullObjectViewModel x.API  
+    member x.PostInvokeActionReturnObjectViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnObjectViewModelValidateOnly api  
 
     [<Test>]
-    member x.PutInvokeActionReturnObjectObjectValidateOnly() = ObjectActionInvoke19.PutInvokeActionReturnObjectObjectValidateOnly x.API
+    member x.PutInvokeActionReturnObjectObject() = ObjectActionInvoke19.PutInvokeActionReturnObjectObject api
     [<Test>]
-    member x.PutInvokeActionReturnObjectServiceValidateOnly() = ObjectActionInvoke19.PutInvokeActionReturnObjectServiceValidateOnly x.API  
+    member x.PutInvokeActionReturnObjectService() = ObjectActionInvoke19.PutInvokeActionReturnObjectService api   
     [<Test>]
-    member x.PutInvokeActionReturnObjectViewModelValidateOnly() = ObjectActionInvoke19.PutInvokeActionReturnObjectViewModelValidateOnly x.API  
+    member x.PutInvokeActionReturnObjectViewModel() = ObjectActionInvoke19.PutInvokeActionReturnObjectViewModel api   
 
     [<Test>]
-    member x.PutInvokeActionReturnObjectObjectConcurrencySuccess() = ObjectActionInvoke19.PutInvokeActionReturnObjectObjectConcurrencySuccess x.API
+    member x.PutInvokeActionReturnViewModelObject() = ObjectActionInvoke19.PutInvokeActionReturnViewModelObject api
     [<Test>]
-    member x.PutInvokeActionReturnObjectServiceConcurrencySuccess() = ObjectActionInvoke19.PutInvokeActionReturnObjectServiceConcurrencySuccess x.API   
+    member x.PutInvokeActionReturnViewModelService() = ObjectActionInvoke19.PutInvokeActionReturnViewModelService api   
     [<Test>]
-    member x.PutInvokeActionReturnObjectViewModelConcurrencySuccess() = ObjectActionInvoke19.PutInvokeActionReturnObjectViewModelConcurrencySuccess x.API   
-
-    [<Test>]
-    member x.GetInvokeActionReturnObjectObject() = ObjectActionInvoke19.GetInvokeActionReturnObjectObject x.API
-    [<Test>]
-    member x.GetInvokeActionReturnObjectService() = ObjectActionInvoke19.GetInvokeActionReturnObjectService x.API    
-    [<Test>]
-    member x.GetInvokeActionReturnObjectViewModel() = ObjectActionInvoke19.GetInvokeActionReturnObjectViewModel x.API    
-
-    [<Test>]
-    member x.GetInvokeActionReturnViewModelObject() = ObjectActionInvoke19.GetInvokeActionReturnViewModelObject x.API
-    [<Test>]
-    member x.GetInvokeActionReturnViewModelService() = ObjectActionInvoke19.GetInvokeActionReturnViewModelService x.API    
-    [<Test>]
-    member x.GetInvokeActionReturnViewModelViewModel() = ObjectActionInvoke19.GetInvokeActionReturnViewModelViewModel x.API    
+    member x.PutInvokeActionReturnViewModelViewModel() = ObjectActionInvoke19.PutInvokeActionReturnViewModelViewModel api   
 
 
     [<Test>]
-    member x.GetInvokeActionReturnNullObjectObject() = ObjectActionInvoke19.GetInvokeActionReturnNullObjectObject x.API
+    member x.PutInvokeActionReturnNullObjectObject() = ObjectActionInvoke19.PutInvokeActionReturnNullObjectObject api
     [<Test>]
-    member x.GetInvokeActionReturnNullObjectService() = ObjectActionInvoke19.GetInvokeActionReturnNullObjectService x.API   
+    member x.PutInvokeActionReturnNullObjectService() = ObjectActionInvoke19.PutInvokeActionReturnNullObjectService api  
     [<Test>]
-    member x.GetInvokeActionReturnNullObjectViewModel() = ObjectActionInvoke19.GetInvokeActionReturnNullObjectViewModel x.API   
+    member x.PutInvokeActionReturnNullObjectViewModel() = ObjectActionInvoke19.PutInvokeActionReturnNullObjectViewModel api  
 
     [<Test>]
-    member x.GetInvokeActionReturnObjectObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnObjectObjectValidateOnly x.API
+    member x.PutInvokeActionReturnObjectObjectValidateOnly() = ObjectActionInvoke19.PutInvokeActionReturnObjectObjectValidateOnly api
     [<Test>]
-    member x.GetInvokeActionReturnObjectServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnObjectServiceValidateOnly x.API   
+    member x.PutInvokeActionReturnObjectServiceValidateOnly() = ObjectActionInvoke19.PutInvokeActionReturnObjectServiceValidateOnly api  
     [<Test>]
-    member x.GetInvokeActionReturnObjectViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnObjectViewModelValidateOnly x.API   
+    member x.PutInvokeActionReturnObjectViewModelValidateOnly() = ObjectActionInvoke19.PutInvokeActionReturnObjectViewModelValidateOnly api  
 
     [<Test>]
-    member x.PostInvokeContribActionReturnObject() = ObjectActionInvoke19.PostInvokeContribActionReturnObject x.API
+    member x.PutInvokeActionReturnObjectObjectConcurrencySuccess() = ObjectActionInvoke19.PutInvokeActionReturnObjectObjectConcurrencySuccess api
     [<Test>]
-    member x.PostInvokeContribActionReturnObjectWithRefParm() = ObjectActionInvoke19.PostInvokeContribActionReturnObjectWithRefParm x.API
+    member x.PutInvokeActionReturnObjectServiceConcurrencySuccess() = ObjectActionInvoke19.PutInvokeActionReturnObjectServiceConcurrencySuccess api   
     [<Test>]
-    member x.PostInvokeContribActionReturnObjectWithValueParm() = ObjectActionInvoke19.PostInvokeContribActionReturnObjectWithValueParm x.API
+    member x.PutInvokeActionReturnObjectViewModelConcurrencySuccess() = ObjectActionInvoke19.PutInvokeActionReturnObjectViewModelConcurrencySuccess api   
+
     [<Test>]
-    member x.PostInvokeContribActionReturnObjectBaseClass() = ObjectActionInvoke19.PostInvokeContribActionReturnObjectBaseClass x.API
+    member x.GetInvokeActionReturnObjectObject() = ObjectActionInvoke19.GetInvokeActionReturnObjectObject api
     [<Test>]
-    member x.PostInvokeActionReturnObjectObjectWithMediaType() = ObjectActionInvoke19.PostInvokeActionReturnObjectObjectWithMediaType x.API
+    member x.GetInvokeActionReturnObjectService() = ObjectActionInvoke19.GetInvokeActionReturnObjectService api    
     [<Test>]
-    member x.PostInvokeActionReturnObjectServiceWithMediaType() = ObjectActionInvoke19.PostInvokeActionReturnObjectServiceWithMediaType x.API  
+    member x.GetInvokeActionReturnObjectViewModel() = ObjectActionInvoke19.GetInvokeActionReturnObjectViewModel api    
+
     [<Test>]
-    member x.PostInvokeActionReturnObjectViewModelWithMediaType() = ObjectActionInvoke19.PostInvokeActionReturnObjectViewModelWithMediaType x.API  
+    member x.GetInvokeActionReturnViewModelObject() = ObjectActionInvoke19.GetInvokeActionReturnViewModelObject api
+    [<Test>]
+    member x.GetInvokeActionReturnViewModelService() = ObjectActionInvoke19.GetInvokeActionReturnViewModelService api    
+    [<Test>]
+    member x.GetInvokeActionReturnViewModelViewModel() = ObjectActionInvoke19.GetInvokeActionReturnViewModelViewModel api    
+
+
+    [<Test>]
+    member x.GetInvokeActionReturnNullObjectObject() = ObjectActionInvoke19.GetInvokeActionReturnNullObjectObject api
+    [<Test>]
+    member x.GetInvokeActionReturnNullObjectService() = ObjectActionInvoke19.GetInvokeActionReturnNullObjectService api   
+    [<Test>]
+    member x.GetInvokeActionReturnNullObjectViewModel() = ObjectActionInvoke19.GetInvokeActionReturnNullObjectViewModel api   
+
+    [<Test>]
+    member x.GetInvokeActionReturnObjectObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnObjectObjectValidateOnly api
+    [<Test>]
+    member x.GetInvokeActionReturnObjectServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnObjectServiceValidateOnly api   
+    [<Test>]
+    member x.GetInvokeActionReturnObjectViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnObjectViewModelValidateOnly api   
+
+    [<Test>]
+    member x.PostInvokeContribActionReturnObject() = ObjectActionInvoke19.PostInvokeContribActionReturnObject api
+    [<Test>]
+    member x.PostInvokeContribActionReturnObjectWithRefParm() = ObjectActionInvoke19.PostInvokeContribActionReturnObjectWithRefParm api
+    [<Test>]
+    member x.PostInvokeContribActionReturnObjectWithValueParm() = ObjectActionInvoke19.PostInvokeContribActionReturnObjectWithValueParm api
+    [<Test>]
+    member x.PostInvokeContribActionReturnObjectBaseClass() = ObjectActionInvoke19.PostInvokeContribActionReturnObjectBaseClass api
+    [<Test>]
+    member x.PostInvokeActionReturnObjectObjectWithMediaType() = ObjectActionInvoke19.PostInvokeActionReturnObjectObjectWithMediaType api
+    [<Test>]
+    member x.PostInvokeActionReturnObjectServiceWithMediaType() = ObjectActionInvoke19.PostInvokeActionReturnObjectServiceWithMediaType api  
+    [<Test>]
+    member x.PostInvokeActionReturnObjectViewModelWithMediaType() = ObjectActionInvoke19.PostInvokeActionReturnObjectViewModelWithMediaType api  
        
     [<Test>]
-    member x.PostInvokeActionReturnObjectObjectConcurrencySuccess() = ObjectActionInvoke19.PostInvokeActionReturnObjectObjectConcurrencySuccess x.API
+    member x.PostInvokeActionReturnObjectObjectConcurrencySuccess() = ObjectActionInvoke19.PostInvokeActionReturnObjectObjectConcurrencySuccess api
     [<Test>]
-    member x.PostInvokeActionReturnObjectServiceConcurrencySuccess() = ObjectActionInvoke19.PostInvokeActionReturnObjectServiceConcurrencySuccess x.API  
+    member x.PostInvokeActionReturnObjectServiceConcurrencySuccess() = ObjectActionInvoke19.PostInvokeActionReturnObjectServiceConcurrencySuccess api  
     [<Test>]
-    member x.PostInvokeActionReturnObjectViewModelConcurrencySuccess() = ObjectActionInvoke19.PostInvokeActionReturnObjectViewModelConcurrencySuccess x.API  
+    member x.PostInvokeActionReturnObjectViewModelConcurrencySuccess() = ObjectActionInvoke19.PostInvokeActionReturnObjectViewModelConcurrencySuccess api  
 
     [<Test>]
-    member x.PostInvokeActionReturnObjectObjectConcurrencyFail() = ObjectActionInvoke19.PostInvokeActionReturnObjectObjectConcurrencyFail x.API
+    member x.PostInvokeActionReturnObjectObjectConcurrencyFail() = ObjectActionInvoke19.PostInvokeActionReturnObjectObjectConcurrencyFail api
     [<Test>]
-    member x.PostInvokeActionReturnObjectObjectMissingIfMatch() = ObjectActionInvoke19.PostInvokeActionReturnObjectObjectMissingIfMatch x.API
+    member x.PostInvokeActionReturnObjectObjectMissingIfMatch() = ObjectActionInvoke19.PostInvokeActionReturnObjectObjectMissingIfMatch api
     [<Test>]
-    member x.PutInvokeActionReturnObjectObjectConcurrencyFail() = ObjectActionInvoke19.PutInvokeActionReturnObjectObjectConcurrencyFail x.API
+    member x.PutInvokeActionReturnObjectObjectConcurrencyFail() = ObjectActionInvoke19.PutInvokeActionReturnObjectObjectConcurrencyFail api
     [<Test>]
-    member x.PutInvokeActionReturnObjectObjectMissingIfMatch() = ObjectActionInvoke19.PutInvokeActionReturnObjectObjectMissingIfMatch x.API
+    member x.PutInvokeActionReturnObjectObjectMissingIfMatch() = ObjectActionInvoke19.PutInvokeActionReturnObjectObjectMissingIfMatch api
     [<Test>]
-    member x.GetInvokeActionReturnObjectObjectConcurrencySuccess() = ObjectActionInvoke19.GetInvokeActionReturnObjectObjectConcurrencySuccess x.API
+    member x.GetInvokeActionReturnObjectObjectConcurrencySuccess() = ObjectActionInvoke19.GetInvokeActionReturnObjectObjectConcurrencySuccess api
     [<Test>]
-    member x.GetInvokeActionReturnObjectServiceConcurrencySuccess() = ObjectActionInvoke19.GetInvokeActionReturnObjectServiceConcurrencySuccess x.API 
+    member x.GetInvokeActionReturnObjectServiceConcurrencySuccess() = ObjectActionInvoke19.GetInvokeActionReturnObjectServiceConcurrencySuccess api 
     [<Test>]
-    member x.GetInvokeActionReturnObjectViewModelConcurrencySuccess() = ObjectActionInvoke19.GetInvokeActionReturnObjectViewModelConcurrencySuccess x.API 
+    member x.GetInvokeActionReturnObjectViewModelConcurrencySuccess() = ObjectActionInvoke19.GetInvokeActionReturnObjectViewModelConcurrencySuccess api 
 
     [<Test>]
-    member x.GetInvokeActionReturnObjectObjectConcurrencyNoIfMatch() = ObjectActionInvoke19.GetInvokeActionReturnObjectObjectConcurrencyNoIfMatch x.API
+    member x.GetInvokeActionReturnObjectObjectConcurrencyNoIfMatch() = ObjectActionInvoke19.GetInvokeActionReturnObjectObjectConcurrencyNoIfMatch api
     [<Test>]
-    member x.GetInvokeActionReturnObjectServiceConcurrencyNoIfMatch() = ObjectActionInvoke19.GetInvokeActionReturnObjectServiceConcurrencyNoIfMatch x.API 
+    member x.GetInvokeActionReturnObjectServiceConcurrencyNoIfMatch() = ObjectActionInvoke19.GetInvokeActionReturnObjectServiceConcurrencyNoIfMatch api 
     [<Test>]
-    member x.GetInvokeActionReturnObjectViewModelConcurrencyNoIfMatch() = ObjectActionInvoke19.GetInvokeActionReturnObjectViewModelConcurrencyNoIfMatch x.API 
+    member x.GetInvokeActionReturnObjectViewModelConcurrencyNoIfMatch() = ObjectActionInvoke19.GetInvokeActionReturnObjectViewModelConcurrencyNoIfMatch api 
       
     [<Test>]
-    member x.PostInvokeActionReturnScalarObject() = ObjectActionInvoke19.PostInvokeActionReturnScalarObject x.API
+    member x.PostInvokeActionReturnScalarObject() = ObjectActionInvoke19.PostInvokeActionReturnScalarObject api
     [<Test>]
-    member x.PostInvokeActionReturnScalarService() = ObjectActionInvoke19.PostInvokeActionReturnScalarService x.API   
+    member x.PostInvokeActionReturnScalarService() = ObjectActionInvoke19.PostInvokeActionReturnScalarService api   
     [<Test>]
-    member x.PostInvokeActionReturnScalarViewModel() = ObjectActionInvoke19.PostInvokeActionReturnScalarViewModel x.API   
+    member x.PostInvokeActionReturnScalarViewModel() = ObjectActionInvoke19.PostInvokeActionReturnScalarViewModel api   
 
     [<Test>]
-    member x.PostInvokeActionReturnScalarObjectFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarObjectFormalOnly x.API
+    member x.PostInvokeActionReturnScalarObjectFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarObjectFormalOnly api
     [<Test>]
-    member x.PostInvokeActionReturnScalarServiceFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarServiceFormalOnly x.API  
+    member x.PostInvokeActionReturnScalarServiceFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarServiceFormalOnly api  
     [<Test>]
-    member x.PostInvokeActionReturnScalarViewModelFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarViewModelFormalOnly x.API  
+    member x.PostInvokeActionReturnScalarViewModelFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarViewModelFormalOnly api  
 
     [<Test>]
-    member x.PostInvokeActionReturnScalarObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarObjectValidateOnly x.API
+    member x.PostInvokeActionReturnScalarObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarObjectValidateOnly api
     [<Test>]
-    member x.PostInvokeActionReturnScalarServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarServiceValidateOnly x.API  
+    member x.PostInvokeActionReturnScalarServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarServiceValidateOnly api  
     [<Test>]
-    member x.PostInvokeActionReturnScalarViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarViewModelValidateOnly x.API  
+    member x.PostInvokeActionReturnScalarViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarViewModelValidateOnly api  
 
     [<Test>]
-    member x.PostInvokeActionReturnEmptyScalarObject() = ObjectActionInvoke19.PostInvokeActionReturnEmptyScalarObject x.API
+    member x.PostInvokeActionReturnEmptyScalarObject() = ObjectActionInvoke19.PostInvokeActionReturnEmptyScalarObject api
     [<Test>]
-    member x.PostInvokeActionReturnEmptyScalarService() = ObjectActionInvoke19.PostInvokeActionReturnEmptyScalarService x.API  
+    member x.PostInvokeActionReturnEmptyScalarService() = ObjectActionInvoke19.PostInvokeActionReturnEmptyScalarService api  
     [<Test>]
-    member x.PostInvokeActionReturnEmptyScalarViewModel() = ObjectActionInvoke19.PostInvokeActionReturnEmptyScalarViewModel x.API  
+    member x.PostInvokeActionReturnEmptyScalarViewModel() = ObjectActionInvoke19.PostInvokeActionReturnEmptyScalarViewModel api  
 
     [<Test>]
-    member x.PostInvokeActionReturnNullScalarObject() = ObjectActionInvoke19.PostInvokeActionReturnNullScalarObject x.API
+    member x.PostInvokeActionReturnNullScalarObject() = ObjectActionInvoke19.PostInvokeActionReturnNullScalarObject api
     [<Test>]
-    member x.PostInvokeActionReturnNullScalarService() = ObjectActionInvoke19.PostInvokeActionReturnNullScalarService x.API  
+    member x.PostInvokeActionReturnNullScalarService() = ObjectActionInvoke19.PostInvokeActionReturnNullScalarService api  
     [<Test>]
-    member x.PostInvokeActionReturnNullScalarViewModel() = ObjectActionInvoke19.PostInvokeActionReturnNullScalarViewModel x.API  
+    member x.PostInvokeActionReturnNullScalarViewModel() = ObjectActionInvoke19.PostInvokeActionReturnNullScalarViewModel api  
     [<Test>]
-    member x.PostInvokeActionReturnVoidObject() = ObjectActionInvoke19.PostInvokeActionReturnVoidObject x.API
+    member x.PostInvokeActionReturnVoidObject() = ObjectActionInvoke19.PostInvokeActionReturnVoidObject api
     [<Test>]
-    member x.PostInvokeActionReturnVoidService() = ObjectActionInvoke19.PostInvokeActionReturnVoidService x.API    
+    member x.PostInvokeActionReturnVoidService() = ObjectActionInvoke19.PostInvokeActionReturnVoidService api    
     [<Test>]
-    member x.PostInvokeActionReturnVoidViewModel() = ObjectActionInvoke19.PostInvokeActionReturnVoidViewModel x.API    
+    member x.PostInvokeActionReturnVoidViewModel() = ObjectActionInvoke19.PostInvokeActionReturnVoidViewModel api    
 
     [<Test>]
-    member x.PostInvokeActionReturnVoidObjectFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidObjectFormalOnly x.API
+    member x.PostInvokeActionReturnVoidObjectFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidObjectFormalOnly api
     [<Test>]
-    member x.PostInvokeActionReturnVoidServiceFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidServiceFormalOnly x.API   
+    member x.PostInvokeActionReturnVoidServiceFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidServiceFormalOnly api   
     [<Test>]
-    member x.PostInvokeActionReturnVoidViewModelFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidViewModelFormalOnly x.API   
+    member x.PostInvokeActionReturnVoidViewModelFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidViewModelFormalOnly api   
 
     [<Test>]
-    member x.PostInvokeActionReturnVoidObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidObjectValidateOnly x.API
+    member x.PostInvokeActionReturnVoidObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidObjectValidateOnly api
     [<Test>]
-    member x.PostInvokeActionReturnVoidServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidServiceValidateOnly x.API  
+    member x.PostInvokeActionReturnVoidServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidServiceValidateOnly api  
     [<Test>]
-    member x.PostInvokeActionReturnVoidViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidViewModelValidateOnly x.API  
+    member x.PostInvokeActionReturnVoidViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidViewModelValidateOnly api  
 
     [<Test>]
-    member x.GetInvokeActionReturnQueryObject() = ObjectActionInvoke19.GetInvokeActionReturnQueryObject x.API
+    member x.GetInvokeActionReturnQueryObject() = ObjectActionInvoke19.GetInvokeActionReturnQueryObject api
     [<Test>]
-    member x.GetInvokeActionReturnQueryService() = ObjectActionInvoke19.GetInvokeActionReturnQueryService x.API    
+    member x.GetInvokeActionReturnQueryService() = ObjectActionInvoke19.GetInvokeActionReturnQueryService api    
     [<Test>]
-    member x.GetInvokeActionReturnQueryViewModel() = ObjectActionInvoke19.GetInvokeActionReturnQueryViewModel x.API    
+    member x.GetInvokeActionReturnQueryViewModel() = ObjectActionInvoke19.GetInvokeActionReturnQueryViewModel api    
 
     [<Test>]
-    member x.GetInvokeActionReturnQueryObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnQueryObjectValidateOnly x.API
+    member x.GetInvokeActionReturnQueryObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnQueryObjectValidateOnly api
     [<Test>]
-    member x.GetInvokeActionReturnQueryServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnQueryServiceValidateOnly x.API   
+    member x.GetInvokeActionReturnQueryServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnQueryServiceValidateOnly api   
     [<Test>]
-    member x.GetInvokeActionReturnQueryViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnQueryViewModelValidateOnly x.API   
+    member x.GetInvokeActionReturnQueryViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnQueryViewModelValidateOnly api   
 
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnScalarObject() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnScalarObject x.API
+    member x.PostInvokeActionWithReferenceParmsReturnScalarObject() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnScalarObject api
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnScalarService() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnScalarService x.API    
+    member x.PostInvokeActionWithReferenceParmsReturnScalarService() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnScalarService api    
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnScalarViewModel() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnScalarViewModel x.API    
+    member x.PostInvokeActionWithReferenceParmsReturnScalarViewModel() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnScalarViewModel api    
 
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnScalarObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnScalarObjectValidateOnly x.API
+    member x.PostInvokeActionWithReferenceParmsReturnScalarObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnScalarObjectValidateOnly api
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnScalarServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnScalarServiceValidateOnly x.API     
+    member x.PostInvokeActionWithReferenceParmsReturnScalarServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnScalarServiceValidateOnly api     
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnScalarViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnScalarViewModelValidateOnly x.API     
-
-
-    [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnVoidObject() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnVoidObject x.API
-    [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnVoidService() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnVoidService x.API  
-    [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnVoidViewModel() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnVoidViewModel x.API  
+    member x.PostInvokeActionWithReferenceParmsReturnScalarViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnScalarViewModelValidateOnly api     
 
 
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnVoidObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnVoidObjectValidateOnly x.API
+    member x.PostInvokeActionWithReferenceParmsReturnVoidObject() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnVoidObject api
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnVoidServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnVoidServiceValidateOnly x.API       
+    member x.PostInvokeActionWithReferenceParmsReturnVoidService() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnVoidService api  
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnVoidViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnVoidViewModelValidateOnly x.API       
+    member x.PostInvokeActionWithReferenceParmsReturnVoidViewModel() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnVoidViewModel api  
 
 
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnObjectObject() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnObjectObject x.API
+    member x.PostInvokeActionWithReferenceParmsReturnVoidObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnVoidObjectValidateOnly api
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnObjectService() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnObjectService x.API   
+    member x.PostInvokeActionWithReferenceParmsReturnVoidServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnVoidServiceValidateOnly api       
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnObjectViewModel() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnObjectViewModel x.API   
+    member x.PostInvokeActionWithReferenceParmsReturnVoidViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnVoidViewModelValidateOnly api       
 
 
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly x.API
+    member x.PostInvokeActionWithReferenceParmsReturnObjectObject() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnObjectObject api
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly x.API    
+    member x.PostInvokeActionWithReferenceParmsReturnObjectService() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnObjectService api   
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly x.API    
+    member x.PostInvokeActionWithReferenceParmsReturnObjectViewModel() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnObjectViewModel api   
 
 
     [<Test>]
-    member x.PutInvokeActionWithReferenceParmsReturnObjectObject() = ObjectActionInvoke19.PutInvokeActionWithReferenceParmsReturnObjectObject x.API
+    member x.PostInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly api
     [<Test>]
-    member x.PutInvokeActionWithReferenceParmsReturnObjectService() = ObjectActionInvoke19.PutInvokeActionWithReferenceParmsReturnObjectService x.API    
+    member x.PostInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly api    
     [<Test>]
-    member x.PutInvokeActionWithReferenceParmsReturnObjectViewModel() = ObjectActionInvoke19.PutInvokeActionWithReferenceParmsReturnObjectViewModel x.API    
-    
-      
-    [<Test>]
-    member x.PutInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly() = ObjectActionInvoke19.PutInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly x.API
-    [<Test>]
-    member x.PutInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly() = ObjectActionInvoke19.PutInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly x.API   
-    [<Test>]
-    member x.PutInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly() = ObjectActionInvoke19.PutInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly x.API   
+    member x.PostInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly api    
 
 
     [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnObjectObject() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectObject x.API
+    member x.PutInvokeActionWithReferenceParmsReturnObjectObject() = ObjectActionInvoke19.PutInvokeActionWithReferenceParmsReturnObjectObject api
     [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnObjectService() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectService x.API   
+    member x.PutInvokeActionWithReferenceParmsReturnObjectService() = ObjectActionInvoke19.PutInvokeActionWithReferenceParmsReturnObjectService api    
     [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnObjectViewModel() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectViewModel x.API   
-
-
-    [<Test>]
-    member x.GetInvokeActionWithParmReturnObjectObject() = ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectObject x.API
-    [<Test>]
-    member x.GetInvokeActionWithParmReturnObjectService() = ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectService x.API  
-    [<Test>]
-    member x.GetInvokeActionWithParmReturnObjectViewModel() = ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectViewModel x.API  
-    
-     
-    [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly x.API
-    [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly x.API     
-    [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly x.API     
+    member x.PutInvokeActionWithReferenceParmsReturnObjectViewModel() = ObjectActionInvoke19.PutInvokeActionWithReferenceParmsReturnObjectViewModel api    
     
       
     [<Test>]
-    member x.NotFoundActionInvokeObject() = ObjectActionInvoke19.NotFoundActionInvokeObject x.API
+    member x.PutInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly() = ObjectActionInvoke19.PutInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly api
     [<Test>]
-    member x.NotFoundActionInvokeService() = ObjectActionInvoke19.NotFoundActionInvokeService x.API  
+    member x.PutInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly() = ObjectActionInvoke19.PutInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly api   
     [<Test>]
-    member x.NotFoundActionInvokeViewModel() = ObjectActionInvoke19.NotFoundActionInvokeViewModel x.API  
+    member x.PutInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly() = ObjectActionInvoke19.PutInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly api   
 
 
     [<Test>]
-    member x.HiddenActionInvokeObject() = ObjectActionInvoke19.HiddenActionInvokeObject x.API
+    member x.GetInvokeActionWithReferenceParmsReturnObjectObject() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectObject api
     [<Test>]
-    member x.HiddenActionInvokeService() = ObjectActionInvoke19.HiddenActionInvokeService x.API   
+    member x.GetInvokeActionWithReferenceParmsReturnObjectService() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectService api   
     [<Test>]
-    member x.HiddenActionInvokeViewModel() = ObjectActionInvoke19.HiddenActionInvokeViewModel x.API   
+    member x.GetInvokeActionWithReferenceParmsReturnObjectViewModel() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectViewModel api   
 
 
     [<Test>]
-    member x.GetActionWithSideEffectsObject() = ObjectActionInvoke19.GetActionWithSideEffectsObject x.API
+    member x.GetInvokeActionWithParmReturnObjectObject() = ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectObject api
     [<Test>]
-    member x.GetActionWithSideEffectsService() = ObjectActionInvoke19.GetActionWithSideEffectsService x.API   
+    member x.GetInvokeActionWithParmReturnObjectService() = ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectService api  
     [<Test>]
-    member x.GetActionWithSideEffectsViewModel() = ObjectActionInvoke19.GetActionWithSideEffectsViewModel x.API   
-
-
-    [<Test>]
-    member x.GetActionWithIdempotentObject() = ObjectActionInvoke19.GetActionWithIdempotentObject x.API
-    [<Test>]
-    member x.GetActionWithIdempotentService() = ObjectActionInvoke19.GetActionWithIdempotentService x.API  
-    [<Test>]
-    member x.GetActionWithIdempotentViewModel() = ObjectActionInvoke19.GetActionWithIdempotentViewModel x.API  
-
-
-    [<Test>]
-    member x.PutActionWithQueryOnlyObject() = ObjectActionInvoke19.PutActionWithQueryOnlyObject x.API
-    [<Test>]
-    member x.PutActionWithQueryOnlyService() = ObjectActionInvoke19.PutActionWithQueryOnlyService x.API  
-    [<Test>]
-    member x.PutActionWithQueryOnlyViewModel() = ObjectActionInvoke19.PutActionWithQueryOnlyViewModel x.API  
-
-
-    [<Test>]
-    member x.NotAcceptableGetInvokeWrongMediaTypeObject() = ObjectActionInvoke19.NotAcceptableGetInvokeWrongMediaTypeObject x.API
-    [<Test>]
-    member x.NotAcceptableGetInvokeWrongMediaTypeService() = ObjectActionInvoke19.NotAcceptableGetInvokeWrongMediaTypeService x.API   
-    [<Test>]
-    member x.NotAcceptableGetInvokeWrongMediaTypeViewModel() = ObjectActionInvoke19.NotAcceptableGetInvokeWrongMediaTypeViewModel x.API   
-
-
-    [<Test>]
-    member x.MissingParmsOnPostObject() = ObjectActionInvoke19.MissingParmsOnPostObject x.API
-    [<Test>]
-    member x.MissingParmsOnPostService() = ObjectActionInvoke19.MissingParmsOnPostService x.API   
-    [<Test>]
-    member x.MissingParmsOnPostViewModel() = ObjectActionInvoke19.MissingParmsOnPostViewModel x.API   
-
-
-    [<Test>]
-    member x.DisabledActionPostInvokeObject() = ObjectActionInvoke19.DisabledActionPostInvokeObject x.API 
-    [<Test>]
-    member x.DisabledActionPostInvokeService() = ObjectActionInvoke19.DisabledActionPostInvokeService x.API 
-    [<Test>]
-    member x.DisabledActionPostInvokeViewModel() = ObjectActionInvoke19.DisabledActionPostInvokeViewModel x.API 
-
-
-    [<Test>]
-    member x.UserDisabledActionPostInvokeObject() = ObjectActionInvoke19.UserDisabledActionPostInvokeObject x.API 
-    [<Test>]
-    member x.UserDisabledActionPostInvokeService() = ObjectActionInvoke19.UserDisabledActionPostInvokeService x.API 
-    [<Test>]
-    member x.UserDisabledActionPostInvokeViewModel() = ObjectActionInvoke19.UserDisabledActionPostInvokeViewModel x.API 
-
-
-    [<Test>]
-    member x.NotFoundActionPostInvokeObject() = ObjectActionInvoke19.NotFoundActionPostInvokeObject x.API
-    [<Test>]
-    member x.NotFoundActionPostInvokeService() = ObjectActionInvoke19.NotFoundActionPostInvokeService x.API  
-    [<Test>]
-    member x.NotFoundActionPostInvokeViewModel() = ObjectActionInvoke19.NotFoundActionPostInvokeViewModel x.API  
-
-
-    [<Test>]
-    member x.HiddenActionPostInvokeObject() = ObjectActionInvoke19.HiddenActionPostInvokeObject x.API
-    [<Test>]
-    member x.HiddenActionPostInvokeService() = ObjectActionInvoke19.HiddenActionPostInvokeService x.API   
-    [<Test>]
-    member x.HiddenActionPostInvokeViewModel() = ObjectActionInvoke19.HiddenActionPostInvokeViewModel x.API   
-
-
-    [<Test>]    
-    member x.NotAcceptablePostInvokeWrongMediaTypeObject() = ObjectActionInvoke19.NotAcceptablePostInvokeWrongMediaTypeObject x.API
-    [<Test>]    
-    member x.NotAcceptablePostInvokeWrongMediaTypeService() = ObjectActionInvoke19.NotAcceptablePostInvokeWrongMediaTypeService x.API   
-    [<Test>]    
-    member x.NotAcceptablePostInvokeWrongMediaTypeViewModel() = ObjectActionInvoke19.NotAcceptablePostInvokeWrongMediaTypeViewModel x.API   
-
-
-    [<Test>]
-    member x.PostQueryActionWithErrorObject() = ObjectActionInvoke19.PostQueryActionWithErrorObject x.API
-    [<Test>]
-    member x.PostQueryActionWithErrorService() = ObjectActionInvoke19.PostQueryActionWithErrorService x.API    
-    [<Test>]
-    member x.PostQueryActionWithErrorViewModel() = ObjectActionInvoke19.PostQueryActionWithErrorViewModel x.API    
-
-
-    [<Test>]
-    member x.GetQueryActionWithErrorObject() = ObjectActionInvoke19.GetQueryActionWithErrorObject x.API
-    [<Test>]
-    member x.GetQueryActionWithErrorService() = ObjectActionInvoke19.GetQueryActionWithErrorService x.API 
-    [<Test>]
-    member x.GetQueryActionWithErrorViewModel() = ObjectActionInvoke19.GetQueryActionWithErrorViewModel x.API 
-
-
-    [<Test>]
-    member x.MalformedFormalParmsOnPostQueryObject() = ObjectActionInvoke19.MalformedFormalParmsOnPostQueryObject x.API
-    [<Test>]
-    member x.MalformedFormalParmsOnPostQueryService() = ObjectActionInvoke19.MalformedFormalParmsOnPostQueryService x.API 
-    [<Test>]
-    member x.MalformedFormalParmsOnPostQueryViewModel() = ObjectActionInvoke19.MalformedFormalParmsOnPostQueryViewModel x.API 
-
-
-    
-    [<Test>]
-    member x.WrongTypeFormalParmsOnPostQueryObject() = ObjectActionInvoke19.WrongTypeFormalParmsOnPostQueryObject x.API
-    [<Test>]
-    member x.WrongTypeFormalParmsOnPostQueryService() = ObjectActionInvoke19.WrongTypeFormalParmsOnPostQueryService x.API 
-    [<Test>]
-    member x.WrongTypeFormalParmsOnPostQueryViewModel() = ObjectActionInvoke19.WrongTypeFormalParmsOnPostQueryViewModel x.API 
-
-     
-    [<Test>]
-    member x.EmptyFormalParmsOnPostQueryObject() = ObjectActionInvoke19.EmptyFormalParmsOnPostQueryObject x.API
-    [<Test>]
-    member x.EmptyFormalParmsOnPostQueryService() = ObjectActionInvoke19.EmptyFormalParmsOnPostQueryService x.API 
-    [<Test>]
-    member x.EmptyFormalParmsOnPostQueryViewModel() = ObjectActionInvoke19.EmptyFormalParmsOnPostQueryViewModel x.API 
-
-    [<Test>]
-    member x.InvalidFormalParmsOnPostQueryObject() = ObjectActionInvoke19.InvalidFormalParmsOnPostQueryObject x.API
-    [<Test>]
-    member x.InvalidFormalParmsOnPostQueryService() = ObjectActionInvoke19.InvalidFormalParmsOnPostQueryService x.API   
-    [<Test>]
-    member x.InvalidFormalParmsOnPostQueryViewModel() = ObjectActionInvoke19.InvalidFormalParmsOnPostQueryViewModel x.API   
-
-
-    [<Test>]
-    member x.MissingParmsOnGetQueryObject() = ObjectActionInvoke19.MissingParmsOnGetQueryObject x.API
-    [<Test>]
-    member x.MissingParmsOnGetQueryService() = ObjectActionInvoke19.MissingParmsOnGetQueryService x.API   
-    [<Test>]
-    member x.MissingParmsOnGetQueryViewModel() = ObjectActionInvoke19.MissingParmsOnGetQueryViewModel x.API   
-
-
-    [<Test>]
-    member x.MalformedSimpleParmsOnGetQueryObject() = ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryObject x.API
-    [<Test>]
-    member x.MalformedSimpleParmsOnGetQueryService() = ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryService x.API   
-    [<Test>]
-    member x.MalformedSimpleParmsOnGetQueryViewModel() = ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryViewModel x.API   
-
-
-    [<Test>]
-    member x.MalformedFormalParmsOnGetQueryObject() = ObjectActionInvoke19.MalformedFormalParmsOnGetQueryObject x.API
-    [<Test>]
-    member x.MalformedFormalParmsOnGetQueryService() = ObjectActionInvoke19.MalformedFormalParmsOnGetQueryService x.API   
-    [<Test>]
-    member x.MalformedFormalParmsOnGetQueryViewModel() = ObjectActionInvoke19.MalformedFormalParmsOnGetQueryViewModel x.API   
-
-
-    [<Test>]
-    member x.InvalidSimpleParmsOnGetQueryObject() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryObject x.API
-    [<Test>]
-    member x.InvalidSimpleParmsOnGetQueryService() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryService x.API    
-    [<Test>]
-    member x.InvalidSimpleParmsOnGetQueryViewModel() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryViewModel x.API    
-
-
-    [<Test>]
-    member x.InvalidFormalParmsOnGetQueryObject() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryObject x.API
-    [<Test>]
-    member x.InvalidFormalParmsOnGetQueryService() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryService x.API  
-    [<Test>]
-    member x.InvalidFormalParmsOnGetQueryViewModel() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryViewModel x.API  
-
-
-    [<Test>]
-    member x.DisabledActionInvokeQueryObject() = ObjectActionInvoke19.DisabledActionInvokeQueryObject x.API
-    [<Test>]
-    member x.DisabledActionInvokeQueryService() = ObjectActionInvoke19.DisabledActionInvokeQueryService x.API    
-    [<Test>]
-    member x.DisabledActionInvokeQueryViewModel() = ObjectActionInvoke19.DisabledActionInvokeQueryViewModel x.API    
-
-
-    [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnQuerySimpleObject() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleObject x.API
-    [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnQuerySimpleService() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleService x.API   
-    [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModel x.API   
-    
-    [<Test>]
-    member x.GetInvokeActionWithScalarMissingParmsSimpleObject() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsSimpleObject x.API
-    [<Test>]
-    member x.GetInvokeActionWithScalarMissingParmsSimpleService() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsSimpleService x.API   
-    [<Test>]
-    member x.GetInvokeActionWithScalarMissingParmsSimpleViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsSimpleViewModel x.API   
-    
-    [<Test>]
-    member x.GetInvokeActionWithScalarMissingParmsFormalObject() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsFormalObject x.API
-    [<Test>]
-    member x.GetInvokeActionWithScalarMissingParmsFormalService() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsFormalService x.API   
-    [<Test>]
-    member x.GetInvokeActionWithScalarMissingParmsFormalViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsFormalViewModel x.API   
-
-    [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnQuerySimpleObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleObjectValidateOnly x.API
-    [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnQuerySimpleServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleServiceValidateOnly x.API        
-    [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModelValidateOnly x.API        
+    member x.GetInvokeActionWithParmReturnObjectViewModel() = ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectViewModel api  
     
      
     [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnQueryFormalObject() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalObject x.API
+    member x.GetInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly api
     [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnQueryFormalService() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalService x.API   
+    member x.GetInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly api     
     [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnQueryFormalViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalViewModel x.API   
+    member x.GetInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly api     
+    
+      
+    [<Test>]
+    member x.NotFoundActionInvokeObject() = ObjectActionInvoke19.NotFoundActionInvokeObject api
+    [<Test>]
+    member x.NotFoundActionInvokeService() = ObjectActionInvoke19.NotFoundActionInvokeService api  
+    [<Test>]
+    member x.NotFoundActionInvokeViewModel() = ObjectActionInvoke19.NotFoundActionInvokeViewModel api  
 
 
     [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnQueryFormalObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalObjectValidateOnly x.API
+    member x.HiddenActionInvokeObject() = ObjectActionInvoke19.HiddenActionInvokeObject api
     [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnQueryFormalServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalServiceValidateOnly x.API   
+    member x.HiddenActionInvokeService() = ObjectActionInvoke19.HiddenActionInvokeService api   
     [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnQueryFormalViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalViewModelValidateOnly x.API   
+    member x.HiddenActionInvokeViewModel() = ObjectActionInvoke19.HiddenActionInvokeViewModel api   
 
 
     [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnQueryFormalObject() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalObject x.API
+    member x.GetActionWithSideEffectsObject() = ObjectActionInvoke19.GetActionWithSideEffectsObject api
     [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnQueryFormalService() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalService x.API  
+    member x.GetActionWithSideEffectsService() = ObjectActionInvoke19.GetActionWithSideEffectsService api   
     [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnQueryFormalViewModel() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalViewModel x.API  
+    member x.GetActionWithSideEffectsViewModel() = ObjectActionInvoke19.GetActionWithSideEffectsViewModel api   
 
 
     [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnQueryFormalObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalObjectValidateOnly x.API
+    member x.GetActionWithIdempotentObject() = ObjectActionInvoke19.GetActionWithIdempotentObject api
     [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnQueryFormalServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalServiceValidateOnly x.API  
+    member x.GetActionWithIdempotentService() = ObjectActionInvoke19.GetActionWithIdempotentService api  
     [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnQueryFormalViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalViewModelValidateOnly x.API  
+    member x.GetActionWithIdempotentViewModel() = ObjectActionInvoke19.GetActionWithIdempotentViewModel api  
+
+
+    [<Test>]
+    member x.PutActionWithQueryOnlyObject() = ObjectActionInvoke19.PutActionWithQueryOnlyObject api
+    [<Test>]
+    member x.PutActionWithQueryOnlyService() = ObjectActionInvoke19.PutActionWithQueryOnlyService api  
+    [<Test>]
+    member x.PutActionWithQueryOnlyViewModel() = ObjectActionInvoke19.PutActionWithQueryOnlyViewModel api  
+
+
+    [<Test>]
+    member x.NotAcceptableGetInvokeWrongMediaTypeObject() = ObjectActionInvoke19.NotAcceptableGetInvokeWrongMediaTypeObject api
+    [<Test>]
+    member x.NotAcceptableGetInvokeWrongMediaTypeService() = ObjectActionInvoke19.NotAcceptableGetInvokeWrongMediaTypeService api   
+    [<Test>]
+    member x.NotAcceptableGetInvokeWrongMediaTypeViewModel() = ObjectActionInvoke19.NotAcceptableGetInvokeWrongMediaTypeViewModel api   
+
+
+    [<Test>]
+    member x.MissingParmsOnPostObject() = ObjectActionInvoke19.MissingParmsOnPostObject api
+    [<Test>]
+    member x.MissingParmsOnPostService() = ObjectActionInvoke19.MissingParmsOnPostService api   
+    [<Test>]
+    member x.MissingParmsOnPostViewModel() = ObjectActionInvoke19.MissingParmsOnPostViewModel api   
+
+
+    [<Test>]
+    member x.DisabledActionPostInvokeObject() = ObjectActionInvoke19.DisabledActionPostInvokeObject api 
+    [<Test>]
+    member x.DisabledActionPostInvokeService() = ObjectActionInvoke19.DisabledActionPostInvokeService api 
+    [<Test>]
+    member x.DisabledActionPostInvokeViewModel() = ObjectActionInvoke19.DisabledActionPostInvokeViewModel api 
+
+
+    [<Test>]
+    member x.UserDisabledActionPostInvokeObject() = ObjectActionInvoke19.UserDisabledActionPostInvokeObject api 
+    [<Test>]
+    member x.UserDisabledActionPostInvokeService() = ObjectActionInvoke19.UserDisabledActionPostInvokeService api 
+    [<Test>]
+    member x.UserDisabledActionPostInvokeViewModel() = ObjectActionInvoke19.UserDisabledActionPostInvokeViewModel api 
+
+
+    [<Test>]
+    member x.NotFoundActionPostInvokeObject() = ObjectActionInvoke19.NotFoundActionPostInvokeObject api
+    [<Test>]
+    member x.NotFoundActionPostInvokeService() = ObjectActionInvoke19.NotFoundActionPostInvokeService api  
+    [<Test>]
+    member x.NotFoundActionPostInvokeViewModel() = ObjectActionInvoke19.NotFoundActionPostInvokeViewModel api  
+
+
+    [<Test>]
+    member x.HiddenActionPostInvokeObject() = ObjectActionInvoke19.HiddenActionPostInvokeObject api
+    [<Test>]
+    member x.HiddenActionPostInvokeService() = ObjectActionInvoke19.HiddenActionPostInvokeService api   
+    [<Test>]
+    member x.HiddenActionPostInvokeViewModel() = ObjectActionInvoke19.HiddenActionPostInvokeViewModel api   
+
+
+    [<Test>]    
+    member x.NotAcceptablePostInvokeWrongMediaTypeObject() = ObjectActionInvoke19.NotAcceptablePostInvokeWrongMediaTypeObject api
+    [<Test>]    
+    member x.NotAcceptablePostInvokeWrongMediaTypeService() = ObjectActionInvoke19.NotAcceptablePostInvokeWrongMediaTypeService api   
+    [<Test>]    
+    member x.NotAcceptablePostInvokeWrongMediaTypeViewModel() = ObjectActionInvoke19.NotAcceptablePostInvokeWrongMediaTypeViewModel api   
+
+
+    [<Test>]
+    member x.PostQueryActionWithErrorObject() = ObjectActionInvoke19.PostQueryActionWithErrorObject api
+    [<Test>]
+    member x.PostQueryActionWithErrorService() = ObjectActionInvoke19.PostQueryActionWithErrorService api    
+    [<Test>]
+    member x.PostQueryActionWithErrorViewModel() = ObjectActionInvoke19.PostQueryActionWithErrorViewModel api    
+
+
+    [<Test>]
+    member x.GetQueryActionWithErrorObject() = ObjectActionInvoke19.GetQueryActionWithErrorObject api
+    [<Test>]
+    member x.GetQueryActionWithErrorService() = ObjectActionInvoke19.GetQueryActionWithErrorService api 
+    [<Test>]
+    member x.GetQueryActionWithErrorViewModel() = ObjectActionInvoke19.GetQueryActionWithErrorViewModel api 
+
+
+    [<Test>]
+    member x.MalformedFormalParmsOnPostQueryObject() = ObjectActionInvoke19.MalformedFormalParmsOnPostQueryObject api
+    [<Test>]
+    member x.MalformedFormalParmsOnPostQueryService() = ObjectActionInvoke19.MalformedFormalParmsOnPostQueryService api 
+    [<Test>]
+    member x.MalformedFormalParmsOnPostQueryViewModel() = ObjectActionInvoke19.MalformedFormalParmsOnPostQueryViewModel api 
+
+
+    
+    [<Test>]
+    member x.WrongTypeFormalParmsOnPostQueryObject() = ObjectActionInvoke19.WrongTypeFormalParmsOnPostQueryObject api
+    [<Test>]
+    member x.WrongTypeFormalParmsOnPostQueryService() = ObjectActionInvoke19.WrongTypeFormalParmsOnPostQueryService api 
+    [<Test>]
+    member x.WrongTypeFormalParmsOnPostQueryViewModel() = ObjectActionInvoke19.WrongTypeFormalParmsOnPostQueryViewModel api 
+
+     
+    [<Test>]
+    member x.EmptyFormalParmsOnPostQueryObject() = ObjectActionInvoke19.EmptyFormalParmsOnPostQueryObject api
+    [<Test>]
+    member x.EmptyFormalParmsOnPostQueryService() = ObjectActionInvoke19.EmptyFormalParmsOnPostQueryService api 
+    [<Test>]
+    member x.EmptyFormalParmsOnPostQueryViewModel() = ObjectActionInvoke19.EmptyFormalParmsOnPostQueryViewModel api 
+
+    [<Test>]
+    member x.InvalidFormalParmsOnPostQueryObject() = ObjectActionInvoke19.InvalidFormalParmsOnPostQueryObject api
+    [<Test>]
+    member x.InvalidFormalParmsOnPostQueryService() = ObjectActionInvoke19.InvalidFormalParmsOnPostQueryService api   
+    [<Test>]
+    member x.InvalidFormalParmsOnPostQueryViewModel() = ObjectActionInvoke19.InvalidFormalParmsOnPostQueryViewModel api   
+
+
+    [<Test>]
+    member x.MissingParmsOnGetQueryObject() = ObjectActionInvoke19.MissingParmsOnGetQueryObject api
+    [<Test>]
+    member x.MissingParmsOnGetQueryService() = ObjectActionInvoke19.MissingParmsOnGetQueryService api   
+    [<Test>]
+    member x.MissingParmsOnGetQueryViewModel() = ObjectActionInvoke19.MissingParmsOnGetQueryViewModel api   
+
+
+    [<Test>]
+    member x.MalformedSimpleParmsOnGetQueryObject() = ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryObject api
+    [<Test>]
+    member x.MalformedSimpleParmsOnGetQueryService() = ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryService api   
+    [<Test>]
+    member x.MalformedSimpleParmsOnGetQueryViewModel() = ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryViewModel api   
+
+
+    [<Test>]
+    member x.MalformedFormalParmsOnGetQueryObject() = ObjectActionInvoke19.MalformedFormalParmsOnGetQueryObject api
+    [<Test>]
+    member x.MalformedFormalParmsOnGetQueryService() = ObjectActionInvoke19.MalformedFormalParmsOnGetQueryService api   
+    [<Test>]
+    member x.MalformedFormalParmsOnGetQueryViewModel() = ObjectActionInvoke19.MalformedFormalParmsOnGetQueryViewModel api   
+
+
+    [<Test>]
+    member x.InvalidSimpleParmsOnGetQueryObject() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryObject api
+    [<Test>]
+    member x.InvalidSimpleParmsOnGetQueryService() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryService api    
+    [<Test>]
+    member x.InvalidSimpleParmsOnGetQueryViewModel() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryViewModel api    
+
+
+    [<Test>]
+    member x.InvalidFormalParmsOnGetQueryObject() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryObject api
+    [<Test>]
+    member x.InvalidFormalParmsOnGetQueryService() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryService api  
+    [<Test>]
+    member x.InvalidFormalParmsOnGetQueryViewModel() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryViewModel api  
+
+
+    [<Test>]
+    member x.DisabledActionInvokeQueryObject() = ObjectActionInvoke19.DisabledActionInvokeQueryObject api
+    [<Test>]
+    member x.DisabledActionInvokeQueryService() = ObjectActionInvoke19.DisabledActionInvokeQueryService api    
+    [<Test>]
+    member x.DisabledActionInvokeQueryViewModel() = ObjectActionInvoke19.DisabledActionInvokeQueryViewModel api    
+
+
+    [<Test>]
+    member x.GetInvokeActionWithScalarParmsReturnQuerySimpleObject() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleObject api
+    [<Test>]
+    member x.GetInvokeActionWithScalarParmsReturnQuerySimpleService() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleService api   
+    [<Test>]
+    member x.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModel api   
+    
+    [<Test>]
+    member x.GetInvokeActionWithScalarMissingParmsSimpleObject() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsSimpleObject api
+    [<Test>]
+    member x.GetInvokeActionWithScalarMissingParmsSimpleService() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsSimpleService api   
+    [<Test>]
+    member x.GetInvokeActionWithScalarMissingParmsSimpleViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsSimpleViewModel api   
+    
+    [<Test>]
+    member x.GetInvokeActionWithScalarMissingParmsFormalObject() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsFormalObject api
+    [<Test>]
+    member x.GetInvokeActionWithScalarMissingParmsFormalService() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsFormalService api   
+    [<Test>]
+    member x.GetInvokeActionWithScalarMissingParmsFormalViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsFormalViewModel api   
+
+    [<Test>]
+    member x.GetInvokeActionWithScalarParmsReturnQuerySimpleObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleObjectValidateOnly api
+    [<Test>]
+    member x.GetInvokeActionWithScalarParmsReturnQuerySimpleServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleServiceValidateOnly api        
+    [<Test>]
+    member x.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModelValidateOnly api        
+    
+     
+    [<Test>]
+    member x.GetInvokeActionWithScalarParmsReturnQueryFormalObject() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalObject api
+    [<Test>]
+    member x.GetInvokeActionWithScalarParmsReturnQueryFormalService() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalService api   
+    [<Test>]
+    member x.GetInvokeActionWithScalarParmsReturnQueryFormalViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalViewModel api   
+
+
+    [<Test>]
+    member x.GetInvokeActionWithScalarParmsReturnQueryFormalObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalObjectValidateOnly api
+    [<Test>]
+    member x.GetInvokeActionWithScalarParmsReturnQueryFormalServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalServiceValidateOnly api   
+    [<Test>]
+    member x.GetInvokeActionWithScalarParmsReturnQueryFormalViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalViewModelValidateOnly api   
+
+
+    [<Test>]
+    member x.GetInvokeActionWithReferenceParmsReturnQueryFormalObject() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalObject api
+    [<Test>]
+    member x.GetInvokeActionWithReferenceParmsReturnQueryFormalService() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalService api  
+    [<Test>]
+    member x.GetInvokeActionWithReferenceParmsReturnQueryFormalViewModel() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalViewModel api  
+
+
+    [<Test>]
+    member x.GetInvokeActionWithReferenceParmsReturnQueryFormalObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalObjectValidateOnly api
+    [<Test>]
+    member x.GetInvokeActionWithReferenceParmsReturnQueryFormalServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalServiceValidateOnly api  
+    [<Test>]
+    member x.GetInvokeActionWithReferenceParmsReturnQueryFormalViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalViewModelValidateOnly api  
     
           
     [<Test>]
-    member x.PostInvokeActionReturnQueryObject() = ObjectActionInvoke19.PostInvokeActionReturnQueryObject x.API
+    member x.PostInvokeActionReturnQueryObject() = ObjectActionInvoke19.PostInvokeActionReturnQueryObject api
     [<Test>]
-    member x.PostInvokeActionReturnQueryService() = ObjectActionInvoke19.PostInvokeActionReturnQueryService x.API  
+    member x.PostInvokeActionReturnQueryService() = ObjectActionInvoke19.PostInvokeActionReturnQueryService api  
     [<Test>]
-    member x.PostInvokeActionReturnQueryViewModel() = ObjectActionInvoke19.PostInvokeActionReturnQueryViewModel x.API  
+    member x.PostInvokeActionReturnQueryViewModel() = ObjectActionInvoke19.PostInvokeActionReturnQueryViewModel api  
 
 
     [<Test>]
-    member x.PostInvokeActionReturnQueryObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnQueryObjectValidateOnly x.API
+    member x.PostInvokeActionReturnQueryObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnQueryObjectValidateOnly api
     [<Test>]
-    member x.PostInvokeActionReturnQueryServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnQueryServiceValidateOnly x.API  
+    member x.PostInvokeActionReturnQueryServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnQueryServiceValidateOnly api  
     [<Test>]
-    member x.PostInvokeActionReturnQueryViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnQueryViewModelValidateOnly x.API  
+    member x.PostInvokeActionReturnQueryViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnQueryViewModelValidateOnly api  
 
 
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnQueryObject() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryObject x.API
+    member x.PostInvokeActionWithScalarParmsReturnQueryObject() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryObject api
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnQueryService() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryService x.API   
+    member x.PostInvokeActionWithScalarParmsReturnQueryService() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryService api   
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnQueryViewModel() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryViewModel x.API   
+    member x.PostInvokeActionWithScalarParmsReturnQueryViewModel() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryViewModel api   
 
     
     [<Test>]
-    member x.PostInvokeOverloadedActionObject() = ObjectActionInvoke19.PostInvokeOverloadedActionObject x.API
+    member x.PostInvokeOverloadedActionObject() = ObjectActionInvoke19.PostInvokeOverloadedActionObject api
     [<Test>]
-    member x.PostInvokeOverloadedActionService() = ObjectActionInvoke19.PostInvokeOverloadedActionService x.API   
+    member x.PostInvokeOverloadedActionService() = ObjectActionInvoke19.PostInvokeOverloadedActionService api   
     [<Test>]
-    member x.PostInvokeOverloadedActionViewModel() = ObjectActionInvoke19.PostInvokeOverloadedActionViewModel x.API   
+    member x.PostInvokeOverloadedActionViewModel() = ObjectActionInvoke19.PostInvokeOverloadedActionViewModel api   
 
 
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnQueryObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryObjectValidateOnly x.API
+    member x.PostInvokeActionWithScalarParmsReturnQueryObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryObjectValidateOnly api
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnQueryServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryServiceValidateOnly x.API  
+    member x.PostInvokeActionWithScalarParmsReturnQueryServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryServiceValidateOnly api  
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnQueryViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryViewModelValidateOnly x.API  
+    member x.PostInvokeActionWithScalarParmsReturnQueryViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryViewModelValidateOnly api  
 
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnQueryObject() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryObject x.API
+    member x.PostInvokeActionWithReferenceParmsReturnQueryObject() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryObject api
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnQueryService() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryService x.API   
+    member x.PostInvokeActionWithReferenceParmsReturnQueryService() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryService api   
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnQueryViewModel() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryViewModel x.API   
+    member x.PostInvokeActionWithReferenceParmsReturnQueryViewModel() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryViewModel api   
        
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnQueryObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryObjectValidateOnly x.API
+    member x.PostInvokeActionWithReferenceParmsReturnQueryObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryObjectValidateOnly api
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnQueryServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryServiceValidateOnly x.API     
+    member x.PostInvokeActionWithReferenceParmsReturnQueryServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryServiceValidateOnly api     
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnQueryViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryViewModelValidateOnly x.API     
+    member x.PostInvokeActionWithReferenceParmsReturnQueryViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryViewModelValidateOnly api     
             
     [<Test>]
-    member x.PostCollectionActionWithErrorObject() = ObjectActionInvoke19.PostCollectionActionWithErrorObject x.API
+    member x.PostCollectionActionWithErrorObject() = ObjectActionInvoke19.PostCollectionActionWithErrorObject api
     [<Test>]
-    member x.PostCollectionActionWithErrorService() = ObjectActionInvoke19.PostCollectionActionWithErrorService x.API  
+    member x.PostCollectionActionWithErrorService() = ObjectActionInvoke19.PostCollectionActionWithErrorService api  
     [<Test>]
-    member x.PostCollectionActionWithErrorViewModel() = ObjectActionInvoke19.PostCollectionActionWithErrorViewModel x.API  
+    member x.PostCollectionActionWithErrorViewModel() = ObjectActionInvoke19.PostCollectionActionWithErrorViewModel api  
 
     [<Test>]
-    member x.MissingParmsOnPostCollectionObject() = ObjectActionInvoke19.MissingParmsOnPostCollectionObject x.API
+    member x.MissingParmsOnPostCollectionObject() = ObjectActionInvoke19.MissingParmsOnPostCollectionObject api
     [<Test>]
-    member x.MissingParmsOnPostCollectionService() = ObjectActionInvoke19.MissingParmsOnPostCollectionService x.API    
+    member x.MissingParmsOnPostCollectionService() = ObjectActionInvoke19.MissingParmsOnPostCollectionService api    
     [<Test>]
-    member x.MissingParmsOnPostCollectionViewModel() = ObjectActionInvoke19.MissingParmsOnPostCollectionViewModel x.API    
+    member x.MissingParmsOnPostCollectionViewModel() = ObjectActionInvoke19.MissingParmsOnPostCollectionViewModel api    
 
     [<Test>]
-    member x.MalformedFormalParmsOnPostCollectionObject() = ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionObject x.API
+    member x.MalformedFormalParmsOnPostCollectionObject() = ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionObject api
     [<Test>]
-    member x.MalformedFormalParmsOnPostCollectionService() = ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionService x.API  
+    member x.MalformedFormalParmsOnPostCollectionService() = ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionService api  
     [<Test>]
-    member x.MalformedFormalParmsOnPostCollectionViewModel() = ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionViewModel x.API  
+    member x.MalformedFormalParmsOnPostCollectionViewModel() = ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionViewModel api  
 
     [<Test>]
-    member x.InvalidFormalParmsOnPostCollectionObject() = ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionObject x.API
+    member x.InvalidFormalParmsOnPostCollectionObject() = ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionObject api
     [<Test>]
-    member x.InvalidFormalParmsOnPostCollectionService() = ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionService x.API    
+    member x.InvalidFormalParmsOnPostCollectionService() = ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionService api    
     [<Test>]
-    member x.InvalidFormalParmsOnPostCollectionViewModel() = ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionViewModel x.API    
+    member x.InvalidFormalParmsOnPostCollectionViewModel() = ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionViewModel api    
 
     [<Test>]
-    member x.DisabledActionInvokeCollectionObject() = ObjectActionInvoke19.DisabledActionInvokeCollectionObject x.API 
+    member x.DisabledActionInvokeCollectionObject() = ObjectActionInvoke19.DisabledActionInvokeCollectionObject api 
     [<Test>]
-    member x.DisabledActionInvokeCollectionService() = ObjectActionInvoke19.DisabledActionInvokeCollectionService x.API 
+    member x.DisabledActionInvokeCollectionService() = ObjectActionInvoke19.DisabledActionInvokeCollectionService api 
     [<Test>]
-    member x.DisabledActionInvokeCollectionViewModel() = ObjectActionInvoke19.DisabledActionInvokeCollectionViewModel x.API 
+    member x.DisabledActionInvokeCollectionViewModel() = ObjectActionInvoke19.DisabledActionInvokeCollectionViewModel api 
 
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnCollectionFormalObject() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalObject x.API
+    member x.PostInvokeActionWithScalarParmsReturnCollectionFormalObject() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalObject api
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnCollectionFormalService() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalService x.API    
+    member x.PostInvokeActionWithScalarParmsReturnCollectionFormalService() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalService api    
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnCollectionFormalViewModel() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalViewModel x.API    
+    member x.PostInvokeActionWithScalarParmsReturnCollectionFormalViewModel() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalViewModel api    
 
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnCollectionFormalObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalObjectValidateOnly x.API
+    member x.PostInvokeActionWithScalarParmsReturnCollectionFormalObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalObjectValidateOnly api
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnCollectionFormalServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalServiceValidateOnly x.API       
+    member x.PostInvokeActionWithScalarParmsReturnCollectionFormalServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalServiceValidateOnly api       
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnCollectionFormalViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalViewModelValidateOnly x.API       
+    member x.PostInvokeActionWithScalarParmsReturnCollectionFormalViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalViewModelValidateOnly api       
     
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalObject() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalObject x.API
+    member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalObject() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalObject api
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalService() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalService x.API      
+    member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalService() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalService api      
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalViewModel() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalViewModel x.API      
+    member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalViewModel() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalViewModel api      
     
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalObjectValidateOnly x.API
+    member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalObjectValidateOnly api
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalServiceValidateOnly x.API   
+    member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalServiceValidateOnly api   
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly x.API   
+    member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly api   
     
     [<Test>]
-    member x.PostInvokeActionReturnCollectionObject() = ObjectActionInvoke19.PostInvokeActionReturnCollectionObject x.API
+    member x.PostInvokeActionReturnCollectionObject() = ObjectActionInvoke19.PostInvokeActionReturnCollectionObject api
     [<Test>]
-    member x.PostInvokeActionReturnCollectionService() = ObjectActionInvoke19.PostInvokeActionReturnCollectionService x.API   
+    member x.PostInvokeActionReturnCollectionService() = ObjectActionInvoke19.PostInvokeActionReturnCollectionService api   
     [<Test>]
-    member x.PostInvokeActionReturnCollectionViewModel() = ObjectActionInvoke19.PostInvokeActionReturnCollectionViewModel x.API   
+    member x.PostInvokeActionReturnCollectionViewModel() = ObjectActionInvoke19.PostInvokeActionReturnCollectionViewModel api   
     
     [<Test>]
-    member x.PostInvokeActionReturnCollectionObjectFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionObjectFormalOnly x.API
+    member x.PostInvokeActionReturnCollectionObjectFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionObjectFormalOnly api
     [<Test>]
-    member x.PostInvokeActionReturnCollectionServiceFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionServiceFormalOnly x.API    
+    member x.PostInvokeActionReturnCollectionServiceFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionServiceFormalOnly api    
     [<Test>]
-    member x.PostInvokeActionReturnCollectionViewModelFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionViewModelFormalOnly x.API    
+    member x.PostInvokeActionReturnCollectionViewModelFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionViewModelFormalOnly api    
     
     [<Test>]
-    member x.PostInvokeActionReturnCollectionObjectVerifyOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionObjectVerifyOnly x.API
+    member x.PostInvokeActionReturnCollectionObjectVerifyOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionObjectVerifyOnly api
     [<Test>]
-    member x.PostInvokeActionReturnCollectionServiceVerifyOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionServiceVerifyOnly x.API    
+    member x.PostInvokeActionReturnCollectionServiceVerifyOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionServiceVerifyOnly api    
     [<Test>]
-    member x.PostInvokeActionReturnCollectionViewModelVerifyOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionViewModelVerifyOnly x.API    
+    member x.PostInvokeActionReturnCollectionViewModelVerifyOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionViewModelVerifyOnly api    
     
     [<Test>]
-    member x.PostInvokeActionReturnEmptyCollectionObject() = ObjectActionInvoke19.PostInvokeActionReturnEmptyCollectionObject x.API
+    member x.PostInvokeActionReturnEmptyCollectionObject() = ObjectActionInvoke19.PostInvokeActionReturnEmptyCollectionObject api
     [<Test>]
-    member x.PostInvokeActionReturnEmptyCollectionService() = ObjectActionInvoke19.PostInvokeActionReturnEmptyCollectionService x.API   
+    member x.PostInvokeActionReturnEmptyCollectionService() = ObjectActionInvoke19.PostInvokeActionReturnEmptyCollectionService api   
     [<Test>]
-    member x.PostInvokeActionReturnEmptyCollectionViewModel() = ObjectActionInvoke19.PostInvokeActionReturnEmptyCollectionViewModel x.API   
+    member x.PostInvokeActionReturnEmptyCollectionViewModel() = ObjectActionInvoke19.PostInvokeActionReturnEmptyCollectionViewModel api   
     
     [<Test>]
-    member x.PostInvokeActionReturnNullCollectionObject() = ObjectActionInvoke19.PostInvokeActionReturnNullCollectionObject x.API
+    member x.PostInvokeActionReturnNullCollectionObject() = ObjectActionInvoke19.PostInvokeActionReturnNullCollectionObject api
     [<Test>]
-    member x.PostInvokeActionReturnNullCollectionService() = ObjectActionInvoke19.PostInvokeActionReturnNullCollectionService x.API   
+    member x.PostInvokeActionReturnNullCollectionService() = ObjectActionInvoke19.PostInvokeActionReturnNullCollectionService api   
     [<Test>]
-    member x.PostInvokeActionReturnNullCollectionViewModel() = ObjectActionInvoke19.PostInvokeActionReturnNullCollectionViewModel x.API   
+    member x.PostInvokeActionReturnNullCollectionViewModel() = ObjectActionInvoke19.PostInvokeActionReturnNullCollectionViewModel api   
     
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnCollectionObject() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionObject x.API
+    member x.PostInvokeActionWithScalarParmsReturnCollectionObject() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionObject api
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnCollectionService() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionService x.API     
+    member x.PostInvokeActionWithScalarParmsReturnCollectionService() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionService api     
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnCollectionViewModel() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionViewModel x.API     
+    member x.PostInvokeActionWithScalarParmsReturnCollectionViewModel() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionViewModel api     
     
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnCollectionObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionObjectValidateOnly x.API
+    member x.PostInvokeActionWithScalarParmsReturnCollectionObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionObjectValidateOnly api
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnCollectionServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionServiceValidateOnly x.API             
+    member x.PostInvokeActionWithScalarParmsReturnCollectionServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionServiceValidateOnly api             
     [<Test>]
-    member x.PostInvokeActionWithScalarParmsReturnCollectionViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionViewModelValidateOnly x.API             
+    member x.PostInvokeActionWithScalarParmsReturnCollectionViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionViewModelValidateOnly api             
     
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnCollectionObject() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionObject x.API
+    member x.PostInvokeActionWithReferenceParmsReturnCollectionObject() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionObject api
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnCollectionService() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionService x.API   
+    member x.PostInvokeActionWithReferenceParmsReturnCollectionService() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionService api   
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnCollectionViewModel() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionViewModel x.API   
+    member x.PostInvokeActionWithReferenceParmsReturnCollectionViewModel() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionViewModel api   
     
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnCollectionObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionObjectValidateOnly x.API
+    member x.PostInvokeActionWithReferenceParmsReturnCollectionObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionObjectValidateOnly api
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnCollectionServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionServiceValidateOnly x.API           
+    member x.PostInvokeActionWithReferenceParmsReturnCollectionServiceValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionServiceValidateOnly api           
     [<Test>]
-    member x.PostInvokeActionWithReferenceParmsReturnCollectionViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionViewModelValidateOnly x.API           
+    member x.PostInvokeActionWithReferenceParmsReturnCollectionViewModelValidateOnly() = ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionViewModelValidateOnly api           
     
     [<Test>]
-    member x.PostQueryActionWithValidateFailObject() = ObjectActionInvoke19.PostQueryActionWithValidateFailObject x.API
+    member x.PostQueryActionWithValidateFailObject() = ObjectActionInvoke19.PostQueryActionWithValidateFailObject api
     [<Test>]
-    member x.PostQueryActionWithValidateFailService() = ObjectActionInvoke19.PostQueryActionWithValidateFailService x.API   
+    member x.PostQueryActionWithValidateFailService() = ObjectActionInvoke19.PostQueryActionWithValidateFailService api   
     [<Test>]
-    member x.PostQueryActionWithValidateFailViewModel() = ObjectActionInvoke19.PostQueryActionWithValidateFailViewModel x.API   
+    member x.PostQueryActionWithValidateFailViewModel() = ObjectActionInvoke19.PostQueryActionWithValidateFailViewModel api   
 
     [<Test>]
-    member x.PostQueryActionWithCrossValidateFailObject() = ObjectActionInvoke19.PostQueryActionWithCrossValidateFailObject x.API
+    member x.PostQueryActionWithCrossValidateFailObject() = ObjectActionInvoke19.PostQueryActionWithCrossValidateFailObject api
     [<Test>]
-    member x.PostQueryActionWithCrossValidateFailService() = ObjectActionInvoke19.PostQueryActionWithCrossValidateFailService x.API   
+    member x.PostQueryActionWithCrossValidateFailService() = ObjectActionInvoke19.PostQueryActionWithCrossValidateFailService api   
     [<Test>]
-    member x.PostQueryActionWithCrossValidateFailViewModel() = ObjectActionInvoke19.PostQueryActionWithCrossValidateFailViewModel x.API  
+    member x.PostQueryActionWithCrossValidateFailViewModel() = ObjectActionInvoke19.PostQueryActionWithCrossValidateFailViewModel api  
 
     [<Test>]
-    member x.GetInvokeActionReturnCollectionObject() = ObjectActionInvoke19.GetInvokeActionReturnCollectionObject x.API
+    member x.GetInvokeActionReturnCollectionObject() = ObjectActionInvoke19.GetInvokeActionReturnCollectionObject api
     [<Test>]
-    member x.GetInvokeActionReturnCollectionService() = ObjectActionInvoke19.GetInvokeActionReturnCollectionService x.API   
+    member x.GetInvokeActionReturnCollectionService() = ObjectActionInvoke19.GetInvokeActionReturnCollectionService api   
     [<Test>]
-    member x.GetInvokeActionReturnCollectionViewModel() = ObjectActionInvoke19.GetInvokeActionReturnCollectionViewModel x.API   
+    member x.GetInvokeActionReturnCollectionViewModel() = ObjectActionInvoke19.GetInvokeActionReturnCollectionViewModel api   
     
     [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnCollectionSimpleObject() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionSimpleObject x.API
+    member x.GetInvokeActionWithScalarParmsReturnCollectionSimpleObject() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionSimpleObject api
     [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnCollectionSimpleService() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionSimpleService x.API    
+    member x.GetInvokeActionWithScalarParmsReturnCollectionSimpleService() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionSimpleService api    
     [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnCollectionSimpleViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionSimpleViewModel x.API    
+    member x.GetInvokeActionWithScalarParmsReturnCollectionSimpleViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionSimpleViewModel api    
     
     [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnCollectionFormalObject() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionFormalObject x.API
+    member x.GetInvokeActionWithScalarParmsReturnCollectionFormalObject() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionFormalObject api
     [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnCollectionFormalService() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionFormalService x.API   
+    member x.GetInvokeActionWithScalarParmsReturnCollectionFormalService() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionFormalService api   
     [<Test>]
-    member x.GetInvokeActionWithScalarParmsReturnCollectionFormalViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionFormalViewModel x.API   
+    member x.GetInvokeActionWithScalarParmsReturnCollectionFormalViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionFormalViewModel api   
     
     [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalObject() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalObject x.API
+    member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalObject() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalObject api
     [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalService() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalService x.API   
+    member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalService() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalService api   
     [<Test>]
-    member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModel() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModel x.API   
+    member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModel() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModel api   
     
     [<Test>]
-    member x.MissingParmsOnGetQueryObjectValidateOnly() = ObjectActionInvoke19.MissingParmsOnGetQueryObjectValidateOnly x.API 
+    member x.MissingParmsOnGetQueryObjectValidateOnly() = ObjectActionInvoke19.MissingParmsOnGetQueryObjectValidateOnly api 
     [<Test>] 
-    member x.MissingParmsOnGetQueryServiceValidateOnly() = ObjectActionInvoke19.MissingParmsOnGetQueryServiceValidateOnly x.API   
+    member x.MissingParmsOnGetQueryServiceValidateOnly() = ObjectActionInvoke19.MissingParmsOnGetQueryServiceValidateOnly api   
     [<Test>] 
-    member x.MissingParmsOnGetQueryViewModelValidateOnly() = ObjectActionInvoke19.MissingParmsOnGetQueryViewModelValidateOnly x.API   
+    member x.MissingParmsOnGetQueryViewModelValidateOnly() = ObjectActionInvoke19.MissingParmsOnGetQueryViewModelValidateOnly api   
     
     [<Test>] 
-    member x.MissingParmsOnPostCollectionObjectValidateOnly() = ObjectActionInvoke19.MissingParmsOnPostCollectionObjectValidateOnly x.API 
+    member x.MissingParmsOnPostCollectionObjectValidateOnly() = ObjectActionInvoke19.MissingParmsOnPostCollectionObjectValidateOnly api 
     [<Test>] 
-    member x.MissingParmsOnPostCollectionServiceValidateOnly() = ObjectActionInvoke19.MissingParmsOnPostCollectionServiceValidateOnly x.API    
+    member x.MissingParmsOnPostCollectionServiceValidateOnly() = ObjectActionInvoke19.MissingParmsOnPostCollectionServiceValidateOnly api    
     [<Test>] 
-    member x.MissingParmsOnPostCollectionViewModelValidateOnly() = ObjectActionInvoke19.MissingParmsOnPostCollectionViewModelValidateOnly x.API    
+    member x.MissingParmsOnPostCollectionViewModelValidateOnly() = ObjectActionInvoke19.MissingParmsOnPostCollectionViewModelValidateOnly api    
 
     
     [<Test>] 
-    member x.MalformedSimpleParmsOnGetQueryObjectValidateOnly() = ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryObjectValidateOnly x.API 
+    member x.MalformedSimpleParmsOnGetQueryObjectValidateOnly() = ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryObjectValidateOnly api 
     [<Test>] 
-    member x.MalformedSimpleParmsOnGetQueryServiceValidateOnly() = ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryServiceValidateOnly x.API    
+    member x.MalformedSimpleParmsOnGetQueryServiceValidateOnly() = ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryServiceValidateOnly api    
     [<Test>] 
-    member x.MalformedSimpleParmsOnGetQueryViewModelValidateOnly() = ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryViewModelValidateOnly x.API    
+    member x.MalformedSimpleParmsOnGetQueryViewModelValidateOnly() = ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryViewModelValidateOnly api    
     
     [<Test>] 
-    member x.MalformedFormalParmsOnGetQueryObjectValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnGetQueryObjectValidateOnly x.API 
+    member x.MalformedFormalParmsOnGetQueryObjectValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnGetQueryObjectValidateOnly api 
     [<Test>] 
-    member x.MalformedFormalParmsOnGetQueryServiceValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnGetQueryServiceValidateOnly x.API   
+    member x.MalformedFormalParmsOnGetQueryServiceValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnGetQueryServiceValidateOnly api   
     [<Test>] 
-    member x.MalformedFormalParmsOnGetQueryViewModelValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnGetQueryViewModelValidateOnly x.API   
+    member x.MalformedFormalParmsOnGetQueryViewModelValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnGetQueryViewModelValidateOnly api   
     
     [<Test>] 
-    member x.MalformedFormalParmsOnPostCollectionObjectValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionObjectValidateOnly x.API 
+    member x.MalformedFormalParmsOnPostCollectionObjectValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionObjectValidateOnly api 
     [<Test>] 
-    member x.MalformedFormalParmsOnPostCollectionServiceValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionServiceValidateOnly x.API    
+    member x.MalformedFormalParmsOnPostCollectionServiceValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionServiceValidateOnly api    
     [<Test>] 
-    member x.MalformedFormalParmsOnPostCollectionViewModelValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionViewModelValidateOnly x.API    
+    member x.MalformedFormalParmsOnPostCollectionViewModelValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionViewModelValidateOnly api    
     
     [<Test>] 
-    member x.InvalidSimpleParmsOnGetQueryObjectValidateOnly() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryObjectValidateOnly x.API 
+    member x.InvalidSimpleParmsOnGetQueryObjectValidateOnly() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryObjectValidateOnly api 
     [<Test>] 
-    member x.InvalidSimpleParmsOnGetQueryServiceValidateOnly() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryServiceValidateOnly x.API         
+    member x.InvalidSimpleParmsOnGetQueryServiceValidateOnly() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryServiceValidateOnly api         
     [<Test>] 
-    member x.InvalidSimpleParmsOnGetQueryViewModelValidateOnly() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryViewModelValidateOnly x.API         
+    member x.InvalidSimpleParmsOnGetQueryViewModelValidateOnly() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryViewModelValidateOnly api         
     
     [<Test>] 
-    member x.InvalidFormalParmsOnGetQueryObjectValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryObjectValidateOnly x.API  
+    member x.InvalidFormalParmsOnGetQueryObjectValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryObjectValidateOnly api  
     [<Test>] 
-    member x.InvalidFormalParmsOnGetQueryServiceValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryServiceValidateOnly x.API      
+    member x.InvalidFormalParmsOnGetQueryServiceValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryServiceValidateOnly api      
     [<Test>] 
-    member x.InvalidFormalParmsOnGetQueryViewModelValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryViewModelValidateOnly x.API      
+    member x.InvalidFormalParmsOnGetQueryViewModelValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryViewModelValidateOnly api      
     
     [<Test>] 
-    member x.InvalidFormalParmsOnPostCollectionObjectValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionObjectValidateOnly x.API 
+    member x.InvalidFormalParmsOnPostCollectionObjectValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionObjectValidateOnly api 
     [<Test>] 
-    member x.InvalidFormalParmsOnPostCollectionServiceValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionServiceValidateOnly x.API     
+    member x.InvalidFormalParmsOnPostCollectionServiceValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionServiceValidateOnly api     
     [<Test>] 
-    member x.InvalidFormalParmsOnPostCollectionViewModelValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionViewModelValidateOnly x.API     
+    member x.InvalidFormalParmsOnPostCollectionViewModelValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionViewModelValidateOnly api     
     
     [<Test>] 
-    member x.DisabledActionInvokeQueryObjectValidateOnly() = ObjectActionInvoke19.DisabledActionInvokeQueryObjectValidateOnly x.API 
+    member x.DisabledActionInvokeQueryObjectValidateOnly() = ObjectActionInvoke19.DisabledActionInvokeQueryObjectValidateOnly api 
     [<Test>] 
-    member x.DisabledActionInvokeQueryServiceValidateOnly() = ObjectActionInvoke19.DisabledActionInvokeQueryServiceValidateOnly x.API    
+    member x.DisabledActionInvokeQueryServiceValidateOnly() = ObjectActionInvoke19.DisabledActionInvokeQueryServiceValidateOnly api    
     [<Test>] 
-    member x.DisabledActionInvokeQueryViewModelValidateOnly() = ObjectActionInvoke19.DisabledActionInvokeQueryViewModelValidateOnly x.API    
+    member x.DisabledActionInvokeQueryViewModelValidateOnly() = ObjectActionInvoke19.DisabledActionInvokeQueryViewModelValidateOnly api    
     
     [<Test>] 
-    member x.DisabledActionInvokeCollectionObjectValidateOnly() = ObjectActionInvoke19.DisabledActionInvokeCollectionObjectValidateOnly x.API 
+    member x.DisabledActionInvokeCollectionObjectValidateOnly() = ObjectActionInvoke19.DisabledActionInvokeCollectionObjectValidateOnly api 
     [<Test>] 
-    member x.DisabledActionInvokeCollectionServiceValidateOnly() = ObjectActionInvoke19.DisabledActionInvokeCollectionServiceValidateOnly x.API 
+    member x.DisabledActionInvokeCollectionServiceValidateOnly() = ObjectActionInvoke19.DisabledActionInvokeCollectionServiceValidateOnly api 
     [<Test>] 
-    member x.DisabledActionInvokeCollectionViewModelValidateOnly() = ObjectActionInvoke19.DisabledActionInvokeCollectionViewModelValidateOnly x.API 
+    member x.DisabledActionInvokeCollectionViewModelValidateOnly() = ObjectActionInvoke19.DisabledActionInvokeCollectionViewModelValidateOnly api 
     
     [<Test>] 
-    member x.NotFoundActionInvokeObjectValidateOnly() = ObjectActionInvoke19.NotFoundActionInvokeObjectValidateOnly x.API 
+    member x.NotFoundActionInvokeObjectValidateOnly() = ObjectActionInvoke19.NotFoundActionInvokeObjectValidateOnly api 
     [<Test>] 
-    member x.NotFoundActionInvokeServiceValidateOnly() = ObjectActionInvoke19.NotFoundActionInvokeServiceValidateOnly x.API      
+    member x.NotFoundActionInvokeServiceValidateOnly() = ObjectActionInvoke19.NotFoundActionInvokeServiceValidateOnly api      
     [<Test>] 
-    member x.NotFoundActionInvokeViewModelValidateOnly() = ObjectActionInvoke19.NotFoundActionInvokeViewModelValidateOnly x.API      
+    member x.NotFoundActionInvokeViewModelValidateOnly() = ObjectActionInvoke19.NotFoundActionInvokeViewModelValidateOnly api      
     
     [<Test>] 
-    member x.HiddenActionInvokeObjectValidateOnly() = ObjectActionInvoke19.HiddenActionInvokeObjectValidateOnly x.API 
+    member x.HiddenActionInvokeObjectValidateOnly() = ObjectActionInvoke19.HiddenActionInvokeObjectValidateOnly api 
     [<Test>] 
-    member x.HiddenActionInvokeServiceValidateOnly() = ObjectActionInvoke19.HiddenActionInvokeServiceValidateOnly x.API    
+    member x.HiddenActionInvokeServiceValidateOnly() = ObjectActionInvoke19.HiddenActionInvokeServiceValidateOnly api    
     [<Test>] 
-    member x.HiddenActionInvokeViewModelValidateOnly() = ObjectActionInvoke19.HiddenActionInvokeViewModelValidateOnly x.API    
+    member x.HiddenActionInvokeViewModelValidateOnly() = ObjectActionInvoke19.HiddenActionInvokeViewModelValidateOnly api    
     
     [<Test>] 
-    member x.GetActionWithSideEffectsObjectValidateOnly() = ObjectActionInvoke19.GetActionWithSideEffectsObjectValidateOnly x.API 
+    member x.GetActionWithSideEffectsObjectValidateOnly() = ObjectActionInvoke19.GetActionWithSideEffectsObjectValidateOnly api 
     [<Test>] 
-    member x.GetActionWithSideEffectsServiceValidateOnly() = ObjectActionInvoke19.GetActionWithSideEffectsServiceValidateOnly x.API   
+    member x.GetActionWithSideEffectsServiceValidateOnly() = ObjectActionInvoke19.GetActionWithSideEffectsServiceValidateOnly api   
     [<Test>] 
-    member x.GetActionWithSideEffectsViewModelValidateOnly() = ObjectActionInvoke19.GetActionWithSideEffectsViewModelValidateOnly x.API   
+    member x.GetActionWithSideEffectsViewModelValidateOnly() = ObjectActionInvoke19.GetActionWithSideEffectsViewModelValidateOnly api   
     
     [<Test>] 
-    member x.GetActionWithIdempotentObjectValidateOnly() = ObjectActionInvoke19.GetActionWithIdempotentObjectValidateOnly x.API 
+    member x.GetActionWithIdempotentObjectValidateOnly() = ObjectActionInvoke19.GetActionWithIdempotentObjectValidateOnly api 
     [<Test>] 
-    member x.GetActionWithIdempotentServiceValidateOnly() = ObjectActionInvoke19.GetActionWithIdempotentServiceValidateOnly x.API    
+    member x.GetActionWithIdempotentServiceValidateOnly() = ObjectActionInvoke19.GetActionWithIdempotentServiceValidateOnly api    
     [<Test>] 
-    member x.GetActionWithIdempotentViewModelValidateOnly() = ObjectActionInvoke19.GetActionWithIdempotentViewModelValidateOnly x.API    
+    member x.GetActionWithIdempotentViewModelValidateOnly() = ObjectActionInvoke19.GetActionWithIdempotentViewModelValidateOnly api    
     
     [<Test>] 
-    member x.PutActionWithQueryOnlyObjectValidateOnly() = ObjectActionInvoke19.PutActionWithQueryOnlyObjectValidateOnly x.API 
+    member x.PutActionWithQueryOnlyObjectValidateOnly() = ObjectActionInvoke19.PutActionWithQueryOnlyObjectValidateOnly api 
     [<Test>] 
-    member x.PutActionWithQueryOnlyServiceValidateOnly() = ObjectActionInvoke19.PutActionWithQueryOnlyServiceValidateOnly x.API    
+    member x.PutActionWithQueryOnlyServiceValidateOnly() = ObjectActionInvoke19.PutActionWithQueryOnlyServiceValidateOnly api    
     [<Test>] 
-    member x.PutActionWithQueryOnlyViewModelValidateOnly() = ObjectActionInvoke19.PutActionWithQueryOnlyViewModelValidateOnly x.API    
+    member x.PutActionWithQueryOnlyViewModelValidateOnly() = ObjectActionInvoke19.PutActionWithQueryOnlyViewModelValidateOnly api    
     
     [<Test>] 
-    member x.GetQueryActionWithErrorObjectValidateOnly() = ObjectActionInvoke19.GetQueryActionWithErrorObjectValidateOnly x.API 
+    member x.GetQueryActionWithErrorObjectValidateOnly() = ObjectActionInvoke19.GetQueryActionWithErrorObjectValidateOnly api 
     [<Test>] 
-    member x.GetQueryActionWithErrorServiceValidateOnly() = ObjectActionInvoke19.GetQueryActionWithErrorServiceValidateOnly x.API     
+    member x.GetQueryActionWithErrorServiceValidateOnly() = ObjectActionInvoke19.GetQueryActionWithErrorServiceValidateOnly api     
     [<Test>] 
-    member x.GetQueryActionWithErrorViewModelValidateOnly() = ObjectActionInvoke19.GetQueryActionWithErrorViewModelValidateOnly x.API     
+    member x.GetQueryActionWithErrorViewModelValidateOnly() = ObjectActionInvoke19.GetQueryActionWithErrorViewModelValidateOnly api     
     
     [<Test>] 
-    member x.PostCollectionActionWithErrorObjectValidateOnly() = ObjectActionInvoke19.PostCollectionActionWithErrorObjectValidateOnly x.API 
+    member x.PostCollectionActionWithErrorObjectValidateOnly() = ObjectActionInvoke19.PostCollectionActionWithErrorObjectValidateOnly api 
     [<Test>] 
-    member x.PostCollectionActionWithErrorServiceValidateOnly() = ObjectActionInvoke19.PostCollectionActionWithErrorServiceValidateOnly x.API    
+    member x.PostCollectionActionWithErrorServiceValidateOnly() = ObjectActionInvoke19.PostCollectionActionWithErrorServiceValidateOnly api    
     [<Test>] 
-    member x.PostCollectionActionWithErrorViewModelValidateOnly() = ObjectActionInvoke19.PostCollectionActionWithErrorViewModelValidateOnly x.API    
+    member x.PostCollectionActionWithErrorViewModelValidateOnly() = ObjectActionInvoke19.PostCollectionActionWithErrorViewModelValidateOnly api    
     
     [<Test>] 
-    member x.MissingParmsOnPostObjectValidateOnly() = ObjectActionInvoke19.MissingParmsOnPostObjectValidateOnly x.API 
+    member x.MissingParmsOnPostObjectValidateOnly() = ObjectActionInvoke19.MissingParmsOnPostObjectValidateOnly api 
     [<Test>] 
-    member x.MissingParmsOnPostServiceValidateOnly() = ObjectActionInvoke19.MissingParmsOnPostServiceValidateOnly x.API     
+    member x.MissingParmsOnPostServiceValidateOnly() = ObjectActionInvoke19.MissingParmsOnPostServiceValidateOnly api     
     [<Test>] 
-    member x.MissingParmsOnPostViewModelValidateOnly() = ObjectActionInvoke19.MissingParmsOnPostViewModelValidateOnly x.API     
+    member x.MissingParmsOnPostViewModelValidateOnly() = ObjectActionInvoke19.MissingParmsOnPostViewModelValidateOnly api     
     
     [<Test>] 
-    member x.MalformedFormalParmsOnPostQueryObjectValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnPostQueryObjectValidateOnly x.API 
+    member x.MalformedFormalParmsOnPostQueryObjectValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnPostQueryObjectValidateOnly api 
     [<Test>] 
-    member x.MalformedFormalParmsOnPostQueryServiceValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnPostQueryServiceValidateOnly x.API     
+    member x.MalformedFormalParmsOnPostQueryServiceValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnPostQueryServiceValidateOnly api     
     [<Test>] 
-    member x.MalformedFormalParmsOnPostQueryViewModelValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnPostQueryViewModelValidateOnly x.API     
+    member x.MalformedFormalParmsOnPostQueryViewModelValidateOnly() = ObjectActionInvoke19.MalformedFormalParmsOnPostQueryViewModelValidateOnly api     
     
     [<Test>] 
-    member x.InvalidFormalParmsOnPostQueryObjectValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnPostQueryObjectValidateOnly x.API 
+    member x.InvalidFormalParmsOnPostQueryObjectValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnPostQueryObjectValidateOnly api 
     [<Test>] 
-    member x.InvalidFormalParmsOnPostQueryServiceValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnPostQueryServiceValidateOnly x.API       
+    member x.InvalidFormalParmsOnPostQueryServiceValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnPostQueryServiceValidateOnly api       
     [<Test>] 
-    member x.InvalidFormalParmsOnPostQueryViewModelValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnPostQueryViewModelValidateOnly x.API       
+    member x.InvalidFormalParmsOnPostQueryViewModelValidateOnly() = ObjectActionInvoke19.InvalidFormalParmsOnPostQueryViewModelValidateOnly api       
     
     [<Test>] 
-    member x.InvalidUrlOnPostQueryObjectValidateOnly() = ObjectActionInvoke19.InvalidUrlOnPostQueryObjectValidateOnly x.API 
+    member x.InvalidUrlOnPostQueryObjectValidateOnly() = ObjectActionInvoke19.InvalidUrlOnPostQueryObjectValidateOnly api 
     [<Test>] 
-    member x.InvalidUrlOnPostQueryServiceValidateOnly() = ObjectActionInvoke19.InvalidUrlOnPostQueryServiceValidateOnly x.API   
+    member x.InvalidUrlOnPostQueryServiceValidateOnly() = ObjectActionInvoke19.InvalidUrlOnPostQueryServiceValidateOnly api   
     [<Test>] 
-    member x.InvalidUrlOnPostQueryViewModelValidateOnly() = ObjectActionInvoke19.InvalidUrlOnPostQueryViewModelValidateOnly x.API   
+    member x.InvalidUrlOnPostQueryViewModelValidateOnly() = ObjectActionInvoke19.InvalidUrlOnPostQueryViewModelValidateOnly api   
     
     
     [<Test>] 
-    member x.DisabledActionPostInvokeObjectValidateOnly() = ObjectActionInvoke19.DisabledActionPostInvokeObjectValidateOnly x.API  
+    member x.DisabledActionPostInvokeObjectValidateOnly() = ObjectActionInvoke19.DisabledActionPostInvokeObjectValidateOnly api  
     [<Test>] 
-    member x.DisabledActionPostInvokeServiceValidateOnly() = ObjectActionInvoke19.DisabledActionPostInvokeServiceValidateOnly x.API  
+    member x.DisabledActionPostInvokeServiceValidateOnly() = ObjectActionInvoke19.DisabledActionPostInvokeServiceValidateOnly api  
     [<Test>] 
-    member x.DisabledActionPostInvokeViewModelValidateOnly() = ObjectActionInvoke19.DisabledActionPostInvokeViewModelValidateOnly x.API  
+    member x.DisabledActionPostInvokeViewModelValidateOnly() = ObjectActionInvoke19.DisabledActionPostInvokeViewModelValidateOnly api  
     
     [<Test>] 
-    member x.NotFoundActionPostInvokeObjectValidateOnly() = ObjectActionInvoke19.NotFoundActionPostInvokeObjectValidateOnly x.API 
+    member x.NotFoundActionPostInvokeObjectValidateOnly() = ObjectActionInvoke19.NotFoundActionPostInvokeObjectValidateOnly api 
     [<Test>] 
-    member x.NotFoundActionPostInvokeServiceValidateOnly() = ObjectActionInvoke19.NotFoundActionPostInvokeServiceValidateOnly x.API    
+    member x.NotFoundActionPostInvokeServiceValidateOnly() = ObjectActionInvoke19.NotFoundActionPostInvokeServiceValidateOnly api    
     [<Test>] 
-    member x.NotFoundActionPostInvokeViewModelValidateOnly() = ObjectActionInvoke19.NotFoundActionPostInvokeViewModelValidateOnly x.API    
+    member x.NotFoundActionPostInvokeViewModelValidateOnly() = ObjectActionInvoke19.NotFoundActionPostInvokeViewModelValidateOnly api    
     
     [<Test>] 
-    member x.HiddenActionPostInvokeObjectValidateOnly() = ObjectActionInvoke19.HiddenActionPostInvokeObjectValidateOnly x.API 
+    member x.HiddenActionPostInvokeObjectValidateOnly() = ObjectActionInvoke19.HiddenActionPostInvokeObjectValidateOnly api 
     [<Test>] 
-    member x.HiddenActionPostInvokeServiceValidateOnly() = ObjectActionInvoke19.HiddenActionPostInvokeServiceValidateOnly x.API    
+    member x.HiddenActionPostInvokeServiceValidateOnly() = ObjectActionInvoke19.HiddenActionPostInvokeServiceValidateOnly api    
     [<Test>] 
-    member x.HiddenActionPostInvokeViewModelValidateOnly() = ObjectActionInvoke19.HiddenActionPostInvokeViewModelValidateOnly x.API    
+    member x.HiddenActionPostInvokeViewModelValidateOnly() = ObjectActionInvoke19.HiddenActionPostInvokeViewModelValidateOnly api    
     
     [<Test>] 
-    member x.PostQueryActionWithErrorObjectValidateOnly() = ObjectActionInvoke19.PostQueryActionWithErrorObjectValidateOnly x.API 
+    member x.PostQueryActionWithErrorObjectValidateOnly() = ObjectActionInvoke19.PostQueryActionWithErrorObjectValidateOnly api 
     [<Test>] 
-    member x.PostQueryActionWithErrorServiceValidateOnly() = ObjectActionInvoke19.PostQueryActionWithErrorServiceValidateOnly x.API     
+    member x.PostQueryActionWithErrorServiceValidateOnly() = ObjectActionInvoke19.PostQueryActionWithErrorServiceValidateOnly api     
     [<Test>] 
-    member x.PostQueryActionWithErrorViewModelValidateOnly() = ObjectActionInvoke19.PostQueryActionWithErrorViewModelValidateOnly x.API     
+    member x.PostQueryActionWithErrorViewModelValidateOnly() = ObjectActionInvoke19.PostQueryActionWithErrorViewModelValidateOnly api     
     
     [<Test>] 
-    member x.GetInvokeActionReturnCollectionObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnCollectionObjectValidateOnly x.API 
+    member x.GetInvokeActionReturnCollectionObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnCollectionObjectValidateOnly api 
     [<Test>] 
-    member x.GetInvokeActionReturnCollectionServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnCollectionServiceValidateOnly x.API    
+    member x.GetInvokeActionReturnCollectionServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnCollectionServiceValidateOnly api    
     [<Test>] 
-    member x.GetInvokeActionReturnCollectionViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnCollectionViewModelValidateOnly x.API    
+    member x.GetInvokeActionReturnCollectionViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnCollectionViewModelValidateOnly api    
     
     [<Test>] 
-    member x.GetInvokeActionWithScalarParmsReturnCollectionSimpleObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionSimpleObjectValidateOnly x.API 
+    member x.GetInvokeActionWithScalarParmsReturnCollectionSimpleObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionSimpleObjectValidateOnly api 
     [<Test>] 
-    member x.GetInvokeActionWithScalarParmsReturnCollectionSimpleServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionSimpleServiceValidateOnly x.API  
+    member x.GetInvokeActionWithScalarParmsReturnCollectionSimpleServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionSimpleServiceValidateOnly api  
     [<Test>] 
-    member x.GetInvokeActionWithScalarParmsReturnCollectionSimpleViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionSimpleViewModelValidateOnly x.API  
+    member x.GetInvokeActionWithScalarParmsReturnCollectionSimpleViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionSimpleViewModelValidateOnly api  
     
     [<Test>] 
-    member x.GetInvokeActionWithScalarParmsReturnCollectionFormalObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionFormalObjectValidateOnly x.API 
+    member x.GetInvokeActionWithScalarParmsReturnCollectionFormalObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionFormalObjectValidateOnly api 
     [<Test>] 
-    member x.GetInvokeActionWithScalarParmsReturnCollectionFormalServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionFormalServiceValidateOnly x.API  
+    member x.GetInvokeActionWithScalarParmsReturnCollectionFormalServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionFormalServiceValidateOnly api  
     [<Test>] 
-    member x.GetInvokeActionWithScalarParmsReturnCollectionFormalViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionFormalViewModelValidateOnly x.API  
+    member x.GetInvokeActionWithScalarParmsReturnCollectionFormalViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnCollectionFormalViewModelValidateOnly api  
     
     [<Test>] 
-    member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalObjectValidateOnly x.API 
+    member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalObjectValidateOnly api 
     [<Test>] 
-    member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalServiceValidateOnly x.API    
+    member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalServiceValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalServiceValidateOnly api    
     [<Test>] 
-    member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly x.API    
+    member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly() = ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly api    
     
     
  
     // DomainType21
     [<Test>] 
-    member x.GetMostSimpleObjectType() = DomainType21.GetMostSimpleObjectType x.API
+    member x.GetMostSimpleObjectType() = DomainType21.GetMostSimpleObjectType api
     [<Test>] 
-    member x.GetWithActionObjectType() = DomainType21.GetWithActionObjectType x.API
+    member x.GetWithActionObjectType() = DomainType21.GetWithActionObjectType api
     [<Test>]
-    member x.GetWithActionServiceType() = DomainType21.GetWithActionServiceType x.API
+    member x.GetWithActionServiceType() = DomainType21.GetWithActionServiceType api
     [<Test>] 
-    member x.GetWithReferenceObjectType() = DomainType21.GetWithReferenceObjectType x.API
+    member x.GetWithReferenceObjectType() = DomainType21.GetWithReferenceObjectType api
     [<Test>] 
-    member x.GetWithValueObjectType() = DomainType21.GetWithValueObjectType x.API
+    member x.GetWithValueObjectType() = DomainType21.GetWithValueObjectType api
     [<Test>] 
-    member x.GetWithCollectionObjectType() = DomainType21.GetWithCollectionObjectType x.API
+    member x.GetWithCollectionObjectType() = DomainType21.GetWithCollectionObjectType api
     [<Test>] 
-    member x.GetPredefinedDomainTypes() = DomainType21.GetPredefinedDomainTypes x.API
+    member x.GetPredefinedDomainTypes() = DomainType21.GetPredefinedDomainTypes api
     [<Test>] 
-    member x.NotFoundPredefinedDomainTypes() = DomainType21.NotFoundPredefinedDomainTypes x.API
+    member x.NotFoundPredefinedDomainTypes() = DomainType21.NotFoundPredefinedDomainTypes api
     [<Test>] 
-    member x.NotFoundGetMostSimpleObjectType() = DomainType21.NotFoundGetMostSimpleObjectType x.API
+    member x.NotFoundGetMostSimpleObjectType() = DomainType21.NotFoundGetMostSimpleObjectType api
     [<Test>] 
-    member x.NotAcceptableGetMostSimpleObjectType() = DomainType21.NotAcceptableGetMostSimpleObjectType x.API
+    member x.NotAcceptableGetMostSimpleObjectType() = DomainType21.NotAcceptableGetMostSimpleObjectType api
     // DomainProperty22
     [<Test>] 
-    member x.GetValuePropertyType() = DomainProperty22.GetValuePropertyType x.API
+    member x.GetValuePropertyType() = DomainProperty22.GetValuePropertyType api
     [<Test>] 
-    member x.GetReferencePropertyType() = DomainProperty22.GetReferencePropertyType x.API
+    member x.GetReferencePropertyType() = DomainProperty22.GetReferencePropertyType api
     [<Test>] 
-    member x.GetValueStringPropertyType() = DomainProperty22.GetValueStringPropertyType x.API
+    member x.GetValueStringPropertyType() = DomainProperty22.GetValueStringPropertyType api
     [<Test>] 
-    member x.GetValueDateTimePropertyType() = DomainProperty22.GetValueDateTimePropertyType x.API
+    member x.GetValueDateTimePropertyType() = DomainProperty22.GetValueDateTimePropertyType api
     [<Test>] 
-    member x.NotFoundPropertyType() = DomainProperty22.NotFoundPropertyType x.API
+    member x.NotFoundPropertyType() = DomainProperty22.NotFoundPropertyType api
     [<Test>] 
-    member x.NotFoundTypePropertyType() = DomainProperty22.NotFoundTypePropertyType x.API
+    member x.NotFoundTypePropertyType() = DomainProperty22.NotFoundTypePropertyType api
     [<Test>] 
-    member x.NotAcceptableGetValuePropertyType() = DomainProperty22.NotAcceptableGetValuePropertyType x.API
+    member x.NotAcceptableGetValuePropertyType() = DomainProperty22.NotAcceptableGetValuePropertyType api
     // DomainCollection23
     [<Test>] 
-    member x.GetCollectionPropertyType() = DomainCollection23.GetCollectionPropertyType x.API
+    member x.GetCollectionPropertyType() = DomainCollection23.GetCollectionPropertyType api
     [<Test>] 
-    member x.GetSetCollectionPropertyType() = DomainCollection23.GetSetCollectionPropertyType x.API
+    member x.GetSetCollectionPropertyType() = DomainCollection23.GetSetCollectionPropertyType api
     [<Test>] 
-    member x.GetCollectionPropertyTypeWithDescription() = DomainCollection23.GetCollectionPropertyTypeWithDescription x.API
+    member x.GetCollectionPropertyTypeWithDescription() = DomainCollection23.GetCollectionPropertyTypeWithDescription api
     [<Test>] 
-    member x.NotFoundTypeCollectionPropertyType() = DomainCollection23.NotFoundTypeCollectionPropertyType x.API
+    member x.NotFoundTypeCollectionPropertyType() = DomainCollection23.NotFoundTypeCollectionPropertyType api
     [<Test>] 
-    member x.NotFoundCollectionPropertyType() = DomainCollection23.NotFoundCollectionPropertyType x.API
+    member x.NotFoundCollectionPropertyType() = DomainCollection23.NotFoundCollectionPropertyType api
     [<Test>] 
-    member x.NotAcceptableGetCollectionPropertyType() = DomainCollection23.NotAcceptableGetCollectionPropertyType x.API
+    member x.NotAcceptableGetCollectionPropertyType() = DomainCollection23.NotAcceptableGetCollectionPropertyType api
     // DomainAction24
     [<Test>] 
-    member x.GetActionTypeObjectNoParmsScalar() = DomainAction24.GetActionTypeObjectNoParmsScalar x.API
+    member x.GetActionTypeObjectNoParmsScalar() = DomainAction24.GetActionTypeObjectNoParmsScalar api
     [<Test>] 
-    member x.GetActionTypeServiceNoParmsScalar() = DomainAction24.GetActionTypeServiceNoParmsScalar x.API
+    member x.GetActionTypeServiceNoParmsScalar() = DomainAction24.GetActionTypeServiceNoParmsScalar api
 
     [<Test>] 
-    member x.GetOverloadedActionTypeObjectNoParmsScalar() = DomainAction24.GetOverloadedActionTypeObjectNoParmsScalar x.API
+    member x.GetOverloadedActionTypeObjectNoParmsScalar() = DomainAction24.GetOverloadedActionTypeObjectNoParmsScalar api
     [<Test>] 
-    member x.GetOverloadedActionTypeServiceNoParmsScalar() = DomainAction24.GetOverloadedActionTypeServiceNoParmsScalar x.API
+    member x.GetOverloadedActionTypeServiceNoParmsScalar() = DomainAction24.GetOverloadedActionTypeServiceNoParmsScalar api
 
 
     [<Test>] 
-    member x.GetActionTypeObjectNoParmsVoid() = DomainAction24.GetActionTypeObjectNoParmsVoid x.API
+    member x.GetActionTypeObjectNoParmsVoid() = DomainAction24.GetActionTypeObjectNoParmsVoid api
     [<Test>] 
-    member x.GetActionTypeServiceNoParmsVoid() = DomainAction24.GetActionTypeServiceNoParmsVoid x.API
+    member x.GetActionTypeServiceNoParmsVoid() = DomainAction24.GetActionTypeServiceNoParmsVoid api
     [<Test>] 
-    member x.GetActionTypeObjectNoParmsCollection() = DomainAction24.GetActionTypeObjectNoParmsCollection x.API
+    member x.GetActionTypeObjectNoParmsCollection() = DomainAction24.GetActionTypeObjectNoParmsCollection api
     [<Test>] 
-    member x.GetActionTypeServiceNoParmsCollection() = DomainAction24.GetActionTypeServiceNoParmsCollection x.API
+    member x.GetActionTypeServiceNoParmsCollection() = DomainAction24.GetActionTypeServiceNoParmsCollection api
     [<Test>] 
-    member x.GetActionTypeObjectParmsScalar() = DomainAction24.GetActionTypeObjectParmsScalar x.API
+    member x.GetActionTypeObjectParmsScalar() = DomainAction24.GetActionTypeObjectParmsScalar api
     [<Test>] 
-    member x.GetActionTypeServiceParmsScalar() = DomainAction24.GetActionTypeServiceParmsScalar x.API
+    member x.GetActionTypeServiceParmsScalar() = DomainAction24.GetActionTypeServiceParmsScalar api
     [<Test>] 
-    member x.GetActionTypeObjectParmsVoid() = DomainAction24.GetActionTypeObjectParmsVoid x.API
+    member x.GetActionTypeObjectParmsVoid() = DomainAction24.GetActionTypeObjectParmsVoid api
     [<Test>] 
-    member x.GetActionTypeServiceParmsVoid() = DomainAction24.GetActionTypeServiceParmsVoid x.API
+    member x.GetActionTypeServiceParmsVoid() = DomainAction24.GetActionTypeServiceParmsVoid api
     [<Test>] 
-    member x.GetActionTypeObjectParmsCollection() = DomainAction24.GetActionTypeObjectParmsCollection x.API
+    member x.GetActionTypeObjectParmsCollection() = DomainAction24.GetActionTypeObjectParmsCollection api
     [<Test>] 
-    member x.GetActionTypeServiceParmsCollection() = DomainAction24.GetActionTypeServiceParmsCollection x.API
+    member x.GetActionTypeServiceParmsCollection() = DomainAction24.GetActionTypeServiceParmsCollection api
     [<Test>] 
-    member x.GetActionTypeObjectContributedOnContributee() = DomainAction24.GetActionTypeObjectContributedOnContributee x.API
+    member x.GetActionTypeObjectContributedOnContributee() = DomainAction24.GetActionTypeObjectContributedOnContributee api
     [<Test>] 
-    member x.GetActionTypeObjectContributedOnContributer() = DomainAction24.GetActionTypeObjectContributedOnContributer x.API
+    member x.GetActionTypeObjectContributedOnContributer() = DomainAction24.GetActionTypeObjectContributedOnContributer api
     [<Test>] 
-    member x.NotFoundTypeActionType() = DomainAction24.NotFoundTypeActionType x.API
+    member x.NotFoundTypeActionType() = DomainAction24.NotFoundTypeActionType api
     [<Test>] 
-    member x.NotFoundActionTypeObject() = DomainAction24.NotFoundActionTypeObject x.API
+    member x.NotFoundActionTypeObject() = DomainAction24.NotFoundActionTypeObject api
     [<Test>] 
-    member x.NotFoundActionTypeService() = DomainAction24.NotFoundActionTypeService x.API
+    member x.NotFoundActionTypeService() = DomainAction24.NotFoundActionTypeService api
     [<Test>] 
-    member x.NotAcceptableActionType() = DomainAction24.NotAcceptableActionType x.API
+    member x.NotAcceptableActionType() = DomainAction24.NotAcceptableActionType api
     // DomainActionParameter25
     [<Test>] 
-    member x.GetActionParameterTypeInt() = DomainActionParameter25.GetActionParameterTypeInt x.API
+    member x.GetActionParameterTypeInt() = DomainActionParameter25.GetActionParameterTypeInt api
     [<Test>] 
-    member x.GetActionParameterTypeString() = DomainActionParameter25.GetActionParameterTypeString x.API
+    member x.GetActionParameterTypeString() = DomainActionParameter25.GetActionParameterTypeString api
     [<Test>] 
-    member x.GetOverloadedActionParameterTypeString() = DomainActionParameter25.GetOverloadedActionParameterTypeString x.API
+    member x.GetOverloadedActionParameterTypeString() = DomainActionParameter25.GetOverloadedActionParameterTypeString api
     [<Test>] 
-    member x.GetActionParameterTypeDateTime() = DomainActionParameter25.GetActionParameterTypeDateTime x.API
+    member x.GetActionParameterTypeDateTime() = DomainActionParameter25.GetActionParameterTypeDateTime api
     [<Test>] 
-    member x.GetActionParameterTypeReference() = DomainActionParameter25.GetActionParameterTypeReference x.API
+    member x.GetActionParameterTypeReference() = DomainActionParameter25.GetActionParameterTypeReference api
     [<Test>] 
-    member x.GetActionParameterTypeStringOptional() = DomainActionParameter25.GetActionParameterTypeStringOptional x.API
+    member x.GetActionParameterTypeStringOptional() = DomainActionParameter25.GetActionParameterTypeStringOptional api
     [<Test>] 
-    member x.NotFoundType() = DomainActionParameter25.NotFoundType x.API
+    member x.NotFoundType() = DomainActionParameter25.NotFoundType api
     [<Test>] 
-    member x.NotFoundAction() = DomainActionParameter25.NotFoundAction x.API
+    member x.NotFoundAction() = DomainActionParameter25.NotFoundAction api
     [<Test>] 
-    member x.NotFoundParm() = DomainActionParameter25.NotFoundParm x.API
+    member x.NotFoundParm() = DomainActionParameter25.NotFoundParm api
     [<Test>] 
-    member x.NotAcceptableActionParameterType() = DomainActionParameter25.NotAcceptableActionParameterType x.API    
+    member x.NotAcceptableActionParameterType() = DomainActionParameter25.NotAcceptableActionParameterType api    
     // DomainTypeActionInvoke26
     [<Test>] 
-    member x.GetIsSubTypeOfReturnFalseSimpleParms() = DomainTypeActionInvoke26.GetIsSubTypeOfReturnFalseSimpleParms x.API
+    member x.GetIsSubTypeOfReturnFalseSimpleParms() = DomainTypeActionInvoke26.GetIsSubTypeOfReturnFalseSimpleParms api
     [<Test>] 
-    member x.GetIsSuperTypeOfReturnFalseSimpleParms() = DomainTypeActionInvoke26.GetIsSuperTypeOfReturnFalseSimpleParms x.API
+    member x.GetIsSuperTypeOfReturnFalseSimpleParms() = DomainTypeActionInvoke26.GetIsSuperTypeOfReturnFalseSimpleParms api
     [<Test>] 
-    member x.GetIsSubTypeOfReturnTrueSimpleParms() = DomainTypeActionInvoke26.GetIsSubTypeOfReturnTrueSimpleParms x.API
+    member x.GetIsSubTypeOfReturnTrueSimpleParms() = DomainTypeActionInvoke26.GetIsSubTypeOfReturnTrueSimpleParms api
     [<Test>] 
-    member x.GetIsSuperTypeOfReturnTrueSimpleParms() = DomainTypeActionInvoke26.GetIsSuperTypeOfReturnTrueSimpleParms x.API
+    member x.GetIsSuperTypeOfReturnTrueSimpleParms() = DomainTypeActionInvoke26.GetIsSuperTypeOfReturnTrueSimpleParms api
     [<Test>] 
-    member x.GetIsSubTypeOfReturnFalseFormalParms() = DomainTypeActionInvoke26.GetIsSubTypeOfReturnFalseFormalParms x.API
+    member x.GetIsSubTypeOfReturnFalseFormalParms() = DomainTypeActionInvoke26.GetIsSubTypeOfReturnFalseFormalParms api
     [<Test>] 
-    member x.GetIsSuperTypeOfReturnFalseFormalParms() = DomainTypeActionInvoke26.GetIsSuperTypeOfReturnFalseFormalParms x.API
+    member x.GetIsSuperTypeOfReturnFalseFormalParms() = DomainTypeActionInvoke26.GetIsSuperTypeOfReturnFalseFormalParms api
     [<Test>] 
-    member x.GetIsSubTypeOfReturnTrueFormalParms() = DomainTypeActionInvoke26.GetIsSubTypeOfReturnTrueFormalParms x.API
+    member x.GetIsSubTypeOfReturnTrueFormalParms() = DomainTypeActionInvoke26.GetIsSubTypeOfReturnTrueFormalParms api
     [<Test>] 
-    member x.GetIsSuperTypeOfReturnTrueFormalParms() = DomainTypeActionInvoke26.GetIsSuperTypeOfReturnTrueFormalParms x.API
+    member x.GetIsSuperTypeOfReturnTrueFormalParms() = DomainTypeActionInvoke26.GetIsSuperTypeOfReturnTrueFormalParms api
     [<Test>] 
-    member x.NotFoundTypeIsSubTypeOfSimpleParms() = DomainTypeActionInvoke26.NotFoundTypeIsSubTypeOfSimpleParms x.API
+    member x.NotFoundTypeIsSubTypeOfSimpleParms() = DomainTypeActionInvoke26.NotFoundTypeIsSubTypeOfSimpleParms api
     [<Test>] 
-    member x.NotFoundTypeIsSuperTypeOfSimpleParms() = DomainTypeActionInvoke26.NotFoundTypeIsSuperTypeOfSimpleParms x.API
+    member x.NotFoundTypeIsSuperTypeOfSimpleParms() = DomainTypeActionInvoke26.NotFoundTypeIsSuperTypeOfSimpleParms api
     [<Test>] 
-    member x.NotFoundTypeIsSubTypeOfFormalParms() = DomainTypeActionInvoke26.NotFoundTypeIsSubTypeOfFormalParms x.API
+    member x.NotFoundTypeIsSubTypeOfFormalParms() = DomainTypeActionInvoke26.NotFoundTypeIsSubTypeOfFormalParms api
     [<Test>] 
-    member x.NotFoundTypeIsSuperTypeOfFormalParms() = DomainTypeActionInvoke26.NotFoundTypeIsSuperTypeOfFormalParms x.API
+    member x.NotFoundTypeIsSuperTypeOfFormalParms() = DomainTypeActionInvoke26.NotFoundTypeIsSuperTypeOfFormalParms api
     [<Test>] 
-    member x.NotFoundActionSimpleParms() = DomainTypeActionInvoke26.NotFoundActionSimpleParms x.API
+    member x.NotFoundActionSimpleParms() = DomainTypeActionInvoke26.NotFoundActionSimpleParms api
     [<Test>] 
-    member x.NotFoundActionFormalParms() = DomainTypeActionInvoke26.NotFoundActionFormalParms x.API
+    member x.NotFoundActionFormalParms() = DomainTypeActionInvoke26.NotFoundActionFormalParms api
     [<Test>] 
-    member x.NotFoundSuperTypeIsSubTypeOfSimpleParms() = DomainTypeActionInvoke26.NotFoundSuperTypeIsSubTypeOfSimpleParms x.API
+    member x.NotFoundSuperTypeIsSubTypeOfSimpleParms() = DomainTypeActionInvoke26.NotFoundSuperTypeIsSubTypeOfSimpleParms api
     [<Test>] 
-    member x.NotFoundSubTypeIsSuperTypeOfSimpleParms() = DomainTypeActionInvoke26.NotFoundSubTypeIsSuperTypeOfSimpleParms x.API
+    member x.NotFoundSubTypeIsSuperTypeOfSimpleParms() = DomainTypeActionInvoke26.NotFoundSubTypeIsSuperTypeOfSimpleParms api
     [<Test>] 
-    member x.NotFoundSuperTypeIsSubTypeOfFormalParms() = DomainTypeActionInvoke26.NotFoundSuperTypeIsSubTypeOfFormalParms x.API
+    member x.NotFoundSuperTypeIsSubTypeOfFormalParms() = DomainTypeActionInvoke26.NotFoundSuperTypeIsSubTypeOfFormalParms api
     [<Test>] 
-    member x.NotFoundSubTypeIsSuperTypeOfFormalParms() = DomainTypeActionInvoke26.NotFoundSubTypeIsSuperTypeOfFormalParms x.API
+    member x.NotFoundSubTypeIsSuperTypeOfFormalParms() = DomainTypeActionInvoke26.NotFoundSubTypeIsSuperTypeOfFormalParms api
     [<Test>] 
-    member x.MissingParmsIsSubTypeOf() = DomainTypeActionInvoke26.MissingParmsIsSubTypeOf x.API
+    member x.MissingParmsIsSubTypeOf() = DomainTypeActionInvoke26.MissingParmsIsSubTypeOf api
     [<Test>] 
-    member x.MalformedSimpleParmsIsSubTypeOf() = DomainTypeActionInvoke26.MalformedSimpleParmsIsSubTypeOf x.API
+    member x.MalformedSimpleParmsIsSubTypeOf() = DomainTypeActionInvoke26.MalformedSimpleParmsIsSubTypeOf api
     [<Test>] 
-    member x.MalformedFormalParmsIsSubTypeOf() = DomainTypeActionInvoke26.MalformedFormalParmsIsSubTypeOf x.API
+    member x.MalformedFormalParmsIsSubTypeOf() = DomainTypeActionInvoke26.MalformedFormalParmsIsSubTypeOf api
     [<Test>] 
-    member x.NotAcceptableIsSubTypeOf() = DomainTypeActionInvoke26.NotAcceptableIsSubTypeOf x.API
+    member x.NotAcceptableIsSubTypeOf() = DomainTypeActionInvoke26.NotAcceptableIsSubTypeOf api
 end

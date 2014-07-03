@@ -16,7 +16,7 @@ namespace RestfulObjects.Test.Data {
 
 
     public class WithScalars {
-        private DateTime dateTime = new DateTime(2012, 3, 27, 09, 42, 36);
+        private DateTime dateTime = new DateTime(2012, 03, 27, 08, 42, 36, 0, DateTimeKind.Utc);
         private IList<MostSimple> list = new List<MostSimple>();
         private ISet<MostSimple> set = new HashSet<MostSimple>();
 
