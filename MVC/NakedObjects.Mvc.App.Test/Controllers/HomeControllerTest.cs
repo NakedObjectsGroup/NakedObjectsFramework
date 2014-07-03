@@ -61,14 +61,11 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupFixture() {
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
             SqlConnection.ClearAllPools();
-        }
-
-        [SetUp]
-        public void SetupTest() {
             InitializeNakedObjectsFramework();
         }
 
-        [TearDown]
+
+        [TestFixtureTearDown]
         public void TearDownTest() {
             CleanupNakedObjectsFramework();
         }

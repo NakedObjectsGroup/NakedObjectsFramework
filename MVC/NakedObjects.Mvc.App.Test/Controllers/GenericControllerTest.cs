@@ -32,14 +32,27 @@ using NakedObjects.Xat;
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]
     public class GenericControllerTest : AcceptanceTestCase {
-        [SetUp]
+
+        [TestFixtureSetUp]
         public void SetupTest() {
+            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
+            SqlConnection.ClearAllPools();
             InitializeNakedObjectsFramework();
         }
 
-        [TearDown]
+        [TestFixtureTearDown]
         public void TearDownTest() {
             CleanupNakedObjectsFramework();
+        }
+
+        [SetUp]
+        public void StartTest() {
+           
+        }
+
+        [TearDown]
+        public void EndTest() {
+            NakedObjectsContext.ObjectPersistor.Reset();
         }
 
         protected override IServicesInstaller MenuServices {
@@ -78,11 +91,6 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
-        [TestFixtureSetUp]
-        public void SetupFixture() {
-            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
-            SqlConnection.ClearAllPools();
-        }
 
         private static void AssertPagingData(ViewResult result, int currentPage, int pageSize, int pageTotal) {
             Assert.AreEqual(currentPage, ((Dictionary<string, int>) result.ViewData[IdHelper.PagingData])[IdHelper.PagingCurrentPage]);
@@ -1478,7 +1486,8 @@ namespace MvcTestApp.Tests.Controllers {
             var result = (ViewResult) controller.EditObject(objectModel, GetForm(form));
 
             AssertIsQueryableViewOf<SalesOrderHeader>(result);
-            Assert.AreEqual("No objects selected", NakedObjectsContext.MessageBroker.Warnings.First());
+            var warnings = NakedObjectsContext.MessageBroker.Warnings.ToArray();
+            Assert.AreEqual("No objects selected", warnings.First());
         }
 
         [Test]
@@ -1917,25 +1926,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("aName", ((NotPersistedObject) result.ViewData.Model).Name);
         }
 
-        [Test]
-        public void InvokeObjectActionConcurrencyFail() {
-            var controller = new GenericController();
-            new ContextMocks(controller);
-            SalesOrderHeader order = Order;
-            var objectModel = new ObjectAndControlData {
-                ActionId = "Recalculate",
-                Id = FrameworkHelper.GetObjectId(order),
-                InvokeAction = "action=action"
-            };
-
-            try {
-                controller.Action(objectModel, GetForm(new Dictionary<string, string> {{"SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", DateTime.Now.ToString()}}));
-                Assert.Fail("Expected concurrency exception");
-            }
-            catch (ConcurrencyException expected) {
-                Assert.AreSame(order, expected.SourceNakedObject.Object);
-            }
-        }
+      
 
         [Test]
         public void InvokeObjectActionDefaultSet() {
@@ -2259,8 +2250,11 @@ namespace MvcTestApp.Tests.Controllers {
 
     [TestFixture]
     public class ConcurrencyTest : AcceptanceTestCase {
+
         [SetUp]
         public void SetupTest() {
+            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
+            SqlConnection.ClearAllPools();
             InitializeNakedObjectsFramework();
         }
 
@@ -2300,12 +2294,36 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
-        [TestFixtureSetUp]
-        public void SetupFixture() {
-            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
-            SqlConnection.ClearAllPools();
+        private static SalesOrderHeader Order {
+            get { return NakedObjectsContext.ObjectPersistor.Instances<SalesOrderHeader>().First(); }
         }
 
+        private static FormCollection GetForm(IDictionary<string, string> nameValues) {
+            var form = new FormCollection();
+            nameValues.ForEach(kvp => form.Add(kvp.Key, kvp.Value));
+            return form;
+        }
+
+
+        [Test]
+        public void InvokeObjectActionConcurrencyFail() {
+            var controller = new GenericController();
+            new ContextMocks(controller);
+            SalesOrderHeader order = Order;
+            var objectModel = new ObjectAndControlData {
+                ActionId = "Recalculate",
+                Id = FrameworkHelper.GetObjectId(order),
+                InvokeAction = "action=action"
+            };
+
+            try {
+                controller.Action(objectModel, GetForm(new Dictionary<string, string> { { "SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", DateTime.Now.ToString() } }));
+                Assert.Fail("Expected concurrency exception");
+            }
+            catch (ConcurrencyException expected) {
+                Assert.AreSame(order, expected.SourceNakedObject.Object);
+            }
+        }
 
         [Test]
         // in seperate test fixture because otherwise it fails on second attempt - MvcTestApp.Tests.Controllers.GenericControllerTest.EditSaveEFConcurrencyFail:

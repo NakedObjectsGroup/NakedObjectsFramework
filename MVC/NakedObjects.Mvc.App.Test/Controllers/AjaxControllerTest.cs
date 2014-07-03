@@ -31,12 +31,14 @@ namespace MvcTestApp.Tests.Controllers {
     public class AjaxControllerTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestFixtureSetUp]
         public void SetupTest() {
+            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
+            SqlConnection.ClearAllPools();
             InitializeNakedObjectsFramework();
         }
 
-        [TearDown]
+        [TestFixtureTearDown]
         public void TearDownTest() {
             CleanupNakedObjectsFramework();
         }
@@ -77,12 +79,6 @@ namespace MvcTestApp.Tests.Controllers {
                 installer.ForceContextSet();
                 return installer;
             }
-        }
-
-        [TestFixtureSetUp]
-        public void SetupFixture() {
-            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
-            SqlConnection.ClearAllPools();
         }
 
         [Test]

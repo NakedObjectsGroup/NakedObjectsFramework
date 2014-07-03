@@ -26,12 +26,13 @@ namespace MvcTestApp.Tests.Controllers {
     public class CustomControllerTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [SetUp]
+
+        [TestFixtureSetUp]
         public void SetupTest() {
             InitializeNakedObjectsFramework();
         }
 
-        [TearDown]
+        [TestFixtureTearDown]
         public void TearDownTest() {
             CleanupNakedObjectsFramework();
         }

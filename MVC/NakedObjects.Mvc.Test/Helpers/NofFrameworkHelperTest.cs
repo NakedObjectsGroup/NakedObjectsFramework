@@ -26,15 +26,26 @@ namespace MvcTestApp.Tests.Helpers {
     public class NofFrameworkHelperTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestFixtureSetUp]
         public void SetupTest() {
             InitializeNakedObjectsFramework();
+        }
+
+        [TestFixtureTearDown]
+        public void TearDownTest() {
+            CleanupNakedObjectsFramework();
+        }
+
+        [SetUp]
+        public void StartTest() {
             SetUser("sven");
+            Fixtures.InstallFixtures(NakedObjectsContext.ObjectPersistor);
         }
 
         [TearDown]
-        public void TearDownTest() {
-            CleanupNakedObjectsFramework();
+        public void EndTest() {
+            MemoryObjectStore.DiscardObjects();
+            ((NakedObjectPersistorAbstract)NakedObjectsContext.ObjectPersistor).OidGenerator = new SimpleOidGenerator(100L);
         }
 
         #endregion
