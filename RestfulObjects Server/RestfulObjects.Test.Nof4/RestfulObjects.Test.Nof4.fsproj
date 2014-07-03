@@ -65,12 +65,12 @@
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <ItemGroup>
     <None Include="ExampleXAT.cs" />
+    <Compile Include="RestTests.fs" />
     <Compile Include="RestTestsTypes.fs" />
     <Compile Include="RestTestsDomainType.fs" />
     <Compile Include="RestTestsTypesDomainType.fs" />
     <None Include="App.config" />
     <None Include="packages.config" />
-    <Compile Include="RestTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj">

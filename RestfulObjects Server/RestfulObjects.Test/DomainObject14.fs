@@ -347,7 +347,8 @@ let GetMostSimpleObjectConfiguredCaching(api : RestfulObjectsControllerBase) =
 
 let GetWithDateTimeKeyObject(api : RestfulObjectsControllerBase) = 
         let oType = ttc "RestfulObjects.Test.Data.WithDateTimeKey"
-        let id =  ktc "634835232000000000"
+        let k = 634835232000000000L
+        let id =  ktc (Convert.ToString(k))
         let oid = oType + "/" + id
         let url = sprintf "http://localhost/objects/%s"  oid
 
@@ -360,8 +361,11 @@ let GetWithDateTimeKeyObject(api : RestfulObjectsControllerBase) =
 
         let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty("Id", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]))]))
 
+        let dt = new DateTime(k);
+        let title = dt.ToString(); 
+
         let expected = [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType)); TProperty(JsonPropertyNames.InstanceId, TObjectVal(id));
-                         TProperty(JsonPropertyNames.Title, TObjectVal("18/09/2012 00:00:00"));
+                         TProperty(JsonPropertyNames.Title, TObjectVal(title));
                          TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid)  RepresentationTypes.Object oType);
                                                                      TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" oType)  RepresentationTypes.DomainType "");
                                                                      //TObjectJson(makeIconLink()); 
@@ -618,6 +622,9 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                                                                             TProperty("ULong", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]));
                                                                             TProperty("UShort", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]))]))
 
+        //let dt = DateTime.Parse("2012-03-27T08:42:36Z").ToUniversalTime()
+        let dt = (new DateTime(2012, 03, 27, 08, 42, 36, 0, DateTimeKind.Utc))
+
         let expected = [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType)); TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"));
                          TProperty(JsonPropertyNames.Title, TObjectVal("1"));
                          TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson( makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid)  RepresentationTypes.Object oType); 
@@ -630,7 +637,7 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                                                                            TProperty("Char",      TObjectJson(makePropertyMemberWithFormat "objects" "Char" oid "Char" "" "string" false (TObjectVal("3") ))); 
                                                                            //TProperty("CharArray", TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "CharArray" oid "Char Array" "" "clob"  false)) ;
                                                                            TProperty("Decimal",   TObjectJson(makePropertyMemberWithNumber "objects" "Decimal" oid "Decimal" "" "decimal" false (TObjectVal(5.1) ))); 
-                                                                           TProperty("DateTime",  TObjectJson(makePropertyMemberWithFormat "objects" "DateTime" oid "Date Time" "" "date-time" false (TObjectVal(DateTime.Parse("2012-03-27T08:42:36Z").ToUniversalTime()) )));  
+                                                                           TProperty("DateTime",  TObjectJson(makePropertyMemberWithFormat "objects" "DateTime" oid "Date Time" "" "date-time" false (TObjectVal(dt) )));  
                                                                            TProperty("Double",    TObjectJson(makePropertyMemberWithNumber "objects" "Double" oid "Double" "" "decimal" false (TObjectVal(6.2) ))); 
 
                                                                            TProperty("EnumByAttributeChoices",    TObjectJson(makePropertyMemberWithNumber "objects" "EnumByAttributeChoices" oid "Enum By Attribute Choices" "" "integer" false (TObjectVal(0) ))); 
