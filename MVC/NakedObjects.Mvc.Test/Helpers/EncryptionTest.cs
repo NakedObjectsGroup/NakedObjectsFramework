@@ -9,7 +9,9 @@ using Expenses.RecordedActions;
 using Expenses.Services;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Boot;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Persistor.Objectstore.Inmemory;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
@@ -21,15 +23,26 @@ namespace MvcTestApp.Tests.Helpers {
     public class EncryptionTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [SetUp]
+        [TestFixtureSetUp]
         public void SetupTest() {
             InitializeNakedObjectsFramework();
+
+        }
+
+        [TestFixtureTearDown]
+        public void TearDownTest() {
+            CleanupNakedObjectsFramework();
+        }
+
+        [SetUp]
+        public void StartTest() {
             SetUser("sven");
+            Fixtures.InstallFixtures(NakedObjectsContext.ObjectPersistor);
         }
 
         [TearDown]
-        public void TearDownTest() {
-            CleanupNakedObjectsFramework();
+        public void EndTest() {
+            MemoryObjectStore.DiscardObjects();
         }
 
         #endregion
