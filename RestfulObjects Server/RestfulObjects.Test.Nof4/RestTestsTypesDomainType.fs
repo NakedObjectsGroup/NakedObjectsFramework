@@ -19,6 +19,10 @@ open System.Web.Http
 let mapper = new TestTypeCodeMapper()
 let keyMapper = new TestKeyCodeMapper()
 
+let api = 
+    let api = new RestfulObjectsControllerBase()
+    api.Surface <- new NakedObjects.Surface.Nof4.Implementation.NakedObjectsSurface(new NakedObjects.Surface.Nof4.Utility.ExternalOid())
+    api
 
 [<TestFixture>]
 type Nof4TestsTypeDomainType() = class      
@@ -74,19 +78,14 @@ type Nof4TestsTypeDomainType() = class
     override x.Fixtures 
         with get() : IFixturesInstaller = 
             box (new FixturesInstaller([| box (new RestDataFixtureUnitTests()) |])) :?> IFixturesInstaller 
-
-    member x.API = 
-        let api = new RestfulObjectsControllerBase()
-        api.Surface <-  new NakedObjects.Surface.Nof4.Implementation.NakedObjectsSurface(new NakedObjects.Surface.Nof4.Utility.ExternalOid())  
-        api
  
  
     // DomainTypes20
     [<Test>] 
-    member x.GetDomainTypes() = DomainTypes20.GetDomainTypesDomainType x.API
+    member x.GetDomainTypes() = DomainTypes20.GetDomainTypesDomainType api
     [<Test>] 
-    member x.GetDomainTypesWithMediaType() = DomainTypes20.GetDomainTypesWithMediaTypeDomainType x.API 
+    member x.GetDomainTypesWithMediaType() = DomainTypes20.GetDomainTypesWithMediaTypeDomainType api 
     [<Test>] 
-    member x.NotAcceptableGetDomainTypes() = DomainTypes20.NotAcceptableGetDomainTypes x.API
+    member x.NotAcceptableGetDomainTypes() = DomainTypes20.NotAcceptableGetDomainTypes api
    
 end

@@ -18,6 +18,11 @@ open System.Web.Http
 open NakedObjects.Core.Context
 open NakedObjects.Core.Util
 
+let api = 
+    let api = new RestfulObjectsControllerBase()
+    api.Surface <- new NakedObjects.Surface.Nof4.Implementation.NakedObjectsSurface(new NakedObjects.Surface.Nof4.Utility.ExternalOid())
+    api
+
 [<TestFixture>]
 type Nof4TestsTypes() = class      
     inherit  NakedObjects.Xat.AcceptanceTestCase()    
@@ -65,18 +70,15 @@ type Nof4TestsTypes() = class
         with get() : IFixturesInstaller = 
             box (new FixturesInstaller([| box (new RestDataFixtureUnitTests()) |])) :?> IFixturesInstaller 
 
-    member x.API = 
-        let api = new RestfulObjectsControllerBase()
-        api.Surface <-  new NakedObjects.Surface.Nof4.Implementation.NakedObjectsSurface(new NakedObjects.Surface.Nof4.Utility.ExternalOid())  
-        api
+  
 
 
     // DomainTypes20
     [<Test>] 
-    member x.GetDomainTypes() = DomainTypes20.GetDomainTypes x.API
+    member x.GetDomainTypes() = DomainTypes20.GetDomainTypes api
     [<Test>] 
-    member x.GetDomainTypesWithMediaType() = DomainTypes20.GetDomainTypesWithMediaType x.API 
+    member x.GetDomainTypesWithMediaType() = DomainTypes20.GetDomainTypesWithMediaType api 
     [<Test>] 
-    member x.NotAcceptableGetDomainTypes() = DomainTypes20.NotAcceptableGetDomainTypes x.API
+    member x.NotAcceptableGetDomainTypes() = DomainTypes20.NotAcceptableGetDomainTypes api
     
 end
