@@ -2,6 +2,8 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using System;
+using System.Linq;
 using AdventureWorksModel;
 using NakedObjects.Boot;
 using NakedObjects.Core.Context;
@@ -48,6 +50,11 @@ namespace NakedObjects.Rest.App.Demo.App_Start {
 			get { return new ServicesInstaller(); }
 		}
 
+        private static Type[] AdventureWorksTypes() {
+            var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
+            return allTypes.Where(t => t.BaseType == typeof(AWDomainObject) && !t.IsAbstract).ToArray();
+        }
+
         protected override IObjectPersistorInstaller Persistor
         {
             get
@@ -56,7 +63,8 @@ namespace NakedObjects.Rest.App.Demo.App_Start {
                 // Database.SetInitializer(new DropCreateDatabaseIfModelChanges<MyDbContext>()); //Optional behaviour for CodeFirst
                 var installer = new EntityPersistorInstaller();
 
-                // installer.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes); // for Model/Database First
+                installer.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
+                installer.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
                 // installer.UsingCodeFirstContext(() => new MyDbContext()).AssociateTypes(CodeFirstTypes);  //For Code First
 
                 return installer;
