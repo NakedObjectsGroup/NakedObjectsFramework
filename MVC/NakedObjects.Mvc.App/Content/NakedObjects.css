@@ -1093,3 +1093,34 @@ display: none; /*Hide the Find menu always*/
 } 
 /*End - Special treatment for editable view models*/
 
+/*NOF 6.0 - New styling*/
+.body-content, .content-wrapper {
+    padding-top: 30px;
+    margin: auto;
+    max-width: 1170px;
+}
+
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+          box-sizing: content-box;
+}
+
+.nof-tab, .nof-tab:after,
+.nof-tab form, .nof-tab form:after,
+.nof-tab form button, .nof-tab form button:after  {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+button[title="OK"],  button[title="Apply"], button[title="Edit"],  button[title="Save"] ,  button[name="Cancel"]{
+background-color: #d3dce0;
+padding: 7px;
+margin-right: 8px;
+margin-top: 8px;
+border: none;
+font-size: 12px;
+}
