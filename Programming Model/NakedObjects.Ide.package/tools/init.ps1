@@ -161,7 +161,7 @@ param($rootPath, $toolsPath, $package, $project)
 
 		# update nuspec files 
 
-		$nuspecFile = Get-ChildItem -Filter ($Package + "*") -Recurse  -Include *.nuspec | ?{ $_.fullname -notmatch "\\build\\?" }
+		$nuspecFile = Get-ChildItem -Filter ($Package + ".nuspec") -Recurse  -Include *.nuspec | ?{ $_.fullname -notmatch "\\build\\?" }
 	
 		[xml]$nuspecContent =  Get-Content $nuspecFile 
 
