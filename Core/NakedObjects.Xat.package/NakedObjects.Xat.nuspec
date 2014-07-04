@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Xat</id>
-    <version>6.0.0-beta2</version>
+    <version>6.0.0-beta3</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
@@ -12,7 +12,7 @@
     <description>Add to an MS Test project to create eXecutable Application Tests against a domain model.</description>
     <tags>naked objects nakedobjects</tags>
     <dependencies>
-      <dependency id="NakedObjects.Core" version="6.0.0-beta2" />
+      <dependency id="NakedObjects.Core" version="6.0.0-beta3" />
     </dependencies>
   </metadata>
 </package>
