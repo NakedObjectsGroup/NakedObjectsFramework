@@ -1465,8 +1465,9 @@ namespace MvcTestApp.Tests.Controllers {
             AssertIsDialogViewOfAction(result, "Append Comment");
         }
 
+        // run first
         [Test]
-        public void InitialInvokeContributedActionOnEmptyCollectionTarget() {
+        public void AAInitialInvokeContributedActionOnEmptyCollectionTarget() {
             var controller = new GenericController();
 
             new ContextMocks(controller);
