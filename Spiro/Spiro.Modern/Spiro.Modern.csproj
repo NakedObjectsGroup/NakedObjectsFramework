@@ -134,6 +134,10 @@
     <TypeScriptCompile Include="Scripts\spiro.models.ts" />
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
+    <TypeScriptCompile Include="Scripts\spiro.angular..services.transformstrategy.ts" />
+    <TypeScriptCompile Include="Scripts\spiro.angular.services.loaderwithtransform.ts" />
+    <Content Include="Scripts\spiro.angular..services.transformstrategy.js" />
+    <Content Include="Scripts\spiro.angular.services.loaderwithtransform.js" />
     <Content Include="Scripts\spiro.modern.app.js" />
     <Content Include="Scripts\spiro.modern.controllers.js" />
     <Content Include="Scripts\spiro.modern.directives.js" />
@@ -217,6 +221,8 @@
     <Content Include="Tests\specs\maskService.js.map" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <Content Include="Scripts\underscore-min.map" />
+    <Content Include="Scripts\spiro.angular..services.transformstrategy.js.map" />
+    <Content Include="Scripts\spiro.angular.services.loaderwithtransform.js.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
