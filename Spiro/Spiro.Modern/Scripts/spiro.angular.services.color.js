@@ -2,12 +2,17 @@
 /// <reference path="spiro.models.ts" />
 /// <reference path="spiro.angular.viewmodels.ts" />
 /// <reference path="spiro.angular.app.ts" />
-/// <reference path="spiro.angular.config.ts" />
 var Spiro;
 (function (Spiro) {
     (function (Angular) {
         Angular.app.service('color', function () {
             var color = this;
+            var colorMap = {};
+
+            // array of colors for allocated colors by default
+            var defaultColorArray = [];
+
+            var defaultColor = "darkBlue";
 
             function hashCode(toHash) {
                 var hash = 0, i, chr;
@@ -23,12 +28,12 @@ var Spiro;
             ;
 
             function getColorMapValues(dt) {
-                var clr = dt ? Angular.colorMap[dt] : Angular.defaultColor;
+                var clr = dt ? colorMap[dt] : defaultColor;
                 if (!clr) {
                     var hash = Math.abs(hashCode(dt));
                     var index = hash % 18;
-                    clr = Angular.defaultColorArray[index];
-                    Angular.colorMap[dt] = clr;
+                    clr = defaultColorArray[index];
+                    colorMap[dt] = clr;
                 }
                 return clr;
             }
@@ -38,6 +43,18 @@ var Spiro;
                 var results = (typeRegex).exec(url);
                 return (results && results.length > 2) ? results[2] : "";
             }
+
+            color.setColorMap = function (map) {
+                colorMap = map;
+            };
+
+            color.setDefaultColorArray = function (colors) {
+                defaultColorArray = colors;
+            };
+
+            color.setDefaultColor = function (dfltColor) {
+                defaultColor = dfltColor;
+            };
 
             // tested
             color.toColorFromHref = function (href) {

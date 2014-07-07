@@ -2,7 +2,7 @@
 /// <reference path="spiro.models.ts" />
 /// <reference path="spiro.angular.viewmodels.ts" />
 /// <reference path="spiro.angular.app.ts" />
-/// <reference path="spiro.angular.config.ts" />
+
 module Spiro.Angular {
 
     export interface INavigation {

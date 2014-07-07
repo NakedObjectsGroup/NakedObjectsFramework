@@ -4,7 +4,6 @@
 /// <reference path="spiro.angular.viewmodels.ts" />
 /// <reference path="spiro.angular.app.ts" />
 /// <reference path="spiro.angular.services.representationloader.ts" />
-/// <reference path="spiro.angular.config.ts" />
 var Spiro;
 (function (Spiro) {
     (function (Angular) {

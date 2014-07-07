@@ -1,10 +1,9 @@
+/// <reference path="typings/underscore/underscore.d.ts" />
+/// <reference path="spiro.models.ts" />
+/// <reference path="spiro.angular.viewmodels.ts" />
+/// <reference path="spiro.angular.app.ts" />
 var Spiro;
 (function (Spiro) {
-    /// <reference path="typings/underscore/underscore.d.ts" />
-    /// <reference path="spiro.models.ts" />
-    /// <reference path="spiro.angular.viewmodels.ts" />
-    /// <reference path="spiro.angular.app.ts" />
-    /// <reference path="spiro.angular.config.ts" />
     (function (Angular) {
         Angular.app.service('navigation', function ($location, $routeParams) {
             var nav = this;

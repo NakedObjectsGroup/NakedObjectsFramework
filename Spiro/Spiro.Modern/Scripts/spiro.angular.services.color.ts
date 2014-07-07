@@ -2,18 +2,32 @@
 /// <reference path="spiro.models.ts" />
 /// <reference path="spiro.angular.viewmodels.ts" />
 /// <reference path="spiro.angular.app.ts" />
-/// <reference path="spiro.angular.config.ts" />
+
 
 module Spiro.Angular {
 
+    export interface IColorMap {
+        [index: string]: string;
+    }
+
+
     export interface IColor {
         toColorFromHref(href: string) : string;
-        toColorFromType(type : string) : string;
+        toColorFromType(type: string): string;
+        setColorMap(map: IColorMap);
+        setDefaultColorArray(colors: string[]);
+        setDefaultColor(dfltColor : string); 
     }
 
     app.service('color', function () {
 
         var color = <IColor>this;
+        var colorMap: IColorMap = {};
+
+        // array of colors for allocated colors by default
+        var defaultColorArray : string[] = [];
+
+        var defaultColor: string = "darkBlue";
 
         function hashCode(toHash) {
             var hash = 0, i, chr;
@@ -43,12 +57,24 @@ module Spiro.Angular {
             return (results && results.length > 2) ? results[2] : "";
         }
 
+        color.setColorMap = (map: IColorMap) => {
+            colorMap = map;
+        }
+
+        color.setDefaultColorArray = (colors: string[]) => {
+            defaultColorArray = colors;
+        }
+
+        color.setDefaultColor = (dfltColor: string) => {
+            defaultColor = dfltColor;
+        }
+
         // tested
         color.toColorFromHref = (href: string): string => {
             var type = typeFromUrl(href);
             return "bg-color-" + getColorMapValues(type);
         }
-
+    
         color.toColorFromType = (type: string): string => "bg-color-" + getColorMapValues(type);
     });
 }
