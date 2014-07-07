@@ -1,8 +1,8 @@
 /// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
-/// <reference path="../../Scripts/spiro.angular.services.handlers.ts" />
-/// <reference path="../../Scripts/spiro.angular.viewmodels.ts" />
+/// <reference path="../../Scripts/spiro.modern.services.handlers.ts" />
+/// <reference path="../../Scripts/spiro.modern.viewmodels.ts" />
 /// <reference path="helpers.ts" />
 describe('context Service', function () {
     beforeEach(module('app'));
@@ -517,7 +517,7 @@ describe('context Service', function () {
         });
 
         describe('when selected choice is set', function () {
-            var testCvm = new Spiro.Angular.ChoiceViewModel();
+            var testCvm = new Spiro.Angular.Modern.ChoiceViewModel();
 
             beforeEach(inject(function ($rootScope) {
                 localContext.setSelectedChoice("test1", "test2", testCvm);
@@ -535,8 +535,8 @@ describe('context Service', function () {
         });
 
         describe('when multiple selected choices are set', function () {
-            var testCvm1 = new Spiro.Angular.ChoiceViewModel();
-            var testCvm2 = new Spiro.Angular.ChoiceViewModel();
+            var testCvm1 = new Spiro.Angular.Modern.ChoiceViewModel();
+            var testCvm2 = new Spiro.Angular.Modern.ChoiceViewModel();
 
             beforeEach(inject(function ($rootScope) {
                 localContext.setSelectedChoice("test3", "test4", testCvm1);
@@ -556,7 +556,7 @@ describe('context Service', function () {
         });
 
         describe('when match parm but not search', function () {
-            var testCvm = new Spiro.Angular.ChoiceViewModel();
+            var testCvm = new Spiro.Angular.Modern.ChoiceViewModel();
 
             beforeEach(inject(function ($rootScope) {
                 localContext.setSelectedChoice("test5", "test6", testCvm);
@@ -573,8 +573,8 @@ describe('context Service', function () {
         });
 
         describe('when multiple selected choices are set for a parm', function () {
-            var testCvm1 = new Spiro.Angular.ChoiceViewModel();
-            var testCvm2 = new Spiro.Angular.ChoiceViewModel();
+            var testCvm1 = new Spiro.Angular.Modern.ChoiceViewModel();
+            var testCvm2 = new Spiro.Angular.Modern.ChoiceViewModel();
 
             var result1;
 

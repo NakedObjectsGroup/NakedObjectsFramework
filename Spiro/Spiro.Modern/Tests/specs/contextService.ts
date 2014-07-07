@@ -1,8 +1,8 @@
 /// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
-/// <reference path="../../Scripts/spiro.angular.services.handlers.ts" />
-/// <reference path="../../Scripts/spiro.angular.viewmodels.ts" />
+/// <reference path="../../Scripts/spiro.modern.services.handlers.ts" />
+/// <reference path="../../Scripts/spiro.modern.viewmodels.ts" />
 /// <reference path="helpers.ts" />
 
 describe('context Service', () => {
@@ -16,7 +16,7 @@ describe('context Service', () => {
 
         var result;
 
-        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.IContext, repLoader: Spiro.Angular.IRepLoader) => {
+        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext, repLoader: Spiro.Angular.IRepLoader) => {
             spyOnPromise(repLoader, 'populate', testHome);
             localContext = context;
 
@@ -69,7 +69,7 @@ describe('context Service', () => {
 
         var result;
 
-        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.IContext, repLoader: Spiro.Angular.IRepLoader) => {
+        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext, repLoader: Spiro.Angular.IRepLoader) => {
             spyOnPromise(repLoader, 'populate', testServices);
             spyOnPromise(context, 'getHome', testHome);
 
@@ -129,7 +129,7 @@ describe('context Service', () => {
         var getDomainObject;
         var getService;
 
-        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.IContext, repLoader: Spiro.Angular.IRepLoader) => {
+        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext, repLoader: Spiro.Angular.IRepLoader) => {
             spyOnPromise(repLoader, 'populate', testObject);
             getDomainObject = spyOnPromise(context, 'getDomainObject', testObject);
             getService = spyOnPromise(context, 'getService', testObject);
@@ -225,7 +225,7 @@ describe('context Service', () => {
 
         var populate;
 
-        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.IContext) => {
+        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext) => {
 
 
             spyOn(testObject, 'domainType').andReturn("test");
@@ -324,7 +324,7 @@ describe('context Service', () => {
         var localContext;
         var result;
 
-        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.IContext) => {
+        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext) => {
             localContext = context;
         }));
 
@@ -377,10 +377,10 @@ describe('context Service', () => {
 
         var testObject = new Spiro.DomainObjectRepresentation();
 
-        var localContext : Spiro.Angular.IContext;
+        var localContext : Spiro.Angular.Modern.IContext;
         var result;
 
-        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.IContext) => {
+        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext) => {
             localContext = context;
         }));
 
@@ -439,7 +439,7 @@ describe('context Service', () => {
         var getDomainObject;
         var getService;
 
-        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.IContext, repLoader: Spiro.Angular.IRepLoader) => {
+        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext, repLoader: Spiro.Angular.IRepLoader) => {
             spyOnPromise(repLoader, 'populate', testObject);
             getDomainObject = spyOnPromise(context, 'getDomainObject', testObject);
             getService = spyOnPromise(context, 'getService', testObject);
@@ -525,10 +525,10 @@ describe('context Service', () => {
 
     describe('getSelectedChoice', () => {
 
-        var localContext: Spiro.Angular.IContext;
-        var result: Spiro.Angular.ChoiceViewModel[];
+        var localContext: Spiro.Angular.Modern.IContext;
+        var result: Spiro.Angular.Modern.ChoiceViewModel[];
 
-        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.IContext) => {       
+        beforeEach(inject(($rootScope, $routeParams, context: Spiro.Angular.Modern.IContext) => {       
             localContext = context;
         }));
 
@@ -549,7 +549,7 @@ describe('context Service', () => {
 
         describe('when selected choice is set', () => {
 
-            var testCvm = new Spiro.Angular.ChoiceViewModel();
+            var testCvm = new Spiro.Angular.Modern.ChoiceViewModel();
 
             beforeEach(inject($rootScope => {
 
@@ -569,8 +569,8 @@ describe('context Service', () => {
 
         describe('when multiple selected choices are set', () => {
 
-            var testCvm1 = new Spiro.Angular.ChoiceViewModel();
-            var testCvm2 = new Spiro.Angular.ChoiceViewModel();
+            var testCvm1 = new Spiro.Angular.Modern.ChoiceViewModel();
+            var testCvm2 = new Spiro.Angular.Modern.ChoiceViewModel();
 
             beforeEach(inject($rootScope => {
 
@@ -592,7 +592,7 @@ describe('context Service', () => {
 
         describe('when match parm but not search', () => {
 
-            var testCvm = new Spiro.Angular.ChoiceViewModel();
+            var testCvm = new Spiro.Angular.Modern.ChoiceViewModel();
 
             beforeEach(inject($rootScope => {
 
@@ -611,8 +611,8 @@ describe('context Service', () => {
 
         describe('when multiple selected choices are set for a parm', () => {
 
-            var testCvm1 = new Spiro.Angular.ChoiceViewModel();
-            var testCvm2 = new Spiro.Angular.ChoiceViewModel();
+            var testCvm1 = new Spiro.Angular.Modern.ChoiceViewModel();
+            var testCvm2 = new Spiro.Angular.Modern.ChoiceViewModel();
 
             var result1;
 

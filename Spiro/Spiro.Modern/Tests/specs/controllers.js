@@ -1,8 +1,8 @@
 /// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
-/// <reference path="../../Scripts/spiro.angular.app.ts" />
-/// <reference path="../../Scripts/spiro.angular.services.handlers.ts" />
+/// <reference path="../../Scripts/spiro.modern.app.ts" />
+/// <reference path="../../Scripts/spiro.modern.services.handlers.ts" />
 describe('Controllers', function () {
     var $scope, ctrl;
 

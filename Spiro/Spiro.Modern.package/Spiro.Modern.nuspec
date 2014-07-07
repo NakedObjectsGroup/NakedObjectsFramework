@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Spiro.Modern</id>
-    <version>0.9.0-beta</version>
+    <version>0.10.0-beta</version>
     <title>Spiro Modern - Single Page Interface for Restful Objects</title>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
@@ -19,7 +19,7 @@
       <dependency id="AngularJS.Touch" version="1.2.16" />  
       <dependency id="angularjs.TypeScript.DefinitelyTyped" version="1.4.6" />
       <dependency id="jQuery.UI.Combined" version="1.10.4" />
-      <dependency id="Spiro.Models" version="0.9.0-beta" />
+      <dependency id="Spiro.Angular" version="0.10.0-beta" />
     </dependencies>
   </metadata>
 </package>

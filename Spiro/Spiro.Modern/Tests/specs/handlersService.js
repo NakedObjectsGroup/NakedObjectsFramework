@@ -1,7 +1,7 @@
 /// <reference path="../../Scripts/typings/jasmine/jasmine-1.3.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
-/// <reference path="../../Scripts/spiro.angular.services.handlers.ts" />
+/// <reference path="../../Scripts/spiro.modern.services.handlers.ts" />
 /// <reference path="helpers.ts" />
 describe('handlers Service', function () {
     var $scope;
@@ -974,7 +974,7 @@ describe('handlers Service', function () {
 
     describe('setResult helper', function () {
         var testActionResult = new Spiro.ActionResultRepresentation();
-        var testViewModel = new Spiro.Angular.DialogViewModel();
+        var testViewModel = new Spiro.Angular.Modern.DialogViewModel();
         var location;
 
         beforeEach(inject(function ($location) {
@@ -1055,7 +1055,7 @@ describe('handlers Service', function () {
             }));
 
             describe('with show flag', function () {
-                var testParameters = [new Spiro.Angular.ParameterViewModel(), new Spiro.Angular.ParameterViewModel()];
+                var testParameters = [new Spiro.Angular.Modern.ParameterViewModel(), new Spiro.Angular.Modern.ParameterViewModel()];
                 testParameters[0].type = "scalar";
                 testParameters[0].value = "1";
                 testParameters[1].type = "scalar";
@@ -1103,9 +1103,9 @@ describe('handlers Service', function () {
     describe('invokeAction helper', function () {
         var testAction = new Spiro.ActionRepresentation();
         var testActionResult = new Spiro.ActionResultRepresentation();
-        var testViewModel = new Spiro.Angular.DialogViewModel();
+        var testViewModel = new Spiro.Angular.Modern.DialogViewModel();
 
-        var testParameters = [new Spiro.Angular.ParameterViewModel(), new Spiro.Angular.ParameterViewModel()];
+        var testParameters = [new Spiro.Angular.Modern.ParameterViewModel(), new Spiro.Angular.Modern.ParameterViewModel()];
         testParameters[0].value = "1";
         testParameters[1].value = "2";
         testParameters[0].id = "one";
@@ -1173,10 +1173,10 @@ describe('handlers Service', function () {
         var testObject = new Spiro.DomainObjectRepresentation();
         var testUpdatedObject = new Spiro.DomainObjectRepresentation();
         var testUpdate = {};
-        var testViewModel = new Spiro.Angular.DomainObjectViewModel();
+        var testViewModel = new Spiro.Angular.Modern.DomainObjectViewModel();
         var testRawLinks = { testLinks: "" };
 
-        var testProperties = [new Spiro.Angular.PropertyViewModel(), new Spiro.Angular.PropertyViewModel(), new Spiro.Angular.PropertyViewModel()];
+        var testProperties = [new Spiro.Angular.Modern.PropertyViewModel(), new Spiro.Angular.Modern.PropertyViewModel(), new Spiro.Angular.Modern.PropertyViewModel()];
 
         testProperties[0].id = "one";
         testProperties[0].value = "1";
@@ -1274,7 +1274,7 @@ describe('handlers Service', function () {
     });
 
     describe('setInvokeUpdateError helper', function () {
-        var testViewModel = new Spiro.Angular.MessageViewModel();
+        var testViewModel = new Spiro.Angular.Modern.MessageViewModel();
         testViewModel.message = "";
 
         beforeEach(inject(function ($rootScope) {
@@ -1286,8 +1286,8 @@ describe('handlers Service', function () {
 
             var errorMap = new Spiro.ErrorMap(error, "status", "a warning message");
 
-            var vm1 = new Spiro.Angular.ValueViewModel();
-            var vm2 = new Spiro.Angular.ValueViewModel();
+            var vm1 = new Spiro.Angular.Modern.ValueViewModel();
+            var vm2 = new Spiro.Angular.Modern.ValueViewModel();
 
             vm1.id = "one";
             vm2.id = "two";

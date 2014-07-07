@@ -1,6 +1,5 @@
 /// <reference path="typings/underscore/underscore.d.ts" />
 /// <reference path="spiro.models.ts" />
-/// <reference path="spiro.angular.app.ts" />
 
 
 module Spiro.Angular {

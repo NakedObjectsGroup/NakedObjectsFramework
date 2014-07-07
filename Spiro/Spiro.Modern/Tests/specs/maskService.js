@@ -2,7 +2,7 @@
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/spiro.angular.services.color.ts" />
-/// <reference path="../../Scripts/spiro.angular.viewmodels.ts" />
+/// <reference path="../../Scripts/spiro.modern.viewmodels.ts" />
 /// <reference path="helpers.ts" />
 describe('mask Service', function () {
     beforeEach(module('app'));

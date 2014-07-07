@@ -3,24 +3,22 @@
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/spiro.models.ts" />
 /// <reference path="../../Scripts/spiro.angular.services.color.ts" />
-/// <reference path="../../Scripts/spiro.angular.viewmodels.ts" />
+/// <reference path="../../Scripts/spiro.modern.viewmodels.ts" />
 /// <reference path="helpers.ts" />
 
 describe('viewModelFactory Service', () => {
 
     beforeEach(module('app'));
 
-   
-
     describe('create errorViewModel', () => {
 
-        var resultVm: Spiro.Angular.ErrorViewModel;
+        var resultVm: Spiro.Angular.Modern.ErrorViewModel;
         var rawError = { message: "a message", stackTrace: ["line1", "line2"] };
         var emptyError = {};
 
         describe('from populated rep', () => {
           
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 resultVm = viewModelFactory.errorViewModel(new Spiro.ErrorRepresentation(rawError));
             }));
 
@@ -35,7 +33,7 @@ describe('viewModelFactory Service', () => {
         describe('from empty rep', () => {
           
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 resultVm = viewModelFactory.errorViewModel(new Spiro.ErrorRepresentation(emptyError));
             }));
 
@@ -51,13 +49,13 @@ describe('viewModelFactory Service', () => {
 
     describe('create linkViewModel', () => {
 
-        var resultVm: Spiro.Angular.LinkViewModel;
+        var resultVm: Spiro.Angular.Modern.LinkViewModel;
         var rawLink = { title: "a title", href : "http://objects/AdventureWorksModel.Product/1" };
         var emptyLink = {};
 
         describe('from populated rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 resultVm = viewModelFactory.linkViewModel(new Spiro.Link(rawLink));
             }));
 
@@ -71,7 +69,7 @@ describe('viewModelFactory Service', () => {
 
         describe('from empty rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 resultVm = viewModelFactory.linkViewModel(new Spiro.Link(emptyLink));
             }));
 
@@ -85,13 +83,13 @@ describe('viewModelFactory Service', () => {
 
     describe('create itemViewModel', () => {
 
-        var resultVm: Spiro.Angular.ItemViewModel;
+        var resultVm: Spiro.Angular.Modern.ItemViewModel;
         var rawLink = { title: "a title", href: "http://objects/AdventureWorksModel.Product/1" };
         var emptyLink = {};
 
         describe('from populated rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 resultVm = viewModelFactory.itemViewModel(new Spiro.Link(rawLink), "http://objects/AdventureWorksModel.SalesOrderHeader/1");
             }));
 
@@ -105,7 +103,7 @@ describe('viewModelFactory Service', () => {
 
         describe('from empty rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 resultVm = viewModelFactory.itemViewModel(new Spiro.Link(emptyLink), "");
             }));
 
@@ -119,14 +117,14 @@ describe('viewModelFactory Service', () => {
 
     describe('create actionViewModel', () => {
 
-        var resultVm: Spiro.Angular.ActionViewModel;
+        var resultVm: Spiro.Angular.Modern.ActionViewModel;
         var rawdetailsLink = { rel: "urn:org.restfulobjects:rels/details", href: "http://objects/AdventureWorksModel.Product/1/actions/anaction"} 
         var rawAction = { extensions: {friendlyName : "a title"}, links : [rawdetailsLink] };
         
 
         describe('from populated rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 resultVm = viewModelFactory.actionViewModel(new Spiro.ActionMember(rawAction, {}));
             }));
 
@@ -140,7 +138,7 @@ describe('viewModelFactory Service', () => {
 
     describe('create dialogViewModel', () => {
 
-        var resultVm: Spiro.Angular.DialogViewModel;
+        var resultVm: Spiro.Angular.Modern.DialogViewModel;
         var rawInvokeLink = { rel: "urn:org.restfulobjects:rels/invoke", href: "http://objects/AdventureWorksModel.Product/1/actions/anaction" };
         var rawUpLink = { rel: "urn:org.restfulobjects:rels/up", href: "http://objects/AdventureWorksModel.Product/1" };
 
@@ -148,7 +146,7 @@ describe('viewModelFactory Service', () => {
 
         describe('from simple rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory, $routeParams) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory, $routeParams) => {
                 $routeParams.action = "";
                 resultVm = viewModelFactory.dialogViewModel(new Spiro.ActionRepresentation(rawAction), () => {});
             }));
@@ -168,7 +166,7 @@ describe('viewModelFactory Service', () => {
 
     describe('create collectionViewModel', () => {
 
-        var resultVm: Spiro.Angular.CollectionViewModel;
+        var resultVm: Spiro.Angular.Modern.CollectionViewModel;
         var rawDetailsLink = { rel: "urn:org.restfulobjects:rels/details", href: "http://objects/AdventureWorksModel.Product/1/collections/acollection" };
         var rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://objects/AdventureWorksModel.Product/1/collections/acollection" };
 
@@ -176,7 +174,7 @@ describe('viewModelFactory Service', () => {
 
         describe('from collection member rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
 
                 resultVm = viewModelFactory.collectionViewModel(new Spiro.CollectionMember(rawCollection, {}));
             }));
@@ -193,7 +191,7 @@ describe('viewModelFactory Service', () => {
 
         describe('from collection details rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 (<any>rawCollection).value = [];
                 (<any>rawCollection).links.push(rawSelfLink);
 
@@ -212,7 +210,7 @@ describe('viewModelFactory Service', () => {
 
         describe('from list rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
               
                 var rawList = { value: [], links: [rawSelfLink] };
 
@@ -228,13 +226,13 @@ describe('viewModelFactory Service', () => {
     });
 
     describe("create services view model", () => {
-        var resultVm: Spiro.Angular.ServicesViewModel;
+        var resultVm: Spiro.Angular.Modern.ServicesViewModel;
         var rawServices = { value : [] };
 
 
         describe('from populated rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 resultVm = viewModelFactory.servicesViewModel(new Spiro.DomainServicesRepresentation(rawServices));
             }));
 
@@ -248,14 +246,14 @@ describe('viewModelFactory Service', () => {
     });
 
     describe("create service view model", () => {
-        var resultVm: Spiro.Angular.ServiceViewModel;
+        var resultVm: Spiro.Angular.Modern.ServiceViewModel;
         var rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://services/AdventureWorksModel.ProductRepository" };
 
         var rawService = { serviceId : "a service", value: [] , links : [rawSelfLink],title : "a title" };
 
         describe('from populated rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 resultVm = viewModelFactory.serviceViewModel(new Spiro.DomainObjectRepresentation(rawService));
             }));
 
@@ -271,14 +269,14 @@ describe('viewModelFactory Service', () => {
     });
 
     describe("create object view model", () => {
-        var resultVm: Spiro.Angular.DomainObjectViewModel;
+        var resultVm: Spiro.Angular.Modern.DomainObjectViewModel;
         var rawSelfLink = { rel: "urn:org.restfulobjects:rels/self", href: "http://objects/AdventureWorksModel.Product/1" };
 
         var rawObject = { domainType : "an object",  links: [rawSelfLink], title: "a title", extensions : {friendlyName : "a name"} };
 
         describe('from populated rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 resultVm = viewModelFactory.domainObjectViewModel(new Spiro.DomainObjectRepresentation(rawObject));
             }));
 
@@ -296,7 +294,7 @@ describe('viewModelFactory Service', () => {
 
         describe('from transient populated rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 var rawPersistLink = { rel: "urn:org.restfulobjects:rels/persist", href: "http://objects/AdventureWorksModel.Product" };
                 rawObject.links.pop();
                 rawObject.links.push(rawPersistLink);
@@ -321,14 +319,14 @@ describe('viewModelFactory Service', () => {
     });
 
     describe("create parameter view model", () => {
-        var resultVm: Spiro.Angular.ParameterViewModel;
+        var resultVm: Spiro.Angular.Modern.ParameterViewModel;
 
         var rawParameter : any = { extensions : {friendlyName : "a parm"}, links : [] };
         var rawAction = {};
 
         describe('from populated rep', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 resultVm = viewModelFactory.parameterViewModel(new Spiro.Parameter(rawParameter, new Spiro.ActionRepresentation(rawAction)), "", "pv");
             }));
 
@@ -357,7 +355,7 @@ describe('viewModelFactory Service', () => {
 
         describe('from populated rep with scalar choices', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
 
                 rawParameter.choices = [1, 2, 3];
                 rawParameter.default = 1;
@@ -382,7 +380,7 @@ describe('viewModelFactory Service', () => {
 
         describe('from populated rep with prompt autocomplete', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 var rawPromptLink = {
                     rel: "urn:org.restfulobjects:rels/prompt",
                     href: "http://services/AdventureWorksModel.ProductRepository/prompt",
@@ -414,7 +412,7 @@ describe('viewModelFactory Service', () => {
 
         describe('from populated rep with prompt conditional choices', () => {
 
-            beforeEach(inject((viewModelFactory: Spiro.Angular.IViewModelFactory) => {
+            beforeEach(inject((viewModelFactory: Spiro.Angular.Modern.IViewModelFactory) => {
                 var rawPromptLink = {
                     rel: "urn:org.restfulobjects:rels/prompt",
                     href: "http://services/AdventureWorksModel.ProductRepository/prompt",
