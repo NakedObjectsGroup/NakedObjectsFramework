@@ -11,7 +11,7 @@
     <iconUrl>http://www.nakedobjects.net/images/RestfulObjectsLogo.jpg</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Includes both TypeScript source and compiled JavaScript</summary>
-    <description></description>
+    <description>Services for using Angular with Spiro and Restful Objects</description>
     <tags>restfulobjects restful objects nakedobjects naked javascript angularjs</tags>
     <dependencies>
       <dependency id="AngularJS.Core" version="1.2.16"  />
