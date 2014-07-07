@@ -115,7 +115,6 @@
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <TypeScriptCompile Include="Scripts\spiro.angular.app.ts" />
-    <TypeScriptCompile Include="Scripts\spiro.angular.config.ts" />
     <TypeScriptCompile Include="Scripts\spiro.angular.controllers.ts" />
     <TypeScriptCompile Include="Scripts\spiro.angular.directives.ts" />
     <TypeScriptCompile Include="Scripts\spiro.angular.services.color.ts" />
@@ -136,7 +135,6 @@
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
     <Content Include="Scripts\spiro.angular.app.js" />
-    <Content Include="Scripts\spiro.angular.config.js" />
     <Content Include="Scripts\spiro.angular.controllers.js" />
     <Content Include="Scripts\spiro.angular.directives.js" />
     <Content Include="Scripts\spiro.angular.services.color.js" />
@@ -198,7 +196,6 @@
     <Content Include="Scripts\spiro.angular.services.representationloader.js.map" />
     <Content Include="Scripts\spiro.angular.services.urlhelper.js.map" />
     <Content Include="Scripts\spiro.angular.app.js.map" />
-    <Content Include="Scripts\spiro.angular.config.js.map" />
     <Content Include="Scripts\spiro.angular.controllers.js.map" />
     <Content Include="Scripts\spiro.angular.directives.js.map" />
     <Content Include="Scripts\spiro.angular.services.color.js.map" />
