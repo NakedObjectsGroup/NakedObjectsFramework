@@ -1,11 +1,9 @@
 ﻿/// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="spiro.models.ts" />
-/// <reference path="spiro.angular.viewmodels.ts" />
-/// <reference path="spiro.angular.app.ts" />
-/// <reference path="spiro.angular.services.context.ts" />
+
 
 // tested 
-module Spiro.Angular {
+module Spiro.Angular.Modern {
 
     interface ISelectScope extends ng.IScope {
         select: any;
@@ -61,7 +59,7 @@ module Spiro.Angular {
             };
         });
 
-    app.directive('nogAutocomplete', function ($filter: ng.IFilterService, $parse, context: Spiro.Angular.IContext): ng.IDirective {
+    app.directive('nogAutocomplete', function ($filter: ng.IFilterService, $parse, context: IContext): ng.IDirective {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -146,7 +144,7 @@ module Spiro.Angular {
         };
     });
 
-    app.directive('nogConditionalchoices', function ($filter: ng.IFilterService, $parse, context: Spiro.Angular.IContext): ng.IDirective {
+    app.directive('nogConditionalchoices', function ($filter: ng.IFilterService, $parse, context: IContext): ng.IDirective {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only

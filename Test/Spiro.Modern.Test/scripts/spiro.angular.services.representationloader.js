@@ -1,8 +1,6 @@
 /// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/underscore/underscore.d.ts" />
 /// <reference path="spiro.models.ts" />
-/// <reference path="spiro.angular.viewmodels.ts" />
-/// <reference path="spiro.angular.app.ts" />
 var Spiro;
 (function (Spiro) {
     (function (Angular) {

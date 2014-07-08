@@ -1,16 +1,9 @@
 /// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/underscore/underscore.d.ts" />
 /// <reference path="spiro.models.ts" />
-/// <reference path="spiro.angular.viewmodels.ts" />
-/// <reference path="spiro.angular.app.ts" />
-/// <reference path="spiro.angular.services.color.ts" />
-/// <reference path="spiro.angular.services.representationloader.ts" />
-/// <reference path="spiro.angular.services.urlhelper.ts" />
-/// <reference path="spiro.angular.services.context.ts" />
-/// <reference path="spiro.angular.services.viewmodelfactory.ts" />
-/// <reference path="spiro.angular.services.navigation.browser.ts" />
 
-module Spiro.Angular {
+
+module Spiro.Angular.Modern {
 
 
     export interface IHandlers {
@@ -31,65 +24,64 @@ module Spiro.Angular {
         handleAppBar($scope): void;
     }
 
-    app.service("handlers", function ($routeParams: ISpiroRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, urlHelper: IUrlHelper, color : IColor, repHandlers : IRepHandlers, navigation : INavigation,  $route) {
+    app.service("handlers", function($routeParams: ISpiroRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, urlHelper: IUrlHelper, color: IColor, repHandlers: IRepHandlers, navigation: INavigation) {
 
         var handlers = <IHandlers>this;
 
-        handlers.handleBackground = function ($scope) {
+        // tested
+        handlers.handleBackground = $scope => {
             $scope.backgroundColor = color.toColorFromHref($location.absUrl());
             $scope.closeNestedObject = urlHelper.toAppUrl($location.path(), ["property", "collectionItem", "resultObject"]);
             $scope.closeCollection = urlHelper.toAppUrl($location.path(), ["collection", "resultCollection"]);
             navigation.push();
         };
 
-        
-
-// tested
-        handlers.handleCollectionResult = function($scope) {
+        // tested
+        handlers.handleCollectionResult = $scope => {
             context.getCollection().
-                then(function (list: ListRepresentation) {
+                then((list: ListRepresentation) => {
                     setNestedCollection($scope, list);
-                }, function(error) {
+                }, error => {
                     setError(error);
                 });
         };
 
         // tested
-        handlers.handleCollection = function ($scope) {
+        handlers.handleCollection = $scope => {
             context.getObject($routeParams.dt, $routeParams.id).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
                     var collectionDetails = object.collectionMember($routeParams.collection).getDetails();
                     return repLoader.populate(collectionDetails);
                 }).
-                then(function (details: CollectionRepresentation) {
+                then((details: CollectionRepresentation) => {
                     setNestedCollection($scope, details);
-                }, function (error) {
+                }, error => {
                     setError(error);
                 });
         };
 
         // tested
-        handlers.handleActionDialog = function ($scope) {
-           
+        handlers.handleActionDialog = $scope => {
+
             context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
                     var actionTarget = object.actionMember(urlHelper.action()).getDetails();
                     return repLoader.populate(actionTarget);
                 }).
-                then(function (action: ActionRepresentation) {
-                    if (action.extensions().hasParams) {      
+                then((action: ActionRepresentation) => {
+                    if (action.extensions().hasParams) {
                         $scope.dialog = viewModelFactory.dialogViewModel(action, <(dvm: DialogViewModel) => void > _.partial(repHandlers.invokeAction, $scope, action));
                         $scope.dialogTemplate = dialogTemplate;
                     }
-                }, function (error) {
+                }, error => {
                     setError(error);
                 });
         };
 
         // tested
-        handlers.handleActionResult = function ($scope) {
+        handlers.handleActionResult = $scope => {
             context.getObject($routeParams.sid || $routeParams.dt, $routeParams.id).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
                     var action = object.actionMember(urlHelper.action());
 
                     if (action.extensions().hasParams) {
@@ -100,13 +92,13 @@ module Spiro.Angular {
                     var actionTarget = action.getDetails();
                     return repLoader.populate(actionTarget);
                 }).
-                then(function (action: ActionRepresentation) {
+                then((action: ActionRepresentation) => {
                     var result = action.getInvoke();
                     return repLoader.populate(result, true);
                 }).
-                then(function (result: ActionResultRepresentation) {
+                then((result: ActionResultRepresentation) => {
                     repHandlers.setResult(result);
-                }, function (error) {
+                }, error => {
                     if (error) {
                         setError(error);
                     }
@@ -115,83 +107,83 @@ module Spiro.Angular {
         };
 
         // tested
-        handlers.handleProperty = function ($scope) {
+        handlers.handleProperty = $scope => {
             context.getObject($routeParams.dt, $routeParams.id).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
                     var propertyDetails = object.propertyMember($routeParams.property).getDetails();
                     return repLoader.populate(propertyDetails);
                 }).
-                then(function (details: PropertyRepresentation) {
+                then((details: PropertyRepresentation) => {
                     var target = details.value().link().getTarget();
                     return repLoader.populate(target);
                 }).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
                     setNestedObject(object, $scope);
-                }, function (error) {
+                }, error => {
                     setError(error);
                 });
         };
 
         //tested
-        handlers.handleCollectionItem = function ($scope) {
+        handlers.handleCollectionItem = $scope => {
             var collectionItemTypeKey = $routeParams.collectionItem.split("/");
             var collectionItemType = collectionItemTypeKey[0];
             var collectionItemKey = collectionItemTypeKey[1];
 
             context.getNestedObject(collectionItemType, collectionItemKey).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
                     setNestedObject(object, $scope);
-                }, function (error) {
+                }, error => {
                     setError(error);
                 });
         };
 
         // tested
-        handlers.handleServices = function ($scope) {       
+        handlers.handleServices = $scope => {
             context.getServices().
-                then(function (services: DomainServicesRepresentation) {
+                then((services: DomainServicesRepresentation) => {
                     $scope.services = viewModelFactory.servicesViewModel(services);
                     $scope.servicesTemplate = servicesTemplate;
                     context.setObject(null);
                     context.setNestedObject(null);
-                }, function (error) {
+                }, error => {
                     setError(error);
                 });
         };
 
         // tested
-       handlers.handleService = function ($scope) {      
+        handlers.handleService = $scope => {
             context.getObject($routeParams.sid).
-                then(function (service: DomainObjectRepresentation) {
+                then((service: DomainObjectRepresentation) => {
                     $scope.object = viewModelFactory.serviceViewModel(service);
                     $scope.serviceTemplate = serviceTemplate;
-                    $scope.actionTemplate = actionTemplate;           
-                }, function (error) {
+                    $scope.actionTemplate = actionTemplate;
+                }, error => {
                     setError(error);
                 });
 
         };
 
         // tested
-        handlers.handleResult = function ($scope) {
-           
+        handlers.handleResult = $scope => {
+
             var result = $routeParams.resultObject.split("-");
             var dt = result[0];
             var id = result[1];
 
             context.getNestedObject(dt, id).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
                     $scope.result = viewModelFactory.domainObjectViewModel(object); // todo rename result
                     $scope.nestedTemplate = nestedObjectTemplate;
                     context.setNestedObject(object);
-                }, function (error) {
+                }, error => {
                     setError(error);
                 });
 
         };
 
         // tested
-        handlers.handleError = function ($scope) {          
+        handlers.handleError = $scope => {
             var error = context.getError();
             if (error) {
                 var evm = viewModelFactory.errorViewModel(error);
@@ -201,15 +193,14 @@ module Spiro.Angular {
         };
 
         // tested
-        handlers.handleAppBar = function ($scope) {
+        handlers.handleAppBar = $scope => {
 
             $scope.appBar = {};
 
             $scope.$on("ajax-change", (event, count) => {
                 if (count > 0) {
                     $scope.appBar.loading = "Loading...";
-                }
-                else {
+                } else {
                     $scope.appBar.loading = "";
                 }
             });
@@ -226,11 +217,11 @@ module Spiro.Angular {
 
             $scope.appBar.goHome = "#/";
 
-            $scope.appBar.goBack = function () {
-                navigation.back();      
+            $scope.appBar.goBack = () => {
+                navigation.back();
             };
 
-            $scope.appBar.goForward = function () {
+            $scope.appBar.goForward = () => {
                 navigation.forward();
             };
 
@@ -240,41 +231,42 @@ module Spiro.Angular {
 
             if ($routeParams.dt && $routeParams.id) {
                 context.getObject($routeParams.dt, $routeParams.id).
-                    then(function (object: DomainObjectRepresentation) {
+                    then((object: DomainObjectRepresentation) => {
 
-                        var pms = <PropertyMember[]>  _.toArray(object.propertyMembers());
+                        var pms = <PropertyMember[]> _.toArray(object.propertyMembers());
 
-                        var anyEditableField = _.any(pms, (pm : PropertyMember) => !pm.disabledReason());
+                        var anyEditableField = _.any(pms, (pm: PropertyMember) => !pm.disabledReason());
 
                         $scope.appBar.hideEdit = !(object) || $routeParams.editMode || !anyEditableField;
 
                         // rework to use viewmodel code
-                       
+
                         $scope.appBar.doEdit = urlHelper.toAppUrl($location.path()) + "?editMode=true";
                     });
             }
         };
 
         //tested
-        handlers.handleObject = function ($scope) {
-        
+        handlers.handleObject = $scope => {
+
             context.getObject($routeParams.dt, $routeParams.id).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
                     context.setNestedObject(null);
                     $scope.object = viewModelFactory.domainObjectViewModel(object);
                     $scope.objectTemplate = objectTemplate;
                     $scope.actionTemplate = actionTemplate;
                     $scope.propertiesTemplate = viewPropertiesTemplate;
-                }, function (error) {
+                }, error => {
                     setError(error);
                 });
 
         };
 
-        handlers.handleTransientObject = function ($scope) {
+        // tested
+        handlers.handleTransientObject = $scope => {
 
             context.getTransientObject().
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
 
                     if (object) {
 
@@ -282,45 +274,44 @@ module Spiro.Angular {
 
                         context.setNestedObject(null);
                         var obj = viewModelFactory.domainObjectViewModel(object, null, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.saveObject, $scope, object));
-                        obj.cancelEdit =  urlHelper.toAppUrl(context.getPreviousUrl()); 
+                        obj.cancelEdit = urlHelper.toAppUrl(context.getPreviousUrl());
 
                         $scope.object = obj;
                         $scope.objectTemplate = objectTemplate;
                         $scope.actionTemplate = "";
                         $scope.propertiesTemplate = editPropertiesTemplate;
 
-                    }
-                    else {
+                    } else {
                         // transient has disappeared - return to previous page 
                         //parent.history.back();
                         navigation.back();
                     }
 
-                }, function (error) {
+                }, error => {
                     setError(error);
                 });
         };
 
 
         // tested
-        handlers.handleEditObject = function ($scope) {
+        handlers.handleEditObject = $scope => {
 
             context.getObject($routeParams.dt, $routeParams.id).
-                then(function (object: DomainObjectRepresentation) {
+                then((object: DomainObjectRepresentation) => {
 
                     var detailPromises = _.map(object.propertyMembers(), (pm: PropertyMember) => { return repLoader.populate(pm.getDetails()); });
 
-                    $q.all(detailPromises).then(function (details: PropertyRepresentation[]) {
+                    $q.all(detailPromises).then((details: PropertyRepresentation[]) => {
                         context.setNestedObject(null);
                         $scope.object = viewModelFactory.domainObjectViewModel(object, details, <(ovm: DomainObjectViewModel) => void> _.partial(repHandlers.updateObject, $scope, object));
                         $scope.objectTemplate = objectTemplate;
                         $scope.actionTemplate = "";
                         $scope.propertiesTemplate = editPropertiesTemplate;
-                    }, function (error) {
-                            setError(error);
-                        });
+                    }, error => {
+                        setError(error);
+                    });
 
-                }, function (error) {
+                }, error => {
                     setError(error);
                 });
         };
@@ -334,7 +325,7 @@ module Spiro.Angular {
         }
 
         function setNestedCollection($scope, listOrCollection: ListOrCollection) {
-            
+
 
             if ($routeParams.tableMode) {
                 $scope.collection = viewModelFactory.collectionViewModel(listOrCollection, true);
@@ -352,8 +343,7 @@ module Spiro.Angular {
             var errorRep: ErrorRepresentation;
             if (error instanceof ErrorRepresentation) {
                 errorRep = <ErrorRepresentation>error;
-            }
-            else {
+            } else {
                 errorRep = new ErrorRepresentation({ message: "an unrecognised error has occurred" });
             }
             context.setError(errorRep);

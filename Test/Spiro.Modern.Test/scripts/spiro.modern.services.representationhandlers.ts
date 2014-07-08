@@ -1,15 +1,9 @@
 /// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/underscore/underscore.d.ts" />
 /// <reference path="spiro.models.ts" />
-/// <reference path="spiro.angular.viewmodels.ts" />
-/// <reference path="spiro.angular.app.ts" />
-/// <reference path="spiro.angular.services.color.ts" />
-/// <reference path="spiro.angular.services.context.ts" />
-/// <reference path="spiro.angular.services.urlhelper.ts" />
-/// <reference path="spiro.angular.services.representationloader.ts" />
 
 
-module Spiro.Angular {
+module Spiro.Angular.Modern {
 
     export interface IRepHandlers {
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;

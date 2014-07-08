@@ -1,9 +1,8 @@
 /// <reference path="typings/underscore/underscore.d.ts" />
 /// <reference path="spiro.models.ts" />
-/// <reference path="spiro.angular.viewmodels.ts" />
-/// <reference path="spiro.angular.app.ts" />
-/// <reference path="spiro.angular.config.ts" />
-module Spiro.Angular {
+
+
+module Spiro.Angular.Modern {
 
     export interface INavigation {
         back()

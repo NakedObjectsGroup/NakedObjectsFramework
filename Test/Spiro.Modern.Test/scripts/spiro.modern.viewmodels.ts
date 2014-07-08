@@ -1,8 +1,8 @@
 /// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="spiro.models.ts" />
-/// <reference path="spiro.angular.app.ts" />
 
-module Spiro.Angular {
+
+module Spiro.Angular.Modern {
 
 
     export class AttachmentViewModel {
@@ -118,6 +118,10 @@ module Spiro.Angular {
                     var ss = _.map(this.multiChoices, (c) => {
                         return c.search;
                     });
+
+                    if (ss.length === 0) {
+                        return "";
+                    }
 
                     return _.reduce(ss, (m: string, s) => {
                         return m + "-" + s;

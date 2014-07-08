@@ -102,52 +102,36 @@
     <Content Include="fonts\iconFont.svg" />
     <Content Include="fonts\license.txt" />
     <Content Include="index.html" />
-    <Content Include="scripts\angular-mocks.js" />
     <Content Include="scripts\angular-route.js" />
     <Content Include="scripts\angular-route.min.js" />
     <Content Include="scripts\angular-touch.js" />
     <Content Include="scripts\angular-touch.min.js" />
     <Content Include="scripts\angular.js" />
     <Content Include="scripts\angular.min.js" />
+    <Content Include="scripts\angular.min.js.map" />
+    <Content Include="packages.config" />
+    <Content Include="scripts\angular-route.min.js.map" />
+    <Content Include="scripts\angular-touch.min.js.map" />
     <Content Include="fonts\iconFont.woff" />
     <Content Include="fonts\iconFont.ttf" />
     <Content Include="fonts\iconFont.eot" />
     <None Include="scripts\jquery-2.0.3.intellisense.js" />
-    <None Include="scripts\jquery-2.1.1-vsdoc.js" />
+    <Content Include="scripts\angular-mocks.js" />
+    <None Include="scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="scripts\jquery-2.1.1.js" />
     <Content Include="scripts\jquery-2.1.1.min.js" />
     <Content Include="scripts\jquery-ui-1.10.4.js" />
     <Content Include="scripts\jquery-ui-1.10.4.min.js" />
-    <Content Include="scripts\spiro.angular.app.js" />
-    <Content Include="scripts\spiro.angular.app.ts" />
-    <Content Include="scripts\spiro.angular.config.js" />
-    <Content Include="scripts\spiro.angular.config.ts" />
-    <Content Include="scripts\spiro.angular.controllers.js" />
-    <Content Include="scripts\spiro.angular.controllers.ts" />
-    <Content Include="scripts\spiro.angular.directives.js" />
-    <Content Include="scripts\spiro.angular.directives.ts" />
     <Content Include="scripts\spiro.angular.services.color.js" />
     <Content Include="scripts\spiro.angular.services.color.ts" />
-    <Content Include="scripts\spiro.angular.services.context.js" />
-    <Content Include="scripts\spiro.angular.services.context.ts" />
-    <Content Include="scripts\spiro.angular.services.handlers.js" />
-    <Content Include="scripts\spiro.angular.services.handlers.ts" />
+    <Content Include="scripts\spiro.angular.services.loaderwithtransform.js" />
+    <Content Include="scripts\spiro.angular.services.loaderwithtransform.ts" />
     <Content Include="scripts\spiro.angular.services.mask.js" />
     <Content Include="scripts\spiro.angular.services.mask.ts" />
-    <Content Include="scripts\spiro.angular.services.navigation.browser.js" />
-    <Content Include="scripts\spiro.angular.services.navigation.browser.ts" />
-    <Content Include="scripts\spiro.angular.services.navigation.simple.js" />
-    <Content Include="scripts\spiro.angular.services.navigation.simple.ts" />
-    <Content Include="scripts\spiro.angular.services.representationhandlers.js" />
-    <Content Include="scripts\spiro.angular.services.representationhandlers.ts" />
     <Content Include="scripts\spiro.angular.services.representationloader.js" />
     <Content Include="scripts\spiro.angular.services.representationloader.ts" />
-    <Content Include="scripts\spiro.angular.services.urlhelper.js" />
-    <Content Include="scripts\spiro.angular.services.urlhelper.ts" />
-    <Content Include="scripts\spiro.angular.services.viewmodelfactory.js" />
-    <Content Include="scripts\spiro.angular.services.viewmodelfactory.ts" />
-    <Content Include="scripts\spiro.angular.viewmodels.js" />
-    <Content Include="scripts\spiro.angular.viewmodels.ts" />
+    <Content Include="scripts\spiro.angular.services.transformstrategy.js" />
+    <Content Include="scripts\spiro.angular.services.transformstrategy.ts" />
     <Content Include="scripts\spiro.config.js" />
     <Content Include="scripts\spiro.config.ts" />
     <Content Include="scripts\spiro.models.helpers.js" />
@@ -156,9 +140,33 @@
     <Content Include="scripts\spiro.models.shims.js" />
     <Content Include="scripts\spiro.models.shims.ts" />
     <Content Include="scripts\spiro.models.ts" />
+    <Content Include="scripts\spiro.modern.app.js" />
+    <Content Include="scripts\spiro.modern.app.ts" />
+    <Content Include="scripts\spiro.modern.controllers.js" />
+    <Content Include="scripts\spiro.modern.controllers.ts" />
+    <Content Include="scripts\spiro.modern.directives.js" />
+    <Content Include="scripts\spiro.modern.directives.ts" />
+    <Content Include="scripts\spiro.modern.services.context.js" />
+    <Content Include="scripts\spiro.modern.services.context.ts" />
+    <Content Include="scripts\spiro.modern.services.handlers.js" />
+    <Content Include="scripts\spiro.modern.services.handlers.ts" />
+    <Content Include="scripts\spiro.modern.services.navigation.browser.js" />
+    <Content Include="scripts\spiro.modern.services.navigation.browser.ts" />
+    <Content Include="scripts\spiro.modern.services.navigation.simple.js" />
+    <Content Include="scripts\spiro.modern.services.navigation.simple.ts" />
+    <Content Include="scripts\spiro.modern.services.representationhandlers.js" />
+    <Content Include="scripts\spiro.modern.services.representationhandlers.ts" />
+    <Content Include="scripts\spiro.modern.services.urlhelper.js" />
+    <Content Include="scripts\spiro.modern.services.urlhelper.ts" />
+    <Content Include="scripts\spiro.modern.services.viewmodelfactory.js" />
+    <Content Include="scripts\spiro.modern.services.viewmodelfactory.ts" />
+    <Content Include="scripts\spiro.modern.viewmodels.js" />
+    <Content Include="scripts\spiro.modern.viewmodels.ts" />
+    <Content Include="scripts\typings\angularjs\angular-animate.d.ts" />
     <Content Include="scripts\typings\angularjs\angular-cookies.d.ts" />
     <Content Include="scripts\typings\angularjs\angular-mocks.d.ts" />
     <Content Include="scripts\typings\angularjs\angular-resource.d.ts" />
+    <Content Include="scripts\typings\angularjs\angular-route.d.ts" />
     <Content Include="scripts\typings\angularjs\angular-sanitize.d.ts" />
     <Content Include="scripts\typings\angularjs\angular-scenario.d.ts" />
     <Content Include="scripts\typings\angularjs\angular.d.ts" />
@@ -170,10 +178,6 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="scripts\angular.min.js.map" />
-    <Content Include="packages.config" />
-    <Content Include="scripts\angular-route.min.js.map" />
-    <Content Include="scripts\angular-touch.min.js.map" />
     <Content Include="scripts\jquery-2.1.1.min.map" />
     <Content Include="scripts\underscore-min.map" />
     <None Include="test.pubxml" />
@@ -184,6 +188,7 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

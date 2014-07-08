@@ -1,12 +1,10 @@
 /// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/underscore/underscore.d.ts" />
 /// <reference path="spiro.models.ts" />
-/// <reference path="spiro.angular.viewmodels.ts" />
-/// <reference path="spiro.angular.app.ts" />
-/// <reference path="spiro.angular.services.representationloader.ts" />
-/// <reference path="spiro.angular.config.ts" />
 
-module Spiro.Angular {
+
+
+module Spiro.Angular.Modern {
 
     export interface IContext {
         getHome: () => ng.IPromise<HomePageRepresentation>;
@@ -39,19 +37,27 @@ module Spiro.Angular {
 
         var currentHome: HomePageRepresentation = null;
 
+        function getAppPath() {
+            if (appPath.charAt(appPath.length - 1) == '/') {
+                return appPath.length > 1 ? appPath.substring(0, appPath.length - 2) : "";
+            }
+
+            return appPath;
+        }
+
         function isSameObject(object: DomainObjectRepresentation, type: string, id?: string) {
             var sid = object.serviceId();
             return sid ? sid === type : (object.domainType() == type && object.instanceId() === id);
         }
 
-        // exposed for testing
+        // exposed for test mocking
         context.getDomainObject = (type: string, id: string): ng.IPromise<DomainObjectRepresentation> => {
             var object = new DomainObjectRepresentation();
-            object.hateoasUrl = appPath + "/objects/" + type + "/" + id;
+            object.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
             return repLoader.populate<DomainObjectRepresentation>(object);
         };
 
-        // exposed for testing
+        // exposed for test mocking
         context.getService = function (type: string): ng.IPromise<DomainObjectRepresentation> {
             var delay = $q.defer<DomainObjectRepresentation>();
 
@@ -68,7 +74,7 @@ module Spiro.Angular {
             return delay.promise;
         };
 
-
+        // tested
         context.getHome = () => {
             var delay = $q.defer<HomePageRepresentation>();
 
@@ -76,7 +82,6 @@ module Spiro.Angular {
                 delay.resolve(currentHome);
             }
             else {
-                //var home = new HomePageRepresentation();
                 repLoader.populate<HomePageRepresentation>(new HomePageRepresentation()).then((home: HomePageRepresentation) => {
                     currentHome = home;
                     delay.resolve(home);
@@ -88,6 +93,7 @@ module Spiro.Angular {
 
         var currentServices: DomainServicesRepresentation = null;
 
+        // tested
         context.getServices = function () {
             var delay = $q.defer<DomainServicesRepresentation>();
 
@@ -111,6 +117,7 @@ module Spiro.Angular {
 
         var currentObject: DomainObjectRepresentation = null;
 
+        // tested
         context.getObject = function (type: string, id?: string) {
             var delay = $q.defer<DomainObjectRepresentation>();
 
@@ -132,6 +139,7 @@ module Spiro.Angular {
 
         var currentNestedObject: DomainObjectRepresentation = null;
 
+        // tested
         context.getNestedObject = (type: string, id: string) => {
             var delay = $q.defer<DomainObjectRepresentation>();
 
@@ -140,7 +148,7 @@ module Spiro.Angular {
             }
             else {
                 var domainObjectRepresentation = new DomainObjectRepresentation();
-                domainObjectRepresentation.hateoasUrl = appPath + "/objects/" + type + "/" + id;
+                domainObjectRepresentation.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
 
                 repLoader.populate<DomainObjectRepresentation>(domainObjectRepresentation).
                     then((dor: DomainObjectRepresentation) => {
@@ -162,6 +170,7 @@ module Spiro.Angular {
 
         var currentCollection: ListRepresentation = null;
 
+        // tested
         context.getCollection = () => {
             var delay = $q.defer<ListRepresentation>();
             delay.resolve(currentCollection);
@@ -172,6 +181,7 @@ module Spiro.Angular {
 
         var currentTransient: DomainObjectRepresentation = null;
 
+        // tested
         context.getTransientObject = () => {
             var delay = $q.defer<DomainObjectRepresentation>();
             delay.resolve(currentTransient);
@@ -190,6 +200,7 @@ module Spiro.Angular {
 
         context.getSelectedChoice = (parm: string, search: string) => selectedChoice[parm] ? selectedChoice[parm][search] : null;
 
+        // tested
         context.setSelectedChoice = (parm: string, search: string, cvm: ChoiceViewModel) => {
             selectedChoice[parm] = selectedChoice[parm] || {};
             selectedChoice[parm][search] = selectedChoice[parm][search] || [];

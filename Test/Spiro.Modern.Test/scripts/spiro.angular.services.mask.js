@@ -1,20 +1,18 @@
 /// <reference path="typings/underscore/underscore.d.ts" />
 /// <reference path="spiro.models.ts" />
-/// <reference path="spiro.angular.viewmodels.ts" />
-/// <reference path="spiro.angular.app.ts" />
-/// <reference path="spiro.angular.config.ts" />
 var Spiro;
 (function (Spiro) {
     (function (Angular) {
         Angular.app.service('mask', function () {
-            var color = this;
+            var mask = this;
+            var maskMap = {};
 
-            color.toLocalFilter = function (remoteMask) {
-                if (Angular.maskMap) {
-                    return Angular.maskMap[remoteMask];
-                }
+            mask.toLocalFilter = function (remoteMask) {
+                return maskMap ? maskMap[remoteMask] : null;
+            };
 
-                return null;
+            mask.setMaskMap = function (map) {
+                maskMap = map;
             };
         });
     })(Spiro.Angular || (Spiro.Angular = {}));
