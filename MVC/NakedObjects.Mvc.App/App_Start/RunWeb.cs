@@ -57,14 +57,9 @@ namespace NakedObjects.Mvc.App {
 
         protected override IObjectPersistorInstaller Persistor {
             get {
-                // Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0"); //For in-memory database
-                // Database.SetInitializer(new DropCreateDatabaseIfModelChanges<MyDbContext>()); //Optional behaviour for CodeFirst
                 var installer = new EntityPersistorInstaller();
-
                 installer.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
                 installer.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
-                //installer.UsingCodeFirstContext(() => new MyDbContext()).AssociateTypes(CodeFirstTypes);  //For Code First
-
                 return installer;
             }
         }
