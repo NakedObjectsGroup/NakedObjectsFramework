@@ -116,9 +116,9 @@
     <Copy SourceFiles="@(SpiroAngularFiles)" DestinationFolder="$(SpiroPath)\$(SpAngular).package\content\%(RecursiveDir)" />
     <Copy SourceFiles="@(SpiroModernFiles)" DestinationFolder="$(SpiroPath)\$(SpModern).package\content\%(RecursiveDir)" />
 
-    <Exec WorkingDirectory="$(SpiroPath)\$(SpiroModels).package" Command="..\$(Nuget) pack $(SpiroModels).nuspec" />
-    <Exec WorkingDirectory="$(SpiroPath)\$(SpAngular).package" Command="..\$(Nuget) pack $(SpAngular).nuspec" />
-    <Exec WorkingDirectory="$(SpiroPath)\$(SpModern).package" Command="..\$(Nuget) pack $(SpModern).nuspec" />
+    <Exec WorkingDirectory="$(SpiroPath)\$(SpiroModels).package" Command="nuget pack $(SpiroModels).nuspec" />
+    <Exec WorkingDirectory="$(SpiroPath)\$(SpAngular).package" Command="nuget pack $(SpAngular).nuspec" />
+    <Exec WorkingDirectory="$(SpiroPath)\$(SpModern).package" Command="nuget pack $(SpModern).nuspec" />
     
 		<ItemGroup>
 			<Spiro1Package Include="$(SpiroPath)\$(SpiroModels).package\*.nupkg"/>
