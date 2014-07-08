@@ -7,12 +7,12 @@
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
-    <projectUrl>http://restfulobjects.codeplex.com/</projectUrl>
+    <projectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</projectUrl>
     <iconUrl>http://www.nakedobjects.net/images/RestfulObjectsLogo.jpg</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Includes both TypeScript source and compiled JavaScript</summary>
-    <description>An example SPA for accessing an Restful Objects API, adopting a 'Modern' or 'Flat' styling suitable for touch screens.</description>
-    <tags>restfulobjects restful objects nakedobjects naked javascript angularjs</tags>
+    <description>An example SPA, written in Angular.js, for accessing an Restful Objects API, and adopting a 'Modern' or 'Flat' styling suitable for touch screens.</description>
+    <tags>restfulobjects restful objects nakedobjects naked javascript typescript angularjs</tags>
     <dependencies>
       <dependency id="AngularJS.Core" version="1.2.16"  />
       <dependency id="AngularJS.Route" version="1.2.16" />
