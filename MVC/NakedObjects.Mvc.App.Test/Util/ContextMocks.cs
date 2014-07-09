@@ -15,7 +15,11 @@ namespace MvcTestApp.Tests.Util {
    
     
     public static class Constants {
+#if AV
+        public static string Server = @"(local)\SQL2012SP1";
+#else
         public static string Server = @".\SQLEXPRESS";
+#endif
     }
 
      
