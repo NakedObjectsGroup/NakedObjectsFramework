@@ -7,8 +7,14 @@ using NakedObjects;
 namespace MvcTestApp.Tests.Helpers {
     [NotPersisted]
     public class NotPersistedTestClass {
+        private DateTime testDateTime = new DateTime(2014, 7, 9, 17, 6, 0, DateTimeKind.Utc);
         public string TestString { get; set; }
         public void SimpleAction() {}
-        public DateTime TestDateTime { get; set; }
+
+        [Mask("dd/mmm/yyyy hh:mm:ss")]
+        public DateTime TestDateTime {
+            get { return testDateTime; }
+            set { testDateTime = value; }
+        }
     }
 }
