@@ -63,6 +63,14 @@
   <Target Name="Init" DependsOnTargets="Config" >
     <MakeDir Directories="$(TestResultsPath)"/>
     <MakeDir Directories="$(BuiltPackagesPath)"/>
+
+    <CFGFiles Include="$(MVCPath)\$(NOMVC).App.Test\App.config"/>
+
+    <FileUpdate Files="@(CFGFiles)"
+								RegEx= '\.\\SQLEXPRESS'
+								ReplacementText ='(local)\SQL2012SP1'/>
+    
+    
   </Target>
 
   <ItemGroup>
