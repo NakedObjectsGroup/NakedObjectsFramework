@@ -72,12 +72,6 @@
 								RegEx= '\.\\SQLEXPRESS'
 								ReplacementText ='(local)\SQL2012SP1'
                 WarnOnNoUpdate='True'/>
-
-    <!--<FileUpdate Files="@(CFGFiles)"
-								RegEx= 'Integrated Security=True'
-								ReplacementText ='User ID=sa;Password=Password12!'
-                WarnOnNoUpdate='True'/>-->
-    
     
   </Target>
 

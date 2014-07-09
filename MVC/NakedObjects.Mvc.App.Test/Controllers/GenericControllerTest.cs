@@ -35,11 +35,8 @@ namespace MvcTestApp.Tests.Controllers {
 
         [TestFixtureSetUp]
         public void SetupTest() {
-#if AV
-#else
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
             SqlConnection.ClearAllPools();
-#endif
             InitializeNakedObjectsFramework();
         }
 
