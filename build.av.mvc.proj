@@ -64,8 +64,10 @@
     <MakeDir Directories="$(TestResultsPath)"/>
     <MakeDir Directories="$(BuiltPackagesPath)"/>
 
-    <CFGFiles Include="$(MVCPath)\$(NOMVC).App.Test\App.config"/>
-
+    <ItemGroup>
+      <CFGFiles Include="$(MVCPath)\$(NOMVC).App.Test\App.config"/>
+    </ItemGroup>
+      
     <FileUpdate Files="@(CFGFiles)"
 								RegEx= '\.\\SQLEXPRESS'
 								ReplacementText ='(local)\SQL2012SP1'/>
