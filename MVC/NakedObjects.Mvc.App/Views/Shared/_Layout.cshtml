@@ -46,12 +46,15 @@
             </footer>
         </div>
 
-        <!--AJAX:  Replace nakedobjectsajax with nakedobjectsbasic bundle if non-ajax is required -->
-        <!--DATE FORMATS:   The jquerydatepicker bundle specifies that the JQuery DatePicker uses the en-GB date format (dd/mm/yy).
-            To use the US format (mm/dd/yy) just remove the bundle. Or to use another locale, specify the appropriate
-            version of jquery.ui.datepicker in the bundle config -->
         @RenderSection("Scripts", false)    
-        @(Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap", "~/bundles/jqueryui", "~/bundles/jqueryval", "~/bundles/nakedobjectsajax", "~/bundles/jquerydatepicker"))       
+        @(Scripts.Render(
+            "~/bundles/jquery", 
+            "~/bundles/bootstrap", 
+            "~/bundles/jqueryui", 
+            "~/bundles/jqueryval", 
+            "~/bundles/nakedobjectsajax", 
+            "~/bundles/jquerydatepicker" //Specifies UK date format!
+           ))       
          
     </body>
 </html>
