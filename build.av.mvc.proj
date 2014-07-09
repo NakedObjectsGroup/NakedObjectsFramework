@@ -70,7 +70,8 @@
       
     <FileUpdate Files="@(CFGFiles)"
 								RegEx= '\.\\SQLEXPRESS'
-								ReplacementText ='(local)\SQL2012SP1'/>
+								ReplacementText ='(local)\SQL2012SP1'
+                WarnOnNoUpdate='True'/>
     
     
   </Target>
