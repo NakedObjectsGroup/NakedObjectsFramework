@@ -92,6 +92,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return DoParseInvariant(entry);
         }
 
+        public string InvariantString(T obj) {
+            return GetInvariantString(obj);
+        }
+
         public string EditableTitleOf(T existing) {
             return DisplayTitleOf(existing);
         }
@@ -146,6 +150,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
         protected abstract T DoParse(string entry);
 
         protected abstract T DoParseInvariant(string entry);
+
+        protected abstract string GetInvariantString(T obj);
 
         protected virtual string TitleString(T obj) {
             return obj.ToString();

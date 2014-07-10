@@ -66,6 +66,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return ushort.Parse(entry, CultureInfo.InvariantCulture);
         }
 
+        protected override string GetInvariantString(ushort obj) {
+            return obj.ToString(CultureInfo.InvariantCulture);
+        }
+
         protected override string TitleStringWithMask(string mask, ushort value) {
             return value.ToString(mask);
         }

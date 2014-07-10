@@ -55,6 +55,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             throw new NotImplementedException();
         }
 
+        protected override string GetInvariantString(FileAttachment obj) {
+            throw new NotImplementedException();
+        }
+
         protected override string DoEncode(FileAttachment fileAttachment) {
             Stream stream = fileAttachment.GetResourceAsStream();
             long len = stream.Length;

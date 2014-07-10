@@ -100,6 +100,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
                     select (T)Convert.ChangeType(s, typeof(T), CultureInfo.InvariantCulture)).ToArray();
         }
 
+        protected override string GetInvariantString(T[] obj) {
+            return obj.Aggregate("", (s, t) => (string.IsNullOrEmpty(s) ? "" : s + " ") + t.ToString());
+        }
+
         protected override string TitleStringWithMask(string mask, T[] value) {
             return TitleString(value);
         }

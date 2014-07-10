@@ -65,6 +65,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return float.Parse(entry, CultureInfo.InvariantCulture);
         }
 
+        protected override string GetInvariantString(float obj) {
+            return obj.ToString(CultureInfo.InvariantCulture);
+        }
+
         protected override string TitleStringWithMask(string mask, float value) {
             return value.ToString(mask);
         }

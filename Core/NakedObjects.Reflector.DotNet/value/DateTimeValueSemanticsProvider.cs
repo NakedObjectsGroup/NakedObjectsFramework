@@ -73,6 +73,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return DateTime.Parse(entry, CultureInfo.InvariantCulture);
         }
 
+        protected override string GetInvariantString(DateTime obj) {
+            return obj.ToString(CultureInfo.InvariantCulture);
+        }
+
         protected override DateTime DoRestore(string data) {
             return DateTime.Parse(data);
         }

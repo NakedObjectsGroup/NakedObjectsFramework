@@ -48,6 +48,10 @@ namespace NakedObjects.TestSystem {
             set { typeOfFacet = value; }
         }
 
+        public string InvariantString() {
+            throw new NotImplementedException();
+        }
+
         public void CheckLock(IVersion otherVersion) {}
 
         public string IconName() {

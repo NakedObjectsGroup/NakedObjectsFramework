@@ -35,6 +35,10 @@ namespace NakedObjects.TestSystem {
             return titleString;
         }
 
+        public string InvariantString() {
+            throw new NotImplementedException();
+        }
+
         public virtual ITypeOfFacet TypeOfFacet {
             get {
                 if (typeOfFacet == null) {

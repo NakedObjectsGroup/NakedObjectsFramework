@@ -411,6 +411,13 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return IsService ? SingularName : UntitledName;
         }
 
+        public override string GetInvariantString(INakedObject nakedObject) {
+            var parser = GetFacet<IParseableFacet>();
+            if (parser != null) {
+                return parser.InvariantString(nakedObject);
+            }
+            return null;
+        }
 
         public override string GetIconName(INakedObject forObject) {
             string iconName = null;

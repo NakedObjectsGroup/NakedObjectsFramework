@@ -38,6 +38,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
             return parser.EditableTitleOf(context);
         }
 
+        public string InvariantString(INakedObject nakedObject) {
+            var context = nakedObject.GetDomainObject<T>();
+            return parser.InvariantString(context);
+        }
+
         public bool IsValid {
             get { return parser != null; }
         }

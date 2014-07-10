@@ -138,6 +138,10 @@ namespace NakedObjects.TestSystem {
             throw new Exception("Field not found: " + name);
         }
 
+        public override string GetInvariantString(INakedObject nakedObject) {
+            throw new NotImplementedException();
+        }
+
         public object GetFieldExtension(string name, Type type) {
             return null;
         }

@@ -61,6 +61,10 @@ namespace NakedObjects.Testing {
             throw new System.NotImplementedException();
         }
 
+        public string InvariantString() {
+            throw new NotImplementedException();
+        }
+
         public void CheckLock(IVersion otherVersion) {
             throw new System.NotImplementedException();
         }

@@ -193,6 +193,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
                 return null;
             }
 
+            public string InvariantString(T obj) {
+                throw new NotImplementedException();
+            }
+
             public int TypicalLength {
                 get { return 0; }
             }

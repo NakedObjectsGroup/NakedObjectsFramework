@@ -65,6 +65,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return Guid.Parse(entry);
         }
 
+        protected override string GetInvariantString(Guid obj) {
+            return obj.ToString();
+        }
+
         protected override string TitleStringWithMask(string mask, Guid value) {
             return value.ToString(mask);
         }

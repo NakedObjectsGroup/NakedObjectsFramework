@@ -264,6 +264,10 @@ namespace NakedObjects.Architecture.Adapter {
             public void MarkAsService() {
                 throw new NotImplementedException();
             }
+
+            public string GetInvariantString(INakedObject nakedObject) {
+                throw new NotImplementedException();
+            }
         }
 
         private class TestAdapter : INakedObject {
@@ -301,6 +305,10 @@ namespace NakedObjects.Architecture.Adapter {
             }
 
             public string TitleString() {
+                throw new NotImplementedException();
+            }
+
+            public string InvariantString() {
                 throw new NotImplementedException();
             }
 

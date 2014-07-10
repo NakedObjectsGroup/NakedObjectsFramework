@@ -62,6 +62,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return entry;
         }
 
+        protected override string GetInvariantString(string obj) {
+            return obj.ToString(CultureInfo.InvariantCulture);
+        }
+
         protected override string DoEncode(string obj) {
             string text = obj;
             if (text.Equals("NULL") || IsEscaped(text)) {

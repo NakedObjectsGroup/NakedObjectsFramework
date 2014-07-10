@@ -66,6 +66,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return sbyte.Parse(entry, CultureInfo.InvariantCulture);
         }
 
+        protected override string GetInvariantString(sbyte obj) {
+            return obj.ToString(CultureInfo.InvariantCulture);
+        }
+
         protected override string TitleStringWithMask(string mask, sbyte value) {
             return value.ToString(mask);
         }

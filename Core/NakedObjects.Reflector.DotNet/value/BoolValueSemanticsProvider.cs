@@ -79,6 +79,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return bool.Parse(entry);
         }
 
+        protected override string GetInvariantString(bool obj) {
+            return obj.ToString(CultureInfo.InvariantCulture);
+        }
+
         protected override string DoEncode(bool obj) {
             return obj ? "T" : "F";
         }

@@ -313,6 +313,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
                return null;
             }
 
+            public string InvariantString(MyValueSemanticsProviderThatIsAParser obj) {
+                throw new NotImplementedException();
+            }
+
             public string DisplayTitleOf(MyValueSemanticsProviderThatIsAParser obj) {
                 return null;
             }
@@ -461,6 +465,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
                 return null;
             }
 
+            public string InvariantString(MyValueWithSemanticsProviderSpecifiedUsingConfiguration obj) {
+                throw new NotImplementedException();
+            }
+
             public string DisplayTitleOf(MyValueWithSemanticsProviderSpecifiedUsingConfiguration obj) {
                 return null;
             }
@@ -498,6 +506,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
 
             public object ParseInvariant(string entry) {
                 return null;
+            }
+
+            public string InvariantString(NonAnnotatedValueSemanticsProviderSpecifiedUsingConfiguration obj) {
+                throw new NotImplementedException();
             }
 
             public string DisplayTitleOf(NonAnnotatedValueSemanticsProviderSpecifiedUsingConfiguration obj) {

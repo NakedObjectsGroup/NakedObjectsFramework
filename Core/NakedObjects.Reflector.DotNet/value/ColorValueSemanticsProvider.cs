@@ -74,6 +74,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return Color.FromArgb(int.Parse(entry, CultureInfo.InvariantCulture));
         }
 
+        protected override string GetInvariantString(Color obj) {
+            return obj.ToArgb().ToString(CultureInfo.InvariantCulture);
+        }
+
         protected override string TitleStringWithMask(string mask, Color value) {
             return value.ToString();
         }

@@ -24,7 +24,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Parseable {
         INakedObject ParseTextEntry(string text);
 
         /// <summary>
-        ///     Parses an invariant value and sets teh domain objects value
+        ///     Parses an invariant value and sets the domain objects value
         /// </summary>
         /// <para>
         ///     Equivalent to <see cref="IParser{T}.ParseTextEntry" />, though may
@@ -46,5 +46,8 @@ namespace NakedObjects.Architecture.Facets.Objects.Parseable {
         ///     form might be <b>20070502</b>.
         /// </para>
         string ParseableTitle(INakedObject nakedObject);
+
+
+        string InvariantString(INakedObject nakedObject);
     }
 }

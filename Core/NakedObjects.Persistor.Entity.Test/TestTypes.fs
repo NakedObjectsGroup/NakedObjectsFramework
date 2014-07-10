@@ -54,6 +54,7 @@ type MockNakedObjectSpecification() =
         member x.CreateObject() : obj = null   
         member x.GetBoundedSet() : System.Collections.IEnumerable = null
         member x.MarkAsService() = ()
+        member x.GetInvariantString(nakedObject : INakedObject ) = ""
        
     interface IActionContainer with 
        
@@ -112,6 +113,7 @@ type MockNakedObject(obj, oid) =
                              and set(tof : ITypeOfFacet) = ()
         member x.IconName() : string = ""
         member x.TitleString() : string = ""
+        member x.InvariantString() : string = ""
         member x.ReplacePoco(obj : Object) = ()
         member x.ValidToPersist() : string = null
         member x.SetATransientOid (oid : IOid) = ()

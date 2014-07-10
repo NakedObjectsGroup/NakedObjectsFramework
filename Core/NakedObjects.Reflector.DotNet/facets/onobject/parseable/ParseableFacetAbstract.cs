@@ -35,6 +35,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
             return parseableFacetUsingParser.ParseableTitle(nakedObject);
         }
 
+        public string InvariantString(INakedObject nakedObject) {
+            return parseableFacetUsingParser.InvariantString(nakedObject);
+        }
+
         /// <summary>
         ///     Discover whether either of the candidate parser name or class is valid.
         /// </summary>

@@ -65,6 +65,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return TimeSpan.Parse(entry, CultureInfo.InvariantCulture);
         }
 
+        protected override string GetInvariantString(TimeSpan obj) {
+            return obj.ToString(null, CultureInfo.InvariantCulture);
+        }
+
         protected override TimeSpan DoRestore(string data) {
             return TimeSpan.Parse(data);
         }

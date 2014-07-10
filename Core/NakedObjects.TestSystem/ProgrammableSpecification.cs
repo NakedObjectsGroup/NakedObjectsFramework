@@ -230,6 +230,10 @@ namespace NakedObjects.Testing {
             throw new NotImplementedException();
         }
 
+        public string GetInvariantString(INakedObject nakedObject) {
+            throw new NotImplementedException();
+        }
+
         public object DefaultValue {
             get { throw new NotImplementedException(); }
         }

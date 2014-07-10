@@ -205,11 +205,12 @@ namespace NakedObjects.Reflector.Spec {
         public abstract string UntitledName { get; }
         public abstract string GetTitle(INakedObject nakedObject);
         public abstract INakedObjectAssociation GetProperty(string id);
+        public abstract string GetInvariantString(INakedObject nakedObject);
 
         #endregion
 
         public virtual void MarkAsService() {}
-
+        
         public override string ToString() {
             var str = new AsString(this);
             str.Append("class", fullName);
