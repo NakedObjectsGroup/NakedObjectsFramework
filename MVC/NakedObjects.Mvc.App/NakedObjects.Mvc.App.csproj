@@ -111,54 +111,54 @@
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Architecture">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta3\lib\net451\NakedObjects.Architecture.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0\lib\net451\NakedObjects.Architecture.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Async">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta3\lib\net451\NakedObjects.Async.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0\lib\net451\NakedObjects.Async.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0-beta3\lib\net40\NakedObjects.Attributes.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Bootstrap">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta3\lib\net451\NakedObjects.Bootstrap.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0\lib\net451\NakedObjects.Bootstrap.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Core">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta3\lib\net451\NakedObjects.Core.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0\lib\net451\NakedObjects.Core.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.FWResources">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta3\lib\net451\NakedObjects.FWResources.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0\lib\net451\NakedObjects.FWResources.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Helpers">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0-beta3\lib\net40\NakedObjects.Helpers.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Persistor">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta3\lib\net451\NakedObjects.Persistor.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0\lib\net451\NakedObjects.Persistor.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Persistor.Entity">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta3\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.PMResources">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0-beta3\lib\net40\NakedObjects.PMResources.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Reflector.Core">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta3\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Reflector.DotNet">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta3\lib\net451\NakedObjects.Reflector.DotNet.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0\lib\net451\NakedObjects.Reflector.DotNet.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml">
-      <HintPath>..\..\packages\NakedObjects.Core.6.0.0-beta3\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Core.6.0.0\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Surface">
-      <HintPath>..\..\packages\NakedObjects.Surface.3.0.0-beta3\lib\net451\NakedObjects.Surface.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Surface.3.0.0\lib\net451\NakedObjects.Surface.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Surface.Nof4">
-      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.3.0.0-beta3\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.3.0.0\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0-beta3\lib\net40\NakedObjects.Types.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Types.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -169,14 +169,14 @@
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="RestfulObjects.Bootstrap">
-      <HintPath>..\..\packages\RestfulObjects.Server.2.0.0-beta3\lib\net451\RestfulObjects.Bootstrap.dll</HintPath>
+      <HintPath>..\..\packages\RestfulObjects.Server.2.0.0\lib\net451\RestfulObjects.Bootstrap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RestfulObjects.Mvc">
-      <HintPath>..\..\packages\RestfulObjects.Mvc.2.0.0-beta3\lib\net451\RestfulObjects.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\RestfulObjects.Mvc.2.0.0\lib\net451\RestfulObjects.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="RestfulObjects.Snapshot">
-      <HintPath>..\..\packages\RestfulObjects.Mvc.2.0.0-beta3\lib\net451\RestfulObjects.Snapshot.dll</HintPath>
+      <HintPath>..\..\packages\RestfulObjects.Mvc.2.0.0\lib\net451\RestfulObjects.Snapshot.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

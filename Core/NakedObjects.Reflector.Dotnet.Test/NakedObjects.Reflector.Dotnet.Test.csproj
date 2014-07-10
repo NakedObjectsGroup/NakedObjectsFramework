@@ -70,17 +70,17 @@
       <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0-beta3\lib\net40\NakedObjects.Attributes.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0-beta3\lib\net40\NakedObjects.Helpers.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.PMResources">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0-beta3\lib\net40\NakedObjects.PMResources.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0-beta3\lib\net40\NakedObjects.Types.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Types.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>

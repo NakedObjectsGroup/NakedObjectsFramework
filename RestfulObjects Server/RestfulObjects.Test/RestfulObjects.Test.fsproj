@@ -102,7 +102,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Surface">
-      <HintPath>..\..\packages\NakedObjects.Surface.3.0.0-beta3\lib\net451\NakedObjects.Surface.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Surface.3.0.0\lib\net451\NakedObjects.Surface.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">

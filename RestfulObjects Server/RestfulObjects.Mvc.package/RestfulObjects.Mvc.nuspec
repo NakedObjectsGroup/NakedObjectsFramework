@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>RestfulObjects.Mvc</id>
-    <version>2.0.0-beta3</version>
+    <version>2.0.0</version>
     <title>Restful Objects Mvc</title>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
@@ -13,7 +13,7 @@
     <summary>Provides a base controller and helper classes for an MVC4-based implementation of Restful Objects</summary>
     <description>Typically this package is only installed as a dependency of another package.</description>
     <dependencies>
-      <dependency id="NakedObjects.Surface" version="3.0.0-beta3" />
+      <dependency id="NakedObjects.Surface" version="[3.0.0, 4.0)" />
       <dependency id="Newtonsoft.Json" version="[5.0.4, 6.0)" />
       <dependency id="Microsoft.AspNet.WebApi" version="[5.1.2, 6.0)" />
     </dependencies>
