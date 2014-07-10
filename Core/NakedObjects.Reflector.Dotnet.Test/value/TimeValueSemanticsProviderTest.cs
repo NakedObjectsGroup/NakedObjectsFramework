@@ -3,8 +3,8 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
-using NUnit.Framework;
 using NakedObjects.Architecture.Facets;
+using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     [TestFixture]
@@ -22,52 +22,6 @@ namespace NakedObjects.Reflector.DotNet.Value {
         private IFacetHolder holder;
         private TimeSpan time;
 
-        [Test]
-        public void TestParseEntryOfHoursAfterNow() {
-            object parsed = adapter.ParseTextEntry(new TimeSpan(TestClock.GetTicks()), "+5H");
-            Assert.AreEqual(new TimeSpan(2, 30, 25), parsed);
-        }
-
-        [Test]
-        public void TestParseEntryOfHoursAfterTime() {
-            object parsed = adapter.ParseTextEntry(time, "+5H");
-            Assert.AreEqual(new TimeSpan(13, 13, 00), parsed);
-        }
-
-        [Test]
-        public void TestParseEntryOfHoursAfterTimePartEntry() {
-            object parsed = adapter.ParseTextEntry(time, "+");
-            Assert.AreEqual(new TimeSpan(8, 13, 00), parsed);
-
-            parsed = adapter.ParseTextEntry(time, "+5");
-            Assert.AreEqual(new TimeSpan(8, 13, 00), parsed);
-        }
-
-        [Test]
-        public void TestParseEntryOfHoursBeforeTime() {
-            object parsed = adapter.ParseTextEntry(time, "-7H");
-            Assert.AreEqual(new TimeSpan(1, 13, 00), parsed);
-        }
-
-        [Test]
-        public void TestParseEntryOfHoursBeforeToNow() {
-            object parsed = adapter.ParseTextEntry(new TimeSpan(TestClock.GetTicks()), "-5H");
-            Assert.AreEqual(new TimeSpan(16, 30, 25), parsed);
-        }
-
-        [Test]
-        public void TestParseEntryOfKeywordNow() {
-            var now = new DateTime(2013, 10, 24, 15, 21, 56);
-            TimeValueSemanticsProvider.TestDateTime = now;
-
-            try {
-                object parsed = adapter.ParseTextEntry(time, "now");
-                Assert.AreEqual(now.TimeOfDay, parsed);
-            }
-            finally {
-                TimeValueSemanticsProvider.TestDateTime = null;
-            }
-        }
 
         [Test]
         public void TestRestoreOfInvalidDatal() {

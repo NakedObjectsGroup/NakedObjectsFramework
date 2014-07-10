@@ -49,7 +49,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        protected override sbyte DoParse(sbyte original, string entry) {
+        protected override sbyte DoParse(string entry) {
             try {
                 return sbyte.Parse(entry);
             }

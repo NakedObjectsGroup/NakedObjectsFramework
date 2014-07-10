@@ -305,7 +305,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
 
             #region IParser Members
 
-            public object ParseTextEntry(MyValueSemanticsProviderThatIsAParser context, string entry) {
+            public object ParseTextEntry(string entry) {
                 return null;
             }
 
@@ -449,7 +449,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
 
             #region IParser Members
 
-            public object ParseTextEntry(MyValueWithSemanticsProviderSpecifiedUsingConfiguration context, string entry) {
+            public object ParseTextEntry(string entry) {
                 return null;
             }
 
@@ -484,7 +484,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
 
             #region IParser Members
 
-            public object ParseTextEntry(NonAnnotatedValueSemanticsProviderSpecifiedUsingConfiguration context, string entry) {
+            public object ParseTextEntry(string entry) {
                 return null;
             }
 

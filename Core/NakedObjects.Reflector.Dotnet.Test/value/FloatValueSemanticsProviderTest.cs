@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [Test]
         public void TestInvalidParse() {
             try {
-                GetValue().ParseTextEntry(0, "one");
+                GetValue().ParseTextEntry("one");
                 Assert.Fail();
             }
             catch (Exception e) {
@@ -47,20 +47,20 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         [Test]
         public void TestParse() {
-            object newValue = GetValue().ParseTextEntry(0, "120.56");
+            object newValue = GetValue().ParseTextEntry("120.56");
             Assert.AreEqual(120.56F, newValue);
         }
 
         [Test]
         public void TestParse2() {
-            object newValue = GetValue().ParseTextEntry(0, "1,20.0");
+            object newValue = GetValue().ParseTextEntry("1,20.0");
             Assert.AreEqual(120F, newValue);
         }
 
         [Test]
         public new void TestParseEmptyString() {
             try {
-                object newValue = GetValue().ParseTextEntry(0, "");
+                object newValue = GetValue().ParseTextEntry("");
                 Assert.IsNull(newValue);
             } catch (Exception ) {
                 Assert.Fail();

@@ -49,7 +49,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        protected override ulong DoParse(ulong original, string entry) {
+        protected override ulong DoParse(string entry) {
             try {
                 return ulong.Parse(entry, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
             }

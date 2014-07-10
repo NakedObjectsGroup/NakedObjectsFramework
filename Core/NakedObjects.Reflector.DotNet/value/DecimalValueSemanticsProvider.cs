@@ -49,7 +49,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        protected override decimal DoParse(decimal original, string entry) {
+        protected override decimal DoParse(string entry) {
             try {
                 return decimal.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
             }

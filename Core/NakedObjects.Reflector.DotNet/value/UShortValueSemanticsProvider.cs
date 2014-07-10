@@ -50,7 +50,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        protected override ushort DoParse(ushort original, string entry) {
+        protected override ushort DoParse(string entry) {
             try {
                 return ushort.Parse(entry, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
             }

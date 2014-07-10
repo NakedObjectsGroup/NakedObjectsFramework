@@ -23,8 +23,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
 
         #region IParseableFacet Members
 
-        public INakedObject ParseTextEntry(INakedObject original, string entryText) {
-            return parseableFacetUsingParser.ParseTextEntry(original, entryText);
+        public INakedObject ParseTextEntry(string entryText) {
+            return parseableFacetUsingParser.ParseTextEntry(entryText);
         }
 
         public string ParseableTitle(INakedObject nakedObject) {

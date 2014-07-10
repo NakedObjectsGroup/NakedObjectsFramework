@@ -26,20 +26,20 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         [Test]
         public void TestParseFalseString() {
-            object parsed = value.ParseTextEntry(false, "faLSe");
+            object parsed = value.ParseTextEntry("faLSe");
             Assert.AreEqual(false, parsed);
         }
 
         [Test]
         public void TestParseTrueString() {
-            object parsed = value.ParseTextEntry(false, "TRue");
+            object parsed = value.ParseTextEntry("TRue");
             Assert.AreEqual(true, parsed);
         }
 
         [Test]
         public void TestParseInvalidString() {
             try {
-                value.ParseTextEntry(false, "yes");
+                value.ParseTextEntry("yes");
                 Assert.Fail("Invalid string");
             }
             catch (Exception e) {
@@ -91,7 +91,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [Test]
         public new void TestParseEmptyString() {
             try {
-                object newValue = value.ParseTextEntry(false, "");
+                object newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
             }
             catch (Exception ) {

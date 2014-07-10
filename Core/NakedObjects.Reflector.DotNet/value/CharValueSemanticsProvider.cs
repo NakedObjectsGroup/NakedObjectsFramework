@@ -48,17 +48,17 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return type == AdaptedType;
         }
 
-        public override object ParseTextEntry(char context, string entry) {
+        public override object ParseTextEntry(string entry) {
             if (entry == null) {
                 throw new ArgumentException();
             }
             if (entry.Equals("")) {
                 return null;
             }
-            return DoParse(context, entry);
+            return DoParse(entry);
         }
 
-        protected override char DoParse(char original, string entry) {
+        protected override char DoParse(string entry) {
             try {
                 return char.Parse(entry);
             }

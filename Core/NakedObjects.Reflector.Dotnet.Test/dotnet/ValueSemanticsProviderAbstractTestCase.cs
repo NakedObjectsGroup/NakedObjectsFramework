@@ -64,7 +64,7 @@ namespace NakedObjects.Reflector.DotNet {
        [Test]
         public void TestParseNull() {
             try {
-                value.ParseTextEntry(default(T), null);
+                value.ParseTextEntry(null);
                 Assert.Fail();
             }
             catch (ArgumentException /*expected*/) {}
@@ -72,7 +72,7 @@ namespace NakedObjects.Reflector.DotNet {
 
        [Test]
         public void TestParseEmptyString() {
-            object newValue = value.ParseTextEntry(default(T), "");
+            object newValue = value.ParseTextEntry("");
             Assert.IsNull(newValue);
         }
 

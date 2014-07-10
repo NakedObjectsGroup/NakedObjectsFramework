@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [Test]
         public void TestParseLongString() {
             try {
-                value.ParseTextEntry(' ', "one");
+                value.ParseTextEntry("one");
                 Assert.Fail();
             }
             catch (Exception e) {
@@ -40,7 +40,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         [Test]
         public void TestValidParse() {
-            object parse = value.ParseTextEntry(' ', "t");
+            object parse = value.ParseTextEntry("t");
             Assert.AreEqual('t', parse);
         }
 
@@ -58,7 +58,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [Test]
         public new void TestParseEmptyString() {
             try {
-                object newValue = value.ParseTextEntry(' ', "");
+                object newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
             } catch (Exception ) {
                 Assert.Fail();

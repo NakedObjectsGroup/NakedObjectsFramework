@@ -50,7 +50,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        protected override Color DoParse(Color original, string entry) {
+        protected override Color DoParse(string entry) {
             try {
                 int argb;
                 if (entry.StartsWith("0x")) {

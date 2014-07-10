@@ -50,7 +50,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        protected override string DoParse(string original, string entry) {
+        protected override string DoParse(string entry) {
             if (entry.Trim().Equals("")) {
                 return null;
             }

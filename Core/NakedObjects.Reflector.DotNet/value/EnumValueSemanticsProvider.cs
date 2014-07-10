@@ -57,7 +57,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return type == AdaptedType;
         }
 
-        protected override T DoParse(T original, string entry) {
+        protected override T DoParse(string entry) {
             try {
                 return (T) Enum.Parse(typeof (T), entry);
             }

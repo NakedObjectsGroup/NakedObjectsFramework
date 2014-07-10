@@ -78,14 +78,14 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         #region IParser<T> Members
 
-        public virtual object ParseTextEntry(T context, string entry) {
+        public virtual object ParseTextEntry(string entry) {
             if (entry == null) {
                 throw new ArgumentException();
             }
             if (entry.Trim().Equals("")) {
                 return null;
             }
-            return DoParse(context, entry);
+            return DoParse(entry);
         }
 
         public string EditableTitleOf(T existing) {
@@ -140,7 +140,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        protected abstract T DoParse(T original, string entry);
+        protected abstract T DoParse(string entry);
 
 
         protected virtual string TitleString(T obj) {

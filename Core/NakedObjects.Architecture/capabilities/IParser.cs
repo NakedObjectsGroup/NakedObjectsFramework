@@ -57,7 +57,7 @@ namespace NakedObjects.Capabilities {
     ///     </para>
     /// </remarks>
     /// <seealso cref="IEncoderDecoder{T}" />
-    public interface IParser<T> {
+    public interface IParser<in T> {
         /// <summary>
         ///     The typical length of objects that can be parsed
         /// </summary>
@@ -69,9 +69,8 @@ namespace NakedObjects.Capabilities {
         /// <para>
         ///     Here the implementing class is acting as a factory for itself
         /// </para>
-        /// <param name="context">The context in which the text is being parsed.  For example +3 might mean add 3 to the current number</param>
         /// <param name="entry"></param>
-        object ParseTextEntry(T context, string entry);
+        object ParseTextEntry(string entry);
 
         /// <summary>
         ///     The title of the object

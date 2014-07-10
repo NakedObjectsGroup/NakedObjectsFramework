@@ -11,13 +11,13 @@ using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<TimeSpan>, ITimeValueFacet {
-        private const bool equalByContent = false;
-        private const bool immutable = false;
+        private const bool EqualByContent = false;
+        private const bool Immutable = false;
         private const int typicalLength = 6;
         private static readonly TimeSpan defaultValue = new TimeSpan();
 
         public TimeValueSemanticsProvider(IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue) {}
+            : base(Type, holder, AdaptedType, typicalLength, Immutable, EqualByContent, defaultValue) {}
 
         public static Type Type {
             get { return typeof (ITimeValueFacet); }
@@ -30,14 +30,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             get { return typeof (TimeSpan); }
         }
 
-        public int Level {
-            get { throw new NotImplementedException(); }
-        }
-
         #region ITimeValueFacet Members
 
         public INakedObject CreateValue(TimeSpan time) {
-            return PersistorUtils.CreateAdapter(SetTime(time));
+            return PersistorUtils.CreateAdapter(time);
         }
 
         public TimeSpan TimeValue(INakedObject nakedObject) {
@@ -51,99 +47,29 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
         protected override string DoEncode(TimeSpan time) {
-            return (time).ToString();
+            return time.ToString();
         }
 
-        protected override TimeSpan DoParse(TimeSpan original, string entry) {
+        protected override TimeSpan DoParse(string entry) {
             string dateString = entry.Trim();
-            string str = dateString.ToLower();
-            if (str.Equals("today") || str.Equals("now")) {
-                return Now();
-            }
-            if (dateString.StartsWith("+")) {
-                return RelativeDate(original, dateString, true);
-            }
-            if (dateString.StartsWith("-")) {
-                return RelativeDate(original, dateString, false);
-            }
-            return ParseTime(entry.Trim());
-        }
-
-        private static TimeSpan RelativeDate(TimeSpan original, string str, bool add) {
-            if (str.Equals("")) {
-                return Now();
-            }
-
-            TimeSpan time = original;
-            string[] st = str.Substring(1).Split();
-            foreach (string token in st) {
-                time = RelativeDate2(time, token, add);
-            }
-            return time;
-        }
-
-        private static int ParseIncrement(string str) {
-            return int.Parse(str.Substring(0, str.Length - 1));
-        }
-
-        private static TimeSpan RelativeDate2(TimeSpan original, string str, bool addDate) {
-            int hours = 0;
-            int minutes = 0;
-
-
-            if (str.EndsWith("H")) {
-                hours = ParseIncrement(str);
-            }
-            else if (str.EndsWith("M")) {
-                minutes = ParseIncrement(str);
-            }
-            else {
-                return original;
-            }
-
-            if (addDate) {
-                return Add(original, hours, minutes);
-            }
-            return Add(original, -hours, -minutes);
-        }
-
-
-        private static TimeSpan ParseTime(string dateString) {
             try {
-                return SetTime(DateTime.Parse(dateString).TimeOfDay);
+                return DateTime.Parse(dateString).TimeOfDay;
             }
             catch (FormatException) {
                 throw new InvalidEntryException(FormatMessage(dateString));
             }
         }
 
-
         protected override TimeSpan DoRestore(string data) {
-            return SetTime(TimeSpan.Parse(data));
+            return TimeSpan.Parse(data);
         }
 
         protected override string TitleString(TimeSpan obj) {
-            TimeSpan? time = obj;
-            return time == null ? "" : DateTime.Today.Add((TimeSpan) time).ToShortTimeString();
+            return DateTime.Today.Add(obj).ToShortTimeString();
         }
 
         protected override string TitleStringWithMask(string mask, TimeSpan obj) {
-            TimeSpan? time = (obj);
-            return time == null ? "" : DateTime.Today.Add((TimeSpan) time).ToString(mask);
-        }
-
-        protected static TimeSpan SetTime(TimeSpan time) {
-            return time;
-        }
-
-        protected static TimeSpan Now() {
-            return TestDateTime.HasValue ? TestDateTime.Value.TimeOfDay : DateTime.Now.TimeOfDay;
-        }
-
-        protected static TimeSpan Add(TimeSpan original, int hours, int minutes) {
-            // new to lose any day wrapping 
-            TimeSpan newTime = original.Add(new TimeSpan(hours, minutes, 0));
-            return new TimeSpan(0, newTime.Hours, newTime.Minutes, newTime.Seconds);
+            return DateTime.Today.Add(obj).ToString(mask);
         }
     }
 

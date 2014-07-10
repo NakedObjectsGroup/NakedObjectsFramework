@@ -168,7 +168,7 @@ namespace NakedObjects.Xat {
 
                 var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
 
-                INakedObject newValue = parseableFacet.ParseTextEntry(existingValue, textEntry);
+                INakedObject newValue = parseableFacet.ParseTextEntry(textEntry);
 
                 IConsent consent = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, newValue);
                 LastMessage = consent.Reason;
@@ -239,7 +239,7 @@ namespace NakedObjects.Xat {
             Assert.IsNotNull(valueObject, "Field '" + Name + "' contains null, but should contain an INakedObject object");
             try {
                 var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
-                parseableFacet.ParseTextEntry(valueObject, text);
+                parseableFacet.ParseTextEntry(text);
                 Assert.Fail("Content was unexpectedly parsed");
             }
             catch (InvalidEntryException /*expected*/) {
@@ -404,7 +404,7 @@ namespace NakedObjects.Xat {
             INakedObject existingValue = field.GetNakedObject(nakedObject);
             var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
             try {
-                INakedObject newValue = parseableFacet.ParseTextEntry(existingValue, text);
+                INakedObject newValue = parseableFacet.ParseTextEntry(text);
                 IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue);
                 LastMessage = isAssociationValid.Reason;
                 Assert.IsFalse(isAssociationValid.IsAllowed, "Content was unexpectedly validated");
@@ -423,7 +423,7 @@ namespace NakedObjects.Xat {
             INakedObject nakedObject = owningObject.NakedObject;
             INakedObject existingValue = field.GetNakedObject(nakedObject);
             var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
-            INakedObject newValue = parseableFacet.ParseTextEntry(existingValue, text);
+            INakedObject newValue = parseableFacet.ParseTextEntry(text);
             IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue);
             LastMessage = isAssociationValid.Reason;
             Assert.IsTrue(isAssociationValid.IsAllowed, "Content was unexpectedly invalidated");

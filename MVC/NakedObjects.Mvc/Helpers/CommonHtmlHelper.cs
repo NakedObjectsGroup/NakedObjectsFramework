@@ -1432,7 +1432,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             if (value is string) {
-                return spec.GetFacet<IParseableFacet>().ParseTextEntry(null, (string) value);
+                return spec.GetFacet<IParseableFacet>().ParseTextEntry((string) value);
             }
 
             return FrameworkHelper.GetNakedObject(value);

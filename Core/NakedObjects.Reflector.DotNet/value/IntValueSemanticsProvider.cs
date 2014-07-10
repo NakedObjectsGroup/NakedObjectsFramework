@@ -49,7 +49,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return type == typeof (int);
         }
 
-        protected override int DoParse(int original, string entry) {
+        protected override int DoParse(string entry) {
             try {
                 return int.Parse(entry, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands);
             }

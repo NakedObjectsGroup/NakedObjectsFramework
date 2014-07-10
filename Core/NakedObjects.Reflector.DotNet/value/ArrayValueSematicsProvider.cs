@@ -72,7 +72,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return type == typeof (T[]);
         }
 
-        protected override T[] DoParse(T[] original, string entry) {
+        protected override T[] DoParse(string entry) {
             try {
                 return (from s in entry.Split(' ')
                         where s.Trim().Length > 0

@@ -20,12 +20,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
 
         #region IParseableFacet Members
 
-        public INakedObject ParseTextEntry(INakedObject original, string entry) {
+        public INakedObject ParseTextEntry(string entry) {
             if (entry == null) {
                 throw new ArgumentException(Resources.NakedObjects.MissingEntryError);
             }
-            var context = original.GetDomainObject<T>();
-            object parsed = parser.ParseTextEntry(context, entry);
+            object parsed = parser.ParseTextEntry(entry);
             return PersistorUtils.CreateAdapter(parsed);
         }
 

@@ -56,7 +56,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        protected override byte DoParse(byte original, string entry) {
+        protected override byte DoParse(string entry) {
             try {
                 return byte.Parse(entry);
             }

@@ -60,7 +60,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        protected override Image DoParse(Image original, string entry) {
+        protected override Image DoParse(string entry) {
             throw new NotImplementedException();
         }
 

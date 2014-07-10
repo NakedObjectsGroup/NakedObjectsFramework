@@ -58,7 +58,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        protected override FileAttachment DoParse(FileAttachment original, string entry) {
+        protected override FileAttachment DoParse(string entry) {
             throw new NotImplementedException();
         }
 

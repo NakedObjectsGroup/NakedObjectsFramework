@@ -48,7 +48,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        protected override float DoParse(float original, string entry) {
+        protected override float DoParse(string entry) {
             try {
                 return float.Parse(entry);
             }

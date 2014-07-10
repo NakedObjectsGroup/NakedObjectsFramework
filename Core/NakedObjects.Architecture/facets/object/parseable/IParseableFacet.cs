@@ -21,7 +21,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Parseable {
         ///     be implemented through some other mechanism.
         /// </para>
         /// <exception cref="InvalidEntryException" />
-        INakedObject ParseTextEntry(INakedObject original, string text);
+        INakedObject ParseTextEntry(string text);
 
         /// <summary>
         ///     A title for the object that is valid but which may be easier to

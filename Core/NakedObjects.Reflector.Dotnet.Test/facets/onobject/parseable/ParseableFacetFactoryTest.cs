@@ -185,7 +185,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
         public class ParserNoop<T> : IParser<T> {
             #region IParser Members
 
-            public object ParseTextEntry(T context, string entry) {
+            public object ParseTextEntry(string entry) {
                 return null;
             }
 

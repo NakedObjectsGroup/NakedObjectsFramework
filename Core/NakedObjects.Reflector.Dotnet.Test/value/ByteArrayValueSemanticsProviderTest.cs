@@ -54,7 +54,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [Test]
         public new void TestParseEmptyString() {
             try {
-                object newValue = value.ParseTextEntry(null, "");
+                object newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
             }
             catch (Exception) {
@@ -65,7 +65,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [Test]
         public void TestParseInvalidString() {
             try {
-                value.ParseTextEntry(null, "fred");
+                value.ParseTextEntry("fred");
                 Assert.Fail("Invalid string");
             }
             catch (Exception e) {
@@ -76,7 +76,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [Test]
         public void TestParseOutOfRangeString() {
             try {
-                value.ParseTextEntry(null, "1 2 1000");
+                value.ParseTextEntry("1 2 1000");
                 Assert.Fail("out of range string");
             }
             catch (Exception e) {
@@ -86,7 +86,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         [Test]
         public void TestParseString() {
-            object parsed = value.ParseTextEntry(null, "0 0 1 100 255");
+            object parsed = value.ParseTextEntry("0 0 1 100 255");
             Assert.AreEqual(new byte[] {0, 0, 1, 100, 255}, parsed);
         }
 

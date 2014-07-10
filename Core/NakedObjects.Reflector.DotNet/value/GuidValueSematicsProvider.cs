@@ -48,7 +48,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        protected override Guid DoParse(Guid original, string entry) {
+        protected override Guid DoParse(string entry) {
             try {
                 return new Guid(entry);
             }

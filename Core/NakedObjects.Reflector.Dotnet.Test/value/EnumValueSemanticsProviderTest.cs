@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [Test]
         public void TestInvalidParse() {
             try {
-                value.ParseTextEntry(0, "fail");
+                value.ParseTextEntry("fail");
                 Assert.Fail();
             }
             catch (Exception e) {
@@ -47,14 +47,14 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         [Test]
         public void TestParse() {
-            object newValue = value.ParseTextEntry(0, "0");
+            object newValue = value.ParseTextEntry("0");
             Assert.AreEqual(TestEnum.London, newValue);
         }
 
         [Test]
         public void TestParseOverflow() {
             try {
-                object newValue = value.ParseTextEntry(0, long.MaxValue.ToString());
+                object newValue = value.ParseTextEntry(long.MaxValue.ToString());
                 Assert.Fail("Expect Exception");
             }
             catch (InvalidEntryException e) { 
@@ -65,7 +65,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [Test]
         public new void TestParseEmptyString() {
             try {
-                object newValue = value.ParseTextEntry(0, "");
+                object newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
             } catch (Exception ) {
                 Assert.Fail();

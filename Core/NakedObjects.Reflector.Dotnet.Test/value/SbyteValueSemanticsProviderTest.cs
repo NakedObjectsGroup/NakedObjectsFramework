@@ -23,13 +23,13 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
         public void TestParseValidString() {
-            Object parsed = value.ParseTextEntry(0, "21");
+            Object parsed = value.ParseTextEntry("21");
             Assert.AreEqual((sbyte) 21, parsed);
         }
 
         public void TestParseInvalidString() {
             try {
-                value.ParseTextEntry(0, "xs21z4xxx23");
+                value.ParseTextEntry("xs21z4xxx23");
                 Assert.Fail();
             }
             catch (Exception e) {
@@ -53,7 +53,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [Test]
         public new void TestParseEmptyString() {
             try {
-                object newValue = value.ParseTextEntry(0, "");
+                object newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
             } catch (Exception ) {
                 Assert.Fail();

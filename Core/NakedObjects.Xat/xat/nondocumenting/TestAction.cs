@@ -205,7 +205,7 @@ namespace NakedObjects.Xat {
                 object value = parameters[i++];
 
                 if (value is string && parm.Specification.IsParseable) {
-                    parsedParameters.Add(parm.Specification.GetFacet<IParseableFacet>().ParseTextEntry(null, (string) value).Object);
+                    parsedParameters.Add(parm.Specification.GetFacet<IParseableFacet>().ParseTextEntry((string) value).Object);
                 }
                 else {
                     parsedParameters.Add(value);

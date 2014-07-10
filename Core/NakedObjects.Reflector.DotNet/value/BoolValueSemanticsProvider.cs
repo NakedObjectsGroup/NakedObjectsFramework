@@ -64,7 +64,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        protected override bool DoParse(bool original, string entry) {
+        protected override bool DoParse(string entry) {
             if ("true".StartsWith(entry.ToLower())) {
                 return true;
             }
