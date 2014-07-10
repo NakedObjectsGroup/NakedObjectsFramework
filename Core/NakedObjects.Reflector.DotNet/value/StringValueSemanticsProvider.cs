@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Globalization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
@@ -57,6 +58,9 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return entry;
         }
 
+        protected override string DoParseInvariant(string entry) {
+            return entry;
+        }
 
         protected override string DoEncode(string obj) {
             string text = obj;

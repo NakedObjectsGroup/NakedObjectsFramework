@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System;
+using System.Globalization;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
@@ -77,6 +78,14 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public void TestDecode() {
             float decoded = GetValue().FromEncodedString("3.042112234E6");
             Assert.AreEqual(3042112.234f, decoded);
+        }
+
+        [Test]
+        public void TestParseInvariant() {
+            const float c1 = 123.456F;
+            var s1 = c1.ToString(CultureInfo.InvariantCulture);
+            var c2 = GetValue().ParseInvariant(s1);
+            Assert.AreEqual(c1, c2);
         }
     }
 

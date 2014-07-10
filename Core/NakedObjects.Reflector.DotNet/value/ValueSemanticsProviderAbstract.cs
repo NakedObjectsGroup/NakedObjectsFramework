@@ -22,12 +22,12 @@ namespace NakedObjects.Reflector.DotNet.Value {
         ///     Lazily looked up per <see cref="Specification" />
         /// </summary>
         protected ValueSemanticsProviderAbstract(Type adapterFacetType,
-                                                 IFacetHolder holder,
-                                                 Type adaptedType,
-                                                 int typicalLength,
-                                                 bool immutable,
-                                                 bool equalByContent,
-                                                 T defaultValue)
+            IFacetHolder holder,
+            Type adaptedType,
+            int typicalLength,
+            bool immutable,
+            bool equalByContent,
+            T defaultValue)
             : base(adapterFacetType, holder) {
             this.adaptedType = adaptedType;
             this.typicalLength = typicalLength;
@@ -88,10 +88,13 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return DoParse(entry);
         }
 
+        public object ParseInvariant(string entry) {
+            return DoParseInvariant(entry);
+        }
+
         public string EditableTitleOf(T existing) {
             return DisplayTitleOf(existing);
         }
-
 
         public string DisplayTitleOf(T obj) {
             return TitleString(obj);
@@ -142,6 +145,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         protected abstract T DoParse(string entry);
 
+        protected abstract T DoParseInvariant(string entry);
 
         protected virtual string TitleString(T obj) {
             return obj.ToString();

@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Globalization;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
@@ -67,10 +68,13 @@ namespace NakedObjects.Reflector.DotNet.Value {
             }
         }
 
+        protected override char DoParseInvariant(string entry) {
+            return char.Parse(entry);
+        }
+
         protected override string TitleStringWithMask(string mask, char value) {
             return value.ToString();
         }
-
 
         protected override string DoEncode(char obj) {
             return obj.ToString();

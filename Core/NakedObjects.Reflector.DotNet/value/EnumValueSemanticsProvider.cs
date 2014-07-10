@@ -69,6 +69,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             }
         }
 
+        protected override T DoParseInvariant(string entry) {
+            return (T)Enum.Parse(typeof(T), entry);
+        }
+
         protected override string TitleString(T obj) {
             return NameUtils.NaturalName(obj.ToString());
         }

@@ -61,6 +61,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             }
         }
 
+        protected override long DoParseInvariant(string entry) {
+            return long.Parse(entry, CultureInfo.InvariantCulture);
+        }
+
         protected override string TitleStringWithMask(string mask, long value) {
             return value.ToString(mask);
         }

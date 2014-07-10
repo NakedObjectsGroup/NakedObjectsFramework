@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Globalization;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
@@ -58,6 +59,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             catch (FormatException) {
                 throw new InvalidEntryException(FormatMessage(dateString));
             }
+        }
+
+        protected override TimeSpan DoParseInvariant(string entry) {
+            return TimeSpan.Parse(entry, CultureInfo.InvariantCulture);
         }
 
         protected override TimeSpan DoRestore(string data) {

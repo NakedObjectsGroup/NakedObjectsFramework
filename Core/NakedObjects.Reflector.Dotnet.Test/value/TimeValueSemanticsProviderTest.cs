@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Globalization;
 using NakedObjects.Architecture.Facets;
 using NUnit.Framework;
 
@@ -41,6 +42,14 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [Test]
         public void TestTimeAsEncodedString() {
             Assert.AreEqual("08:13:00", adapter.ToEncodedString(time));
+        }
+
+        [Test]
+        public void TestParseInvariant() {
+            var d1 = new TimeSpan(1, 5, 1, 25);
+            var s1 = d1.ToString(null, CultureInfo.InvariantCulture);
+            var d2 = adapter.ParseInvariant(s1);
+            Assert.AreEqual(d1, d2);
         }
     }
 

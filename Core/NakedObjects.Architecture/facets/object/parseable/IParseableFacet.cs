@@ -24,6 +24,17 @@ namespace NakedObjects.Architecture.Facets.Objects.Parseable {
         INakedObject ParseTextEntry(string text);
 
         /// <summary>
+        ///     Parses an invariant value and sets teh domain objects value
+        /// </summary>
+        /// <para>
+        ///     Equivalent to <see cref="IParser{T}.ParseTextEntry" />, though may
+        ///     be implemented through some other mechanism.
+        /// </para>
+        /// <exception cref="InvalidEntryException" />
+        INakedObject ParseInvariant(string text);
+
+
+        /// <summary>
         ///     A title for the object that is valid but which may be easier to
         ///     edit than the title provided by a <see cref="ITitleFacet" />
         /// </summary>

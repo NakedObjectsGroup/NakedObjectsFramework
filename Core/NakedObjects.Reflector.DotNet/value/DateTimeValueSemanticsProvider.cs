@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Globalization;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
@@ -40,7 +41,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         #region IDateValueFacet Members
 
         public INakedObject CreateValue(DateTime date) {
-            return PersistorUtils.CreateAdapter(SetDate(date));
+            return PersistorUtils.CreateAdapter(date);
         }
 
         public DateTime DateValue(INakedObject nakedObject) {
@@ -59,28 +60,25 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
         protected override DateTime DoParse(string entry) {
-            return ParseDate(entry.Trim());
-        }
-
-        protected override DateTime DoRestore(string data) {
-            return SetDate(DateTime.Parse(data));
-        }
-
-        protected override string TitleStringWithMask(string mask, DateTime value) {
-            return value.ToString(mask);
-        }
-
-        private static DateTime ParseDate(string dateString) {
+            string dateString = entry.Trim();
             try {
-                return SetDate(DateTime.Parse(dateString));
+                return DateTime.Parse(dateString);
             }
             catch (FormatException) {
                 throw new InvalidEntryException(FormatMessage(dateString));
             }
         }
 
-        protected static DateTime SetDate(DateTime date) {
-            return new DateTime(date.Ticks);
+        protected override DateTime DoParseInvariant(string entry) {
+            return DateTime.Parse(entry, CultureInfo.InvariantCulture);
+        }
+
+        protected override DateTime DoRestore(string data) {
+            return DateTime.Parse(data);
+        }
+
+        protected override string TitleStringWithMask(string mask, DateTime value) {
+            return value.ToString(mask);
         }
 
         protected static DateTime Now() {

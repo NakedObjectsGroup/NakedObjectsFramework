@@ -34,17 +34,6 @@ namespace NakedObjects.Reflector.DotNet.Value {
             get { return typeof (FileAttachment); }
         }
 
-        // TODO return null so they are ignored
-        /*
-        public IParser<Image> Parser {
-            get { throw new System.NotImplementedException(); }
-        }
-
-        public IDefaultsProvider<Image> DefaultsProvider {
-            get { throw new System.NotImplementedException(); }
-        }
-        */
-
         public override IFromStream FromStream {
             get { return this; }
         }
@@ -59,6 +48,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
 
         protected override FileAttachment DoParse(string entry) {
+            throw new NotImplementedException();
+        }
+
+        protected override FileAttachment DoParseInvariant(string entry) {
             throw new NotImplementedException();
         }
 

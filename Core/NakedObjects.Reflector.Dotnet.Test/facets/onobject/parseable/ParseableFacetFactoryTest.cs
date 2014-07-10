@@ -189,6 +189,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
                 return null;
             }
 
+            public object ParseInvariant(string entry) {
+                return null;
+            }
+
             public int TypicalLength {
                 get { return 0; }
             }

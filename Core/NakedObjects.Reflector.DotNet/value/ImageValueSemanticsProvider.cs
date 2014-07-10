@@ -64,6 +64,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
             throw new NotImplementedException();
         }
 
+
+        protected override Image DoParseInvariant(string entry) {
+            throw new NotImplementedException();
+        }
+
         protected override string DoEncode(Image image) {
             Stream stream = image.GetResourceAsStream();
             long len = stream.Length;

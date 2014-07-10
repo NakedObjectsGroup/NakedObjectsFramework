@@ -61,6 +61,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             }
         }
 
+        protected override ulong DoParseInvariant(string entry) {
+            return ulong.Parse(entry, CultureInfo.InvariantCulture);
+        }
+
         protected override string TitleStringWithMask(string mask, ulong value) {
             return value.ToString(mask);
         }

@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Globalization;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
@@ -74,6 +75,9 @@ namespace NakedObjects.Reflector.DotNet.Value {
             throw new InvalidEntryException(string.Format(Resources.NakedObjects.NotALogical, entry));
         }
 
+        protected override bool DoParseInvariant(string entry) {
+            return bool.Parse(entry);
+        }
 
         protected override string DoEncode(bool obj) {
             return obj ? "T" : "F";

@@ -28,6 +28,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
             return PersistorUtils.CreateAdapter(parsed);
         }
 
+        public INakedObject ParseInvariant(string text) {
+            object parsed = parser.ParseInvariant(text);
+            return PersistorUtils.CreateAdapter(parsed);
+        }
+
         public string ParseableTitle(INakedObject nakedObject) {
             var context = nakedObject.GetDomainObject<T>();
             return parser.EditableTitleOf(context);

@@ -27,6 +27,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
             return parseableFacetUsingParser.ParseTextEntry(entryText);
         }
 
+        public INakedObject ParseInvariant(string text) {
+            return parseableFacetUsingParser.ParseInvariant(text);
+        }
+
         public string ParseableTitle(INakedObject nakedObject) {
             return parseableFacetUsingParser.ParseableTitle(nakedObject);
         }

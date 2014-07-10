@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Globalization;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
@@ -58,6 +59,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             catch (OverflowException) {
                 throw new InvalidEntryException(OutOfRangeMessage(entry, float.MinValue, float.MaxValue));
             }
+        }
+
+        protected override float DoParseInvariant(string entry) {
+            return float.Parse(entry, CultureInfo.InvariantCulture);
         }
 
         protected override string TitleStringWithMask(string mask, float value) {

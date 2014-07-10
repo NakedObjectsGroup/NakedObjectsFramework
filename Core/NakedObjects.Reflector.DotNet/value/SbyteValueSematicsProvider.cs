@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Globalization;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
@@ -59,6 +60,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             catch (OverflowException) {
                 throw new InvalidEntryException(OutOfRangeMessage(entry, sbyte.MinValue, sbyte.MaxValue));
             }
+        }
+
+        protected override sbyte DoParseInvariant(string entry) {
+            return sbyte.Parse(entry, CultureInfo.InvariantCulture);
         }
 
         protected override string TitleStringWithMask(string mask, sbyte value) {

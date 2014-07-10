@@ -309,6 +309,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
                 return null;
             }
 
+            public object ParseInvariant(string entry) {
+               return null;
+            }
+
             public string DisplayTitleOf(MyValueSemanticsProviderThatIsAParser obj) {
                 return null;
             }
@@ -453,6 +457,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
                 return null;
             }
 
+            public object ParseInvariant(string entry) {
+                return null;
+            }
+
             public string DisplayTitleOf(MyValueWithSemanticsProviderSpecifiedUsingConfiguration obj) {
                 return null;
             }
@@ -485,6 +493,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
             #region IParser Members
 
             public object ParseTextEntry(string entry) {
+                return null;
+            }
+
+            public object ParseInvariant(string entry) {
                 return null;
             }
 

@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System;
+using System.Globalization;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
@@ -70,6 +71,15 @@ namespace NakedObjects.Reflector.DotNet.Value {
             } catch (Exception ) {
                 Assert.Fail();
             }
+        }
+
+
+        [Test]
+        public void TestParseInvariant() {
+            const TestEnum c1 = TestEnum.London;
+            var s1 = c1.ToString();
+            var c2 = value.ParseInvariant(s1);
+            Assert.AreEqual(c1, c2);
         }
 
         [Test]

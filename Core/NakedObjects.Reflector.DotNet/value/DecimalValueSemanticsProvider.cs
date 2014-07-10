@@ -61,6 +61,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
             }
         }
 
+        protected override decimal DoParseInvariant(string entry) {
+            return decimal.Parse(entry, CultureInfo.InvariantCulture);
+        }
+
         protected override string TitleStringWithMask(string mask, decimal value) {
             return value.ToString(mask);
         }

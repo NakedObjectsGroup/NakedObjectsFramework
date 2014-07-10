@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -91,6 +92,12 @@ namespace NakedObjects.Reflector.DotNet.Value {
                 // no simple way of getting min and maxvalue of 'T' = complexity isn't worth the risk just for an error message
                 throw new InvalidEntryException(OutOfRangeMessage(entry, new T[] {}, new T[] {}));
             }
+        }
+
+        protected override T[] DoParseInvariant(string entry) {
+            return (from s in entry.Split(' ')
+                    where s.Trim().Length > 0
+                    select (T)Convert.ChangeType(s, typeof(T), CultureInfo.InvariantCulture)).ToArray();
         }
 
         protected override string TitleStringWithMask(string mask, T[] value) {

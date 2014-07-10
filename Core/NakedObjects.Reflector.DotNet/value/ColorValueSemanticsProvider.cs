@@ -70,10 +70,13 @@ namespace NakedObjects.Reflector.DotNet.Value {
             }
         }
 
+        protected override Color DoParseInvariant(string entry) {
+            return Color.FromArgb(int.Parse(entry, CultureInfo.InvariantCulture));
+        }
+
         protected override string TitleStringWithMask(string mask, Color value) {
             return value.ToString();
         }
-
 
         protected override string DoEncode(Color obj) {
             return (obj).ToArgb().ToString();

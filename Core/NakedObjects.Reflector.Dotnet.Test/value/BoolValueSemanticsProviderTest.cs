@@ -2,9 +2,11 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System;
+using System.Globalization;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Util;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Value {
@@ -22,6 +24,15 @@ namespace NakedObjects.Reflector.DotNet.Value {
             booleanNO = CreateAdapter(booleanObj);
             facetHolder = new FacetHolderImpl();
             SetValue(value = new BooleanValueSemanticsProvider(facetHolder));
+        }
+
+        [Test]
+        public void TestParseInvariant() {
+            new[] {true, false}.ForEach(b => {
+                var b1 = b.ToString(CultureInfo.InvariantCulture);
+                var b2 = value.ParseInvariant(b1);
+                Assert.AreEqual(b, b2);
+            });
         }
 
         [Test]

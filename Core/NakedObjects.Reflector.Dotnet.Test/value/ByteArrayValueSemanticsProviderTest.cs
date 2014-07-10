@@ -3,6 +3,9 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 using NUnit.Framework;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
@@ -50,6 +53,13 @@ namespace NakedObjects.Reflector.DotNet.Value {
             TestEncodeDecode(null);
         }
 
+        [Test]
+        public void TestParseInvariant() {
+            var b1 = new byte[] {1, 2, 3, 4};
+            string s1 = b1.Aggregate("", (s, t) => s + ' ' + t.ToString(CultureInfo.InvariantCulture));
+            object b2 = value.ParseInvariant(s1);
+            Assert.AreEqual(b1, b2);
+        }
 
         [Test]
         public new void TestParseEmptyString() {
