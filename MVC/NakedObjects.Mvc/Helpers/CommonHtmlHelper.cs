@@ -419,7 +419,7 @@ namespace NakedObjects.Web.Mvc.Html {
             IEnumerable<INakedObjectAssociation> filteredFields = nakedObject.Specification.Properties.Where(p => !p.IsCollection && p.IsVisible(NakedObjectsContext.Session, nakedObject)).Except(visibleFields);
             IEnumerable<ElementDescriptor> filteredElements = filteredFields.Select(property => new PropertyContext(nakedObject, property, false, parentContext)).Select(pc => new ElementDescriptor {
                 TagType = "div",
-                Value = html.GetHiddenValue(pc, pc.GetFieldInputId())
+                Value = html.GetHiddenValue(pc, pc.GetFieldInputId(), false)
             });
             IEnumerable<ElementDescriptor> elements = visibleElements.Union(filteredElements);
 
@@ -437,7 +437,7 @@ namespace NakedObjects.Web.Mvc.Html {
             IEnumerable<INakedObjectAssociation> concurrencyFields = nakedObject.Specification.Properties.Where(p => p.ContainsFacet<IConcurrencyCheckFacet>());
             return concurrencyFields.Select(property => new ElementDescriptor {
                 TagType = "div",
-                Value = html.GetHiddenValue(new PropertyContext(nakedObject, property, false), idFunc(property))
+                Value = html.GetHiddenValue(new PropertyContext(nakedObject, property, false), idFunc(property), true)
             });
         }
 
@@ -1257,6 +1257,16 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             return linktag.ToString();
+        }
+
+        private static string GetInvariantValue(PropertyContext propertyContext) {
+            INakedObject valueNakedObject = propertyContext.GetValue();
+
+            if (valueNakedObject == null) {
+                return string.Empty;
+            }
+
+            return valueNakedObject.InvariantString();
         }
 
         private static string GetRawValue(PropertyContext propertyContext) {
@@ -2394,13 +2404,13 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.GetReferenceField(propertyContext, id, tooltip, childElements, addToThis, readOnly, noFinder);
         }
 
-        private static string GetHiddenValue(this HtmlHelper html, PropertyContext propertyContext, string id) {
+        private static string GetHiddenValue(this HtmlHelper html, PropertyContext propertyContext, string id, bool invariant) {
             var tag = new TagBuilder("div");
             string value;
 
             if (propertyContext.Property.Specification.IsParseable) {
                 tag.AddCssClass(IdHelper.ValueName);
-                value = GetRawValue(propertyContext);
+                value = invariant ? GetInvariantValue(propertyContext) : GetRawValue(propertyContext);
             }
             else {
                 tag.AddCssClass(IdHelper.ObjectName);

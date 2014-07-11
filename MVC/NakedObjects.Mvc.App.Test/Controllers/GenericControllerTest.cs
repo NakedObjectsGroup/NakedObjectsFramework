@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -1338,7 +1339,7 @@ namespace MvcTestApp.Tests.Controllers {
             Store store = Store;
             INakedObject adaptedStore = NakedObjectsContext.ObjectPersistor.CreateAdapter(store, null, null);
             IDictionary<string, string> idToRawvalue;
-            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, FrameworkHelper.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(), out idToRawvalue);
+            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, FrameworkHelper.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
 
             var objectModel = new ObjectAndControlData {Id = FrameworkHelper.GetObjectId(store)};
 
@@ -1640,7 +1641,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             string idMD = IdHelper.GetConcurrencyActionInputId(order, action, assocMD);
 
-            form.Add(idMD, Order.ModifiedDate.ToString());
+            form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.InvariantCulture));
 
             var result = (ViewResult) controller.Action(objectModel, form);
 
@@ -1671,7 +1672,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             string idMD = IdHelper.GetConcurrencyActionInputId(order, action, assocMD);
 
-            form.Add(idMD, Order.ModifiedDate.ToString());
+            form.Add(idMD, Order.ModifiedDate.ToString(CultureInfo.InvariantCulture));
 
             var result = (ViewResult) controller.Action(objectModel, form);
 
@@ -1760,7 +1761,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             var result = (ViewResult) controller.Action(objectModel, GetForm(
                 new Dictionary<string, string> {
-                    {"Store-LastOrder-ModifiedDate-Concurrency", store.ModifiedDate.ToString()}
+                    {"Store-LastOrder-ModifiedDate-Concurrency", store.ModifiedDate.ToString(CultureInfo.InvariantCulture)}
                 }));
 
             AssertIsSetAfterTransactionViewOf<SalesOrderHeader>(result);
@@ -1805,7 +1806,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             var result = (ViewResult) controller.Action(objectModel, GetForm(
                 new Dictionary<string, string> {
-                    {"Store-CreateNewOrder-ModifiedDate-Concurrency", store.ModifiedDate.ToString()}
+                    {"Store-CreateNewOrder-ModifiedDate-Concurrency", store.ModifiedDate.ToString(CultureInfo.InvariantCulture)}
                 }));
 
             AssertIsDialogViewOfAction(result, "Create New Order");
@@ -1954,7 +1955,7 @@ namespace MvcTestApp.Tests.Controllers {
                 InvokeAction = "action=action"
             };
 
-            var result = (ViewResult) controller.Action(objectModel, GetForm(new Dictionary<string, string> {{"SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", order.ModifiedDate.ToString()}}));
+            var result = (ViewResult) controller.Action(objectModel, GetForm(new Dictionary<string, string> {{"SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", order.ModifiedDate.ToString(CultureInfo.InvariantCulture)}}));
 
             AssertIsSetAfterTransactionViewOf<SalesOrderHeader>(result);
         }
@@ -2337,7 +2338,7 @@ namespace MvcTestApp.Tests.Controllers {
             INakedObject adaptedStore = NakedObjectsContext.ObjectPersistor.CreateAdapter(store, null, null);
             IDictionary<string, string> idToRawvalue;
 
-            FormCollection form = GenericControllerTest.GetFormForStoreEdit(adaptedStore, store.Name, FrameworkHelper.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(), out idToRawvalue);
+            FormCollection form = GenericControllerTest.GetFormForStoreEdit(adaptedStore, store.Name, FrameworkHelper.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
 
             var objectModel = new ObjectAndControlData {Id = FrameworkHelper.GetObjectId(store)};
 

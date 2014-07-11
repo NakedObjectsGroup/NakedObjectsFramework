@@ -425,7 +425,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 foreach (var pair in fieldsAndMatchingValues) {
                     if (pair.Item1.Specification.IsParseable) {
                         INakedObject currentValue = pair.Item1.GetNakedObject(nakedObject);
-                        INakedObject concurrencyValue = pair.Item1.Specification.GetFacet<IParseableFacet>().ParseTextEntry(pair.Item2 as string);
+                        INakedObject concurrencyValue = pair.Item1.Specification.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string);
 
                         if (concurrencyValue != null && currentValue != null) {
                             if (concurrencyValue.TitleString() != currentValue.TitleString()) {
