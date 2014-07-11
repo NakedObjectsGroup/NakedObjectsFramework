@@ -1259,9 +1259,18 @@ namespace NakedObjects.Web.Mvc.Html {
             return linktag.ToString();
         }
 
-        private static string GetInvariantValue(PropertyContext propertyContext) {
+        private static string GetRawValue(PropertyContext propertyContext) {
             INakedObject valueNakedObject = propertyContext.GetValue();
-            return valueNakedObject == null ? string.Empty : valueNakedObject.InvariantString();
+
+            if (valueNakedObject == null) {
+                return string.Empty;
+            }
+
+            if (valueNakedObject.Specification.ContainsFacet<IEnumValueFacet>()) {
+                return valueNakedObject.Object.ToString();
+            }
+
+            return valueNakedObject.TitleString();
         }
 
         private static IDictionary<string, object> GetDisplayStatuses(this HtmlHelper html) {
@@ -2148,7 +2157,7 @@ namespace NakedObjects.Web.Mvc.Html {
             html.AddClientValidationAttributes(propertyContext, htmlAttributes);
 
             if (!propertyContext.Property.IsVisible(NakedObjectsContext.Session, propertyContext.Target)) {
-                tag.InnerHtml += html.Encrypted(id, GetInvariantValue(propertyContext)).ToString();
+                tag.InnerHtml += html.Encrypted(id, GetRawValue(propertyContext)).ToString();
                 propertyContext.IsPropertyEdit = false;
             }
             else if (propertyContext.Property.Specification.ContainsFacet<IBooleanValueFacet>() && !readOnly) {
@@ -2174,7 +2183,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 html.AddAutoCompleteControl(tag, htmlAttributes, propertyContext, propertyContext.Property.GetNakedObject(propertyContext.Target));
             }
             else {
-                string rawValue = GetInvariantValue(propertyContext);
+                string rawValue = GetRawValue(propertyContext);
                 if (readOnly) {
                     tag.InnerHtml += html.GetFieldValue(propertyContext) + html.CustomEncrypted(id, rawValue);
                     propertyContext.IsPropertyEdit = false;
@@ -2391,7 +2400,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             if (propertyContext.Property.Specification.IsParseable) {
                 tag.AddCssClass(IdHelper.ValueName);
-                value = GetInvariantValue(propertyContext);
+                value = GetRawValue(propertyContext);
             }
             else {
                 tag.AddCssClass(IdHelper.ObjectName);
