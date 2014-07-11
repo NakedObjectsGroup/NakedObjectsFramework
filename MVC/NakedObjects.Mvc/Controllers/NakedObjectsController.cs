@@ -425,7 +425,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 foreach (var pair in fieldsAndMatchingValues) {
                     if (pair.Item1.Specification.IsParseable) {
                         INakedObject currentValue = pair.Item1.GetNakedObject(nakedObject);
-                        INakedObject concurrencyValue = pair.Item1.Specification.GetFacet<IParseableFacet>().ParseTextEntry(pair.Item2 as string);
+                        INakedObject concurrencyValue = pair.Item1.Specification.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string);
 
                         if (concurrencyValue != null && currentValue != null) {
                             if (concurrencyValue.TitleString() != currentValue.TitleString()) {
@@ -631,7 +631,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                                 try {
                                  
                                     var oneToOneAssoc = ((IOneToOneAssociation) assoc);
-                                    INakedObject value = assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry((string) newValue);
+                                    INakedObject value = assoc.Specification.GetFacet<IParseableFacet>().ParseInvariant((string) newValue);
                                     oneToOneAssoc.SetAssociation(nakedObject, value);
                                 }
                                 catch (InvalidEntryException) {
