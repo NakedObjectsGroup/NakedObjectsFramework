@@ -200,10 +200,10 @@
   <Target Name="MVCTest" DependsOnTargets="MVC">
    
     <MSBuild Projects="@(MVCTFiles)" Targets="$(Targets)" Properties="ReferencePath=$(RefPath);Configuration=%(Configuration.Identity)" />
-    
-    <NUnit Assemblies="$(MVCPath)\$(NOMVC).App.Test\bin\%(Configuration.Identity)\$(NOMVC).App.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\$(NOMVC).App.Test.xml" />
-    <NUnit Assemblies="$(MVCPath)\$(NOMVC).Test\bin\%(Configuration.Identity)\$(NOMVC).Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\$(NOMVC).Test.xml" />
-    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(MVCPath)\$(NOMVC).Test.Javascript\bin\%(Configuration.Identity)\$(NOMVC).Test.Javascript.dll" /resultsfile:$(TestResultsPath)\$(NOMVC).Test.Javascript.trx' />
+
+    <Exec Command='"mstest" /testcontainer:"$(MVCPath)\$(NOMVC).Test.Javascript\bin\%(Configuration.Identity)\$(NOMVC).Test.Javascript.dll" /resultsfile:$(TestResultsPath)\$(NOMVC).Test.Javascript.trx' />
+    <Exec Command='nunit-console "$(MVCPath)\$(NOMVC).App.Test\bin\%(Configuration.Identity)\$(NOMVC).App.Test.dll"'/>
+    <Exec Command='nunit-console "$(MVCPath)\$(NOMVC).Test\bin\%(Configuration.Identity)\$(NOMVC).Test.dll"'/>      
   </Target>
 
 
