@@ -3,8 +3,10 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Expenses.Currencies;
@@ -53,6 +55,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [SetUp]
         public void StartTest() {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-GB");
             SetUser("sven");
             Fixtures.InstallFixtures(NakedObjectsContext.ObjectPersistor);
         }
@@ -1545,6 +1548,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void NotPersistedPropertyList() {
+            
+
+
             var mocks = new ContextMocks(controller);
             INakedObject adapter = FrameworkHelper.GetNakedObject(NotPersistedTestClass);
             mocks.ViewDataContainer.Object.ViewData.Model = adapter.Object;
