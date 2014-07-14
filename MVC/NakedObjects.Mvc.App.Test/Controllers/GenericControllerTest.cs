@@ -1313,7 +1313,7 @@ namespace MvcTestApp.Tests.Controllers {
             Store store = Store;
             INakedObject adaptedStore = NakedObjectsContext.ObjectPersistor.CreateAdapter(store, null, null);
             IDictionary<string, string> idToRawvalue;
-            string differentDateTime = DateTime.Now.ToString();
+            string differentDateTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, FrameworkHelper.GetObjectId(store.SalesPerson), differentDateTime, out idToRawvalue);
 
             var objectModel = new ObjectAndControlData {Id = FrameworkHelper.GetObjectId(store)};
@@ -1782,7 +1782,7 @@ namespace MvcTestApp.Tests.Controllers {
             try {
                 var result = (ViewResult) controller.Action(objectModel, GetForm(
                     new Dictionary<string, string> {
-                        {"Store-LastOrder-ModifiedDate-Concurrency", DateTime.Now.ToString()}
+                        {"Store-LastOrder-ModifiedDate-Concurrency", DateTime.Now.ToString(CultureInfo.InvariantCulture)}
                     }));
 
                 Assert.Fail("Expected concurrency exception");
@@ -2319,7 +2319,7 @@ namespace MvcTestApp.Tests.Controllers {
             };
 
             try {
-                controller.Action(objectModel, GetForm(new Dictionary<string, string> { { "SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", DateTime.Now.ToString() } }));
+                controller.Action(objectModel, GetForm(new Dictionary<string, string> { { "SalesOrderHeader-Recalculate-ModifiedDate-Concurrency", DateTime.Now.ToString(CultureInfo.InvariantCulture) } }));
                 Assert.Fail("Expected concurrency exception");
             }
             catch (ConcurrencyException expected) {
