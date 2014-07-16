@@ -10,6 +10,7 @@ using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
 using NakedObjects.EntityObjectStore;
+using NakedObjects.Rest.App.Demo.Models;
 using RestfulObjects.Bootstrap;
 
 namespace NakedObjects.Rest.App.Demo.App_Start {
@@ -25,22 +26,22 @@ namespace NakedObjects.Rest.App.Demo.App_Start {
 			get { return HttpContextContext.CreateInstance(); }
 		}
 
-        protected override IServicesInstaller MenuServices {
-            get {
-                return new ServicesInstaller(new object[] {
-					new CustomerRepository(),
-					new OrderRepository(),
-					new ProductRepository(),
-					new EmployeeRepository(),
-					new SalesRepository(),
-					new SpecialOfferRepository(),
-					new ContactRepository(),
-					new VendorRepository(),
-					new PurchaseOrderRepository(),
-					new WorkOrderRepository()}
-                    );
-            }
-        }
+	    protected override IServicesInstaller MenuServices {
+	        get {
+	            return new ServicesInstaller(
+                    new CustomerRepository(),
+	                new OrderRepository(),
+	                new ProductRepository(),
+	                new EmployeeRepository(),
+	                new SalesRepository(),
+	                new SpecialOfferRepository(),
+	                new ContactRepository(),
+	                new VendorRepository(),
+	                new PurchaseOrderRepository(),
+	                new WorkOrderRepository(),
+	                new TestHelperService());
+	        }
+	    }
 
         protected override IServicesInstaller ContributedActions {
             get { return new ServicesInstaller(new object[] { new OrderContributedActions(), new CustomerContributedActions() }); }
