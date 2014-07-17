@@ -71,7 +71,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const string ProductServiceUrl = Url + "#/services/AdventureWorksModel.ProductRepository";
         protected const string SalesServiceUrl = Url + "#/services/AdventureWorksModel.SalesRepository";
 
-        protected const int ServicesCount = 10;
+        protected const int ServicesCount = 11;
 
         protected const int CustomerServiceActions = 9;
         protected const int OrderServiceActions = 5;
@@ -177,7 +177,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
 
         protected virtual void GoToServiceFromHomePage(string serviceName) {
-            wait.Until(d => d.FindElements(By.ClassName("service")).Count == 10);
+            wait.Until(d => d.FindElements(By.ClassName("service")).Count == ServicesCount);
             ReadOnlyCollection<IWebElement> services = br.FindElements(By.CssSelector("div.service > a"));
             IWebElement service = services.FirstOrDefault(s => s.Text == serviceName);
             if (service != null) {
