@@ -169,7 +169,7 @@
 			<MVCSrc Include="$(MVCPath)\*$(NOMVC)Resources\**\*.cs"/>
 			<MVCSrc Include="$(MVCPath)\*$(NOMVC)\**\*.cs"/>
 		</ItemGroup>
-		<!--<Copy SourceFiles="@(MVCSrc)" DestinationFolder="$(MVCPath)\$(NOMVC)-Assemblies.package\src\%(RecursiveDir)" />-->
+		<Copy SourceFiles="@(MVCSrc)" DestinationFolder="$(MVCPath)\$(NOMVC)-Assemblies.package\src\%(RecursiveDir)" />
 	</Target>
 
   <Target Name="MVCTest" DependsOnTargets="MVC">
@@ -188,7 +188,7 @@
     <Exec WorkingDirectory="$(MVCPath)\$(NOMVC)-FileTemplates.package" Command="nuget pack $(NOMVC)-FileTemplates.nuspec" />
 
     <ItemGroup>
-      <Mvc1Package Include="$(MVCPath)\$(NOMVC)-Assemblies.package\*.nupkg"/>
+      <Mvc1Package Include="$(MVCPath)\$(NOMVC)-Assemblies.package\*.nupkg" Exclude="$(MVCPath)\$(NOMVC)-Assemblies.package\*.symbols.nupkg"/>
       <Mvc2Package Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\*.nupkg"/>
     </ItemGroup>
 
