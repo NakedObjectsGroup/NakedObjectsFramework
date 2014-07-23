@@ -9,7 +9,7 @@
     <projectUrl>http://nakedobjects.codeplex.com/</projectUrl>
     <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Naked Objects MVC will auto-create a complete web UI from a domain model. Add this package to an empty MVC 5 project.</description>
+    <description>Naked Objects MVC will auto-create a complete web UI from a domain model. Add this package to an empty MVC 5 project. Temp tracking message 1</description>
     <tags>naked objects nakedobjects asp.net mvc ddd domain driven design</tags>
     <dependencies>
       <dependency id="NakedObjects.Mvc-Assemblies" version="[6.0.0, 7.0)" />
