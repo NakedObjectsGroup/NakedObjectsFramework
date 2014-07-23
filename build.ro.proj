@@ -158,8 +158,8 @@
     </ItemGroup>
 
     <FileUpdate Files="@(ToUpdateRo)"
-							 RegEx= 'MvcTestApp\.'
-							 ReplacementText ='$rootnamespace$.'/>
+							 RegEx= 'MvcTestApp'
+							 ReplacementText ='$rootnamespace$'/>
 
     <Move SourceFiles="@(ToUpdateRo)" DestinationFiles="$(ROPath)\$(ROMVC).package\content\%(RecursiveDir)%(Filename)%(Extension).pp" />
 
