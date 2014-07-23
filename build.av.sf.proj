@@ -81,12 +81,14 @@
   <Target Name="SurfacePackage" DependsOnTargets="Surface">
     <Exec WorkingDirectory="$(SurfacePath)\$(NOSF).package" Command="nuget pack $(NOSF).nuspec -Symbols" />
     <ItemGroup>
-      <SurfaceApiPackage Include="$(SurfacePath)\$(NOSF).package\*.nupkg"/>
+      <!--Don't push symbols causes problems in Account Feed-->
+      <SurfaceApiPackage Include="$(SurfacePath)\$(NOSF).package\*.nupkg" Exclude="$(SurfacePath)\$(NOSF).package\*.symbols.nupkg"/>
     </ItemGroup>
 
     <Exec WorkingDirectory="$(SurfacePath)\$(NOSF).Nof4.package" Command="nuget pack $(NOSF).Nof4.nuspec -Symbols" />
     <ItemGroup>
-      <SurfaceNof4Package Include="$(SurfacePath)\$(NOSF).Nof4.package\*.nupkg"/>
+      <!--Don't push symbols causes problems in Account Feed-->
+      <SurfaceNof4Package Include="$(SurfacePath)\$(NOSF).Nof4.package\*.nupkg" Exclude="$(SurfacePath)\$(NOSF).Nof4.package\*.symbols.nupkg"/>
     </ItemGroup>
 
     <Exec Command='appveyor PushArtifact "%(SurfaceApiPackage.FullPath)"'/>

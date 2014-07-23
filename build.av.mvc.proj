@@ -188,6 +188,7 @@
     <Exec WorkingDirectory="$(MVCPath)\$(NOMVC)-FileTemplates.package" Command="nuget pack $(NOMVC)-FileTemplates.nuspec" />
 
     <ItemGroup>
+      <!--Don't push symbols causes problems in Account Feed-->
       <Mvc1Package Include="$(MVCPath)\$(NOMVC)-Assemblies.package\*.nupkg" Exclude="$(MVCPath)\$(NOMVC)-Assemblies.package\*.symbols.nupkg"/>
       <Mvc2Package Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\*.nupkg"/>
     </ItemGroup>

@@ -169,7 +169,8 @@
 
     <Exec WorkingDirectory="$(ROPath)\$(ROSVR).package" Command="nuget pack $(ROSVR).nuspec -Symbols" />
     <ItemGroup>
-      <ROSPackage Include="$(ROPath)\$(ROSVR).package\*.nupkg"/>
+      <!--Don't push symbols causes problems in Account Feed-->
+      <ROSPackage Include="$(ROPath)\$(ROSVR).package\*.nupkg" Exclude="$(ROPath)\$(ROSVR).package\*.symbols.nupkg"/>
     </ItemGroup>
 
     <Exec Command='appveyor PushArtifact "%(ROSPackage.FullPath)"'/> 

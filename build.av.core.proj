@@ -161,8 +161,9 @@
     <Exec WorkingDirectory="$(CorePath)\$(NOX).package" Command="nuget pack $(NOX).nuspec -Symbols"/>
 
     <ItemGroup>
-      <CorePackage Include="$(CorePath)\$(NOCore).package\*.nupkg"/>
-      <XatPackage Include="$(CorePath)\$(NOX).package\*.nupkg"/>
+      <!--Don't push sybols causes problems in Account Feed-->
+      <CorePackage Include="$(CorePath)\$(NOCore).package\*.nupkg" Exclude="$(CorePath)\$(NOCore).package\*.symbols.nupkg"/>
+      <XatPackage Include="$(CorePath)\$(NOX).package\*.nupkg" Exclude="$(CorePath)\$(NOX).package\*.symbols.nupkg"/>
     </ItemGroup>
 
     <Exec Command='appveyor PushArtifact "%(CorePackage.FullPath)"'/>

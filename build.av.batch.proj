@@ -72,7 +72,8 @@
     <Exec WorkingDirectory="$(BATPath)\$(NOBAT).package" Command="nuget pack $(NOBAT).nuspec -Symbols"/>
 
     <ItemGroup>
-      <BatchPackage Include="$(BATPath)\$(NOBAT).package\*.nupkg"/>
+      <!--Don't push sybols causes problems in Account Feed-->
+      <BatchPackage Include="$(BATPath)\$(NOBAT).package\*.nupkg" Exclude="$(BATPath)\$(NOBAT).package\*.symbols.nupkg"/>
     </ItemGroup>
 
     <Exec Command='appveyor PushArtifact "%(BatchPackage.FullPath)"'/>  

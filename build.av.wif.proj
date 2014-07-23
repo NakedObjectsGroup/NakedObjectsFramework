@@ -77,7 +77,8 @@
   <Target Name="WifPackage" >
     <Exec WorkingDirectory="$(CorePath)\$(NOWIF).package" Command="nuget pack $(NOWIF).nuspec -Symbols" />
     <ItemGroup>
-      <WifPackage Include="$(CorePath)\$(NOWIF).package\*.nupkg"/>
+      <!--Don't push symbols causes problems in Account Feed-->
+      <WifPackage Include="$(CorePath)\$(NOWIF).package\*.nupkg" Exclude="$(CorePath)\$(NOWIF).package\*.nupkg"/>
     </ItemGroup>
 
     <Exec Command='appveyor PushArtifact "%(WifPackage.FullPath)"'/>

@@ -59,7 +59,8 @@
     <Exec WorkingDirectory="$(TestPath)\$(NOSEL).package" Command="..\$(Nuget) pack $(NOSEL).nuspec -Symbols" />
 
     <ItemGroup>
-      <SeleniumPackage Include="$(TestPath)\$(NOSEL).package\*.nupkg"/>
+      <!--Don't push symbols causes problems in Account Feed-->
+      <SeleniumPackage Include="$(TestPath)\$(NOSEL).package\*.nupkg" Exclude="$(TestPath)\$(NOSEL).package\*.symbols.nupkg"/>
     </ItemGroup>
 
     <Exec Command='appveyor PushArtifact "%(SeleniumPackage.FullPath)"'/>

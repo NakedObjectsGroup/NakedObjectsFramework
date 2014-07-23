@@ -111,7 +111,8 @@
 		<Exec WorkingDirectory="$(PMPath)\$(NOPM).package" Command="nuget pack $(NOPM).nuspec -Symbols"/>
 
 		<ItemGroup>
-			<PMPackage Include="$(PMPath)\$(NOPM).package\*.nupkg"/>
+      <!--Don't push symbols causes problems in Account Feed-->
+			<PMPackage Include="$(PMPath)\$(NOPM).package\*.nupkg" Exclude="$(PMPath)\$(NOPM).package\*.symbols.nupkg"/>
 		</ItemGroup>
 
     <Exec Command='appveyor PushArtifact  "%(PMPackage.FullPath)"'/>
