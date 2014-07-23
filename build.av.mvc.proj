@@ -150,13 +150,13 @@
     <Move SourceFiles="@(ToUpdatePartialNamespace)" DestinationFiles="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\%(RecursiveDir)%(Filename)%(Extension).pp" />
     <Move SourceFiles="@(ToUpdateWholeNamespace)" DestinationFiles="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\%(RecursiveDir)%(Filename)%(Extension).pp" />
 
-    <!--<ItemGroup>
+    <ItemGroup>
       <ToZip Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\**\*.*"/>
     </ItemGroup>
     
     <Zip Files="@(ToZip)"
 				WorkingDirectory="$(MVCPath)\$(NOMVC)-Assemblies.package\content"
-				ZipFileName="$(MVCPath)\$(NOMVC)-Assemblies.package\content\NakedObjects.Mvc-Files.zip" />-->
+				ZipFileName="$(MVCPath)\$(NOMVC)-Assemblies.package\content\NakedObjects.Mvc-Files.zip" />
 
 		<ItemGroup>
 			<MVCPdb Include="$(MVCPath)\$(NOMVC)Resources\bin\%(Configuration.Identity)\$(NOMVC)Resources.pdb"/>
@@ -169,7 +169,7 @@
 			<MVCSrc Include="$(MVCPath)\*$(NOMVC)Resources\**\*.cs"/>
 			<MVCSrc Include="$(MVCPath)\*$(NOMVC)\**\*.cs"/>
 		</ItemGroup>
-		<Copy SourceFiles="@(MVCSrc)" DestinationFolder="$(MVCPath)\$(NOMVC)-Assemblies.package\src\%(RecursiveDir)" />
+		<!--<Copy SourceFiles="@(MVCSrc)" DestinationFolder="$(MVCPath)\$(NOMVC)-Assemblies.package\src\%(RecursiveDir)" />-->
 	</Target>
 
   <Target Name="MVCTest" DependsOnTargets="MVC">
@@ -196,7 +196,7 @@
     <Exec Command='appveyor PushArtifact "%(Mvc2Package.FullPath)"'/>
   </Target>
 
-  <Target Name="MVCPackageTest" DependsOnTargets="MVCPackage;MVCTest">
+  <Target Name="MVCPackageTest" DependsOnTargets="MVCTest">
     <MSBuild Projects="$(MSBuildProjectFile)" Targets="MVCPackage"/>
   </Target>
 
