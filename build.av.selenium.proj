@@ -3,14 +3,11 @@
   <PropertyGroup>
     <TestPath>Test</TestPath>
     <NOSEL>NakedObjects.Mvc.Selenium</NOSEL>
-    <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
     <PackageSourcePath>C:\NakedObjectsNugetPackages</PackageSourcePath>
-    <Nuget>..\.nuget\nuget.exe</Nuget>
-    <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
+    <Nuget>..\.nuget\nuget.exe</Nuget>   
   </PropertyGroup>
 
-  <Import Project="$(CommunityTargets)"/>
 
   <PropertyGroup Condition="'$(Configuration)'==''">
     <Configuration>Debug</Configuration>
@@ -27,31 +24,8 @@
     <SelHelperFiles Include="$(TestPath)\$(NOSEL).Test.Helpers\$(NOSEL).Test.Helpers.csproj"/>
   </ItemGroup>
 
-  <Target Name="Clean" DependsOnTargets="Config">
-
-    <MSBuild Projects="@(SelHelperFiles)" Targets="Clean"/>
-
-    <RemoveDir Directories="$(TestPath)\$(NOSEL).package\lib"/>
-    <RemoveDir Directories="$(TestPath)\$(NOSEL).package\content"/>
-    <RemoveDir Directories="$(TestPath)\$(NOSEL).package\src"/>
-
-    <ItemGroup>
-      <OldPackages Include="$(TestPath)\$(NOSEL).package\*.nupkg"/>
-      <OldPackages Include="$(PackageSourcePath)\$(NOSEL)*.nupkg"/>
-      <OldPackages Include="$(BuiltPackagesPath)\$(NOSEL)*.nupkg"/>
-      <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOSEL).package\**\*.*"/>
-      <OldCode Include="$(TestPath)\$(NOSEL).Test.Helpers\bin\**\*.dll"/>
-      <OldCode Include="$(TestPath)\$(NOSEL).Test.Helpers\obj\**\*.*"/>
-    </ItemGroup>
-
-    <Delete Files="@(OldPackages)"/>
-    <Delete Files="@(OldPackageFiles)"/>
-    <Delete Files="@(OldCode)" ContinueOnError="true"/>
-  </Target>
-
   <Target Name="Init" DependsOnTargets="Config" >
     <MakeDir Directories="$(PackageSourcePath)"/>
-    <MakeDir Directories="$(BuiltPackagesPath)"/>
   </Target>
 
   <ItemGroup>
@@ -88,8 +62,7 @@
       <SeleniumPackage Include="$(TestPath)\$(NOSEL).package\*.nupkg"/>
     </ItemGroup>
 
-    <Copy SourceFiles="@(SeleniumPackage)" DestinationFolder="$(PackageSourcePath)" />
-    <Copy SourceFiles="@(SeleniumPackage)" DestinationFolder="$(BuiltPackagesPath)" />
+    <Exec Command='appveyor PushArtifact "%(SeleniumPackage.FullPath)"'/>
 
   </Target>
 </Project>

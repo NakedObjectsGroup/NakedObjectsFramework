@@ -3,29 +3,9 @@
   <PropertyGroup>
     <CorePath>Core</CorePath>
     <NOWIF>NakedObjects.Authorisation.Wif</NOWIF>
-    <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
-    <TestResultsPath>test-results</TestResultsPath>
-    <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
-    <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
-    <NUnitVer>2.6.3</NUnitVer>
+    <TestResultsPath>test-results</TestResultsPath>  
   </PropertyGroup>
-
-  <Import Project="$(CommunityTargets)"/>
-  <UsingTask TaskName="NUnit" AssemblyFile="$(CommunityTasks)" />
-
-  <Choose>
-    <When Condition="Exists('C:\Program Files (x86)')">
-      <PropertyGroup>
-        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>     
-      </PropertyGroup>
-    </Otherwise>
-  </Choose>
 
   <PropertyGroup Condition="'$(Configuration)'==''">
     <Configuration>Debug</Configuration>
@@ -48,7 +28,6 @@
 
   <Target Name="Init" DependsOnTargets="Config" >
     <MakeDir Directories="$(TestResultsPath)"/>
-    <MakeDir Directories="$(BuiltPackagesPath)"/>
   </Target>
 
   <ItemGroup>
@@ -102,8 +81,6 @@
     </ItemGroup>
 
     <Exec Command='appveyor PushArtifact "%(WifPackage.FullPath)"'/>
-   
-    <Copy SourceFiles="@(WifPackage)" DestinationFolder="$(BuiltPackagesPath)" />
   </Target>
 
   <Target Name="WifPackageTest" DependsOnTargets="WifTest">

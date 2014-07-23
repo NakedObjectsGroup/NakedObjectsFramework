@@ -3,12 +3,8 @@
 	<PropertyGroup>
 		<PMPath>Programming Model</PMPath>
 		<NOPM>NakedObjects.ProgrammingModel</NOPM>
-		<BuiltPackagesPath>build\packages</BuiltPackagesPath>
 		<InstalledPackagesPath>packages</InstalledPackagesPath>
-    <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
 	</PropertyGroup>
-
-  <Import Project="$(CommunityTargets)"/>
 
   <PropertyGroup Condition=" '$(Configuration)'=='' ">
 		<Configuration>Debug</Configuration>
@@ -29,7 +25,7 @@
   </ItemGroup>
 
   <Target Name="Init" DependsOnTargets="Config">
-    <MakeDir Directories="$(BuiltPackagesPath)"/>
+    
   </Target>
   
   <ItemGroup>
@@ -119,8 +115,6 @@
 		</ItemGroup>
 
     <Exec Command='appveyor PushArtifact  "%(PMPackage.FullPath)"'/>
-  
-		<Copy SourceFiles="@(PMPackage)" DestinationFolder="$(BuiltPackagesPath)" />
   </Target>
 
 </Project>

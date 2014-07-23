@@ -4,33 +4,15 @@
     <MVCPath>MVC</MVCPath>
     <SamplesPath>Samples</SamplesPath>
     <NOMVC>NakedObjects.Mvc</NOMVC>
-    <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
     <TestResultsPath>test-results</TestResultsPath>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
     <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
-    <NUnitVer>2.6.3</NUnitVer>
   </PropertyGroup>
 
   <Import Project="$(CommunityTargets)"/>
-  <UsingTask TaskName="NUnit" AssemblyFile="$(CommunityTasks)" />
   <UsingTask TaskName="FileUpdate" AssemblyFile="$(CommunityTasks)" />
   <UsingTask TaskName="Zip" AssemblyFile="$(CommunityTasks)"/>
-
-  <Choose>
-    <When Condition="Exists('C:\Program Files (x86)')">
-      <PropertyGroup>
-        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>
-        <MSTestPath>C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE</MSTestPath>
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <NUnitPath>$(InstalledPackagesPath)\NUnit.Runners.$(NUnitVer)\tools</NUnitPath>
-        <MSTestPath>C:\Program Files\Microsoft Visual Studio 11.0\Common7\IDE</MSTestPath>
-      </PropertyGroup>
-    </Otherwise>
-  </Choose>
 
   <PropertyGroup Condition="'$(Configuration)'==''">
     <Configuration>Debug</Configuration>
@@ -62,8 +44,7 @@
 
   <Target Name="Init" DependsOnTargets="Config" >
     <MakeDir Directories="$(TestResultsPath)"/>
-    <MakeDir Directories="$(BuiltPackagesPath)"/>
-
+ 
     <ItemGroup>
       <CFGFiles Include="$(MVCPath)\$(NOMVC).App.Test\App.config"/>
     </ItemGroup>
@@ -212,9 +193,6 @@
 
     <Exec Command='appveyor PushArtifact "%(Mvc1Package.FullPath)"'/>
     <Exec Command='appveyor PushArtifact "%(Mvc2Package.FullPath)"'/>
-    
-    <Copy SourceFiles="@(Mvc1Package)" DestinationFolder="$(BuiltPackagesPath)"/>
-    <Copy SourceFiles="@(Mvc2Package)" DestinationFolder="$(BuiltPackagesPath)"/>
   </Target>
 
   <Target Name="MVCPackageTest" DependsOnTargets="MVCTest">

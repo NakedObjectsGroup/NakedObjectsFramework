@@ -4,17 +4,14 @@
     <ROPath>RestfulObjects Server</ROPath>
     <ROMVC>RestfulObjects.Mvc</ROMVC>
     <ROSVR>RestfulObjects.Server</ROSVR>
-    <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
     <TestResultsPath>test-results</TestResultsPath>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
     <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
-    <NUnitVer>2.6.3</NUnitVer>
   </PropertyGroup>
 
   <Import Project="$(CommunityTargets)"/>
   <UsingTask TaskName="Zip" AssemblyFile="$(CommunityTasks)"/>
-  <UsingTask TaskName="NUnit" AssemblyFile="$(CommunityTasks)" />
   <UsingTask TaskName="FileUpdate" AssemblyFile="$(CommunityTasks)" />
 
   <Choose>
@@ -56,7 +53,6 @@
   
   <Target Name="Init" DependsOnTargets="Config" >
     <MakeDir Directories="$(TestResultsPath)"/>
-    <MakeDir Directories="$(BuiltPackagesPath)"/>
   </Target>
 
   <ItemGroup>
@@ -137,8 +133,6 @@
     </ItemGroup>
 
     <Exec Command='appveyor PushArtifact "%(RestApiPackage.FullPath)"'/>
-
-    <Copy SourceFiles="@(RestApiPackage)" DestinationFolder="$(BuiltPackagesPath)" />
    
   </Target>
 
@@ -179,7 +173,7 @@
     </ItemGroup>
 
     <Exec Command='appveyor PushArtifact "%(ROSPackage.FullPath)"'/> 
-    <Copy SourceFiles="@(ROSPackage)" DestinationFolder="$(BuiltPackagesPath)"/>
+   
     
   </Target>
 

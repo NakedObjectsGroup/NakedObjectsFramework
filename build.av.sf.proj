@@ -4,12 +4,9 @@
     <SurfacePath>Surface</SurfacePath>
     <NOSF>NakedObjects.Surface</NOSF>
     <NOSF4>NakedObjects.Surface.Nof4</NOSF4>
-    <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
-    <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
   </PropertyGroup>
 
-  <Import Project="$(CommunityTargets)"/>
 
   <PropertyGroup Condition="'$(Configuration)'==''">
     <Configuration>Debug</Configuration>
@@ -28,7 +25,7 @@
   </ItemGroup>
 
   <Target Name="Init" DependsOnTargets="Config" >
-    <MakeDir Directories="$(BuiltPackagesPath)"/>
+    
   </Target>
 
   <ItemGroup>
@@ -95,8 +92,6 @@
     <Exec Command='appveyor PushArtifact "%(SurfaceApiPackage.FullPath)"'/>
     <Exec Command='appveyor PushArtifact "%(SurfaceNof4Package.FullPath)"'/>
    
-    <Copy SourceFiles="@(SurfaceApiPackage)" DestinationFolder="$(BuiltPackagesPath)" />
-    <Copy SourceFiles="@(SurfaceNof4Package)" DestinationFolder="$(BuiltPackagesPath)" />
 
   </Target>
 </Project>

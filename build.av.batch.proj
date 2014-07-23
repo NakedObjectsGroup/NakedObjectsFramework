@@ -3,12 +3,8 @@
   <PropertyGroup>
     <BATPath>Batch</BATPath>
     <NOBAT>NakedObjects.Batch</NOBAT>
-    <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
-    <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
   </PropertyGroup>
-
-  <Import Project="$(CommunityTargets)"/>
 
   <PropertyGroup Condition="'$(Configuration)'==''">
     <Configuration>Debug</Configuration>
@@ -27,8 +23,6 @@
 
 
   <Target Name="Init" DependsOnTargets="Config" >
-    <MakeDir Directories="$(PackageSourcePath)"/>
-    <MakeDir Directories="$(BuiltPackagesPath)"/>
   </Target>
 
   <Target Name="RestorePackage"  Returns="%(PackageCongfigFiles.Identity)" DependsOnTargets="Init">
@@ -81,8 +75,6 @@
       <BatchPackage Include="$(BATPath)\$(NOBAT).package\*.nupkg"/>
     </ItemGroup>
 
-    <Exec Command='appveyor PushArtifact "%(BatchPackage.FullPath)"'/>
-    <Copy SourceFiles="@(BatchPackage)" DestinationFolder="$(BuiltPackagesPath)" />
-   
+    <Exec Command='appveyor PushArtifact "%(BatchPackage.FullPath)"'/>  
   </Target>
 </Project>

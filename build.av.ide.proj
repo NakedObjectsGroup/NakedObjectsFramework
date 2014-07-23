@@ -3,7 +3,6 @@
   <PropertyGroup>
     <PMPath>Programming Model</PMPath>
     <NOIDE>NakedObjects.Ide</NOIDE>
-    <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
     <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
@@ -24,7 +23,6 @@
   </Target>
 
   <Target Name="Init" DependsOnTargets="Config">
-    <MakeDir Directories="$(BuiltPackagesPath)"/>
   </Target>
 
   <Target Name="RestoreSolutionPackages" DependsOnTargets="Init">
@@ -84,8 +82,6 @@
     </ItemGroup>
 
     <Exec Command='appveyor PushArtifact  "%(Package.FullPath)"'/>
-
-    <Copy SourceFiles="@(Package)" DestinationFolder="$(BuiltPackagesPath)" />
   </Target>
 
 </Project>
