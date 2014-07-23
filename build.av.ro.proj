@@ -129,7 +129,8 @@
 
     <Exec WorkingDirectory="$(ROPath)\$(ROMVC).package" Command="nuget pack $(ROMVC).nuspec -Symbols" />
     <ItemGroup>
-      <RestApiPackage Include="$(ROPath)\$(ROMVC).package\*.nupkg"/>
+      <!--Don't push symbols causes problems in Account Feed-->
+      <RestApiPackage Include="$(ROPath)\$(ROMVC).package\*.nupkg"  Exclude="$(ROPath)\$(ROMVC).package\*.symbols.nupkg"/>
     </ItemGroup>
 
     <Exec Command='appveyor PushArtifact "%(RestApiPackage.FullPath)"'/>
