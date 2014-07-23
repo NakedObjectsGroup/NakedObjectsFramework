@@ -23,7 +23,7 @@ namespace NakedObjects.Mvc.App {
 
             RunWeb.Run();
             DependencyResolver.SetResolver(new NakedObjectsDependencyResolver());
-            //RestConfig.RestPostStart();
+            RestConfig.RestPostStart();
 
             // Without this any value type fields with a default value will be set to mandatory by the MS unobtrusive validation
             // - that overrides the required NOF behaviour based on the 'Optionally' attribute.
@@ -35,7 +35,7 @@ namespace NakedObjects.Mvc.App {
             routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
             routes.IgnoreRoute("{*nakedobjects}", new { nakedobjects = @"(.*/)?nakedobjects.ico(/.*)?" });
 
-            //RestConfig.RestRegisterRoutes(routes); // must be rest first 
+            RestConfig.RestRegisterRoutes(routes); // must be rest first 
             RunMvc.RegisterGenericRoutes(routes);
         }
 

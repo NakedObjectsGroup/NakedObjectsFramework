@@ -8,7 +8,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.EntityObjectStore;
 using RestfulObjects.Bootstrap;
 
-namespace $rootnamespace$.App_Start {
+namespace $rootnamespace$ {
 	public class RunWeb : RunRest {
 
 	    // Return an empty string to support REST on the root application path. 

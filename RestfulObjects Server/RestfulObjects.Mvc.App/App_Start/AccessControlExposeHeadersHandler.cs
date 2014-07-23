@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MvcTestApp.App_Start {
+namespace MvcTestApp {
     public class AccessControlExposeHeadersHandler : DelegatingHandler {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
             return base.SendAsync(request, cancellationToken).ContinueWith(

@@ -11,7 +11,7 @@ using NakedObjects.EntityObjectStore;
 using RestfulObjects.Bootstrap;
 using RestfulObjects.Test.Data;
 
-namespace MvcTestApp.App_Start {
+namespace MvcTestApp {
     public class RunWeb : RunRest {
 
         // Return an empty string to support REST on the root application path. 

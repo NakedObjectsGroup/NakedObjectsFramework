@@ -6,7 +6,7 @@ using System.Web.Routing;
 using RestfulObjects.Mvc;
 using RestfulObjects.Mvc.Media;
 
-namespace MvcTestApp.App_Start {
+namespace MvcTestApp {
     public class RestConfig {
         public static void RestPostStart() {
 

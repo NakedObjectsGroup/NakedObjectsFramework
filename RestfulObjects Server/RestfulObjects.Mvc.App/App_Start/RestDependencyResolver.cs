@@ -11,7 +11,7 @@ using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 
-namespace MvcTestApp.App_Start {
+namespace MvcTestApp {
     public class RestDependencyResolver : IDependencyResolver {
         private NakedObjectsSurface surface;
 

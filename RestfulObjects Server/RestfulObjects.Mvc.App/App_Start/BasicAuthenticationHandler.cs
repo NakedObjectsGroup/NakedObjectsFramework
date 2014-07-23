@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NakedObjects.Surface;
 
-namespace MvcTestApp.App_Start {
+namespace MvcTestApp {
     public class BasicAuthenticationHandler : DelegatingHandler {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
             HttpRequestMessage r = request;
