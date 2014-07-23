@@ -132,6 +132,7 @@
     </ItemGroup>
 
     <Copy SourceFiles="@(MVCSrcFiles)" DestinationFolder="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\%(RecursiveDir)"/>
+    <Copy SourceFiles="@(MVCSrcFiles)" DestinationFolder="$(MVCPath)\$(NOMVC)-FileTemplates.package\src\%(RecursiveDir)"/>
 
     <ItemGroup>
       <ToUpdatePartialNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\Controllers*\*.cs" Exclude="**\RestfulObjectsController.cs;**\AccountController.cs;**\HomeController.cs"/>
@@ -149,13 +150,13 @@
     <Move SourceFiles="@(ToUpdatePartialNamespace)" DestinationFiles="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\%(RecursiveDir)%(Filename)%(Extension).pp" />
     <Move SourceFiles="@(ToUpdateWholeNamespace)" DestinationFiles="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\%(RecursiveDir)%(Filename)%(Extension).pp" />
 
-    <ItemGroup>
+    <!--<ItemGroup>
       <ToZip Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\**\*.*"/>
     </ItemGroup>
 
     <Zip Files="@(ToZip)"
 				WorkingDirectory="$(MVCPath)\$(NOMVC)-FileTemplates.package\content"
-				ZipFileName="$(MVCPath)\$(NOMVC)-Assemblies.package\content\NakedObjects.Mvc-Files($(MVCVersion)).zip" />
+				ZipFileName="$(MVCPath)\$(NOMVC)-Assemblies.package\content\NakedObjects.Mvc-Files($(MVCVersion)).zip" />-->
 
 		<ItemGroup>
 			<MVCPdb Include="$(MVCPath)\$(NOMVC)Resources\bin\%(Configuration.Identity)\$(NOMVC)Resources.pdb"/>
@@ -184,7 +185,7 @@
   <Target Name="MVCPackage" >
    
     <Exec WorkingDirectory="$(MVCPath)\$(NOMVC)-Assemblies.package" Command="nuget pack $(NOMVC)-Assemblies.nuspec -Symbols" />
-    <Exec WorkingDirectory="$(MVCPath)\$(NOMVC)-FileTemplates.package" Command="nuget pack $(NOMVC)-FileTemplates.nuspec -Symbols" />
+    <Exec WorkingDirectory="$(MVCPath)\$(NOMVC)-FileTemplates.package" Command="nuget pack $(NOMVC)-FileTemplates.nuspec" />
 
     <ItemGroup>
       <Mvc1Package Include="$(MVCPath)\$(NOMVC)-Assemblies.package\*.nupkg"/>
