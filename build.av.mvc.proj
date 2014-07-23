@@ -154,6 +154,8 @@
       <ToZip Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\**\*.*"/>
     </ItemGroup>
 
+    <MakeDir Directories="$(MVCPath)\$(NOMVC)-Assemblies.package\content"/>
+    
     <Zip Files="@(ToZip)"
 				WorkingDirectory="$(MVCPath)\$(NOMVC)-Assemblies.package\content"
 				ZipFileName="$(MVCPath)\$(NOMVC)-Assemblies.package\content\NakedObjects.Mvc-Files.zip" />
