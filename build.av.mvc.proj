@@ -132,7 +132,7 @@
     </ItemGroup>
 
     <Copy SourceFiles="@(MVCSrcFiles)" DestinationFolder="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\%(RecursiveDir)"/>
-    <Copy SourceFiles="@(MVCSrcFiles)" DestinationFolder="$(MVCPath)\$(NOMVC)-FileTemplates.package\src\%(RecursiveDir)"/>
+    <!--<Copy SourceFiles="@(MVCSrcFiles)" DestinationFolder="$(MVCPath)\$(NOMVC)-FileTemplates.package\src\%(RecursiveDir)"/>-->
 
     <ItemGroup>
       <ToUpdatePartialNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\Controllers*\*.cs" Exclude="**\RestfulObjectsController.cs;**\AccountController.cs;**\HomeController.cs"/>
