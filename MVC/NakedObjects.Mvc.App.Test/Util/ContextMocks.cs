@@ -80,7 +80,7 @@ namespace MvcTestApp.Tests.Util {
 
         public static RouteData TestRoute(string url, object expectedValues) {
             var routeConfig = new RouteCollection();
-            NakedObjectsStart.RegisterRoutes(routeConfig);
+            RouteConfig.RegisterRoutes(routeConfig);
             Mock<HttpContextBase> mockHttpContext = MakeMockHttpContext(url);
 
             RouteData routeData = routeConfig.GetRouteData(mockHttpContext.Object);
@@ -103,7 +103,7 @@ namespace MvcTestApp.Tests.Util {
 
         public static VirtualPathData GenerateUrlViaMocks(object values) {
             var routeConfig = new RouteCollection();
-            NakedObjectsStart.RegisterRoutes(routeConfig);
+            RouteConfig.RegisterRoutes(routeConfig);
             Mock<HttpContextBase> mockContext = MakeMockHttpContext(null);
             var context = new RequestContext(mockContext.Object, new RouteData());
             return routeConfig.GetVirtualPath(context, new RouteValueDictionary(values));

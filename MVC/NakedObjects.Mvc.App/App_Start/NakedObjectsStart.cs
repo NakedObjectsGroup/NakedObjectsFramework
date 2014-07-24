@@ -2,8 +2,8 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System.Web.Mvc;
-using System.Web.Optimization;
-using System.Web.Routing;
+using Common.Logging;
+using Common.Logging.Configuration;
 using NakedObjects.Mvc.App;
 using NakedObjects.Web.Mvc;
 using WebActivatorEx;
@@ -15,7 +15,7 @@ namespace NakedObjects.Mvc.App {
     public static class NakedObjectsStart {
         public static void PreStart() {
             InitialiseLogging();
-            RegisterRoutes(RouteTable.Routes);            
+            RestConfig.RestPreStart();           
         }
 
         public static void PostStart() {
@@ -28,25 +28,16 @@ namespace NakedObjects.Mvc.App {
             DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
         }
 
-        public static void RegisterRoutes(RouteCollection routes) {
-            routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
-            routes.IgnoreRoute("{*nakedobjects}", new { nakedobjects = @"(.*/)?nakedobjects.ico(/.*)?" });
-
-            RestConfig.RestRegisterRoutes(routes); // must be rest first 
-            RunMvc.RegisterGenericRoutes(routes);
-        }
-
         public static void InitialiseLogging() {
             // uncomment and add appropriate Common.Logging package
             // http://netcommon.sourceforge.net/docs/2.1.0/reference/html/index.html
 
             //var properties = new NameValueCollection();
-        
+
             //properties["configType"] = "INLINE";
             //properties["configFile"] = @"C:\Naked Objects\nologfile.txt";
 
             //LogManager.Adapter = new Common.Logging.Log4Net.Log4NetLoggerFactoryAdapter(properties);
-
         }
     }
 }

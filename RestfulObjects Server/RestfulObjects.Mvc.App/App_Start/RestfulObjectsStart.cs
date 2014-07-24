@@ -12,7 +12,8 @@ using WebActivatorEx;
 namespace MvcTestApp {
     public static class RestfulObjectsStart {
         public static void PreStart() {
-            RestConfig.RestRegisterRoutes(RouteTable.Routes);
+            RestConfig.RestPreStart();
+            RestConfig.RegisterRestfulObjectsRoutes(RouteTable.Routes);
         }
 
         public static void PostStart() {
