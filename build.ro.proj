@@ -198,8 +198,8 @@
     </ItemGroup>
 
     <FileUpdate Files="@(ROSUpdate)"
-							 RegEx= 'MvcTestApp\.'
-							 ReplacementText ='$rootnamespace$.'/>
+							 RegEx= 'MvcTestApp'
+							 ReplacementText ='$rootnamespace$'/>
 
     <Move SourceFiles="@(ROSUpdate)" DestinationFiles="$(ROPath)\$(ROSVR).package\content\%(RecursiveDir)%(Filename)%(Extension).pp"/>
 
