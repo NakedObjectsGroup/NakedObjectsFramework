@@ -125,10 +125,8 @@
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Views*\Home\Index.cshtml"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Views*\Shared\*.*" Exclude="**\_LoginPartial.cshtml; **\Error.cshtml; **\_Layout.cshtml"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\NakedObjectsStart.cs"/>
-      <!--<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\RestConfig.cs"/>
-      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\RestDependencyResolver.cs"/>-->
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\BundleConfig.cs"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\RunWeb.cs.pp"/>
-      <!--<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Web.config.transform"/>-->
     </ItemGroup>
 
     <Copy SourceFiles="@(MVCSrcFiles)" DestinationFolder="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\%(RecursiveDir)"/>
@@ -136,7 +134,7 @@
 
     <ItemGroup>
       <ToUpdatePartialNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\Controllers*\*.cs" Exclude="**\RestfulObjectsController.cs;**\AccountController.cs;**\HomeController.cs"/>
-      <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\NakedObjectsStart.cs"/>
+      <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\NakedObjectsStart.cs;$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\BundleConfig.cs"/>
     </ItemGroup>
 
     <FileUpdate Files="@(ToUpdatePartialNamespace)"
