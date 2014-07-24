@@ -460,74 +460,74 @@ let GetCollectionValue(api : RestfulObjectsControllerBase) =
         compareObject expected parsedResult
 
 
-//let AddToAndDeleteFromCollectionProperty (api : RestfulObjectsControllerBase) = 
-//        let desc = "an empty collection for testing"
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let mst = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" mst oid )).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//        
-//        api.Request <-  jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)     
-//        Assert.AreEqual(null, result.Content.Headers.ContentType)
-//        assertTransactionalCache  result 
-//       
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <-  jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//     
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual(null, result.Content.Headers.ContentType)
-//        assertTransactionalCache  result 
+let AddToAndDeleteFromCollectionProperty (api : RestfulObjectsControllerBase) = 
+        let desc = "an empty collection for testing"
+        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
+        let oid = ktc "1"
+        let pid = "AnEmptyCollection"
+        let ourl = sprintf "objects/%s/%s"  oType oid
+        let purl = sprintf "%s/collections/%s" ourl pid
+        let mst = ttc "RestfulObjects.Test.Data.MostSimple"
+
+        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" mst oid )).ToString())) 
+
+        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
+        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
+
+        let arg = CreateSingleValueArg parms
+        
+        try
+            api.Request <-  jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
+            let result = api.PostCollection(oType, oid, pid, arg)
+            Assert.Fail("expect exception")
+        with 
+            | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.Forbidden, ex.Response.StatusCode)
+             
+        let arg = CreateSingleValueArg parms
+
+        try
+            api.Request <-  jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
+            let result = api.DeleteCollection(oType, oid, pid, arg)
+            Assert.Fail("expect exception")
+        with 
+            | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.Forbidden, ex.Response.StatusCode)
        
        
 
-//let AddToAndDeleteFromCollectionPropertyViewModel (api : RestfulObjectsControllerBase) = 
-//        let desc = "an empty collection for testing"
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollectionViewModel"
-//        let oid = ktc "1-2"
-//        let oid1 = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let mst = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" mst oid1 )).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        
-//        api.Request <-  jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual(null, result.Content.Headers.ContentType)
-//        assertTransactionalCache  result 
-//   
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <-  jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual(null, result.Content.Headers.ContentType)
-//        assertTransactionalCache  result 
+let AddToAndDeleteFromCollectionPropertyViewModel (api : RestfulObjectsControllerBase) = 
+        let desc = "an empty collection for testing"
+        let oType = ttc "RestfulObjects.Test.Data.WithCollectionViewModel"
+        let oid = ktc "1-2"
+        let oid1 = ktc "1"
+        let pid = "AnEmptyCollection"
+        let ourl = sprintf "objects/%s/%s"  oType oid
+        let purl = sprintf "%s/collections/%s" ourl pid
+        let mst = ttc "RestfulObjects.Test.Data.MostSimple"
+
+        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" mst oid1 )).ToString())) 
+
+        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
+        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
+
+        let arg = CreateSingleValueArg parms
+
+        try
+            api.Request <-  jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
+            let result = api.PostCollection(oType, oid, pid, arg)
+            Assert.Fail("expect exception")
+         with 
+            | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.Forbidden, ex.Response.StatusCode)
+        
+  
+        let arg = CreateSingleValueArg parms
+
+        try 
+            api.Request <-  jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
+            let result = api.DeleteCollection(oType, oid, pid, arg)
+            Assert.Fail("expect exception")
+        with 
+            | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.Forbidden, ex.Response.StatusCode)
+    
 
 //let AddToAndDeleteFromSetCollectionProperty (api : RestfulObjectsControllerBase) = 
 //        let desc = "an empty set for testing"

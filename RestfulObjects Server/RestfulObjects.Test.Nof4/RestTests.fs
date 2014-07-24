@@ -629,10 +629,10 @@ type Nof4Tests() = class
     member x.GetDisabledCollectionProperty() = ObjectCollection17.GetDisabledCollectionProperty api 
     [<Test>]
     member x.GetCollectionValue() = ObjectCollection17.GetCollectionValue api 
-//    [<Test>]    
-//    member x.AddToAndDeleteFromCollectionProperty() = ObjectCollection17.AddToAndDeleteFromCollectionProperty api 
-//    [<Test>]    
-//    member x.AddToAndDeleteFromCollectionPropertyViewModel() = ObjectCollection17.AddToAndDeleteFromCollectionPropertyViewModel api 
+    [<Test>]    
+    member x.AddToAndDeleteFromCollectionProperty() = ObjectCollection17.AddToAndDeleteFromCollectionProperty api 
+    [<Test>]    
+    member x.AddToAndDeleteFromCollectionPropertyViewModel() = ObjectCollection17.AddToAndDeleteFromCollectionPropertyViewModel api 
 //    [<Test>]    
 //    member x.AddToAndDeleteFromSetCollectionProperty() = ObjectCollection17.AddToAndDeleteFromSetCollectionProperty api 
 //    [<Test>]    
