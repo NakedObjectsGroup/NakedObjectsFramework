@@ -19,8 +19,6 @@ namespace NakedObjects.Mvc.App {
         }
 
         public static void PostStart() {
-            RegisterBundles(BundleTable.Bundles);
-
             RunWeb.Run();
             DependencyResolver.SetResolver(new NakedObjectsDependencyResolver());
             RestConfig.RestPostStart();
@@ -28,7 +26,6 @@ namespace NakedObjects.Mvc.App {
             // Without this any value type fields with a default value will be set to mandatory by the MS unobtrusive validation
             // - that overrides the required NOF behaviour based on the 'Optionally' attribute.
             DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
-
         }
 
         public static void RegisterRoutes(RouteCollection routes) {
@@ -37,57 +34,6 @@ namespace NakedObjects.Mvc.App {
 
             RestConfig.RestRegisterRoutes(routes); // must be rest first 
             RunMvc.RegisterGenericRoutes(routes);
-        }
-
-        // this may be moved to BundleConfig as required - here just to simplify Nuget install  
-        public static void RegisterBundles(BundleCollection bundles) {
-
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                        "~/Scripts/jquery-ui-{version}.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                "~/Scripts/jquery.validate.js",
-                "~/Scripts/jquery.validate.unobtrusive.js",
-                "~/Scripts/jquery.unobtrusive-ajax.js"));
-
-            // register Naked Objects bundles  
-
-            bundles.Add(new ScriptBundle("~/bundles/nakedobjectsajax").Include(
-                "~/Scripts/jquery.address-{version}.js",
-                "~/Scripts/jquery.json-{version}.js",
-                "~/Scripts/jstorage*",
-                "~/Scripts/NakedObjects-Ajax*"));
-
-            //DATE FORMATS:   This bundle specifies that the JQuery DatePicker uses the en-GB date format (dd/mm/yy).
-            //To use the US format (mm/dd/yy) just remove any references to the bundle. Or to use another locale, specify the appropriate
-            //version of jquery.ui.datepicker
-            bundles.Add(new ScriptBundle("~/bundles/jquerydatepicker").Include(
-                "~/Scripts/ui/i18n/jquery.ui.datepicker-en-GB*"));
-
-            bundles.Add(new StyleBundle("~/Content/nakedobjectscss").Include(
-                "~/Content/NakedObjects.css"));
-
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                    "~/Content/bootstrap.css",
-                    "~/Content/site.css"));
-
-            bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
-                        "~/Content/themes/base/jquery.ui.core.css",
-                        "~/Content/themes/base/jquery.ui.resizable.css",
-                        "~/Content/themes/base/jquery.ui.selectable.css",
-                        "~/Content/themes/base/jquery.ui.accordion.css",
-                        "~/Content/themes/base/jquery.ui.autocomplete.css",
-                        "~/Content/themes/base/jquery.ui.button.css",
-                        "~/Content/themes/base/jquery.ui.dialog.css",
-                        "~/Content/themes/base/jquery.ui.slider.css",
-                        "~/Content/themes/base/jquery.ui.tabs.css",
-                        "~/Content/themes/base/jquery.ui.datepicker.css",
-                        "~/Content/themes/base/jquery.ui.progressbar.css",
-                        "~/Content/themes/base/jquery.ui.theme.css"));
-
         }
 
         public static void InitialiseLogging() {
