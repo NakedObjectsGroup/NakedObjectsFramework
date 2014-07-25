@@ -398,7 +398,7 @@ DISPLAY:block;
 FLOAT:left;
 POSITION:relative;
 CLEAR: left;
-WIDTH: 170px;
+WIDTH: 154px;
 MARGIN:0;
 PADDING-TOP: 4px;
 PADDING-RIGHT: 8px;
@@ -472,13 +472,13 @@ POSITION:relative;
 Z-INDEX:2000;
 CLEAR:left;
 FLOAT:left;
-WIDTH:170px;
+
 BORDER-TOP:1px solid #ffffff;
-PADDING:4px 10px;
+
 BACKGROUND:#a5de8a;
 TEXT-ALIGN:left;
 }
-.nof-submenuitem button:hover{
+.nof-submenuitems button:hover{
 BACKGROUND: #75b755;
 }
 /* PROPERTY_based menu styles below ... */
