@@ -332,7 +332,6 @@
     <Content Include="Scripts\jstorage.js" />
     <Content Include="Scripts\jstorage.min.js" />
     <Content Include="Scripts\NakedObjects-Ajax.js" />
-    <Content Include="Scripts\NakedObjects-Basic.js" />
     <Content Include="Scripts\ui\i18n\jquery.ui.datepicker-en-GB.js" />
     <Content Include="Scripts\ui\i18n\jquery.ui.datepicker-en-GB.min.js" />
     <Content Include="Web.config" />
