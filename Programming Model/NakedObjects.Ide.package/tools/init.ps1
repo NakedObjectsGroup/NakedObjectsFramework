@@ -45,7 +45,35 @@ param($rootPath, $toolsPath, $package, $project)
 
 	# helper functions for build and package versioning 
 
+	<#
+	.SYNOPSIS
+
+	Do a clean build of the Naked Objects Framework including running tests.  
+	.DESCRIPTION
+
+	Do a clean build of the Naked Objects Framework including running tests. This cmd must be called from a solution at the same level as Naked Objects build 
+	scripts. It will call msbuild on: 
 	
+	build.ide.proj /t:Clean
+	build.pm.proj /t:Clean
+	build.core.proj /t:Clean
+	build.sf.proj /t:Clean
+	build.wif.proj /t:Clean
+	build.ro.proj /t:Clean
+	build.mvc.proj /t:Clean
+	
+	build.ide.proj 
+	build.pm.proj 
+	build.core.proj 
+	build.sf.proj 
+	build.wif.proj 
+	build.ro.proj 
+	build.mvc.proj 
+
+	.EXAMPLE
+
+	New-NakedObjectsCleanBuildTest
+	#>
 	function global:New-NakedObjectsCleanBuildTest()
 	{		
 		Function build( $project, $target ){
@@ -70,6 +98,35 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.mvc.proj 
 	}
 
+	<#
+	.SYNOPSIS
+
+	Do a clean build of the Naked Objects Framework without running tests.  
+	.DESCRIPTION
+
+	Do a clean build of the Naked Objects Framework without running tests. This cmd must be called from a solution at the same level as Naked Objects build 
+	scripts. It will call msbuild on: 
+	
+	build.ide.proj /t:Clean
+	build.pm.proj /t:Clean
+	build.core.proj /t:Clean
+	build.sf.proj /t:Clean
+	build.wif.proj /t:Clean
+	build.ro.proj /t:Clean
+	build.mvc.proj /t:Clean
+	
+	build.ide.proj 
+	build.pm.proj 
+	build.core.proj /t:FrameworkPackageNoTest
+	build.sf.proj 
+	build.wif.proj /t:WifPackageNoTest
+	build.ro.proj /t:RestfulObjectsPackageNoTest
+	build.mvc.proj /t:MvcPackageNoTest
+
+	.EXAMPLE
+
+	New-NakedObjectsCleanBuildNoTest
+	#>
 	function global:New-NakedObjectsCleanBuildNoTest()
 	{		
 		Function build( $project, $target ){
@@ -95,6 +152,19 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.mvc.proj /t:MvcPackageNoTest
 	}
 
+	<#
+	.SYNOPSIS
+
+	Get the versions of the NakedObjects packages and save into a file.  
+	.DESCRIPTION
+
+	The versions of all the packages as stored in all the .nuspec files under the solution will be saved into the file "nog-packages.txt".
+	Packages in the 'build' directory will be ignored. Contents of the file are displayed.  
+
+	.EXAMPLE
+
+	Get-NakedObjectsPackageVersions
+	#>
 	function global:Get-NakedObjectsPackageVersions() {
 
 		$dependentFiles = Get-ChildItem -Filter ("*.nuspec") -Recurse  -Include *.nuspec | ?{ $_.fullname -notmatch "\\build\\?" }
@@ -110,6 +180,23 @@ param($rootPath, $toolsPath, $package, $project)
 		type "nog-packages.txt"
 	}
 
+	<#
+	.SYNOPSIS
+
+	Set the versions of the Naked Objects packages from a file
+	.DESCRIPTION
+
+	A file called nog-packages in the format produced by the Get-NakedObjectsPackageVersions cmdlet is expected in the solution directory. 
+	Update-NakedObjectsPackageVersion will be called for each package in the file. The file format is, for example 
+	
+	NakedObjects.Batch            	6.0.0
+	NakedObjects.Authorisation.Wif	6.0.0
+	etc 
+
+	.EXAMPLE
+
+	Set-NakedObjectsPackageVersions
+	#>
 	function global:Set-NakedObjectsPackageVersions() {
 		$versionsFile = Get-ChildItem -Filter "nog-packages.txt"
 		$versions = @(Get-Content $versionsFile) 
@@ -125,7 +212,38 @@ param($rootPath, $toolsPath, $package, $project)
 		}
 	}
 
+	<#
+	.SYNOPSIS
 
+	Update the package version of a NakedObjects Package in the .nuspec files.
+	.DESCRIPTION
+
+	Updates the version of a NakedObjects Package.The version is updated in the package's .nuspec file and also any dependent packages' .nuspec files. 
+	.PARAMETER Package
+
+	Mandatory. The name of the package. The following are valid.   
+	nakedobjects.batch         
+	nakedobjects.authorisation.wif
+	nakedobjects.core    
+	nakedobjects.xat         
+	nakedobjects.mvc-assemblies
+	nakedobjects.mvc-filetemplates
+	nakedobjects.ide            
+	nakedobjects.programmingmodel
+	restfulobjects.mvc          
+	restfulobjects.server      
+	nakedobjects.sample.icons
+	nakedobjects.surface.nof4 
+	nakedobjects.surface        
+	nakedobjects.mvc.selenium   
+
+	.PARAMETER NewVersion
+
+	Mandatory. The new version for the package. Any string is valid.  
+	.EXAMPLE
+
+	Update-NakedObjectsPackageVersion nakedobjects.batch 6.0.0-beta3
+	#>
 	function global:Update-NakedObjectsPackageVersion($Package, $NewVersion) {
 
 		"Calling Update-NakedObjectsPackageVersion -Package " + $Package  + " -NewVersion " + $NewVersion 
@@ -192,6 +310,30 @@ param($rootPath, $toolsPath, $package, $project)
 		} 
 	}
 
+	<#
+	.SYNOPSIS
+
+	Update the pacakge version of a NakedObjects package in the packages.config files and in the .proj files of the solution. 
+	.DESCRIPTION
+
+	The package version is updated in each packages.config file that it appears in. In addition the hint paths in all *proj files in the solution that 
+	use the package are updated. 
+	.PARAMETER PackageName
+
+	Mandatory. The name of the package. And string is valid
+	.PARAMETER NewVersion
+
+	Mandatory. The new version. Any string is valid. 
+	.PARAMETER verbose
+
+	A flag to output additional info during processing.   
+	.EXAMPLE
+
+	Update-NakedObjectsPackageVersion nakedobjects.batch 6.0.0-beta3
+
+	.EXAMPLE
+	Update-NakedObjectsPackageVersion nakedobjects.batch 6.0.0-beta3 -verbose
+	#>
 	function global:Update-PackageConfig($PackageName, $NewVersion, [switch] $verbose) {
     
 		if (!($PackageName -is [string])){
