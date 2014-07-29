@@ -142,7 +142,7 @@
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Bootstrap.Test\bin\%(Configuration.Identity)\NakedObjects.Bootstrap.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Test.dll"'/>
-    <!--<Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll"'/>-->
+    <Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll"'/>
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Reflector.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Reflector.Core.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Reflector.Dotnet.Test\bin\%(Configuration.Identity)\NakedObjects.Reflector.Dotnet.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Snapshot.Xml.Test\bin\%(Configuration.Identity)\NakedObjects.Snapshot.Xml.Test.dll"'/>
