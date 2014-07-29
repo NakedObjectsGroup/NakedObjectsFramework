@@ -21,7 +21,11 @@ open TestData
         
 let assemblyName = "NakedObjects.Persistor.Test.Data"
 
+#if AV
+let datasourceName = "(local)\SQL2012SP1"
+#else
 let datasourceName = ".\SQLEXPRESS"
+#endif
 
 let LoadTestAssembly() = 
     let obj = new Person()

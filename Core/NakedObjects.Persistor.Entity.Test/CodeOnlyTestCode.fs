@@ -45,7 +45,12 @@ let CodeFirstLoadTestAssembly() =
 
 let assemblyName = "NakedObjects.Persistor.Entity.Test.CodeOnly"
 
+
+#if AV
+let datasourceName = "(local)\SQL2012SP1"
+#else
 let datasourceName = ".\SQLEXPRESS"
+#endif
 
 //let ToLinq (exp : Expr<'a -> 'b>) =
 //    let linq = exp.ToLinqExpression()
