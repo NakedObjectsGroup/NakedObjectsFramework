@@ -6,7 +6,12 @@
     <NOX>NakedObjects.Xat</NOX>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
     <TestResultsPath>test-results</TestResultsPath>
+    <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
+    <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
   </PropertyGroup>
+
+  <Import Project="$(CommunityTargets)"/>
+  <UsingTask TaskName="FileUpdate" AssemblyFile="$(CommunityTasks)" />
 
   <PropertyGroup Condition="'$(Configuration)'==''">
     <Configuration>Debug</Configuration>
