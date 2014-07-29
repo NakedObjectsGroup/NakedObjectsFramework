@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class CollectionDelete : CollectionAbstract {
         #region Helpers
 
@@ -26,19 +26,7 @@ namespace RestfulObjects.Test.EndToEnd {
 
         [TestMethod]
         public void DeleteItemFromList() {
-            Helpers.TestResponse(simpleList, FilePrefix + "DeleteItemFromList", simple1AsArgument.ToString(), Methods.Delete);
-        }
-
-
-        //TODO: Currently this is the behaviour, and it is consistent with .NET. But we should perhaps review whether this should be in the spec or not.
-        [TestMethod]
-        public void DeleteItemNotInCollection() {
-            Helpers.TestResponse(simpleList, FilePrefix + "DeleteItemNotInCollection", simple3AsArgument.ToString(), Methods.Delete);
-        }
-
-        [TestMethod]
-        public void AttemptToDeleteFromNonExistentCollection() {
-            Helpers.TestResponse(simpleList + "ThatIsntThere", null, simple1AsArgument.ToString(), Methods.Delete, Codes.NotFound);
+            Helpers.TestResponse(simpleList, FilePrefix + "DeleteItemFromList", simple1AsArgument.ToString(), Methods.Delete, Codes.Forbidden);
         }
     }
 }
