@@ -45,7 +45,7 @@ type CodeSystemTests() =
     override x.Persistor
         with get() : IObjectPersistorInstaller = 
             let inst = new EntityPersistorInstaller()
-            let f = (fun () -> new CodeFirstContext() :> Data.Entity.DbContext)
+            let f = (fun () -> new CodeFirstContext("CodeSystemTest") :> Data.Entity.DbContext)
             let ignore = inst.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) 
             box (inst) :?> IObjectPersistorInstaller
                        

@@ -2,8 +2,7 @@
 
 namespace TestCodeOnly {
     public class CodeFirstContext : DbContext {
-        public CodeFirstContext(string dbName) : base(dbName) {}
-        public CodeFirstContext() {}
+        public CodeFirstContext(string dbName) : base("name=" + dbName) { }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CountryCode> CountryCodes { get; set; }

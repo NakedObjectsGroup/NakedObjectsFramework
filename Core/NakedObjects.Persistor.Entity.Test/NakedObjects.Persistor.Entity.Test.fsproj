@@ -59,6 +59,7 @@
     <Compile Include="DomainNoProxiesTest.fs" />
     <Compile Include="CodeOnlyTestCode.fs" />
     <Compile Include="CodeOnlyTest.fs" />
+    <Compile Include="CodeOnlyCeTest.fs" />
     <Compile Include="ModelTestCode.fs" />
     <Compile Include="ModelTest.fs" />
     <Compile Include="MultiDatabaseTestCode.fs" />
