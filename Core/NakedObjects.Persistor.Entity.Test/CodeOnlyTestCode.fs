@@ -141,7 +141,7 @@ type CodeFirstInitializer() =
        
 let CodeFirstConfig (name) =    
     let c = new CodeFirstEntityContextConfiguration()
-    c.DbContext <- fun () -> upcast new CodeFirstContext(name) 
+    c.DbContext <- fun () -> upcast new CodeFirstContext("name=" + name) 
     c
 
 let CodeFirstCeConfig =    
