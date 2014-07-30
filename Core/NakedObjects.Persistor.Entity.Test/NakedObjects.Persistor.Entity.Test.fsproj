@@ -68,7 +68,6 @@
     <Compile Include="ModelSystemTest.fs" />
     <Compile Include="CodeSystemTest.fs" />
     <Compile Include="EntityTestSuite.fs" />
-    <Content Include="NakedObjects.Persistor.Entity.Test.dll.config" />
     <None Include="packages.config" />
     <None Include="App.config" />
   </ItemGroup>
