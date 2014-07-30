@@ -1,8 +1,10 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Specialized;
+using System.Data.Entity;
 using NakedObjects.Persistor.TestData;
 
 namespace TestData {
     public class TestDataContext : DbContext {
+        public TestDataContext() : base("name=TestDataCodeOnly")   {}
         //public DbSet<Address> Addresses { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Pet> Pets { get; set; }
