@@ -18,10 +18,6 @@ namespace RestfulObjects.Test.EndToEnd {
         [TestInitialize]
         public void AddItemsToCollections() {
             base.InitializeVerySimple1();
-            Helpers.TestResponse(simpleSet, null, simple1AsArgument.ToString(), Methods.Post);
-            Helpers.TestResponse(simpleSet, null, simple2AsArgument.ToString(), Methods.Post);
-            Helpers.TestResponse(simpleList, null, simple1AsArgument.ToString(), Methods.Post);
-            Helpers.TestResponse(simpleSet, null, simple2AsArgument.ToString(), Methods.Post);
         }
 
         [TestMethod]
