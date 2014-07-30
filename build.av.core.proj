@@ -151,7 +151,7 @@
 
     <MSBuild Projects="@(FWTFiles)" Properties="Configuration=%(Configuration.Identity)"/>
 
-    <Copy SourceFiles="$(CorePath)\NakedObjects.Persistor.Entity.Test\NakedObjects.Persistor.Entity.Test.dll.config" DestinationFolder="$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)" />
+    <!--<Copy SourceFiles="$(CorePath)\NakedObjects.Persistor.Entity.Test\NakedObjects.Persistor.Entity.Test.dll.config" DestinationFolder="$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)" />-->
 
    
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Architecture.Test\bin\%(Configuration.Identity)\NakedObjects.Architecture.Test.dll"'/>
