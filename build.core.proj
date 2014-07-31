@@ -201,8 +201,6 @@
 
     <MSBuild Projects="@(FWTFiles)" Properties="Configuration=%(Configuration.Identity)"/>
 
-    <Copy SourceFiles="$(CorePath)\NakedObjects.Persistor.Entity.Test\NakedObjects.Persistor.Entity.Test.dll.config" DestinationFolder="$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)" />
-
     <NUnit Assemblies="$(CorePath)\NakedObjects.Architecture.Test\bin\%(Configuration.Identity)\NakedObjects.Architecture.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Architecture.Test.xml" />
     <NUnit Assemblies="$(CorePath)\NakedObjects.Bootstrap.Test\bin\%(Configuration.Identity)\NakedObjects.Bootstrap.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Bootstrap.Test.xml" />
     <NUnit Assemblies="$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Core.Test.xml" />
