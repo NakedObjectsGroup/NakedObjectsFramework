@@ -10,3 +10,5 @@
 **/bld
 UpgradeLog.htm
 *.zip
+*.mdf
+*.ldf
