@@ -135,7 +135,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 return null;
             }
 
-            IOid oid = NakedObjectsContext.ObjectPersistor.RestoreOid(encodedId.Split(';'));
+            IOid oid =  NakedObjectsContext.ObjectPersistor.OidGenerator.RestoreOid(encodedId.Split(';'));
 
             if (oid is CollectionMemento) {
                 return RestoreCollection(oid as CollectionMemento);

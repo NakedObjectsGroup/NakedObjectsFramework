@@ -31,7 +31,6 @@ namespace NakedObjects.Persistor.Objectstore {
         private static readonly ILog Log;
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
         private readonly INakedObjectStore objectStore;
-        private readonly IOidGenerator oidGenerator;
         private readonly IPersistAlgorithm persistAlgorithm;
         private readonly List<ServiceWrapper> services = new List<ServiceWrapper>();
         private readonly INakedObjectTransactionManager transactionManager;
@@ -50,17 +49,12 @@ namespace NakedObjects.Persistor.Objectstore {
 
             this.objectStore = objectStore;
             this.persistAlgorithm = persistAlgorithm;
-            this.oidGenerator = oidGenerator;
+            OidGenerator = oidGenerator;
             this.identityMap = identityMap;
 
             transactionManager = new ObjectStoreTransactionManager(objectStore);
             Log.DebugFormat("Creating {0}", this);
         }
-
-        //public virtual IIdentityMap IdentityMap {
-        //    get { return identityMap; }
-        //    set { identityMap = value; }
-        //}
 
         protected virtual List<ServiceWrapper> Services {
             get { return services; }
@@ -69,6 +63,8 @@ namespace NakedObjects.Persistor.Objectstore {
         public string DebugTitle {
             get { return "Object Store Persistor"; }
         }
+
+        public IOidGenerator OidGenerator { get; private set; }
 
         /// <summary>
         ///     Factory (for transient instance)
@@ -244,14 +240,14 @@ namespace NakedObjects.Persistor.Objectstore {
             transactionManager.Init();
             persistAlgorithm.Init();
             identityMap.Init();
-            oidGenerator.Init();
+            OidGenerator.Init();
             InitServices();
         }
 
         public void Shutdown() {
             Log.Debug("Shutdown");
             identityMap.Shutdown();
-            oidGenerator.Shutdown();
+            OidGenerator.Shutdown();
             transactionManager.Shutdown();
             persistAlgorithm.Shutdown();
             objectStore.Shutdown();
@@ -590,7 +586,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         private PocoAdapter CreateAdapterForNewObject(object domainObject) {
-            IOid transientOid = oidGenerator.CreateTransientOid(domainObject);
+            IOid transientOid = OidGenerator.CreateTransientOid(domainObject);
             PocoAdapter adapter = NewAdapter(domainObject, transientOid);
             Log.DebugFormat("Creating adapter (transient) {0}", adapter);
             identityMap.AddAdapter(adapter);

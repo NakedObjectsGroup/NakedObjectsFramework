@@ -19,12 +19,11 @@ namespace NakedObjects.TestSystem {
     public class TestProxyPersistor : INakedObjectPersistor {
         private readonly IList<string> actions = new List<string>();
         private readonly IDictionary<object, INakedObject> domainObjectMap = new Dictionary<object, INakedObject>();
-        private readonly IOidGenerator generator;
         private readonly IDictionary<IOid, INakedObject> identityMap = new Dictionary<IOid, INakedObject>();
         private readonly IDictionary<IOid, INakedObject> objects = new Dictionary<IOid, INakedObject>();
 
         public TestProxyPersistor() {
-            generator = new TestProxyOidGenerator();
+            OidGenerator = new TestProxyOidGenerator();
         }
 
         #region INakedObjectPersistor Members
@@ -58,6 +57,8 @@ namespace NakedObjects.TestSystem {
         public INakedObject[] ServiceAdapters {
             get { return new INakedObject[0]; }
         }
+
+        public IOidGenerator OidGenerator { get; private set; }
 
         public PropertyInfo[] GetKeys(Type type) {
             throw new NotImplementedException();
@@ -199,15 +200,15 @@ namespace NakedObjects.TestSystem {
         public void AddCommand(IPersistenceCommand command) {}
 
         public IOid CreateTransientOid(object obj) {
-            return generator.CreateTransientOid(obj);
+            return OidGenerator.CreateTransientOid(obj);
         }
 
         public void ConvertTransientToPersistentOid(IOid oid) {
-            generator.ConvertTransientToPersistentOid(oid);
+            OidGenerator.ConvertTransientToPersistentOid(oid);
         }
 
         public void ConvertPersistentToTransientOid(IOid oid) {
-            generator.ConvertPersistentToTransientOid(oid);
+            OidGenerator.ConvertPersistentToTransientOid(oid);
         }
 
         public IQueryable<T> Instances<T>() where T : class {

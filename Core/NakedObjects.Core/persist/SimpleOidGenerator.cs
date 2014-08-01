@@ -31,6 +31,11 @@ namespace NakedObjects.Core.Persist {
             get { return "Simple Serial OID Generator"; }
         }
 
+        public void ResetTo(long resetValue) {
+            persistentSerialNumber = resetValue;
+            transientSerialNumber = -resetValue;
+        }
+
         #region IOidGenerator Members
 
         public virtual void Init() {}

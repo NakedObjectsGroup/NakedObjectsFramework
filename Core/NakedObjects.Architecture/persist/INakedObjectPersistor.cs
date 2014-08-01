@@ -23,6 +23,7 @@ namespace NakedObjects.Architecture.Persist {
         bool IsInitialized { get; set; }
 
         INakedObject[] ServiceAdapters { get; }
+        IOidGenerator OidGenerator { get; }
 
         /// <summary>
         ///     Primarily for testing

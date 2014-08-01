@@ -17,6 +17,7 @@ using NakedObjects.Boot;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
+using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Persistor.Objectstore.Inmemory;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
@@ -47,7 +48,7 @@ namespace MvcTestApp.Tests.Helpers {
         [TearDown]
         public void EndTest() {
             MemoryObjectStore.DiscardObjects();
-            ((NakedObjectPersistorAbstract)NakedObjectsContext.ObjectPersistor).OidGenerator = new SimpleOidGenerator(100L);
+            ((SimpleOidGenerator)NakedObjectsContext.ObjectPersistor.OidGenerator).ResetTo(100L); 
         }
 
         #endregion

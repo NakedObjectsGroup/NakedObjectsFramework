@@ -47,7 +47,7 @@ namespace MvcTestApp.Tests.Helpers {
         [TearDown]
         public void EndTest() {
             MemoryObjectStore.DiscardObjects();
-            ((NakedObjectPersistorAbstract) NakedObjectsContext.ObjectPersistor).OidGenerator = new SimpleOidGenerator(100L);
+           // ((ObjectPersistor) NakedObjectsContext.ObjectPersistor).OidGenerator = new SimpleOidGenerator(100L);
         }
 
         #endregion
