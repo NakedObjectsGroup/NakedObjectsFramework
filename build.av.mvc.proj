@@ -173,7 +173,7 @@
 
   <Target Name="MVCTest" DependsOnTargets="MVC">
    
-    <MSBuild Projects="@(MVCTFiles)" Targets="$(Targets)" Properties='ReferencePath=$(RefPath);Configuration=%(Configuration.Identity);DefineConstants=AV' />
+    <MSBuild Projects="@(MVCTFiles)" Properties="ReferencePath=$(RefPath);Configuration=%(Configuration.Identity)" />
 
     <Exec Command='vstest.console /logger:Appveyor "$(MVCPath)\$(NOMVC).Test.Javascript\bin\%(Configuration.Identity)\$(NOMVC).Test.Javascript.dll"' />
     <Exec Command='nunit-console "$(MVCPath)\$(NOMVC).App.Test\bin\%(Configuration.Identity)\$(NOMVC).App.Test.dll"'/>
