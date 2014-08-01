@@ -5,7 +5,7 @@
 using NakedObjects.Architecture;
 
 namespace NakedObjects.Core.Persist {
-    internal class AdapterException : NakedObjectSystemException {
+    public class AdapterException : NakedObjectSystemException {
         public AdapterException(string message) : base(message) {}
     }
 }

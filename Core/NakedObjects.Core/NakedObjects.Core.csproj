@@ -165,7 +165,6 @@
     <Compile Include="persist\CollectionMemento.cs" />
     <Compile Include="persist\CollectionMementoHelper.cs" />
     <Compile Include="persist\EntityOid.cs" />
-    <Compile Include="persist\NakedObjectPersistorAbstract.cs" />
     <Compile Include="persist\PersistorUtils.cs" />
     <Compile Include="persist\SerialOid.cs" />
     <Compile Include="persist\SimpleOidGenerator.cs" />

@@ -31,8 +31,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             Log.Info("installing " + GetType().FullName);
 
             var inMemoryObjectStore = new MemoryObjectStore();
-            var persistor = new ObjectStorePersistor {
-                ObjectStore = inMemoryObjectStore,
+            var persistor = new ObjectStorePersistor(inMemoryObjectStore) {
                 PersistAlgorithm = new DefaultPersistAlgorithm(),
                 OidGenerator = SimpleOidGeneratorStart.HasValue ? new SimpleOidGenerator(SimpleOidGeneratorStart.Value) : new TimeBasedOidGenerator()
             };

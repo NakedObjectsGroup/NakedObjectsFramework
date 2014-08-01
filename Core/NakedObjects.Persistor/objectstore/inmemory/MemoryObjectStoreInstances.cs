@@ -110,7 +110,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                     ObjectAndVersion holder = objectInstances[oid];
                     object domainObject = holder.DomainObject;
                     if (domainObject == poco) {
-                        var adapter = new PocoAdapter(poco, oid) {OptimisticLock = holder.Version};
+                        var adapter = new PocoAdapter(NakedObjectsContext.Reflector, NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session, poco, oid) {OptimisticLock = holder.Version};
                         adapter.ResolveState.Handle(Events.InitializePersistentEvent);
                         adapter.ResolveState.Handle(Events.StartResolvingEvent);
                         adapter.ResolveState.Handle(Events.EndResolvingEvent);

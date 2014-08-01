@@ -139,8 +139,8 @@ namespace NakedObjects.EntityObjectStore {
             EntityObjectStore.RollBackOnError = RollBackOnError;
             EntityObjectStore.MaximumCommitCycles = MaximumCommitCycles;
             EntityObjectStore.IsInitializedCheck = IsInitializedCheck;
-            var persistor =  new ObjectStorePersistor {
-                ObjectStore = objectStore,
+            var persistor =  new ObjectStorePersistor(objectStore) {
+         
                 PersistAlgorithm = new EntityPersistAlgorithm(),
                 OidGenerator = oidGenerator
             };

@@ -442,7 +442,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public INakedObject CreateAdapterForKnownObject(object domainObject) {
             EntityOid oid = oidGenerator.CreateOid(EntityUtils.GetProxiedTypeName(domainObject), GetContext(domainObject).GetKey(domainObject));
-            return new PocoAdapter(domainObject, oid);
+            return new PocoAdapter(NakedObjectsContext.Reflector, NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session, domainObject, oid);
         }
 
         private static string ConcatenateMessages(Exception e) {

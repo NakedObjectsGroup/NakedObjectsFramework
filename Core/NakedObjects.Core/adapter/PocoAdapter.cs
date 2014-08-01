@@ -12,9 +12,9 @@ using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
@@ -24,6 +24,9 @@ namespace NakedObjects.Core.Adapter {
         private static readonly ILog Log;
         private string defaultTitle;
         private IOid oid;
+        private readonly INakedObjectReflector reflector;
+        private readonly INakedObjectPersistor persistor;
+        private readonly ISession session;
         private object poco;
         private INakedObjectSpecification specification;
         private ITypeOfFacet typeOfFacet;
@@ -33,10 +36,17 @@ namespace NakedObjects.Core.Adapter {
             Log = LogManager.GetLogger(typeof (PocoAdapter));
         }
 
-        public PocoAdapter(object poco, IOid oid) {
+        public PocoAdapter(INakedObjectReflector reflector, INakedObjectPersistor persistor, ISession session, object poco, IOid oid) {
+            Assert.AssertNotNull(reflector);
+            Assert.AssertNotNull(persistor);
+            //Assert.AssertNotNull(session);
+
             if (poco is INakedObject) {
                 throw new AdapterException("Adapter can't be used to adapt an adapter: " + poco);
             }
+            this.reflector = reflector;
+            this.persistor = persistor;
+            this.session = session;
             this.poco = poco;
             this.oid = oid;
             ResolveState = new ResolveStateMachine(this);
@@ -76,7 +86,7 @@ namespace NakedObjects.Core.Adapter {
         public virtual INakedObjectSpecification Specification {
             get {
                 if (specification == null) {
-                    specification = NakedObjectsContext.Reflector.LoadSpecification(Object.GetType());
+                    specification = reflector.LoadSpecification(Object.GetType());
                     defaultTitle = "A" + (" " + specification.SingularName).ToLower();
                 }
                 return specification;
@@ -134,7 +144,7 @@ namespace NakedObjects.Core.Adapter {
             INakedObjectAssociation[] properties = Specification.Properties;
             foreach (INakedObjectAssociation property in properties) {
                 INakedObject referencedObject = property.GetNakedObject(this);
-                if (property.IsUsable(NakedObjectsContext.Session, this).IsAllowed && property.IsVisible(NakedObjectsContext.Session, this)) {
+                if (property.IsUsable(session, this).IsAllowed && property.IsVisible(session, this)) {
                     if (property.IsMandatory && property.IsEmpty(this)) {
                         return string.Format(Resources.NakedObjects.PropertyMandatory, specification.ShortName, property.Name);
                     }
@@ -156,7 +166,7 @@ namespace NakedObjects.Core.Adapter {
             }
 
             foreach (INakedObjectValidation validator in specification.ValidateMethods()) {
-                IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => specification.Properties.Where(p => p.Id.ToLower() == name).Single().GetNakedObject(this));
+                IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => specification.Properties.Single(p => p.Id.ToLower() == name).GetNakedObject(this));
                 string result = validator.Execute(this, parameters.ToArray());
                 if (result != null) {
                     return result;
@@ -196,13 +206,10 @@ namespace NakedObjects.Core.Adapter {
             if (title == null) {
                 if (ResolveState.IsGhost()) {
                     Log.InfoFormat("attempting to use unresolved object; resolving it immediately: {0}", this);
-                    NakedObjectsContext.ObjectPersistor.ResolveImmediately(this);
+                    persistor.ResolveImmediately(this);
                 }
             }
-            if (title == null) {
-                title = DefaultTitle;
-            }
-            return title;
+            return title ?? DefaultTitle;
         }
 
         private string CollectionTitleString(ICollectionFacet facet) {
