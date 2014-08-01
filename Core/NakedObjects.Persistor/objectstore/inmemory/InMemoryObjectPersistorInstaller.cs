@@ -36,10 +36,9 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                 PersistAlgorithm = new DefaultPersistAlgorithm(),
                 OidGenerator = SimpleOidGeneratorStart.HasValue ? new SimpleOidGenerator(SimpleOidGeneratorStart.Value) : new TimeBasedOidGenerator()
             };
-            var identityMapImpl = new IdentityMapImpl {
-                IdentityAdapterMap = identityAdapterMap,
-                PocoAdapterMap = new CreateIfNullPocoAdapterDecorator(inMemoryObjectStore, pocoAdapterMap ?? new PocoAdapterHashMap())
-            };
+
+
+            var identityMapImpl = new IdentityMapImpl(persistor, identityAdapterMap ?? new IdentityAdapterHashMap(), new CreateIfNullPocoAdapterDecorator(inMemoryObjectStore, pocoAdapterMap ?? new PocoAdapterHashMap()));
             inMemoryObjectStore.IdentityMap = identityMapImpl;
             persistor.IdentityMap = identityMapImpl;
             return persistor;

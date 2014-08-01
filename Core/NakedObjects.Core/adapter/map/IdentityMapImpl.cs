@@ -8,13 +8,13 @@ using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter.Map {
     public class IdentityMapImpl : IIdentityMap {
         private static readonly ILog Log;
+        private readonly INakedObjectPersistor objectPersistor;
         private readonly IDictionary<object, object> unloadedObjects = new Dictionary<object, object>();
         private IIdentityAdapterMap identityAdapterMap;
         private IPocoAdapterMap pocoAdapterMap;
@@ -23,58 +23,40 @@ namespace NakedObjects.Core.Adapter.Map {
             Log = LogManager.GetLogger(typeof (IdentityMapImpl));
         }
 
-        /// <summary>
-        ///     For dependency injection.
-        /// </summary>
-        /// <para>
-        ///     If not injected, will be instantiated within <see cref="Init" /> method.
-        /// </para>
-        public virtual IIdentityAdapterMap IdentityAdapterMap {
-            set { identityAdapterMap = value; }
-            private get { return identityAdapterMap; }
-        }
+        public IdentityMapImpl(INakedObjectPersistor objectPersistor, IIdentityAdapterMap identityAdapterMap, IPocoAdapterMap pocoAdapterMap) {
+            Assert.AssertNotNull(objectPersistor);
+            Assert.AssertNotNull(identityAdapterMap);
+            Assert.AssertNotNull(pocoAdapterMap);
 
-        /// <summary>
-        ///     For dependency injection.
-        /// </summary>
-        /// <para>
-        ///     If not injected, will be instantiated within <see cref="Init" /> method.
-        /// </para>
-        public virtual IPocoAdapterMap PocoAdapterMap {
-            set { pocoAdapterMap = value; }
-            private get { return pocoAdapterMap; }
+            this.objectPersistor = objectPersistor;
+            this.identityAdapterMap = identityAdapterMap;
+            this.pocoAdapterMap = pocoAdapterMap;
         }
 
         #region IIdentityMap Members
 
         public virtual IEnumerator<INakedObject> GetEnumerator() {
-            return PocoAdapterMap.GetEnumerator();
+            return pocoAdapterMap.GetEnumerator();
         }
 
         public virtual void Init() {
-            if (identityAdapterMap == null) {
-                identityAdapterMap = new IdentityAdapterHashMap();
-            }
-            if (pocoAdapterMap == null) {
-                pocoAdapterMap = new PocoAdapterHashMap();
-            }
         }
 
         public virtual void Shutdown() {
-            IdentityAdapterMap.Shutdown();
-            PocoAdapterMap.Shutdown();
+            identityAdapterMap.Shutdown();
+            pocoAdapterMap.Shutdown();
         }
 
         public virtual void Reset() {
-            IdentityAdapterMap.Reset();
-            PocoAdapterMap.Reset();
+            identityAdapterMap.Reset();
+            pocoAdapterMap.Reset();
             unloadedObjects.Clear();
         }
 
         public virtual void AddAdapter(INakedObject nakedObject) {
             Assert.AssertNotNull("Cannot add null adapter to IdentityAdapterMap", nakedObject);
             object obj = nakedObject.Object;
-            Assert.AssertFalse("POCO Map already contains object", obj, PocoAdapterMap.ContainsObject(obj));
+            Assert.AssertFalse("POCO Map already contains object", obj, pocoAdapterMap.ContainsObject(obj));
 
             if (unloadedObjects.ContainsKey(obj)) {
                 string msg = string.Format(Resources.NakedObjects.TransientReferenceMessage, obj);
@@ -83,10 +65,10 @@ namespace NakedObjects.Core.Adapter.Map {
 
             // TODO we should be ignoring immutable values object as well
             if (nakedObject.Specification.IsObject) {
-                PocoAdapterMap.Add(obj, nakedObject);
+                pocoAdapterMap.Add(obj, nakedObject);
             }
             // order is important - add to identity map after poco map 
-            IdentityAdapterMap.Add(nakedObject.Oid, nakedObject);
+            identityAdapterMap.Add(nakedObject.Oid, nakedObject);
 
             // log at end so that if ToString needs adapters they're in maps. 
             Log.DebugFormat("Adding identity for {0}", nakedObject);
@@ -99,15 +81,15 @@ namespace NakedObjects.Core.Adapter.Map {
             // be found afterwards. To work properly, we therefore remove the identity first then change the oid,
             // finally re-add to the map.
 
-            IdentityAdapterMap.Remove(oid);
-            NakedObjectsContext.ObjectPersistor.ConvertTransientToPersistentOid(oid);
+            identityAdapterMap.Remove(oid);
+            objectPersistor.ConvertTransientToPersistentOid(oid);
 
             adapter.ResolveState.Handle(Events.StartResolvingEvent);
             adapter.ResolveState.Handle(Events.EndResolvingEvent);
 
-            Assert.AssertTrue("Adapter's poco should exist in poco map and return the adapter", PocoAdapterMap.GetObject(adapter.Object) == adapter);
-            Assert.AssertNull("Changed OID should not already map to a known adapter " + oid, IdentityAdapterMap.GetAdapter(oid));
-            IdentityAdapterMap.Add(oid, adapter);
+            Assert.AssertTrue("Adapter's poco should exist in poco map and return the adapter", pocoAdapterMap.GetObject(adapter.Object) == adapter);
+            Assert.AssertNull("Changed OID should not already map to a known adapter " + oid, identityAdapterMap.GetAdapter(oid));
+            identityAdapterMap.Add(oid, adapter);
             Log.DebugFormat("Made persistent {0}; was {1}", adapter, oid.Previous);
         }
 
@@ -118,16 +100,13 @@ namespace NakedObjects.Core.Adapter.Map {
             // be found afterwards. To work properly, we therefore remove the identity first then change the oid,
             // finally re-add to the map.
 
-            IdentityAdapterMap.Remove(oid);
+            identityAdapterMap.Remove(oid);
 
-            ((ViewModelOid)adapter.Oid).UpdateKeys(keys, false);
+            ((ViewModelOid) adapter.Oid).UpdateKeys(keys, false);
 
-            //adapter.ResolveState.Handle(Events.StartResolvingEvent);
-            //adapter.ResolveState.Handle(Events.EndResolvingEvent);
-
-            Assert.AssertTrue("Adapter's poco should exist in poco map and return the adapter", PocoAdapterMap.GetObject(adapter.Object) == adapter);
-            Assert.AssertNull("Changed OID should not already map to a known adapter " + oid, IdentityAdapterMap.GetAdapter(oid));
-            IdentityAdapterMap.Add(oid, adapter);
+            Assert.AssertTrue("Adapter's poco should exist in poco map and return the adapter", pocoAdapterMap.GetObject(adapter.Object) == adapter);
+            Assert.AssertNull("Changed OID should not already map to a known adapter " + oid, identityAdapterMap.GetAdapter(oid));
+            identityAdapterMap.Add(oid, adapter);
             Log.DebugFormat("UpdateView Model {0}; was {1}", adapter, oid.Previous);
         }
 
@@ -144,26 +123,26 @@ namespace NakedObjects.Core.Adapter.Map {
             Log.DebugFormat("Removed loaded object {0}", nakedObject);
             IOid oid = nakedObject.Oid;
             if (oid != null) {
-                IdentityAdapterMap.Remove(oid);
+                identityAdapterMap.Remove(oid);
             }
-            PocoAdapterMap.Remove(nakedObject);
+            pocoAdapterMap.Remove(nakedObject);
         }
 
         public virtual INakedObject GetAdapterFor(object domainObject) {
             Assert.AssertNotNull("can't get an adapter for null", this, domainObject);
-            return PocoAdapterMap.GetObject(domainObject);
+            return pocoAdapterMap.GetObject(domainObject);
         }
 
         public virtual INakedObject GetAdapterFor(IOid oid) {
             Assert.AssertNotNull("OID should not be null", this, oid);
             ProcessChangedOid(oid);
-            return IdentityAdapterMap.GetAdapter(oid);
+            return identityAdapterMap.GetAdapter(oid);
         }
 
         public virtual bool IsIdentityKnown(IOid oid) {
             Assert.AssertNotNull("OID should not be null", oid);
             ProcessChangedOid(oid);
-            return IdentityAdapterMap.IsIdentityKnown(oid);
+            return identityAdapterMap.IsIdentityKnown(oid);
         }
 
         public void Replaced(object domainObject) {

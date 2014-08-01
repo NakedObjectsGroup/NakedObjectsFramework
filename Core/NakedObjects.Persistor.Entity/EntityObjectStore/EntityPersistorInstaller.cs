@@ -12,6 +12,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Persistor;
 using NakedObjects.Persistor.Objectstore;
@@ -138,12 +139,15 @@ namespace NakedObjects.EntityObjectStore {
             EntityObjectStore.RollBackOnError = RollBackOnError;
             EntityObjectStore.MaximumCommitCycles = MaximumCommitCycles;
             EntityObjectStore.IsInitializedCheck = IsInitializedCheck;
-            return new ObjectStorePersistor {
+            var persistor =  new ObjectStorePersistor {
                 ObjectStore = objectStore,
                 PersistAlgorithm = new EntityPersistAlgorithm(),
-                OidGenerator = oidGenerator,
-                IdentityMap = new EntityIdentityMapImpl(objectStore) {IdentityAdapterMap = identityAdapterMap, PocoAdapterMap = pocoAdapterMap}
+                OidGenerator = oidGenerator
             };
+
+            persistor.IdentityMap = new EntityIdentityMapImpl(persistor, identityAdapterMap ?? new IdentityAdapterHashMap(), pocoAdapterMap ?? new PocoAdapterHashMap(), objectStore);
+
+            return persistor;
         }
 
         protected IEnumerable<EntityContextConfiguration> PocoConfiguration() {

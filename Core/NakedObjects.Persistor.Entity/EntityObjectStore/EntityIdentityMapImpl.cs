@@ -4,12 +4,14 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Aggregated;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Core.Adapter.Map;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityIdentityMapImpl : IdentityMapImpl {
-        public EntityIdentityMapImpl(EntityObjectStore objectStore) {
+        public EntityIdentityMapImpl(INakedObjectPersistor objectPersistor, IIdentityAdapterMap identityAdapterMap, IPocoAdapterMap pocoAdapterMap, EntityObjectStore objectStore)
+            : base(objectPersistor, identityAdapterMap, pocoAdapterMap) {
             ObjectStore = objectStore;
         }
 
