@@ -12,7 +12,7 @@
     <description>Add for Naked Objects WIF support</description>
     <tags>naked objects nakedobjects</tags>
     <dependencies>
-      <dependency id="NakedObjects.Core" version="[6.0.0, 7.0)" />
+      <dependency id="NakedObjects.Core" version="6.1.0" />
     </dependencies>
   </metadata>
 </package>
