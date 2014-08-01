@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.CodeDom.Compiler;
 using System.Collections;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
@@ -17,10 +18,12 @@ namespace NakedObjects.TestSystem {
         private readonly TestProxyReflector reflector;
         private NakedObjectsContext nakedObjects;
         private int nextId = 1;
+        private TestProxyOidGenerator generator;
 
         public TestProxySystem() {
             reflector = new TestProxyReflector();
             Persistor = new TestProxyPersistor();
+            generator = new TestProxyOidGenerator();
         }
 
         private INakedObjectPersistor Persistor { get; set; }
@@ -71,7 +74,7 @@ namespace NakedObjects.TestSystem {
 
         public void MakePersistent(TestProxyNakedObject adapter) {
             IOid oid = adapter.Oid;
-            Persistor.ConvertTransientToPersistentOid(oid);
+            generator.ConvertTransientToPersistentOid(oid);
             adapter.SetupOid(oid);
             Persistor.MakePersistent(adapter);
         }

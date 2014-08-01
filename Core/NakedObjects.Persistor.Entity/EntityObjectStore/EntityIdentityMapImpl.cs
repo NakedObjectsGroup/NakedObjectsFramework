@@ -10,8 +10,8 @@ using NakedObjects.Core.Adapter.Map;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityIdentityMapImpl : IdentityMapImpl {
-        public EntityIdentityMapImpl(INakedObjectPersistor objectPersistor, IIdentityAdapterMap identityAdapterMap, IPocoAdapterMap pocoAdapterMap, EntityObjectStore objectStore)
-            : base(objectPersistor, identityAdapterMap, pocoAdapterMap) {
+        public EntityIdentityMapImpl(IOidGenerator oidGenerator, IIdentityAdapterMap identityAdapterMap, IPocoAdapterMap pocoAdapterMap, EntityObjectStore objectStore)
+            : base(oidGenerator, identityAdapterMap, pocoAdapterMap) {
             ObjectStore = objectStore;
         }
 

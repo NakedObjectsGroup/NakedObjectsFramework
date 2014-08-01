@@ -30,48 +30,41 @@ namespace NakedObjects.Persistor.Objectstore {
     public class ObjectStorePersistor : INakedObjectPersistor, IPersistedObjectAdder {
         private static readonly ILog Log;
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
-        private IContainerInjector containerInjector;
-        private IIdentityMap identityMap;
-        private INakedObjectStore objectStore;
-        private IOidGenerator oidGenerator;
-        private IPersistAlgorithm persistAlgorithm;
+        private readonly INakedObjectStore objectStore;
+        private readonly IOidGenerator oidGenerator;
+        private readonly IPersistAlgorithm persistAlgorithm;
         private readonly List<ServiceWrapper> services = new List<ServiceWrapper>();
-        private INakedObjectTransactionManager transactionManager;
+        private readonly INakedObjectTransactionManager transactionManager;
+        private IContainerInjector containerInjector;
+        private readonly IIdentityMap identityMap;
 
         static ObjectStorePersistor() {
             Log = LogManager.GetLogger(typeof (ObjectStorePersistor));
         }
 
-        public ObjectStorePersistor(INakedObjectStore objectStore) {
+        public ObjectStorePersistor(INakedObjectStore objectStore, IPersistAlgorithm persistAlgorithm, IOidGenerator oidGenerator, IIdentityMap identityMap) {
+            Assert.AssertNotNull(objectStore);
+            Assert.AssertNotNull(persistAlgorithm);
+            Assert.AssertNotNull(oidGenerator);
+            Assert.AssertNotNull(identityMap);
+
             this.objectStore = objectStore;
+            this.persistAlgorithm = persistAlgorithm;
+            this.oidGenerator = oidGenerator;
+            this.identityMap = identityMap;
+
+            transactionManager = new ObjectStoreTransactionManager(objectStore);
             Log.DebugFormat("Creating {0}", this);
         }
 
-        public virtual IOidGenerator OidGenerator {
-            set { oidGenerator = value; }
-        }
-
-        public virtual IIdentityMap IdentityMap {
-            get { return identityMap; }
-            set { identityMap = value; }
-        }
+        //public virtual IIdentityMap IdentityMap {
+        //    get { return identityMap; }
+        //    set { identityMap = value; }
+        //}
 
         protected virtual List<ServiceWrapper> Services {
             get { return services; }
         }
-
-        public virtual IPersistAlgorithm PersistAlgorithm {
-            set { persistAlgorithm = value; }
-        }
-
-        public virtual INakedObjectTransactionManager TransactionManager {
-            set { transactionManager = value; }
-        }
-
-        //public virtual INakedObjectStore ObjectStore {
-        //    set { objectStore = value; }
-        //}
-
 
         public string DebugTitle {
             get { return "Object Store Persistor"; }
@@ -130,7 +123,7 @@ namespace NakedObjects.Persistor.Objectstore {
         public virtual INakedObject GetAdapterFor(object obj) {
             Log.DebugFormat("GetAdapterFor: {0}", obj);
             Assert.AssertNotNull("must have a domain object", obj);
-            INakedObject nakedObject = IdentityMap.GetAdapterFor(obj);
+            INakedObject nakedObject = identityMap.GetAdapterFor(obj);
             if (nakedObject != null && nakedObject.Object != obj) {
                 throw new AdapterException("Mapped adapter is for different domain object: " + obj + "; " + nakedObject);
             }
@@ -140,7 +133,7 @@ namespace NakedObjects.Persistor.Objectstore {
         public virtual INakedObject GetAdapterFor(IOid oid) {
             Log.DebugFormat("GetAdapterFor oid: {0}", oid);
             Assert.AssertNotNull("must have an OID", oid);
-            return IdentityMap.GetAdapterFor(oid);
+            return identityMap.GetAdapterFor(oid);
         }
 
         public virtual INakedObject CreateAdapter(object domainObject, IOid oid, IVersion version) {
@@ -172,21 +165,6 @@ namespace NakedObjects.Persistor.Objectstore {
         public virtual void RemoveAdapter(INakedObject nakedObject) {
             Log.DebugFormat("RemoveAdapter nakedObject: {0}", nakedObject);
             identityMap.Unloaded(nakedObject);
-        }
-
-        public virtual IOid CreateTransientOid(object obj) {
-            return oidGenerator.CreateTransientOid(obj);
-            // don't log until after oid created or we may fail with a duplicate object in map (if title triggers Resolve)
-        }
-
-        public virtual void ConvertPersistentToTransientOid(IOid oid) {
-            Log.DebugFormat("ConvertPersistentToTransientOid oid: {0}", oid);
-            oidGenerator.ConvertPersistentToTransientOid(oid);
-        }
-
-        public virtual void ConvertTransientToPersistentOid(IOid oid) {
-            Log.DebugFormat("ConvertTransientToPersistentOid oid: {0}", oid);
-            oidGenerator.ConvertTransientToPersistentOid(oid);
         }
 
         public void AddServices(IEnumerable<ServiceWrapper> services) {
@@ -251,11 +229,6 @@ namespace NakedObjects.Persistor.Objectstore {
             get { return Services.Select(x => PersistorUtils.CreateAdapter(x.Service)).ToArray(); }
         }
 
-        public virtual IOid RestoreOid(string[] encodedData) {
-            Log.DebugFormat("RestoreOid: {0}", encodedData.Aggregate("", (s, t) => s + "," + t));
-            return oidGenerator.RestoreOid(encodedData);
-        }
-
         public bool IsInitialized {
             get { return objectStore.IsInitialized; }
             set { objectStore.IsInitialized = value; }
@@ -267,20 +240,9 @@ namespace NakedObjects.Persistor.Objectstore {
         /// </summary>
         public void Init() {
             Log.Debug("Init");
-
-            Assert.AssertNotNull("persist algorithm required", persistAlgorithm);
-            Assert.AssertNotNull("object store required", objectStore);
             objectStore.Init();
-
-            // can inject the TxMgr, but  will otherwise default
-            if (transactionManager == null) {
-                transactionManager = new ObjectStoreTransactionManager(objectStore);
-                transactionManager.Init();
-            }
-
+            transactionManager.Init();
             persistAlgorithm.Init();
-            Assert.AssertNotNull("Identity map missing", identityMap);
-            Assert.AssertNotNull("OID generator required", oidGenerator);
             identityMap.Init();
             oidGenerator.Init();
             InitServices();
@@ -288,30 +250,18 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public void Shutdown() {
             Log.Debug("Shutdown");
-            if (identityMap != null) {
-                identityMap.Shutdown();
-                identityMap = null;
-            }
-
-            if (oidGenerator != null) {
-                oidGenerator.Shutdown();
-                oidGenerator = null;
-            }
-
-            if (transactionManager != null) {
-                transactionManager.Shutdown();
-            }
-
+            identityMap.Shutdown();
+            oidGenerator.Shutdown();
+            transactionManager.Shutdown();
             persistAlgorithm.Shutdown();
             objectStore.Shutdown();
-            objectStore = null;
         }
 
 
         public void Reset() {
             Log.Debug("Reset");
             objectStore.Reset();
-            IdentityMap.Reset();
+            identityMap.Reset();
             adapterCache.Reset();
             GetServices();
         }
@@ -322,7 +272,7 @@ namespace NakedObjects.Persistor.Objectstore {
             Assert.AssertNotNull("needs an OID", oid);
             Assert.AssertNotNull("needs a specification", specification);
 
-            INakedObject nakedObject = IdentityMap.IsIdentityKnown(oid) ? GetAdapterFor(oid) : objectStore.GetObject(oid, specification);
+            INakedObject nakedObject = identityMap.IsIdentityKnown(oid) ? GetAdapterFor(oid) : objectStore.GetObject(oid, specification);
             return nakedObject;
         }
 
@@ -523,7 +473,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public virtual void MadePersistent(INakedObject nakedObject) {
-            IdentityMap.MadePersistent(nakedObject);
+            identityMap.MadePersistent(nakedObject);
         }
 
         private INakedObject RecreateViewModel(ViewModelOid oid) {
@@ -640,7 +590,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         private PocoAdapter CreateAdapterForNewObject(object domainObject) {
-            IOid transientOid = CreateTransientOid(domainObject);
+            IOid transientOid = oidGenerator.CreateTransientOid(domainObject);
             PocoAdapter adapter = NewAdapter(domainObject, transientOid);
             Log.DebugFormat("Creating adapter (transient) {0}", adapter);
             identityMap.AddAdapter(adapter);

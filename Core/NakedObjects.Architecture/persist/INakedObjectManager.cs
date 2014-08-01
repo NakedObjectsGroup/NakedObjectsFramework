@@ -9,7 +9,7 @@ namespace NakedObjects.Architecture.Persist {
     /// <summary>
     ///     Broadly speaking, keeps track of the oid/adapter/domain object tuple
     /// </summary>
-    public interface INakedObjectManager : IOidGenerator {
+    public interface INakedObjectManager  {
         INakedObject CreateInstance(INakedObjectSpecification specification);
 
         INakedObject CreateViewModel(INakedObjectSpecification specification);

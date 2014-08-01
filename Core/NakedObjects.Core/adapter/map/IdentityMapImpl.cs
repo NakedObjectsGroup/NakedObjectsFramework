@@ -14,21 +14,21 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Adapter.Map {
     public class IdentityMapImpl : IIdentityMap {
         private static readonly ILog Log;
-        private readonly INakedObjectPersistor objectPersistor;
+        private readonly IOidGenerator oidGenerator;
         private readonly IDictionary<object, object> unloadedObjects = new Dictionary<object, object>();
-        private IIdentityAdapterMap identityAdapterMap;
-        private IPocoAdapterMap pocoAdapterMap;
+        private readonly IIdentityAdapterMap identityAdapterMap;
+        private readonly IPocoAdapterMap pocoAdapterMap;
 
         static IdentityMapImpl() {
             Log = LogManager.GetLogger(typeof (IdentityMapImpl));
         }
 
-        public IdentityMapImpl(INakedObjectPersistor objectPersistor, IIdentityAdapterMap identityAdapterMap, IPocoAdapterMap pocoAdapterMap) {
-            Assert.AssertNotNull(objectPersistor);
+        public IdentityMapImpl(IOidGenerator oidGenerator, IIdentityAdapterMap identityAdapterMap, IPocoAdapterMap pocoAdapterMap) {
+            Assert.AssertNotNull(oidGenerator);
             Assert.AssertNotNull(identityAdapterMap);
             Assert.AssertNotNull(pocoAdapterMap);
 
-            this.objectPersistor = objectPersistor;
+            this.oidGenerator = oidGenerator;
             this.identityAdapterMap = identityAdapterMap;
             this.pocoAdapterMap = pocoAdapterMap;
         }
@@ -82,7 +82,7 @@ namespace NakedObjects.Core.Adapter.Map {
             // finally re-add to the map.
 
             identityAdapterMap.Remove(oid);
-            objectPersistor.ConvertTransientToPersistentOid(oid);
+            oidGenerator.ConvertTransientToPersistentOid(oid);
 
             adapter.ResolveState.Handle(Events.StartResolvingEvent);
             adapter.ResolveState.Handle(Events.EndResolvingEvent);

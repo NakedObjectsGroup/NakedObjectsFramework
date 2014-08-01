@@ -31,15 +31,21 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             Log.Info("installing " + GetType().FullName);
 
             var inMemoryObjectStore = new MemoryObjectStore();
-            var persistor = new ObjectStorePersistor(inMemoryObjectStore) {
-                PersistAlgorithm = new DefaultPersistAlgorithm(),
-                OidGenerator = SimpleOidGeneratorStart.HasValue ? new SimpleOidGenerator(SimpleOidGeneratorStart.Value) : new TimeBasedOidGenerator()
-            };
+            var oidGenerator = SimpleOidGeneratorStart.HasValue ? new SimpleOidGenerator(SimpleOidGeneratorStart.Value) : new TimeBasedOidGenerator();
 
+            var identityMapImpl = new IdentityMapImpl(
+                oidGenerator,
+                identityAdapterMap ?? new IdentityAdapterHashMap(),
+                new CreateIfNullPocoAdapterDecorator(inMemoryObjectStore, pocoAdapterMap ?? new PocoAdapterHashMap()));
 
-            var identityMapImpl = new IdentityMapImpl(persistor, identityAdapterMap ?? new IdentityAdapterHashMap(), new CreateIfNullPocoAdapterDecorator(inMemoryObjectStore, pocoAdapterMap ?? new PocoAdapterHashMap()));
+            var persistor = new ObjectStorePersistor(
+                inMemoryObjectStore,
+                new DefaultPersistAlgorithm(),
+                oidGenerator,
+                identityMapImpl);
+
             inMemoryObjectStore.IdentityMap = identityMapImpl;
-            persistor.IdentityMap = identityMapImpl;
+
             return persistor;
         }
 

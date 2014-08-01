@@ -139,15 +139,10 @@ namespace NakedObjects.EntityObjectStore {
             EntityObjectStore.RollBackOnError = RollBackOnError;
             EntityObjectStore.MaximumCommitCycles = MaximumCommitCycles;
             EntityObjectStore.IsInitializedCheck = IsInitializedCheck;
-            var persistor =  new ObjectStorePersistor(objectStore) {
-         
-                PersistAlgorithm = new EntityPersistAlgorithm(),
-                OidGenerator = oidGenerator
-            };
 
-            persistor.IdentityMap = new EntityIdentityMapImpl(persistor, identityAdapterMap ?? new IdentityAdapterHashMap(), pocoAdapterMap ?? new PocoAdapterHashMap(), objectStore);
+            var identityMap = new EntityIdentityMapImpl(oidGenerator, identityAdapterMap ?? new IdentityAdapterHashMap(), pocoAdapterMap ?? new PocoAdapterHashMap(), objectStore);
 
-            return persistor;
+            return  new ObjectStorePersistor(objectStore, new EntityPersistAlgorithm(), oidGenerator, identityMap);
         }
 
         protected IEnumerable<EntityContextConfiguration> PocoConfiguration() {
