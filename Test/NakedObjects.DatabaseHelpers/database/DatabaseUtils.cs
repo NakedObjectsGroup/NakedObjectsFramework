@@ -17,7 +17,16 @@ namespace NakedObjects.DatabaseHelpers {
     /// DatabaseUtils.RevertDatabaseFromSnapshot("AdventureWorks", "startstate");
     /// </summary>
     public static class DatabaseUtils {
-        public static void BackupDatabase(string databaseName, string backupName, string serverName = @".\SQLEXPRESS") {
+
+#if AV 
+        private const string Server = @"(local)\SQL2012SP1";
+#else
+        private const string Server = @".\SQLEXPRESS";
+#endif
+
+
+
+        public static void BackupDatabase(string databaseName, string backupName, string serverName = Server) {
             Server server = string.IsNullOrEmpty(serverName) ? new Server() : new Server(serverName);
             var backup = new Backup {
                 Database = databaseName,
@@ -29,7 +38,7 @@ namespace NakedObjects.DatabaseHelpers {
             backup.SqlBackup(server);
         }
 
-        public static void RestoreDatabase(string databaseName, string backupName, string serverName = @".\SQLEXPRESS") {
+        public static void RestoreDatabase(string databaseName, string backupName, string serverName = Server) {
             Server server = string.IsNullOrEmpty(serverName) ? new Server() : new Server(serverName);
             var restore = new Restore {
                 Database = databaseName,
@@ -61,7 +70,7 @@ namespace NakedObjects.DatabaseHelpers {
 
         private const string ConString = "server={0}; database=master; Integrated Security=SSPI;";
 
-        public static void SnapshotDatabase(string databaseName, string snapshotName, string server = "(local)") {
+        public static void SnapshotDatabase(string databaseName, string snapshotName, string server = Server) {
             string connectionString = string.Format(ConString, server);
             using (var connection = new SqlConnection(connectionString)) {
                 using (var command = new SqlCommand()) {
@@ -82,7 +91,7 @@ namespace NakedObjects.DatabaseHelpers {
             }
         }
 
-        public static void RevertDatabaseFromSnapshot(string databaseName, string snapshotName, string server = "(local)") {
+        public static void RevertDatabaseFromSnapshot(string databaseName, string snapshotName, string server = Server) {
             string connectionString = string.Format(ConString, server);
             new Server().KillAllProcesses(databaseName);
             using (var connection = new SqlConnection(connectionString)) {
