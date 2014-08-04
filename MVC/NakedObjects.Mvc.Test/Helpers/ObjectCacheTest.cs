@@ -209,7 +209,7 @@ namespace MvcTestApp.Tests.Helpers {
             var claimAdapter = FrameworkHelper.GetNakedObject(claim);
             var claimsAdapter = FrameworkHelper.GetNakedObject(claims);
 
-            var mockOid = new CollectionMemento(claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = new CollectionMemento(NakedObjectsContext.ObjectPersistor, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             claimsAdapter.SetATransientOid(mockOid);
 

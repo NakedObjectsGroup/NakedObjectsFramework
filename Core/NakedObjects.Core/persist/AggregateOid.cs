@@ -4,22 +4,29 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Persist {
     public class AggregateOid : IOid, IEncodedToStrings {
         private readonly string fieldName;
+        private readonly INakedObjectReflector reflector;
         private readonly IOid parentOid;
         private readonly string typeName;
 
-        public AggregateOid(IOid oid, string id, string typeName) {
+        public AggregateOid(INakedObjectReflector reflector, IOid oid, string id, string typeName) {
+            Assert.AssertNotNull(reflector);
+
+            this.reflector = reflector;
             parentOid = oid;
             fieldName = id;
             this.typeName = typeName;
         }
 
-        public AggregateOid(string[] strings) {
+        public AggregateOid(INakedObjectReflector reflector, string[] strings) {
+            Assert.AssertNotNull(reflector);
+            this.reflector = reflector;
             var helper = new StringDecoderHelper(strings);
             typeName = helper.GetNextString();
             fieldName = helper.GetNextString();
@@ -65,7 +72,7 @@ namespace NakedObjects.Core.Persist {
         }
 
         public INakedObjectSpecification Specification {
-            get { return NakedObjectsContext.Reflector.LoadSpecification(typeName); }
+            get { return reflector.LoadSpecification(typeName); }
         }
 
         public virtual bool HasPrevious {
@@ -78,13 +85,14 @@ namespace NakedObjects.Core.Persist {
             if (obj == this) {
                 return true;
             }
-            if (obj is AggregateOid) {
-                var otherOid = ((AggregateOid) obj);
-                return otherOid.parentOid.Equals(parentOid) &&
-                       otherOid.fieldName.Equals(fieldName) &&
-                       otherOid.typeName.Equals(typeName);
-            }
-            return false;
+            var otherOid = obj as AggregateOid;
+            return otherOid != null && Equals(otherOid);
+        }
+
+        private bool Equals(AggregateOid otherOid) {
+            return otherOid.parentOid.Equals(parentOid) &&
+                   otherOid.fieldName.Equals(fieldName) &&
+                   otherOid.typeName.Equals(typeName);
         }
 
         public override int GetHashCode() {

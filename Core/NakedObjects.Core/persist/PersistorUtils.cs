@@ -88,14 +88,14 @@ namespace NakedObjects.Core.Persist {
             INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(typeName);
 
             if (spec.IsCollection) {
-                return new CollectionMemento(encodedData);
+                return new CollectionMemento(NakedObjectsContext.ObjectPersistor, encodedData);
             }
 
             if (spec.ContainsFacet<IViewModelFacet>()) {
                 return new ViewModelOid(encodedData);
             }
 
-            return spec.ContainsFacet<IComplexTypeFacet>() ? new AggregateOid(encodedData) : null;
+            return spec.ContainsFacet<IComplexTypeFacet>() ? new AggregateOid(NakedObjectsContext.Reflector, encodedData) : null;
         }
 
         public static INakedObject GetViewModel(ViewModelOid oid) {
@@ -119,7 +119,7 @@ namespace NakedObjects.Core.Persist {
         private static INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj) {
             NakedObjectsContext.ObjectPersistor.GetAdapterFor(obj);
 
-            IOid oid = new AggregateOid(parent.Oid, fieldId, obj.GetType().FullName);
+            IOid oid = new AggregateOid(NakedObjectsContext.Reflector,  parent.Oid, fieldId, obj.GetType().FullName);
             INakedObject adapterFor = NakedObjectsContext.ObjectPersistor.GetAdapterFor(oid);
             if (adapterFor == null || adapterFor.Object != obj) {
                 if (adapterFor != null) {

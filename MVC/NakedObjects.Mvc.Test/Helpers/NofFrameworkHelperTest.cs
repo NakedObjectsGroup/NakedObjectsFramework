@@ -147,7 +147,7 @@ namespace MvcTestApp.Tests.Helpers {
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Where(a => a.Id == "FindMyClaims").Single();
             INakedObject[] parms = new[] {null, ""}.Select(PersistorUtils.CreateAdapter).ToArray();
 
-            var cm = new CollectionMemento(service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, service, action, parms);
             no.SetATransientOid(cm);
 
             string id = FrameworkHelper.GetObjectId(no);

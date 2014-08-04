@@ -1874,7 +1874,7 @@ namespace MvcTestApp.Tests.Helpers {
                                                                                                        };
             var claimAdapter = PersistorUtils.CreateAdapter(claims.First());
             var adapter = PersistorUtils.CreateAdapter(claims);
-            var mockOid = new CollectionMemento(claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = new CollectionMemento(NakedObjectsContext.ObjectPersistor, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             adapter.SetATransientOid(mockOid);
 
@@ -1898,7 +1898,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             var claimAdapter = PersistorUtils.CreateAdapter(claims.First());
             var adapter = PersistorUtils.CreateAdapter(claims);
-            var mockOid = new CollectionMemento(claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = new CollectionMemento(NakedObjectsContext.ObjectPersistor, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             adapter.SetATransientOid(mockOid);
 
@@ -2108,7 +2108,7 @@ namespace MvcTestApp.Tests.Helpers {
             var selected = claimRepo.GetDomainObject<ClaimRepository>().MyRecentClaims().First();
 
             INakedObject target = PersistorUtils.CreateAdapter(new[] {claim}.AsQueryable());
-            target.SetATransientOid(new CollectionMemento(new CollectionMemento(claimRepo, action, new INakedObject[]{}), new object[] {selected}));
+            target.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, new CollectionMemento(NakedObjectsContext.ObjectPersistor, claimRepo, action, new INakedObject[] { }), new object[] { selected }));
 
             INakedObjectAction targetAction = claimRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "ApproveClaims");
 

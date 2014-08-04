@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Persist;
+using NakedObjects.Core.Context;
 
 namespace NakedObjects.Web.Mvc.Models {
     public abstract class ActionResultModel : IEnumerable {
@@ -37,7 +38,7 @@ namespace NakedObjects.Web.Mvc.Models {
             Type armType = armGenericType.MakeGenericType(genericType);
             var arm = (ActionResultModel) Activator.CreateInstance(armType, action, result);
             INakedObject noArm = PersistorUtils.CreateAdapter(arm);
-            noArm.SetATransientOid(new CollectionMemento((CollectionMemento) nakedObject.Oid, new object[] {}));
+            noArm.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, (CollectionMemento) nakedObject.Oid, new object[] {}));
             arm.Page = page;
             arm.PageSize = pageSize;
             arm.Format = format;

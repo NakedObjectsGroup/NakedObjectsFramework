@@ -8,14 +8,18 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Context;
+using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Core.Persist {
     public class CollectionMemento : IEncodedToStrings, IOid {
+        private readonly INakedObjectPersistor persistor;
+
         public enum ParameterType {
             Value,
             Object,
@@ -23,7 +27,11 @@ namespace NakedObjects.Core.Persist {
             ObjectCollection
         }
 
-        public CollectionMemento(CollectionMemento otherMemento, object[] selectedObjects) {
+        public CollectionMemento(INakedObjectPersistor persistor,  CollectionMemento otherMemento, object[] selectedObjects) {
+            Assert.AssertNotNull(persistor);
+            Assert.AssertNotNull(otherMemento);
+
+            this.persistor = persistor;
             IsPaged = otherMemento.IsPaged;
             IsNotQueryable = otherMemento.IsNotQueryable;
             Target = otherMemento.Target;
@@ -32,7 +40,9 @@ namespace NakedObjects.Core.Persist {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
+        public CollectionMemento(INakedObjectPersistor persistor, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
+            Assert.AssertNotNull(persistor);
+            this.persistor = persistor;
             Target = target;
             Action = action;
             Parameters = parameters;
@@ -42,7 +52,9 @@ namespace NakedObjects.Core.Persist {
             }
         }
 
-        public CollectionMemento(string[] strings) {
+        public CollectionMemento(INakedObjectPersistor persistor, string[] strings) {
+            Assert.AssertNotNull(persistor);
+            this.persistor = persistor;
             var helper = new StringDecoderHelper(strings, true);
             string specName = helper.GetNextString();
             string actionId = helper.GetNextString();
@@ -169,7 +181,7 @@ namespace NakedObjects.Core.Persist {
 
         #endregion
 
-        private static INakedObject RestoreObject(IOid oid) {
+        private INakedObject RestoreObject(IOid oid) {
             if (oid.IsTransient) {
                 return PersistorUtils.RecreateInstance(oid, oid.Specification);
             }
@@ -178,7 +190,7 @@ namespace NakedObjects.Core.Persist {
                 return PersistorUtils.GetViewModel(oid as ViewModelOid);
             }
 
-            return NakedObjectsContext.ObjectPersistor.LoadObject(oid, oid.Specification);
+            return persistor.LoadObject(oid, oid.Specification);
         }
 
         public INakedObject RecoverCollection() {
