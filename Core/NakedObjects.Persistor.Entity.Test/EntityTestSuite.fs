@@ -46,7 +46,7 @@ let Config =
 //    c
 
 let db = 
-    let p = new EntityObjectStore([|(box Config :?> EntityContextConfiguration)|], new EntityOidGenerator())
+    let p = new EntityObjectStore([|(box Config :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector))
     p
 
 

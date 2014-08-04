@@ -7,9 +7,10 @@ open TestTypes
 open NakedObjects.EntityObjectStore
 open TestCode
 open ModelTestCode
+open NakedObjects.Core.Context
 
 let persistor =
-    let p = new EntityObjectStore([|(box ModelConfig :?> EntityContextConfiguration)|], new EntityOidGenerator())
+    let p = new EntityObjectStore([|(box ModelConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector))
     setupPersistorForInjectorTesting p
 
 

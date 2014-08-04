@@ -17,6 +17,7 @@ open NakedObjects.Architecture.Persist
 open System.Reflection
 open NakedObjects.Persistor
 open NakedObjects.Architecture.Facets
+open NakedObjects.Core.Context
 
 let injectedObjects = new List<Object>()
 
@@ -97,7 +98,7 @@ type MockNakedObject(obj, oid) =
         member x.Oid 
             with get() : IOid =
                 match eoid with 
-                | null -> eoid <- ((box (new EntityOid(obj.GetType(), [|box 0|], true))) :?> IOid)
+                | null -> eoid <- ((box (new EntityOid(NakedObjectsContext.Reflector, obj.GetType(), [|box 0|], true))) :?> IOid)
                 | _ -> ()
                 eoid         
         member x.ResolveState 

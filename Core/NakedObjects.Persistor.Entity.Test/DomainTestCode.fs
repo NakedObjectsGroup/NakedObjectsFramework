@@ -20,6 +20,7 @@ open TestCode
 open System.Collections
 open Microsoft.FSharp.Linq
 open System.Data.Entity.Core.Objects
+open NakedObjects.Core.Context
 
 let PocoConfig = 
     let pc = new NakedObjects.EntityObjectStore.PocoEntityContextConfiguration()
@@ -530,7 +531,7 @@ let CanGetManyToOneReference (persistor : EntityObjectStore) =
     
 let CanRemoteResolve (persistor : EntityObjectStore) =
    let keys =  [|box 54002; box 51409|]  
-   let key = new EntityOid(typeof<SalesOrderDetail>, keys, false) 
+   let key = new EntityOid(NakedObjectsContext.Reflector, typeof<SalesOrderDetail>, keys, false) 
    let obj = persistor.GetObjectByKey(key, typeof<SalesOrderDetail>) 
    let nakedObj = GetOrAddAdapterForTest obj key
    if nakedObj.ResolveState.IsResolvable() then        
@@ -550,7 +551,7 @@ let DomainCanGetContextForType persistor =  CanGetContextForType<SalesOrderHeade
 let CanDetectConcurrency (persistor : EntityObjectStore) = 
     let sr1 = persistor.GetInstances<ScrapReason>() |> Seq.head
     let otherPersistor =
-        let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator())
+        let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector))
         setupPersistorForTesting p
     let sr2 = otherPersistor.GetInstances<ScrapReason>() |> Seq.head
     Assert.AreEqual(sr1.Name, sr2.Name)
@@ -606,7 +607,7 @@ let DataUpdateNoCustomOnUpdatingError (persistor : EntityObjectStore) =
 let ConcurrencyNoCustomOnUpdatingError (persistor : EntityObjectStore) = 
     let l1 = persistor.GetInstances<Location>() |> Seq.head
     let otherPersistor =
-        let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator())
+        let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector))
         setupPersistorForTesting p
     let l2 = otherPersistor.GetInstances<Location>() |> Seq.head
     Assert.AreEqual(l1.Name, l2.Name)

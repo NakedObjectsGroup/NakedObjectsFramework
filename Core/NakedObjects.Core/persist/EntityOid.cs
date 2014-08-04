@@ -6,6 +6,7 @@ using System;
 using System.Data.Entity.Core;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Context;
@@ -13,30 +14,34 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityOid : IOid, IEncodedToStrings {
+        private readonly INakedObjectReflector reflector;
         private int cachedHashCode;
         private string cachedToString;
         private EntityOid previous;
 
         #region Constructors
 
-        public EntityOid(Type type, object[] key, bool isTransient)
-            : this(type.FullName, key) {
+        public EntityOid(INakedObjectReflector reflector, Type type, object[] key, bool isTransient)
+            : this(reflector, type.FullName, key) {     
             IsTransient = isTransient;
             CacheState();
         }
 
-        public EntityOid(Type type, object[] key) : this(type.FullName, key) {}
+        public EntityOid(INakedObjectReflector reflector, Type type, object[] key) : this(reflector, type.FullName, key) { }
 
-        public EntityOid(string typeName, object[] key) {
+        public EntityOid(INakedObjectReflector reflector, string typeName, object[] key) {
+            Assert.AssertNotNull(reflector);
+            this.reflector = reflector;
             TypeName = TypeNameUtils.EncodeTypeName(typeName);
             Key = key;
             IsTransient = false;
             CacheState();
         }
 
-        public EntityOid(object pojo, object[] key) : this(pojo.GetType(), key) {}
+        public EntityOid(INakedObjectReflector reflector, object pojo, object[] key) : this(reflector, pojo.GetType(), key) { }
 
-        public EntityOid(string[] strings) {
+        public EntityOid(INakedObjectReflector reflector, string[] strings) {
+            Assert.AssertNotNull(reflector);
             var helper = new StringDecoderHelper(strings);
 
             TypeName = helper.GetNextString();
@@ -102,7 +107,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         public INakedObjectSpecification Specification {
-            get { return NakedObjectsContext.Reflector.LoadSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
+            get { return reflector.LoadSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
         }
 
         public IOid Previous {
@@ -129,7 +134,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public void MakePersistent() {
             ThrowErrorIfNotTransient();
-            previous = new EntityOid(TypeName, Key) {IsTransient = IsTransient};
+            previous = new EntityOid(reflector, TypeName, Key) {IsTransient = IsTransient};
             IsTransient = false;
             CacheState();
         }
@@ -144,7 +149,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public void MakePersistentAndUpdateKey(object[] newKey) {
             ThrowErrorIfNotTransient(newKey);
-            previous = new EntityOid(TypeName, Key) {IsTransient = IsTransient};
+            previous = new EntityOid(reflector, TypeName, Key) {IsTransient = IsTransient};
             Key = newKey; // after old key is saved ! 
             IsTransient = false;
             CacheState();

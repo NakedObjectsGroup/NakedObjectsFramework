@@ -8,9 +8,10 @@ open TestTypes
 open NakedObjects.EntityObjectStore
 open TestCode
 open System.Data.Entity.Core.Objects
+open NakedObjects.Core.Context
 
 let persistor =
-    let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator())
+    let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector))
     setupPersistorForTesting p
 
 let overwritePersistor =
@@ -19,7 +20,7 @@ let overwritePersistor =
         pc.ContextName <- "AdventureWorksEntities"  
         pc.DefaultMergeOption <- MergeOption.OverwriteChanges
         pc
-    let p = new EntityObjectStore([|(box config :?> EntityContextConfiguration)|], new EntityOidGenerator())
+    let p = new EntityObjectStore([|(box config :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector))
     setupPersistorForTesting p
 
 [<TestFixture>]

@@ -6,12 +6,20 @@ using System.Threading;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Persist;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityOidGenerator : IOidGenerator {
+        private readonly INakedObjectReflector reflector;
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityOidGenerator));
         private static long transientId;
+
+        public EntityOidGenerator(INakedObjectReflector reflector) {
+            Assert.AssertNotNull(reflector);
+            this.reflector = reflector;
+        }
 
         public string Name {
             get { return "Entity Oids"; }
@@ -30,7 +38,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         public IOid CreateTransientOid(object obj) {
-            var oid = new EntityOid(obj.GetType(), new object[] {Interlocked.Increment(ref transientId)}, true);
+            var oid = new EntityOid(reflector, obj.GetType(), new object[] { Interlocked.Increment(ref transientId) }, true);
             Log.DebugFormat("Created OID {0} for instance of {1}", oid, obj.GetType().FullName);
             return oid;
         }
@@ -40,11 +48,11 @@ namespace NakedObjects.EntityObjectStore {
         public void Shutdown() {}
 
         public IOid RestoreOid(string[] encodedData) {
-            return PersistorUtils.RestoreGenericOid(encodedData) ?? new EntityOid(encodedData);
+            return PersistorUtils.RestoreGenericOid(encodedData) ?? new EntityOid(reflector, encodedData);
         }
 
         public EntityOid CreateOid(string typeName, object[] keys) {
-            return new EntityOid(typeName, keys);
+            return new EntityOid(reflector, typeName, keys);
         }
 
         #endregion

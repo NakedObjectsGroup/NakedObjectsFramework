@@ -134,7 +134,7 @@ namespace NakedObjects.EntityObjectStore {
 
             IEnumerable<CodeFirstEntityContextConfiguration> cfConfigs = DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {DbContext = f.Item1, PreCachedTypes = f.Item2, NotPersistedTypes = NotPersistedTypes});
             IEnumerable<EntityContextConfiguration> config = PocoConfiguration().Union(cfConfigs);
-            var oidGenerator = new EntityOidGenerator();
+            var oidGenerator = new EntityOidGenerator(NakedObjectsContext.Reflector);
             var objectStore = new EntityObjectStore(config.ToArray(), oidGenerator);
             EntityObjectStore.EnforceProxies = EnforceProxies;
             EntityObjectStore.RequireExplicitAssociationOfTypes = RequireExplicitAssociationOfTypes;
