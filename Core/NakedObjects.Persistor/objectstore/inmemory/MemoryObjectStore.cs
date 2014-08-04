@@ -17,10 +17,12 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
+using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Transaction;
 
 namespace NakedObjects.Persistor.Objectstore.Inmemory {
     public class MemoryObjectStore : INakedObjectStore {
+        private readonly INakedObjectReflector reflector;
         private static readonly ILog Log;
         private static IDictionary<INakedObjectSpecification, MemoryObjectStoreInstances> instances;
         private static IDictionary<string, IOid> services;
@@ -32,7 +34,9 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             services = new Dictionary<string, IOid>();
         }
 
-        public MemoryObjectStore() {
+        public MemoryObjectStore(INakedObjectReflector reflector) {
+            Assert.AssertNotNull(reflector);
+            this.reflector = reflector;
             Log.Info("creating object store");
         }
 
@@ -80,14 +84,14 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
         public virtual IQueryable<T> GetInstances<T>() where T : class {
             Log.Debug("GetInstances<T> of: " + typeof (T));
             return (from KeyValuePair<INakedObjectSpecification, MemoryObjectStoreInstances> pair in instances
-                    where pair.Key.IsOfType(NakedObjectsContext.Reflector.LoadSpecification(typeof (T)))
+                    where pair.Key.IsOfType(reflector.LoadSpecification(typeof (T)))
                     from T obj in pair.Value.AllInstances<T>()
                     select obj).AsQueryable();
         }
 
         public virtual IQueryable GetInstances(Type type) {
             Log.Debug("GetInstances of: " + type);
-            return GetInstances(NakedObjectsContext.Reflector.LoadSpecification(type));
+            return GetInstances(reflector.LoadSpecification(type));
         }
 
         public virtual IQueryable GetInstances(INakedObjectSpecification specification) {
@@ -105,7 +109,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public object CreateInstance(Type type) {
             Log.Debug("CreateInstance of: " + type);
-            return NakedObjectsContext.Reflector.LoadSpecification(type).CreateObject();
+            return reflector.LoadSpecification(type).CreateObject();
         }
 
         public virtual INakedObject GetObject(IOid oid, INakedObjectSpecification hint) {
@@ -159,7 +163,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public PropertyInfo[] GetKeys(Type type) {
             Log.Debug("GetKeys of: " + type);
-            INakedObjectAssociation[] assocs = NakedObjectsContext.Reflector.LoadSpecification(type).Properties.Where(p => p.ContainsFacet<IKeyFacet>()).ToArray();
+            INakedObjectAssociation[] assocs = reflector.LoadSpecification(type).Properties.Where(p => p.ContainsFacet<IKeyFacet>()).ToArray();
             return type.GetProperties().Where(p => assocs.Any(a => a.Id == p.Name)).ToArray();
         }
 
@@ -247,7 +251,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
         }
 
         public virtual INakedObject CreateAdapter(object obj) {
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(obj.GetType());
+            INakedObjectSpecification spec = reflector.LoadSpecification(obj.GetType());
             MemoryObjectStoreInstances ins = InstancesFor(spec);
             INakedObject adapterFor = ins.GetAdapterFor(obj);
             if (adapterFor != null) {

@@ -13,7 +13,6 @@ using Expenses.RecordedActions;
 using Expenses.Services;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Boot;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
@@ -47,7 +46,7 @@ namespace MvcTestApp.Tests.Helpers {
         [TearDown]
         public void EndTest() {
             MemoryObjectStore.DiscardObjects();
-           // ((ObjectPersistor) NakedObjectsContext.ObjectPersistor).OidGenerator = new SimpleOidGenerator(100L);
+            ((SimpleOidGenerator) NakedObjectsContext.ObjectPersistor.OidGenerator).ResetTo(100L);
         }
 
         #endregion

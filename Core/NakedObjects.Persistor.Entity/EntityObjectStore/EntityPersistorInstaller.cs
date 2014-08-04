@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Adapter.Map;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Persistor;
 using NakedObjects.Persistor.Objectstore;
@@ -142,7 +143,14 @@ namespace NakedObjects.EntityObjectStore {
 
             var identityMap = new EntityIdentityMapImpl(oidGenerator, identityAdapterMap ?? new IdentityAdapterHashMap(), pocoAdapterMap ?? new PocoAdapterHashMap(), objectStore);
 
-            return  new ObjectStorePersistor(objectStore, new EntityPersistAlgorithm(), oidGenerator, identityMap);
+            return new ObjectStorePersistor(
+                NakedObjectsContext.Reflector,
+                NakedObjectsContext.Session,
+                NakedObjectsContext.UpdateNotifier,
+                objectStore, 
+                new EntityPersistAlgorithm(),
+                oidGenerator, 
+                identityMap);
         }
 
         protected IEnumerable<EntityContextConfiguration> PocoConfiguration() {

@@ -35,7 +35,7 @@ namespace NakedObjects.Testing {
         }
 
         protected override IUpdateNotifier GetUpdateNotifier() {
-            throw new NotImplementedException();
+            return new SimpleUpdateNotifier();
         }
 
         protected override string GetExecutionContextId() {

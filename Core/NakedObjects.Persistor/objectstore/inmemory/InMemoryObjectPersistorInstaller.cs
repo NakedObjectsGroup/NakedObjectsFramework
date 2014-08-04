@@ -8,6 +8,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Core.Adapter.Map;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Persistor.Objectstore.Inmemory {
@@ -30,7 +31,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
         public override INakedObjectPersistor CreateObjectPersistor() {
             Log.Info("installing " + GetType().FullName);
 
-            var inMemoryObjectStore = new MemoryObjectStore();
+            var inMemoryObjectStore = new MemoryObjectStore(NakedObjectsContext.Reflector);
             var oidGenerator = SimpleOidGeneratorStart.HasValue ? new SimpleOidGenerator(SimpleOidGeneratorStart.Value) : new TimeBasedOidGenerator();
 
             var identityMapImpl = new IdentityMapImpl(
@@ -39,6 +40,9 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                 new CreateIfNullPocoAdapterDecorator(inMemoryObjectStore, pocoAdapterMap ?? new PocoAdapterHashMap()));
 
             var persistor = new ObjectStorePersistor(
+                NakedObjectsContext.Reflector,
+                NakedObjectsContext.Session, 
+                NakedObjectsContext.UpdateNotifier,
                 inMemoryObjectStore,
                 new DefaultPersistAlgorithm(),
                 oidGenerator,
