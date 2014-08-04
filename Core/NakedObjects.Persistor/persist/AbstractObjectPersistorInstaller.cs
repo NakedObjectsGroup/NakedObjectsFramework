@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.NakedObjectsSystem;
 
@@ -13,7 +14,7 @@ namespace NakedObjects.Persistor {
 
         #region IObjectPersistorInstaller Members
 
-        public abstract INakedObjectPersistor CreateObjectPersistor();
+        public abstract INakedObjectPersistor CreateObjectPersistor(ISession session);
 
         public abstract string Name { get; }
 

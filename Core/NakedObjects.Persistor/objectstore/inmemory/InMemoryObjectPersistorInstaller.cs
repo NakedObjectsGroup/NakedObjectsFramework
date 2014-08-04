@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
@@ -28,7 +29,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public int? SimpleOidGeneratorStart { get; set; }
 
-        public override INakedObjectPersistor CreateObjectPersistor() {
+        public override INakedObjectPersistor CreateObjectPersistor(ISession session) {
             Log.Info("installing " + GetType().FullName);
 
             var inMemoryObjectStore = new MemoryObjectStore(NakedObjectsContext.Reflector);
@@ -41,7 +42,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
             var persistor = new ObjectStorePersistor(
                 NakedObjectsContext.Reflector,
-                NakedObjectsContext.Session, 
+                session, 
                 NakedObjectsContext.UpdateNotifier,
                 inMemoryObjectStore,
                 new DefaultPersistAlgorithm(),

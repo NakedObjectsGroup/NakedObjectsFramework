@@ -26,7 +26,7 @@ namespace NakedObjects.Core.Context {
         }
 
         private static NakedObjectsData InitialiseNewData() {
-            var local = new NakedObjectsData {ObjectPersistor = PersistorInstaller.CreateObjectPersistor()};
+            var local = new NakedObjectsData {ObjectPersistor = PersistorInstaller.CreateObjectPersistor(Session)};
             local.ObjectPersistor.AddServices(MenuServicesInstaller, ContributedActionsInstaller, SystemServicesInstaller);
             local.ObjectPersistor.Init();
             return local;

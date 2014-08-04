@@ -149,7 +149,7 @@ namespace NakedObjects.Boot {
             }
 
             context.SetReflector(reflector);
-            INakedObjectPersistor objectPersistor = objectPersistorInstaller.CreateObjectPersistor();
+            INakedObjectPersistor objectPersistor = objectPersistorInstaller.CreateObjectPersistor(session);
             NakedObjectsContext.PersistorInstaller = objectPersistorInstaller;
             NakedObjectsContext.MenuServicesInstaller = menuServicesInstaller;
             NakedObjectsContext.ContributedActionsInstaller = contributedActionsInstaller;

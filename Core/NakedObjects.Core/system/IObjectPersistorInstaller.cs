@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Adapter.Map;
 
 namespace NakedObjects.Core.NakedObjectsSystem {
@@ -10,7 +11,7 @@ namespace NakedObjects.Core.NakedObjectsSystem {
     ///     Installs a NakedObjectPersistor during system start up
     /// </summary>
     public interface IObjectPersistorInstaller : IInstaller {
-        INakedObjectPersistor CreateObjectPersistor();
+        INakedObjectPersistor CreateObjectPersistor(ISession session);
 
         void SetupMaps(IIdentityAdapterMap adapterMap, IPocoAdapterMap pocoMap);
     }

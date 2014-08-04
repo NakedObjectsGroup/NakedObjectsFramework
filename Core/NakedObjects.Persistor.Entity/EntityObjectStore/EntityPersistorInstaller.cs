@@ -11,6 +11,7 @@ using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Context;
@@ -126,7 +127,7 @@ namespace NakedObjects.EntityObjectStore {
             isContextSet = true;
         }
 
-        public override INakedObjectPersistor CreateObjectPersistor() {
+        public override INakedObjectPersistor CreateObjectPersistor(ISession session) {
             if (!isContextSet) {
                 throw new InitialisationException(@"No context set on EntityPersistorInstaller, must call either ""UsingCodeFirstContext"" or ""UsingEdmxContext""");
             }
@@ -145,7 +146,7 @@ namespace NakedObjects.EntityObjectStore {
 
             return new ObjectStorePersistor(
                 NakedObjectsContext.Reflector,
-                NakedObjectsContext.Session,
+                session,
                 NakedObjectsContext.UpdateNotifier,
                 objectStore, 
                 new EntityPersistAlgorithm(),
