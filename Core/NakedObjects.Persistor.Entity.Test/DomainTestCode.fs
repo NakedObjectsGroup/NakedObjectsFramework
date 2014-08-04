@@ -531,7 +531,7 @@ let CanGetManyToOneReference (persistor : EntityObjectStore) =
     
 let CanRemoteResolve (persistor : EntityObjectStore) =
    let keys =  [|box 54002; box 51409|]  
-   let key = new EntityOid(NakedObjectsContext.Reflector, typeof<SalesOrderDetail>, keys, false) 
+   let key = new EntityOid(new MockReflector(), typeof<SalesOrderDetail>, keys, false) 
    let obj = persistor.GetObjectByKey(key, typeof<SalesOrderDetail>) 
    let nakedObj = GetOrAddAdapterForTest obj key
    if nakedObj.ResolveState.IsResolvable() then        

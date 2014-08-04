@@ -4,6 +4,7 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Persist {
@@ -11,14 +12,18 @@ namespace NakedObjects.Core.Persist {
     ///     Generates OIDs based on the system clock
     /// </summary>
     public class SimpleOidGenerator : IOidGenerator {
+        private readonly INakedObjectReflector reflector;
         private readonly long start;
         private long persistentSerialNumber;
         private long transientSerialNumber;
 
-        public SimpleOidGenerator()
-            : this(0) {}
+        public SimpleOidGenerator(INakedObjectReflector reflector)
+            : this(reflector, 0L) {}
 
-        public SimpleOidGenerator(long start) {
+        public SimpleOidGenerator(INakedObjectReflector reflector, long start) {
+            Assert.AssertNotNull(reflector);
+
+            this.reflector = reflector;
             this.start = start;
 
             // TODO: REVIEW This is simple, but not reliable, fix to try to ensure that ids on
@@ -56,12 +61,12 @@ namespace NakedObjects.Core.Persist {
 
         public virtual IOid CreateTransientOid(object obj) {
             lock (this) {
-                return SerialOid.CreateTransient(transientSerialNumber++, obj.GetType().FullName);
+                return SerialOid.CreateTransient(reflector, transientSerialNumber++, obj.GetType().FullName);
             }
         }
 
         public IOid RestoreOid(string[] encodedData) {
-            return PersistorUtils.RestoreGenericOid(encodedData) ?? new SerialOid(encodedData);
+            return PersistorUtils.RestoreGenericOid(encodedData) ?? new SerialOid(reflector, encodedData);
         }
 
         #endregion

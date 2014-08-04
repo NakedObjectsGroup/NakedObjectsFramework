@@ -32,8 +32,9 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
         public override INakedObjectPersistor CreateObjectPersistor(ISession session) {
             Log.Info("installing " + GetType().FullName);
 
-            var inMemoryObjectStore = new MemoryObjectStore(NakedObjectsContext.Reflector);
-            var oidGenerator = SimpleOidGeneratorStart.HasValue ? new SimpleOidGenerator(SimpleOidGeneratorStart.Value) : new TimeBasedOidGenerator();
+            var reflector = NakedObjectsContext.Reflector;
+            var inMemoryObjectStore = new MemoryObjectStore(reflector);
+            var oidGenerator = SimpleOidGeneratorStart.HasValue ? new SimpleOidGenerator(reflector, SimpleOidGeneratorStart.Value) : new TimeBasedOidGenerator(reflector);
 
             var identityMapImpl = new IdentityMapImpl(
                 oidGenerator,
@@ -41,7 +42,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                 new CreateIfNullPocoAdapterDecorator(inMemoryObjectStore, pocoAdapterMap ?? new PocoAdapterHashMap()));
 
             var persistor = new ObjectStorePersistor(
-                NakedObjectsContext.Reflector,
+                reflector,
                 session, 
                 NakedObjectsContext.UpdateNotifier,
                 inMemoryObjectStore,

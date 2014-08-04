@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;

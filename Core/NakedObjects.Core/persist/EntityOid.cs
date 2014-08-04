@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
+using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.EntityObjectStore {
@@ -42,6 +42,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public EntityOid(INakedObjectReflector reflector, string[] strings) {
             Assert.AssertNotNull(reflector);
+            this.reflector = reflector;
             var helper = new StringDecoderHelper(strings);
 
             TypeName = helper.GetNextString();

@@ -10,8 +10,8 @@ using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Testing {
     public class ProgrammableTestSystem {
-        private ProgrammableReflector reflector;
-        private IDictionary<object, INakedObject> adapters = new Dictionary<object, INakedObject>();
+        private readonly ProgrammableReflector reflector;
+        private readonly IDictionary<object, INakedObject> adapters = new Dictionary<object, INakedObject>();
         private ProgrammableContext context;
         private int nextId;
 
@@ -28,7 +28,7 @@ namespace NakedObjects.Testing {
             if (adapters.ContainsKey(obj)) {
                 return adapters[obj];
             } else {
-                IOid oid = SerialOid.CreatePersistent(nextId++, obj.GetType().FullName);
+                IOid oid = SerialOid.CreatePersistent(reflector, nextId++, obj.GetType().FullName);
                 INakedObject adapterFor = new ProgrammableNakedObject(obj, reflector.LoadSpecification(obj.GetType()), oid);
                 adapterFor.ResolveState.Handle(resolveEvent);
                 adapters[obj] = adapterFor;

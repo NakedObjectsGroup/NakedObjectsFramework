@@ -134,6 +134,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +150,8 @@
     <Compile Include="adapter\NullVersion.cs" />
     <Compile Include="adapter\PocoAdapter.cs" />
     <Compile Include="adapter\SerialNumberVersion.cs" />
+    <Compile Include="adapter\StringDecoderHelper.cs" />
+    <Compile Include="adapter\StringEncoderHelper.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="context\HttpContextContext.cs" />
     <Compile Include="context\MultiUserContext.cs" />

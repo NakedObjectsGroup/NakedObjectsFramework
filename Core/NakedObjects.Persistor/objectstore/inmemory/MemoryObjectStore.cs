@@ -132,7 +132,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                 if (services.ContainsKey(name)) {
                     return services[name];
                 }
-                SerialOid oid = SerialOid.CreatePersistent(services.Count(), typeName);
+                SerialOid oid = SerialOid.CreatePersistent(reflector, services.Count(), typeName);
                 services[name] = oid;
                 return oid;
             }

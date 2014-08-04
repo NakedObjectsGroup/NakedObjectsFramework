@@ -4,13 +4,15 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
+using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Persist {
     public sealed class SerialOid : IOid, IEncodedToStrings {
+        private readonly INakedObjectReflector reflector;
         private const bool Persistent = false;
         private const bool Transient = true;
         private readonly string typeName;
@@ -22,7 +24,9 @@ namespace NakedObjects.Core.Persist {
         private SerialOid previous;
         private long serialNo;
 
-        private SerialOid(long serialNo, string typeName, bool isTransient) {
+        private SerialOid(INakedObjectReflector reflector, long serialNo, string typeName, bool isTransient) {
+            Assert.AssertNotNull(reflector);
+            this.reflector = reflector;
             this.serialNo = serialNo;
             this.typeName = TypeNameUtils.EncodeTypeName(typeName);
             this.isTransient = isTransient;
@@ -30,7 +34,10 @@ namespace NakedObjects.Core.Persist {
         }
 
 
-        public SerialOid(string[] strings) {
+        public SerialOid(INakedObjectReflector reflector,  string[] strings) {
+            Assert.AssertNotNull(reflector);
+
+            this.reflector = reflector;
             var helper = new StringDecoderHelper(strings);
 
             typeName = helper.GetNextString();
@@ -98,7 +105,7 @@ namespace NakedObjects.Core.Persist {
         }
 
         public INakedObjectSpecification Specification {
-            get { return NakedObjectsContext.Reflector.LoadSpecification(TypeNameUtils.DecodeTypeName(typeName)); }
+            get { return reflector.LoadSpecification(TypeNameUtils.DecodeTypeName(typeName)); }
         }
 
         public bool HasPrevious {
@@ -107,12 +114,12 @@ namespace NakedObjects.Core.Persist {
 
         #endregion
 
-        public static SerialOid CreatePersistent(long serialNo, string typeName) {
-            return new SerialOid(serialNo, typeName, Persistent);
+        public static SerialOid CreatePersistent(INakedObjectReflector reflector,  long serialNo, string typeName) {
+            return new SerialOid(reflector, serialNo, typeName, Persistent);
         }
 
-        public static SerialOid CreateTransient(long serialNo, string typeName) {
-            return new SerialOid(serialNo, typeName, Transient);
+        public static SerialOid CreateTransient(INakedObjectReflector reflector, long serialNo, string typeName) {
+            return new SerialOid(reflector, serialNo, typeName, Transient);
         }
 
         private static long UrShift(long number, int bits) {
@@ -131,17 +138,15 @@ namespace NakedObjects.Core.Persist {
 
         internal void MakePersistent(long newSerialNo) {
             Assert.AssertTrue("Attempting to make persistent a non transient oid", isTransient);
-            previous = new SerialOid(serialNo, typeName, isTransient);
+            previous = new SerialOid(reflector, serialNo, typeName, isTransient);
             serialNo = newSerialNo;
             isTransient = false;
             CacheState();
         }
 
         public override bool Equals(object obj) {
-            if (obj is SerialOid) {
-                return Equals(((SerialOid) obj));
-            }
-            return false;
+            var otherOid = obj as SerialOid;
+            return otherOid != null && Equals(otherOid);
         }
 
 

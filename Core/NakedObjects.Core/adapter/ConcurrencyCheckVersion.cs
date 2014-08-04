@@ -5,6 +5,7 @@
 using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Core.Adapter;
 
 namespace NakedObjects.EntityObjectStore {
     public class ConcurrencyCheckVersion : IVersion, IEncodedToStrings {

@@ -121,15 +121,10 @@
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Types.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="adapter\IEntryTextParser.cs" />
@@ -138,8 +133,6 @@
     <Compile Include="adapter\IOid.cs" />
     <Compile Include="adapter\Persistable.cs" />
     <Compile Include="adapter\ResolveException.cs" />
-    <Compile Include="adapter\StringDecoderHelper.cs" />
-    <Compile Include="adapter\StringEncoderHelper.cs" />
     <Compile Include="adapter\value\IArrayValueFacet.cs" />
     <Compile Include="adapter\value\IEnumValueFacet.cs" />
     <Compile Include="adapter\value\IFileAttachmentValueFacet.cs" />

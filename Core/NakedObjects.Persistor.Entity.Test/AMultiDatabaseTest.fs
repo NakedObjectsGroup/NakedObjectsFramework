@@ -15,11 +15,11 @@ open ModelFirst
 open NakedObjects.Core.Context
 
 let multiDatabasePersistor =   
-    let p = new EntityObjectStore([|(box (CodeFirstConfig  "AMultiDatabaseTests" ):?> EntityContextConfiguration);(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector))
+    let p = new EntityObjectStore([|(box (CodeFirstConfig  "AMultiDatabaseTests" ):?> EntityContextConfiguration);(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(new MockReflector()))
     setupPersistorForTesting p
 
 let multiDomainDatabasePersistor = 
-    let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration);(box ModelTestCode.ModelConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector))
+    let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration);(box ModelTestCode.ModelConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(new MockReflector()))
     setupPersistorForTesting p
 
 

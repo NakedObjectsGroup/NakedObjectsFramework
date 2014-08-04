@@ -92,7 +92,7 @@ namespace NakedObjects.Core.Persist {
             }
 
             if (spec.ContainsFacet<IViewModelFacet>()) {
-                return new ViewModelOid(encodedData);
+                return new ViewModelOid(NakedObjectsContext.Reflector, encodedData);
             }
 
             return spec.ContainsFacet<IComplexTypeFacet>() ? new AggregateOid(NakedObjectsContext.Reflector, encodedData) : null;

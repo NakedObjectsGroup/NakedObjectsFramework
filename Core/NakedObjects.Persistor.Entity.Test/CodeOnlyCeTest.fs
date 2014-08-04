@@ -12,7 +12,7 @@ open TestTypes
 open NakedObjects.Core.Context
 
 let codeOnlyCePersistor =  
-    let p = new EntityObjectStore([|(box (CodeFirstCeConfig "CodeOnlyCeTests") :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector))
+    let p = new EntityObjectStore([|(box (CodeFirstCeConfig "CodeOnlyCeTests") :?> EntityContextConfiguration)|], new EntityOidGenerator(new MockReflector()))
     setupPersistorForTesting p
 
 [<TestFixture>]

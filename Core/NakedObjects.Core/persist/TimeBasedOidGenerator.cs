@@ -3,17 +3,18 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Core.Persist {
     /// <summary>
     ///     Generates OIDs based on the system clock
     /// </summary>
     public class TimeBasedOidGenerator : SimpleOidGenerator {
-        public TimeBasedOidGenerator()
-            : base(DateTime.Now.Ticks) {}
+        public TimeBasedOidGenerator(INakedObjectReflector reflector)
+            : base(reflector, DateTime.Now.Ticks) {}
 
-        public TimeBasedOidGenerator(long start)
-            : base(start) {}
+        public TimeBasedOidGenerator(INakedObjectReflector reflector, long start)
+            : base(reflector, start) {}
 
         public override string Name {
             get { return "Time Initialised OID Generator"; }

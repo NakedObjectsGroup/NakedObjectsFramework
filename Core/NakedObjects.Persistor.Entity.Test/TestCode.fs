@@ -91,7 +91,7 @@ let GetNextID<'t when 't : not struct> (p : EntityObjectStore) fGetID  =
     (GetMaxID<'t> p fGetID)  + 1
 
 let CanGetObjectByKey<'t when 't : not struct>  (p : EntityObjectStore) keys = 
-    let key = new EntityOid(NakedObjectsContext.Reflector, typeof<'t>, keys, false) 
+    let key = new EntityOid(new MockReflector(), typeof<'t>, keys, false) 
     let obj = p.GetObjectByKey(key, typeof<'t>) 
     Assert.IsNotNull(obj)
     

@@ -21,6 +21,19 @@ open NakedObjects.Core.Context
 
 let injectedObjects = new List<Object>()
 
+type MockReflector() = 
+    interface INakedObjectReflector with 
+        member x.AllSpecifications with get() = [||]
+        member x.IgnoreCase with get() = false
+        member x.Init() = ()
+        member x.Shutdown() = ()
+        member x.LoadSpecification(typ : Type) : INakedObjectSpecification = null
+        member x.LoadSpecification(str : string) : INakedObjectSpecification = null
+        member x.InstallServiceSpecifications(types : Type[]) = ()
+        member x.PopulateContributedActions(services : INakedObject[]) = ()
+        member x.CreateContainerInjector(services : obj[]) : IContainerInjector = null
+
+
 type MockInjector() = 
     interface IContainerInjector with 
         member x.InitDomainObject obj = 
@@ -98,7 +111,7 @@ type MockNakedObject(obj, oid) =
         member x.Oid 
             with get() : IOid =
                 match eoid with 
-                | null -> eoid <- ((box (new EntityOid(NakedObjectsContext.Reflector, obj.GetType(), [|box 0|], true))) :?> IOid)
+                | null -> eoid <- ((box (new EntityOid(new MockReflector(), obj.GetType(), [|box 0|], true))) :?> IOid)
                 | _ -> ()
                 eoid         
         member x.ResolveState 

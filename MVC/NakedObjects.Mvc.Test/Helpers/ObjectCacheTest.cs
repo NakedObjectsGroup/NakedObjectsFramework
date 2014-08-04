@@ -309,7 +309,7 @@ namespace MvcTestApp.Tests.Helpers {
             INakedObject claim = NakedObjectsContext.ObjectPersistor.CreateInstance( NakedObjectsContext.Reflector.LoadSpecification(typeof(Claim)));
 
             // mangle oid 
-            new SimpleOidGenerator(100).ConvertTransientToPersistentOid(claim.Oid);
+            new SimpleOidGenerator(NakedObjectsContext.Reflector, 100).ConvertTransientToPersistentOid(claim.Oid);
 
             mocks.HtmlHelper.ViewContext.HttpContext.Session.TestAddToCache(claim);
                     

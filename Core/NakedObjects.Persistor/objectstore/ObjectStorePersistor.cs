@@ -497,7 +497,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         private PocoAdapter CreateAdapterForViewModel(object viewModel, INakedObjectSpecification spec) {
-            var oid = new ViewModelOid(spec);
+            var oid = new ViewModelOid(reflector, spec);
             PocoAdapter adapter = NewAdapter(viewModel, oid);
 
             object versionObject = adapter.GetVersion();

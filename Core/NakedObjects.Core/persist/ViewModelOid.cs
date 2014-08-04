@@ -4,24 +4,31 @@
 
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
+using NakedObjects.Core.Adapter;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Persist {
     public class ViewModelOid : IOid, IEncodedToStrings {
+        private readonly INakedObjectReflector reflector;
         private int cachedHashCode;
         private string cachedToString;
         private ViewModelOid previous;
        
-        public ViewModelOid(INakedObjectSpecification specification) {
+        public ViewModelOid(INakedObjectReflector reflector, INakedObjectSpecification specification) {
+            Assert.AssertNotNull(reflector);
+            this.reflector = reflector;
             IsTransient = false;
             TypeName = TypeNameUtils.EncodeTypeName(specification.FullName);
             Keys = new[] {System.Guid.NewGuid().ToString()};
             CacheState();
         }
 
-        public ViewModelOid(string[] strings) {
+        public ViewModelOid(INakedObjectReflector reflector, string[] strings) {
+            Assert.AssertNotNull(reflector);
+            this.reflector = reflector;
             var helper = new StringDecoderHelper(strings);
             TypeName = helper.GetNextString();
 
@@ -73,11 +80,11 @@ namespace NakedObjects.Core.Persist {
         }
 
         public INakedObjectSpecification Specification {
-            get { return NakedObjectsContext.Reflector.LoadSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
+            get { return reflector.LoadSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
         }
 
         public void UpdateKeys(string[] newKeys, bool final) { 
-            previous = new ViewModelOid(Specification) { Keys = Keys };
+            previous = new ViewModelOid(reflector, Specification) { Keys = Keys };
             Keys = newKeys; // after old key is saved ! 
             IsFinal = final; 
             CacheState();
