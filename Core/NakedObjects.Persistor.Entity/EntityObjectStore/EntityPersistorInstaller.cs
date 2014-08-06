@@ -127,7 +127,7 @@ namespace NakedObjects.EntityObjectStore {
             isContextSet = true;
         }
 
-        public override INakedObjectPersistor CreateObjectPersistor(ISession session) {
+        public override INakedObjectPersistor CreateObjectPersistor() {
             if (!isContextSet) {
                 throw new InitialisationException(@"No context set on EntityPersistorInstaller, must call either ""UsingCodeFirstContext"" or ""UsingEdmxContext""");
             }
@@ -144,14 +144,19 @@ namespace NakedObjects.EntityObjectStore {
 
             var identityMap = new EntityIdentityMapImpl(oidGenerator, identityAdapterMap ?? new IdentityAdapterHashMap(), pocoAdapterMap ?? new PocoAdapterHashMap(), objectStore);
 
-            return new ObjectStorePersistor(
+            var op = new ObjectStorePersistor(
                 NakedObjectsContext.Reflector,
-                session,
-                NakedObjectsContext.UpdateNotifier,
+                //session,
+                //NakedObjectsContext.UpdateNotifier,
                 objectStore, 
                 new EntityPersistAlgorithm(),
                 oidGenerator, 
                 identityMap);
+
+            //op.Session = session;
+
+            return op;
+
         }
 
         protected IEnumerable<EntityContextConfiguration> PocoConfiguration() {

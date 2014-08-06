@@ -52,7 +52,7 @@ namespace NakedObjects.Testing {
         }
 
         protected override INakedObjectPersistor GetObjectPersistor() {
-            return persistor ?? (persistor = new InMemoryObjectPersistorInstaller().CreateObjectPersistor(session));
+            return persistor ?? (persistor = new InMemoryObjectPersistorInstaller().CreateObjectPersistor());
         }
 
         public override void SetObjectPersistor(INakedObjectPersistor persistor) {

@@ -149,7 +149,7 @@ namespace NakedObjects.Boot {
             }
 
             context.SetReflector(reflector);
-            INakedObjectPersistor objectPersistor = objectPersistorInstaller.CreateObjectPersistor(session);
+            INakedObjectPersistor objectPersistor = objectPersistorInstaller.CreateObjectPersistor();
             NakedObjectsContext.PersistorInstaller = objectPersistorInstaller;
             NakedObjectsContext.MenuServicesInstaller = menuServicesInstaller;
             NakedObjectsContext.ContributedActionsInstaller = contributedActionsInstaller;
@@ -159,6 +159,8 @@ namespace NakedObjects.Boot {
             context.SetObjectPersistor(objectPersistor);
             context.SetAuthorizationManager(new NullAuthorizationManager());
             context.SetSession(session);
+            objectPersistor.Session = session;
+            objectPersistor.UpdateNotifier = NakedObjectsContext.UpdateNotifier;
 
             objectPersistor.AddServices(menuServicesInstaller, contributedActionsInstaller, systemServicesInstaller);
 

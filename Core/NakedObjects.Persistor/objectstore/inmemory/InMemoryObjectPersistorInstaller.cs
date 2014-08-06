@@ -29,7 +29,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public int? SimpleOidGeneratorStart { get; set; }
 
-        public override INakedObjectPersistor CreateObjectPersistor(ISession session) {
+        public override INakedObjectPersistor CreateObjectPersistor() {
             Log.Info("installing " + GetType().FullName);
 
             var reflector = NakedObjectsContext.Reflector;
@@ -43,12 +43,14 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
             var persistor = new ObjectStorePersistor(
                 reflector,
-                session, 
-                NakedObjectsContext.UpdateNotifier,
+                //session, 
+               // NakedObjectsContext.UpdateNotifier,
                 inMemoryObjectStore,
                 new DefaultPersistAlgorithm(),
                 oidGenerator,
                 identityMapImpl);
+
+            //persistor.Session = session;
 
             inMemoryObjectStore.IdentityMap = identityMapImpl;
 

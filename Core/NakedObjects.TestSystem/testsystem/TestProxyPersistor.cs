@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NakedObjects.Architecture.Security;
 using NUnit.Framework;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
@@ -137,6 +138,9 @@ namespace NakedObjects.TestSystem {
         public INakedObject LoadObject(IOid oid, INakedObjectSpecification spec) {
             throw new NotImplementedException();
         }
+
+        public ISession Session { get; set; }
+        public object UpdateNotifier { get; set; }
 
         public bool IsInitialized {
             get { return true; }

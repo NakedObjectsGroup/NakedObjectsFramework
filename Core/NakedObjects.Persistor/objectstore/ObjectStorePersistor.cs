@@ -32,31 +32,32 @@ namespace NakedObjects.Persistor.Objectstore {
         private static readonly ILog Log;
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
         private readonly INakedObjectReflector reflector;
-        private readonly ISession session;
-        private readonly IUpdateNotifier updateNotifier;
+        //private readonly ISession session;
+        private IUpdateNotifier updateNotifier;
         private readonly INakedObjectStore objectStore;
         private readonly IPersistAlgorithm persistAlgorithm;
         private readonly List<ServiceWrapper> services = new List<ServiceWrapper>();
         private readonly INakedObjectTransactionManager transactionManager;
         private IContainerInjector containerInjector;
         private readonly IIdentityMap identityMap;
+      
 
         static ObjectStorePersistor() {
             Log = LogManager.GetLogger(typeof (ObjectStorePersistor));
         }
 
-        public ObjectStorePersistor(INakedObjectReflector reflector, ISession session, IUpdateNotifier updateNotifier, INakedObjectStore objectStore, IPersistAlgorithm persistAlgorithm, IOidGenerator oidGenerator, IIdentityMap identityMap) {
+        public ObjectStorePersistor(INakedObjectReflector reflector,  INakedObjectStore objectStore, IPersistAlgorithm persistAlgorithm, IOidGenerator oidGenerator, IIdentityMap identityMap) {
             Assert.AssertNotNull(objectStore);
             Assert.AssertNotNull(persistAlgorithm);
             Assert.AssertNotNull(oidGenerator);
             Assert.AssertNotNull(identityMap);
             Assert.AssertNotNull(reflector);
-            Assert.AssertNotNull(updateNotifier);
+            //Assert.AssertNotNull(updateNotifier);
 
 
             this.reflector = reflector;
-            this.session = session;
-            this.updateNotifier = updateNotifier;
+            //this.session = session;
+            //this.updateNotifier = updateNotifier;
             this.objectStore = objectStore;
             this.persistAlgorithm = persistAlgorithm;
             OidGenerator = oidGenerator;
@@ -65,6 +66,16 @@ namespace NakedObjects.Persistor.Objectstore {
             transactionManager = new ObjectStoreTransactionManager(objectStore);
             Log.DebugFormat("Creating {0}", this);
         }
+
+        // property Injected dependencies as temp workarounds while refactoring 
+
+        public ISession Session { set;  get; }
+
+        public object UpdateNotifier {
+            set { updateNotifier = (IUpdateNotifier)value; }
+            get { return updateNotifier; }
+        }
+
 
         protected virtual List<ServiceWrapper> Services {
             get { return services; }
@@ -222,7 +233,7 @@ namespace NakedObjects.Persistor.Objectstore {
             Log.DebugFormat("GetServicesWithVisibleActions of: {0}", serviceType);
             return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
                 Select(sw => GetServiceAdapter(sw.Service)).
-                Where(no => no.Specification.GetObjectActions().Any(a => a.IsVisible(session, no))).ToArray();
+                Where(no => no.Specification.GetObjectActions().Any(a => a.IsVisible(Session, no))).ToArray();
         }
 
         public virtual INakedObject[] GetServices(ServiceTypes serviceType) {
@@ -502,7 +513,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
             object versionObject = adapter.GetVersion();
             if (versionObject != null) {
-                adapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
+                adapter.OptimisticLock = new ConcurrencyCheckVersion(Session.UserName, DateTime.Now, versionObject);
                 Log.DebugFormat("CreateAdapterForViewModel: Updating Version {0} on {1}", adapter.Version, adapter);
             }
 
@@ -604,7 +615,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         private PocoAdapter NewAdapter(object domainObject, IOid transientOid) {
-            return new PocoAdapter(reflector, this, session, domainObject, transientOid);
+            return new PocoAdapter(reflector, this, Session, domainObject, transientOid);
         }
 
         private void CreateInlineObjects(INakedObject parentObject, object rootObject) {
