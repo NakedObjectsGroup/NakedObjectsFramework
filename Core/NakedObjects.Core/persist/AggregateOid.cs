@@ -28,7 +28,7 @@ namespace NakedObjects.Core.Persist {
         public AggregateOid(INakedObjectReflector reflector, string[] strings) {
             Assert.AssertNotNull(reflector);
             this.reflector = reflector;
-            var helper = new StringDecoderHelper(strings);
+            var helper = new StringDecoderHelper(reflector, strings);
             typeName = helper.GetNextString();
             fieldName = helper.GetNextString();
             if (helper.HasNext) {

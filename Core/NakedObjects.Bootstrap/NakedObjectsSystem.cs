@@ -167,6 +167,9 @@ namespace NakedObjects.Boot {
             objectPersistor.Init();
            
             if (fixtureInstaller != null) {
+                NakedObjectsContext.EnsureReady();
+                NakedObjectsContext.ObjectPersistor.Session = session;
+                context.SetSession(session);
                 fixtureInstaller.InstallFixtures(NakedObjectsContext.ObjectPersistor);
             }
 

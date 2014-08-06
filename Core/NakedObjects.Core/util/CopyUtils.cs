@@ -52,13 +52,13 @@ namespace NakedObjects.Core.Util {
             return clone;
         }
 
-        public static INakedObject CloneInlineObject(object domainObject, INakedObject parent, INakedObjectAssociation field) {
-            object clone = NakedObjectsContext.ObjectPersistor.CreateObject(NakedObjectsContext.Reflector.LoadSpecification(domainObject.GetType()));
-            INakedObject nakedObject = PersistorUtils.CreateAggregatedAdapterClone(parent, field, clone);
-            NakedObjectsContext.ObjectPersistor.InitInlineObject(parent, clone);
-            CopyProperties(domainObject, clone);
-            return nakedObject;
-        }
+        //public static INakedObject CloneInlineObject(object domainObject, INakedObject parent, INakedObjectAssociation field) {
+        //    object clone = NakedObjectsContext.ObjectPersistor.CreateObject(NakedObjectsContext.Reflector.LoadSpecification(domainObject.GetType()));
+        //    INakedObject nakedObject = PersistorUtils.CreateAggregatedAdapterClone(parent, field, clone);
+        //    NakedObjectsContext.ObjectPersistor.InitInlineObject(parent, clone);
+        //    CopyProperties(domainObject, clone);
+        //    return nakedObject;
+        //}
 
         private static void CopyCollectionProperties(object fromObject, object toObject) {
             fromObject.GetType().GetProperties().

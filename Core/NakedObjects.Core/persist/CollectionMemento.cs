@@ -20,6 +20,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Core.Persist {
     public class CollectionMemento : IEncodedToStrings, IOid {
         private readonly INakedObjectPersistor persistor;
+        private readonly INakedObjectReflector reflector;
 
         public enum ParameterType {
             Value,
@@ -28,11 +29,13 @@ namespace NakedObjects.Core.Persist {
             ObjectCollection
         }
 
-        public CollectionMemento(INakedObjectPersistor persistor,  CollectionMemento otherMemento, object[] selectedObjects) {
+        public CollectionMemento(INakedObjectPersistor persistor, INakedObjectReflector reflector,  CollectionMemento otherMemento, object[] selectedObjects) {
             Assert.AssertNotNull(persistor);
+            Assert.AssertNotNull(reflector);
             Assert.AssertNotNull(otherMemento);
 
             this.persistor = persistor;
+            this.reflector = reflector;
             IsPaged = otherMemento.IsPaged;
             IsNotQueryable = otherMemento.IsNotQueryable;
             Target = otherMemento.Target;
@@ -41,9 +44,11 @@ namespace NakedObjects.Core.Persist {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(INakedObjectPersistor persistor, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
+        public CollectionMemento(INakedObjectPersistor persistor, INakedObjectReflector reflector, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
             Assert.AssertNotNull(persistor);
+            Assert.AssertNotNull(reflector);
             this.persistor = persistor;
+            this.reflector = reflector;
             Target = target;
             Action = action;
             Parameters = parameters;
@@ -53,10 +58,12 @@ namespace NakedObjects.Core.Persist {
             }
         }
 
-        public CollectionMemento(INakedObjectPersistor persistor, string[] strings) {
+        public CollectionMemento(INakedObjectPersistor persistor, INakedObjectReflector reflector, string[] strings) {
             Assert.AssertNotNull(persistor);
+            Assert.AssertNotNull(reflector);
             this.persistor = persistor;
-            var helper = new StringDecoderHelper(strings, true);
+            this.reflector = reflector;
+            var helper = new StringDecoderHelper(reflector, strings, true);
             string specName = helper.GetNextString();
             string actionId = helper.GetNextString();
             var targetOid = (IOid) helper.GetNextEncodedToStrings();

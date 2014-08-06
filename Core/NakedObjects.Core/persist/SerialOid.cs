@@ -38,7 +38,7 @@ namespace NakedObjects.Core.Persist {
             Assert.AssertNotNull(reflector);
 
             this.reflector = reflector;
-            var helper = new StringDecoderHelper(strings);
+            var helper = new StringDecoderHelper(reflector, strings);
 
             typeName = helper.GetNextString();
             serialNo = helper.GetNextLong();

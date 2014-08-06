@@ -29,7 +29,7 @@ namespace NakedObjects.Core.Persist {
         public ViewModelOid(INakedObjectReflector reflector, string[] strings) {
             Assert.AssertNotNull(reflector);
             this.reflector = reflector;
-            var helper = new StringDecoderHelper(strings);
+            var helper = new StringDecoderHelper(reflector, strings);
             TypeName = helper.GetNextString();
 
             Keys = helper.HasNext ? helper.GetNextArray() : new[] {System.Guid.NewGuid().ToString()};

@@ -88,7 +88,7 @@ namespace NakedObjects.Core.Persist {
             INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(typeName);
 
             if (spec.IsCollection) {
-                return new CollectionMemento(NakedObjectsContext.ObjectPersistor, encodedData);
+                return new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, encodedData);
             }
 
             if (spec.ContainsFacet<IViewModelFacet>()) {

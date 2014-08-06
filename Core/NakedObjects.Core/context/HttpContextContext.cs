@@ -20,6 +20,7 @@ namespace NakedObjects.Core.Context {
 
                 if (!HttpContext.Current.Items.Contains("NakedObjectsData")) {
                     HttpContext.Current.Items.Add("NakedObjectsData", InitialiseNewData());
+                    ObjectPersistor.UpdateNotifier = UpdateNotifier;
                 }
                 return HttpContext.Current.Items["NakedObjectsData"] as NakedObjectsData;
             }
@@ -27,6 +28,7 @@ namespace NakedObjects.Core.Context {
 
         private static NakedObjectsData InitialiseNewData() {
             var local = new NakedObjectsData {ObjectPersistor = PersistorInstaller.CreateObjectPersistor()};
+           
             local.ObjectPersistor.AddServices(MenuServicesInstaller, ContributedActionsInstaller, SystemServicesInstaller);
             local.ObjectPersistor.Init();
             return local;

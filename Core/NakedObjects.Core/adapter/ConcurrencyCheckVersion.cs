@@ -5,10 +5,13 @@
 using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Adapter;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.EntityObjectStore {
     public class ConcurrencyCheckVersion : IVersion, IEncodedToStrings {
+        private readonly INakedObjectReflector reflector;
         private readonly DateTime time;
         private readonly string user;
         private readonly object version;
@@ -19,8 +22,10 @@ namespace NakedObjects.EntityObjectStore {
             this.version = version;
         }
 
-        public ConcurrencyCheckVersion(string[] strings) {
-            var helper = new StringDecoderHelper(strings);
+        public ConcurrencyCheckVersion(INakedObjectReflector reflector, string[] strings) {
+            Assert.AssertNotNull(reflector);
+            this.reflector = reflector;
+            var helper = new StringDecoderHelper(reflector, strings);
 
             user = helper.GetNextString();
             time = new DateTime(helper.GetNextLong());

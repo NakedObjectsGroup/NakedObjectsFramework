@@ -849,7 +849,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private static INakedObject DoPaging(INakedObject nakedObject, ICollectionFacet collectionfacet, int page, int pageSize, bool forceEnumerable) {
             INakedObject newNakedObject = collectionfacet.Page(page, pageSize, nakedObject, forceEnumerable);
             object[] objects = newNakedObject.GetAsEnumerable().Select(no => no.Object).ToArray();
-            newNakedObject.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, nakedObject.Oid as CollectionMemento, objects) {IsPaged = true});
+            newNakedObject.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, nakedObject.Oid as CollectionMemento, objects) { IsPaged = true });
             return newNakedObject;
         }
 
@@ -868,7 +868,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private static INakedObject CloneAndPopulateCollection(INakedObject nakedObject, object[] selected, bool forceEnumerable) {
             IList result = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
             INakedObject adapter = PersistorUtils.CreateAdapter(nakedObject.Specification.IsQueryable && !forceEnumerable ? (IEnumerable) result.AsQueryable() : result);
-            adapter.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, nakedObject.Oid as CollectionMemento, selected));
+            adapter.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, nakedObject.Oid as CollectionMemento, selected));
             return adapter;
         }
 

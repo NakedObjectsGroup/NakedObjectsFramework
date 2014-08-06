@@ -43,7 +43,7 @@ namespace NakedObjects.EntityObjectStore {
         public EntityOid(INakedObjectReflector reflector, string[] strings) {
             Assert.AssertNotNull(reflector);
             this.reflector = reflector;
-            var helper = new StringDecoderHelper(strings);
+            var helper = new StringDecoderHelper(reflector, strings);
 
             TypeName = helper.GetNextString();
             Key = helper.GetNextObjectArray();
