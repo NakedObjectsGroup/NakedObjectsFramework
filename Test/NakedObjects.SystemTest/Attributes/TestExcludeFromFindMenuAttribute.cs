@@ -6,8 +6,8 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Boot;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Core.Persist;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Reflector.Spec;
 using TestClass.Attributes.Contributed;
@@ -74,7 +74,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual void Contributed() {
             var service = (TestService) GetTestService("Test Service").NakedObject.Object;
             Object1 obj = service.NewObject1();
-            INakedObject adapter = PersistorUtils.CreateAdapter(obj);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
             INakedObjectAction[] actions = adapter.Specification.GetRelatedServiceActions();
 
             Assert.AreEqual(1, actions.Count());

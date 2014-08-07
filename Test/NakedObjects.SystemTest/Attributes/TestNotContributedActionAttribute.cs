@@ -4,6 +4,7 @@
 
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Boot;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -65,7 +66,7 @@ namespace NakedObjects.SystemTest.Attributes.NotContributed {
 
             var service = (TestService) GetTestService("Test Service").NakedObject.Object;
             var obj = service.NewObject1();
-            var adapter = PersistorUtils.CreateAdapter(obj);
+            var adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
             var actions = adapter.Specification.GetObjectActions();
 
             Assert.AreEqual(1, actions.Count());
