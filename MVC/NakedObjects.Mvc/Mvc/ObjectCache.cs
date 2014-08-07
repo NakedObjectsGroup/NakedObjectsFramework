@@ -9,6 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter.Map;
+using NakedObjects.Core.Context;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc {
@@ -22,20 +23,19 @@ namespace NakedObjects.Web.Mvc {
 
         #endregion
 
+        [Serializable]
         private class CacheMemento {
             public DateTime Added { get; set; }
             public string Url { get; set; }
-            public INakedObjectSpecification Spec { get; set; }
+            public string Spec { get; set; }
         }
-
-
 
         private const string NoneBucket = "ObjectCache";
         private const string BreadCrumbBucket = "BreadCrumbCache";
 
 
         public const int CacheSize = 100;
-        private static readonly string[] Bucket = new[] {NoneBucket, BreadCrumbBucket};
+        private static readonly string[] Bucket = new[] { NoneBucket, BreadCrumbBucket };
 
         public static void AddToCache(this HttpSessionStateBase session, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
             INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
@@ -64,8 +64,7 @@ namespace NakedObjects.Web.Mvc {
             }
         }
 
-
-        public static void AddToCache(this HttpSessionStateBase session, INakedObject nakedObject, string url,  ObjectFlag flag = ObjectFlag.None) {
+        public static void AddToCache(this HttpSessionStateBase session, INakedObject nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
             // only add transients if we are storing transients in the session 
 
             if ((!nakedObject.ResolveState.IsTransient() || MvcIdentityAdapterHashMap.StoringTransientsInSession) || nakedObject.Specification.IsCollection) {
@@ -145,9 +144,14 @@ namespace NakedObjects.Web.Mvc {
             return session.GetCache(flag).OrderBy(kvp => kvp.Value.Added).Select(kvp => FrameworkHelper.GetNakedObjectFromId(kvp.Key));
         }
 
+        private static bool SameSpec(string name, INakedObjectSpecification otherSpec) {
+            var thisSpec = NakedObjectsContext.Reflector.LoadSpecification(name);
+            return thisSpec.IsOfType(otherSpec);
+        }
+
         private static IEnumerable<INakedObject> GetAndTidyCachedNakedObjectsOfType(this HttpSessionStateBase session, INakedObjectSpecification spec, ObjectFlag flag) {
             session.ClearDestroyedObjectsOfType(spec, flag);
-            return session.GetCache(flag).Where(cm => cm.Value.Spec.IsOfType(spec)).OrderBy(kvp => kvp.Value.Added).Select(kvp => FrameworkHelper.GetNakedObjectFromId(kvp.Key));
+            return session.GetCache(flag).Where(cm => SameSpec(cm.Value.Spec, spec)).OrderBy(kvp => kvp.Value.Added).Select(kvp => FrameworkHelper.GetNakedObjectFromId(kvp.Key));
         }
 
         public static IEnumerable<object> CachedObjectsOfType(this HttpSessionStateBase session, INakedObjectSpecification spec, ObjectFlag flag = ObjectFlag.None) {
@@ -157,13 +161,13 @@ namespace NakedObjects.Web.Mvc {
         // This is dangerous - retrieves all cached objects from the database - use with care !
         private static void ClearDestroyedObjects(this HttpSessionStateBase session, ObjectFlag flag = ObjectFlag.None) {
             Dictionary<string, CacheMemento> cache = session.GetCache(flag);
-            List<string> toRemove = cache.Select(kvp => new {kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key)}).Where(ao => ao.no.ResolveState.IsDestroyed()).Select(ao => ao.Key).ToList();
+            List<string> toRemove = cache.Select(kvp => new { kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key) }).Where(ao => ao.no.ResolveState.IsDestroyed()).Select(ao => ao.Key).ToList();
             toRemove.ForEach(k => cache.Remove(k));
         }
 
         public static void ClearDestroyedObjectsOfType(this HttpSessionStateBase session, INakedObjectSpecification spec, ObjectFlag flag = ObjectFlag.None) {
             Dictionary<string, CacheMemento> cache = session.GetCache(flag);
-            List<string> toRemove = cache.Where(cm => cm.Value.Spec.IsOfType(spec)).Select(kvp => new { kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key) }).Where(ao => ao.no.ResolveState.IsDestroyed()).Select(ao => ao.Key).ToList();
+            List<string> toRemove = cache.Where(cm => SameSpec(cm.Value.Spec, spec)).Select(kvp => new { kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key) }).Where(ao => ao.no.ResolveState.IsDestroyed()).Select(ao => ao.Key).ToList();
             toRemove.ForEach(k => cache.Remove(k));
         }
 
@@ -190,7 +194,7 @@ namespace NakedObjects.Web.Mvc {
             var objs = (Dictionary<string, CacheMemento>)session[Bucket[(int)flag]];
             if (objs == null) {
                 objs = new Dictionary<string, CacheMemento>();
-                session.Add(Bucket[(int) flag], objs);
+                session.Add(Bucket[(int)flag], objs);
             }
             return objs;
         }
@@ -199,11 +203,11 @@ namespace NakedObjects.Web.Mvc {
             string objectId = FrameworkHelper.GetObjectId(nakedObject);
 
             if (cache.ContainsKey(objectId)) {
-                cache[objectId].Spec = nakedObject.Specification;
+                cache[objectId].Spec = nakedObject.Specification.FullName;
                 cache[objectId].Url = url;
             }
             else {
-                cache[objectId] = new CacheMemento {Added = DateTime.Now, Spec = nakedObject.Specification, Url = url};
+                cache[objectId] = new CacheMemento { Added = DateTime.Now, Spec = nakedObject.Specification.FullName, Url = url };
                 while (cache.Count > CacheSize) {
                     RemoveOldest(cache, flag);
                 }
@@ -212,7 +216,7 @@ namespace NakedObjects.Web.Mvc {
 
         private static void AddToCache(this Dictionary<string, CacheMemento> cache, INakedObject nakedObject, string url, ObjectFlag flag) {
             string objectId = FrameworkHelper.GetObjectId(nakedObject);
-            cache[objectId] = new CacheMemento {Added = DateTime.Now, Spec = nakedObject.Specification, Url = url};
+            cache[objectId] = new CacheMemento { Added = DateTime.Now, Spec = nakedObject.Specification.FullName, Url = url };
             while (cache.Count > CacheSize) {
                 RemoveOldest(cache, flag);
             }
