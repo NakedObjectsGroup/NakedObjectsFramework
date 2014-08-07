@@ -7,6 +7,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
 
@@ -48,7 +49,7 @@ namespace NakedObjects.EntityObjectStore {
         public void Shutdown() {}
 
         public IOid RestoreOid(string[] encodedData) {
-            return PersistorUtils.RestoreGenericOid(encodedData) ?? new EntityOid(reflector, encodedData);
+            return NakedObjectsContext.ObjectPersistor.RestoreGenericOid(encodedData) ?? new EntityOid(reflector, encodedData);
         }
 
         public EntityOid CreateOid(string typeName, object[] keys) {

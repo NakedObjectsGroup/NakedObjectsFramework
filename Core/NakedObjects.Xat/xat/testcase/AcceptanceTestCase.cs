@@ -107,8 +107,8 @@ namespace NakedObjects.Xat {
                 Assert.Fail(spec.SingularName + " is not a Bounded type");
             }
             IEnumerable allInstances = NakedObjectsContext.ObjectPersistor.Instances(spec);
-            object inst = allInstances.Cast<object>().Single(o => PersistorUtils.CreateAdapter(o).TitleString() == title);
-            return testObjectFactory.CreateTestObject(PersistorUtils.CreateAdapter(inst));
+            object inst = allInstances.Cast<object>().Single(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null).TitleString() == title);
+            return testObjectFactory.CreateTestObject(NakedObjectsContext.ObjectPersistor.CreateAdapter(inst, null, null));
         }
 
         private static IPrincipal CreatePrincipal(string name, string[] roles) {

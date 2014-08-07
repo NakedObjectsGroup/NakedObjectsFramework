@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Properties.Defaults;
 using NakedObjects.Capabilities;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Value {
@@ -99,7 +100,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
         public INakedObject CreateValue(INakedObject nakedObject, int color) {
-            return PersistorUtils.CreateAdapter(Color.FromArgb(color));
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(Color.FromArgb(color), null, null);
         }
 
 

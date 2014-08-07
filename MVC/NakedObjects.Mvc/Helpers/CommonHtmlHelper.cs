@@ -111,12 +111,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static string ObjectIconAndLink(this HtmlHelper html, string linkText, string actionName, object model, bool withTitleAttr = false) {
-            INakedObject nakedObject = PersistorUtils.CreateAdapter(model);
+            INakedObject nakedObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(model, null, null);
             return html.ObjectIcon(nakedObject) + html.ObjectLink(linkText, actionName, model, withTitleAttr);
         }
 
         internal static string ObjectIconAndDetailsLink(this HtmlHelper html, string linkText, string actionName, object model) {
-            INakedObject nakedObject = PersistorUtils.CreateAdapter(model);
+            INakedObject nakedObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(model, null, null);
             return html.ObjectIcon(nakedObject) + html.ObjectTitle(model) + html.ObjectLink(MvcUi.Details, actionName, model);
         }
 
@@ -1481,7 +1481,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     if (itemSpec.IsParseable) {
                         var collection = (INakedObject) rawvalue;
                         List<object> parsedCollection = collection.GetCollectionFacetFromSpec().AsEnumerable(collection).Select(no => GetAndParseValueAsNakedObject(itemSpec, no.Object).GetDomainObject()).ToList();
-                        return PersistorUtils.CreateAdapter(parsedCollection);
+                        return NakedObjectsContext.ObjectPersistor.CreateAdapter(parsedCollection, null, null);
                     }
 
                     return (INakedObject) rawvalue;

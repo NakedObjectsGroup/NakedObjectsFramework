@@ -7,6 +7,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Capabilities;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
@@ -25,12 +26,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
                 throw new ArgumentException(Resources.NakedObjects.MissingEntryError);
             }
             object parsed = parser.ParseTextEntry(entry);
-            return PersistorUtils.CreateAdapter(parsed);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(parsed, null, null);
         }
 
         public INakedObject ParseInvariant(string text) {
             object parsed = parser.ParseInvariant(text);
-            return PersistorUtils.CreateAdapter(parsed);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(parsed, null, null);
         }
 
         public string ParseableTitle(INakedObject nakedObject) {

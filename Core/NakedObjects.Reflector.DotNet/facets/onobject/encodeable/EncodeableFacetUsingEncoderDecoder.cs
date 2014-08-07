@@ -6,6 +6,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Encodeable;
 using NakedObjects.Capabilities;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
@@ -25,7 +26,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
             if (ENCODED_NULL.Equals(encodedData)) {
                 return null;
             }
-            return PersistorUtils.CreateAdapter(encoderDecoder.FromEncodedString(encodedData));
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(encoderDecoder.FromEncodedString(encodedData), null, null);
         }
 
         public string ToEncodedString(INakedObject nakedObject) {

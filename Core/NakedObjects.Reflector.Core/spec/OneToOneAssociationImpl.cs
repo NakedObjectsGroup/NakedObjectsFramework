@@ -65,25 +65,25 @@ namespace NakedObjects.Reflector.Spec {
             object[] objectOptions = propertyChoicesFacet == null ? null : propertyChoicesFacet.GetChoices(target, parameterNameValues);
             if (objectOptions != null) {
                 if (enumFacet == null) {
-                    return PersistorUtils.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
+                    return NakedObjectsContext.ObjectPersistor .GetCollectionOfAdaptedObjects(objectOptions).ToArray();
                 }
-                return PersistorUtils.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(target, objectOptions)).ToArray();
+                return NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(target, objectOptions)).ToArray();
             }
 
             objectOptions = enumFacet == null ? null : enumFacet.GetChoices(target);
             if (objectOptions != null) {
-                return PersistorUtils.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
+                return NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
             }
 
             if (Specification.IsBoundedSet()) {
-                return PersistorUtils.GetCollectionOfAdaptedObjects(Specification.GetBoundedSet()).ToArray();
+                return NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(Specification.GetBoundedSet()).ToArray();
             }
             return null;
         }
 
         public override INakedObject[] GetCompletions(INakedObject target, string autoCompleteParm) {
             var propertyAutoCompleteFacet = GetFacet<IAutoCompleteFacet>();
-            return propertyAutoCompleteFacet == null ? null : PersistorUtils.GetCollectionOfAdaptedObjects(propertyAutoCompleteFacet.GetCompletions(target, autoCompleteParm)).ToArray();
+            return propertyAutoCompleteFacet == null ? null : NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(propertyAutoCompleteFacet.GetCompletions(target, autoCompleteParm)).ToArray();
         }
 
         public virtual void InitAssociation(INakedObject inObject, INakedObject associate) {
@@ -158,9 +158,9 @@ namespace NakedObjects.Reflector.Spec {
             }
             INakedObjectSpecification specification = NakedObjectsContext.Reflector.LoadSpecification(obj.GetType());
             if (specification.ContainsFacet(typeof (IComplexTypeFacet))) {
-                return PersistorUtils.CreateAggregatedAdapter(fromObject, this, obj);
+                return NakedObjectsContext.ObjectPersistor.CreateAggregatedAdapter(fromObject, ((INakedObjectAssociation) this).Id, obj);
             }
-            return PersistorUtils.CreateAdapter(obj);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
         }
 
         public virtual Tuple<INakedObject, TypeOfDefaultValue> GetDefaultObject(INakedObject fromObject) {
@@ -177,7 +177,7 @@ namespace NakedObjects.Reflector.Spec {
                 return new Tuple<INakedObject, TypeOfDefaultValue>(null, TypeOfDefaultValue.Implicit);
             }
             object obj = propertyDefaultFacet.GetDefault(fromObject);
-            return new Tuple<INakedObject, TypeOfDefaultValue>(PersistorUtils.CreateAdapter(obj), typeofDefaultValue);
+            return new Tuple<INakedObject, TypeOfDefaultValue>(NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null), typeofDefaultValue);
         }
 
         public override string ToString() {

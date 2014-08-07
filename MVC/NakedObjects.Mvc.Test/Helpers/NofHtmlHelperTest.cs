@@ -289,7 +289,7 @@ namespace MvcTestApp.Tests.Helpers {
             var testChoices = (ChoicesTestClass)GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
             mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestMultipleChoicesAction4-Parm1-Select"] = FrameworkHelper.GetNakedObject(testChoices);
-            mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestMultipleChoicesAction4-Parm2-Select"] = PersistorUtils.CreateAdapter(new List<string> {"test1", "test2"});
+            mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestMultipleChoicesAction4-Parm2-Select"] = NakedObjectsContext.ObjectPersistor.CreateAdapter(new List<string> { "test1", "test2" }, null, null);
 
             testChoices.TestChoicesProperty = testChoices;
             testChoices.TestChoicesStringProperty = "test2";
@@ -505,7 +505,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = FrameworkHelper.GetServices();
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
-            INakedObject collectionAdapter = PersistorUtils.CreateAdapter(new List<ChoicesTestClass>().AsQueryable());
+            INakedObject collectionAdapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(new List<ChoicesTestClass>().AsQueryable(), null, null);
             collectionAdapter.SetATransientOid(new DummyOid());
             mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestQueryableAction-Parm1-Select"] = collectionAdapter;
 
@@ -523,7 +523,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = FrameworkHelper.GetServices();
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
-            INakedObject collectionAdapter = PersistorUtils.CreateAdapter(new List<ChoicesTestClass>());
+            INakedObject collectionAdapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(new List<ChoicesTestClass>(), null, null);
             collectionAdapter.SetATransientOid(new DummyOid());
             mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestEnumerableAction-Parm1-Select"] = collectionAdapter;
 
@@ -543,7 +543,7 @@ namespace MvcTestApp.Tests.Helpers {
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
 
-            INakedObject collectionAdapter = PersistorUtils.CreateAdapter(new List<ChoicesTestClass> {testChoices}.AsQueryable());
+            INakedObject collectionAdapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(new List<ChoicesTestClass> { testChoices }.AsQueryable(), null, null);
             collectionAdapter.SetATransientOid(new DummyOid());
             mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestQueryableAction-Parm1-Select"] = collectionAdapter;
 
@@ -562,7 +562,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = FrameworkHelper.GetServices();
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
-            INakedObject collectionAdapter = PersistorUtils.CreateAdapter(new List<ChoicesTestClass> {testChoices});
+            INakedObject collectionAdapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(new List<ChoicesTestClass> { testChoices }, null, null);
             collectionAdapter.SetATransientOid(new DummyOid());
             mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestEnumerableAction-Parm1-Select"] = collectionAdapter;
 
@@ -619,7 +619,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void CollectionViewForEmptyCollection() {
             var mocks = new ContextMocks(controller);
             var collection = new object[] {};
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -632,7 +632,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void QueryableViewForEmptyCollection() {
             var mocks = new ContextMocks(controller);
             var collection = new object[] { }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -647,7 +647,7 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
 
             var collection = new[] {claim};
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -663,7 +663,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] {pc};
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -680,7 +680,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] {claim1};
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -704,7 +704,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] {claim1};
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -729,7 +729,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] {claim1};
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -754,7 +754,7 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
 
             var collection = new[] { claim }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             
@@ -771,8 +771,8 @@ namespace MvcTestApp.Tests.Helpers {
             ProjectCode pc = NakedObjectsContext.ObjectPersistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
-            var collection = new[] { pc }.AsQueryable(); 
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            var collection = new[] { pc }.AsQueryable();
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
            
@@ -790,8 +790,8 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim1 = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
 
 
-            var collection = new[] { claim1 }.AsQueryable(); 
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            var collection = new[] { claim1 }.AsQueryable();
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -816,8 +816,8 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim1 = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
 
 
-            var collection = new[] { claim1 }.AsQueryable(); 
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            var collection = new[] { claim1 }.AsQueryable();
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -843,8 +843,8 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim1 = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
 
 
-            var collection = new[] { claim1 }.AsQueryable(); 
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            var collection = new[] { claim1 }.AsQueryable();
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -869,7 +869,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void CollectionListViewForEmptyCollection() {
             var mocks = new ContextMocks(controller);
             var collection = new object[] { };
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -881,7 +881,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void CollectionListViewForEmptyCollectionTableView() {
             var mocks = new ContextMocks(controller);
             var collection = new object[] { };
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -900,7 +900,7 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
             var collection = new[] { claim };
 
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -918,7 +918,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void QueryableListViewForEmptyCollection() {
             var mocks = new ContextMocks(controller);
             var collection = new object[] { }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -931,7 +931,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void QueryableListViewForEmptyCollectionTableView() {
             var mocks = new ContextMocks(controller);
             var collection = new object[] { }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -952,7 +952,7 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
 
             var collection = new[] { claim };
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -967,7 +967,7 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
 
             var collection = new[] { claim };
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -986,7 +986,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { pc };
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -1002,7 +1002,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { pc };
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -1024,7 +1024,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { claim1 };
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1048,7 +1048,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { claim1 };
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1078,7 +1078,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { claim1 };
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1102,7 +1102,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { claim1 };
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1132,7 +1132,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { claim1 };
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1156,7 +1156,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { claim1 };
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1187,7 +1187,7 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
 
             var collection = new[] { claim }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -1201,7 +1201,7 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
 
             var collection = new[] { claim }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -1222,7 +1222,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { pc }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
 
@@ -1240,7 +1240,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { pc }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -1261,7 +1261,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { claim1 }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1287,7 +1287,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { claim1 }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1316,7 +1316,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { claim1 }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1342,7 +1342,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { claim1 }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1371,7 +1371,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { claim1 }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1398,7 +1398,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             var collection = new[] { claim1 }.AsQueryable();
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1872,8 +1872,8 @@ namespace MvcTestApp.Tests.Helpers {
                                                                                                            {IdHelper.PagingPageSize, 2},
                                                                                                            {IdHelper.PagingTotal, 2}
                                                                                                        };
-            var claimAdapter = PersistorUtils.CreateAdapter(claims.First());
-            var adapter = PersistorUtils.CreateAdapter(claims);
+            var claimAdapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(claims.First(), null, null);
+            var adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(claims, null, null);
             var mockOid = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             adapter.SetATransientOid(mockOid);
@@ -1896,8 +1896,8 @@ namespace MvcTestApp.Tests.Helpers {
                                                                                                            {IdHelper.PagingTotal, 2}
                                                                                                        };
 
-            var claimAdapter = PersistorUtils.CreateAdapter(claims.First());
-            var adapter = PersistorUtils.CreateAdapter(claims);
+            var claimAdapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(claims.First(), null, null);
+            var adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(claims, null, null);
             var mockOid = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             adapter.SetATransientOid(mockOid);
@@ -2107,7 +2107,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             var selected = claimRepo.GetDomainObject<ClaimRepository>().MyRecentClaims().First();
 
-            INakedObject target = PersistorUtils.CreateAdapter(new[] {claim}.AsQueryable());
+            INakedObject target = NakedObjectsContext.ObjectPersistor.CreateAdapter(new[] { claim }.AsQueryable(), null, null);
             target.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, claimRepo, action, new INakedObject[] { }), new object[] { selected }));
 
             INakedObjectAction targetAction = claimRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "ApproveClaims");
@@ -2125,7 +2125,7 @@ namespace MvcTestApp.Tests.Helpers {
 //            var mocks = new ContextMocks(controller);
 //            PasswordTestClass ptc = PasswordTestClass;
 //            mocks.ViewDataContainer.Object.ViewData.Model = ptc;
-//            PersistorUtils.CreateAdapterForTransient(ptc, true);
+//            NakedObjectsContext.ObjectPersistor.CreateAdapterForTransient(ptc, true);
 //            string s = mocks.GetHtmlHelper<PasswordTestClass>().PropertyListEditWith(ptc, x => x.Password).ToString();
        
 
@@ -2137,7 +2137,7 @@ namespace MvcTestApp.Tests.Helpers {
 //            var mocks = new ContextMocks(controller);
 //            PasswordTestClass ptc = PasswordTestClass;
 //            mocks.ViewDataContainer.Object.ViewData.Model = ptc;
-//            PersistorUtils.CreateAdapterForTransient(ptc, true);
+//            NakedObjectsContext.ObjectPersistor.CreateAdapterForTransient(ptc, true);
 //#pragma warning disable 612,618
 //            string s = mocks.GetHtmlHelper<PasswordTestClass>().ObjectActionAsDialog<PasswordTestClass, Password>(ptc, x => x.ChangePassword).ToString();
 //#pragma warning restore 612,618
@@ -2151,7 +2151,7 @@ namespace MvcTestApp.Tests.Helpers {
             var mocks = new ContextMocks(controller);
             var btc = new BoolTestClass();
             mocks.ViewDataContainer.Object.ViewData.Model = btc;
-            PersistorUtils.CreateAdapter(btc);
+            NakedObjectsContext.ObjectPersistor.CreateAdapter(btc, null, null);
             string s = mocks.GetHtmlHelper<BoolTestClass>().ObjectActionAsDialog<BoolTestClass,bool>(btc, x => x.TestBoolAction).ToString();
           
 
@@ -2163,7 +2163,7 @@ namespace MvcTestApp.Tests.Helpers {
             var mocks = new ContextMocks(controller);
             var btc = new BoolTestClass();
             mocks.ViewDataContainer.Object.ViewData.Model = btc;
-            PersistorUtils.CreateAdapter(btc);
+            NakedObjectsContext.ObjectPersistor.CreateAdapter(btc, null, null);
             string s = mocks.GetHtmlHelper<BoolTestClass>().ObjectActionAsDialog<BoolTestClass, bool?>(btc, x => x.TestNullableBoolAction).ToString();
 
 

@@ -5,6 +5,7 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Persist {
@@ -66,7 +67,7 @@ namespace NakedObjects.Core.Persist {
         }
 
         public IOid RestoreOid(string[] encodedData) {
-            return PersistorUtils.RestoreGenericOid(encodedData) ?? new SerialOid(reflector, encodedData);
+            return NakedObjectsContext.ObjectPersistor.RestoreGenericOid(encodedData) ?? new SerialOid(reflector, encodedData);
         }
 
         #endregion

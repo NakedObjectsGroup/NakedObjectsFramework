@@ -203,7 +203,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         var itemvalues = values.Select(v => itemSpec.IsParseable ? (object) v : FrameworkHelper.GetNakedObjectFromId(v).GetDomainObject()).ToList();
 
                         if (itemvalues.Any()) {
-                            AddAttemptedValue(name, PersistorUtils.CreateAdapter(itemvalues));
+                            AddAttemptedValue(name, NakedObjectsContext.ObjectPersistor.CreateAdapter(itemvalues, null, null));
                         }
                     }
                 }
@@ -867,7 +867,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private static INakedObject CloneAndPopulateCollection(INakedObject nakedObject, object[] selected, bool forceEnumerable) {
             IList result = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
-            INakedObject adapter = PersistorUtils.CreateAdapter(nakedObject.Specification.IsQueryable && !forceEnumerable ? (IEnumerable) result.AsQueryable() : result);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(nakedObject.Specification.IsQueryable && !forceEnumerable ? (IEnumerable)result.AsQueryable() : result, null, null);
             adapter.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, nakedObject.Oid as CollectionMemento, selected));
             return adapter;
         }

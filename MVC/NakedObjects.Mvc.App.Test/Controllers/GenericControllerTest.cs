@@ -1634,7 +1634,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;1;False;;0");
             form.Add("SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;2;False;;0");
 
-            INakedObject order = PersistorUtils.CreateAdapter(Order);
+            INakedObject order = NakedObjectsContext.ObjectPersistor.CreateAdapter(Order, null, null);
             INakedObjectAssociation assocMD = order.Specification.GetProperty("ModifiedDate");
             INakedObjectAction action = order.GetActionLeafNode("AddNewSalesReasons");
 
@@ -1665,7 +1665,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories-Select", @"1");
             form.Add("SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories-Select", @"2");
 
-            INakedObject order = PersistorUtils.CreateAdapter(Order);
+            INakedObject order = NakedObjectsContext.ObjectPersistor.CreateAdapter(Order, null, null);
             INakedObjectAssociation assocMD = order.Specification.GetProperty("ModifiedDate");
             INakedObjectAction action = order.GetActionLeafNode("AddNewSalesReasonsByCategories");
 

@@ -358,7 +358,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                         });
                     }
                     else {
-                        mappedArguments[key] = PersistorUtils.CreateAdapter(value);
+                        mappedArguments[key] = NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
 
                         errors.Add(new ChoiceContextSurface(key, new NakedObjectSpecificationWrapper(expectedType, surface)) {
                             ProposedValue = getValue(ep)
@@ -689,7 +689,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         private PropertyContext SetupPropertyContext(INakedObject nakedObject, string propertyName, object toAdd) {
             PropertyContext context = GetProperty(nakedObject, propertyName);
             context.ProposedValue = toAdd;
-            context.ProposedNakedObject = PersistorUtils.CreateAdapter(toAdd);
+            context.ProposedNakedObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(toAdd, null, null);
             return context;
         }
 
@@ -764,7 +764,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                     var elements = ((IEnumerable)rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString())).ToArray();
                     var elementType = TypeUtils.GetType(elementSpec.FullName);
                     Type collType = typeof(List<>).MakeGenericType(elementType);
-                    var collection =  PersistorUtils.CreateAdapter(Activator.CreateInstance(collType));
+                    var collection = NakedObjectsContext.ObjectPersistor.CreateAdapter(Activator.CreateInstance(collType), null, null);
 
                     collection.Specification.GetFacet<ICollectionFacet>().Init(collection, elements);
                     return collection;
@@ -772,7 +772,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
 
-            return PersistorUtils.CreateAdapter(rawValue);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(rawValue, null, null);
         }
 
         private static IConsent CanSetPropertyValue(PropertyContext context) {
@@ -799,13 +799,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private INakedObject GetObjectAsNakedObject(LinkObjectId objectId) {
             object obj = oidStrategy.GetDomainObjectByOid(objectId);
-            return PersistorUtils.CreateAdapter(obj);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
         }
 
 
         private INakedObject GetServiceAsNakedObject(LinkObjectId serviceName) {
             object obj = oidStrategy.GetServiceByServiceName(serviceName);
-            return PersistorUtils.CreateAdapter(obj);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
         }
 
         private ParameterContext[] FilterParmsForContributedActions(INakedObjectAction action, INakedObjectSpecification targetSpec, string uid) {

@@ -37,7 +37,7 @@ namespace NakedObjects.Web.Mvc.Models {
             Type armGenericType = result is IQueryable ? typeof (ActionResultModelQ<>) : typeof (ActionResultModel<>);
             Type armType = armGenericType.MakeGenericType(genericType);
             var arm = (ActionResultModel) Activator.CreateInstance(armType, action, result);
-            INakedObject noArm = PersistorUtils.CreateAdapter(arm);
+            INakedObject noArm = NakedObjectsContext.ObjectPersistor.CreateAdapter(arm, null, null);
             noArm.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, (CollectionMemento)nakedObject.Oid, new object[] { }));
             arm.Page = page;
             arm.PageSize = pageSize;

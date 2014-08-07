@@ -3,9 +3,11 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Security;
 using NUnit.Framework;
 using NakedObjects.Architecture.Adapter;
@@ -79,6 +81,22 @@ namespace NakedObjects.TestSystem {
 
         public INakedObject[] GetServices(ServiceTypes serviceType) {
            return new INakedObject[]{};
+        }
+
+        public INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj) {
+            throw new NotImplementedException();
+        }
+
+        public List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects) {
+            throw new NotImplementedException();
+        }
+
+        public IOid RestoreGenericOid(string[] encodedData) {
+            throw new NotImplementedException();
+        }
+
+        public void PopulateViewModelKeys(INakedObject nakedObject) {
+            throw new NotImplementedException();
         }
 
         public IOid RestoreOid(string[] encodedData) {
@@ -202,6 +220,9 @@ namespace NakedObjects.TestSystem {
         }
 
         public void AddCommand(IPersistenceCommand command) {}
+        public void Abort(INakedObjectPersistor objectManager, IFacetHolder holder) {
+            throw new NotImplementedException();
+        }
 
         public IOid CreateTransientOid(object obj) {
             return OidGenerator.CreateTransientOid(obj);

@@ -92,7 +92,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static string GetObjectId(INakedObject nakedObject) {
             if (nakedObject.Specification.IsViewModel) {
-                PersistorUtils.PopulateViewModelKeys(nakedObject);
+                NakedObjectsContext.ObjectPersistor.PopulateViewModelKeys(nakedObject);
             }
             else if (nakedObject.Oid == null) {
                 return "";
@@ -177,18 +177,18 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static INakedObject RestoreViewModel(ViewModelOid viewModelOid) {
-            return NakedObjectsContext.ObjectPersistor.GetAdapterFor(viewModelOid) ?? PersistorUtils.GetViewModel(viewModelOid);
+            return NakedObjectsContext.ObjectPersistor.GetAdapterFor(viewModelOid) ?? NakedObjectsContext.ObjectPersistor.GetViewModel(viewModelOid);
         }
 
         public static INakedObject RestoreObject(IOid oid) {
             if (oid.IsTransient) {
-                return PersistorUtils.RecreateInstance(oid, oid.Specification);
+                return NakedObjectsContext.ObjectPersistor.RecreateInstance(oid, oid.Specification);
             }
             return NakedObjectsContext.ObjectPersistor.LoadObject(oid, oid.Specification);
         }
 
         public static INakedObject GetNakedObject(object domainObject) {
-            return PersistorUtils.CreateAdapter(domainObject);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(domainObject, null, null);
         }
 
         public static INakedObject GetAdaptedService(string name) {
@@ -265,7 +265,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static INakedObject Parse(this INakedObjectSpecification spec, string s) {
-            return s == null ? PersistorUtils.CreateAdapter("") : spec.GetFacet<IParseableFacet>().ParseTextEntry(s);
+            return s == null ? NakedObjectsContext.ObjectPersistor.CreateAdapter("", null, null) : spec.GetFacet<IParseableFacet>().ParseTextEntry(s);
         }
 
         public static bool IsQueryOnly(this INakedObjectAction action) {
@@ -310,7 +310,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
 
-            return PersistorUtils.CreateAdapter(typedCollection.AsQueryable());
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(typedCollection.AsQueryable(), null, null);
         }
 
         public static bool IsViewModelEditView(this INakedObject target) {

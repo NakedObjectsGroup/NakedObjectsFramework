@@ -6,6 +6,7 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Ident.Title;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
 
@@ -28,7 +29,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
 
         public override string GetTitle(INakedObject nakedObject) {
             object obj = InvokeUtils.Invoke(method, nakedObject);
-            return obj == null ? null : PersistorUtils.CreateAdapter(obj).TitleString();
+            return obj == null ? null : NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null).TitleString();
         }
     }
 

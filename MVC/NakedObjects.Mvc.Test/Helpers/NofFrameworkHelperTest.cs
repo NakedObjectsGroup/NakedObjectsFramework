@@ -141,11 +141,11 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void GetCollectionNakedObjectFromId() {
             IList<Claim> claims = FrameworkHelper.GetService<ClaimRepository>().FindMyClaims(null, "");
-            INakedObject no = PersistorUtils.CreateAdapter(claims);
+            INakedObject no = NakedObjectsContext.ObjectPersistor.CreateAdapter(claims, null, null);
 
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Where(a => a.Id == "FindMyClaims").Single();
-            INakedObject[] parms = new[] {null, ""}.Select(PersistorUtils.CreateAdapter).ToArray();
+            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
             var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, service, action, parms);
             no.SetATransientOid(cm);

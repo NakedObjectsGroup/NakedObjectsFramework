@@ -132,7 +132,7 @@ namespace MvcTestApp.Tests.Helpers {
             var tc = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
 
             var collection = new List<CustomHelperTestClass> {tc};
-            INakedObject adapter = PersistorUtils.CreateAdapter(collection);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             mocks.ViewDataContainer.Object.ViewData.Model = collection;
@@ -182,7 +182,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionExclusionsGenericOtherObj() {
             var tc = new List<CustomHelperTestClass> {TestClass};
-            INakedObject adapter = PersistorUtils.CreateAdapter(tc);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(tc, null, null);
             adapter.SetATransientOid(new DummyOid());
             CustomHelperTestCollection(x => x.GetHtmlHelper<IEnumerable<CustomHelperTestClass>>().CollectionTableWithout(tc, y => y.TestCollectionOne, y => y.TestInt).ToString(),
                                        "CollectionWithExclusions");
@@ -191,7 +191,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionExclusionsOtherObj() {
             var tc = new List<CustomHelperTestClass> {TestClass};
-            INakedObject adapter = PersistorUtils.CreateAdapter(tc);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(tc, null, null);
             adapter.SetATransientOid(new DummyOid());
             CustomHelperTestCollection(x => x.GetHtmlHelper<IEnumerable<CustomHelperTestClass>>().CollectionTableWithout(tc, "TestCollectionOne", "TestInt").ToString(),
                                        "CollectionWithExclusions");
@@ -212,7 +212,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionInclusionsGenericOtherObj() {
             var tc = new List<CustomHelperTestClass> {TestClass};
-            INakedObject adapter = PersistorUtils.CreateAdapter(tc);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(tc, null, null);
             adapter.SetATransientOid(new DummyOid());
             CustomHelperTestCollection(x => x.GetHtmlHelper<IEnumerable<CustomHelperTestClass>>().CollectionTableWith(tc, y => y.TestInt, y => y.TestCollectionOne).ToString(),
                                        "CollectionWithInclusions");
@@ -221,7 +221,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionInclusionsOtherObj() {
             var tc = new List<CustomHelperTestClass> {TestClass};
-            INakedObject adapter = PersistorUtils.CreateAdapter(tc);
+            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(tc, null, null);
             adapter.SetATransientOid(new DummyOid());
             CustomHelperTestCollection(x => x.GetHtmlHelper<IEnumerable<CustomHelperTestClass>>().CollectionTableWith(tc, "TestInt", "TestCollectionOne").ToString(),
                                        "CollectionWithInclusions");
@@ -822,7 +822,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData.Model = adapter.Object;
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = FrameworkHelper.GetServices();
 
-            mocks.ViewDataContainer.Object.ViewData["CustomHelperTestClass-TestIntDefault-Input"] = PersistorUtils.CreateAdapter(0);
+            mocks.ViewDataContainer.Object.ViewData["CustomHelperTestClass-TestIntDefault-Input"] = NakedObjectsContext.ObjectPersistor.CreateAdapter(0, null, null);
 
             string s = mocks.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit(y => y.TestIntDefault).ToString();
 
@@ -1394,7 +1394,7 @@ namespace MvcTestApp.Tests.Helpers {
             var tc = (CustomHelperTestClass)GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
             mocks.ViewDataContainer.Object.ViewData.Model = tc;
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = FrameworkHelper.GetServices();
-            mocks.ViewDataContainer.Object.ViewData["CustomHelperTestClass-OneRefParameterAction-Parm-Select"] = PersistorUtils.CreateAdapter(tc);
+            mocks.ViewDataContainer.Object.ViewData["CustomHelperTestClass-OneRefParameterAction-Parm-Select"] = NakedObjectsContext.ObjectPersistor.CreateAdapter(tc, null, null);
 
             string s = mocks.GetHtmlHelper<CustomHelperTestClass>().ObjectActionAsDialog<CustomHelperTestClass, CustomHelperTestClass>(y => y.OneRefParameterAction).ToString();
    

@@ -37,7 +37,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                 obj = objectInstances[oid];
             }
             if (obj != null) {
-                nakedObject = PersistorUtils.CreateAdapter(oid, obj.DomainObject);
+                nakedObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(obj.DomainObject, oid, null);
                 nakedObject.OptimisticLock = obj.Version;
                 foreach (INakedObjectAssociation field in nakedObject.Specification.Properties.Where(field => field.IsPersisted)) {
                     INakedObject fieldObject = field.GetNakedObject(nakedObject);

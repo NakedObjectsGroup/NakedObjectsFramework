@@ -72,7 +72,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] { null, "" }.Select(PersistorUtils.CreateAdapter).ToArray();
+            INakedObject[] parms = new[] { null, "" }.Select(o =>  NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
             var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, service, action, parms);
             var claims = (IEnumerable)cm.RecoverCollection().Object;
@@ -87,7 +87,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] { null, "" }.Select(PersistorUtils.CreateAdapter).ToArray();
+            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
             var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, service, action, parms);
             string[] strings = cm.ToEncodedStrings();
@@ -105,7 +105,7 @@ namespace MvcTestApp.Tests.Helpers {
             object status = NakedObjectsContext.ObjectPersistor.Instances(typeof(ClaimStatus)).Cast<object>().First();
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] { status, "" }.Select(PersistorUtils.CreateAdapter).ToArray();
+            INakedObject[] parms = new[] { status, "" }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
             var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, service, action, parms);
             string[] strings = cm.ToEncodedStrings();
@@ -122,7 +122,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaimsByEnumStatus");
-            INakedObject[] parms = new[] { (object)ClaimStatusEnum.New }.Select(PersistorUtils.CreateAdapter).ToArray();
+            INakedObject[] parms = new[] { (object)ClaimStatusEnum.New }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
             var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, service, action, parms);
 
@@ -142,7 +142,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] { null, "" }.Select(PersistorUtils.CreateAdapter).ToArray();
+            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
             var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, service, action, parms);
             var claims = (IEnumerable)cm.RecoverCollection().Object;
@@ -164,7 +164,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] { null, "" }.Select(PersistorUtils.CreateAdapter).ToArray();
+            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
             var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, service, action, parms);
             var claims = (IEnumerable)cm.RecoverCollection().Object;
@@ -184,7 +184,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] { null, "" }.Select(PersistorUtils.CreateAdapter).ToArray();
+            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
             var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, service, action, parms);
             var claims = (IEnumerable)cm.RecoverCollection().Object;

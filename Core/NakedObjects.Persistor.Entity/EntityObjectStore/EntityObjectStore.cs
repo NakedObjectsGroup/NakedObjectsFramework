@@ -88,10 +88,14 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         internal EntityObjectStore() {
-            createAdapter = PersistorUtils.CreateAdapter;
-            replacePoco = PersistorUtils.ReplacePoco;
-            removeAdapter = PersistorUtils.RemoveAdapter;
-            createAggregatedAdapter = PersistorUtils.CreateAggregatedAdapter;
+            createAdapter = (oid, domainObject) => NakedObjectsContext.ObjectPersistor.CreateAdapter(domainObject, oid, null);
+            replacePoco = (nakedObject, newDomainObject) => {
+                NakedObjectsContext.ObjectPersistor.ReplacePoco(nakedObject, newDomainObject);
+            };
+            removeAdapter = o => {
+                NakedObjectsContext.ObjectPersistor.RemoveAdapter(o);
+            };
+            createAggregatedAdapter = (parent, property, obj) => NakedObjectsContext.ObjectPersistor.CreateAggregatedAdapter(parent, parent.Specification.GetProperty(property.Name).Id, obj);
             notifyUi = x => NakedObjectsContext.UpdateNotifier.AddChangedObject(x);
             updating = x => x.Updating();
             updated = x => x.Updated();
@@ -567,7 +571,7 @@ namespace NakedObjects.EntityObjectStore {
 
         private void SavingChangesHandler(object sender, EventArgs e) {
             IEnumerable<object> changedObjects = GetChangedObjectsInContext((ObjectContext) sender);
-            IEnumerable<INakedObject> adaptedObjects = changedObjects.Where(o => TypeUtils.IsEntityProxy(o.GetType())).Select(PersistorUtils.CreateAdapter).ToArray();
+            IEnumerable<INakedObject> adaptedObjects = changedObjects.Where(o => TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => NakedObjectsContext.ObjectPersistor.CreateAdapter(domainObject, null, null)).ToArray();
             adaptedObjects.Where(x => x.ResolveState.IsGhost()).ForEach(ResolveImmediately);
             adaptedObjects.ForEach(ValidateIfRequired);
             adaptedObjects.ForEach(x => notifyUi(x));

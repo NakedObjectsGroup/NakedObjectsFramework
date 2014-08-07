@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facets;
 
 namespace NakedObjects.Architecture.Persist {
     public interface INakedObjectTransactionManager : IRequiresSetup {
@@ -17,7 +18,8 @@ namespace NakedObjects.Architecture.Persist {
         void EndTransaction();
 
         void AddCommand(IPersistenceCommand command);
-        
+
+        void Abort(INakedObjectPersistor objectManager, IFacetHolder holder);
     }
 
 

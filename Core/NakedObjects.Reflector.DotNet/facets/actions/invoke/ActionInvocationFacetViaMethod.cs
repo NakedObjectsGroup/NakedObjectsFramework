@@ -8,6 +8,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Invoke;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
 
@@ -53,7 +54,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Invoke {
             }
 
             object result = InvokeUtils.Invoke(actionMethod, inObject, parameters);
-            INakedObject adaptedResult = PersistorUtils.CreateAdapter(result);
+            INakedObject adaptedResult = NakedObjectsContext.ObjectPersistor.CreateAdapter(result, null, null);
 
             Log.DebugFormat("Action result {0}", adaptedResult);
             return adaptedResult;

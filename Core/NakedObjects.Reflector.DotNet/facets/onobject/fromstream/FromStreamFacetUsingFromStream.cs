@@ -7,6 +7,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.FromStream;
 using NakedObjects.Capabilities;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.FromStream {
@@ -23,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.FromStream {
 
         public INakedObject ParseFromStream(Stream stream, string mimeType, string name) {
             object obj = fromStream.ParseFromStream(stream, mimeType, name);
-            return PersistorUtils.CreateAdapter(obj);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
         }
 
         #endregion

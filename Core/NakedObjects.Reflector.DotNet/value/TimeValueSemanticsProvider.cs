@@ -8,6 +8,7 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Value {
@@ -34,7 +35,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         #region ITimeValueFacet Members
 
         public INakedObject CreateValue(TimeSpan time) {
-            return PersistorUtils.CreateAdapter(time);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(time, null, null);
         }
 
         public TimeSpan TimeValue(INakedObject nakedObject) {

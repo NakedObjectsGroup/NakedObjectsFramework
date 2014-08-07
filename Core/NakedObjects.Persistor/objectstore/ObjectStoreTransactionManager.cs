@@ -4,6 +4,7 @@
 
 using System;
 using Common.Logging;
+using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Core.Persist;
 using NakedObjects.Persistor.Transaction;
@@ -100,6 +101,10 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public virtual void AddCommand(IPersistenceCommand command) {
             Transaction.AddCommand(command);
+        }
+
+        public  void Abort(INakedObjectPersistor objectManager, IFacetHolder holder) {
+            throw new NotImplementedException();
         }
 
         #endregion

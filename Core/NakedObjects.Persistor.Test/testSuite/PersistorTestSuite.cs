@@ -31,7 +31,7 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         private static INakedObject AdapterFor(object domainObject) {
-            return PersistorUtils.CreateAdapter(null, domainObject);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(domainObject, null, null);
         }
 
 

@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
@@ -43,11 +44,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
                 newCollection = newCollection.ToList();
             }
 
-            return PersistorUtils.CreateAdapter(newCollection);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(newCollection, null, null);
         }
 
         public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection) {
-            return AsGenericIQueryable(collection).AsEnumerable().Select(arg => PersistorUtils.CreateAdapter(arg));
+            return AsGenericIQueryable(collection).AsEnumerable().Select(arg => NakedObjectsContext.ObjectPersistor.CreateAdapter(arg, null, null));
         }
 
         public override IQueryable AsQueryable(INakedObject collection) {

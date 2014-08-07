@@ -111,7 +111,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Display name of object
         /// </summary>
         public static MvcHtmlString ObjectTitle(this HtmlHelper html, object model) {
-            INakedObject nakedObject = PersistorUtils.CreateAdapter(model);
+            INakedObject nakedObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(model, null, null);
             return html.ObjectTitle(nakedObject);
         }
 
@@ -125,14 +125,14 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Display name of object with icon
         /// </summary>
         public static MvcHtmlString Object(this HtmlHelper html, object model) {
-            INakedObject nakedObject = PersistorUtils.CreateAdapter(model);
+            INakedObject nakedObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(model, null, null);
             string title = nakedObject.Specification.IsCollection ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString();
             title = string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title;
             return CommonHtmlHelper.WrapInDiv(html.ObjectIcon(nakedObject) + title, IdHelper.ObjectName);
         }
 
         public static MvcHtmlString ActionResult(this HtmlHelper html, ActionResultModel model) {
-            INakedObject nakedObject = PersistorUtils.CreateAdapter(model.Result);
+            INakedObject nakedObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(model.Result, null, null);
             string title = GetCollectionTitle(nakedObject, html);
             title = model.Action.Name + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title);
             return CommonHtmlHelper.WrapInDiv(title, IdHelper.ObjectName);

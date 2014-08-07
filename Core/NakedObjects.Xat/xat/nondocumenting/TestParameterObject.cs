@@ -21,7 +21,7 @@ namespace NakedObjects.Xat {
         }
 
         public INakedObject NakedObject {
-            get { return PersistorUtils.CreateAdapter(domainObject); }
+            get { return NakedObjectsContext.ObjectPersistor.CreateAdapter(domainObject, null, null); }
             set { throw new UnexpectedCallException(); }
         }
 

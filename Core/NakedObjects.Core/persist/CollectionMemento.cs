@@ -54,7 +54,7 @@ namespace NakedObjects.Core.Persist {
             Parameters = parameters;
 
             if (Target.Specification.IsViewModel) {
-                PersistorUtils.PopulateViewModelKeys(Target);
+                NakedObjectsContext.ObjectPersistor.PopulateViewModelKeys(Target);
             }
         }
 
@@ -79,7 +79,7 @@ namespace NakedObjects.Core.Persist {
                 switch (parmType) {
                     case ParameterType.Value:
                         object obj = helper.GetNextObject();
-                        parameters.Add(PersistorUtils.CreateAdapter(obj));
+                        parameters.Add(NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null));
                         break;
                     case ParameterType.Object:
                         var oid = (IOid) helper.GetNextEncodedToStrings();
@@ -90,13 +90,13 @@ namespace NakedObjects.Core.Persist {
                         Type vInstanceType;
                         IList<object> vColl = helper.GetNextValueCollection(out vInstanceType);
                         IList typedVColl = CollectionUtils.ToTypedIList(vColl, vInstanceType);
-                        parameters.Add(PersistorUtils.CreateAdapter(typedVColl));
+                        parameters.Add(NakedObjectsContext.ObjectPersistor.CreateAdapter(typedVColl, null, null));
                         break;
                     case ParameterType.ObjectCollection:
                         Type oInstanceType;
                         List<object> oColl = helper.GetNextObjectCollection(out oInstanceType).Cast<IOid>().Select(o => RestoreObject(o).Object).ToList();
                         IList typedOColl = CollectionUtils.ToTypedIList(oColl, oInstanceType);
-                        parameters.Add(PersistorUtils.CreateAdapter(typedOColl));
+                        parameters.Add(NakedObjectsContext.ObjectPersistor.CreateAdapter(typedOColl, null, null));
                         break;
                     default:
                         throw new ArgumentException(string.Format("Unexpected parameter type value: {0}", parmType));
@@ -191,11 +191,11 @@ namespace NakedObjects.Core.Persist {
 
         private INakedObject RestoreObject(IOid oid) {
             if (oid.IsTransient) {
-                return PersistorUtils.RecreateInstance(oid, oid.Specification);
+                return NakedObjectsContext.ObjectPersistor.RecreateInstance(oid, oid.Specification);
             }
 
             if (oid is ViewModelOid) {
-                return PersistorUtils.GetViewModel(oid as ViewModelOid);
+                return NakedObjectsContext.ObjectPersistor.GetViewModel(oid as ViewModelOid);
             }
 
             return persistor.LoadObject(oid, oid.Specification);
@@ -207,7 +207,7 @@ namespace NakedObjects.Core.Persist {
             if (selectedObjects != null) {
                 IEnumerable<object> selected = nakedObject.GetDomainObject<IEnumerable>().Cast<object>().Where(x => selectedObjects.Contains(x));
                 IList newResult = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
-                nakedObject = PersistorUtils.CreateAdapter(newResult);
+                nakedObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(newResult, null, null);
             }
 
             nakedObject.SetATransientOid(this);

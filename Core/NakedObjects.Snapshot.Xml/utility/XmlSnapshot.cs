@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
@@ -32,7 +33,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         // Start a snapshot at the root object, using supplied namespace manager.
         public XmlSnapshot(object obj, XmlSchema schema) {
-            INakedObject rootObject = PersistorUtils.CreateAdapter(obj);
+            INakedObject rootObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
             Log.Debug(".ctor(" + DoLog("rootObj", rootObject) + AndLog("schema", schema) + AndLog("addOids", "" + true) + ")");
 
             Schema = schema;

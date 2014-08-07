@@ -9,6 +9,7 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Collections.Modify;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
@@ -24,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         }
 
         public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection) {
-            return AsCollection(collection).Cast<object>().Select(PersistorUtils.CreateAdapter);
+            return AsCollection(collection).Cast<object>().Select(domainObject => NakedObjectsContext.ObjectPersistor.CreateAdapter(domainObject, null, null));
         }
 
         public override IQueryable AsQueryable(INakedObject collection) {
@@ -46,7 +47,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         }
 
         public override INakedObject Page(int page, int size, INakedObject collection, bool forceEnumerable) {
-            return PersistorUtils.CreateAdapter(PageInternal(page, size, collection));
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(PageInternal(page, size, collection), null, null);
         }
 
         public override void Init(INakedObject collection, INakedObject[] initData) {

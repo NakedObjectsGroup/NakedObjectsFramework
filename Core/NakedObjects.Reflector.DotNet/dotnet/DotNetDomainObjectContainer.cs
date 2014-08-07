@@ -79,7 +79,7 @@ namespace NakedObjects.Reflector.DotNet {
 
         public object NewTransientInstance(Type type) {
             INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(type);
-            return PersistorUtils.CreateTransientInstance(spec).Object;
+            return NakedObjectsContext.ObjectPersistor.CreateInstance(spec).Object;
         }
 
         public void ObjectChanged(object obj) {
@@ -141,7 +141,7 @@ namespace NakedObjects.Reflector.DotNet {
         }
 
         private static INakedObject AdapterFor(object obj) {
-            return PersistorUtils.CreateAdapter(obj);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
         }
     }
 

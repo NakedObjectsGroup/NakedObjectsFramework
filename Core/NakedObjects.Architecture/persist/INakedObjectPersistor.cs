@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -110,6 +111,10 @@ namespace NakedObjects.Architecture.Persist {
 
         INakedObject FindByKeys(Type type, object[] keys);
         INakedObject[] GetServices(ServiceTypes serviceType);
+        INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj);
+        List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);
+        IOid RestoreGenericOid(string[] encodedData);
+        void PopulateViewModelKeys(INakedObject nakedObject);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

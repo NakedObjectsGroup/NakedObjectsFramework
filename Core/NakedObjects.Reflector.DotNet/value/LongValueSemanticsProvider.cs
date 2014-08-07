@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Properties.Defaults;
 using NakedObjects.Capabilities;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Value {
@@ -88,7 +89,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
         public INakedObject CreateValue(long value) {
-            return PersistorUtils.CreateAdapter(value);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
         }
 
 

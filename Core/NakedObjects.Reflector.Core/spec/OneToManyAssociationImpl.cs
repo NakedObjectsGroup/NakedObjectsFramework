@@ -94,7 +94,7 @@ namespace NakedObjects.Reflector.Spec {
             if (collection == null) {
                 return null;
             }
-            INakedObject adapterFor = PersistorUtils.CreateAggregatedAdapter(inObject, this, collection);
+            INakedObject adapterFor = NakedObjectsContext.ObjectPersistor.CreateAggregatedAdapter(inObject, ((INakedObjectAssociation) this).Id, collection);
             adapterFor.TypeOfFacet = GetFacet<ITypeOfFacet>();
             SetResolveStateForDerivedCollections(adapterFor);
             return adapterFor;

@@ -9,6 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Capabilities;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Value {
@@ -41,7 +42,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         #region IDateValueFacet Members
 
         public INakedObject CreateValue(DateTime date) {
-            return PersistorUtils.CreateAdapter(date);
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(date, null, null);
         }
 
         public DateTime DateValue(INakedObject nakedObject) {
