@@ -19,7 +19,7 @@ namespace NakedObjects.Architecture.Persist {
 
         IOid CreateTransientOid(object obj);
 
-        IOid RestoreOid(string[] encodedData);
+        IOid RestoreOid(INakedObjectPersistor persistor, string[] encodedData);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

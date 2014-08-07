@@ -48,8 +48,8 @@ namespace NakedObjects.EntityObjectStore {
 
         public void Shutdown() {}
 
-        public IOid RestoreOid(string[] encodedData) {
-            return NakedObjectsContext.ObjectPersistor.RestoreGenericOid(encodedData) ?? new EntityOid(reflector, encodedData);
+        public IOid RestoreOid(INakedObjectPersistor persistor, string[] encodedData) {
+            return persistor.RestoreGenericOid(encodedData) ?? new EntityOid(reflector, encodedData);
         }
 
         public EntityOid CreateOid(string typeName, object[] keys) {

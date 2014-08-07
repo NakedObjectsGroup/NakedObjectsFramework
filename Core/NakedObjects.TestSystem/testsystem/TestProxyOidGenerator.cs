@@ -20,6 +20,10 @@ namespace NakedObjects.TestSystem {
             return CreateOid();
         }
 
+        public IOid RestoreOid(INakedObjectPersistor persistor, string[] encodedData) {
+            throw new System.NotImplementedException();
+        }
+
         public void ConvertTransientToPersistentOid(IOid oid) {
             ((TestProxyOid) oid).MakePersistent(persistentId++);
             ((TestProxyOid) oid).previous = CreateOid();

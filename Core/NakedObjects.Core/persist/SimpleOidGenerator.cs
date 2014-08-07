@@ -5,7 +5,6 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Persist {
@@ -23,7 +22,7 @@ namespace NakedObjects.Core.Persist {
 
         public SimpleOidGenerator(INakedObjectReflector reflector, long start) {
             Assert.AssertNotNull(reflector);
-
+         
             this.reflector = reflector;
             this.start = start;
 
@@ -66,8 +65,8 @@ namespace NakedObjects.Core.Persist {
             }
         }
 
-        public IOid RestoreOid(string[] encodedData) {
-            return NakedObjectsContext.ObjectPersistor.RestoreGenericOid(encodedData) ?? new SerialOid(reflector, encodedData);
+        public IOid RestoreOid(INakedObjectPersistor persistor, string[] encodedData) {
+            return persistor.RestoreGenericOid(encodedData) ?? new SerialOid(reflector, encodedData);
         }
 
         #endregion
