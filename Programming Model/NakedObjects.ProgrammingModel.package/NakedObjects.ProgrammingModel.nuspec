@@ -12,7 +12,7 @@
     <description>Naked Objects Programming Model. Add to a Model project (a C# or VB class library) for useful Attributes and Helper classes.</description>
     <tags>naked objects nakedobjects</tags>
     <dependencies>
-      <dependency id="NakedObjects.Ide" version="[4.6.0, 5.0)" />
+      <dependency id="NakedObjects.Ide" version="[5.0.0, 6.0)" />
     </dependencies>
   </metadata>
 </package>
