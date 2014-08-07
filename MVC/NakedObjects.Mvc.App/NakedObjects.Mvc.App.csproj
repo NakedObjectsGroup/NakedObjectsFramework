@@ -335,6 +335,7 @@
     <Content Include="Images\cartons.png" />
     <Content Include="Images\cellphone.png" />
     <Content Include="Images\certificate.png" />
+    <Content Include="Images\checked.png" />
     <Content Include="Images\clapboard.png" />
     <Content Include="Images\clipboard.png" />
     <Content Include="Images\clock.png" />
@@ -409,6 +410,7 @@
     <Content Include="Images\transmitter.png" />
     <Content Include="Images\trolley.png" />
     <Content Include="Images\trolley_item.png" />
+    <Content Include="Images\unchecked.png" />
     <Content Include="Project_Readme.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
