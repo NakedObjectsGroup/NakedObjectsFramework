@@ -15,7 +15,7 @@
     <tags>rest restful objects naked nakedobjects ddd domain driven design api</tags>
     <description>Restful Objects Server. Add to an ASP.NET MVC4 (Empty) Web Application project to auto-create a restful interface for a domain model.</description>
     <dependencies>
-      <dependency id="NakedObjects.Surface.Nof4" version="[3.1.0, 4.0) />
+      <dependency id="NakedObjects.Surface.Nof4" version="3.1.0" />
       <dependency id="RestfulObjects.Mvc" version="[2.0.0, 3.0)" />
       <dependency id="WebActivatorEx" version="[2.0.5, 3.0)" />
     </dependencies>

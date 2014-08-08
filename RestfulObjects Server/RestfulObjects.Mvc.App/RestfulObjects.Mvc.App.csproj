@@ -110,7 +110,7 @@
     </Reference>
     <Reference Include="NakedObjects.Surface.Nof4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.3.0.0\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.3.1.0\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Types">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Types.dll</HintPath>

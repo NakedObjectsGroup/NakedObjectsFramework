@@ -170,7 +170,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Surface.Nof4">
-      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.3.0.0\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Surface.Nof4.3.1.0\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Types">
