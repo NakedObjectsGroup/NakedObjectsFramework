@@ -9,6 +9,7 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
@@ -44,7 +45,7 @@ namespace NakedObjects.Persistor.Objectstore {
         ///     If the object to be persisted is a collection, then each element of that collection, that is not
         ///     already persistent, should be made persistent by recursively calling this method.
         /// </para>
-        ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject);
+        ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session);
 
         void RegisterService(string name, IOid oid);
 
@@ -59,7 +60,7 @@ namespace NakedObjects.Persistor.Objectstore {
         ///     updated to reflect the state of the specified objects. Once updated, the object store should issue a
         ///     notification to all of the object's users via the <see cref="IUpdateNotifier" /> object.
         /// </summary>
-        ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject);
+        ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session);
 
         void EndTransaction();
 

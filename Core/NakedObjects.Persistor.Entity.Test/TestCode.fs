@@ -36,15 +36,15 @@ let CreateAndSetup<'t when 't : not struct> (p : EntityObjectStore) setter =
 let uniqueName() = Guid.NewGuid().ToString()
 
 let CreateAndEndTransaction  (p : EntityObjectStore) o =
-    let cmd = p.CreateCreateObjectCommand(GetOrAddAdapterForTest o null)
+    let cmd = p.CreateCreateObjectCommand((GetOrAddAdapterForTest o null), null)
     p.EndTransaction()
 
 let SaveAndEndTransaction  (p : EntityObjectStore) o =
-    let cmd = p.CreateSaveObjectCommand(GetOrAddAdapterForTest o null)
+    let cmd = p.CreateSaveObjectCommand((GetOrAddAdapterForTest o null), null)
     p.EndTransaction()
 
 let SaveWithNoEndTransaction  (p : EntityObjectStore) o =
-    let cmd = p.CreateSaveObjectCommand(GetOrAddAdapterForTest o null)
+    let cmd = p.CreateSaveObjectCommand((GetOrAddAdapterForTest o null), null)
     ()
 
 let GetInstancesGenericNotEmpty<'t when 't : not struct> (p: EntityObjectStore)  =

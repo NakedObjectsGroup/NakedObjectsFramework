@@ -25,7 +25,6 @@ namespace NakedObjects.Core.Adapter {
         private string defaultTitle;
         private IOid oid;
         private readonly INakedObjectReflector reflector;
-        private readonly INakedObjectPersistor persistor;
         private readonly ISession session;
         private object poco;
         private INakedObjectSpecification specification;
@@ -36,16 +35,14 @@ namespace NakedObjects.Core.Adapter {
             Log = LogManager.GetLogger(typeof (PocoAdapter));
         }
 
-        public PocoAdapter(INakedObjectReflector reflector, INakedObjectPersistor persistor, ISession session, object poco, IOid oid) {
+        public PocoAdapter(INakedObjectReflector reflector, ISession session, object poco, IOid oid) {
             Assert.AssertNotNull(reflector);
-            Assert.AssertNotNull(persistor);
             //Assert.AssertNotNull(session);
 
             if (poco is INakedObject) {
                 throw new AdapterException("Adapter can't be used to adapt an adapter: " + poco);
             }
             this.reflector = reflector;
-            this.persistor = persistor;
             this.session = session;
             this.poco = poco;
             this.oid = oid;
@@ -202,14 +199,7 @@ namespace NakedObjects.Core.Adapter {
         #endregion
 
         private string ObjectTitleString() {
-            string title = Specification.GetTitle(this);
-            if (title == null) {
-                if (ResolveState.IsGhost()) {
-                    Log.InfoFormat("attempting to use unresolved object; resolving it immediately: {0}", this);
-                    persistor.ResolveImmediately(this);
-                }
-            }
-            return title ?? DefaultTitle;
+             return Specification.GetTitle(this) ?? DefaultTitle;
         }
 
         private string CollectionTitleString(ICollectionFacet facet) {

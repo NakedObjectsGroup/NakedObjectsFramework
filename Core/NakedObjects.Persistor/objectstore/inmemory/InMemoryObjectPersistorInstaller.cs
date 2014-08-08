@@ -42,15 +42,11 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                 new CreateIfNullPocoAdapterDecorator(inMemoryObjectStore, pocoAdapterMap ?? new PocoAdapterHashMap()));
 
             var persistor = new ObjectStorePersistor(
-                reflector,
-                //session, 
-               // NakedObjectsContext.UpdateNotifier,
+                reflector,  
                 inMemoryObjectStore,
                 new DefaultPersistAlgorithm(),
                 oidGenerator,
                 identityMapImpl);
-
-            //persistor.Session = session;
 
             inMemoryObjectStore.IdentityMap = identityMapImpl;
 
@@ -87,7 +83,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             }
 
             public INakedObject GetObject(object obj) {
-                return decorated.GetObject(obj) ?? objectStore.CreateAdapter(obj);
+                return decorated.GetObject(obj) ?? objectStore.CreateAdapter(obj, NakedObjectsContext.Session);
             }
 
             public void Reset() {

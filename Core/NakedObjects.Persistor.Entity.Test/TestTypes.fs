@@ -136,7 +136,7 @@ type MockPersistedObjectAdder(p : EntityObjectStore) =
     let persistor = p
     interface IPersistedObjectAdder with 
         member x.AddPersistedObject(nakedObject : INakedObject) =
-            let cmd = persistor.CreateCreateObjectCommand nakedObject 
+            let cmd = persistor.CreateCreateObjectCommand(nakedObject, null)
             ()
         member x.MadePersistent(nakedObject : INakedObject) =            
             nakedObject.ResolveState.Handle Events.StartResolvingEvent

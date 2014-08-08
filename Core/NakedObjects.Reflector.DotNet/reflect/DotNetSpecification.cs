@@ -403,11 +403,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 titleFacet = GetFacet<ITitleFacet>();
             }
             if (titleFacet != null) {
-                string titleString = titleFacet.GetTitle(nakedObject);
-                if (titleString != null) {
-                    return titleString;
-                }
+                return titleFacet.GetTitle(nakedObject) ?? DefaultTitle();
             }
+            return DefaultTitle();
+        }
+
+        private string DefaultTitle() {
             return IsService ? SingularName : UntitledName;
         }
 

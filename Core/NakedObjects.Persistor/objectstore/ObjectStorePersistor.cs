@@ -43,7 +43,8 @@ namespace NakedObjects.Persistor.Objectstore {
         private readonly INakedObjectTransactionManager transactionManager;
         private IContainerInjector containerInjector;
         private readonly IIdentityMap identityMap;
-      
+        private ISession session;
+
 
         static ObjectStorePersistor() {
             Log = LogManager.GetLogger(typeof (ObjectStorePersistor));
@@ -55,12 +56,11 @@ namespace NakedObjects.Persistor.Objectstore {
             Assert.AssertNotNull(oidGenerator);
             Assert.AssertNotNull(identityMap);
             Assert.AssertNotNull(reflector);
-            //Assert.AssertNotNull(updateNotifier);
+          
 
 
             this.reflector = reflector;
-            //this.session = session;
-            //this.updateNotifier = updateNotifier;
+        
             this.objectStore = objectStore;
             this.persistAlgorithm = persistAlgorithm;
             OidGenerator = oidGenerator;
@@ -72,7 +72,12 @@ namespace NakedObjects.Persistor.Objectstore {
 
         // property Injected dependencies as temp workarounds while refactoring 
 
-        public ISession Session { set;  get; }
+        public ISession Session {
+            set {
+                session = value;
+            }
+            get { return session; }
+        }
 
         public object UpdateNotifier {
             set { updateNotifier = (IUpdateNotifier)value; }
@@ -370,7 +375,7 @@ namespace NakedObjects.Persistor.Objectstore {
                         throw new NotPersistableException("cannot change immutable object");
                     }
                     nakedObject.Updating();
-                    ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject);
+                    ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject, Session);
                     transactionManager.AddCommand(saveObjectCommand);
                     nakedObject.Updated();
                     updateNotifier.AddChangedObject(nakedObject);
@@ -488,7 +493,7 @@ namespace NakedObjects.Persistor.Objectstore {
             if (nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return;
             }
-            ICreateObjectCommand createObjectCommand = objectStore.CreateCreateObjectCommand(nakedObject);
+            ICreateObjectCommand createObjectCommand = objectStore.CreateCreateObjectCommand(nakedObject, Session);
             transactionManager.AddCommand(createObjectCommand);
         }
 
@@ -618,7 +623,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         private PocoAdapter NewAdapter(object domainObject, IOid transientOid) {
-            return new PocoAdapter(reflector, this, Session, domainObject, transientOid);
+            return new PocoAdapter(reflector, Session, domainObject, transientOid);
         }
 
         private void CreateInlineObjects(INakedObject parentObject, object rootObject) {

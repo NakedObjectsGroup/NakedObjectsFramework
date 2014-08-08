@@ -10,10 +10,11 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Key;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Persistor.Objectstore.Inmemory {
     /*
@@ -23,11 +24,20 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
     */
 
     public class MemoryObjectStoreInstances {
+        private readonly INakedObjectReflector reflector;
+    
         private static int nextKey;
         private readonly IDictionary<IOid, ObjectAndVersion> objectInstances = new Dictionary<IOid, ObjectAndVersion>();
 
         public static void ResetNextKey() {
             nextKey = 0;
+        }
+
+        public MemoryObjectStoreInstances(INakedObjectReflector reflector) {
+            Assert.AssertNotNull(reflector);
+     
+            this.reflector = reflector;
+           
         }
 
         public virtual INakedObject GetObject(IOid oid) {
@@ -81,15 +91,15 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
         }
 
 
-        public virtual void Save(INakedObject nakedObject) {
+        public virtual void Save(INakedObject nakedObject, ISession session) {
             lock (objectInstances) {
                 SerialNumberVersion version;
                 if (objectInstances.ContainsKey(nakedObject.Oid)) {
                     version = objectInstances[nakedObject.Oid].Version;
-                    version = (SerialNumberVersion) version.Next(NakedObjectsContext.Session.UserName, DateTime.Now);
+                    version = (SerialNumberVersion) version.Next(session.UserName, DateTime.Now);
                 }
                 else {
-                    version = new SerialNumberVersion(1, NakedObjectsContext.Session.UserName, DateTime.Now);
+                    version = new SerialNumberVersion(1, session.UserName, DateTime.Now);
                     SetKey(nakedObject);
                     nakedObject.Persisted();
                 }
@@ -104,13 +114,13 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             }
         }
 
-        public virtual INakedObject GetAdapterFor(object poco) {
+        public virtual INakedObject GetAdapterFor(object poco, ISession session) {
             lock (objectInstances) {
                 foreach (IOid oid in objectInstances.Keys) {
                     ObjectAndVersion holder = objectInstances[oid];
                     object domainObject = holder.DomainObject;
                     if (domainObject == poco) {
-                        var adapter = new PocoAdapter(NakedObjectsContext.Reflector, NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session, poco, oid) {OptimisticLock = holder.Version};
+                        var adapter = new PocoAdapter(reflector, session, poco, oid) {OptimisticLock = holder.Version};
                         adapter.ResolveState.Handle(Events.InitializePersistentEvent);
                         adapter.ResolveState.Handle(Events.StartResolvingEvent);
                         adapter.ResolveState.Handle(Events.EndResolvingEvent);

@@ -24,6 +24,7 @@ using NakedObjects.Architecture.Facets.Objects.Callbacks;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Adapter;
@@ -446,7 +447,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public INakedObject CreateAdapterForKnownObject(object domainObject) {
             EntityOid oid = oidGenerator.CreateOid(EntityUtils.GetProxiedTypeName(domainObject), GetContext(domainObject).GetKey(domainObject));
-            return new PocoAdapter(NakedObjectsContext.Reflector, NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session, domainObject, oid);
+            return new PocoAdapter(NakedObjectsContext.Reflector, NakedObjectsContext.Session, domainObject, oid);
         }
 
         private static string ConcatenateMessages(Exception e) {
@@ -1035,7 +1036,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
 
-        public ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject) {
+        public ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session) {
             Log.DebugFormat("CreateCreateObjectCommand : {0}", nakedObject);
             try {
                 return ExecuteCommand(new EntityCreateObjectCommand(nakedObject, GetContext(nakedObject)));
@@ -1061,7 +1062,7 @@ namespace NakedObjects.EntityObjectStore {
             }
         }
 
-        public ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject) {
+        public ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session) {
             Log.DebugFormat("CreateSaveObjectCommand : {0}", nakedObject);
             try {
                 return ExecuteCommand(new EntitySaveObjectCommand(nakedObject, GetContext(nakedObject)));
