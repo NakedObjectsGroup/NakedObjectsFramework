@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.AutoComplete;
 using NakedObjects.Architecture.Facets.Objects.Aggregated;
@@ -19,16 +18,17 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class OneToOneAssociationImpl : NakedObjectAssociationAbstract, IOneToOneAssociation {
+        private readonly INakedObjectReflector reflector;
         private readonly INakedObjectAssociationPeer reflectiveAdapter;
 
-        public OneToOneAssociationImpl(INakedObjectAssociationPeer association)
+        public OneToOneAssociationImpl(INakedObjectReflector reflector, INakedObjectAssociationPeer association)
             : base(association.Identifier.MemberName, association.Specification, association) {
+            this.reflector = reflector;
             reflectiveAdapter = association;
         }
 
@@ -156,7 +156,7 @@ namespace NakedObjects.Reflector.Spec {
             if (obj == null) {
                 return null;
             }
-            INakedObjectSpecification specification = NakedObjectsContext.Reflector.LoadSpecification(obj.GetType());
+            INakedObjectSpecification specification = reflector.LoadSpecification(obj.GetType());
             if (specification.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return NakedObjectsContext.ObjectPersistor.CreateAggregatedAdapter(fromObject, ((INakedObjectAssociation) this).Id, obj);
             }

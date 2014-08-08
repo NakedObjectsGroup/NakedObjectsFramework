@@ -13,8 +13,8 @@ using NakedObjects.Reflector.DotNet.Facets.Collections.Modify;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class CollectionFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public CollectionFacetFactory()
-            : base(NakedObjectFeatureType.ObjectsPropertiesAndCollections) {}
+        public CollectionFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndCollections) { }
 
         private bool ProcessArray(Type type, IFacetHolder holder) {
             holder.AddFacet(new DotNetArrayFacet(holder, type.GetElementType()));

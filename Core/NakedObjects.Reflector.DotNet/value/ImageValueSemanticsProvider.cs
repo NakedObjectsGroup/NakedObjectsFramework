@@ -7,6 +7,7 @@ using System.IO;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
 using NakedObjects.Value;
 
@@ -20,12 +21,12 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public ImageValueSemanticsProvider()
-            : this(null) {}
+        public ImageValueSemanticsProvider(INakedObjectReflector reflector)
+            : this(reflector, null) {}
 
 
-        public ImageValueSemanticsProvider(IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, null) {}
+        public ImageValueSemanticsProvider(INakedObjectReflector reflector, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, null, reflector) { }
 
         public static Type Type {
             get { return typeof (IImageValueFacet); }

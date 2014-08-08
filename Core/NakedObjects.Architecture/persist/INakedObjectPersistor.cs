@@ -111,7 +111,7 @@ namespace NakedObjects.Architecture.Persist {
 
         INakedObject FindByKeys(Type type, object[] keys);
         INakedObject[] GetServices(ServiceTypes serviceType);
-        INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj);
+        
         List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);
         IOid RestoreGenericOid(string[] encodedData);
         void PopulateViewModelKeys(INakedObject nakedObject);

@@ -14,8 +14,8 @@ using ParameterInfo = System.Reflection.ParameterInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine {
     public class MultiLineAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MultiLineAnnotationFacetFactory()
-            : base(NakedObjectFeatureType.ObjectsPropertiesAndParameters) {}
+        public MultiLineAnnotationFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             var attribute = type.GetCustomAttributeByReflection<MultiLineAttribute>();

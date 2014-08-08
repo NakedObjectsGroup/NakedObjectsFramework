@@ -7,6 +7,7 @@ using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Reflector.DotNet.Facets;
 using NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory;
@@ -36,7 +37,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             reflector.Init();
 
             if (OptionalByDefault) {
-                ((FacetFactorySetImpl) reflector.IntrospectionControlParameters.FacetFactorySet).ReplaceAndRegisterFactory(typeof (MandatoryDefaultFacetFactory), new OptionalDefaultFacetFactory());
+                ((FacetFactorySetImpl) reflector.IntrospectionControlParameters.FacetFactorySet).ReplaceAndRegisterFactory(typeof (MandatoryDefaultFacetFactory), new OptionalDefaultFacetFactory(NakedObjectsContext.Reflector));
             }
 
             return reflector;

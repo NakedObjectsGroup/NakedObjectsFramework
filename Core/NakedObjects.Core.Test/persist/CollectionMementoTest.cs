@@ -98,11 +98,11 @@ namespace NakedObjects.Core.Persist {
 
         private void RoundTrip(CollectionMemento memento) {
             string[] strings1 = memento.ToEncodedStrings();
-            var newMemento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, strings1);
+            var newMemento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, strings1);
             string[] strings2 = newMemento.ToEncodedStrings();
             Assert.IsTrue(strings1.SequenceEqual(strings2), "memento failed roundtrip");
 
-            var copyMemento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, memento, new object[] { });
+            var copyMemento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, memento, new object[] { });
             string[] strings3 = copyMemento.ToEncodedStrings();
             Assert.IsTrue(strings1.SequenceEqual(strings3), "memento failed copy");
         }
@@ -118,18 +118,18 @@ namespace NakedObjects.Core.Persist {
             INakedObject targetNo = NakedObjectsContext.ObjectPersistor.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetObjectActions().Single(a => a.Id == "Action1");
 
-            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, targetNo, action, new INakedObject[] { });
+            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, targetNo, action, new INakedObject[] { });
             RoundTrip(memento);
             RecoverCollection(target.Action1(), memento);
         }
 
         [Test]
         public void TestActionNoParmsTransient() {
-            var targetNo = NakedObjectsContext.ObjectPersistor.CreateInstance(NakedObjectsContext.Reflector.LoadSpecification(typeof (TestDomainObject)));
+            var targetNo = NakedObjectsContext.ObjectPersistor.CreateInstance(reflector.LoadSpecification(typeof (TestDomainObject)));
 
             INakedObjectAction action = targetNo.Specification.GetObjectActions().Single(a => a.Id == "Action1");
 
-            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, targetNo, action, new INakedObject[] { });
+            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, targetNo, action, new INakedObject[] { });
             RoundTrip(memento);
             RecoverCollection(targetNo.GetDomainObject<TestDomainObject>().Action1(), memento);
         }
@@ -140,9 +140,9 @@ namespace NakedObjects.Core.Persist {
             INakedObject targetNo = NakedObjectsContext.ObjectPersistor.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetObjectActions().Single(a => a.Id == "Action1");
 
-            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, targetNo, action, new INakedObject[] { });
+            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, targetNo, action, new INakedObject[] { });
 
-            var selectedMemento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, memento, new[] { target });
+            var selectedMemento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, memento, new[] { target });
 
             RoundTrip(selectedMemento);
             IEnumerable<TestDomainObject> recoveredCollection = selectedMemento.RecoverCollection().GetAsEnumerable().Select(no => no.GetDomainObject<TestDomainObject>());
@@ -166,7 +166,7 @@ namespace NakedObjects.Core.Persist {
             var rawParm = new List<TestDomainObject> {target, obj2};
             INakedObject parm = NakedObjectsContext.ObjectPersistor.CreateAdapter(rawParm, null, null);
 
-            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, targetNo, action, new[] { parm });
+            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, targetNo, action, new[] { parm });
 
             RoundTrip(memento);
             RecoverCollection(target.Action5(rawParm), memento);
@@ -182,7 +182,7 @@ namespace NakedObjects.Core.Persist {
             var rawParm = new List<TestDomainObject>();
             INakedObject parm = NakedObjectsContext.ObjectPersistor.CreateAdapter(rawParm, null, null);
 
-            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector,  targetNo, action, new[] { parm });
+            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector,  targetNo, action, new[] { parm });
 
             RoundTrip(memento);
             RecoverCollection(target.Action5(rawParm), memento);
@@ -195,7 +195,7 @@ namespace NakedObjects.Core.Persist {
             INakedObject targetNo = NakedObjectsContext.ObjectPersistor.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetObjectActions().Single(a => a.Id == "Action3");
 
-            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, targetNo, action, new[] { targetNo });
+            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, targetNo, action, new[] { targetNo });
 
             RoundTrip(memento);
             RecoverCollection(target.Action3(target), memento);
@@ -207,7 +207,7 @@ namespace NakedObjects.Core.Persist {
             INakedObject targetNo = NakedObjectsContext.ObjectPersistor.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetObjectActions().Single(a => a.Id == "Action3");
 
-            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, targetNo, action, new INakedObject[] { null });
+            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, targetNo, action, new INakedObject[] { null });
 
             RoundTrip(memento);
             RecoverCollection(target.Action3(null), memento);
@@ -220,7 +220,7 @@ namespace NakedObjects.Core.Persist {
             INakedObjectAction action = targetNo.Specification.GetObjectActions().Single(a => a.Id == "Action4");
 
             var rawParm = new List<int> {1, 2};
-            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, targetNo, action, new[] { NakedObjectsContext.ObjectPersistor.CreateAdapter(rawParm, null, null) });
+            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, targetNo, action, new[] { NakedObjectsContext.ObjectPersistor.CreateAdapter(rawParm, null, null) });
 
             RoundTrip(memento);
             RecoverCollection(target.Action4(rawParm), memento);
@@ -233,7 +233,7 @@ namespace NakedObjects.Core.Persist {
             INakedObjectAction action = targetNo.Specification.GetObjectActions().Single(a => a.Id == "Action4");
 
             var rawParm = new List<int>();
-            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, targetNo, action, new[] { NakedObjectsContext.ObjectPersistor.CreateAdapter(rawParm, null, null) });
+            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, targetNo, action, new[] { NakedObjectsContext.ObjectPersistor.CreateAdapter(rawParm, null, null) });
 
             RoundTrip(memento);
             RecoverCollection(target.Action4(rawParm), memento);
@@ -246,7 +246,7 @@ namespace NakedObjects.Core.Persist {
             INakedObjectAction action = targetNo.Specification.GetObjectActions().Single(a => a.Id == "Action7");
 
             var rawParm = new List<string> {"1", "2"};
-            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, targetNo, action, new[] { NakedObjectsContext.ObjectPersistor.CreateAdapter(rawParm, null, null) });
+            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, targetNo, action, new[] { NakedObjectsContext.ObjectPersistor.CreateAdapter(rawParm, null, null) });
 
             RoundTrip(memento);
             RecoverCollection(target.Action7(rawParm), memento);
@@ -258,7 +258,7 @@ namespace NakedObjects.Core.Persist {
             INakedObject targetNo = NakedObjectsContext.ObjectPersistor.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetObjectActions().Single(a => a.Id == "Action2");
 
-            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, targetNo, action, new[] { NakedObjectsContext.ObjectPersistor.CreateAdapter(1, null, null) });
+            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, targetNo, action, new[] { NakedObjectsContext.ObjectPersistor.CreateAdapter(1, null, null) });
 
             RoundTrip(memento);
             RecoverCollection(target.Action2(1), memento);
@@ -270,7 +270,7 @@ namespace NakedObjects.Core.Persist {
             INakedObject targetNo = NakedObjectsContext.ObjectPersistor.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetObjectActions().Single(a => a.Id == "Action6");
 
-            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, targetNo, action, new[] { NakedObjectsContext.ObjectPersistor.CreateAdapter("1", null, null) });
+            var memento = new CollectionMemento(NakedObjectsContext.ObjectPersistor, reflector, targetNo, action, new[] { NakedObjectsContext.ObjectPersistor.CreateAdapter("1", null, null) });
 
             RoundTrip(memento);
             RecoverCollection(target.Action6("1"), memento);

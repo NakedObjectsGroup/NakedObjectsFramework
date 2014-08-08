@@ -17,10 +17,14 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     ///     <see cref="NotContributedActionAttribute" /> annotation
     /// </summary>
     public class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ContributedActionAnnotationFacetFactory()
-            : base(NakedObjectFeatureType.ActionsOnly) {}
+        private readonly INakedObjectReflector reflector;
 
-        private static bool Process(MemberInfo member, IFacetHolder holder) {
+        public ContributedActionAnnotationFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ActionsOnly) {
+            this.reflector = reflector;
+        }
+
+        private bool Process(MemberInfo member, IFacetHolder holder) {
             var attribute = member.GetCustomAttribute<NotContributedActionAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
@@ -29,8 +33,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             return Process(method, holder);
         }
 
-        private static INotContributedActionFacet Create(NotContributedActionAttribute attribute, IFacetHolder holder) {
-            return attribute == null ? null : new NotContributedActionFacetImpl(holder, attribute.NotContributedToTypes.Select(t => NakedObjectsContext.Reflector.LoadSpecification(t)).ToArray());
+        private INotContributedActionFacet Create(NotContributedActionAttribute attribute, IFacetHolder holder) {
+            return attribute == null ? null : new NotContributedActionFacetImpl(holder, attribute.NotContributedToTypes.Select(t => Reflector.LoadSpecification(t)).ToArray());
         }
     }
 }

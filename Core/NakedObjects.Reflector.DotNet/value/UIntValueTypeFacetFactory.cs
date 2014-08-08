@@ -5,15 +5,16 @@
 using System;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class UIntValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<uint> {
-        public UIntValueTypeFacetFactory()
-            : base(typeof (IUnsignedIntegerValueFacet)) {}
+        public UIntValueTypeFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, typeof (IUnsignedIntegerValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (UIntValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new UIntValueSemanticsProvider(holder));
+                AddFacets(new UIntValueSemanticsProvider(Reflector, holder));
                 return true;
             }
             return false;

@@ -49,6 +49,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                 identityMapImpl);
 
             inMemoryObjectStore.IdentityMap = identityMapImpl;
+            inMemoryObjectStore.Manager = persistor;
 
             return persistor;
         }

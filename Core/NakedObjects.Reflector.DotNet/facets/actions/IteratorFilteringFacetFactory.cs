@@ -23,8 +23,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             FixedPrefixes = new[] {PrefixesAndRecognisedMethods.GetEnumeratorMethod};
         }
 
-        public IteratorFilteringFacetFactory()
-            : base(NakedObjectFeatureType.ObjectsOnly) {}
+        public IteratorFilteringFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

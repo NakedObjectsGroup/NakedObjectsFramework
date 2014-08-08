@@ -38,6 +38,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     public class DotNetSpecification : NakedObjectSpecificationAbstract {
+        private readonly DotNetReflector reflector;
         private static readonly ILog Log = LogManager.GetLogger(typeof (DotNetSpecification));
 
         private INakedObjectSpecification[] interfaces = new INakedObjectSpecification[] {};
@@ -56,8 +57,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private bool whetherVoid;
 
         public DotNetSpecification(Type type, DotNetReflector reflector) {
+            this.reflector = reflector;
             introspector = new DotNetIntrospector(type, this, reflector);
-            identifier = new IdentifierImpl(type.FullName);
+            identifier = new IdentifierImpl(reflector, type.FullName);
         }
 
         public override bool HasSubclasses {
@@ -277,7 +279,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             string superclassName = introspector.SuperclassName;
             string[] interfaceNames = introspector.InterfacesNames;
 
-            INakedObjectReflector reflector = NakedObjectsContext.Reflector;
+
             if (superclassName != null && !TypeUtils.IsSystem(superclassName)) {
                 superClassSpecification = reflector.LoadSpecification(superclassName);
                 if (superClassSpecification != null) {
@@ -347,7 +349,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
         }
 
-        private static INakedObjectAssociation[] OrderFields(OrderSet order) {
+        private  INakedObjectAssociation[] OrderFields(OrderSet order) {
             var orderedFields = new List<INakedObjectAssociation>();
             foreach (IOrderableElement element in order) {
                 if (element is DotNetNakedObjectAssociationPeer) {
@@ -388,9 +390,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return new NakedObjectActionImpl(peer.Identifier.MemberName, peer);
         }
 
-        private static INakedObjectAssociation CreateNakedObjectField(INakedObjectAssociationPeer peer) {
+        private  INakedObjectAssociation CreateNakedObjectField(INakedObjectAssociationPeer peer) {
             if (peer.IsOneToOne) {
-                return new OneToOneAssociationImpl(peer);
+                return new OneToOneAssociationImpl(reflector, peer);
             }
             if (peer.IsOneToMany) {
                 return new OneToManyAssociationImpl(peer);
@@ -466,7 +468,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             if (Type.IsAbstract) {
                 throw new ModelException(string.Format(Resources.NakedObjects.CannotCreateAbstract, Type));
             }
-            object domainObject = Activator.CreateInstance(ProxyCreator.CreateProxyType(Type));
+            object domainObject = Activator.CreateInstance(ProxyCreator.CreateProxyType(reflector, Type));
             NakedObjectsContext.ObjectPersistor.InitDomainObject(domainObject);
             return domainObject;
         }

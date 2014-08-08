@@ -16,6 +16,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
     public static class ProxyCreator {
+       
         private static readonly object ModuleBuilderLock = new object();
         private static readonly ILog Log = LogManager.GetLogger(typeof (ProxyCreator));
         private static ModuleBuilder ModuleBuilder { get; set; }
@@ -40,7 +41,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
             return ns + typeToProxy.FullName;
         }
 
-        public static Type CreateProxyType(Type typeToProxy) {
+        public static Type CreateProxyType(INakedObjectReflector reflector, Type typeToProxy) {
             // do not proxy EF domain objects 
 
             if (TypeUtils.IsEntityDomainObject(typeToProxy) ||
@@ -59,8 +60,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
                     if (proxyType == null) {
                         TypeBuilder typeBuilder = ModuleBuilder.DefineType(typeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Sealed, typeToProxy);
                         FieldBuilder containerField = CreateContainerProperty(typeBuilder);
-                        CreateProperties(typeBuilder, typeToProxy, containerField);
-                        SubclassAllCollectionAccessors(typeBuilder, typeToProxy, containerField);
+                        CreateProperties(reflector, typeBuilder, typeToProxy, containerField);
+                        SubclassAllCollectionAccessors(reflector, typeBuilder, typeToProxy, containerField);
                         proxyType = typeBuilder.CreateType();
                     }
                     return proxyType;
@@ -72,9 +73,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
             }
         }
 
-        private static void CreateProperties(TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
+        private static void CreateProperties(INakedObjectReflector reflector, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
             // do not proxy key properties as we don't want ObjectChanged called when key is set
-            foreach (INakedObjectAssociation assoc in NakedObjectsContext.Reflector.LoadSpecification(typeToProxy).Properties) {
+            foreach (INakedObjectAssociation assoc in reflector.LoadSpecification(typeToProxy).Properties) {
                 PropertyInfo property = typeToProxy.GetProperty(assoc.Id);
 
                 if (!assoc.ContainsFacet<IKeyFacet>()) {
@@ -148,8 +149,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
                           ForEach(name => SubclassCollectionAccessorIfFound(typeToProxy, name, typeBuilder, containerField));
         }
 
-        private static void SubclassAllCollectionAccessors(TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
-            INakedObjectAssociation[] associations = NakedObjectsContext.Reflector.LoadSpecification(typeToProxy).Properties.Where(a => a.IsCollection).ToArray();
+        private static void SubclassAllCollectionAccessors(INakedObjectReflector reflector, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
+            INakedObjectAssociation[] associations = reflector.LoadSpecification(typeToProxy).Properties.Where(a => a.IsCollection).ToArray();
 
             associations.ForEach(assoc => SubclassCollectionAccessors(typeBuilder, typeToProxy, containerField, assoc.Name));
         }

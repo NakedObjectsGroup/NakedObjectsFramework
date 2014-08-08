@@ -26,8 +26,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             };
         }
 
-        public CollectionFieldMethodsFacetFactory()
-            : base(NakedObjectFeatureType.CollectionsOnly) {}
+        public CollectionFieldMethodsFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.CollectionsOnly) { }
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

@@ -7,6 +7,7 @@ using System.IO;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
 using NakedObjects.Value;
 
@@ -20,11 +21,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public FileAttachmentValueSemanticsProvider()
-            : this(null) {}
+        public FileAttachmentValueSemanticsProvider(INakedObjectReflector reflector)
+            : this(reflector, null) {}
 
-        public FileAttachmentValueSemanticsProvider(IFacetHolder holder)
-            : base(Type, holder, AdaptedType, TypicalLengthDefault, Immutable, EqualByContent, null) {}
+        public FileAttachmentValueSemanticsProvider(INakedObjectReflector reflector, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, TypicalLengthDefault, Immutable, EqualByContent, null, reflector) { }
 
         public static Type Type {
             get { return typeof (IFileAttachmentValueFacet); }

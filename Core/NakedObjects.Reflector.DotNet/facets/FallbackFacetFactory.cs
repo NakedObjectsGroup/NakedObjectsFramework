@@ -33,8 +33,8 @@ namespace NakedObjects.Reflector.DotNet.Facets {
     ///     Central point for providing some kind of default for any  <see cref="IFacet" />s required by the Naked Objects Framework itself.
     /// </summary>
     public class FallbackFacetFactory : FacetFactoryAbstract {
-        public FallbackFacetFactory()
-            : base(NakedObjectFeatureType.Everything) {}
+        public FallbackFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.Everything) { }
 
 
         public bool Recognizes(MethodInfo method) {

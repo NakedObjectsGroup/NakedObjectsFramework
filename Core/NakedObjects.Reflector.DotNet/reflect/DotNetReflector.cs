@@ -27,9 +27,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 ClassStrategy = new DefaultClassStrategy();
             }
             if (FacetFactorySet == null) {
-                var facetFactorySetImpl = new FacetFactorySetImpl {
-                    Reflector = this
-                };
+                var facetFactorySetImpl = new FacetFactorySetImpl(this);
                 facetFactorySetImpl.Init();
                 FacetFactorySet = facetFactorySetImpl;
             }
@@ -62,7 +60,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         public override IContainerInjector CreateContainerInjector(object[] services) {
-            return new DotNetDomainObjectContainerInjector(services);
+            return new DotNetDomainObjectContainerInjector(this, services);
         }
     }
 

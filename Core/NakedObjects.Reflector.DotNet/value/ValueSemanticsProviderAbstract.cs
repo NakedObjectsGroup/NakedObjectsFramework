@@ -5,6 +5,7 @@
 using System;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Properties.Defaults;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
 using NakedObjects.Core.Context;
@@ -13,6 +14,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
     public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T>, IEncoderDecoder<T>, IParser<T>, IDefaultsProvider<T> {
         private readonly Type adaptedType;
         private readonly T defaultValue;
+        private readonly INakedObjectReflector reflector;
         private readonly bool equalByContent;
         private readonly bool immutable;
         private readonly int typicalLength;
@@ -27,20 +29,22 @@ namespace NakedObjects.Reflector.DotNet.Value {
             int typicalLength,
             bool immutable,
             bool equalByContent,
-            T defaultValue)
+            T defaultValue, 
+            INakedObjectReflector reflector)
             : base(adapterFacetType, holder) {
             this.adaptedType = adaptedType;
             this.typicalLength = typicalLength;
             this.immutable = immutable;
             this.equalByContent = equalByContent;
             this.defaultValue = defaultValue;
+            this.reflector = reflector;
         }
 
 
         public INakedObjectSpecification Specification {
             get {
                 if (specification == null) {
-                    specification = NakedObjectsContext.Reflector.LoadSpecification(GetAdaptedClass());
+                    specification = reflector.LoadSpecification(GetAdaptedClass());
                 }
                 return specification;
             }

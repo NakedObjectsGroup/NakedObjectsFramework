@@ -9,6 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Properties.Defaults;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
@@ -23,11 +24,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public ShortValueSemanticsProvider()
-            : this(null) {}
+        public ShortValueSemanticsProvider(INakedObjectReflector reflector)
+            : this(reflector, null) {}
 
-        public ShortValueSemanticsProvider(IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue) {}
+        public ShortValueSemanticsProvider(INakedObjectReflector reflector, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, reflector) { }
 
         public static Type Type {
             get { return typeof (IShortValueFacet); }

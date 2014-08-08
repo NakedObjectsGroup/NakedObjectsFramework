@@ -17,8 +17,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
             prefixes = new[] {PrefixesAndRecognisedMethods.IconNameMethod};
         }
 
-        public IconMethodFacetFactory()
-            : base(NakedObjectFeatureType.ObjectsOnly) {}
+        public IconMethodFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
         public override string[] Prefixes {
             get { return prefixes; }

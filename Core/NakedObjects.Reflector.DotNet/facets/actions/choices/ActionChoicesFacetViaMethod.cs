@@ -11,8 +11,8 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Choices;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Choices {
@@ -24,12 +24,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Choices {
         private readonly string[] parameterNames;
 
 
-        public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, Type choicesType, IFacetHolder holder, bool isMultiple = false)
+        public ActionChoicesFacetViaMethod(INakedObjectReflector reflector, MethodInfo choicesMethod, Type choicesType, IFacetHolder holder, bool isMultiple = false)
             : base(holder) {
             this.choicesMethod = choicesMethod;
             this.choicesType = choicesType;
             this.isMultiple = isMultiple;
-            parameterNamesAndTypes = choicesMethod.GetParameters().Select(p => new Tuple<string, INakedObjectSpecification>(p.Name.ToLower(), NakedObjectsContext.Reflector.LoadSpecification(p.ParameterType))).ToArray();
+            parameterNamesAndTypes = choicesMethod.GetParameters().Select(p => new Tuple<string, INakedObjectSpecification>(p.Name.ToLower(), reflector.LoadSpecification(p.ParameterType))).ToArray();
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
         }
 

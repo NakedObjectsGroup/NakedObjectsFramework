@@ -5,15 +5,16 @@
 using System;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class TimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<TimeSpan> {
-        public TimeValueTypeFacetFactory()
-            : base(typeof (IDateValueFacet)) {}
+        public TimeValueTypeFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, typeof (IDateValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (TimeValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new TimeValueSemanticsProvider(holder));
+                AddFacets(new TimeValueSemanticsProvider(Reflector, holder));
                 return true;
             }
             return false;

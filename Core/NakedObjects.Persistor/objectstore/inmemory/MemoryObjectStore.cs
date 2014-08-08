@@ -41,6 +41,8 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             Log.Info("creating object store");
         }
 
+        public INakedObjectManager Manager { get; set; }
+
         public virtual IIdentityMap IdentityMap {
             set { identityMap = value; }
         }
@@ -86,7 +88,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             Log.Debug("GetInstances<T> of: " + typeof (T));
             return (from KeyValuePair<INakedObjectSpecification, MemoryObjectStoreInstances> pair in instances
                     where pair.Key.IsOfType(reflector.LoadSpecification(typeof (T)))
-                    from T obj in pair.Value.AllInstances<T>()
+                    from T obj in pair.Value.AllInstances<T>(Manager)
                     select obj).AsQueryable();
         }
 
@@ -99,7 +101,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             Log.DebugFormat("GetInstances for: {0}", specification);
             return (from KeyValuePair<INakedObjectSpecification, MemoryObjectStoreInstances> pair in instances
                     where pair.Key.IsOfType(specification)
-                    from object obj in pair.Value.AllInstances()
+                    from object obj in pair.Value.AllInstances(Manager)
                     select obj).AsQueryable();
         }
 
@@ -115,7 +117,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public virtual INakedObject GetObject(IOid oid, INakedObjectSpecification hint) {
             Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
-            INakedObject nakedObject = InstancesFor(hint).GetObject(oid);
+            INakedObject nakedObject = InstancesFor(hint).GetObject(oid, Manager);
             if (nakedObject == null) {
                 throw new FindObjectException(oid);
             }
@@ -184,7 +186,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                 IEnumerable<Tuple<PropertyInfo, object>> zip = keyProperties.Zip(keys, (pi, o) => new Tuple<PropertyInfo, object>(pi, o));
                 IQueryable<object> objs = GetInstances(type).Cast<object>();
                 object match = objs.SingleOrDefault(o => zip.All(z => z.Item1.GetValue(o, null).Equals(z.Item2)));
-                return match == null ? null : NakedObjectsContext.ObjectPersistor.GetAdapterFor(match);
+                return match == null ? null : Manager.GetAdapterFor(match);
             }
             return null;
         }

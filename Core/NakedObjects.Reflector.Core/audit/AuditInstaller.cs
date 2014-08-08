@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Audit;
+using NakedObjects.Core.Context;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.Audit {
@@ -10,7 +11,7 @@ namespace NakedObjects.Reflector.Audit {
         private readonly AuditManager auditManager;
 
         public AuditInstaller(IAuditor defaultAuditor) {
-            auditManager = new AuditManager(defaultAuditor);
+            auditManager = new AuditManager(NakedObjectsContext.Reflector, defaultAuditor);
         }
 
         /// <summary>
@@ -18,12 +19,12 @@ namespace NakedObjects.Reflector.Audit {
         /// <param name="defaultAuditor">This will be used unless the object is recognised by one of the namespaceAuthorizers</param>
         /// <param name="namespaceAuditors"></param>
         public AuditInstaller(IAuditor defaultAuditor, params INamespaceAuditor[] namespaceAuditors) {
-            auditManager = new AuditManager(defaultAuditor, namespaceAuditors);
+            auditManager = new AuditManager(NakedObjectsContext.Reflector, defaultAuditor, namespaceAuditors);
         }
 
 
         public IFacetDecorator[] CreateDecorators() {
-            return new IFacetDecorator[] {new AuditFacetDecorator(auditManager)};
+            return new IFacetDecorator[] {new AuditFacetDecorator(auditManager, NakedObjectsContext.Reflector)};
         }
 
         public string Name {

@@ -5,15 +5,16 @@
 using System;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class UShortValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<ushort> {
-        public UShortValueTypeFacetFactory()
-            : base(typeof (IUnsignedShortValueFacet)) {}
+        public UShortValueTypeFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, typeof (IUnsignedShortValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (UShortValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new UShortValueSemanticsProvider(holder));
+                AddFacets(new UShortValueSemanticsProvider(Reflector, holder));
                 return true;
             }
             return false;

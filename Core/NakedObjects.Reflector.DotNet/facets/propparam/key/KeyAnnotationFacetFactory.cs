@@ -12,8 +12,8 @@ using PropertyInfo = System.Reflection.PropertyInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Key {
     public class KeyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public KeyAnnotationFacetFactory()
-            : base(NakedObjectFeatureType.PropertiesOnly) {}
+        public KeyAnnotationFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
             Attribute attribute = property.GetCustomAttribute<KeyAttribute>();

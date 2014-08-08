@@ -20,8 +20,8 @@ using MethodInfo = System.Reflection.MethodInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class MethodPrefixBasedFacetFactoryAbstract : FacetFactoryAbstract, IMethodPrefixBasedFacetFactory {
-        protected MethodPrefixBasedFacetFactoryAbstract(NakedObjectFeatureType[] featureTypes)
-            : base(featureTypes) {}
+        protected MethodPrefixBasedFacetFactoryAbstract(INakedObjectReflector reflector, NakedObjectFeatureType[] featureTypes)
+            : base(reflector, featureTypes) {}
 
         #region IMethodPrefixBasedFacetFactory Members
 

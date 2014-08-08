@@ -5,15 +5,16 @@
 using System;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class StringValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<string> {
-        public StringValueTypeFacetFactory()
-            : base(typeof (IStringValueFacet)) {}
+        public StringValueTypeFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, typeof (IStringValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (StringValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new StringValueSemanticsProvider(holder));
+                AddFacets(new StringValueSemanticsProvider(Reflector, holder));
                 return true;
             }
             return false;

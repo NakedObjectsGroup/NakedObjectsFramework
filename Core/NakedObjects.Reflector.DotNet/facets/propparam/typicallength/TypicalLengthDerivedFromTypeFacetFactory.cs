@@ -11,8 +11,8 @@ using NakedObjects.Reflector.DotNet.Facets;
 
 namespace NakedObjects.Architecture.Facets.Propparam.TypicalLength {
     public class TypicalLengthDerivedFromTypeFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TypicalLengthDerivedFromTypeFacetFactory()
-            : base(NakedObjectFeatureType.PropertiesAndParameters) {}
+        public TypicalLengthDerivedFromTypeFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.PropertiesAndParameters) { }
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
             return AddFacetDerivedFromTypeIfPresent(holder, property.PropertyType);

@@ -8,10 +8,11 @@ using System.Reflection;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Facets {
-    public abstract class FacetFactoryAbstract : IFacetFactory, INakedObjectReflectorAware {
+    public abstract class FacetFactoryAbstract : IFacetFactory {
         private readonly NakedObjectFeatureType[] featureTypes;
 
-        protected FacetFactoryAbstract(NakedObjectFeatureType[] featureTypes) {
+        protected FacetFactoryAbstract(INakedObjectReflector reflector, NakedObjectFeatureType[] featureTypes) {
+            Reflector = reflector;
             this.featureTypes = featureTypes;
         }
 
@@ -48,7 +49,7 @@ namespace NakedObjects.Architecture.Facets {
         /// <summary>
         ///     Injected
         /// </summary>
-        public virtual INakedObjectReflector Reflector { protected get; set; }
+        protected INakedObjectReflector Reflector {  get; private set; }
 
         #endregion
     }

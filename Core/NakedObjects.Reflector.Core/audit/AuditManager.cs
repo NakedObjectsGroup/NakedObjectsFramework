@@ -15,17 +15,19 @@ namespace NakedObjects.Reflector.Audit {
     public class AuditManager {
         private readonly IAuditor defaultAuditor;
         private readonly INamespaceAuditor[] namespaceAuditors;
+        private readonly INakedObjectReflector reflector;
 
         private bool isInitialised;
 
-        public AuditManager(IAuditor defaultAuditor, params INamespaceAuditor[] namespaceAuditors) {
+        public AuditManager(INakedObjectReflector reflector, IAuditor defaultAuditor, params INamespaceAuditor[] namespaceAuditors) {
             this.defaultAuditor = defaultAuditor;
             this.namespaceAuditors = namespaceAuditors;
+            this.reflector = reflector;
         }
 
         private void Inject() {
             object[] services = NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray();
-            IContainerInjector injector = NakedObjectsContext.Reflector.CreateContainerInjector(services);
+            IContainerInjector injector = reflector.CreateContainerInjector(services);
             injector.InitDomainObject(defaultAuditor);
             namespaceAuditors.ForEach(injector.InitDomainObject);
         }

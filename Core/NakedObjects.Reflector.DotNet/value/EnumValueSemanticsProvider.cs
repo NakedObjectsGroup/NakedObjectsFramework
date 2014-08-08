@@ -8,6 +8,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Properties.Defaults;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
 using NakedObjects.Util;
 
@@ -20,11 +21,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public EnumValueSemanticsProvider()
-            : this(null) {}
+        public EnumValueSemanticsProvider(INakedObjectReflector reflector)
+            : this(reflector, null) { }
 
-        public EnumValueSemanticsProvider(IFacetHolder holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, default(T)) {}
+        public EnumValueSemanticsProvider(INakedObjectReflector reflector, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, default(T), reflector) { }
 
         public static Type Type {
             get { return typeof (IEnumValueFacet); }

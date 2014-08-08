@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Key;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Security;
@@ -35,19 +36,17 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public MemoryObjectStoreInstances(INakedObjectReflector reflector) {
             Assert.AssertNotNull(reflector);
-     
-            this.reflector = reflector;
-           
+            this.reflector = reflector;         
         }
 
-        public virtual INakedObject GetObject(IOid oid) {
+        public virtual INakedObject GetObject(IOid oid, INakedObjectManager manager) {
             ObjectAndVersion obj;
             INakedObject nakedObject = null;
             lock (objectInstances) {
                 obj = objectInstances[oid];
             }
             if (obj != null) {
-                nakedObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(obj.DomainObject, oid, null);
+                nakedObject = manager.CreateAdapter(obj.DomainObject, oid, null);
                 nakedObject.OptimisticLock = obj.Version;
                 foreach (INakedObjectAssociation field in nakedObject.Specification.Properties.Where(field => field.IsPersisted)) {
                     INakedObject fieldObject = field.GetNakedObject(nakedObject);
@@ -62,14 +61,14 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             return nakedObject;
         }
 
-        public virtual IQueryable<T> AllInstances<T>() {
+        public virtual IQueryable<T> AllInstances<T>(INakedObjectManager manager) {
             return (from IOid oid in objectInstances.Keys
-                    select GetObject(oid).GetDomainObject<T>()).AsQueryable();
+                    select GetObject(oid, manager).GetDomainObject<T>()).AsQueryable();
         }
 
-        public virtual IQueryable AllInstances() {
+        public virtual IQueryable AllInstances(INakedObjectManager manager) {
             return (from IOid oid in objectInstances.Keys
-                    select GetObject(oid).GetDomainObject()).AsQueryable();
+                    select GetObject(oid, manager).GetDomainObject()).AsQueryable();
         }
 
         public virtual void Remove(IOid oid) {

@@ -5,15 +5,16 @@
 using System;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ArrayValueTypeFacetFactory<T> : ValueUsingValueSemanticsProviderFacetFactory<T[]> {
-        public ArrayValueTypeFacetFactory()
-            : base(typeof (IArrayValueFacet<T>)) {}
+        public ArrayValueTypeFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, typeof (IArrayValueFacet<T>)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (ArrayValueSemanticsProvider<T>.IsAdaptedType(type)) {
-                AddFacets(new ArrayValueSemanticsProvider<T>(holder));
+                AddFacets(new ArrayValueSemanticsProvider<T>(Reflector, holder));
                 return true;
             }
             return false;

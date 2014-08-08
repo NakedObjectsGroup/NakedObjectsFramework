@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Security.Principal;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Validation;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Context;
@@ -17,6 +18,12 @@ using NakedObjects.UtilInternal;
 
 namespace NakedObjects.Reflector.DotNet {
     public class DotNetDomainObjectContainer : IDomainObjectContainer, IInternalAccess {
+        private readonly INakedObjectReflector reflector;
+
+        public DotNetDomainObjectContainer(INakedObjectReflector reflector) {
+            this.reflector = reflector;
+        }
+
         #region IDomainObjectContainer Members
 
         public IQueryable<T> Instances<T>() where T : class {
@@ -70,7 +77,7 @@ namespace NakedObjects.Reflector.DotNet {
         }
 
         public IViewModel NewViewModel(Type type) {
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(type);
+            INakedObjectSpecification spec = reflector.LoadSpecification(type);
             if (spec.IsViewModel) {
                 return NakedObjectsContext.ObjectPersistor.CreateViewModel(spec).GetDomainObject<IViewModel>();
             }
@@ -78,7 +85,7 @@ namespace NakedObjects.Reflector.DotNet {
         }
 
         public object NewTransientInstance(Type type) {
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(type);
+            INakedObjectSpecification spec = reflector.LoadSpecification(type);
             return NakedObjectsContext.ObjectPersistor.CreateInstance(spec).Object;
         }
 

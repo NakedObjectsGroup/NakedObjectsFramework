@@ -10,8 +10,8 @@ using NakedObjects.Architecture.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
     public class TypeOfAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TypeOfAnnotationFacetFactory()
-            : base(NakedObjectFeatureType.CollectionsAndActions) {}
+        public TypeOfAnnotationFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.CollectionsAndActions) { }
 
         private bool Process(Type methodReturnType, IFacetHolder holder) {
             if (!CollectionUtils.IsCollection(methodReturnType)) {

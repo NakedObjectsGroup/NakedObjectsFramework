@@ -44,12 +44,12 @@ namespace NakedObjects.TestSystem {
             nakedObjects.SetObjectPersistor(Persistor);
             nakedObjects.SetSession(new TestProxySession());
 
-            NakedObjectsContext.Reflector.Init();
+            reflector.Init();
             NakedObjectsContext.ObjectPersistor.Init();
         }
 
         public void Shutdown() {
-            NakedObjectsContext.Reflector.Shutdown();
+            reflector.Shutdown();
             NakedObjectsContext.ObjectPersistor.Shutdown();
         }
 

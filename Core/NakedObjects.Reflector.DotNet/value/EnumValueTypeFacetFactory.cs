@@ -9,8 +9,8 @@ using NakedObjects.Reflector.DotNet.Facets.Objects.Value;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class EnumValueTypeFacetFactory : FacetFactoryAbstract {
-        public EnumValueTypeFacetFactory()
-            : base(NakedObjectFeatureType.ObjectsOnly) {}
+        public EnumValueTypeFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (typeof (Enum).IsAssignableFrom(type)) {

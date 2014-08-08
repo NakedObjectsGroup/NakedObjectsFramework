@@ -8,6 +8,7 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 
@@ -18,8 +19,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
         private const int typicalLength = 6;
         private static readonly TimeSpan defaultValue = new TimeSpan();
 
-        public TimeValueSemanticsProvider(IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, Immutable, EqualByContent, defaultValue) {}
+        public TimeValueSemanticsProvider(INakedObjectReflector reflector, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, Immutable, EqualByContent, defaultValue, reflector) { }
 
         public static Type Type {
             get { return typeof (ITimeValueFacet); }

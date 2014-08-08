@@ -33,6 +33,8 @@ namespace NakedObjects.Architecture.Persist {
         object CreateObject(INakedObjectSpecification specification);
 
         INakedObject GetViewModel(IOid oid);
+
+        INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj);
     }
 
 

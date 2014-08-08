@@ -7,6 +7,7 @@ using System.Globalization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
@@ -21,11 +22,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public StringValueSemanticsProvider()
-            : this(null) {}
+        public StringValueSemanticsProvider(INakedObjectReflector reflector)
+            : this(reflector, null) {}
 
-        public StringValueSemanticsProvider(IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue) {}
+        public StringValueSemanticsProvider(INakedObjectReflector reflector, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, reflector) { }
 
         public static Type Type {
             get { return typeof (IStringValueFacet); }

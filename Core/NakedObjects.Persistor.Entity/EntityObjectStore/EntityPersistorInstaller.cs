@@ -19,6 +19,7 @@ using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Persistor;
 using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Resources;
+using NakedObjects.Util;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityPersistorInstaller : AbstractObjectPersistorInstaller {
@@ -134,8 +135,9 @@ namespace NakedObjects.EntityObjectStore {
 
             IEnumerable<CodeFirstEntityContextConfiguration> cfConfigs = DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {DbContext = f.Item1, PreCachedTypes = f.Item2, NotPersistedTypes = NotPersistedTypes});
             IEnumerable<EntityContextConfiguration> config = PocoConfiguration().Union(cfConfigs);
-            var oidGenerator = new EntityOidGenerator(NakedObjectsContext.Reflector);
-            var objectStore = new EntityObjectStore(config.ToArray(), oidGenerator);
+            var reflector = NakedObjectsContext.Reflector;
+            var oidGenerator = new EntityOidGenerator(reflector);
+            var objectStore = new EntityObjectStore(config.ToArray(), oidGenerator, reflector);
             EntityObjectStore.EnforceProxies = EnforceProxies;
             EntityObjectStore.RequireExplicitAssociationOfTypes = RequireExplicitAssociationOfTypes;
             EntityObjectStore.RollBackOnError = RollBackOnError;
@@ -145,15 +147,13 @@ namespace NakedObjects.EntityObjectStore {
             var identityMap = new EntityIdentityMapImpl(oidGenerator, identityAdapterMap ?? new IdentityAdapterHashMap(), pocoAdapterMap ?? new PocoAdapterHashMap(), objectStore);
 
             var op = new ObjectStorePersistor(
-                NakedObjectsContext.Reflector,
-                //session,
-                //NakedObjectsContext.UpdateNotifier,
+                reflector,             
                 objectStore, 
                 new EntityPersistAlgorithm(),
                 oidGenerator, 
                 identityMap);
 
-            //op.Session = session;
+            objectStore.Manager = op;
 
             return op;
 

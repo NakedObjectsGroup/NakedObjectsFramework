@@ -14,6 +14,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Security {
     public class CustomAuthorizationManager : IAuthorizationManager {
+        private readonly INakedObjectReflector reflector;
         private readonly ITypeAuthorizer<object> defaultAuthorizer;
         private readonly INamespaceAuthorizer[] namespaceAuthorizers = {};
         private readonly Dictionary<Type, object> typeAuthorizerMap = new Dictionary<Type, object>();
@@ -22,13 +23,14 @@ namespace NakedObjects.Security {
 
         #region Constructors
 
-        public CustomAuthorizationManager(ITypeAuthorizer<object> defaultAuthorizer) {
+        public CustomAuthorizationManager(INakedObjectReflector reflector, ITypeAuthorizer<object> defaultAuthorizer) {
             if (defaultAuthorizer == null) throw new InitialisationException("Default Authorizer cannot be null");
+            this.reflector = reflector;
             this.defaultAuthorizer = defaultAuthorizer;
         }
 
-        public CustomAuthorizationManager(ITypeAuthorizer<object> defaultAuthorizer, params INamespaceAuthorizer[] namespaceAuthorizers)
-            : this(defaultAuthorizer) {
+        public CustomAuthorizationManager(INakedObjectReflector reflector, ITypeAuthorizer<object> defaultAuthorizer, params INamespaceAuthorizer[] namespaceAuthorizers)
+            : this(reflector, defaultAuthorizer) {
             this.namespaceAuthorizers = namespaceAuthorizers;
         }
 
@@ -36,8 +38,8 @@ namespace NakedObjects.Security {
         /// </summary>
         /// <param name="defaultAuthorizer">This will be used unless the object type exactly matches one of the typeAuthorizers</param>
         /// <param name="typeAuthorizers">Each authorizer must implement ITypeAuthorizer of T, where T is a concrete domain type</param>
-        public CustomAuthorizationManager(ITypeAuthorizer<object> defaultAuthorizer, params object[] typeAuthorizers)
-            : this(defaultAuthorizer) {
+        public CustomAuthorizationManager(INakedObjectReflector reflector, ITypeAuthorizer<object> defaultAuthorizer, params object[] typeAuthorizers)
+            : this(reflector, defaultAuthorizer) {
             foreach (object typeAuth in typeAuthorizers) {
                 Type authInt = typeAuth.GetType().GetInterface("ITypeAuthorizer`1");
                 if (authInt != null && !(authInt.GetGenericArguments()[0]).IsAbstract) {
@@ -52,7 +54,7 @@ namespace NakedObjects.Security {
 
         private void Inject() {
             object[] services = NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray();
-            IContainerInjector injector = NakedObjectsContext.Reflector.CreateContainerInjector(services);
+            IContainerInjector injector = reflector.CreateContainerInjector(services);
             injector.InitDomainObject(defaultAuthorizer);
 
             namespaceAuthorizers.ForEach(injector.InitDomainObject);

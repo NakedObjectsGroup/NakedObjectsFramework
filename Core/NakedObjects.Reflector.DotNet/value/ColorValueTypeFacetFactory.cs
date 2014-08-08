@@ -6,15 +6,16 @@ using System;
 using System.Drawing;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ColorValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<Color> {
-        public ColorValueTypeFacetFactory()
-            : base(typeof (IColorValueFacet)) {}
+        public ColorValueTypeFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, typeof (IColorValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (ColorValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new ColorValueSemanticsProvider(holder));
+                AddFacets(new ColorValueSemanticsProvider(Reflector, holder));
                 return true;
             }
             return false;

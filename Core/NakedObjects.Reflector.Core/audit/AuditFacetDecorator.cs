@@ -17,16 +17,18 @@ using NakedObjects.Reflector.Spec;
 namespace NakedObjects.Reflector.Audit {
     public class AuditFacetDecorator : IFacetDecorator {
         private readonly AuditManager manager;
+        private readonly INakedObjectReflector reflector;
 
-        public AuditFacetDecorator(AuditManager manager) {
+        public AuditFacetDecorator(AuditManager manager, INakedObjectReflector reflector) {
             this.manager = manager;
+            this.reflector = reflector;
         }
 
         #region IFacetDecorator Members
 
         public virtual IFacet Decorate(IFacet facet, IFacetHolder holder) {
             if (facet.FacetType == typeof (IActionInvocationFacet)) {
-                return new AuditActionInvocationFacet((IActionInvocationFacet) facet, manager);
+                return new AuditActionInvocationFacet((IActionInvocationFacet) facet, manager, reflector);
             }
 
             if (facet.FacetType == typeof (IUpdatedCallbackFacet)) {
@@ -51,20 +53,22 @@ namespace NakedObjects.Reflector.Audit {
         private class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
             private readonly IIdentifier identifier;
             private readonly AuditManager manager;
+            private readonly INakedObjectReflector reflector;
             private readonly IActionInvocationFacet underlyingFacet;
             private bool? isQueryOnly;
 
-            public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, AuditManager auditManager)
+            public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, AuditManager auditManager, INakedObjectReflector reflector)
                 : base(underlyingFacet.FacetHolder) {
                 this.underlyingFacet = underlyingFacet;
                 manager = auditManager;
+                this.reflector = reflector;
                 identifier = underlyingFacet.FacetHolder.Identifier;
             }
 
             private bool IsQueryOnly {
                 get {
                     if (!isQueryOnly.HasValue) {
-                        INakedObjectAction action = NakedObjectsContext.Reflector.LoadSpecification(identifier.ClassName).GetActionLeafNodes().FirstOrDefault(a => a.Id == identifier.MemberName);
+                        INakedObjectAction action = reflector.LoadSpecification(identifier.ClassName).GetActionLeafNodes().FirstOrDefault(a => a.Id == identifier.MemberName);
                         isQueryOnly = action.ReturnType.IsQueryable || action.ContainsFacet<IQueryOnlyFacet>();
                     }
                     return isQueryOnly.Value;

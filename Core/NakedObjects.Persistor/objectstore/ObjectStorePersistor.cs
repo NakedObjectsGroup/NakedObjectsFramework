@@ -251,7 +251,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public virtual INakedObject[] ServiceAdapters {
-            get { return Services.Select(x => NakedObjectsContext.ObjectPersistor.CreateAdapter(x.Service, null, null)).ToArray(); }
+            get { return Services.Select(x => CreateAdapter(x.Service, null, null)).ToArray(); }
         }
 
         public bool IsInitialized {
@@ -631,7 +631,7 @@ namespace NakedObjects.Persistor.Objectstore {
                 object inlineObject = CreateObject(assoc.Specification);
 
                 InitInlineObject(rootObject, inlineObject);
-                INakedObject inlineNakedObject = NakedObjectsContext.ObjectPersistor.CreateAggregatedAdapter(parentObject, assoc.Id, inlineObject);
+                INakedObject inlineNakedObject = CreateAggregatedAdapter(parentObject, assoc.Id, inlineObject);
                 InitializeNewObject(inlineNakedObject, rootObject);
                 assoc.InitAssociation(parentObject, inlineNakedObject);
             }
@@ -691,7 +691,7 @@ namespace NakedObjects.Persistor.Objectstore {
         public INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj) {
             GetAdapterFor(obj);
 
-            IOid oid = new AggregateOid(NakedObjectsContext.Reflector, parent.Oid, fieldId, obj.GetType().FullName);
+            IOid oid = new AggregateOid(reflector, parent.Oid, fieldId, obj.GetType().FullName);
             INakedObject adapterFor = GetAdapterFor(oid);
             if (adapterFor == null || adapterFor.Object != obj) {
                 if (adapterFor != null) {
@@ -724,17 +724,17 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public  IOid RestoreGenericOid(string[] encodedData) {
             string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(encodedData.First()));
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(typeName);
+            INakedObjectSpecification spec = reflector.LoadSpecification(typeName);
 
             if (spec.IsCollection) {
-                return new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, encodedData);
+                return new CollectionMemento(this, reflector, encodedData);
             }
 
             if (spec.ContainsFacet<IViewModelFacet>()) {
-                return new ViewModelOid(NakedObjectsContext.Reflector, encodedData);
+                return new ViewModelOid(reflector, encodedData);
             }
 
-            return spec.ContainsFacet<IComplexTypeFacet>() ? new AggregateOid(NakedObjectsContext.Reflector, encodedData) : null;
+            return spec.ContainsFacet<IComplexTypeFacet>() ? new AggregateOid(reflector, encodedData) : null;
         }
 
         public  void PopulateViewModelKeys(INakedObject nakedObject) {

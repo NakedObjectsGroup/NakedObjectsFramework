@@ -14,8 +14,8 @@ using ParameterInfo = System.Reflection.ParameterInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask {
     public class MaskAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MaskAnnotationFacetFactory()
-            : base(NakedObjectFeatureType.ObjectsPropertiesAndParameters) {}
+        public MaskAnnotationFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             var attribute = type.GetCustomAttributeByReflection<MaskAttribute>();

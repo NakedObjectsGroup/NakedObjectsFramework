@@ -5,15 +5,16 @@
 using System;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class CharValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<char> {
-        public CharValueTypeFacetFactory()
-            : base(typeof (ICharValueFacet)) {}
+        public CharValueTypeFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, typeof(ICharValueFacet)) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (CharValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new CharValueSemanticsProvider(holder));
+                AddFacets(new CharValueSemanticsProvider(Reflector, holder));
                 return true;
             }
             return false;

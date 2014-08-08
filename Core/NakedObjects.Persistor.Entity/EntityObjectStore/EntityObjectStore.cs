@@ -45,6 +45,7 @@ using IsolationLevel = System.Transactions.IsolationLevel;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityObjectStore : INakedObjectStore {
+        private readonly INakedObjectReflector reflector;
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStore));
         private static CreateAdapterDelegate createAdapter;
         private static CreateAggregatedAdapterDelegate createAggregatedAdapter;
@@ -88,15 +89,14 @@ namespace NakedObjects.EntityObjectStore {
             IsInitializedCheck = () => true;
         }
 
-        internal EntityObjectStore() {
-            createAdapter = (oid, domainObject) => NakedObjectsContext.ObjectPersistor.CreateAdapter(domainObject, oid, null);
-            replacePoco = (nakedObject, newDomainObject) => {
-                NakedObjectsContext.ObjectPersistor.ReplacePoco(nakedObject, newDomainObject);
-            };
-            removeAdapter = o => {
-                NakedObjectsContext.ObjectPersistor.RemoveAdapter(o);
-            };
-            createAggregatedAdapter = (parent, property, obj) => NakedObjectsContext.ObjectPersistor.CreateAggregatedAdapter(parent, parent.Specification.GetProperty(property.Name).Id, obj);
+        internal EntityObjectStore(INakedObjectReflector reflector) {
+            this.reflector = reflector;
+
+
+            createAdapter = (oid, domainObject) => Manager.CreateAdapter(domainObject, oid, null);
+            replacePoco = (nakedObject, newDomainObject) => Manager.ReplacePoco(nakedObject, newDomainObject);
+            removeAdapter = o => Manager.RemoveAdapter(o);
+            createAggregatedAdapter = (parent, property, obj) => Manager.CreateAggregatedAdapter(parent, parent.Specification.GetProperty(property.Name).Id, obj);
             notifyUi = x => NakedObjectsContext.UpdateNotifier.AddChangedObject(x);
             updating = x => x.Updating();
             updated = x => x.Updated();
@@ -104,15 +104,17 @@ namespace NakedObjects.EntityObjectStore {
             persisted = x => x.Persisted();
             handleLoaded = HandleLoadedDefault;
             savingChangesHandlerDelegate = SavingChangesHandler;
-            loadSpecification = x => NakedObjectsContext.Reflector.LoadSpecification(x);
+            loadSpecification = reflector.LoadSpecification;
         }
 
 
-        public EntityObjectStore(IEnumerable<EntityContextConfiguration> config, EntityOidGenerator oidGenerator)
-            : this() {
+        public EntityObjectStore(IEnumerable<EntityContextConfiguration> config, EntityOidGenerator oidGenerator, INakedObjectReflector reflector)
+            : this(reflector) {
             this.oidGenerator = oidGenerator;
             contexts = config.ToDictionary<EntityContextConfiguration, EntityContextConfiguration, LocalContext>(c => c, c => null);
         }
+
+        public INakedObjectManager Manager { get; set; }
 
         #region for testing only
 
@@ -160,7 +162,7 @@ namespace NakedObjects.EntityObjectStore {
         public IContainerInjector Injector {
             get {
                 if (injector == null) {
-                    injector = NakedObjectsContext.ObjectPersistor;
+                    injector = (IContainerInjector) Manager;
                 }
                 return injector;
             }
@@ -447,7 +449,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public INakedObject CreateAdapterForKnownObject(object domainObject) {
             EntityOid oid = oidGenerator.CreateOid(EntityUtils.GetProxiedTypeName(domainObject), GetContext(domainObject).GetKey(domainObject));
-            return new PocoAdapter(NakedObjectsContext.Reflector, NakedObjectsContext.Session, domainObject, oid);
+            return new PocoAdapter(reflector, NakedObjectsContext.Session, domainObject, oid);
         }
 
         private static string ConcatenateMessages(Exception e) {
@@ -572,7 +574,7 @@ namespace NakedObjects.EntityObjectStore {
 
         private void SavingChangesHandler(object sender, EventArgs e) {
             IEnumerable<object> changedObjects = GetChangedObjectsInContext((ObjectContext) sender);
-            IEnumerable<INakedObject> adaptedObjects = changedObjects.Where(o => TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => NakedObjectsContext.ObjectPersistor.CreateAdapter(domainObject, null, null)).ToArray();
+            IEnumerable<INakedObject> adaptedObjects = changedObjects.Where(o => TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => Manager.CreateAdapter(domainObject, null, null)).ToArray();
             adaptedObjects.Where(x => x.ResolveState.IsGhost()).ForEach(ResolveImmediately);
             adaptedObjects.ForEach(ValidateIfRequired);
             adaptedObjects.ForEach(x => notifyUi(x));
@@ -1132,7 +1134,7 @@ namespace NakedObjects.EntityObjectStore {
             if (aggregateOid != null) {
                 var parentOid = (EntityOid) aggregateOid.ParentOid;
                 string parentType = parentOid.TypeName;
-                INakedObjectSpecification parentSpec = NakedObjectsContext.Reflector.LoadSpecification(parentType);
+                INakedObjectSpecification parentSpec = reflector.LoadSpecification(parentType);
                 INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
 
                 return parent.Specification.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);

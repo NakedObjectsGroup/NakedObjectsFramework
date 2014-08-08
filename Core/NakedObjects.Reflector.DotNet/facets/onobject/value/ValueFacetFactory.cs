@@ -13,8 +13,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
     public class ValueFacetFactory : AnnotationBasedFacetFactoryAbstract, INakedObjectConfigurationAware {
-        public ValueFacetFactory()
-            : base(NakedObjectFeatureType.ObjectsOnly) {}
+        public ValueFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             return FacetUtils.AddFacet(Create(type, holder));

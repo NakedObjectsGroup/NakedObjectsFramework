@@ -10,7 +10,13 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
-    public abstract class FacetFactorySetAbstract : IFacetFactorySet, INakedObjectReflectorAware {
+    public abstract class FacetFactorySetAbstract : IFacetFactorySet {
+        private readonly INakedObjectReflector reflector;
+
+        protected FacetFactorySetAbstract(INakedObjectReflector reflector) {
+            this.reflector = reflector;
+        }
+
         private readonly object cacheLock = true;
 
         /// <summary>
@@ -55,6 +61,10 @@ namespace NakedObjects.Reflector.DotNet.Facets {
                 }
                 return prefixes;
             }
+        }
+
+        public INakedObjectReflector Reflector {
+            get { return reflector; }
         }
 
         public void FindCollectionProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo) {
@@ -134,11 +144,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
 
         #endregion
 
-        #region INakedObjectReflectorAware Members
-
-        public INakedObjectReflector Reflector { set; private get; }
-
-        #endregion
+      
 
         public void RegisterFactory(IFacetFactory factory) {
             lock (cacheLock) {
@@ -146,9 +152,6 @@ namespace NakedObjects.Reflector.DotNet.Facets {
                 factoryByFactoryType.Add(factory.GetType(), factory);
                 factories.Add(factory);
 
-                if (factory is INakedObjectReflectorAware) {
-                    ((INakedObjectReflectorAware) factory).Reflector = Reflector;
-                }
             }
         }
 
@@ -162,9 +165,6 @@ namespace NakedObjects.Reflector.DotNet.Facets {
 
                 factories[factories.IndexOf(oldFactory)] = newFactory;
 
-                if (newFactory is INakedObjectReflectorAware) {
-                    ((INakedObjectReflectorAware) newFactory).Reflector = Reflector;
-                }
             }
         }
 

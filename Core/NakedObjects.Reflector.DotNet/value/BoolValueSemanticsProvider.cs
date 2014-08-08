@@ -8,6 +8,7 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
 
@@ -18,14 +19,14 @@ namespace NakedObjects.Reflector.DotNet.Value {
         private const bool immutable = true;
         private const int typicalLength = 5;
 
-        public BooleanValueSemanticsProvider(IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue) {}
+        public BooleanValueSemanticsProvider(INakedObjectReflector reflector, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, reflector) { }
 
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public BooleanValueSemanticsProvider()
-            : this(null) {}
+        public BooleanValueSemanticsProvider(INakedObjectReflector reflector)
+            : this(reflector, null) { }
 
         private static Type Type {
             get { return typeof (IBooleanValueFacet); }

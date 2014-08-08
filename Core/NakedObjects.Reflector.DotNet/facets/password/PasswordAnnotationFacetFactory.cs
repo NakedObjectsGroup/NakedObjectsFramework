@@ -14,8 +14,8 @@ using ParameterInfo = System.Reflection.ParameterInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Password {
     public class PasswordAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PasswordAnnotationFacetFactory()
-            : base(NakedObjectFeatureType.PropertiesAndParameters) {}
+        public PasswordAnnotationFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.PropertiesAndParameters) { }
 
 
         private static bool Process(MemberInfo member, IFacetHolder holder) {

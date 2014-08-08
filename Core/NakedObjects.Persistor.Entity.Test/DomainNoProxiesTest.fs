@@ -16,7 +16,7 @@ open NakedObjects.Core.Context
 
 let persistor =
     setProxyingAndDeferredLoading <- false
-    let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector))
+    let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
     let p = setupPersistorForTesting p
     p
 
@@ -27,7 +27,7 @@ let overwritePersistor =
         pc.ContextName <- "AdventureWorksEntities"  
         pc.DefaultMergeOption <- MergeOption.OverwriteChanges
         pc
-    let p = new EntityObjectStore([|(box config :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector))
+    let p = new EntityObjectStore([|(box config :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
     let p = setupPersistorForTesting p
     p
 

@@ -5,15 +5,16 @@
 using System;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class LongValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<long> {
-        public LongValueTypeFacetFactory()
-            : base(typeof (ILongValueFacet)) {}
+        public LongValueTypeFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, typeof (ILongValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (LongValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new LongValueSemanticsProvider(holder));
+                AddFacets(new LongValueSemanticsProvider(Reflector, holder));
                 return true;
             }
             return false;

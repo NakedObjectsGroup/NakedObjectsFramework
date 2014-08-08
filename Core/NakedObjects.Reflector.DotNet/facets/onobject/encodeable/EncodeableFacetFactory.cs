@@ -11,8 +11,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
     public class EncodeableFacetFactory : AnnotationBasedFacetFactoryAbstract, INakedObjectConfigurationAware {
-        public EncodeableFacetFactory()
-            : base(NakedObjectFeatureType.ObjectsOnly) {}
+        public EncodeableFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             return FacetUtils.AddFacet(Create(type, holder));

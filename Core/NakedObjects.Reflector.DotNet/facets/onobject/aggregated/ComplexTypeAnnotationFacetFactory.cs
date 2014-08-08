@@ -11,8 +11,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated {
     public class ComplexTypeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ComplexTypeAnnotationFacetFactory()
-            : base(NakedObjectFeatureType.ObjectsOnly) {}
+        public ComplexTypeAnnotationFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             Attribute ctAttribute = type.GetCustomAttributeByReflection<ComplexTypeAttribute>();

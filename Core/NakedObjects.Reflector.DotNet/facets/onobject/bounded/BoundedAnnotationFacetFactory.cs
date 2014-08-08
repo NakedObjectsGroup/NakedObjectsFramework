@@ -10,8 +10,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Bounded {
     public class BoundedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public BoundedAnnotationFacetFactory()
-            : base(NakedObjectFeatureType.ObjectsOnly) {}
+        public BoundedAnnotationFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             var attribute = type.GetCustomAttributeByReflection<BoundedAttribute>();

@@ -5,15 +5,16 @@
 using System;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class DateTimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<DateTime> {
-        public DateTimeValueTypeFacetFactory()
-            : base(typeof (IDateValueFacet)) {}
+        public DateTimeValueTypeFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, typeof (IDateValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (DateTimeValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new DateTimeValueSemanticsProvider(holder));
+                AddFacets(new DateTimeValueSemanticsProvider(Reflector, holder));
                 return true;
             }
             return false;

@@ -11,8 +11,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Defaults {
     public class ActionDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ActionDefaultAnnotationFacetFactory()
-            : base(NakedObjectFeatureType.ParametersOnly) {}
+        public ActionDefaultAnnotationFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ParametersOnly) { }
 
 
         public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {

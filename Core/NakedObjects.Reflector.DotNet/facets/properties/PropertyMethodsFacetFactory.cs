@@ -40,11 +40,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             };
         }
 
-        public PropertyMethodsFacetFactory()
-            : base(NakedObjectFeatureType.PropertiesOnly) {}
+        public PropertyMethodsFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
 
-        public PropertyMethodsFacetFactory(string[] subPefixes)
-            : base(NakedObjectFeatureType.PropertiesOnly) {}
+        public PropertyMethodsFacetFactory(INakedObjectReflector reflector, string[] subPefixes)
+            : base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
 
         public override string[] Prefixes {
             get { return prefixes; }
@@ -162,7 +162,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             MethodInfo method = methods.FirstOrDefault();
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                propertyFacets.Add(new PropertyChoicesFacetViaMethod(method, property));
+                propertyFacets.Add(new PropertyChoicesFacetViaMethod(Reflector, method, property));
                 AddOrAddToExecutedWhereFacet(method, property);
             }
         }

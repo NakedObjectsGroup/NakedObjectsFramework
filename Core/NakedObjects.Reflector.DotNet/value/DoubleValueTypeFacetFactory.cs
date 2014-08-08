@@ -5,15 +5,16 @@
 using System;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class DoubleValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<double> {
-        public DoubleValueTypeFacetFactory()
-            : base(typeof (IDoubleFloatingPointValueFacet)) {}
+        public DoubleValueTypeFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, typeof (IDoubleFloatingPointValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (DoubleValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new DoubleValueSemanticsProvider(holder));
+                AddFacets(new DoubleValueSemanticsProvider(Reflector, holder));
                 return true;
             }
             return false;

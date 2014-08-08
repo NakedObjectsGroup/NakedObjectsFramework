@@ -11,8 +11,8 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Properties.Choices;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Choices {
@@ -22,11 +22,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Choices {
         private readonly Tuple<string, INakedObjectSpecification>[] parameterNamesAndTypes;
         private readonly string[] parameterNames;
 
-        public PropertyChoicesFacetViaMethod(MethodInfo optionsMethod, IFacetHolder holder)
+        public PropertyChoicesFacetViaMethod(INakedObjectReflector reflector, MethodInfo optionsMethod, IFacetHolder holder)
             : base(holder) {
             method = optionsMethod;
 
-            parameterNamesAndTypes = optionsMethod.GetParameters().Select(p => new Tuple<string, INakedObjectSpecification>(p.Name.ToLower(), NakedObjectsContext.Reflector.LoadSpecification(p.ParameterType))).ToArray();
+            parameterNamesAndTypes = optionsMethod.GetParameters().Select(p => new Tuple<string, INakedObjectSpecification>(p.Name.ToLower(), reflector.LoadSpecification(p.ParameterType))).ToArray();
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
         }
 

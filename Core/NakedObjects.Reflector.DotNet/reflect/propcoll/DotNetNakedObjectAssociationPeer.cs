@@ -4,17 +4,19 @@
 
 using System;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Propcoll {
     public abstract class DotNetNakedObjectAssociationPeer : DotNetNakedObjectMemberPeer, INakedObjectAssociationPeer {
         private readonly bool oneToMany;
-        protected Type returnType;
+        protected readonly INakedObjectReflector reflector;
+        protected readonly Type returnType;
 
-        protected DotNetNakedObjectAssociationPeer(IIdentifier identifier, Type returnType, bool oneToMany)
+        protected DotNetNakedObjectAssociationPeer(INakedObjectReflector reflector,  IIdentifier identifier, Type returnType, bool oneToMany)
             : base(identifier) {
+            this.reflector = reflector;
             this.returnType = returnType;
             this.oneToMany = oneToMany;
         }
@@ -22,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Propcoll {
         #region INakedObjectAssociationPeer Members
 
         public virtual INakedObjectSpecification Specification {
-            get { return returnType == null ? null : NakedObjectsContext.Reflector.LoadSpecification(returnType); }
+            get { return returnType == null ? null : reflector.LoadSpecification(returnType); }
         }
 
         public bool IsOneToMany {

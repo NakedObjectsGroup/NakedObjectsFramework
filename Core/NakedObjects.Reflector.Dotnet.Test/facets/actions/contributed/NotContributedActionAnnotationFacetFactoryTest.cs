@@ -97,7 +97,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotContributedActionFacetImpl);
 
-            var sp = NakedObjectsContext.Reflector.LoadSpecification(typeof(Customer2));
+            var sp = reflector.LoadSpecification(typeof(Customer2));
 
             Assert.IsTrue(facet.NotContributedTo(sp) );
 
@@ -113,8 +113,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotContributedActionFacetImpl);
 
-            var sp = NakedObjectsContext.Reflector.LoadSpecification(typeof(Customer2));
-            var sp1 = NakedObjectsContext.Reflector.LoadSpecification(typeof(Customer3));
+            var sp = reflector.LoadSpecification(typeof(Customer2));
+            var sp1 = reflector.LoadSpecification(typeof(Customer3));
 
             Assert.IsTrue(facet.NotContributedTo(sp));
             Assert.IsTrue(facet.NotContributedTo(sp1));

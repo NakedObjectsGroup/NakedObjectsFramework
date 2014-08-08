@@ -5,15 +5,16 @@
 using System;
 using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class BooleanValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<bool> {
-        public BooleanValueTypeFacetFactory()
-            : base(typeof (IBooleanValueFacet)) {}
+        public BooleanValueTypeFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, typeof(IBooleanValueFacet)) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (BooleanValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new BooleanValueSemanticsProvider(holder));
+                AddFacets(new BooleanValueSemanticsProvider(Reflector, holder));
                 return true;
             }
             return false;

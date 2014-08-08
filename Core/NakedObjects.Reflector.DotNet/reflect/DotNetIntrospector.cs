@@ -138,8 +138,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return allMethods.ToArray();
         }
 
-        private static INakedObjectSpecification GetSpecification(Type returnType) {
-            return NakedObjectsContext.Reflector.LoadSpecification(returnType);
+        private INakedObjectSpecification GetSpecification(Type returnType) {
+            return reflector.LoadSpecification(returnType);
         }
 
         public void IntrospectClass() {
@@ -241,10 +241,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             foreach (PropertyInfo property in collectionProperties) {
                 Log.DebugFormat("Identified one-many association method {0}", property);
 
-                IIdentifier identifier = new IdentifierImpl(FullName, property.Name);
+                IIdentifier identifier = new IdentifierImpl(reflector, FullName, property.Name);
 
                 // create property and add facets
-                var collection = new DotNetOneToManyAssociationPeer(identifier, property.PropertyType);
+                var collection = new DotNetOneToManyAssociationPeer(reflector, identifier, property.PropertyType);
                 FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), collection, NakedObjectFeatureType.Collection);
 
                 // figure out what the Type is
@@ -262,10 +262,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 Log.DebugFormat("Identified 1-1 association method {0}", property);
                 Log.DebugFormat("One-to-One association {0} -> {1}", property.Name, property);
 
-                IIdentifier identifier = new IdentifierImpl(FullName, property.Name);
+                IIdentifier identifier = new IdentifierImpl(reflector, FullName, property.Name);
 
                 // create a reference property
-                var referenceProperty = new DotNetOneToOneAssociationPeer(identifier, property.PropertyType);
+                var referenceProperty = new DotNetOneToOneAssociationPeer(reflector, identifier, property.PropertyType);
 
                 // Process facets for the property
                 FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), referenceProperty, NakedObjectFeatureType.Property);
@@ -365,7 +365,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
                 Type[] parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
 
-                IIdentifier identifier = new IdentifierImpl(FullName, fullMethodName, actionMethod.GetParameters().ToArray());
+                IIdentifier identifier = new IdentifierImpl(reflector, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
 
                 // build action & its parameters
 
@@ -379,7 +379,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 }
 
                 if (actionMethod.ReturnType != typeof (void)) {
-                    NakedObjectsContext.Reflector.LoadSpecification(actionMethod.ReturnType);
+                    reflector.LoadSpecification(actionMethod.ReturnType);
                 }
 
                 actionPeers.Add(action);
