@@ -14,10 +14,7 @@ Getting Started
 Follow these steps to write your first ultra-simple Naked Objects application:
 1.	Using Visual Studio 2013 (Express version is fine) create a new ASP.NET Web Application project using the MVC template.
 2.	Install the NuGet Package NakedObjects.Mvc-FileTemplates, selecting Yes To All to overwrite existing files.
-3.	In the Models folder add a new class Customer as follows. Note that:
-•	All properties in a Naked Objects application must be virtual.
-•	[Hidden] specifies that this property is not for display on the user interface.
-•	[Title] specifes that the value of the property should be displayed in the Tab.
+3.	In the Models folder add a new class Customer as follows. Note that: All properties in a Naked Objects application must be virtual, [Hidden] specifies that this property is not for display on the user interface, and [Title] specifes that the value of the property should be displayed in the Tab.
 
 public class Customer
 {   
@@ -35,7 +32,7 @@ public class MyDbContext : DbContext {
 }
 
 5.	In the App_Start folder find the RunWeb class and edit two members as follows. First, the MenuServices property which defines the services to be shown on the main menu. (NakedObjects.Services.SimpleRepository is a ready-made class for early-stage prototyping only.)
-6.	
+
 protected override IServicesInstaller MenuServices {
     get {
         return new ServicesInstaller(
