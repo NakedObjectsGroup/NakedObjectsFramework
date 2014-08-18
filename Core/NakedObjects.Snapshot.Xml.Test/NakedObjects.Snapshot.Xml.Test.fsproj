@@ -65,6 +65,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.FrameworkService\NakedObjects.FrameworkService.csproj">
+      <Name>NakedObjects.FrameworkService</Name>
+      <Project>{7095e1c3-2c43-4802-9930-522e1bbf27c1}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.Core.csproj">
       <Name>NakedObjects.Reflector.Core</Name>
       <Project>{91153c56-313c-426e-8b0d-43fa39bd567a}</Project>

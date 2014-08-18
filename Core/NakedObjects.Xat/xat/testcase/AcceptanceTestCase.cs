@@ -10,12 +10,14 @@ using System.Security.Principal;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Bounded;
+using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Boot;
 using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
 using NakedObjects.Core.Security;
+using NakedObjects.Service;
 using NakedObjects.Xat.Performance;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
@@ -61,6 +63,15 @@ namespace NakedObjects.Xat {
             get {
                 NakedObjectsContext ctx = StaticContext.CreateInstance();
                 return ctx;
+            }
+        }
+
+        // make framework available to tests 
+        private readonly NakedObjectsFramework nakedObjectsFramework = new NakedObjectsFramework();
+
+        protected INakedObjectsFramework NakedObjectsContext {
+            get {
+                return nakedObjectsFramework;
             }
         }
 
@@ -116,7 +127,7 @@ namespace NakedObjects.Xat {
         }
 
         protected static void SetUser(string username, params string[] roles) {
-            var staticContext = (StaticContext) NakedObjectsContext.Instance;
+            var staticContext = (StaticContext)  Core.Context.NakedObjectsContext.Instance;
             ISession session = new SimpleSession(CreatePrincipal(username, roles));
             staticContext.SetSession(session);
         }
