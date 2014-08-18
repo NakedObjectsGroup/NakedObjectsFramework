@@ -152,7 +152,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             var facetsFacet = dotnetSpecification.GetFacet<IFacetsFacet>();
             if (facetsFacet != null) {
                 foreach (Type facetFactory in facetsFacet.FacetFactories) {
-                    var facetFactoryInstance = (IFacetFactory) Activator.CreateInstance(facetFactory);
+                    var facetFactoryInstance = (IFacetFactory) Activator.CreateInstance(facetFactory, reflector);
                     facetFactoryInstance.Process(introspectedType, methodRemover, dotnetSpecification);
                 }
             }

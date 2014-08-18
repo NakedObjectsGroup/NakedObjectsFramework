@@ -179,7 +179,7 @@ namespace NakedObjects.Core.Adapter {
             if (!typeof (IEncodedToStrings).IsAssignableFrom(objectType)) {
                 throw new Exception(string.Format("Type: {0} needs to be: {1} ", objectType, typeof (IEncodedToStrings)));
             }
-            return (IEncodedToStrings) Activator.CreateInstance(TypeUtils.GetType(type), new object[] {reflector, encodedData});
+            return (IEncodedToStrings)Activator.CreateInstance(objectType, new object[] { reflector, encodedData });
         }
 
         private void CheckCurrentIndex() {

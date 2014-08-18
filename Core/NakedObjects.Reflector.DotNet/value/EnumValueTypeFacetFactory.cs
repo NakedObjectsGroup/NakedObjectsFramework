@@ -15,7 +15,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (typeof (Enum).IsAssignableFrom(type)) {
                 Type semanticsProviderType = typeof (EnumValueSemanticsProvider<>).MakeGenericType(type);
-                object semanticsProvider = Activator.CreateInstance(semanticsProviderType, holder);
+                object semanticsProvider = Activator.CreateInstance(semanticsProviderType, Reflector, holder);
                 Type facetType = typeof (ValueFacetUsingSemanticsProvider<>).MakeGenericType(type);
                 var facet = (IFacet) Activator.CreateInstance(facetType, semanticsProvider, semanticsProvider);
                 FacetUtils.AddFacet(facet);
