@@ -20,9 +20,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Core.Persist;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Services;
 using NakedObjects.Web.Mvc;
@@ -242,7 +240,7 @@ namespace MvcTestApp.Tests.Controllers {
             });
         }
 
-        private static FormCollection GetFormForShiftEdit(INakedObject shift,
+        private  FormCollection GetFormForShiftEdit(INakedObject shift,
                                                           INakedObject timePeriod,
                                                           string t1,
                                                           string t2,
@@ -271,7 +269,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        private static FormCollection GetFormForVendorEdit(INakedObject vendor,
+        private  FormCollection GetFormForVendorEdit(INakedObject vendor,
                                                            string accountNumber,
                                                            string name,
                                                            string creditRating,
@@ -306,7 +304,7 @@ namespace MvcTestApp.Tests.Controllers {
             return GetForm(idToRawValue);
         }
 
-        public static FormCollection GetFormForStoreEdit(INakedObject store,
+        public  FormCollection GetFormForStoreEdit(INakedObject store,
                                                          string storeName,
                                                          string salesPerson,
                                                          string modifiedDate,
@@ -329,7 +327,7 @@ namespace MvcTestApp.Tests.Controllers {
             return GetForm(idToRawValue);
         }
 
-        private static FormCollection GetFormForCeditCardEdit(INakedObject creditCard,
+        private  FormCollection GetFormForCeditCardEdit(INakedObject creditCard,
                                                               string cardType,
                                                               string cardNumber,
                                                               string expiryMonth,
@@ -381,62 +379,62 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        private static Employee Employee {
+        private  Employee Employee {
             get { return NakedObjectsContext.ObjectPersistor.Instances<Employee>().First(); }
         }
 
-        private static string EmployeeId {
+        private  string EmployeeId {
             get { return FrameworkHelper.GetObjectId(Employee); }
         }
 
-        private static Employee TransientEmployee {
+        private  Employee TransientEmployee {
             get { return NakedObjectsContext.ObjectPersistor.CreateInstance(NakedObjectsContext.Reflector.LoadSpecification(typeof (Employee))).GetDomainObject<Employee>(); }
         }
 
-        private static Vendor TransientVendor {
+        private  Vendor TransientVendor {
             get { return NakedObjectsContext.ObjectPersistor.CreateInstance(NakedObjectsContext.Reflector.LoadSpecification(typeof (Vendor))).GetDomainObject<Vendor>(); }
         }
 
-        private static Shift TransientShift {
+        private  Shift TransientShift {
             get { return NakedObjectsContext.ObjectPersistor.CreateInstance(NakedObjectsContext.Reflector.LoadSpecification(typeof (Shift))).GetDomainObject<Shift>(); }
         }
 
-        private static Individual TransientIndividual {
+        private  Individual TransientIndividual {
             get { return NakedObjectsContext.ObjectPersistor.CreateInstance(NakedObjectsContext.Reflector.LoadSpecification(typeof (Individual))).GetDomainObject<Individual>(); }
         }
 
-        private static NotPersistedObject NotPersistedObject {
+        private  NotPersistedObject NotPersistedObject {
             get {
                 var repo = FrameworkHelper.GetAdaptedService("repository#MvcTestApp.Tests.Controllers.NotPersistedObject").Object as SimpleRepository<NotPersistedObject>;
                 return repo.NewInstance();
             }
         }
 
-        private static SalesOrderHeader Order {
+        private  SalesOrderHeader Order {
             get { return NakedObjectsContext.ObjectPersistor.Instances<SalesOrderHeader>().First(); }
         }
 
-        private static string OrderId {
+        private  string OrderId {
             get { return FrameworkHelper.GetObjectId(Order); }
         }
 
-        private static Vendor Vendor {
+        private  Vendor Vendor {
             get { return NakedObjectsContext.ObjectPersistor.Instances<Vendor>().First(); }
         }
 
-        private static Contact Contact {
+        private  Contact Contact {
             get { return NakedObjectsContext.ObjectPersistor.Instances<Contact>().First(); }
         }
 
-        private static Individual Individual {
+        private  Individual Individual {
             get { return NakedObjectsContext.ObjectPersistor.Instances<Individual>().First(); }
         }
 
-        private static Product Product {
+        private  Product Product {
             get { return NakedObjectsContext.ObjectPersistor.Instances<Product>().First(); }
         }
 
-        private static string ProductId {
+        private  string ProductId {
             get { return FrameworkHelper.GetObjectId(Product); }
         }
 
@@ -453,15 +451,15 @@ namespace MvcTestApp.Tests.Controllers {
             get { return FrameworkHelper.GetObjectId(OrderContributedActions); }
         }
 
-        private static INakedObject ProductRepo {
+        private  INakedObject ProductRepo {
             get { return FrameworkHelper.GetAdaptedService("ProductRepository"); }
         }
 
-        private static string EmployeeRepoId {
+        private  string EmployeeRepoId {
             get { return FrameworkHelper.GetObjectId(EmployeeRepo); }
         }
 
-        private static string ProductRepoId {
+        private  string ProductRepoId {
             get { return FrameworkHelper.GetObjectId(ProductRepo); }
         }
 
@@ -469,39 +467,39 @@ namespace MvcTestApp.Tests.Controllers {
             get { return FrameworkHelper.GetAdaptedService("OrderRepository"); }
         }
 
-        private static string OrderRepoId {
+        private  string OrderRepoId {
             get { return FrameworkHelper.GetObjectId(OrderRepo); }
         }
 
-        private static INakedObject OrderContrib {
+        private  INakedObject OrderContrib {
             get { return FrameworkHelper.GetAdaptedService("OrderContributedActions"); }
         }
 
-        private static string OrderContribId {
+        private  string OrderContribId {
             get { return FrameworkHelper.GetObjectId(OrderContrib); }
         }
 
-        private static INakedObject CustomerRepo {
+        private  INakedObject CustomerRepo {
             get { return FrameworkHelper.GetAdaptedService("CustomerRepository"); }
         }
 
-        private static string CustomerRepoId {
+        private  string CustomerRepoId {
             get { return FrameworkHelper.GetObjectId(CustomerRepo); }
         }
 
-        public static Store Store {
+        public  Store Store {
             get { return NakedObjectsContext.ObjectPersistor.Instances<Store>().First(); }
         }
 
-        private static string StoreId {
+        private  string StoreId {
             get { return FrameworkHelper.GetObjectId(Store); }
         }
 
-        private static SalesPerson SalesPerson {
+        private  SalesPerson SalesPerson {
             get { return NakedObjectsContext.ObjectPersistor.Instances<SalesPerson>().First(); }
         }
 
-        private static Store TransientStore {
+        private  Store TransientStore {
             get { return NakedObjectsContext.ObjectPersistor.CreateInstance(NakedObjectsContext.Reflector.LoadSpecification(typeof (Store))).GetDomainObject<Store>(); }
         }
 
@@ -2253,6 +2251,34 @@ namespace MvcTestApp.Tests.Controllers {
     [TestFixture]
     public class ConcurrencyTest : AcceptanceTestCase {
 
+
+        public Store Store {
+            get { return NakedObjectsContext.ObjectPersistor.Instances<Store>().First(); }
+        }
+
+        public FormCollection GetFormForStoreEdit(INakedObject store,
+                                                       string storeName,
+                                                       string salesPerson,
+                                                       string modifiedDate,
+                                                       out IDictionary<string, string> idToRawValue) {
+            INakedObjectSpecification nakedObjectSpecification = NakedObjectsContext.Reflector.LoadSpecification(typeof(Store));
+            INakedObjectAssociation assocSN = nakedObjectSpecification.GetProperty("Name");
+            INakedObjectAssociation assocSP = nakedObjectSpecification.GetProperty("SalesPerson");
+            INakedObjectAssociation assocMD = nakedObjectSpecification.GetProperty("ModifiedDate");
+
+            string idSN = IdHelper.GetFieldInputId(store, assocSN);
+            string idSP = IdHelper.GetFieldInputId(store, assocSP);
+            string idMD = IdHelper.GetConcurrencyFieldInputId(store, assocMD);
+
+            idToRawValue = new Dictionary<string, string> {
+                {idSN, storeName},
+                {idSP, salesPerson},
+                {idMD, modifiedDate}
+            };
+
+            return GetForm(idToRawValue);
+        }
+
         [SetUp]
         public void SetupTest() {
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
@@ -2296,7 +2322,7 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
-        private static SalesOrderHeader Order {
+        private  SalesOrderHeader Order {
             get { return NakedObjectsContext.ObjectPersistor.Instances<SalesOrderHeader>().First(); }
         }
 
@@ -2334,11 +2360,11 @@ namespace MvcTestApp.Tests.Controllers {
         public void EditSaveEFConcurrencyFail() {
             var controller = new GenericController();
             new ContextMocks(controller);
-            Store store = GenericControllerTest.Store;
+            Store store = Store;
             INakedObject adaptedStore = NakedObjectsContext.ObjectPersistor.CreateAdapter(store, null, null);
             IDictionary<string, string> idToRawvalue;
 
-            FormCollection form = GenericControllerTest.GetFormForStoreEdit(adaptedStore, store.Name, FrameworkHelper.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
+            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, FrameworkHelper.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
 
             var objectModel = new ObjectAndControlData {Id = FrameworkHelper.GetObjectId(store)};
 

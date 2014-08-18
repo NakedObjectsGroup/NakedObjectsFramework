@@ -83,26 +83,26 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("Fixture: TestFixture installed", (data[IdHelper.SystemMessages] as string[])[0]);
         }
 
-        private static Employee Employee {
+        private  Employee Employee {
             get {
                 return NakedObjectsContext.ObjectPersistor.Instances<Employee>().First();
             }
         }
 
-        private static Vendor Vendor {
+        private  Vendor Vendor {
             get {
                 return NakedObjectsContext.ObjectPersistor.Instances<Vendor>().First();
             }
         }
 
 
-        private static string EmployeeId {
+        private  string EmployeeId {
             get {
                 return FrameworkHelper.GetObjectId(Employee);
             }
         }
 
-        private static string VendorId {
+        private  string VendorId {
             get {
                 return FrameworkHelper.GetObjectId(Vendor);
             }
