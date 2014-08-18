@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.DescribedAs {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new DescribedAsAnnotationFacetFactory { Reflector = reflector };
+            facetFactory = new DescribedAsAnnotationFacetFactory(reflector);
         }
 
         [TearDown]

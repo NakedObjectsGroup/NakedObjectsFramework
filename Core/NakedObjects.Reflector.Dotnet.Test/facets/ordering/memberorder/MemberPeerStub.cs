@@ -59,7 +59,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             private readonly MemberPeerStub owner;
 
             public IdentifierNull(MemberPeerStub owner)
-                : base("", "") {
+                : base(null, "", "") {
                 this.owner = owner;
             }
 

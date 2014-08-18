@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             byteArray = new byte[0];
             byteArrayNakedObject = CreateAdapter(byteArray);
             facetHolder = new FacetHolderImpl();
-            SetValue(value = new ArrayValueSemanticsProvider<byte>(facetHolder));
+            SetValue(value = new ArrayValueSemanticsProvider<byte>(reflector, facetHolder));
         }
 
         private INakedObject byteArrayNakedObject;

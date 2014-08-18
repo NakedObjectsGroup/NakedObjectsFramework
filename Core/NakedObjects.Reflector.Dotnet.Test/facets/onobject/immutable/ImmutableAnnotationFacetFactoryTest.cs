@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new ImmutableAnnotationFacetFactory { Reflector = reflector };
+            facetFactory = new ImmutableAnnotationFacetFactory(reflector);
         }
 
         [TearDown]

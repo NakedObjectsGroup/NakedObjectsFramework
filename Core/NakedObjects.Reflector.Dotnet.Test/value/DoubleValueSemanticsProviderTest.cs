@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
 
             holder = new FacetHolderImpl();
-            SetValue(new DoubleValueSemanticsProvider(holder));
+            SetValue(new DoubleValueSemanticsProvider(reflector, holder));
 
             doubleObj = 32.5;
         }

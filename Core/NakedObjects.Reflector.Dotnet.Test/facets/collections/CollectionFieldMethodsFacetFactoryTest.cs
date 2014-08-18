@@ -27,7 +27,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new CollectionFieldMethodsFacetFactory {Reflector = reflector};
+            facetFactory = new CollectionFieldMethodsFacetFactory(reflector);
         }
 
         [TearDown]

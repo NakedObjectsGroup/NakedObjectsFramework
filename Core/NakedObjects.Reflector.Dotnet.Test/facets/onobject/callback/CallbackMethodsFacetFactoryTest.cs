@@ -37,7 +37,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new CallbackMethodsFacetFactory { Reflector = reflector };
+            facetFactory = new CallbackMethodsFacetFactory(reflector);
         }
 
         [TearDown]

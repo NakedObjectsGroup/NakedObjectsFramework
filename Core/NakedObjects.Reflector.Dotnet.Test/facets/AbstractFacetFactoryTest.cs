@@ -4,6 +4,7 @@
 
 using System;
 using System.Reflection;
+using NakedObjects.Architecture.Reflect;
 using NUnit.Framework;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Testing;
@@ -12,7 +13,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class AbstractFacetFactoryTest {
         protected FacetHolderImpl facetHolder;
         protected ProgrammableMethodRemover methodRemover;
-        protected ProgrammableReflector reflector;
+        protected INakedObjectReflector reflector;
         protected abstract Type[] SupportedTypes { get; }
         protected abstract IFacetFactory FacetFactory { get; }
 

@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new RegExAnnotationFacetFactory { Reflector = reflector };
+            facetFactory = new RegExAnnotationFacetFactory(reflector);
         }
 
         [TearDown]

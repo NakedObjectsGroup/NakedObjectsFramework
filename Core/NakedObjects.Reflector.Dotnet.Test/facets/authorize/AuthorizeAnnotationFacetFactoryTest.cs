@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new AuthorizeAnnotationFacetFactory {Reflector = reflector};
+            facetFactory = new AuthorizeAnnotationFacetFactory(reflector);
         }
 
         [TearDown]

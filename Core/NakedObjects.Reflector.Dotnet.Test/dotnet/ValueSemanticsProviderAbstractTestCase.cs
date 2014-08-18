@@ -8,6 +8,7 @@ using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Parseable;
 using NakedObjects.Reflector.DotNet.Value;
+using NakedObjects.Testing;
 using NakedObjects.TestSystem;
 using NUnit.Framework;
 
@@ -17,11 +18,13 @@ namespace NakedObjects.Reflector.DotNet {
         private EncodeableFacetUsingEncoderDecoder<T> encodeableFacet;
         private ParseableFacetUsingParser<T> parseableFacet;
         private ValueSemanticsProviderAbstract<T> value;
+        protected ProgrammableReflector reflector;
 
         protected void SetValue(ValueSemanticsProviderAbstract<T> newValue) {
             value = newValue;
             encodeableFacet = new EncodeableFacetUsingEncoderDecoder<T>(newValue, null);
             parseableFacet = new ParseableFacetUsingParser<T>(newValue, null);
+            reflector = new ProgrammableReflector(new ProgrammableTestSystem());
         }
 
         protected ValueSemanticsProviderAbstract<T> GetValue() {

@@ -40,7 +40,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PropertyMethodsFacetFactory {Reflector = reflector};
+            facetFactory = new PropertyMethodsFacetFactory(reflector);
         }
 
         [TearDown]

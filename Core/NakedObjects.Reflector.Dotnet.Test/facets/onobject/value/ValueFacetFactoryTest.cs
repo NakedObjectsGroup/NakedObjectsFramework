@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ValueFacetFactory { Reflector = reflector };         
+            facetFactory = new ValueFacetFactory(reflector);    
            
         }
 

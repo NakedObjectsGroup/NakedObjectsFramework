@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new FacetsAnnotationFacetFactory { Reflector = reflector };
+            facetFactory = new FacetsAnnotationFacetFactory(reflector);
         }
 
         [TearDown]
@@ -125,7 +125,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
         #region Nested Type: CustomerFacetFactory
 
         public class CustomerFacetFactory : FacetFactoryAbstract {
-            public CustomerFacetFactory() : base(null) {}
+            public CustomerFacetFactory() : base(null, null) {}
 
 
             public override NakedObjectFeatureType[] FeatureTypes {
@@ -150,7 +150,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
         #region Nested Type: CustomerFacetFactory2
 
         public class CustomerFacetFactory2 : FacetFactoryAbstract {
-            public CustomerFacetFactory2() : base(null) {}
+            public CustomerFacetFactory2() : base(null, null) {}
 
 
             public override NakedObjectFeatureType[] FeatureTypes {

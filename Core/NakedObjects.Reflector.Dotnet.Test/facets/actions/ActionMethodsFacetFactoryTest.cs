@@ -41,7 +41,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ActionMethodsFacetFactory {Reflector = reflector};
+            facetFactory = new ActionMethodsFacetFactory(reflector);
         }
 
         [TearDown]

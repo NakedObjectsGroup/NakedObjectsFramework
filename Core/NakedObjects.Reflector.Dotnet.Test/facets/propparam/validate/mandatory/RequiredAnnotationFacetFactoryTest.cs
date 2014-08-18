@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new RequiredAnnotationFacetFactory {Reflector = reflector};
+            facetFactory = new RequiredAnnotationFacetFactory(reflector);
         }
 
         [TearDown]

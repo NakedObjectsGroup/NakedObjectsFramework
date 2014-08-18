@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.ActionOrder {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ActionOrderAnnotationFacetFactory { Reflector = reflector };
+            facetFactory = new ActionOrderAnnotationFacetFactory(reflector);
         }
 
         [TearDown]

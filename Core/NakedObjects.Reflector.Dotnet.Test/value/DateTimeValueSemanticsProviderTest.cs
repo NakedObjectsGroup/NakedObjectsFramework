@@ -15,7 +15,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
             SetupSpecification(typeof (DateTime));
             holder = new FacetHolderImpl();
-            SetValue(adapter = new DateTimeValueSemanticsProvider(holder));
+            SetValue(adapter = new DateTimeValueSemanticsProvider(reflector, holder));
         }
 
         private DateTimeValueSemanticsProvider adapter;

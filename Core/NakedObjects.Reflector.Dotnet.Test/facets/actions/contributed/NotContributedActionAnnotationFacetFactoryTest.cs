@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ContributedActionAnnotationFacetFactory {Reflector = reflector};
+            facetFactory = new ContributedActionAnnotationFacetFactory(reflector);
         }
 
         [TearDown]

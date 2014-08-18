@@ -22,7 +22,7 @@ let ModelConfig =
 type TestInjector() = 
     interface IContainerInjector with 
         member x.InitDomainObject obj = 
-            let container = new NakedObjects.Reflector.DotNet.DotNetDomainObjectContainer()
+            let container = new NakedObjects.Reflector.DotNet.DotNetDomainObjectContainer(null)
             let prop = obj.GetType().GetProperty("Container")
             if prop <> null then 
                 prop.SetValue(obj, container, null)    

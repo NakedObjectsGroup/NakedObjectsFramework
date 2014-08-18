@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new TableViewAnnotationFacetFactory {Reflector = reflector};
+            facetFactory = new TableViewAnnotationFacetFactory(reflector);
         }
 
         [TearDown]

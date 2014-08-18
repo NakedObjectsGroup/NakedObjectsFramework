@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ParseableFacetFactory { Reflector = reflector };
+            facetFactory = new ParseableFacetFactory(reflector);
      
         }
 

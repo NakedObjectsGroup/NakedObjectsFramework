@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
             integer = 32;
             holder = new FacetHolderImpl();
-            SetValue(value = new IntValueSemanticsProvider(holder));
+            SetValue(value = new IntValueSemanticsProvider(reflector, holder));
         }
 
         [Test]

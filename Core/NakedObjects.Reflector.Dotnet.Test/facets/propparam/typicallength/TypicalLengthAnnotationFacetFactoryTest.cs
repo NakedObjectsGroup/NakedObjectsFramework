@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.TypicalLength {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new TypicalLengthAnnotationFacetFactory { Reflector = reflector };
+            facetFactory = new TypicalLengthAnnotationFacetFactory(reflector);
         }
 
         [TearDown]

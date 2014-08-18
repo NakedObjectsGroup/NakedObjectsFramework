@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new EncodeableFacetFactory { Reflector = reflector }; 
+            facetFactory = new EncodeableFacetFactory(reflector);
         }
 
         [TearDown]

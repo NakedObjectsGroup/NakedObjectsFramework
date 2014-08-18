@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ExcludeFromFindMenuAnnotationFacetFactory { Reflector = reflector };
+            facetFactory = new ExcludeFromFindMenuAnnotationFacetFactory(reflector);
         }
 
         [TearDown]

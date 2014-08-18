@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new TypeOfAnnotationFacetFactory { Reflector = reflector };
+            facetFactory = new TypeOfAnnotationFacetFactory(reflector);
         }
 
         [TearDown]

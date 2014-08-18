@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             base.SetUp();
             var dnReflector = new DotNetReflector {FacetDecorator = new FacetDecoratorSet()};
             dnReflector.Init();
-            facetFactory = new RemoveEventHandlerMethodsFacetFactory {Reflector = dnReflector};
+            facetFactory = new RemoveEventHandlerMethodsFacetFactory(reflector);
         }
 
         [TearDown]

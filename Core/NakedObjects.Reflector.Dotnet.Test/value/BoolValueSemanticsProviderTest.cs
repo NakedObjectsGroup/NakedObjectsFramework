@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             booleanObj = true;
             booleanNO = CreateAdapter(booleanObj);
             facetHolder = new FacetHolderImpl();
-            SetValue(value = new BooleanValueSemanticsProvider(facetHolder));
+            SetValue(value = new BooleanValueSemanticsProvider(reflector, facetHolder));
         }
 
         [Test]
