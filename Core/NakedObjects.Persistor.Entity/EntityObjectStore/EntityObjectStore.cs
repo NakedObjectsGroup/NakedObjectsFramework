@@ -356,9 +356,9 @@ namespace NakedObjects.EntityObjectStore {
             return createAdapter(null, trigger);
         }
 
-        private static LocalContext ResetPocoContext(PocoEntityContextConfiguration pocoConfig) {
+        private  LocalContext ResetPocoContext(PocoEntityContextConfiguration pocoConfig) {
             try {
-                return new LocalContext(pocoConfig) {IsInitialized = true};
+                return new LocalContext(pocoConfig, Session) {IsInitialized = true};
             }
             catch (Exception e) {
                 string explain = string.Format(Resources.NakedObjects.StartPersistorErrorMessage, pocoConfig.ContextName);
@@ -366,9 +366,9 @@ namespace NakedObjects.EntityObjectStore {
             }
         }
 
-        private static LocalContext ResetCodeOnlyContext(CodeFirstEntityContextConfiguration codeOnlyConfig) {
+        private  LocalContext ResetCodeOnlyContext(CodeFirstEntityContextConfiguration codeOnlyConfig) {
             try {
-                return new LocalContext(codeOnlyConfig);
+                return new LocalContext(codeOnlyConfig, Session);
             }
             catch (Exception e) {
                 throw new InitialisationException(Resources.NakedObjects.StartPersistorErrorCodeFirst, e);
@@ -517,7 +517,7 @@ namespace NakedObjects.EntityObjectStore {
             INakedObject nakedObject = createAdapter(oid, domainObject);
             Injector.InitDomainObject(nakedObject.Object);
             LoadComplexTypes(nakedObject, nakedObject.ResolveState.IsGhost());
-            nakedObject.UpdateVersion();
+            nakedObject.UpdateVersion(Session);
 
             if (nakedObject.ResolveState.IsGhost()) {
                 StartResolving(nakedObject, context);
@@ -828,6 +828,7 @@ namespace NakedObjects.EntityObjectStore {
         #region Nested type: LocalContext
 
         public class LocalContext {
+            private readonly ISession session;
             private readonly List<object> added = new List<object>();
             private readonly IDictionary<Type, Type> baseTypeMap = new Dictionary<Type, Type>();
             private readonly ISet<INakedObject> deletedNakedObjects = new HashSet<INakedObject>();
@@ -839,21 +840,22 @@ namespace NakedObjects.EntityObjectStore {
             private List<INakedObject> coUpdating;
             private List<INakedObject> updatingNakedObjects;
 
-            private LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes) {
+            private LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session) {
+                this.session = session;
                 preCachedTypes.ForEach(t => ownedTypes.Add(t));
                 notPersistedTypes.ForEach(t => this.notPersistedTypes.Add(t));
             }
 
-            public LocalContext(PocoEntityContextConfiguration config)
-                : this(config.PreCachedTypes(), config.NotPersistedTypes()) {
+            public LocalContext(PocoEntityContextConfiguration config, ISession session)
+                : this(config.PreCachedTypes(), config.NotPersistedTypes(), session) {
                 WrappedObjectContext = new ObjectContext("name=" + config.ContextName);
                 Name = config.ContextName;
                 Log.DebugFormat("Context {0} Created", Name);
                 ValidatePreCachedTypes(config);
             }
 
-            public LocalContext(CodeFirstEntityContextConfiguration config)
-                : this(config.PreCachedTypes(), config.NotPersistedTypes()) {
+            public LocalContext(CodeFirstEntityContextConfiguration config, ISession session)
+                : this(config.PreCachedTypes(), config.NotPersistedTypes(), session) {
                 WrappedObjectContext = ((IObjectContextAdapter) config.DbContext()).ObjectContext;
                 Name = WrappedObjectContext.DefaultContainerName;
                 Log.DebugFormat("Context {0} Wrapped", Name);
@@ -997,7 +999,7 @@ namespace NakedObjects.EntityObjectStore {
             public void PostSave(EntityObjectStore store) {
                 try {
                     updatingNakedObjects.ForEach(updated);
-                    updatingNakedObjects.ForEach(x => x.UpdateVersion());
+                    updatingNakedObjects.ForEach(x => x.UpdateVersion(session));
                     coUpdating.ForEach(updated);
                     // Take a copy of PersistedNakedObjects and clear original so new ones can be added 
                     INakedObject[] currentPersistedNakedObjects = PersistedNakedObjects.ToArray();
@@ -1138,7 +1140,7 @@ namespace NakedObjects.EntityObjectStore {
             Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
             if (oid is EntityOid) {
                 INakedObject adapter = createAdapter(oid, GetObjectByKey((EntityOid) oid, hint));
-                adapter.UpdateVersion();
+                adapter.UpdateVersion(Session);
                 return adapter;
             }
             var aggregateOid = oid as AggregateOid;
