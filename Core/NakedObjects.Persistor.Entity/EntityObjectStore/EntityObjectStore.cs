@@ -66,6 +66,7 @@ namespace NakedObjects.EntityObjectStore {
 
         private IDictionary<EntityContextConfiguration, LocalContext> contexts = new Dictionary<EntityContextConfiguration, LocalContext>();
         private IContainerInjector injector;
+        private IUpdateNotifier updateNotifier;
 
         #region Delegates
 
@@ -97,7 +98,7 @@ namespace NakedObjects.EntityObjectStore {
             replacePoco = (nakedObject, newDomainObject) => Manager.ReplacePoco(nakedObject, newDomainObject);
             removeAdapter = o => Manager.RemoveAdapter(o);
             createAggregatedAdapter = (parent, property, obj) => Manager.CreateAggregatedAdapter(parent, parent.Specification.GetProperty(property.Name).Id, obj);
-            notifyUi = x => NakedObjectsContext.UpdateNotifier.AddChangedObject(x);
+            
             updating = x => x.Updating();
             updated = x => x.Updated();
             persisting = x => x.Persisting();
@@ -115,6 +116,16 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         public INakedObjectManager Manager { get; set; }
+
+        public IUpdateNotifier UpdateNotifier {
+            get { return updateNotifier; }
+            set {
+                updateNotifier = value;
+                notifyUi = UpdateNotifier.AddChangedObject;
+            }
+        }
+
+        public ISession Session { get; set; }
 
         #region for testing only
 
@@ -449,7 +460,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public INakedObject CreateAdapterForKnownObject(object domainObject) {
             EntityOid oid = oidGenerator.CreateOid(EntityUtils.GetProxiedTypeName(domainObject), GetContext(domainObject).GetKey(domainObject));
-            return new PocoAdapter(reflector, NakedObjectsContext.Session, domainObject, oid);
+            return new PocoAdapter(reflector, Session, domainObject, oid);
         }
 
         private static string ConcatenateMessages(Exception e) {

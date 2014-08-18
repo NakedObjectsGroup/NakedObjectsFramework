@@ -29,6 +29,9 @@ namespace NakedObjects.Persistor.Objectstore {
         /// </summary>
         string Name { get; }
 
+        IUpdateNotifier UpdateNotifier { get; set; }
+        ISession Session { get; set; }
+
         void AbortTransaction();
 
         /// <summary>

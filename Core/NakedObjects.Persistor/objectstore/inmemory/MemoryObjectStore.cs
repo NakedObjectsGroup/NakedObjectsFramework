@@ -54,6 +54,8 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             set { }
         }
 
+        public ISession Session { get; set; }
+
         public virtual void AbortTransaction() {
             Log.Debug("AbortTransaction");
         }
@@ -149,6 +151,8 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
         public virtual string Name {
             get { return "In-Memory Object Store"; }
         }
+
+        public IUpdateNotifier UpdateNotifier { get; set; }
 
         public virtual void RegisterService(string name, IOid oid) {
             Log.DebugFormat("RegisterService name: {0} oid : {1}", name, oid);

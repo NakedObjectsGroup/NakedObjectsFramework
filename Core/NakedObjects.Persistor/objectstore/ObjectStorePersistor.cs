@@ -57,14 +57,14 @@ namespace NakedObjects.Persistor.Objectstore {
             Assert.AssertNotNull(identityMap);
             Assert.AssertNotNull(reflector);
           
-
-
             this.reflector = reflector;
         
             this.objectStore = objectStore;
             this.persistAlgorithm = persistAlgorithm;
             OidGenerator = oidGenerator;
             this.identityMap = identityMap;
+
+          
 
             transactionManager = new ObjectStoreTransactionManager(objectStore);
             Log.DebugFormat("Creating {0}", this);
@@ -75,12 +75,16 @@ namespace NakedObjects.Persistor.Objectstore {
         public ISession Session {
             set {
                 session = value;
+                objectStore.Session = session;
             }
             get { return session; }
         }
 
         public object UpdateNotifier {
-            set { updateNotifier = (IUpdateNotifier)value; }
+            set {
+                updateNotifier = (IUpdateNotifier)value;
+                objectStore.UpdateNotifier = updateNotifier;
+            }
             get { return updateNotifier; }
         }
 
