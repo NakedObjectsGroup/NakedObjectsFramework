@@ -8,7 +8,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
     public interface IColorValueFacet : IFacet {
         int ColorValue(INakedObject nakedObject);
 
-        INakedObject CreateValue(INakedObject nakedObject, int color);
+  
     }
 
     // Copyright (c) Naked Objects Group Ltd.

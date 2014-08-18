@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets;
 namespace NakedObjects.Architecture.Adapter.Value {
     public interface IUnsignedShortValueFacet : IFacet {
         ushort UnsignedShortValue(INakedObject nakedObject);
-        INakedObject CreateValue(ushort shortValue);
+       
     }
 
     // Copyright (c) Naked Objects Group Ltd.

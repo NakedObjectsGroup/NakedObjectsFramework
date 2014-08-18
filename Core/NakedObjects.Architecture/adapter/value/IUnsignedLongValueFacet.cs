@@ -8,7 +8,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
     public interface IUnsignedLongValueFacet : IFacet {
         ulong UnsignedLongValue(INakedObject nakedObject);
 
-        INakedObject CreateValue(ulong longValue);
+       
     }
 
     // Copyright (c) Naked Objects Group Ltd.

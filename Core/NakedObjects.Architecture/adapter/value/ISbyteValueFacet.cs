@@ -9,7 +9,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
     public interface ISbyteValueFacet : IFacet {
         SByte SByteValue(INakedObject nakedObject);
 
-        INakedObject CreateValue(SByte sbyteValue);
+    
     }
 
     // Copyright (c) Naked Objects Group Ltd.

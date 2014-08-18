@@ -89,10 +89,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return nakedObject.GetDomainObject<float>();
         }
 
-        public INakedObject CreateValue(float value) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
-        }
-
+   
 
         public override string ToString() {
             return "FloatAdapter: ";

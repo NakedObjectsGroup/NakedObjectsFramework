@@ -50,9 +50,6 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return nakedObject.GetDomainObject<byte>();
         }
 
-        public INakedObject CreateValue(byte value) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
-        }
 
         public static bool IsAdaptedType(Type type) {
             return type == typeof (byte);

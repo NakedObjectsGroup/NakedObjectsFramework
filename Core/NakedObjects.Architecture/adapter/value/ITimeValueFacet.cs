@@ -7,6 +7,6 @@ using System;
 namespace NakedObjects.Architecture.Adapter.Value {
     public interface ITimeValueFacet {
         TimeSpan TimeValue(INakedObject nakedObject);
-        INakedObject CreateValue(TimeSpan timeSpanValue);
+        
     }
 }

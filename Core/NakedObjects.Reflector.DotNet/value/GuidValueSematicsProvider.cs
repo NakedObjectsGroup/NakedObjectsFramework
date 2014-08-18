@@ -87,9 +87,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return nakedObject.GetDomainObject<Guid>();
         }
 
-        public INakedObject CreateValue(Guid value) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
-        }
+  
 
         public override string ToString() {
             return "GuidAdapter: ";

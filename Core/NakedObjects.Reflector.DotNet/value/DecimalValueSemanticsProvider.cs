@@ -89,10 +89,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return nakedObject.GetDomainObject<decimal>();
         }
 
-        public INakedObject CreateValue(decimal value) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
-        }
-
+  
 
         public override string ToString() {
             return "DecimalAdapter: ";

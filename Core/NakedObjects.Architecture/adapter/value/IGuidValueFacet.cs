@@ -9,7 +9,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
     public interface IGuidValueFacet : IFacet {
         Guid GuidValue(INakedObject nakedObject);
 
-        INakedObject CreateValue(Guid guidValue);
+     
     }
 
     // Copyright (c) Naked Objects Group Ltd.

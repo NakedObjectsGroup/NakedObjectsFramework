@@ -87,9 +87,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return nakedObject.GetDomainObject<uint>();
         }
 
-        public INakedObject CreateValue(uint value) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
-        }
+  
 
         public override string ToString() {
             return "UIntAdapter: ";

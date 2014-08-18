@@ -100,10 +100,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return color.ToArgb();
         }
 
-        public INakedObject CreateValue(INakedObject nakedObject, int color) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(Color.FromArgb(color), null, null);
-        }
-
+    
 
         public override string ToString() {
             return "ColorAdapter: ";

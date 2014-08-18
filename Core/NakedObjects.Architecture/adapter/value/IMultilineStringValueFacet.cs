@@ -8,7 +8,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
     public interface IMultilineStringValueFacet : IFacet {
         string StringValue(INakedObject nakedObject);
 
-        INakedObject CreateValue(string stringValue);
+      
     }
 
     // Copyright (c) Naked Objects Group Ltd.

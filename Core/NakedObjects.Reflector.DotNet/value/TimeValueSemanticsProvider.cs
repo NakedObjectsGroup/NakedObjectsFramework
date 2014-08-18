@@ -35,9 +35,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         #region ITimeValueFacet Members
 
-        public INakedObject CreateValue(TimeSpan time) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(time, null, null);
-        }
+    
 
         public TimeSpan TimeValue(INakedObject nakedObject) {
             return nakedObject.GetDomainObject<TimeSpan>();

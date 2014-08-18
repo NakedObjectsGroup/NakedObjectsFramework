@@ -57,10 +57,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return nakedObject.GetDomainObject<T[]>();
         }
 
-        public INakedObject CreateValue(T[] value) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
-        }
-
+   
         public object ParseFromStream(Stream stream, string mimeType = null, string name = null) {
             if (typeof (T) == typeof (byte)) {
                 var ba = new byte[stream.Length];

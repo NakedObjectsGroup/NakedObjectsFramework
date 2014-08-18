@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets;
 
 namespace NakedObjects.Architecture.Adapter.Value {
     public interface IImageValueFacet : IFacet {
-        INakedObject CreateValue(Image image);
+    
 
         Image GetImage(INakedObject nakedObject);
 

@@ -8,7 +8,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
     public interface ILongValueFacet : IFacet {
         long LongValue(INakedObject nakedObject);
 
-        INakedObject CreateValue(long longValue);
+    
     }
 
     // Copyright (c) Naked Objects Group Ltd.

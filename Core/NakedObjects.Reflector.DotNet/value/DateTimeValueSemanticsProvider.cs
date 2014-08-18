@@ -42,9 +42,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         #region IDateValueFacet Members
 
-        public INakedObject CreateValue(DateTime date) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(date, null, null);
-        }
+  
 
         public DateTime DateValue(INakedObject nakedObject) {
             return nakedObject == null ? Now() : (DateTime) nakedObject.Object;

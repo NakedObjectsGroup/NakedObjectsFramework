@@ -9,7 +9,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
     public interface IDateValueFacet : IFacet {
         DateTime DateValue(INakedObject nakedObject);
 
-        INakedObject CreateValue(DateTime dateValue);
+   
     }
 
     // Copyright (c) Naked Objects Group Ltd.

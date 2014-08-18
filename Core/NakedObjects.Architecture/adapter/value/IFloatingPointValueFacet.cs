@@ -8,7 +8,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
     public interface IFloatingPointValueFacet : IFacet {
         float FloatValue(INakedObject nakedObject);
 
-        INakedObject CreateValue(float floatValue);
+      
     }
 
     // Copyright (c) Naked Objects Group Ltd.

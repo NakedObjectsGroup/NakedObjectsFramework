@@ -95,9 +95,6 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return nakedObject.GetDomainObject<char>();
         }
 
-        public INakedObject CreateValue(char value) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
-        }
 
 
         public override string ToString() {

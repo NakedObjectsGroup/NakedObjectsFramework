@@ -8,7 +8,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
     public interface IIntegerValueFacet : IFacet {
         int IntegerValue(INakedObject nakedObject);
 
-        INakedObject CreateValue(int intValue);
+     
     }
 
     // Copyright (c) Naked Objects Group Ltd.

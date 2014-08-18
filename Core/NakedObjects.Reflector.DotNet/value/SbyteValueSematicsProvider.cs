@@ -90,10 +90,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return nakedObject.GetDomainObject<sbyte>();
         }
 
-        public INakedObject CreateValue(sbyte value) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
-        }
-
+ 
 
         public override string ToString() {
             return "SByteAdapter: ";

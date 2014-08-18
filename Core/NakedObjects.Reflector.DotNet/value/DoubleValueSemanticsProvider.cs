@@ -87,10 +87,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return nakedObject.GetDomainObject<double>();
         }
 
-        public INakedObject CreateValue(Double value) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
-        }
-
+ 
 
         public override string ToString() {
             return "DoubleAdapter: ";

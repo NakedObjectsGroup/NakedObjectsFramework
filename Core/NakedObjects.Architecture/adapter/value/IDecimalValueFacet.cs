@@ -8,7 +8,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
     public interface IDecimalValueFacet : IFacet {
         decimal DecimalValue(INakedObject nakedObject);
 
-        INakedObject CreateValue(decimal decimalValue);
+    
     }
 
     // Copyright (c) Naked Objects Group Ltd.

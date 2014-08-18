@@ -10,7 +10,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
 
         string GetCurrencyCode(INakedObject nakedObject);
 
-        INakedObject CreateValue(decimal amount, string currencyCode);
+     
     }
 
     // Copyright (c) Naked Objects Group Ltd.

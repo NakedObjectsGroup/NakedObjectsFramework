@@ -8,7 +8,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
     public interface IDoubleFloatingPointValueFacet : IFacet {
         double DoubleValue(INakedObject nakedObject);
 
-        INakedObject CreateValue(double doubleValue);
+      
     }
 
     // Copyright (c) Naked Objects Group Ltd.

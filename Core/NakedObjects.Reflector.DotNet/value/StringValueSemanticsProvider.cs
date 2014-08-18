@@ -38,9 +38,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         #region IStringValueFacet Members
 
-        public INakedObject CreateValue(string value) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
-        }
+     
 
         public string StringValue(INakedObject nakedObject) {
             return nakedObject.GetDomainObject<string>();

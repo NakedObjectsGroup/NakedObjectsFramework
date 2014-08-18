@@ -89,10 +89,6 @@ namespace NakedObjects.Reflector.DotNet.Value {
             return nakedObject.GetDomainObject<long>();
         }
 
-        public INakedObject CreateValue(long value) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
-        }
-
 
         public override string ToString() {
             return "LongAdapter: ";

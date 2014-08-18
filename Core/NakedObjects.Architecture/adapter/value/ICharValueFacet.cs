@@ -8,7 +8,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
     public interface ICharValueFacet : IFacet {
         char CharValue(INakedObject nakedObject);
 
-        INakedObject CreateValue(char charValue);
+     
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -8,7 +8,7 @@ namespace NakedObjects.Architecture.Adapter.Value {
     public interface IArrayValueFacet<T> : IFacet {
         T[] ArrayValue(INakedObject nakedObject);
 
-        INakedObject CreateValue(T[] value);
+       
     }
 
     // Copyright (c) Naked Objects Group Ltd.

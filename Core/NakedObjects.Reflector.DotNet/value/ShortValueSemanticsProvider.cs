@@ -86,9 +86,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
 
-        public INakedObject CreateValue(short value) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
-        }
+   
 
         public short ShortValue(INakedObject nakedObject) {
             return nakedObject.GetDomainObject<short>();
