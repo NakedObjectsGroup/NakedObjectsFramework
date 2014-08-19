@@ -49,7 +49,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString ObjectPropertyView(this HtmlHelper html, object model, string propertyId) {
             INakedObject nakedObject = FrameworkHelper.GetNakedObject(model);
-            INakedObjectAssociation property = nakedObject.Specification.Properties.Where(a => a.Id == propertyId).Where(a => a.IsVisible(NakedObjectsContext.Session, nakedObject)).SingleOrDefault();
+            INakedObjectAssociation property = nakedObject.Specification.Properties.Where(a => a.Id == propertyId).Where(a => a.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor)).SingleOrDefault();
             return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyView(new PropertyContext(nakedObject, property, false));
         }
 
@@ -84,7 +84,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString ObjectPropertyEdit(this HtmlHelper html, object model, string propertyId) {
             INakedObject nakedObject = FrameworkHelper.GetNakedObject(model);
-            INakedObjectAssociation property = nakedObject.Specification.Properties.Where(a => a.Id == propertyId).Where(a => a.IsVisible(NakedObjectsContext.Session, nakedObject)).SingleOrDefault();
+            INakedObjectAssociation property = nakedObject.Specification.Properties.Where(a => a.Id == propertyId).Where(a => a.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor)).SingleOrDefault();
             return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyEdit(new PropertyContext(nakedObject, property, true));
         }
 
@@ -245,7 +245,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         public static MvcHtmlString[] PropertiesListOnlyCollections(this HtmlHelper html, object domainObject) {
             INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
-            IEnumerable<string> collections = nakedObject.Specification.Properties.Where(p => p.IsCollection && p.IsVisible(NakedObjectsContext.Session, nakedObject)).Select(p => p.Id);
+            IEnumerable<string> collections = nakedObject.Specification.Properties.Where(p => p.IsCollection && p.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor)).Select(p => p.Id);
          
             return  collections.Select(c => html.PropertyListWith(domainObject, new[] {c})).ToArray();
         }

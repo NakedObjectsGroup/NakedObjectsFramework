@@ -71,12 +71,12 @@ namespace NakedObjects.Xat {
         }
 
         public ITestNaked[] GetChoices() {
-            INakedObject[] choices = ((NakedObjectAssociationAbstract) field).GetChoices(owningObject.NakedObject, null);
+            INakedObject[] choices = ((NakedObjectAssociationAbstract) field).GetChoices(owningObject.NakedObject, null, persistor);
             return choices.Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 
         public ITestNaked[] GetCompletions(string autoCompleteParm) {
-            INakedObject[] completions = ((NakedObjectAssociationAbstract) field).GetCompletions(owningObject.NakedObject, autoCompleteParm);
+            INakedObject[] completions = ((NakedObjectAssociationAbstract) field).GetCompletions(owningObject.NakedObject, autoCompleteParm, persistor);
             return completions.Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 
@@ -300,13 +300,13 @@ namespace NakedObjects.Xat {
         }
 
         public ITestProperty AssertIsInvisible() {
-            bool canAccess = field.IsVisible(session, owningObject.NakedObject);
+            bool canAccess = field.IsVisible(session, owningObject.NakedObject, persistor);
             Assert.IsFalse(canAccess, "Field '" + Name + "' is visible");
             return this;
         }
 
         public ITestProperty AssertIsVisible() {
-            bool canAccess = field.IsVisible(session, owningObject.NakedObject);
+            bool canAccess = field.IsVisible(session, owningObject.NakedObject, persistor);
             Assert.IsTrue(canAccess, "Field '" + Name + "' is invisible");
             return this;
         }
@@ -331,7 +331,7 @@ namespace NakedObjects.Xat {
             AssertIsVisible();
             ResetLastMessage();
 
-            IConsent isUsable = field.IsUsable(session, owningObject.NakedObject);
+            IConsent isUsable = field.IsUsable(session, owningObject.NakedObject, persistor);
             LastMessage = isUsable.Reason;
 
             bool canUse = isUsable.IsAllowed;
@@ -341,7 +341,7 @@ namespace NakedObjects.Xat {
 
         public ITestProperty AssertIsUnmodifiable() {
             ResetLastMessage();
-            IConsent isUsable = field.IsUsable(session, owningObject.NakedObject);
+            IConsent isUsable = field.IsUsable(session, owningObject.NakedObject, persistor);
             LastMessage = isUsable.Reason;
 
             bool canUse = isUsable.IsAllowed;
@@ -380,7 +380,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestProperty AssertIsValidToSave() {
-            if (field.IsMandatory && field.IsVisible(session, owningObject.NakedObject) && field.IsUsable(session, owningObject.NakedObject).IsAllowed) {
+            if (field.IsMandatory && field.IsVisible(session, owningObject.NakedObject, persistor) && field.IsUsable(session, owningObject.NakedObject, persistor).IsAllowed) {
                 Assert.IsFalse(field.IsEmpty(owningObject.NakedObject), "Cannot save object as mandatory field " + " '" + Name + "' is empty");
                 Assert.IsTrue(field.GetNakedObject(owningObject.NakedObject).ValidToPersist() == null);
             }

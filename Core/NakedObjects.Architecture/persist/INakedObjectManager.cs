@@ -35,6 +35,9 @@ namespace NakedObjects.Architecture.Persist {
         INakedObject GetViewModel(IOid oid);
 
         INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj);
+
+        INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid);
+
     }
 
 

@@ -9,6 +9,7 @@ using NakedObjects.Architecture.Facets.Naming.DescribedAs;
 using NakedObjects.Architecture.Facets.Naming.Named;
 using NakedObjects.Architecture.Facets.Propparam.Modify;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
@@ -98,7 +99,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Loops over all <see cref="IHidingInteractionAdvisor" /> <see cref="IFacet" />s and
         ///     returns <c>true</c> only if none hide the member.
         /// </summary>
-        public virtual bool IsVisible(ISession session, INakedObject target) {
+        public virtual bool IsVisible(ISession session, INakedObject target, INakedObjectPersistor persistor) {
             InteractionContext ic = InteractionContext.AccessMember(session, false, target, Identifier);
             return InteractionUtils.IsVisible(this, ic);
         }
@@ -108,7 +109,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Loops over all <see cref="IDisablingInteractionAdvisor" /> <see cref="IFacet" />s and
         ///     returns <c>true</c> only if none disables the member.
         /// </summary>
-        public virtual IConsent IsUsable(ISession session, INakedObject target) {
+        public virtual IConsent IsUsable(ISession session, INakedObject target, INakedObjectPersistor persistor) {
             InteractionContext ic = InteractionContext.AccessMember(session, false, target, Identifier);
             return InteractionUtils.IsUsable(this, ic);
         }

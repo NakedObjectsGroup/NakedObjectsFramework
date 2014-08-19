@@ -119,22 +119,22 @@ namespace NakedObjects.Reflector.Spec {
             get { return null; }
         }
 
-        public virtual INakedObject Execute(INakedObject nakedObject, INakedObject[] parameterSet) {
+        public virtual INakedObject Execute(INakedObject nakedObject, INakedObject[] parameterSet, INakedObjectPersistor persistor) {
             Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);
             INakedObject[] parms = RealParameters(nakedObject, parameterSet);
-            INakedObject target = RealTarget(nakedObject);
+            INakedObject target = RealTarget(nakedObject, persistor);
             return GetFacet<IActionInvocationFacet>().Invoke(target, parms);
         }
 
-        public virtual INakedObject RealTarget(INakedObject target) {
+        public virtual INakedObject RealTarget(INakedObject target, INakedObjectPersistor persistor) {
             if (target == null) {
-                return FindService();
+                return FindService(persistor);
             }
             if (target.Specification.IsService) {
                 return target;
             }
             if (IsContributedMethod) {
-                return FindService();
+                return FindService(persistor);
             }
             return target;
         }
@@ -214,29 +214,29 @@ namespace NakedObjects.Reflector.Spec {
         /// <summary>
         ///     Checks declarative constraints, and then checks imperatively.
         /// </summary>
-        public virtual IConsent IsParameterSetValid(INakedObject nakedObject, INakedObject[] parameterSet) {
+        public virtual IConsent IsParameterSetValid(ISession session, INakedObject nakedObject, INakedObject[] parameterSet, INakedObjectPersistor persistor) {
             InteractionContext ic;
             var buf = new InteractionBuffer();
             if (parameterSet != null) {
                 INakedObject[] parms = RealParameters(nakedObject, parameterSet);
                 for (int i = 0; i < parms.Length; i++) {
-                    ic = InteractionContext.ModifyingPropParam(NakedObjectsContext.Session, false, RealTarget(nakedObject), Identifier, parameterSet[i]);
+                    ic = InteractionContext.ModifyingPropParam(session, false, RealTarget(nakedObject, persistor), Identifier, parameterSet[i]);
                     InteractionUtils.IsValid(GetParameter(i), ic, buf);
                 }
             }
-            INakedObject target = RealTarget(nakedObject);
-            ic = InteractionContext.InvokingAction(NakedObjectsContext.Session, false, target, Identifier, parameterSet);
+            INakedObject target = RealTarget(nakedObject, persistor);
+            ic = InteractionContext.InvokingAction(session, false, target, Identifier, parameterSet);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
 
-        public override IConsent IsUsable(ISession session, INakedObject target) {
-            InteractionContext ic = InteractionContext.InvokingAction(session, false, RealTarget(target), Identifier, new[] {target});
+        public override IConsent IsUsable(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+            InteractionContext ic = InteractionContext.InvokingAction(session, false, RealTarget(target, persistor), Identifier, new[] {target});
             return InteractionUtils.IsUsable(this, ic);
         }
 
-        public override bool IsVisible(ISession session, INakedObject target) {
-            return base.IsVisible(session, RealTarget(target));
+        public override bool IsVisible(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+            return base.IsVisible(session, RealTarget(target, persistor), persistor);
         }
 
         private bool ContributeTo(INakedObjectSpecification parmSpec, INakedObjectSpecification contributeeSpec) {
@@ -269,8 +269,8 @@ namespace NakedObjects.Reflector.Spec {
             return FindServiceOnSpecOrSpecSuperclass(spec.Superclass);
         }
 
-        private INakedObject FindService() {
-            foreach (INakedObject serviceAdapter in NakedObjectsContext.ObjectPersistor.GetServices(ServiceTypes.Menu | ServiceTypes.Contributor)) {
+        private INakedObject FindService(INakedObjectPersistor persistor) {
+            foreach (INakedObject serviceAdapter in persistor.GetServices(ServiceTypes.Menu | ServiceTypes.Contributor)) {
                 if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Specification)) {
                     return serviceAdapter;
                 }

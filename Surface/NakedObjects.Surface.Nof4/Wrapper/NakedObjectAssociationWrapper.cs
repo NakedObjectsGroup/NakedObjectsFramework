@@ -134,7 +134,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
 
         public IConsentSurface IsUsable(INakedObjectSurface target) {
-            IConsent consent = assoc.IsUsable(NakedObjectsContext.Session, ((NakedObjectWrapper) target).WrappedNakedObject);
+            IConsent consent = assoc.IsUsable(NakedObjectsContext.Session, ((NakedObjectWrapper)target).WrappedNakedObject, NakedObjectsContext.ObjectPersistor);
             return new ConsentWrapper(consent);
         }
 
@@ -144,7 +144,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool IsVisible(INakedObjectSurface nakedObject) {
-            return assoc.IsVisible(NakedObjectsContext.Session, ((NakedObjectWrapper) nakedObject).WrappedNakedObject);
+            return assoc.IsVisible(NakedObjectsContext.Session, ((NakedObjectWrapper)nakedObject).WrappedNakedObject, NakedObjectsContext.ObjectPersistor);
         }
 
         public bool IsEager(INakedObjectSurface nakedObject) {
@@ -154,7 +154,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, INakedObjectSurface> parameterNameValues) {
             var oneToOneFeature = assoc as IOneToOneFeature;
-            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((NakedObjectWrapper)target).WrappedNakedObject, null).Select(no => NakedObjectWrapper.Wrap(no, Surface)).Cast<INakedObjectSurface>().ToArray() : null;
+            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((NakedObjectWrapper)target).WrappedNakedObject, null, NakedObjectsContext.ObjectPersistor).Select(no => NakedObjectWrapper.Wrap(no, Surface)).Cast<INakedObjectSurface>().ToArray() : null;
         }
 
         private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, INakedObjectSpecification> parm) {
@@ -173,7 +173,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectSurface[] GetCompletions(INakedObjectSurface target, string autoCompleteParm) {
             var oneToOneFeature = assoc as IOneToOneFeature;
-            return oneToOneFeature != null ? oneToOneFeature.GetCompletions(((NakedObjectWrapper)target).WrappedNakedObject, autoCompleteParm).Select(no => NakedObjectWrapper.Wrap(no, Surface)).Cast<INakedObjectSurface>().ToArray() : null;
+            return oneToOneFeature != null ? oneToOneFeature.GetCompletions(((NakedObjectWrapper)target).WrappedNakedObject, autoCompleteParm, NakedObjectsContext.ObjectPersistor).Select(no => NakedObjectWrapper.Wrap(no, Surface)).Cast<INakedObjectSurface>().ToArray() : null;
         }
 
         public int Count(INakedObjectSurface target) {

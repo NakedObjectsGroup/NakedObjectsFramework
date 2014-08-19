@@ -65,7 +65,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestParameter CreateTestParameter(INakedObjectAction action, INakedObjectActionParameter parameter, ITestHasActions owningObject) {
-            return new TestParameter(action, parameter, owningObject, this);
+            return new TestParameter(persistor, action, parameter, owningObject, this);
         }
 
         #endregion

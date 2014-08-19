@@ -109,7 +109,7 @@ namespace NakedObjects.Persistor.Objectstore {
             }
             object obj = CreateObject(specification);
 
-            PocoAdapter adapter = CreateAdapterForNewObject(obj);
+            INakedObject adapter = CreateAdapterForNewObject(obj);
             InitializeNewObject(adapter);
             NewTransientsResolvedState(adapter);
             return adapter;
@@ -119,7 +119,7 @@ namespace NakedObjects.Persistor.Objectstore {
             Log.DebugFormat("CreateViewModel of: {0}", specification);
 
             object viewModel = CreateObject(specification);
-            PocoAdapter adapter = CreateAdapterForViewModel(viewModel, specification);
+            INakedObject adapter = CreateAdapterForViewModel(viewModel, specification);
             InitializeNewObject(adapter);
             adapter.ResolveState.Handle(Events.InitializePersistentEvent);
             return adapter;
@@ -245,7 +245,7 @@ namespace NakedObjects.Persistor.Objectstore {
             Log.DebugFormat("GetServicesWithVisibleActions of: {0}", serviceType);
             return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
                 Select(sw => GetServiceAdapter(sw.Service)).
-                Where(no => no.Specification.GetObjectActions().Any(a => a.IsVisible(Session, no))).ToArray();
+                Where(no => no.Specification.GetObjectActions().Any(a => a.IsVisible(Session, no, this))).ToArray();
         }
 
         public virtual INakedObject[] GetServices(ServiceTypes serviceType) {
@@ -519,9 +519,9 @@ namespace NakedObjects.Persistor.Objectstore {
             identityMap.UpdateViewModel(adapter, keys);
         }
 
-        private PocoAdapter CreateAdapterForViewModel(object viewModel, INakedObjectSpecification spec) {
+        private INakedObject CreateAdapterForViewModel(object viewModel, INakedObjectSpecification spec) {
             var oid = new ViewModelOid(reflector, spec);
-            PocoAdapter adapter = NewAdapter(viewModel, oid);
+            INakedObject adapter = NewAdapterForKnownObject(viewModel, oid);
 
             object versionObject = adapter.GetVersion();
             if (versionObject != null) {
@@ -543,7 +543,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         private INakedObject NewAdapterBasedOnOid(object domainObject, IOid oid) {
-            INakedObject nakedObject = NewAdapter(domainObject, oid);
+            INakedObject nakedObject = NewAdapterForKnownObject(domainObject, oid);
             identityMap.AddAdapter(nakedObject);
 
             if (oid is AggregateOid && nakedObject.Specification.IsObject) {
@@ -558,7 +558,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
         private INakedObject NewAdapterForViewModel(object domainObject, INakedObjectSpecification spec) {
             if (spec.IsViewModel) {
-                PocoAdapter adapter = CreateAdapterForViewModel(domainObject, spec);
+                INakedObject adapter = CreateAdapterForViewModel(domainObject, spec);
                 adapter.ResolveState.Handle(Events.InitializePersistentEvent);
                 return adapter;
             }
@@ -567,7 +567,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
 
         private INakedObject NewAdapterForTransient(object domainObject) {
-            PocoAdapter adapter = CreateAdapterForNewObject(domainObject);
+            INakedObject adapter = CreateAdapterForNewObject(domainObject);
             NewTransientsResolvedState(adapter);
             return adapter;
         }
@@ -576,7 +576,7 @@ namespace NakedObjects.Persistor.Objectstore {
             INakedObject pocoAdapter = adapterCache.GetAdapter(domainObject);
 
             if (pocoAdapter == null) {
-                pocoAdapter = NewAdapter(domainObject, null);
+                pocoAdapter = NewAdapterForKnownObject(domainObject, null);
                 NewTransientsResolvedState(pocoAdapter);
                 adapterCache.AddAdapter(pocoAdapter);
             }
@@ -618,16 +618,16 @@ namespace NakedObjects.Persistor.Objectstore {
             pocoAdapter.ResolveState.Handle(pocoAdapter.Specification.IsAggregated ? Events.InitializeAggregateEvent : Events.InitializeTransientEvent);
         }
 
-        private PocoAdapter CreateAdapterForNewObject(object domainObject) {
+        private INakedObject CreateAdapterForNewObject(object domainObject) {
             IOid transientOid = OidGenerator.CreateTransientOid(domainObject);
-            PocoAdapter adapter = NewAdapter(domainObject, transientOid);
+            var adapter = NewAdapterForKnownObject(domainObject, transientOid);
             Log.DebugFormat("Creating adapter (transient) {0}", adapter);
             identityMap.AddAdapter(adapter);
             return adapter;
         }
 
-        private PocoAdapter NewAdapter(object domainObject, IOid transientOid) {
-            return new PocoAdapter(reflector, Session, domainObject, transientOid);
+        public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid) {
+            return new PocoAdapter(reflector, Session, this, domainObject, transientOid);
         }
 
         private void CreateInlineObjects(INakedObject parentObject, object rootObject) {

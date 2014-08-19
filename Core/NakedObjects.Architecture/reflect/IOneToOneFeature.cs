@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
@@ -25,12 +26,12 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Returns a list of possible references/values for this field, which the user can choose from
         /// </summary>
-        INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
+        INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, INakedObjectPersistor persistor);
 
         /// <summary>
         ///     Returns a list of possible autocompletions for this field, which the user can choose from
         /// </summary>
-        INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm);
+        INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, INakedObjectPersistor persistor);
 
         /// <summary>
         ///     Returns a parameter names and types if the field supports conditional choices

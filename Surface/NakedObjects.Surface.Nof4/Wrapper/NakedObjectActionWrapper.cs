@@ -98,11 +98,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool IsVisible(INakedObjectSurface nakedObject) {
-            return action.IsVisible(NakedObjectsContext.Session, ((NakedObjectWrapper) nakedObject).WrappedNakedObject);
+            return action.IsVisible(NakedObjectsContext.Session, ((NakedObjectWrapper)nakedObject).WrappedNakedObject, NakedObjectsContext.ObjectPersistor);
         }
 
         public IConsentSurface IsUsable(INakedObjectSurface nakedObject) {
-            return new ConsentWrapper(action.IsUsable(NakedObjectsContext.Session, ((NakedObjectWrapper) nakedObject).WrappedNakedObject));
+            return new ConsentWrapper(action.IsUsable(NakedObjectsContext.Session, ((NakedObjectWrapper)nakedObject).WrappedNakedObject, NakedObjectsContext.ObjectPersistor));
         }
 
         public INakedObjectSpecificationSurface OnType {

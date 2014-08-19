@@ -17,11 +17,11 @@ using NakedObjects.Architecture.Facets.Properties.Enums;
 using NakedObjects.Architecture.Facets.Propparam.Modify;
 using NakedObjects.Architecture.Facets.Propparam.Validate.Mandatory;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
@@ -147,18 +147,18 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue) {
+        public IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue, INakedObjectPersistor persistor) {
             if (proposedValue != null && !proposedValue.Specification.IsOfType(Specification)) {
                 return GetConsent("Not a suitable type; must be a " + Specification.SingularName);
             }
 
             var buf = new InteractionBuffer();
-            InteractionContext ic = InteractionContext.ModifyingPropParam(NakedObjectsContext.Session, false, parentAction.RealTarget(nakedObject), Identifier, proposedValue);
+            InteractionContext ic = InteractionContext.ModifyingPropParam(NakedObjectsContext.Session, false, parentAction.RealTarget(nakedObject, persistor), Identifier, proposedValue);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
 
-        public virtual IConsent IsUsable(ISession session, INakedObject target) {
+        public virtual IConsent IsUsable(ISession session, INakedObject target, INakedObjectPersistor persistor) {
             return Allow.Default;
         }
 
@@ -171,22 +171,22 @@ namespace NakedObjects.Reflector.Spec {
             return choicesFacet != null ? choicesFacet.ParameterNamesAndTypes : new Tuple<string, INakedObjectSpecification>[]{};
         }
 
-        public INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues) {
+        public INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, INakedObjectPersistor persistor) {
             var choicesFacet = GetFacet<IActionChoicesFacet>();
             var enumFacet = GetFacet<IEnumFacet>();
 
             if (choicesFacet != null) {
-                object[] options = choicesFacet.GetChoices(parentAction.RealTarget(nakedObject), parameterNameValues);
+                object[] options = choicesFacet.GetChoices(parentAction.RealTarget(nakedObject, persistor), parameterNameValues);
                 if (enumFacet == null) {
-                    return NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(options).ToArray();
+                    return persistor.GetCollectionOfAdaptedObjects(options).ToArray();
                 }
 
-                return NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject), options)).ToArray();
+                return persistor.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject, persistor), options)).ToArray();
             }
 
 
             if (enumFacet != null) {
-                return NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject))).ToArray();
+                return NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject, persistor))).ToArray();
             }
 
             if (Specification.IsBoundedSet()) {
@@ -199,27 +199,27 @@ namespace NakedObjects.Reflector.Spec {
                 var instanceEnumFacet = instanceSpec.GetFacet<IEnumFacet>();
 
                 if (instanceEnumFacet != null) {
-                    return NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(instanceEnumFacet.GetChoices(parentAction.RealTarget(nakedObject))).ToArray();
+                    return persistor.GetCollectionOfAdaptedObjects(instanceEnumFacet.GetChoices(parentAction.RealTarget(nakedObject, persistor))).ToArray();
                 }
 
-                return NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(NakedObjectsContext.ObjectPersistor.Instances(instanceSpec)).ToArray();
+                return persistor.GetCollectionOfAdaptedObjects(NakedObjectsContext.ObjectPersistor.Instances(instanceSpec)).ToArray();
             }
 
             return null;
         }
 
 
-        public INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm) {
+        public INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, INakedObjectPersistor persistor) {
             var autoCompleteFacet = GetFacet<IAutoCompleteFacet>();
-            return autoCompleteFacet == null ? null : NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObject), autoCompleteParm)).ToArray();
+            return autoCompleteFacet == null ? null : NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObject, persistor), autoCompleteParm)).ToArray();
         }
 
-        public INakedObject GetDefault(INakedObject nakedObject) {
-            return GetDefaultValueAndType(nakedObject).Item1;
+        public INakedObject GetDefault(INakedObject nakedObject, INakedObjectPersistor persistor) {
+            return GetDefaultValueAndType(nakedObject, persistor).Item1;
         }
 
-        public TypeOfDefaultValue GetDefaultType(INakedObject nakedObject) {
-            return GetDefaultValueAndType(nakedObject).Item2;
+        public TypeOfDefaultValue GetDefaultType(INakedObject nakedObject, INakedObjectPersistor persistor) {
+            return GetDefaultValueAndType(nakedObject, persistor).Item2;
         }
 
 
@@ -227,7 +227,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return Identifier.MemberParameterNames[Number]; }
         }
 
-        private Tuple<INakedObject, TypeOfDefaultValue> GetDefaultValueAndType(INakedObject nakedObject) {
+        private Tuple<INakedObject, TypeOfDefaultValue> GetDefaultValueAndType(INakedObject nakedObject, INakedObjectPersistor persistor) {
             if (parentAction.IsContributedMethod && nakedObject != null) {
                 IEnumerable<INakedObjectActionParameter> matchingParms = parentAction.Parameters.Where(p => nakedObject.Specification.IsOfType(p.Specification));
 
@@ -237,7 +237,7 @@ namespace NakedObjects.Reflector.Spec {
             }
             var defaultsFacet = GetFacet<IActionDefaultsFacet>();
             if (defaultsFacet != null) {
-                Tuple<object, TypeOfDefaultValue> defaultvalue = defaultsFacet.GetDefault(parentAction.RealTarget(nakedObject));
+                Tuple<object, TypeOfDefaultValue> defaultvalue = defaultsFacet.GetDefault(parentAction.RealTarget(nakedObject, persistor));
                 return new Tuple<INakedObject, TypeOfDefaultValue>(NakedObjectsContext.ObjectPersistor.CreateAdapter(defaultvalue.Item1, null, null), defaultvalue.Item2);
             }
             return new Tuple<INakedObject, TypeOfDefaultValue>(null, TypeOfDefaultValue.Implicit);

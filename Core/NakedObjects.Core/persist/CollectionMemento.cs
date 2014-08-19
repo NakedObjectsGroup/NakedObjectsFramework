@@ -202,7 +202,7 @@ namespace NakedObjects.Core.Persist {
         }
 
         public INakedObject RecoverCollection() {
-            INakedObject nakedObject = Action.Execute(Target, Parameters);
+            INakedObject nakedObject = Action.Execute(Target, Parameters, persistor);
 
             if (selectedObjects != null) {
                 IEnumerable<object> selected = nakedObject.GetDomainObject<IEnumerable>().Cast<object>().Where(x => selectedObjects.Contains(x));

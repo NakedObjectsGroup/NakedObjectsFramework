@@ -20,17 +20,17 @@ namespace NakedObjects.Xat {
         private readonly ITestObjectFactory factory;
         private readonly INakedObjectReflector reflector;
         private readonly ISession session;
-        private readonly INakedObjectManager manager;
+        private readonly INakedObjectPersistor persistor;
         private readonly ITestHasActions owningObject;
 
-        public TestAction(INakedObjectReflector reflector, ISession session, INakedObjectManager manager, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory)
-            : this(reflector, session, manager, string.Empty, action, owningObject, factory) {}
+        public TestAction(INakedObjectReflector reflector, ISession session, INakedObjectPersistor persistor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory)
+            : this(reflector, session, persistor, string.Empty, action, owningObject, factory) {}
 
-        public TestAction(INakedObjectReflector reflector, ISession session, INakedObjectManager manager, string contributor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory) {
+        public TestAction(INakedObjectReflector reflector, ISession session, INakedObjectPersistor persistor, string contributor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory) {
             SubMenu = contributor;
             this.reflector = reflector;
             this.session = session;
-            this.manager = manager;
+            this.persistor = persistor;
             this.owningObject = owningObject;
             this.factory = factory;
             this.action = action;
@@ -79,10 +79,10 @@ namespace NakedObjects.Xat {
         private ITestNaked DoInvoke(int page, params object[] parameters) {
             ResetLastMessage();
             AssertIsValidWithParms(parameters);
-            INakedObject[] parameterObjects = parameters.AsTestNakedArray(manager).Select(x => x.NakedObject).ToArray();
+            INakedObject[] parameterObjects = parameters.AsTestNakedArray(persistor).Select(x => x.NakedObject).ToArray();
 
             INakedObject[] parms = action.RealParameters(owningObject.NakedObject, parameterObjects);
-            INakedObject target = action.RealTarget(owningObject.NakedObject);
+            INakedObject target = action.RealTarget(owningObject.NakedObject, persistor);
             INakedObject result = action.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page);
 
             if (result == null) {
@@ -98,10 +98,10 @@ namespace NakedObjects.Xat {
         private ITestNaked DoInvoke(params object[] parameters) {
             ResetLastMessage();
             AssertIsValidWithParms(parameters);
-            INakedObject[] parameterObjects = parameters.AsTestNakedArray(manager).Select(x => x.NakedObject).ToArray();
+            INakedObject[] parameterObjects = parameters.AsTestNakedArray(persistor).Select(x => x.NakedObject).ToArray();
             INakedObject result = null;
             try {
-                result = action.Execute(owningObject.NakedObject, parameterObjects);
+                result = action.Execute(owningObject.NakedObject, parameterObjects, persistor);
             }
             catch (ArgumentException e) {
                 Assert.IsInstanceOfType(e, typeof (ArgumentException));
@@ -125,8 +125,8 @@ namespace NakedObjects.Xat {
 
         public ITestAction AssertIsDisabled() {
             ResetLastMessage();
-            if (action.IsVisible(session, owningObject.NakedObject)) {
-                IConsent canUse = action.IsUsable(session, owningObject.NakedObject);
+            if (action.IsVisible(session, owningObject.NakedObject, persistor)) {
+                IConsent canUse = action.IsUsable(session, owningObject.NakedObject, persistor);
                 LastMessage = canUse.Reason;
                 Assert.IsFalse(canUse.IsAllowed, "Action '" + Name + "' is usable: " + canUse.Reason);
             }
@@ -136,7 +136,7 @@ namespace NakedObjects.Xat {
         public ITestAction AssertIsEnabled() {
             ResetLastMessage();
             AssertIsVisible();
-            IConsent canUse = action.IsUsable(session, owningObject.NakedObject);
+            IConsent canUse = action.IsUsable(session, owningObject.NakedObject, persistor);
             LastMessage = canUse.Reason;
             Assert.IsTrue(canUse.IsAllowed, "Action '" + Name + "' is disabled: " + canUse.Reason);
             return this;
@@ -148,12 +148,12 @@ namespace NakedObjects.Xat {
 
             object[] parsedParameters = ParsedParameters(parameters);
 
-            if (action.IsVisible(session, owningObject.NakedObject)) {
-                IConsent canUse = action.IsUsable(session, owningObject.NakedObject);
+            if (action.IsVisible(session, owningObject.NakedObject, persistor)) {
+                IConsent canUse = action.IsUsable(session, owningObject.NakedObject, persistor);
                 LastMessage = canUse.Reason;
                 if (canUse.IsAllowed) {
-                    INakedObject[] parameterObjects = parsedParameters.AsTestNakedArray(manager).Select(x => x == null ? null : x.NakedObject).ToArray();
-                    IConsent canExecute = action.IsParameterSetValid(owningObject.NakedObject, parameterObjects);
+                    INakedObject[] parameterObjects = parsedParameters.AsTestNakedArray(persistor).Select(x => x == null ? null : x.NakedObject).ToArray();
+                    IConsent canExecute = action.IsParameterSetValid(session, owningObject.NakedObject, parameterObjects, persistor);
                     LastMessage = canExecute.Reason;
                     Assert.IsFalse(canExecute.IsAllowed, "Action '" + Name + "' is usable and executable");
                 }
@@ -170,21 +170,21 @@ namespace NakedObjects.Xat {
 
            
 
-            INakedObject[] parameterObjects = parsedParameters.AsTestNakedArray(manager).Select(x => x == null ? null : x.NakedObject).ToArray();
-            IConsent canExecute = action.IsParameterSetValid(owningObject.NakedObject, parameterObjects);
+            INakedObject[] parameterObjects = parsedParameters.AsTestNakedArray(persistor).Select(x => x == null ? null : x.NakedObject).ToArray();
+            IConsent canExecute = action.IsParameterSetValid(session, owningObject.NakedObject, parameterObjects, persistor);
             Assert.IsTrue(canExecute.IsAllowed, "Action '" + Name + "' is unusable: " + canExecute.Reason);
             return this;
         }
 
         public ITestAction AssertIsVisible() {
             ResetLastMessage();
-            Assert.IsTrue(action.IsVisible(session, owningObject.NakedObject), "Action '" + Name + "' is hidden");
+            Assert.IsTrue(action.IsVisible(session, owningObject.NakedObject, persistor), "Action '" + Name + "' is hidden");
             return this;
         }
 
         public ITestAction AssertIsInvisible() {
             ResetLastMessage();
-            Assert.IsFalse(action.IsVisible(session, owningObject.NakedObject), "Action '" + Name + "' is visible");
+            Assert.IsFalse(action.IsVisible(session, owningObject.NakedObject, persistor), "Action '" + Name + "' is visible");
             return this;
         }
 

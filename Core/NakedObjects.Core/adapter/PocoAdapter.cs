@@ -26,6 +26,7 @@ namespace NakedObjects.Core.Adapter {
         private IOid oid;
         private readonly INakedObjectReflector reflector;
         private readonly ISession session;
+        private readonly INakedObjectPersistor persistor;
         private object poco;
         private INakedObjectSpecification specification;
         private ITypeOfFacet typeOfFacet;
@@ -35,7 +36,7 @@ namespace NakedObjects.Core.Adapter {
             Log = LogManager.GetLogger(typeof (PocoAdapter));
         }
 
-        public PocoAdapter(INakedObjectReflector reflector, ISession session, object poco, IOid oid) {
+        public PocoAdapter(INakedObjectReflector reflector, ISession session,  INakedObjectPersistor persistor, object poco, IOid oid) {
             Assert.AssertNotNull(reflector);
             //Assert.AssertNotNull(session);
 
@@ -44,6 +45,7 @@ namespace NakedObjects.Core.Adapter {
             }
             this.reflector = reflector;
             this.session = session;
+            this.persistor = persistor;
             this.poco = poco;
             this.oid = oid;
             ResolveState = new ResolveStateMachine(this);
@@ -141,7 +143,7 @@ namespace NakedObjects.Core.Adapter {
             INakedObjectAssociation[] properties = Specification.Properties;
             foreach (INakedObjectAssociation property in properties) {
                 INakedObject referencedObject = property.GetNakedObject(this);
-                if (property.IsUsable(session, this).IsAllowed && property.IsVisible(session, this)) {
+                if (property.IsUsable(session, this, persistor).IsAllowed && property.IsVisible(session, this, persistor)) {
                     if (property.IsMandatory && property.IsEmpty(this)) {
                         return string.Format(Resources.NakedObjects.PropertyMandatory, specification.ShortName, property.Name);
                     }

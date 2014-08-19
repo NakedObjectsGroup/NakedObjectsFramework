@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facets.Propparam.Validate.MaxLength;
 using NakedObjects.Architecture.Facets.Propparam.Validate.RegEx;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Context;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
@@ -105,7 +106,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, INakedObjectSurface> parameterNameValues) {
-            return nakedObjectActionParameter.GetChoices(((NakedObjectWrapper)nakedObject).WrappedNakedObject, null).Select(no => NakedObjectWrapper.Wrap(no, Surface)).Cast<INakedObjectSurface>().ToArray();
+            return nakedObjectActionParameter.GetChoices(((NakedObjectWrapper)nakedObject).WrappedNakedObject, null, NakedObjectsContext.ObjectPersistor).Select(no => NakedObjectWrapper.Wrap(no, Surface)).Cast<INakedObjectSurface>().ToArray();
         }
 
         private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, INakedObjectSpecification> parm) {
@@ -122,15 +123,15 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSurface[] GetCompletions(INakedObjectSurface nakedObject, string autoCompleteParm) {
-            return nakedObjectActionParameter.GetCompletions(((NakedObjectWrapper)nakedObject).WrappedNakedObject, autoCompleteParm).Select(no => NakedObjectWrapper.Wrap(no, Surface)).Cast<INakedObjectSurface>().ToArray();
+            return nakedObjectActionParameter.GetCompletions(((NakedObjectWrapper)nakedObject).WrappedNakedObject, autoCompleteParm, NakedObjectsContext.ObjectPersistor).Select(no => NakedObjectWrapper.Wrap(no, Surface)).Cast<INakedObjectSurface>().ToArray();
         }
 
         public bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject) {
-            return nakedObjectActionParameter.GetDefaultType(((NakedObjectWrapper) nakedObject).WrappedNakedObject) == TypeOfDefaultValue.Explicit;
+            return nakedObjectActionParameter.GetDefaultType(((NakedObjectWrapper)nakedObject).WrappedNakedObject, NakedObjectsContext.ObjectPersistor) == TypeOfDefaultValue.Explicit;
         }
 
         public INakedObjectSurface GetDefault(INakedObjectSurface nakedObject) {
-            return NakedObjectWrapper.Wrap(nakedObjectActionParameter.GetDefault(((NakedObjectWrapper)nakedObject).WrappedNakedObject), Surface);
+            return NakedObjectWrapper.Wrap(nakedObjectActionParameter.GetDefault(((NakedObjectWrapper)nakedObject).WrappedNakedObject, NakedObjectsContext.ObjectPersistor), Surface);
         }
 
         #endregion

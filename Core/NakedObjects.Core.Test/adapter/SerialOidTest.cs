@@ -2,13 +2,25 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
+using NakedObjects.Xat;
 using NUnit.Framework;
 
 namespace NakedObjects.Core {
     [TestFixture]
-    public class SerialOidTest {
+    public class SerialOidTest : AcceptanceTestCase {
+
+        [SetUp]
+        public void Setup() {
+            InitializeNakedObjectsFramework();
+        }
+
+        [TearDown]
+        public void TearDown() {
+            CleanupNakedObjectsFramework();
+        }
+
+
         [Test]
         public void TestEquals() {
             var r = NakedObjectsContext.Reflector;

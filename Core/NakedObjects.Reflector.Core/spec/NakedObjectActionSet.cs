@@ -6,6 +6,7 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
@@ -107,7 +108,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return null; }
         }
 
-        public virtual INakedObject Execute(INakedObject target, INakedObject[] parameterSet) {
+        public virtual INakedObject Execute(INakedObject target, INakedObject[] parameterSet, INakedObjectPersistor persistor) {
             throw new UnexpectedCallException();
         }
 
@@ -182,11 +183,11 @@ namespace NakedObjects.Reflector.Spec {
             return false;
         }
 
-        public virtual IConsent IsParameterSetValid(INakedObject nakedObject, INakedObject[] parameterSet) {
+        public virtual IConsent IsParameterSetValid(ISession session, INakedObject nakedObject, INakedObject[] parameterSet, INakedObjectPersistor persistor) {
             throw new UnexpectedCallException();
         }
 
-        public virtual IConsent IsUsable(ISession session, INakedObject target) {
+        public virtual IConsent IsUsable(ISession session, INakedObject target, INakedObjectPersistor persistor) {
             return Allow.Default;
         }
 
@@ -194,11 +195,11 @@ namespace NakedObjects.Reflector.Spec {
             get { return false; }
         }
 
-        public virtual bool IsVisible(ISession session, INakedObject target) {
+        public virtual bool IsVisible(ISession session, INakedObject target, INakedObjectPersistor persistor) {
             return true;
         }
 
-        public virtual INakedObject RealTarget(INakedObject target) {
+        public virtual INakedObject RealTarget(INakedObject target, INakedObjectPersistor persistor) {
             return null;
         }
 

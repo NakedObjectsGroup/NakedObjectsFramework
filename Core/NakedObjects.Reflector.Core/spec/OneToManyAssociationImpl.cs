@@ -9,6 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Properties.Access;
 using NakedObjects.Architecture.Facets.Properties.Set;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
@@ -77,7 +78,7 @@ namespace NakedObjects.Reflector.Spec {
 
         #endregion
 
-        public override INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues) {
+        public override INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, INakedObjectPersistor persistor) {
             return new INakedObject[0];
         }
 
@@ -85,7 +86,7 @@ namespace NakedObjects.Reflector.Spec {
             return new Tuple<string, INakedObjectSpecification>[0];
         }
 
-        public override INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm) {
+        public override INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, INakedObjectPersistor persistor) {
             return new INakedObject[0];
         }
 

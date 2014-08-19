@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facets.Objects.Immutable;
 using NakedObjects.Architecture.Facets.Propcoll.NotPersisted;
 using NakedObjects.Architecture.Facets.Properties.Choices;
 using NakedObjects.Architecture.Facets.Properties.Modify;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
@@ -88,7 +89,7 @@ namespace NakedObjects.Architecture.Reflect {
         public abstract TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
         public abstract void ToDefault(INakedObject nakedObject);
 
-        public override IConsent IsUsable(ISession session, INakedObject target) {
+        public override IConsent IsUsable(ISession session, INakedObject target, INakedObjectPersistor persistor) {
             bool isPersistent = target.ResolveState.IsPersistent();
             IConsent disabledConsent = IsUsableDeclaratively(isPersistent);
             if (disabledConsent != null) {
@@ -121,11 +122,11 @@ namespace NakedObjects.Architecture.Reflect {
 
         #endregion
 
-        public abstract INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
+        public abstract INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, INakedObjectPersistor persistor);
 
         public abstract Tuple<string, INakedObjectSpecification>[] GetChoicesParameters();
 
-        public abstract INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm);
+        public abstract INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, INakedObjectPersistor persistor);
 
         private IConsent IsUsableDeclaratively(bool isPersistent) {
             var facet = GetFacet<IDisabledFacet>();

@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
@@ -64,12 +65,12 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Whether proposed value for this parameter is valid
         /// </summary>
-        IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue);
+        IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue, INakedObjectPersistor persistor);
 
         /// <summary>
         ///     Get set of options for the parameter - either coded choices or bounded set
         /// </summary>
-        INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
+        INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, INakedObjectPersistor persistor);
 
         /// <summary>
         ///     Get set of options for the parameter - either coded choices or bounded set
@@ -79,18 +80,18 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Get set of autocompletions for the parameter
         /// </summary>
-        INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm);
+        INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, INakedObjectPersistor persistor);
 
 
         /// <summary>
         ///     GetDefault value for parameter
         /// </summary>
-        INakedObject GetDefault(INakedObject nakedObject);
+        INakedObject GetDefault(INakedObject nakedObject, INakedObjectPersistor persistor);
 
         /// <summary>
         ///     GetDefault type value for parameter
         /// </summary>
-        TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
+        TypeOfDefaultValue GetDefaultType(INakedObject nakedObject, INakedObjectPersistor persistor);
     }
 
     public enum TypeOfDefaultValue {

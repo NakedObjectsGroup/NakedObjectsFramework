@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
@@ -326,7 +327,7 @@ namespace NakedObjects.Testing {
             get { throw new NotImplementedException(); }
         }
 
-        public bool IsVisible(ISession session, INakedObject target) {
+        public bool IsVisible(ISession session, INakedObject target, INakedObjectPersistor persistor) {
             throw new NotImplementedException();
         }
 
@@ -386,7 +387,7 @@ namespace NakedObjects.Testing {
             get { return specification; }
         }
 
-        public IConsent IsUsable(ISession session, INakedObject target) {
+        public IConsent IsUsable(ISession session, INakedObject target, INakedObjectPersistor persistor) {
             throw new NotImplementedException();
         }
 

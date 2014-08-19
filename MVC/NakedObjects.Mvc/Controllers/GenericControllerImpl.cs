@@ -199,7 +199,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private static INakedObject Execute(INakedObjectAction action, INakedObject target, INakedObject[] parameterSet) {
-            var result = action.Execute(target, parameterSet);
+            var result = action.Execute(target, parameterSet, NakedObjectsContext.ObjectPersistor);
             if (result != null && result.Oid == null) {
                 result.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, target, action, parameterSet));
             }
@@ -390,7 +390,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (ValidateParameters(targetNakedObject, targetAction, controlData)) {
                 IEnumerable<INakedObject> parms = GetParameterValues(targetAction, controlData);
-                INakedObject result = targetAction.Execute(targetNakedObject, parms.ToArray());
+                INakedObject result = targetAction.Execute(targetNakedObject, parms.ToArray(), NakedObjectsContext.ObjectPersistor);
 
                 if (result != null) {
                     IEnumerable resultAsEnumerable = !result.Specification.IsCollection ? new List<object> {result.Object} : (IEnumerable) result.Object;

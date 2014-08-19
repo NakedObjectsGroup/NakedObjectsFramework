@@ -158,7 +158,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (ModelState.IsValid) {
                 IEnumerable<INakedObject> parms = action.Parameters.Select(p => GetParameterValue(p, IdHelper.GetParameterInputId(action, p), controlData));
 
-                IConsent consent = action.IsParameterSetValid(targetNakedObject, parms.ToArray());
+                IConsent consent = action.IsParameterSetValid(NakedObjectsContext.Session,  targetNakedObject, parms.ToArray(), NakedObjectsContext.ObjectPersistor);
                 if (!consent.IsAllowed) {
                     ModelState.AddModelError(string.Empty, consent.Reason);
                 }
@@ -168,7 +168,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public void ValidateParameter(INakedObjectAction action, INakedObjectActionParameter parm, INakedObject targetNakedObject, INakedObject valueNakedObject) {
-            IConsent consent = parm.IsValid(targetNakedObject, valueNakedObject);
+            IConsent consent = parm.IsValid(targetNakedObject, valueNakedObject, NakedObjectsContext.ObjectPersistor);
             if (!consent.IsAllowed) {
                 ModelState.AddModelError(IdHelper.GetParameterInputId(action, parm), consent.Reason);
             }
@@ -355,8 +355,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         internal void SetDefaults(INakedObject nakedObject, INakedObjectAction action) {
             foreach (INakedObjectActionParameter parm in action.Parameters) {
-                INakedObject value = parm.GetDefault(nakedObject);
-                TypeOfDefaultValue typeOfValue = parm.GetDefaultType(nakedObject);
+                INakedObject value = parm.GetDefault(nakedObject, NakedObjectsContext.ObjectPersistor);
+                TypeOfDefaultValue typeOfValue = parm.GetDefaultType(nakedObject, NakedObjectsContext.ObjectPersistor);
 
                 bool ignore = value == null || (value.Object is DateTime && ((DateTime) value.Object).Ticks == 0) || typeOfValue == TypeOfDefaultValue.Implicit;
                 if (!ignore) {
@@ -607,11 +607,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         internal static bool IsUsable(INakedObjectAssociation assoc, INakedObject nakedObject) {
-            return assoc.IsUsable(NakedObjectsContext.Session, nakedObject).IsAllowed;
+            return assoc.IsUsable(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor).IsAllowed;
         }
 
         internal static bool IsVisible(INakedObjectAssociation assoc, INakedObject nakedObject) {
-            return assoc.IsVisible(NakedObjectsContext.Session, nakedObject);
+            return assoc.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor);
         }
 
         internal static bool IsConcurrency(INakedObjectAssociation assoc) {

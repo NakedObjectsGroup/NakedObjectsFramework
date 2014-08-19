@@ -36,27 +36,27 @@ namespace NakedObjects.Web.Mvc.Html {
         public static IEnumerable<INakedObjectAction> GetActions(INakedObject nakedObject) {
             return nakedObject.Specification.GetObjectActions().OfType<NakedObjectActionImpl>().Cast<INakedObjectAction>().Union(
                         nakedObject.Specification.GetObjectActions().OfType<NakedObjectActionSet>().SelectMany(set => set.Actions)).
-                               Where(a => a.IsUsable(CurrentSession, nakedObject).IsAllowed).
-                               Where(a => a.IsVisible(CurrentSession, nakedObject));
+                               Where(a => a.IsUsable(CurrentSession, nakedObject, NakedObjectsContext.ObjectPersistor).IsAllowed).
+                               Where(a => a.IsVisible(CurrentSession, nakedObject, NakedObjectsContext.ObjectPersistor));
         }
 
         public static IEnumerable<INakedObjectAction> GetTopLevelActions(INakedObject nakedObject) {
             return nakedObject.Specification.GetObjectActions().
-                               Where(a => a.IsVisible(CurrentSession, nakedObject)).
-                               Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible(CurrentSession, nakedObject)));
+                               Where(a => a.IsVisible(CurrentSession, nakedObject, NakedObjectsContext.ObjectPersistor)).
+                               Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible(CurrentSession, nakedObject, NakedObjectsContext.ObjectPersistor)));
         }
 
         public static IEnumerable<INakedObjectAction> GetTopLevelActionsByReturnType(INakedObject nakedObject, INakedObjectSpecification spec) {
             return GetTopLevelActions(nakedObject).
                 Where(a => a is NakedObjectActionSet || (IsOfTypeOrCollectionOfType(a.ReturnType, spec) && a.IsFinderMethod)).
-                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible(CurrentSession, nakedObject) && IsOfTypeOrCollectionOfType(sa.ReturnType, spec) && sa.IsFinderMethod));
+                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible(CurrentSession, nakedObject, NakedObjectsContext.ObjectPersistor) && IsOfTypeOrCollectionOfType(sa.ReturnType, spec) && sa.IsFinderMethod));
         }
 
         public static IEnumerable<INakedObjectAction> GetChildActions(ActionContext actionContext) {
             if (actionContext.Action is NakedObjectActionSet) {
                 return actionContext.Action.Actions.
                                      Where(a => a.ActionType == NakedObjectActionType.User).
-                                     Where(a => a.IsVisible(CurrentSession, actionContext.Target));
+                                     Where(a => a.IsVisible(CurrentSession, actionContext.Target, NakedObjectsContext.ObjectPersistor));
             }
 
             return new List<INakedObjectAction>();

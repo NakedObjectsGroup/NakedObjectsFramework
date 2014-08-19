@@ -385,7 +385,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                                                         bool noFinder = false,
                                                                         IList<ElementDescriptor> childElements = null,
                                                                         string idToAddTo = null) {
-            IEnumerable<INakedObjectAssociation> query = nakedObject.Specification.Properties.Where(p => p.IsVisible(NakedObjectsContext.Session, nakedObject)).Where(filter);
+                                                                            IEnumerable<INakedObjectAssociation> query = nakedObject.Specification.Properties.Where(p => p.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor)).Where(filter);
 
             if (order != null) {
                 query = query.OrderBy(order);
@@ -396,7 +396,7 @@ namespace NakedObjects.Web.Mvc.Html {
             IEnumerable<ElementDescriptor> visibleElements = visibleFields.Select(property => html.EditObjectField(new PropertyContext(nakedObject, property, true, parentContext), noFinder, childElements, idToAddTo));
 
             if (nakedObject.ResolveState.IsTransient()) {
-                IEnumerable<ElementDescriptor> hiddenElements = nakedObject.Specification.Properties.Where(p => !p.IsCollection && !p.IsVisible(NakedObjectsContext.Session, nakedObject)).
+                IEnumerable<ElementDescriptor> hiddenElements = nakedObject.Specification.Properties.Where(p => !p.IsCollection && !p.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor)).
                                                                             Select(property => new ElementDescriptor {
                                                                                 TagType = "div",
                                                                                 Value = html.GetEditValue(new PropertyContext(nakedObject, property, true, parentContext), childElements, property.Id == idToAddTo, noFinder),
@@ -416,7 +416,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             // add filtered fields as hidden to preserve their values 
 
-            IEnumerable<INakedObjectAssociation> filteredFields = nakedObject.Specification.Properties.Where(p => !p.IsCollection && p.IsVisible(NakedObjectsContext.Session, nakedObject)).Except(visibleFields);
+            IEnumerable<INakedObjectAssociation> filteredFields = nakedObject.Specification.Properties.Where(p => !p.IsCollection && p.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor)).Except(visibleFields);
             IEnumerable<ElementDescriptor> filteredElements = filteredFields.Select(property => new PropertyContext(nakedObject, property, false, parentContext)).Select(pc => new ElementDescriptor {
                 TagType = "div",
                 Value = html.GetHiddenValue(pc, pc.GetFieldInputId(), false)
@@ -628,7 +628,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string tagType;
             string value;
 
-            IConsent consent = actionContext.Action.IsUsable(NakedObjectsContext.Session, actionContext.Target);
+            IConsent consent = actionContext.Action.IsUsable(NakedObjectsContext.Session, actionContext.Target, NakedObjectsContext.ObjectPersistor);
             if (consent.IsVetoed) {
                 tagType = GetVetoedAction(actionContext, consent, out value, out attributes);
             }
@@ -724,14 +724,14 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static IEnumerable<ElementDescriptor> ViewObjectFields(this HtmlHelper html, INakedObject nakedObject, PropertyContext parentContext, Func<INakedObjectAssociation, bool> filter, Func<INakedObjectAssociation, int> order, out bool anyEditableFields) {
-            IEnumerable<INakedObjectAssociation> query = nakedObject.Specification.Properties.Where(p => p.IsVisible(NakedObjectsContext.Session, nakedObject)).Where(filter);
+            IEnumerable<INakedObjectAssociation> query = nakedObject.Specification.Properties.Where(p => p.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor)).Where(filter);
 
             if (order != null) {
                 query = query.OrderBy(order);
             }
 
             var visibleFields = query.ToList();
-            anyEditableFields = visibleFields.Any(p => !p.IsCollection && p.IsUsable(NakedObjectsContext.Session, nakedObject).IsAllowed);
+            anyEditableFields = visibleFields.Any(p => !p.IsCollection && p.IsUsable(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor).IsAllowed);
             return visibleFields.Select(property => html.ViewObjectField(new PropertyContext(nakedObject, property, false, parentContext)));
         }
 
@@ -1583,7 +1583,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static IEnumerable<SelectListItem> GetChoicesSet(PropertyContext propertyContext,
                                                                  INakedObject existingNakedObject,
                                                                  IDictionary<string, INakedObject> values) {
-            List<INakedObject> nakedObjects = ((IOneToOneAssociation) propertyContext.Property).GetChoices(propertyContext.Target, values).ToList();
+                                                                     List<INakedObject> nakedObjects = ((IOneToOneAssociation)propertyContext.Property).GetChoices(propertyContext.Target, values, NakedObjectsContext.ObjectPersistor).ToList();
             return GetChoicesSet(nakedObjects, existingNakedObject);
         }
 
@@ -1595,7 +1595,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static IEnumerable<SelectListItem> GetChoicesSet(ParameterContext parameterContext,
                                                                  INakedObject existingNakedObject,
                                                                  IDictionary<string, INakedObject> values) {
-            List<INakedObject> nakedObjects = parameterContext.Parameter.GetChoices(parameterContext.Target, values).ToList();
+                                                                     List<INakedObject> nakedObjects = parameterContext.Parameter.GetChoices(parameterContext.Target, values, NakedObjectsContext.ObjectPersistor).ToList();
             return GetChoicesSet(nakedObjects, existingNakedObject);
         }
 
@@ -1712,7 +1712,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                                                         INakedObjectSpecification collectionSpec,
                                                                         Func<INakedObjectAssociation, bool> filter,
                                                                         Func<INakedObjectAssociation, int> order) {
-            IEnumerable<INakedObjectAssociation> assocs = collectionSpec.Properties.Where(filter).Where(a => collection.Any(item => a.IsVisible(NakedObjectsContext.Session, item)));
+                                                                            IEnumerable<INakedObjectAssociation> assocs = collectionSpec.Properties.Where(filter).Where(a => collection.Any(item => a.IsVisible(NakedObjectsContext.Session, item, NakedObjectsContext.ObjectPersistor)));
 
             if (order != null) {
                 assocs = assocs.OrderBy(order);
@@ -1780,7 +1780,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdHelper.ObjectName);
 
-            if (!propertyContext.Property.IsVisible(NakedObjectsContext.Session, propertyContext.Target)) {
+            if (!propertyContext.Property.IsVisible(NakedObjectsContext.Session, propertyContext.Target, NakedObjectsContext.ObjectPersistor)) {
                 INakedObject existingValue = propertyContext.GetValue();
                 string value = existingValue == null ? string.Empty : FrameworkHelper.GetObjectId(existingValue);
                 tag.InnerHtml += html.Encrypted(id, value).ToString();
@@ -1952,7 +1952,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string GetViewField(this HtmlHelper html, PropertyContext propertyContext, string tooltip, bool addIcon = true, bool inTable = false) {
             var tag = new TagBuilder("div");
 
-            if (propertyContext.Property.IsVisible(NakedObjectsContext.Session, propertyContext.Target)) {
+            if (propertyContext.Property.IsVisible(NakedObjectsContext.Session, propertyContext.Target, NakedObjectsContext.ObjectPersistor)) {
                 string value = html.GetFieldValue(propertyContext, inTable);
                 string cls = propertyContext.Property.Specification.IsParseable ? IdHelper.ValueName : IdHelper.ObjectName;
                 var multiLineFacet = propertyContext.Property.GetFacet<IMultiLineFacet>();
@@ -2069,11 +2069,11 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static bool IsMandatory(ParameterContext parameterContext) {
-            return (parameterContext.Parameter.IsMandatory && parameterContext.Parameter.IsUsable(NakedObjectsContext.Session, parameterContext.Target).IsAllowed);
+            return (parameterContext.Parameter.IsMandatory && parameterContext.Parameter.IsUsable(NakedObjectsContext.Session, parameterContext.Target, NakedObjectsContext.ObjectPersistor).IsAllowed);
         }
 
         private static bool IsMandatory(PropertyContext propertyContext) {
-            return (propertyContext.Property.IsMandatory && propertyContext.Property.IsUsable(NakedObjectsContext.Session, propertyContext.Target).IsAllowed);
+            return (propertyContext.Property.IsMandatory && propertyContext.Property.IsUsable(NakedObjectsContext.Session, propertyContext.Target, NakedObjectsContext.ObjectPersistor).IsAllowed);
         }
 
 
@@ -2166,7 +2166,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             html.AddClientValidationAttributes(propertyContext, htmlAttributes);
 
-            if (!propertyContext.Property.IsVisible(NakedObjectsContext.Session, propertyContext.Target)) {
+            if (!propertyContext.Property.IsVisible(NakedObjectsContext.Session, propertyContext.Target, NakedObjectsContext.ObjectPersistor)) {
                 tag.InnerHtml += html.Encrypted(id, GetRawValue(propertyContext)).ToString();
                 propertyContext.IsPropertyEdit = false;
             }
@@ -2375,7 +2375,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 propertyContext.IsPropertyEdit = false;
                 return html.GetChildCollection(propertyContext);
             }
-            IConsent consent = propertyContext.Property.IsUsable(NakedObjectsContext.Session, propertyContext.Target);
+            IConsent consent = propertyContext.Property.IsUsable(NakedObjectsContext.Session, propertyContext.Target, NakedObjectsContext.ObjectPersistor);
             if (consent.IsVetoed && !propertyContext.Target.Oid.IsTransient) {
                 propertyContext.IsPropertyEdit = false;
                 return html.GetViewField(propertyContext, consent.Reason);
@@ -2636,13 +2636,13 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static INakedObjectAction GetActionByMethodInfo(INakedObject nakedObject, MethodInfo methodInfo) {
             return nakedObject.Specification.GetObjectActions().
-                               Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(NakedObjectsContext.Session, nakedObject));
+                               Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor));
         }
 
         internal static MvcHtmlString ObjectActionOnTransient(this HtmlHelper html, object target, MethodInfo methodInfo) {
             INakedObject nakedObject = FrameworkHelper.GetNakedObject(target);
             INakedObjectAction action = nakedObject.Specification.GetObjectActions().
-                                                    Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(NakedObjectsContext.Session, nakedObject));
+                                                    Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor));
 
             return action == null ? MvcHtmlString.Create("") : html.ObjectActionOnTransient(new ActionContext(nakedObject, action));
         }
@@ -2650,14 +2650,14 @@ namespace NakedObjects.Web.Mvc.Html {
 
         internal static MvcHtmlString ObjectPropertyView(this HtmlHelper html, object target, MemberInfo propertyInfo) {
             INakedObject nakedObject = FrameworkHelper.GetNakedObject(target);
-            INakedObjectAssociation property = nakedObject.Specification.Properties.Where(a => a.Id == propertyInfo.Name).SingleOrDefault(a => a.IsVisible(NakedObjectsContext.Session, nakedObject));
+            INakedObjectAssociation property = nakedObject.Specification.Properties.Where(a => a.Id == propertyInfo.Name).SingleOrDefault(a => a.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor));
 
             return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyView(new PropertyContext(nakedObject, property, false));
         }
 
         internal static MvcHtmlString ObjectPropertyEdit(this HtmlHelper html, object target, MemberInfo propertyInfo) {
             INakedObject nakedObject = FrameworkHelper.GetNakedObject(target);
-            INakedObjectAssociation property = nakedObject.Specification.Properties.Where(a => a.Id == propertyInfo.Name).SingleOrDefault(a => a.IsVisible(NakedObjectsContext.Session, nakedObject));
+            INakedObjectAssociation property = nakedObject.Specification.Properties.Where(a => a.Id == propertyInfo.Name).SingleOrDefault(a => a.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor));
 
             return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyEdit(new PropertyContext(nakedObject, property, true));
         }
@@ -2685,13 +2685,13 @@ namespace NakedObjects.Web.Mvc.Html {
         internal static MvcHtmlString ObjectActionAsDialog(this HtmlHelper html, object target, MethodInfo methodInfo) {
             INakedObject nakedObject = FrameworkHelper.GetNakedObject(target);
             INakedObjectAction action = nakedObject.Specification.GetObjectActions().
-                                                    Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(NakedObjectsContext.Session, nakedObject));
+                                                    Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor));
 
             return action == null ? MvcHtmlString.Create("") : html.ObjectActionAsDialog(new ActionContext(nakedObject, action));
         }
 
         internal static MvcHtmlString ObjectActionAsDialog(this HtmlHelper html, ActionContext actionContext) {
-            bool allowed = actionContext.Action.IsUsable(NakedObjectsContext.Session, actionContext.Target).IsAllowed;
+            bool allowed = actionContext.Action.IsUsable(NakedObjectsContext.Session, actionContext.Target, NakedObjectsContext.ObjectPersistor).IsAllowed;
 
             if (allowed) {
                 return html.WrapInForm(Action(actionContext.Action.Id),

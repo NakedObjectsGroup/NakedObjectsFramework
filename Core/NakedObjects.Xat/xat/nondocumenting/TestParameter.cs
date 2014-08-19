@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Xat {
@@ -13,9 +14,11 @@ namespace NakedObjects.Xat {
         private readonly ITestObjectFactory factory;
         private readonly ITestHasActions owningObject;
         private readonly INakedObjectActionParameter parameter;
+        private readonly INakedObjectPersistor persistor;
         private INakedObjectAction action;
 
-        public TestParameter(INakedObjectAction action, INakedObjectActionParameter parameter, ITestHasActions owningObject, ITestObjectFactory factory) {
+        public TestParameter(INakedObjectPersistor persistor, INakedObjectAction action, INakedObjectActionParameter parameter, ITestHasActions owningObject, ITestObjectFactory factory) {
+            this.persistor = persistor;
             this.action = action;
             this.parameter = parameter;
             this.owningObject = owningObject;
@@ -37,16 +40,16 @@ namespace NakedObjects.Xat {
         }
 
         public ITestNaked[] GetChoices() {
-            return parameter.GetChoices(NakedObject, null).Select(x => factory.CreateTestNaked(x)).ToArray();
+            return parameter.GetChoices(NakedObject, null, persistor).Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 
         public ITestNaked[] GetCompletions(string autoCompleteParm) {
-            return parameter.GetCompletions(NakedObject, autoCompleteParm).Select(x => factory.CreateTestNaked(x)).ToArray();
+            return parameter.GetCompletions(NakedObject, autoCompleteParm, persistor).Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 
         public ITestNaked GetDefault() {
-            INakedObject defaultValue = parameter.GetDefault(NakedObject);
-            TypeOfDefaultValue defaultType = parameter.GetDefaultType(NakedObject);
+            INakedObject defaultValue = parameter.GetDefault(NakedObject, persistor);
+            TypeOfDefaultValue defaultType = parameter.GetDefaultType(NakedObject, persistor);
 
             if (defaultType == TypeOfDefaultValue.Implicit && defaultValue.Object is Enum) {
                 defaultValue = null;

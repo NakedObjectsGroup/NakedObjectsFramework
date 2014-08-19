@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Persistor.Objectstore.Inmemory {
@@ -25,7 +24,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
     */
 
     public class MemoryObjectStoreInstances {
-        private readonly INakedObjectReflector reflector;
+        private readonly INakedObjectManager manager;
     
         private static int nextKey;
         private readonly IDictionary<IOid, ObjectAndVersion> objectInstances = new Dictionary<IOid, ObjectAndVersion>();
@@ -34,12 +33,13 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             nextKey = 0;
         }
 
-        public MemoryObjectStoreInstances(INakedObjectReflector reflector) {
-            Assert.AssertNotNull(reflector);
-            this.reflector = reflector;         
+        public MemoryObjectStoreInstances(INakedObjectManager manager) {
+            Assert.AssertNotNull(manager);
+            this.manager = manager;         
         }
 
-        public virtual INakedObject GetObject(IOid oid, INakedObjectManager manager) {
+
+        public virtual INakedObject GetObject(IOid oid) {
             ObjectAndVersion obj;
             INakedObject nakedObject = null;
             lock (objectInstances) {
@@ -63,12 +63,12 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public virtual IQueryable<T> AllInstances<T>(INakedObjectManager manager) {
             return (from IOid oid in objectInstances.Keys
-                    select GetObject(oid, manager).GetDomainObject<T>()).AsQueryable();
+                    select GetObject(oid).GetDomainObject<T>()).AsQueryable();
         }
 
         public virtual IQueryable AllInstances(INakedObjectManager manager) {
             return (from IOid oid in objectInstances.Keys
-                    select GetObject(oid, manager).GetDomainObject()).AsQueryable();
+                    select GetObject(oid).GetDomainObject()).AsQueryable();
         }
 
         public virtual void Remove(IOid oid) {
@@ -119,7 +119,8 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                     ObjectAndVersion holder = objectInstances[oid];
                     object domainObject = holder.DomainObject;
                     if (domainObject == poco) {
-                        var adapter = new PocoAdapter(reflector, session, poco, oid) {OptimisticLock = holder.Version};
+                        var adapter = manager.NewAdapterForKnownObject(poco, oid);
+                        adapter.OptimisticLock = holder.Version;
                         adapter.ResolveState.Handle(Events.InitializePersistentEvent);
                         adapter.ResolveState.Handle(Events.StartResolvingEvent);
                         adapter.ResolveState.Handle(Events.EndResolvingEvent);

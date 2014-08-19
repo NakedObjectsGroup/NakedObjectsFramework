@@ -87,6 +87,10 @@ namespace NakedObjects.TestSystem {
             throw new NotImplementedException();
         }
 
+        public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid) {
+            throw new NotImplementedException();
+        }
+
         public List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects) {
             throw new NotImplementedException();
         }

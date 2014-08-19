@@ -532,7 +532,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return nakedObject.Specification.GetObjectActions().Union(
                 nakedObject.Specification.GetObjectActions().
                             Where(a => a.ActionType == NakedObjectActionType.Set).SelectMany(a => a.Actions)).
-                               Where(a => a.IsVisible(NakedObjectsContext.Session, nakedObject));
+                               Where(a => a.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor));
         }
 
         #endregion
@@ -1121,7 +1121,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Contents<TModel>(this HtmlHelper html, TModel model, string actionId, int index) {
             INakedObject nakedObject = FrameworkHelper.GetNakedObject(model);
 
-            return MvcHtmlString.Create(nakedObject.Specification.GetObjectActions().Single(p => p.Id == actionId).Parameters[index].GetDefault(nakedObject).TitleString());
+            return MvcHtmlString.Create(nakedObject.Specification.GetObjectActions().Single(p => p.Id == actionId).Parameters[index].GetDefault(nakedObject, NakedObjectsContext.ObjectPersistor).TitleString());
         }
 
         #endregion

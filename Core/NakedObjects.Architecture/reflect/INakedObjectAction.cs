@@ -3,6 +3,8 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
@@ -78,7 +80,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Determine the real target for this action. If this action represents an object action than the target
         ///     is returned. If this action is on a service then that service will be returned.
         /// </summary>
-        INakedObject RealTarget(INakedObject target);
+        INakedObject RealTarget(INakedObject target, INakedObjectPersistor persistor);
 
 
         /// <summary>
@@ -89,13 +91,13 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Invokes the action's method on the target object given the specified set of parameters
         /// </summary>
-        INakedObject Execute(INakedObject target, INakedObject[] parameterSet);
+        INakedObject Execute(INakedObject target, INakedObject[] parameterSet, INakedObjectPersistor persistor);
 
 
         /// <summary>
         ///     Whether the provided parameter set is valid
         /// </summary>
-        IConsent IsParameterSetValid(INakedObject nakedObject, INakedObject[] parameterSet);
+        IConsent IsParameterSetValid(ISession session, INakedObject nakedObject, INakedObject[] parameterSet, INakedObjectPersistor persistor);
 
 
         /// <summary>

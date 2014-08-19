@@ -119,7 +119,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public virtual INakedObject GetObject(IOid oid, INakedObjectSpecification hint) {
             Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
-            INakedObject nakedObject = InstancesFor(hint).GetObject(oid, Manager);
+            INakedObject nakedObject = InstancesFor(hint).GetObject(oid);
             if (nakedObject == null) {
                 throw new FindObjectException(oid);
             }
@@ -244,7 +244,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
         private MemoryObjectStoreInstances InstancesFor(INakedObjectSpecification spec) {
             lock (instances) {
                 if (!instances.ContainsKey(spec)) {
-                    instances[spec] = new MemoryObjectStoreInstances(reflector);
+                    instances[spec] = new MemoryObjectStoreInstances(Manager);
                 }
                 return instances[spec];
             }
