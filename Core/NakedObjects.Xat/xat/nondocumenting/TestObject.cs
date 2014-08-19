@@ -7,6 +7,7 @@ using System.Linq;
 using Common.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Util;
@@ -17,14 +18,16 @@ using System.Text;
 
 namespace NakedObjects.Xat {
     internal class TestObject : TestHasActions, ITestObject {
+        private readonly INakedObjectPersistor persistor;
         private static readonly ILog LOG;
 
         static TestObject() {
             LOG = LogManager.GetLogger(typeof (TestObject));
         }
 
-        public TestObject(INakedObject nakedObject, ITestObjectFactory factory)
+        public TestObject(INakedObjectPersistor persistor,   INakedObject nakedObject, ITestObjectFactory factory)
             : base(factory) {
+            this.persistor = persistor;
             LOG.DebugFormat("Created test object for {0}", nakedObject);
             NakedObject = nakedObject;
         }
@@ -56,14 +59,14 @@ namespace NakedObjects.Xat {
         public ITestObject Save() {
             AssertCanBeSaved();
 
-            NakedObjectsContext.ObjectPersistor.StartTransaction();
-            NakedObjectsContext.ObjectPersistor.MakePersistent(NakedObject);
-            NakedObjectsContext.ObjectPersistor.EndTransaction();
+            persistor.StartTransaction();
+            persistor.MakePersistent(NakedObject);
+            persistor.EndTransaction();
             return this;
         }
 
         public ITestObject Refresh() {
-            NakedObjectsContext.ObjectPersistor.Refresh(NakedObject);
+            persistor.Refresh(NakedObject);
             return this;
         }
 

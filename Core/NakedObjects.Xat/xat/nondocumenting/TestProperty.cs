@@ -7,8 +7,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
@@ -17,10 +19,14 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 namespace NakedObjects.Xat {
     public class TestProperty : ITestProperty {
         private readonly ITestObjectFactory factory;
+        private readonly INakedObjectPersistor persistor;
+        private readonly ISession session;
         private readonly INakedObjectAssociation field;
         private readonly ITestHasActions owningObject;
 
-        public TestProperty(INakedObjectAssociation field, ITestHasActions owningObject, ITestObjectFactory factory) {
+        public TestProperty(INakedObjectPersistor persistor, ISession session,  INakedObjectAssociation field, ITestHasActions owningObject, ITestObjectFactory factory) {
+            this.persistor = persistor;
+            this.session = session;
             this.field = field;
             this.owningObject = owningObject;
             this.factory = factory;
@@ -44,7 +50,7 @@ namespace NakedObjects.Xat {
             get {
                 INakedObject fieldValue = field.GetNakedObject(owningObject.NakedObject);
                 if (fieldValue != null && fieldValue.ResolveState.IsResolvable()) {
-                    NakedObjectsContext.ObjectPersistor.ResolveImmediately(fieldValue);
+                    persistor.ResolveImmediately(fieldValue);
                 }
 
                 return factory.CreateTestNaked(fieldValue);
@@ -294,13 +300,13 @@ namespace NakedObjects.Xat {
         }
 
         public ITestProperty AssertIsInvisible() {
-            bool canAccess = field.IsVisible(NakedObjectsContext.Session, owningObject.NakedObject);
+            bool canAccess = field.IsVisible(session, owningObject.NakedObject);
             Assert.IsFalse(canAccess, "Field '" + Name + "' is visible");
             return this;
         }
 
         public ITestProperty AssertIsVisible() {
-            bool canAccess = field.IsVisible(NakedObjectsContext.Session, owningObject.NakedObject);
+            bool canAccess = field.IsVisible(session, owningObject.NakedObject);
             Assert.IsTrue(canAccess, "Field '" + Name + "' is invisible");
             return this;
         }
@@ -325,7 +331,7 @@ namespace NakedObjects.Xat {
             AssertIsVisible();
             ResetLastMessage();
 
-            IConsent isUsable = field.IsUsable(NakedObjectsContext.Session, owningObject.NakedObject);
+            IConsent isUsable = field.IsUsable(session, owningObject.NakedObject);
             LastMessage = isUsable.Reason;
 
             bool canUse = isUsable.IsAllowed;
@@ -335,7 +341,7 @@ namespace NakedObjects.Xat {
 
         public ITestProperty AssertIsUnmodifiable() {
             ResetLastMessage();
-            IConsent isUsable = field.IsUsable(NakedObjectsContext.Session, owningObject.NakedObject);
+            IConsent isUsable = field.IsUsable(session, owningObject.NakedObject);
             LastMessage = isUsable.Reason;
 
             bool canUse = isUsable.IsAllowed;
@@ -374,7 +380,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestProperty AssertIsValidToSave() {
-            if (field.IsMandatory && field.IsVisible(NakedObjectsContext.Session, owningObject.NakedObject) && field.IsUsable(NakedObjectsContext.Session, owningObject.NakedObject).IsAllowed) {
+            if (field.IsMandatory && field.IsVisible(session, owningObject.NakedObject) && field.IsUsable(session, owningObject.NakedObject).IsAllowed) {
                 Assert.IsFalse(field.IsEmpty(owningObject.NakedObject), "Cannot save object as mandatory field " + " '" + Name + "' is empty");
                 Assert.IsTrue(field.GetNakedObject(owningObject.NakedObject).ValidToPersist() == null);
             }

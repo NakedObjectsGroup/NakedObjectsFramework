@@ -9,8 +9,6 @@ namespace NakedObjects.Architecture.Adapter.Value {
         decimal GetAmount(INakedObject nakedObject);
 
         string GetCurrencyCode(INakedObject nakedObject);
-
-     
     }
 
     // Copyright (c) Naked Objects Group Ltd.

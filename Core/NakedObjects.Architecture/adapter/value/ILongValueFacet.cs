@@ -7,8 +7,6 @@ using NakedObjects.Architecture.Facets;
 namespace NakedObjects.Architecture.Adapter.Value {
     public interface ILongValueFacet : IFacet {
         long LongValue(INakedObject nakedObject);
-
-    
     }
 
     // Copyright (c) Naked Objects Group Ltd.

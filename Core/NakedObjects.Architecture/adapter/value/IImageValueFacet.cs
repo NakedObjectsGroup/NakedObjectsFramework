@@ -7,8 +7,6 @@ using NakedObjects.Architecture.Facets;
 
 namespace NakedObjects.Architecture.Adapter.Value {
     public interface IImageValueFacet : IFacet {
-    
-
         Image GetImage(INakedObject nakedObject);
 
         int GetHeight(INakedObject nakedObject);

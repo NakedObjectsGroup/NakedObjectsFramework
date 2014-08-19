@@ -1,16 +1,30 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Xat {
     public class TestObjectFactory : ITestObjectFactory {
+        private readonly INakedObjectReflector reflector;
+        private readonly ISession session;
+        private readonly INakedObjectPersistor persistor;
+
+        public TestObjectFactory(INakedObjectReflector reflector, ISession session, INakedObjectPersistor persistor) {
+            this.reflector = reflector;
+            this.session = session;
+            this.persistor = persistor;
+        }
+
         #region ITestObjectFactory Members
 
         public ITestService CreateTestService(Object service) {
-            return new TestService(service, this);
+            var no = persistor.GetAdapterFor(service);
+            return new TestService(no, this);
         }
 
         public ITestCollection CreateTestCollection(INakedObject instances) {
@@ -18,7 +32,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestObject CreateTestObject(INakedObject nakedObject) {
-            return new TestObject(nakedObject, this);
+            return new TestObject(persistor, nakedObject, this);
         }
 
         public ITestNaked CreateTestNaked(INakedObject nakedObject) {
@@ -39,15 +53,15 @@ namespace NakedObjects.Xat {
         }
 
         public ITestAction CreateTestAction(INakedObjectAction action, ITestHasActions owningObject) {
-            return new TestAction(action, owningObject, this);
+            return new TestAction(reflector, session, persistor, action, owningObject, this);
         }
 
         public ITestAction CreateTestAction(string contributor, INakedObjectAction action, ITestHasActions owningObject) {
-            return new TestAction(contributor, action, owningObject, this);
+            return new TestAction(reflector, session, persistor, contributor, action, owningObject, this);
         }
 
         public ITestProperty CreateTestProperty(INakedObjectAssociation field, ITestHasActions owningObject) {
-            return new TestProperty(field, owningObject, this);
+            return new TestProperty(persistor, session, field, owningObject, this);
         }
 
         public ITestParameter CreateTestParameter(INakedObjectAction action, INakedObjectActionParameter parameter, ITestHasActions owningObject) {

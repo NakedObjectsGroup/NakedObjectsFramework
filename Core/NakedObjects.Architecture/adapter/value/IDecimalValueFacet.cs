@@ -7,8 +7,6 @@ using NakedObjects.Architecture.Facets;
 namespace NakedObjects.Architecture.Adapter.Value {
     public interface IDecimalValueFacet : IFacet {
         decimal DecimalValue(INakedObject nakedObject);
-
-    
     }
 
     // Copyright (c) Naked Objects Group Ltd.

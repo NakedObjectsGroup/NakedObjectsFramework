@@ -2,15 +2,16 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Xat {
     internal class TestParameterObject : ITestValue {
+        private readonly INakedObjectManager manager;
         private readonly object domainObject;
 
-        public TestParameterObject(object domainObject) {
+        public TestParameterObject(INakedObjectManager manager,  object domainObject) {
+            this.manager = manager;
             this.domainObject = domainObject;
         }
 
@@ -21,7 +22,7 @@ namespace NakedObjects.Xat {
         }
 
         public INakedObject NakedObject {
-            get { return NakedObjectsContext.ObjectPersistor.CreateAdapter(domainObject, null, null); }
+            get { return manager.CreateAdapter(domainObject, null, null); }
             set { throw new UnexpectedCallException(); }
         }
 

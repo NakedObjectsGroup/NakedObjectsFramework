@@ -8,8 +8,6 @@ using NakedObjects.Architecture.Facets;
 namespace NakedObjects.Architecture.Adapter.Value {
     public interface IByteValueFacet : IFacet {
         Byte ByteValue(INakedObject nakedObject);
-
-  
     }
 
     // Copyright (c) Naked Objects Group Ltd.

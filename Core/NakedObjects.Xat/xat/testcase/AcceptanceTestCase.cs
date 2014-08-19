@@ -52,7 +52,9 @@ namespace NakedObjects.Xat {
         private bool ProfilerOn { get; set; }
 
         protected virtual ITestObjectFactory TestObjectFactoryClass {
-            get { return new TestObjectFactory(); }
+            get {
+                return new TestObjectFactory(NakedObjectsContext.Reflector, NakedObjectsContext.Session, NakedObjectsContext.ObjectPersistor);
+            }
         }
 
         protected virtual ISession TestSession {
@@ -140,14 +142,14 @@ namespace NakedObjects.Xat {
         protected void InitializeNakedObjectsFramework() {
             LOG.Info("test initialize " + Name);
             servicesCache = new Dictionary<string, ITestService>();
-            testObjectFactory = TestObjectFactoryClass;
+            
             methodProfiler.Start();
 
             SetupSystem();
             System.Init();
 
             System.Connect(TestSession);
-
+            testObjectFactory = TestObjectFactoryClass;
             methodProfiler.Stop();
 
             LOG.Info("test initialize complete " + Name + " " + methodProfiler.TimeLog());

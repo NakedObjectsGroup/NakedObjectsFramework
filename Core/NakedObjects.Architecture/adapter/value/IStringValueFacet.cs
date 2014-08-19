@@ -7,7 +7,6 @@ using NakedObjects.Architecture.Facets;
 namespace NakedObjects.Architecture.Adapter.Value {
     public interface IStringValueFacet : IFacet {
         string StringValue(INakedObject nakedObject);
-     
     }
 
     // Copyright (c) Naked Objects Group Ltd.

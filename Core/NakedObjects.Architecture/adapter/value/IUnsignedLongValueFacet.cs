@@ -7,8 +7,6 @@ using NakedObjects.Architecture.Facets;
 namespace NakedObjects.Architecture.Adapter.Value {
     public interface IUnsignedLongValueFacet : IFacet {
         ulong UnsignedLongValue(INakedObject nakedObject);
-
-       
     }
 
     // Copyright (c) Naked Objects Group Ltd.
