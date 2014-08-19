@@ -6,7 +6,6 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Reflector.Spec;
