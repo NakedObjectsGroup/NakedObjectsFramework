@@ -31,7 +31,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 Log.Debug("No enhancements set up");
             }
             else {
-                AddEnhancement(facetDecoratorSet);
+                AddEnhancement(facetDecoratorSet, reflector);
             }
 
             reflector.Init();
@@ -53,9 +53,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         #endregion
 
-        private void AddEnhancement(FacetDecoratorSet facetDecoratorSet) {
+        private void AddEnhancement(FacetDecoratorSet facetDecoratorSet, INakedObjectReflector reflector) {
             foreach (IReflectionDecoratorInstaller installer in enhancements.Where(x => x is IReflectionDecoratorInstaller)) {
-                installer.CreateDecorators().ForEach(facetDecoratorSet.Add);
+                installer.CreateDecorators(reflector).ForEach(facetDecoratorSet.Add);
             }
         }
     }

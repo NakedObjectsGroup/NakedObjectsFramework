@@ -187,6 +187,10 @@
       <Project>{7494A00E-6A3F-4BDE-84FF-20AA538ED575}</Project>
       <Name>NakedObjects.FWResources</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Reflector.DotNet\NakedObjects.Reflector.DotNet.csproj">
+      <Project>{47D00690-5B24-42D3-A9A7-C87469B6A088}</Project>
+      <Name>NakedObjects.Reflector.DotNet</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

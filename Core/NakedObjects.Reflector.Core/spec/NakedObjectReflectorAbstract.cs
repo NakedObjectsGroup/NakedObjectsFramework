@@ -6,13 +6,16 @@ using System;
 using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
+using NakedObjects.Objects;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
@@ -118,8 +121,7 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public abstract IContainerInjector CreateContainerInjector(object[] services);
-
+      
         public bool IgnoreCase { get; set; }
 
         #endregion

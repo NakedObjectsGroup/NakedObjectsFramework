@@ -12,7 +12,7 @@ using NakedObjects.Services;
 
 namespace NakedObjects.SystemTest.Authorization.Installer4 {
     [TestClass]
-    public class TestCustomAuthoriserInstallerUsersAndRoles : AbstractSystemTest {
+    public class TestCustomAuthoriserInstallerUsersAndRoles1 : AbstractSystemTest {
         #region "Services & Fixtures"
 
         protected override IServicesInstaller MenuServices {
@@ -28,36 +28,101 @@ namespace NakedObjects.SystemTest.Authorization.Installer4 {
         [TestInitialize]
         public void Initialize() {
             InitializeNakedObjectsFramework();
+            SetUser("Fred");
         }
 
 
         [TestMethod]
         public void AccessByAuthorizedUserName() {
-            SetUser("Fred");
             GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
+        }
+    }
+
+    [TestClass]
+    public class TestCustomAuthoriserInstallerUsersAndRoles2 : AbstractSystemTest {
+        #region "Services & Fixtures"
+
+        protected override IServicesInstaller MenuServices {
+            get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
+        }
+
+        protected override IAuthorizerInstaller Authorizer {
+            get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer(), new MyDefaultAuthorizer()); }
+        }
+
+        #endregion
+
+        [TestInitialize]
+        public void Initialize() {
+            InitializeNakedObjectsFramework();
+            SetUser("Anon");
         }
 
 
         [TestMethod]
         public void AccessByAnonUserWithoutRole() {
-            SetUser("Anon");
             GetTestService("Foos").GetAction("New Instance").AssertIsInvisible();
         }
+    }
+
+    [TestClass]
+    public class TestCustomAuthoriserInstallerUsersAndRoles3 : AbstractSystemTest {
+        #region "Services & Fixtures"
+
+        protected override IServicesInstaller MenuServices {
+            get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
+        }
+
+        protected override IAuthorizerInstaller Authorizer {
+            get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer(), new MyDefaultAuthorizer()); }
+        }
+
+        #endregion
+
+        [TestInitialize]
+        public void Initialize() {
+            InitializeNakedObjectsFramework();
+            SetUser("Anon", "sysAdmin");
+        }
+
 
         [TestMethod]
         public void AccessByAnonUserWithRole() {
-            SetUser("Anon", "sysAdmin");
-            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
-        }
-
-        [TestMethod]
-        public void AccessByAnonUserWithMultipleRoles() {
-            SetUser("Anon", "service", "sysAdmin");
             GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
         }
     }
 
+    [TestClass]
+    public class TestCustomAuthoriserInstallerUsersAndRoles4 : AbstractSystemTest {
+        #region "Services & Fixtures"
+
+        protected override IServicesInstaller MenuServices {
+            get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
+        }
+
+        protected override IAuthorizerInstaller Authorizer {
+            get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer(), new MyDefaultAuthorizer()); }
+        }
+
+        #endregion
+
+        [TestInitialize]
+        public void Initialize() {
+            InitializeNakedObjectsFramework();
+            SetUser("Anon", "service", "sysAdmin");
+        }
+
+
+        [TestMethod]
+        public void AccessByAnonUserWithMultipleRoles() {
+            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
+        }
+    }
+
+
     public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
+        #region ITypeAuthorizer<object> Members
+
         public void Init() {
             //Does nothing
         }
@@ -73,6 +138,8 @@ namespace NakedObjects.SystemTest.Authorization.Installer4 {
         public void Shutdown() {
             //Does nothing
         }
+
+        #endregion
     }
 
     public class Foo {

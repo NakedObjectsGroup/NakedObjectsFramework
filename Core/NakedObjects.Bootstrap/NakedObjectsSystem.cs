@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.ServiceModel;
 using System.Threading;
 using Common.Logging;
@@ -17,6 +18,7 @@ using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
 using NakedObjects.Core.Service;
 using NakedObjects.Core.Util;
+using NakedObjects.Reflector.DotNet;
 using NakedObjects.Reflector.Transaction;
 
 namespace NakedObjects.Boot {
@@ -143,6 +145,10 @@ namespace NakedObjects.Boot {
             }
         }
 
+        private object[] GetServices(IServicesInstaller si) {
+            return si == null ? new object[] {} : si.GetServices();
+        }
+
         private void InitContext(ISession session) {
             if (session == null) {
                 throw new InvalidStateException("Session not specified on " + Thread.CurrentThread);
@@ -161,8 +167,12 @@ namespace NakedObjects.Boot {
             context.SetSession(session);
             objectPersistor.Session = session;
             objectPersistor.UpdateNotifier = NakedObjectsContext.UpdateNotifier;
-
+            
             objectPersistor.AddServices(menuServicesInstaller, contributedActionsInstaller, systemServicesInstaller);
+
+            var ss = GetServices(menuServicesInstaller).Union(GetServices(contributedActionsInstaller)).Union(GetServices(systemServicesInstaller)).ToArray();
+          
+            objectPersistor.Injector = new DotNetDomainObjectContainerInjector(reflector, ss);      
 
             objectPersistor.Init();
            

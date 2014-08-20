@@ -22,15 +22,5 @@ namespace NakedObjects.Reflector.Security {
             return authorizer.IsVisible(session, target, identifier);
         }
 
-        public virtual void Init() {
-            InitAuthorizer();
-            authorizer.Init();
-        }
-
-        public virtual void Shutdown() {
-            authorizer.Shutdown();
-        }
-
-        protected internal abstract void InitAuthorizer();
     }
 }

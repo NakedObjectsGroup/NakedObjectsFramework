@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
@@ -14,23 +11,20 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Security {
     public class CustomAuthorizationManager : IAuthorizationManager {
-        private readonly INakedObjectReflector reflector;
         private readonly ITypeAuthorizer<object> defaultAuthorizer;
         private readonly INamespaceAuthorizer[] namespaceAuthorizers = {};
         private readonly Dictionary<Type, object> typeAuthorizerMap = new Dictionary<Type, object>();
 
-        private bool isInitialised;
-
         #region Constructors
 
-        public CustomAuthorizationManager(INakedObjectReflector reflector, ITypeAuthorizer<object> defaultAuthorizer) {
+        public CustomAuthorizationManager(ITypeAuthorizer<object> defaultAuthorizer) {
             if (defaultAuthorizer == null) throw new InitialisationException("Default Authorizer cannot be null");
-            this.reflector = reflector;
+
             this.defaultAuthorizer = defaultAuthorizer;
         }
 
-        public CustomAuthorizationManager(INakedObjectReflector reflector, ITypeAuthorizer<object> defaultAuthorizer, params INamespaceAuthorizer[] namespaceAuthorizers)
-            : this(reflector, defaultAuthorizer) {
+        public CustomAuthorizationManager(ITypeAuthorizer<object> defaultAuthorizer, params INamespaceAuthorizer[] namespaceAuthorizers)
+            : this(defaultAuthorizer) {
             this.namespaceAuthorizers = namespaceAuthorizers;
         }
 
@@ -38,8 +32,8 @@ namespace NakedObjects.Security {
         /// </summary>
         /// <param name="defaultAuthorizer">This will be used unless the object type exactly matches one of the typeAuthorizers</param>
         /// <param name="typeAuthorizers">Each authorizer must implement ITypeAuthorizer of T, where T is a concrete domain type</param>
-        public CustomAuthorizationManager(INakedObjectReflector reflector, ITypeAuthorizer<object> defaultAuthorizer, params object[] typeAuthorizers)
-            : this(reflector, defaultAuthorizer) {
+        public CustomAuthorizationManager(ITypeAuthorizer<object> defaultAuthorizer, params object[] typeAuthorizers)
+            : this(defaultAuthorizer) {
             foreach (object typeAuth in typeAuthorizers) {
                 Type authInt = typeAuth.GetType().GetInterface("ITypeAuthorizer`1");
                 if (authInt != null && !(authInt.GetGenericArguments()[0]).IsAbstract) {
@@ -50,15 +44,6 @@ namespace NakedObjects.Security {
                     throw new InitialisationException("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete");
                 }
             }
-        }
-
-        private void Inject() {
-            object[] services = NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray();
-            IContainerInjector injector = reflector.CreateContainerInjector(services);
-            injector.InitDomainObject(defaultAuthorizer);
-
-            namespaceAuthorizers.ForEach(injector.InitDomainObject);
-            typeAuthorizerMap.ForEach(kvp => injector.InitDomainObject(kvp.Value));
         }
 
         #endregion
@@ -77,46 +62,41 @@ namespace NakedObjects.Security {
             //Does nothing
         }
 
-        public void Init() {
-            isInitialised = true;
-            Inject();
-            defaultAuthorizer.Init();
-            namespaceAuthorizers.OfType<IRequiresSetup>().ForEach(na => na.Init());
-            typeAuthorizerMap.Select(kvp => kvp.Value).OfType<IRequiresSetup>().ForEach(ta => ta.Init());
-        }
-
-        public void Shutdown() {
-            //does nothing
-        }
+        #endregion
 
         private bool IsEditableOrVisible(ISession session, INakedObject target, IIdentifier identifier, string toInvoke) {
             Assert.AssertNotNull(target);
-            // initialise on first use
-            if (!isInitialised) {
-                Init();
-            }
-            object authorizer = GetNamespaceAuthorizerFor(target) ?? GetTypeAuthorizerFor(target) ?? defaultAuthorizer;
+
+            object authorizer = GetNamespaceAuthorizerFor(target) ?? GetTypeAuthorizerFor(target) ?? GetDefaultAuthorizor();
             return (bool) authorizer.GetType().GetMethod(toInvoke).Invoke(authorizer, new[] {session.Principal, target.Object, identifier.MemberName});
         }
-
-        #endregion
 
         private object GetTypeAuthorizerFor(INakedObject target) {
             Assert.AssertNotNull(target);
             Type domainType = TypeUtils.GetType(target.Specification.FullName).GetProxiedType();
             object authorizer;
             typeAuthorizerMap.TryGetValue(domainType, out authorizer);
-            return authorizer;
+            return authorizer == null ? null : CreateAuthorizer(authorizer);
+        }
+
+        private object GetDefaultAuthorizor() {
+            return CreateAuthorizer(defaultAuthorizer);
+        }
+
+        private object CreateAuthorizer(object authorizer) {
+            return NakedObjectsContext.Reflector.LoadSpecification(authorizer.GetType()).CreateObject();
         }
 
         //TODO:  Change return type to INamespaceAuthorizer when TypeAuthorization has been obsoleted.
         private object GetNamespaceAuthorizerFor(INakedObject target) {
             Assert.AssertNotNull(target);
             string fullyQualifiedOfTarget = target.Specification.FullName;
-            return namespaceAuthorizers.
+            INamespaceAuthorizer authorizer = namespaceAuthorizers.
                 Where(x => fullyQualifiedOfTarget.StartsWith(x.NamespaceToAuthorize)).
                 OrderByDescending(x => x.NamespaceToAuthorize.Length).
                 FirstOrDefault();
+
+            return authorizer == null ? null : CreateAuthorizer(authorizer);
         }
     }
 }

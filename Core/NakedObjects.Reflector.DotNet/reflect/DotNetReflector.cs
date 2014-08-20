@@ -6,8 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Context;
+using NakedObjects.Objects;
 using NakedObjects.Reflector.DotNet.Facets;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.Spec;
@@ -59,9 +63,6 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
         }
 
-        public override IContainerInjector CreateContainerInjector(object[] services) {
-            return new DotNetDomainObjectContainerInjector(this, services);
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

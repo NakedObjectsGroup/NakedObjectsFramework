@@ -8,20 +8,24 @@ using System.Reflection;
 using System.Security.Principal;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Validation;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
+using NakedObjects.Objects;
 using NakedObjects.Services;
 using NakedObjects.UtilInternal;
 
 namespace NakedObjects.Reflector.DotNet {
     public class DotNetDomainObjectContainer : IDomainObjectContainer, IInternalAccess {
         private readonly INakedObjectReflector reflector;
+    
 
         public DotNetDomainObjectContainer(INakedObjectReflector reflector) {
             this.reflector = reflector;
+         
         }
 
         #region IDomainObjectContainer Members
@@ -147,7 +151,7 @@ namespace NakedObjects.Reflector.DotNet {
             return NakedObjectsContext.ObjectPersistor.FindByKeys(type, keys).GetDomainObject();
         }
 
-        private static INakedObject AdapterFor(object obj) {
+        private  INakedObject AdapterFor(object obj) {
             return NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
         }
     }

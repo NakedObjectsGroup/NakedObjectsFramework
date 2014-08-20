@@ -34,43 +34,53 @@ namespace NakedObjects.Persistor.Objectstore {
     public class ObjectStorePersistor : INakedObjectPersistor, IPersistedObjectAdder {
         private static readonly ILog Log;
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
-        private readonly INakedObjectReflector reflector;
-        //private readonly ISession session;
-        private IUpdateNotifier updateNotifier;
+        private readonly IIdentityMap identityMap;
         private readonly INakedObjectStore objectStore;
         private readonly IPersistAlgorithm persistAlgorithm;
+        private readonly INakedObjectReflector reflector;
         private readonly List<ServiceWrapper> services = new List<ServiceWrapper>();
         private readonly INakedObjectTransactionManager transactionManager;
-        private IContainerInjector containerInjector;
-        private readonly IIdentityMap identityMap;
+
         private ISession session;
+        private IUpdateNotifier updateNotifier;
 
 
         static ObjectStorePersistor() {
             Log = LogManager.GetLogger(typeof (ObjectStorePersistor));
         }
 
-        public ObjectStorePersistor(INakedObjectReflector reflector,  INakedObjectStore objectStore, IPersistAlgorithm persistAlgorithm, IOidGenerator oidGenerator, IIdentityMap identityMap) {
+        public ObjectStorePersistor(INakedObjectReflector reflector, INakedObjectStore objectStore, IPersistAlgorithm persistAlgorithm, IOidGenerator oidGenerator, IIdentityMap identityMap) {
             Assert.AssertNotNull(objectStore);
             Assert.AssertNotNull(persistAlgorithm);
             Assert.AssertNotNull(oidGenerator);
             Assert.AssertNotNull(identityMap);
             Assert.AssertNotNull(reflector);
-          
+
             this.reflector = reflector;
-        
+
             this.objectStore = objectStore;
             this.persistAlgorithm = persistAlgorithm;
             OidGenerator = oidGenerator;
             this.identityMap = identityMap;
 
-          
 
             transactionManager = new ObjectStoreTransactionManager(objectStore);
             Log.DebugFormat("Creating {0}", this);
         }
 
+        protected virtual List<ServiceWrapper> Services {
+            get { return services; }
+        }
+
+        public string DebugTitle {
+            get { return "Object Store Persistor"; }
+        }
+
         // property Injected dependencies as temp workarounds while refactoring 
+
+        #region INakedObjectPersistor Members
+
+        public IContainerInjector Injector { get; set; }
 
         public ISession Session {
             set {
@@ -82,20 +92,12 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public object UpdateNotifier {
             set {
-                updateNotifier = (IUpdateNotifier)value;
+                updateNotifier = (IUpdateNotifier) value;
                 objectStore.UpdateNotifier = updateNotifier;
             }
             get { return updateNotifier; }
         }
 
-
-        protected virtual List<ServiceWrapper> Services {
-            get { return services; }
-        }
-
-        public string DebugTitle {
-            get { return "Object Store Persistor"; }
-        }
 
         public IOidGenerator OidGenerator { get; private set; }
 
@@ -218,12 +220,12 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public virtual void InitDomainObject(object obj) {
             Log.DebugFormat("InitDomainObject: {0}", obj);
-            containerInjector.InitDomainObject(obj);
+            Injector.InitDomainObject(obj);
         }
 
         public void InitInlineObject(object root, object inlineObject) {
             Log.DebugFormat("InitInlineObject root: {0} inlineObject: {1}", root, inlineObject);
-            containerInjector.InitInlineObject(root, inlineObject);
+            Injector.InitInlineObject(root, inlineObject);
         }
 
         public virtual ServiceTypes GetServiceType(INakedObjectSpecification spec) {
@@ -493,6 +495,71 @@ namespace NakedObjects.Persistor.Objectstore {
             objectStore.Refresh(nakedObject);
         }
 
+        public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid) {
+            return new PocoAdapter(reflector, Session, this, domainObject, transientOid);
+        }
+
+        public INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj) {
+            GetAdapterFor(obj);
+
+            IOid oid = new AggregateOid(reflector, parent.Oid, fieldId, obj.GetType().FullName);
+            INakedObject adapterFor = GetAdapterFor(oid);
+            if (adapterFor == null || adapterFor.Object != obj) {
+                if (adapterFor != null) {
+                    RemoveAdapter(adapterFor);
+                }
+                adapterFor = CreateAdapter(obj, oid, null);
+                adapterFor.OptimisticLock = new NullVersion();
+            }
+            Assert.AssertNotNull(adapterFor);
+            return adapterFor;
+        }
+
+        public List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects) {
+            var adaptedObjects = new List<INakedObject>();
+            foreach (object domainObject in domainObjects) {
+                adaptedObjects.Add(CreateAdapter(domainObject, null, null));
+            }
+            return adaptedObjects;
+        }
+
+        public void Abort(INakedObjectPersistor objectManager, IFacetHolder holder) {
+            Log.Info("exception executing " + holder + ", aborting transaction");
+            try {
+                objectManager.AbortTransaction();
+            }
+            catch (Exception e2) {
+                Log.Error("failure during abort", e2);
+            }
+        }
+
+        public IOid RestoreGenericOid(string[] encodedData) {
+            string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(encodedData.First()));
+            INakedObjectSpecification spec = reflector.LoadSpecification(typeName);
+
+            if (spec.IsCollection) {
+                return new CollectionMemento(this, reflector, encodedData);
+            }
+
+            if (spec.ContainsFacet<IViewModelFacet>()) {
+                return new ViewModelOid(reflector, encodedData);
+            }
+
+            return spec.ContainsFacet<IComplexTypeFacet>() ? new AggregateOid(reflector, encodedData) : null;
+        }
+
+        public void PopulateViewModelKeys(INakedObject nakedObject) {
+            var vmoid = (ViewModelOid) nakedObject.Oid;
+
+            if (!vmoid.IsFinal) {
+                vmoid.UpdateKeys(nakedObject.Specification.GetFacet<IViewModelFacet>().Derive(nakedObject), true);
+            }
+        }
+
+        #endregion
+
+        #region IPersistedObjectAdder Members
+
         public virtual void AddPersistedObject(INakedObject nakedObject) {
             if (nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return;
@@ -504,6 +571,8 @@ namespace NakedObjects.Persistor.Objectstore {
         public virtual void MadePersistent(INakedObject nakedObject) {
             identityMap.MadePersistent(nakedObject);
         }
+
+        #endregion
 
         private INakedObject RecreateViewModel(ViewModelOid oid) {
             string[] keys = oid.Keys;
@@ -591,16 +660,10 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         private void InitServices() {
-         
-
             reflector.InstallServiceSpecifications(Services.Select(s => s.Service.GetType()).ToArray());
-
-
             reflector.PopulateContributedActions(GetServices(ServiceTypes.Menu | ServiceTypes.Contributor));
-
-            containerInjector = reflector.CreateContainerInjector(Services.Select(x => x.Service).ToArray());
             foreach (ServiceWrapper service in Services) {
-                containerInjector.InitDomainObject(service.Service);
+                Injector.InitDomainObject(service.Service);
             }
         }
 
@@ -620,14 +683,10 @@ namespace NakedObjects.Persistor.Objectstore {
 
         private INakedObject CreateAdapterForNewObject(object domainObject) {
             IOid transientOid = OidGenerator.CreateTransientOid(domainObject);
-            var adapter = NewAdapterForKnownObject(domainObject, transientOid);
+            INakedObject adapter = NewAdapterForKnownObject(domainObject, transientOid);
             Log.DebugFormat("Creating adapter (transient) {0}", adapter);
             identityMap.AddAdapter(adapter);
             return adapter;
-        }
-
-        public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid) {
-            return new PocoAdapter(reflector, Session, this, domainObject, transientOid);
         }
 
         private void CreateInlineObjects(INakedObject parentObject, object rootObject) {
@@ -690,63 +749,6 @@ namespace NakedObjects.Persistor.Objectstore {
                 asString.Append("persistAlgorithm", persistAlgorithm.Name);
             }
             return asString.ToString();
-        }
-
-        public INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj) {
-            GetAdapterFor(obj);
-
-            IOid oid = new AggregateOid(reflector, parent.Oid, fieldId, obj.GetType().FullName);
-            INakedObject adapterFor = GetAdapterFor(oid);
-            if (adapterFor == null || adapterFor.Object != obj) {
-                if (adapterFor != null) {
-                    RemoveAdapter(adapterFor);
-                }
-                adapterFor = CreateAdapter(obj, oid, null);
-                adapterFor.OptimisticLock = new NullVersion();
-            }
-            Assert.AssertNotNull(adapterFor);
-            return adapterFor;
-        }
-
-        public  List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects) {
-            var adaptedObjects = new List<INakedObject>();
-            foreach (object domainObject in domainObjects) {
-                adaptedObjects.Add(CreateAdapter(domainObject, null, null));
-            }
-            return adaptedObjects;
-        }
-
-        public  void Abort(INakedObjectPersistor objectManager, IFacetHolder holder) {
-            Log.Info("exception executing " + holder + ", aborting transaction");
-            try {
-                objectManager.AbortTransaction();
-            }
-            catch (Exception e2) {
-                Log.Error("failure during abort", e2);
-            }
-        }
-
-        public  IOid RestoreGenericOid(string[] encodedData) {
-            string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(encodedData.First()));
-            INakedObjectSpecification spec = reflector.LoadSpecification(typeName);
-
-            if (spec.IsCollection) {
-                return new CollectionMemento(this, reflector, encodedData);
-            }
-
-            if (spec.ContainsFacet<IViewModelFacet>()) {
-                return new ViewModelOid(reflector, encodedData);
-            }
-
-            return spec.ContainsFacet<IComplexTypeFacet>() ? new AggregateOid(reflector, encodedData) : null;
-        }
-
-        public  void PopulateViewModelKeys(INakedObject nakedObject) {
-            var vmoid = (ViewModelOid)nakedObject.Oid;
-
-            if (!vmoid.IsFinal) {
-                vmoid.UpdateKeys(nakedObject.Specification.GetFacet<IViewModelFacet>().Derive(nakedObject), true);
-            }
         }
     }
 

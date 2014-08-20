@@ -8,9 +8,6 @@ using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Reflector.Security {
     public interface IAuthorizer {
-        void Init();
-
-        void Shutdown();
 
         bool IsUsable(ISession session, INakedObject target, IIdentifier member);
 

@@ -50,10 +50,6 @@ namespace NakedObjects.TestSystem {
             return null;
         }
 
-        public override IContainerInjector CreateContainerInjector(object[] container) {
-            return new TestProxyContainerInjector();
-        }
-
         public void AddSpecification(INakedObjectSpecification specification) {
             specs[specification.FullName] = specification;
         }

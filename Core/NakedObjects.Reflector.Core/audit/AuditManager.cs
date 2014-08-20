@@ -6,7 +6,6 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Audit;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
@@ -15,33 +14,17 @@ namespace NakedObjects.Reflector.Audit {
     public class AuditManager {
         private readonly IAuditor defaultAuditor;
         private readonly INamespaceAuditor[] namespaceAuditors;
-        private readonly INakedObjectReflector reflector;
+       
 
-        private bool isInitialised;
-
-        public AuditManager(INakedObjectReflector reflector, IAuditor defaultAuditor, params INamespaceAuditor[] namespaceAuditors) {
+        public AuditManager( IAuditor defaultAuditor, params INamespaceAuditor[] namespaceAuditors) {
             this.defaultAuditor = defaultAuditor;
             this.namespaceAuditors = namespaceAuditors;
-            this.reflector = reflector;
-        }
-
-        private void Inject() {
-            object[] services = NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray();
-            IContainerInjector injector = reflector.CreateContainerInjector(services);
-            injector.InitDomainObject(defaultAuditor);
-            namespaceAuditors.ForEach(injector.InitDomainObject);
-        }
-
-        public void Init() {
-            if (!isInitialised) {
-                isInitialised = true;
-                Inject();
-            }
+         
         }
 
         public void Invoke(INakedObject nakedObject, INakedObject[] parameters, bool queryOnly, IIdentifier identifier) {
-            Init();
-            IAuditor auditor = GetNamespaceAuthorizerFor(nakedObject) ?? defaultAuditor;
+
+            IAuditor auditor = GetNamespaceAuditorFor(nakedObject) ?? GetDefaultAuditor();
 
             if (nakedObject.Specification.IsService) {
                 string serviceName = nakedObject.Specification.GetTitle(nakedObject);
@@ -53,25 +36,32 @@ namespace NakedObjects.Reflector.Audit {
         }
 
         public void Updated(INakedObject nakedObject) {
-            Init();
-            IAuditor auditor = GetNamespaceAuthorizerFor(nakedObject) ?? defaultAuditor;
+            IAuditor auditor = GetNamespaceAuditorFor(nakedObject) ?? GetDefaultAuditor();
             auditor.ObjectUpdated(NakedObjectsContext.Session.Principal, nakedObject.GetDomainObject());
         }
 
         public void Persisted(INakedObject nakedObject) {
-            Init();
-            IAuditor auditor = GetNamespaceAuthorizerFor(nakedObject) ?? defaultAuditor;
+            IAuditor auditor = GetNamespaceAuditorFor(nakedObject) ?? GetDefaultAuditor();
             auditor.ObjectPersisted(NakedObjectsContext.Session.Principal, nakedObject.GetDomainObject());
         }
 
-
-        private INamespaceAuditor GetNamespaceAuthorizerFor(INakedObject target) {
+        private IAuditor GetNamespaceAuditorFor(INakedObject target) {
             Assert.AssertNotNull(target);
             string fullyQualifiedOfTarget = target.Specification.FullName;
-            return namespaceAuditors.
+            var auditor = namespaceAuditors.
                 Where(x => fullyQualifiedOfTarget.StartsWith(x.NamespaceToAudit)).
                 OrderByDescending(x => x.NamespaceToAudit.Length).
                 FirstOrDefault();
+
+            return auditor != null ? CreateAuditor(auditor) : null;
+        }
+
+        private IAuditor CreateAuditor(IAuditor auditor) {
+            return (IAuditor) NakedObjectsContext.Reflector.LoadSpecification(auditor.GetType()).CreateObject();
+        }
+
+        private IAuditor GetDefaultAuditor() {
+            return CreateAuditor(defaultAuditor);
         }
     }
 }

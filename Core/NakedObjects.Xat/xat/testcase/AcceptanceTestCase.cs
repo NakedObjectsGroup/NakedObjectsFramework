@@ -10,13 +10,13 @@ using System.Security.Principal;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Bounded;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Boot;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Security;
+using NakedObjects.Reflector.DotNet;
 using NakedObjects.Service;
 using NakedObjects.Xat.Performance;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
@@ -70,10 +70,21 @@ namespace NakedObjects.Xat {
 
         // make framework available to tests 
         private readonly NakedObjectsFramework nakedObjectsFramework = new NakedObjectsFramework();
+        private IContainerInjector injector;
+
 
         protected INakedObjectsFramework NakedObjectsContext {
             get {
                 return nakedObjectsFramework;
+            }
+        }
+
+        protected IContainerInjector Injector {
+            get {
+                if (injector == null) {
+                    injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector, NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray());
+                }
+                return injector;
             }
         }
 
@@ -128,13 +139,14 @@ namespace NakedObjects.Xat {
             return new GenericPrincipal(new GenericIdentity(name), roles);
         }
 
-        protected static void SetUser(string username, params string[] roles) {
+        protected  void SetUser(string username, params string[] roles) {
             var staticContext = (StaticContext)  Core.Context.NakedObjectsContext.Instance;
             ISession session = new SimpleSession(CreatePrincipal(username, roles));
             staticContext.SetSession(session);
+            testObjectFactory.Session = session;
         }
 
-        protected static void SetUser(string username) {
+        protected  void SetUser(string username) {
             SetUser(username, new string[] {});
         }
 

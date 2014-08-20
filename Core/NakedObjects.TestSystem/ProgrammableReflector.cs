@@ -52,9 +52,7 @@ namespace NakedObjects.Testing {
 
         public void Shutdown() {}
 
-        public IContainerInjector CreateContainerInjector(object[] services) {
-            throw new NotImplementedException();
-        }
+     
 
         public bool IgnoreCase {
             get { return false; }

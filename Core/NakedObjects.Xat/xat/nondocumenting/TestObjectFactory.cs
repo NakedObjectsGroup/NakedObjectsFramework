@@ -11,14 +11,16 @@ using NakedObjects.Architecture.Security;
 namespace NakedObjects.Xat {
     public class TestObjectFactory : ITestObjectFactory {
         private readonly INakedObjectReflector reflector;
-        private readonly ISession session;
+      
         private readonly INakedObjectPersistor persistor;
 
         public TestObjectFactory(INakedObjectReflector reflector, ISession session, INakedObjectPersistor persistor) {
             this.reflector = reflector;
-            this.session = session;
+            this.Session = session;
             this.persistor = persistor;
         }
+
+        public ISession Session { get; set; }
 
         #region ITestObjectFactory Members
 
@@ -53,15 +55,15 @@ namespace NakedObjects.Xat {
         }
 
         public ITestAction CreateTestAction(INakedObjectAction action, ITestHasActions owningObject) {
-            return new TestAction(reflector, session, persistor, action, owningObject, this);
+            return new TestAction(reflector, Session, persistor, action, owningObject, this);
         }
 
         public ITestAction CreateTestAction(string contributor, INakedObjectAction action, ITestHasActions owningObject) {
-            return new TestAction(reflector, session, persistor, contributor, action, owningObject, this);
+            return new TestAction(reflector, Session, persistor, contributor, action, owningObject, this);
         }
 
         public ITestProperty CreateTestProperty(INakedObjectAssociation field, ITestHasActions owningObject) {
-            return new TestProperty(persistor, session, field, owningObject, this);
+            return new TestProperty(persistor, Session, field, owningObject, this);
         }
 
         public ITestParameter CreateTestParameter(INakedObjectAction action, INakedObjectActionParameter parameter, ITestHasActions owningObject) {

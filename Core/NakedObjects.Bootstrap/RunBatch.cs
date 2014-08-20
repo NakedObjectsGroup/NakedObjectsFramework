@@ -6,6 +6,7 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
+using NakedObjects.Reflector.DotNet;
 
 namespace NakedObjects.Boot {
     public class BatchClient : INakedObjectsClient {
@@ -17,7 +18,8 @@ namespace NakedObjects.Boot {
 
         protected void Inject(object obj) {
             object[] services = NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray();
-            IContainerInjector injector = NakedObjectsContext.Reflector.CreateContainerInjector(services);
+            IContainerInjector injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector,
+                services);
             injector.InitDomainObject(obj);
         }
 

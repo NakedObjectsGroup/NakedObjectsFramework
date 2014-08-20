@@ -1,10 +1,15 @@
 ﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
+using System.Linq;
 using System.Web.Mvc;
 using Common.Logging;
 using Common.Logging.Configuration;
+using NakedObjects.Architecture.Services;
+using NakedObjects.Core.Context;
 using NakedObjects.Mvc.App;
+using NakedObjects.Reflector.DotNet;
 using NakedObjects.Web.Mvc;
 using WebActivatorEx;
 
@@ -20,7 +25,8 @@ namespace NakedObjects.Mvc.App {
 
         public static void PostStart() {
             RunWeb.Run();
-            DependencyResolver.SetResolver(new NakedObjectsDependencyResolver());
+            var injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector, NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray());
+            DependencyResolver.SetResolver(new NakedObjectsDependencyResolver(injector));
             RestConfig.RestPostStart();
 
             // Without this any value type fields with a default value will be set to mandatory by the MS unobtrusive validation

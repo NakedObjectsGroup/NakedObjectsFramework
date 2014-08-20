@@ -33,7 +33,8 @@ namespace NakedObjects.Architecture.Persist {
 
         INakedObject[] ServiceAdapters { get; }
         IOidGenerator OidGenerator { get; }
-       
+        IContainerInjector Injector { get; set; }
+
 
         /// <summary>
         ///     Primarily for testing

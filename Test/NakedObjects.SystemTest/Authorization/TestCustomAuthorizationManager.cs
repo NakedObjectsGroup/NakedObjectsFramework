@@ -42,14 +42,18 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
             get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>(), new SimpleRepository<Bar>(), new SimpleRepository<FooSub>(), new SimpleRepository<Qux>()}); }
         }
 
+
         protected override IAuthorizerInstaller Authorizer {
-            get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer(), new FooAuthorizer(), new QuxAuthorizer()); }
+            get { return new CustomAuthorizerInstaller( new MyDefaultAuthorizer(), new FooAuthorizer(), new QuxAuthorizer()); }
         }
 
         #endregion
 
         [TestMethod]
         public void VisibilityUsingSpecificTypeAuthorizer() {
+
+           
+
             ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             try {
                 foo.GetPropertyByName("Prop1").AssertIsVisible();
@@ -94,9 +98,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         public IDomainObjectContainer Container { get; set; }
         public SimpleRepository<Foo> Service { get; set; }
 
-        public void Init() {
-            //Does nothing
-        }
+     
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) {
             Assert.IsNotNull(Container);
@@ -108,6 +110,10 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
             Assert.IsNotNull(Container);
             Assert.IsNotNull(Service);
             return true;
+        }
+
+        public void Init() {
+            throw new NotImplementedException();
         }
 
         public void Shutdown() {

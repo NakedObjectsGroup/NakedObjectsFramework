@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
@@ -65,7 +66,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Whether proposed value for this parameter is valid
         /// </summary>
-        IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue, INakedObjectPersistor persistor);
+        IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue, INakedObjectPersistor persistor, ISession session);
 
         /// <summary>
         ///     Get set of options for the parameter - either coded choices or bounded set

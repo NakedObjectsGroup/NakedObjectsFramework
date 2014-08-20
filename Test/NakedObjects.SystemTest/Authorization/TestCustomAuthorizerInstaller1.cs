@@ -21,7 +21,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         protected override IAuthorizerInstaller Authorizer {
-            get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer(), new FooAbstractAuthorizer()); }
+            get { return new CustomAuthorizerInstaller( new MyDefaultAuthorizer(), new FooAbstractAuthorizer()); }
         }
 
         #endregion

@@ -36,9 +36,9 @@ namespace NakedObjects.SystemTest.Audit {
 
         #region "Services & Fixtures"
 
-        protected FooAuditor fooAuditor = new FooAuditor();
-        protected MyDefaultAuditor myDefaultAuditor = new MyDefaultAuditor();
-        protected QuxAuditor quxAuditor = new QuxAuditor();
+        protected static FooAuditor fooAuditor = new FooAuditor();
+        protected static MyDefaultAuditor myDefaultAuditor = new MyDefaultAuditor();
+        protected static QuxAuditor quxAuditor = new QuxAuditor();
 
         protected override IFixturesInstaller Fixtures {
             get { return new FixturesInstaller(new object[] {}); }
@@ -50,7 +50,108 @@ namespace NakedObjects.SystemTest.Audit {
 
 
         protected override IAuditorInstaller Auditor {
-            get { return new AuditInstaller(myDefaultAuditor, fooAuditor, quxAuditor); }
+            get { return new AuditInstaller(new Da(), new Fa(), new Qa()); }
+        }
+
+        public class Da : IAuditor {
+
+
+            public IDomainObjectContainer Container { get; set; }
+            public SimpleRepository<Foo> Service { get; set; }
+
+            public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
+                Assert.IsNotNull(Container);
+                Assert.IsNotNull(Service);
+                myDefaultAuditor.ActionInvoked(byPrincipal, actionName, onObject, queryOnly, withParameters);
+            }
+
+            public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
+                Assert.IsNotNull(Container);
+                Assert.IsNotNull(Service);
+                myDefaultAuditor.ActionInvoked(byPrincipal, actionName, serviceName, queryOnly, withParameters);
+            }
+
+            public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
+                Assert.IsNotNull(Container);
+                Assert.IsNotNull(Service);
+                myDefaultAuditor.ObjectUpdated(byPrincipal, updatedObject);
+            }
+
+            public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
+                Assert.IsNotNull(Container);
+                Assert.IsNotNull(Service);
+                myDefaultAuditor.ObjectPersisted(byPrincipal, updatedObject);
+            }
+        }
+
+        public class Fa : INamespaceAuditor {
+
+            public IDomainObjectContainer Container { get; set; }
+            public SimpleRepository<Foo> Service { get; set; }
+
+            public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
+                Assert.IsNotNull(Container);
+                Assert.IsNotNull(Service);
+                fooAuditor.ActionInvoked(byPrincipal, actionName, onObject, queryOnly, withParameters);
+            }
+
+            public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
+                Assert.IsNotNull(Container);
+                Assert.IsNotNull(Service);
+                fooAuditor.ActionInvoked(byPrincipal, actionName, serviceName, queryOnly, withParameters);
+            }
+
+            public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
+                Assert.IsNotNull(Container);
+                Assert.IsNotNull(Service);
+                fooAuditor.ObjectUpdated(byPrincipal, updatedObject);
+            }
+
+            public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
+                Assert.IsNotNull(Container);
+                Assert.IsNotNull(Service);
+                fooAuditor.ObjectPersisted(byPrincipal, updatedObject);
+            }
+
+            public string NamespaceToAudit {
+                get { return fooAuditor.NamespaceToAudit; }
+            
+            }
+        }
+
+        public class Qa : INamespaceAuditor {
+
+            public IDomainObjectContainer Container { get; set; }
+            public SimpleRepository<Foo> Service { get; set; }
+
+            public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
+                Assert.IsNotNull(Container);
+                Assert.IsNotNull(Service);
+                quxAuditor.ActionInvoked(byPrincipal, actionName, onObject, queryOnly, withParameters);
+            }
+
+            public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
+                Assert.IsNotNull(Container);
+                Assert.IsNotNull(Service);
+                quxAuditor.ActionInvoked(byPrincipal, actionName, serviceName, queryOnly, withParameters);
+            }
+
+            public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
+                Assert.IsNotNull(Container);
+                Assert.IsNotNull(Service);
+                quxAuditor.ObjectUpdated(byPrincipal, updatedObject);
+            }
+
+            public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
+                Assert.IsNotNull(Container);
+                Assert.IsNotNull(Service);
+                quxAuditor.ObjectPersisted(byPrincipal, updatedObject);
+            }
+
+            public string NamespaceToAudit {
+                get { return quxAuditor.NamespaceToAudit; }
+            
+            }
         }
 
         #endregion
@@ -116,6 +217,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorQueryOnlyAction() {
+            myDefaultAuditor.SetActionCallbacksExpected();
             ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
 
             myDefaultAuditor.SetActionCallbacksUnexpected();
@@ -138,6 +240,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorImplicitQueryOnlyAction() {
+            myDefaultAuditor.SetActionCallbacksExpected();
             ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
 
             myDefaultAuditor.SetActionCallbacksUnexpected();
@@ -182,6 +285,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorActionWithParm() {
+            myDefaultAuditor.SetActionCallbacksExpected();
             ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             myDefaultAuditor.SetActionCallbacksUnexpected();
 
@@ -226,6 +330,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorActionWithParms() {
+            myDefaultAuditor.SetActionCallbacksExpected();
             ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             myDefaultAuditor.SetActionCallbacksUnexpected();
 
@@ -249,6 +354,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorServiceActionWithParms() {
+            myDefaultAuditor.SetActionCallbacksExpected();
             ITestService foo = GetTestService("Foo Service");
             ITestObject fooObj = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             myDefaultAuditor.SetActionCallbacksUnexpected();
@@ -273,6 +379,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorUpdate() {
+            myDefaultAuditor.SetActionCallbacksExpected();
             ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             myDefaultAuditor.SetActionCallbacksUnexpected();
 
@@ -307,6 +414,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorActionQux() {
+            myDefaultAuditor.SetActionCallbacksExpected();
             ITestObject qux = GetTestService("Quxes").GetAction("New Instance").InvokeReturnObject();
             myDefaultAuditor.SetActionCallbacksUnexpected();
 
@@ -349,6 +457,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorUpdateQux() {
+            myDefaultAuditor.SetActionCallbacksExpected();
             ITestObject qux = GetTestService("Quxes").GetAction("New Instance").InvokeReturnObject();
             myDefaultAuditor.SetActionCallbacksUnexpected();
 
@@ -383,6 +492,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void DefaultAuditorCalledForNonSpecificTypeAction() {
+            myDefaultAuditor.SetActionCallbacksExpected();
             ITestObject bar = GetTestService("Bars").GetAction("New Instance").InvokeReturnObject();
             myDefaultAuditor.SetActionCallbacksUnexpected();
 
@@ -425,6 +535,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void DefaultAuditorCalledForNonSpecificTypeUpdate() {
+            myDefaultAuditor.SetActionCallbacksExpected();
             ITestObject bar = GetTestService("Bars").GetAction("New Instance").InvokeReturnObject();
             myDefaultAuditor.SetActionCallbacksUnexpected();
 
@@ -471,31 +582,26 @@ namespace NakedObjects.SystemTest.Audit {
             objectUpdatedCallback = TestAuditManager.UnexpectedCallback(name);
         }
 
-        public IDomainObjectContainer Container { get; set; }
-        public SimpleRepository<Foo> Service { get; set; }
+     
 
 
         public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
-            Assert.IsNotNull(Container);
-            Assert.IsNotNull(Service);
+         
             actionInvokedCallback(byPrincipal, actionName, onObject, queryOnly, withParameters);
         }
 
         public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
-            Assert.IsNotNull(Container);
-            Assert.IsNotNull(Service);
+         
             serviceActionInvokedCallback(byPrincipal, actionName, serviceName, queryOnly, withParameters);
         }
 
         public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
-            Assert.IsNotNull(Container);
-            Assert.IsNotNull(Service);
+        
             objectUpdatedCallback(byPrincipal, updatedObject);
         }
 
         public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
-            Assert.IsNotNull(Container);
-            Assert.IsNotNull(Service);
+         
             objectPersistedCallback(byPrincipal, updatedObject);
         }
     }
@@ -503,6 +609,11 @@ namespace NakedObjects.SystemTest.Audit {
 
     public class MyDefaultAuditor : Auditor {
         public MyDefaultAuditor() : base("default") {
+            actionInvokedCallback = (p, a, o, b, pp) => { };
+            serviceActionInvokedCallback = (p, a, s, b, pp) => { };
+        }
+
+        public void SetActionCallbacksExpected() {
             actionInvokedCallback = (p, a, o, b, pp) => { };
             serviceActionInvokedCallback = (p, a, s, b, pp) => { };
         }

@@ -168,7 +168,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public void ValidateParameter(INakedObjectAction action, INakedObjectActionParameter parm, INakedObject targetNakedObject, INakedObject valueNakedObject) {
-            IConsent consent = parm.IsValid(targetNakedObject, valueNakedObject, NakedObjectsContext.ObjectPersistor);
+            IConsent consent = parm.IsValid(targetNakedObject, valueNakedObject, NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
             if (!consent.IsAllowed) {
                 ModelState.AddModelError(IdHelper.GetParameterInputId(action, parm), consent.Reason);
             }

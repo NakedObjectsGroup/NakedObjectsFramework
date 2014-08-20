@@ -36,7 +36,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// </summary>
         void Shutdown();
 
-        IContainerInjector CreateContainerInjector(object[] services);
+       
     }
 
     // Copyright (c) Naked Objects Group Ltd.

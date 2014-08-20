@@ -62,6 +62,7 @@ namespace NakedObjects.TestSystem {
         }
 
         public IOidGenerator OidGenerator { get; private set; }
+        public IContainerInjector Injector { get; set; }
 
         public PropertyInfo[] GetKeys(Type type) {
             throw new NotImplementedException();

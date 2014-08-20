@@ -3,10 +3,8 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Core.Context;
 
 namespace NakedObjects.Web.Mvc {
 
@@ -14,13 +12,12 @@ namespace NakedObjects.Web.Mvc {
 
         private IContainerInjector injector;
 
+        public NakedObjectsDependencyResolver(IContainerInjector injector) {
+            this.injector = injector;
+        }
+
         private IContainerInjector Injector {
             get {
-                if (injector == null) {
-                    var servicesToInject = NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray();
-                    injector = NakedObjectsContext.Reflector.CreateContainerInjector(servicesToInject);
-                }
-
                 return injector;
             }
         }

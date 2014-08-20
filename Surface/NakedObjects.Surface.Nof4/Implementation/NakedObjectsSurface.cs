@@ -638,7 +638,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
                         orderedParms[parm.Id].ProposedNakedObject = valueNakedObject;
 
-                        IConsent consent = parm.IsValid(actionContext.Target, valueNakedObject, NakedObjectsContext.ObjectPersistor);
+                        IConsent consent = parm.IsValid(actionContext.Target, valueNakedObject, NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
                         if (!consent.IsAllowed) {
                             orderedParms[parm.Id].Reason = consent.Reason;
                             isValid = false;

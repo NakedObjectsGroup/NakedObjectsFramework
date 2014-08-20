@@ -6,6 +6,7 @@ using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Reflector.DotNet;
 using NakedObjects.Reflector.Security;
 using NakedObjects.Security;
 using NakedObjects.Services;
@@ -20,7 +21,10 @@ namespace NakedObjects.SystemTest.Authorization.Installer2 {
         }
 
         protected override IAuthorizerInstaller Authorizer {
-            get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer()); }
+            get {
+                
+                return new CustomAuthorizerInstaller( new MyDefaultAuthorizer());
+            }
         }
 
         #endregion
@@ -37,9 +41,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer2 {
     }
 
     public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
-        public void Init() {
-            //Does nothing
-        }
+     
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) {
             return true;
@@ -47,6 +49,10 @@ namespace NakedObjects.SystemTest.Authorization.Installer2 {
 
         public bool IsVisible(IPrincipal principal, object target, string memberName) {
             return true;
+        }
+
+        public void Init() {
+            throw new System.NotImplementedException();
         }
 
         public void Shutdown() {

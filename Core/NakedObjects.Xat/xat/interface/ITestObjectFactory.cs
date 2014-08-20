@@ -4,6 +4,7 @@
 using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Xat {
     /// <summary>
@@ -26,6 +27,7 @@ namespace NakedObjects.Xat {
         ITestAction CreateTestAction(string contributor, INakedObjectAction action, ITestHasActions owningObject);
 
         ITestProperty CreateTestProperty(INakedObjectAssociation field, ITestHasActions owningObject);
+        ISession Session { get; set; }
     }
 
     // Copyright (c) INakedObject Objects Group Ltd.

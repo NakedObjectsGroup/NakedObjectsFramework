@@ -11,7 +11,7 @@ using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Authorization.Installer5 {
     [TestClass]
-    public class TestAttributeAuthorizationUsersAndRoles : AbstractSystemTest {
+    public class TestAttributeAuthorizationUsersAndRoles1 : AbstractSystemTest {
         private ITestAction act1;
         private ITestObject foo1;
         private ITestProperty prop1;
@@ -27,6 +27,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
         [TestInitialize]
         public void Initialize() {
             InitializeNakedObjectsFramework();
+            SetUser("Anon");
             foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             prop1 = foo1.GetPropertyByName("Prop1");
             act1 = foo1.GetAction("Act1");
@@ -42,66 +43,222 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
 
         [TestMethod]
         public void AccessByAnonForProperty() {
-            SetUser("Anon");
             prop1.AssertIsInvisible();
             prop1.AssertIsUnmodifiable();
         }
 
         [TestMethod]
         public void AccessByAnonForAction() {
-            SetUser("Anon");
             act1.AssertIsInvisible();
         }
+    }
+
+    [TestClass]
+    public class TestAttributeAuthorizationUsersAndRoles2 : AbstractSystemTest {
+        private ITestAction act1;
+        private ITestObject foo1;
+        private ITestProperty prop1;
+
+        #region "Services & Fixtures"
+
+        protected override IServicesInstaller MenuServices {
+            get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
+        }
+
+        #endregion
+
+        [TestInitialize]
+        public void Initialize() {
+            InitializeNakedObjectsFramework();
+            SetUser("Fred");
+            foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
+            prop1 = foo1.GetPropertyByName("Prop1");
+            act1 = foo1.GetAction("Act1");
+        }
+
+        [TestCleanup]
+        public void Cleanup() {
+            CleanupNakedObjectsFramework();
+            foo1 = null;
+            prop1 = null;
+            act1 = null;
+        }
+
 
         [TestMethod]
         public void AccessByAuthorizedViewUser() {
-            SetUser("Fred");
             prop1.AssertIsVisible();
             prop1.AssertIsUnmodifiable();
         }
 
         [TestMethod]
         public void AccessByAuthorizedActionUser() {
-            SetUser("Fred");
             act1.AssertIsVisible();
             act1.AssertIsEnabled();
         }
+    }
+
+    [TestClass]
+    public class TestAttributeAuthorizationUsersAndRoles3 : AbstractSystemTest {
+        private ITestAction act1;
+        private ITestObject foo1;
+        private ITestProperty prop1;
+
+        #region "Services & Fixtures"
+
+        protected override IServicesInstaller MenuServices {
+            get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
+        }
+
+        #endregion
+
+        [TestInitialize]
+        public void Initialize() {
+            InitializeNakedObjectsFramework();
+            SetUser("Joe");
+            foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
+            prop1 = foo1.GetPropertyByName("Prop1");
+            act1 = foo1.GetAction("Act1");
+        }
+
+        [TestCleanup]
+        public void Cleanup() {
+            CleanupNakedObjectsFramework();
+            foo1 = null;
+            prop1 = null;
+            act1 = null;
+        }
+
 
         [TestMethod]
         public void AuthorizedForEditOnlyDoesNotMakePropertyVisible() {
-            SetUser("Joe");
             prop1.AssertIsInvisible();
         }
+    }
+
+    [TestClass]
+    public class TestAttributeAuthorizationUsersAndRoles4 : AbstractSystemTest {
+        private ITestAction act1;
+        private ITestObject foo1;
+        private ITestProperty prop1;
+
+        #region "Services & Fixtures"
+
+        protected override IServicesInstaller MenuServices {
+            get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
+        }
+
+        #endregion
+
+        [TestInitialize]
+        public void Initialize() {
+            InitializeNakedObjectsFramework();
+            SetUser("Bob");
+            foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
+            prop1 = foo1.GetPropertyByName("Prop1");
+            act1 = foo1.GetAction("Act1");
+        }
+
+        [TestCleanup]
+        public void Cleanup() {
+            CleanupNakedObjectsFramework();
+            foo1 = null;
+            prop1 = null;
+            act1 = null;
+        }
+
 
         [TestMethod]
         public void AuthorizedForEditAndViewView() {
-            SetUser("Bob");
             prop1.AssertIsVisible();
             prop1.AssertIsModifiable();
+        }
+    }
+
+    [TestClass]
+    public class TestAttributeAuthorizationUsersAndRoles5 : AbstractSystemTest {
+        private ITestAction act1;
+        private ITestObject foo1;
+        private ITestProperty prop1;
+
+        #region "Services & Fixtures"
+
+        protected override IServicesInstaller MenuServices {
+            get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
+        }
+
+        #endregion
+
+        [TestInitialize]
+        public void Initialize() {
+            InitializeNakedObjectsFramework();
+            SetUser("Anon", "sysAdmin");
+            foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
+            prop1 = foo1.GetPropertyByName("Prop1");
+            act1 = foo1.GetAction("Act1");
+        }
+
+        [TestCleanup]
+        public void Cleanup() {
+            CleanupNakedObjectsFramework();
+            foo1 = null;
+            prop1 = null;
+            act1 = null;
         }
 
 
         [TestMethod]
         public void AccessByAnonUserWithViewRole() {
-            SetUser("Anon", "sysAdmin");
             prop1.AssertIsVisible();
             prop1.AssertIsUnmodifiable();
         }
 
         [TestMethod]
         public void AccessByAnonUserWitActionRole() {
-            SetUser("Anon", "sysAdmin");
             act1.AssertIsVisible();
             act1.AssertIsEnabled();
         }
+    }
+
+    [TestClass]
+    public class TestAttributeAuthorizationUsersAndRoles6 : AbstractSystemTest {
+        private ITestAction act1;
+        private ITestObject foo1;
+        private ITestProperty prop1;
+
+        #region "Services & Fixtures"
+
+        protected override IServicesInstaller MenuServices {
+            get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
+        }
+
+        #endregion
+
+        [TestInitialize]
+        public void Initialize() {
+            InitializeNakedObjectsFramework();
+            SetUser("Anon", "super");
+            foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
+            prop1 = foo1.GetPropertyByName("Prop1");
+            act1 = foo1.GetAction("Act1");
+        }
+
+        [TestCleanup]
+        public void Cleanup() {
+            CleanupNakedObjectsFramework();
+            foo1 = null;
+            prop1 = null;
+            act1 = null;
+        }
+
 
         [TestMethod]
         public void AccessByAnonUserWithViewAndEditRole() {
-            SetUser("Anon", "super");
             prop1.AssertIsVisible();
             prop1.AssertIsModifiable();
         }
     }
+
 
     public class Foo {
         [Optionally]

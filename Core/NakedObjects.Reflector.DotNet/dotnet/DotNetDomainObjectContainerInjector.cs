@@ -10,7 +10,7 @@ namespace NakedObjects.Reflector.DotNet {
         private readonly object container;
         private readonly object[] services;
 
-        public DotNetDomainObjectContainerInjector(INakedObjectReflector reflector,  object[] services) {
+        public DotNetDomainObjectContainerInjector(INakedObjectReflector reflector, object[] services) {
             container = new DotNetDomainObjectContainer(reflector);
             this.services = services;
         }

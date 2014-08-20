@@ -147,13 +147,13 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue, INakedObjectPersistor persistor) {
+        public IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue, INakedObjectPersistor persistor, ISession session) {
             if (proposedValue != null && !proposedValue.Specification.IsOfType(Specification)) {
                 return GetConsent("Not a suitable type; must be a " + Specification.SingularName);
             }
 
             var buf = new InteractionBuffer();
-            InteractionContext ic = InteractionContext.ModifyingPropParam(NakedObjectsContext.Session, false, parentAction.RealTarget(nakedObject, persistor), Identifier, proposedValue);
+            InteractionContext ic = InteractionContext.ModifyingPropParam(session, false, parentAction.RealTarget(nakedObject, persistor), Identifier, proposedValue);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
@@ -186,11 +186,11 @@ namespace NakedObjects.Reflector.Spec {
 
 
             if (enumFacet != null) {
-                return NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject, persistor))).ToArray();
+                return persistor.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject, persistor))).ToArray();
             }
 
             if (Specification.IsBoundedSet()) {
-                return NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(NakedObjectsContext.ObjectPersistor.Instances(Specification)).ToArray();
+                return persistor.GetCollectionOfAdaptedObjects(persistor.Instances(Specification)).ToArray();
             }
 
             if (Specification.IsCollectionOfBoundedSet() || Specification.IsCollectionOfEnum()) {
@@ -202,7 +202,7 @@ namespace NakedObjects.Reflector.Spec {
                     return persistor.GetCollectionOfAdaptedObjects(instanceEnumFacet.GetChoices(parentAction.RealTarget(nakedObject, persistor))).ToArray();
                 }
 
-                return persistor.GetCollectionOfAdaptedObjects(NakedObjectsContext.ObjectPersistor.Instances(instanceSpec)).ToArray();
+                return persistor.GetCollectionOfAdaptedObjects(persistor.Instances(instanceSpec)).ToArray();
             }
 
             return null;
@@ -211,7 +211,7 @@ namespace NakedObjects.Reflector.Spec {
 
         public INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, INakedObjectPersistor persistor) {
             var autoCompleteFacet = GetFacet<IAutoCompleteFacet>();
-            return autoCompleteFacet == null ? null : NakedObjectsContext.ObjectPersistor.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObject, persistor), autoCompleteParm)).ToArray();
+            return autoCompleteFacet == null ? null : persistor.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObject, persistor), autoCompleteParm)).ToArray();
         }
 
         public INakedObject GetDefault(INakedObject nakedObject, INakedObjectPersistor persistor) {
@@ -238,7 +238,7 @@ namespace NakedObjects.Reflector.Spec {
             var defaultsFacet = GetFacet<IActionDefaultsFacet>();
             if (defaultsFacet != null) {
                 Tuple<object, TypeOfDefaultValue> defaultvalue = defaultsFacet.GetDefault(parentAction.RealTarget(nakedObject, persistor));
-                return new Tuple<INakedObject, TypeOfDefaultValue>(NakedObjectsContext.ObjectPersistor.CreateAdapter(defaultvalue.Item1, null, null), defaultvalue.Item2);
+                return new Tuple<INakedObject, TypeOfDefaultValue>(persistor.CreateAdapter(defaultvalue.Item1, null, null), defaultvalue.Item2);
             }
             return new Tuple<INakedObject, TypeOfDefaultValue>(null, TypeOfDefaultValue.Implicit);
         }

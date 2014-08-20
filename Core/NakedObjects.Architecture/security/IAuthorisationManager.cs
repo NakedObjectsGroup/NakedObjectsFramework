@@ -9,7 +9,7 @@ namespace NakedObjects.Architecture.Security {
     /// <summary>
     ///     Authorizes the user in the current session view and use members of an object
     /// </summary>
-    public interface IAuthorizationManager : IRequiresSetup {
+    public interface IAuthorizationManager  {
         /// <summary>
         ///     Returns true when the user represented by the specified session is authorized to view the member of the
         ///     class/object represented by the member identifier. Normally the view of the specified field, or the
