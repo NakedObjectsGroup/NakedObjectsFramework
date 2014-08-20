@@ -10,7 +10,7 @@
     <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Add to a Windows Application project to create an executable version of Naked Objects with no UI.</description>
-    <tags>naked objects nakedobjects</tags>
+    <tags>naked objects nakedobjects batch</tags>
     <dependencies>
       <dependency id="NakedObjects.Core" version="6.1.0" />
     </dependencies>

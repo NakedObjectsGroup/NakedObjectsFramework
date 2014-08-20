@@ -3,14 +3,15 @@
   <metadata>
     <id>RestfulObjects.Mvc</id>
     <version>2.0.0</version>
-    <title>Restful Objects Mvc</title>
+    <title>NakedObjects.RestfulObjects.Mvc</title>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
-    <iconUrl>http://www.nakedobjects.net/images/RestfulObjectsLogo.jpg</iconUrl>
+    <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Provides a base controller and helper classes for an MVC4-based implementation of Restful Objects</summary>
+    <tags>rest restful objects naked nakedobjects ddd domain driven design api</tags>
+    <summary>Provides a base controller and helper classes for an MVC5-based implementation of Restful Objects</summary>
     <description>Typically this package is only installed as a dependency of another package.</description>
     <dependencies>
       <dependency id="NakedObjects.Surface" version="[3.0.0, 4.0)" />

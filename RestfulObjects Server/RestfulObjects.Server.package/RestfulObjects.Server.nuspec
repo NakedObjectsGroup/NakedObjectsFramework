@@ -3,12 +3,12 @@
   <metadata>
     <id>RestfulObjects.Server</id>
     <version>2.0.0</version>
-    <title>Restful Objects Server</title>
+    <title>NakedObjects.RestfulObjects.Server</title>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
-    <iconUrl>http://www.nakedobjects.net/images/RestfulObjectsLogo.jpg</iconUrl>
+    <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>
     </summary>

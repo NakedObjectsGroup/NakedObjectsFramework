@@ -2,6 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Surface</id>
+    <title>NakedObjects.Surface.Api</title>
     <version>3.0.0</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
@@ -9,7 +10,7 @@
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
     <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Facade to decouple from a particular version of the NO framework</description>
+    <description>Facade to decouple API from a particular version of the Naked Objects Framework</description>
     <dependencies>
     </dependencies>
   </metadata>

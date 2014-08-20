@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
     <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This is the package used to upgrade an existing NakedObjects.Mvc project. It updates the assemblies, and adds a .zip of other files that might need to be merged with your own changes. (If you are starting from scratch, install NakedObjects.Mvc-FreshInstall)</description>
+    <description>This is the package used to upgrade an existing NakedObjects.Mvc project. It updates the assemblies, and adds a .zip of other files that might need to be merged with your own changes. (If you are starting from scratch, install NakedObjects.Mvc-FileTemplates)</description>
     <tags>naked objects nakedobjects asp.net mvc ddd domain driven design</tags>
     <dependencies>
       <dependency id="NakedObjects.Core" version="6.1.0" />

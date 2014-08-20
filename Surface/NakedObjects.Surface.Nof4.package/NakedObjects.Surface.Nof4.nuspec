@@ -2,6 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Surface.Nof4</id>
+    <title>NakedObjects.Surface.Impl</title>
     <version>3.1.0</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
@@ -9,7 +10,7 @@
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
     <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Implementation of Surface facade for Nof4 version of the NO framework</description>
+    <description>Implementation of Surface facade for current version of the Naked Objects Framework</description>
     <dependencies>
       <dependency id="NakedObjects.Core" version="6.1.0" />
       <dependency id="NakedObjects.Surface" version="[3.0.0, 4.0)" />

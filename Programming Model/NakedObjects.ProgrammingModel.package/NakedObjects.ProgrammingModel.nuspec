@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
     <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Naked Objects Programming Model. Add to a Model project (a C# or VB class library) for useful Attributes and Helper classes.</description>
+    <description>Naked Objects Programming Model. Add to a Model project (class library) for useful Attributes and Helper classes.</description>
     <tags>naked objects nakedobjects</tags>
     <dependencies>
       <dependency id="NakedObjects.Ide" version="[5.0.0, 6.0)" />
