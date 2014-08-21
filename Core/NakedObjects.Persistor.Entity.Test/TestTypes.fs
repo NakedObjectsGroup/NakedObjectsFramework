@@ -17,6 +17,7 @@ open NakedObjects.Architecture.Persist
 open System.Reflection
 open NakedObjects.Persistor
 open NakedObjects.Architecture.Facets
+open NakedObjects.Architecture.Security
 open NakedObjects.Core.Context
 
 let injectedObjects = new List<Object>()
@@ -65,7 +66,7 @@ type MockNakedObjectSpecification() =
         member x.GetTitle(nakedObject : INakedObject ) = ""
         member x.ValidToPersist(transientObject : INakedObject )  : IConsent = null
         member x.Persistable with get() : Persistable = null
-        member x.CreateObject() : obj = null   
+        member x.CreateObject(persistor : INakedObjectPersistor) : obj = null   
         member x.GetBoundedSet(persistor : INakedObjectPersistor) : System.Collections.IEnumerable = null
         member x.MarkAsService() = ()
         member x.GetInvariantString(nakedObject : INakedObject ) = ""
@@ -117,7 +118,7 @@ type MockNakedObject(obj, oid) =
         member x.ResolveState 
             with get() : ResolveStateMachine = 
                 match rsm with 
-                | null -> rsm <- new ResolveStateMachine(x)
+                | null -> rsm <- new ResolveStateMachine(x, null, null)
                 | _ -> ()          
                 rsm 
         member x.CheckLock (v : IVersion) = ()
@@ -136,7 +137,7 @@ type MockPersistedObjectAdder(p : EntityObjectStore) =
     let persistor = p
     interface IPersistedObjectAdder with 
         member x.AddPersistedObject(nakedObject : INakedObject) =
-            let cmd = persistor.CreateCreateObjectCommand(nakedObject, null)
+            let cmd = persistor.CreateCreateObjectCommand(nakedObject, null, null)
             ()
         member x.MadePersistent(nakedObject : INakedObject) =            
             nakedObject.ResolveState.Handle Events.StartResolvingEvent
@@ -183,19 +184,19 @@ let mutable persistedCount = 0
 let mutable persistingCount = 0
 
  
-let updated (nakedObject : INakedObject) = 
+let updated (nakedObject : INakedObject) (sess : ISession) (p : INakedObjectPersistor) = 
     updatedCount <- updatedCount + 1
     ()
  
-let updating (nakedObject : INakedObject) = 
+let updating (nakedObject : INakedObject) (sess : ISession) (p : INakedObjectPersistor) = 
     updatingCount <- updatingCount + 1
     ()
  
-let persisted (nakedObject : INakedObject) = 
+let persisted (nakedObject : INakedObject) (sess : ISession) (p : INakedObjectPersistor) = 
     persistedCount <- persistedCount + 1
     ()
  
-let persisting (nakedObject : INakedObject) = 
+let persisting (nakedObject : INakedObject) (sess : ISession) (p : INakedObjectPersistor) = 
     persistingCount <- persistingCount + 1
     ()
 
@@ -216,10 +217,10 @@ let setupPersistorForTesting (p : EntityObjectStore) =
                       EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), 
                       EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
                       EntityObjectStore.NotifyUiDelegate(NotifyUIForTest),
-                      Action<INakedObject>(updated), 
-                      Action<INakedObject>(updating),
-                      Action<INakedObject>(persisted), 
-                      Action<INakedObject>(persisting),
+                      Action<INakedObject, ISession, INakedObjectPersistor>(updated), 
+                      Action<INakedObject, ISession, INakedObjectPersistor>(updating),
+                      Action<INakedObject, ISession, INakedObjectPersistor>(persisted), 
+                      Action<INakedObject, ISession, INakedObjectPersistor>(persisting),
                       Action<INakedObject>(handleLoadingTest),
                       EventHandler(savingChangesHandler),
                       Func<Type, INakedObjectSpecification>(loadSpecificationHandler))

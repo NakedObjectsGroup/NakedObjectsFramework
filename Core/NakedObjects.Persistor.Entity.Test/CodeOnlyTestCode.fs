@@ -206,7 +206,7 @@ let CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore (codeOnlyPersistor:
         Assert.Fail()
     with
         | expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
-    let p2 = codeOnlyPersistor.CreateInstance<Product>()  
+    let p2 = codeOnlyPersistor.CreateInstance<Product>(null)  
     createProductWithID  p2 (GetNextID<Product> codeOnlyPersistor (fun i -> i.ID)) codeOnlyPersistor
 
 let CanNavigateReferences codeOnlyPersistor = 
@@ -300,7 +300,7 @@ let CanPersistingPersistedCalledForCreateInstance (codeOnlyPersistor:EntityObjec
     let nextId = GetNextID<Product> codeOnlyPersistor (fun i -> i.ID)
     persistingCount <- 0
     persistedCount <- 0
-    let pr = codeOnlyPersistor.CreateInstance<Product>()
+    let pr = codeOnlyPersistor.CreateInstance<Product>(null)
     createProductWithID pr nextId  codeOnlyPersistor
     Assert.AreEqual(1, persistingCount, "persisting")
     Assert.AreEqual(1, persistedCount, "persisted")
@@ -333,21 +333,21 @@ let GetNextAddressID codeOnlyPersistor =
     GetNextID<Address> codeOnlyPersistor (fun i -> i.ID)
  
 let CanCreateDomesticSubclass (codeOnlyPersistor:EntityObjectStore) =
-    let address = codeOnlyPersistor.CreateInstance<DomesticAddress>() 
+    let address = codeOnlyPersistor.CreateInstance<DomesticAddress>(null) 
     address.ID <- GetNextAddressID codeOnlyPersistor
     address.Lines <- uniqueName()
     address.Postcode <- uniqueName() 
     CreateAndEndTransaction codeOnlyPersistor address
 
 let CanCreateInternationalSubclass (codeOnlyPersistor:EntityObjectStore) =
-    let address = codeOnlyPersistor.CreateInstance<InternationalAddress>() 
+    let address = codeOnlyPersistor.CreateInstance<InternationalAddress>(null) 
     address.ID <- GetNextAddressID codeOnlyPersistor
     address.Lines <- uniqueName()
     address.Country <- uniqueName() 
     CreateAndEndTransaction codeOnlyPersistor address  
 
 let CanCreateBaseClass (codeOnlyPersistor:EntityObjectStore) =
-    let address = codeOnlyPersistor.CreateInstance<Address>() 
+    let address = codeOnlyPersistor.CreateInstance<Address>(null) 
     address.ID <- GetNextAddressID codeOnlyPersistor
     address.Lines <- uniqueName()
     CreateAndEndTransaction codeOnlyPersistor address  

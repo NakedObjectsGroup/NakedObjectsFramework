@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Facets.Hide {
@@ -17,7 +18,7 @@ namespace NakedObjects.Architecture.Facets.Hide {
         /// <summary>
         ///     Always returns <c>null</c>
         /// </summary>
-        public override string HiddenReason(ISession session, INakedObject target) {
+        public override string HiddenReason(ISession session, INakedObject target, INakedObjectPersistor persistor) {
             return null;
         }
     }

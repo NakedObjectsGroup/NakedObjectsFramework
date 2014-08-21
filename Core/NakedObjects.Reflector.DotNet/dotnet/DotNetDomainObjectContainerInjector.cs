@@ -2,17 +2,20 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using System.Collections.Generic;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Util;
+using NakedObjects.Service;
 
 namespace NakedObjects.Reflector.DotNet {
     public class DotNetDomainObjectContainerInjector : IContainerInjector {
         private readonly object container;
-        private readonly object[] services;
+        private readonly List<object> services = new List<object>();
 
         public DotNetDomainObjectContainerInjector(INakedObjectReflector reflector, object[] services) {
             container = new DotNetDomainObjectContainer(reflector);
-            this.services = services;
+            this.services.AddRange(services);
+            this.services.Add(new NakedObjectsFramework());
         }
 
         #region IContainerInjector Members
@@ -21,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet {
             Assert.AssertNotNull("no container", container);
             Assert.AssertNotNull("no services", services);
             Methods.InjectContainer(obj, container);
-            Methods.InjectServices(obj, services);
+            Methods.InjectServices(obj, services.ToArray());
         }
 
         public void InitInlineObject(object root, object inlineObject) {

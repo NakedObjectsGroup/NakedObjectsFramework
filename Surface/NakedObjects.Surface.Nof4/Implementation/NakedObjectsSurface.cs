@@ -720,7 +720,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             var actionResultContext = new ActionResultContext {Target = actionContext.Target, ActionContext = actionContext};
             if (ConsentHandler(actionContext.Action.IsUsable(NakedObjectsContext.Session, actionContext.Target, NakedObjectsContext.ObjectPersistor), actionResultContext, Cause.Disabled)) {
                 if (ValidateParameters(actionContext, arguments.Values) && !arguments.ValidateOnly) {
-                    INakedObject result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray(), NakedObjectsContext.ObjectPersistor);
+                    INakedObject result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray(), NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
                     actionResultContext.Result = GetObjectContext(result);
                 }
             }

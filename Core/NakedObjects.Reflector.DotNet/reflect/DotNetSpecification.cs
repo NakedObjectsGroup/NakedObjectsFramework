@@ -462,7 +462,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return str.ToString();
         }
 
-        public override object CreateObject() {
+        public override object CreateObject(INakedObjectPersistor persistor) {
             if (Type.IsArray) {
                 return Array.CreateInstance(Type.GetElementType(), 0);
             }

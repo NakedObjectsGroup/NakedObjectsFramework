@@ -376,7 +376,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (action.ParameterCount == 1) {
                     // contributed action being invoked with a single parm that is the current target
                     // no dialog - go straight through 
-                    INakedObject result = action.Execute(nakedObject, new[] { nakedObject }, NakedObjectsContext.ObjectPersistor);
+                    INakedObject result = action.Execute(nakedObject, new[] { nakedObject }, NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
                     valid = true;
                     return result.GetDomainObject<T>();
                 }
@@ -391,7 +391,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (ValidateParameters(nakedObject, action, new ObjectAndControlData {Form = parameters})) {
                 IEnumerable<INakedObject> parms = GetParameterValues(action, new ObjectAndControlData {Form = parameters});
-                INakedObject result = action.Execute(nakedObject, parms.ToArray(), NakedObjectsContext.ObjectPersistor);
+                INakedObject result = action.Execute(nakedObject, parms.ToArray(), NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
                 valid = true;
                 return result.GetDomainObject<T>();
             }

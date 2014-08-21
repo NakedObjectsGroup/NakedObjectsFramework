@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Facets.Actions.Potency;
 using NakedObjects.Architecture.Facets.Objects.Callbacks;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Context;
 using NakedObjects.Reflector.Spec;
@@ -88,14 +89,14 @@ namespace NakedObjects.Reflector.Audit {
                 return underlyingFacet.GetIsRemoting(target);
             }
 
-            public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, INakedObjectPersistor persistor) {
-                auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier);
-                return underlyingFacet.Invoke(nakedObject, parameters, persistor);
+            public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, INakedObjectPersistor persistor, ISession session) {
+                auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session, persistor);
+                return underlyingFacet.Invoke(nakedObject, parameters, persistor, session);
             }
 
-            public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectPersistor persistor) {
-                auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier);
-                return underlyingFacet.Invoke(nakedObject, parameters, resultPage, persistor);
+            public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectPersistor persistor, ISession session) {
+                auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session, persistor);
+                return underlyingFacet.Invoke(nakedObject, parameters, resultPage, persistor, session);
             }
         }
 
@@ -113,9 +114,9 @@ namespace NakedObjects.Reflector.Audit {
                 manager = auditManager;
             }
 
-            public override void Invoke(INakedObject nakedObject) {
-                manager.Updated(nakedObject);
-                underlyingFacet.Invoke(nakedObject);
+            public override void Invoke(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+                manager.Updated(nakedObject, session, persistor);
+                underlyingFacet.Invoke(nakedObject, session, persistor);
             }
         }
 
@@ -133,9 +134,9 @@ namespace NakedObjects.Reflector.Audit {
                 manager = auditManager;
             }
 
-            public override void Invoke(INakedObject nakedObject) {
-                manager.Persisted(nakedObject);
-                underlyingFacet.Invoke(nakedObject);
+            public override void Invoke(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+                manager.Persisted(nakedObject, session, persistor);
+                underlyingFacet.Invoke(nakedObject, session, persistor);
             }
         }
 

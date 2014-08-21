@@ -48,7 +48,7 @@ namespace NakedObjects.Core.Adapter {
             this.persistor = persistor;
             this.poco = poco;
             this.oid = oid;
-            ResolveState = new ResolveStateMachine(this);
+            ResolveState = new ResolveStateMachine(this, session, persistor);
             version = new NullVersion();
         }
 

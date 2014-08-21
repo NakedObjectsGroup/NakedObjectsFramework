@@ -8,6 +8,7 @@ using NakedObjects.Architecture.Facets.Objects.Aggregated;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Util;
 
@@ -23,11 +24,11 @@ namespace NakedObjects.Persistor {
 
         public virtual void Init() {}
 
-        public virtual void MakePersistent(INakedObject nakedObject, INakedObjectPersistor persistor) {
+        public virtual void MakePersistent(INakedObject nakedObject, INakedObjectPersistor persistor, ISession session) {
             if (nakedObject.Specification.IsCollection) {
                 Log.Info("Persist " + nakedObject);
 
-                nakedObject.GetAsEnumerable(persistor).ForEach(no => Persist(no, persistor));
+                nakedObject.GetAsEnumerable(persistor).ForEach(no => Persist(no, persistor, session));
 
                 if (nakedObject.ResolveState.IsGhost()) {
                     nakedObject.ResolveState.Handle(Events.StartResolvingEvent);
@@ -41,7 +42,7 @@ namespace NakedObjects.Persistor {
                 if (nakedObject.Specification.Persistable == Persistable.TRANSIENT) {
                     throw new NotPersistableException("can't make object persistent as it is not persistable: " + nakedObject);
                 }
-                Persist(nakedObject, persistor);
+                Persist(nakedObject, persistor, session);
             }
         }
 
@@ -53,14 +54,14 @@ namespace NakedObjects.Persistor {
 
         #endregion
 
-        protected void Persist(INakedObject nakedObject, INakedObjectPersistor persistor) {
+        protected void Persist(INakedObject nakedObject, INakedObjectPersistor persistor, ISession session) {
             if (nakedObject.ResolveState.IsAggregated() ||
                 (nakedObject.ResolveState.IsTransient() &&
                  nakedObject.Specification.Persistable != Persistable.TRANSIENT)) {
                 INakedObjectAssociation[] fields = nakedObject.Specification.Properties;
                 if (!nakedObject.Specification.IsEncodeable && fields.Length > 0) {
                     Log.Info("make persistent " + nakedObject);
-                    nakedObject.Persisting();
+                    nakedObject.Persisting(session, persistor);
                     if (!nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
                         persistor.MadePersistent(nakedObject);
                     }
@@ -74,14 +75,14 @@ namespace NakedObjects.Persistor {
                             if (collection == null) {
                                 throw new NotPersistableException("Collection " + field.Name + " does not exist in " + nakedObject.Specification.FullName);
                             }
-                            MakePersistent(collection, persistor);
+                            MakePersistent(collection, persistor, session);
                         }
                         else {
                             INakedObject fieldValue = field.GetNakedObject(nakedObject, persistor);
                             if (fieldValue == null) {
                                 continue;
                             }
-                            Persist(fieldValue, persistor);
+                            Persist(fieldValue, persistor, session);
                         }
                     }
                     persistor.AddPersistedObject(nakedObject);

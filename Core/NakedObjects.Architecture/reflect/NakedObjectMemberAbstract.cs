@@ -101,7 +101,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// </summary>
         public virtual bool IsVisible(ISession session, INakedObject target, INakedObjectPersistor persistor) {
             InteractionContext ic = InteractionContext.AccessMember(session, false, target, Identifier);
-            return InteractionUtils.IsVisible(this, ic);
+            return InteractionUtils.IsVisible(this, ic, persistor);
         }
 
 

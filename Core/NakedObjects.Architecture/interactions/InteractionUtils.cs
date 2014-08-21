@@ -4,20 +4,21 @@
 
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Hide;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Interactions {
     public static class InteractionUtils {
-        public static bool IsVisible(IFacetHolder facetHolder, InteractionContext ic) {
+        public static bool IsVisible(IFacetHolder facetHolder, InteractionContext ic, INakedObjectPersistor persistor) {
             var buf = new InteractionBuffer();
             IFacet[] facets = facetHolder.GetFacets(FacetFilters.IsA(typeof (IHidingInteractionAdvisor)));
             foreach (IHidingInteractionAdvisor advisor in facets) {
-                buf.Append(advisor.Hides(ic));
+                buf.Append(advisor.Hides(ic, persistor));
             }
             return IsVisible(buf);
         }
 
-        public static bool IsVisibleWhenPersistent(IFacetHolder facetHolder, InteractionContext ic) {
+        public static bool IsVisibleWhenPersistent(IFacetHolder facetHolder, InteractionContext ic, INakedObjectPersistor persistor) {
             var buf = new InteractionBuffer();
             IFacet[] facets = facetHolder.GetFacets(FacetFilters.IsA(typeof (IHidingInteractionAdvisor)));
             foreach (IHidingInteractionAdvisor advisor in facets) {
@@ -26,7 +27,7 @@ namespace NakedObjects.Architecture.Interactions {
                         continue;
                     }
                 }
-                buf.Append(advisor.Hides(ic));
+                buf.Append(advisor.Hides(ic, persistor));
             }
             return IsVisible(buf);
         }

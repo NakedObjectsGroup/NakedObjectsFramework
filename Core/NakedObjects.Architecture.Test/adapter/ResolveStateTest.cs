@@ -9,6 +9,7 @@ using NakedObjects.Architecture.Facets.Objects.Callbacks;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NUnit.Framework;
 
@@ -60,7 +61,7 @@ namespace NakedObjects.Architecture.Adapter {
                 get { throw new NotImplementedException(); }
             }
 
-            public void Invoke(INakedObject nakedObject) {
+            public void Invoke(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
                 
             }
         }
@@ -254,7 +255,7 @@ namespace NakedObjects.Architecture.Adapter {
                 get { throw new NotImplementedException(); }
             }
 
-            public object CreateObject() {
+            public object CreateObject(INakedObjectPersistor persistor) {
                 throw new NotImplementedException();
             }
 
@@ -339,7 +340,7 @@ namespace NakedObjects.Architecture.Adapter {
         #region State Machines 
 
         private static IResolveStateMachine NewSM() {
-            return new ResolveStateMachine(new TestAdapter());
+            return new ResolveStateMachine(new TestAdapter(), null, null);
         }
 
         private static IResolveStateMachine GhostSM() {

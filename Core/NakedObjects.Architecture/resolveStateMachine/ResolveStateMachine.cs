@@ -7,13 +7,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Util;
 
 namespace NakedObjects.Architecture.Resolve {
     public class ResolveStateMachine : IResolveStateMachine {
         #region Delegates
 
-        public delegate IResolveState EventHandler(INakedObject no, IResolveStateMachine rsm);
+        public delegate IResolveState EventHandler(INakedObject no, IResolveStateMachine rsm, ISession s, INakedObjectPersistor p);
 
         #endregion
 
@@ -163,7 +165,7 @@ namespace NakedObjects.Architecture.Resolve {
             #endregion
 
             protected void InitialiseEventMap() {
-                EventMap[Events.EndResolvingEvent] = (no, rsm) => this;
+                EventMap[Events.EndResolvingEvent] = (no, rsm, s, p) => this;
             }
         }
 
@@ -189,16 +191,16 @@ namespace NakedObjects.Architecture.Resolve {
             #endregion
 
             protected void InitialiseEventMap() {
-                EventMap[Events.DestroyEvent] = (no, rsm) => States.DestroyedState;
-                EventMap[Events.StartPartResolvingEvent] = (no, rsm) => States.ResolvingPartState;
-                EventMap[Events.StartResolvingEvent] = (no, rsm) => {
-                    Loading(no, rsm);
+                EventMap[Events.DestroyEvent] = (no, rsm, s, p) => States.DestroyedState;
+                EventMap[Events.StartPartResolvingEvent] = (no, rsm, s, p) => States.ResolvingPartState;
+                EventMap[Events.StartResolvingEvent] = (no, rsm, s, p) => {
+                    Loading(no, rsm, s, p);
                     return States.ResolvingState;
                 };
-                EventMap[Events.StartUpdatingEvent] = (no, rsm) => States.UpdatingState;
-                EventMap[Events.StartSerializingEvent] = (no, rsm) => States.SerializingGhostState;
-                EventMap[Events.StartSetupEvent] = (no, rsm) => States.ResolvingState;
-                EventMap[Events.StartPartSetupEvent] = (no, rsm) => States.ResolvingPartState;
+                EventMap[Events.StartUpdatingEvent] = (no, rsm, s, p) => States.UpdatingState;
+                EventMap[Events.StartSerializingEvent] = (no, rsm, s, p) => States.SerializingGhostState;
+                EventMap[Events.StartSetupEvent] = (no, rsm, s, p) => States.ResolvingState;
+                EventMap[Events.StartPartSetupEvent] = (no, rsm, s, p) => States.ResolvingPartState;
             }
         }
 
@@ -224,11 +226,11 @@ namespace NakedObjects.Architecture.Resolve {
             #endregion
 
             protected void InitialiseEventMap() {
-                EventMap[Events.InitializeTransientEvent] = (no, rsm) => States.TransientState;
-                EventMap[Events.InitializePersistentEvent] = (no, rsm) => States.GhostState;
-                EventMap[Events.InitializeAggregateEvent] = (no, rsm) => {
-                    Loading(no, rsm);
-                    Loaded(no, rsm);
+                EventMap[Events.InitializeTransientEvent] = (no, rsm, s, p) => States.TransientState;
+                EventMap[Events.InitializePersistentEvent] = (no, rsm, s, p) => States.GhostState;
+                EventMap[Events.InitializeAggregateEvent] = (no, rsm, s, p) => {
+                    Loading(no, rsm, s, p);
+                    Loaded(no, rsm, s, p);
                     return States.ResolvedState;
                 };
             }
@@ -256,13 +258,13 @@ namespace NakedObjects.Architecture.Resolve {
             #endregion
 
             protected void InitialiseEventMap() {
-                EventMap[Events.DestroyEvent] = (no, rsm) => States.DestroyedState;
-                EventMap[Events.StartPartResolvingEvent] = (no, rsm) => States.ResolvingPartState;
-                EventMap[Events.StartResolvingEvent] = (no, rsm) => States.ResolvingState;
-                EventMap[Events.StartUpdatingEvent] = (no, rsm) => States.UpdatingState;
-                EventMap[Events.StartSerializingEvent] = (no, rsm) => States.SerializingPartResolvedState;
-                EventMap[Events.StartSetupEvent] = (no, rsm) => States.ResolvingState;
-                EventMap[Events.StartPartSetupEvent] = (no, rsm) => States.ResolvingPartState;
+                EventMap[Events.DestroyEvent] = (no, rsm, s, p) => States.DestroyedState;
+                EventMap[Events.StartPartResolvingEvent] = (no, rsm, s, p) => States.ResolvingPartState;
+                EventMap[Events.StartResolvingEvent] = (no, rsm, s, p) => States.ResolvingState;
+                EventMap[Events.StartUpdatingEvent] = (no, rsm, s, p) => States.UpdatingState;
+                EventMap[Events.StartSerializingEvent] = (no, rsm, s, p) => States.SerializingPartResolvedState;
+                EventMap[Events.StartSetupEvent] = (no, rsm, s, p) => States.ResolvingState;
+                EventMap[Events.StartPartSetupEvent] = (no, rsm, s, p) => States.ResolvingPartState;
             }
         }
 
@@ -288,12 +290,12 @@ namespace NakedObjects.Architecture.Resolve {
             #endregion
 
             protected void InitialiseEventMap() {
-                EventMap[Events.DestroyEvent] = (no, rsm) => States.DestroyedState;
-                EventMap[Events.StartUpdatingEvent] = (no, rsm) => States.UpdatingState;
-                EventMap[Events.StartSerializingEvent] = (no, rsm) => States.SerializingResolvedState;
-                EventMap[Events.ResetEvent] = (no, rsm) => States.GhostState;
-                EventMap[Events.StartSetupEvent] = (no, rsm) => States.UpdatingState;
-                EventMap[Events.StartPartSetupEvent] = (no, rsm) => States.UpdatingState;
+                EventMap[Events.DestroyEvent] = (no, rsm, s, p) => States.DestroyedState;
+                EventMap[Events.StartUpdatingEvent] = (no, rsm, s, p) => States.UpdatingState;
+                EventMap[Events.StartSerializingEvent] = (no, rsm, s, p) => States.SerializingResolvedState;
+                EventMap[Events.ResetEvent] = (no, rsm, s, p) => States.GhostState;
+                EventMap[Events.StartSetupEvent] = (no, rsm, s, p) => States.UpdatingState;
+                EventMap[Events.StartPartSetupEvent] = (no, rsm, s, p) => States.UpdatingState;
             }
         }
 
@@ -315,13 +317,13 @@ namespace NakedObjects.Architecture.Resolve {
                 get { return eventMap; }
             }
 
-            protected virtual void Loading(INakedObject no, IResolveStateMachine rsm) {
-                no.Loading();
+            protected virtual void Loading(INakedObject no, IResolveStateMachine rsm, ISession s, INakedObjectPersistor p) {
+                no.Loading(s, p);
                 rsm.AddHistoryNote("Loading");
             }
 
-            protected virtual void Loaded(INakedObject no, IResolveStateMachine rsm) {
-                no.Loaded();
+            protected virtual void Loaded(INakedObject no, IResolveStateMachine rsm, ISession s, INakedObjectPersistor p) {
+                no.Loaded(s, p);
                 rsm.AddHistoryNote("Loaded");
             }
 
@@ -329,9 +331,9 @@ namespace NakedObjects.Architecture.Resolve {
                 return string.Format("ResolveState [name={0},code={1}]", Name, Code);
             }
 
-            public IResolveState Handle(IResolveEvent rEvent, INakedObject owner, IResolveStateMachine rsm) {
+            public IResolveState Handle(IResolveEvent rEvent, INakedObject owner, IResolveStateMachine rsm, ISession s, INakedObjectPersistor p) {
                 if (EventMap.ContainsKey(rEvent)) {
-                    return EventMap[rEvent](owner, rsm);
+                    return EventMap[rEvent](owner, rsm, s, p);
                 }
                 throw new ResolveException(string.Format("Unknown event {0} in state {1}", rEvent, this));
             }
@@ -359,10 +361,10 @@ namespace NakedObjects.Architecture.Resolve {
             #endregion
 
             protected void InitialiseEventMap() {
-                EventMap[Events.EndPartResolvingEvent] = (no, rsm) => States.PartResolvedState;
-                EventMap[Events.EndResolvingEvent] = (no, rsm) => States.ResolvedState;
-                EventMap[Events.EndSetupEvent] = (no, rsm) => States.PartResolvedState;
-                EventMap[Events.EndPartSetupEvent] = (no, rsm) => States.PartResolvedState;
+                EventMap[Events.EndPartResolvingEvent] = (no, rsm, s, p) => States.PartResolvedState;
+                EventMap[Events.EndResolvingEvent] = (no, rsm, s, p) => States.ResolvedState;
+                EventMap[Events.EndSetupEvent] = (no, rsm, s, p) => States.PartResolvedState;
+                EventMap[Events.EndPartSetupEvent] = (no, rsm, s, p) => States.PartResolvedState;
             }
         }
 
@@ -388,13 +390,13 @@ namespace NakedObjects.Architecture.Resolve {
             #endregion
 
             protected void InitialiseEventMap() {
-                EventMap[Events.EndResolvingEvent] = (no, rsm) => {
-                    Loaded(no, rsm);
+                EventMap[Events.EndResolvingEvent] = (no, rsm, s, p) => {
+                    Loaded(no, rsm, s, p);
                     return States.ResolvedState;
                 };
-                EventMap[Events.EndSetupEvent] = (no, rsm) => States.ResolvedState;
-                EventMap[Events.EndPartSetupEvent] = (no, rsm) => States.ResolvedState;
-                EventMap[Events.DestroyEvent] = (no, rsm) => States.DestroyedState;
+                EventMap[Events.EndSetupEvent] = (no, rsm, s, p) => States.ResolvedState;
+                EventMap[Events.EndPartSetupEvent] = (no, rsm, s, p) => States.ResolvedState;
+                EventMap[Events.DestroyEvent] = (no, rsm, s, p) => States.DestroyedState;
             }
         }
 
@@ -420,7 +422,7 @@ namespace NakedObjects.Architecture.Resolve {
             #endregion
 
             protected void InitialiseEventMap() {
-                EventMap[Events.EndSerializingEvent] = (no, rsm) => States.GhostState;
+                EventMap[Events.EndSerializingEvent] = (no, rsm, s, p) => States.GhostState;
             }
         }
 
@@ -446,7 +448,7 @@ namespace NakedObjects.Architecture.Resolve {
             #endregion
 
             protected void InitialiseEventMap() {
-                EventMap[Events.EndSerializingEvent] = (no, rsm) => States.PartResolvedState;
+                EventMap[Events.EndSerializingEvent] = (no, rsm, s, p) => States.PartResolvedState;
             }
         }
 
@@ -472,7 +474,7 @@ namespace NakedObjects.Architecture.Resolve {
             #endregion
 
             protected void InitialiseEventMap() {
-                EventMap[Events.EndSerializingEvent] = (no, rsm) => States.ResolvedState;
+                EventMap[Events.EndSerializingEvent] = (no, rsm, s, p) => States.ResolvedState;
             }
         }
 
@@ -498,9 +500,9 @@ namespace NakedObjects.Architecture.Resolve {
             #endregion
 
             protected void InitialiseEventMap() {
-                EventMap[Events.EndSerializingEvent] = (no, rsm) => States.TransientState;
-                EventMap[Events.EndSetupEvent] = (no, rsm) => States.TransientState;
-                EventMap[Events.EndPartSetupEvent] = (no, rsm) => States.TransientState;
+                EventMap[Events.EndSerializingEvent] = (no, rsm, s, p) => States.TransientState;
+                EventMap[Events.EndSetupEvent] = (no, rsm, s, p) => States.TransientState;
+                EventMap[Events.EndPartSetupEvent] = (no, rsm, s, p) => States.TransientState;
             }
         }
 
@@ -526,10 +528,10 @@ namespace NakedObjects.Architecture.Resolve {
             #endregion
 
             protected void InitialiseEventMap() {
-                EventMap[Events.StartResolvingEvent] = (no, rsm) => States.ResolvingState;
-                EventMap[Events.StartSerializingEvent] = (no, rsm) => States.SerializingTransientState;
-                EventMap[Events.StartSetupEvent] = (no, rsm) => States.SerializingTransientState;
-                EventMap[Events.StartPartSetupEvent] = (no, rsm) => States.SerializingTransientState;
+                EventMap[Events.StartResolvingEvent] = (no, rsm, s, p) => States.ResolvingState;
+                EventMap[Events.StartSerializingEvent] = (no, rsm, s, p) => States.SerializingTransientState;
+                EventMap[Events.StartSetupEvent] = (no, rsm, s, p) => States.SerializingTransientState;
+                EventMap[Events.StartPartSetupEvent] = (no, rsm, s, p) => States.SerializingTransientState;
             }
         }
 
@@ -555,9 +557,9 @@ namespace NakedObjects.Architecture.Resolve {
             #endregion
 
             protected void InitialiseEventMap() {
-                EventMap[Events.EndUpdatingEvent] = (no, rsm) => States.ResolvedState;
-                EventMap[Events.EndSetupEvent] = (no, rsm) => States.ResolvedState;
-                EventMap[Events.EndPartSetupEvent] = (no, rsm) => States.ResolvedState;
+                EventMap[Events.EndUpdatingEvent] = (no, rsm, s, p) => States.ResolvedState;
+                EventMap[Events.EndSetupEvent] = (no, rsm, s, p) => States.ResolvedState;
+                EventMap[Events.EndPartSetupEvent] = (no, rsm, s, p) => States.ResolvedState;
             }
         }
 
@@ -567,10 +569,15 @@ namespace NakedObjects.Architecture.Resolve {
 
         private readonly List<HistoryEvent> history = new List<HistoryEvent>();
 
-        public ResolveStateMachine(INakedObject owner) {
+        public ResolveStateMachine(INakedObject owner, ISession session, INakedObjectPersistor persistor) {
             CurrentState = States.NewState;
             Owner = owner;
+            Session = session;
+            Persistor = persistor;
         }
+
+        private ISession Session { get; set; }
+        private INakedObjectPersistor Persistor { get; set; }
 
         private INakedObject Owner { get; set; }
         public bool FullTrace { get; set; }
@@ -580,7 +587,7 @@ namespace NakedObjects.Architecture.Resolve {
         public IResolveState CurrentState { get; private set; }
 
         public void Handle(IResolveEvent rEvent) {
-            IResolveState newState = CurrentState.Handle(rEvent, Owner, this);
+            IResolveState newState = CurrentState.Handle(rEvent, Owner, this, Session, Persistor);
             history.Add(new HistoryEvent(CurrentState, newState, rEvent, FullTrace));
             CurrentState = newState;
         }

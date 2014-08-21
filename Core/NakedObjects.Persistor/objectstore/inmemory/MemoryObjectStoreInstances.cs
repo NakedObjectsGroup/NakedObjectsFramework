@@ -90,7 +90,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
         }
 
 
-        public virtual void Save(INakedObject nakedObject, ISession session) {
+        public virtual void Save(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
             lock (objectInstances) {
                 SerialNumberVersion version;
                 if (objectInstances.ContainsKey(nakedObject.Oid)) {
@@ -100,7 +100,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                 else {
                     version = new SerialNumberVersion(1, session.UserName, DateTime.Now);
                     SetKey(nakedObject);
-                    nakedObject.Persisted();
+                    nakedObject.Persisted(session, persistor);
                 }
                 objectInstances[nakedObject.Oid] = new ObjectAndVersion(nakedObject.Object, version);
                 nakedObject.OptimisticLock = version;

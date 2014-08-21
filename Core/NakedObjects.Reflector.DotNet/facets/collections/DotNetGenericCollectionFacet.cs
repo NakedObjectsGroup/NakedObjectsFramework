@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         }
 
         public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectPersistor persistor, bool forceEnumerable) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(AsGenericCollection(collection).Skip((page - 1)*size).Take(size).ToList(), null, null);
+            return persistor.CreateAdapter(AsGenericCollection(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
         }
 
         public override void Init(INakedObject collection, INakedObject[] initData) {

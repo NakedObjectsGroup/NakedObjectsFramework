@@ -5,6 +5,7 @@
 using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Hide {
     public abstract class HideForContextFacetAbstract : FacetAbstract, IHideForContextFacet {
@@ -17,12 +18,12 @@ namespace NakedObjects.Architecture.Facets.Hide {
 
         #region IHideForContextFacet Members
 
-        public virtual string Hides(InteractionContext ic) {
+        public virtual string Hides(InteractionContext ic, INakedObjectPersistor persistor) {
             return HiddenReason(ic.Target);
         }
 
-        public virtual HiddenException CreateExceptionFor(InteractionContext ic) {
-            return new HiddenException(ic, Hides(ic));
+        public virtual HiddenException CreateExceptionFor(InteractionContext ic, INakedObjectPersistor persistor) {
+            return new HiddenException(ic, Hides(ic, persistor));
         }
 
         public abstract string HiddenReason(INakedObject nakedObject);

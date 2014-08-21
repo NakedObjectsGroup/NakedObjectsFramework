@@ -8,7 +8,6 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Capabilities;
 using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
     public class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {

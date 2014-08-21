@@ -4,6 +4,7 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Security {
     public class NullAuthorizationManager : IAuthorizationManager {
@@ -18,11 +19,11 @@ namespace NakedObjects.Architecture.Security {
         }
 
 
-        public bool IsVisible(ISession session, INakedObject target, IIdentifier identifier) {
+        public bool IsVisible(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier) {
             return true;
         }
 
-        public bool IsEditable(ISession session, INakedObject target, IIdentifier identifier) {
+        public bool IsEditable(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier) {
             return true;
         }
 

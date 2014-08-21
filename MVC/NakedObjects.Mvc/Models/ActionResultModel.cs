@@ -38,7 +38,7 @@ namespace NakedObjects.Web.Mvc.Models {
             Type armType = armGenericType.MakeGenericType(genericType);
             var arm = (ActionResultModel) Activator.CreateInstance(armType, action, result);
             INakedObject noArm = NakedObjectsContext.ObjectPersistor.CreateAdapter(arm, null, null);
-            noArm.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, (CollectionMemento)nakedObject.Oid, new object[] { }));
+            noArm.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, (CollectionMemento)nakedObject.Oid, new object[] { }));
             arm.Page = page;
             arm.PageSize = pageSize;
             arm.Format = format;

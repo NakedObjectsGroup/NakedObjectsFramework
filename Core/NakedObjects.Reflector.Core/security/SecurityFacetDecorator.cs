@@ -7,6 +7,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Disable;
 using NakedObjects.Architecture.Facets.Hide;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Reflector.Spec;
 
@@ -55,8 +56,8 @@ namespace NakedObjects.Reflector.Security {
                 this.decorator = decorator;
             }
 
-            public override string DisabledReason(ISession session, INakedObject target) {
-                return decorator.manager.IsEditable(session, target, identifier) ? null : "Not authorized to edit";
+            public override string DisabledReason(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+                return decorator.manager.IsEditable(session, persistor, target, identifier) ? null : "Not authorized to edit";
             }
         }
 
@@ -76,8 +77,8 @@ namespace NakedObjects.Reflector.Security {
                 this.decorator = decorator;
             }
 
-            public override string HiddenReason(ISession session, INakedObject target) {
-                return decorator.manager.IsVisible(session, target, identifier) ? null : "Not authorized to view";
+            public override string HiddenReason(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+                return decorator.manager.IsVisible(session, persistor, target, identifier) ? null : "Not authorized to view";
             }
         }
 

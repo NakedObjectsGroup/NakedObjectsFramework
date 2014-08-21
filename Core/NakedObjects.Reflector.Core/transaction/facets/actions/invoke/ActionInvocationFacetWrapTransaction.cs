@@ -7,6 +7,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Actions.Invoke;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Context;
 
@@ -57,12 +58,12 @@ namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
             }
         }
 
-        public override INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectPersistor persistor) {
-            return InvokeInTransaction(() => underlyingFacet.Invoke(target, parameters, persistor), persistor);
+        public override INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectPersistor persistor, ISession session) {
+            return InvokeInTransaction(() => underlyingFacet.Invoke(target, parameters, persistor, session), persistor);
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectPersistor persistor) {
-            return InvokeInTransaction(() => underlyingFacet.Invoke(nakedObject, parameters, resultPage, persistor), persistor);
+        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectPersistor persistor, ISession session) {
+            return InvokeInTransaction(() => underlyingFacet.Invoke(nakedObject, parameters, resultPage, persistor, session), persistor);
         }
 
         public override string ToString() {

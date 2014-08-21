@@ -11,6 +11,8 @@ open System
 open NakedObjects
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Architecture.Reflect
+open NakedObjects.Architecture.Security
+open NakedObjects.Architecture.Persist
 open System.Data.Entity.Core.Objects
 
 let ModelConfig = 
@@ -39,10 +41,10 @@ let setupPersistorForInjectorTesting (p : EntityObjectStore) =
                       EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), 
                       EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
                       EntityObjectStore.NotifyUiDelegate(NotifyUIForTest),
-                      Action<INakedObject>(updated), 
-                      Action<INakedObject>(updating),
-                      Action<INakedObject>(persisted), 
-                      Action<INakedObject>(persisting),
+                      Action<INakedObject, ISession, INakedObjectPersistor>(updated), 
+                      Action<INakedObject, ISession, INakedObjectPersistor>(updating),
+                      Action<INakedObject, ISession, INakedObjectPersistor>(persisted), 
+                      Action<INakedObject, ISession, INakedObjectPersistor>(persisting),
                       Action<INakedObject>(handleLoadingTest),
                       EventHandler(savingChangesHandler),             
                       Func<Type, NakedObjects.Architecture.Spec.INakedObjectSpecification>(loadSpecificationHandler))

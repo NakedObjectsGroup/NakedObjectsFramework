@@ -6,6 +6,8 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Callbacks;
+using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
@@ -25,7 +27,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
 
         #endregion
 
-        public override void Invoke(INakedObject nakedObject) {
+        public override void Invoke(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
             InvokeUtils.Invoke(method, nakedObject);
         }
 

@@ -394,7 +394,7 @@ let createWithName persistor (sr : ScrapReason) name =
     CreateAndEndTransaction persistor sr
             
 let CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt (persistor : EntityObjectStore)  =  
-    let sr0 = persistor.CreateInstance<ScrapReason>()
+    let sr0 = persistor.CreateInstance<ScrapReason>(null)
     let sr1 = Second<ScrapReason> persistor
     try
         createWithName persistor sr0 sr1.Name    
@@ -404,14 +404,14 @@ let CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt (persistor : Ent
     createWithName persistor sr0 (uniqueName())
       
 let CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore (persistor : EntityObjectStore)  =  
-    let sr0 = persistor.CreateInstance<ScrapReason>() 
+    let sr0 = persistor.CreateInstance<ScrapReason>(null) 
     let sr1 = Second<ScrapReason> persistor 
     try
         createWithName persistor sr0 sr1.Name    
         Assert.Fail()
     with
         | expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
-    let sr2 = persistor.CreateInstance<ScrapReason>()
+    let sr2 = persistor.CreateInstance<ScrapReason>(null)
     createWithName persistor sr2 (uniqueName())
    
         
@@ -467,7 +467,7 @@ let CanCreateManyToMany (persistor : EntityObjectStore) =
             |> Seq.map (fun p -> (p, (sos |> Seq.filter (fun so -> noEntryFor p so) |> Seq.head))) |> Seq.head
                   
     let (pr, so) = getPandSO()       
-    let sop = persistor.CreateInstance<SpecialOfferProduct>()
+    let sop = persistor.CreateInstance<SpecialOfferProduct>(null)
     sop.ModifiedDate <- DateTime.Now
     sop.rowguid <- Guid.NewGuid()
     sop.Product <- pr
@@ -494,7 +494,7 @@ let CanCreateManyToManyWithFixup (persistor : EntityObjectStore) =
     persistor.ResolveImmediately(no1)    
     persistor.ResolveImmediately(no2)   
 
-    let sop = persistor.CreateInstance<SpecialOfferProduct>()
+    let sop = persistor.CreateInstance<SpecialOfferProduct>(null)
     sop.ModifiedDate <- DateTime.Now
     sop.rowguid <- Guid.NewGuid()
     sop.Product <- pr

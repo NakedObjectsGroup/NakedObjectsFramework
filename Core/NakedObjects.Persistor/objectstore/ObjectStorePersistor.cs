@@ -371,8 +371,8 @@ namespace NakedObjects.Persistor.Objectstore {
             Log.DebugFormat("ObjectChanged nakedObject: {0}", nakedObject);
             if (nakedObject.ResolveState.RespondToChangesInPersistentObjects()) {
                 if (nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
-                    nakedObject.Updating();
-                    nakedObject.Updated();
+                    nakedObject.Updating(session, this);
+                    nakedObject.Updated(session, this);
                     updateNotifier.AddChangedObject(nakedObject);
                 }
                 else {
@@ -380,10 +380,10 @@ namespace NakedObjects.Persistor.Objectstore {
                     if (specification.IsAlwaysImmutable() || (specification.IsImmutableOncePersisted() && nakedObject.ResolveState.IsPersistent())) {
                         throw new NotPersistableException("cannot change immutable object");
                     }
-                    nakedObject.Updating();
-                    ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject, Session);
+                    nakedObject.Updating(session, this);
+                    ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject, Session, this);
                     transactionManager.AddCommand(saveObjectCommand);
-                    nakedObject.Updated();
+                    nakedObject.Updated(session, this);
                     updateNotifier.AddChangedObject(nakedObject);
                 }
             }
@@ -420,7 +420,7 @@ namespace NakedObjects.Persistor.Objectstore {
                 throw new NotPersistableException("Cannot persist services: " + nakedObject);
             }
 
-            persistAlgorithm.MakePersistent(nakedObject, this);
+            persistAlgorithm.MakePersistent(nakedObject, this, session);
         }
 
         /// <summary>
@@ -430,11 +430,11 @@ namespace NakedObjects.Persistor.Objectstore {
         public void DestroyObject(INakedObject nakedObject) {
             Log.DebugFormat("DestroyObject nakedObject: {0}", nakedObject);
 
-            nakedObject.Deleting();
+            nakedObject.Deleting(session, this);
             IDestroyObjectCommand command = objectStore.CreateDestroyObjectCommand(nakedObject);
             transactionManager.AddCommand(command);
             nakedObject.ResolveState.Handle(Events.DestroyEvent);
-            nakedObject.Deleted();
+            nakedObject.Deleted(session, this);
         }
 
         public object CreateObject(INakedObjectSpecification specification) {
@@ -447,7 +447,7 @@ namespace NakedObjects.Persistor.Objectstore {
                 return viewModel;
             }
 
-            return objectStore.CreateInstance(type);
+            return objectStore.CreateInstance(type, this);
         }
 
         public void AbortTransaction() {
@@ -538,7 +538,7 @@ namespace NakedObjects.Persistor.Objectstore {
             INakedObjectSpecification spec = reflector.LoadSpecification(typeName);
 
             if (spec.IsCollection) {
-                return new CollectionMemento(this, reflector, encodedData);
+                return new CollectionMemento(this, reflector, session, encodedData);
             }
 
             if (spec.ContainsFacet<IViewModelFacet>()) {
@@ -564,7 +564,7 @@ namespace NakedObjects.Persistor.Objectstore {
             if (nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return;
             }
-            ICreateObjectCommand createObjectCommand = objectStore.CreateCreateObjectCommand(nakedObject, Session);
+            ICreateObjectCommand createObjectCommand = objectStore.CreateCreateObjectCommand(nakedObject, Session, this);
             transactionManager.AddCommand(createObjectCommand);
         }
 
@@ -703,7 +703,7 @@ namespace NakedObjects.Persistor.Objectstore {
         private void InitializeNewObject(INakedObject nakedObject, object rootObject) {
             nakedObject.Specification.Properties.ForEach(field => field.ToDefault(nakedObject));
             CreateInlineObjects(nakedObject, rootObject);
-            nakedObject.Created();
+            nakedObject.Created(session, this);
         }
 
         private void InitializeNewObject(INakedObject nakedObject) {

@@ -262,7 +262,7 @@ namespace NakedObjects.TestSystem {
         }
 
         public INakedObject CreateInstance(INakedObjectSpecification specification) {
-            object domainObject = specification.CreateObject();
+            object domainObject = specification.CreateObject(NakedObjectsContext.ObjectPersistor);
             return CreateAdapter(domainObject, null, null);
         }
 
@@ -274,7 +274,7 @@ namespace NakedObjects.TestSystem {
             if (identityMap.ContainsKey(oid)) {
                 return identityMap[oid];
             }
-            object domainObject = specification.CreateObject();
+            object domainObject = specification.CreateObject(NakedObjectsContext.ObjectPersistor);
             return CreateAdapter(domainObject, oid, null);
         }
 

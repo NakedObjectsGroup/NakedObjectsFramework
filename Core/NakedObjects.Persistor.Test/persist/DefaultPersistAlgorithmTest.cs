@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Context;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks;
 using NakedObjects.Testing;
 using NakedObjects.Testing.Dom;
@@ -301,7 +302,7 @@ namespace NakedObjects.Persistor.Persist {
 
         [Test]
         public void TestMakePersistent() {
-            algorithm.MakePersistent(roleAdapter, adder);
+            algorithm.MakePersistent(roleAdapter, adder, NakedObjectsContext.Session);
             Assert.IsTrue(roleAdapter.ResolveState.IsResolved());
             Assert.IsTrue(adder.PersistedObjects.Contains(roleAdapter));
             Assert.IsTrue(adder.PersistedObjects.Contains(personAdapter));
@@ -314,7 +315,7 @@ namespace NakedObjects.Persistor.Persist {
             roleAdapter.ResolveState.Handle(Events.EndResolvingEvent);
 
             try {
-                algorithm.MakePersistent(roleAdapter, adder);
+                algorithm.MakePersistent(roleAdapter, adder, NakedObjectsContext.Session);
                 Assert.Fail();
             }
             catch (NotPersistableException /*expected*/) {}
@@ -328,7 +329,7 @@ namespace NakedObjects.Persistor.Persist {
 
             try {
                 ((ProgrammableSpecification) roleAdapter.Specification).SetUpPersistable(Persistable.TRANSIENT);
-                algorithm.MakePersistent(roleAdapter, adder);
+                algorithm.MakePersistent(roleAdapter, adder, NakedObjectsContext.Session);
                 Assert.Fail();
             }
             catch (NotPersistableException /*expected*/) {}
@@ -336,10 +337,10 @@ namespace NakedObjects.Persistor.Persist {
 
         [Test]
         public void TestMakePersistentSkipsAlreadyPersistedObjects() {
-            algorithm.MakePersistent(personAdapter, adder);
+            algorithm.MakePersistent(personAdapter, adder, NakedObjectsContext.Session);
             adder.Reset();
 
-            algorithm.MakePersistent(roleAdapter, adder);
+            algorithm.MakePersistent(roleAdapter, adder, NakedObjectsContext.Session);
 
             Assert.IsTrue(adder.PersistedObjects.Contains(roleAdapter));
             Assert.That(adder.PersistedCount, Is.EqualTo(1));
@@ -351,7 +352,7 @@ namespace NakedObjects.Persistor.Persist {
             system.AdapterFor(person, Events.InitializeAggregateEvent);
             ((Role)roleAdapter.GetDomainObject()).Person = person;
 
-            algorithm.MakePersistent(roleAdapter, adder);
+            algorithm.MakePersistent(roleAdapter, adder, NakedObjectsContext.Session);
 
             Assert.IsTrue(adder.PersistedObjects.Contains(roleAdapter));
             Assert.That(adder.PersistedCount, Is.EqualTo(1));

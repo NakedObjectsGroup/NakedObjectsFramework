@@ -5,6 +5,7 @@
 using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Invoke {
@@ -21,9 +22,9 @@ namespace NakedObjects.Architecture.Facets.Actions.Invoke {
         public abstract INakedObjectSpecification OnType { get; }
         public abstract INakedObjectSpecification ReturnType { get; }
 
-        public abstract INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, INakedObjectPersistor persistor);
+        public abstract INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, INakedObjectPersistor persistor, ISession session);
 
-        public abstract INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectPersistor persistor);
+        public abstract INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectPersistor persistor, ISession session);
 
         public virtual bool GetIsRemoting(INakedObject target) {
             return false;

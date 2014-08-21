@@ -21,7 +21,7 @@ namespace NakedObjects.Testing {
             this.specification = specification;
             this.oid = oid;
 
-            resolveState = new ResolveStateMachine(this);
+            resolveState = new ResolveStateMachine(this, null, null);
         }
 
         public object Object {

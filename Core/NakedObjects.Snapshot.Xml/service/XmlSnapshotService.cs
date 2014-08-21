@@ -10,9 +10,11 @@ namespace NakedObjects.Snapshot {
     public class XmlSnapshotService : IXmlSnapshotService {
         #region IXmlSnapshotService Members
 
+        public INakedObjectsFramework Framework { set; protected get; }
+
         [NotContributedAction]
         public IXmlSnapshot GenerateSnapshot(object domainObject) {
-            return new XmlSnapshot(domainObject, NakedObjectsContext.ObjectPersistor);
+            return new XmlSnapshot(domainObject, Framework.ObjectPersistor);
         }
 
         #endregion

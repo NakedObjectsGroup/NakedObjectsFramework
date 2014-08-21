@@ -7,7 +7,6 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Encodeable;
 using NakedObjects.Capabilities;
 using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
     public class EncodeableFacetUsingEncoderDecoder<T> : FacetAbstract, IEncodeableFacet {

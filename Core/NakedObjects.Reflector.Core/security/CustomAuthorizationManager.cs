@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
@@ -50,12 +51,12 @@ namespace NakedObjects.Security {
 
         #region IAuthorizationManager Members
 
-        public bool IsEditable(ISession session, INakedObject target, IIdentifier identifier) {
-            return IsEditableOrVisible(session, target, identifier, "IsEditable");
+        public bool IsEditable(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier) {
+            return IsEditableOrVisible(session, persistor, target, identifier, "IsEditable");
         }
 
-        public bool IsVisible(ISession session, INakedObject target, IIdentifier identifier) {
-            return IsEditableOrVisible(session, target, identifier, "IsVisible");
+        public bool IsVisible(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier) {
+            return IsEditableOrVisible(session, persistor, target, identifier, "IsVisible");
         }
 
         public void UpdateAuthorizationCache(INakedObject nakedObject) {
@@ -64,31 +65,31 @@ namespace NakedObjects.Security {
 
         #endregion
 
-        private bool IsEditableOrVisible(ISession session, INakedObject target, IIdentifier identifier, string toInvoke) {
+        private bool IsEditableOrVisible(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier, string toInvoke) {
             Assert.AssertNotNull(target);
 
-            object authorizer = GetNamespaceAuthorizerFor(target) ?? GetTypeAuthorizerFor(target) ?? GetDefaultAuthorizor();
+            object authorizer = GetNamespaceAuthorizerFor(target, persistor) ?? GetTypeAuthorizerFor(target, persistor) ?? GetDefaultAuthorizor(persistor);
             return (bool) authorizer.GetType().GetMethod(toInvoke).Invoke(authorizer, new[] {session.Principal, target.Object, identifier.MemberName});
         }
 
-        private object GetTypeAuthorizerFor(INakedObject target) {
+        private object GetTypeAuthorizerFor(INakedObject target, INakedObjectPersistor persistor) {
             Assert.AssertNotNull(target);
             Type domainType = TypeUtils.GetType(target.Specification.FullName).GetProxiedType();
             object authorizer;
             typeAuthorizerMap.TryGetValue(domainType, out authorizer);
-            return authorizer == null ? null : CreateAuthorizer(authorizer);
+            return authorizer == null ? null : CreateAuthorizer(authorizer, persistor);
         }
 
-        private object GetDefaultAuthorizor() {
-            return CreateAuthorizer(defaultAuthorizer);
+        private object GetDefaultAuthorizor(INakedObjectPersistor persistor) {
+            return CreateAuthorizer(defaultAuthorizer, persistor);
         }
 
-        private object CreateAuthorizer(object authorizer) {
-            return NakedObjectsContext.Reflector.LoadSpecification(authorizer.GetType()).CreateObject();
+        private object CreateAuthorizer(object authorizer, INakedObjectPersistor persistor) {
+            return NakedObjectsContext.Reflector.LoadSpecification(authorizer.GetType()).CreateObject(persistor);
         }
 
         //TODO:  Change return type to INamespaceAuthorizer when TypeAuthorization has been obsoleted.
-        private object GetNamespaceAuthorizerFor(INakedObject target) {
+        private object GetNamespaceAuthorizerFor(INakedObject target, INakedObjectPersistor persistor) {
             Assert.AssertNotNull(target);
             string fullyQualifiedOfTarget = target.Specification.FullName;
             INamespaceAuthorizer authorizer = namespaceAuthorizers.
@@ -96,7 +97,7 @@ namespace NakedObjects.Security {
                 OrderByDescending(x => x.NamespaceToAuthorize.Length).
                 FirstOrDefault();
 
-            return authorizer == null ? null : CreateAuthorizer(authorizer);
+            return authorizer == null ? null : CreateAuthorizer(authorizer, persistor);
         }
     }
 }

@@ -5,6 +5,7 @@
 using System;
 using System.Reflection;
 using System.Security.Principal;
+using NakedObjects.Core.Context;
 using NUnit.Framework;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Disable;
@@ -304,12 +305,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null));
+            Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor ));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null));
+            Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -320,12 +321,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null));
+            Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null));
+            Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -336,20 +337,20 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null));
+            Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null));
+            Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             testSession = new TestSession("anotherRole", "");
-            Assert.IsNotNull(facet.DisabledReason(testSession, null));
+            Assert.IsNotNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNotNull(facet1.HiddenReason(testSession, null));
+            Assert.IsNotNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -360,12 +361,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -376,12 +377,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -392,12 +393,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null));
+            Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null));
+            Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -408,12 +409,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null));
+            Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null));
+            Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
 
@@ -425,12 +426,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -441,12 +442,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -457,12 +458,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.DisabledReason(testSession, null));
+            Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null));
+            Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -473,12 +474,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.DisabledReason(testSession, null));
+            Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null));
+            Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -489,12 +490,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -505,12 +506,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -521,12 +522,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.DisabledReason(testSession, null));
+            Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null));
+            Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -537,12 +538,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.DisabledReason(testSession, null));
+            Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.IsNull(facet1.HiddenReason(testSession, null));
+            Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -553,12 +554,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -569,12 +570,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null));
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
 
@@ -586,7 +587,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null));
+            Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -597,7 +598,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.DisabledReason(testSession, null));
+            Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -608,7 +609,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -619,7 +620,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -630,7 +631,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.DisabledReason(testSession, null));
+            Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -641,7 +642,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.DisabledReason(testSession, null));
+            Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -652,7 +653,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -663,7 +664,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
 
@@ -852,7 +853,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.HiddenReason(testSession, null));
+            Assert.IsNull(facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -863,7 +864,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            Assert.IsNull(facet.HiddenReason(testSession, null));
+            Assert.IsNull(facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -874,7 +875,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null));
+            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -885,7 +886,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null));
+            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
 
@@ -897,7 +898,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.HiddenReason(testSession, null));
+            Assert.IsNull(facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -908,10 +909,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.HiddenReason(testSession, null));
+            Assert.IsNull(facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
 
             testSession = new TestSession("", "anotherUser");
-            Assert.IsNotNull(facet.HiddenReason(testSession, null));
+            Assert.IsNotNull(facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
 
@@ -923,7 +924,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            Assert.IsNull(facet.HiddenReason(testSession, null));
+            Assert.IsNull(facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
 
@@ -935,7 +936,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null));
+            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
         [Test]
@@ -946,7 +947,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null));
+            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
         }
 
 

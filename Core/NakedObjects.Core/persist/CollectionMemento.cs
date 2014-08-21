@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Adapter;
@@ -21,6 +22,7 @@ namespace NakedObjects.Core.Persist {
     public class CollectionMemento : IEncodedToStrings, IOid {
         private readonly INakedObjectPersistor persistor;
         private readonly INakedObjectReflector reflector;
+        private readonly ISession session;
 
         public enum ParameterType {
             Value,
@@ -29,13 +31,14 @@ namespace NakedObjects.Core.Persist {
             ObjectCollection
         }
 
-        public CollectionMemento(INakedObjectPersistor persistor, INakedObjectReflector reflector,  CollectionMemento otherMemento, object[] selectedObjects) {
+        public CollectionMemento(INakedObjectPersistor persistor, INakedObjectReflector reflector, ISession session,  CollectionMemento otherMemento, object[] selectedObjects) {
             Assert.AssertNotNull(persistor);
             Assert.AssertNotNull(reflector);
             Assert.AssertNotNull(otherMemento);
 
             this.persistor = persistor;
             this.reflector = reflector;
+            this.session = session;
             IsPaged = otherMemento.IsPaged;
             IsNotQueryable = otherMemento.IsNotQueryable;
             Target = otherMemento.Target;
@@ -44,11 +47,12 @@ namespace NakedObjects.Core.Persist {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(INakedObjectPersistor persistor, INakedObjectReflector reflector, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
+        public CollectionMemento(INakedObjectPersistor persistor, INakedObjectReflector reflector, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
             Assert.AssertNotNull(persistor);
             Assert.AssertNotNull(reflector);
             this.persistor = persistor;
             this.reflector = reflector;
+            this.session = session;
             Target = target;
             Action = action;
             Parameters = parameters;
@@ -58,11 +62,12 @@ namespace NakedObjects.Core.Persist {
             }
         }
 
-        public CollectionMemento(INakedObjectPersistor persistor, INakedObjectReflector reflector, string[] strings) {
+        public CollectionMemento(INakedObjectPersistor persistor, INakedObjectReflector reflector, ISession session, string[] strings) {
             Assert.AssertNotNull(persistor);
             Assert.AssertNotNull(reflector);
             this.persistor = persistor;
             this.reflector = reflector;
+            this.session = session;
             var helper = new StringDecoderHelper(reflector, strings, true);
             string specName = helper.GetNextString();
             string actionId = helper.GetNextString();
@@ -202,7 +207,7 @@ namespace NakedObjects.Core.Persist {
         }
 
         public INakedObject RecoverCollection() {
-            INakedObject nakedObject = Action.Execute(Target, Parameters, persistor);
+            INakedObject nakedObject = Action.Execute(Target, Parameters, persistor, session);
 
             if (selectedObjects != null) {
                 IEnumerable<object> selected = nakedObject.GetDomainObject<IEnumerable>().Cast<object>().Where(x => selectedObjects.Contains(x));

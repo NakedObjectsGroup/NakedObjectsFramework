@@ -4,6 +4,8 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Facets.Objects.Callbacks {
     /// <summary>
@@ -15,7 +17,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Callbacks {
 
         #region ICallbackFacet Members
 
-        public abstract void Invoke(INakedObject nakedObject);
+        public abstract void Invoke(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor);
 
         #endregion
     }

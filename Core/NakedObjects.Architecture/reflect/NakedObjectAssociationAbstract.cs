@@ -114,7 +114,7 @@ namespace NakedObjects.Architecture.Reflect {
 
             if (reason == null) {
                 var fs = GetFacet<IDisableForSessionFacet>();
-                reason = fs == null ? null : fs.DisabledReason(session, target);
+                reason = fs == null ? null : fs.DisabledReason(session, target, persistor);
             }
 
             return GetConsent(reason);

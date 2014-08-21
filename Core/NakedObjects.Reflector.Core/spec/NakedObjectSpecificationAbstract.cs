@@ -195,7 +195,7 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public abstract object CreateObject();
+        public abstract object CreateObject(INakedObjectPersistor persistor);
         public abstract IEnumerable GetBoundedSet(INakedObjectPersistor persistor);
         public abstract void Introspect(FacetDecoratorSet decoratorSet);
         public abstract void PopulateAssociatedActions(INakedObject[] services);

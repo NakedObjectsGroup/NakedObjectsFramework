@@ -14,24 +14,26 @@ namespace NakedObjects.Async {
     public class AsyncService : IAsyncService {
         private readonly ILog log = LogManager.GetLogger(typeof (AsyncService));
 
-        protected static void AbortTransaction() {
-            NakedObjectsContext.ObjectPersistor.AbortTransaction();
+        public INakedObjectsFramework Framework { set; protected get; }
+
+        protected  void AbortTransaction() {
+            Framework.ObjectPersistor.AbortTransaction();
         }
 
-        protected static void EndTransaction() {
-            NakedObjectsContext.ObjectPersistor.EndTransaction();
+        protected  void EndTransaction() {
+            Framework.ObjectPersistor.EndTransaction();
         }
 
-        protected static void StartTransaction() {
-            NakedObjectsContext.ObjectPersistor.StartTransaction();
+        protected  void StartTransaction() {
+            Framework.ObjectPersistor.StartTransaction();
         }
 
-        protected static void EnsureReady() {
-            NakedObjectsContext.EnsureReady();
+        protected  void EnsureReady() {
+           // Framework.EnsureReady();
         }
 
         protected void SetSession() {
-            NakedObjectsContext.Instance.SetSession(new WindowsSession(Thread.CurrentPrincipal));
+           // Framework.SetSession(new WindowsSession(Thread.CurrentPrincipal));
         }
 
         protected Action WorkWrapper(Action action) {

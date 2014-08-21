@@ -4,6 +4,7 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Security {
     /// <summary>
@@ -15,14 +16,14 @@ namespace NakedObjects.Architecture.Security {
         ///     class/object represented by the member identifier. Normally the view of the specified field, or the
         ///     display of the action will be suppress if this returns false.
         /// </summary>
-        bool IsVisible(ISession session, INakedObject target, IIdentifier identifier);
+        bool IsVisible(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier);
 
         /// <summary>
         ///     Returns true when the use represented by the specified session is authorized to change the field
         ///     represented by the member identifier. Normally the specified field will be not appear editable if this
         ///     returns false.
         /// </summary>
-        bool IsEditable(ISession session, INakedObject target, IIdentifier identifier);
+        bool IsEditable(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier);
 
         /// <summary>
         ///     This is an optimisation to update the cache for usability and visibility in one hit.

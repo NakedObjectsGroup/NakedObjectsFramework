@@ -60,9 +60,9 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             Log.Debug("AbortTransaction");
         }
 
-        public virtual ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session) {
+        public virtual ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
             Log.DebugFormat("CreateCreateObjectCommand: {0}", nakedObject);
-            return new Create(nakedObject, this, session);
+            return new Create(nakedObject, this, session, persistor);
         }
 
         public virtual IDestroyObjectCommand CreateDestroyObjectCommand(INakedObject nakedObject) {
@@ -70,9 +70,9 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             return new Destroy(nakedObject, this);
         }
 
-        public virtual ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session) {
+        public virtual ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
             Log.DebugFormat("CreateSaveObjectCommand: {0}", nakedObject);
-            return new Save(nakedObject, this, session);
+            return new Save(nakedObject, this, session, persistor);
         }
 
         public virtual void EndTransaction() {
@@ -107,14 +107,14 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                     select obj).AsQueryable();
         }
 
-        public T CreateInstance<T>() where T : class {
+        public T CreateInstance<T>(INakedObjectPersistor persistor) where T : class {
             Log.Debug("CreateInstance<T> of: " + typeof (T));
-            return (T) CreateInstance(typeof (T));
+            return (T) CreateInstance(typeof (T), persistor);
         }
 
-        public object CreateInstance(Type type) {
+        public object CreateInstance(Type type, INakedObjectPersistor persistor) {
             Log.Debug("CreateInstance of: " + type);
-            return reflector.LoadSpecification(type).CreateObject();
+            return reflector.LoadSpecification(type).CreateObject(persistor);
         }
 
         public virtual INakedObject GetObject(IOid oid, INakedObjectSpecification hint) {
@@ -250,11 +250,11 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             }
         }
 
-        private void DoSave(INakedObject nakedObject, ISession session) {
+        private void DoSave(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
             INakedObjectSpecification specification = nakedObject.Specification;
             Log.DebugFormat("Saving object {0} as instance of {1}", nakedObject, specification.ShortName);
             MemoryObjectStoreInstances ins = InstancesFor(specification);
-            ins.Save(nakedObject, session);
+            ins.Save(nakedObject, session, persistor);
         }
 
         public virtual INakedObject CreateAdapter(object obj, ISession session) {
@@ -273,18 +273,20 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             private readonly INakedObject nakedObject;
             private readonly MemoryObjectStore objectStore;
             private readonly ISession session;
+            private readonly INakedObjectPersistor persistor;
 
-            public Create(INakedObject nakedObject, MemoryObjectStore objectStore, ISession session) {
+            public Create(INakedObject nakedObject, MemoryObjectStore objectStore, ISession session, INakedObjectPersistor persistor) {
                 this.nakedObject = nakedObject;
                 this.objectStore = objectStore;
                 this.session = session;
+                this.persistor = persistor;
             }
 
             #region ICreateObjectCommand Members
 
             public void Execute(IExecutionContext context) {
                 Log.DebugFormat("Create object {0}", nakedObject);
-                objectStore.DoSave(nakedObject, session);
+                objectStore.DoSave(nakedObject, session, persistor);
             }
 
             public INakedObject OnObject() {
@@ -337,17 +339,19 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             private readonly INakedObject nakedObject;
             private readonly MemoryObjectStore objectStore;
             private readonly ISession session;
+            private readonly INakedObjectPersistor persistor;
 
-            public Save(INakedObject nakedObject, MemoryObjectStore objectStore, ISession session) {
+            public Save(INakedObject nakedObject, MemoryObjectStore objectStore, ISession session, INakedObjectPersistor persistor) {
                 this.nakedObject = nakedObject;
                 this.objectStore = objectStore;
                 this.session = session;
+                this.persistor = persistor;
             }
 
             #region ISaveObjectCommand Members
 
             public void Execute(IExecutionContext context) {
-                objectStore.DoSave(nakedObject, session);
+                objectStore.DoSave(nakedObject, session, persistor);
             }
 
             public INakedObject OnObject() {

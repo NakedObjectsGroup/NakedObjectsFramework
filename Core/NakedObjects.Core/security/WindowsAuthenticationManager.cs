@@ -5,7 +5,6 @@
 using System.Security.Principal;
 using System.Threading;
 using NakedObjects.Architecture.Security;
-using NakedObjects.Core.Context;
 
 namespace NakedObjects.Core.Security {
     public class WindowsAuthenticationManager : IAuthenticationManager {
@@ -20,7 +19,7 @@ namespace NakedObjects.Core.Security {
         }
 
         public void CloseSession(ISession session) {
-            NakedObjectsContext.CloseSession();
+            //NakedObjectsContext.CloseSession();
         }
 
         public void Init() {

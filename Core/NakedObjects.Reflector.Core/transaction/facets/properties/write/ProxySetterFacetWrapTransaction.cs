@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.Transaction.Facets.Properties.Write {
                     persistor.EndTransaction();
                 }
                 catch (Exception) {
-                    NakedObjectsContext.ObjectPersistor.Abort(persistor, FacetHolder);
+                    persistor.Abort(persistor, FacetHolder);
                     throw;
                 }
             }

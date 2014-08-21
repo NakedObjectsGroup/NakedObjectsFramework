@@ -6,6 +6,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Persistor;
 
@@ -17,9 +18,9 @@ namespace NakedObjects.EntityObjectStore {
 
         public void Init() {}
 
-        public void MakePersistent(INakedObject nakedObject, INakedObjectPersistor persistor) {
+        public void MakePersistent(INakedObject nakedObject, INakedObjectPersistor persistor, ISession session) {
             if (nakedObject.Specification.IsCollection) {
-                MakeCollectionPersistent(nakedObject, persistor);
+                MakeCollectionPersistent(nakedObject, persistor, session);
             }
             else {
                 MakeObjectPersistent(nakedObject, persistor);
@@ -45,7 +46,7 @@ namespace NakedObjects.EntityObjectStore {
             persistor.AddPersistedObject(nakedObject);
         }
 
-        private void MakeCollectionPersistent(INakedObject collection, INakedObjectPersistor persistor) {
+        private void MakeCollectionPersistent(INakedObject collection, INakedObjectPersistor persistor, ISession session) {
             if (collection.ResolveState.IsPersistent() || collection.Specification.Persistable == Persistable.TRANSIENT) {
                 return;
             }
@@ -55,7 +56,7 @@ namespace NakedObjects.EntityObjectStore {
                 collection.ResolveState.Handle(Events.EndResolvingEvent);
             }
             persistor.MadePersistent(collection);
-            collection.GetAsEnumerable(persistor).ForEach(no => MakePersistent(no, persistor));
+            collection.GetAsEnumerable(persistor).ForEach(no => MakePersistent(no, persistor, session));
         }
 
         public override string ToString() {

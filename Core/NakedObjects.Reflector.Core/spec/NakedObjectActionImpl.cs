@@ -119,11 +119,11 @@ namespace NakedObjects.Reflector.Spec {
             get { return null; }
         }
 
-        public virtual INakedObject Execute(INakedObject nakedObject, INakedObject[] parameterSet, INakedObjectPersistor persistor) {
+        public virtual INakedObject Execute(INakedObject nakedObject, INakedObject[] parameterSet, INakedObjectPersistor persistor, ISession session) {
             Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);
             INakedObject[] parms = RealParameters(nakedObject, parameterSet);
             INakedObject target = RealTarget(nakedObject, persistor);
-            return GetFacet<IActionInvocationFacet>().Invoke(target, parms, persistor);
+            return GetFacet<IActionInvocationFacet>().Invoke(target, parms, persistor, session);
         }
 
         public virtual INakedObject RealTarget(INakedObject target, INakedObjectPersistor persistor) {

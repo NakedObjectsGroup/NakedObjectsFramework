@@ -108,7 +108,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return null; }
         }
 
-        public virtual INakedObject Execute(INakedObject target, INakedObject[] parameterSet, INakedObjectPersistor persistor) {
+        public virtual INakedObject Execute(INakedObject target, INakedObject[] parameterSet, INakedObjectPersistor persistor, ISession session) {
             throw new UnexpectedCallException();
         }
 

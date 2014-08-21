@@ -91,7 +91,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Invokes the action's method on the target object given the specified set of parameters
         /// </summary>
-        INakedObject Execute(INakedObject target, INakedObject[] parameterSet, INakedObjectPersistor persistor);
+        INakedObject Execute(INakedObject target, INakedObject[] parameterSet, INakedObjectPersistor persistor, ISession session);
 
 
         /// <summary>

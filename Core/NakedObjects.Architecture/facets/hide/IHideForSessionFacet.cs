@@ -4,6 +4,7 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Facets.Hide {
@@ -15,7 +16,7 @@ namespace NakedObjects.Architecture.Facets.Hide {
     ///     invoking the <c>HideXxx</c> support method for the member
     /// </para>
     public interface IHideForSessionFacet : IFacet, IHidingInteractionAdvisor {
-        string HiddenReason(ISession session, INakedObject target);
+        string HiddenReason(ISession session, INakedObject target, INakedObjectPersistor persistor);
     }
 
 

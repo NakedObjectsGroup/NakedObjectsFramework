@@ -2,6 +2,8 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using NakedObjects.Architecture.Persist;
+
 namespace NakedObjects.Architecture.Interactions {
     /// <summary>
     ///     Mix-in interface for facets that can advise as to whether a member
@@ -20,13 +22,13 @@ namespace NakedObjects.Architecture.Interactions {
         ///     however guard against a <c>null</c> target <see cref="InteractionContext.Target" />
         ///     and session <see cref="InteractionContext.Session" /> - neither are guaranteed to be populated.
         /// </para>
-        string Hides(InteractionContext ic);
+        string Hides(InteractionContext ic, INakedObjectPersistor persistor);
 
 
         /// <summary>
         ///     Create (not throw) an exception to indicate that this
         ///     interaction cannot be performed because the target object or member is hidden.
         /// </summary>
-        HiddenException CreateExceptionFor(InteractionContext ic);
+        HiddenException CreateExceptionFor(InteractionContext ic, INakedObjectPersistor persistor);
     }
 }

@@ -4,6 +4,7 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Facets.Disable {
@@ -17,7 +18,7 @@ namespace NakedObjects.Architecture.Facets.Disable {
 
         #region IDisableForSessionFacet Members
 
-        public abstract string DisabledReason(ISession session, INakedObject target);
+        public abstract string DisabledReason(ISession session, INakedObject target, INakedObjectPersistor persistor);
 
         #endregion
     }

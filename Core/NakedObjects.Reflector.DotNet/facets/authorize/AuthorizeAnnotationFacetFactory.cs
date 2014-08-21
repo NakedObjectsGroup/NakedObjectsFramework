@@ -9,6 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Disable;
 using NakedObjects.Architecture.Facets.Hide;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Security;
@@ -117,7 +118,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
                 this.users = SplitOnComma(users);
             }
 
-            public override string DisabledReason(ISession session, INakedObject target) {
+            public override string DisabledReason(ISession session, INakedObject target, INakedObjectPersistor persistor) {
                 return IsAllowed(session, roles, users) ? null : "Not authorized to edit";
             }
         }
@@ -138,7 +139,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
                 this.users = SplitOnComma(users);
             }
 
-            public override string HiddenReason(ISession session, INakedObject target) {
+            public override string HiddenReason(ISession session, INakedObject target, INakedObjectPersistor persistor) {
                 return IsAllowed(session, roles, users) ? null : "Not authorized to view";
             }
         }

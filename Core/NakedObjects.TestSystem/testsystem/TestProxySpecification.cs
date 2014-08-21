@@ -212,7 +212,7 @@ namespace NakedObjects.TestSystem {
             return null;
         }
 
-        public override object CreateObject() {
+        public override object CreateObject(INakedObjectPersistor persistor) {
             Type type = Type.GetType(name);
             return type.GetConstructor(Type.EmptyTypes).Invoke(null);
         }

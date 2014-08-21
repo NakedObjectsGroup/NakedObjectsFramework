@@ -27,7 +27,7 @@ namespace NakedObjects.TestSystem {
         private IVersion version;
 
         public TestProxyNakedCollection() {
-            resolveState = new ResolveStateMachine(this);
+            resolveState = new ResolveStateMachine(this, null, null);
         }
 
         public TestProxyNakedCollection(object wrappedCollection) {

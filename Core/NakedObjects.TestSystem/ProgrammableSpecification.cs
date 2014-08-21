@@ -219,7 +219,7 @@ namespace NakedObjects.Testing {
             get { return false; }
         }
 
-        public object CreateObject() {
+        public object CreateObject(INakedObjectPersistor persistor) {
             throw new NotImplementedException();
         }
 

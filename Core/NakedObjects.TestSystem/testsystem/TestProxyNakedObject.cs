@@ -26,7 +26,7 @@ namespace NakedObjects.TestSystem {
         private IVersion version;
 
         public TestProxyNakedObject() {
-            resolveState = new ResolveStateMachine(this);
+            resolveState = new ResolveStateMachine(this, null, null);
         }
 
         #region INakedObject Members

@@ -28,7 +28,7 @@ let resetPersistor (p : EntityObjectStore) =
     setupPersistorForTesting p
 
 let CreateAndSetup<'t when 't : not struct> (p : EntityObjectStore) setter =  
-    let inst = p.CreateInstance<'t>()
+    let inst = p.CreateInstance<'t>(null)
     setter inst
     let n1 = GetOrAddAdapterForTest inst null
     inst
@@ -36,15 +36,15 @@ let CreateAndSetup<'t when 't : not struct> (p : EntityObjectStore) setter =
 let uniqueName() = Guid.NewGuid().ToString()
 
 let CreateAndEndTransaction  (p : EntityObjectStore) o =
-    let cmd = p.CreateCreateObjectCommand((GetOrAddAdapterForTest o null), null)
+    let cmd = p.CreateCreateObjectCommand((GetOrAddAdapterForTest o null), null, null)
     p.EndTransaction()
 
 let SaveAndEndTransaction  (p : EntityObjectStore) o =
-    let cmd = p.CreateSaveObjectCommand((GetOrAddAdapterForTest o null), null)
+    let cmd = p.CreateSaveObjectCommand((GetOrAddAdapterForTest o null), null, null)
     p.EndTransaction()
 
 let SaveWithNoEndTransaction  (p : EntityObjectStore) o =
-    let cmd = p.CreateSaveObjectCommand((GetOrAddAdapterForTest o null), null)
+    let cmd = p.CreateSaveObjectCommand((GetOrAddAdapterForTest o null), null, null)
     ()
 
 let GetInstancesGenericNotEmpty<'t when 't : not struct> (p: EntityObjectStore)  =
@@ -65,7 +65,7 @@ let GetInstancesDoesntReturnProxies<'t when 't : not struct> (p: EntityObjectSto
     Assert.IsFalse(instances |> Seq.forall (fun i ->  EntityUtils.IsEntityProxy(i.GetType())))
     
 let CanCreateTransientObject<'t when 't : not struct> (p: EntityObjectStore)  =
-     let transientInstance = p.CreateInstance<'t>()
+     let transientInstance = p.CreateInstance<'t>(null)
      Assert.IsNotNull(transientInstance)
      Assert.IsFalse(EntityUtils.IsEntityProxy(transientInstance.GetType()))
     
@@ -110,5 +110,5 @@ let CanGetContextForArray<'t when 't : not struct> (persistor : EntityObjectStor
     persistor.LoadComplexTypes (GetOrAddAdapterForTest [|header|] null, false)
 
 let CanGetContextForType<'t when 't : not struct> (persistor : EntityObjectStore) =
-    let test = persistor.CreateInstance<'t>()
+    let test = persistor.CreateInstance<'t>(null)
     persistor.LoadComplexTypes (GetOrAddAdapterForTest test null, false)

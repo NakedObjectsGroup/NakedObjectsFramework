@@ -8,6 +8,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Invoke;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
@@ -49,7 +50,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Invoke {
 
         #endregion
 
-        public override INakedObject Invoke(INakedObject inObject, INakedObject[] parameters, INakedObjectPersistor persistor) {
+        public override INakedObject Invoke(INakedObject inObject, INakedObject[] parameters, INakedObjectPersistor persistor, ISession session) {
             if (parameters.Length != paramCount) {
                 Log.Error(actionMethod + " requires " + paramCount + " parameters, not " + parameters.Length);
             }
@@ -61,8 +62,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Invoke {
             return adaptedResult;
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectPersistor persistor) {
-            return Invoke(nakedObject, parameters, persistor);
+        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectPersistor persistor, ISession session) {
+            return Invoke(nakedObject, parameters, persistor, session);
         }
 
         protected override string ToStringValues() {

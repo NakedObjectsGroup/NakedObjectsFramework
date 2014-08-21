@@ -5,6 +5,7 @@
 using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Facets.Hide {
@@ -25,15 +26,15 @@ namespace NakedObjects.Architecture.Facets.Hide {
 
         #region IHideForSessionFacet Members
 
-        public virtual string Hides(InteractionContext ic) {
-            return HiddenReason(ic.Session, ic.Target);
+        public virtual string Hides(InteractionContext ic, INakedObjectPersistor persistor) {
+            return HiddenReason(ic.Session, ic.Target, persistor);
         }
 
-        public virtual HiddenException CreateExceptionFor(InteractionContext ic) {
-            return new HiddenException(ic, Hides(ic));
+        public virtual HiddenException CreateExceptionFor(InteractionContext ic, INakedObjectPersistor persistor) {
+            return new HiddenException(ic, Hides(ic, persistor));
         }
 
-        public abstract string HiddenReason(ISession session, INakedObject target);
+        public abstract string HiddenReason(ISession session, INakedObject target, INakedObjectPersistor persistor);
 
         #endregion
     }

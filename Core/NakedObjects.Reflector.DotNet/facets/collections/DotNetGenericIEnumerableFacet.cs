@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         }
 
         public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectPersistor persistor, bool forceEnumerable) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(AsGenericIEnumerable(collection).Skip((page - 1)*size).Take(size).ToList(), null, null);
+            return persistor.CreateAdapter(AsGenericIEnumerable(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
         }
 
         public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager) {

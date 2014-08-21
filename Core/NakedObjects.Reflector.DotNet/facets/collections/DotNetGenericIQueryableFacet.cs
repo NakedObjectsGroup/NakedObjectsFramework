@@ -45,7 +45,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
                 newCollection = newCollection.ToList();
             }
 
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(newCollection, null, null);
+            return persistor.CreateAdapter(newCollection, null, null);
         }
 
         public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager) {

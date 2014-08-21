@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Facets.Disable {
@@ -17,7 +18,7 @@ namespace NakedObjects.Architecture.Facets.Disable {
         /// <summary>
         ///     The reason this is disabled, or <c>null</c> if not
         /// </summary>
-        string DisabledReason(ISession session, INakedObject target);
+        string DisabledReason(ISession session, INakedObject target, INakedObjectPersistor persistor);
     }
 
 
