@@ -17,11 +17,10 @@ using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public class XmlSnapshot : IXmlSnapshot {
-        private readonly INakedObjectManager manager;
+        private readonly INakedObjectPersistor persistor;
         private static readonly ILog Log = LogManager.GetLogger(typeof (XmlSnapshot));
 
         private readonly Place rootPlace;
@@ -30,12 +29,12 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
 
         //  Start a snapshot at the root object, using own namespace manager.
-        public XmlSnapshot(object obj, INakedObjectManager manager) : this(obj, new XmlSchema(), manager) {}
+        public XmlSnapshot(object obj, INakedObjectPersistor persistor) : this(obj, new XmlSchema(), persistor) { }
 
         // Start a snapshot at the root object, using supplied namespace manager.
-        public XmlSnapshot(object obj, XmlSchema schema, INakedObjectManager manager) {
-            this.manager = manager;
-            INakedObject rootObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
+        public XmlSnapshot(object obj, XmlSchema schema, INakedObjectPersistor persistor) {
+            this.persistor = persistor;
+            INakedObject rootObject = persistor.CreateAdapter(obj, null, null);
             Log.Debug(".ctor(" + DoLog("rootObj", rootObject) + AndLog("schema", schema) + AndLog("addOids", "" + true) + ")");
 
             Schema = schema;
@@ -301,7 +300,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 Log.Debug("includeField(Pl, Vec, Str): field is 1->1");
 
                 var oneToOneAssociation = ((IOneToOneAssociation) field);
-                INakedObject referencedObject = oneToOneAssociation.GetNakedObject(fieldPlace.NakedObject);
+                INakedObject referencedObject = oneToOneAssociation.GetNakedObject(fieldPlace.NakedObject, persistor);
 
                 if (referencedObject == null) {
                     return true; // not a failure if the reference was null
@@ -317,9 +316,9 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 Log.Debug("includeField(Pl, Vec, Str): field is 1->M");
 
                 var oneToManyAssociation = (IOneToManyAssociation) field;
-                INakedObject collection = oneToManyAssociation.GetNakedObject(fieldPlace.NakedObject);
+                INakedObject collection = oneToManyAssociation.GetNakedObject(fieldPlace.NakedObject, persistor);
 
-                INakedObject[] collectionAsEnumerable = collection.GetAsEnumerable(manager).ToArray();
+                INakedObject[] collectionAsEnumerable = collection.GetAsEnumerable(persistor).ToArray();
 
                 Log.Debug("includeField(Pl, Vec, Str): 1->M: " + DoLog("collection.size", "" + collectionAsEnumerable.Count()));
                 bool allFieldsNavigated = true;
@@ -462,7 +461,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     XElement xmlValueElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {
-                        INakedObject value = oneToOneAssociation.GetNakedObject(nakedObject);
+                        INakedObject value = oneToOneAssociation.GetNakedObject(nakedObject, persistor);
 
                         // a null value would be a programming error, but we protect
                         // against it anyway
@@ -499,7 +498,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     XElement xmlReferenceElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {
-                        INakedObject referencedNakedObject = oneToOneAssociation.GetNakedObject(nakedObject);
+                        INakedObject referencedNakedObject = oneToOneAssociation.GetNakedObject(nakedObject, persistor);
                         string fullyQualifiedClassName = field.Specification.FullName;
 
                         // XML
@@ -526,14 +525,14 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     XElement xmlCollectionElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {
-                        INakedObject collection = oneToManyAssociation.GetNakedObject(nakedObject);
+                        INakedObject collection = oneToManyAssociation.GetNakedObject(nakedObject, persistor);
                         ITypeOfFacet facet = collection.GetTypeOfFacetFromSpec();
 
                         INakedObjectSpecification referencedTypeNos = facet.ValueSpec;
                         string fullyQualifiedClassName = referencedTypeNos.FullName;
 
                         // XML
-                        NofMetaModel.SetNofCollection(xmlCollectionElement, Schema.Prefix, fullyQualifiedClassName, collection, manager);
+                        NofMetaModel.SetNofCollection(xmlCollectionElement, Schema.Prefix, fullyQualifiedClassName, collection, persistor);
                     }
                     catch (Exception) {
                         Log.Warn("objectToElement(NO): " + DoLog("field", fieldName) + ": get(obj) threw exception - skipping XML generation");

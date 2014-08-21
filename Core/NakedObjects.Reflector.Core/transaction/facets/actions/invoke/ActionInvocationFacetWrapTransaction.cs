@@ -37,8 +37,8 @@ namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
         }
 
 
-        private INakedObject InvokeInTransaction(Func<INakedObject> action) {
-            INakedObjectPersistor persistor = NakedObjectsContext.ObjectPersistor;
+        private INakedObject InvokeInTransaction(Func<INakedObject> action, INakedObjectTransactionManager persistor) {
+           
             try {
                 persistor.StartTransaction();
                 INakedObject result = action();
@@ -57,12 +57,12 @@ namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
             }
         }
 
-        public override INakedObject Invoke(INakedObject target, INakedObject[] parameters) {
-            return InvokeInTransaction(() => underlyingFacet.Invoke(target, parameters));
+        public override INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectPersistor persistor) {
+            return InvokeInTransaction(() => underlyingFacet.Invoke(target, parameters, persistor), persistor);
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage) {
-            return InvokeInTransaction(() => underlyingFacet.Invoke(nakedObject, parameters, resultPage));
+        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectPersistor persistor) {
+            return InvokeInTransaction(() => underlyingFacet.Invoke(nakedObject, parameters, resultPage, persistor), persistor);
         }
 
         public override string ToString() {

@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
 
@@ -36,8 +35,8 @@ namespace NakedObjects.Reflector.Spec {
 
         #region IOneToManyAssociation Members
 
-        public override INakedObject GetNakedObject(INakedObject inObject) {
-            return GetCollection(inObject);
+        public override INakedObject GetNakedObject(INakedObject inObject, INakedObjectManager manager) {
+            return GetCollection(inObject, manager);
         }
 
         public override bool IsCollection {
@@ -48,12 +47,12 @@ namespace NakedObjects.Reflector.Spec {
             get { return isASet; }
         }
 
-        public override bool IsEmpty(INakedObject inObject) {
-            return Count(inObject) == 0;
+        public override bool IsEmpty(INakedObject inObject, INakedObjectPersistor persistor) {
+            return Count(inObject, persistor) == 0;
         }
 
-        public virtual int Count(INakedObject inObject) {
-            return NakedObjectsContext.ObjectPersistor.CountField(inObject, Id);
+        public virtual int Count(INakedObject inObject, INakedObjectPersistor persistor) {
+            return persistor.CountField(inObject, Id);
         }
 
         public override bool IsInline {
@@ -89,21 +88,21 @@ namespace NakedObjects.Reflector.Spec {
             return new INakedObject[0];
         }
 
-        private INakedObject GetCollection(INakedObject inObject) {
+        private INakedObject GetCollection(INakedObject inObject, INakedObjectManager manager) {
             object collection = GetFacet<IPropertyAccessorFacet>().GetProperty(inObject);
             if (collection == null) {
                 return null;
             }
-            INakedObject adapterFor = NakedObjectsContext.ObjectPersistor.CreateAggregatedAdapter(inObject, ((INakedObjectAssociation) this).Id, collection);
+            INakedObject adapterFor = manager.CreateAggregatedAdapter(inObject, ((INakedObjectAssociation)this).Id, collection);
             adapterFor.TypeOfFacet = GetFacet<ITypeOfFacet>();
-            SetResolveStateForDerivedCollections(adapterFor, NakedObjectsContext.ObjectPersistor);
+            SetResolveStateForDerivedCollections(adapterFor, manager);
             return adapterFor;
         }
 
-        private void SetResolveStateForDerivedCollections(INakedObject adapterFor, INakedObjectPersistor persistor) {
+        private void SetResolveStateForDerivedCollections(INakedObject adapterFor, INakedObjectManager manager) {
             bool isDerived = !IsPersisted;
             if (isDerived && !adapterFor.ResolveState.IsResolved()) {
-                if (adapterFor.GetAsEnumerable(persistor).Any()) {
+                if (adapterFor.GetAsEnumerable(manager).Any()) {
                     adapterFor.ResolveState.Handle(Events.StartResolvingEvent);
                     adapterFor.ResolveState.Handle(Events.EndResolvingEvent);
                 }

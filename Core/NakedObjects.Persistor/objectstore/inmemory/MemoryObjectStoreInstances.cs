@@ -49,7 +49,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                 nakedObject = manager.CreateAdapter(obj.DomainObject, oid, null);
                 nakedObject.OptimisticLock = obj.Version;
                 foreach (INakedObjectAssociation field in nakedObject.Specification.Properties.Where(field => field.IsPersisted)) {
-                    INakedObject fieldObject = field.GetNakedObject(nakedObject);
+                    INakedObject fieldObject = field.GetNakedObject(nakedObject, manager);
                     if (field.IsCollection) {
                         if (fieldObject.ResolveState.IsResolvable()) {
                             fieldObject.ResolveState.Handle(Events.StartResolvingEvent);

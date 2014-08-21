@@ -83,7 +83,7 @@ namespace NakedObjects.Xat {
 
             INakedObject[] parms = action.RealParameters(owningObject.NakedObject, parameterObjects);
             INakedObject target = action.RealTarget(owningObject.NakedObject, persistor);
-            INakedObject result = action.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page);
+            INakedObject result = action.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, persistor);
 
             if (result == null) {
                 return null;

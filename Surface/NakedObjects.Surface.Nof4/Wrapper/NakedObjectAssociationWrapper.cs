@@ -139,7 +139,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSurface GetNakedObject(INakedObjectSurface target) {
-            INakedObject result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject);
+            INakedObject result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject, NakedObjectsContext.ObjectPersistor);
             return NakedObjectWrapper.Wrap(result, Surface);
         }
 
@@ -178,7 +178,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public int Count(INakedObjectSurface target) {
             if (IsCollection) {
-                INakedObject result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject);
+                INakedObject result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject, NakedObjectsContext.ObjectPersistor);
                 return result.GetCollectionFacetFromSpec().AsQueryable(result).Count();
             }
             return 0;

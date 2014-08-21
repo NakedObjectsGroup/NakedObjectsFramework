@@ -50,7 +50,7 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public override INakedObject GetNakedObject(INakedObject fromObject) {
+        public override INakedObject GetNakedObject(INakedObject fromObject, INakedObjectManager manager) {
             return GetAssociation(fromObject);
         }
 
@@ -111,7 +111,7 @@ namespace NakedObjects.Reflector.Spec {
             return InteractionUtils.IsValid(buf);
         }
 
-        public override bool IsEmpty(INakedObject inObject) {
+        public override bool IsEmpty(INakedObject inObject, INakedObjectPersistor persistor) {
             return GetAssociation(inObject) == null;
         }
 
@@ -134,17 +134,17 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public virtual void SetAssociation(INakedObject inObject, INakedObject associate) {
+        public virtual void SetAssociation(INakedObject inObject, INakedObject associate, INakedObjectPersistor persistor) {
             INakedObject currentValue = GetAssociation(inObject);
             if (currentValue != associate) {
                 if (associate == null && ContainsFacet<IPropertyClearFacet>()) {
-                    GetFacet<IPropertyClearFacet>().ClearProperty(inObject);
+                    GetFacet<IPropertyClearFacet>().ClearProperty(inObject, persistor);
                 }
                 else {
                     var setterFacet = GetFacet<IPropertySetterFacet>();
                     if (setterFacet != null) {
                         inObject.ResolveState.CheckCanAssociate(associate);
-                        setterFacet.SetProperty(inObject, associate);
+                        setterFacet.SetProperty(inObject, associate, persistor);
                     }
                 }
             }

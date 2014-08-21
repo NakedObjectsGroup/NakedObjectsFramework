@@ -486,7 +486,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             PropertyContext context = CanChangeProperty(nakedObject, propertyName, argument.Value);
             if (string.IsNullOrEmpty(context.Reason)) {
                 IEnumerable<PropertyContext> existingValues = context.Target.Specification.Properties.Where(p => p.Id != context.Id).
-                                                                      Select(p => new {p, no = p.GetNakedObject(context.Target)}).
+                                                                      Select(p => new {p, no = p.GetNakedObject(context.Target, NakedObjectsContext.ObjectPersistor)}).
                                                                       Select(ao => new PropertyContext {
                                                                           Property = ao.p,
                                                                           ProposedNakedObject = ao.no,
@@ -512,7 +512,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private static void SetProperty(PropertyContext context) {
-            ((IOneToOneAssociation) context.Property).SetAssociation(context.Target, context.ProposedValue == null ? null : context.ProposedNakedObject);
+            ((IOneToOneAssociation) context.Property).SetAssociation(context.Target, context.ProposedValue == null ? null : context.ProposedNakedObject, NakedObjectsContext.ObjectPersistor);
         }
 
         private static void ValidateConcurrency(INakedObject nakedObject, string digest) {
@@ -669,7 +669,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private IConsent IsOfCorrectType(IOneToManyAssociation property, PropertyContext context) {
             // todo this should probably be in the framework somewhere
-            INakedObject collectionNakedObject = property.GetNakedObject(context.Target);
+            INakedObject collectionNakedObject = property.GetNakedObject(context.Target, NakedObjectsContext.ObjectPersistor);
             ITypeOfFacet facet = collectionNakedObject.GetTypeOfFacetFromSpec();
 
             if (context.ProposedNakedObject.Specification.IsOfType(facet.ValueSpec)) {

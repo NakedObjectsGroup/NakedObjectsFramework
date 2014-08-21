@@ -6,6 +6,7 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Properties.Modify;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Modify {
@@ -25,7 +26,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Modify {
 
         #endregion
 
-        public override void SetProperty(INakedObject nakedObject, INakedObject value) {
+        public override void SetProperty(INakedObject nakedObject, INakedObject value, INakedObjectPersistor persistor) {
             try {
                 property.SetValue(nakedObject.GetDomainObject(), value.GetDomainObject(), null);
             }

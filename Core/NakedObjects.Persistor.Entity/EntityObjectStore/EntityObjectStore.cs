@@ -251,7 +251,7 @@ namespace NakedObjects.EntityObjectStore {
             if (nakedObject.Specification != null) {
                 // testing check 
                 foreach (INakedObjectAssociation assoc in nakedObject.Specification.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
-                    INakedObject adapter = assoc.GetNakedObject(nakedObject);
+                    INakedObject adapter = assoc.GetNakedObject(nakedObject, Manager);
                     if (adapter.ResolveState.IsGhost()) {
                         StartResolving(adapter, GetContext(nakedObject));
                         EndResolving(adapter);
@@ -358,7 +358,7 @@ namespace NakedObjects.EntityObjectStore {
 
         private  LocalContext ResetPocoContext(PocoEntityContextConfiguration pocoConfig) {
             try {
-                return new LocalContext(pocoConfig, Session) {IsInitialized = true};
+                return new LocalContext(pocoConfig, Session, Manager) {IsInitialized = true};
             }
             catch (Exception e) {
                 string explain = string.Format(Resources.NakedObjects.StartPersistorErrorMessage, pocoConfig.ContextName);
@@ -368,7 +368,7 @@ namespace NakedObjects.EntityObjectStore {
 
         private  LocalContext ResetCodeOnlyContext(CodeFirstEntityContextConfiguration codeOnlyConfig) {
             try {
-                return new LocalContext(codeOnlyConfig, Session);
+                return new LocalContext(codeOnlyConfig, Session, Manager);
             }
             catch (Exception e) {
                 throw new InitialisationException(Resources.NakedObjects.StartPersistorErrorCodeFirst, e);
@@ -387,7 +387,7 @@ namespace NakedObjects.EntityObjectStore {
             if (nakedObject.Specification != null) {
                 // testing check 
                 foreach (INakedObjectAssociation assoc in nakedObject.Specification.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
-                    INakedObject adapter = assoc.GetNakedObject(nakedObject);
+                    INakedObject adapter = assoc.GetNakedObject(nakedObject, Manager);
                     if (adapter.ResolveState.IsGhost()) {
                         StartResolving(adapter, GetContext(adapter));
                         EndResolving(adapter);
@@ -517,7 +517,7 @@ namespace NakedObjects.EntityObjectStore {
             INakedObject nakedObject = createAdapter(oid, domainObject);
             Injector.InitDomainObject(nakedObject.Object);
             LoadComplexTypes(nakedObject, nakedObject.ResolveState.IsGhost());
-            nakedObject.UpdateVersion(Session);
+            nakedObject.UpdateVersion(Session, Manager);
 
             if (nakedObject.ResolveState.IsGhost()) {
                 StartResolving(nakedObject, context);
@@ -807,7 +807,7 @@ namespace NakedObjects.EntityObjectStore {
             #region ISaveObjectCommand Members
 
             public void Execute(IExecutionContext executionContext) {
-                Log.DebugFormat("EntitySaveObjectCommand: pre refresh version in object {0}", nakedObject.GetVersion());
+               // Log.DebugFormat("EntitySaveObjectCommand: pre refresh version in object {0}", nakedObject.GetVersion());
                 Log.DebugFormat("Saving: {0}", nakedObject);
                 context.CurrentUpdateRootObject = nakedObject;
             }
@@ -829,6 +829,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public class LocalContext {
             private readonly ISession session;
+            private readonly INakedObjectManager manager;
             private readonly List<object> added = new List<object>();
             private readonly IDictionary<Type, Type> baseTypeMap = new Dictionary<Type, Type>();
             private readonly ISet<INakedObject> deletedNakedObjects = new HashSet<INakedObject>();
@@ -840,22 +841,23 @@ namespace NakedObjects.EntityObjectStore {
             private List<INakedObject> coUpdating;
             private List<INakedObject> updatingNakedObjects;
 
-            private LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session) {
+            private LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session, INakedObjectManager manager) {
                 this.session = session;
+                this.manager = manager;
                 preCachedTypes.ForEach(t => ownedTypes.Add(t));
                 notPersistedTypes.ForEach(t => this.notPersistedTypes.Add(t));
             }
 
-            public LocalContext(PocoEntityContextConfiguration config, ISession session)
-                : this(config.PreCachedTypes(), config.NotPersistedTypes(), session) {
+            public LocalContext(PocoEntityContextConfiguration config, ISession session, INakedObjectManager manager)
+                : this(config.PreCachedTypes(), config.NotPersistedTypes(), session, manager) {
                 WrappedObjectContext = new ObjectContext("name=" + config.ContextName);
                 Name = config.ContextName;
                 Log.DebugFormat("Context {0} Created", Name);
                 ValidatePreCachedTypes(config);
             }
 
-            public LocalContext(CodeFirstEntityContextConfiguration config, ISession session)
-                : this(config.PreCachedTypes(), config.NotPersistedTypes(), session) {
+            public LocalContext(CodeFirstEntityContextConfiguration config, ISession session, INakedObjectManager manager)
+                : this(config.PreCachedTypes(), config.NotPersistedTypes(), session, manager) {
                 WrappedObjectContext = ((IObjectContextAdapter) config.DbContext()).ObjectContext;
                 Name = WrappedObjectContext.DefaultContainerName;
                 Log.DebugFormat("Context {0} Wrapped", Name);
@@ -999,7 +1001,7 @@ namespace NakedObjects.EntityObjectStore {
             public void PostSave(EntityObjectStore store) {
                 try {
                     updatingNakedObjects.ForEach(updated);
-                    updatingNakedObjects.ForEach(x => x.UpdateVersion(session));
+                    updatingNakedObjects.ForEach(x => x.UpdateVersion(session, manager));
                     coUpdating.ForEach(updated);
                     // Take a copy of PersistedNakedObjects and clear original so new ones can be added 
                     INakedObject[] currentPersistedNakedObjects = PersistedNakedObjects.ToArray();
@@ -1140,7 +1142,7 @@ namespace NakedObjects.EntityObjectStore {
             Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
             if (oid is EntityOid) {
                 INakedObject adapter = createAdapter(oid, GetObjectByKey((EntityOid) oid, hint));
-                adapter.UpdateVersion(Session);
+                adapter.UpdateVersion(Session, Manager);
                 return adapter;
             }
             var aggregateOid = oid as AggregateOid;
@@ -1150,7 +1152,7 @@ namespace NakedObjects.EntityObjectStore {
                 INakedObjectSpecification parentSpec = reflector.LoadSpecification(parentType);
                 INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
 
-                return parent.Specification.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
+                return parent.Specification.GetProperty(aggregateOid.FieldName).GetNakedObject(parent, Manager);
             }
             throw new NakedObjectSystemException("Unexpected oid type: " + oid.GetType());
         }
@@ -1177,7 +1179,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public void ResolveField(INakedObject nakedObject, INakedObjectAssociation field) {
             Log.DebugFormat("ResolveField nakedobject: {0} field: {1}", nakedObject, field);
-            field.GetNakedObject(nakedObject);
+            field.GetNakedObject(nakedObject, Manager);
         }
 
         public int CountField(INakedObject nakedObject, INakedObjectAssociation field) {
@@ -1330,7 +1332,7 @@ namespace NakedObjects.EntityObjectStore {
                 }
             }
 
-            return field.GetNakedObject(nakedObject).GetAsEnumerable(manager).Count();
+            return field.GetNakedObject(nakedObject, Manager).GetAsEnumerable(manager).Count();
         }
 
         #endregion

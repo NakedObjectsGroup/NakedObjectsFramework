@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Reflect {
     /// <summary>
@@ -61,7 +62,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Returns the <see cref="INakedObject" /> adapting this field's object. This invokes the specified
         ///     instances accessor method and creates an adapter for the returned value
         /// </summary>
-        INakedObject GetNakedObject(INakedObject target);
+        INakedObject GetNakedObject(INakedObject target, INakedObjectManager manager);
 
         /// <summary>
         ///     Return the default for this property
@@ -81,7 +82,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Returns <c>true</c> if this field on the specified object is deemed to be empty, or has no content
         /// </summary>
-        bool IsEmpty(INakedObject target);
+        bool IsEmpty(INakedObject target, INakedObjectPersistor persistor);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

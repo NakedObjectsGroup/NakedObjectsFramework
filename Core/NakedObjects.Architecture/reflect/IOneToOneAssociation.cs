@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Reflect {
     /// <summary>
@@ -27,7 +28,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     association (such as back-links or bidirectional association). To initialise a recreated object to this
         ///     logical state the <see cref="InitAssociation" /> method should be used on each of the objects.
         /// </summary>
-        void SetAssociation(INakedObject inObject, INakedObject associate);
+        void SetAssociation(INakedObject inObject, INakedObject associate, INakedObjectPersistor persistor);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

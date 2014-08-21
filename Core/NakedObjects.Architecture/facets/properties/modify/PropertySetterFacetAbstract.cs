@@ -4,6 +4,7 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Properties.Modify {
     public abstract class PropertySetterFacetAbstract : FacetAbstract, IPropertySetterFacet {
@@ -16,7 +17,7 @@ namespace NakedObjects.Architecture.Facets.Properties.Modify {
 
         #region IPropertySetterFacet Members
 
-        public abstract void SetProperty(INakedObject nakedObject, INakedObject nakedValue);
+        public abstract void SetProperty(INakedObject nakedObject, INakedObject nakedValue, INakedObjectPersistor persistor);
 
         #endregion
     }

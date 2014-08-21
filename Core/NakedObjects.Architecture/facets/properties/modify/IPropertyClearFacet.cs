@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Properties.Modify {
     /// <summary>
@@ -15,6 +16,6 @@ namespace NakedObjects.Architecture.Facets.Properties.Modify {
     ///     method with <c>null</c>.
     /// </para>
     public interface IPropertyClearFacet : IFacet {
-        void ClearProperty(INakedObject nakedObject);
+        void ClearProperty(INakedObject nakedObject, INakedObjectPersistor persistor);
     }
 }

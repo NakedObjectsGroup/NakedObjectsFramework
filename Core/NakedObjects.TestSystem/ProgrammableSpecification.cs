@@ -355,7 +355,7 @@ namespace NakedObjects.Testing {
             get { throw new NotImplementedException(); }
         }
 
-        public INakedObject GetNakedObject(INakedObject target) {
+        public INakedObject GetNakedObject(INakedObject target, INakedObjectManager manager) {
             object value = property.GetValue(target.Object, null);
             if (value == null) {
                 return null;
@@ -375,7 +375,7 @@ namespace NakedObjects.Testing {
             throw new NotImplementedException();
         }
 
-        public bool IsEmpty(INakedObject target) {
+        public bool IsEmpty(INakedObject target, INakedObjectPersistor persistor) {
             throw new NotImplementedException();
         }
 

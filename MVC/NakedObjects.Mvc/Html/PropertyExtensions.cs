@@ -619,7 +619,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString Contents<TModel>(this HtmlHelper html, TModel model, string propertyId) {
             INakedObject nakedObject = FrameworkHelper.GetNakedObject(model);
-            return MvcHtmlString.Create(nakedObject.Specification.Properties.Where(p => p.Id == propertyId).Single().GetNakedObject(nakedObject).TitleString());
+            return MvcHtmlString.Create(nakedObject.Specification.Properties.Single(p => p.Id == propertyId).GetNakedObject(nakedObject, NakedObjectsContext.ObjectPersistor).TitleString());
         }
 
         #endregion

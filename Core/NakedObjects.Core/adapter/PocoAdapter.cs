@@ -142,9 +142,9 @@ namespace NakedObjects.Core.Adapter {
         public string ValidToPersist() {
             INakedObjectAssociation[] properties = Specification.Properties;
             foreach (INakedObjectAssociation property in properties) {
-                INakedObject referencedObject = property.GetNakedObject(this);
+                INakedObject referencedObject = property.GetNakedObject(this, persistor);
                 if (property.IsUsable(session, this, persistor).IsAllowed && property.IsVisible(session, this, persistor)) {
-                    if (property.IsMandatory && property.IsEmpty(this)) {
+                    if (property.IsMandatory && property.IsEmpty(this, persistor)) {
                         return string.Format(Resources.NakedObjects.PropertyMandatory, specification.ShortName, property.Name);
                     }
                     if (property.IsObject) {
@@ -165,7 +165,7 @@ namespace NakedObjects.Core.Adapter {
             }
 
             foreach (INakedObjectValidation validator in specification.ValidateMethods()) {
-                IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => specification.Properties.Single(p => p.Id.ToLower() == name).GetNakedObject(this));
+                IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => specification.Properties.Single(p => p.Id.ToLower() == name).GetNakedObject(this, persistor));
                 string result = validator.Execute(this, parameters.ToArray());
                 if (result != null) {
                     return result;

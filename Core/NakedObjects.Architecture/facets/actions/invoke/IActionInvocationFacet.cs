@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Invoke {
@@ -20,9 +21,9 @@ namespace NakedObjects.Architecture.Facets.Actions.Invoke {
 
         INakedObjectSpecification OnType { get; }
 
-        INakedObject Invoke(INakedObject target, INakedObject[] parameters);
+        INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectPersistor persistor);
 
-        INakedObject Invoke(INakedObject target, INakedObject[] parameters, int resultPage);
+        INakedObject Invoke(INakedObject target, INakedObject[] parameters, int resultPage, INakedObjectPersistor persistor);
 
         bool GetIsRemoting(INakedObject target);
     }

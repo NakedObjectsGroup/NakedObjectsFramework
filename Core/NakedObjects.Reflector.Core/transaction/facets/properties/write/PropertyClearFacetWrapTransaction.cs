@@ -7,8 +7,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Properties.Modify;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.Transaction.Facets.Properties.Write {
     public class PropertyClearFacetWrapTransaction : PropertyClearFacetAbstract {
@@ -19,21 +17,21 @@ namespace NakedObjects.Reflector.Transaction.Facets.Properties.Write {
             this.underlyingFacet = underlyingFacet;
         }
 
-        public override void ClearProperty(INakedObject inObject) {
-            INakedObjectPersistor objectManager = NakedObjectsContext.ObjectPersistor;
+        public override void ClearProperty(INakedObject inObject, INakedObjectPersistor persistor) {
+          
             if (inObject.ResolveState.IsPersistent()) {
                 try {
-                    objectManager.StartTransaction();
-                    underlyingFacet.ClearProperty(inObject);
-                    objectManager.EndTransaction();
+                    persistor.StartTransaction();
+                    underlyingFacet.ClearProperty(inObject, persistor);
+                    persistor.EndTransaction();
                 }
                 catch (Exception) {
-                    NakedObjectsContext.ObjectPersistor.Abort(objectManager, FacetHolder);
+                    persistor.Abort(persistor, FacetHolder);
                     throw;
                 }
             }
             else {
-                underlyingFacet.ClearProperty(inObject);
+                underlyingFacet.ClearProperty(inObject, persistor);
             }
         }
 

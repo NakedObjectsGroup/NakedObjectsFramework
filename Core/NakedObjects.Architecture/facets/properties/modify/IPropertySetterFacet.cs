@@ -4,6 +4,7 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Properties.Access;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Properties.Modify {
     /// <summary>
@@ -19,6 +20,6 @@ namespace NakedObjects.Architecture.Facets.Properties.Modify {
         /// <summary>
         ///     Sets the value of this property
         /// </summary>
-        void SetProperty(INakedObject nakedObject, INakedObject nakedValue);
+        void SetProperty(INakedObject nakedObject, INakedObject nakedValue, INakedObjectPersistor persistor);
     }
 }

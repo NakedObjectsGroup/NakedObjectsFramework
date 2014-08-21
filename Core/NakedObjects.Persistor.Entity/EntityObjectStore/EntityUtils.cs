@@ -5,6 +5,7 @@
 using System;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Util;
 
@@ -12,8 +13,8 @@ namespace NakedObjects.EntityObjectStore {
     public static class EntityUtils {
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityUtils));
 
-        public static void UpdateVersion(this INakedObject nakedObject, ISession session) {
-            object versionObject = nakedObject == null ? null : nakedObject.GetVersion();
+        public static void UpdateVersion(this INakedObject nakedObject, ISession session, INakedObjectManager manager) {
+            object versionObject = nakedObject == null ? null : nakedObject.GetVersion(manager);
             if (versionObject != null) {
                 nakedObject.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
                 Log.DebugFormat("GetObject: Updating Version {0} on {1}", nakedObject.Version, nakedObject);

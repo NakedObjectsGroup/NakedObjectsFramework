@@ -318,7 +318,7 @@ namespace NakedObjects.Persistor.Objectstore {
             if (field.Specification.HasNoIdentity) {
                 return;
             }
-            INakedObject reference = field.GetNakedObject(nakedObject);
+            INakedObject reference = field.GetNakedObject(nakedObject, this);
             if (reference == null || reference.ResolveState.IsResolved()) {
                 return;
             }
@@ -344,7 +344,7 @@ namespace NakedObjects.Persistor.Objectstore {
             INakedObjectAssociation association = nakedObject.Specification.Properties.Single(x => x.Id == field);
 
             if (nakedObject.Specification.IsViewModel) {
-                INakedObject collection = association.GetNakedObject(nakedObject);
+                INakedObject collection = association.GetNakedObject(nakedObject, this);
                 return collection.GetCollectionFacetFromSpec().AsEnumerable(collection, this).Count();
             }
 
@@ -592,7 +592,7 @@ namespace NakedObjects.Persistor.Objectstore {
             var oid = new ViewModelOid(reflector, spec);
             INakedObject adapter = NewAdapterForKnownObject(viewModel, oid);
 
-            object versionObject = adapter.GetVersion();
+            object versionObject = adapter.GetVersion(this);
             if (versionObject != null) {
                 adapter.OptimisticLock = new ConcurrencyCheckVersion(Session.UserName, DateTime.Now, versionObject);
                 Log.DebugFormat("CreateAdapterForViewModel: Updating Version {0} on {1}", adapter.Version, adapter);

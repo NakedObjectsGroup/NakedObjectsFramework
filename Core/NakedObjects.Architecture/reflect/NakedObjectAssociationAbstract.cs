@@ -80,9 +80,9 @@ namespace NakedObjects.Architecture.Reflect {
 
         public abstract bool IsMandatory { get; }
 
-        public abstract INakedObject GetNakedObject(INakedObject fromObject);
+        public abstract INakedObject GetNakedObject(INakedObject fromObject, INakedObjectManager manager);
 
-        public abstract bool IsEmpty(INakedObject adapter);
+        public abstract bool IsEmpty(INakedObject adapter, INakedObjectPersistor persistor);
         public abstract bool IsInline { get; }
 
         public abstract INakedObject GetDefault(INakedObject nakedObject);

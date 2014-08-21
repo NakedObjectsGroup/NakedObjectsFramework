@@ -123,7 +123,7 @@ namespace NakedObjects.Reflector.Spec {
             Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);
             INakedObject[] parms = RealParameters(nakedObject, parameterSet);
             INakedObject target = RealTarget(nakedObject, persistor);
-            return GetFacet<IActionInvocationFacet>().Invoke(target, parms);
+            return GetFacet<IActionInvocationFacet>().Invoke(target, parms, persistor);
         }
 
         public virtual INakedObject RealTarget(INakedObject target, INakedObjectPersistor persistor) {

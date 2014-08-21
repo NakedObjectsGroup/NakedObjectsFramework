@@ -173,7 +173,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObject parent = RestoreObject(parentOid);
             INakedObjectAssociation assoc = parent.Specification.Properties.Where((p => p.Id == aggregateOid.FieldName)).Single();
 
-            return assoc.GetNakedObject(parent);
+            return assoc.GetNakedObject(parent, NakedObjectsContext.ObjectPersistor);
         }
 
         private static INakedObject RestoreViewModel(ViewModelOid viewModelOid) {

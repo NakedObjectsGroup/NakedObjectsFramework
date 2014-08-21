@@ -24,7 +24,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static MvcHtmlString[] Collections(this HtmlHelper html, object domainObject, string defaultTo = IdHelper.ListDisplayFormat) {
             INakedObject adapter = FrameworkHelper.GetNakedObject(domainObject);
-            IEnumerable<INakedObject> collections = adapter.Specification.Properties.Where(obj => obj.IsCollection).Select(a => a.GetNakedObject(adapter));
+            IEnumerable<INakedObject> collections = adapter.Specification.Properties.Where(obj => obj.IsCollection).Select(a => a.GetNakedObject(adapter, NakedObjectsContext.ObjectPersistor));
             return collections.Select(c => html.Collection(c.GetAsEnumerable(NakedObjectsContext.ObjectPersistor), null, defaultTo)).ToArray();
         }
 
@@ -38,7 +38,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static string[] CollectionTitles(this HtmlHelper html, object domainObject, string format) {
             INakedObject adapter = FrameworkHelper.GetNakedObject(domainObject);
-            var collections = adapter.Specification.Properties.Where(obj => obj.IsCollection && obj.IsVisible(NakedObjectsContext.Session, adapter, NakedObjectsContext.ObjectPersistor)).Select(a => new { assoc = a, val = a.GetNakedObject(adapter) });
+            var collections = adapter.Specification.Properties.Where(obj => obj.IsCollection && obj.IsVisible(NakedObjectsContext.Session, adapter, NakedObjectsContext.ObjectPersistor)).Select(a => new { assoc = a, val = a.GetNakedObject(adapter, NakedObjectsContext.ObjectPersistor) });
 
             return collections.Select(coll => string.Format(format, coll.assoc.Name, coll.val.TitleString())).ToArray();
         }

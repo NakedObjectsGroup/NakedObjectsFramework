@@ -4,6 +4,7 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Properties.Modify {
     public abstract class PropertyClearFacetAbstract : FacetAbstract, IPropertyClearFacet {
@@ -16,7 +17,7 @@ namespace NakedObjects.Architecture.Facets.Properties.Modify {
 
         #region IPropertyClearFacet Members
 
-        public abstract void ClearProperty(INakedObject nakedObject);
+        public abstract void ClearProperty(INakedObject nakedObject, INakedObjectPersistor persistor);
 
         #endregion
     }

@@ -168,7 +168,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public virtual FileContentResult GetFile(string Id, string PropertyId) {
             INakedObject target = FrameworkHelper.GetNakedObjectFromId(Id);
             INakedObjectAssociation assoc = target.Specification.Properties.Single(a => a.Id == PropertyId);
-            var domainObject = assoc.GetNakedObject(target).GetDomainObject();
+            var domainObject = assoc.GetNakedObject(target, NakedObjectsContext.ObjectPersistor).GetDomainObject();
 
             return AsFile(domainObject);
         }

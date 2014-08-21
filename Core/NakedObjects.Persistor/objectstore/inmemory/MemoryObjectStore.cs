@@ -180,7 +180,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
         }
 
         public int CountField(INakedObject nakedObject, INakedObjectAssociation association) {
-            return association.GetNakedObject(nakedObject).GetAsEnumerable(Manager).Count();
+            return association.GetNakedObject(nakedObject, Manager).GetAsEnumerable(Manager).Count();
         }
 
         public INakedObject FindByKeys(Type type, object[] keys) {
@@ -197,7 +197,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public virtual void ResolveField(INakedObject nakedObject, INakedObjectAssociation field) {
             Log.DebugFormat("ResolveField nakedobject: {0} field : {1}", nakedObject, field);
-            INakedObject reference = field.GetNakedObject(nakedObject);
+            INakedObject reference = field.GetNakedObject(nakedObject, Manager);
             reference.ResolveState.Handle(Events.StartResolvingEvent);
             reference.ResolveState.Handle(Events.EndResolvingEvent);
         }

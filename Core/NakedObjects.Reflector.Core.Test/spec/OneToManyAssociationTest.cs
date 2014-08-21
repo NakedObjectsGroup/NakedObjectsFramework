@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using NakedObjects.Core.Context;
 using NUnit.Framework;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
@@ -64,7 +65,7 @@ namespace NakedObjects.Reflector.spec {
 
         [Test]
         public void TestCount() {
-            Assert.AreEqual(0, association.Count(nakedObject));
+            Assert.AreEqual(0, association.Count(nakedObject, NakedObjectsContext.ObjectPersistor));
         }
     }
 }

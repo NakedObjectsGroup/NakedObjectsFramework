@@ -84,11 +84,11 @@ namespace NakedObjects.Architecture.Adapter {
                                 fullDateTime.Second);
         }
 
-        public static object GetVersion(this INakedObject nakedObject) {
+        public static object GetVersion(this INakedObject nakedObject, INakedObjectManager manager) {
             INakedObjectAssociation versionProperty = nakedObject.GetVersionProperty();
 
             if (versionProperty != null) {
-                object version = versionProperty.GetNakedObject(nakedObject).GetDomainObject();
+                object version = versionProperty.GetNakedObject(nakedObject, manager).GetDomainObject();
 
                 if (version is DateTime) {
                     return ((DateTime)version).StripMillis();

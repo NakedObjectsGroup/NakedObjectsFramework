@@ -8,6 +8,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Presentation;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Context;
 
 namespace NakedObjects.Web.Mvc.Html {
     internal abstract class ObjectContext {
@@ -61,7 +62,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public INakedObject GetValue() {
-            return Property.GetNakedObject(Target);
+            return Property.GetNakedObject(Target, NakedObjectsContext.ObjectPersistor);
         }
 
         public bool IsEdit { get; private set; }

@@ -9,6 +9,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Invoke;
 using NakedObjects.Architecture.Facets.Actions.Potency;
 using NakedObjects.Architecture.Facets.Objects.Callbacks;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Context;
@@ -52,7 +53,7 @@ namespace NakedObjects.Reflector.Audit {
 
         private class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
             private readonly IIdentifier identifier;
-            private readonly AuditManager manager;
+            private readonly AuditManager auditManager;
             private readonly INakedObjectReflector reflector;
             private readonly IActionInvocationFacet underlyingFacet;
             private bool? isQueryOnly;
@@ -60,7 +61,7 @@ namespace NakedObjects.Reflector.Audit {
             public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, AuditManager auditManager, INakedObjectReflector reflector)
                 : base(underlyingFacet.FacetHolder) {
                 this.underlyingFacet = underlyingFacet;
-                manager = auditManager;
+                this.auditManager = auditManager;
                 this.reflector = reflector;
                 identifier = underlyingFacet.FacetHolder.Identifier;
             }
@@ -87,14 +88,14 @@ namespace NakedObjects.Reflector.Audit {
                 return underlyingFacet.GetIsRemoting(target);
             }
 
-            public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters) {
-                manager.Invoke(nakedObject, parameters, IsQueryOnly, identifier);
-                return underlyingFacet.Invoke(nakedObject, parameters);
+            public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, INakedObjectPersistor persistor) {
+                auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier);
+                return underlyingFacet.Invoke(nakedObject, parameters, persistor);
             }
 
-            public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage) {
-                manager.Invoke(nakedObject, parameters, IsQueryOnly, identifier);
-                return underlyingFacet.Invoke(nakedObject, parameters, resultPage);
+            public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectPersistor persistor) {
+                auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier);
+                return underlyingFacet.Invoke(nakedObject, parameters, resultPage, persistor);
             }
         }
 

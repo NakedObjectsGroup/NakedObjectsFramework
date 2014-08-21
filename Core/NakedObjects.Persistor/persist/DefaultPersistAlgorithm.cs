@@ -70,14 +70,14 @@ namespace NakedObjects.Persistor {
                             continue;
                         }
                         if (field is IOneToManyAssociation) {
-                            INakedObject collection = field.GetNakedObject(nakedObject);
+                            INakedObject collection = field.GetNakedObject(nakedObject, persistor);
                             if (collection == null) {
                                 throw new NotPersistableException("Collection " + field.Name + " does not exist in " + nakedObject.Specification.FullName);
                             }
                             MakePersistent(collection, persistor);
                         }
                         else {
-                            INakedObject fieldValue = field.GetNakedObject(nakedObject);
+                            INakedObject fieldValue = field.GetNakedObject(nakedObject, persistor);
                             if (fieldValue == null) {
                                 continue;
                             }
