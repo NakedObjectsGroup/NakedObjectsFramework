@@ -180,7 +180,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
         }
 
         public int CountField(INakedObject nakedObject, INakedObjectAssociation association) {
-            return association.GetNakedObject(nakedObject).GetAsEnumerable().Count();
+            return association.GetNakedObject(nakedObject).GetAsEnumerable(Manager).Count();
         }
 
         public INakedObject FindByKeys(Type type, object[] keys) {

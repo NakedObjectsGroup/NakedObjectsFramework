@@ -322,6 +322,10 @@ namespace NakedObjects.TestSystem {
             throw new Exception("No persisted object to get for " + oid);
         }
 
+        public void AddPersistedObject(INakedObject nakedObject) {
+            throw new NotImplementedException();
+        }
+
         public void MadePersistent(INakedObject nakedObject) {
             // TODO modify OID?
         }

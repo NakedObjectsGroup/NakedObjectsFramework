@@ -223,7 +223,7 @@ namespace NakedObjects.Testing {
             throw new NotImplementedException();
         }
 
-        public IEnumerable GetBoundedSet() {
+        public IEnumerable GetBoundedSet(INakedObjectPersistor persistor) {
             throw new NotImplementedException();
         }
 

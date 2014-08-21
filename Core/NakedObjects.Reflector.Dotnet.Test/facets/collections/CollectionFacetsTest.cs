@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NakedObjects.Core.Context;
 using NUnit.Framework;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
@@ -20,18 +21,18 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         private readonly FacetHolderImpl facetHolder = new FacetHolderImpl();
 
         private static void Size(ICollectionFacet collectionFacet, INakedObject collection) {
-            Assert.AreEqual(2, collectionFacet.AsEnumerable(collection).Count());
+            Assert.AreEqual(2, collectionFacet.AsEnumerable(collection, NakedObjectsContext.ObjectPersistor).Count());
         }
 
         private static void ValidateCollection(ICollectionFacet collectionFacet, INakedObject collection, IEnumerable<object> objects) {
-            IEnumerable<INakedObject> collectionAsEnumerable = collectionFacet.AsEnumerable(collection);
+            IEnumerable<INakedObject> collectionAsEnumerable = collectionFacet.AsEnumerable(collection, NakedObjectsContext.ObjectPersistor);
             Assert.AreEqual(collectionAsEnumerable.Count(), objects.Count());
             IEnumerable<Tuple<object, object>> zippedCollections = collectionAsEnumerable.Zip(objects, (no, o1) => new Tuple<object, object>(no.Object, o1));
             zippedCollections.ForEach(t => Assert.AreSame(t.Item1, t.Item2));
         }
 
         private static void FirstElement(ICollectionFacet collectionFacet, INakedObject collection, object first) {
-            Assert.AreSame(first, collectionFacet.AsEnumerable(collection).First().Object);
+            Assert.AreSame(first, collectionFacet.AsEnumerable(collection, NakedObjectsContext.ObjectPersistor).First().Object);
         }
 
         private void Contains(ICollectionFacet collectionFacet, INakedObject collection, object first, object second) {
@@ -47,11 +48,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         }
 
         private void Page(ICollectionFacet testArrayFacet, INakedObject collection, object first) {
-            INakedObject pagedCollection = testArrayFacet.Page(1, 1, collection, false);
+            INakedObject pagedCollection = testArrayFacet.Page(1, 1, collection, NakedObjectsContext.ObjectPersistor, false);
             var pagedCollectionFacet = new DotNetGenericIEnumerableFacet<object>(facetHolder, typeof (object), false);
 
-            Assert.IsTrue(pagedCollectionFacet.AsEnumerable(pagedCollection).Count() == 1);
-            Assert.AreSame(pagedCollectionFacet.AsEnumerable(pagedCollection).First().Object, first);
+            Assert.IsTrue(pagedCollectionFacet.AsEnumerable(pagedCollection, NakedObjectsContext.ObjectPersistor).Count() == 1);
+            Assert.AreSame(pagedCollectionFacet.AsEnumerable(pagedCollection, NakedObjectsContext.ObjectPersistor).First().Object, first);
         }
 
         [Test]

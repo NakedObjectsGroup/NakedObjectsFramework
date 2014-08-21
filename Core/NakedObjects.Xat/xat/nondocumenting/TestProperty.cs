@@ -385,7 +385,7 @@ namespace NakedObjects.Xat {
                 Assert.IsTrue(field.GetNakedObject(owningObject.NakedObject).ValidToPersist() == null);
             }
             if (field.IsCollection) {
-                field.GetNakedObject(owningObject.NakedObject).GetAsEnumerable().ForEach(no => Assert.AreEqual(no.ValidToPersist(), null));
+                field.GetNakedObject(owningObject.NakedObject).GetAsEnumerable(persistor).ForEach(no => Assert.AreEqual(no.ValidToPersist(), null));
             }
 
             return this;

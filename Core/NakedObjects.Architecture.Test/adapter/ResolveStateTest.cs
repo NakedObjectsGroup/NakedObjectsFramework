@@ -6,6 +6,7 @@ using System.Collections;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Objects.Callbacks;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
@@ -257,7 +258,7 @@ namespace NakedObjects.Architecture.Adapter {
                 throw new NotImplementedException();
             }
 
-            public IEnumerable GetBoundedSet() {
+            public IEnumerable GetBoundedSet(INakedObjectPersistor persistor) {
                 throw new NotImplementedException();
             }
 

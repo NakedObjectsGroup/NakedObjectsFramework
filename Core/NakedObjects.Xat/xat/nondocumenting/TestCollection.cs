@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Resolve;
 
 
@@ -15,9 +16,9 @@ namespace NakedObjects.Xat {
         private readonly INakedObject collection;
         private readonly IEnumerable<ITestObject> wrappedCollection;
 
-        public TestCollection(INakedObject collection, ITestObjectFactory factory) {
+        public TestCollection(INakedObject collection, ITestObjectFactory factory, INakedObjectManager manager) {
             this.collection = collection;
-            wrappedCollection = collection.GetAsEnumerable().Select(factory.CreateTestObject);
+            wrappedCollection = collection.GetAsEnumerable(manager).Select(factory.CreateTestObject);
         }
 
         #region ITestCollection Members

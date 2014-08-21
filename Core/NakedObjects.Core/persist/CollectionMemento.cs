@@ -140,7 +140,7 @@ namespace NakedObjects.Core.Persist {
                     }
                     else {
                         helper.Add(ParameterType.ObjectCollection);
-                        helper.Add(parameter.GetCollectionFacetFromSpec().AsEnumerable(parameter).Select(p => p.Oid).Cast<IEncodedToStrings>(), instanceType);
+                        helper.Add(parameter.GetCollectionFacetFromSpec().AsEnumerable(parameter, persistor).Select(p => p.Oid).Cast<IEncodedToStrings>(), instanceType);
                     }
                 }
                 else {

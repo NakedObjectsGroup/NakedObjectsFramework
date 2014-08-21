@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Collections.Modify {
     public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet {
@@ -23,10 +24,10 @@ namespace NakedObjects.Architecture.Facets.Collections.Modify {
 
         public abstract bool Contains(INakedObject collection, INakedObject element);
         public abstract void Init(INakedObject nakedObject, INakedObject[] initData);
-        public abstract INakedObject Page(int page, int size, INakedObject collection, bool forceEnumerable);
+        public abstract INakedObject Page(int page, int size, INakedObject collection, INakedObjectPersistor persistor, bool forceEnumerable);
 
         public bool IsASet { get; private set; }
-        public abstract IEnumerable<INakedObject> AsEnumerable(INakedObject collection);
+        public abstract IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager);
         public abstract IQueryable AsQueryable(INakedObject collection);
 
         #endregion

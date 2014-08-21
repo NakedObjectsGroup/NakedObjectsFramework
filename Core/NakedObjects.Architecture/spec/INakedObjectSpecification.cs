@@ -8,6 +8,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Facets.Objects.Encodeable;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Spec {
@@ -126,7 +127,7 @@ namespace NakedObjects.Architecture.Spec {
 
         object CreateObject();
 
-        IEnumerable GetBoundedSet();
+        IEnumerable GetBoundedSet(INakedObjectPersistor persistor);
 
         void MarkAsService();
 

@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.Spec;
@@ -216,7 +217,7 @@ namespace NakedObjects.TestSystem {
             return type.GetConstructor(Type.EmptyTypes).Invoke(null);
         }
 
-        public override IEnumerable GetBoundedSet() {
+        public override IEnumerable GetBoundedSet(INakedObjectPersistor persistor) {
             throw new NotImplementedException();
         }
 

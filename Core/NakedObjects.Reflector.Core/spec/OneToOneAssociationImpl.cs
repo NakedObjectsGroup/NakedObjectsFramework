@@ -77,7 +77,7 @@ namespace NakedObjects.Reflector.Spec {
             }
 
             if (Specification.IsBoundedSet()) {
-                return persistor.GetCollectionOfAdaptedObjects(Specification.GetBoundedSet()).ToArray();
+                return persistor.GetCollectionOfAdaptedObjects(Specification.GetBoundedSet(persistor)).ToArray();
             }
             return null;
         }

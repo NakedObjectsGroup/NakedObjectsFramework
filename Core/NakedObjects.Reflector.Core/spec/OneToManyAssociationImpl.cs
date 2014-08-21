@@ -96,14 +96,14 @@ namespace NakedObjects.Reflector.Spec {
             }
             INakedObject adapterFor = NakedObjectsContext.ObjectPersistor.CreateAggregatedAdapter(inObject, ((INakedObjectAssociation) this).Id, collection);
             adapterFor.TypeOfFacet = GetFacet<ITypeOfFacet>();
-            SetResolveStateForDerivedCollections(adapterFor);
+            SetResolveStateForDerivedCollections(adapterFor, NakedObjectsContext.ObjectPersistor);
             return adapterFor;
         }
 
-        private void SetResolveStateForDerivedCollections(INakedObject adapterFor) {
+        private void SetResolveStateForDerivedCollections(INakedObject adapterFor, INakedObjectPersistor persistor) {
             bool isDerived = !IsPersisted;
             if (isDerived && !adapterFor.ResolveState.IsResolved()) {
-                if (adapterFor.GetAsEnumerable().Any()) {
+                if (adapterFor.GetAsEnumerable(persistor).Any()) {
                     adapterFor.ResolveState.Handle(Events.StartResolvingEvent);
                     adapterFor.ResolveState.Handle(Events.EndResolvingEvent);
                 }

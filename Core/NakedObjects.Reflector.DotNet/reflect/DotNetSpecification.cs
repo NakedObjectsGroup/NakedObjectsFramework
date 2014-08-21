@@ -20,6 +20,7 @@ using NakedObjects.Architecture.Facets.Objects.NotPersistable;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Facets.Propcoll.NotPersisted;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
@@ -480,18 +481,18 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return new[] {spec};
         }
 
-        public override IEnumerable GetBoundedSet() {
+        public override IEnumerable GetBoundedSet(INakedObjectPersistor persistor) {
             if (this.IsBoundedSet()) {
                 if (Type.IsInterface) {
                     IList<object> instances = new List<object>();
                     foreach (INakedObjectSpecification spec in GetLeafNodes(this)) {
-                        foreach (object instance in  NakedObjectsContext.ObjectPersistor.Instances(spec)) {
+                        foreach (object instance in persistor.Instances(spec)) {
                             instances.Add(instance);
                         }
                     }
                     return instances;
                 }
-                return NakedObjectsContext.ObjectPersistor.Instances(this);
+                return persistor.Instances(this);
             }
             return new object[] {};
         }

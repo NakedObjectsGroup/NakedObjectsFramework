@@ -1,10 +1,20 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.Services;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks;
 using NakedObjects.Testing;
 using NakedObjects.Testing.Dom;
@@ -63,7 +73,7 @@ namespace NakedObjects.Persistor.Persist {
             }
         }
 */
-        private class PersistedObjectAdderSpy : IPersistedObjectAdder {
+        private class PersistedObjectAdderSpy : INakedObjectPersistor {
             private readonly IList<INakedObject> persistedObjects = new List<INakedObject>();
 
             public IList<INakedObject> PersistedObjects {
@@ -89,8 +99,203 @@ namespace NakedObjects.Persistor.Persist {
 
             #endregion
 
+            public ISession Session { get; set; }
+            public object UpdateNotifier { get; set; }
+            public bool IsInitialized { get; set; }
+            public INakedObject[] ServiceAdapters { get; private set; }
+            public IOidGenerator OidGenerator { get; private set; }
+            public IContainerInjector Injector { get; set; }
+
             public void Reset() {
                 persistedObjects.Clear();
+            }
+
+            public void AddServices(IEnumerable<ServiceWrapper> services) {
+                throw new NotImplementedException();
+            }
+
+            public IQueryable<T> Instances<T>() where T : class {
+                throw new NotImplementedException();
+            }
+
+            public IQueryable Instances(Type type) {
+                throw new NotImplementedException();
+            }
+
+            public IQueryable Instances(INakedObjectSpecification specification) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject LoadObject(IOid oid, INakedObjectSpecification spec) {
+                throw new NotImplementedException();
+            }
+
+            public void ResolveField(INakedObject nakedObject, INakedObjectAssociation field) {
+                throw new NotImplementedException();
+            }
+
+            public void LoadField(INakedObject nakedObject, string fieldName) {
+                throw new NotImplementedException();
+            }
+
+            public void ResolveImmediately(INakedObject nakedObject) {
+                throw new NotImplementedException();
+            }
+
+            public void ObjectChanged(INakedObject nakedObject) {
+                throw new NotImplementedException();
+            }
+
+            public void MakePersistent(INakedObject nakedObject) {
+                throw new NotImplementedException();
+            }
+
+            public void DestroyObject(INakedObject nakedObject) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject GetService(string id) {
+                throw new NotImplementedException();
+            }
+
+            public ServiceTypes GetServiceType(INakedObjectSpecification spec) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject[] GetServices() {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject[] GetServicesWithVisibleActions(ServiceTypes serviceType) {
+                throw new NotImplementedException();
+            }
+
+            public PropertyInfo[] GetKeys(Type type) {
+                throw new NotImplementedException();
+            }
+
+            public void Refresh(INakedObject nakedObject) {
+                throw new NotImplementedException();
+            }
+
+            public int CountField(INakedObject nakedObject, string fieldName) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject FindByKeys(Type type, object[] keys) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject[] GetServices(ServiceTypes serviceType) {
+                throw new NotImplementedException();
+            }
+
+            public List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects) {
+                throw new NotImplementedException();
+            }
+
+            public IOid RestoreGenericOid(string[] encodedData) {
+                throw new NotImplementedException();
+            }
+
+            public void PopulateViewModelKeys(INakedObject nakedObject) {
+                throw new NotImplementedException();
+            }
+
+            public void Init() {
+                throw new NotImplementedException();
+            }
+
+            public void Shutdown() {
+                throw new NotImplementedException();
+            }
+
+            public void StartTransaction() {
+                throw new NotImplementedException();
+            }
+
+            public bool FlushTransaction() {
+                throw new NotImplementedException();
+            }
+
+            public void AbortTransaction() {
+                throw new NotImplementedException();
+            }
+
+            public void UserAbortTransaction() {
+                throw new NotImplementedException();
+            }
+
+            public void EndTransaction() {
+                throw new NotImplementedException();
+            }
+
+            public void AddCommand(IPersistenceCommand command) {
+                throw new NotImplementedException();
+            }
+
+            public void Abort(INakedObjectPersistor objectManager, IFacetHolder holder) {
+                throw new NotImplementedException();
+            }
+
+            public void InitDomainObject(object obj) {
+                throw new NotImplementedException();
+            }
+
+            public void InitInlineObject(object root, object inlineObject) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject CreateInstance(INakedObjectSpecification specification) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject CreateViewModel(INakedObjectSpecification specification) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject RecreateInstance(IOid oid, INakedObjectSpecification specification) {
+                throw new NotImplementedException();
+            }
+
+            public void Reload(INakedObject nakedObject) {
+                throw new NotImplementedException();
+            }
+
+            public void RemoveAdapter(INakedObject objectToDispose) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject GetAdapterFor(object obj) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject GetAdapterFor(IOid oid) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject CreateAdapter(object domainObject, IOid oid, IVersion version) {
+                throw new NotImplementedException();
+            }
+
+            public void ReplacePoco(INakedObject nakedObject, object newDomainObject) {
+                throw new NotImplementedException();
+            }
+
+            public object CreateObject(INakedObjectSpecification specification) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject GetViewModel(IOid oid) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj) {
+                throw new NotImplementedException();
+            }
+
+            public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid) {
+                throw new NotImplementedException();
             }
         }
 

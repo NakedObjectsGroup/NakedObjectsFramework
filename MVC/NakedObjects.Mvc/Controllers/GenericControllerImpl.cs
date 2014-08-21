@@ -187,7 +187,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (filteredNakedObject.Specification.IsCollection) {
                
-                if (!filteredNakedObject.GetAsEnumerable().Any()) {
+                if (!filteredNakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Any()) {
                     NakedObjectsContext.MessageBroker.AddWarning("No objects selected");
                     return AppropriateView(controlData, targetNakedObject, targetAction);
                 }

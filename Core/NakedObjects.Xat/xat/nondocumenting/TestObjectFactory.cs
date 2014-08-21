@@ -30,7 +30,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestCollection CreateTestCollection(INakedObject instances) {
-            return new TestCollection(instances, this);
+            return new TestCollection(instances, this, persistor);
         }
 
         public ITestObject CreateTestObject(INakedObject nakedObject) {

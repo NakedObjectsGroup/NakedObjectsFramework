@@ -4,11 +4,12 @@
 
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Persistor {
     public interface IPersistAlgorithm : IRequiresSetup {
         string Name { get; }
-        void MakePersistent(INakedObject nakedObject, IPersistedObjectAdder adders);
+        void MakePersistent(INakedObject nakedObject, INakedObjectPersistor adders);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

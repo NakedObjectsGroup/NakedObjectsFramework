@@ -9,8 +9,8 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Collections.Modify;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class DotNetCollectionFacet : CollectionFacetAbstract {
@@ -24,8 +24,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             return (IList) collection.Object;
         }
 
-        public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection) {
-            return AsCollection(collection).Cast<object>().Select(domainObject => NakedObjectsContext.ObjectPersistor.CreateAdapter(domainObject, null, null));
+        public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager) {
+            return AsCollection(collection).Cast<object>().Select(domainObject => manager.CreateAdapter(domainObject, null, null));
         }
 
         public override IQueryable AsQueryable(INakedObject collection) {
@@ -36,18 +36,18 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             return AsCollection(collection).Contains(element.Object);
         }
 
-        private IEnumerable PageInternal(int page, int size, INakedObject collection) {
+        private IEnumerable PageInternal(int page, int size, INakedObject collection, INakedObjectPersistor persistor) {
             int firstIndex = (page - 1)*size;
             for (int index = firstIndex; index < firstIndex + size; index++) {
-                if (index >= AsEnumerable(collection).Count()) {
+                if (index >= AsEnumerable(collection, persistor).Count()) {
                     yield break;
                 }
                 yield return AsCollection(collection)[index];
             }
         }
 
-        public override INakedObject Page(int page, int size, INakedObject collection, bool forceEnumerable) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(PageInternal(page, size, collection), null, null);
+        public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectPersistor persistor, bool forceEnumerable) {
+            return NakedObjectsContext.ObjectPersistor.CreateAdapter(PageInternal(page, size, collection, persistor), null, null);
         }
 
         public override void Init(INakedObject collection, INakedObject[] initData) {

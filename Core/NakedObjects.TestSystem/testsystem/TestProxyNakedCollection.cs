@@ -9,6 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Collections.Modify;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
@@ -207,11 +208,11 @@ namespace NakedObjects.TestSystem {
        
 
         public override void Init(INakedObject collection, INakedObject[] initData) {}
-        public override INakedObject Page(int page, int size, INakedObject collection, bool forceEnumerable) {
+        public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectPersistor persistor, bool forceEnumerable) {
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection) {
+        public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager) {
             throw new NotImplementedException();
         }
 

@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Persist {
-    public interface INakedObjectPersistor : INakedObjectTransactionManager, IContainerInjector, INakedObjectManager {
+    public interface INakedObjectPersistor : INakedObjectTransactionManager, IContainerInjector, INakedObjectManager, IPersistedObjectAdder {
         
         // just temp workaround 
 

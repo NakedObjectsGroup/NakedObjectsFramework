@@ -14,13 +14,14 @@ using Common.Logging;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public class XmlSnapshot : IXmlSnapshot {
+        private readonly INakedObjectManager manager;
         private static readonly ILog Log = LogManager.GetLogger(typeof (XmlSnapshot));
 
         private readonly Place rootPlace;
@@ -29,10 +30,11 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
 
         //  Start a snapshot at the root object, using own namespace manager.
-        public XmlSnapshot(object obj) : this(obj, new XmlSchema()) {}
+        public XmlSnapshot(object obj, INakedObjectManager manager) : this(obj, new XmlSchema(), manager) {}
 
         // Start a snapshot at the root object, using supplied namespace manager.
-        public XmlSnapshot(object obj, XmlSchema schema) {
+        public XmlSnapshot(object obj, XmlSchema schema, INakedObjectManager manager) {
+            this.manager = manager;
             INakedObject rootObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
             Log.Debug(".ctor(" + DoLog("rootObj", rootObject) + AndLog("schema", schema) + AndLog("addOids", "" + true) + ")");
 
@@ -317,7 +319,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 var oneToManyAssociation = (IOneToManyAssociation) field;
                 INakedObject collection = oneToManyAssociation.GetNakedObject(fieldPlace.NakedObject);
 
-                INakedObject[] collectionAsEnumerable = collection.GetAsEnumerable().ToArray();
+                INakedObject[] collectionAsEnumerable = collection.GetAsEnumerable(manager).ToArray();
 
                 Log.Debug("includeField(Pl, Vec, Str): 1->M: " + DoLog("collection.size", "" + collectionAsEnumerable.Count()));
                 bool allFieldsNavigated = true;
@@ -531,7 +533,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                         string fullyQualifiedClassName = referencedTypeNos.FullName;
 
                         // XML
-                        NofMetaModel.SetNofCollection(xmlCollectionElement, Schema.Prefix, fullyQualifiedClassName, collection);
+                        NofMetaModel.SetNofCollection(xmlCollectionElement, Schema.Prefix, fullyQualifiedClassName, collection, manager);
                     }
                     catch (Exception) {
                         Log.Warn("objectToElement(NO): " + DoLog("field", fieldName) + ": get(obj) threw exception - skipping XML generation");

@@ -136,7 +136,6 @@
     <Compile Include="persist\AbstractObjectPersistorInstaller.cs" />
     <Compile Include="persist\DefaultPersistAlgorithm.cs" />
     <Compile Include="persist\IPersistAlgorithm.cs" />
-    <Compile Include="persist\IPersistedObjectAdder.cs" />
     <Compile Include="transaction\ICreateObjectCommand.cs" />
     <Compile Include="transaction\IDestroyObjectCommand.cs" />
     <Compile Include="transaction\ISaveObjectCommand.cs" />

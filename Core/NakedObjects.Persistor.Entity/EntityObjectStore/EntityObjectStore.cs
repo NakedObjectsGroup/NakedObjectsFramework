@@ -1183,7 +1183,7 @@ namespace NakedObjects.EntityObjectStore {
         public int CountField(INakedObject nakedObject, INakedObjectAssociation field) {
             Type type = TypeUtils.GetType(field.GetFacet<ITypeOfFacet>().ValueSpec.FullName);
             MethodInfo countMethod = GetType().GetMethod("Count").GetGenericMethodDefinition().MakeGenericMethod(type);
-            return (int) countMethod.Invoke(this, new object[] {nakedObject, field});
+            return (int) countMethod.Invoke(this, new object[] {nakedObject, field, Manager});
         }
 
         public INakedObject FindByKeys(Type type, object[] keys) {
@@ -1317,7 +1317,7 @@ namespace NakedObjects.EntityObjectStore {
             }
         }
 
-        public int Count<T>(INakedObject nakedObject, INakedObjectAssociation field) where T : class {
+        public int Count<T>(INakedObject nakedObject, INakedObjectAssociation field, INakedObjectManager manager) where T : class {
             if (!nakedObject.ResolveState.IsTransient()) {
                 using (var dbContext = new DbContext(GetContext(nakedObject).WrappedObjectContext, false)) {
                     // check this is an EF collection 
@@ -1330,7 +1330,7 @@ namespace NakedObjects.EntityObjectStore {
                 }
             }
 
-            return field.GetNakedObject(nakedObject).GetAsEnumerable().Count();
+            return field.GetNakedObject(nakedObject).GetAsEnumerable(manager).Count();
         }
 
         #endregion

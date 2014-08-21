@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facets.Objects.Encodeable;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Facets.Objects.Value;
 using NakedObjects.Architecture.Facets.Objects.ViewModel;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
@@ -195,7 +196,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public abstract object CreateObject();
-        public abstract IEnumerable GetBoundedSet();
+        public abstract IEnumerable GetBoundedSet(INakedObjectPersistor persistor);
         public abstract void Introspect(FacetDecoratorSet decoratorSet);
         public abstract void PopulateAssociatedActions(INakedObject[] services);
         public abstract string PluralName { get; }

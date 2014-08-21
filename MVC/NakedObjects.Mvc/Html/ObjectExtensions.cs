@@ -140,7 +140,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetCollectionTitle(INakedObject nakedObject, HtmlHelper html) {
             int pageSize, maxPage, currentPage, total;
-            int count = nakedObject.GetAsEnumerable().Count();
+            int count = nakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Count();
             if (!html.GetPagingValues(out pageSize, out maxPage, out currentPage, out total)) {
                 total = count;
             }

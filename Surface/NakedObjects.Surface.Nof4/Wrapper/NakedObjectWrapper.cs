@@ -57,7 +57,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IEnumerable<INakedObjectSurface> ToEnumerable() {
-            return WrappedNakedObject.GetAsEnumerable().Select(no => new NakedObjectWrapper(no, Surface));
+            return WrappedNakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Select(no => new NakedObjectWrapper(no, Surface));
         }
 
         // todo move into adapterutils
@@ -100,7 +100,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         private static INakedObject Page(INakedObject objectRepresentingCollection, int page, int size) {
-            return objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, true);
+            return objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, NakedObjectsContext.ObjectPersistor, true);
         }
 
         #endregion

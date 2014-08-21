@@ -374,7 +374,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static IEnumerable<Tuple<INakedObjectAssociation, INakedObject>> Items(this INakedObjectAssociation assoc, INakedObject target) {
-            return assoc.GetNakedObject(target).GetAsEnumerable().Select(no => new Tuple<INakedObjectAssociation, INakedObject>(assoc, no));
+            return assoc.GetNakedObject(target).GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Select(no => new Tuple<INakedObjectAssociation, INakedObject>(assoc, no));
         }
 
         internal static IEnumerable<ElementDescriptor> EditObjectFields(this HtmlHelper html,
@@ -900,7 +900,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             string innerHtml = "";
 
-            INakedObject[] collection = collectionNakedObject.GetAsEnumerable().ToArray();
+            INakedObject[] collection = collectionNakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).ToArray();
             INakedObjectSpecification collectionSpec = collectionNakedObject.GetTypeOfFacetFromSpec().ValueSpec;
             INakedObjectAssociation[] collectionAssocs = CollectionAssociations(collection, collectionSpec, filter, order);
 
@@ -1480,7 +1480,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
                     if (itemSpec.IsParseable) {
                         var collection = (INakedObject) rawvalue;
-                        List<object> parsedCollection = collection.GetCollectionFacetFromSpec().AsEnumerable(collection).Select(no => GetAndParseValueAsNakedObject(itemSpec, no.Object).GetDomainObject()).ToList();
+                        List<object> parsedCollection = collection.GetCollectionFacetFromSpec().AsEnumerable(collection, NakedObjectsContext.ObjectPersistor).Select(no => GetAndParseValueAsNakedObject(itemSpec, no.Object).GetDomainObject()).ToList();
                         return NakedObjectsContext.ObjectPersistor.CreateAdapter(parsedCollection, null, null);
                     }
 
@@ -1545,7 +1545,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 existingNakedObjects = new[] {existingNakedObject};
             }
             else {
-                existingNakedObjects = existingNakedObject.GetCollectionFacetFromSpec().AsEnumerable(existingNakedObject);
+                existingNakedObjects = existingNakedObject.GetCollectionFacetFromSpec().AsEnumerable(existingNakedObject, NakedObjectsContext.ObjectPersistor);
             }
 
             var enumFacet = choice.Specification.GetFacet<IEnumValueFacet>();
@@ -1853,7 +1853,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetCollectionAsTable(this HtmlHelper html, PropertyContext propertyContext) {
             INakedObject collectionNakedObject = propertyContext.GetValue();
-            bool any = collectionNakedObject.GetAsEnumerable().Any();
+            bool any = collectionNakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Any();
             Func<INakedObject, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
 
             Func<INakedObjectAssociation, bool> filterFunc;
@@ -1901,7 +1901,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetCollectionAsList(this HtmlHelper html, PropertyContext propertyContext) {
             INakedObject collectionNakedObject = propertyContext.GetValue();
-            bool any = collectionNakedObject.GetAsEnumerable().Any();
+            bool any = collectionNakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Any();
             Func<INakedObject, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
             return (any ? html.GetCollectionDisplayLinks(propertyContext) : GetCollectionTitle(propertyContext, 0)) +
                    html.CollectionTable(collectionNakedObject, linkFunc, x => false, null, false, false, true);

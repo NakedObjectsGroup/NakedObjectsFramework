@@ -5,6 +5,7 @@
 using System.Linq;
 using System.Xml.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public static class NofMetaModel {
@@ -135,10 +136,12 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         public static void SetNofCollection(XElement element,
                                             string prefix,
                                             string fullyQualifiedClassName,
-                                            INakedObject collection) {
+                                            INakedObject collection,
+                                            INakedObjectManager manager
+                                            ) {
             SetAttribute(element, "feature", NofMetamodelFeatureCollection);
             SetAttribute(element, "type", prefix + ":" + fullyQualifiedClassName);
-            SetAttribute(element, "size", "" + collection.GetAsEnumerable().Count());
+            SetAttribute(element, "size", "" + collection.GetAsEnumerable(manager).Count());
         }
     }
 }

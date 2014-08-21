@@ -66,7 +66,7 @@ type MockNakedObjectSpecification() =
         member x.ValidToPersist(transientObject : INakedObject )  : IConsent = null
         member x.Persistable with get() : Persistable = null
         member x.CreateObject() : obj = null   
-        member x.GetBoundedSet() : System.Collections.IEnumerable = null
+        member x.GetBoundedSet(persistor : INakedObjectPersistor) : System.Collections.IEnumerable = null
         member x.MarkAsService() = ()
         member x.GetInvariantString(nakedObject : INakedObject ) = ""
        

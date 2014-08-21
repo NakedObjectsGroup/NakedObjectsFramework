@@ -8,6 +8,7 @@ using System.Linq;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Facets.Properties.Version;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
@@ -36,8 +37,8 @@ namespace NakedObjects.Architecture.Adapter {
             return collectionSpec.GetFacet<ICollectionFacet>();
         }
 
-        public static IEnumerable<INakedObject> GetAsEnumerable(this INakedObject objectRepresentingCollection) {
-            return objectRepresentingCollection.GetCollectionFacetFromSpec().AsEnumerable(objectRepresentingCollection);
+        public static IEnumerable<INakedObject> GetAsEnumerable(this INakedObject objectRepresentingCollection, INakedObjectManager manager) {
+            return objectRepresentingCollection.GetCollectionFacetFromSpec().AsEnumerable(objectRepresentingCollection, manager);
         }
 
         public static IQueryable GetAsQueryable(this INakedObject objectRepresentingCollection) {

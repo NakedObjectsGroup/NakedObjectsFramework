@@ -23,11 +23,11 @@ namespace NakedObjects.Persistor {
 
         public virtual void Init() {}
 
-        public virtual void MakePersistent(INakedObject nakedObject, IPersistedObjectAdder persistor) {
+        public virtual void MakePersistent(INakedObject nakedObject, INakedObjectPersistor persistor) {
             if (nakedObject.Specification.IsCollection) {
                 Log.Info("Persist " + nakedObject);
 
-                nakedObject.GetAsEnumerable().ForEach(no => Persist(no, persistor));
+                nakedObject.GetAsEnumerable(persistor).ForEach(no => Persist(no, persistor));
 
                 if (nakedObject.ResolveState.IsGhost()) {
                     nakedObject.ResolveState.Handle(Events.StartResolvingEvent);
@@ -53,7 +53,7 @@ namespace NakedObjects.Persistor {
 
         #endregion
 
-        protected void Persist(INakedObject nakedObject, IPersistedObjectAdder persistor) {
+        protected void Persist(INakedObject nakedObject, INakedObjectPersistor persistor) {
             if (nakedObject.ResolveState.IsAggregated() ||
                 (nakedObject.ResolveState.IsTransient() &&
                  nakedObject.Specification.Persistable != Persistable.TRANSIENT)) {

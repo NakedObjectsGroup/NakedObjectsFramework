@@ -25,7 +25,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString[] Collections(this HtmlHelper html, object domainObject, string defaultTo = IdHelper.ListDisplayFormat) {
             INakedObject adapter = FrameworkHelper.GetNakedObject(domainObject);
             IEnumerable<INakedObject> collections = adapter.Specification.Properties.Where(obj => obj.IsCollection).Select(a => a.GetNakedObject(adapter));
-            return collections.Select(c => html.Collection(c.GetAsEnumerable(), null, defaultTo)).ToArray();
+            return collections.Select(c => html.Collection(c.GetAsEnumerable(NakedObjectsContext.ObjectPersistor), null, defaultTo)).ToArray();
         }
 
         public static MvcHtmlString CollectionTable(this HtmlHelper html, IEnumerable collection, INakedObjectAction action) {

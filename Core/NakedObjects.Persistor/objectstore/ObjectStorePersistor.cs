@@ -31,7 +31,7 @@ using NakedObjects.Persistor.Transaction;
 using NakedObjects.Util;
 
 namespace NakedObjects.Persistor.Objectstore {
-    public class ObjectStorePersistor : INakedObjectPersistor, IPersistedObjectAdder {
+    public class ObjectStorePersistor : INakedObjectPersistor {
         private static readonly ILog Log;
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
         private readonly IIdentityMap identityMap;
@@ -345,7 +345,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
             if (nakedObject.Specification.IsViewModel) {
                 INakedObject collection = association.GetNakedObject(nakedObject);
-                return collection.GetCollectionFacetFromSpec().AsEnumerable(collection).Count();
+                return collection.GetCollectionFacetFromSpec().AsEnumerable(collection, this).Count();
             }
 
             return objectStore.CountField(nakedObject, association);

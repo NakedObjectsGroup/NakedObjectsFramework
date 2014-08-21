@@ -4,6 +4,7 @@
 
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Persistor;
@@ -16,7 +17,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public void Init() {}
 
-        public void MakePersistent(INakedObject nakedObject, IPersistedObjectAdder persistor) {
+        public void MakePersistent(INakedObject nakedObject, INakedObjectPersistor persistor) {
             if (nakedObject.Specification.IsCollection) {
                 MakeCollectionPersistent(nakedObject, persistor);
             }
@@ -33,7 +34,7 @@ namespace NakedObjects.EntityObjectStore {
 
         #endregion
 
-        public static void MakeObjectPersistent(INakedObject nakedObject, IPersistedObjectAdder persistor) {
+        public static void MakeObjectPersistent(INakedObject nakedObject, INakedObjectPersistor persistor) {
             if (nakedObject.ResolveState.IsAggregated() ||
                 nakedObject.ResolveState.IsPersistent() ||
                 nakedObject.Specification.Persistable == Persistable.TRANSIENT ||
@@ -44,7 +45,7 @@ namespace NakedObjects.EntityObjectStore {
             persistor.AddPersistedObject(nakedObject);
         }
 
-        private void MakeCollectionPersistent(INakedObject collection, IPersistedObjectAdder persistor) {
+        private void MakeCollectionPersistent(INakedObject collection, INakedObjectPersistor persistor) {
             if (collection.ResolveState.IsPersistent() || collection.Specification.Persistable == Persistable.TRANSIENT) {
                 return;
             }
@@ -54,7 +55,7 @@ namespace NakedObjects.EntityObjectStore {
                 collection.ResolveState.Handle(Events.EndResolvingEvent);
             }
             persistor.MadePersistent(collection);
-            collection.GetAsEnumerable().ForEach(no => MakePersistent(no, persistor));
+            collection.GetAsEnumerable(persistor).ForEach(no => MakePersistent(no, persistor));
         }
 
         public override string ToString() {

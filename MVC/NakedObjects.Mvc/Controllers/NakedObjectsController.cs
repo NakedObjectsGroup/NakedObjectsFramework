@@ -694,7 +694,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private bool IsObjectCompleteAndSaved(INakedObject fieldTarget) {
             if (fieldTarget.Specification.IsCollection) {         
-                if (fieldTarget.GetAsEnumerable().Any(no => !IsReferenceValidToPersist(no))) {
+                if (fieldTarget.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Any(no => !IsReferenceValidToPersist(no))) {
                     ModelState.AddModelError("", MvcUi.CollectionIncomplete);
                     return false;
                 }
@@ -791,7 +791,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void SetPagingValues(ObjectAndControlData controlData, INakedObject nakedObject) {
             if (nakedObject.Specification.IsCollection) {
                 int sink1, sink2;
-                CurrentlyPaging(controlData, nakedObject.GetAsEnumerable().Count(), out sink1, out sink2);
+                CurrentlyPaging(controlData, nakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Count(), out sink1, out sink2);
             }
         }
 
@@ -847,8 +847,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private static INakedObject DoPaging(INakedObject nakedObject, ICollectionFacet collectionfacet, int page, int pageSize, bool forceEnumerable) {
-            INakedObject newNakedObject = collectionfacet.Page(page, pageSize, nakedObject, forceEnumerable);
-            object[] objects = newNakedObject.GetAsEnumerable().Select(no => no.Object).ToArray();
+            INakedObject newNakedObject = collectionfacet.Page(page, pageSize, nakedObject, NakedObjectsContext.ObjectPersistor, forceEnumerable);
+            object[] objects = newNakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Select(no => no.Object).ToArray();
             newNakedObject.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, nakedObject.Oid as CollectionMemento, objects) { IsPaged = true });
             return newNakedObject;
         }
@@ -857,7 +857,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var form = controlData.Form;
             if (form != null && nakedObject != null && nakedObject.Specification.IsCollection && nakedObject.Oid is CollectionMemento) {
                 nakedObject = Page(nakedObject, nakedObject.GetAsQueryable().Count(), controlData, false);
-                var map = nakedObject.GetAsEnumerable().ToDictionary(FrameworkHelper.GetObjectId, y => y.Object);
+                var map = nakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).ToDictionary(FrameworkHelper.GetObjectId, y => y.Object);
                 var selected = map.Where(kvp => form.Keys.Cast<string>().Contains(kvp.Key) && form[kvp.Key].Contains("true")).Select(kvp => kvp.Value).ToArray();
                 return CloneAndPopulateCollection(nakedObject, selected, false);
             }
