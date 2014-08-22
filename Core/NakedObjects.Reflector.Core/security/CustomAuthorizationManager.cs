@@ -4,8 +4,8 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
@@ -28,6 +28,8 @@ namespace NakedObjects.Security {
             : this(defaultAuthorizer) {
             this.namespaceAuthorizers = namespaceAuthorizers;
         }
+
+        public INakedObjectReflector Reflector { get; set; }
 
         /// <summary>
         /// </summary>
@@ -85,7 +87,7 @@ namespace NakedObjects.Security {
         }
 
         private object CreateAuthorizer(object authorizer, INakedObjectPersistor persistor) {
-            return NakedObjectsContext.Reflector.LoadSpecification(authorizer.GetType()).CreateObject(persistor);
+            return Reflector.LoadSpecification(authorizer.GetType()).CreateObject(persistor);
         }
 
         //TODO:  Change return type to INamespaceAuthorizer when TypeAuthorization has been obsoleted.

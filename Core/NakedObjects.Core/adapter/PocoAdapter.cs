@@ -148,7 +148,7 @@ namespace NakedObjects.Core.Adapter {
                         return string.Format(Resources.NakedObjects.PropertyMandatory, specification.ShortName, property.Name);
                     }
                     if (property.IsObject) {
-                        IConsent valid = ((IOneToOneAssociation) property).IsAssociationValid(this, referencedObject);
+                        IConsent valid = ((IOneToOneAssociation) property).IsAssociationValid(this, referencedObject, session);
                         if (valid.IsVetoed) {
                             return string.Format(Resources.NakedObjects.PropertyInvalid, specification.ShortName, property.Name, valid.Reason);
                         }

@@ -95,7 +95,7 @@ namespace NakedObjects.Xat {
 
             IConsent valid;
             if (field is IOneToOneAssociation) {
-                valid = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, testNakedObject);
+                valid = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, testNakedObject, session);
             }
             else if (field is IOneToManyAssociation) {
                 valid = new Veto("Always disabled");
@@ -176,7 +176,7 @@ namespace NakedObjects.Xat {
 
                 INakedObject newValue = parseableFacet.ParseTextEntry(textEntry);
 
-                IConsent consent = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, newValue);
+                IConsent consent = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, newValue, session);
                 LastMessage = consent.Reason;
 
                 Assert.IsFalse(consent.IsVetoed, string.Format("Content: '{0}' is not valid. Reason: {1}", textEntry, consent.Reason));
@@ -201,7 +201,7 @@ namespace NakedObjects.Xat {
 
             INakedObject nakedObject = owningObject.NakedObject;
             try {
-                IConsent consent = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, null);
+                IConsent consent = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, null, session);
                 LastMessage = consent.Reason;
                 Assert.IsFalse(consent.IsVetoed, string.Format("Content: 'null' is not valid. Reason: {0}", consent.Reason));
                 ((IOneToOneAssociation) field).SetAssociation(nakedObject, null, persistor);
@@ -285,7 +285,7 @@ namespace NakedObjects.Xat {
             INakedObject nakedObject = owningObject.NakedObject;
             IConsent valid;
             if (field is IOneToOneAssociation) {
-                valid = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, testNakedObject);
+                valid = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, testNakedObject, session);
             }
             else if (field is IOneToManyAssociation) {
                 valid = new Veto("Always disabled");
@@ -411,7 +411,7 @@ namespace NakedObjects.Xat {
             var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
             try {
                 INakedObject newValue = parseableFacet.ParseTextEntry(text);
-                IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue);
+                IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue, session);
                 LastMessage = isAssociationValid.Reason;
                 Assert.IsFalse(isAssociationValid.IsAllowed, "Content was unexpectedly validated");
             }
@@ -430,7 +430,7 @@ namespace NakedObjects.Xat {
             INakedObject existingValue = field.GetNakedObject(nakedObject, persistor);
             var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
             INakedObject newValue = parseableFacet.ParseTextEntry(text);
-            IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue);
+            IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue, session);
             LastMessage = isAssociationValid.Reason;
             Assert.IsTrue(isAssociationValid.IsAllowed, "Content was unexpectedly invalidated");
             return this;

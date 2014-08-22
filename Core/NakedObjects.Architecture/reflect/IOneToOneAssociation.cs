@@ -4,6 +4,7 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Reflect {
     /// <summary>
@@ -20,7 +21,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Determines if the specified reference is valid for setting this field in the specified object
         /// </summary>
-        IConsent IsAssociationValid(INakedObject inObject, INakedObject associate);
+        IConsent IsAssociationValid(INakedObject inObject, INakedObject associate, ISession session);
 
         /// <summary>
         ///     Set up the association represented by this field in the specified object with the specified reference -

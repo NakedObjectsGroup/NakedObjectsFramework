@@ -105,7 +105,7 @@ namespace NakedObjects.EntityObjectStore {
             persisted = (x, s, p) => x.Persisted(s, p);
             handleLoaded = HandleLoadedDefault;
             savingChangesHandlerDelegate = SavingChangesHandler;
-            loadSpecification = reflector.LoadSpecification;
+            loadSpecification = type => reflector.LoadSpecification(type);
         }
 
 

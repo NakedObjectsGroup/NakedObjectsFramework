@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
@@ -23,6 +24,8 @@ namespace NakedObjects.Testing {
         public INakedObjectSpecification[] AllSpecifications {
             get { return new INakedObjectSpecification[0]; }
         }
+
+        public INakedObject[] NonSystemServices { get; set; }
 
         public INakedObjectSpecification LoadSpecification(Type type) {
             if (specifications.ContainsKey(type)) {

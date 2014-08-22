@@ -20,9 +20,10 @@ namespace NakedObjects.Reflector.Audit {
 
         public AuditManager( IAuditor defaultAuditor, params INamespaceAuditor[] namespaceAuditors) {
             this.defaultAuditor = defaultAuditor;
-            this.namespaceAuditors = namespaceAuditors;
-         
+            this.namespaceAuditors = namespaceAuditors;  
         }
+
+        public INakedObjectReflector Reflector { protected get; set; }
 
         public void Invoke(INakedObject nakedObject, INakedObject[] parameters, bool queryOnly, IIdentifier identifier, ISession session, INakedObjectPersistor persistor) {
 
@@ -59,7 +60,7 @@ namespace NakedObjects.Reflector.Audit {
         }
 
         private IAuditor CreateAuditor(IAuditor auditor, INakedObjectPersistor persistor) {
-            return (IAuditor)NakedObjectsContext.Reflector.LoadSpecification(auditor.GetType()).CreateObject(persistor);
+            return (IAuditor)Reflector.LoadSpecification(auditor.GetType()).CreateObject(persistor);
         }
 
         private IAuditor GetDefaultAuditor(INakedObjectPersistor persistor) {

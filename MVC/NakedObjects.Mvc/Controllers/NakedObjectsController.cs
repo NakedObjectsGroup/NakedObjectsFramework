@@ -723,7 +723,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
 
         internal void SetAssociation(INakedObject nakedObject, IOneToOneAssociation oneToOneAssoc, INakedObject valueNakedObject, object attemptedValue) {
-            IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject);
+            IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject, NakedObjectsContext.Session);
             string key = IdHelper.GetFieldInputId(nakedObject, oneToOneAssoc);
             if (consent.IsAllowed) {
                 oneToOneAssoc.SetAssociation(nakedObject, valueNakedObject, NakedObjectsContext.ObjectPersistor);
@@ -739,7 +739,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             try {
                 INakedObject valueNakedObject = GetNakedObjectValue(oneToOneAssoc, nakedObject, attemptedValue);
 
-                IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject);               
+                IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject, NakedObjectsContext.Session);               
                 if (!consent.IsAllowed) {
                     ModelState.AddModelError(key, consent.Reason);
                 }

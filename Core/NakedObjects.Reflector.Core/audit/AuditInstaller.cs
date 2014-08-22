@@ -23,8 +23,8 @@ namespace NakedObjects.Reflector.Audit {
             auditManager = new AuditManager(defaultAuditor, namespaceAuditors);
         }
 
-
         public IFacetDecorator[] CreateDecorators(INakedObjectReflector reflector) {
+            auditManager.Reflector = reflector;
             return new IFacetDecorator[] {new AuditFacetDecorator(auditManager, reflector)};
         }
 

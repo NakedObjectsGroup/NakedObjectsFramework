@@ -7,10 +7,8 @@ using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
@@ -37,6 +35,8 @@ namespace NakedObjects.Reflector.Spec {
             get { return cache; }
             set { cache = value; }
         }
+
+        public INakedObject[] NonSystemServices { get; set; }
 
         #region INakedObjectReflector Members
 
@@ -151,7 +151,7 @@ namespace NakedObjects.Reflector.Spec {
                     introspectableSpecification.Introspect(facetDecorator);
 
                     if (!installingServices) {
-                        introspectableSpecification.PopulateAssociatedActions( NakedObjectsContext.ObjectPersistor.GetServices(ServiceTypes.Menu | ServiceTypes.Contributor));
+                        introspectableSpecification.PopulateAssociatedActions(NonSystemServices);
                     }
                 }
 

@@ -17,9 +17,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public virtual void SetUp() {
             var reflector = new DotNetReflector {
                 ClassStrategy = new DefaultClassStrategy(),
-                FacetDecorator = new FacetDecoratorSet()
+                FacetDecorator = new FacetDecoratorSet(), 
+                NonSystemServices = new INakedObject[] {}
             };
-
 
             NakedObjectsContext context = StaticContext.CreateInstance();
             context.SetReflector(reflector);

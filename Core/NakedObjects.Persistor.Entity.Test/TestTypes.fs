@@ -32,6 +32,8 @@ type MockReflector() =
         member x.LoadSpecification(str : string) : INakedObjectSpecification = null
         member x.InstallServiceSpecifications(types : Type[]) = ()
         member x.PopulateContributedActions(services : INakedObject[]) = ()
+        member x.NonSystemServices with get() = [||]
+                                   and set(arr) = ()
       
 
 

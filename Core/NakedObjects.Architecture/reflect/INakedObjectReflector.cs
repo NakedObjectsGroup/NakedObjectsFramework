@@ -12,6 +12,7 @@ namespace NakedObjects.Architecture.Reflect {
         bool IgnoreCase { get; }
 
         INakedObjectSpecification[] AllSpecifications { get; }
+        INakedObject[] NonSystemServices { get; set; }
 
         /// <summary>
         ///     Provided so that the <see cref="INakedObjectPersistor" /> can lookup if wasn't explicitly injected into

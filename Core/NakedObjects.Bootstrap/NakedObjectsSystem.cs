@@ -13,6 +13,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.Services;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
@@ -175,6 +176,8 @@ namespace NakedObjects.Boot {
             objectPersistor.Injector = new DotNetDomainObjectContainerInjector(reflector, ss);      
 
             objectPersistor.Init();
+
+            reflector.NonSystemServices = objectPersistor.GetServices(ServiceTypes.Menu | ServiceTypes.Contributor).ToArray();
            
             if (fixtureInstaller != null) {
                 NakedObjectsContext.EnsureReady();

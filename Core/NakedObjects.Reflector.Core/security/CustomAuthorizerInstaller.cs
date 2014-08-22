@@ -1,11 +1,10 @@
 ﻿using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Reflector.Security;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Security {
     public class CustomAuthorizerInstaller : IAuthorizerInstaller {
-        private readonly IAuthorizationManager authManager;
+        private readonly CustomAuthorizationManager authManager;
 
         public CustomAuthorizerInstaller( ITypeAuthorizer<object> defaultAuthorizer) {
             authManager = new CustomAuthorizationManager(defaultAuthorizer);
@@ -29,6 +28,7 @@ namespace NakedObjects.Security {
         #region IAuthorizerInstaller Members
 
         public IFacetDecorator[] CreateDecorators(INakedObjectReflector reflector) {
+            authManager.Reflector = reflector;
             return new IFacetDecorator[] {new SecurityFacetDecorator(authManager)};
         }
 

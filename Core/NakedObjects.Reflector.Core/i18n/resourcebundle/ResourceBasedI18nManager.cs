@@ -12,6 +12,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Context;
+using NakedObjects.Objects;
 using NakedObjects.Resources;
 
 namespace NakedObjects.Reflector.I18n.Resourcebundle {
@@ -28,14 +29,16 @@ namespace NakedObjects.Reflector.I18n.Resourcebundle {
 
         private readonly IDictionary<string, string> keyCache = new Dictionary<string, string>();
         private readonly string resourceFile;
+        private readonly IMessageBroker messageBroker;
         private IDictionary<string, string> resources;
 
         static ResourceBasedI18nManager() {
             Log = LogManager.GetLogger(typeof (ResourceBasedI18nManager));
         }
 
-        public ResourceBasedI18nManager(string resourceFile) {
+        public ResourceBasedI18nManager(string resourceFile, IMessageBroker messageBroker) {
             this.resourceFile = resourceFile;
+            this.messageBroker = messageBroker;
             Log.Info(this);
         }
 
@@ -92,16 +95,16 @@ namespace NakedObjects.Reflector.I18n.Resourcebundle {
 
         private string GetText(IIdentifier identifier, string type, string original) {
             string form = identifier.IsField ? Property : Action;
-            string key = identifier.ToIdentityString(identifier.IsField ? IdentifierDepth.ClassNameParams : IdentifierDepth.ClassNameParams) + ":" + form + "/" + type;
+            string key = identifier.ToIdentityString(IdentifierDepth.ClassNameParams) + ":" + form + "/" + type;
             return GetText(key, original);
         }
 
         private void AddTranslatorRunningMessage() {
             if (resources != null) {
                 string automatedTranslatorRunning = "Writing resourcefile: " + resourceFile;
-                string[] existingMessages = NakedObjectsContext.MessageBroker.PeekMessages;
+                string[] existingMessages = messageBroker.PeekMessages;
                 if (!existingMessages.Any(s => s == automatedTranslatorRunning)) {
-                    NakedObjectsContext.MessageBroker.AddMessage(automatedTranslatorRunning);
+                    messageBroker.AddMessage(automatedTranslatorRunning);
                 }
             }
         }

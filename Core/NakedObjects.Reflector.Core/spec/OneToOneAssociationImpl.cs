@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
@@ -94,7 +95,7 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public virtual IConsent IsAssociationValid(INakedObject inObject, INakedObject reference) {
+        public virtual IConsent IsAssociationValid(INakedObject inObject, INakedObject reference, ISession session) {
             if (reference != null && !reference.Specification.IsOfType(Specification)) {
                 return GetConsent(string.Format(Resources.NakedObjects.TypeMismatchError, Specification.SingularName));
             }

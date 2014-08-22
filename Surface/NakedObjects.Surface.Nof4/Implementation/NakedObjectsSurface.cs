@@ -426,7 +426,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
                 if (ConsentHandler(property.IsUsable(NakedObjectsContext.Session, context.Target, NakedObjectsContext.ObjectPersistor), context, Cause.Disabled)) {
                     if (toPut != null && ConsentHandler(CanSetPropertyValue(context), context, Cause.WrongType)) {
-                        ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject), context, Cause.Other);
+                        ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject, NakedObjectsContext.Session), context, Cause.Other);
                     }
                 }
             }
@@ -441,7 +441,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             //if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
                 if (toPut != null && ConsentHandler(CanSetPropertyValue(context), context, Cause.WrongType)) {
-                    ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject), context, Cause.Other);
+                    ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject, NakedObjectsContext.Session), context, Cause.Other);
                 }
                 else if (toPut == null && (property.IsMandatory && property.IsUsable(NakedObjectsContext.Session, context.Target, NakedObjectsContext.ObjectPersistor).IsAllowed)) {
                     // only check user editable fields
