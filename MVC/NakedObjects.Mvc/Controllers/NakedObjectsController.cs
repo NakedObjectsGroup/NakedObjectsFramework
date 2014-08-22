@@ -246,7 +246,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
             var stringValue = value as string;
             if (parm.Specification.IsParseable) {
-                return parm.Specification.GetFacet<IParseableFacet>().ParseTextEntry(stringValue);
+                return parm.Specification.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.ObjectPersistor);
             }
 
             var collectionValue = value as IEnumerable;
@@ -405,8 +405,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
             var stringValue = value as string;
             if (assoc.Specification.IsParseable) {
-               
-                return assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry(stringValue);
+
+                return assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.ObjectPersistor);
             }
        
             if (assoc.IsObject) {
@@ -425,7 +425,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 foreach (var pair in fieldsAndMatchingValues) {
                     if (pair.Item1.Specification.IsParseable) {
                         INakedObject currentValue = pair.Item1.GetNakedObject(nakedObject, NakedObjectsContext.ObjectPersistor);
-                        INakedObject concurrencyValue = pair.Item1.Specification.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string);
+                        INakedObject concurrencyValue = pair.Item1.Specification.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.ObjectPersistor);
 
                         if (concurrencyValue != null && currentValue != null) {
                             if (concurrencyValue.TitleString() != currentValue.TitleString()) {
@@ -631,7 +631,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                                 try {
                                  
                                     var oneToOneAssoc = ((IOneToOneAssociation) assoc);
-                                    INakedObject value = assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry((string) newValue);
+                                    INakedObject value = assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry((string)newValue, NakedObjectsContext.ObjectPersistor);
                                     oneToOneAssoc.SetAssociation(nakedObject, value, NakedObjectsContext.ObjectPersistor);
                                 }
                                 catch (InvalidEntryException) {

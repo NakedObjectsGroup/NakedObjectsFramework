@@ -160,7 +160,7 @@ namespace NakedObjects.TestSystem {
             return null;
         }
 
-        public override string GetTitle(INakedObject nakedObject) {
+        public override string GetTitle(INakedObject nakedObject, INakedObjectManager manager) {
             return title;
         }
 

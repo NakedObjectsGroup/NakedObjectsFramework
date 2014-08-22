@@ -205,7 +205,7 @@ namespace NakedObjects.Reflector.Spec {
         public abstract string Description { get; }
         public abstract string SingularName { get; }
         public abstract string UntitledName { get; }
-        public abstract string GetTitle(INakedObject nakedObject);
+        public abstract string GetTitle(INakedObject nakedObject, INakedObjectManager manager);
         public abstract INakedObjectAssociation GetProperty(string id);
         public abstract string GetInvariantString(INakedObject nakedObject);
 

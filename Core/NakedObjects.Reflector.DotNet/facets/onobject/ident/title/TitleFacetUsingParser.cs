@@ -5,6 +5,7 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Ident.Title;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Capabilities;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
@@ -18,14 +19,14 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
 
         #region ITitleFacet Members
 
-        public string GetTitle(INakedObject nakedObject) {
+        public string GetTitle(INakedObject nakedObject, INakedObjectManager manager) {
             if (nakedObject == null || nakedObject.Object == null) {
                 return null;
             }
             return parser.DisplayTitleOf((T) nakedObject.Object);
         }
 
-        public string GetTitleWithMask(string mask, INakedObject nakedObject) {
+        public string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager manager) {
             if (nakedObject == null || nakedObject.Object == null) {
                 return null;
             }

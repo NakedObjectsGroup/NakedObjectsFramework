@@ -190,7 +190,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 return nakedObject.TitleString();
             }
             var titleFacet = ((NakedObjectSpecificationWrapper) nakedObject.Specification).WrappedValue.GetFacet<ITitleFacet>();
-            return titleFacet.GetTitleWithMask(mask.Value, ((NakedObjectWrapper) nakedObject).WrappedNakedObject);
+            return titleFacet.GetTitleWithMask(mask.Value, ((NakedObjectWrapper) nakedObject).WrappedNakedObject, NakedObjectsContext.ObjectPersistor);
         }
 
         #endregion

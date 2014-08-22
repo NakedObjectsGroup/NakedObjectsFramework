@@ -6,10 +6,11 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Ident.Title;
 using NakedObjects.Architecture.Facets.Propparam.Validate.Mask;
 using NakedObjects.Architecture.Facets.Propparam.Validate.RegEx;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Reflect {
     public static class NakedObjectFeatureUtils {
-        public static string PropertyTitle(this INakedObjectFeature feature, INakedObject nakedObject) {
+        public static string PropertyTitle(this INakedObjectFeature feature, INakedObject nakedObject, INakedObjectManager manager) {
             if (nakedObject == null) {
                 return "";
             }
@@ -21,7 +22,7 @@ namespace NakedObjects.Architecture.Reflect {
             var mask = feature.GetFacet<IMaskFacet>();
             if (mask != null) {
                 var title = feature.Specification.GetFacet<ITitleFacet>();
-                text = title.GetTitleWithMask(mask.Value, nakedObject);
+                text = title.GetTitleWithMask(mask.Value, nakedObject, manager);
             }
             if (text == null) {
                 text = nakedObject.TitleString();

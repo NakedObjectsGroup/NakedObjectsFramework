@@ -235,7 +235,7 @@ namespace NakedObjects.Architecture.Adapter {
                 throw new NotImplementedException();
             }
 
-            public string GetTitle(INakedObject nakedObject) {
+            public string GetTitle(INakedObject nakedObject, INakedObjectManager manager) {
                 throw new NotImplementedException();
             }
 

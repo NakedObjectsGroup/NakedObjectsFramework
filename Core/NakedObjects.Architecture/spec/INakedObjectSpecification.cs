@@ -119,7 +119,7 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Returns the title string for the specified object
         /// </summary>
-        string GetTitle(INakedObject nakedObject);
+        string GetTitle(INakedObject nakedObject, INakedObjectManager manager);
 
         /// <summary>
         ///     Determines whether the specified object can be persisted, that is, it is in a valid state to be saved

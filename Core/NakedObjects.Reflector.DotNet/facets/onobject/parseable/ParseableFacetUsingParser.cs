@@ -6,8 +6,8 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Capabilities;
-using NakedObjects.Core.Context;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
     public class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
@@ -20,17 +20,17 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
 
         #region IParseableFacet Members
 
-        public INakedObject ParseTextEntry(string entry) {
+        public INakedObject ParseTextEntry(string entry, INakedObjectManager manager) {
             if (entry == null) {
                 throw new ArgumentException(Resources.NakedObjects.MissingEntryError);
             }
             object parsed = parser.ParseTextEntry(entry);
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(parsed, null, null);
+            return manager.CreateAdapter(parsed, null, null);
         }
 
-        public INakedObject ParseInvariant(string text) {
+        public INakedObject ParseInvariant(string text, INakedObjectManager manager) {
             object parsed = parser.ParseInvariant(text);
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(parsed, null, null);
+            return manager.CreateAdapter(parsed, null, null);
         }
 
         public string ParseableTitle(INakedObject nakedObject) {

@@ -339,7 +339,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                         string rawValue = value.ToString();
 
                         try {
-                            mappedArguments[key] = expectedType.GetFacet<IParseableFacet>().ParseTextEntry(rawValue);
+                            mappedArguments[key] = expectedType.GetFacet<IParseableFacet>().ParseTextEntry(rawValue, NakedObjectsContext.ObjectPersistor);
 
                             errors.Add(new ChoiceContextSurface(key, new NakedObjectSpecificationWrapper(expectedType, surface)) {
                                 ProposedValue = rawValue
@@ -755,14 +755,14 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
             if (specification.IsParseable) {
-                return specification.GetFacet<IParseableFacet>().ParseTextEntry(rawValue.ToString());
+                return specification.GetFacet<IParseableFacet>().ParseTextEntry(rawValue.ToString(), NakedObjectsContext.ObjectPersistor);
             }
 
             if (specification.IsCollection) {
                 var elementSpec = specification.GetFacet<ITypeOfFacet>().ValueSpec;
 
                 if (elementSpec.IsParseable) {
-                    var elements = ((IEnumerable)rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString())).ToArray();
+                    var elements = ((IEnumerable)rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), NakedObjectsContext.ObjectPersistor)).ToArray();
                     var elementType = TypeUtils.GetType(elementSpec.FullName);
                     Type collType = typeof(List<>).MakeGenericType(elementType);
                     var collection = NakedObjectsContext.ObjectPersistor.CreateAdapter(Activator.CreateInstance(collType), null, null);

@@ -402,12 +402,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             throw new ReflectionException("Unknown peer type: " + peer);
         }
 
-        public override string GetTitle(INakedObject nakedObject) {
+        public override string GetTitle(INakedObject nakedObject, INakedObjectManager manager) {
             if (titleFacet == null) {
                 titleFacet = GetFacet<ITitleFacet>();
             }
             if (titleFacet != null) {
-                return titleFacet.GetTitle(nakedObject) ?? DefaultTitle();
+                return titleFacet.GetTitle(nakedObject, manager) ?? DefaultTitle();
             }
             return DefaultTitle();
         }
@@ -437,7 +437,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         public override IConsent ValidToPersist(INakedObject target, ISession session) {
-            InteractionContext ic = InteractionContext.PersistingObject(NakedObjectsContext.Session, false, target);
+            InteractionContext ic = InteractionContext.PersistingObject(session, false, target);
             IConsent cons = InteractionUtils.IsValid(target.Specification, ic);
             return cons;
         }

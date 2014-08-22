@@ -6,8 +6,7 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Ident.Title;
-using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
@@ -27,9 +26,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
 
         #endregion
 
-        public override string GetTitle(INakedObject nakedObject) {
+        public override string GetTitle(INakedObject nakedObject, INakedObjectManager manager) {
             object obj = InvokeUtils.Invoke(method, nakedObject);
-            return obj == null ? null : NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null).TitleString();
+            return obj == null ? null : manager.CreateAdapter(obj, null, null).TitleString();
         }
     }
 

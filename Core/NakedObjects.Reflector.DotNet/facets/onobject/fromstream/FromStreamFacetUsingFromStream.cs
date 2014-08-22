@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.FromStream {
 
         public INakedObject ParseFromStream(Stream stream, string mimeType, string name, INakedObjectManager manager) {
             object obj = fromStream.ParseFromStream(stream, mimeType, name);
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
+            return manager.CreateAdapter(obj, null, null);
         }
 
         #endregion

@@ -201,7 +201,7 @@ namespace NakedObjects.Core.Adapter {
         #endregion
 
         private string ObjectTitleString() {
-             return Specification.GetTitle(this) ?? DefaultTitle;
+             return Specification.GetTitle(this, persistor) ?? DefaultTitle;
         }
 
         private string CollectionTitleString(ICollectionFacet facet) {

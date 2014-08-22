@@ -4,6 +4,7 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Ident.Title;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Capabilities;
 
 namespace NakedObjects.Architecture.Facets.Objects.Parseable {
@@ -21,7 +22,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Parseable {
         ///     be implemented through some other mechanism.
         /// </para>
         /// <exception cref="InvalidEntryException" />
-        INakedObject ParseTextEntry(string text);
+        INakedObject ParseTextEntry(string text, INakedObjectManager manager);
 
         /// <summary>
         ///     Parses an invariant value and sets the domain objects value
@@ -31,7 +32,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Parseable {
         ///     be implemented through some other mechanism.
         /// </para>
         /// <exception cref="InvalidEntryException" />
-        INakedObject ParseInvariant(string text);
+        INakedObject ParseInvariant(string text, INakedObjectManager manager);
 
 
         /// <summary>

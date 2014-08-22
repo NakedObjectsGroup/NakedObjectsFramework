@@ -4,6 +4,7 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Objects.Ident.Title {
     public abstract class TitleFacetAbstract : FacetAbstract, ITitleFacet {
@@ -16,11 +17,11 @@ namespace NakedObjects.Architecture.Facets.Objects.Ident.Title {
 
         #region ITitleFacet Members
 
-        public virtual string GetTitleWithMask(string mask, INakedObject nakedObject) {
-            return GetTitle(nakedObject);
+        public virtual string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager manager) {
+            return GetTitle(nakedObject, manager);
         }
 
-        public abstract string GetTitle(INakedObject nakedObject);
+        public abstract string GetTitle(INakedObject nakedObject, INakedObjectManager manager);
 
         #endregion
     }

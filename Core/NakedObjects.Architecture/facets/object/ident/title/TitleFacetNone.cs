@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Objects.Ident.Title {
     public class TitleFacetNone : TitleFacetAbstract {
@@ -13,7 +14,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Ident.Title {
             get { return true; }
         }
 
-        public override string GetTitle(INakedObject nakedObject) {
+        public override string GetTitle(INakedObject nakedObject, INakedObjectManager manager) {
             return null;
         }
     }

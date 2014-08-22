@@ -30,7 +30,7 @@ namespace NakedObjects.Reflector.Audit {
             IAuditor auditor = GetNamespaceAuditorFor(nakedObject, persistor) ?? GetDefaultAuditor(persistor);
 
             if (nakedObject.Specification.IsService) {
-                string serviceName = nakedObject.Specification.GetTitle(nakedObject);
+                string serviceName = nakedObject.Specification.GetTitle(nakedObject, persistor);
                 auditor.ActionInvoked(session.Principal, identifier.MemberName, serviceName, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray());
             }
             else {

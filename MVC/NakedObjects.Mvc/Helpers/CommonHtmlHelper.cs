@@ -1442,7 +1442,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             if (value is string) {
-                return spec.GetFacet<IParseableFacet>().ParseTextEntry((string) value);
+                return spec.GetFacet<IParseableFacet>().ParseTextEntry((string) value, NakedObjectsContext.ObjectPersistor);
             }
 
             return FrameworkHelper.GetNakedObject(value);
@@ -2056,7 +2056,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetMaskedValue(INakedObject valueNakedObject, IMaskFacet mask) {
             if (valueNakedObject != null) {
-                return mask != null ? valueNakedObject.Specification.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, valueNakedObject) : valueNakedObject.TitleString();
+                return mask != null ? valueNakedObject.Specification.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, valueNakedObject, NakedObjectsContext.ObjectPersistor) : valueNakedObject.TitleString();
             }
             return null;
         }
@@ -2571,7 +2571,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetDisplayTitle(IFacetHolder holder, INakedObject nakedObject) {
             var mask = holder.GetFacet<IMaskFacet>();
-            string title = mask != null ? nakedObject.Specification.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, nakedObject) : nakedObject.TitleString();
+            string title = mask != null ? nakedObject.Specification.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, nakedObject, NakedObjectsContext.ObjectPersistor) : nakedObject.TitleString();
             return string.IsNullOrWhiteSpace(title) && !nakedObject.Specification.IsParseable ? nakedObject.Specification.UntitledName : title;
         }
 

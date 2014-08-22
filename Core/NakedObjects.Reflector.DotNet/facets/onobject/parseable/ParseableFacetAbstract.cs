@@ -6,6 +6,7 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Capabilities;
 using NakedObjects.Util;
 
@@ -23,12 +24,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
 
         #region IParseableFacet Members
 
-        public INakedObject ParseTextEntry(string entryText) {
-            return parseableFacetUsingParser.ParseTextEntry(entryText);
+        public INakedObject ParseTextEntry(string entryText, INakedObjectManager manager) {
+            return parseableFacetUsingParser.ParseTextEntry(entryText, manager);
         }
 
-        public INakedObject ParseInvariant(string text) {
-            return parseableFacetUsingParser.ParseInvariant(text);
+        public INakedObject ParseInvariant(string text, INakedObjectManager manager) {
+            return parseableFacetUsingParser.ParseInvariant(text, manager);
         }
 
         public string ParseableTitle(INakedObject nakedObject) {

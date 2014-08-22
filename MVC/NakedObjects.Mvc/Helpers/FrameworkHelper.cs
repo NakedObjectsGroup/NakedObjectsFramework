@@ -265,7 +265,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static INakedObject Parse(this INakedObjectSpecification spec, string s) {
-            return s == null ? NakedObjectsContext.ObjectPersistor.CreateAdapter("", null, null) : spec.GetFacet<IParseableFacet>().ParseTextEntry(s);
+            return s == null ? NakedObjectsContext.ObjectPersistor.CreateAdapter("", null, null) : spec.GetFacet<IParseableFacet>().ParseTextEntry(s, NakedObjectsContext.ObjectPersistor);
         }
 
         public static bool IsQueryOnly(this INakedObjectAction action) {
@@ -293,7 +293,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
 
             if (collectionitemSpec.IsParseable) {
-                objCollection = rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : collectionitemSpec.GetFacet<IParseableFacet>().ParseTextEntry(s).Object).ToArray();
+                objCollection = rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : collectionitemSpec.GetFacet<IParseableFacet>().ParseTextEntry(s, NakedObjectsContext.ObjectPersistor).Object).ToArray();
             }
             else {
                 // need to check if collection is actually a collection memento 

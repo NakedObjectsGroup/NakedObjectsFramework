@@ -6,6 +6,7 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Ident.Title;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
     public class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativeFacet {
@@ -29,13 +30,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
 
         #endregion
 
-        public override string GetTitle(INakedObject nakedObject) {
+        public override string GetTitle(INakedObject nakedObject, INakedObjectManager manager) {
             return nakedObject.Object.ToString();
         }
 
-        public override string GetTitleWithMask(string mask, INakedObject nakedObject) {
+        public override string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager manager) {
             if (maskMethod == null) {
-                return GetTitle(nakedObject);
+                return GetTitle(nakedObject, manager);
             }
             return (string) maskMethod.Invoke(nakedObject.Object, new[] {mask});
         }
