@@ -67,17 +67,17 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Return the default for this property
         /// </summary>
-        INakedObject GetDefault(INakedObject nakedObject);
+        INakedObject GetDefault(INakedObject nakedObject, INakedObjectManager manager);
 
         /// <summary>
         ///     Return the default for this property
         /// </summary>
-        TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
+        TypeOfDefaultValue GetDefaultType(INakedObject nakedObject, INakedObjectManager manager);
 
         /// <summary>
         ///     Set the property to its default references or values
         /// </summary>
-        void ToDefault(INakedObject target);
+        void ToDefault(INakedObject target, INakedObjectManager manager);
 
         /// <summary>
         ///     Returns <c>true</c> if this field on the specified object is deemed to be empty, or has no content

@@ -701,7 +701,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         private void InitializeNewObject(INakedObject nakedObject, object rootObject) {
-            nakedObject.Specification.Properties.ForEach(field => field.ToDefault(nakedObject));
+            nakedObject.Specification.Properties.ForEach(field => field.ToDefault(nakedObject, this));
             CreateInlineObjects(nakedObject, rootObject);
             nakedObject.Created(session, this);
         }

@@ -363,15 +363,15 @@ namespace NakedObjects.Testing {
             return system.AdapterFor(value);
         }
 
-        public INakedObject GetDefault(INakedObject nakedObject) {
+        public INakedObject GetDefault(INakedObject nakedObject, INakedObjectManager manager) {
             throw new NotImplementedException();
         }
 
-        public TypeOfDefaultValue GetDefaultType(INakedObject nakedObject) {
+        public TypeOfDefaultValue GetDefaultType(INakedObject nakedObject, INakedObjectManager manager) {
             throw new NotImplementedException();
         }
 
-        public void ToDefault(INakedObject target) {
+        public void ToDefault(INakedObject target, INakedObjectManager manager) {
             throw new NotImplementedException();
         }
 

@@ -1401,7 +1401,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static IEnumerable<SelectListItem> GetItems(this HtmlHelper html, string id, PropertyContext propertyContext) {
             INakedObject existingValue;
 
-            if (propertyContext.Target.ResolveState.IsTransient() && propertyContext.Property.GetDefaultType(propertyContext.Target) == TypeOfDefaultValue.Implicit) {
+            if (propertyContext.Target.ResolveState.IsTransient() && propertyContext.Property.GetDefaultType(propertyContext.Target, NakedObjectsContext.ObjectPersistor) == TypeOfDefaultValue.Implicit) {
                 // ignore implicit defaults on transients
                 existingValue = null;
             }
@@ -2357,7 +2357,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string ZeroValueIfTransientAndNotSet(PropertyContext propertyContext, string value) {
             if (propertyContext.Target.ResolveState.IsTransient() && !string.IsNullOrEmpty(value)) {
                 INakedObject valueNakedObject = propertyContext.GetValue();
-                if (propertyContext.Property.GetDefaultType(propertyContext.Target) == TypeOfDefaultValue.Implicit && ShouldClearValue(valueNakedObject.Object)) {
+                if (propertyContext.Property.GetDefaultType(propertyContext.Target, NakedObjectsContext.ObjectPersistor) == TypeOfDefaultValue.Implicit && ShouldClearValue(valueNakedObject.Object)) {
                     value = null;
                 }
             }

@@ -85,9 +85,9 @@ namespace NakedObjects.Architecture.Reflect {
         public abstract bool IsEmpty(INakedObject adapter, INakedObjectPersistor persistor);
         public abstract bool IsInline { get; }
 
-        public abstract INakedObject GetDefault(INakedObject nakedObject);
-        public abstract TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
-        public abstract void ToDefault(INakedObject nakedObject);
+        public abstract INakedObject GetDefault(INakedObject nakedObject, INakedObjectManager manager);
+        public abstract TypeOfDefaultValue GetDefaultType(INakedObject nakedObject, INakedObjectManager manager);
+        public abstract void ToDefault(INakedObject nakedObject, INakedObjectManager manager);
 
         public override IConsent IsUsable(ISession session, INakedObject target, INakedObjectPersistor persistor) {
             bool isPersistent = target.ResolveState.IsPersistent();

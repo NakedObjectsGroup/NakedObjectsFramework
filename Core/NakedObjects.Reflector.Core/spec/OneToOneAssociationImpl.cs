@@ -52,7 +52,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public override INakedObject GetNakedObject(INakedObject fromObject, INakedObjectManager manager) {
-            return GetAssociation(fromObject);
+            return GetAssociation(fromObject, manager);
         }
 
         public override Tuple<string, INakedObjectSpecification>[] GetChoicesParameters() {
@@ -107,36 +107,36 @@ namespace NakedObjects.Reflector.Spec {
             }
 
             var buf = new InteractionBuffer();
-            InteractionContext ic = InteractionContext.ModifyingPropParam(NakedObjectsContext.Session, false, inObject, Identifier, reference);
+            InteractionContext ic = InteractionContext.ModifyingPropParam(session, false, inObject, Identifier, reference);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
 
         public override bool IsEmpty(INakedObject inObject, INakedObjectPersistor persistor) {
-            return GetAssociation(inObject) == null;
+            return GetAssociation(inObject, persistor) == null;
         }
 
         public override bool IsInline {
             get { return Specification.ContainsFacet(typeof (IComplexTypeFacet)); }
         }
 
-        public override INakedObject GetDefault(INakedObject fromObject) {
-            return GetDefaultObject(fromObject).Item1;
+        public override INakedObject GetDefault(INakedObject fromObject, INakedObjectManager manager) {
+            return GetDefaultObject(fromObject, manager).Item1;
         }
 
-        public override TypeOfDefaultValue GetDefaultType(INakedObject fromObject) {
-            return GetDefaultObject(fromObject).Item2;
+        public override TypeOfDefaultValue GetDefaultType(INakedObject fromObject, INakedObjectManager manager) {
+            return GetDefaultObject(fromObject, manager).Item2;
         }
 
-        public override void ToDefault(INakedObject inObject) {
-            INakedObject defaultValue = GetDefault(inObject);
+        public override void ToDefault(INakedObject inObject, INakedObjectManager manager) {
+            INakedObject defaultValue = GetDefault(inObject, manager);
             if (defaultValue != null) {
                 InitAssociation(inObject, defaultValue);
             }
         }
 
         public virtual void SetAssociation(INakedObject inObject, INakedObject associate, INakedObjectPersistor persistor) {
-            INakedObject currentValue = GetAssociation(inObject);
+            INakedObject currentValue = GetAssociation(inObject, persistor);
             if (currentValue != associate) {
                 if (associate == null && ContainsFacet<IPropertyClearFacet>()) {
                     GetFacet<IPropertyClearFacet>().ClearProperty(inObject, persistor);
@@ -153,19 +153,19 @@ namespace NakedObjects.Reflector.Spec {
 
         #endregion
 
-        private INakedObject GetAssociation(INakedObject fromObject) {
+        private INakedObject GetAssociation(INakedObject fromObject, INakedObjectManager manager) {
             object obj = GetFacet<IPropertyAccessorFacet>().GetProperty(fromObject);
             if (obj == null) {
                 return null;
             }
             INakedObjectSpecification specification = reflector.LoadSpecification(obj.GetType());
             if (specification.ContainsFacet(typeof (IComplexTypeFacet))) {
-                return NakedObjectsContext.ObjectPersistor.CreateAggregatedAdapter(fromObject, ((INakedObjectAssociation) this).Id, obj);
+                return manager.CreateAggregatedAdapter(fromObject, ((INakedObjectAssociation)this).Id, obj);
             }
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
+            return manager.CreateAdapter(obj, null, null);
         }
 
-        public virtual Tuple<INakedObject, TypeOfDefaultValue> GetDefaultObject(INakedObject fromObject) {
+        public virtual Tuple<INakedObject, TypeOfDefaultValue> GetDefaultObject(INakedObject fromObject, INakedObjectManager manager) {
             var typeofDefaultValue = TypeOfDefaultValue.Explicit;
 
             // look for a default on the association ...
@@ -179,7 +179,7 @@ namespace NakedObjects.Reflector.Spec {
                 return new Tuple<INakedObject, TypeOfDefaultValue>(null, TypeOfDefaultValue.Implicit);
             }
             object obj = propertyDefaultFacet.GetDefault(fromObject);
-            return new Tuple<INakedObject, TypeOfDefaultValue>(NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null), typeofDefaultValue);
+            return new Tuple<INakedObject, TypeOfDefaultValue>(manager.CreateAdapter(obj, null, null), typeofDefaultValue);
         }
 
         public override string ToString() {

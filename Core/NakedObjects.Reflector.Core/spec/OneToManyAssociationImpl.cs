@@ -64,15 +64,15 @@ namespace NakedObjects.Reflector.Spec {
         }
 
 
-        public override INakedObject GetDefault(INakedObject nakedObject) {
+        public override INakedObject GetDefault(INakedObject nakedObject, INakedObjectManager manager) {
             return null;
         }
 
-        public override TypeOfDefaultValue GetDefaultType(INakedObject nakedObject) {
+        public override TypeOfDefaultValue GetDefaultType(INakedObject nakedObject, INakedObjectManager manager) {
             return TypeOfDefaultValue.Implicit;
         }
 
-        public override void ToDefault(INakedObject target) {}
+        public override void ToDefault(INakedObject target, INakedObjectManager manager) {}
 
         #endregion
 

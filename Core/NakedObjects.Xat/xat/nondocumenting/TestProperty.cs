@@ -66,7 +66,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestNaked GetDefault() {
-            INakedObject defaultValue = field.GetDefault(owningObject.NakedObject);
+            INakedObject defaultValue = field.GetDefault(owningObject.NakedObject, persistor);
             return factory.CreateTestNaked(defaultValue);
         }
 
