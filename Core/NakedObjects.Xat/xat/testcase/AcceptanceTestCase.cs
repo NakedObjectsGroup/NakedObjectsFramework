@@ -144,6 +144,7 @@ namespace NakedObjects.Xat {
             ISession session = new SimpleSession(CreatePrincipal(username, roles));
             staticContext.SetSession(session);
             testObjectFactory.Session = session;
+            NakedObjectsContext.ObjectPersistor.Session = session;
         }
 
         protected  void SetUser(string username) {
