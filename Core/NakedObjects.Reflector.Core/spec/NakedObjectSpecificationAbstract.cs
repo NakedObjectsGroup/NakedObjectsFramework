@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Facets.Objects.Value;
 using NakedObjects.Architecture.Facets.Objects.ViewModel;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
@@ -173,7 +174,7 @@ namespace NakedObjects.Reflector.Spec {
             return relatedActions;
         }
 
-        public virtual IConsent ValidToPersist(INakedObject transientObject) {
+        public virtual IConsent ValidToPersist(INakedObject transientObject, ISession session) {
             return Allow.Default;
         }
 

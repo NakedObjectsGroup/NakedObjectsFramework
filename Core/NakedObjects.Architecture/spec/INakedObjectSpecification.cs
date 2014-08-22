@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facets.Objects.Encodeable;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Spec {
     public interface INakedObjectSpecification : IActionContainer,
@@ -123,7 +124,7 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Determines whether the specified object can be persisted, that is, it is in a valid state to be saved
         /// </summary>
-        IConsent ValidToPersist(INakedObject transientObject);
+        IConsent ValidToPersist(INakedObject transientObject, ISession session);
 
         object CreateObject(INakedObjectPersistor persistor);
 

@@ -22,6 +22,7 @@ using NakedObjects.Architecture.Facets.Propcoll.NotPersisted;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Context;
@@ -435,7 +436,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return string.IsNullOrEmpty(iconName) ? "Default" : iconName;
         }
 
-        public override IConsent ValidToPersist(INakedObject target) {
+        public override IConsent ValidToPersist(INakedObject target, ISession session) {
             InteractionContext ic = InteractionContext.PersistingObject(NakedObjectsContext.Session, false, target);
             IConsent cons = InteractionUtils.IsValid(target.Specification, ic);
             return cons;
@@ -470,7 +471,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 throw new ModelException(string.Format(Resources.NakedObjects.CannotCreateAbstract, Type));
             }
             object domainObject = Activator.CreateInstance(ProxyCreator.CreateProxyType(reflector, Type));
-            NakedObjectsContext.ObjectPersistor.InitDomainObject(domainObject);
+            persistor.InitDomainObject(domainObject);
             return domainObject;
         }
 

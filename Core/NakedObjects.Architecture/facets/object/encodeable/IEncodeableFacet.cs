@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Capabilities;
 
 namespace NakedObjects.Architecture.Facets.Objects.Encodeable {
@@ -16,7 +17,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Encodeable {
         ///     Equivalent to <see cref="IEncoderDecoder{T}.FromEncodedString" /> though may be
         ///     implemented through some other equivalent mechanism.
         /// </summary>
-        INakedObject FromEncodedString(string encodedData);
+        INakedObject FromEncodedString(string encodedData, INakedObjectManager manager);
 
         /// <summary>
         ///     Equivalent to <see cref="IEncoderDecoder{T}.ToEncodedString" />, though may be

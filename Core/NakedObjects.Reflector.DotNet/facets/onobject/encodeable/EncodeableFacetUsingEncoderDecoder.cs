@@ -5,8 +5,8 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Encodeable;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Capabilities;
-using NakedObjects.Core.Context;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
     public class EncodeableFacetUsingEncoderDecoder<T> : FacetAbstract, IEncodeableFacet {
@@ -20,12 +20,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
 
         #region IEncodeableFacet Members
 
-        public INakedObject FromEncodedString(string encodedData) {
+        public INakedObject FromEncodedString(string encodedData, INakedObjectManager manager) {
             //Assert.assertNotNull(encodedData);
             if (ENCODED_NULL.Equals(encodedData)) {
                 return null;
             }
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(encoderDecoder.FromEncodedString(encodedData), null, null);
+            return manager.CreateAdapter(encoderDecoder.FromEncodedString(encodedData), null, null);
         }
 
         public string ToEncodedString(INakedObject nakedObject) {

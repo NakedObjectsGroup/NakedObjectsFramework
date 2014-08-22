@@ -8,6 +8,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.Spec;
 
@@ -208,7 +209,7 @@ namespace NakedObjects.TestSystem {
             return FullName;
         }
 
-        public override IConsent ValidToPersist(INakedObject transientObject) {
+        public override IConsent ValidToPersist(INakedObject transientObject, ISession session) {
             return null;
         }
 

@@ -203,7 +203,7 @@ namespace NakedObjects.Testing {
             throw new NotImplementedException();
         }
 
-        public IConsent ValidToPersist(INakedObject transientObject) {
+        public IConsent ValidToPersist(INakedObject transientObject, ISession session) {
             throw new NotImplementedException();
         }
 

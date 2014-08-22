@@ -5,6 +5,7 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Encodeable;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
+using NakedObjects.Core.Context;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Parseable;
 using NakedObjects.Reflector.DotNet.Value;
@@ -81,7 +82,7 @@ namespace NakedObjects.Reflector.DotNet {
 
        [Test]
         public void TestDecodeNull() {
-            object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.ENCODED_NULL);
+            object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.ENCODED_NULL, NakedObjectsContext.ObjectPersistor);
             Assert.IsNull(newValue);
         }
 

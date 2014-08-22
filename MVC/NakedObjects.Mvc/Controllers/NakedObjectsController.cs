@@ -242,7 +242,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var fromStreamFacet = parm.Specification.GetFacet<IFromStreamFacet>();
             if (fromStreamFacet != null) {
                 var httpPostedFileBase = (HttpPostedFileBase) value;
-                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName);
+                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.ObjectPersistor);
             }
             var stringValue = value as string;
             if (parm.Specification.IsParseable) {
@@ -401,7 +401,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var fromStreamFacet = assoc.Specification.GetFacet<IFromStreamFacet>();
             if (fromStreamFacet != null) {
                 var httpPostedFileBase = (HttpPostedFileBase)value;
-                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName);
+                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.ObjectPersistor);
             }
             var stringValue = value as string;
             if (assoc.Specification.IsParseable) {

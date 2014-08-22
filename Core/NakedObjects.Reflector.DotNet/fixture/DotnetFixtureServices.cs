@@ -46,16 +46,16 @@ namespace NakedObjects.Reflector.DotNet.Fixture {
             Clock.SetTime(hour, minute);
         }
 
-        public void SetUser(string username, string[] roles) {
-            var staticContext = (StaticContext) NakedObjectsContext.Instance;
+        //public void SetUser(string username, string[] roles) {
+        //    var staticContext = (StaticContext) NakedObjectsContext.Instance;
 
-            IIdentity identity = new GenericIdentity(username);
-            IPrincipal principal = new GenericPrincipal(identity, roles);
+        //    IIdentity identity = new GenericIdentity(username);
+        //    IPrincipal principal = new GenericPrincipal(identity, roles);
 
 
-            ISession session = new SimpleSession(principal);
-            staticContext.SetSession(session);
-        }
+        //    ISession session = new SimpleSession(principal);
+        //    staticContext.SetSession(session);
+        //}
 
         #endregion
 

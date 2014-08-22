@@ -6,6 +6,7 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Encodeable;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Capabilities;
 using NakedObjects.Util;
 
@@ -26,8 +27,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
 
         #region IEncodeableFacet Members
 
-        public INakedObject FromEncodedString(string encodedData) {
-            return encodeableFacetUsingEncoderDecoder.FromEncodedString(encodedData);
+        public INakedObject FromEncodedString(string encodedData, INakedObjectManager manager) {
+            return encodeableFacetUsingEncoderDecoder.FromEncodedString(encodedData, manager);
         }
 
         public string ToEncodedString(INakedObject nakedObject) {
