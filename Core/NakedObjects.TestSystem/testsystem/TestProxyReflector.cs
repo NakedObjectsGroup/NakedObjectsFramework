@@ -4,18 +4,61 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.Util;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.TestSystem {
-    public class TestProxyReflector : NakedObjectReflectorAbstract {
+    public class TestProxyReflector : INakedObjectReflector {
+        // abstract
+
+
         private readonly IDictionary<string, INakedObjectSpecification> specs = new Dictionary<string, INakedObjectSpecification>();
+        private ISpecificationCache cache = new SimpleSpecificationCache();
+        private FacetDecoratorSet facetDecorator;
+
+        private bool linked;
 
 
-        public override INakedObjectSpecification[] AllSpecifications {
+        public virtual FacetDecoratorSet FacetDecorator {
+            set { facetDecorator = value; }
+        }
+
+        public virtual ISpecificationCache Cache {
+            get { return cache; }
+            set { cache = value; }
+        }
+
+        #region INakedObjectReflector Members
+
+        public INakedObject[] NonSystemServices { get; set; }
+
+        public virtual void InstallServiceSpecifications(Type[] type) {
+            type.ForEach(InstallServiceSpecification);
+        }
+
+
+        public virtual void PopulateContributedActions(INakedObject[] services) {
+            try {
+                if (!linked) {
+                    AllSpecifications.OfType<IIntrospectableSpecification>().ForEach(s => s.PopulateAssociatedActions(services));
+                }
+            }
+            finally {
+                linked = true;
+            }
+        }
+
+
+        public bool IgnoreCase { get; set; }
+
+        // end abastract
+
+
+        public INakedObjectSpecification[] AllSpecifications {
             get {
                 var specsArray = new INakedObjectSpecification[specs.Count];
                 int i = 0;
@@ -28,15 +71,13 @@ namespace NakedObjects.TestSystem {
         }
 
 
-        public override void Init() {}
+        public void Init() {}
 
-        public override void InstallServiceSpecification(Type type) {}
-
-        public override INakedObjectSpecification LoadSpecification(Type type) {
+        public INakedObjectSpecification LoadSpecification(Type type) {
             return LoadSpecification(type.FullName);
         }
 
-        public new INakedObjectSpecification LoadSpecification(string name) {
+        public INakedObjectSpecification LoadSpecification(string name) {
             if (specs.ContainsKey(name)) {
                 return specs[name];
             }
@@ -45,7 +86,11 @@ namespace NakedObjects.TestSystem {
             return specification;
         }
 
-        public override void Shutdown() {}
+        public void Shutdown() {}
+
+        #endregion
+
+        public void InstallServiceSpecification(Type type) {}
 
         public INakedObject CreateCollectionAdapter(object collection, INakedObjectSpecification elementSpecification) {
             return null;
@@ -55,11 +100,11 @@ namespace NakedObjects.TestSystem {
             specs[specification.FullName] = specification;
         }
 
-        protected override NakedObjectSpecificationAbstract Install(Type type) {
+        protected NakedObjectSpecificationAbstract Install(Type type) {
             throw new NotImplementedException();
         }
 
-        protected override INakedObjectSpecification CreateSpecification(Type type) {
+        protected INakedObjectSpecification CreateSpecification(Type type) {
             return LoadSpecification(type);
         }
     }

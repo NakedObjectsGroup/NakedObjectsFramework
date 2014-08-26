@@ -168,7 +168,6 @@
     <Compile Include="spec\NakedObjectActionParameterParseable.cs" />
     <Compile Include="spec\NakedObjectActionSet.cs" />
     <Compile Include="spec\NakedObjectMemberSessionAware.cs" />
-    <Compile Include="spec\NakedObjectReflectorAbstract.cs" />
     <Compile Include="spec\NakedObjectSpecificationAbstract.cs" />
     <Compile Include="spec\OneToManyActionParameterImpl.cs" />
     <Compile Include="spec\OneToManyAssociationImpl.cs" />
