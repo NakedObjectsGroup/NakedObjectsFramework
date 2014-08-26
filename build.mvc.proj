@@ -116,7 +116,7 @@
       <SolutionRestoreCommand>"$(NugetToolsPath)\nuget.exe" install "$(PackagesConfig)" -o "$(InstalledPackagesPath)"</SolutionRestoreCommand>
     </PropertyGroup>
     <Exec Command="$(SolutionRestoreCommand)" Condition="Exists('$(PackagesConfig)')"/>
-    <Exec WorkingDirectory="$(MVCPath)" Command="$(Nuget) install Nunit.Runners  -o ..\$(InstalledPackagesPath)"/>
+    <!--<Exec WorkingDirectory="$(MVCPath)" Command="$(Nuget) install Nunit.Runners  -o ..\$(InstalledPackagesPath)"/>-->
   </Target>
 
   
