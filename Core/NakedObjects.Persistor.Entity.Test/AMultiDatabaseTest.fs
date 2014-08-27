@@ -13,15 +13,25 @@ open CodeOnlyTestCode
 open AdventureWorksModel
 open ModelFirst
 open NakedObjects.Core.Context
+open NakedObjects.Core.Security
+open System.Security.Principal
 
 let multiDatabasePersistor =   
     let r = new MockReflector()
-    let p = new EntityObjectStore([|(box (CodeFirstConfig  "AMultiDatabaseTests" ):?> EntityContextConfiguration);(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(r), r)
+    let c = new EntityObjectStoreConfiguration()
+    let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
+    let u = new SimpleUpdateNotifier()
+    c.ContextConfiguration <- [|(box (CodeFirstConfig  "AMultiDatabaseTests" ):?> EntityContextConfiguration);(box PocoConfig :?> EntityContextConfiguration)|]
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r)
     setupPersistorForTesting p
 
 let multiDomainDatabasePersistor =
     let r = new MockReflector() 
-    let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration);(box ModelTestCode.ModelConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(r), r)
+    let c = new EntityObjectStoreConfiguration()
+    let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
+    let u = new SimpleUpdateNotifier()
+    c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration);(box ModelTestCode.ModelConfig :?> EntityContextConfiguration)|]
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r)
     setupPersistorForTesting p
 
 

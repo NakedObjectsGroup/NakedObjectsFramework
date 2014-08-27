@@ -3,7 +3,6 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,21 +11,19 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Adapter.Map;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 using NakedObjects.Resources;
-using NakedObjects.Util;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public class AjaxControllerImpl : NakedObjectsController {
+        public AjaxControllerImpl(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
+
         protected internal JsonpResult Jsonp(object data) {
             return Jsonp(data, null /* contentType */);
         }
@@ -126,7 +123,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
          
             if (spec.IsParseable) {
-                return spec.GetFacet<IParseableFacet>().ParseTextEntry(values.First(), NakedObjectsContext.ObjectPersistor);
+                return spec.GetFacet<IParseableFacet>().ParseTextEntry(values.First(), Core.Context.NakedObjectsContext.ObjectPersistor);
             }
             if (spec.IsCollection) {
                 return FrameworkHelper.GetTypedCollection(spec, values);
@@ -183,7 +180,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             foreach (INakedObjectActionParameter p in action.Parameters) {
                 if (p.IsChoicesEnabled || p.IsMultipleChoicesEnabled) {
-                    INakedObject[] nakedObjectChoices = p.GetChoices(nakedObject, otherValues, NakedObjectsContext.ObjectPersistor);
+                    INakedObject[] nakedObjectChoices = p.GetChoices(nakedObject, otherValues, Core.Context.NakedObjectsContext.ObjectPersistor);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
                     string[] value = FrameworkHelper.IsParseableOrCollectionOfParseable(p.Specification) ? content : nakedObjectChoices.Select(FrameworkHelper.GetObjectId).ToArray();
 
@@ -203,7 +200,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             foreach (IOneToOneAssociation assoc in nakedObject.Specification.Properties.Where(p => p.IsObject)) {
                 if (assoc.IsChoicesEnabled) {
-                    INakedObject[] nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues, NakedObjectsContext.ObjectPersistor);
+                    INakedObject[] nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues, Core.Context.NakedObjectsContext.ObjectPersistor);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
                     string[] value = assoc.Specification.IsParseable ? content : nakedObjectChoices.Select(FrameworkHelper.GetObjectId).ToArray();
 
@@ -238,7 +235,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var assoc = (IOneToOneAssociation) nakedObject.Specification.Properties.Single(p => p.IsObject && p.Id == propertyId);
 
             if (assoc.IsAutoCompleteEnabled) {
-                INakedObject[] nakedObjectCompletions = assoc.GetCompletions(nakedObject, autoCompleteParm, NakedObjectsContext.ObjectPersistor);
+                INakedObject[] nakedObjectCompletions = assoc.GetCompletions(nakedObject, autoCompleteParm, Core.Context.NakedObjectsContext.ObjectPersistor);
                 completions = nakedObjectCompletions.Select(no => GetCompletionData(no, assoc.Specification)).ToList();
             }
 
@@ -253,7 +250,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             INakedObjectActionParameter p = action.Parameters[parameterIndex];
             if (p.IsAutoCompleteEnabled) {
-                INakedObject[] nakedObjectCompletions = p.GetCompletions(nakedObject, autoCompleteParm, NakedObjectsContext.ObjectPersistor);
+                INakedObject[] nakedObjectCompletions = p.GetCompletions(nakedObject, autoCompleteParm, Core.Context.NakedObjectsContext.ObjectPersistor);
                 completions = nakedObjectCompletions.Select(no => GetCompletionData(no, p.Specification)).ToList();
             }
 

@@ -3,12 +3,20 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System;
 using System.Linq;
+using System.Web.UI.WebControls;
 using AdventureWorksModel;
+using Microsoft.Practices.Unity;
+using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Boot;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
 using NakedObjects.EntityObjectStore;
+using NakedObjects.Mvc.App.App_Start;
+using NakedObjects.Reflector.DotNet.Facets;
+using NakedObjects.Reflector.DotNet.Reflect;
+using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Web.Mvc;
 using NakedObjects.Web.Mvc.Helpers;
 
@@ -64,9 +72,14 @@ namespace NakedObjects.Mvc.App {
             }
         }
 
+       
+
         public static void Run() {
-            Assert.AssertTrue("Rest root may not be empty", RestRoot == null || RestRoot.Trim().Length > 0);
-            new RunWeb().Start();
+            //Assert.AssertTrue("Rest root may not be empty", RestRoot == null || RestRoot.Trim().Length > 0);
+            //new RunWeb().Start();  
+
+          
+
         }
     }
 }

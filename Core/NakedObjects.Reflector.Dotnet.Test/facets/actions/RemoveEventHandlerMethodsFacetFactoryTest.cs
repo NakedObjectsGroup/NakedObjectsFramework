@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NUnit.Framework;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Choices;
@@ -26,8 +27,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            var dnReflector = new DotNetReflector {FacetDecorator = new FacetDecoratorSet()};
-            dnReflector.Init();
+            var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySetImpl(), new FacetDecoratorSet());
+       
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(reflector);
         }
 

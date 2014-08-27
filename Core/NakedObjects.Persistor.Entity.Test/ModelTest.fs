@@ -8,9 +8,15 @@ open NakedObjects.EntityObjectStore
 open TestCode
 open ModelTestCode
 open NakedObjects.Core.Context
+open NakedObjects.Core.Security
+open System.Security.Principal
 
 let persistor =
-    let p = new EntityObjectStore([|(box ModelConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
+    let c = new EntityObjectStoreConfiguration()
+    let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
+    let u = new SimpleUpdateNotifier()
+    c.ContextConfiguration <- [|(box ModelConfig :?> EntityContextConfiguration)|]
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
     setupPersistorForInjectorTesting p
 
 

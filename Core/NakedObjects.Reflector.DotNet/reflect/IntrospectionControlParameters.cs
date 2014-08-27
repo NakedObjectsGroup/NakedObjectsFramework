@@ -3,7 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Reflector.DotNet.Reflect.Strategy;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     /// <summary>

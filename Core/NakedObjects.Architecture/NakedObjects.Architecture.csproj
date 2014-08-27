@@ -427,6 +427,7 @@
     <Compile Include="persist\IPersistenceCommand.cs" />
     <Compile Include="reflect\Allow.cs" />
     <Compile Include="reflect\Do.cs" />
+    <Compile Include="reflect\IClassStrategy.cs" />
     <Compile Include="reflect\IConsent.cs" />
     <Compile Include="reflect\ConsentAbstract.cs" />
     <Compile Include="reflect\IContainerInjector.cs" />

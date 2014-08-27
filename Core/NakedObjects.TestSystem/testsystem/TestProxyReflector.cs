@@ -5,7 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
@@ -35,6 +37,8 @@ namespace NakedObjects.TestSystem {
         #region INakedObjectReflector Members
 
         public INakedObject[] NonSystemServices { get; set; }
+        public IClassStrategy ClassStrategy { get; private set; }
+        public IFacetFactorySet FacetFactorySet { get; private set; }
 
         public virtual void InstallServiceSpecifications(Type[] type) {
             type.ForEach(InstallServiceSpecification);
@@ -87,6 +91,9 @@ namespace NakedObjects.TestSystem {
         }
 
         public void Shutdown() {}
+        public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) {
+            throw new NotImplementedException();
+        }
 
         #endregion
 

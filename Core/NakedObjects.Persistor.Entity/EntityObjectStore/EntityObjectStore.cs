@@ -27,7 +27,6 @@ using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
@@ -46,6 +45,7 @@ using IsolationLevel = System.Transactions.IsolationLevel;
 namespace NakedObjects.EntityObjectStore {
     public class EntityObjectStore : INakedObjectStore {
         private readonly INakedObjectReflector reflector;
+        private readonly ISession session;
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStore));
         private static CreateAdapterDelegate createAdapter;
         private static CreateAggregatedAdapterDelegate createAggregatedAdapter;
@@ -90,9 +90,10 @@ namespace NakedObjects.EntityObjectStore {
             IsInitializedCheck = () => true;
         }
 
-        internal EntityObjectStore(INakedObjectReflector reflector) {
+        internal EntityObjectStore(INakedObjectReflector reflector, ISession session, IUpdateNotifier updateNotifier) {
             this.reflector = reflector;
-
+            this.session = session;
+            this.updateNotifier = updateNotifier;
 
             createAdapter = (oid, domainObject) => Manager.CreateAdapter(domainObject, oid, null);
             replacePoco = (nakedObject, newDomainObject) => Manager.ReplacePoco(nakedObject, newDomainObject);
@@ -105,27 +106,25 @@ namespace NakedObjects.EntityObjectStore {
             persisted = (x, s, p) => x.Persisted(s, p);
             handleLoaded = HandleLoadedDefault;
             savingChangesHandlerDelegate = SavingChangesHandler;
-            loadSpecification = type => reflector.LoadSpecification(type);
+            loadSpecification = reflector.LoadSpecification;
+            notifyUi = updateNotifier.AddChangedObject;
         }
 
 
-        public EntityObjectStore(IEnumerable<EntityContextConfiguration> config, EntityOidGenerator oidGenerator, INakedObjectReflector reflector)
-            : this(reflector) {
+        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, EntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, INakedObjectReflector reflector)
+            : this(reflector, session, updateNotifier) {
             this.oidGenerator = oidGenerator;
-            contexts = config.ToDictionary<EntityContextConfiguration, EntityContextConfiguration, LocalContext>(c => c, c => null);
+            contexts = config.ContextConfiguration.ToDictionary<EntityContextConfiguration, EntityContextConfiguration, LocalContext>(c => c, c => null);
+        
+            EnforceProxies = config.EnforceProxies;
+            RequireExplicitAssociationOfTypes = config.RequireExplicitAssociationOfTypes;
+            RollBackOnError = config.RollBackOnError;
+            MaximumCommitCycles = config.MaximumCommitCycles;
+            IsInitializedCheck = config.IsInitializedCheck;
+            Reset();
         }
 
         public INakedObjectManager Manager { get; set; }
-
-        public IUpdateNotifier UpdateNotifier {
-            get { return updateNotifier; }
-            set {
-                updateNotifier = value;
-                notifyUi = UpdateNotifier.AddChangedObject;
-            }
-        }
-
-        public ISession Session { get; set; }
 
         #region for testing only
 
@@ -358,7 +357,7 @@ namespace NakedObjects.EntityObjectStore {
 
         private  LocalContext ResetPocoContext(PocoEntityContextConfiguration pocoConfig) {
             try {
-                return new LocalContext(pocoConfig, Session, Manager) {IsInitialized = true};
+                return new LocalContext(pocoConfig, session, Manager) {IsInitialized = true};
             }
             catch (Exception e) {
                 string explain = string.Format(Resources.NakedObjects.StartPersistorErrorMessage, pocoConfig.ContextName);
@@ -368,7 +367,7 @@ namespace NakedObjects.EntityObjectStore {
 
         private  LocalContext ResetCodeOnlyContext(CodeFirstEntityContextConfiguration codeOnlyConfig) {
             try {
-                return new LocalContext(codeOnlyConfig, Session, Manager);
+                return new LocalContext(codeOnlyConfig, session, Manager);
             }
             catch (Exception e) {
                 throw new InitialisationException(Resources.NakedObjects.StartPersistorErrorCodeFirst, e);
@@ -517,7 +516,7 @@ namespace NakedObjects.EntityObjectStore {
             INakedObject nakedObject = createAdapter(oid, domainObject);
             Injector.InitDomainObject(nakedObject.Object);
             LoadComplexTypes(nakedObject, nakedObject.ResolveState.IsGhost());
-            nakedObject.UpdateVersion(Session, Manager);
+            nakedObject.UpdateVersion(session, Manager);
 
             if (nakedObject.ResolveState.IsGhost()) {
                 StartResolving(nakedObject, context);
@@ -1146,7 +1145,7 @@ namespace NakedObjects.EntityObjectStore {
             Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
             if (oid is EntityOid) {
                 INakedObject adapter = createAdapter(oid, GetObjectByKey((EntityOid) oid, hint));
-                adapter.UpdateVersion(Session, Manager);
+                adapter.UpdateVersion(session, Manager);
                 return adapter;
             }
             var aggregateOid = oid as AggregateOid;
@@ -1298,9 +1297,9 @@ namespace NakedObjects.EntityObjectStore {
         public void Refresh(INakedObject nakedObject) {
             Log.Debug("Refresh nakedobject: " + nakedObject);
             if (nakedObject.Specification.GetFacet<IComplexTypeFacet>() == null) {
-                updating(nakedObject, Session, (INakedObjectPersistor)Manager);
+                updating(nakedObject, session, (INakedObjectPersistor)Manager);
                 GetContext(nakedObject.Object.GetType()).WrappedObjectContext.Refresh(RefreshMode.StoreWins, nakedObject.Object);
-                updated(nakedObject, Session, (INakedObjectPersistor)Manager);
+                updated(nakedObject, session, (INakedObjectPersistor)Manager);
             }
         }
 

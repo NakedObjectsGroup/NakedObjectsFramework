@@ -21,9 +21,7 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
-using NakedObjects.Core.Security;
 using NakedObjects.Resources;
 using NakedObjects.Value;
 using NakedObjects.Web.Mvc.Helpers;
@@ -32,12 +30,21 @@ using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class NakedObjectsController : Controller {
+        private readonly INakedObjectsFramework nakedObjectsContext;
 
-   
+
+        protected NakedObjectsController(INakedObjectsFramework nakedObjectsContext) {
+            this.nakedObjectsContext = nakedObjectsContext;
+        }
+
         public IEncryptDecrypt EncryptDecryptService { protected get; set; }
 
+        protected INakedObjectsFramework NakedObjectsContext {
+            get { return nakedObjectsContext; }
+        }
+
         protected void SetSession() {
-            NakedObjectsContext.Instance.SetSession(new WindowsSession(User));
+           // NakedObjectsContext.Instance.SetSession(new WindowsSession(User));
         }
 
         protected void SetControllerName(string name) {
@@ -54,9 +61,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext) {
-            NakedObjectsContext.EnsureReady();
-            SetSession();
-            SetServices();
+            //NakedObjectsContext.EnsureReady();
+            //SetSession();
+            //SetServices();
             NakedObjectsContext.ObjectPersistor.StartTransaction();
         }
 
@@ -235,7 +242,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return FilterCollection(nakedObject, controlData);
         }
 
-        internal static INakedObject GetParameterValue(INakedObjectActionParameter parm, object value) {
+        internal  INakedObject GetParameterValue(INakedObjectActionParameter parm, object value) {
             if (value == null) {
                 return null;
             }
@@ -394,7 +401,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        internal static INakedObject GetNakedObjectValue(INakedObjectAssociation assoc, INakedObject targetNakedObject, object value) {
+        internal  INakedObject GetNakedObjectValue(INakedObjectAssociation assoc, INakedObject targetNakedObject, object value) {
             if (value == null) {
                 return null;
             }
@@ -517,7 +524,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
         }
 
-        private static void GetUsableAndVisibleFields(INakedObject nakedObject, ObjectAndControlData controlData, INakedObjectAssociation parent, out List<INakedObjectAssociation> usableAndVisibleFields, out List<Tuple<INakedObjectAssociation, object>> fieldsAndMatchingValues) {
+        private  void GetUsableAndVisibleFields(INakedObject nakedObject, ObjectAndControlData controlData, INakedObjectAssociation parent, out List<INakedObjectAssociation> usableAndVisibleFields, out List<Tuple<INakedObjectAssociation, object>> fieldsAndMatchingValues) {
             usableAndVisibleFields = nakedObject.Specification.Properties.Where(p => IsUsable(p, nakedObject) && IsVisible(p, nakedObject)).ToList();
             fieldsAndMatchingValues = GetFieldsAndMatchingValues(nakedObject, parent, usableAndVisibleFields, controlData, GetFieldInputId).ToList();
         }
@@ -606,15 +613,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         }
 
-        internal static bool IsUsable(INakedObjectAssociation assoc, INakedObject nakedObject) {
+        internal  bool IsUsable(INakedObjectAssociation assoc, INakedObject nakedObject) {
             return assoc.IsUsable(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor).IsAllowed;
         }
 
-        internal static bool IsVisible(INakedObjectAssociation assoc, INakedObject nakedObject) {
+        internal  bool IsVisible(INakedObjectAssociation assoc, INakedObject nakedObject) {
             return assoc.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor);
         }
 
-        internal static bool IsConcurrency(INakedObjectAssociation assoc) {
+        internal  bool IsConcurrency(INakedObjectAssociation assoc) {
             return assoc.ContainsFacet<IConcurrencyCheckFacet>();
         }
 
@@ -846,7 +853,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return DoPaging(nakedObject, collectionfacet, 1, collectionSize, forceEnumerable);
         }
 
-        private static INakedObject DoPaging(INakedObject nakedObject, ICollectionFacet collectionfacet, int page, int pageSize, bool forceEnumerable) {
+        private  INakedObject DoPaging(INakedObject nakedObject, ICollectionFacet collectionfacet, int page, int pageSize, bool forceEnumerable) {
             INakedObject newNakedObject = collectionfacet.Page(page, pageSize, nakedObject, NakedObjectsContext.ObjectPersistor, forceEnumerable);
             object[] objects = newNakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Select(no => no.Object).ToArray();
             newNakedObject.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, nakedObject.Oid as CollectionMemento, objects) { IsPaged = true });
@@ -865,7 +872,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return nakedObject;
         }
 
-        private static INakedObject CloneAndPopulateCollection(INakedObject nakedObject, object[] selected, bool forceEnumerable) {
+        private  INakedObject CloneAndPopulateCollection(INakedObject nakedObject, object[] selected, bool forceEnumerable) {
             IList result = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
             INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(nakedObject.Specification.IsQueryable && !forceEnumerable ? (IEnumerable)result.AsQueryable() : result, null, null);
             adapter.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, nakedObject.Oid as CollectionMemento, selected));

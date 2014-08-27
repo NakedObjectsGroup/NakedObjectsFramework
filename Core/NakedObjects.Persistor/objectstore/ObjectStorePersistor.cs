@@ -41,28 +41,29 @@ namespace NakedObjects.Persistor.Objectstore {
         private readonly List<ServiceWrapper> services = new List<ServiceWrapper>();
         private readonly INakedObjectTransactionManager transactionManager;
 
-        private ISession session;
-        private IUpdateNotifier updateNotifier;
+        private readonly ISession session;
+        private readonly IUpdateNotifier updateNotifier;
 
 
         static ObjectStorePersistor() {
             Log = LogManager.GetLogger(typeof (ObjectStorePersistor));
         }
 
-        public ObjectStorePersistor(INakedObjectReflector reflector, INakedObjectStore objectStore, IPersistAlgorithm persistAlgorithm, IOidGenerator oidGenerator, IIdentityMap identityMap) {
+        public ObjectStorePersistor(ISession session, IUpdateNotifier updateNotifier, INakedObjectReflector reflector, INakedObjectStore objectStore, IPersistAlgorithm persistAlgorithm, IOidGenerator oidGenerator, IIdentityMap identityMap) {
             Assert.AssertNotNull(objectStore);
             Assert.AssertNotNull(persistAlgorithm);
             Assert.AssertNotNull(oidGenerator);
             Assert.AssertNotNull(identityMap);
             Assert.AssertNotNull(reflector);
 
+            this.session = session;
             this.reflector = reflector;
+            this.updateNotifier = updateNotifier;
 
             this.objectStore = objectStore;
             this.persistAlgorithm = persistAlgorithm;
             OidGenerator = oidGenerator;
             this.identityMap = identityMap;
-
 
             transactionManager = new ObjectStoreTransactionManager(objectStore);
             Log.DebugFormat("Creating {0}", this);
@@ -81,23 +82,6 @@ namespace NakedObjects.Persistor.Objectstore {
         #region INakedObjectPersistor Members
 
         public IContainerInjector Injector { get; set; }
-
-        public ISession Session {
-            set {
-                session = value;
-                objectStore.Session = session;
-            }
-            get { return session; }
-        }
-
-        public object UpdateNotifier {
-            set {
-                updateNotifier = (IUpdateNotifier) value;
-                objectStore.UpdateNotifier = updateNotifier;
-            }
-            get { return updateNotifier; }
-        }
-
 
         public IOidGenerator OidGenerator { get; private set; }
 
@@ -247,7 +231,7 @@ namespace NakedObjects.Persistor.Objectstore {
             Log.DebugFormat("GetServicesWithVisibleActions of: {0}", serviceType);
             return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
                 Select(sw => GetServiceAdapter(sw.Service)).
-                Where(no => no.Specification.GetObjectActions().Any(a => a.IsVisible(Session, no, this))).ToArray();
+                Where(no => no.Specification.GetObjectActions().Any(a => a.IsVisible(session, no, this))).ToArray();
         }
 
         public virtual INakedObject[] GetServices(ServiceTypes serviceType) {
@@ -381,7 +365,7 @@ namespace NakedObjects.Persistor.Objectstore {
                         throw new NotPersistableException("cannot change immutable object");
                     }
                     nakedObject.Updating(session, this);
-                    ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject, Session, this);
+                    ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject, session, this);
                     transactionManager.AddCommand(saveObjectCommand);
                     nakedObject.Updated(session, this);
                     updateNotifier.AddChangedObject(nakedObject);
@@ -496,7 +480,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid) {
-            return new PocoAdapter(reflector, Session, this, domainObject, transientOid);
+            return new PocoAdapter(reflector, session, this, domainObject, transientOid);
         }
 
         public INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj) {
@@ -564,7 +548,7 @@ namespace NakedObjects.Persistor.Objectstore {
             if (nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return;
             }
-            ICreateObjectCommand createObjectCommand = objectStore.CreateCreateObjectCommand(nakedObject, Session, this);
+            ICreateObjectCommand createObjectCommand = objectStore.CreateCreateObjectCommand(nakedObject, session, this);
             transactionManager.AddCommand(createObjectCommand);
         }
 
@@ -594,7 +578,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
             object versionObject = adapter.GetVersion(this);
             if (versionObject != null) {
-                adapter.OptimisticLock = new ConcurrencyCheckVersion(Session.UserName, DateTime.Now, versionObject);
+                adapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
                 Log.DebugFormat("CreateAdapterForViewModel: Updating Version {0} on {1}", adapter.Version, adapter);
             }
 

@@ -26,7 +26,6 @@ type MockReflector() =
     interface INakedObjectReflector with 
         member x.AllSpecifications with get() = [||]
         member x.IgnoreCase with get() = false
-        member x.Init() = ()
         member x.Shutdown() = ()
         member x.LoadSpecification(typ : Type) : INakedObjectSpecification = null
         member x.LoadSpecification(str : string) : INakedObjectSpecification = null
@@ -34,6 +33,9 @@ type MockReflector() =
         member x.PopulateContributedActions(services : INakedObject[]) = ()
         member x.NonSystemServices with get() = [||]
                                    and set(arr) = ()
+        member x.ClassStrategy with get() = (null)
+        member x.FacetFactorySet with get() = (null)
+        member x.LoadSpecificationForReturnTypes(properties, classToIgnore) = ()
       
 
 

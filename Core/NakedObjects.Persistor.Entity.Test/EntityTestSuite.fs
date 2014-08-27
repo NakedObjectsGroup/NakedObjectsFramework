@@ -18,6 +18,8 @@ open TestData
 open NakedObjects.Persistor.TestSuite
 open TestTypes
 open TestData
+open NakedObjects.Core.Security
+open System.Security.Principal
         
 let assemblyName = "NakedObjects.Persistor.Test.Data"
 
@@ -46,7 +48,11 @@ let Config =
 //    c
 
 let db = 
-    let p = new EntityObjectStore([|(box Config :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
+    let c = new EntityObjectStoreConfiguration()
+    let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
+    let u = new SimpleUpdateNotifier()
+    c.ContextConfiguration <- [|(box Config :?> EntityContextConfiguration)|]
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
     p
 
 

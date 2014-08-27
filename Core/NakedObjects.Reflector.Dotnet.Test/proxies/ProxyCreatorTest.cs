@@ -67,8 +67,8 @@ namespace NakedObjects.Reflector.DotNet.Proxies {
         [SetUp]
         public void SetupTest() {
             InitializeNakedObjectsFramework();
-            injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector,
-                new[] {new SimpleRepository<HasProperty>()});
+            //injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector,
+            //    new[] {new SimpleRepository<HasProperty>()});
         }
 
         [TearDown]
@@ -82,7 +82,7 @@ namespace NakedObjects.Reflector.DotNet.Proxies {
             get { return new ServicesInstaller(new[] {new SimpleRepository<HasProperty>()}); }
         }
 
-        private DotNetDomainObjectContainerInjector injector;
+        private DotNetDomainObjectContainerInjector injector = null;
 
 
         [Test]

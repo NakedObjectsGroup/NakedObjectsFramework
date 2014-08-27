@@ -12,7 +12,6 @@ using NakedObjects.Architecture.Facets.Objects.Facets;
 using NakedObjects.Architecture.Facets.Ordering.MemberOrder;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder;
 using NakedObjects.Reflector.DotNet.Reflect.Actions;
@@ -37,7 +36,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         private readonly MethodInfo[] methods;
         private readonly PropertyInfo[] properties;
-        private readonly DotNetReflector reflector;
+        private readonly INakedObjectReflector reflector;
 
         private OrderSet orderedClassActions;
         private OrderSet orderedFields;
@@ -45,7 +44,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         public DotNetIntrospector(Type typeToIntrospect,
                                   DotNetSpecification dotnetSpecification,
-                                  DotNetReflector reflector) {
+                                  INakedObjectReflector reflector) {
             Log.DebugFormat("Creating DotNetIntrospector for {0}", typeToIntrospect);
 
             if (!TypeUtils.IsPublic(typeToIntrospect)) {
@@ -60,11 +59,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         private IClassStrategy ClassStrategy {
-            get { return reflector.IntrospectionControlParameters.ClassStrategy; }
+            get { return reflector.ClassStrategy; }
         }
 
         private IFacetFactorySet FacetFactorySet {
-            get { return reflector.IntrospectionControlParameters.FacetFactorySet; }
+            get { return reflector.FacetFactorySet; }
         }
 
         public Type IntrospectedType {

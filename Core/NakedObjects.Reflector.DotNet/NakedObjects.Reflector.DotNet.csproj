@@ -331,7 +331,6 @@
     <Compile Include="reflect\propcoll\DotNetNakedObjectAssociationPeer.cs" />
     <Compile Include="reflect\properties\DotNetOneToOneAssociationPeer.cs" />
     <Compile Include="reflect\proxies\ProxyCreator.cs" />
-    <Compile Include="reflect\strategy\IClassStrategy.cs" />
     <Compile Include="reflect\strategy\DefaultClassStrategy.cs" />
     <Compile Include="reflect\util\EnumUtils.cs" />
     <Compile Include="reflect\util\InvokeUtils.cs" />

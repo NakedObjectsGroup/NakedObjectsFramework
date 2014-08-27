@@ -42,6 +42,8 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                 new CreateIfNullPocoAdapterDecorator(inMemoryObjectStore, pocoAdapterMap ?? new PocoAdapterHashMap()));
 
             var persistor = new ObjectStorePersistor(
+                null, 
+                null,
                 reflector,  
                 inMemoryObjectStore,
                 new DefaultPersistAlgorithm(),

@@ -11,11 +11,6 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class FacetFactorySetAbstract : IFacetFactorySet {
-        private readonly INakedObjectReflector reflector;
-
-        protected FacetFactorySetAbstract(INakedObjectReflector reflector) {
-            this.reflector = reflector;
-        }
 
         private readonly object cacheLock = true;
 
@@ -63,9 +58,6 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             }
         }
 
-        public INakedObjectReflector Reflector {
-            get { return reflector; }
-        }
 
         public void FindCollectionProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo) {
             CachePropertyOrCollectionIdentifyingFacetFactoriesIfRequired();
@@ -141,6 +133,8 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             }
             return facetsAdded;
         }
+
+        public abstract void Init(INakedObjectReflector reflector);
 
         #endregion
 

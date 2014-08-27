@@ -4,6 +4,7 @@
 
 using System;
 using Common.Logging;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Util;
 

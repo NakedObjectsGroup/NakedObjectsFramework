@@ -19,7 +19,6 @@ using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
 using NakedObjects.Core.Service;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.DotNet;
 using NakedObjects.Reflector.Transaction;
 
 namespace NakedObjects.Boot {
@@ -166,14 +165,14 @@ namespace NakedObjects.Boot {
             context.SetObjectPersistor(objectPersistor);
             context.SetAuthorizationManager(new NullAuthorizationManager());
             context.SetSession(session);
-            objectPersistor.Session = session;
-            objectPersistor.UpdateNotifier = NakedObjectsContext.UpdateNotifier;
+      
+            //objectPersistor.UpdateNotifier = NakedObjectsContext.UpdateNotifier;
             
             objectPersistor.AddServices(menuServicesInstaller, contributedActionsInstaller, systemServicesInstaller);
 
             var ss = GetServices(menuServicesInstaller).Union(GetServices(contributedActionsInstaller)).Union(GetServices(systemServicesInstaller)).ToArray();
           
-            objectPersistor.Injector = new DotNetDomainObjectContainerInjector(reflector, ss);      
+          //  objectPersistor.Injector = new DotNetDomainObjectContainerInjector(reflector, ss);      
 
             objectPersistor.Init();
 
@@ -181,7 +180,7 @@ namespace NakedObjects.Boot {
            
             if (fixtureInstaller != null) {
                 NakedObjectsContext.EnsureReady();
-                NakedObjectsContext.ObjectPersistor.Session = session;
+               
                 context.SetSession(session);
                 fixtureInstaller.InstallFixtures(NakedObjectsContext.ObjectPersistor);
             }

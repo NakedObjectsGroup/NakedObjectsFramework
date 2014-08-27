@@ -71,5 +71,7 @@ namespace NakedObjects.Architecture.Facets {
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
         bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder facetHolder);
+
+        void Init(INakedObjectReflector reflector);
     }
 }

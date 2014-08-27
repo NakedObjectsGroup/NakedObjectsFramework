@@ -6,30 +6,46 @@ using NakedObjects.Objects;
 
 namespace NakedObjects.Service {
     public class NakedObjectsFramework : INakedObjectsFramework {
+        private readonly IMessageBroker messageBroker;
+        private readonly IUpdateNotifier updateNotifier;
+        private readonly ISession session;
+        private readonly INakedObjectPersistor objectPersistor;
+        private readonly INakedObjectReflector reflector;
+        private readonly IAuthorizationManager authorizationManager;
+
+        public NakedObjectsFramework(IMessageBroker messageBroker, IUpdateNotifier updateNotifier, ISession session, INakedObjectPersistor objectPersistor, INakedObjectReflector reflector, IAuthorizationManager authorizationManager) {
+            this.messageBroker = messageBroker;
+            this.updateNotifier = updateNotifier;
+            this.session = session;
+            this.objectPersistor = objectPersistor;
+            this.reflector = reflector;
+            this.authorizationManager = authorizationManager;
+        }
+
         #region INakedObjectsFramework Members
 
         public IMessageBroker MessageBroker {
-            get { return NakedObjectsContext.MessageBroker; }
+            get { return this.messageBroker; }
         }
 
         public IUpdateNotifier UpdateNotifier {
-            get { return NakedObjectsContext.UpdateNotifier; }
+            get { return this.updateNotifier; }
         }
 
         public ISession Session {
-            get { return NakedObjectsContext.Session; }
+            get { return this.session; }
         }
 
         public INakedObjectPersistor ObjectPersistor {
-            get { return NakedObjectsContext.ObjectPersistor; }
+            get { return this.objectPersistor; }
         }
 
         public INakedObjectReflector Reflector {
-            get { return NakedObjectsContext.Reflector; }
+            get { return this.reflector; }
         }
 
         public IAuthorizationManager AuthorizationManager {
-            get { return NakedObjectsContext.AuthorizationManager; }
+            get { return this.authorizationManager; }
         }
 
         #endregion

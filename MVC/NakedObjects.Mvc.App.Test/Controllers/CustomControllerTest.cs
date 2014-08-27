@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.Web.Mvc;
 using AdventureWorksModel;
 using MvcTestApp.Tests.Util;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Boot;
@@ -95,6 +96,8 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         private class CustomControllerWrapper : CustomController {
+            public CustomControllerWrapper(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
+
             public new T InvokeAction<T>(object domainObject, string actionName, FormCollection parameters, out bool valid) {
                 return base.InvokeAction<T>(domainObject, actionName, parameters, out valid);
             }
@@ -236,7 +239,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeActionByLambda() {
-            var controller = new CustomControllerWrapper();
+            var controller = new CustomControllerWrapper(null);
             new ContextMocks(controller);
             bool valid;
             Employee result = controller.InvokeAction<EmployeeRepository, Employee>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.RandomEmployee, new FormCollection(), out valid);
@@ -246,7 +249,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeActionByLambdaWithInvalidParms() {
-            var controller = new CustomControllerWrapper();
+            var controller = new CustomControllerWrapper(null);
             new ContextMocks(controller);
             bool valid;
             IQueryable<Employee> result = controller.InvokeAction<EmployeeRepository, string, string, IQueryable<Employee>>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.FindEmployeeByName, new FormCollection(), out valid);
@@ -256,7 +259,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeActionByLambdaWithValidParms() {
-            var controller = new CustomControllerWrapper();
+            var controller = new CustomControllerWrapper(null);
             new ContextMocks(controller);
             bool valid;
             FormCollection fc = GetForm(new Dictionary<string, string> {
@@ -270,7 +273,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeActionByName() {
-            var controller = new CustomControllerWrapper();
+            var controller = new CustomControllerWrapper(null);
             new ContextMocks(controller);
             bool valid;
             var result = controller.InvokeAction<Employee>(EmployeeRepo.Object, "RandomEmployee", new FormCollection(), out valid);
@@ -281,7 +284,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByLambda() {
-            var controller = new CustomControllerWrapper();
+            var controller = new CustomControllerWrapper(null);
             new ContextMocks(controller);
             ViewResult result = controller.InvokeAction<EmployeeRepository, Employee>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.RandomEmployee, new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
@@ -290,7 +293,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByLambdaWithInvalidParms() {
-            var controller = new CustomControllerWrapper();
+            var controller = new CustomControllerWrapper(null);
             new ContextMocks(controller);
             ViewResult result = controller.InvokeAction<EmployeeRepository, string, string, IQueryable<Employee>>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.FindEmployeeByName, new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
@@ -299,7 +302,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByLambdaWithInvalidParmsWithOid() {
-            var controller = new CustomControllerWrapper();
+            var controller = new CustomControllerWrapper(null);
             new ContextMocks(controller);
             ViewResult result = controller.InvokeAction<EmployeeRepository, string, string, IQueryable<Employee>>(EmployeeRepoId, x => x.FindEmployeeByName, new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
@@ -308,7 +311,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByLambdaWithOid() {
-            var controller = new CustomControllerWrapper();
+            var controller = new CustomControllerWrapper(null);
             new ContextMocks(controller);
             ViewResult result = controller.InvokeAction<EmployeeRepository, Employee>(EmployeeRepoId, x => x.RandomEmployee, new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
@@ -317,7 +320,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByLambdaWithValidParms() {
-            var controller = new CustomControllerWrapper();
+            var controller = new CustomControllerWrapper(null);
             new ContextMocks(controller);
             FormCollection fc = GetForm(new Dictionary<string, string> {
                                                                            {"EmployeeRepository-FindEmployeeByName-FirstName-Input", ""},
@@ -330,7 +333,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByLambdaWithValidParmsWithOid() {
-            var controller = new CustomControllerWrapper();
+            var controller = new CustomControllerWrapper(null);
             new ContextMocks(controller);
             FormCollection fc = GetForm(new Dictionary<string, string> {
                                                                            {"EmployeeRepository-FindEmployeeByName-FirstName-Input", ""},
@@ -343,7 +346,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByName() {
-            var controller = new CustomControllerWrapper();
+            var controller = new CustomControllerWrapper(null);
             new ContextMocks(controller);
             ViewResult result = controller.InvokeAction(EmployeeRepo.Object, "RandomEmployee", new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
@@ -352,7 +355,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByNameWithOid() {
-            var controller = new CustomControllerWrapper();
+            var controller = new CustomControllerWrapper(null);
             new ContextMocks(controller);
             ViewResult result = controller.InvokeAction(EmployeeRepoId, "RandomEmployee", new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);

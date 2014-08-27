@@ -5,17 +5,16 @@
 using System.Collections.Generic;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Util;
-using NakedObjects.Service;
 
 namespace NakedObjects.Reflector.DotNet {
     public class DotNetDomainObjectContainerInjector : IContainerInjector {
         private readonly object container;
         private readonly List<object> services = new List<object>();
 
-        public DotNetDomainObjectContainerInjector(INakedObjectReflector reflector, object[] services) {
-            container = new DotNetDomainObjectContainer(reflector);
+        public DotNetDomainObjectContainerInjector(INakedObjectsFramework framework, object[] services) {
+            container = new DotNetDomainObjectContainer(framework);
             this.services.AddRange(services);
-            this.services.Add(new NakedObjectsFramework());
+            this.services.Add(framework);
         }
 
         #region IContainerInjector Members

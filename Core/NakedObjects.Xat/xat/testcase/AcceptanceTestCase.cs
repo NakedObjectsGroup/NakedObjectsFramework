@@ -69,8 +69,8 @@ namespace NakedObjects.Xat {
         }
 
         // make framework available to tests 
-        private readonly NakedObjectsFramework nakedObjectsFramework = new NakedObjectsFramework();
-        private IContainerInjector injector;
+        private readonly NakedObjectsFramework nakedObjectsFramework = null;//new NakedObjectsFramework();
+        private IContainerInjector injector = null;
 
 
         protected INakedObjectsFramework NakedObjectsContext {
@@ -82,7 +82,7 @@ namespace NakedObjects.Xat {
         protected IContainerInjector Injector {
             get {
                 if (injector == null) {
-                    injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector, NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray());
+                    //injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector, NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray());
                 }
                 return injector;
             }
@@ -144,7 +144,7 @@ namespace NakedObjects.Xat {
             ISession session = new SimpleSession(CreatePrincipal(username, roles));
             staticContext.SetSession(session);
             testObjectFactory.Session = session;
-            NakedObjectsContext.ObjectPersistor.Session = session;
+            //NakedObjectsContext.ObjectPersistor.Session = session;
         }
 
         protected  void SetUser(string username) {

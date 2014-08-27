@@ -9,9 +9,15 @@ open NakedObjects.EntityObjectStore
 open TestCode
 open System.Data.Entity.Core.Objects
 open NakedObjects.Core.Context
+open NakedObjects.Core.Security
+open System.Security.Principal
 
 let persistor =
-    let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
+    let c = new EntityObjectStoreConfiguration()
+    let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
+    let u = new SimpleUpdateNotifier()
+    c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
     setupPersistorForTesting p
 
 let overwritePersistor =
@@ -20,7 +26,11 @@ let overwritePersistor =
         pc.ContextName <- "AdventureWorksEntities"  
         pc.DefaultMergeOption <- MergeOption.OverwriteChanges
         pc
-    let p = new EntityObjectStore([|(box config :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
+    let c = new EntityObjectStoreConfiguration()
+    let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
+    let u = new SimpleUpdateNotifier()
+    c.ContextConfiguration <- [|(box config :?> EntityContextConfiguration)|]
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
     setupPersistorForTesting p
 
 [<TestFixture>]

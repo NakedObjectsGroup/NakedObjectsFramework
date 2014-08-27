@@ -73,7 +73,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void ExecuteFixture() {
-            var controller = new HomeController();
+            var controller = new HomeController(null);
             new ContextMocks(controller);
 
             var result = (ViewResult)controller.ExecuteFixture("TestFixture");
@@ -111,7 +111,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void ClearHistory() {
-            var controller = new HomeController();
+            var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
             mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
@@ -125,7 +125,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void ClearAllHistory() {
-            var controller = new HomeController();
+            var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
             mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
@@ -138,7 +138,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void ClearHistoryItemNoNext() {
-            var controller = new HomeController();
+            var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
             mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
@@ -151,7 +151,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void ClearHistoryItemNext1() {
-            var controller = new HomeController();
+            var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
             mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
@@ -166,7 +166,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void ClearHistoryItemNext2() {
-            var controller = new HomeController();
+            var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
             mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
@@ -182,7 +182,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void ClearHistoryOthers1() {
-            var controller = new HomeController();
+            var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
             mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
@@ -197,7 +197,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void ClearHistoryOthers2() {
-            var controller = new HomeController();
+            var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
             mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
@@ -212,7 +212,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void ClearEmptyHistory() {
-            var controller = new HomeController();
+            var controller = new HomeController(null);
             new ContextMocks(controller);
 
             var result = (RedirectToRouteResult) controller.ClearHistory(false);

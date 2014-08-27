@@ -25,7 +25,7 @@ namespace NakedObjects.EntityObjectStore {
     public class EntityPersistorInstaller : AbstractObjectPersistorInstaller {
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityPersistorInstaller));
 
-        private bool isContextSet = false;
+        //private bool isContextSet = false;
 
         public EntityPersistorInstaller() {
             EnforceProxies = true;
@@ -106,7 +106,7 @@ namespace NakedObjects.EntityObjectStore {
         /// <returns>A ContextInstaller that allows further configuration.</returns>
         /// <example>UsingCodeFirstContext( () => new MyDbContext())</example>
         public ContextInstaller UsingCodeFirstContext(Func<DbContext> f) {
-            isContextSet = true;
+            //isContextSet = true;
             CodeFirst = true;
             return new ContextInstaller(this, f);
         }
@@ -119,44 +119,45 @@ namespace NakedObjects.EntityObjectStore {
         /// <returns>A ContextInstaller that allows further configuration.</returns>
         /// <example>UsingEdmxContext("Model1")</example>
         public ContextInstaller UsingEdmxContext(string name) {
-            isContextSet = true;
+           // isContextSet = true;
             return new ContextInstaller(this, name);
         }
 
         // for testing
         public void ForceContextSet() {
-            isContextSet = true;
+           // isContextSet = true;
         }
 
         public override INakedObjectPersistor CreateObjectPersistor() {
-            if (!isContextSet) {
-                throw new InitialisationException(@"No context set on EntityPersistorInstaller, must call either ""UsingCodeFirstContext"" or ""UsingEdmxContext""");
-            }
+            //if (!isContextSet) {
+            //    throw new InitialisationException(@"No context set on EntityPersistorInstaller, must call either ""UsingCodeFirstContext"" or ""UsingEdmxContext""");
+            //}
 
-            IEnumerable<CodeFirstEntityContextConfiguration> cfConfigs = DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {DbContext = f.Item1, PreCachedTypes = f.Item2, NotPersistedTypes = NotPersistedTypes});
-            IEnumerable<EntityContextConfiguration> config = PocoConfiguration().Union(cfConfigs);
-            var reflector = NakedObjectsContext.Reflector;
-            var oidGenerator = new EntityOidGenerator(reflector);
-            var objectStore = new EntityObjectStore(config.ToArray(), oidGenerator, reflector);
-            EntityObjectStore.EnforceProxies = EnforceProxies;
-            EntityObjectStore.RequireExplicitAssociationOfTypes = RequireExplicitAssociationOfTypes;
-            EntityObjectStore.RollBackOnError = RollBackOnError;
-            EntityObjectStore.MaximumCommitCycles = MaximumCommitCycles;
-            EntityObjectStore.IsInitializedCheck = IsInitializedCheck;
+            //IEnumerable<CodeFirstEntityContextConfiguration> cfConfigs = DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {DbContext = f.Item1, PreCachedTypes = f.Item2, NotPersistedTypes = NotPersistedTypes});
+            //IEnumerable<EntityContextConfiguration> config = PocoConfiguration().Union(cfConfigs);
+            //var reflector = NakedObjectsContext.Reflector;
+            //var oidGenerator = new EntityOidGenerator(reflector);
+            //var cfg = new EntityObjectStoreConfiguration();// {ContextConfiguration = config.ToArray()};
+            //var objectStore = new EntityObjectStore(cfg, oidGenerator, reflector);
+            ////EntityObjectStore.EnforceProxies = EnforceProxies;
+            ////EntityObjectStore.RequireExplicitAssociationOfTypes = RequireExplicitAssociationOfTypes;
+            ////EntityObjectStore.RollBackOnError = RollBackOnError;
+            ////EntityObjectStore.MaximumCommitCycles = MaximumCommitCycles;
+            ////EntityObjectStore.IsInitializedCheck = IsInitializedCheck;
 
-            var identityMap = new EntityIdentityMapImpl(oidGenerator, identityAdapterMap ?? new IdentityAdapterHashMap(), pocoAdapterMap ?? new PocoAdapterHashMap(), objectStore);
+            //var identityMap = new EntityIdentityMapImpl(oidGenerator, identityAdapterMap ?? new IdentityAdapterHashMap(), pocoAdapterMap ?? new PocoAdapterHashMap(), objectStore);
 
-            var op = new ObjectStorePersistor(
-                reflector,             
-                objectStore, 
-                new EntityPersistAlgorithm(),
-                oidGenerator, 
-                identityMap);
+            //var op = new ObjectStorePersistor(
+            //    reflector,             
+            //    objectStore, 
+            //    new EntityPersistAlgorithm(),
+            //    oidGenerator, 
+            //    identityMap);
 
-            objectStore.Manager = op;
+            //objectStore.Manager = op;
 
-            return op;
-
+            //return op;
+            return null;
         }
 
         protected IEnumerable<EntityContextConfiguration> PocoConfiguration() {

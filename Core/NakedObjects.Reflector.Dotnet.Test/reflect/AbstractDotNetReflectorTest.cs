@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using NakedObjects.Reflector.DotNet.Facets;
 using NUnit.Framework;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Core.Context;
@@ -15,18 +16,13 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [SetUp]
         public virtual void SetUp() {
-            var reflector = new DotNetReflector {
-                ClassStrategy = new DefaultClassStrategy(),
-                FacetDecorator = new FacetDecoratorSet(), 
+            var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySetImpl(), new FacetDecoratorSet()) {
                 NonSystemServices = new INakedObject[] {}
             };
 
             NakedObjectsContext context = StaticContext.CreateInstance();
             context.SetReflector(reflector);
             context.SetObjectPersistor(new TestProxyPersistor());
-
-
-            reflector.Init();
 
             specification = LoadSpecification(reflector);
             specification.PopulateAssociatedActions(new INakedObject[]{});

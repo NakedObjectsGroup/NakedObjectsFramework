@@ -10,12 +10,12 @@ using System.Reflection;
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Core.Context;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class CustomController : NakedObjectsController {
+        protected CustomController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
         public IDomainObjectContainer Container { set; protected get; }
 
         #region Actions
@@ -376,7 +376,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (action.ParameterCount == 1) {
                     // contributed action being invoked with a single parm that is the current target
                     // no dialog - go straight through 
-                    INakedObject result = action.Execute(nakedObject, new[] { nakedObject }, NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
+                    INakedObject result = action.Execute(nakedObject, new[] { nakedObject }, Core.Context.NakedObjectsContext.ObjectPersistor, Core.Context.NakedObjectsContext.Session);
                     valid = true;
                     return result.GetDomainObject<T>();
                 }
@@ -391,7 +391,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (ValidateParameters(nakedObject, action, new ObjectAndControlData {Form = parameters})) {
                 IEnumerable<INakedObject> parms = GetParameterValues(action, new ObjectAndControlData {Form = parameters});
-                INakedObject result = action.Execute(nakedObject, parms.ToArray(), NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
+                INakedObject result = action.Execute(nakedObject, parms.ToArray(), Core.Context.NakedObjectsContext.ObjectPersistor, Core.Context.NakedObjectsContext.Session);
                 valid = true;
                 return result.GetDomainObject<T>();
             }

@@ -83,7 +83,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateFailRefParameter() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             new ContextMocks(controller);
 
             Store store = NakedObjectsContext.ObjectPersistor.Instances<Store>().First();
@@ -100,7 +100,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateFailRefProperty() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             new ContextMocks(controller);
 
             Store store = NakedObjectsContext.ObjectPersistor.Instances<Store>().First();
@@ -116,7 +116,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateFailValueParameter() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             INakedObject contactRepo = FrameworkHelper.GetAdaptedService("ContactRepository");
@@ -136,7 +136,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateFailValueProperty() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             Vendor vendor = NakedObjectsContext.ObjectPersistor.Instances<Vendor>().First();
@@ -152,7 +152,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateOkRefParameter() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             new ContextMocks(controller);
 
             Store store = NakedObjectsContext.ObjectPersistor.Instances<Store>().First();
@@ -169,7 +169,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateOkRefProperty() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             new ContextMocks(controller);
 
             Store store = NakedObjectsContext.ObjectPersistor.Instances<Store>().First();
@@ -185,7 +185,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateOkValueParameter() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             INakedObject contactRepo = FrameworkHelper.GetAdaptedService("ContactRepository");
@@ -205,7 +205,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateOkValueProperty() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             Vendor vendor = NakedObjectsContext.ObjectPersistor.Instances<Vendor>().First();
@@ -222,7 +222,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateOkInlineValueProperty() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             TimePeriod timePeriod = NakedObjectsContext.ObjectPersistor.Instances<Shift>().First().Times;
@@ -243,7 +243,7 @@ namespace MvcTestApp.Tests.Controllers {
       
             const string data = "testData";
 
-            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController().Jsonp(data, "application/json", Encoding.UTF8);
+            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null).Jsonp(data, "application/json", Encoding.UTF8);
 
             var mockControllerContext = new Mock<ControllerContext>();
             var mockHttpContext = new Mock<HttpContextBase>();
@@ -268,7 +268,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             const string data = "testData";
 
-            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController().Jsonp(data);
+            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null).Jsonp(data);
 
             var mockControllerContext = new Mock<ControllerContext>();
             var mockHttpContext = new Mock<HttpContextBase>();
@@ -289,7 +289,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestGetActionChoicesDefault() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");
@@ -323,7 +323,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestGetActionMultipleChoicesDefault() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");
@@ -357,7 +357,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestGetActionAutoComplete() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             INakedObject autoCompleteRepo = FrameworkHelper.GetAdaptedService("AutoCompleteRepository");
@@ -397,7 +397,7 @@ namespace MvcTestApp.Tests.Controllers {
       
 
         public void TestGetActionChoicesOtherParms(string value) {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");
@@ -429,7 +429,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void TestGetActionChoicesOtherParmsMultiple(string value) {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");
@@ -461,7 +461,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void TestGetActionChoicesOtherParmsMultipleMultiSelect(string value) {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");
@@ -528,7 +528,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestGetPropertyChoicesDefault() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");
@@ -557,7 +557,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestGetPropertyAutoComplete() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             INakedObject autoCompleteRepo = FrameworkHelper.GetAdaptedService("AutoCompleteRepository");
@@ -594,7 +594,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestGetPropertyChoicesOtherValue() {
-            var controller = new AjaxController();
+            var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
             INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");

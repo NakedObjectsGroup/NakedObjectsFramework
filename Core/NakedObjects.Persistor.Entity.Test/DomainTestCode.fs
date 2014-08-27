@@ -21,6 +21,8 @@ open System.Collections
 open Microsoft.FSharp.Linq
 open System.Data.Entity.Core.Objects
 open NakedObjects.Core.Context
+open NakedObjects.Core.Security
+open System.Security.Principal
 
 let PocoConfig = 
     let pc = new NakedObjects.EntityObjectStore.PocoEntityContextConfiguration()
@@ -551,7 +553,11 @@ let DomainCanGetContextForType persistor =  CanGetContextForType<SalesOrderHeade
 let CanDetectConcurrency (persistor : EntityObjectStore) = 
     let sr1 = persistor.GetInstances<ScrapReason>() |> Seq.head
     let otherPersistor =
-        let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
+        let c = new EntityObjectStoreConfiguration()
+        let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
+        let u = new SimpleUpdateNotifier()
+        c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
+        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
         setupPersistorForTesting p
     let sr2 = otherPersistor.GetInstances<ScrapReason>() |> Seq.head
     Assert.AreEqual(sr1.Name, sr2.Name)
@@ -607,7 +613,11 @@ let DataUpdateNoCustomOnUpdatingError (persistor : EntityObjectStore) =
 let ConcurrencyNoCustomOnUpdatingError (persistor : EntityObjectStore) = 
     let l1 = persistor.GetInstances<Location>() |> Seq.head
     let otherPersistor =
-        let p = new EntityObjectStore([|(box PocoConfig :?> EntityContextConfiguration)|], new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
+        let c = new EntityObjectStoreConfiguration()
+        let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
+        let u = new SimpleUpdateNotifier()
+        c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
+        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
         setupPersistorForTesting p
     let l2 = otherPersistor.GetInstances<Location>() |> Seq.head
     Assert.AreEqual(l1.Name, l2.Name)

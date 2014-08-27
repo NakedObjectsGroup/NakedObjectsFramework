@@ -17,10 +17,10 @@ namespace NakedObjects.Boot {
         }
 
         protected void Inject(object obj) {
-            object[] services = NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray();
-            IContainerInjector injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector,
-                services);
-            injector.InitDomainObject(obj);
+            //object[] services = NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray();
+            //IContainerInjector injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector,
+            //    services);
+            //injector.InitDomainObject(obj);
         }
 
         protected static void StartTransaction() {

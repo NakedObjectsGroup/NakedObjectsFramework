@@ -24,10 +24,10 @@ namespace NakedObjects.Mvc.App {
         }
 
         public static void PostStart() {
-            RunWeb.Run();
-            var injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector, NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray());
-            DependencyResolver.SetResolver(new NakedObjectsDependencyResolver(injector));
-            RestConfig.RestPostStart();
+            //RunWeb.Run();
+            //var injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector, NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray());
+            //DependencyResolver.SetResolver(new NakedObjectsDependencyResolver(injector));
+            //RestConfig.RestPostStart();
 
             // Without this any value type fields with a default value will be set to mandatory by the MS unobtrusive validation
             // - that overrides the required NOF behaviour based on the 'Optionally' attribute.

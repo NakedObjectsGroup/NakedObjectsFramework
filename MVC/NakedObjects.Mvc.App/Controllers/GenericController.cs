@@ -12,6 +12,8 @@ namespace NakedObjects.Mvc.App.Controllers {
 
         #region actions
 
+        public GenericController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
+
         [HttpGet]
         public override ActionResult Details(ObjectAndControlData controlData) {
             return base.Details(controlData);

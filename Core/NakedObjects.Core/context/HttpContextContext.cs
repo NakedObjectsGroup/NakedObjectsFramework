@@ -20,7 +20,7 @@ namespace NakedObjects.Core.Context {
 
                 if (!HttpContext.Current.Items.Contains("NakedObjectsData")) {
                     HttpContext.Current.Items.Add("NakedObjectsData", InitialiseNewData());
-                    ObjectPersistor.UpdateNotifier = UpdateNotifier;
+                    //ObjectPersistor.UpdateNotifier = UpdateNotifier;
                 }
                 return HttpContext.Current.Items["NakedObjectsData"] as NakedObjectsData;
             }

@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
 using NakedObjects.Web.Mvc.Html;
@@ -25,6 +24,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private static readonly ILog Log = LogManager.GetLogger<GenericControllerImpl>();
 
         #region actions
+
+        protected GenericControllerImpl(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
 
         [HttpGet]
         public virtual ActionResult Details(ObjectAndControlData controlData) {
@@ -168,7 +169,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public virtual FileContentResult GetFile(string Id, string PropertyId) {
             INakedObject target = FrameworkHelper.GetNakedObjectFromId(Id);
             INakedObjectAssociation assoc = target.Specification.Properties.Single(a => a.Id == PropertyId);
-            var domainObject = assoc.GetNakedObject(target, NakedObjectsContext.ObjectPersistor).GetDomainObject();
+            var domainObject = assoc.GetNakedObject(target, Core.Context.NakedObjectsContext.ObjectPersistor).GetDomainObject();
 
             return AsFile(domainObject);
         }
@@ -187,8 +188,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (filteredNakedObject.Specification.IsCollection) {
                
-                if (!filteredNakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Any()) {
-                    NakedObjectsContext.MessageBroker.AddWarning("No objects selected");
+                if (!filteredNakedObject.GetAsEnumerable(Core.Context.NakedObjectsContext.ObjectPersistor).Any()) {
+                    Core.Context.NakedObjectsContext.MessageBroker.AddWarning("No objects selected");
                     return AppropriateView(controlData, targetNakedObject, targetAction);
                 }
                 // force any result to not be queryable
@@ -199,9 +200,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private static INakedObject Execute(INakedObjectAction action, INakedObject target, INakedObject[] parameterSet) {
-            var result = action.Execute(target, parameterSet, NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
+            var result = action.Execute(target, parameterSet, Core.Context.NakedObjectsContext.ObjectPersistor, Core.Context.NakedObjectsContext.Session);
             if (result != null && result.Oid == null) {
-                result.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, target, action, parameterSet));
+                result.SetATransientOid(new CollectionMemento(Core.Context.NakedObjectsContext.ObjectPersistor, Core.Context.NakedObjectsContext.Reflector, Core.Context.NakedObjectsContext.Session, target, action, parameterSet));
             }
             return result;
         }    
@@ -269,11 +270,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             string propertyName = controlData.DataDict["propertyName"];
             string contextActionId = controlData.DataDict["contextActionId"];
 
-            var objectSet = Session.CachedObjectsOfType(NakedObjectsContext.Reflector.LoadSpecification(spec)).ToList();
+            var objectSet = Session.CachedObjectsOfType(Core.Context.NakedObjectsContext.Reflector.LoadSpecification(spec)).ToList();
 
             if (!objectSet.Any()) {
                 Log.InfoFormat("No Cached objects of type {0} found", spec);
-                NakedObjectsContext.MessageBroker.AddWarning("No objects of appropriate type viewed recently");
+                Core.Context.NakedObjectsContext.MessageBroker.AddWarning("No objects of appropriate type viewed recently");
             }
             var contextNakedObject = FilterCollection(FrameworkHelper.GetNakedObjectFromId(contextObjectId), controlData);
             var contextAction = string.IsNullOrEmpty(contextActionId) ? null : FrameworkHelper.GetActionFromId(contextActionId);
@@ -390,7 +391,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (ValidateParameters(targetNakedObject, targetAction, controlData)) {
                 IEnumerable<INakedObject> parms = GetParameterValues(targetAction, controlData);
-                INakedObject result = targetAction.Execute(targetNakedObject, parms.ToArray(), NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
+                INakedObject result = targetAction.Execute(targetNakedObject, parms.ToArray(), Core.Context.NakedObjectsContext.ObjectPersistor, Core.Context.NakedObjectsContext.Session);
 
                 if (result != null) {
                     IEnumerable resultAsEnumerable = !result.Specification.IsCollection ? new List<object> {result.Object} : (IEnumerable) result.Object;

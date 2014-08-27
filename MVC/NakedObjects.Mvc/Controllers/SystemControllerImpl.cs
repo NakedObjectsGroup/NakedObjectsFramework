@@ -4,18 +4,18 @@
 using System;
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Core.Context;
+
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Controllers {
     public abstract class SystemControllerImpl : NakedObjectsController {
-       
+        protected SystemControllerImpl(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
 
         public virtual ActionResult ExecuteFixture(string name) {
             try {
-                NakedObjectsContext.FixturesInstaller.InstallFixture(NakedObjectsContext.ObjectPersistor, name);
+                Core.Context.NakedObjectsContext.FixturesInstaller.InstallFixture(Core.Context.NakedObjectsContext.ObjectPersistor, name);
                 ViewData[IdHelper.SystemMessages] = new[] {string.Format(MvcUi.InstalledFixtureText, name)};
             }
             catch (Exception e) {

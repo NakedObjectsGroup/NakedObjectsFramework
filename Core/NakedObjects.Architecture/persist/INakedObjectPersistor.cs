@@ -9,18 +9,12 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Persist {
     public interface INakedObjectPersistor : INakedObjectTransactionManager, IContainerInjector, INakedObjectManager, IPersistedObjectAdder {
-        
-        // just temp workaround 
-
-        ISession Session { get; set; }
-        object UpdateNotifier { set; get; }
-        
+       
         
         /// <summary>
         ///     Determine if the object store has been initialized with its set of start up objects.

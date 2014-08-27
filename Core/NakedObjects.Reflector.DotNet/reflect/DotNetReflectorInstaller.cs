@@ -11,6 +11,7 @@ using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Reflector.DotNet.Facets;
 using NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory;
+using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 
@@ -24,9 +25,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public bool OptionalByDefault { get; set; }
 
         public INakedObjectReflector CreateReflector() {
-            var reflector = new DotNetReflector();
+            
             var facetDecoratorSet = new FacetDecoratorSet();
-            reflector.FacetDecorator = facetDecoratorSet;
+          
+            var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySetImpl(), facetDecoratorSet);
+
             if (enhancements.Count == 0) {
                 Log.Debug("No enhancements set up");
             }
@@ -34,13 +37,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 AddEnhancement(facetDecoratorSet, reflector);
             }
 
-            reflector.Init();
-
             if (OptionalByDefault) {
-                ((FacetFactorySetImpl) reflector.IntrospectionControlParameters.FacetFactorySet).ReplaceAndRegisterFactory(typeof (MandatoryDefaultFacetFactory), new OptionalDefaultFacetFactory(NakedObjectsContext.Reflector));
+                ((FacetFactorySetImpl)reflector.FacetFactorySet).ReplaceAndRegisterFactory(typeof(MandatoryDefaultFacetFactory), new OptionalDefaultFacetFactory(NakedObjectsContext.Reflector));
             }
 
             return reflector;
+          
         }
 
         public void AddEnhancement(IReflectorEnhancementInstaller enhancement) {

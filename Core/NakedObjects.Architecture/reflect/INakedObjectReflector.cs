@@ -3,8 +3,10 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
@@ -12,16 +14,12 @@ namespace NakedObjects.Architecture.Reflect {
         bool IgnoreCase { get; }
 
         INakedObjectSpecification[] AllSpecifications { get; }
+
         INakedObject[] NonSystemServices { get; set; }
 
-        /// <summary>
-        ///     Provided so that the <see cref="INakedObjectPersistor" /> can lookup if wasn't explicitly injected into
-        ///     the persistor via other means.
-        /// </summary>
-        /// <para>
-        ///     Indicates to the component that it is to initialise itself as it will soon be receiving requests
-        /// </para>
-        void Init();
+        IClassStrategy ClassStrategy { get; }
+
+        IFacetFactorySet FacetFactorySet { get; }
 
         INakedObjectSpecification LoadSpecification(Type type);
 
@@ -31,13 +29,9 @@ namespace NakedObjects.Architecture.Reflect {
 
         void PopulateContributedActions(INakedObject[] services);
 
-        /// <summary>
-        ///     Indicates to the component that no more requests will be made of it and it can safely release any
-        ///     services it has hold of.
-        /// </summary>
         void Shutdown();
 
-       
+        void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore);
     }
 
     // Copyright (c) Naked Objects Group Ltd.
