@@ -21,9 +21,9 @@ namespace NakedObjects.App.Demo.App_Start {
             get { return null; }
         }
 
-        protected override NakedObjectsContext Context {
-            get { return HttpContextContext.CreateInstance(); }
-        }
+        //protected override NakedObjectsContext Context {
+        //    get { return HttpContextContext.CreateInstance(); }
+        //}
 
         protected override IServicesInstaller MenuServices {
             get {

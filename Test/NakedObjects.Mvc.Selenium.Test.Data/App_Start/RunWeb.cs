@@ -18,9 +18,9 @@ namespace NakedObjects.Mvc.Selenium.Test.Data {
             get { return null; }
         }
 
-        protected override NakedObjectsContext Context {
-            get { return HttpContextContext.CreateInstance(); }
-        }
+        //protected override NakedObjectsContext Context {
+        //    get { return HttpContextContext.CreateInstance(); }
+        //}
 
         protected override bool StoreTransientsInSession {
             get { return true; }
