@@ -19,10 +19,12 @@ using NakedObjects.Value;
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectSpecificationWrapper : ScalarPropertyHolder, INakedObjectSpecificationSurface {
         private readonly INakedObjectSpecification spec;
+        private readonly INakedObjectsFramework framework;
 
-        public NakedObjectSpecificationWrapper(INakedObjectSpecification spec, INakedObjectsSurface surface) {
+        public NakedObjectSpecificationWrapper(INakedObjectSpecification spec, INakedObjectsSurface surface, INakedObjectsFramework framework) {
             Surface = surface;
             this.spec = spec;
+            this.framework = framework;
         }
 
         public INakedObjectSpecification WrappedValue {
@@ -34,7 +36,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 var extData = new Dictionary<string, object>();
                 
                 if (spec.IsService) {
-                    ServiceTypes st = NakedObjectsContext.ObjectPersistor.GetServiceType(spec);
+                    ServiceTypes st = framework.ObjectPersistor.GetServiceType(spec);
                     extData[ServiceType] = st.ToString();
                 }
 
@@ -74,14 +76,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         protected bool IsImage {
             get {
-                var imageSpec = NakedObjectsContext.Reflector.LoadSpecification(typeof(Image));
+                var imageSpec = framework.Reflector.LoadSpecification(typeof(Image));
                 return spec.IsOfType(imageSpec);
             }
         }
 
         protected bool IsFileAttachment {
             get {
-                var fileSpec = NakedObjectsContext.Reflector.LoadSpecification(typeof(FileAttachment));
+                var fileSpec = framework.Reflector.LoadSpecification(typeof(FileAttachment));
                 return spec.IsOfType(fileSpec);
             }
         }
@@ -115,7 +117,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectAssociationSurface[] Properties {
-            get { return spec.Properties.Select(p => new NakedObjectAssociationWrapper(p, Surface)).Cast<INakedObjectAssociationSurface>().ToArray(); }
+            get { return spec.Properties.Select(p => new NakedObjectAssociationWrapper(p, Surface, framework)).Cast<INakedObjectAssociationSurface>().ToArray(); }
         }
 
         public bool IsImmutable(INakedObjectSurface nakedObject) {
@@ -128,13 +130,13 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectActionSurface[] GetActionLeafNodes() {
             var actionsAndUid = SurfaceUtils.GetActionsandUidFromSpec(spec);
-            return actionsAndUid.Select(a => new NakedObjectActionWrapper(a.Item1, Surface, a.Item2)).Cast<INakedObjectActionSurface>().ToArray();
+            return actionsAndUid.Select(a => new NakedObjectActionWrapper(a.Item1, Surface, framework, a.Item2)).Cast<INakedObjectActionSurface>().ToArray();
         }
 
         public INakedObjectSpecificationSurface ElementType {
             get {
                 if (IsCollection) {
-                    return new NakedObjectSpecificationWrapper(spec.GetFacet<ITypeOfFacet>().ValueSpec, Surface);
+                    return new NakedObjectSpecificationWrapper(spec.GetFacet<ITypeOfFacet>().ValueSpec, Surface, framework);
                 }
                 return null;
             }

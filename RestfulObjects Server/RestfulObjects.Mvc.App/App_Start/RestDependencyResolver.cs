@@ -18,7 +18,8 @@ namespace MvcTestApp {
         public NakedObjectsSurface Surface {
             get {
                 if (surface == null) {
-                    surface = new NakedObjectsSurface(new ExternalOid());
+                    //surface = new NakedObjectsSurface(new ExternalOid());
+                    surface = null;
                 }
 
                 return surface;

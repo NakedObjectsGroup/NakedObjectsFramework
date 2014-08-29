@@ -83,8 +83,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelFacetConvention);
 
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(typeof(Class1).GetMethod("DeriveKeys")));
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(typeof(Class1).GetMethod("PopulateUsingKeys")));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(typeof(Class1).GetMethod("DeriveKeys")));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(typeof(Class1).GetMethod("PopulateUsingKeys")));
+
+            Assert.Fail(); // fix this 
         }
 
         [Test]

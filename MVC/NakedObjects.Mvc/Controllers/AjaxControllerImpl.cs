@@ -42,7 +42,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public virtual JsonResult ValidateProperty(string id, string value, string propertyName) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObjectFromId(id);
+            INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
 
             if (nakedObject.ResolveState.IsTransient() && !MvcIdentityAdapterHashMap.StoringTransientsInSession) {
                 // if transient and not saving transients in session then we cannot validate now - need to wait until save 
@@ -86,8 +86,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public virtual JsonResult ValidateParameter(string id, string value, string actionName, string parameterName) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObjectFromId(id);
-            INakedObjectAction action = FrameworkHelper.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
+            INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
+            INakedObjectAction action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
             bool isValid = false;
             string parmId = "";
 
@@ -117,19 +117,19 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
-        private static INakedObject GetValue(string[] values, INakedObjectSpecification spec) {
+        private  INakedObject GetValue(string[] values, INakedObjectSpecification spec) {
             if (!values.Any()) {
                 return null;
             }
          
             if (spec.IsParseable) {
-                return spec.GetFacet<IParseableFacet>().ParseTextEntry(values.First(), Core.Context.NakedObjectsContext.ObjectPersistor);
+                return spec.GetFacet<IParseableFacet>().ParseTextEntry(values.First(), NakedObjectsContext.ObjectPersistor);
             }
             if (spec.IsCollection) {
-                return FrameworkHelper.GetTypedCollection(spec, values);
+                return NakedObjectsContext.GetTypedCollection(spec, values);
             }
 
-            return FrameworkHelper.GetNakedObjectFromId(values.First());
+            return NakedObjectsContext.GetNakedObjectFromId(values.First());
         }
 
         private string[] GetRawValues(FormCollection parms, string id) {
@@ -173,16 +173,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
 
         public virtual JsonResult GetActionChoices(string id, string actionName) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObjectFromId(id);
-            INakedObjectAction action = FrameworkHelper.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
+            INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
+            INakedObjectAction action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
             IDictionary<string, string[][]> choices = new Dictionary<string, string[][]>();
             IDictionary<string, INakedObject> otherValues = GetOtherValues(action);
 
             foreach (INakedObjectActionParameter p in action.Parameters) {
                 if (p.IsChoicesEnabled || p.IsMultipleChoicesEnabled) {
-                    INakedObject[] nakedObjectChoices = p.GetChoices(nakedObject, otherValues, Core.Context.NakedObjectsContext.ObjectPersistor);
+                    INakedObject[] nakedObjectChoices = p.GetChoices(nakedObject, otherValues, NakedObjectsContext.ObjectPersistor);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
-                    string[] value = FrameworkHelper.IsParseableOrCollectionOfParseable(p.Specification) ? content : nakedObjectChoices.Select(FrameworkHelper.GetObjectId).ToArray();
+                    string[] value = NakedObjectsContext.IsParseableOrCollectionOfParseable(p.Specification) ? content : nakedObjectChoices.Select(NakedObjectsContext.GetObjectId).ToArray();
 
                     choices[IdHelper.GetParameterInputId(action, p)] = new[] {value, content};
                 }
@@ -194,15 +194,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
 
         public virtual JsonResult GetPropertyChoices(string id) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObjectFromId(id);
+            INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
             IDictionary<string, string[][]> choices = new Dictionary<string, string[][]>();
             IDictionary<string, INakedObject> otherValues = GetOtherValues(nakedObject);
 
             foreach (IOneToOneAssociation assoc in nakedObject.Specification.Properties.Where(p => p.IsObject)) {
                 if (assoc.IsChoicesEnabled) {
-                    INakedObject[] nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues, Core.Context.NakedObjectsContext.ObjectPersistor);
+                    INakedObject[] nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues, NakedObjectsContext.ObjectPersistor);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
-                    string[] value = assoc.Specification.IsParseable ? content : nakedObjectChoices.Select(FrameworkHelper.GetObjectId).ToArray();
+                    string[] value = assoc.Specification.IsParseable ? content : nakedObjectChoices.Select(NakedObjectsContext.GetObjectId).ToArray();
 
                     choices[GetFieldInputId(nakedObject, assoc)] = new[] {value, content};
                 }
@@ -222,7 +222,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private object GetCompletionData(INakedObject nakedObject, INakedObjectSpecification spec) {
             string label = nakedObject.TitleString();
             string value = nakedObject.TitleString();
-            string link = spec.IsParseable ? label : FrameworkHelper.GetObjectId(nakedObject);
+            string link = spec.IsParseable ? label : NakedObjectsContext.GetObjectId(nakedObject);
             string src = GetIconSrc(nakedObject);
             string alt = GetIconAlt(nakedObject);
             return new {label, value, link, src, alt};
@@ -230,12 +230,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
 
         public virtual JsonResult GetPropertyCompletions(string id, string propertyId, string autoCompleteParm) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObjectFromId(id);
+            INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
             IList<object> completions = new List<object>();
             var assoc = (IOneToOneAssociation) nakedObject.Specification.Properties.Single(p => p.IsObject && p.Id == propertyId);
 
             if (assoc.IsAutoCompleteEnabled) {
-                INakedObject[] nakedObjectCompletions = assoc.GetCompletions(nakedObject, autoCompleteParm, Core.Context.NakedObjectsContext.ObjectPersistor);
+                INakedObject[] nakedObjectCompletions = assoc.GetCompletions(nakedObject, autoCompleteParm, NakedObjectsContext.ObjectPersistor);
                 completions = nakedObjectCompletions.Select(no => GetCompletionData(no, assoc.Specification)).ToList();
             }
 
@@ -244,13 +244,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
 
         public virtual JsonResult GetActionCompletions(string id, string actionName, int parameterIndex, string autoCompleteParm) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObjectFromId(id);
-            INakedObjectAction action = FrameworkHelper.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
+            INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
+            INakedObjectAction action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
             IList<object> completions = new List<object>();
 
             INakedObjectActionParameter p = action.Parameters[parameterIndex];
             if (p.IsAutoCompleteEnabled) {
-                INakedObject[] nakedObjectCompletions = p.GetCompletions(nakedObject, autoCompleteParm, Core.Context.NakedObjectsContext.ObjectPersistor);
+                INakedObject[] nakedObjectCompletions = p.GetCompletions(nakedObject, autoCompleteParm, NakedObjectsContext.ObjectPersistor);
                 completions = nakedObjectCompletions.Select(no => GetCompletionData(no, p.Specification)).ToList();
             }
 

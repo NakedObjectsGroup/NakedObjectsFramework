@@ -22,12 +22,12 @@ namespace NakedObjects.Boot {
         #region IFixturesInstaller Members
 
         public void InstallFixtures(INakedObjectPersistor persistor) {
-            NakedObjectsContext.ObjectPersistor.Reset();
+            //NakedObjectsContext.ObjectPersistor.Reset();
 
-            if (NakedObjectsContext.ObjectPersistor.IsInitialized) {
-                Log.Info("skipping fixtures, as already loaded");
-                return;
-            }
+            //if (NakedObjectsContext.ObjectPersistor.IsInitialized) {
+            //    Log.Info("skipping fixtures, as already loaded");
+            //    return;
+            //}
 
             var builder = new DotNetFixtureBuilder();
             fixtures.ForEach(builder.AddFixture);

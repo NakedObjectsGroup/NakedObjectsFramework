@@ -25,7 +25,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.DotNet.Facets.Collections;
 using NakedObjects.Reflector.DotNet.Facets.Naming.Named;
@@ -497,6 +496,18 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
             return new object[] {};
         }
+
+        public override string UniqueShortName(string sep) {
+            string postfix = string.Empty;
+            Type type = TypeUtils.GetType(FullName);
+          
+            if (type.IsGenericType) {
+                postfix = type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + sep + reflector.LoadSpecification(y).UniqueShortName(sep));
+            }
+
+            return ShortName + postfix;
+        }
+
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -37,10 +37,10 @@ namespace NakedObjects.Surface.Nof4.Context {
             get { return ActionContext.Action.ReturnType; }
         }
 
-        public ActionResultContextSurface ToActionResultContextSurface(INakedObjectsSurface surface) {
+        public ActionResultContextSurface ToActionResultContextSurface(INakedObjectsSurface surface, INakedObjectsFramework framework) {
             var ac = new ActionResultContextSurface {
-                Result = Result == null ? null : Result.ToObjectContextSurface(surface),
-                ActionContext = ActionContext.ToActionContextSurface(surface),
+                Result = Result == null ? null : Result.ToObjectContextSurface(surface, framework),
+                ActionContext = ActionContext.ToActionContextSurface(surface, framework),
                 HasResult = HasResult
             };
 
@@ -51,7 +51,7 @@ namespace NakedObjects.Surface.Nof4.Context {
             }
 
 
-            return ToContextSurface(ac, surface);
+            return ToContextSurface(ac, surface, framework);
         }
     }
 }

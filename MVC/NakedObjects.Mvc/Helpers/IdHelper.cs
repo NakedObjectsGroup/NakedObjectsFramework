@@ -5,7 +5,6 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 using NakedObjects.Resources;
 using NakedObjects.Util;
 using System.Linq;
@@ -169,16 +168,8 @@ namespace NakedObjects.Web.Mvc.Html {
             return (spec.IsParseable ? inputName : selectName);
         }
 
-
         private static string UniqueShortName(this INakedObjectSpecification spec) {
-            string postfix = string.Empty;
-            Type type = TypeUtils.GetType(spec.FullName);
-
-            if (type.IsGenericType) {
-                postfix = type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + sep + NakedObjectsContext.Reflector.LoadSpecification(y).UniqueShortName());
-            }
-
-            return spec.ShortName + postfix;
+            return spec.UniqueShortName(sep);
         }
 
         public static string GetDisplayFormatId(string id) {
@@ -259,7 +250,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetParameterId(INakedObjectAction action, INakedObjectActionParameter parameter) {
-            return action.OnType.UniqueShortName() + sep + action.Id + sep +  NameUtils.CapitalizeName(parameter.Id);
+            return action.OnType.UniqueShortName() + sep + action.Id + sep + NameUtils.CapitalizeName(parameter.Id);
         }
 
         public static string GetParameterInputId(INakedObjectAction action, INakedObjectActionParameter parameter) {

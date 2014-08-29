@@ -5,10 +5,8 @@
 using NakedObjects.Reflector.DotNet.Facets;
 using NUnit.Framework;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Core.Context;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.Spec;
-using NakedObjects.TestSystem;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     public abstract class AbstractDotNetReflectorTest {
@@ -20,9 +18,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 NonSystemServices = new INakedObject[] {}
             };
 
-            NakedObjectsContext context = StaticContext.CreateInstance();
-            context.SetReflector(reflector);
-            context.SetObjectPersistor(new TestProxyPersistor());
+            //NakedObjectsContext context = StaticContext.CreateInstance();
+            //context.SetReflector(reflector);
+            //context.SetObjectPersistor(new TestProxyPersistor());
 
             specification = LoadSpecification(reflector);
             specification.PopulateAssociatedActions(new INakedObject[]{});

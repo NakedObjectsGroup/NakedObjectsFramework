@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 module NakedObjects.SystemTestCode
+
 open NUnit.Framework
 open NakedObjects.Core.NakedObjectsSystem
 open NakedObjects.Boot
@@ -14,80 +15,80 @@ open NakedObjects.Architecture.Resolve
 open NakedObjects.Architecture.Persist
 open NakedObjects.Architecture.Adapter
 
-let getNo (obj : obj) = 
-    match obj with 
+let getNo (obj : obj) (ctx : INakedObjectsFramework) = 
+    match obj with
     | :? INakedObject as no -> no
-    | _ -> NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null)
+    | _ -> ctx.ObjectPersistor.CreateAdapter(obj, null, null)
 
-let IsPersistentObject obj = 
-    let no = getNo obj
+let IsPersistentObject obj ctx = 
+    let no = getNo obj ctx
     Assert.IsNotNull(no)
     Assert.IsTrue(no.ResolveState |> StateHelperUtils.IsPersistent)
 
-let IsPersistentOid obj =     
-    let oid = (getNo obj).Oid
+let IsPersistentOid obj ctx = 
+    let oid = (getNo obj ctx).Oid
     Assert.IsNotNull(oid)
     Assert.IsInstanceOf(typeof<EntityOid>, oid)
     Assert.IsFalse(oid.IsTransient)
 
-let IsTransientObject obj = 
-    let no = getNo obj
+let IsTransientObject obj ctx = 
+    let no = getNo obj ctx
     Assert.IsNotNull(no)
     Assert.IsTrue(no.ResolveState |> StateHelperUtils.IsTransient)
 
-let IsTransientOid obj =     
-    let oid = (getNo obj).Oid
+let IsTransientOid obj ctx = 
+    let oid = (getNo obj ctx).Oid
     Assert.IsNotNull(oid)
     Assert.IsInstanceOf(typeof<EntityOid>, oid)
     Assert.IsTrue(oid.IsTransient)
 
-let IsPersistentAggregateOid obj =     
-    let oid = (getNo obj).Oid
+let IsPersistentAggregateOid obj ctx = 
+    let oid = (getNo obj ctx).Oid
     Assert.IsNotNull(oid)
     Assert.IsInstanceOf(typeof<AggregateOid>, oid)
     Assert.IsFalse(oid.IsTransient)
 
-let IsTransientAggregateOid obj =     
-    let oid = (getNo obj).Oid
+let IsTransientAggregateOid obj ctx = 
+    let oid = (getNo obj ctx).Oid
     Assert.IsNotNull(oid)
     Assert.IsInstanceOf(typeof<AggregateOid>, oid)
     Assert.IsTrue(oid.IsTransient)
 
-let IsNotNullAndPersistent obj = 
+let IsNotNullAndPersistent obj ctx = 
     Assert.IsNotNull(obj)
-    IsPersistentObject obj
-    IsPersistentOid obj
+    IsPersistentObject obj ctx
+    IsPersistentOid obj ctx
 
-let IsNotNullAndTransient obj = 
+let IsNotNullAndTransient obj ctx = 
     Assert.IsNotNull(obj)
-    IsTransientObject obj
-    IsTransientOid obj
+    IsTransientObject obj ctx
+    IsTransientOid obj ctx
 
-let IsNotNullAndPersistentAggregate obj = 
+let IsNotNullAndPersistentAggregate obj ctx = 
     Assert.IsNotNull(obj)
-    IsPersistentObject obj
-    IsPersistentAggregateOid obj
+    IsPersistentObject obj ctx
+    IsPersistentAggregateOid obj ctx
 
-let IsNotNullAndTransientAggregate obj = 
+let IsNotNullAndTransientAggregate obj ctx = 
     Assert.IsNotNull(obj)
-    IsPersistentObject obj
-    IsTransientAggregateOid obj
+    IsPersistentObject obj ctx
+    IsTransientAggregateOid obj ctx
 
-let Create<'t when 't : not struct>() =  
-    let spec = NakedObjectsContext.Reflector.LoadSpecification(typeof<'t>)
-    NakedObjectsContext.ObjectPersistor.CreateInstance(spec)
+let Create<'t when 't : not struct>(ctx : INakedObjectsFramework) = 
+    let spec = ctx.Reflector.LoadSpecification(typeof<'t>)
+    ctx.ObjectPersistor.CreateInstance(spec)
 
-let CreateAndSetup<'t when 't : not struct> setter =  
-    let no = Create<'t>()
+let CreateAndSetup<'t when 't : not struct> setter ctx = 
+    let no = Create<'t>(ctx)
     let inst = box (no.Object) :?> 't
     setter inst
     no
-    
-let makeAndSaveChanges change = 
-    NakedObjectsContext.ObjectPersistor.StartTransaction()
+
+let makeAndSaveChanges change (ctx : INakedObjectsFramework) = 
+    ctx.ObjectPersistor.StartTransaction()
     change()
-    NakedObjectsContext.ObjectPersistor.EndTransaction()    
-        
-let save no =
-    let saveNo() =  no |> NakedObjectsContext.ObjectPersistor.MakePersistent
-    makeAndSaveChanges saveNo
+    ctx.ObjectPersistor.EndTransaction()
+
+let save no (ctx : INakedObjectsFramework) = 
+    let saveNo() = no |> ctx.ObjectPersistor.MakePersistent
+    makeAndSaveChanges saveNo ctx

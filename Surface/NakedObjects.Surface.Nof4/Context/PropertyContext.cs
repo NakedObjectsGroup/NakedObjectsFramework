@@ -20,13 +20,13 @@ namespace NakedObjects.Surface.Nof4.Context {
             get { return Property.Specification; }
         }
 
-        public PropertyContextSurface ToPropertyContextSurface(INakedObjectsSurface surface) {
+        public PropertyContextSurface ToPropertyContextSurface(INakedObjectsSurface surface, INakedObjectsFramework framework) {
             var pc = new PropertyContextSurface {
-                Property = new NakedObjectAssociationWrapper(Property, surface),
+                Property = new NakedObjectAssociationWrapper(Property, surface, framework),
                 Mutated = Mutated,
             };
 
-            return ToContextSurface(pc, surface);
+            return ToContextSurface(pc, surface, framework);
         }
     }
 }

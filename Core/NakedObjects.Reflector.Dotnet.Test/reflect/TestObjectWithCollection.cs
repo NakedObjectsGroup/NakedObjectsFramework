@@ -3,10 +3,9 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System;
 using System.Collections;
-using NakedObjects.TestSystem;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
-    public class TestObjectWithCollection : TestPojo {
+    public class TestObjectWithCollection  {
         private readonly ArrayList arrayList;
         private readonly bool throwException;
 

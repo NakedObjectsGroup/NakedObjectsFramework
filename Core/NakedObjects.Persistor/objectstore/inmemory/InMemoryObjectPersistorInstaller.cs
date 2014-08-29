@@ -32,28 +32,29 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
         public override INakedObjectPersistor CreateObjectPersistor() {
             Log.Info("installing " + GetType().FullName);
 
-            var reflector = NakedObjectsContext.Reflector;
-            var inMemoryObjectStore = new MemoryObjectStore(reflector);
-            var oidGenerator = SimpleOidGeneratorStart.HasValue ? new SimpleOidGenerator(reflector, SimpleOidGeneratorStart.Value) : new TimeBasedOidGenerator(reflector);
+            //var reflector = NakedObjectsContext.Reflector;
+            //var inMemoryObjectStore = new MemoryObjectStore(reflector);
+            //var oidGenerator = SimpleOidGeneratorStart.HasValue ? new SimpleOidGenerator(reflector, SimpleOidGeneratorStart.Value) : new TimeBasedOidGenerator(reflector);
 
-            var identityMapImpl = new IdentityMapImpl(
-                oidGenerator,
-                identityAdapterMap ?? new IdentityAdapterHashMap(),
-                new CreateIfNullPocoAdapterDecorator(inMemoryObjectStore, pocoAdapterMap ?? new PocoAdapterHashMap()));
+            //var identityMapImpl = new IdentityMapImpl(
+            //    oidGenerator,
+            //    identityAdapterMap ?? new IdentityAdapterHashMap(),
+            //    new CreateIfNullPocoAdapterDecorator(inMemoryObjectStore, pocoAdapterMap ?? new PocoAdapterHashMap()));
 
-            var persistor = new ObjectStorePersistor(
-                null, 
-                null,
-                reflector,  
-                inMemoryObjectStore,
-                new DefaultPersistAlgorithm(),
-                oidGenerator,
-                identityMapImpl);
+            //var persistor = new ObjectStorePersistor(
+            //    null, 
+            //    null,
+            //    reflector,  
+            //    inMemoryObjectStore,
+            //    new DefaultPersistAlgorithm(),
+            //    oidGenerator,
+            //    identityMapImpl);
 
-            inMemoryObjectStore.IdentityMap = identityMapImpl;
-            inMemoryObjectStore.Manager = persistor;
+            //inMemoryObjectStore.IdentityMap = identityMapImpl;
+            //inMemoryObjectStore.Manager = persistor;
 
-            return persistor;
+            //return persistor;
+            return null;
         }
 
         #region Nested type: CreateIfNullPocoAdapterDecorator
@@ -86,7 +87,8 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             }
 
             public INakedObject GetObject(object obj) {
-                return decorated.GetObject(obj) ?? objectStore.CreateAdapter(obj, NakedObjectsContext.Session);
+                //return decorated.GetObject(obj) ?? objectStore.CreateAdapter(obj, NakedObjectsContext.Session);
+                return null;
             }
 
             public void Reset() {

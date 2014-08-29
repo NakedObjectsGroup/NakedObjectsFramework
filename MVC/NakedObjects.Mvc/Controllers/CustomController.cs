@@ -27,7 +27,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     parameters valid.
         /// </summary>
         protected T InvokeAction<T>(object domainObject, string actionName, FormCollection parameters, out bool valid) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
+            INakedObject nakedObject = NakedObjectsContext.GetNakedObject(domainObject);
             INakedObjectAction action = nakedObject.GetActionLeafNode(actionName);
             return InvokeAction<T>(nakedObject, action, parameters, out valid);
         }
@@ -39,7 +39,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     parameters valid.
         /// </summary>
         protected TResult InvokeAction<TTarget, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TResult>>> expression, FormCollection parameters, out bool valid) {
-            return InvokeAction<TResult>(FrameworkHelper.GetNakedObject(domainObject), expression, parameters, out valid);
+            return InvokeAction<TResult>(NakedObjectsContext.GetNakedObject(domainObject), expression, parameters, out valid);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     parameters valid.
         /// </summary>
         protected TResult InvokeAction<TTarget, TParm, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm, TResult>>> expression, FormCollection parameters, out bool valid) {
-            return InvokeAction<TResult>(FrameworkHelper.GetNakedObject(domainObject), expression, parameters, out valid);
+            return InvokeAction<TResult>(NakedObjectsContext.GetNakedObject(domainObject), expression, parameters, out valid);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     parameters valid.
         /// </summary>
         protected TResult InvokeAction<TTarget, TParm1, TParm2, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TResult>>> expression, FormCollection parameters, out bool valid) {
-            return InvokeAction<TResult>(FrameworkHelper.GetNakedObject(domainObject), expression, parameters, out valid);
+            return InvokeAction<TResult>(NakedObjectsContext.GetNakedObject(domainObject), expression, parameters, out valid);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     parameters valid.
         /// </summary>
         protected TResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TResult>>> expression, FormCollection parameters, out bool valid) {
-            return InvokeAction<TResult>(FrameworkHelper.GetNakedObject(domainObject), expression, parameters, out valid);
+            return InvokeAction<TResult>(NakedObjectsContext.GetNakedObject(domainObject), expression, parameters, out valid);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     parameters valid.
         /// </summary>
         protected TResult InvokeAction<TTarget, TParm1, TParm2, TParm3, TParm4, TResult>(TTarget domainObject, Expression<Func<TTarget, Func<TParm1, TParm2, TParm3, TParm4, TResult>>> expression, FormCollection parameters, out bool valid) {
-            return InvokeAction<TResult>(FrameworkHelper.GetNakedObject(domainObject), expression, parameters, out valid);
+            return InvokeAction<TResult>(NakedObjectsContext.GetNakedObject(domainObject), expression, parameters, out valid);
         }
 
         #endregion
@@ -84,7 +84,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
         /// </summary>
         protected ViewResult InvokeAction(object domainObject, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
+            INakedObject nakedObject = NakedObjectsContext.GetNakedObject(domainObject);
             return InvokeAction(nakedObject, actionName, parameters, viewNameForFailure, viewNameForSuccess);
         }
 
@@ -174,7 +174,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     Invoke the action on the domain object with the parameters in the form. Got to appropriate view based on result
         /// </summary>
         protected ViewResult InvokeAction(string objectId, string actionName, FormCollection parameters, String viewNameForFailure, string viewNameForSuccess = null) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObjectFromId(objectId);
+            INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(objectId);
             return InvokeAction(nakedObject, actionName, parameters, viewNameForFailure, viewNameForSuccess);
         }
 
@@ -266,7 +266,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     SetUpDefaultParameters(customer, "CreateNewAddress")
         /// </example>
         protected void SetUpDefaultParameters(object domainObject, string actionName) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
+            INakedObject nakedObject = NakedObjectsContext.GetNakedObject(domainObject);
             INakedObjectAction findOrder = nakedObject.Specification.GetObjectActions().Single(x => x.Id == actionName);
             SetDefaults(nakedObject, findOrder);
         }
@@ -279,7 +279,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     Apply changes from form and attempt to save. Go to indicated View based on result of save
         /// </summary>
         protected ActionResult SaveObject(FormCollection form, string id, string viewNameForFailure, string viewNameForSuccess, object modelForSuccessViewIfDifferent = null) {
-            object obj = FrameworkHelper.GetObjectFromId(id); //Assuming id is for a transient, this will re-create a transient of same type
+            object obj = NakedObjectsContext.GetObjectFromId(id); //Assuming id is for a transient, this will re-create a transient of same type
 
             if (SaveObject(form, ref obj)) {
                 return View(viewNameForSuccess, modelForSuccessViewIfDifferent ?? obj);
@@ -294,7 +294,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         /// <param name="form">Form to populate from</param>
         protected T RecreateTransient<T>(FormCollection form) where T : new() {
             var obj = Container.NewTransientInstance<T>();
-            INakedObject naked = FrameworkHelper.GetNakedObject(obj);
+            INakedObject naked = NakedObjectsContext.GetNakedObject(obj);
             RefreshTransient(naked, form);
             return obj;
         }
@@ -307,7 +307,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         /// <param name="obj"></param>
         /// <returns>true if changes in form are valid and object saved</returns>
         protected bool SaveObject<T>(FormCollection form, ref T obj) {
-            INakedObject naked = FrameworkHelper.GetNakedObject(obj);
+            INakedObject naked = NakedObjectsContext.GetNakedObject(obj);
             bool result = false;
 
             if (ValidateChanges(naked, new ObjectAndControlData() {Form = form})) {
@@ -327,7 +327,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         ///     If id is null or empty use creator function to create and return a new object otherwise
         ///     returns the domain object that has the specified objectId (typically extracted from the URL).
         /// </summary>
-        protected static T GetOrCreateFromId<T>(string id, Func<T> creator) {
+        protected  T GetOrCreateFromId<T>(string id, Func<T> creator) {
             if (string.IsNullOrEmpty(id)) {
                 return creator();
             }
@@ -338,15 +338,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
         /// <summary>
         ///     Returns the domain object that has the specified objectId (typically extracted from the URL)
         /// </summary>
-        protected static T GetObjectFromId<T>(string objectId) {
-            return FrameworkHelper.GetNakedObjectFromId(objectId).GetDomainObject<T>();
+        protected  T GetObjectFromId<T>(string objectId) {
+            return NakedObjectsContext.GetNakedObjectFromId(objectId).GetDomainObject<T>();
         }
 
         /// <summary>
         ///     Obtains the Id for the specified object
         /// </summary>
-        protected static string GetIdFromObject(object domainObject) {
-            return FrameworkHelper.GetObjectId(domainObject);
+        protected  string GetIdFromObject(object domainObject) {
+            return NakedObjectsContext.GetObjectId(domainObject);
         }
 
         #endregion
@@ -354,13 +354,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
         #region private
 
         private ViewResult InvokeAction(object domainObject, LambdaExpression expression, FormCollection parameters, string viewNameForFailure, string viewNameForSuccess) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
+            INakedObject nakedObject = NakedObjectsContext.GetNakedObject(domainObject);
             MethodInfo methodInfo = GetAction(expression);
             return InvokeAction(nakedObject, methodInfo.Name, parameters, viewNameForFailure, viewNameForSuccess);
         }
 
         private ViewResult InvokeAction(string objectId, LambdaExpression expression, FormCollection parameters, string viewNameForFailure, string viewNameForSuccess) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObjectFromId(objectId);
+            INakedObject nakedObject = NakedObjectsContext.GetNakedObjectFromId(objectId);
             MethodInfo methodInfo = GetAction(expression);
             return InvokeAction(nakedObject, methodInfo.Name, parameters, viewNameForFailure, viewNameForSuccess);
         }
@@ -376,7 +376,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (action.ParameterCount == 1) {
                     // contributed action being invoked with a single parm that is the current target
                     // no dialog - go straight through 
-                    INakedObject result = action.Execute(nakedObject, new[] { nakedObject }, Core.Context.NakedObjectsContext.ObjectPersistor, Core.Context.NakedObjectsContext.Session);
+                    INakedObject result = action.Execute(nakedObject, new[] { nakedObject }, NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
                     valid = true;
                     return result.GetDomainObject<T>();
                 }
@@ -384,14 +384,14 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     // contributed action being invoked with multiple parms - populate first that match the target 
                     INakedObjectActionParameter parmToPopulate = action.Parameters.FirstOrDefault(p => nakedObject.Specification.IsOfType(p.Specification));
                     if (parmToPopulate != null) {
-                        ViewData[IdHelper.GetParameterInputId(action, parmToPopulate)] = FrameworkHelper.GetObjectId(nakedObject.Object);
+                        ViewData[IdHelper.GetParameterInputId(action, parmToPopulate)] = NakedObjectsContext.GetObjectId(nakedObject.Object);
                     }
                 }
             }
 
             if (ValidateParameters(nakedObject, action, new ObjectAndControlData {Form = parameters})) {
                 IEnumerable<INakedObject> parms = GetParameterValues(action, new ObjectAndControlData {Form = parameters});
-                INakedObject result = action.Execute(nakedObject, parms.ToArray(), Core.Context.NakedObjectsContext.ObjectPersistor, Core.Context.NakedObjectsContext.Session);
+                INakedObject result = action.Execute(nakedObject, parms.ToArray(), NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
                 valid = true;
                 return result.GetDomainObject<T>();
             }

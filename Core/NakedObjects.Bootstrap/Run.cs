@@ -20,7 +20,7 @@ namespace NakedObjects.Boot {
 
         internal Run() {
             // to prevent subclassing oustside of this project/assembly, ie by an application
-            NakedObjectsContext.StartTime = DateTime.Now;
+           // NakedObjectsContext.StartTime = DateTime.Now;
         }
 
         protected NakedObjectsSystem System { get; private set; }
@@ -38,10 +38,10 @@ namespace NakedObjects.Boot {
             Log.DebugFormat("Real path: {0}", dir);
             EnsureDomainAssembliesAreLoaded();
 
-            System = new NakedObjectsSystem {
-                ReflectorInstaller = Reflector,
-                Context = Context
-            };
+            //System = new NakedObjectsSystem {
+            //    ReflectorInstaller = Reflector,
+            //    Context = Context
+            //};
         }
 
         #region overridable properties
@@ -103,9 +103,9 @@ namespace NakedObjects.Boot {
             get { return null; }
         }
 
-        protected virtual NakedObjectsContext Context {
-            get { return StaticContext.CreateInstance(); }
-        }
+        //protected virtual NakedObjectsContext Context {
+        //    get { return StaticContext.CreateInstance(); }
+        //}
 
         protected virtual IReflectorInstaller Reflector {
             get { return new DotNetReflectorInstaller(); }

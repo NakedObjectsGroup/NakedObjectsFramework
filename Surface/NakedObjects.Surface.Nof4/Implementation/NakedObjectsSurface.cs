@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using System.Threading;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
@@ -21,11 +20,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
-using NakedObjects.Core.Security;
-using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof4.Context;
 using NakedObjects.Surface.Nof4.Utility;
@@ -35,11 +29,12 @@ using NakedObjects.Util;
 namespace NakedObjects.Surface.Nof4.Implementation {
     public class NakedObjectsSurface : INakedObjectsSurface {
         private readonly IOidStrategy oidStrategy;
+        private readonly INakedObjectsFramework framework;
 
-
-        public NakedObjectsSurface(IOidStrategy oidStrategy) {
+        public NakedObjectsSurface(IOidStrategy oidStrategy, INakedObjectsFramework framework) {
             oidStrategy.Surface = this;
             this.oidStrategy = oidStrategy;
+            this.framework = framework;
             OidStrategyHolder.OidStrategy = oidStrategy;
         }
 
@@ -49,47 +44,50 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return null;
         }
 
+        private INakedObjectSpecificationSurface GetSpecificationWrapper(INakedObjectSpecification spec) {
+            return new NakedObjectSpecificationWrapper(spec, this, framework);
+        }
+
 
         public void Start() {
-            NakedObjectsContext.EnsureReady();
-            SetSession();
-            NakedObjectsContext.ObjectPersistor.StartTransaction();
+            //framework.EnsureReady();
+            //SetSession();
+            framework.ObjectPersistor.StartTransaction();
         }
 
         public void End(bool success) {
             if (success) {
-                NakedObjectsContext.ObjectPersistor.EndTransaction();
+                framework.ObjectPersistor.EndTransaction();
             }
             else {
-                NakedObjectsContext.ObjectPersistor.AbortTransaction();
+                framework.ObjectPersistor.AbortTransaction();
             }
         }
 
         public IPrincipal GetUser() {
-            return MapErrors(() => NakedObjectsContext.Session.Principal);
+            return MapErrors(() => framework.Session.Principal);
         }
 
         public INakedObjectSpecificationSurface[] GetDomainTypes() {
-            return MapErrors(() => NakedObjectsContext.Reflector.AllSpecifications.
-                                                       Where(s => !IsGenericType(s)).
-                                                       Select(s => new NakedObjectSpecificationWrapper(s, this)).
-                                                       Cast<INakedObjectSpecificationSurface>().ToArray());
+            return MapErrors(() => framework.Reflector.AllSpecifications.
+                Where(s => !IsGenericType(s)).
+                Select(GetSpecificationWrapper).ToArray());
         }
 
         public ObjectContextSurface GetService(LinkObjectId serviceName) {
-            return MapErrors(() => GetServiceInternal(serviceName).ToObjectContextSurface(this));
+            return MapErrors(() => GetServiceInternal(serviceName).ToObjectContextSurface(this, framework));
         }
 
         public ListContextSurface GetServices() {
-            return MapErrors(() => GetServicesInternal().ToListContextSurface(this));
+            return MapErrors(() => GetServicesInternal().ToListContextSurface(this, framework));
         }
 
         public ObjectContextSurface GetObject(INakedObjectSurface nakedObject) {
-            return MapErrors(() => GetObjectContext(((NakedObjectWrapper) nakedObject).WrappedNakedObject).ToObjectContextSurface(this));
+            return MapErrors(() => GetObjectContext(((NakedObjectWrapper) nakedObject).WrappedNakedObject).ToObjectContextSurface(this, framework));
         }
 
         public INakedObjectSpecificationSurface GetDomainType(string typeName) {
-            return MapErrors(() => new NakedObjectSpecificationWrapper(GetDomainTypeInternal(typeName), this));
+            return MapErrors(() => GetSpecificationWrapper(GetDomainTypeInternal(typeName)));
         }
 
         public PropertyTypeContextSurface GetPropertyType(string typeName, string propertyName) {
@@ -97,8 +95,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 Tuple<INakedObjectAssociation, INakedObjectSpecification> pc = GetPropertyTypeInternal(typeName, propertyName);
 
                 return new PropertyTypeContextSurface {
-                    Property = new NakedObjectAssociationWrapper(pc.Item1, this),
-                    OwningSpecification = new NakedObjectSpecificationWrapper(pc.Item2, this)
+                    Property = new NakedObjectAssociationWrapper(pc.Item1, this, framework),
+                    OwningSpecification = GetSpecificationWrapper(pc.Item2)
                 };
             });
         }
@@ -107,8 +105,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return MapErrors(() => {
                 Tuple<ActionContext, INakedObjectSpecification> pc = GetActionTypeInternal(typeName, actionName);
                 return new ActionTypeContextSurface {
-                    ActionContext = pc.Item1.ToActionContextSurface(this),
-                    OwningSpecification = new NakedObjectSpecificationWrapper(pc.Item2, this)
+                    ActionContext = pc.Item1.ToActionContextSurface(this, framework),
+                    OwningSpecification = GetSpecificationWrapper(pc.Item2)
                 };
             });
         }
@@ -118,9 +116,9 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 var pc = GetActionParameterTypeInternal(typeName, actionName, parmName);
 
                 return new ParameterTypeContextSurface {
-                    Action = new NakedObjectActionWrapper(pc.Item1, this, pc.Item4),
-                    OwningSpecification = new NakedObjectSpecificationWrapper(pc.Item2, this),
-                    Parameter = new NakedObjectActionParameterWrapper(pc.Item3, this, pc.Item4)
+                    Action = new NakedObjectActionWrapper(pc.Item1, this, framework, pc.Item4),
+                    OwningSpecification = GetSpecificationWrapper(pc.Item2),
+                    Parameter = new NakedObjectActionParameterWrapper(pc.Item3, this, framework, pc.Item4)
                 };
             });
         }
@@ -134,7 +132,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         public ObjectContextSurface GetObject(LinkObjectId oid) {
-            return MapErrors(() => GetObjectInternal(oid).ToObjectContextSurface(this));
+            return MapErrors(() => GetObjectInternal(oid).ToObjectContextSurface(this, framework));
         }
 
         public ObjectContextSurface PutObject(LinkObjectId oid, ArgumentsContext arguments) {
@@ -142,27 +140,27 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         public PropertyContextSurface GetProperty(LinkObjectId oid, string propertyName) {
-            return MapErrors(() => GetProperty(GetObjectAsNakedObject(oid), propertyName).ToPropertyContextSurface(this));
+            return MapErrors(() => GetProperty(GetObjectAsNakedObject(oid), propertyName).ToPropertyContextSurface(this, framework));
         }
 
         public ListContextSurface GetPropertyCompletions(LinkObjectId objectId, string propertyName, ArgumentsContext arguments) {
-            return MapErrors(() => GetPropertyCompletions(GetObjectAsNakedObject(objectId), propertyName, arguments).ToListContextSurface(this));
+            return MapErrors(() => GetPropertyCompletions(GetObjectAsNakedObject(objectId), propertyName, arguments).ToListContextSurface(this, framework));
         }
 
         public ListContextSurface GetParameterCompletions(LinkObjectId objectId, string actionName, string parmName, ArgumentsContext arguments) {
-            return MapErrors(() => GetParameterCompletions(GetObjectAsNakedObject(objectId), actionName, parmName, arguments).ToListContextSurface(this));
+            return MapErrors(() => GetParameterCompletions(GetObjectAsNakedObject(objectId), actionName, parmName, arguments).ToListContextSurface(this, framework));
         }
 
         public ListContextSurface GetServiceParameterCompletions(LinkObjectId objectId, string actionName, string parmName, ArgumentsContext arguments) {
-            return MapErrors(() => GetParameterCompletions(GetServiceAsNakedObject(objectId), actionName, parmName, arguments).ToListContextSurface(this));
+            return MapErrors(() => GetParameterCompletions(GetServiceAsNakedObject(objectId), actionName, parmName, arguments).ToListContextSurface(this, framework));
         }
 
         public ActionContextSurface GetServiceAction(LinkObjectId serviceName, string actionName) {
-            return MapErrors(() => GetAction(actionName, GetServiceAsNakedObject(serviceName)).ToActionContextSurface(this));
+            return MapErrors(() => GetAction(actionName, GetServiceAsNakedObject(serviceName)).ToActionContextSurface(this, framework));
         }
 
         public ActionContextSurface GetObjectAction(LinkObjectId objectId, string actionName) {
-            return MapErrors(() => GetAction(actionName, GetObjectAsNakedObject(objectId)).ToActionContextSurface(this));
+            return MapErrors(() => GetAction(actionName, GetObjectAsNakedObject(objectId)).ToActionContextSurface(this, framework));
         }
 
         public PropertyContextSurface PutProperty(LinkObjectId objectId, string propertyName, ArgumentContext argument) {
@@ -193,7 +191,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         #region Helpers
 
         private void SetSession() {
-            NakedObjectsContext.Instance.SetSession(new WindowsSession(Thread.CurrentPrincipal));
+            //framework.Instance.SetSession(new WindowsSession(Thread.CurrentPrincipal));
         }
 
 
@@ -205,7 +203,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             IEnumerable<INakedObjectAssociation> propertyQuery = nakedObject.Specification.Properties;
 
             if (onlyVisible) {
-                propertyQuery = propertyQuery.Where(p => p.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor));
+                propertyQuery = propertyQuery.Where(p => p.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor));
             }
 
             INakedObjectAssociation property = propertyQuery.SingleOrDefault(p => p.Id == propertyName);
@@ -224,8 +222,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private ListContext GetServicesInternal() {
-            INakedObject[] services = NakedObjectsContext.ObjectPersistor.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor);
-            INakedObjectSpecification elementType = NakedObjectsContext.Reflector.LoadSpecification(typeof (object));
+            INakedObject[] services = framework.ObjectPersistor.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor);
+            INakedObjectSpecification elementType = framework.Reflector.LoadSpecification(typeof(object));
 
             return new ListContext {
                 ElementType = elementType,
@@ -238,20 +236,24 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             private readonly INakedObjectActionParameter parm;
             private readonly IOneToOneFeature prop;
             private readonly INakedObjectsSurface surface;
+            private readonly INakedObjectsFramework framework;
 
-            private PropParmAdapter(object p, INakedObjectsSurface surface) {
+            private PropParmAdapter(object p, INakedObjectsSurface surface, INakedObjectsFramework framework) {
                 this.surface = surface;
+                this.framework = framework;
                 if (p == null) {
                     throw new BadRequestNOSException();
                 }
             }
 
-            public PropParmAdapter(IOneToOneFeature prop, INakedObjectsSurface surface) : this((object) prop, surface) {
+            public PropParmAdapter(IOneToOneFeature prop, INakedObjectsSurface surface, INakedObjectsFramework framework)
+                : this((object)prop, surface, framework) {
                 this.prop = prop;
                 CheckAutocompleOrConditional();
             }
 
-            public PropParmAdapter(INakedObjectActionParameter parm, INakedObjectsSurface surface) : this((object) parm, surface) {
+            public PropParmAdapter(INakedObjectActionParameter parm, INakedObjectsSurface surface, INakedObjectsFramework framework)
+                : this((object)parm, surface, framework) {
                 this.parm = parm;
                 CheckAutocompleOrConditional();
             }
@@ -294,6 +296,9 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 return value == null ? string.Format("Missing argument {0}", key) : null;
             }
 
+            private INakedObjectSpecificationSurface GetSpecificationWrapper(INakedObjectSpecification spec) {
+                return new NakedObjectSpecificationWrapper(spec, surface, framework);
+            }
 
             private INakedObject[] GetConditionalList(INakedObject nakedObject, ArgumentsContext arguments) {
                 
@@ -318,10 +323,11 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                     return ep.Item2.IsParseable ? "" : null;
                 };
 
+             
                 var matchedParms = expectedParms.ToDictionary(ep => ep.Item1, ep => new {
                     expectedType = ep.Item2,
                     value = getValue(ep),
-                    actualType = getValue(ep) == null ? null : NakedObjectsContext.Reflector.LoadSpecification(getValue(ep).GetType())
+                    actualType = getValue(ep) == null ? null : framework.Reflector.LoadSpecification(getValue(ep).GetType())
                 });
 
                 var errors = new List<ContextSurface>();
@@ -339,29 +345,29 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                         string rawValue = value.ToString();
 
                         try {
-                            mappedArguments[key] = expectedType.GetFacet<IParseableFacet>().ParseTextEntry(rawValue, NakedObjectsContext.ObjectPersistor);
+                            mappedArguments[key] = expectedType.GetFacet<IParseableFacet>().ParseTextEntry(rawValue, framework.ObjectPersistor);
 
-                            errors.Add(new ChoiceContextSurface(key, new NakedObjectSpecificationWrapper(expectedType, surface)) {
+                            errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
                                 ProposedValue = rawValue
                             });
                         }
                         catch (Exception e) {
-                            errors.Add(new ChoiceContextSurface(key, new NakedObjectSpecificationWrapper(expectedType, surface)) {
+                            errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
                                 Reason = e.Message,
                                 ProposedValue = rawValue
                             });
                         }
                     }
                     else if (actualType != null && !actualType.IsOfType(expectedType)) {
-                        errors.Add(new ChoiceContextSurface(key, new NakedObjectSpecificationWrapper(expectedType, surface)) {
+                        errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
                             Reason = string.Format("Argument is of wrong type is {0} expect {1}", actualType.FullName, expectedType.FullName),
                             ProposedValue = actualParms[ep.Item1]
                         });
                     }
                     else {
-                        mappedArguments[key] = NakedObjectsContext.ObjectPersistor.CreateAdapter(value, null, null);
+                        mappedArguments[key] = framework.ObjectPersistor.CreateAdapter(value, null, null);
 
-                        errors.Add(new ChoiceContextSurface(key, new NakedObjectSpecificationWrapper(expectedType, surface)) {
+                        errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
                             ProposedValue = getValue(ep)
                         });
                     }
@@ -371,14 +377,14 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                     throw new BadRequestNOSException("Wrong type of conditional argument(s)", errors);
                 }
 
-                return GetChoices(nakedObject, mappedArguments, NakedObjectsContext.ObjectPersistor);
+                return GetChoices(nakedObject, mappedArguments, framework.ObjectPersistor);
             }
 
             private INakedObject[] GetAutocompleteList(INakedObject nakedObject, ArgumentsContext arguments) {
                 if (arguments.SearchTerm == null) {
                     throw new BadRequestNOSException("Missing or malformed search term");
                 }
-                return GetCompletions(nakedObject, arguments.SearchTerm, NakedObjectsContext.ObjectPersistor);
+                return GetCompletions(nakedObject, arguments.SearchTerm, framework.ObjectPersistor);
             }
         }
 
@@ -394,12 +400,12 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private ListContext GetPropertyCompletions(INakedObject nakedObject, string propertyName, ArgumentsContext arguments) {
             var property = GetPropertyInternal(nakedObject, propertyName) as IOneToOneFeature;
-            return GetCompletions(new PropParmAdapter(property, this), nakedObject, arguments);
+            return GetCompletions(new PropParmAdapter(property, this, framework), nakedObject, arguments);
         }
 
         private ListContext GetParameterCompletions(INakedObject nakedObject, string actionName, string parmName, ArgumentsContext arguments) {
             INakedObjectActionParameter parm = GetParameterInternal(actionName, parmName, nakedObject);
-            return GetCompletions(new PropParmAdapter(parm, this), nakedObject, arguments);
+            return GetCompletions(new PropParmAdapter(parm, this, framework), nakedObject, arguments);
         }
 
         private Tuple<INakedObjectAssociation, INakedObjectSpecification> GetPropertyTypeInternal(string typeName, string propertyName) {
@@ -424,9 +430,9 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             var property = (IOneToOneAssociation) context.Property;
 
             if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
-                if (ConsentHandler(property.IsUsable(NakedObjectsContext.Session, context.Target, NakedObjectsContext.ObjectPersistor), context, Cause.Disabled)) {
+                if (ConsentHandler(property.IsUsable(framework.Session, context.Target, framework.ObjectPersistor), context, Cause.Disabled)) {
                     if (toPut != null && ConsentHandler(CanSetPropertyValue(context), context, Cause.WrongType)) {
-                        ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject, NakedObjectsContext.Session), context, Cause.Other);
+                        ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject, framework.Session), context, Cause.Other);
                     }
                 }
             }
@@ -441,9 +447,9 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             //if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
                 if (toPut != null && ConsentHandler(CanSetPropertyValue(context), context, Cause.WrongType)) {
-                    ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject, NakedObjectsContext.Session), context, Cause.Other);
+                    ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject, framework.Session), context, Cause.Other);
                 }
-                else if (toPut == null && (property.IsMandatory && property.IsUsable(NakedObjectsContext.Session, context.Target, NakedObjectsContext.ObjectPersistor).IsAllowed)) {
+                else if (toPut == null && (property.IsMandatory && property.IsUsable(framework.Session, context.Target, framework.ObjectPersistor).IsAllowed)) {
                     // only check user editable fields
                     context.Reason = "Mandatory";
                     context.ErrorCause = Cause.Other;
@@ -486,7 +492,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             PropertyContext context = CanChangeProperty(nakedObject, propertyName, argument.Value);
             if (string.IsNullOrEmpty(context.Reason)) {
                 IEnumerable<PropertyContext> existingValues = context.Target.Specification.Properties.Where(p => p.Id != context.Id).
-                                                                      Select(p => new {p, no = p.GetNakedObject(context.Target, NakedObjectsContext.ObjectPersistor)}).
+                                                                      Select(p => new {p, no = p.GetNakedObject(context.Target, framework.ObjectPersistor)}).
                                                                       Select(ao => new PropertyContext {
                                                                           Property = ao.p,
                                                                           ProposedNakedObject = ao.no,
@@ -508,11 +514,11 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 }
             }
             context.Mutated = true; // mark as changed even if property not actually changed to stop self rep
-            return context.ToPropertyContextSurface(this);
+            return context.ToPropertyContextSurface(this, framework);
         }
 
-        private static void SetProperty(PropertyContext context) {
-            ((IOneToOneAssociation) context.Property).SetAssociation(context.Target, context.ProposedValue == null ? null : context.ProposedNakedObject, NakedObjectsContext.ObjectPersistor);
+        private void SetProperty(PropertyContext context) {
+            ((IOneToOneAssociation) context.Property).SetAssociation(context.Target, context.ProposedValue == null ? null : context.ProposedNakedObject, framework.ObjectPersistor);
         }
 
         private static void ValidateConcurrency(INakedObject nakedObject, string digest) {
@@ -546,7 +552,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                     }
 
                     propertiesToDisplay = nakedObject.Specification.Properties.
-                                                      Where(p => p.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor)).
+                                                      Where(p => p.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor)).
                                                       Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
                 }
             }
@@ -555,7 +561,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             oc.Mutated = true;
             oc.Reason = objectContext.Reason;
             oc.VisibleProperties = propertiesToDisplay;
-            return oc.ToObjectContextSurface(this);
+            return oc.ToObjectContextSurface(this, framework);
         }
 
         private ObjectContextSurface SetObject(INakedObject nakedObject, ArgumentsContext arguments) {
@@ -575,13 +581,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                         Array.ForEach(objectContext.VisibleProperties, SetProperty);
 
                         if (nakedObject.Specification.Persistable == Persistable.USER_PERSISTABLE) {
-                            NakedObjectsContext.ObjectPersistor.MakePersistent(nakedObject);
+                            framework.ObjectPersistor.MakePersistent(nakedObject);
                         }
                         else {
-                            NakedObjectsContext.ObjectPersistor.ObjectChanged(nakedObject);
+                            framework.ObjectPersistor.ObjectChanged(nakedObject);
                         }
                         propertiesToDisplay = nakedObject.Specification.Properties.
-                                                          Where(p => p.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor)).
+                                                          Where(p => p.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor)).
                                                           Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
                     }
                 }
@@ -590,7 +596,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             ObjectContext oc = GetObjectContext(objectContext.Target);
             oc.Reason = objectContext.Reason;
             oc.VisibleProperties = propertiesToDisplay;
-            return oc.ToObjectContextSurface(this);
+            return oc.ToObjectContextSurface(this, framework);
         }
 
         private bool ValidateParameters(ActionContext actionContext, IDictionary<string, object> rawParms) {
@@ -638,7 +644,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
                         orderedParms[parm.Id].ProposedNakedObject = valueNakedObject;
 
-                        IConsent consent = parm.IsValid(actionContext.Target, valueNakedObject, NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
+                        IConsent consent = parm.IsValid(actionContext.Target, valueNakedObject, framework.ObjectPersistor, framework.Session);
                         if (!consent.IsAllowed) {
                             orderedParms[parm.Id].Reason = consent.Reason;
                             isValid = false;
@@ -654,7 +660,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             // check for validity of whole set, including any 'co-validation' involving multiple parameters
             if (isValid) {
-                IConsent consent = actionContext.Action.IsParameterSetValid(NakedObjectsContext.Session,  actionContext.Target, orderedParms.Select(kvp => kvp.Value.ProposedNakedObject).ToArray(), NakedObjectsContext.ObjectPersistor);
+                IConsent consent = actionContext.Action.IsParameterSetValid(framework.Session,  actionContext.Target, orderedParms.Select(kvp => kvp.Value.ProposedNakedObject).ToArray(), framework.ObjectPersistor);
                 if (!consent.IsAllowed) {
                     actionContext.Reason = consent.Reason;
                     isValid = false;
@@ -669,7 +675,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private IConsent IsOfCorrectType(IOneToManyAssociation property, PropertyContext context) {
             // todo this should probably be in the framework somewhere
-            INakedObject collectionNakedObject = property.GetNakedObject(context.Target, NakedObjectsContext.ObjectPersistor);
+            INakedObject collectionNakedObject = property.GetNakedObject(context.Target, framework.ObjectPersistor);
             ITypeOfFacet facet = collectionNakedObject.GetTypeOfFacetFromSpec();
 
             if (context.ProposedNakedObject.Specification.IsOfType(facet.ValueSpec)) {
@@ -690,7 +696,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         private PropertyContext SetupPropertyContext(INakedObject nakedObject, string propertyName, object toAdd) {
             PropertyContext context = GetProperty(nakedObject, propertyName);
             context.ProposedValue = toAdd;
-            context.ProposedNakedObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(toAdd, null, null);
+            context.ProposedNakedObject = framework.ObjectPersistor.CreateAdapter(toAdd, null, null);
             return context;
         }
 
@@ -701,7 +707,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             if (ConsentHandler(IsOfCorrectType(property, context), context, Cause.Other)) {
                 if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
-                    if (ConsentHandler(property.IsUsable(NakedObjectsContext.Session, context.Target, NakedObjectsContext.ObjectPersistor), context, Cause.Disabled)) {
+                    if (ConsentHandler(property.IsUsable(framework.Session, context.Target, framework.ObjectPersistor), context, Cause.Disabled)) {
                         if (ConsentHandler(validator(context.Target, context.ProposedNakedObject), context, Cause.Other)) {
                             if (!argument.ValidateOnly) {
                                 mutator(context.Target, context.ProposedNakedObject);
@@ -711,20 +717,20 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 }
             }
             context.Mutated = true;
-            return context.ToPropertyContextSurface(this);
+            return context.ToPropertyContextSurface(this, framework);
         }
 
         private ActionResultContextSurface ExecuteAction(ActionContext actionContext, ArgumentsContext arguments) {
             ValidateConcurrency(actionContext.Target, arguments.Digest);
 
             var actionResultContext = new ActionResultContext {Target = actionContext.Target, ActionContext = actionContext};
-            if (ConsentHandler(actionContext.Action.IsUsable(NakedObjectsContext.Session, actionContext.Target, NakedObjectsContext.ObjectPersistor), actionResultContext, Cause.Disabled)) {
+            if (ConsentHandler(actionContext.Action.IsUsable(framework.Session, actionContext.Target, framework.ObjectPersistor), actionResultContext, Cause.Disabled)) {
                 if (ValidateParameters(actionContext, arguments.Values) && !arguments.ValidateOnly) {
-                    INakedObject result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray(), NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
+                    INakedObject result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray(), framework.ObjectPersistor, framework.Session);
                     actionResultContext.Result = GetObjectContext(result);
                 }
             }
-            return actionResultContext.ToActionResultContextSurface(this);
+            return actionResultContext.ToActionResultContextSurface(this, framework);
         }
 
         // TODO either move this into framework or (better?) add a VetoCause enum to Veto and use  
@@ -749,23 +755,23 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
 
-        private static INakedObject GetValue(INakedObjectSpecification specification, object rawValue) {
+        private  INakedObject GetValue(INakedObjectSpecification specification, object rawValue) {
             if (rawValue == null) {
                 return null;
             }
 
             if (specification.IsParseable) {
-                return specification.GetFacet<IParseableFacet>().ParseTextEntry(rawValue.ToString(), NakedObjectsContext.ObjectPersistor);
+                return specification.GetFacet<IParseableFacet>().ParseTextEntry(rawValue.ToString(), framework.ObjectPersistor);
             }
 
             if (specification.IsCollection) {
                 var elementSpec = specification.GetFacet<ITypeOfFacet>().ValueSpec;
 
                 if (elementSpec.IsParseable) {
-                    var elements = ((IEnumerable)rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), NakedObjectsContext.ObjectPersistor)).ToArray();
+                    var elements = ((IEnumerable)rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.ObjectPersistor)).ToArray();
                     var elementType = TypeUtils.GetType(elementSpec.FullName);
                     Type collType = typeof(List<>).MakeGenericType(elementType);
-                    var collection = NakedObjectsContext.ObjectPersistor.CreateAdapter(Activator.CreateInstance(collType), null, null);
+                    var collection = framework.ObjectPersistor.CreateAdapter(Activator.CreateInstance(collType), null, null);
 
                     collection.Specification.GetFacet<ICollectionFacet>().Init(collection, elements);
                     return collection;
@@ -773,10 +779,10 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
 
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(rawValue, null, null);
+            return framework.ObjectPersistor.CreateAdapter(rawValue, null, null);
         }
 
-        private static IConsent CanSetPropertyValue(PropertyContext context) {
+        private  IConsent CanSetPropertyValue(PropertyContext context) {
             try {
                 context.ProposedNakedObject = GetValue(context.Specification, context.ProposedValue);
                 return new Allow();
@@ -800,13 +806,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private INakedObject GetObjectAsNakedObject(LinkObjectId objectId) {
             object obj = oidStrategy.GetDomainObjectByOid(objectId);
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
+            return framework.ObjectPersistor.CreateAdapter(obj, null, null);
         }
 
 
         private INakedObject GetServiceAsNakedObject(LinkObjectId serviceName) {
             object obj = oidStrategy.GetServiceByServiceName(serviceName);
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
+            return framework.ObjectPersistor.CreateAdapter(obj, null, null);
         }
 
         private ParameterContext[] FilterParmsForContributedActions(INakedObjectAction action, INakedObjectSpecification targetSpec, string uid) {
@@ -844,7 +850,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 throw new BadRequestNOSException();
             }
 
-            INakedObjectAction[] actions = nakedObject.Specification.GetActionLeafNodes().Where(p => p.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor)).ToArray();
+            INakedObjectAction[] actions = nakedObject.Specification.GetActionLeafNodes().Where(p => p.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor)).ToArray();
             INakedObjectAction action = actions.SingleOrDefault(p => p.Id == actionName) ?? SurfaceUtils.GetOverloadedAction(actionName, nakedObject.Specification);
 
             if (action == null) {
@@ -934,8 +940,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 return null;
             }
 
-            INakedObjectAction[] actions = nakedObject.Specification.GetActionLeafNodes().Where(p => p.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor)).ToArray();
-            INakedObjectAssociation[] properties = nakedObject.Specification.Properties.Where(p => p.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor)).ToArray();
+            INakedObjectAction[] actions = nakedObject.Specification.GetActionLeafNodes().Where(p => p.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor)).ToArray();
+            INakedObjectAssociation[] properties = nakedObject.Specification.Properties.Where(p => p.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor)).ToArray();
 
             return new ObjectContext(nakedObject) {
                 VisibleActions = actions.Select(a => new { action = a, uid = SurfaceUtils.GetOverloadedUId(a, nakedObject.Specification) }).Select(a => new ActionContext {
@@ -979,7 +985,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
             INakedObjectSpecification spec = GetDomainTypeInternal(typeName);
-            INakedObject nakedObject = NakedObjectsContext.ObjectPersistor.CreateInstance(spec);
+            INakedObject nakedObject = framework.ObjectPersistor.CreateInstance(spec);
 
             return SetObject(nakedObject, arguments);
         }

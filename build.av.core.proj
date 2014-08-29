@@ -56,7 +56,6 @@
     <FWTFiles Include="$(CorePath)\NakedObjects.Reflector.Dotnet.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Snapshot.Xml.Test\*.fsproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Snapshot.Xml.Test.Data\*.fsproj"/>
-    <FWTFiles Include="$(CorePath)\NakedObjects.TestSystem\*.csproj"/>
   </ItemGroup>
 
   <Target Name="Init" DependsOnTargets="Config" >

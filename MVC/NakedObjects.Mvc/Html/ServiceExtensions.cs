@@ -8,6 +8,11 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class ServiceExtensions {
+
+        private static INakedObjectsFramework Framework(this HtmlHelper html) {
+            return (INakedObjectsFramework)html.ViewData["NakedObjectsFramework"];
+        }
+
         #region ServiceMenus
 
         /// <summary>
@@ -34,7 +39,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// list wrap in a div with class=IdHelper.ServicesContainerName with any other required services. 
         /// </summary> 
         public static MvcHtmlString Service(this HtmlHelper html, object service, params CustomMenuItem[] menuItems) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObject(service);
+            INakedObject nakedObject = html.Framework().GetNakedObject(service);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
                                                        IdHelper.MenuContainerName,
                                                        IdHelper.GetServiceContainerId(nakedObject),

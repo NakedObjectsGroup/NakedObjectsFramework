@@ -37,23 +37,23 @@ namespace NakedObjects.Web.Mvc {
         public const int CacheSize = 100;
         private static readonly string[] Bucket = new[] { NoneBucket, BreadCrumbBucket };
 
-        public static void AddToCache(this HttpSessionStateBase session, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
-            session.AddToCache(nakedObject, url, flag);
+        public static void AddToCache(this HttpSessionStateBase session, INakedObjectsFramework framework,  object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
+            INakedObject nakedObject = framework.GetNakedObject(domainObject);
+            session.AddToCache(framework, nakedObject, url, flag);
         }
 
-        public static void AddOrUpdateInCache(this HttpSessionStateBase session, object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
-            session.AddOrUpdateInCache(nakedObject, url, flag);
+        public static void AddOrUpdateInCache(this HttpSessionStateBase session, INakedObjectsFramework framework,  object domainObject, string url, ObjectFlag flag = ObjectFlag.None) {
+            INakedObject nakedObject = framework.GetNakedObject(domainObject);
+            session.AddOrUpdateInCache(framework, nakedObject, url, flag);
         }
 
-        public static void AddToCache(this HttpSessionStateBase session, object domainObject, ObjectFlag flag = ObjectFlag.None) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
-            session.AddToCache(nakedObject, flag);
+        public static void AddToCache(this HttpSessionStateBase session, INakedObjectsFramework framework,  object domainObject, ObjectFlag flag = ObjectFlag.None) {
+            INakedObject nakedObject = framework.GetNakedObject(domainObject);
+            session.AddToCache(framework, nakedObject, flag);
         }
 
-        public static void AddToCache(this HttpSessionStateBase session, INakedObject nakedObject, ObjectFlag flag = ObjectFlag.None) {
-            session.AddToCache(nakedObject, null, flag);
+        public static void AddToCache(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObject nakedObject, ObjectFlag flag = ObjectFlag.None) {
+            session.AddToCache(framework, nakedObject, null, flag);
         }
 
         private static void ClearPreviousTransients(this HttpSessionStateBase session, INakedObject nakedObject, ObjectFlag flag) {
@@ -64,74 +64,74 @@ namespace NakedObjects.Web.Mvc {
             }
         }
 
-        public static void AddToCache(this HttpSessionStateBase session, INakedObject nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
+        public static void AddToCache(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObject nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
             // only add transients if we are storing transients in the session 
 
             if ((!nakedObject.ResolveState.IsTransient() || MvcIdentityAdapterHashMap.StoringTransientsInSession) || nakedObject.Specification.IsCollection) {
                 session.ClearPreviousTransients(nakedObject, flag);
-                session.GetCache(flag).AddToCache(nakedObject, url, flag);
+                session.GetCache(flag).AddToCache(framework, nakedObject, url, flag);
             }
         }
 
-        public static void AddOrUpdateInCache(this HttpSessionStateBase session, INakedObject nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
+        public static void AddOrUpdateInCache(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObject nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
             // only add transients if we are storing transients in the session 
 
             if ((!nakedObject.ResolveState.IsTransient() || MvcIdentityAdapterHashMap.StoringTransientsInSession) || nakedObject.Specification.IsCollection) {
                 session.ClearPreviousTransients(nakedObject, flag);
-                session.GetCache(flag).AddOrUpdateInCache(nakedObject, url, flag);
+                session.GetCache(flag).AddOrUpdateInCache(framework, nakedObject, url, flag);
             }
         }
 
-        internal static void TestAddToCache(this HttpSessionStateBase session, INakedObject nakedObject, ObjectFlag flag = ObjectFlag.None) {
-            session.GetCache(flag).AddToCache(nakedObject, null, flag);
+        internal static void TestAddToCache(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObject nakedObject, ObjectFlag flag = ObjectFlag.None) {
+            session.GetCache(flag).AddToCache(framework, nakedObject, null, flag);
         }
 
-        public static void RemoveFromCache(this HttpSessionStateBase session, object domainObject, ObjectFlag flag = ObjectFlag.None) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
-            session.RemoveFromCache(nakedObject, flag);
+        public static void RemoveFromCache(this HttpSessionStateBase session, INakedObjectsFramework framework,  object domainObject, ObjectFlag flag = ObjectFlag.None) {
+            INakedObject nakedObject = framework.GetNakedObject(domainObject);
+            session.RemoveFromCache(framework, nakedObject, flag);
         }
 
-        public static void RemoveOthersFromCache(this HttpSessionStateBase session, object domainObject, ObjectFlag flag = ObjectFlag.None) {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
-            session.RemoveOthersFromCache(nakedObject, flag);
+        public static void RemoveOthersFromCache(this HttpSessionStateBase session, INakedObjectsFramework framework, object domainObject, ObjectFlag flag = ObjectFlag.None) {
+            INakedObject nakedObject = framework.GetNakedObject(domainObject);
+            session.RemoveOthersFromCache(framework, nakedObject, flag);
         }
 
         public static void RemoveOthersFromCache(this HttpSessionStateBase session, string objectId, ObjectFlag flag = ObjectFlag.None) {
             session.GetCache(flag).RemoveOthersFromCache(objectId);
         }
 
-        public static void RemoveFromCache(this HttpSessionStateBase session, INakedObject nakedObject, ObjectFlag flag = ObjectFlag.None) {
-            session.GetCache(flag).RemoveFromCache(nakedObject);
+        public static void RemoveFromCache(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObject nakedObject, ObjectFlag flag = ObjectFlag.None) {
+            session.GetCache(flag).RemoveFromCache(framework, nakedObject);
         }
 
         public static void RemoveFromCache(this HttpSessionStateBase session, string objectId, ObjectFlag flag = ObjectFlag.None) {
             session.GetCache(flag).RemoveFromCache(objectId);
         }
 
-        public static void RemoveOthersFromCache(this HttpSessionStateBase session, INakedObject nakedObject, ObjectFlag flag = ObjectFlag.None) {
-            session.GetCache(flag).RemoveOthersFromCache(nakedObject);
+        public static void RemoveOthersFromCache(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObject nakedObject, ObjectFlag flag = ObjectFlag.None) {
+            session.GetCache(flag).RemoveOthersFromCache(framework, nakedObject);
         }
 
-        public static object LastObject(this HttpSessionStateBase session, ObjectFlag flag = ObjectFlag.None) {
+        public static object LastObject(this HttpSessionStateBase session, INakedObjectsFramework framework, ObjectFlag flag = ObjectFlag.None) {
             KeyValuePair<string, CacheMemento> lastEntry = session.GetCache(flag).OrderBy(kvp => kvp.Value.Added).LastOrDefault();
 
             if (lastEntry.Equals(default(KeyValuePair<string, CacheMemento>))) {
                 return null;
             }
 
-            INakedObject lastObject = SafeGetNakedObjectFromId(lastEntry.Key);
+            INakedObject lastObject = SafeGetNakedObjectFromId(lastEntry.Key, framework);
 
             if (lastObject.ResolveState.IsDestroyed()) {
                 session.GetCache(flag).Remove(lastEntry.Key);
-                return session.LastObject(flag);
+                return session.LastObject(framework, flag);
             }
 
             return lastObject.Object;
         }
 
         // This is dangerous - retrieves all cached objects from the database - use with care !
-        internal static IEnumerable<object> AllCachedObjects(this HttpSessionStateBase session, ObjectFlag flag = ObjectFlag.None) {
-            return session.GetAndTidyCachedNakedObjects(flag).Where(no => !no.ResolveState.IsDestroyed()).Select(no => no.Object);
+        internal static IEnumerable<object> AllCachedObjects(this HttpSessionStateBase session, INakedObjectsFramework framework, ObjectFlag flag = ObjectFlag.None) {
+            return session.GetAndTidyCachedNakedObjects(framework, flag).Where(no => !no.ResolveState.IsDestroyed()).Select(no => no.Object);
         }
 
         public static IEnumerable<string> AllCachedUrls(this HttpSessionStateBase session, ObjectFlag flag = ObjectFlag.None) {
@@ -139,35 +139,35 @@ namespace NakedObjects.Web.Mvc {
         }
 
         // This is dangerous - retrieves all cached objects from the database - use with care !
-        private static IEnumerable<INakedObject> GetAndTidyCachedNakedObjects(this HttpSessionStateBase session, ObjectFlag flag) {
-            session.ClearDestroyedObjects(flag);
-            return session.GetCache(flag).OrderBy(kvp => kvp.Value.Added).Select(kvp => FrameworkHelper.GetNakedObjectFromId(kvp.Key));
+        private static IEnumerable<INakedObject> GetAndTidyCachedNakedObjects(this HttpSessionStateBase session, INakedObjectsFramework framework, ObjectFlag flag) {
+            session.ClearDestroyedObjects(framework, flag);
+            return session.GetCache(flag).OrderBy(kvp => kvp.Value.Added).Select(kvp => framework.GetNakedObjectFromId(kvp.Key));
         }
 
-        private static bool SameSpec(string name, INakedObjectSpecification otherSpec) {
-            var thisSpec = NakedObjectsContext.Reflector.LoadSpecification(name);
+        private static bool SameSpec(string name, INakedObjectSpecification otherSpec, INakedObjectsFramework framework) {
+            var thisSpec = framework.Reflector.LoadSpecification(name);
             return thisSpec.IsOfType(otherSpec);
         }
 
-        private static IEnumerable<INakedObject> GetAndTidyCachedNakedObjectsOfType(this HttpSessionStateBase session, INakedObjectSpecification spec, ObjectFlag flag) {
-            session.ClearDestroyedObjectsOfType(spec, flag);
-            return session.GetCache(flag).Where(cm => SameSpec(cm.Value.Spec, spec)).OrderBy(kvp => kvp.Value.Added).Select(kvp => FrameworkHelper.GetNakedObjectFromId(kvp.Key));
+        private static IEnumerable<INakedObject> GetAndTidyCachedNakedObjectsOfType(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObjectSpecification spec, ObjectFlag flag) {
+            session.ClearDestroyedObjectsOfType(framework, spec, flag);
+            return session.GetCache(flag).Where(cm => SameSpec(cm.Value.Spec, spec, framework)).OrderBy(kvp => kvp.Value.Added).Select(kvp => framework.GetNakedObjectFromId(kvp.Key));
         }
 
-        public static IEnumerable<object> CachedObjectsOfType(this HttpSessionStateBase session, INakedObjectSpecification spec, ObjectFlag flag = ObjectFlag.None) {
-            return session.GetAndTidyCachedNakedObjectsOfType(spec, flag).Select(no => no.Object);
+        public static IEnumerable<object> CachedObjectsOfType(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObjectSpecification spec, ObjectFlag flag = ObjectFlag.None) {
+            return session.GetAndTidyCachedNakedObjectsOfType(framework, spec, flag).Select(no => no.Object);
         }
 
         // This is dangerous - retrieves all cached objects from the database - use with care !
-        private static void ClearDestroyedObjects(this HttpSessionStateBase session, ObjectFlag flag = ObjectFlag.None) {
+        private static void ClearDestroyedObjects(this HttpSessionStateBase session, INakedObjectsFramework framework, ObjectFlag flag = ObjectFlag.None) {
             Dictionary<string, CacheMemento> cache = session.GetCache(flag);
-            List<string> toRemove = cache.Select(kvp => new { kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key) }).Where(ao => ao.no.ResolveState.IsDestroyed()).Select(ao => ao.Key).ToList();
+            List<string> toRemove = cache.Select(kvp => new { kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, framework) }).Where(ao => ao.no.ResolveState.IsDestroyed()).Select(ao => ao.Key).ToList();
             toRemove.ForEach(k => cache.Remove(k));
         }
 
-        public static void ClearDestroyedObjectsOfType(this HttpSessionStateBase session, INakedObjectSpecification spec, ObjectFlag flag = ObjectFlag.None) {
+        public static void ClearDestroyedObjectsOfType(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObjectSpecification spec, ObjectFlag flag = ObjectFlag.None) {
             Dictionary<string, CacheMemento> cache = session.GetCache(flag);
-            List<string> toRemove = cache.Where(cm => SameSpec(cm.Value.Spec, spec)).Select(kvp => new { kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key) }).Where(ao => ao.no.ResolveState.IsDestroyed()).Select(ao => ao.Key).ToList();
+            List<string> toRemove = cache.Where(cm => SameSpec(cm.Value.Spec, spec, framework)).Select(kvp => new { kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, framework) }).Where(ao => ao.no.ResolveState.IsDestroyed()).Select(ao => ao.Key).ToList();
             toRemove.ForEach(k => cache.Remove(k));
         }
 
@@ -177,13 +177,13 @@ namespace NakedObjects.Web.Mvc {
             toRemove.ForEach(k => cache.Remove(k));
         }
 
-        private static INakedObject SafeGetNakedObjectFromId(string id) {
+        private static INakedObject SafeGetNakedObjectFromId(string id, INakedObjectsFramework framework) {
             try {
-                return FrameworkHelper.GetNakedObjectFromId(id);
+                return framework.GetNakedObjectFromId(id);
             }
             catch (Exception) {
                 // create a NakedObject just to carry the 'Destroyed' state
-                var no = FrameworkHelper.GetNakedObject(new object());
+                var no = framework.GetNakedObject(new object());
                 no.ResolveState.Handle(Events.StartResolvingEvent);
                 no.ResolveState.Handle(Events.DestroyEvent);
                 return no;
@@ -199,8 +199,8 @@ namespace NakedObjects.Web.Mvc {
             return objs;
         }
 
-        private static void AddOrUpdateInCache(this Dictionary<string, CacheMemento> cache, INakedObject nakedObject, string url, ObjectFlag flag) {
-            string objectId = FrameworkHelper.GetObjectId(nakedObject);
+        private static void AddOrUpdateInCache(this Dictionary<string, CacheMemento> cache, INakedObjectsFramework framework, INakedObject nakedObject, string url, ObjectFlag flag) {
+            string objectId = framework.GetObjectId(nakedObject);
 
             if (cache.ContainsKey(objectId)) {
                 cache[objectId].Spec = nakedObject.Specification.FullName;
@@ -214,8 +214,8 @@ namespace NakedObjects.Web.Mvc {
             }
         }
 
-        private static void AddToCache(this Dictionary<string, CacheMemento> cache, INakedObject nakedObject, string url, ObjectFlag flag) {
-            string objectId = FrameworkHelper.GetObjectId(nakedObject);
+        private static void AddToCache(this Dictionary<string, CacheMemento> cache, INakedObjectsFramework framework, INakedObject nakedObject, string url, ObjectFlag flag) {
+            string objectId = framework.GetObjectId(nakedObject);
             cache[objectId] = new CacheMemento { Added = DateTime.Now, Spec = nakedObject.Specification.FullName, Url = url };
             while (cache.Count > CacheSize) {
                 RemoveOldest(cache, flag);
@@ -228,16 +228,16 @@ namespace NakedObjects.Web.Mvc {
             cache.Remove(oldestId);
         }
 
-        private static void RemoveFromCache(this Dictionary<string, CacheMemento> cache, INakedObject nakedObject) {
-            cache.RemoveFromCache(FrameworkHelper.GetObjectId(nakedObject));
+        private static void RemoveFromCache(this Dictionary<string, CacheMemento> cache, INakedObjectsFramework framework, INakedObject nakedObject) {
+            cache.RemoveFromCache(framework.GetObjectId(nakedObject));
         }
 
         private static void RemoveFromCache(this Dictionary<string, CacheMemento> cache, string objectId) {
             cache.Remove(objectId);
         }
 
-        private static void RemoveOthersFromCache(this Dictionary<string, CacheMemento> cache, INakedObject nakedObject) {
-            string id = FrameworkHelper.GetObjectId(nakedObject);
+        private static void RemoveOthersFromCache(this Dictionary<string, CacheMemento> cache, INakedObjectsFramework framework, INakedObject nakedObject) {
+            string id = framework.GetObjectId(nakedObject);
             cache.RemoveOthersFromCache(id);
         }
 

@@ -68,7 +68,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMemento() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
 
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
@@ -83,7 +83,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMementoToStringWithNull() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
 
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
@@ -100,7 +100,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMementoToStringWithObject() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
 
             object status = NakedObjectsContext.ObjectPersistor.Instances(typeof(ClaimStatus)).Cast<object>().First();
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
@@ -118,7 +118,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMementoToStringWithEnum() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
 
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaimsByEnumStatus");
@@ -138,7 +138,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMementoWithFilterAll() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
 
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
@@ -160,7 +160,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMementoWithFilterNone() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
 
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
@@ -180,7 +180,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMementoWithFilterOne() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
 
             INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");

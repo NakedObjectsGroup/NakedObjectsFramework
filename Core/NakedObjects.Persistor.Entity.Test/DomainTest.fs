@@ -17,7 +17,7 @@ let persistor =
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
     c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null)
     setupPersistorForTesting p
 
 let overwritePersistor =
@@ -30,7 +30,7 @@ let overwritePersistor =
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
     c.ContextConfiguration <- [|(box config :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null)
     setupPersistorForTesting p
 
 [<TestFixture>]

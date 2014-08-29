@@ -24,23 +24,23 @@ namespace NakedObjects.Boot {
         }
 
         protected static void StartTransaction() {
-            NakedObjectsContext.ObjectPersistor.StartTransaction();
+           // NakedObjectsContext.ObjectPersistor.StartTransaction();
         }
 
         protected static void EnsureReady() {
-            NakedObjectsContext.EnsureReady();
+           // NakedObjectsContext.EnsureReady();
         }
 
         protected void SetSession() {
-            NakedObjectsContext.Instance.SetSession(new WindowsSession(Thread.CurrentPrincipal));
+          //  NakedObjectsContext.Instance.SetSession(new WindowsSession(Thread.CurrentPrincipal));
         }
 
         protected static void EndTransaction() {
-            NakedObjectsContext.ObjectPersistor.EndTransaction();
+         //   NakedObjectsContext.ObjectPersistor.EndTransaction();
         }
 
         protected static void AbortTransaction() {
-            NakedObjectsContext.ObjectPersistor.AbortTransaction();
+         //   NakedObjectsContext.ObjectPersistor.AbortTransaction();
         }
 
         #region INakedObjectsClient Members
@@ -67,9 +67,9 @@ namespace NakedObjects.Boot {
     }
 
     public abstract class RunBatch : RunStandaloneBase {
-        protected override NakedObjectsContext Context {
-            get { return ThreadContext.CreateInstance(); }
-        }
+        //protected override NakedObjectsContext Context {
+        //    get { return ThreadContext.CreateInstance(); }
+        //}
 
         protected override INakedObjectsClient Client {
             get { return new BatchClient(BatchStartPoint); }

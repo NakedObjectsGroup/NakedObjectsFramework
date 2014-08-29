@@ -7,8 +7,6 @@ using System.Web.Routing;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Presentation;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
 
 namespace NakedObjects.Web.Mvc.Html {
     internal abstract class ObjectContext {
@@ -16,16 +14,8 @@ namespace NakedObjects.Web.Mvc.Html {
             Target = otherContext.Target;
         }
 
-        protected ObjectContext(object target) {
-            if (target is INakedObject) {
-                Target = target as INakedObject;
-            }
-            else if (target != null) {
-                Target = FrameworkHelper.GetNakedObject(target);
-            }
-            else {
-                Target = null;
-            }
+        protected ObjectContext(INakedObject target) {
+            Target = target;
         }
 
         public INakedObject Target { get; set; }
@@ -34,7 +24,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
     internal abstract class FeatureContext : ObjectContext {
         protected FeatureContext(ObjectContext otherContext) : base(otherContext) {}
-        protected FeatureContext(object target) : base(target) {}
+        protected FeatureContext(INakedObject target) : base(target) {}
         public abstract INakedObjectFeature Feature { get; }
     }
 
@@ -43,7 +33,7 @@ namespace NakedObjects.Web.Mvc.Html {
             ParentContext = otherContext.ParentContext;
         }
 
-        public PropertyContext(object target, INakedObjectAssociation property, bool isEdit, PropertyContext parentContext = null)
+        public PropertyContext(INakedObject target, INakedObjectAssociation property, bool isEdit, PropertyContext parentContext = null)
             : base(target) {
             Property = property;
             IsPropertyEdit = isEdit;
@@ -61,8 +51,8 @@ namespace NakedObjects.Web.Mvc.Html {
             get { return Property; }
         }
 
-        public INakedObject GetValue() {
-            return Property.GetNakedObject(Target, NakedObjectsContext.ObjectPersistor);
+        public INakedObject GetValue(INakedObjectsFramework framework) {
+            return Property.GetNakedObject(Target, framework.ObjectPersistor);
         }
 
         public bool IsEdit { get; private set; }
@@ -107,13 +97,13 @@ namespace NakedObjects.Web.Mvc.Html {
             Action = otherContext.Action;
         }
 
-        public ActionContext(object target, INakedObjectAction action)
+        public ActionContext(INakedObject target, INakedObjectAction action)
             : base(target) {
             EmbeddedInObject = false;
             Action = action;
         }
 
-        public ActionContext(bool embeddedInObject, object target, INakedObjectAction action)
+        public ActionContext(bool embeddedInObject, INakedObject target, INakedObjectAction action)
             : base(target) {
             EmbeddedInObject = embeddedInObject;
             Action = action;
@@ -140,25 +130,22 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public RouteValueDictionary ParameterValues { get; set; }
 
+        public ParameterContext[] GetParameterContexts(INakedObjectsFramework framework) {
+            if (parameterContexts == null) {
+                parameterContexts = Action.Parameters.Where(Filter).Select(p => new ParameterContext(EmbeddedInObject, Target, Action, p, true)).ToArray();
 
-        public ParameterContext[] ParameterContexts {
-            get {
-                if (parameterContexts == null) {
-                    parameterContexts = Action.Parameters.Where(Filter).Select(p => new ParameterContext(EmbeddedInObject, Target, Action, p, true)).ToArray();
-
-                    if (ParameterValues != null) {
-                        foreach (ParameterContext pc in parameterContexts) {
-                            object value;
-                            if (ParameterValues.TryGetValue(pc.Parameter.Id, out value)) {
-                                pc.IsHidden = true;
-                                pc.CustomValue = FrameworkHelper.GetNakedObject(value);
-                            }
+                if (ParameterValues != null) {
+                    foreach (ParameterContext pc in parameterContexts) {
+                        object value;
+                        if (ParameterValues.TryGetValue(pc.Parameter.Id, out value)) {
+                            pc.IsHidden = true;
+                            pc.CustomValue = framework.GetNakedObject(value);
                         }
                     }
                 }
-
-                return parameterContexts;
             }
+
+            return parameterContexts;
         }
 
         public override INakedObjectFeature Feature {
@@ -178,12 +165,12 @@ namespace NakedObjects.Web.Mvc.Html {
             return facet == null ? "" : " " + facet.Value;
         }
 
-        private  bool IsFileActionNoParms() {
-            return Action != null && Action.ReturnType.IsFile() && !Action.Parameters.Any();
+        private  bool IsFileActionNoParms(INakedObjectsFramework framework) {
+            return Action != null && Action.ReturnType.IsFile(framework) && !Action.Parameters.Any();
         }
 
-        public string GetActionClass() {
-            return (IsFileActionNoParms() ? IdHelper.ActionNameFile : IdHelper.ActionName) + GetPresentationHint();
+        public string GetActionClass(INakedObjectsFramework framework) {
+            return (IsFileActionNoParms(framework) ? IdHelper.ActionNameFile : IdHelper.ActionName) + GetPresentationHint();
         }
 
         public string GetSubMenuId() {
@@ -205,7 +192,7 @@ namespace NakedObjects.Web.Mvc.Html {
             Parameter = otherContext.Parameter;
         }
 
-        public ParameterContext(bool embeddedInObject, object target, INakedObjectAction action, INakedObjectActionParameter parameter, bool isEdit)
+        public ParameterContext(bool embeddedInObject, INakedObject target, INakedObjectAction action, INakedObjectActionParameter parameter, bool isEdit)
             : base(embeddedInObject, target, action) {
             Parameter = parameter;
             IsParameterEdit = isEdit;

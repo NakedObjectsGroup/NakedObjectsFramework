@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Services;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
 using NakedObjects.Core.Service;
@@ -27,7 +26,7 @@ namespace NakedObjects.Boot {
     public sealed class NakedObjectsSystem : IConnectionManager {
         private static readonly ILog Log;
         private IAuthenticatorInstaller authenticatorInstaller;
-        private NakedObjectsContext context;
+      
         private IServicesInstaller contributedActionsInstaller;
         private IFixturesInstaller fixtureInstaller;
         private ServiceHost host;
@@ -46,10 +45,7 @@ namespace NakedObjects.Boot {
             set { authenticatorInstaller = value; }
         }
 
-        public NakedObjectsContext Context {
-            set { context = value; }
-        }
-
+       
         public IFixturesInstaller FixtureInstaller {
             set { fixtureInstaller = value; }
             get { return fixtureInstaller; }
@@ -98,7 +94,6 @@ namespace NakedObjects.Boot {
                 host = null;
             }
 
-            NakedObjectsContext.Shutdown();
             reflector.Shutdown();
         }
 
@@ -154,47 +149,47 @@ namespace NakedObjects.Boot {
                 throw new InvalidStateException("Session not specified on " + Thread.CurrentThread);
             }
 
-            context.SetReflector(reflector);
-            INakedObjectPersistor objectPersistor = objectPersistorInstaller.CreateObjectPersistor();
-            NakedObjectsContext.PersistorInstaller = objectPersistorInstaller;
-            NakedObjectsContext.MenuServicesInstaller = menuServicesInstaller;
-            NakedObjectsContext.ContributedActionsInstaller = contributedActionsInstaller;
-            NakedObjectsContext.SystemServicesInstaller = systemServicesInstaller;
+          //  context.SetReflector(reflector);
+          //  INakedObjectPersistor objectPersistor = objectPersistorInstaller.CreateObjectPersistor();
+          //  NakedObjectsContext.PersistorInstaller = objectPersistorInstaller;
+          //  NakedObjectsContext.MenuServicesInstaller = menuServicesInstaller;
+          //  NakedObjectsContext.ContributedActionsInstaller = contributedActionsInstaller;
+          //  NakedObjectsContext.SystemServicesInstaller = systemServicesInstaller;
 
-            NakedObjectsContext.FixturesInstaller = fixtureInstaller;
-            context.SetObjectPersistor(objectPersistor);
-            context.SetAuthorizationManager(new NullAuthorizationManager());
-            context.SetSession(session);
+          //  NakedObjectsContext.FixturesInstaller = fixtureInstaller;
+          //  context.SetObjectPersistor(objectPersistor);
+          //  context.SetAuthorizationManager(new NullAuthorizationManager());
+          //  context.SetSession(session);
       
-            //objectPersistor.UpdateNotifier = NakedObjectsContext.UpdateNotifier;
+          //  //objectPersistor.UpdateNotifier = NakedObjectsContext.UpdateNotifier;
             
-            objectPersistor.AddServices(menuServicesInstaller, contributedActionsInstaller, systemServicesInstaller);
+          //  objectPersistor.AddServices(menuServicesInstaller, contributedActionsInstaller, systemServicesInstaller);
 
-            var ss = GetServices(menuServicesInstaller).Union(GetServices(contributedActionsInstaller)).Union(GetServices(systemServicesInstaller)).ToArray();
+          //  var ss = GetServices(menuServicesInstaller).Union(GetServices(contributedActionsInstaller)).Union(GetServices(systemServicesInstaller)).ToArray();
           
-          //  objectPersistor.Injector = new DotNetDomainObjectContainerInjector(reflector, ss);      
+          ////  objectPersistor.Injector = new DotNetDomainObjectContainerInjector(reflector, ss);      
 
-            objectPersistor.Init();
+          //  objectPersistor.Init();
 
-            reflector.NonSystemServices = objectPersistor.GetServices(ServiceTypes.Menu | ServiceTypes.Contributor).ToArray();
+          //  reflector.NonSystemServices = objectPersistor.GetServices(ServiceTypes.Menu | ServiceTypes.Contributor).ToArray();
            
-            if (fixtureInstaller != null) {
-                NakedObjectsContext.EnsureReady();
+          //  if (fixtureInstaller != null) {
+          //      NakedObjectsContext.EnsureReady();
                
-                context.SetSession(session);
-                fixtureInstaller.InstallFixtures(NakedObjectsContext.ObjectPersistor);
-            }
+          //      context.SetSession(session);
+          //      fixtureInstaller.InstallFixtures(NakedObjectsContext.ObjectPersistor);
+          //  }
 
-            // remove all unneeded details in the initialisation context
-            NakedObjectsContext.MessageBroker.ClearWarnings();
-            NakedObjectsContext.MessageBroker.ClearMessages();
-            NakedObjectsContext.UpdateNotifier.AllChangedObjects();
-            NakedObjectsContext.UpdateNotifier.AllDisposedObjects();
+          //  // remove all unneeded details in the initialisation context
+          //  NakedObjectsContext.MessageBroker.ClearWarnings();
+          //  NakedObjectsContext.MessageBroker.ClearMessages();
+          //  NakedObjectsContext.UpdateNotifier.AllChangedObjects();
+          //  NakedObjectsContext.UpdateNotifier.AllDisposedObjects();
         }
 
         private void ResetContext() {
-            context.ClearSession();
-            NakedObjectsContext.ObjectPersistor.Reset();
+            //context.ClearSession();
+            //NakedObjectsContext.ObjectPersistor.Reset();
         }
     }
 

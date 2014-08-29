@@ -68,21 +68,22 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
         [Test]
         public void TestActionWithNoParameters() {
-            facetFactory.Process(typeof (Customer), methodRemover, facetHolder);
+            //facetFactory.Process(typeof (Customer), methodRemover, facetHolder);
 
-            Assert.AreEqual(3, methodRemover.GetRemoveMethodMethodCalls().Count);
+            //Assert.AreEqual(3, methodRemover.GetRemoveMethodMethodCalls().Count);
 
-            IList<MethodInfo> removedMethods = methodRemover.GetRemoveMethodMethodCalls();
+            //IList<MethodInfo> removedMethods = methodRemover.GetRemoveMethodMethodCalls();
 
-            EventInfo eInfo = typeof (Customer).GetEvent("AnEventHandler");
+            //EventInfo eInfo = typeof (Customer).GetEvent("AnEventHandler");
 
-            var eventMethods = new[] {eInfo.GetAddMethod(), eInfo.GetRaiseMethod(), eInfo.GetRemoveMethod()};
+            //var eventMethods = new[] {eInfo.GetAddMethod(), eInfo.GetRaiseMethod(), eInfo.GetRemoveMethod()};
 
-            Assert.AreEqual(removedMethods.Count(), eventMethods.Count());
+            //Assert.AreEqual(removedMethods.Count(), eventMethods.Count());
 
-            foreach (MethodInfo removedMethod in removedMethods) {
-                Assert.IsTrue(eventMethods.Contains(removedMethod));
-            }
+            //foreach (MethodInfo removedMethod in removedMethods) {
+            //    Assert.IsTrue(eventMethods.Contains(removedMethod));
+            //}
+            Assert.Fail(); // fix this 
         }
 
         [Test]

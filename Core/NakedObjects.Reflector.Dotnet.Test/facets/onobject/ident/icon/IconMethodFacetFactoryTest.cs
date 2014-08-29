@@ -6,7 +6,6 @@ using System.Reflection;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Ident.Icon;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Testing;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
@@ -51,7 +50,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
             var facet = facetHolder.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
-            Assert.AreEqual(iconNameMethod.Name, methodRemover.GetRemoveMethodMethodCalls()[0].Name);
+            //Assert.AreEqual(iconNameMethod.Name, methodRemover.GetRemoveMethodMethodCalls()[0].Name);
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -62,8 +62,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
             Assert.IsTrue(facet is IconFacetViaMethod);      
             Assert.IsNull(facet.GetIconName());
 
-            var no = ((ProgrammableReflector)reflector).TestSystem.AdapterFor(new Customer());
-            Assert.AreEqual("TestName", facet.GetIconName(no));
+            //var no = ((ProgrammableReflector)reflector).TestSystem.AdapterFor(new Customer());
+            //Assert.AreEqual("TestName", facet.GetIconName(no));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -73,8 +74,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetAnnotation);
             Assert.AreEqual("AttributeName", facet.GetIconName());
-            var no = ((ProgrammableReflector) reflector).TestSystem.AdapterFor(new Customer1());
-            Assert.AreEqual("AttributeName", facet.GetIconName(no));
+            //var no = ((ProgrammableReflector) reflector).TestSystem.AdapterFor(new Customer1());
+            //Assert.AreEqual("AttributeName", facet.GetIconName(no));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -84,8 +86,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             Assert.AreEqual("AttributeName", facet.GetIconName());
-            var no = ((ProgrammableReflector)reflector).TestSystem.AdapterFor(new Customer2());
-            Assert.AreEqual("TestName", facet.GetIconName(no));
+            //var no = ((ProgrammableReflector)reflector).TestSystem.AdapterFor(new Customer2());
+            //Assert.AreEqual("TestName", facet.GetIconName(no));
+
+            Assert.Fail(); // fix this 
         }
 
         #region Nested Type: Customer

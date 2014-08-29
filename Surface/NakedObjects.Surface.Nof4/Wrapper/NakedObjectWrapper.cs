@@ -14,20 +14,21 @@ using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
 using NakedObjects.Surface.Interface;
 using NakedObjects.Value;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectWrapper : ScalarPropertyHolder, INakedObjectSurface {
         private readonly INakedObject nakedObject;
+        private readonly INakedObjectsFramework framework;
 
-        public static NakedObjectWrapper Wrap(INakedObject nakedObject, INakedObjectsSurface surface) {
-            return nakedObject == null ? null : new NakedObjectWrapper(nakedObject, surface);
+        public static NakedObjectWrapper Wrap(INakedObject nakedObject, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+            return nakedObject == null ? null : new NakedObjectWrapper(nakedObject, surface, framework);
         }
 
-        protected NakedObjectWrapper(INakedObject nakedObject, INakedObjectsSurface surface) {
+        protected NakedObjectWrapper(INakedObject nakedObject, INakedObjectsSurface surface, INakedObjectsFramework framework) {
             this.nakedObject = nakedObject;
+            this.framework = framework;
             Surface = surface;
         }
 
@@ -39,16 +40,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return nakedObject.ResolveState.IsTransient(); }
         }
 
+
         #region INakedObjectSurface Members
 
         public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(WrappedNakedObject.Specification, Surface); }
+            get { return new NakedObjectSpecificationWrapper(WrappedNakedObject.Specification, Surface, framework); }
         }
 
         public INakedObjectSpecificationSurface ElementSpecification {
             get {
                 ITypeOfFacet typeOfFacet = nakedObject.GetTypeOfFacetFromSpec();
-                return new NakedObjectSpecificationWrapper(typeOfFacet.ValueSpec, Surface);
+                return new NakedObjectSpecificationWrapper(typeOfFacet.ValueSpec, Surface, framework);
             }
         }
 
@@ -57,13 +59,13 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IEnumerable<INakedObjectSurface> ToEnumerable() {
-            return WrappedNakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Select(no => new NakedObjectWrapper(no, Surface));
+            return WrappedNakedObject.GetAsEnumerable(framework.ObjectPersistor).Select(no => new NakedObjectWrapper(no, Surface, framework));
         }
 
         // todo move into adapterutils
 
         public INakedObjectSurface Page(int page, int size) {
-            return new NakedObjectWrapper(Page(nakedObject, page, size), Surface);
+            return new NakedObjectWrapper(Page(nakedObject, page, size), Surface, framework);
         }
 
         public int Count() {
@@ -88,7 +90,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 // services don't have keys
                 return new PropertyInfo[] {};
             }
-            return NakedObjectsContext.ObjectPersistor.GetKeys(nakedObject.Object.GetType());
+            return framework.ObjectPersistor.GetKeys(nakedObject.Object.GetType());
         }
 
         public IVersionSurface Version {
@@ -99,8 +101,8 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get { return new OidWrapper(nakedObject.Oid); }
         }
 
-        private static INakedObject Page(INakedObject objectRepresentingCollection, int page, int size) {
-            return objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, NakedObjectsContext.ObjectPersistor, true);
+        private INakedObject Page(INakedObject objectRepresentingCollection, int page, int size) {
+            return objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.ObjectPersistor, true);
         }
 
         #endregion
@@ -113,7 +115,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 INakedObjectSpecification spec = WrappedNakedObject.Specification;
 
                 if (spec.IsService) {
-                    ServiceTypes st = NakedObjectsContext.ObjectPersistor.GetServiceType(spec);
+                    ServiceTypes st = framework.ObjectPersistor.GetServiceType(spec);
                     extData[ServiceType] = st.ToString();
                 }
 

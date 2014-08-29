@@ -47,7 +47,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         public void TestRequestsRemoverToRemoveIteratorMethods() {
             MethodInfo enumeratorMethod = FindMethod(typeof (Customer), "GetEnumerator");
             facetFactory.Process(typeof (Customer), methodRemover, facetHolder);
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(enumeratorMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(enumeratorMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]

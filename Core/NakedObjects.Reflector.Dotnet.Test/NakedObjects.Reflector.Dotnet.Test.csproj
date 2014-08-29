@@ -69,6 +69,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\..\packages\Moq.4.2.1408.0717\lib\net40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
     </Reference>
@@ -221,10 +224,6 @@
     <ProjectReference Include="..\NakedObjects.Reflector.DotNet\NakedObjects.Reflector.DotNet.csproj">
       <Project>{47D00690-5B24-42D3-A9A7-C87469B6A088}</Project>
       <Name>NakedObjects.Reflector.DotNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.TestSystem\NakedObjects.TestSystem.csproj">
-      <Project>{1FE8DB33-2B9A-4DBE-AC3C-8B4DF08608A0}</Project>
-      <Name>NakedObjects.TestSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Xat\NakedObjects.Xat.csproj">
       <Project>{C818DFD4-6020-419A-8274-F59803956180}</Project>

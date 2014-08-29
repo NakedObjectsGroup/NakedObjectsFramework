@@ -9,14 +9,14 @@ using NakedObjects.Web.Mvc.Html;
 namespace NakedObjects.Web.Mvc {
     public static class SessionCache {
 
-        public static void AddObjectToSession(this HttpSessionStateBase session, string key, object domainObject)  {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
-            session.Add(key, (nakedObject.ResolveState.IsTransient() ? domainObject : FrameworkHelper.GetObjectId(domainObject)));
+        public static void AddObjectToSession(this HttpSessionStateBase session, INakedObjectsFramework framework, string key, object domainObject)  {
+            INakedObject nakedObject = framework.GetNakedObject(domainObject);
+            session.Add(key, (nakedObject.ResolveState.IsTransient() ? domainObject : framework.GetObjectId(domainObject)));
         }
 
-        public static void AddObjectToSession<T>(this HttpSessionStateBase session, string key, T domainObject) where T : class {
-            INakedObject nakedObject = FrameworkHelper.GetNakedObject(domainObject);
-            session.Add(key,(nakedObject.ResolveState.IsTransient() ? (object)domainObject : FrameworkHelper.GetObjectId(domainObject)));
+        public static void AddObjectToSession<T>(this HttpSessionStateBase session, INakedObjectsFramework framework, string key, T domainObject) where T : class {
+            INakedObject nakedObject = framework.GetNakedObject(domainObject);
+            session.Add(key,(nakedObject.ResolveState.IsTransient() ? (object)domainObject : framework.GetObjectId(domainObject)));
         }
 
         public static void AddValueToSession<T>(this HttpSessionStateBase session, string key, T value)   where T : struct{       
@@ -41,7 +41,7 @@ namespace NakedObjects.Web.Mvc {
             return null; 
         }
 
-        public static object GetObjectFromSession(this HttpSessionStateBase session, string key) {
+        public static object GetObjectFromSession(this HttpSessionStateBase session, INakedObjectsFramework framework, string key) {
             object rawValue = session[key];
 
             if (rawValue == null) {
@@ -49,14 +49,14 @@ namespace NakedObjects.Web.Mvc {
             }
 
             if (rawValue is string) {
-                return FrameworkHelper.GetObjectFromId((string) rawValue);
+                return framework.GetObjectFromId((string) rawValue);
             }
 
             return rawValue;
         }
 
 
-        public static T GetObjectFromSession<T>(this HttpSessionStateBase session, string key) where  T : class {
+        public static T GetObjectFromSession<T>(this HttpSessionStateBase session, INakedObjectsFramework framework, string key) where T : class {
             object rawValue = session[key];
 
             if (rawValue == null) {
@@ -68,7 +68,7 @@ namespace NakedObjects.Web.Mvc {
             }
 
             if (rawValue is string) {
-                var obj = FrameworkHelper.GetObjectFromId((string) rawValue);
+                var obj = framework.GetObjectFromId((string) rawValue);
 
                 if (typeof(T).IsAssignableFrom(obj.GetType())) {
                     return (T)obj;

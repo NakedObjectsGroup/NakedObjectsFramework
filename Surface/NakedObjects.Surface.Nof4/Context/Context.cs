@@ -22,11 +22,11 @@ namespace NakedObjects.Surface.Nof4.Context {
 
         public abstract INakedObjectSpecification Specification { get; }
 
-        protected T ToContextSurface<T>(T context, INakedObjectsSurface surface) where T : ContextSurface {
-            context.Target = NakedObjectWrapper.Wrap(Target, surface);
+        protected T ToContextSurface<T>(T context, INakedObjectsSurface surface, INakedObjectsFramework framework) where T : ContextSurface {
+            context.Target = NakedObjectWrapper.Wrap(Target, surface, framework);
             context.Reason = Reason;
             context.ErrorCause = ErrorCause;
-            context.ProposedNakedObject = NakedObjectWrapper.Wrap(ProposedNakedObject, surface);
+            context.ProposedNakedObject = NakedObjectWrapper.Wrap(ProposedNakedObject, surface, framework);
             context.ProposedValue = ProposedValue;
 
             return context;

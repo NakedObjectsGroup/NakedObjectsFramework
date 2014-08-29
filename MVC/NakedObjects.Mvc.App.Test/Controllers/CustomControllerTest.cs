@@ -85,13 +85,13 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        private static INakedObject EmployeeRepo {
-            get { return FrameworkHelper.GetAdaptedService("EmployeeRepository"); }
+        private  INakedObject EmployeeRepo {
+            get { return NakedObjectsContext.GetAdaptedService("EmployeeRepository"); }
         }
 
 
-        private static string EmployeeRepoId {
-            get { return FrameworkHelper.GetObjectId(EmployeeRepo); }
+        private  string EmployeeRepoId {
+            get { return NakedObjectsContext.GetObjectId(EmployeeRepo); }
         }
 
 

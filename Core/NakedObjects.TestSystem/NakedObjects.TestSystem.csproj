@@ -98,7 +98,6 @@
     <Compile Include="Dom\Person.cs" />
     <Compile Include="Dom\Role.cs" />
     <Compile Include="Dom\Team.cs" />
-    <Compile Include="ProgrammableContext.cs" />
     <Compile Include="ProgrammableNakedObject.cs" />
     <Compile Include="ProgrammableReflector.cs" />
     <Compile Include="ProgrammableSpecification.cs" />

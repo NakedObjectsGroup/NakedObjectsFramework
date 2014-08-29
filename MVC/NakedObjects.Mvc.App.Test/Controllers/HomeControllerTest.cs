@@ -7,7 +7,6 @@ using System.Web.Mvc;
 using AdventureWorksModel;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.EntityObjectStore;
@@ -71,17 +70,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        [Test]
-        public void ExecuteFixture() {
-            var controller = new HomeController(null);
-            new ContextMocks(controller);
-
-            var result = (ViewResult)controller.ExecuteFixture("TestFixture");
-
-            Assert.AreEqual("Index", result.ViewName);
-            ViewDataDictionary data = result.ViewData;
-            Assert.AreEqual("Fixture: TestFixture installed", (data[IdHelper.SystemMessages] as string[])[0]);
-        }
+     
 
         private  Employee Employee {
             get {
@@ -98,13 +87,13 @@ namespace MvcTestApp.Tests.Controllers {
 
         private  string EmployeeId {
             get {
-                return FrameworkHelper.GetObjectId(Employee);
+                return NakedObjectsContext.GetObjectId(Employee);
             }
         }
 
         private  string VendorId {
             get {
-                return FrameworkHelper.GetObjectId(Vendor);
+                return NakedObjectsContext.GetObjectId(Vendor);
             }
         }
 
@@ -114,7 +103,7 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
-            mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, Employee, ObjectCache.ObjectFlag.BreadCrumb);
 
             var result = (ViewResult)controller.ClearHistory(false);
 
@@ -128,7 +117,7 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
-            mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, Employee, ObjectCache.ObjectFlag.BreadCrumb);
 
             var result = (RedirectToRouteResult)controller.ClearHistory(true);
 
@@ -141,7 +130,7 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
-            mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, Employee, ObjectCache.ObjectFlag.BreadCrumb);
 
             var result = (RedirectToRouteResult)controller.ClearHistoryItem(EmployeeId, "", new ObjectAndControlData());
 
@@ -154,8 +143,8 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
-            mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
-            mocks.HttpContext.Object.Session.AddToCache(Vendor, ObjectCache.ObjectFlag.BreadCrumb);
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, Employee, ObjectCache.ObjectFlag.BreadCrumb);
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, Vendor, ObjectCache.ObjectFlag.BreadCrumb);
 
             var result = (ViewResult)controller.ClearHistoryItem(EmployeeId, VendorId, new ObjectAndControlData());
 
@@ -169,8 +158,8 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
-            mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
-            mocks.HttpContext.Object.Session.AddToCache(Vendor, ObjectCache.ObjectFlag.BreadCrumb);
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, Employee, ObjectCache.ObjectFlag.BreadCrumb);
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, Vendor, ObjectCache.ObjectFlag.BreadCrumb);
 
             var result = (ViewResult)controller.ClearHistoryItem(VendorId, EmployeeId, new ObjectAndControlData());
 
@@ -185,8 +174,8 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
-            mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
-            mocks.HttpContext.Object.Session.AddToCache(Vendor, ObjectCache.ObjectFlag.BreadCrumb);
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, Employee, ObjectCache.ObjectFlag.BreadCrumb);
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, Vendor, ObjectCache.ObjectFlag.BreadCrumb);
 
             var result = (ViewResult)controller.ClearHistoryOthers(EmployeeId, new ObjectAndControlData());
 
@@ -200,8 +189,8 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new HomeController(null);
             var mocks = new ContextMocks(controller);
 
-            mocks.HttpContext.Object.Session.AddToCache(Employee, ObjectCache.ObjectFlag.BreadCrumb);
-            mocks.HttpContext.Object.Session.AddToCache(Vendor, ObjectCache.ObjectFlag.BreadCrumb);
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, Employee, ObjectCache.ObjectFlag.BreadCrumb);
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, Vendor, ObjectCache.ObjectFlag.BreadCrumb);
 
             var result = (ViewResult)controller.ClearHistoryOthers(VendorId, new ObjectAndControlData());
 

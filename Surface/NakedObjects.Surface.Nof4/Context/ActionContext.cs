@@ -28,12 +28,12 @@ namespace NakedObjects.Surface.Nof4.Context {
 
         public string OverloadedUniqueId { get; set; }
 
-        public ActionContextSurface ToActionContextSurface(INakedObjectsSurface surface) {
+        public ActionContextSurface ToActionContextSurface(INakedObjectsSurface surface, INakedObjectsFramework framework) {
             var ac = new ActionContextSurface {
-                Action = new NakedObjectActionWrapper(Action, surface, OverloadedUniqueId ?? ""),
-                VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextSurface(surface)).ToArray()
+                Action = new NakedObjectActionWrapper(Action, surface, framework, OverloadedUniqueId ?? ""),
+                VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextSurface(surface, framework)).ToArray()
             };
-            return ToContextSurface(ac, surface);
+            return ToContextSurface(ac, surface, framework);
         }
     }
 }

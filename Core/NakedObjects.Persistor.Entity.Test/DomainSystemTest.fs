@@ -38,7 +38,7 @@ type DomainSystemTests() =
        
     
     member x.GetScrapReasonDomainObject() = 
-        let srs = NakedObjectsContext.ObjectPersistor.Instances<ScrapReason>()
+        let srs = x.NakedObjectsContext.ObjectPersistor.Instances<ScrapReason>()
         srs |> Seq.filter (fun s -> s.ScrapReasonID = 2s)
             |> Seq.head 
     
@@ -48,7 +48,7 @@ type DomainSystemTests() =
             pc.ModifiedDate <- DateTime.Now
             pc.ProductCategoryID <- 1
             pc.rowguid <- Guid.NewGuid()
-        SystemTestCode.CreateAndSetup<ProductCategory> setter
+        SystemTestCode.CreateAndSetup<ProductCategory> setter x.NakedObjectsContext
     
     member x.CreatePSC() = 
         let setter (psc : ProductSubcategory) = 
@@ -56,16 +56,16 @@ type DomainSystemTests() =
             psc.ModifiedDate <- DateTime.Now
             psc.ProductSubcategoryID <- 1
             psc.rowguid <- Guid.NewGuid()
-        SystemTestCode.CreateAndSetup<ProductSubcategory> setter
+        SystemTestCode.CreateAndSetup<ProductSubcategory> setter x.NakedObjectsContext
 
     [<Test>]
     member x.GetService() = 
-        let srService = NakedObjectsContext.ObjectPersistor.GetService("repository#AdventureWorksModel.ScrapReason")
+        let srService = x.NakedObjectsContext.ObjectPersistor.GetService("repository#AdventureWorksModel.ScrapReason")
         Assert.IsNotNull(srService.Object)     
         
     [<Test>]
     member x.GetCollectionDirectly() = 
-        let srs = NakedObjectsContext.ObjectPersistor.Instances<ScrapReason>()
+        let srs = x.NakedObjectsContext.ObjectPersistor.Instances<ScrapReason>()
         Assert.Greater( srs |> Seq.length, 0)
         //Assert.Greater(srs |> Seq.length, 0)
 
@@ -78,10 +78,10 @@ type DomainSystemTests() =
        
     [<Test>]
     member x.CheckItemIdentities() = 
-       let getSrByKey (key : Int16) =  NakedObjectsContext.ObjectPersistor.Instances<ScrapReason>() |> Seq.filter (fun s -> s.ScrapReasonID = key) |> Seq.head
-       //let getSrByKey (key : Int16) =  NakedObjectsContext.ObjectPersistor.Instances<ScrapReason>() |> Seq.filter (fun s -> s.ScrapReasonID = key) |> Seq.head
-       
-       let (sr1, sr2, sr3, sr4) = (getSrByKey 1s, getSrByKey 2s, getSrByKey 1s, getSrByKey 2s)
+       let ctx = x.NakedObjectsContext
+       let getSrByKey (key : Int16) =  ctx.ObjectPersistor.Instances<ScrapReason>() |> Seq.filter (fun s -> s.ScrapReasonID = key) |> Seq.head
+         
+       let (sr1, sr2, sr3, sr4) = (getSrByKey 1s , getSrByKey 2s, getSrByKey 1s, getSrByKey 2s)
        Assert.AreSame(sr1, sr3)
        Assert.AreSame(sr2, sr4)
        Assert.AreNotSame(sr1, sr2)
@@ -90,12 +90,12 @@ type DomainSystemTests() =
     [<Test>]
     member x.CheckPersistentResolveState() = 
        let sr = x.GetScrapReasonDomainObject()
-       IsNotNullAndPersistent sr
+       IsNotNullAndPersistent sr x.NakedObjectsContext
        
     [<Test>]
     member x.CheckTransientResolveState() = 
        let pc = x.CreatePC()
-       IsNotNullAndTransient pc
+       IsNotNullAndTransient pc x.NakedObjectsContext
               
     [<Test>]
     member x.GetCollectionIndirectly() = 
@@ -106,14 +106,14 @@ type DomainSystemTests() =
     [<Test>]
     member x.GetCollectionItemIndirectly() = 
        let wo = x.GetScrapReasonDomainObject().WorkOrders |> Seq.head
-       IsNotNullAndPersistent wo
+       IsNotNullAndPersistent wo x.NakedObjectsContext
        
     [<Test>]
     member x.CheckReferenceIdentities() = 
-       let wo = NakedObjectsContext.ObjectPersistor.Instances<WorkOrder>() |> Seq.filter (fun w -> w.ScrapReason <> null) |> Seq.head 
+       let wo = x.NakedObjectsContext.ObjectPersistor.Instances<WorkOrder>() |> Seq.filter (fun w -> w.ScrapReason <> null) |> Seq.head 
        //let wo = NakedObjectsContext.ObjectPersistor.Instances<WorkOrder>() |> Seq.filter (fun w -> w.ScrapReason <> null) |> Seq.head 
        Assert.IsNotNull(wo)
-       IsNotNullAndPersistent wo.ScrapReason
+       IsNotNullAndPersistent wo.ScrapReason x.NakedObjectsContext
        
     [<Test>]
     member x.CheckCollectionIdentities() = 
@@ -124,18 +124,18 @@ type DomainSystemTests() =
     [<Test>]
     member x.CreateNewObjectWithScalars() =    
        let pc = x.CreatePC()
-       save pc
-       IsNotNullAndPersistent pc
+       save pc x.NakedObjectsContext
+       IsNotNullAndPersistent pc x.NakedObjectsContext
         
     [<Test>]
     member x.CreateNewObjectWithPersistentReference() =         
        let pscNo = x.CreatePSC()
        let psc = box pscNo.Object :?> ProductSubcategory
-       let pc =  NakedObjectsContext.ObjectPersistor.Instances<ProductCategory>() |> Seq.head 
+       let pc =  x.NakedObjectsContext.ObjectPersistor.Instances<ProductCategory>() |> Seq.head 
        //let pc =  NakedObjectsContext.ObjectPersistor.Instances<ProductCategory>() |> Seq.head 
        psc.ProductCategory <- pc
-       save pscNo
-       IsNotNullAndPersistent pscNo 
+       save pscNo x.NakedObjectsContext
+       IsNotNullAndPersistent pscNo x.NakedObjectsContext
        
     [<Test>]
     member x.CreateNewObjectWithTransientReference() = 
@@ -144,43 +144,45 @@ type DomainSystemTests() =
        let pcNo = x.CreatePC()
        let pc = pcNo.Object :?> ProductCategory 
        psc.ProductCategory <- pc
-       save pscNo
-       IsNotNullAndPersistent pscNo 
-       IsNotNullAndPersistent pcNo 
+       save pscNo x.NakedObjectsContext
+       IsNotNullAndPersistent pscNo  x.NakedObjectsContext
+       IsNotNullAndPersistent pcNo x.NakedObjectsContext
        
     [<Test>]
     member x.AddObjectToPersistentCollection() =
-        let psc =   NakedObjectsContext.ObjectPersistor.Instances<ProductSubcategory>() |> Seq.head 
+        let psc =   x.NakedObjectsContext.ObjectPersistor.Instances<ProductSubcategory>() |> Seq.head 
         //let psc = NakedObjectsContext.ObjectPersistor.Instances<ProductSubcategory>() |> Seq.head 
         let origPc = psc.ProductCategory
-        let replPc =  NakedObjectsContext.ObjectPersistor.Instances<ProductCategory>() |> Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head   
+        let replPc =  x.NakedObjectsContext.ObjectPersistor.Instances<ProductCategory>() |> Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head   
         //let replPc =   NakedObjectsContext.ObjectPersistor.Instances<ProductCategory>() |> Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head  
+        let ctx = x.NakedObjectsContext
         let swapSubcatsForCollection (oldPc : ProductCategory) (newPc : ProductCategory) =
-            NakedObjectsContext.ObjectPersistor.StartTransaction()  
+            ctx.ObjectPersistor.StartTransaction()  
             let b = oldPc.ProductSubcategories.Remove(psc)
             newPc.ProductSubcategories.Add(psc)
-            NakedObjectsContext.ObjectPersistor.EndTransaction()       
+            ctx.ObjectPersistor.EndTransaction()       
             Assert.AreEqual(newPc, psc.ProductCategory)      
         swapSubcatsForCollection origPc replPc 
         swapSubcatsForCollection replPc origPc   
         
     [<Test>]
     member x.AddObjectToPersistentCollectionNotifiesUI() =
-        let psc = NakedObjectsContext.ObjectPersistor.Instances<ProductSubcategory>() |> Seq.head 
+        let psc = x.NakedObjectsContext.ObjectPersistor.Instances<ProductSubcategory>() |> Seq.head 
         //let psc =  NakedObjectsContext.ObjectPersistor.Instances<ProductSubcategory>() |> Seq.head 
         let origPc = psc.ProductCategory
-        let replPc =  NakedObjectsContext.ObjectPersistor.Instances<ProductCategory>() |> Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head  
+        let replPc =  x.NakedObjectsContext.ObjectPersistor.Instances<ProductCategory>() |> Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head  
         //let replPc =   NakedObjectsContext.ObjectPersistor.Instances<ProductCategory>() |> Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head 
+        let ctx = x.NakedObjectsContext
         let swapSubcatsForCollection (oldPc : ProductCategory) (newPc : ProductCategory) =
-            NakedObjectsContext.ObjectPersistor.StartTransaction()  
+            ctx.ObjectPersistor.StartTransaction()  
             let b = oldPc.ProductSubcategories.Remove(psc)
             newPc.ProductSubcategories.Add(psc)
-            NakedObjectsContext.ObjectPersistor.EndTransaction()       
+            ctx.ObjectPersistor.EndTransaction()       
             Assert.AreEqual(newPc, psc.ProductCategory)      
-        NakedObjectsContext.UpdateNotifier.EnsureEmpty()
+        x.NakedObjectsContext.UpdateNotifier.EnsureEmpty()
         swapSubcatsForCollection origPc replPc 
         swapSubcatsForCollection replPc origPc   
-        let updates = Seq.toList (CollectionUtils.ToEnumerable<INakedObject>(NakedObjectsContext.UpdateNotifier.AllChangedObjects()))
+        let updates = Seq.toList (CollectionUtils.ToEnumerable<INakedObject>(x.NakedObjectsContext.UpdateNotifier.AllChangedObjects()))
         Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box origPc), "original PC")
         Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box replPc), "repl PC")
         Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box psc), "PSC")

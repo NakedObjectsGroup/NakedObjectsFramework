@@ -16,7 +16,7 @@ let persistor =
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
     c.ContextConfiguration <- [|(box ModelConfig :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null)
     setupPersistorForInjectorTesting p
 
 

@@ -557,7 +557,7 @@ let CanDetectConcurrency (persistor : EntityObjectStore) =
         let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
         let u = new SimpleUpdateNotifier()
         c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
+        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null)
         setupPersistorForTesting p
     let sr2 = otherPersistor.GetInstances<ScrapReason>() |> Seq.head
     Assert.AreEqual(sr1.Name, sr2.Name)
@@ -617,7 +617,7 @@ let ConcurrencyNoCustomOnUpdatingError (persistor : EntityObjectStore) =
         let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
         let u = new SimpleUpdateNotifier()
         c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
+        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null)
         setupPersistorForTesting p
     let l2 = otherPersistor.GetInstances<Location>() |> Seq.head
     Assert.AreEqual(l1.Name, l2.Name)

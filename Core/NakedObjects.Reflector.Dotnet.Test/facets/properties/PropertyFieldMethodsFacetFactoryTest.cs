@@ -473,7 +473,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
             var propertyChoicesFacet = (PropertyChoicesFacetViaMethod) facet;
             Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod));
+            Assert.Fail(); // fix this 
 
             IFacet facetExecuted = facetHolder.GetFacet(typeof (IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted);
@@ -489,10 +490,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
             var propertyChoicesFacet = (PropertyChoicesFacetViaMethod)facet;
             Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod));
 
             IFacet facetExecuted = facetHolder.GetFacet(typeof(IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted);
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -506,11 +508,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
             var propertyChoicesFacet = (PropertyChoicesFacetViaMethod)facet;
             Assert.AreEqual(propertyChoicesMethod1, propertyChoicesFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod1));
-            Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod2));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod1));
+            //Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod2));
 
             IFacet facetExecuted = facetHolder.GetFacet(typeof(IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted);
+            Assert.Fail(); // fix this 
         }
 
 
@@ -524,12 +527,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
             var propertyChoicesFacet = (PropertyChoicesFacetViaMethod) facet;
             Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod));
 
             var facetExecuted = facetHolder.GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted);
 
             Assert.AreEqual(facetExecuted.ExecutedWhere(propertyChoicesMethod), Architecture.Facets.Where.Locally);
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -542,12 +546,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
             var propertyChoicesFacet = (PropertyChoicesFacetViaMethod) facet;
             Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod));
 
             var facetExecuted = facetHolder.GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted);
 
             Assert.AreEqual(facetExecuted.ExecutedWhere(propertyChoicesMethod), Architecture.Facets.Where.Remotely);
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -560,10 +565,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
             var propertyAutoCompleteFacet = (AutoCompleteFacetViaMethod) facet;
             Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyAutoCompleteMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyAutoCompleteMethod));
 
             Assert.AreEqual(50, propertyAutoCompleteFacet.PageSize);
             Assert.AreEqual(0, propertyAutoCompleteFacet.MinLength);
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -576,10 +582,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
             var propertyAutoCompleteFacet = (AutoCompleteFacetViaMethod)facet;
             Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyAutoCompleteMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyAutoCompleteMethod));
 
             Assert.AreEqual(50, propertyAutoCompleteFacet.PageSize);
             Assert.AreEqual(0, propertyAutoCompleteFacet.MinLength);
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -592,9 +599,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
             var propertyAutoCompleteFacet = (AutoCompleteFacetViaMethod)facet;
             Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyAutoCompleteMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyAutoCompleteMethod));
             Assert.AreEqual(33, propertyAutoCompleteFacet.PageSize);
             Assert.AreEqual(3, propertyAutoCompleteFacet.MinLength);
+            Assert.Fail(); // fix this 
         }
 
 
@@ -627,7 +635,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is PropertyClearFacetViaClearMethod);
             var propertyClearFacet = (PropertyClearFacetViaClearMethod) facet;
             Assert.AreEqual(propertyClearMethod, propertyClearFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyClearMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyClearMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -648,10 +657,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is PropertyDefaultFacetViaMethod);
             var propertyDefaultFacet = (PropertyDefaultFacetViaMethod) facet;
             Assert.AreEqual(propertyDefaultMethod, propertyDefaultFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyDefaultMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyDefaultMethod));
 
             IFacet facetExecuted = facetHolder.GetFacet(typeof (IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted);
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -664,7 +674,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is PropertyDefaultFacetViaMethod);
             var propertyDefaultFacet = (PropertyDefaultFacetViaMethod) facet;
             Assert.AreEqual(propertyDefaultMethod, propertyDefaultFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyDefaultMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyDefaultMethod));
+            Assert.Fail(); // fix this 
 
             var facetExecuted = facetHolder.GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted);
@@ -682,7 +693,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is PropertyDefaultFacetViaMethod);
             var propertyDefaultFacet = (PropertyDefaultFacetViaMethod) facet;
             Assert.AreEqual(propertyDefaultMethod, propertyDefaultFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyDefaultMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyDefaultMethod));
+            Assert.Fail(); // fix this 
 
 
             var facetExecuted = facetHolder.GetFacet<IExecutedControlMethodFacet>();
@@ -701,7 +713,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is DisableForContextFacetViaMethod);
             var disableFacet = (DisableForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, disableFacet.GetMethod());
-            Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            //Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -714,7 +727,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is DisableForContextFacetViaMethod);
             var disableFacet = (DisableForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, disableFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -727,7 +741,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is DisableForContextFacetViaMethod);
             var propertyValidateFacet = (DisableForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -740,7 +755,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is DisableForContextFacetViaMethod);
             var propertyValidateFacet = (DisableForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -763,7 +779,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is HideForContextFacetViaMethod);
             var propertyValidateFacet = (HideForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
-            Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            //Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -788,7 +805,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is HideForContextFacetViaMethod);
             var propertyValidateFacet = (HideForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -801,7 +819,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is HideForContextFacetViaMethod);
             var propertyValidateFacet = (HideForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -814,7 +833,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is PropertySetterFacetViaModifyMethod);
             var propertySetterFacet = (PropertySetterFacetViaModifyMethod) facet;
             Assert.AreEqual(propertyModifyMethod, propertySetterFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyModifyMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyModifyMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -880,7 +900,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is PropertySetterFacetViaModifyMethod);
             var propertySetterFacet = (PropertySetterFacetViaModifyMethod) facet;
             Assert.AreEqual(propertyModifyMethod, propertySetterFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyModifyMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyModifyMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -912,7 +933,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             Assert.IsTrue(facet is PropertyValidateFacetViaMethod);
             var propertyValidateFacet = (PropertyValidateFacetViaMethod) facet;
             Assert.AreEqual(propertyValidateMethod, propertyValidateFacet.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -922,7 +944,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, methodRemover, facetHolder);
             IFacet facet = facetHolder.GetFacet(typeof(IAjaxFacet));
             Assert.IsNull(facet);
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -933,7 +956,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             IFacet facet = facetHolder.GetFacet(typeof(IAjaxFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is AjaxFacetAnnotation);
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -943,7 +967,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, methodRemover, facetHolder);
             IFacet facet = facetHolder.GetFacet(typeof(IAjaxFacet));
             Assert.IsNull(facet);
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]

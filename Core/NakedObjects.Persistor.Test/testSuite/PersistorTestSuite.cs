@@ -7,6 +7,7 @@ using System.Linq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
@@ -19,33 +20,49 @@ namespace NakedObjects.Persistor.TestSuite {
     /// <summary>
     /// Prerequisite - TestData Fixture run and nakedobjects framework setup
     /// </summary>
-    public static class PersistorTestSuite {
+    public  class PersistorTestSuite {
+        private readonly INakedObjectsFramework framework;
+
+        public PersistorTestSuite(INakedObjectsFramework framework) {
+            this.framework = framework;
+        }
+
         #region helpers
 
-        private static INakedObjectPersistor Persistor {
-            get { return NakedObjectsContext.ObjectPersistor; }
+        private  INakedObjectPersistor Persistor {
+            get {
+                return framework.ObjectPersistor;
+            }
         }
 
-        private static IUpdateNotifier Notifier {
-            get { return NakedObjectsContext.UpdateNotifier; }
+        private INakedObjectReflector Reflector {
+            get {
+                return framework.Reflector;
+            }
         }
 
-        private static INakedObject AdapterFor(object domainObject) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(domainObject, null, null);
+        private  IUpdateNotifier Notifier {
+            get {
+                return framework.UpdateNotifier;
+            }
+        }
+
+        private  INakedObject AdapterFor(object domainObject) {
+            return framework.ObjectPersistor.CreateAdapter(domainObject, null, null);
         }
 
 
-        private static Person GetPerson(int id) {
-            return Persistor.Instances<Person>().Where(p => p.PersonId == id).Single();
+        private  Person GetPerson(int id) {
+            return framework.ObjectPersistor.Instances<Person>().Single(p => p.PersonId == id);
         }
 
 
-        private static void AssertIsPerson(Person person, int id) {
+        private  void AssertIsPerson(Person person, int id) {
             Assert.IsNotNull(person, "Failed to get instance");
             Assert.AreEqual(id, person.PersonId);
         }
 
-        private static Person ChangeScalarOnPerson(int id) {
+        private  Person ChangeScalarOnPerson(int id) {
             Person person = GetPerson(id);
             string originalName = person.Name;
             Persistor.StartTransaction();
@@ -59,11 +76,11 @@ namespace NakedObjects.Persistor.TestSuite {
             return person;
         }
 
-        private static Product GetProduct(int id) {
-            return Persistor.Instances<Product>().Where(p => p.Id == id).Single();
+        private  Product GetProduct(int id) {
+            return Persistor.Instances<Product>().Single(p => p.Id == id);
         }
 
-        private static Person ChangeReferenceOnPerson(int id) {
+        private  Person ChangeReferenceOnPerson(int id) {
             Person person = GetPerson(id);
             Notifier.AllChangedObjects();
             person.ResetEvents();
@@ -73,7 +90,7 @@ namespace NakedObjects.Persistor.TestSuite {
             return person;
         }
 
-        private static Person AddToCollectionOnPersonOne(Person personToAdd) {
+        private  Person AddToCollectionOnPersonOne(Person personToAdd) {
             Person person = GetPerson(1);
             Notifier.AllChangedObjects();
             person.ResetEvents();
@@ -83,7 +100,7 @@ namespace NakedObjects.Persistor.TestSuite {
             return person;
         }
 
-        private static Person RemoveFromCollectionOnPersonOne(Person personToRemove) {
+        private  Person RemoveFromCollectionOnPersonOne(Person personToRemove) {
             Person person = GetPerson(1);
             Notifier.AllChangedObjects();
             person.ResetEvents();
@@ -93,7 +110,7 @@ namespace NakedObjects.Persistor.TestSuite {
             return person;
         }
 
-        private static Person ClearCollectionOnPerson(int id) {
+        private  Person ClearCollectionOnPerson(int id) {
             Person person = GetPerson(id);
             Notifier.AllChangedObjects();
             person.ResetEvents();
@@ -103,7 +120,7 @@ namespace NakedObjects.Persistor.TestSuite {
             return person;
         }
 
-        private static Product GetProductFromPersonOne() {
+        private  Product GetProductFromPersonOne() {
             Persistor.StartTransaction();
             Person person1 = GetPerson(1);
             Product product = person1.FavouriteProduct;
@@ -112,32 +129,32 @@ namespace NakedObjects.Persistor.TestSuite {
             return product;
         }
 
-        private static Person GetPersonFromPersonOneCollection() {
+        private  Person GetPersonFromPersonOneCollection() {
             Persistor.StartTransaction();
             Person relative = GetPerson(1).Relatives.First();
             Persistor.EndTransaction();
             return relative;
         }
 
-        private static Person CreateNewTransientPerson() {
+        private  Person CreateNewTransientPerson() {
             int nextIndex = Persistor.Instances<Person>().Select(p => p.PersonId).Max() + 1;
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(typeof (Person));
+            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof (Person));
             INakedObject newPersonAdapter = Persistor.CreateInstance(spec);
             Person person = (Person)newPersonAdapter.Object;
             person.PersonId = nextIndex;
             return person;
         }
 
-        private static Order CreateNewTransientOrder() {       
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(typeof(Order));
+        private  Order CreateNewTransientOrder() {
+            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof(Order));
             INakedObject newOrderAdapter = Persistor.CreateInstance(spec);
             Order order = (Order)newOrderAdapter.Object;
             order.OrderId = 0;
             return order;
         }
 
-        private static OrderFail CreateNewTransientOrderFail() {
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(typeof(OrderFail));
+        private  OrderFail CreateNewTransientOrderFail() {
+            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof(OrderFail));
             INakedObject newOrderAdapter = Persistor.CreateInstance(spec);
             OrderFail order = (OrderFail)newOrderAdapter.Object;
             order.OrderFailId = 0;
@@ -145,25 +162,25 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
 
-        private static Product CreateNewTransientProduct() {
+        private  Product CreateNewTransientProduct() {
             int nextIndex = Persistor.Instances<Product>().Select(p => p.Id).Max() + 1;
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(typeof(Product));
+            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof(Product));
             INakedObject newProductAdapter = Persistor.CreateInstance(spec);
             Product product = (Product)newProductAdapter.Object;
             product.Id = nextIndex;
             return product;
         }
 
-        private static Pet CreateNewTransientPet() {
+        private  Pet CreateNewTransientPet() {
             int nextIndex = Persistor.Instances<Pet>().Select(p => p.PetId).Max() + 1;
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(typeof(Pet));
+            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof(Pet));
             INakedObject newPetAdapter = Persistor.CreateInstance(spec);
             Pet pet = (Pet)newPetAdapter.Object;
             pet.PetId = nextIndex;
             return pet;
         }
 
-        private static INakedObject Save(object toSave) {
+        private  INakedObject Save(object toSave) {
             Persistor.StartTransaction();
             INakedObject adapterForToSave = AdapterFor(toSave);
             Persistor.MakePersistent(adapterForToSave);
@@ -171,7 +188,7 @@ namespace NakedObjects.Persistor.TestSuite {
             return adapterForToSave;
         }
 
-        private static void Delete(object toDelete) {
+        private  void Delete(object toDelete) {
             Persistor.StartTransaction();
             INakedObject adapterForToDelete = AdapterFor(toDelete);
             Persistor.DestroyObject(adapterForToDelete);
@@ -180,7 +197,7 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
 
-        private static Address ChangeScalarOnAddress() {
+        private  Address ChangeScalarOnAddress() {
             INakedObject adaptedAddress = GetAdaptedAddress(GetPerson(1));
             Address address = (Address)adaptedAddress.Object;
             string original1 = address.Line1;     
@@ -195,12 +212,12 @@ namespace NakedObjects.Persistor.TestSuite {
             return address;
         }
 
-        private static INakedObject GetAdaptedAddress(Person person) {
+        private  INakedObject GetAdaptedAddress(Person person) {
             INakedObject personAdapter = AdapterFor(person);
             return personAdapter.Specification.GetProperty("Address").GetNakedObject(personAdapter, Persistor);
         }
 
-        private static INakedObject GetAdaptedRelatives(Person person) {
+        private  INakedObject GetAdaptedRelatives(Person person) {
             Persistor.StartTransaction();
             INakedObject personAdapter = AdapterFor(person);
             Persistor.EndTransaction();
@@ -212,24 +229,24 @@ namespace NakedObjects.Persistor.TestSuite {
 
         #region tests
 
-        public static void GetInstanceFromInstancesOfT() {
+        public  void GetInstanceFromInstancesOfT() {
             Person person = GetPerson(1);
             AssertIsPerson(person, 1);
         }
 
-        public static void GetInstanceFromInstancesOfType() {
+        public  void GetInstanceFromInstancesOfType() {
             Person person = Persistor.Instances(typeof(Person)).Cast<Person>().Where(p => p.PersonId == 1).Single();
             AssertIsPerson(person, 1);
         }
 
-        public static void GetInstanceFromInstancesOfSpecification() {
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(typeof(Person));
+        public  void GetInstanceFromInstancesOfSpecification() {
+            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof(Person));
             Person person = Persistor.Instances(spec).Cast<Person>().Where(p => p.PersonId == 1).Single();
             AssertIsPerson(person, 1);
         }
 
-        public static void GetInstanceIsAlwaysSameObject() {
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(typeof(Person));
+        public  void GetInstanceIsAlwaysSameObject() {
+            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof(Person));
             Person person1 = GetPerson(1);
             Person person2 = Persistor.Instances(typeof(Person)).Cast<Person>().Where(p => p.PersonId == 1).Single();
             Person person3 = Persistor.Instances(spec).Cast<Person>().Where(p => p.PersonId == 1).Single();
@@ -237,40 +254,40 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreSame(person2, person3);
         }
 
-        public static void GetInstanceResolveStateIsPersistent() {
+        public  void GetInstanceResolveStateIsPersistent() {
             INakedObject adapter = AdapterFor(GetPerson(1));
             Assert.IsTrue(adapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(adapter.Oid.IsTransient, "is transient");
         }
 
-        public static void GetInstanceHasVersion() {
+        public  void GetInstanceHasVersion() {
             INakedObject adapter = AdapterFor(GetPerson(1));
             Assert.IsNotNull(adapter.Version, "should have version");
         }
 
-        public static void ChangeScalarOnPersistentNotifiesUi() {
+        public  void ChangeScalarOnPersistentNotifiesUi() {
             Person person = ChangeScalarOnPerson(1);
             Assert.Contains(person, Notifier.AllChangedObjects().ToEnumerable().Select(no => no.Object).ToList(), "no person in notifier");
         }
 
-        public static void ChangeScalarOnPersistentCallsUpdatingUpdated() {
+        public  void ChangeScalarOnPersistentCallsUpdatingUpdated() {
             Person person = ChangeScalarOnPerson(1);
             Assert.AreEqual(1, person.GetEvents()["Updating"], "updating");
             Assert.AreEqual(1, person.GetEvents()["Updated"], "updated");
         }
 
-        public static void ChangeReferenceOnPersistentNotifiesUi() {
+        public  void ChangeReferenceOnPersistentNotifiesUi() {
             Person person = ChangeReferenceOnPerson(6);
             Assert.Contains(person, Notifier.AllChangedObjects().ToEnumerable().Select(no => no.Object).ToList(), "no person in notifier");
         }
 
-        public static void ChangeReferenceOnPersistentCallsUpdatingUpdated() {
+        public  void ChangeReferenceOnPersistentCallsUpdatingUpdated() {
             Person person = ChangeReferenceOnPerson(7);
             Assert.AreEqual(1, person.GetEvents()["Updating"], "updating");
             Assert.AreEqual(1, person.GetEvents()["Updated"], "updated");
         }
 
-        public static void AddToCollectionOnPersistent() {
+        public  void AddToCollectionOnPersistent() {
             Person person1 = GetPerson(1);
             Person person4 = GetPerson(4);
             int countbefore = person1.Relatives.Count();
@@ -278,20 +295,20 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(countbefore + 1, person1.Relatives.Count());
         }
 
-        public static void AddToCollectionOnPersistentNotifiesUi() {
+        public  void AddToCollectionOnPersistentNotifiesUi() {
             Person person5 = GetPerson(5);
             Person person1 = AddToCollectionOnPersonOne(person5);
             Assert.Contains(person1, Notifier.AllChangedObjects().ToEnumerable().Select(no => no.Object).ToList(), "no person in notifier");
         }
 
-        public static void AddToCollectionOnPersistentCallsUpdatingUpdated() {
+        public  void AddToCollectionOnPersistentCallsUpdatingUpdated() {
             Person person6 = GetPerson(6);
             Person person1 = AddToCollectionOnPersonOne(person6);
             Assert.AreEqual(1, person1.GetEvents()["Updating"], "updating");
             Assert.AreEqual(1, person1.GetEvents()["Updated"], "updated");
         }
 
-        public static void RemoveFromCollectionOnPersistent() {
+        public  void RemoveFromCollectionOnPersistent() {
             Person person1 = GetPerson(1);
             Person person2 = GetPerson(2);
             int countbefore = person1.Relatives.Count();
@@ -299,53 +316,53 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(countbefore -1, person1.Relatives.Count());
         }
 
-        public static void RemoveFromCollectionOnPersistentNotifiesUi() {
+        public  void RemoveFromCollectionOnPersistentNotifiesUi() {
             Person person7 = GetPerson(7);
             Person person1 = RemoveFromCollectionOnPersonOne(person7);
             Assert.Contains(person1, Notifier.AllChangedObjects().ToEnumerable().Select(no => no.Object).ToList(), "no person in notifier");
         }
 
-        public static void RemoveFromCollectionOnPersistentCallsUpdatingUpdated() {
+        public  void RemoveFromCollectionOnPersistentCallsUpdatingUpdated() {
             Person person8 = GetPerson(8);
             Person person1 = RemoveFromCollectionOnPersonOne(person8);
             Assert.AreEqual(1, person1.GetEvents()["Updating"], "updating");
             Assert.AreEqual(1, person1.GetEvents()["Updated"], "updated");
         }
 
-        public static void ClearCollectionOnPersistent() {
+        public  void ClearCollectionOnPersistent() {
             Person person = ClearCollectionOnPerson(6);
             Assert.AreEqual(0, person.Relatives.Count);
         }
 
-        public static void ClearCollectionOnPersistentNotifiesUi() {
+        public  void ClearCollectionOnPersistentNotifiesUi() {
             Person person = ClearCollectionOnPerson(7);
             Assert.Contains(person, Notifier.AllChangedObjects().ToEnumerable().Select(no => no.Object).ToList(), "no person in notifier");
         }
 
-        public static void ClearCollectionOnPersistentCallsUpdatingUpdated() {         
+        public  void ClearCollectionOnPersistentCallsUpdatingUpdated() {         
             Person person = ClearCollectionOnPerson(8);
             Assert.AreEqual(1, person.GetEvents()["Updating"], "updating");
             Assert.AreEqual(1, person.GetEvents()["Updated"], "updated");
         }
 
-        public static void LoadObjectReturnSameObject() {
+        public  void LoadObjectReturnSameObject() {
             Person person1 = GetPerson(1);
             INakedObject adapter1 = AdapterFor(person1);
             INakedObject adapter2 = Persistor.LoadObject(adapter1.Oid, adapter1.Specification);
             Assert.AreSame(person1, adapter2.Object);
         }
 
-        public static void PersistentObjectHasContainerInjected() {
+        public  void PersistentObjectHasContainerInjected() {
             Person person1 = GetPerson(1);
             Assert.IsTrue(person1.HasContainer, "no container injected");
         }
 
-        public static void PersistentObjectHasServiceInjected() {
+        public  void PersistentObjectHasServiceInjected() {
             Person person1 = GetPerson(1);
             Assert.IsTrue(person1.HasMenuService, "no service injected");
         }
 
-        public static void PersistentObjectHasLoadingLoadedCalled() {
+        public  void PersistentObjectHasLoadingLoadedCalled() {
             Persistor.StartTransaction();
             Person person1 = GetPerson(1);
             Persistor.EndTransaction();
@@ -353,20 +370,20 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, person1.GetEvents()["Loaded"], "loaded");
         }
 
-        public static void CanAccessReferenceProperty() {
+        public  void CanAccessReferenceProperty() {
             Person person1 = GetPerson(1);
             Product product = person1.FavouriteProduct;
             Assert.IsNotNull(product, "Failed to access instance");
             Assert.AreEqual("ProductOne", product.Name);
         }
 
-        public static void CanAccessCollectionProperty() {
+        public  void CanAccessCollectionProperty() {
             ICollection<Person> relatives = GetPerson(1).Relatives;
             Assert.IsNotNull(relatives, "Failed to access collection");
             Assert.Greater(relatives.Count, 0, "no items in collection");
         }
 
-        public static void CollectionPropertyCollectionResolveStateIsPersistent() {
+        public  void CollectionPropertyCollectionResolveStateIsPersistent() {
             INakedObject relativesAdapter = GetAdaptedRelatives(GetPerson(1)); 
             Assert.IsTrue(relativesAdapter.ResolveState.IsPersistent(), "should be persistent");
           //  Assert.IsFalse(relativesAdapter.ResolveState.IsResolved(), "should not be resolved");
@@ -374,7 +391,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsInstanceOf(typeof(AggregateOid),  relativesAdapter.Oid, "is not aggregate");
         }
 
-        public static void EmptyCollectionPropertyCollectionResolveStateIsPersistent() {
+        public  void EmptyCollectionPropertyCollectionResolveStateIsPersistent() {
             INakedObject relativesAdapter = GetAdaptedRelatives(GetPerson(2));
             Assert.IsTrue(relativesAdapter.ResolveState.IsPersistent(), "should be persistent");
           //  Assert.IsFalse(relativesAdapter.ResolveState.IsResolved(), "should not be resolved");
@@ -382,103 +399,103 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsInstanceOf(typeof(AggregateOid), relativesAdapter.Oid, "is not aggregate");
         }     
 
-        public static void ReferencePropertyHasLoadingLoadedCalled() {
+        public  void ReferencePropertyHasLoadingLoadedCalled() {
             Product product = GetProductFromPersonOne();
             Assert.AreEqual(1, product.GetEvents()["Loading"], "loading");
             Assert.AreEqual(1, product.GetEvents()["Loaded"], "loaded");
         }
 
-        public static void ReferencePropertyObjectHasContainerInjected() {
+        public  void ReferencePropertyObjectHasContainerInjected() {
             Product product = GetProductFromPersonOne();
             Assert.IsTrue(product.HasContainer, "no container injected");
         }
 
-        public static void ReferencePropertyObjectHasServiceInjected() {
+        public  void ReferencePropertyObjectHasServiceInjected() {
             Product product = GetProductFromPersonOne();
             Assert.IsTrue(product.HasMenuService, "no service injected");
         }
 
-        public static void ReferencePropertyObjectResolveStateIsPersistent() {
+        public  void ReferencePropertyObjectResolveStateIsPersistent() {
             INakedObject adapter = AdapterFor(GetProductFromPersonOne());
             Assert.IsTrue(adapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(adapter.Oid.IsTransient, "is transient");
         }
 
-        public static void ReferencePropertyObjectHasVersion() {
+        public  void ReferencePropertyObjectHasVersion() {
             INakedObject adapter = AdapterFor(GetProductFromPersonOne());
             Assert.IsNotNull(adapter.Version, "should have version");
         }
 
-        public static void CollectionPropertyHasLoadingLoadedCalled() {
+        public  void CollectionPropertyHasLoadingLoadedCalled() {
             Person person = GetPersonFromPersonOneCollection();
             Assert.AreEqual(1, person.GetEvents()["Loading"], "loading");
             Assert.AreEqual(1, person.GetEvents()["Loaded"], "loaded");
         }
 
-        public static void CollectionPropertyObjectHasContainerInjected() {
+        public  void CollectionPropertyObjectHasContainerInjected() {
             Person person = GetPersonFromPersonOneCollection();
             Assert.IsTrue(person.HasContainer, "no container injected");
         }
 
-        public static void CollectionPropertyObjectHasMenuServiceInjected() {
+        public  void CollectionPropertyObjectHasMenuServiceInjected() {
             Person person = GetPersonFromPersonOneCollection();
             Assert.IsTrue(person.HasMenuService, "no menu service injected");
         }
 
-        public static void CollectionPropertyObjectHasSystemServiceInjected() {
+        public  void CollectionPropertyObjectHasSystemServiceInjected() {
             Person person = GetPersonFromPersonOneCollection();
             Assert.IsTrue(person.HasSystemService, "no system service injected");
         }
 
-        public static void CollectionPropertyObjectHasContributedServiceInjected() {
+        public  void CollectionPropertyObjectHasContributedServiceInjected() {
             Person person = GetPersonFromPersonOneCollection();
             Assert.IsTrue(person.HasContributedActions, "no contributed service injected");
         }
 
 
-        public static void CollectionPropertyObjectResolveStateIsPersistent() {
+        public  void CollectionPropertyObjectResolveStateIsPersistent() {
             INakedObject adapter = AdapterFor(GetPersonFromPersonOneCollection());
             Assert.IsTrue(adapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(adapter.Oid.IsTransient, "is transient");
         }
 
-        public static void CollectionPropertyObjectHasVersion() {
+        public  void CollectionPropertyObjectHasVersion() {
             INakedObject adapter = AdapterFor(GetPersonFromPersonOneCollection());
             Assert.IsNotNull(adapter.Version, "should have version");
         }
     
-        public static void NewObjectIsCreated () {
+        public  void NewObjectIsCreated () {
             Person person = CreateNewTransientPerson();
             Assert.IsNotNull(person);
         }
 
-        public static void NewObjectHasCreatedCalled() {
+        public  void NewObjectHasCreatedCalled() {
             Person person = CreateNewTransientPerson();
             Assert.AreEqual(1, person.GetEvents()["Created"], "created");
         }
 
-        public static void NewObjectIsTransient() {
+        public  void NewObjectIsTransient() {
             INakedObject adapter = AdapterFor(CreateNewTransientPerson());
             Assert.IsTrue(adapter.ResolveState.IsTransient(), "should be transient");
             Assert.IsTrue(adapter.Oid.IsTransient, "is persistent");
         }
 
-        public static void NewObjectHasVersion() {
+        public  void NewObjectHasVersion() {
             INakedObject adapter = AdapterFor(CreateNewTransientPerson());
             Assert.IsNotNull(adapter.Version, "should have version");
         }
 
-        public static void NewObjectHasContainerInjected() {
+        public  void NewObjectHasContainerInjected() {
             Person person = CreateNewTransientPerson();
             Assert.IsTrue(person.HasContainer, "no container injected");
         }
 
-        public static void NewObjectHasServiceInjected() {
+        public  void NewObjectHasServiceInjected() {
             Person person = CreateNewTransientPerson();
             Assert.IsTrue(person.HasMenuService, "no service injected");
         }
 
-        public static void SaveNewObjectWithScalars() {
+        public  void SaveNewObjectWithScalars() {
             Person person = CreateNewTransientPerson();
             person.Name = Guid.NewGuid().ToString();
             INakedObject adapter = Save(person);
@@ -486,7 +503,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsFalse(adapter.Oid.IsTransient, "is transient");
         }
 
-        public static void SaveNewObjectWithValidate() {
+        public  void SaveNewObjectWithValidate() {
             Person person = CreateNewTransientPerson();
             person.ChangeName("fail");
 
@@ -497,7 +514,7 @@ namespace NakedObjects.Persistor.TestSuite {
             catch (Exception /*expected*/) {}
         }
 
-        public static void ChangeObjectWithValidate() {
+        public  void ChangeObjectWithValidate() {
             Person person = CreateNewTransientPerson();
             person.Name = Guid.NewGuid().ToString();
             person = Save(person).GetDomainObject<Person>();
@@ -512,7 +529,7 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
 
-        public static void SaveNewObjectWithTransientReference() {    
+        public  void SaveNewObjectWithTransientReference() {    
             Person person = CreateNewTransientPerson();
             Product product = CreateNewTransientProduct();
             person.Name = Guid.NewGuid().ToString();
@@ -529,7 +546,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
         }
 
-        public static void SaveNewObjectWithTransientReferenceInvalid() {
+        public  void SaveNewObjectWithTransientReferenceInvalid() {
             Person person = CreateNewTransientPerson();
             Product product = CreateNewTransientProduct();
             person.Name = Guid.NewGuid().ToString();
@@ -551,7 +568,7 @@ namespace NakedObjects.Persistor.TestSuite {
             catch (PersistFailedException /*expected*/) { }
         }
 
-        public static void SaveNewObjectWithTransientReferenceObjectInvalid() {
+        public  void SaveNewObjectWithTransientReferenceObjectInvalid() {
             Person person = CreateNewTransientPerson();
             Pet pet = CreateNewTransientPet();
        
@@ -575,7 +592,7 @@ namespace NakedObjects.Persistor.TestSuite {
             catch (PersistFailedException /*expected*/) { }
         }
 
-        public static void SaveNewObjectWithTransientReferenceValidateAssocInvalid() {
+        public  void SaveNewObjectWithTransientReferenceValidateAssocInvalid() {
             Person person = CreateNewTransientPerson();
             Pet pet = CreateNewTransientPet();
 
@@ -599,7 +616,7 @@ namespace NakedObjects.Persistor.TestSuite {
             catch (PersistFailedException /*expected*/) { }
         }
 
-        public static void SaveNewObjectWithPersistentReference() {
+        public  void SaveNewObjectWithPersistentReference() {
             Person person = CreateNewTransientPerson();
             Product product = GetProduct(2);
             person.Name = Guid.NewGuid().ToString();
@@ -612,7 +629,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
         }
 
-        public static void SaveNewObjectWithPersistentReferenceInSeperateTransaction() {
+        public  void SaveNewObjectWithPersistentReferenceInSeperateTransaction() {
             Persistor.StartTransaction();
             Person person = CreateNewTransientPerson();
             Product product = GetProduct(2);
@@ -627,7 +644,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
         }
 
-        public static void SaveNewObjectWithTransientCollectionItem() {
+        public  void SaveNewObjectWithTransientCollectionItem() {
             Person person1 = CreateNewTransientPerson();
             Person person2 = CreateNewTransientPerson();
             person1.Name = Guid.NewGuid().ToString();
@@ -648,7 +665,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
         }
 
-        public static void SaveNewObjectWithPersistentItemCollectionItem() {
+        public  void SaveNewObjectWithPersistentItemCollectionItem() {
             Person person1 = CreateNewTransientPerson();
             Person person2 = GetPerson(2);
             person1.Name = Guid.NewGuid().ToString();
@@ -665,7 +682,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
         }
 
-        public static void SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction() {
+        public  void SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction() {
             Persistor.StartTransaction();
             Person person1 = CreateNewTransientPerson();
             Person person2 = GetPerson(2);
@@ -684,7 +701,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
         }
 
-        public static void SaveNewObjectCallsPersistingPersisted() {
+        public  void SaveNewObjectCallsPersistingPersisted() {
             Person person = CreateNewTransientPerson();
             person.Name = Guid.NewGuid().ToString();
             person.UpdateInPersisting();
@@ -699,7 +716,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(0, personAfter.GetEvents()["Updated"], "persisted");
         }
 
-        public static void SaveNewObjectCallsPersistingPersistedRecursively() {
+        public  void SaveNewObjectCallsPersistingPersistedRecursively() {
 
             Assert.AreEqual(0, Persistor.Instances(typeof(Order)).Count());
 
@@ -719,7 +736,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, orderAfter.GetEvents()["Updated"], "updated");
         }
 
-        public static void SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax() {
+        public  void SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax() {
 
           
             OrderFail order = CreateNewTransientOrderFail();
@@ -736,7 +753,7 @@ namespace NakedObjects.Persistor.TestSuite {
            
         }
 
-        public static void SaveNewObjectCallsPersistingPersistedRecursivelyFails() {
+        public  void SaveNewObjectCallsPersistingPersistedRecursivelyFails() {
 
             Assert.AreEqual(0, Persistor.Instances(typeof(OrderFail)).Count());
 
@@ -757,7 +774,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
 
 
-        public static void SaveNewObjectTransientReferenceCallsPersistingPersisted() {
+        public  void SaveNewObjectTransientReferenceCallsPersistingPersisted() {
             Person person = CreateNewTransientPerson();
             Product product = CreateNewTransientProduct();
             person.Name = Guid.NewGuid().ToString();
@@ -773,7 +790,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, productAfter.GetEvents()["Persisted"], "persisted");
         }
 
-        public static void SaveNewObjectTransientCollectionItemCallsPersistingPersisted() {
+        public  void SaveNewObjectTransientCollectionItemCallsPersistingPersisted() {
             Person person1 = CreateNewTransientPerson();
             Person person2 = CreateNewTransientPerson();
             person1.Name = Guid.NewGuid().ToString();
@@ -789,34 +806,34 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, personAfter1.GetEvents()["Persisted"], "persisted");
         }
 
-        public static void GetInlineInstance() {
+        public  void GetInlineInstance() {
             INakedObject addressAdapter = GetAdaptedAddress(GetPerson(1));
             Assert.IsTrue(addressAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(addressAdapter.Oid.IsTransient, "is transient");
         }
 
-        public static void InlineObjectHasContainerInjected() {
+        public  void InlineObjectHasContainerInjected() {
             Address address = GetPerson(1).Address;
             Assert.IsTrue(address.HasContainer, "no container injected");
         }
 
-        public static void InlineObjectHasServiceInjected() {
+        public  void InlineObjectHasServiceInjected() {
             Address address = GetPerson(1).Address;
             Assert.IsTrue(address.HasMenuService, "no service injected");
         }
 
-        public static void InlineObjectHasParentInjected() {
+        public  void InlineObjectHasParentInjected() {
             Address address = GetPerson(1).Address;
             Assert.IsTrue(address.HasParent, "no parent injected");
             Assert.IsTrue(address.ParentIsType(typeof(Person)), "parent wrong type");
         }
 
-        public static void InlineObjectHasVersion() {
+        public  void InlineObjectHasVersion() {
             INakedObject addressAdapter = GetAdaptedAddress(GetPerson(1));
             Assert.IsNotNull(addressAdapter.Version, "should have version");
         }
 
-        public static void InlineObjectHasLoadingLoadedCalled() {
+        public  void InlineObjectHasLoadingLoadedCalled() {
             Persistor.StartTransaction();
             INakedObject addressAdapter = GetAdaptedAddress(GetPerson(1));
             Address address = addressAdapter.GetDomainObject<Address>();
@@ -825,39 +842,39 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, address.GetEvents()["Loaded"], "loaded");
         }
 
-        public static void CreateTransientInlineInstance() {
+        public  void CreateTransientInlineInstance() {
             INakedObject addressAdapter = GetAdaptedAddress(CreateNewTransientPerson());
             Assert.IsTrue(addressAdapter.ResolveState.IsResolved(), "should be resolved");
             Assert.IsTrue(addressAdapter.Oid.IsTransient, "is persistent");
         }
 
-        public static void TransientInlineObjectHasContainerInjected() {
+        public  void TransientInlineObjectHasContainerInjected() {
             Address address = CreateNewTransientPerson().Address;
             Assert.IsTrue(address.HasContainer, "no container injected");
         }
 
-        public static void TransientInlineObjectHasServiceInjected() {
+        public  void TransientInlineObjectHasServiceInjected() {
             Address address = CreateNewTransientPerson().Address;
             Assert.IsTrue(address.HasMenuService, "no service injected");
         }
 
-        public static void TransientInlineObjectHasParentInjected() {
+        public  void TransientInlineObjectHasParentInjected() {
             Address address = CreateNewTransientPerson().Address;
             Assert.IsTrue(address.HasParent, "no parent injected");
             Assert.IsTrue(address.ParentIsType(typeof(Person)), "parent wrong type");
         }
 
-        public static void TrainsientInlineObjectHasVersion() {
+        public  void TrainsientInlineObjectHasVersion() {
             INakedObject addressAdapter = GetAdaptedAddress(CreateNewTransientPerson());
             Assert.IsNotNull(addressAdapter.Version, "should have version");
         }
      
-        public static void InlineObjectCallsCreated() {
+        public  void InlineObjectCallsCreated() {
             Person person = CreateNewTransientPerson();
             Assert.AreEqual(1, person.Address.GetEvents()["Created"], "created");
         }
    
-        public static void SaveInlineObjectCallsPersistingPersisted() {
+        public  void SaveInlineObjectCallsPersistingPersisted() {
             Person person = CreateNewTransientPerson();
             person.Address.Line1 = Guid.NewGuid().ToString();
             person.Address.Line2 = Guid.NewGuid().ToString();
@@ -870,18 +887,18 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, personAfter.GetEvents()["Persisted"], "persisted");
         }
 
-        public static void ChangeScalarOnInlineObjectCallsUpdatingUpdated() {
+        public  void ChangeScalarOnInlineObjectCallsUpdatingUpdated() {
             Address address = ChangeScalarOnAddress();
             Assert.AreEqual(1, address.GetEvents()["Updating"], "updating");
             Assert.AreEqual(1, address.GetEvents()["Updated"], "updated");
         }
 
-        public static void UpdateInlineObjectUpdatesUi() {
+        public  void UpdateInlineObjectUpdatesUi() {
             Address address = ChangeScalarOnAddress();
             Assert.Contains(address, Notifier.AllChangedObjects().ToEnumerable().Select(no => no.Object).ToList(), "no address in notifier");
         }
 
-        public static void RefreshResetsObject() {
+        public  void RefreshResetsObject() {
             Person person1 = GetPerson(1);
             string name = person1.Name;
             person1.Name = Guid.NewGuid().ToString();
@@ -891,7 +908,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, person1.GetEvents()["Updated"], "updated");
         }
 
-        public static void GetKeysReturnsKeys() {
+        public  void GetKeysReturnsKeys() {
             Person person1 = GetPerson(1);
             var key = Persistor.GetKeys(person1.GetType());
 
@@ -899,14 +916,14 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(person1.GetType().GetProperty("PersonId").Name,  key[0].Name);       
         }
 
-        public static void FindByKey() {
+        public  void FindByKey() {
             Person person1 = GetPerson(1);
             var person = Persistor.FindByKeys(typeof(Person), new object[] {1}).Object;
 
             Assert.AreEqual(person1, person);      
         }
 
-        public static void CreateAndDeleteNewObjectWithScalars() {
+        public  void CreateAndDeleteNewObjectWithScalars() {
             Person person = CreateNewTransientPerson();
             string name = Guid.NewGuid().ToString();
             person.Name = name;
@@ -923,7 +940,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsNull(person2);
         }
 
-        public static void DeleteObjectCallsDeletingDeleted() {
+        public  void DeleteObjectCallsDeletingDeleted() {
             Person person = CreateNewTransientPerson();
             string name = Guid.NewGuid().ToString();
             person.Name = name;
@@ -937,7 +954,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, person.GetEvents()["Deleted"], "deleted");
         }
 
-        public static void CountCollectionOnPersistent() {
+        public  void CountCollectionOnPersistent() {
             Person person1 = GetPerson(1);
             int count1 = person1.Relatives.Count();
             var adapter = AdapterFor(person1);
@@ -945,7 +962,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(count1, count2);
         }
 
-        public static void CountUnResolvedCollectionOnPersistent() {
+        public  void CountUnResolvedCollectionOnPersistent() {
             Person person1 = GetPerson(1);
             var adapter = AdapterFor(person1);
             var count1 = Persistor.CountField(adapter, "Relatives");
@@ -954,7 +971,7 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
 
-        public static void CountEmptyCollectionOnTransient() {
+        public  void CountEmptyCollectionOnTransient() {
             Person person1 = CreateNewTransientPerson();
             int count1 = person1.Relatives.Count();
             var adapter = AdapterFor(person1);
@@ -962,7 +979,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(count1, count2);
         }
 
-        public static void CountCollectionOnTransient() {
+        public  void CountCollectionOnTransient() {
             Person person1 = CreateNewTransientPerson();
             Person person4 = GetPerson(4);
             AddToCollectionOnPersonOne(person4);

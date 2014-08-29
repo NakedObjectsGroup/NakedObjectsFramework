@@ -20,9 +20,9 @@ namespace MvcTestApp {
             get { return "";  }
         } 
 
-        protected override NakedObjectsContext Context {
-            get { return HttpContextContext.CreateInstance(); }
-        }
+        //protected override NakedObjectsContext Context {
+        //    get { return HttpContextContext.CreateInstance(); }
+        //}
 
         protected override IServicesInstaller MenuServices {
             get {

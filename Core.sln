@@ -63,8 +63,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{DBFA50
 		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.TestSystem", "Core\NakedObjects.TestSystem\NakedObjects.TestSystem.csproj", "{1FE8DB33-2B9A-4DBE-AC3C-8B4DF08608A0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.FrameworkService", "Core\NakedObjects.FrameworkService\NakedObjects.FrameworkService.csproj", "{7095E1C3-2C43-4802-9930-522E1BBF27C1}"
 EndProject
 Global
@@ -231,12 +229,6 @@ Global
 		{F84BBFEF-7D09-4A51-B5CC-7BFBD0F56EFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F84BBFEF-7D09-4A51-B5CC-7BFBD0F56EFD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F84BBFEF-7D09-4A51-B5CC-7BFBD0F56EFD}.Release|x86.ActiveCfg = Release|Any CPU
-		{1FE8DB33-2B9A-4DBE-AC3C-8B4DF08608A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1FE8DB33-2B9A-4DBE-AC3C-8B4DF08608A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1FE8DB33-2B9A-4DBE-AC3C-8B4DF08608A0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1FE8DB33-2B9A-4DBE-AC3C-8B4DF08608A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1FE8DB33-2B9A-4DBE-AC3C-8B4DF08608A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1FE8DB33-2B9A-4DBE-AC3C-8B4DF08608A0}.Release|x86.ActiveCfg = Release|Any CPU
 		{7095E1C3-2C43-4802-9930-522E1BBF27C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7095E1C3-2C43-4802-9930-522E1BBF27C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7095E1C3-2C43-4802-9930-522E1BBF27C1}.Debug|x86.ActiveCfg = Debug|Any CPU

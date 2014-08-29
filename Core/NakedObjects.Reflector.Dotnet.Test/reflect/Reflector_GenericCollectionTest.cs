@@ -9,7 +9,6 @@ using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Facets.Naming.DescribedAs;
 using NakedObjects.Architecture.Facets.Naming.Named;
 using NakedObjects.Architecture.Facets.Objects.Ident.Plural;
-using NakedObjects.TestSystem;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {

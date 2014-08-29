@@ -20,6 +20,9 @@ namespace NakedObjects.Persistor.InMemoryTest {
     public class InMemoryTestSuite : AcceptanceTestCase {
         #region Setup/Teardown
 
+
+        private PersistorTestSuite tests;
+
         [SetUp]
         public void Setup() {
             InitializeNakedObjectsFramework();
@@ -31,6 +34,7 @@ namespace NakedObjects.Persistor.InMemoryTest {
            
             NakedObjectsContext.ObjectPersistor.Reset();
 
+            tests = new PersistorTestSuite(NakedObjectsContext);
         }
 
         [TearDown]
@@ -58,409 +62,409 @@ namespace NakedObjects.Persistor.InMemoryTest {
 
         [Test]
         public void AddToCollectionOnPersistent() {
-            PersistorTestSuite.AddToCollectionOnPersistent();
+            tests.AddToCollectionOnPersistent();
         }
 
         [Test]
         public void CanAccessCollectionProperty() {
-            PersistorTestSuite.CanAccessCollectionProperty();
+            tests.CanAccessCollectionProperty();
         }
 
         [Test]
         public void CanAccessReferenceProperty() {
-            PersistorTestSuite.CanAccessReferenceProperty();
+            tests.CanAccessReferenceProperty();
         }
 
         [Test]
         public void ChangeReferenceOnPersistentCallsUpdatingUpdated() {
-            PersistorTestSuite.ChangeReferenceOnPersistentCallsUpdatingUpdated();
+            tests.ChangeReferenceOnPersistentCallsUpdatingUpdated();
         }
 
         [Test]
         public void ChangeReferenceOnPersistentNotifiesUi() {
-            PersistorTestSuite.ChangeReferenceOnPersistentNotifiesUi();
+            tests.ChangeReferenceOnPersistentNotifiesUi();
         }
 
         [Test]
         public void ChangeScalarOnInlineObjectCallsUpdatingUpdated() {
-            PersistorTestSuite.ChangeScalarOnInlineObjectCallsUpdatingUpdated();
+            tests.ChangeScalarOnInlineObjectCallsUpdatingUpdated();
         }
 
         [Test]
         public void ChangeScalarOnPersistentCallsUpdatingUpdated() {
-            PersistorTestSuite.ChangeScalarOnPersistentCallsUpdatingUpdated();
+            tests.ChangeScalarOnPersistentCallsUpdatingUpdated();
         }
 
         [Test]
         public void ChangeScalarOnPersistentNotifiesUi() {
-            PersistorTestSuite.ChangeScalarOnPersistentNotifiesUi();
+            tests.ChangeScalarOnPersistentNotifiesUi();
         }
 
         [Test]
         public void ClearCollectionOnPersistent() {
-            PersistorTestSuite.ClearCollectionOnPersistent();
+            tests.ClearCollectionOnPersistent();
         }
 
         [Test]
         public void ClearCollectionOnPersistentCallsUpdatingUpdated() {
-            PersistorTestSuite.ClearCollectionOnPersistentCallsUpdatingUpdated();
+            tests.ClearCollectionOnPersistentCallsUpdatingUpdated();
         }
 
         [Test]
         public void ClearCollectionOnPersistentNotifiesUi() {
-            PersistorTestSuite.ClearCollectionOnPersistentNotifiesUi();
+            tests.ClearCollectionOnPersistentNotifiesUi();
         }
 
         [Test]
         public void CollectionPropertyCollectionResolveStateIsPersistent() {
-            PersistorTestSuite.CollectionPropertyCollectionResolveStateIsPersistent();
+            tests.CollectionPropertyCollectionResolveStateIsPersistent();
         }
 
         [Test]
         public void CollectionPropertyHasLoadingLoadedCalled() {
-            PersistorTestSuite.CollectionPropertyHasLoadingLoadedCalled();
+            tests.CollectionPropertyHasLoadingLoadedCalled();
         }
 
         [Test]
         public void CollectionPropertyObjectHasContainerInjected() {
-            PersistorTestSuite.CollectionPropertyObjectHasContainerInjected();
+            tests.CollectionPropertyObjectHasContainerInjected();
         }
 
         [Test]
         public void CollectionPropertyObjectHasMenuServiceInjected() {
-            PersistorTestSuite.CollectionPropertyObjectHasMenuServiceInjected();
+            tests.CollectionPropertyObjectHasMenuServiceInjected();
         }
 
         [Test]
         public void CollectionPropertyObjectHasContributedServiceInjected() {
-            PersistorTestSuite.CollectionPropertyObjectHasContributedServiceInjected();
+            tests.CollectionPropertyObjectHasContributedServiceInjected();
         }
 
         [Test]
         public void CollectionPropertyObjectHasSystemServiceInjected() {
-            PersistorTestSuite.CollectionPropertyObjectHasSystemServiceInjected();
+            tests.CollectionPropertyObjectHasSystemServiceInjected();
         }
 
         [Test]
         public void CollectionPropertyObjectHasVersion() {
-            PersistorTestSuite.CollectionPropertyObjectHasVersion();
+            tests.CollectionPropertyObjectHasVersion();
         }
 
         [Test]
         public void CollectionPropertyObjectResolveStateIsPersistent() {
-            PersistorTestSuite.CollectionPropertyObjectResolveStateIsPersistent();
+            tests.CollectionPropertyObjectResolveStateIsPersistent();
         }
 
         [Test]
         public void CreateTransientInlineInstance() {
-            PersistorTestSuite.CreateTransientInlineInstance();
+            tests.CreateTransientInlineInstance();
         }
 
         [Test]
         public void EmptyCollectionPropertyCollectionResolveStateIsPersistent() {
-            PersistorTestSuite.EmptyCollectionPropertyCollectionResolveStateIsPersistent();
+            tests.EmptyCollectionPropertyCollectionResolveStateIsPersistent();
         }
 
         [Test]
         public void GetInlineInstance() {
-            PersistorTestSuite.GetInlineInstance();
+            tests.GetInlineInstance();
         }
 
         [Test]
         public void GetInstanceFromInstancesOfSpecification() {
-            PersistorTestSuite.GetInstanceFromInstancesOfSpecification();
+            tests.GetInstanceFromInstancesOfSpecification();
         }
 
         [Test]
         public void GetInstanceFromInstancesOfT() {
-            PersistorTestSuite.GetInstanceFromInstancesOfT();
+            tests.GetInstanceFromInstancesOfT();
         }
 
         [Test]
         public void GetInstanceFromInstancesOfType() {
-            PersistorTestSuite.GetInstanceFromInstancesOfType();
+            tests.GetInstanceFromInstancesOfType();
         }
 
         [Test]
         public void GetInstanceHasVersion() {
-            PersistorTestSuite.GetInstanceHasVersion();
+            tests.GetInstanceHasVersion();
         }
 
         [Test]
         public void GetInstanceIsAlwaysSameObject() {
-            PersistorTestSuite.GetInstanceIsAlwaysSameObject();
+            tests.GetInstanceIsAlwaysSameObject();
         }
 
         [Test]
         public void GetInstanceResolveStateIsPersistent() {
-            PersistorTestSuite.GetInstanceResolveStateIsPersistent();
+            tests.GetInstanceResolveStateIsPersistent();
         }
 
         [Test]
         public void InlineObjectCallsCreated() {
-            PersistorTestSuite.InlineObjectCallsCreated();
+            tests.InlineObjectCallsCreated();
         }
 
         [Test]
         public void InlineObjectHasContainerInjected() {
-            PersistorTestSuite.InlineObjectHasContainerInjected();
+            tests.InlineObjectHasContainerInjected();
         }
 
         [Test]
         public void InlineObjectHasLoadingLoadedCalled() {
-            PersistorTestSuite.InlineObjectHasLoadingLoadedCalled();
+            tests.InlineObjectHasLoadingLoadedCalled();
         }
 
         [Test]
         public void InlineObjectHasParentInjected() {
-            PersistorTestSuite.InlineObjectHasParentInjected();
+            tests.InlineObjectHasParentInjected();
         }
 
         [Test]
         public void InlineObjectHasServiceInjected() {
-            PersistorTestSuite.InlineObjectHasServiceInjected();
+            tests.InlineObjectHasServiceInjected();
         }
 
         [Test]
         public void InlineObjectHasVersion() {
-            PersistorTestSuite.InlineObjectHasVersion();
+            tests.InlineObjectHasVersion();
         }
 
         [Test]
         public void LoadObjectReturnSameObject() {
-            PersistorTestSuite.LoadObjectReturnSameObject();
+            tests.LoadObjectReturnSameObject();
         }
 
         [Test]
         public void NewObjectHasContainerInjected() {
-            PersistorTestSuite.NewObjectHasContainerInjected();
+            tests.NewObjectHasContainerInjected();
         }
 
         [Test]
         public void NewObjectHasCreatedCalled() {
-            PersistorTestSuite.NewObjectHasCreatedCalled();
+            tests.NewObjectHasCreatedCalled();
         }
 
         [Test]
         public void NewObjectHasServiceInjected() {
-            PersistorTestSuite.NewObjectHasServiceInjected();
+            tests.NewObjectHasServiceInjected();
         }
 
         [Test]
         public void NewObjectHasVersion() {
-            PersistorTestSuite.NewObjectHasVersion();
+            tests.NewObjectHasVersion();
         }
 
         [Test]
         public void NewObjectIsCreated() {
-            PersistorTestSuite.NewObjectIsCreated();
+            tests.NewObjectIsCreated();
         }
 
         [Test]
         public void NewObjectIsTransient() {
-            PersistorTestSuite.NewObjectIsTransient();
+            tests.NewObjectIsTransient();
         }
 
         [Test]
         public void PersistentObjectHasContainerInjected() {
-            PersistorTestSuite.PersistentObjectHasContainerInjected();
+            tests.PersistentObjectHasContainerInjected();
         }
 
         [Test]
         public void PersistentObjectHasLoadingLoadedCalled() {
-            PersistorTestSuite.PersistentObjectHasLoadingLoadedCalled();
+            tests.PersistentObjectHasLoadingLoadedCalled();
         }
 
         [Test]
         public void PersistentObjectHasServiceInjected() {
-            PersistorTestSuite.PersistentObjectHasServiceInjected();
+            tests.PersistentObjectHasServiceInjected();
         }
 
         [Test]
         public void ReferencePropertyHasLoadingLoadedCalled() {
-            PersistorTestSuite.ReferencePropertyHasLoadingLoadedCalled();
+            tests.ReferencePropertyHasLoadingLoadedCalled();
         }
 
         [Test]
         public void ReferencePropertyObjectHasContainerInjected() {
-            PersistorTestSuite.ReferencePropertyObjectHasContainerInjected();
+            tests.ReferencePropertyObjectHasContainerInjected();
         }
 
         [Test]
         public void ReferencePropertyObjectHasServiceInjected() {
-            PersistorTestSuite.ReferencePropertyObjectHasServiceInjected();
+            tests.ReferencePropertyObjectHasServiceInjected();
         }
 
         [Test]
         public void ReferencePropertyObjectHasVersion() {
-            PersistorTestSuite.ReferencePropertyObjectHasVersion();
+            tests.ReferencePropertyObjectHasVersion();
         }
 
         [Test]
         public void ReferencePropertyObjectResolveStateIsPersistent() {
-            PersistorTestSuite.ReferencePropertyObjectResolveStateIsPersistent();
+            tests.ReferencePropertyObjectResolveStateIsPersistent();
         }
 
         [Test]
         public void RemoveFromCollectionOnPersistent() {
-            PersistorTestSuite.RemoveFromCollectionOnPersistent();
+            tests.RemoveFromCollectionOnPersistent();
         }
 
         [Test]
         public void SaveInlineObjectCallsPersistingPersisted() {
-            PersistorTestSuite.SaveInlineObjectCallsPersistingPersisted();
+            tests.SaveInlineObjectCallsPersistingPersisted();
         }
 
         [Test]
         public void SaveNewObjectCallsPersistingPersisted() {
-            PersistorTestSuite.SaveNewObjectCallsPersistingPersisted();
+            tests.SaveNewObjectCallsPersistingPersisted();
         }
 
         [Test]
         public void SaveNewObjectCallsPersistingPersistedRecursively() {
-            PersistorTestSuite.SaveNewObjectCallsPersistingPersistedRecursively();
+            tests.SaveNewObjectCallsPersistingPersistedRecursively();
         }
 
         [Test]
         public void SaveNewObjectTransientCollectionItemCallsPersistingPersisted() {
-            PersistorTestSuite.SaveNewObjectTransientCollectionItemCallsPersistingPersisted();
+            tests.SaveNewObjectTransientCollectionItemCallsPersistingPersisted();
         }
 
         [Test]
         public void SaveNewObjectTransientReferenceCallsPersistingPersisted() {
-            PersistorTestSuite.SaveNewObjectTransientReferenceCallsPersistingPersisted();
+            tests.SaveNewObjectTransientReferenceCallsPersistingPersisted();
         }
 
         [Test]
         public void SaveNewObjectWithPersistentItemCollectionItem() {
-            PersistorTestSuite.SaveNewObjectWithPersistentItemCollectionItem();
+            tests.SaveNewObjectWithPersistentItemCollectionItem();
         }
 
         [Test]
         public void SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction() {
-            PersistorTestSuite.SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction();
+            tests.SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction();
         }
 
         [Test]
         public void SaveNewObjectWithPersistentReference() {
-            PersistorTestSuite.SaveNewObjectWithPersistentReference();
+            tests.SaveNewObjectWithPersistentReference();
         }
 
         [Test]
         public void SaveNewObjectWithPersistentReferenceInSeperateTransaction() {
-            PersistorTestSuite.SaveNewObjectWithPersistentReferenceInSeperateTransaction();
+            tests.SaveNewObjectWithPersistentReferenceInSeperateTransaction();
         }
 
         [Test]
         public void SaveNewObjectWithScalars() {
-            PersistorTestSuite.SaveNewObjectWithScalars();
+            tests.SaveNewObjectWithScalars();
         }
 
         [Test]
         public void SaveNewObjectWithValidate() {
-            PersistorTestSuite.SaveNewObjectWithValidate();
+            tests.SaveNewObjectWithValidate();
         }
 
         [Test]
         public void ChangeObjectWithValidate() {
-            PersistorTestSuite.ChangeObjectWithValidate();
+            tests.ChangeObjectWithValidate();
         }
 
         [Test]
         public void SaveNewObjectWithTransientReferenceInvalid() {
-            PersistorTestSuite.SaveNewObjectWithTransientReferenceInvalid();
+            tests.SaveNewObjectWithTransientReferenceInvalid();
         }
 
         [Test]
         public void SaveNewObjectWithTransientReferenceObjectInvalid() {
-            PersistorTestSuite.SaveNewObjectWithTransientReferenceObjectInvalid();
+            tests.SaveNewObjectWithTransientReferenceObjectInvalid();
         }
 
         [Test]
         public void SaveNewObjectWithTransientReferenceValidateAssocInvalid() {
-            PersistorTestSuite.SaveNewObjectWithTransientReferenceValidateAssocInvalid();
+            tests.SaveNewObjectWithTransientReferenceValidateAssocInvalid();
         }
 
 
         [Test]
         public void SaveNewObjectWithTransientCollectionItem() {
-            PersistorTestSuite.SaveNewObjectWithTransientCollectionItem();
+            tests.SaveNewObjectWithTransientCollectionItem();
         }
 
         [Test]
         public void SaveNewObjectWithTransientReference() {
-            PersistorTestSuite.SaveNewObjectWithTransientReference();
+            tests.SaveNewObjectWithTransientReference();
         }
 
         [Test]
         public void TrainsientInlineObjectHasVersion() {
-            PersistorTestSuite.TrainsientInlineObjectHasVersion();
+            tests.TrainsientInlineObjectHasVersion();
         }
 
         [Test]
         public void TransientInlineObjectHasContainerInjected() {
-            PersistorTestSuite.TransientInlineObjectHasContainerInjected();
+            tests.TransientInlineObjectHasContainerInjected();
         }
 
         [Test]
         public void TransientInlineObjectHasParentInjected() {
-            PersistorTestSuite.TransientInlineObjectHasParentInjected();
+            tests.TransientInlineObjectHasParentInjected();
         }
 
         [Test]
         public void TransientInlineObjectHasServiceInjected() {
-            PersistorTestSuite.TransientInlineObjectHasServiceInjected();
+            tests.TransientInlineObjectHasServiceInjected();
         }
 
         [Test]
         public void UpdateInlineObjectUpdatesUi() {
-            PersistorTestSuite.UpdateInlineObjectUpdatesUi();
+            tests.UpdateInlineObjectUpdatesUi();
         }
 
         [Test]
         public void GetKeysReturnsKeys() {
-            PersistorTestSuite.GetKeysReturnsKeys();
+            tests.GetKeysReturnsKeys();
         }
 
         [Test]
         public void FindByKey() {
-            PersistorTestSuite.FindByKey();
+            tests.FindByKey();
         }
 
         [Test]
         public void CreateAndDeleteNewObjectWithScalars() {
-            PersistorTestSuite.CreateAndDeleteNewObjectWithScalars();
+            tests.CreateAndDeleteNewObjectWithScalars();
         }
 
         [Test]
         public void DeleteObjectCallsDeletingDeleted() {
-            PersistorTestSuite.DeleteObjectCallsDeletingDeleted();
+            tests.DeleteObjectCallsDeletingDeleted();
         }
 
         [Test]
         public void CountCollectionOnPersistent() {
-            PersistorTestSuite.CountCollectionOnPersistent();
+            tests.CountCollectionOnPersistent();
         }
 
         [Test]
         public void CountUnResolvedCollectionOnPersistent() {
-            PersistorTestSuite.CountUnResolvedCollectionOnPersistent();
+            tests.CountUnResolvedCollectionOnPersistent();
         }
 
         [Test]
         public void CountEmptyCollectionOnTransient() {
-            PersistorTestSuite.CountEmptyCollectionOnTransient();
+            tests.CountEmptyCollectionOnTransient();
         }
 
         [Test]
         public void CountCollectionOnTransient() {
-            PersistorTestSuite.CountCollectionOnTransient();
+            tests.CountCollectionOnTransient();
         } 
 
         [Test]
         [Ignore("#973")]
         public void RefreshResetsObject() {
-            PersistorTestSuite.RefreshResetsObject();
+            tests.RefreshResetsObject();
         }
     }
 }

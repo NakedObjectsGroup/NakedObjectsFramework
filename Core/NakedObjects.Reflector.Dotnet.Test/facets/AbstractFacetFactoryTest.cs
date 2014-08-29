@@ -4,15 +4,15 @@
 
 using System;
 using System.Reflection;
+using Moq;
 using NakedObjects.Architecture.Reflect;
 using NUnit.Framework;
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Testing;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class AbstractFacetFactoryTest {
         protected FacetHolderImpl facetHolder;
-        protected ProgrammableMethodRemover methodRemover;
+        protected IMethodRemover methodRemover;
         protected INakedObjectReflector reflector;
         protected abstract Type[] SupportedTypes { get; }
         protected abstract IFacetFactory FacetFactory { get; }
@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         public virtual void SetUp() {
             facetHolder = new FacetHolderImpl();
             methodRemover = new ProgrammableMethodRemover();
-            reflector = new ProgrammableReflector(new ProgrammableTestSystem());
+            reflector = new Mock<INakedObjectReflector>().Object;
         }
 
         public virtual void TearDown() {
@@ -90,8 +90,9 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         }
 
         protected void AssertNoMethodsRemoved() {
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Count == 0);
-            Assert.IsTrue(methodRemover.GetRemoveMethodArgsCalls().Count == 0);
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Count == 0);
+            //Assert.IsTrue(methodRemover.GetRemoveMethodArgsCalls().Count == 0);
+            Assert.Fail(); // fix this 
         }
 
         public abstract void TestFeatureTypes();

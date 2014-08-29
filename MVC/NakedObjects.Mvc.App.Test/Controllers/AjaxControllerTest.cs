@@ -15,7 +15,6 @@ using Moq;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.EntityObjectStore;
@@ -91,8 +90,8 @@ namespace MvcTestApp.Tests.Controllers {
             const string actionName = "CreateNewOrder";
             const string parameterName = "customer";
 
-            string id = FrameworkHelper.GetObjectId(store);
-            string value = FrameworkHelper.GetObjectId(vendor);
+            string id = NakedObjectsContext.GetObjectId(store);
+            string value = NakedObjectsContext.GetObjectId(vendor);
 
             JsonResult result = controller.ValidateParameter(id, value, actionName, parameterName);
             Assert.AreEqual("Not a suitable type; must be a Customer", result.Data);
@@ -106,8 +105,8 @@ namespace MvcTestApp.Tests.Controllers {
             Store store = NakedObjectsContext.ObjectPersistor.Instances<Store>().First();
             Store store1 = NakedObjectsContext.ObjectPersistor.Instances<Store>().OrderBy(x => "").Skip(1).First();
 
-            string id = FrameworkHelper.GetObjectId(store);
-            string value = FrameworkHelper.GetObjectId(store1);
+            string id = NakedObjectsContext.GetObjectId(store);
+            string value = NakedObjectsContext.GetObjectId(store1);
             const string propertyName = "SalesPerson";
 
             JsonResult result = controller.ValidateProperty(id, value, propertyName);
@@ -119,13 +118,13 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
-            INakedObject contactRepo = FrameworkHelper.GetAdaptedService("ContactRepository");
+            INakedObject contactRepo = NakedObjectsContext.GetAdaptedService("ContactRepository");
 
 
             const string actionName = "FindContactByName";
             const string parameterName = "lastName";
 
-            string id = FrameworkHelper.GetObjectId(contactRepo);
+            string id = NakedObjectsContext.GetObjectId(contactRepo);
             const string value = "";
             const string parmId = "ContactRepository-FindContactByName-LastName-Input";
             mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parmId, value}});
@@ -140,7 +139,7 @@ namespace MvcTestApp.Tests.Controllers {
             var mocks = new ContextMocks(controller);
 
             Vendor vendor = NakedObjectsContext.ObjectPersistor.Instances<Vendor>().First();
-            string id = FrameworkHelper.GetObjectId(vendor);
+            string id = NakedObjectsContext.GetObjectId(vendor);
             const string value = "";
             const string propertyName = "AccountNumber";
             const string fieldId = "Vendor-AccountNumber-Input";
@@ -160,8 +159,8 @@ namespace MvcTestApp.Tests.Controllers {
             const string parameterName = "customer";
 
 
-            string id = FrameworkHelper.GetObjectId(store);
-            string value = FrameworkHelper.GetObjectId(store);
+            string id = NakedObjectsContext.GetObjectId(store);
+            string value = NakedObjectsContext.GetObjectId(store);
 
             JsonResult result = controller.ValidateParameter(id, value, actionName, parameterName);
             Assert.IsTrue((bool) result.Data);
@@ -175,8 +174,8 @@ namespace MvcTestApp.Tests.Controllers {
             Store store = NakedObjectsContext.ObjectPersistor.Instances<Store>().First();
             SalesPerson salesPerson = NakedObjectsContext.ObjectPersistor.Instances<SalesPerson>().First();
 
-            string id = FrameworkHelper.GetObjectId(store);
-            string value = FrameworkHelper.GetObjectId(salesPerson);
+            string id = NakedObjectsContext.GetObjectId(store);
+            string value = NakedObjectsContext.GetObjectId(salesPerson);
             const string propertyName = "SalesPerson";
 
             JsonResult result = controller.ValidateProperty(id, value, propertyName);
@@ -188,13 +187,13 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
-            INakedObject contactRepo = FrameworkHelper.GetAdaptedService("ContactRepository");
+            INakedObject contactRepo = NakedObjectsContext.GetAdaptedService("ContactRepository");
 
 
             const string actionName = "FindContactByName";
             const string parameterName = "lastName";
 
-            string id = FrameworkHelper.GetObjectId(contactRepo);
+            string id = NakedObjectsContext.GetObjectId(contactRepo);
             const string value = "Bloggs";
             const string parmId = "ContactRepository-FindContactByName-LastName-Input";
             mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parmId, value}});
@@ -210,7 +209,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             Vendor vendor = NakedObjectsContext.ObjectPersistor.Instances<Vendor>().First();
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            string id = FrameworkHelper.GetObjectId(vendor);
+            string id = NakedObjectsContext.GetObjectId(vendor);
             string value = uniqueActNum;
             const string propertyName = "AccountNumber";
             const string fieldId = "Vendor-AccountNumber-Input";
@@ -226,7 +225,7 @@ namespace MvcTestApp.Tests.Controllers {
             var mocks = new ContextMocks(controller);
 
             TimePeriod timePeriod = NakedObjectsContext.ObjectPersistor.Instances<Shift>().First().Times;
-            string id = FrameworkHelper.GetObjectId(timePeriod);
+            string id = NakedObjectsContext.GetObjectId(timePeriod);
             string value = DateTime.Now.ToString();
             const string propertyName = "StartTime";
             const string fieldId = "Times-TimePeriod-StartTime-Input";
@@ -292,11 +291,11 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
-            INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");
+            INakedObject choicesRepo = NakedObjectsContext.GetAdaptedService("ChoicesRepository");
 
             const string actionName = "AnAction";
           
-            string id = FrameworkHelper.GetObjectId(choicesRepo);
+            string id = NakedObjectsContext.GetObjectId(choicesRepo);
            
             const string parm1Id = "ChoicesRepository-AnAction-Parm1-Input0";
             const string parm2Id = "ChoicesRepository-AnAction-Parm2-Input0";
@@ -326,11 +325,11 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
-            INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");
+            INakedObject choicesRepo = NakedObjectsContext.GetAdaptedService("ChoicesRepository");
 
             const string actionName = "AnActionMultiple";
 
-            string id = FrameworkHelper.GetObjectId(choicesRepo);
+            string id = NakedObjectsContext.GetObjectId(choicesRepo);
 
             const string parm1Id = "ChoicesRepository-AnActionMultiple-Parm1-Select0";
             const string parm2Id = "ChoicesRepository-AnActionMultiple-Parm2-Select0";
@@ -360,11 +359,11 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
-            INakedObject autoCompleteRepo = FrameworkHelper.GetAdaptedService("AutoCompleteRepository");
+            INakedObject autoCompleteRepo = NakedObjectsContext.GetAdaptedService("AutoCompleteRepository");
 
             const string actionName = "AnAction";
 
-            string id = FrameworkHelper.GetObjectId(autoCompleteRepo);
+            string id = NakedObjectsContext.GetObjectId(autoCompleteRepo);
 
             const string parm1Id = "AutoCompleteRepository-AnAction-name-Input";
         
@@ -400,11 +399,11 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
-            INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");
+            INakedObject choicesRepo = NakedObjectsContext.GetAdaptedService("ChoicesRepository");
 
             const string actionName = "AnAction";
 
-            string id = FrameworkHelper.GetObjectId(choicesRepo);
+            string id = NakedObjectsContext.GetObjectId(choicesRepo);
 
             const string parm1Id = "ChoicesRepository-AnAction-Parm1-Input0";
             const string parm2Id = "ChoicesRepository-AnAction-Parm2-Input0";
@@ -432,11 +431,11 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
-            INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");
+            INakedObject choicesRepo = NakedObjectsContext.GetAdaptedService("ChoicesRepository");
 
             const string actionName = "AnActionMultiple";
 
-            string id = FrameworkHelper.GetObjectId(choicesRepo);
+            string id = NakedObjectsContext.GetObjectId(choicesRepo);
 
             const string parm1Id = "ChoicesRepository-AnActionMultiple-Parm1-Select0";
             const string parm2Id = "ChoicesRepository-AnActionMultiple-Parm2-Select0";
@@ -464,11 +463,11 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
-            INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");
+            INakedObject choicesRepo = NakedObjectsContext.GetAdaptedService("ChoicesRepository");
 
             const string actionName = "AnActionMultiple";
 
-            string id = FrameworkHelper.GetObjectId(choicesRepo);
+            string id = NakedObjectsContext.GetObjectId(choicesRepo);
 
             const string parm1Id0 = "ChoicesRepository-AnActionMultiple-Parm1-Select0";
             const string parm1Id1 = "ChoicesRepository-AnActionMultiple-Parm1-Select1";
@@ -531,11 +530,11 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
-            INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");
+            INakedObject choicesRepo = NakedObjectsContext.GetAdaptedService("ChoicesRepository");
             object choicesObject = choicesRepo.GetDomainObject<ChoicesRepository>().GetChoicesObject();
 
 
-            string id = FrameworkHelper.GetObjectId(choicesObject);
+            string id = NakedObjectsContext.GetObjectId(choicesObject);
 
             const string parm1Id = "ChoicesObject-Name-Input";
             const string parm2Id = "ChoicesObject-AProperty-Input";
@@ -560,10 +559,10 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
-            INakedObject autoCompleteRepo = FrameworkHelper.GetAdaptedService("AutoCompleteRepository");
+            INakedObject autoCompleteRepo = NakedObjectsContext.GetAdaptedService("AutoCompleteRepository");
             object autoCompleteObject = autoCompleteRepo.GetDomainObject<AutoCompleteRepository>().GetAutoCompleteObject();
 
-            string id = FrameworkHelper.GetObjectId(autoCompleteObject);
+            string id = NakedObjectsContext.GetObjectId(autoCompleteObject);
 
             const string parm1Id = "AutoCompleteObject-Name-Input";
             
@@ -597,11 +596,11 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new AjaxController(null);
             var mocks = new ContextMocks(controller);
 
-            INakedObject choicesRepo = FrameworkHelper.GetAdaptedService("ChoicesRepository");
+            INakedObject choicesRepo = NakedObjectsContext.GetAdaptedService("ChoicesRepository");
             object choicesObject = choicesRepo.GetDomainObject<ChoicesRepository>().GetChoicesObject();
 
 
-            string id = FrameworkHelper.GetObjectId(choicesObject);
+            string id = NakedObjectsContext.GetObjectId(choicesObject);
 
             const string parm1Id = "ChoicesObject-Name-Input0";
             const string parm2Id = "ChoicesObject-AProperty-Input0";

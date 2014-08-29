@@ -153,14 +153,8 @@
     <Compile Include="adapter\StringDecoderHelper.cs" />
     <Compile Include="adapter\StringEncoderHelper.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="context\HttpContextContext.cs" />
-    <Compile Include="context\MultiUserContext.cs" />
-    <Compile Include="context\NakedObjectsContext.cs" />
-    <Compile Include="context\NakedObjectsData.cs" />
     <Compile Include="context\SimpleMessageBroker.cs" />
     <Compile Include="context\SimpleUpdateNotifier.cs" />
-    <Compile Include="context\StaticContext.cs" />
-    <Compile Include="context\ThreadContext.cs" />
     <Compile Include="context\IUpdateNotifier.cs" />
     <Compile Include="object\IMessageBroker.cs" />
     <Compile Include="persist\AbstractFixtureBuilder.cs" />

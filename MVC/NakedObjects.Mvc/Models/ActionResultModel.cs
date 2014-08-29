@@ -10,7 +10,6 @@ using System.Linq.Expressions;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Persist;
-using NakedObjects.Core.Context;
 
 namespace NakedObjects.Web.Mvc.Models {
     public abstract class ActionResultModel : IEnumerable {
@@ -31,14 +30,14 @@ namespace NakedObjects.Web.Mvc.Models {
             return Result.GetEnumerator();
         }
 
-        public static ActionResultModel Create(INakedObjectAction action, INakedObject nakedObject, int page, int pageSize, string format) {
+        public static ActionResultModel Create(INakedObjectsFramework framework,  INakedObjectAction action, INakedObject nakedObject, int page, int pageSize, string format) {
             var result = (IEnumerable) nakedObject.Object;
             Type genericType = result.GetType().IsGenericType ? result.GetType().GetGenericArguments().First() : typeof (object);
             Type armGenericType = result is IQueryable ? typeof (ActionResultModelQ<>) : typeof (ActionResultModel<>);
             Type armType = armGenericType.MakeGenericType(genericType);
             var arm = (ActionResultModel) Activator.CreateInstance(armType, action, result);
-            INakedObject noArm = NakedObjectsContext.ObjectPersistor.CreateAdapter(arm, null, null);
-            noArm.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, (CollectionMemento)nakedObject.Oid, new object[] { }));
+            INakedObject noArm = framework.ObjectPersistor.CreateAdapter(arm, null, null);
+            noArm.SetATransientOid(new CollectionMemento(framework.ObjectPersistor, framework.Reflector, framework.Session, (CollectionMemento)nakedObject.Oid, new object[] { }));
             arm.Page = page;
             arm.PageSize = pageSize;
             arm.Format = format;

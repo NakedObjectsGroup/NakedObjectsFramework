@@ -11,7 +11,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
     [TestFixture]
     public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TimeSpan> {
         [SetUp]
-        public override void SetUp() {
+        public  override void SetUp() {
             base.SetUp();
             SetupSpecification(typeof (TimeSpan));
             time = new TimeSpan(8, 13, 0);

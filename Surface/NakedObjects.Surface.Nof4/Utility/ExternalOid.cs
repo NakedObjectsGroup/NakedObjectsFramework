@@ -10,7 +10,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.ViewModel;
 using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 using NakedObjects.Services;
 using NakedObjects.Surface.Nof4.Wrapper;
 using NakedObjects.Surface.Utility;
@@ -19,11 +18,19 @@ using NakedObjects.Util;
 namespace NakedObjects.Surface.Nof4.Utility {
     // to do generalise this 
     public class ExternalOid : IOidStrategy {
-     
+        private readonly INakedObjectsFramework framework;
 
-        public INakedObjectsSurface Surface { protected get; set; }
+        public ExternalOid(INakedObjectsFramework framework) {
+            this.framework = framework;
+        }
+
+        private string GetCode(INakedObjectSpecificationSurface spec) {
+            return GetCode(TypeUtils.GetType(spec.FullName()));
+        }
 
         #region IOidStrategy Members
+
+        public INakedObjectsSurface Surface { protected get; set; }
 
         public object GetDomainObjectByOid(LinkObjectId objectId) {
             Type type = ValidateObjectId(objectId);
@@ -41,7 +48,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             Type type = ValidateServiceId(oid);
             INakedObjectSpecification spec;
             try {
-                spec = NakedObjectsContext.Reflector.LoadSpecification(type);
+                spec = framework.Reflector.LoadSpecification(type);
             }
             catch (Exception e) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString(), e);
@@ -49,7 +56,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             if (spec == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
-            INakedObject service = NakedObjectsContext.ObjectPersistor.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor).SingleOrDefault(no => no.Specification.IsOfType(spec));
+            INakedObject service = framework.ObjectPersistor.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor).SingleOrDefault(no => no.Specification.IsOfType(spec));
             if (service == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
@@ -64,8 +71,8 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         public INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType) {
             Type type = GetType(linkDomainType);
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(type);
-            return new NakedObjectSpecificationWrapper(spec, Surface);
+            INakedObjectSpecification spec = framework.Reflector.LoadSpecification(type);
+            return new NakedObjectSpecificationWrapper(spec, Surface, framework);
         }
 
         public string GetLinkDomainTypeBySpecification(INakedObjectSpecificationSurface spec) {
@@ -75,20 +82,20 @@ namespace NakedObjects.Surface.Nof4.Utility {
         #endregion
 
         protected Tuple<string, string> GetCodeAndKeyAsTuple(INakedObjectSurface nakedObject) {
-            var code = GetCode(nakedObject.Specification);
+            string code = GetCode(nakedObject.Specification);
             return new Tuple<string, string>(code, GetKeyValues(nakedObject));
         }
 
-        private static string KeyRepresentation(object obj) {
+        private string KeyRepresentation(object obj) {
             if (obj is DateTime) {
                 obj = ((DateTime) obj).Ticks;
             }
             return (string) Convert.ChangeType(obj, typeof (string)); // better ? 
         }
 
-        protected static string GetKeyValues(INakedObjectSurface nakedObjectForKey) {
+        protected string GetKeyValues(INakedObjectSurface nakedObjectForKey) {
             string[] keys;
-            var wrappedNakedObject = ((NakedObjectWrapper) nakedObjectForKey).WrappedNakedObject;
+            INakedObject wrappedNakedObject = ((NakedObjectWrapper) nakedObjectForKey).WrappedNakedObject;
 
             if (wrappedNakedObject.Specification.IsViewModel) {
                 keys = wrappedNakedObject.Specification.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject);
@@ -102,39 +109,39 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         private static object CoerceType(Type type, string value) {
-            if (type == typeof(DateTime)) {
-                var ticks = long.Parse(value);
+            if (type == typeof (DateTime)) {
+                long ticks = long.Parse(value);
                 return new DateTime(ticks);
             }
 
             return Convert.ChangeType(value, type);
         }
 
-        private static IDictionary<string, object> CreateKeyDictionary(string[] keys, Type type) {
-            PropertyInfo[] keyProperties = NakedObjectsContext.ObjectPersistor.GetKeys(type);
+        private IDictionary<string, object> CreateKeyDictionary(string[] keys, Type type) {
+            PropertyInfo[] keyProperties = framework.ObjectPersistor.GetKeys(type);
             int index = 0;
             return keyProperties.ToDictionary(kp => kp.Name, kp => CoerceType(kp.PropertyType, keys[index++]));
         }
 
-        protected static object GetObject(string[] keys, Type type) {
-            var spec = NakedObjectsContext.Reflector.LoadSpecification(type);
+        protected object GetObject(string[] keys, Type type) {
+            INakedObjectSpecification spec = framework.Reflector.LoadSpecification(type);
             return spec.IsViewModel ? GetViewModel(keys, spec) : GetDomainObject(keys, type);
         }
 
 
-        protected static object GetDomainObject(string[] keys, Type type) {
+        protected object GetDomainObject(string[] keys, Type type) {
             try {
                 IDictionary<string, object> keyDict = CreateKeyDictionary(keys, type);
-                return NakedObjectsContext.ObjectPersistor.FindByKeys(type, keyDict.Values.ToArray()).GetDomainObject();
+                return framework.ObjectPersistor.FindByKeys(type, keyDict.Values.ToArray()).GetDomainObject();
             }
             catch (Exception) {
                 return null;
             }
         }
 
-        protected static object GetViewModel(string[] keys, INakedObjectSpecification spec) {
+        protected object GetViewModel(string[] keys, INakedObjectSpecification spec) {
             try {
-                INakedObject viewModel = NakedObjectsContext.ObjectPersistor.CreateViewModel(spec);
+                INakedObject viewModel = framework.ObjectPersistor.CreateViewModel(spec);
                 spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel);
                 return viewModel.Object;
             }
@@ -143,41 +150,37 @@ namespace NakedObjects.Surface.Nof4.Utility {
             }
         }
 
-        private static Type GetType(string typeName) {
+        private Type GetType(string typeName) {
             return GetTypeCodeMapper().TypeFromCode(typeName);
         }
 
-        private static ITypeCodeMapper GetTypeCodeMapper() {
-            return (ITypeCodeMapper) NakedObjectsContext.ObjectPersistor.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
+        private ITypeCodeMapper GetTypeCodeMapper() {
+            return (ITypeCodeMapper) framework.ObjectPersistor.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultTypeCodeMapper();
         }
 
-        private static IKeyCodeMapper GetKeyCodeMapper() {
-            return (IKeyCodeMapper)NakedObjectsContext.ObjectPersistor.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
+        private IKeyCodeMapper GetKeyCodeMapper() {
+            return (IKeyCodeMapper) framework.ObjectPersistor.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultKeyCodeMapper();
         }
 
-        private static string[] GetKeys(string instanceId, Type type) {
+        private string[] GetKeys(string instanceId, Type type) {
             return GetKeyCodeMapper().KeyFromCode(instanceId, type);
         }
 
-        private static string GetCode(Type type) {
+        private string GetCode(Type type) {
             return GetTypeCodeMapper().CodeFromType(type);
         }
 
-        private static string GetCode(INakedObjectSpecificationSurface spec) {
-            return GetCode(TypeUtils.GetType(spec.FullName()));
-        }
-
-        protected static Type ValidateServiceId(LinkObjectId objectId) {
+        protected Type ValidateServiceId(LinkObjectId objectId) {
             return ValidateId(objectId, () => { throw new ServiceResourceNotFoundNOSException(objectId.ToString()); });
         }
 
-        protected static Type ValidateObjectId(LinkObjectId objectId) {
+        protected Type ValidateObjectId(LinkObjectId objectId) {
             return ValidateId(objectId, () => { throw new ObjectResourceNotFoundNOSException(objectId.ToString()); });
         }
 
-        private static Type ValidateId(LinkObjectId objectId, Action onError) {
+        private Type ValidateId(LinkObjectId objectId, Action onError) {
             if (string.IsNullOrEmpty(objectId.DomainType.Trim())) {
                 throw new BadRequestNOSException();
             }

@@ -51,31 +51,31 @@ type CodeSystemTests() =
                        
           
     member x.GetPersonDomainObject() = 
-       let pp = NakedObjectsContext.ObjectPersistor.Instances<Person>() 
+       let pp = x.NakedObjectsContext.ObjectPersistor.Instances<Person>() 
        pp |>  Seq.head
       
     member x.GetCategoryDomainObject() = 
-       let cc = NakedObjectsContext.ObjectPersistor.Instances<Category>()
+       let cc = x.NakedObjectsContext.ObjectPersistor.Instances<Category>()
        cc |>  Seq.head
         
     member x.CreatePerson() = 
        let setter (p : Person) = 
            p.Name <- uniqueName()
-       SystemTestCode.CreateAndSetup<Person> setter 
+       SystemTestCode.CreateAndSetup<Person> setter x.NakedObjectsContext
      
     member x.CreateProduct() = 
        let setter (pr : Product) = 
            pr.Name <- uniqueName()
-       SystemTestCode.CreateAndSetup<Product> setter 
+       SystemTestCode.CreateAndSetup<Product> setter x.NakedObjectsContext
                      
     [<Test>]
     member x.GetService() = 
-        let service = NakedObjectsContext.ObjectPersistor.GetService("repository#TestCodeOnly.Person")
+        let service = x.NakedObjectsContext.ObjectPersistor.GetService("repository#TestCodeOnly.Person")
         Assert.IsNotNull(service.Object)     
                
     [<Test>]
     member x.GetCollectionDirectly() = 
-        let pp = NakedObjectsContext.ObjectPersistor.Instances<Person>()
+        let pp = x.NakedObjectsContext.ObjectPersistor.Instances<Person>()
         Assert.Greater(pp |> Seq.length, 0)
               
     [<Test>]
@@ -86,7 +86,8 @@ type CodeSystemTests() =
             
     [<Test>]
     member x.CheckIdentitiesAreConsistent() = 
-       let getp sel  =  NakedObjectsContext.ObjectPersistor.Instances<Person>() |> sel
+       let ctx = x.NakedObjectsContext
+       let getp sel  =  ctx.ObjectPersistor.Instances<Person>() |> sel
        let (p1, p2, p3, p4) = (getp Seq.head, getp (Seq.skip 1 >> Seq.head), getp Seq.head, getp (Seq.skip 1 >> Seq.head))
        Assert.AreSame(p1, p3)
        Assert.AreSame(p2, p4)
@@ -100,7 +101,7 @@ type CodeSystemTests() =
       
     [<Test>]
     member x.CheckResolveStateOfTransientObject() = 
-       let p = Create<Person>()
+       let p = Create<Person>(x.NakedObjectsContext)
        IsNotNullAndTransient p
        
     [<Test>]
@@ -117,7 +118,7 @@ type CodeSystemTests() =
            
     [<Test>]
     member x.GetInstanceIndirectly() = 
-       let pp = NakedObjectsContext.ObjectPersistor.Instances<Person>() |> System.Linq.Enumerable.ToArray
+       let pp = x.NakedObjectsContext.ObjectPersistor.Instances<Person>() |> System.Linq.Enumerable.ToArray
        let p = System.Linq.Enumerable.Where (pp, (fun (p : Person) -> p.Favourite <> null)) |> Seq.head
        Assert.IsNotNull(p)
        IsNotNullAndPersistent p.Favourite
@@ -126,7 +127,7 @@ type CodeSystemTests() =
     member x.CheckIdentitiesAreConsistentWhenNavigating() = 
        let p = x.GetPersonDomainObject()
        let pr = p.Favourite
-       let pp = NakedObjectsContext.ObjectPersistor.Instances<Person>() |> Seq.filter (fun i -> i.Favourite = pr) |> Seq.head
+       let pp = x.NakedObjectsContext.ObjectPersistor.Instances<Person>() |> Seq.filter (fun i -> i.Favourite = pr) |> Seq.head
        Assert.AreSame(p, pp)
            
     [<Test>]
@@ -146,16 +147,16 @@ type CodeSystemTests() =
     [<Test>]
     member x.CreateNewObjectWithScalars() =    
        let p = x.CreatePerson()
-       save p
+       save  p x.NakedObjectsContext
        IsNotNullAndPersistent p
           
     [<Test>]
     member x.CreateNewObjectWithPersistentReference() =         
        let pNo = x.CreatePerson()
        let p = box pNo.Object :?> Person
-       let pr = NakedObjectsContext.ObjectPersistor.Instances<Product>() |> Seq.head
+       let pr = x.NakedObjectsContext.ObjectPersistor.Instances<Product>() |> Seq.head
        p.Favourite <- pr
-       save pNo
+       save pNo x.NakedObjectsContext
        IsNotNullAndPersistent pNo 
            
     [<Test>]
@@ -165,8 +166,8 @@ type CodeSystemTests() =
        let prNo = x.CreateProduct()
        let pr = prNo.Object :?> Product 
        p.Favourite <- pr
-       save pNo
-       IsNotNullAndPersistent pNo 
+       save pNo x.NakedObjectsContext
+       IsNotNullAndPersistent pNo x.NakedObjectsContext
        IsNotNullAndPersistent prNo 
             
     [<Test>]
@@ -187,7 +188,7 @@ type CodeSystemTests() =
         let p = pNo.Object :?> Person
         Assert.IsNotNull(p.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
-        save pNo
+        save pNo x.NakedObjectsContext
         let p = pNo.Object :?> Person
         Assert.IsNotNull(p.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
@@ -198,7 +199,7 @@ type CodeSystemTests() =
         let changeName() = 
             let newName = uniqueName()
             p1.Name <-  newName
-        makeAndSaveChanges changeName
+        makeAndSaveChanges changeName x.NakedObjectsContext
         let p2 = x.GetPersonDomainObject()
         Assert.AreEqual(p1.Name, p2.Name)
      
@@ -206,7 +207,7 @@ type CodeSystemTests() =
     member x.UpdateScalarOnPersistentObjectCallsUpdatingUpdated() =
         let p1 = x.GetPersonDomainObject()
         let changeName() =  p1.Name <- uniqueName()
-        makeAndSaveChanges changeName     
+        makeAndSaveChanges changeName x.NakedObjectsContext    
         let m = p1.GetCallbackStatus()
         let findValue key = 
             let entry = m |> Seq.find (fun kvp -> kvp.Key = key)
@@ -219,45 +220,45 @@ type CodeSystemTests() =
      
     [<Test>]
     member x.UpdateScalarOnPersistentObjectNotifiesUI() =
-        NakedObjectsContext.UpdateNotifier.EnsureEmpty()
+        x.NakedObjectsContext.UpdateNotifier.EnsureEmpty()
         let p1 = x.GetPersonDomainObject()
         let changeName() = 
             let newName = uniqueName()
             p1.Name <-  newName
-        makeAndSaveChanges changeName
-        let updates =   CollectionUtils.ToEnumerable<INakedObject>(NakedObjectsContext.UpdateNotifier.AllChangedObjects())
+        makeAndSaveChanges changeName x.NakedObjectsContext
+        let updates =   CollectionUtils.ToEnumerable<INakedObject>(x.NakedObjectsContext.UpdateNotifier.AllChangedObjects())
         Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box p1))
                
     [<Test>]
     member x.UpdateReferenceOnPersistentObject() =
         let p1 = x.GetPersonDomainObject()
-        let pp = NakedObjectsContext.ObjectPersistor.Instances<Product>()
+        let pp = x.NakedObjectsContext.ObjectPersistor.Instances<Product>()
         let pr = pp |> Seq.filter (fun i -> p1.Favourite <> i) |> Seq.head     
         let changeFav() = 
             p1.Favourite <- pr
-        makeAndSaveChanges changeFav
+        makeAndSaveChanges changeFav x.NakedObjectsContext
         let p2 = x.GetPersonDomainObject()
         Assert.AreEqual(p1.Favourite, p2.Favourite)
      
     [<Test>]
     member x.UpdateReferenceOnPersistentObjectNotifiesUI() =
-        NakedObjectsContext.UpdateNotifier.EnsureEmpty()
+        x.NakedObjectsContext.UpdateNotifier.EnsureEmpty()
         let p1 = x.GetPersonDomainObject()
-        let pp = NakedObjectsContext.ObjectPersistor.Instances<Product>()
+        let pp = x.NakedObjectsContext.ObjectPersistor.Instances<Product>()
         let pr = pp |> Seq.toList |> Seq.filter (fun i -> p1.Favourite <> i) |> Seq.head     
         let changeFav() = 
             p1.Favourite <- pr
-        makeAndSaveChanges changeFav
-        let updates =   CollectionUtils.ToEnumerable<INakedObject>(NakedObjectsContext.UpdateNotifier.AllChangedObjects())
+        makeAndSaveChanges changeFav x.NakedObjectsContext
+        let updates =   CollectionUtils.ToEnumerable<INakedObject>(x.NakedObjectsContext.UpdateNotifier.AllChangedObjects())
         Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box p1))
                          
     [<Test>]
     member x.UpdateReferenceOnPersistentObjectCallsUpdatingUpdated() =
         let p1 = x.GetPersonDomainObject()
-        let pp = NakedObjectsContext.ObjectPersistor.Instances<Product>() |> Seq.toList
+        let pp = x.NakedObjectsContext.ObjectPersistor.Instances<Product>() |> Seq.toList
         let pr = pp |> Seq.filter (fun i -> p1.Favourite <> i) |> Seq.head     
         let changeFav() =  p1.Favourite <- pr
-        makeAndSaveChanges changeFav
+        makeAndSaveChanges changeFav x.NakedObjectsContext
 
         let m = p1.GetCallbackStatus()
         let findValue key = 
@@ -273,7 +274,7 @@ type CodeSystemTests() =
     member x.SavingNewObjectCallsPersistingPersisted() =    
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
-        save pNo
+        save pNo x.NakedObjectsContext
         let m1 = p.GetCallbackStatus()
         let fv (map : IDictionary<string, int>) key = 
             let entry = map |> Seq.find (fun kvp -> kvp.Key = key)
@@ -293,28 +294,30 @@ type CodeSystemTests() =
 
     [<Test>]
     member x.CreateAndRetrieveCountryCode() =
+        let ctx = x.NakedObjectsContext
         let createCC() =
             let setter (cc : CountryCode) = 
                 cc.Code <- uniqueName()
                 cc.Name <- uniqueName()
-            SystemTestCode.CreateAndSetup<CountryCode> setter
+            SystemTestCode.CreateAndSetup<CountryCode> setter ctx
         let nocc = createCC() 
         let cc = nocc.GetDomainObject<CountryCode>()
-        save nocc
-        let cc1 =  NakedObjectsContext.ObjectPersistor.Instances<CountryCode>() |> Seq.head
+        save nocc x.NakedObjectsContext
+        let cc1 =  x.NakedObjectsContext.ObjectPersistor.Instances<CountryCode>() |> Seq.head
         Assert.AreEqual(cc.Code, cc1.Code)
         Assert.AreEqual(cc.Name, cc1.Name)
         () 
 
     [<Test>]
     member x.CountryCodeNameIsRequired() =
+        let ctx = x.NakedObjectsContext
         let createCC() =
             let setter (cc : CountryCode) = 
                 cc.Code <- uniqueName()
-            SystemTestCode.CreateAndSetup<CountryCode> setter
+            SystemTestCode.CreateAndSetup<CountryCode> setter ctx
         let nocc = createCC() 
         try
-            save nocc
+            save nocc x.NakedObjectsContext
             Assert.Fail()
         with 
             | expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)       

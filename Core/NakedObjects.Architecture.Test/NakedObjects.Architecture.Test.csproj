@@ -82,10 +82,6 @@
       <Project>{BF6D9655-B873-4980-ACE7-A122EA45F045}</Project>
       <Name>NakedObjects.Architecture</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.TestSystem\NakedObjects.TestSystem.csproj">
-      <Project>{1FE8DB33-2B9A-4DBE-AC3C-8B4DF08608A0}</Project>
-      <Name>NakedObjects.TestSystem</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

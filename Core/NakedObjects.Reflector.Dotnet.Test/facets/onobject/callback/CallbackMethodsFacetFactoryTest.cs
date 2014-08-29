@@ -6,7 +6,6 @@ using System.Reflection;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Callbacks;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Testing;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
@@ -65,7 +64,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             Assert.IsTrue(facet is CreatedCallbackFacetViaMethod);
             CreatedCallbackFacetViaMethod createdCallbackFacetViaMethod = (CreatedCallbackFacetViaMethod)facet;
             Assert.AreEqual(method, createdCallbackFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -77,7 +77,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             Assert.IsTrue(facet is PersistingCallbackFacetViaMethod);
             PersistingCallbackFacetViaMethod persistingCallbackFacetViaMethod = (PersistingCallbackFacetViaMethod)facet;
             Assert.AreEqual(method, persistingCallbackFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -89,7 +90,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             Assert.IsTrue(facet is PersistedCallbackFacetViaMethod);
             PersistedCallbackFacetViaMethod persistedCallbackFacetViaMethod = (PersistedCallbackFacetViaMethod)facet;
             Assert.AreEqual(method, persistedCallbackFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -101,7 +103,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             Assert.IsTrue(facet is PersistingCallbackFacetViaMethod);
             PersistingCallbackFacetViaMethod persistingCallbackFacetViaMethod = (PersistingCallbackFacetViaMethod)facet;
             Assert.AreEqual(method, persistingCallbackFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -113,7 +116,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             Assert.IsTrue(facet is PersistedCallbackFacetViaMethod);
             PersistedCallbackFacetViaMethod persistedCallbackFacetViaMethod = (PersistedCallbackFacetViaMethod)facet;
             Assert.AreEqual(method, persistedCallbackFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -125,7 +129,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             Assert.IsTrue(facet is UpdatingCallbackFacetViaMethod);
             UpdatingCallbackFacetViaMethod updatingCallbackFacetViaMethod = (UpdatingCallbackFacetViaMethod)facet;
             Assert.AreEqual(method, updatingCallbackFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -137,7 +142,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             Assert.IsTrue(facet is UpdatedCallbackFacetViaMethod);
             UpdatedCallbackFacetViaMethod updatedCallbackFacetViaMethod = (UpdatedCallbackFacetViaMethod)facet;
             Assert.AreEqual(method, updatedCallbackFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -149,7 +155,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             Assert.IsTrue(facet is LoadingCallbackFacetViaMethod);
             LoadingCallbackFacetViaMethod loadingCallbackFacetViaMethod = (LoadingCallbackFacetViaMethod)facet;
             Assert.AreEqual(method, loadingCallbackFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -161,7 +168,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             Assert.IsTrue(facet is LoadedCallbackFacetViaMethod);
             LoadedCallbackFacetViaMethod loadedCallbackFacetViaMethod = (LoadedCallbackFacetViaMethod)facet;
             Assert.AreEqual(method, loadedCallbackFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -173,7 +181,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             Assert.IsTrue(facet is DeletingCallbackFacetViaMethod);
             DeletingCallbackFacetViaMethod deletingCallbackFacetViaMethod = (DeletingCallbackFacetViaMethod)facet;
             Assert.AreEqual(method, deletingCallbackFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -185,7 +194,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             Assert.IsTrue(facet is DeletedCallbackFacetViaMethod);
             DeletedCallbackFacetViaMethod deletedCallbackFacetViaMethod = (DeletedCallbackFacetViaMethod)facet;
             Assert.AreEqual(method, deletedCallbackFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -197,11 +207,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             Assert.IsTrue(facet is OnUpdatingErrorCallbackFacetViaMethod);
             var onUpdatingErrorCallbackFacetViaMethod = (OnUpdatingErrorCallbackFacetViaMethod)facet;
             Assert.AreEqual(method, onUpdatingErrorCallbackFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
 
             // and test exception is passed through (assert in Customer11)
-            var adapter = new ProgrammableTestSystem().AdapterFor(new Customer11());
-            onUpdatingErrorCallbackFacetViaMethod.Invoke(adapter, new Exception());
+            //var adapter = new ProgrammableTestSystem().AdapterFor(new Customer11());
+            //onUpdatingErrorCallbackFacetViaMethod.Invoke(adapter, new Exception());
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -213,11 +225,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             Assert.IsTrue(facet is OnPersistingErrorCallbackFacetViaMethod);
             var onPersistingErrorCallbackFacetViaMethod = (OnPersistingErrorCallbackFacetViaMethod)facet;
             Assert.AreEqual(method, onPersistingErrorCallbackFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
 
             // and test exception is passed through (assert in Customer11)
-            var adapter = new ProgrammableTestSystem().AdapterFor(new Customer11());
-            onPersistingErrorCallbackFacetViaMethod.Invoke(adapter, new Exception());
+            //var adapter = new ProgrammableTestSystem().AdapterFor(new Customer11());
+            //onPersistingErrorCallbackFacetViaMethod.Invoke(adapter, new Exception());
+            Assert.Fail(); // fix this 
         }
 
         [Test]

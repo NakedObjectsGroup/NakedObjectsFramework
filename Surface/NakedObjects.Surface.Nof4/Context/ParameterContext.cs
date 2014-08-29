@@ -22,12 +22,12 @@ namespace NakedObjects.Surface.Nof4.Context {
 
         public string OverloadedUniqueId { get; set; }
 
-        public ParameterContextSurface ToParameterContextSurface(INakedObjectsSurface surface) {
+        public ParameterContextSurface ToParameterContextSurface(INakedObjectsSurface surface, INakedObjectsFramework framework) {
             var pc = new ParameterContextSurface {
-                Parameter = new NakedObjectActionParameterWrapper(Parameter, surface, OverloadedUniqueId ?? ""),
-                Action = new NakedObjectActionWrapper(Action, surface, OverloadedUniqueId ?? "")
+                Parameter = new NakedObjectActionParameterWrapper(Parameter, surface, framework, OverloadedUniqueId ?? ""),
+                Action = new NakedObjectActionWrapper(Action, surface, framework, OverloadedUniqueId ?? "")
             };
-            return ToContextSurface(pc, surface);
+            return ToContextSurface(pc, surface, framework);
         }
     }
 }

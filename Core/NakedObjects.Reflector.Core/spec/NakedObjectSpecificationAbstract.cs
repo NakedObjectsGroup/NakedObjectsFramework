@@ -218,6 +218,8 @@ namespace NakedObjects.Reflector.Spec {
             str.Append("class", fullName);
             return str.ToString();
         }
+
+        public abstract string UniqueShortName(string sep);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

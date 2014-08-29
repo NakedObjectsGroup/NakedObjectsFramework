@@ -113,9 +113,9 @@ namespace NakedObjects.Web.Mvc.Models {
            
         }
 
-        public INakedObject GetNakedObject() {
+        public INakedObject GetNakedObject( INakedObjectsFramework framework) {
             if (nakedObject == null) {
-                nakedObject = FrameworkHelper.GetNakedObjectFromId(Id);
+                nakedObject = framework.GetNakedObjectFromId(Id);
             }
 
             if (nakedObject == null) {
@@ -125,9 +125,9 @@ namespace NakedObjects.Web.Mvc.Models {
             return nakedObject;
         }
 
-        public INakedObjectAction GetAction() {
+        public INakedObjectAction GetAction( INakedObjectsFramework framework) {
             if (nakedObjectAction == null) {
-                nakedObjectAction = FrameworkHelper.GetActions(GetNakedObject()).SingleOrDefault(a => a.Id == ActionId);
+                nakedObjectAction = framework.GetActions(GetNakedObject(framework)).SingleOrDefault(a => a.Id == ActionId);
             }
             return nakedObjectAction;
         }

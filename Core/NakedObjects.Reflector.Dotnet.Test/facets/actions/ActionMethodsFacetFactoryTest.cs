@@ -33,7 +33,6 @@ using NakedObjects.Reflector.DotNet.Facets.Disable;
 using NakedObjects.Reflector.DotNet.Facets.Hide;
 using NakedObjects.Reflector.DotNet.Reflect.Actions;
 using NakedObjects.Reflector.Peer;
-using NakedObjects.TestSystem;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions {
     [TestFixture]
@@ -73,13 +72,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         }
 
         private static DotNetNakedObjectActionPeer CreateHolderWithParms() {
-            var param1 = new DotNetNakedObjectActionParamPeer(new TestProxySpecification("System.Int32"));
-            var param2 = new DotNetNakedObjectActionParamPeer(new TestProxySpecification("System.Int64"));
-            var param3 = new DotNetNakedObjectActionParamPeer(new TestProxySpecification("System.Int64"));
+            //var param1 = new DotNetNakedObjectActionParamPeer(new TestProxySpecification("System.Int32"));
+            //var param2 = new DotNetNakedObjectActionParamPeer(new TestProxySpecification("System.Int64"));
+            //var param3 = new DotNetNakedObjectActionParamPeer(new TestProxySpecification("System.Int64"));
 
-            var parms = new[] {param1, param2, param3};
-            IIdentifier id = new TestProxyIdentifier("action");
-            return new DotNetNakedObjectActionPeer(id, parms);
+            //var parms = new[] {param1, param2, param3};
+            //IIdentifier id = new TestProxyIdentifier("action");
+            //return new DotNetNakedObjectActionPeer(id, parms);
+            Assert.Fail(); // fix this 
+            return null;
         }
 
         private void CheckDefaultFacet(MethodInfo defaultMethod, INakedObjectActionParamPeer parameter) {
@@ -87,7 +88,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionDefaultsFacetViaMethod);
             Assert.AreEqual(defaultMethod, ((ActionDefaultsFacetViaMethod) facet).GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(defaultMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(defaultMethod));
+            Assert.Fail(); // fix this 
         }
 
         private void CheckValidatePrameterFacet(MethodInfo method, INakedObjectActionParamPeer parameter) {
@@ -95,7 +97,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionParameterValidationFacetViaMethod);
             Assert.AreEqual(method, ((ActionParameterValidationFacetViaMethod) facet).GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(method));
+            Assert.Fail(); // fix this 
         }
 
         private void CheckChoicesFacet(MethodInfo choicesMethod, INakedObjectActionParamPeer parameter) {
@@ -103,7 +106,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionChoicesFacetViaMethod);
             Assert.AreEqual(choicesMethod, ((ActionChoicesFacetViaMethod) facet).GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(choicesMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(choicesMethod));
+            Assert.Fail(); // fix this 
         }
 
         private void CheckAutoCompleteFacet(MethodInfo autoCompleteMethod, INakedObjectActionParamPeer parameter, int pageSize, int minLength) {
@@ -112,7 +116,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
             var acf = (AutoCompleteFacetViaMethod) facet;
             Assert.AreEqual(autoCompleteMethod, acf.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(autoCompleteMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(autoCompleteMethod));
+            Assert.Fail(); // fix this 
 
             Assert.AreEqual(pageSize, acf.PageSize);
             Assert.AreEqual(minLength, acf.MinLength);
@@ -121,7 +126,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         private void CheckAutoCompleteFacetIsNull(MethodInfo autoCompleteMethod, INakedObjectActionParamPeer parameter) {
             IFacet facet = parameter.GetFacet(typeof (IAutoCompleteFacet));
             Assert.IsNull(facet);
-            Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(autoCompleteMethod));
+            //Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(autoCompleteMethod));
+            Assert.Fail(); // fix this 
         }
 
 
@@ -520,7 +526,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             Assert.IsTrue(facet is ActionInvocationFacetViaMethod);
             var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod) facet;
             Assert.AreEqual(actionMethod, actionInvocationFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(actionMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(actionMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -572,7 +579,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             IFacet facet = facetHolderWithParms.Parameters[0].GetFacet(typeof (IAjaxFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is AjaxFacetAnnotation);
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -583,7 +591,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             facetFactory.Process(method, methodRemover, facetHolderWithParms);
             IFacet facet = facetHolderWithParms.Parameters[0].GetFacet(typeof (IAjaxFacet));
             Assert.IsNull(facet);
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -594,7 +603,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             facetFactory.Process(method, methodRemover, facetHolderWithParms);
             IFacet facet = facetHolderWithParms.Parameters[0].GetFacet(typeof (IAjaxFacet));
             Assert.IsNull(facet);
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
+            Assert.Fail(); // fix this 
         }
 
 
@@ -734,8 +744,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             IFacet facetExecuted0 = facetHolderWithParms.Parameters[0].GetFacet(typeof (IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted0);
 
-            Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(choices0Method2));
-            Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(choices0Method3));
+            //Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(choices0Method2));
+            //Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(choices0Method3));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -923,7 +934,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             Assert.IsTrue(facet is ActionValidationFacetViaMethod);
             var actionValidationFacetViaMethod = (ActionValidationFacetViaMethod) facet;
             Assert.AreEqual(validateMethod, actionValidationFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(validateMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(validateMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -936,7 +948,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             Assert.IsTrue(facet is ActionValidationFacetViaMethod);
             var actionValidationFacetViaMethod = (ActionValidationFacetViaMethod) facet;
             Assert.AreEqual(validateMethod, actionValidationFacetViaMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(validateMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(validateMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -949,7 +962,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisableForContextFacetViaMethod);
             Assert.AreEqual(disableMethod, ((IImperativeFacet) facet).GetMethod());
-            Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(disableMethod));
+            //Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(disableMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -962,7 +976,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForContextFacetViaMethod);
             Assert.AreEqual(disableMethod, ((IImperativeFacet) facet).GetMethod());
-            Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(disableMethod));
+            //Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(disableMethod));
+            Assert.Fail(); // fix this 
         }
 
 

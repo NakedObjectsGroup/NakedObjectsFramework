@@ -36,7 +36,7 @@ namespace NakedObjects.Reflector.DotNet {
             if (persistentObject == null) {
                 throw new ArgumentException(Resources.NakedObjects.DisposeReferenceError);
             }
-            INakedObject adapter = NakedObjectsContext.ObjectPersistor.GetAdapterFor(persistentObject);
+            INakedObject adapter = framework.ObjectPersistor.GetAdapterFor(persistentObject);
             if (!IsPersistent(persistentObject)) {
                 throw new DisposeFailedException(string.Format(Resources.NakedObjects.NotPersistentMessage, adapter));
             }

@@ -1,7 +1,7 @@
 ﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,8 +9,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Xml.Linq;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Models;
 
@@ -18,6 +16,10 @@ namespace NakedObjects.Web.Mvc.Html {
     public static class SystemExtensions {
 
         private const int DefaultHistorySize = 10;
+
+        private static INakedObjectsFramework Framework(this HtmlHelper html) {
+            return (INakedObjectsFramework)html.ViewData["NakedObjectsFramework"];
+        }
 
         #region system menus
 
@@ -40,13 +42,6 @@ namespace NakedObjects.Web.Mvc.Html {
             return MvcHtmlString.Create(CommonHtmlHelper.UserMessages(messages, IdHelper.NofMessages));
         }
 
-        public static MvcHtmlString ElapsedTimeFromStart(this HtmlHelper html) {
-            DateTime startTime = NakedObjectsContext.StartTime;
-            DateTime now = DateTime.Now;
-
-            return MvcHtmlString.Create((now - startTime).ToString());
-        }
-
         public static MvcHtmlString History(this HtmlHelper html, object domainObject = null, bool clearAll = false) {
             return html.History(DefaultHistorySize, domainObject, clearAll);
         }
@@ -54,7 +49,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString History(this HtmlHelper html, int count, object domainObject = null, bool clearAll = false) {
             if (domainObject != null && !(domainObject is FindViewModel)) {
                 string url = html.Object(html.ObjectTitle(domainObject).ToString(), IdHelper.ViewAction, domainObject).ToString();
-                html.ViewContext.HttpContext.Session.AddToCache(domainObject, url, ObjectCache.ObjectFlag.BreadCrumb);
+                html.ViewContext.HttpContext.Session.AddToCache(html.Framework(), domainObject, url, ObjectCache.ObjectFlag.BreadCrumb);
             }
 
             List<string> urls = html.ViewContext.HttpContext.Session.AllCachedUrls(ObjectCache.ObjectFlag.BreadCrumb).ToList();
@@ -194,7 +189,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (domainObject != null) {
                 newUrl = html.Tab(html.ObjectTitle(domainObject).ToString(), IdHelper.ViewAction, domainObject).ToString();
                 if (!(domainObject is FindViewModel) && !existingUrls.Contains(newUrl)) {
-                    html.ViewContext.HttpContext.Session.AddOrUpdateInCache(domainObject, newUrl, ObjectCache.ObjectFlag.BreadCrumb);
+                    html.ViewContext.HttpContext.Session.AddOrUpdateInCache(html.Framework(), domainObject, newUrl, ObjectCache.ObjectFlag.BreadCrumb);
                 }
             }
 
@@ -265,11 +260,11 @@ namespace NakedObjects.Web.Mvc.Html {
             if (fvm != null) {
                 // if dialog return to target - unless it's a service 
                 object target = fvm.ContextObject;
-                domainObject = !NakedObjectsContext.ObjectPersistor.CreateAdapter(target, null, null).Specification.IsService ? target : null;
+                domainObject = !html.Framework().ObjectPersistor.CreateAdapter(target, null, null).Specification.IsService ? target : null;
             }
 
             // if target is transient  cancel back to history
-            if (domainObject != null && NakedObjectsContext.ObjectPersistor.CreateAdapter(domainObject, null, null).ResolveState.IsTransient()) {
+            if (domainObject != null && html.Framework().ObjectPersistor.CreateAdapter(domainObject, null, null).ResolveState.IsTransient()) {
                 domainObject = null;
             }    
 

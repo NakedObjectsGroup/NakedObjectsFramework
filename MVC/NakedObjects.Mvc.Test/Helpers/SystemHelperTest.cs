@@ -93,7 +93,7 @@ namespace MvcTestApp.Tests.Helpers {
             var mocks = new ContextMocks(controller);
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
             Employee emp = NakedObjectsContext.ObjectPersistor.Instances<Employee>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
             mocks.HtmlHelper.History(claim);
             mocks.HtmlHelper.History(emp);     
             string s = mocks.HtmlHelper.History().StripWhiteSpace();
@@ -106,7 +106,7 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
             Employee emp1 = NakedObjectsContext.ObjectPersistor.Instances<Employee>().First();
             Employee emp2 = NakedObjectsContext.ObjectPersistor.Instances<Employee>().Last();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
 
             mocks.HtmlHelper.History(emp2);
             mocks.HtmlHelper.History(claim);
@@ -122,7 +122,7 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
             Employee emp1 = NakedObjectsContext.ObjectPersistor.Instances<Employee>().First();
             Employee emp2 = NakedObjectsContext.ObjectPersistor.Instances<Employee>().Last();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
 
             mocks.HtmlHelper.History(emp2);
             mocks.HtmlHelper.History(claim);
@@ -138,7 +138,7 @@ namespace MvcTestApp.Tests.Helpers {
             var mocks = new ContextMocks(controller);
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
             Employee emp = NakedObjectsContext.ObjectPersistor.Instances<Employee>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
             mocks.HtmlHelper.TabbedHistory(claim);
             mocks.HtmlHelper.TabbedHistory(emp);
             string s = mocks.HtmlHelper.TabbedHistory().StripWhiteSpace();
@@ -151,7 +151,7 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
             Employee emp1 = NakedObjectsContext.ObjectPersistor.Instances<Employee>().First();
             Employee emp2 = NakedObjectsContext.ObjectPersistor.Instances<Employee>().Last();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
 
             mocks.HtmlHelper.TabbedHistory(emp2);
             mocks.HtmlHelper.TabbedHistory(claim);
@@ -167,7 +167,7 @@ namespace MvcTestApp.Tests.Helpers {
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
             Employee emp1 = NakedObjectsContext.ObjectPersistor.Instances<Employee>().First();
             Employee emp2 = NakedObjectsContext.ObjectPersistor.Instances<Employee>().Last();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
 
             mocks.HtmlHelper.TabbedHistory(emp2);
             mocks.HtmlHelper.TabbedHistory(claim);
@@ -183,7 +183,7 @@ namespace MvcTestApp.Tests.Helpers {
             var mocks = new ContextMocks(controller);
             Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
             Employee emp = NakedObjectsContext.ObjectPersistor.Instances<Employee>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = FrameworkHelper.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
 
             mocks.HtmlHelper.History(claim);
             mocks.HtmlHelper.History(emp);

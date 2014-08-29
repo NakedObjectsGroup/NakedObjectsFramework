@@ -133,6 +133,7 @@ namespace NakedObjects.Architecture.Spec {
         void MarkAsService();
 
         string GetInvariantString(INakedObject nakedObject);
+        string UniqueShortName(string sep);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.I18n.Resourcebundle {
 
         public virtual IFacetDecorator[] CreateDecorators(INakedObjectReflector reflector) {
             return new IFacetDecorator[] {
-                new I18nFacetDecorator(new ResourceBasedI18nManager(resourceFile, NakedObjectsContext.MessageBroker), false)
+              //  new I18nFacetDecorator(new ResourceBasedI18nManager(resourceFile, NakedObjectsContext.MessageBroker), false)
             };
         }
 

@@ -19,7 +19,6 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Service;
 using NakedObjects.Core.Util;
@@ -29,41 +28,38 @@ using NakedObjects.Value;
 
 namespace NakedObjects.Web.Mvc.Html {
     internal static class FrameworkHelper {
-        private static ISession CurrentSession {
-            get { return NakedObjectsContext.Session; }
-        }
-
-        public static IEnumerable<INakedObjectAction> GetActions(INakedObject nakedObject) {
+     
+        public static IEnumerable<INakedObjectAction> GetActions(this INakedObjectsFramework framework, INakedObject nakedObject) {
             return nakedObject.Specification.GetObjectActions().OfType<NakedObjectActionImpl>().Cast<INakedObjectAction>().Union(
                         nakedObject.Specification.GetObjectActions().OfType<NakedObjectActionSet>().SelectMany(set => set.Actions)).
-                               Where(a => a.IsUsable(CurrentSession, nakedObject, NakedObjectsContext.ObjectPersistor).IsAllowed).
-                               Where(a => a.IsVisible(CurrentSession, nakedObject, NakedObjectsContext.ObjectPersistor));
+                               Where(a => a.IsUsable(framework.Session, nakedObject, framework.ObjectPersistor).IsAllowed).
+                               Where(a => a.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor));
         }
 
-        public static IEnumerable<INakedObjectAction> GetTopLevelActions(INakedObject nakedObject) {
+        public static IEnumerable<INakedObjectAction> GetTopLevelActions(this INakedObjectsFramework framework,INakedObject nakedObject) {
             return nakedObject.Specification.GetObjectActions().
-                               Where(a => a.IsVisible(CurrentSession, nakedObject, NakedObjectsContext.ObjectPersistor)).
-                               Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible(CurrentSession, nakedObject, NakedObjectsContext.ObjectPersistor)));
+                               Where(a => a.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor)).
+                               Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor)));
         }
 
-        public static IEnumerable<INakedObjectAction> GetTopLevelActionsByReturnType(INakedObject nakedObject, INakedObjectSpecification spec) {
-            return GetTopLevelActions(nakedObject).
+        public static IEnumerable<INakedObjectAction> GetTopLevelActionsByReturnType(this INakedObjectsFramework framework, INakedObject nakedObject, INakedObjectSpecification spec) {
+            return framework.GetTopLevelActions(nakedObject).
                 Where(a => a is NakedObjectActionSet || (IsOfTypeOrCollectionOfType(a.ReturnType, spec) && a.IsFinderMethod)).
-                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible(CurrentSession, nakedObject, NakedObjectsContext.ObjectPersistor) && IsOfTypeOrCollectionOfType(sa.ReturnType, spec) && sa.IsFinderMethod));
+                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor) && IsOfTypeOrCollectionOfType(sa.ReturnType, spec) && sa.IsFinderMethod));
         }
 
-        public static IEnumerable<INakedObjectAction> GetChildActions(ActionContext actionContext) {
+        public static IEnumerable<INakedObjectAction> GetChildActions(this INakedObjectsFramework framework, ActionContext actionContext) {
             if (actionContext.Action is NakedObjectActionSet) {
                 return actionContext.Action.Actions.
                                      Where(a => a.ActionType == NakedObjectActionType.User).
-                                     Where(a => a.IsVisible(CurrentSession, actionContext.Target, NakedObjectsContext.ObjectPersistor));
+                                     Where(a => a.IsVisible(framework.Session, actionContext.Target, framework.ObjectPersistor));
             }
 
             return new List<INakedObjectAction>();
         }
 
-        public static IEnumerable<INakedObjectAction> GetChildActionsByReturnType(ActionContext actionContext, INakedObjectSpecification spec) {
-            return GetChildActions(actionContext).Where(a => IsOfTypeOrCollectionOfType(a.ReturnType, spec)).
+        public static IEnumerable<INakedObjectAction> GetChildActionsByReturnType(this INakedObjectsFramework framework, ActionContext actionContext, INakedObjectSpecification spec) {
+            return framework.GetChildActions(actionContext).Where(a => IsOfTypeOrCollectionOfType(a.ReturnType, spec)).
                                                   Where(action => action.Parameters.All(parm => parm.Specification.IsParseable || parm.IsChoicesEnabled || parm.Specification.IsOfType(actionContext.Target.Specification)));
         }
 
@@ -90,9 +86,9 @@ namespace NakedObjects.Web.Mvc.Html {
             return memento.Encode();
         }
 
-        public static string GetObjectId(INakedObject nakedObject) {
+        public static string GetObjectId(this INakedObjectsFramework framework, INakedObject nakedObject) {
             if (nakedObject.Specification.IsViewModel) {
-                NakedObjectsContext.ObjectPersistor.PopulateViewModelKeys(nakedObject);
+                framework.ObjectPersistor.PopulateViewModelKeys(nakedObject);
             }
             else if (nakedObject.Oid == null) {
                 return "";
@@ -106,60 +102,60 @@ namespace NakedObjects.Web.Mvc.Html {
             return ((IEncodedToStrings) oid).Encode();
         }
 
-        public static string GetObjectId(object model) {
+        public static string GetObjectId(this INakedObjectsFramework framework, object model) {
             Assert.AssertFalse("Cannot get Adapter for Adapter", model is INakedObject);
-            INakedObject nakedObject = GetNakedObject(model);
-            return GetObjectId(nakedObject);
+            INakedObject nakedObject = framework.GetNakedObject(model);
+            return framework.GetObjectId(nakedObject);
         }
 
-        public static string GetObjectTypeName(object model) {
-            INakedObject nakedObject = GetNakedObject(model);
+        public static string GetObjectTypeName(this INakedObjectsFramework framework, object model) {
+            INakedObject nakedObject = framework.GetNakedObject(model);
             return nakedObject.Specification.ShortName;
         }
 
-        public static string GetServiceId(string name) {
-            INakedObject nakedObject = GetAdaptedService(name);
-            return GetObjectId(nakedObject);
+        public static string GetServiceId(this INakedObjectsFramework framework, string name) {
+            INakedObject nakedObject = framework.GetAdaptedService(name);
+            return framework.GetObjectId(nakedObject);
         }
 
         public static string GetInternalServiceId(object service) {
             return ServiceUtils.GetId(service);
         }
 
-        public static object GetObjectFromId(string encodedId) {
-            return GetNakedObjectFromId(encodedId).Object;
+        public static object GetObjectFromId(this INakedObjectsFramework framework, string encodedId) {
+            return framework.GetNakedObjectFromId(encodedId).Object;
         }
 
-        public static INakedObject GetNakedObjectFromId(string encodedId) {
+        public static INakedObject GetNakedObjectFromId(this INakedObjectsFramework framework, string encodedId) {
             if (string.IsNullOrEmpty(encodedId)) {
                 return null;
             }
 
-            IOid oid = NakedObjectsContext.ObjectPersistor.OidGenerator.RestoreOid(NakedObjectsContext.ObjectPersistor, encodedId.Split(';'));
+            IOid oid = framework.ObjectPersistor.OidGenerator.RestoreOid(framework.ObjectPersistor, encodedId.Split(';'));
 
             if (oid is CollectionMemento) {
                 return RestoreCollection(oid as CollectionMemento);
             }
 
             if (oid is AggregateOid) {
-                return RestoreInline(oid as AggregateOid);
+                return framework.RestoreInline(oid as AggregateOid);
             }
 
             if (oid is ViewModelOid) {
-                return RestoreViewModel(oid as ViewModelOid);
+                return framework.RestoreViewModel(oid as ViewModelOid);
             }
 
-            return RestoreObject(oid);
+            return framework.RestoreObject(oid);
         }
 
-        private static INakedObjectSpecification GetSpecificationFromObjectId(string encodedId, out string[] restOfArray) {
+        private static INakedObjectSpecification GetSpecificationFromObjectId(this INakedObjectsFramework framework, string encodedId, out string[] restOfArray) {
             string[] asArray = encodedId.Split(';');
-            return GetSpecificationFromObjectId(asArray, out restOfArray);
+            return framework.GetSpecificationFromObjectId(asArray, out restOfArray);
         }
 
-        private static INakedObjectSpecification GetSpecificationFromObjectId(string[] asArray, out string[] restOfArray) {
+        private static INakedObjectSpecification GetSpecificationFromObjectId(this INakedObjectsFramework framework, string[] asArray, out string[] restOfArray) {
             string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(asArray.First()));
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(typeName);
+            INakedObjectSpecification spec = framework.Reflector.LoadSpecification(typeName);
             restOfArray = asArray.ToArray();
             return spec;
         }
@@ -168,69 +164,69 @@ namespace NakedObjects.Web.Mvc.Html {
             return memento.RecoverCollection();
         }
 
-        private static INakedObject RestoreInline(AggregateOid aggregateOid) {
+        private static INakedObject RestoreInline(this INakedObjectsFramework framework, AggregateOid aggregateOid) {
             IOid parentOid = aggregateOid.ParentOid;
-            INakedObject parent = RestoreObject(parentOid);
+            INakedObject parent = framework.RestoreObject(parentOid);
             INakedObjectAssociation assoc = parent.Specification.Properties.Where((p => p.Id == aggregateOid.FieldName)).Single();
 
-            return assoc.GetNakedObject(parent, NakedObjectsContext.ObjectPersistor);
+            return assoc.GetNakedObject(parent, framework.ObjectPersistor);
         }
 
-        private static INakedObject RestoreViewModel(ViewModelOid viewModelOid) {
-            return NakedObjectsContext.ObjectPersistor.GetAdapterFor(viewModelOid) ?? NakedObjectsContext.ObjectPersistor.GetViewModel(viewModelOid);
+        private static INakedObject RestoreViewModel(this INakedObjectsFramework framework, ViewModelOid viewModelOid) {
+            return framework.ObjectPersistor.GetAdapterFor(viewModelOid) ?? framework.ObjectPersistor.GetViewModel(viewModelOid);
         }
 
-        public static INakedObject RestoreObject(IOid oid) {
+        public static INakedObject RestoreObject(this INakedObjectsFramework framework, IOid oid) {
             if (oid.IsTransient) {
-                return NakedObjectsContext.ObjectPersistor.RecreateInstance(oid, oid.Specification);
+                return framework.ObjectPersistor.RecreateInstance(oid, oid.Specification);
             }
-            return NakedObjectsContext.ObjectPersistor.LoadObject(oid, oid.Specification);
+            return framework.ObjectPersistor.LoadObject(oid, oid.Specification);
         }
 
-        public static INakedObject GetNakedObject(object domainObject) {
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(domainObject, null, null);
+        public static INakedObject GetNakedObject(this INakedObjectsFramework framework, object domainObject) {
+            return framework.ObjectPersistor.CreateAdapter(domainObject, null, null);
         }
 
-        public static INakedObject GetAdaptedService(string name) {
-            return NakedObjectsContext.ObjectPersistor.GetService(name);
+        public static INakedObject GetAdaptedService(this INakedObjectsFramework framework, string name) {
+            return framework.ObjectPersistor.GetService(name);
         }
 
-        public static object GetService(string name) {
-            return NakedObjectsContext.ObjectPersistor.GetService(name).Object;
+        public static object GetService(this INakedObjectsFramework framework, string name) {
+            return framework.ObjectPersistor.GetService(name).Object;
         }
 
-        public static T GetService<T>(string name) {
-            return NakedObjectsContext.ObjectPersistor.GetService(name).GetDomainObject<T>();
+        public static T GetService<T>(this INakedObjectsFramework framework, string name) {
+            return framework.ObjectPersistor.GetService(name).GetDomainObject<T>();
         }
 
-        public static INakedObject GetAdaptedService<T>() {
-            return NakedObjectsContext.ObjectPersistor.GetServices().FirstOrDefault(no => no.Object is T);
+        public static INakedObject GetAdaptedService<T>(this INakedObjectsFramework framework) {
+            return framework.ObjectPersistor.GetServices().FirstOrDefault(no => no.Object is T);
         }
 
-        public static T GetService<T>() {
-            return NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).OfType<T>().FirstOrDefault();
+        public static T GetService<T>(this INakedObjectsFramework framework) {
+            return framework.ObjectPersistor.GetServices().Select(no => no.Object).OfType<T>().FirstOrDefault();
         }
 
-        public static IEnumerable<object> GetAllServices() {
-            return NakedObjectsContext.ObjectPersistor.GetServices().Where(x => GetActions(x).Any()).Select(x => x.Object);
+        public static IEnumerable<object> GetAllServices(this INakedObjectsFramework framework) {
+            return framework.ObjectPersistor.GetServices().Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
-        public static IEnumerable<object> GetContributingServices() {
-            return NakedObjectsContext.ObjectPersistor.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor).Where(x => GetActions(x).Any()).Select(x => x.Object);
+        public static IEnumerable<object> GetContributingServices(this INakedObjectsFramework framework) {
+            return framework.ObjectPersistor.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
-        public static IEnumerable<object> GetServices() {
-            GetAllServices();
-            return NakedObjectsContext.ObjectPersistor.GetServicesWithVisibleActions(ServiceTypes.Menu).Where(x => GetActions(x).Any()).Select(x => x.Object);
+        public static IEnumerable<object> GetServices(this INakedObjectsFramework framework) {
+            framework.GetAllServices();
+            return framework.ObjectPersistor.GetServicesWithVisibleActions(ServiceTypes.Menu).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
         public static string GetActionId(INakedObjectAction action) {
             return action == null ? string.Empty : string.Format("{0};{1}", action.OnType.FullName, action.Id);
         }
 
-        public static INakedObjectAction GetActionFromId(string actionId) {
+        public static INakedObjectAction GetActionFromId(this INakedObjectsFramework framework, string actionId) {
             string[] asArray = actionId.Split(';');
-            INakedObjectSpecification spec = NakedObjectsContext.Reflector.LoadSpecification(asArray.First());
+            INakedObjectSpecification spec = framework.Reflector.LoadSpecification(asArray.First());
             string id = asArray.Skip(1).First();
 
             return spec.GetObjectActions().Single(a => a.Id == id);
@@ -241,22 +237,22 @@ namespace NakedObjects.Web.Mvc.Html {
                    nakedObject.Specification.Persistable == Persistable.TRANSIENT;
         }
 
-        public static bool IsImage(this INakedObjectSpecification spec) {
-            INakedObjectSpecification imageSpec = NakedObjectsContext.Reflector.LoadSpecification(typeof (Image));
+        public static bool IsImage(this INakedObjectSpecification spec, INakedObjectsFramework framework) {
+            INakedObjectSpecification imageSpec = framework.Reflector.LoadSpecification(typeof (Image));
             return spec != null && spec.IsOfType(imageSpec);
         }
 
-        private static bool IsFileAttachment(this INakedObjectSpecification spec) {
-            INakedObjectSpecification fileSpec = NakedObjectsContext.Reflector.LoadSpecification(typeof (FileAttachment));
+        private static bool IsFileAttachment(this INakedObjectSpecification spec, INakedObjectsFramework framework) {
+            INakedObjectSpecification fileSpec = framework.Reflector.LoadSpecification(typeof (FileAttachment));
             return spec != null && spec.IsOfType(fileSpec);
         }
 
-        public static bool IsFile(this INakedObjectAssociation assoc) {
-            return assoc.Specification.IsFile();
+        public static bool IsFile(this INakedObjectAssociation assoc, INakedObjectsFramework framework) {
+            return assoc.Specification.IsFile(framework);
         }
 
-        public static bool IsFile(this INakedObjectSpecification spec) {
-            return spec != null && (spec.IsImage() || spec.IsFileAttachment() || spec.ContainsFacet<IArrayValueFacet<byte>>());
+        public static bool IsFile(this INakedObjectSpecification spec, INakedObjectsFramework framework) {
+            return spec != null && (spec.IsImage(framework) || spec.IsFileAttachment(framework) || spec.ContainsFacet<IArrayValueFacet<byte>>());
         }
 
         public static string IconName(INakedObject nakedObject) {
@@ -264,8 +260,8 @@ namespace NakedObjects.Web.Mvc.Html {
             return name.Contains(".") ? name : name + ".png";
         }
 
-        public static INakedObject Parse(this INakedObjectSpecification spec, string s) {
-            return s == null ? NakedObjectsContext.ObjectPersistor.CreateAdapter("", null, null) : spec.GetFacet<IParseableFacet>().ParseTextEntry(s, NakedObjectsContext.ObjectPersistor);
+        public static INakedObject Parse(this INakedObjectSpecification spec, string s, INakedObjectsFramework framework) {
+            return s == null ? framework.ObjectPersistor.CreateAdapter("", null, null) : spec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.ObjectPersistor);
         }
 
         public static bool IsQueryOnly(this INakedObjectAction action) {
@@ -280,11 +276,11 @@ namespace NakedObjects.Web.Mvc.Html {
             return action.ContainsFacet<IIdempotentFacet>();
         }
 
-        public static bool IsParseableOrCollectionOfParseable(INakedObjectSpecification spec) {
+        public static bool IsParseableOrCollectionOfParseable(this INakedObjectsFramework framework, INakedObjectSpecification spec) {
             return spec.IsParseable || (spec.IsCollection && spec.GetFacet<ITypeOfFacet>().ValueSpec.IsParseable);
         }
 
-        public static INakedObject GetTypedCollection(INakedObjectSpecification spec, IEnumerable collectionValue) {
+        public static INakedObject GetTypedCollection(this INakedObjectsFramework framework, INakedObjectSpecification spec, IEnumerable collectionValue) {
             INakedObjectSpecification collectionitemSpec = spec.GetFacet<ITypeOfFacet>().ValueSpec;
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
             object[] objCollection;
@@ -293,24 +289,24 @@ namespace NakedObjects.Web.Mvc.Html {
             var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
 
             if (collectionitemSpec.IsParseable) {
-                objCollection = rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : collectionitemSpec.GetFacet<IParseableFacet>().ParseTextEntry(s, NakedObjectsContext.ObjectPersistor).Object).ToArray();
+                objCollection = rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : collectionitemSpec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.ObjectPersistor).Object).ToArray();
             }
             else {
                 // need to check if collection is actually a collection memento 
                 if (rawCollection.Count() == 1) {
-                    INakedObject firstObj = GetNakedObjectFromId(rawCollection.First());
+                    INakedObject firstObj = framework.GetNakedObjectFromId(rawCollection.First());
 
                     if (firstObj != null && firstObj.Oid is CollectionMemento) {
                         return firstObj;
                     }
                 }
 
-                objCollection = rawCollection.Select(s => GetNakedObjectFromId(s).GetDomainObject()).ToArray();
+                objCollection = rawCollection.Select(s => framework.GetNakedObjectFromId(s).GetDomainObject()).ToArray();
             }
 
             objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
 
-            return NakedObjectsContext.ObjectPersistor.CreateAdapter(typedCollection.AsQueryable(), null, null);
+            return framework.ObjectPersistor.CreateAdapter(typedCollection.AsQueryable(), null, null);
         }
 
         public static bool IsViewModelEditView(this INakedObject target) {

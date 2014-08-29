@@ -14,9 +14,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Security;
-using NakedObjects.Reflector.DotNet;
 using NakedObjects.Service;
 using NakedObjects.Xat.Performance;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
@@ -61,12 +59,7 @@ namespace NakedObjects.Xat {
             get { return new SimpleSession(CreatePrincipal("Test", new string[] {})); }
         }
 
-        protected override NakedObjectsContext Context {
-            get {
-                NakedObjectsContext ctx = StaticContext.CreateInstance();
-                return ctx;
-            }
-        }
+       
 
         // make framework available to tests 
         private readonly NakedObjectsFramework nakedObjectsFramework = null;//new NakedObjectsFramework();
@@ -140,10 +133,10 @@ namespace NakedObjects.Xat {
         }
 
         protected  void SetUser(string username, params string[] roles) {
-            var staticContext = (StaticContext)  Core.Context.NakedObjectsContext.Instance;
-            ISession session = new SimpleSession(CreatePrincipal(username, roles));
-            staticContext.SetSession(session);
-            testObjectFactory.Session = session;
+            //var staticContext = (StaticContext)  Core.Context.NakedObjectsContext.Instance;
+            //ISession session = new SimpleSession(CreatePrincipal(username, roles));
+            //staticContext.SetSession(session);
+            //testObjectFactory.Session = session;
             //NakedObjectsContext.ObjectPersistor.Session = session;
         }
 

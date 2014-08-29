@@ -19,9 +19,9 @@ open System.Web.Http
 let mapper = new TestTypeCodeMapper()
 let keyMapper = new TestKeyCodeMapper()
 
-let api = 
+let api (fw : INakedObjectsFramework) = 
     let api = new RestfulObjectsControllerBase()
-    api.Surface <- new NakedObjects.Surface.Nof4.Implementation.NakedObjectsSurface(new NakedObjects.Surface.Nof4.Utility.ExternalOid())
+    api.Surface <- new NakedObjects.Surface.Nof4.Implementation.NakedObjectsSurface(new NakedObjects.Surface.Nof4.Utility.ExternalOid(fw), fw)
     api
 
 [<TestFixture>]
@@ -35,7 +35,7 @@ type Nof4TestsTypeDomainType() = class
     
     [<SetUp>]
     member x.StartTest() =           
-        x.Fixtures.InstallFixtures(NakedObjectsContext.ObjectPersistor)
+        x.Fixtures.InstallFixtures(x.NakedObjectsContext.ObjectPersistor)
         UriMtHelper.GetApplicationPath <- Func<string>(fun () -> "")
         RestfulObjectsControllerBase.IsReadOnly <- false  
         let p = new GenericPrincipal(new GenericIdentity("REST"), [||])
@@ -82,10 +82,10 @@ type Nof4TestsTypeDomainType() = class
  
     // DomainTypes20
     [<Test>] 
-    member x.GetDomainTypes() = DomainTypes20.GetDomainTypesDomainType api
+    member x.GetDomainTypes() = DomainTypes20.GetDomainTypesDomainType (api x.NakedObjectsContext) 
     [<Test>] 
-    member x.GetDomainTypesWithMediaType() = DomainTypes20.GetDomainTypesWithMediaTypeDomainType api 
+    member x.GetDomainTypesWithMediaType() = DomainTypes20.GetDomainTypesWithMediaTypeDomainType (api x.NakedObjectsContext)  
     [<Test>] 
-    member x.NotAcceptableGetDomainTypes() = DomainTypes20.NotAcceptableGetDomainTypes api
+    member x.NotAcceptableGetDomainTypes() = DomainTypes20.NotAcceptableGetDomainTypes (api x.NakedObjectsContext) 
    
 end

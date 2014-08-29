@@ -10,19 +10,20 @@ open TestCode
 open System.Data.Entity.Core.Objects
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Architecture.Resolve
+open NakedObjects.Architecture.Reflect
 open System
 open NakedObjects.Core.Context
 open NakedObjects.Core.Security
 open System.Security.Principal
 
 
-let persistor =
+let persistor  =
     setProxyingAndDeferredLoading <- false
     let c = new EntityObjectStoreConfiguration()
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
     c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null)
     let p = setupPersistorForTesting p
     p
 
@@ -37,7 +38,7 @@ let overwritePersistor =
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
     c.ContextConfiguration <- [|(box config :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(NakedObjectsContext.Reflector), NakedObjectsContext.Reflector)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null)
     let p = setupPersistorForTesting p
     p
 
@@ -53,6 +54,7 @@ type DomainNoProxiesTests() = class
     member x.TearDown() =      
         persistor.Reset()
         setProxyingAndDeferredLoading <- true
+
     [<Test>] member x.TestCreateEntityPersistor() = CanCreateEntityPersistor persistor    
     [<Test>] member x.TestGetInstancesGeneric() = CanGetInstancesGeneric persistor
     [<Test>] member x.TestGetInstancesByType() = CanGetInstancesByType persistor

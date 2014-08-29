@@ -8,10 +8,14 @@ using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Facets.Naming.DescribedAs;
 using NakedObjects.Architecture.Facets.Naming.Named;
 using NakedObjects.Architecture.Facets.Objects.Ident.Plural;
-using NakedObjects.TestSystem;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
+
+    public class TestPojo {
+        
+    }
+
     [TestFixture]
     public class Reflector_ArrayTest : AbstractDotNetReflectorTest {
         protected override DotNetSpecification LoadSpecification(DotNetReflector reflector) {

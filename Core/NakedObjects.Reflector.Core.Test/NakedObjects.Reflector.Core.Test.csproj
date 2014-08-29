@@ -87,10 +87,6 @@
       <Project>{91153C56-313C-426E-8B0D-43FA39BD567A}</Project>
       <Name>NakedObjects.Reflector.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.TestSystem\NakedObjects.TestSystem.csproj">
-      <Project>{1FE8DB33-2B9A-4DBE-AC3C-8B4DF08608A0}</Project>
-      <Name>NakedObjects.TestSystem</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

@@ -146,7 +146,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
             Assert.AreEqual("some name", namedFacetAbstract.Value);
             AssertNoMethodsRemoved();
 
-            Assert.IsEmpty(NakedObjectsContext.InitialisationWarnings);
+            //Assert.IsEmpty(NakedObjectsContext.InitialisationWarnings);
+            Assert.Fail(); // fix this 
         }
 
 
@@ -261,7 +262,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
             Assert.AreEqual("some name", namedFacetAbstract.Value);
             AssertNoMethodsRemoved();
 
-            Assert.IsEmpty(NakedObjectsContext.InitialisationWarnings);
+            //Assert.IsEmpty(NakedObjectsContext.InitialisationWarnings);
+            Assert.Fail(); // fix this 
         }
 
         #endregion

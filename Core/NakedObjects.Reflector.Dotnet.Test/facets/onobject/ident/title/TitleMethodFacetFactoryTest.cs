@@ -53,7 +53,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
             Assert.IsTrue(facet is TitleFacetViaTitleMethod);
             TitleFacetViaTitleMethod titleFacetViaTitleMethod = (TitleFacetViaTitleMethod) facet;
             Assert.AreEqual(titleMethod, titleFacetViaTitleMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(titleMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(titleMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]
@@ -65,7 +66,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
             Assert.IsTrue(facet is TitleFacetViaToStringMethod);
             TitleFacetViaToStringMethod titleFacetViaTitleMethod = (TitleFacetViaToStringMethod) facet;
             Assert.AreEqual(toStringMethod, titleFacetViaTitleMethod.GetMethod());
-            Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(toStringMethod));
+            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(toStringMethod));
+            Assert.Fail(); // fix this 
         }
 
         [Test]

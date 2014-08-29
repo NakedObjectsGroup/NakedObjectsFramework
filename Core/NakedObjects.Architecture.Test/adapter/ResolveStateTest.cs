@@ -270,6 +270,10 @@ namespace NakedObjects.Architecture.Adapter {
             public string GetInvariantString(INakedObject nakedObject) {
                 throw new NotImplementedException();
             }
+
+            public string UniqueShortName(string sep) {
+                throw new NotImplementedException();
+            }
         }
 
         private class TestAdapter : INakedObject {

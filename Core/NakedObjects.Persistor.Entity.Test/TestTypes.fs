@@ -46,34 +46,36 @@ type MockInjector() =
         member x.InitInlineObject(root : Object, inlineObject : Object) = ()
 
 type MockNakedObjectSpecification() = 
-    interface INakedObjectSpecification with 
-        member x.FullName with get() = ""
-        member x.PluralName with get() = ""
-        member x.ShortName with get() = ""
-        member x.Description with get() = ""
-        member x.SingularName with get() = ""
-        member x.UntitledName with get() = ""    
-        member x.IsParseable with get() = false
-        member x.IsEncodeable with get() = false
-        member x.IsAggregated with get() = false
-        member x.IsCollection with get() = false
-        member x.IsObject with get() = false
-        member x.IsAbstract with get() = false
-        member x.IsInterface with get() = false
-        member x.IsService with get() = false
-        member x.HasNoIdentity with get() = false
-        member x.IsQueryable with get() = false
-        member x.IsVoid with get() = false
-        member x.IsASet with get() = false
-        member x.IsViewModel with get() = false
-        member x.GetIconName(forObject : INakedObject ) = ""
-        member x.GetTitle(nakedObject : INakedObject, m ) = ""
-        member x.ValidToPersist(transientObject : INakedObject, sess : ISession )  : IConsent = null
-        member x.Persistable with get() : Persistable = null
-        member x.CreateObject(persistor : INakedObjectPersistor) : obj = null   
+    interface INakedObjectSpecification with
+        member x.FullName = ""
+        member x.PluralName = ""
+        member x.ShortName = ""
+        member x.Description = ""
+        member x.SingularName = ""
+        member x.UntitledName = ""
+        member x.IsParseable = false
+        member x.IsEncodeable = false
+        member x.IsAggregated = false
+        member x.IsCollection = false
+        member x.IsObject = false
+        member x.IsAbstract = false
+        member x.IsInterface = false
+        member x.IsService = false
+        member x.HasNoIdentity = false
+        member x.IsQueryable = false
+        member x.IsVoid = false
+        member x.IsASet = false
+        member x.IsViewModel = false
+        member x.GetIconName(forObject : INakedObject) = ""
+        member x.GetTitle(nakedObject : INakedObject, m) = ""
+        member x.ValidToPersist(transientObject : INakedObject, sess : ISession) : IConsent = null
+        member x.Persistable = null : Persistable
+        member x.CreateObject(persistor : INakedObjectPersistor) : obj = null
         member x.GetBoundedSet(persistor : INakedObjectPersistor) : System.Collections.IEnumerable = null
         member x.MarkAsService() = ()
-        member x.GetInvariantString(nakedObject : INakedObject ) = ""
+        member x.GetInvariantString(nakedObject : INakedObject) = ""
+        member x.UniqueShortName(sep) = ""
+
        
     interface IActionContainer with 
        

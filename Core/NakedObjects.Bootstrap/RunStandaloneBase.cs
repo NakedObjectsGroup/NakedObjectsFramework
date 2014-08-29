@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using Common.Logging;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Reflector.I18n.Resourcebundle;
 
@@ -65,7 +64,7 @@ namespace NakedObjects.Boot {
             }
             catch (Exception exception) {
                 Log.Error("Error on Framework start", exception);
-                NakedObjectsContext.InitialisationFatalError = exception;
+               // NakedObjectsContext.InitialisationFatalError = exception;
             }
         }
 

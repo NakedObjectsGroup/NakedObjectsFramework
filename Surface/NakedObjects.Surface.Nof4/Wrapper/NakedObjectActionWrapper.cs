@@ -5,27 +5,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using NakedObjects.Architecture.Facets.Actions.Potency;
 using NakedObjects.Architecture.Facets.Ordering.MemberOrder;
 using NakedObjects.Architecture.Facets.Presentation;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Core.Context;
-using NakedObjects.Util;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectActionWrapper : ScalarPropertyHolder, INakedObjectActionSurface {
         private readonly INakedObjectAction action;
+        private readonly INakedObjectsFramework framework;
         private readonly string overloadedUniqueId;
 
-        public NakedObjectActionWrapper(INakedObjectAction action, INakedObjectsSurface surface, string overloadedUniqueId) {
+        public NakedObjectActionWrapper(INakedObjectAction action, INakedObjectsSurface surface, INakedObjectsFramework framework, string overloadedUniqueId) {
             this.action = action;
+            this.framework = framework;
             this.overloadedUniqueId = overloadedUniqueId;
             Surface = surface;
         }
 
         public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(action.Specification, Surface); }
+            get { return new NakedObjectSpecificationWrapper(action.Specification, Surface, framework); }
         }
 
         public bool IsContributed {
@@ -86,7 +85,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSpecificationSurface ReturnType {
-            get { return new NakedObjectSpecificationWrapper(action.ReturnType, Surface); }
+            get { return new NakedObjectSpecificationWrapper(action.ReturnType, Surface, framework); }
         }
 
         public int ParameterCount {
@@ -94,19 +93,19 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectActionParameterSurface[] Parameters {
-            get { return action.Parameters.Select(p => new NakedObjectActionParameterWrapper(p, Surface, overloadedUniqueId)).Cast<INakedObjectActionParameterSurface>().ToArray(); }
+            get { return action.Parameters.Select(p => new NakedObjectActionParameterWrapper(p, Surface, framework, overloadedUniqueId)).Cast<INakedObjectActionParameterSurface>().ToArray(); }
         }
 
         public bool IsVisible(INakedObjectSurface nakedObject) {
-            return action.IsVisible(NakedObjectsContext.Session, ((NakedObjectWrapper)nakedObject).WrappedNakedObject, NakedObjectsContext.ObjectPersistor);
+            return action.IsVisible(framework.Session, ((NakedObjectWrapper)nakedObject).WrappedNakedObject, framework.ObjectPersistor);
         }
 
         public IConsentSurface IsUsable(INakedObjectSurface nakedObject) {
-            return new ConsentWrapper(action.IsUsable(NakedObjectsContext.Session, ((NakedObjectWrapper)nakedObject).WrappedNakedObject, NakedObjectsContext.ObjectPersistor));
+            return new ConsentWrapper(action.IsUsable(framework.Session, ((NakedObjectWrapper)nakedObject).WrappedNakedObject, framework.ObjectPersistor));
         }
 
         public INakedObjectSpecificationSurface OnType {
-            get { return new NakedObjectSpecificationWrapper(action.OnType, Surface); }
+            get { return new NakedObjectSpecificationWrapper(action.OnType, Surface, framework); }
         }
 
         #endregion
