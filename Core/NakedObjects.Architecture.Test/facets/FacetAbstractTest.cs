@@ -13,7 +13,6 @@ namespace INakedObjects.Architecture.Adapter {
         private IFacetHolder facetHolder2;
         private FacetAbstract fooFacet;
 
-
         [SetUp] 
         public void SetUp() {
             facetHolder = new FacetHolderImpl();

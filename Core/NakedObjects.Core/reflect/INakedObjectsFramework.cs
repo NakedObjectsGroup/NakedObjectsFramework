@@ -2,6 +2,7 @@
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Context;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Objects;
 
 namespace NakedObjects {
@@ -17,5 +18,6 @@ namespace NakedObjects {
         INakedObjectReflector Reflector { get; }
 
         IAuthorizationManager AuthorizationManager { get; }
+        IContainerInjector Injector { get; }
     }
 }

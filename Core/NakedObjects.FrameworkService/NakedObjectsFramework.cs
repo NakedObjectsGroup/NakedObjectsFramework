@@ -7,12 +7,13 @@ using NakedObjects.Objects;
 
 namespace NakedObjects.Service {
     public class NakedObjectsFramework : INakedObjectsFramework {
+        private readonly IAuthorizationManager authorizationManager;
+        private readonly IContainerInjector injector;
         private readonly IMessageBroker messageBroker;
-        private readonly IUpdateNotifier updateNotifier;
-        private readonly ISession session;
         private readonly INakedObjectPersistor objectPersistor;
         private readonly INakedObjectReflector reflector;
-        private readonly IAuthorizationManager authorizationManager;
+        private readonly ISession session;
+        private readonly IUpdateNotifier updateNotifier;
 
         public NakedObjectsFramework(IMessageBroker messageBroker, IUpdateNotifier updateNotifier, ISession session, INakedObjectPersistor objectPersistor, INakedObjectReflector reflector, IAuthorizationManager authorizationManager, IContainerInjector injector) {
             this.messageBroker = messageBroker;
@@ -21,33 +22,38 @@ namespace NakedObjects.Service {
             this.objectPersistor = objectPersistor;
             this.reflector = reflector;
             this.authorizationManager = authorizationManager;
+            this.injector = injector;
             injector.Framework = this;
         }
 
         #region INakedObjectsFramework Members
 
+        public IContainerInjector Injector {
+            get { return injector; }
+        }
+
         public IMessageBroker MessageBroker {
-            get { return this.messageBroker; }
+            get { return messageBroker; }
         }
 
         public IUpdateNotifier UpdateNotifier {
-            get { return this.updateNotifier; }
+            get { return updateNotifier; }
         }
 
         public ISession Session {
-            get { return this.session; }
+            get { return session; }
         }
 
         public INakedObjectPersistor ObjectPersistor {
-            get { return this.objectPersistor; }
+            get { return objectPersistor; }
         }
 
         public INakedObjectReflector Reflector {
-            get { return this.reflector; }
+            get { return reflector; }
         }
 
         public IAuthorizationManager AuthorizationManager {
-            get { return this.authorizationManager; }
+            get { return authorizationManager; }
         }
 
         #endregion

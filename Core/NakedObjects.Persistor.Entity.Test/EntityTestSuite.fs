@@ -193,7 +193,7 @@ type EntityTestSuite() =
             box (inst) :?> IObjectPersistorInstaller
 
     member x.Tests = 
-        new PersistorTestSuite(x.NakedObjectsContext)
+        new PersistorTestSuite(x.NakedObjectsFramework)
                                
     [<Test>] member x.CanAccessCollectionProperty() =  x.Tests.CanAccessCollectionProperty()
     [<Test>] member x.GetInstanceFromInstancesOfT() =  x.Tests.GetInstanceFromInstancesOfT()

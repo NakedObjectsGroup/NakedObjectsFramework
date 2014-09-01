@@ -49,24 +49,24 @@ type ModelSystemTests() =
             p.ComplexProperty.Surname <- uniqueName()
             p.ComplexProperty_1.s1 <- uniqueName()
             p.ComplexProperty_1.s2 <- uniqueName()
-        SystemTestCode.CreateAndSetup<Person> setter x.NakedObjectsContext
+        SystemTestCode.CreateAndSetup<Person> setter x.NakedObjectsFramework
       
     member x.GetPersonDomainObject() = 
-       let pp = x.NakedObjectsContext.ObjectPersistor.Instances<Person>()
+       let pp = x.NakedObjectsFramework.ObjectPersistor.Instances<Person>()
        pp |> Seq.filter (fun p -> p.Id = 1) |> Seq.head     
           
     member x.GetNextPersonID() = 
-       let pp = x.NakedObjectsContext.ObjectPersistor.Instances<Person>()
+       let pp = x.NakedObjectsFramework.ObjectPersistor.Instances<Person>()
        (pp |> Seq.map (fun i -> i.Id) |> Seq.max)   + 1 
             
     [<Test>]
     member x.GetService() = 
-        let service = x.NakedObjectsContext.ObjectPersistor.GetService("repository#ModelFirst.Person")
+        let service = x.NakedObjectsFramework.ObjectPersistor.GetService("repository#ModelFirst.Person")
         Assert.IsNotNull(service.Object)     
         
     [<Test>]
     member x.GetCollectionDirectly() = 
-        let pp = x.NakedObjectsContext.ObjectPersistor.Instances<Person>()
+        let pp = x.NakedObjectsFramework.ObjectPersistor.Instances<Person>()
         Assert.Greater(pp |> Seq.length , 0)   
                          
     [<Test>]
@@ -110,17 +110,17 @@ type ModelSystemTests() =
     [<Test>]
     member x.CreateNewObjectWithComplexType() =    
        let pNo = x.CreatePerson()
-       save pNo x.NakedObjectsContext
-       IsNotNullAndPersistent pNo x.NakedObjectsContext
+       save pNo x.NakedObjectsFramework
+       IsNotNullAndPersistent pNo x.NakedObjectsFramework
        let p = pNo.Object :?> Person
-       IsNotNullAndPersistentAggregate p.ComplexProperty x.NakedObjectsContext
-       IsNotNullAndPersistentAggregate p.ComplexProperty_1 x.NakedObjectsContext   
+       IsNotNullAndPersistentAggregate p.ComplexProperty x.NakedObjectsFramework
+       IsNotNullAndPersistentAggregate p.ComplexProperty_1 x.NakedObjectsFramework   
         
     [<Test>]
     member x.CreatedObjectCallsCreatedPersistingPersisted() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
-        save pNo x.NakedObjectsContext
+        save pNo x.NakedObjectsFramework
         let m1 = p.GetCallbackStatus()
         let fv (map : IDictionary<string, int>) key = 
             let entry = map |> Seq.find (fun kvp -> kvp.Key = key)
@@ -141,7 +141,7 @@ type ModelSystemTests() =
     [<Test>]
     member x.ComplexTypeObjectCallsCreated() = 
         let pNo = x.CreatePerson()
-        save pNo x.NakedObjectsContext
+        save pNo x.NakedObjectsFramework
         let p = pNo.Object :?> Person
         let m = p.ComplexProperty.GetCallbackStatus()
         let findValue key = 
@@ -156,7 +156,7 @@ type ModelSystemTests() =
         let p = pNo.Object :?> Person
         Assert.IsNotNull(p.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
-        save pNo x.NakedObjectsContext
+        save pNo x.NakedObjectsFramework
         let p = pNo.Object :?> Person
         Assert.IsNotNull(p.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
@@ -168,7 +168,7 @@ type ModelSystemTests() =
         let co = p.ComplexProperty
         Assert.IsNotNull(co.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, co.ExposeContainerForTest())
-        save pNo x.NakedObjectsContext
+        save pNo x.NakedObjectsFramework
         let co = p.ComplexProperty
         Assert.IsNotNull(co.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, co.ExposeContainerForTest())
@@ -180,7 +180,7 @@ type ModelSystemTests() =
         let co = p.ComplexProperty
         Assert.IsNotNull(co.Parent)
         Assert.IsInstanceOf(typeof<Person>, co.Parent)
-        save pNo x.NakedObjectsContext
+        save pNo x.NakedObjectsFramework
         let co = p.ComplexProperty
         Assert.IsNotNull(co.Parent)
         Assert.IsInstanceOf(typeof<Person>, co.Parent)
@@ -188,7 +188,7 @@ type ModelSystemTests() =
     [<Test>]
     member x.ComplexTypeObjectCallsPersistingPersisted() = 
         let pNo = x.CreatePerson()
-        save pNo x.NakedObjectsContext
+        save pNo x.NakedObjectsFramework
         let p = pNo.Object :?> Person
         let m = p.ComplexProperty.GetCallbackStatus()
         let findValue key = 
@@ -201,21 +201,21 @@ type ModelSystemTests() =
      
     [<Test>]
     member x.UpdateComplexTypeUpdatesUI() = 
-         x.NakedObjectsContext.ObjectPersistor.StartTransaction()
+         x.NakedObjectsFramework.ObjectPersistor.StartTransaction()
          let p = x.GetPersonDomainObject()
          let co = p.ComplexProperty
          co.Firstname <- uniqueName()
-         x.NakedObjectsContext.UpdateNotifier.EnsureEmpty()
-         x.NakedObjectsContext.ObjectPersistor.EndTransaction()
-         let updates =  CollectionUtils.ToEnumerable<INakedObject>(x.NakedObjectsContext.UpdateNotifier.AllChangedObjects())
+         x.NakedObjectsFramework.UpdateNotifier.EnsureEmpty()
+         x.NakedObjectsFramework.ObjectPersistor.EndTransaction()
+         let updates =  CollectionUtils.ToEnumerable<INakedObject>(x.NakedObjectsFramework.UpdateNotifier.AllChangedObjects())
          Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box co), "complex object")
      
     [<Test>]
     member x.ComplexTypeObjectCallsLoadingLoaded() = 
-        x.NakedObjectsContext.ObjectPersistor.StartTransaction();
+        x.NakedObjectsFramework.ObjectPersistor.StartTransaction();
         let p = x.GetPersonDomainObject()
         let co = p.ComplexProperty
-        x.NakedObjectsContext.ObjectPersistor.EndTransaction();
+        x.NakedObjectsFramework.ObjectPersistor.EndTransaction();
         let m = co.GetCallbackStatus()
         let findValue key = 
             let entry = m |> Seq.find (fun kvp -> kvp.Key = key)
@@ -233,7 +233,7 @@ type ModelSystemTests() =
         
     [<Test>]
     member x.SavePersonWithInheritedTypeProperty() =
-       let ctx = x.NakedObjectsContext
+       let ctx = x.NakedObjectsFramework
        let GetNextFruitID() = 
             (ctx.ObjectPersistor.Instances<Fruit>() |> Seq.map (fun i -> i.Id) |> Seq.max) + 1
 
@@ -256,7 +256,7 @@ type ModelSystemTests() =
 
     [<Test>]
     member x.AddToCollectionNotifiesUI() =
-       let ctx = x.NakedObjectsContext
+       let ctx = x.NakedObjectsFramework
        let GetNextFruitID() = 
             (ctx.ObjectPersistor.Instances<Fruit>() |> Seq.map (fun i -> i.Id) |> Seq.max) + 1
 

@@ -18,12 +18,15 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Transaction;
+using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Persistor.Objectstore.Inmemory {
     public class MemoryObjectStore : INakedObjectStore {
         private readonly INakedObjectReflector reflector;
+        private readonly IContainerInjector injector;
         private static readonly ILog Log;
         private static IDictionary<INakedObjectSpecification, MemoryObjectStoreInstances> instances;
         private static IDictionary<string, IOid> services;
@@ -35,9 +38,10 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             services = new Dictionary<string, IOid>();
         }
 
-        public MemoryObjectStore(INakedObjectReflector reflector) {
+        public MemoryObjectStore(INakedObjectReflector reflector, IContainerInjector injector) {
             Assert.AssertNotNull(reflector);
             this.reflector = reflector;
+            this.injector = injector;
             Log.Info("creating object store");
         }
 
@@ -114,8 +118,16 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public object CreateInstance(Type type, INakedObjectPersistor persistor) {
             Log.Debug("CreateInstance of: " + type);
-            return persistor.CreateObject(reflector.LoadSpecification(type));
-            //return .CreateObject(persistor);
+            Log.Debug("CreateInstance of: " + type);
+            if (type.IsArray) {
+                return Array.CreateInstance(type.GetElementType(), 0);
+            }
+            if (type.IsAbstract) {
+                throw new ModelException(string.Format(Resources.NakedObjects.CannotCreateAbstract, type));
+            }
+            object domainObject = Activator.CreateInstance(type);
+            injector.InitDomainObject(domainObject);
+            return domainObject;
         }
 
         public virtual INakedObject GetObject(IOid oid, INakedObjectSpecification hint) {

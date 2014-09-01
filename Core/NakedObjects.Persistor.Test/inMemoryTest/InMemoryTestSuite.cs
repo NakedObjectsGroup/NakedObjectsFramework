@@ -28,13 +28,13 @@ namespace NakedObjects.Persistor.InMemoryTest {
             InitializeNakedObjectsFramework();
 
             // reset events from fixtures running
-            NakedObjectsContext.ObjectPersistor.Instances<Person>().ForEach(p => p.ResetEvents());
-            NakedObjectsContext.ObjectPersistor.Instances<Person>().Select( p => p.Address).ForEach(a => a.ResetEvents());
-            NakedObjectsContext.ObjectPersistor.Instances<Product>().ForEach(p => p.ResetEvents());
+            NakedObjectsFramework.ObjectPersistor.Instances<Person>().ForEach(p => p.ResetEvents());
+            NakedObjectsFramework.ObjectPersistor.Instances<Person>().Select( p => p.Address).ForEach(a => a.ResetEvents());
+            NakedObjectsFramework.ObjectPersistor.Instances<Product>().ForEach(p => p.ResetEvents());
            
-            NakedObjectsContext.ObjectPersistor.Reset();
+            NakedObjectsFramework.ObjectPersistor.Reset();
 
-            tests = new PersistorTestSuite(NakedObjectsContext);
+            tests = new PersistorTestSuite(NakedObjectsFramework);
         }
 
         [TearDown]

@@ -56,6 +56,18 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
     </Reference>
@@ -127,12 +139,17 @@
       <Project>{7095E1C3-2C43-4802-9930-522E1BBF27C1}</Project>
       <Name>NakedObjects.FrameworkService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Persistor\NakedObjects.Persistor.csproj">
+      <Project>{26DE3AD7-424B-4246-89C3-DB675BE02628}</Project>
+      <Name>NakedObjects.Persistor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Xat\NakedObjects.Xat.csproj">
       <Project>{C818DFD4-6020-419A-8274-F59803956180}</Project>
       <Name>NakedObjects.Xat</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
