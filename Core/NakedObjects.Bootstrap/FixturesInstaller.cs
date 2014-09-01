@@ -6,8 +6,8 @@ using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Reflector.DotNet.Fixture;
 
 namespace NakedObjects.Boot {
@@ -21,7 +21,7 @@ namespace NakedObjects.Boot {
 
         #region IFixturesInstaller Members
 
-        public void InstallFixtures(INakedObjectPersistor persistor) {
+        public void InstallFixtures(INakedObjectPersistor persistor, IContainerInjector injector) {
             //NakedObjectsContext.ObjectPersistor.Reset();
 
             //if (NakedObjectsContext.ObjectPersistor.IsInitialized) {
@@ -31,16 +31,16 @@ namespace NakedObjects.Boot {
 
             var builder = new DotNetFixtureBuilder();
             fixtures.ForEach(builder.AddFixture);
-            builder.InstallFixtures(persistor);
+            builder.InstallFixtures(persistor, injector);
         }
 
-        public void InstallFixture(INakedObjectPersistor persistor, string fixtureName) {
+        public void InstallFixture(INakedObjectPersistor persistor, IContainerInjector injector, string fixtureName) {
             object fixture = fixtures.FirstOrDefault(f => f.GetType().Name == fixtureName);
 
             if (fixture != null) {
                 var builder = new DotNetFixtureBuilder();
                 builder.AddFixture(fixture);
-                builder.InstallFixture(persistor, fixtureName);
+                builder.InstallFixture(persistor, injector, fixtureName);
             }
         }
 

@@ -8,6 +8,7 @@ using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core.Reflect;
 
 namespace NakedObjects.Core.Persist {
     public abstract class AbstractFixtureBuilder : IFixturesInstaller {
@@ -36,16 +37,16 @@ namespace NakedObjects.Core.Persist {
         /// <para>
         ///     Once done the set of fixtures is cleared and <see cref="Fixtures" /> returns an empty array.
         /// </para>
-        public void InstallFixtures(INakedObjectPersistor persistor) {
+        public void InstallFixtures(INakedObjectPersistor persistor, IContainerInjector injector) {
             PreInstallFixtures(persistor);
-            InstallFixtures(persistor, Fixtures);
+            InstallFixtures(persistor, injector, Fixtures);
             PostInstallFixtures(persistor);
             persistor.Reset();
             fixtures.Clear();
         }
 
-        public void InstallFixture(INakedObjectPersistor persistor, string fixtureName) {
-            InstallFixtures(persistor, Fixtures);
+        public void InstallFixture(INakedObjectPersistor persistor, IContainerInjector injector, string fixtureName) {
+            InstallFixtures(persistor, injector, Fixtures);
         }
 
         public string[] FixtureNames {
@@ -58,18 +59,18 @@ namespace NakedObjects.Core.Persist {
             fixtures.Add(fixture);
         }
 
-        private void InstallFixtures(INakedObjectPersistor persistor, object[] newFixtures) {
+        private void InstallFixtures(INakedObjectPersistor persistor, IContainerInjector injector, object[] newFixtures) {
             foreach (object fixture in newFixtures) {
-                InstallFixture(persistor, fixture);
+                InstallFixture(persistor, injector, fixture);
             }
         }
 
-        private void InstallFixture(INakedObjectPersistor persistor, object fixture) {
-            persistor.InitDomainObject(fixture);
+        private void InstallFixture(INakedObjectPersistor persistor, IContainerInjector injector, object fixture) {
+            injector.InitDomainObject(fixture);
 
             // first, install any child fixtures (if this is a composite.
             object[] childFixtures = GetFixtures(fixture);
-            InstallFixtures(persistor, childFixtures);
+            InstallFixtures(persistor, injector, childFixtures);
 
             // now, install the fixture itself
             try {

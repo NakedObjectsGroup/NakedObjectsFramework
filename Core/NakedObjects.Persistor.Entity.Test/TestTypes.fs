@@ -19,6 +19,7 @@ open NakedObjects.Persistor
 open NakedObjects.Architecture.Facets
 open NakedObjects.Architecture.Security
 open NakedObjects.Core.Context
+open NakedObjects.Core.Reflect
 
 let injectedObjects = new List<Object>()
 
@@ -40,10 +41,13 @@ type MockReflector() =
 
 
 type MockInjector() = 
-    interface IContainerInjector with 
-        member x.InitDomainObject obj = 
-            injectedObjects.Add obj
+    interface IContainerInjector with
+        member x.InitDomainObject obj = injectedObjects.Add obj
         member x.InitInlineObject(root : Object, inlineObject : Object) = ()
+        member x.Framework 
+            with set (f) = ()
+        member x.ServiceTypes
+            with set (f) = ()
 
 type MockNakedObjectSpecification() = 
     interface INakedObjectSpecification with
@@ -70,7 +74,7 @@ type MockNakedObjectSpecification() =
         member x.GetTitle(nakedObject : INakedObject, m) = ""
         member x.ValidToPersist(transientObject : INakedObject, sess : ISession) : IConsent = null
         member x.Persistable = null : Persistable
-        member x.CreateObject(persistor : INakedObjectPersistor) : obj = null
+        //member x.CreateObject(persistor : INakedObjectPersistor) : obj = null
         member x.GetBoundedSet(persistor : INakedObjectPersistor) : System.Collections.IEnumerable = null
         member x.MarkAsService() = ()
         member x.GetInvariantString(nakedObject : INakedObject) = ""

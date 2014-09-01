@@ -114,7 +114,8 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public object CreateInstance(Type type, INakedObjectPersistor persistor) {
             Log.Debug("CreateInstance of: " + type);
-            return reflector.LoadSpecification(type).CreateObject(persistor);
+            return persistor.CreateObject(reflector.LoadSpecification(type));
+            //return .CreateObject(persistor);
         }
 
         public virtual INakedObject GetObject(IOid oid, INakedObjectSpecification hint) {

@@ -168,6 +168,8 @@
     <Compile Include="persist\TransactionException.cs" />
     <Compile Include="persist\AggregateOid.cs" />
     <Compile Include="persist\ViewModelOid.cs" />
+    <Compile Include="reflect\IContainerInjector.cs" />
+    <Compile Include="reflect\INakedObjectsFramework.cs" />
     <Compile Include="security\IAuthenticatorInstaller.cs" />
     <Compile Include="security\SimpleSession.cs" />
     <Compile Include="service\ServiceUtils.cs" />

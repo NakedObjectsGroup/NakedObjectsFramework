@@ -60,7 +60,8 @@ namespace NakedObjects.Reflector.Audit {
         }
 
         private IAuditor CreateAuditor(IAuditor auditor, INakedObjectPersistor persistor) {
-            return (IAuditor)Reflector.LoadSpecification(auditor.GetType()).CreateObject(persistor);
+            return (IAuditor)persistor.CreateObject(Reflector.LoadSpecification(auditor.GetType()));
+            //return (IAuditor)Reflector.LoadSpecification(auditor.GetType()).CreateObject(persistor);
         }
 
         private IAuditor GetDefaultAuditor(INakedObjectPersistor persistor) {

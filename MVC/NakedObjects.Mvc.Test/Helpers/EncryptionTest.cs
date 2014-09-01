@@ -37,7 +37,7 @@ namespace MvcTestApp.Tests.Helpers {
         [SetUp]
         public void StartTest() {
             SetUser("sven");
-            Fixtures.InstallFixtures(NakedObjectsContext.ObjectPersistor);
+            Fixtures.InstallFixtures(NakedObjectsContext.ObjectPersistor, null);
         }
 
         [TearDown]

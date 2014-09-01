@@ -2,36 +2,57 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using System;
 using System.Collections.Generic;
-using NakedObjects.Architecture.Reflect;
+using System.Linq;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Reflector.DotNet {
     public class DotNetDomainObjectContainerInjector : IContainerInjector {
-        private readonly object container;
-        private readonly List<object> services = new List<object>();
+        private object container;
+        private bool initialized;
+        private List<object> services;
 
-        public DotNetDomainObjectContainerInjector(INakedObjectsFramework framework, object[] services) {
-            container = new DotNetDomainObjectContainer(framework);
-            this.services.AddRange(services);
-            this.services.Add(framework);
+        public INakedObjectsFramework Framework { private get; set; }
+        public Type[] ServiceTypes { set; private get; }
+
+        private List<object> Services {
+            get {
+                if (services == null) {
+                    services = ServiceTypes.Select(Activator.CreateInstance).ToList();
+                    services.Add(Framework);
+                    services.ForEach(InitDomainObject);           
+                }
+                return services;
+            }
         }
 
         #region IContainerInjector Members
 
         public void InitDomainObject(object obj) {
+            Initialize();
             Assert.AssertNotNull("no container", container);
-            Assert.AssertNotNull("no services", services);
+            Assert.AssertNotNull("no services", Services);
             Methods.InjectContainer(obj, container);
-            Methods.InjectServices(obj, services.ToArray());
+            Methods.InjectServices(obj, Services.ToArray());
         }
 
         public void InitInlineObject(object root, object inlineObject) {
+            Initialize();
             Assert.AssertNotNull("no root object", root);
             Methods.InjectRoot(root, inlineObject);
         }
 
         #endregion
+
+        private void Initialize() {
+            if (!initialized) {
+                Assert.AssertNotNull(Framework);
+                container = new DotNetDomainObjectContainer(Framework);
+                initialized = true;
+            }
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

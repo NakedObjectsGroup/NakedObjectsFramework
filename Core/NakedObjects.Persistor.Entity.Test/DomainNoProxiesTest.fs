@@ -15,6 +15,7 @@ open System
 open NakedObjects.Core.Context
 open NakedObjects.Core.Security
 open System.Security.Principal
+open NakedObjects.Reflector.DotNet
 
 
 let persistor  =
@@ -22,8 +23,9 @@ let persistor  =
     let c = new EntityObjectStoreConfiguration()
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
+    let i = new DotNetDomainObjectContainerInjector()
     c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null, i)
     let p = setupPersistorForTesting p
     p
 
@@ -37,8 +39,9 @@ let overwritePersistor =
     let c = new EntityObjectStoreConfiguration()
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
+    let i = new DotNetDomainObjectContainerInjector()
     c.ContextConfiguration <- [|(box config :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null, i)
     let p = setupPersistorForTesting p
     p
 

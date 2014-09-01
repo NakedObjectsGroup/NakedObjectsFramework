@@ -35,7 +35,7 @@ type Nof4Tests() = class
     
     [<SetUp>]
     member x.StartTest() =           
-        x.Fixtures.InstallFixtures(x.NakedObjectsContext.ObjectPersistor)
+        x.Fixtures.InstallFixtures(x.NakedObjectsContext.ObjectPersistor, null)
         UriMtHelper.GetApplicationPath <- Func<string>(fun () -> "")
         RestfulObjectsControllerBase.IsReadOnly <- false  
         let p = new GenericPrincipal(new GenericIdentity("REST"), [||])

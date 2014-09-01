@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Persist {
-    public interface INakedObjectPersistor : INakedObjectTransactionManager, IContainerInjector, INakedObjectManager, IPersistedObjectAdder {
+    public interface INakedObjectPersistor : INakedObjectTransactionManager, INakedObjectManager, IPersistedObjectAdder {
        
         
         /// <summary>
@@ -27,15 +27,14 @@ namespace NakedObjects.Architecture.Persist {
 
         INakedObject[] ServiceAdapters { get; }
         IOidGenerator OidGenerator { get; }
-        IContainerInjector Injector { get; set; }
-
+       
 
         /// <summary>
         ///     Primarily for testing
         /// </summary>
         void Reset();
 
-        void AddServices(IEnumerable<ServiceWrapper> services);
+        //void AddServices(IEnumerable<ServiceWrapper> services);
 
         IQueryable<T> Instances<T>() where T : class;
 

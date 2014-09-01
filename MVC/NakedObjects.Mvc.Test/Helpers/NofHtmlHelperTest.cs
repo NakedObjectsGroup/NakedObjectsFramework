@@ -58,7 +58,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void StartTest() {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-GB");
             SetUser("sven");
-            Fixtures.InstallFixtures(NakedObjectsContext.ObjectPersistor);
+            Fixtures.InstallFixtures(NakedObjectsContext.ObjectPersistor, null);
         }
 
         [TearDown]

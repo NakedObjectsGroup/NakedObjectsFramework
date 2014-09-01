@@ -28,7 +28,9 @@ namespace NakedObjects.Persistor.Objectstore {
         ///     The name of this object store (for logging/debugging purposes)
         /// </summary>
         string Name { get; }
-      
+
+        INakedObjectManager Manager { get; set; }
+
         void AbortTransaction();
 
         /// <summary>

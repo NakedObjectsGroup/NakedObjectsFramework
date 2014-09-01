@@ -36,11 +36,20 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         /// Display Naked Objects Framework messages and warnings from ViewData
         /// </summary>
+        public static MvcHtmlString[] InitialisationWarnings(this HtmlHelper html) {
+            // TODO display any warnings flagged during initialisation 
+            return new MvcHtmlString[] {};
+        }
+
+        /// <summary>
+        /// Display Naked Objects Framework messages and warnings from ViewData
+        /// </summary>
         public static MvcHtmlString SystemMessages(this HtmlHelper html) {
-            string[] messages = (string[]) html.ViewData[IdHelper.SystemMessages] ?? new string[0];
+            string[] messages = (string[])html.ViewData[IdHelper.SystemMessages] ?? new string[0];
 
             return MvcHtmlString.Create(CommonHtmlHelper.UserMessages(messages, IdHelper.NofMessages));
         }
+
 
         public static MvcHtmlString History(this HtmlHelper html, object domainObject = null, bool clearAll = false) {
             return html.History(DefaultHistorySize, domainObject, clearAll);

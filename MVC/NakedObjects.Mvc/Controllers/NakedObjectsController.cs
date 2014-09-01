@@ -60,10 +60,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
             ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
         }
 
+        protected void SetFramework() {
+            ViewData[IdHelper.NoFramework] = NakedObjectsContext;
+        }
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext) {
             //NakedObjectsContext.EnsureReady();
             //SetSession();
-            //SetServices();
+            SetServices();
+            SetFramework();
             NakedObjectsContext.ObjectPersistor.StartTransaction();
         }
 

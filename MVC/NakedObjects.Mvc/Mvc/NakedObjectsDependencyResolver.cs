@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Core.Reflect;
 
 namespace NakedObjects.Web.Mvc {
 

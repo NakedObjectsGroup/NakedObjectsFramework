@@ -1,18 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Configuration;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Context;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Security;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Objects;
@@ -23,6 +21,7 @@ using NakedObjects.Reflector.DotNet.Facets;
 using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Service;
+using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Mvc.App.App_Start
 {
@@ -69,6 +68,40 @@ namespace NakedObjects.Mvc.App.App_Start
             };
         }
 
+        private static object[] MenuServices {
+            get {
+                return new object[] {
+                    new CustomerRepository(),
+                    new OrderRepository(),
+                    new ProductRepository(),
+                    new EmployeeRepository(),
+                    new SalesRepository(),
+                    new SpecialOfferRepository(),
+                    new ContactRepository(),
+                    new VendorRepository(),
+                    new PurchaseOrderRepository(),
+                    new WorkOrderRepository()
+                };
+            }
+        }
+
+        private static object[] ContributedActions {
+            get {
+                return new object[] {
+                    new OrderContributedActions(),
+                    new CustomerContributedActions()
+                };
+            }
+        }
+
+        private static object[] SystemServices {
+            get {
+                return new object[] {
+                    new SimpleEncryptDecrypt()
+                };
+            }
+        }
+
 
         /// <summary>Registers the type mappings with the Unity container.</summary>
         /// <param name="container">The unity container to configure.</param>
@@ -95,8 +128,19 @@ namespace NakedObjects.Mvc.App.App_Start
 
             container.RegisterInstance(typeof(EntityObjectStoreConfiguration), config, new ContainerControlledLifetimeManager());
 
+            var serviceConfig = new ServicesConfiguration();
+
+            serviceConfig.AddMenuServices(MenuServices);
+            serviceConfig.AddContributedActions(ContributedActions);
+            serviceConfig.AddSystemServices(SystemServices);
+
+            container.RegisterInstance(typeof(ServicesConfiguration), serviceConfig, new ContainerControlledLifetimeManager());
+
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
+
+
+            container.RegisterType<IContainerInjector, DotNetDomainObjectContainerInjector>(new PerRequestLifetimeManager());
 
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerRequestLifetimeManager());
             container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerRequestLifetimeManager());
@@ -111,7 +155,7 @@ namespace NakedObjects.Mvc.App.App_Start
 
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerRequestLifetimeManager());
 
-            container.RegisterType<IDomainObjectContainer, DotNetDomainObjectContainer>(new PerRequestLifetimeManager());
+          
 
         }
     }

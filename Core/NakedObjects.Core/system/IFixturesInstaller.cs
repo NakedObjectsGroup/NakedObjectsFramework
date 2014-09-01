@@ -3,12 +3,13 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Core.Reflect;
 
 namespace NakedObjects.Core.NakedObjectsSystem {
     public interface IFixturesInstaller : IInstaller {
         string[] FixtureNames { get; }
-        void InstallFixtures(INakedObjectPersistor persistor);
-        void InstallFixture(INakedObjectPersistor persistor, string fixtureName);
+        void InstallFixtures(INakedObjectPersistor persistor, IContainerInjector injector);
+        void InstallFixture(INakedObjectPersistor persistor, IContainerInjector injector, string fixtureName);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

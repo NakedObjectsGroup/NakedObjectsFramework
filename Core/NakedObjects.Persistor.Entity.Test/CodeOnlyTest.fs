@@ -11,14 +11,16 @@ open TestTypes
 open NakedObjects.Core.Context
 open NakedObjects.Core.Security
 open System.Security.Principal
+open NakedObjects.Reflector.DotNet
 
 let codeOnlyPersistor =
     let r = new MockReflector()  
     let c = new EntityObjectStoreConfiguration()
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
+    let i = new DotNetDomainObjectContainerInjector()
     c.ContextConfiguration <- [|(box (CodeFirstConfig "CodeOnlyTests") :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r),r)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r),r,i)
     setupPersistorForTesting p
 
 [<TestFixture>]

@@ -2,6 +2,7 @@
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Context;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Objects;
 
 namespace NakedObjects.Service {
@@ -13,13 +14,14 @@ namespace NakedObjects.Service {
         private readonly INakedObjectReflector reflector;
         private readonly IAuthorizationManager authorizationManager;
 
-        public NakedObjectsFramework(IMessageBroker messageBroker, IUpdateNotifier updateNotifier, ISession session, INakedObjectPersistor objectPersistor, INakedObjectReflector reflector, IAuthorizationManager authorizationManager) {
+        public NakedObjectsFramework(IMessageBroker messageBroker, IUpdateNotifier updateNotifier, ISession session, INakedObjectPersistor objectPersistor, INakedObjectReflector reflector, IAuthorizationManager authorizationManager, IContainerInjector injector) {
             this.messageBroker = messageBroker;
             this.updateNotifier = updateNotifier;
             this.session = session;
             this.objectPersistor = objectPersistor;
             this.reflector = reflector;
             this.authorizationManager = authorizationManager;
+            injector.Framework = this;
         }
 
         #region INakedObjectsFramework Members

@@ -87,7 +87,8 @@ namespace NakedObjects.Security {
         }
 
         private object CreateAuthorizer(object authorizer, INakedObjectPersistor persistor) {
-            return Reflector.LoadSpecification(authorizer.GetType()).CreateObject(persistor);
+            return persistor.CreateObject(Reflector.LoadSpecification(authorizer.GetType())); 
+            //return Reflector.LoadSpecification(authorizer.GetType()).CreateObject(persistor);
         }
 
         //TODO:  Change return type to INamespaceAuthorizer when TypeAuthorization has been obsoleted.

@@ -11,6 +11,7 @@ open System
 open NakedObjects
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Architecture.Reflect
+open NakedObjects.Core.Reflect
 open NakedObjects.Architecture.Security
 open NakedObjects.Architecture.Persist
 open System.Data.Entity.Core.Objects
@@ -33,6 +34,10 @@ type TestInjector() =
             if prop <> null then 
                 prop.SetValue(obj, service, null)
         member x.InitInlineObject(root : Object, inlineObject : Object) = ()
+        member x.Framework 
+            with set (f) = ()
+        member x.ServiceTypes 
+            with set (f) = ()
             
 let setupPersistorForInjectorTesting (p : EntityObjectStore) = 
     p.SetupForTesting(new TestInjector(),

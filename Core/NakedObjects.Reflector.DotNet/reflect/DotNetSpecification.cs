@@ -462,17 +462,17 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return str.ToString();
         }
 
-        public override object CreateObject(INakedObjectPersistor persistor) {
-            if (Type.IsArray) {
-                return Array.CreateInstance(Type.GetElementType(), 0);
-            }
-            if (Type.IsAbstract) {
-                throw new ModelException(string.Format(Resources.NakedObjects.CannotCreateAbstract, Type));
-            }
-            object domainObject = Activator.CreateInstance(ProxyCreator.CreateProxyType(reflector, Type));
-            persistor.InitDomainObject(domainObject);
-            return domainObject;
-        }
+        //public override object CreateObject(INakedObjectPersistor persistor) {
+        //    if (Type.IsArray) {
+        //        return Array.CreateInstance(Type.GetElementType(), 0);
+        //    }
+        //    if (Type.IsAbstract) {
+        //        throw new ModelException(string.Format(Resources.NakedObjects.CannotCreateAbstract, Type));
+        //    }
+        //    object domainObject = Activator.CreateInstance(ProxyCreator.CreateProxyType(reflector, Type));
+        //    persistor.InitDomainObject(domainObject);
+        //    return domainObject;
+        //}
 
         private static IEnumerable<INakedObjectSpecification> GetLeafNodes(INakedObjectSpecification spec) {
             if ((spec.IsInterface || spec.IsAbstract)) {

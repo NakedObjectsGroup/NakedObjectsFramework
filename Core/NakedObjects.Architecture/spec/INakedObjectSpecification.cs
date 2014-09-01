@@ -126,7 +126,7 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         IConsent ValidToPersist(INakedObject transientObject, ISession session);
 
-        object CreateObject(INakedObjectPersistor persistor);
+        //object CreateObject(INakedObjectPersistor persistor);
 
         IEnumerable GetBoundedSet(INakedObjectPersistor persistor);
 

@@ -24,6 +24,7 @@ using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Service;
 using NakedObjects.Core.Util;
 using NakedObjects.EntityObjectStore;
@@ -31,6 +32,30 @@ using NakedObjects.Persistor.Transaction;
 using NakedObjects.Util;
 
 namespace NakedObjects.Persistor.Objectstore {
+    public class ServicesConfiguration {
+        public ServicesConfiguration() {
+            Services = new List<ServiceWrapper>();
+        }
+
+        public List<ServiceWrapper> Services { get; set; }
+
+        public void AddMenuServices(object[] services) {
+            IEnumerable<ServiceWrapper> ss = services.Select(s => new ServiceWrapper(ServiceTypes.Menu, s));
+            Services.AddRange(ss);
+        }
+
+        public void AddContributedActions(object[] services) {
+            IEnumerable<ServiceWrapper> ss = services.Select(s => new ServiceWrapper(ServiceTypes.Contributor, s));
+            Services.AddRange(ss);
+        }
+
+        public void AddSystemServices(object[] services) {
+            IEnumerable<ServiceWrapper> ss = services.Select(s => new ServiceWrapper(ServiceTypes.System, s));
+            Services.AddRange(ss);
+        }
+    }
+
+
     public class ObjectStorePersistor : INakedObjectPersistor {
         private static readonly ILog Log;
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
@@ -40,16 +65,16 @@ namespace NakedObjects.Persistor.Objectstore {
         private readonly INakedObjectReflector reflector;
         private readonly List<ServiceWrapper> services = new List<ServiceWrapper>();
         private readonly INakedObjectTransactionManager transactionManager;
-
         private readonly ISession session;
         private readonly IUpdateNotifier updateNotifier;
-
+        private readonly IContainerInjector injector;
+        private bool servicesInit;
 
         static ObjectStorePersistor() {
             Log = LogManager.GetLogger(typeof (ObjectStorePersistor));
         }
 
-        public ObjectStorePersistor(ISession session, IUpdateNotifier updateNotifier, INakedObjectReflector reflector, INakedObjectStore objectStore, IPersistAlgorithm persistAlgorithm, IOidGenerator oidGenerator, IIdentityMap identityMap) {
+        public ObjectStorePersistor(ISession session, IUpdateNotifier updateNotifier, INakedObjectReflector reflector, INakedObjectStore objectStore, IPersistAlgorithm persistAlgorithm, IOidGenerator oidGenerator, IIdentityMap identityMap, IContainerInjector injector,  ServicesConfiguration servicesConfig) {
             Assert.AssertNotNull(objectStore);
             Assert.AssertNotNull(persistAlgorithm);
             Assert.AssertNotNull(oidGenerator);
@@ -64,13 +89,28 @@ namespace NakedObjects.Persistor.Objectstore {
             this.persistAlgorithm = persistAlgorithm;
             OidGenerator = oidGenerator;
             this.identityMap = identityMap;
+            this.injector = injector;
+
+            // TODO - fix !
+            objectStore.Manager = this; 
+
 
             transactionManager = new ObjectStoreTransactionManager(objectStore);
             Log.DebugFormat("Creating {0}", this);
+
+            AddServices(servicesConfig.Services);
+            this.injector.ServiceTypes = servicesConfig.Services.Select(sw => sw.Service.GetType()).ToArray();
         }
 
         protected virtual List<ServiceWrapper> Services {
-            get { return services; }
+            get {
+                if (!servicesInit) {
+                    services.ForEach(sw => injector.InitDomainObject(sw.Service));
+                    servicesInit = true;
+                }
+
+                return services;
+            }
         }
 
         public string DebugTitle {
@@ -79,9 +119,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
         // property Injected dependencies as temp workarounds while refactoring 
 
-        #region INakedObjectPersistor Members
-
-        public IContainerInjector Injector { get; set; }
+        #region INakedObjectPersistor Members       
 
         public IOidGenerator OidGenerator { get; private set; }
 
@@ -184,7 +222,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public void AddServices(IEnumerable<ServiceWrapper> services) {
             Log.DebugFormat("AddServices count: {0}", services.Count());
-            Services.AddRange(services);
+            this.services.AddRange(services);
         }
 
         public virtual IQueryable<T> Instances<T>() where T : class {
@@ -204,12 +242,12 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public virtual void InitDomainObject(object obj) {
             Log.DebugFormat("InitDomainObject: {0}", obj);
-            Injector.InitDomainObject(obj);
+            injector.InitDomainObject(obj);
         }
 
         public void InitInlineObject(object root, object inlineObject) {
             Log.DebugFormat("InitInlineObject root: {0} inlineObject: {1}", root, inlineObject);
-            Injector.InitInlineObject(root, inlineObject);
+            injector.InitInlineObject(root, inlineObject);
         }
 
         public virtual ServiceTypes GetServiceType(INakedObjectSpecification spec) {
@@ -260,7 +298,7 @@ namespace NakedObjects.Persistor.Objectstore {
             persistAlgorithm.Init();
             identityMap.Init();
             OidGenerator.Init();
-            InitServices();
+            //InitServices();
         }
 
         public void Shutdown() {
@@ -643,13 +681,13 @@ namespace NakedObjects.Persistor.Objectstore {
             return AdapterForService(oid, service);
         }
 
-        private void InitServices() {
-            reflector.InstallServiceSpecifications(Services.Select(s => s.Service.GetType()).ToArray());
-            reflector.PopulateContributedActions(GetServices(ServiceTypes.Menu | ServiceTypes.Contributor));
-            foreach (ServiceWrapper service in Services) {
-                Injector.InitDomainObject(service.Service);
-            }
-        }
+        //private void InitServices() {
+        //    reflector.InstallServiceSpecifications(Services.Select(s => s.Service.GetType()).ToArray());
+        //    reflector.PopulateContributedActions(GetServices(ServiceTypes.Menu | ServiceTypes.Contributor));
+        //    foreach (ServiceWrapper service in Services) {
+        //        InitDomainObject(service.Service);
+        //    }
+        //}
 
         private INakedObject AdapterForService(IOid oid, object serv) {
             // do not use PersistorUtils here we want to avoid calling into NakedObjectsContext to avoid a stack overflow ! 

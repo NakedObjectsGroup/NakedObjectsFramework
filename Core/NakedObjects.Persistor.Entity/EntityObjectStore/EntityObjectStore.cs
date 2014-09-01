@@ -30,6 +30,7 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Persistor.Transaction;
@@ -90,10 +91,11 @@ namespace NakedObjects.EntityObjectStore {
             IsInitializedCheck = () => true;
         }
 
-        internal EntityObjectStore(INakedObjectReflector reflector, ISession session, IUpdateNotifier updateNotifier) {
+        internal EntityObjectStore(INakedObjectReflector reflector, ISession session, IUpdateNotifier updateNotifier, IContainerInjector injector) {
             this.reflector = reflector;
             this.session = session;
             this.updateNotifier = updateNotifier;
+            this.injector = injector;
 
             createAdapter = (oid, domainObject) => Manager.CreateAdapter(domainObject, oid, null);
             replacePoco = (nakedObject, newDomainObject) => Manager.ReplacePoco(nakedObject, newDomainObject);
@@ -111,8 +113,8 @@ namespace NakedObjects.EntityObjectStore {
         }
 
 
-        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, EntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, INakedObjectReflector reflector)
-            : this(reflector, session, updateNotifier) {
+        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, EntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, INakedObjectReflector reflector, IContainerInjector injector)
+            : this(reflector, session, updateNotifier, injector) {
             this.oidGenerator = oidGenerator;
             contexts = config.ContextConfiguration.ToDictionary<EntityContextConfiguration, EntityContextConfiguration, LocalContext>(c => c, c => null);
         
@@ -168,16 +170,6 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         #endregion
-
-        public IContainerInjector Injector {
-            get {
-                if (injector == null) {
-                    injector = (IContainerInjector) Manager;
-                }
-                return injector;
-            }
-            set { injector = value; }
-        }
 
         private LocalContext FindContext(Type type) {
             return contexts.Values.SingleOrDefault(c => c.GetIsOwned(type)) ?? contexts.Values.Single(c => c.GetIsKnown(type));
@@ -493,7 +485,7 @@ namespace NakedObjects.EntityObjectStore {
                     object complexObject = pi.GetValue(nakedObject.Object, null);
                     Assert.AssertNotNull("Complex type members should never be null", complexObject);
                     InjectParentIntoChild(nakedObject.Object, complexObject);
-                    Injector.InitDomainObject(complexObject);
+                    injector.InitDomainObject(complexObject);
                     createAggregatedAdapter(nakedObject, pi, complexObject);
                 }
             }
@@ -514,7 +506,7 @@ namespace NakedObjects.EntityObjectStore {
             CheckProxies(domainObject);
             EntityOid oid = oidGenerator.CreateOid(EntityUtils.GetProxiedTypeName(domainObject), context.GetKey(domainObject));
             INakedObject nakedObject = createAdapter(oid, domainObject);
-            Injector.InitDomainObject(nakedObject.Object);
+            injector.InitDomainObject(nakedObject.Object);
             LoadComplexTypes(nakedObject, nakedObject.ResolveState.IsGhost());
             nakedObject.UpdateVersion(session, Manager);
 
@@ -1267,13 +1259,13 @@ namespace NakedObjects.EntityObjectStore {
                 throw new ModelException(string.Format(Resources.NakedObjects.CannotCreateAbstract, type));
             }
             object domainObject = Activator.CreateInstance(type);
-            Injector.InitDomainObject(domainObject);
+            injector.InitDomainObject(domainObject);
 
             if (EntityFrameworkKnowsType(type)) {
                 foreach (PropertyInfo pi in GetContext(domainObject).GetComplexMembers(domainObject.GetType())) {
                     object complexObject = pi.GetValue(domainObject, null);
                     Assert.AssertNotNull("Complex type members should never be null", complexObject);
-                    Injector.InitDomainObject(complexObject);
+                    injector.InitDomainObject(complexObject);
                 }
             }
             return domainObject;
