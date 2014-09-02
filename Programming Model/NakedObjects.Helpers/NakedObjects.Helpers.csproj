@@ -48,9 +48,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IPolymorphicLinkWithOid.cs" />
     <Compile Include="RecognisedMethods.cs" />
     <Compile Include="Services\AbstractFactoryAndRepository.cs" />
     <Compile Include="Interfaces\IHasIntegerId.cs" />
+    <Compile Include="Interfaces\IPolymorphicLinkWithOidService.cs" />
+    <Compile Include="Services\PolymorphicLinkWithOidService.cs" />
     <Compile Include="Services\IKeyCodeMapper.cs" />
     <Compile Include="Interfaces\IPolymorphicLink.cs" />
     <Compile Include="Services\ObjectFinderWithTypeCodeMapper.cs" />

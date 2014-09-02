@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{39EBF7
 		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Helpers.Test", "Test\NakedObjects.Helpers.Test\NakedObjects.Helpers.Test.csproj", "{C51D9EC0-E85E-43BD-8AE5-5493430283C9}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = development.vsmdi
@@ -56,6 +58,12 @@ Global
 		{F67B7823-5A02-41E0-B0AF-08AC438AA882}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F67B7823-5A02-41E0-B0AF-08AC438AA882}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F67B7823-5A02-41E0-B0AF-08AC438AA882}.Release|x86.ActiveCfg = Release|Any CPU
+		{C51D9EC0-E85E-43BD-8AE5-5493430283C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C51D9EC0-E85E-43BD-8AE5-5493430283C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C51D9EC0-E85E-43BD-8AE5-5493430283C9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C51D9EC0-E85E-43BD-8AE5-5493430283C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C51D9EC0-E85E-43BD-8AE5-5493430283C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C51D9EC0-E85E-43BD-8AE5-5493430283C9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
