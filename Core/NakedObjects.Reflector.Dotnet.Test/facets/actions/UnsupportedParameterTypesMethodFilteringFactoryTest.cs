@@ -5,8 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using NakedObjects.Reflector.DotNet.Reflect.Strategy;
-using NUnit.Framework;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Choices;
 using NakedObjects.Architecture.Facets.Actions.Defaults;
@@ -18,17 +16,21 @@ using NakedObjects.Architecture.Facets.Naming.Named;
 using NakedObjects.Architecture.Facets.Propparam.Validate.Mandatory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.DotNet.Reflect;
+using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.Spec;
+using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions {
     [TestFixture]
     public class UnsupportedParameterTypesMethodFilteringFactoryTest : AbstractFacetFactoryTest {
+        #region Setup/Teardown
+
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySetImpl(), new FacetDecoratorSet());
-          
-            facetFactory = new UnsupportedParameterTypesMethodFilteringFactory(reflector);
+            Reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySetImpl(), new FacetDecoratorSet());
+
+            facetFactory = new UnsupportedParameterTypesMethodFilteringFactory(Reflector);
         }
 
         [TearDown]
@@ -36,6 +38,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             facetFactory = null;
             base.TearDown();
         }
+
+        #endregion
 
         private UnsupportedParameterTypesMethodFilteringFactory facetFactory;
 

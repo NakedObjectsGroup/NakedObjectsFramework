@@ -1,6 +1,7 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.ComponentModel;
 using System.Reflection;
@@ -17,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Defaults {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PropertyDefaultAnnotationFacetFactory(reflector);
+            facetFactory = new PropertyDefaultAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -56,8 +57,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Defaults {
         [Test]
         public void TestPropertyDefaultAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Prop");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyDefaultFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyDefaultFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyDefaultFacetAnnotation);
             var propertyDefaultFacetAnnotation = (PropertyDefaultFacetAnnotation) facet;

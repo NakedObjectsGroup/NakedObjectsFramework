@@ -10,7 +10,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
     [TestFixture]
     public class Reflector_ValidateTest : AbstractDotNetReflectorTest {
         protected override DotNetSpecification LoadSpecification(DotNetReflector reflector) {
-            return (DotNetSpecification)reflector.LoadSpecification(typeof(Product));
+            return (DotNetSpecification) reflector.LoadSpecification(typeof (Product));
         }
 
         [Test]
@@ -34,22 +34,31 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         [Test]
         public void ValidateMethodsRun() {
             INakedObjectValidation[] validation = specification.ValidateMethods();
-           }
+        }
     }
 
     public class Product {
         // has the wrong number of parameters
+        public string Name { get; set; }
+
+        public DateTime When { get; set; }
+
+        public int Count { get; set; }
+
         public string Validate(string name) {
             return null;
         }
+
         // has the wrong return type
         public int Validate(string name, string count) {
             return 0;
         }
+
         // has the wrong name
         public string ValidateObject(string name, int count) {
             return null;
         }
+
         // has unmatched parameter name
         public string Validate(DateTime date, int count) {
             return null;
@@ -58,10 +67,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public string Validate(string name, int count) {
             if (name == null) {
                 return "no name";
-            } else {
-                if (name.Length != count)
-                    return "invalid length";
             }
+            if (name.Length != count)
+                return "invalid length";
 
             return null;
         }
@@ -69,12 +77,6 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public string Validate(string name, DateTime when) {
             return null;
         }
-
-        public string Name { get; set; }
-
-        public DateTime When { get; set;  }
-
-        public int Count { get; set; }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

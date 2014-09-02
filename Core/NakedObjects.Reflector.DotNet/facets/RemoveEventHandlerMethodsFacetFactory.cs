@@ -25,14 +25,19 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             return false;
         }
 
+        private void RemoveIfNotNull(IMethodRemover methodRemover, MethodInfo mi) {
+            if (mi != null) {
+                RemoveMethod(methodRemover, mi);
+            }
+        }
+
         private void FindAndRemoveEventHandlerMethods(Type type, IMethodRemover methodRemover) {
             foreach (EventInfo eInfo in type.GetEvents()) {
-                RemoveMethod(methodRemover, eInfo.GetAddMethod());
-                RemoveMethod(methodRemover, eInfo.GetRaiseMethod());
-                RemoveMethod(methodRemover, eInfo.GetRemoveMethod());
-                RemoveMethod(methodRemover, eInfo.GetAddMethod());
+                RemoveIfNotNull(methodRemover, eInfo.GetAddMethod());
+                RemoveIfNotNull(methodRemover, eInfo.GetRaiseMethod());
+                RemoveIfNotNull(methodRemover, eInfo.GetRemoveMethod());
 
-                eInfo.GetOtherMethods().ForEach(mi => RemoveMethod(methodRemover, mi));
+                eInfo.GetOtherMethods().ForEach(mi => RemoveIfNotNull(methodRemover, mi));
             }
         }
     }

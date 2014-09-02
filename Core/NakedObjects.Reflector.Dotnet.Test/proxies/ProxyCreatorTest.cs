@@ -1,11 +1,19 @@
 ﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Collections.Generic;
+using Microsoft.Practices.Unity;
+using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
+using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core.Persist;
+using NakedObjects.Persistor;
+using NakedObjects.Persistor.Objectstore;
+using NakedObjects.Persistor.Objectstore.Inmemory;
 using NakedObjects.Reflector.DotNet.Reflect.Proxies;
 using NakedObjects.Services;
 using NakedObjects.Xat;
@@ -15,7 +23,6 @@ namespace NakedObjects.Reflector.DotNet.Proxies {
     public class HasProperty {
         public virtual string Prop { get; set; }
     }
-
 
     public class HasCollectionWithVirtualAccessors {
         private ICollection<HasProperty> aCollection = new List<HasProperty>();
@@ -50,11 +57,11 @@ namespace NakedObjects.Reflector.DotNet.Proxies {
             aCollection.Add(val);
         }
 
-        public  void RemoveFromACollection(HasProperty val) {
+        public void RemoveFromACollection(HasProperty val) {
             aCollection.Remove(val);
         }
 
-        public  void ClearACollection() {
+        public void ClearACollection() {
             aCollection.Clear();
         }
     }
@@ -65,31 +72,44 @@ namespace NakedObjects.Reflector.DotNet.Proxies {
         #region Setup/Teardown
 
         [SetUp]
-        public void SetupTest() {
-            InitializeNakedObjectsFramework();
-            //injector = new DotNetDomainObjectContainerInjector(NakedObjectsFramework.Reflector,
-            //    new[] {new SimpleRepository<HasProperty>()});
+        public void Setup() {
+            StartTest();
         }
 
         [TearDown]
-        public void TearDownTest() {
-            CleanupNakedObjectsFramework();
-        }
+        public void TearDown() {}
 
         #endregion
 
-        protected override IServicesInstaller MenuServices {
-            get { return new ServicesInstaller(new[] {new SimpleRepository<HasProperty>()}); }
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            // replace INakedObjectStore types
+
+            container.RegisterType<IOidGenerator, SimpleOidGenerator>(new InjectionConstructor(typeof (INakedObjectReflector), 0L));
+            container.RegisterType<IPersistAlgorithm, DefaultPersistAlgorithm>();
+            container.RegisterType<INakedObjectStore, MemoryObjectStore>();
+            container.RegisterType<IIdentityMap, IdentityMapImpl>();
         }
 
-        private DotNetDomainObjectContainerInjector injector = null;
+        [TestFixtureSetUp]
+        public void SetupFixture() {
+            InitializeNakedObjectsFramework();
+        }
 
+        [TestFixtureTearDown]
+        public void TearDownFixture() {
+            CleanupNakedObjectsFramework();
+        }
+
+        protected override IServicesInstaller MenuServices {
+            get { return new ServicesInstaller(new SimpleRepository<HasProperty>()); }
+        }
 
         [Test]
-        public void CreateProxyWithVirtualAddTo() {
-            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, typeof (HasCollectionWithVirtualAccessors));
-            var proxy = (HasCollectionWithVirtualAccessors) Activator.CreateInstance(proxyType);
-            injector.InitDomainObject(proxy);
+        public void CreateProxyWithNonVirtualAccessors() {
+            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, typeof (HasCollectionWithNonVirtualAccessors));
+            var proxy = (HasCollectionWithNonVirtualAccessors) Activator.CreateInstance(proxyType);
+            NakedObjectsFramework.Injector.InitDomainObject(proxy);
 
             var hasProperty = new HasProperty();
 
@@ -99,26 +119,23 @@ namespace NakedObjects.Reflector.DotNet.Proxies {
         }
 
         [Test]
-        public void CreateProxyWithVirtualRemoveFrom() {
-            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, typeof(HasCollectionWithVirtualAccessors));
+        public void CreateProxyWithVirtualAddTo() {
+            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, typeof (HasCollectionWithVirtualAccessors));
             var proxy = (HasCollectionWithVirtualAccessors) Activator.CreateInstance(proxyType);
-            injector.InitDomainObject(proxy);
+            NakedObjectsFramework.Injector.InitDomainObject(proxy);
+
             var hasProperty = new HasProperty();
 
-            proxy.ACollection.Add(hasProperty);
+            proxy.AddToACollection(hasProperty);
 
             Assert.IsTrue(proxy.ACollection.Contains(hasProperty));
-
-            proxy.RemoveFromACollection(hasProperty);
-
-            Assert.IsFalse(proxy.ACollection.Contains(hasProperty));
         }
 
         [Test]
         public void CreateProxyWithVirtualClear() {
-            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, typeof(HasCollectionWithVirtualAccessors));
-            var proxy = (HasCollectionWithVirtualAccessors)Activator.CreateInstance(proxyType);
-            injector.InitDomainObject(proxy);
+            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, typeof (HasCollectionWithVirtualAccessors));
+            var proxy = (HasCollectionWithVirtualAccessors) Activator.CreateInstance(proxyType);
+            NakedObjectsFramework.Injector.InitDomainObject(proxy);
             var hasProperty = new HasProperty();
 
             proxy.ACollection.Add(hasProperty);
@@ -130,30 +147,33 @@ namespace NakedObjects.Reflector.DotNet.Proxies {
             Assert.IsFalse(proxy.ACollection.Contains(hasProperty));
         }
 
-        [Test]
-        public void CreateProxyWithNonVirtualAccessors() {
-            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, typeof(HasCollectionWithNonVirtualAccessors));
-            var proxy = (HasCollectionWithNonVirtualAccessors)Activator.CreateInstance(proxyType);
-            injector.InitDomainObject(proxy);
-
-            var hasProperty = new HasProperty();
-
-            proxy.AddToACollection(hasProperty);
-
-            Assert.IsTrue(proxy.ACollection.Contains(hasProperty));
-        }
-
 
         [Test]
         public void CreateProxyWithVirtualProperty() {
-            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, typeof(HasProperty));
+            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, typeof (HasProperty));
             var proxy = (HasProperty) Activator.CreateInstance(proxyType);
-            injector.InitDomainObject(proxy);
+            NakedObjectsFramework.Injector.InitDomainObject(proxy);
             const string testValue = "A Test Value";
 
             proxy.Prop = testValue;
 
             Assert.AreEqual(testValue, proxy.Prop);
+        }
+
+        [Test]
+        public void CreateProxyWithVirtualRemoveFrom() {
+            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, typeof (HasCollectionWithVirtualAccessors));
+            var proxy = (HasCollectionWithVirtualAccessors) Activator.CreateInstance(proxyType);
+            NakedObjectsFramework.Injector.InitDomainObject(proxy);
+            var hasProperty = new HasProperty();
+
+            proxy.ACollection.Add(hasProperty);
+
+            Assert.IsTrue(proxy.ACollection.Contains(hasProperty));
+
+            proxy.RemoveFromACollection(hasProperty);
+
+            Assert.IsFalse(proxy.ACollection.Contains(hasProperty));
         }
     }
 }

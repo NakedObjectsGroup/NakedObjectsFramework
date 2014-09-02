@@ -2,11 +2,11 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
-using NakedObjects.Reflector.DotNet.Facets;
-using NUnit.Framework;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Reflector.DotNet.Facets;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.Spec;
+using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     public abstract class AbstractDotNetReflectorTest {
@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             //context.SetObjectPersistor(new TestProxyPersistor());
 
             specification = LoadSpecification(reflector);
-            specification.PopulateAssociatedActions(new INakedObject[]{});
+            specification.PopulateAssociatedActions(new INakedObject[] {});
         }
 
         protected abstract DotNetSpecification LoadSpecification(DotNetReflector reflector);

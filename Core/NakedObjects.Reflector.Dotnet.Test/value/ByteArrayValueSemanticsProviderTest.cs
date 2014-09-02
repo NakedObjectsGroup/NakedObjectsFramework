@@ -5,15 +5,16 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
+using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     [TestFixture]
     public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<byte[]> {
+        #region Setup/Teardown
+
         [SetUp]
         public override void SetUp() {
             base.SetUp();
@@ -22,6 +23,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
             facetHolder = new FacetHolderImpl();
             SetValue(value = new ArrayValueSemanticsProvider<byte>(reflector, facetHolder));
         }
+
+        #endregion
 
         private INakedObject byteArrayNakedObject;
         private object byteArray;
@@ -54,14 +57,6 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
         [Test]
-        public void TestParseInvariant() {
-            var b1 = new byte[] {1, 2, 3, 4};
-            string s1 = b1.Aggregate("", (s, t) => s + ' ' + t.ToString(CultureInfo.InvariantCulture));
-            object b2 = value.ParseInvariant(s1);
-            Assert.AreEqual(b1, b2);
-        }
-
-        [Test]
         public new void TestParseEmptyString() {
             try {
                 object newValue = value.ParseTextEntry("");
@@ -81,6 +76,14 @@ namespace NakedObjects.Reflector.DotNet.Value {
             catch (Exception e) {
                 Assert.IsInstanceOf(typeof (InvalidEntryException), e);
             }
+        }
+
+        [Test]
+        public void TestParseInvariant() {
+            var b1 = new byte[] {1, 2, 3, 4};
+            string s1 = b1.Aggregate("", (s, t) => s + ' ' + t.ToString(CultureInfo.InvariantCulture));
+            object b2 = value.ParseInvariant(s1);
+            Assert.AreEqual(b1, b2);
         }
 
         [Test]

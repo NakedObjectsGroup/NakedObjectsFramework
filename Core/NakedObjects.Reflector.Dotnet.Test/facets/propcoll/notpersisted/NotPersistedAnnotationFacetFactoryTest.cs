@@ -1,6 +1,7 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Collections;
 using System.Reflection;
@@ -12,6 +13,22 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
     [TestFixture]
     public class NotPersistedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+        #region Setup/Teardown
+
+        [SetUp]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new NotPersistedAnnotationFacetFactory(Reflector);
+        }
+
+        [TearDown]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
+
         private NotPersistedAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -22,20 +39,21 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
             get { return facetFactory; }
         }
 
-        [SetUp]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new NotPersistedAnnotationFacetFactory (reflector);
+        private class Customer {
+            [NotPersisted]
+            public string FirstName {
+                get { return null; }
+            }
         }
 
-        [TearDown]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
+        private class Customer1 {
+            [NotPersisted]
+            public IList Orders {
+                get { return null; }
+            }
         }
 
-
-       [Test]
+        [Test]
         public override void TestFeatureTypes() {
             NakedObjectFeatureType[] featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(Contains(featureTypes, NakedObjectFeatureType.Objects));
@@ -45,47 +63,25 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
             Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.ActionParameter));
         }
 
-       [Test]
-        public void TestNotPersistedAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer), "FirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (INotPersistedFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotPersistedFacetAnnotation);
-            AssertNoMethodsRemoved();
-        }
-
-       [Test]
+        [Test]
         public void TestNotPersistedAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (INotPersistedFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (INotPersistedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotPersistedFacetAnnotation);
             AssertNoMethodsRemoved();
         }
 
-        #region Nested Type: Customer
-
-        private class Customer {
-            [NotPersisted]
-            public string FirstName {
-                get { return null; }
-            }
+        [Test]
+        public void TestNotPersistedAnnotationPickedUpOnProperty() {
+            PropertyInfo property = FindProperty(typeof (Customer), "FirstName");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (INotPersistedFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is NotPersistedFacetAnnotation);
+            AssertNoMethodsRemoved();
         }
-
-        #endregion
-
-        #region Nested Type: Customer1
-
-        private class Customer1 {
-            [NotPersisted]
-            public IList Orders {
-                get { return null; }
-            }
-        }
-
-        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

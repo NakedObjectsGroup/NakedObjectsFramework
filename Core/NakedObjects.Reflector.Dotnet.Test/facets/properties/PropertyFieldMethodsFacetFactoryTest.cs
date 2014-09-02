@@ -1,6 +1,7 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -40,7 +41,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PropertyMethodsFacetFactory(reflector);
+            facetFactory = new PropertyMethodsFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -56,16 +57,16 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         protected override Type[] SupportedTypes {
             get {
                 return new[] {
-                                 typeof (IMandatoryFacet),
-                                 typeof (IPropertyAccessorFacet),
-                                 typeof (IPropertyValidateFacet),
-                                 typeof (IPropertyDefaultFacet),
-                                 typeof (IPropertyChoicesFacet),
-                                 typeof (IPropertySetterFacet),
-                                 typeof (IPropertyClearFacet),
-                                 typeof (INotPersistedFacet),
-                                 typeof (IDisabledFacet)
-                             };
+                    typeof (IMandatoryFacet),
+                    typeof (IPropertyAccessorFacet),
+                    typeof (IPropertyValidateFacet),
+                    typeof (IPropertyDefaultFacet),
+                    typeof (IPropertyChoicesFacet),
+                    typeof (IPropertySetterFacet),
+                    typeof (IPropertyClearFacet),
+                    typeof (INotPersistedFacet),
+                    typeof (IDisabledFacet)
+                };
             }
         }
 
@@ -449,7 +450,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         }
 
         public interface NameInterface {
-             string Name { get; set; }
+            string Name { get; set; }
         }
 
         private class Customer27 {
@@ -462,58 +463,141 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             }
         }
 
+        [Test]
+        public void TestAjaxFacetAddedIfNoValidate() {
+            PropertyInfo property = FindProperty(typeof (Customer2), "FirstName");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IAjaxFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is AjaxFacetAnnotation);
+        }
+
+        [Test]
+        public void TestAjaxFacetFoundAndMethodRemovedDisabled() {
+            PropertyInfo property = FindProperty(typeof (Customer19), "FirstName");
+            MethodInfo propertyValidateMethod = FindMethod(typeof (Customer19), "ValidateFirstName", new[] {typeof (string)});
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IAjaxFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is AjaxFacetAnnotation);
+            AssertMethodRemoved(propertyValidateMethod);
+        }
+
+        [Test]
+        public void TestAjaxFacetFoundAndMethodRemovedEnabled() {
+            PropertyInfo property = FindProperty(typeof (Customer20), "FirstName");
+            MethodInfo propertyValidateMethod = FindMethod(typeof (Customer20), "ValidateFirstName", new[] {typeof (string)});
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IAjaxFacet));
+            Assert.IsNull(facet);
+            AssertMethodRemoved(propertyValidateMethod);
+        }
+
+        [Test]
+        public void TestAjaxFacetNotAddedByDefault() {
+            PropertyInfo property = FindProperty(typeof (Customer12), "FirstName");
+            MethodInfo propertyValidateMethod = FindMethod(typeof (Customer12), "ValidateFirstName", new[] {typeof (string)});
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IAjaxFacet));
+            Assert.IsNull(facet);
+            AssertMethodRemoved(propertyValidateMethod);
+        }
+
+        [Test]
+        public void TestAutoCompleteFacetAttributes() {
+            PropertyInfo property = FindProperty(typeof (Customer26), "FirstName");
+            MethodInfo propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof (Customer26), "AutoCompleteFirstName");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IAutoCompleteFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
+            var propertyAutoCompleteFacet = (AutoCompleteFacetViaMethod) facet;
+            Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
+            AssertMethodRemoved(propertyAutoCompleteMethod);
+            Assert.AreEqual(33, propertyAutoCompleteFacet.PageSize);
+            Assert.AreEqual(3, propertyAutoCompleteFacet.MinLength);
+        }
+
+        [Test]
+        public void TestAutoCompleteFacetFoundAndMethodRemoved() {
+            PropertyInfo property = FindProperty(typeof (Customer21), "FirstName");
+            MethodInfo propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof (Customer21), "AutoCompleteFirstName");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IAutoCompleteFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
+            var propertyAutoCompleteFacet = (AutoCompleteFacetViaMethod) facet;
+            Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
+            AssertMethodRemoved(propertyAutoCompleteMethod);
+            Assert.AreEqual(50, propertyAutoCompleteFacet.PageSize);
+            Assert.AreEqual(0, propertyAutoCompleteFacet.MinLength);
+        }
+
+        [Test]
+        public void TestAutoCompleteFacetFoundAndMethodRemovedForInterface() {
+            PropertyInfo property = FindProperty(typeof (Customer27), "FirstName");
+            MethodInfo propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof (Customer27), "AutoCompleteFirstName");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IAutoCompleteFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
+            var propertyAutoCompleteFacet = (AutoCompleteFacetViaMethod) facet;
+            Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
+            AssertMethodRemoved(propertyAutoCompleteMethod);
+            Assert.AreEqual(50, propertyAutoCompleteFacet.PageSize);
+            Assert.AreEqual(0, propertyAutoCompleteFacet.MinLength);
+        }
+
+        [Test]
+        public void TestAutoCompleteFacetIgnored() {
+            PropertyInfo property = FindProperty(typeof (Customer22), "FirstName");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            Assert.IsNull(FacetHolder.GetFacet(typeof (IAutoCompleteFacet)));
+
+            property = FindProperty(typeof (Customer23), "FirstName");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            Assert.IsNull(FacetHolder.GetFacet(typeof (IAutoCompleteFacet)));
+
+            property = FindProperty(typeof (Customer24), "FirstName");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            Assert.IsNull(FacetHolder.GetFacet(typeof (IAutoCompleteFacet)));
+
+            property = FindProperty(typeof (Customer25), "FirstName");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            Assert.IsNull(FacetHolder.GetFacet(typeof (IAutoCompleteFacet)));
+        }
+
 
         [Test]
         public void TestChoicesFacetFoundAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer10), "FirstName");
             MethodInfo propertyChoicesMethod = FindMethod(typeof (Customer10), "ChoicesFirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyChoicesFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
             var propertyChoicesFacet = (PropertyChoicesFacetViaMethod) facet;
             Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod));
-            Assert.Fail(); // fix this 
-
-            IFacet facetExecuted = facetHolder.GetFacet(typeof (IExecutedControlMethodFacet));
+            AssertMethodRemoved(propertyChoicesMethod);
+            IFacet facetExecuted = FacetHolder.GetFacet(typeof (IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted);
-        }
-
-        [Test]
-        public void TestChoicesFacetFoundAndMethodRemovedWithParms() {
-            PropertyInfo property = FindProperty(typeof(Customer17), "FirstName");
-            MethodInfo propertyChoicesMethod = FindMethod(typeof(Customer17), "ChoicesFirstName", new[] { typeof(string) });
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IPropertyChoicesFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
-            var propertyChoicesFacet = (PropertyChoicesFacetViaMethod)facet;
-            Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod));
-
-            IFacet facetExecuted = facetHolder.GetFacet(typeof(IExecutedControlMethodFacet));
-            Assert.IsNull(facetExecuted);
-            Assert.Fail(); // fix this 
         }
 
         [Test]
         public void TestChoicesFacetFoundAndMethodRemovedDuplicate() {
-            PropertyInfo property = FindProperty(typeof(Customer18), "FirstName");
-            MethodInfo propertyChoicesMethod1 = FindMethod(typeof(Customer18), "ChoicesFirstName", new Type[] {});
-            MethodInfo propertyChoicesMethod2 = FindMethod(typeof(Customer18), "ChoicesFirstName", new [] {typeof(string) });
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IPropertyChoicesFacet));
+            PropertyInfo property = FindProperty(typeof (Customer18), "FirstName");
+            MethodInfo propertyChoicesMethod1 = FindMethod(typeof (Customer18), "ChoicesFirstName", new Type[] {});
+            MethodInfo propertyChoicesMethod2 = FindMethod(typeof (Customer18), "ChoicesFirstName", new[] {typeof (string)});
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
-            var propertyChoicesFacet = (PropertyChoicesFacetViaMethod)facet;
+            var propertyChoicesFacet = (PropertyChoicesFacetViaMethod) facet;
             Assert.AreEqual(propertyChoicesMethod1, propertyChoicesFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod1));
-            //Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod2));
-
-            IFacet facetExecuted = facetHolder.GetFacet(typeof(IExecutedControlMethodFacet));
+            AssertMethodRemoved(propertyChoicesMethod1);
+            AssertMethodNotRemoved(propertyChoicesMethod2);
+            IFacet facetExecuted = FacetHolder.GetFacet(typeof (IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted);
-            Assert.Fail(); // fix this 
         }
 
 
@@ -521,129 +605,66 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         public void TestChoicesFacetFoundAndMethodRemovedLocal() {
             PropertyInfo property = FindProperty(typeof (Customer10l), "FirstName");
             MethodInfo propertyChoicesMethod = FindMethod(typeof (Customer10l), "ChoicesFirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyChoicesFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
             var propertyChoicesFacet = (PropertyChoicesFacetViaMethod) facet;
             Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod));
-
-            var facetExecuted = facetHolder.GetFacet<IExecutedControlMethodFacet>();
+            AssertMethodRemoved(propertyChoicesMethod);
+            var facetExecuted = FacetHolder.GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted);
-
             Assert.AreEqual(facetExecuted.ExecutedWhere(propertyChoicesMethod), Architecture.Facets.Where.Locally);
-            Assert.Fail(); // fix this 
         }
 
         [Test]
         public void TestChoicesFacetFoundAndMethodRemovedRemote() {
             PropertyInfo property = FindProperty(typeof (Customer10r), "FirstName");
             MethodInfo propertyChoicesMethod = FindMethod(typeof (Customer10r), "ChoicesFirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyChoicesFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
             var propertyChoicesFacet = (PropertyChoicesFacetViaMethod) facet;
             Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyChoicesMethod));
-
-            var facetExecuted = facetHolder.GetFacet<IExecutedControlMethodFacet>();
+            AssertMethodRemoved(propertyChoicesMethod);
+            var facetExecuted = FacetHolder.GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted);
-
             Assert.AreEqual(facetExecuted.ExecutedWhere(propertyChoicesMethod), Architecture.Facets.Where.Remotely);
-            Assert.Fail(); // fix this 
         }
 
         [Test]
-        public void TestAutoCompleteFacetFoundAndMethodRemoved() {
-            PropertyInfo property = FindProperty(typeof (Customer21), "FirstName");
-            MethodInfo propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof (Customer21), "AutoCompleteFirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IAutoCompleteFacet));
+        public void TestChoicesFacetFoundAndMethodRemovedWithParms() {
+            PropertyInfo property = FindProperty(typeof (Customer17), "FirstName");
+            MethodInfo propertyChoicesMethod = FindMethod(typeof (Customer17), "ChoicesFirstName", new[] {typeof (string)});
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
-            var propertyAutoCompleteFacet = (AutoCompleteFacetViaMethod) facet;
-            Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyAutoCompleteMethod));
-
-            Assert.AreEqual(50, propertyAutoCompleteFacet.PageSize);
-            Assert.AreEqual(0, propertyAutoCompleteFacet.MinLength);
-            Assert.Fail(); // fix this 
-        }
-
-        [Test]
-        public void TestAutoCompleteFacetFoundAndMethodRemovedForInterface() {
-            PropertyInfo property = FindProperty(typeof(Customer27), "FirstName");
-            MethodInfo propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof(Customer27), "AutoCompleteFirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IAutoCompleteFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
-            var propertyAutoCompleteFacet = (AutoCompleteFacetViaMethod)facet;
-            Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyAutoCompleteMethod));
-
-            Assert.AreEqual(50, propertyAutoCompleteFacet.PageSize);
-            Assert.AreEqual(0, propertyAutoCompleteFacet.MinLength);
-            Assert.Fail(); // fix this 
-        }
-
-        [Test]
-        public void TestAutoCompleteFacetAttributes() {
-            PropertyInfo property = FindProperty(typeof(Customer26), "FirstName");
-            MethodInfo propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof(Customer26), "AutoCompleteFirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IAutoCompleteFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
-            var propertyAutoCompleteFacet = (AutoCompleteFacetViaMethod)facet;
-            Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyAutoCompleteMethod));
-            Assert.AreEqual(33, propertyAutoCompleteFacet.PageSize);
-            Assert.AreEqual(3, propertyAutoCompleteFacet.MinLength);
-            Assert.Fail(); // fix this 
-        }
-
-
-        [Test]
-        public void TestAutoCompleteFacetIgnored() {
-            PropertyInfo property = FindProperty(typeof (Customer22), "FirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            Assert.IsNull(facetHolder.GetFacet(typeof (IAutoCompleteFacet)));
-
-            property = FindProperty(typeof (Customer23), "FirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            Assert.IsNull(facetHolder.GetFacet(typeof (IAutoCompleteFacet)));
-
-            property = FindProperty(typeof (Customer24), "FirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            Assert.IsNull(facetHolder.GetFacet(typeof (IAutoCompleteFacet)));
-
-            property = FindProperty(typeof (Customer25), "FirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            Assert.IsNull(facetHolder.GetFacet(typeof (IAutoCompleteFacet)));
+            Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
+            var propertyChoicesFacet = (PropertyChoicesFacetViaMethod) facet;
+            AssertMethodRemoved(propertyChoicesMethod);
+            IFacet facetExecuted = FacetHolder.GetFacet(typeof (IExecutedControlMethodFacet));
+            Assert.IsNull(facetExecuted);
         }
 
         [Test]
         public void TestClearFacet() {
             PropertyInfo property = FindProperty(typeof (Customer8), "FirstName");
             MethodInfo propertyClearMethod = FindMethod(typeof (Customer8), "ClearFirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyClearFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyClearFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyClearFacetViaClearMethod);
             var propertyClearFacet = (PropertyClearFacetViaClearMethod) facet;
             Assert.AreEqual(propertyClearMethod, propertyClearFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyClearMethod));
-            Assert.Fail(); // fix this 
+            AssertMethodRemoved(propertyClearMethod);
         }
 
         [Test]
         public void TestClearFacetViaSetterIfNoExplicitClearMethod() {
             PropertyInfo property = FindProperty(typeof (Customer9), "FirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyClearFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyClearFacet));
             Assert.IsNull(facet);
         }
 
@@ -651,35 +672,30 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         public void TestDefaultFacetFoundAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer11), "FirstName");
             MethodInfo propertyDefaultMethod = FindMethod(typeof (Customer11), "DefaultFirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyDefaultFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyDefaultFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyDefaultFacetViaMethod);
             var propertyDefaultFacet = (PropertyDefaultFacetViaMethod) facet;
             Assert.AreEqual(propertyDefaultMethod, propertyDefaultFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyDefaultMethod));
-
-            IFacet facetExecuted = facetHolder.GetFacet(typeof (IExecutedControlMethodFacet));
+            AssertMethodRemoved(propertyDefaultMethod);
+            IFacet facetExecuted = FacetHolder.GetFacet(typeof (IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted);
-            Assert.Fail(); // fix this 
         }
 
         [Test]
         public void TestDefaultFacetFoundAndMethodRemovedLocal() {
             PropertyInfo property = FindProperty(typeof (Customer11l), "FirstName");
             MethodInfo propertyDefaultMethod = FindMethod(typeof (Customer11l), "DefaultFirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyDefaultFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyDefaultFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyDefaultFacetViaMethod);
             var propertyDefaultFacet = (PropertyDefaultFacetViaMethod) facet;
             Assert.AreEqual(propertyDefaultMethod, propertyDefaultFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyDefaultMethod));
-            Assert.Fail(); // fix this 
-
-            var facetExecuted = facetHolder.GetFacet<IExecutedControlMethodFacet>();
+            AssertMethodRemoved(propertyDefaultMethod);
+            var facetExecuted = FacetHolder.GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted);
-
             Assert.AreEqual(facetExecuted.ExecutedWhere(propertyDefaultMethod), Architecture.Facets.Where.Locally);
         }
 
@@ -687,19 +703,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         public void TestDefaultFacetFoundAndMethodRemovedRemote() {
             PropertyInfo property = FindProperty(typeof (Customer11r), "FirstName");
             MethodInfo propertyDefaultMethod = FindMethod(typeof (Customer11r), "DefaultFirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyDefaultFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyDefaultFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyDefaultFacetViaMethod);
             var propertyDefaultFacet = (PropertyDefaultFacetViaMethod) facet;
             Assert.AreEqual(propertyDefaultMethod, propertyDefaultFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyDefaultMethod));
-            Assert.Fail(); // fix this 
-
-
-            var facetExecuted = facetHolder.GetFacet<IExecutedControlMethodFacet>();
+            AssertMethodRemoved(propertyDefaultMethod);
+            var facetExecuted = FacetHolder.GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted);
-
             Assert.AreEqual(facetExecuted.ExecutedWhere(propertyDefaultMethod), Architecture.Facets.Where.Remotely);
         }
 
@@ -707,56 +719,52 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         public void TestDisableDefaultMethodFacet() {
             PropertyInfo property = FindProperty(typeof (Customer16), "FirstName");
             MethodInfo hideMethod = FindMethod(typeof (Customer16), "DisablePropertyDefault", new Type[0]);
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IDisableForContextFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IDisableForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisableForContextFacetViaMethod);
             var disableFacet = (DisableForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, disableFacet.GetMethod());
-            //Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
-            Assert.Fail(); // fix this 
+            AssertMethodNotRemoved(hideMethod);
         }
 
         [Test]
         public void TestDisableMethodOverridsDefault() {
             PropertyInfo property = FindProperty(typeof (Customer16), "SecondName");
             MethodInfo hideMethod = FindMethod(typeof (Customer16), "DisableSecondName", new Type[0]);
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IDisableForContextFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IDisableForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisableForContextFacetViaMethod);
             var disableFacet = (DisableForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, disableFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
-            Assert.Fail(); // fix this 
+            AssertMethodRemoved(hideMethod);
         }
 
         [Test]
         public void TestDisableMethodWithParameterFacet() {
             PropertyInfo property = FindProperty(typeof (Customer15), "FirstName");
             MethodInfo hideMethod = FindMethod(typeof (Customer15), "DisableFirstName", new[] {typeof (string)});
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IDisableForContextFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IDisableForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisableForContextFacetViaMethod);
             var propertyValidateFacet = (DisableForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
-            Assert.Fail(); // fix this 
+            AssertMethodRemoved(hideMethod);
         }
 
         [Test]
         public void TestDisableMethodWithoutParameterFacet() {
             PropertyInfo property = FindProperty(typeof (Customer15), "SecondName");
             MethodInfo hideMethod = FindMethod(typeof (Customer15), "DisableSecondName", new Type[0]);
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IDisableForContextFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IDisableForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisableForContextFacetViaMethod);
             var propertyValidateFacet = (DisableForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
-            Assert.Fail(); // fix this 
+            AssertMethodRemoved(hideMethod);
         }
 
         [Test]
@@ -773,22 +781,21 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         public void TestHideDefaultMethodFacet() {
             PropertyInfo property = FindProperty(typeof (Customer14), "FirstName");
             MethodInfo hideMethod = FindMethod(typeof (Customer14), "HidePropertyDefault", new Type[0]);
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForContextFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForContextFacetViaMethod);
             var propertyValidateFacet = (HideForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
-            //Assert.IsFalse(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
-            Assert.Fail(); // fix this 
+            AssertMethodNotRemoved(hideMethod);
         }
 
         [Test]
         public void TestHideMethodOverridesDefault() {
             PropertyInfo property = FindProperty(typeof (Customer14), "SecondName");
             MethodInfo hideMethod = FindMethod(typeof (Customer14), "HideSecondName", new[] {typeof (string)});
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForContextFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForContextFacetViaMethod);
             var propertyValidateFacet = (HideForContextFacetViaMethod) facet;
@@ -799,49 +806,46 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         public void TestHideMethodWithParameterFacet() {
             PropertyInfo property = FindProperty(typeof (Customer13), "SecondName");
             MethodInfo hideMethod = FindMethod(typeof (Customer13), "HideSecondName", new[] {typeof (string)});
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForContextFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForContextFacetViaMethod);
             var propertyValidateFacet = (HideForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
-            Assert.Fail(); // fix this 
+            AssertMethodRemoved(hideMethod);
         }
 
         [Test]
         public void TestHideMethodWithoutParameterFacet() {
             PropertyInfo property = FindProperty(typeof (Customer13), "FirstName");
             MethodInfo hideMethod = FindMethod(typeof (Customer13), "HideFirstName", new Type[0]);
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForContextFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForContextFacetViaMethod);
             var propertyValidateFacet = (HideForContextFacetViaMethod) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(hideMethod));
-            Assert.Fail(); // fix this 
+            AssertMethodRemoved(hideMethod);
         }
 
         [Test]
         public void TestIfHaveSetterAndModifyFacetThenTheModifyFacetWinsOut() {
             PropertyInfo property = FindProperty(typeof (Customer7), "FirstName");
             MethodInfo propertyModifyMethod = FindMethod(typeof (Customer7), "ModifyFirstName", new[] {typeof (string)});
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertySetterFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertySetterFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertySetterFacetViaModifyMethod);
             var propertySetterFacet = (PropertySetterFacetViaModifyMethod) facet;
             Assert.AreEqual(propertyModifyMethod, propertySetterFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyModifyMethod));
-            Assert.Fail(); // fix this 
+            AssertMethodRemoved(propertyModifyMethod);
         }
 
         [Test]
         public void TestInitializationFacetIsInstalledForSetterMethodAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer2), "FirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyInitializationFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyInitializationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IPropertyInitializationFacet);
             var propertySetterFacet = (PropertyInitializationFacetViaSetterMethod) facet;
@@ -851,8 +855,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         [Test]
         public void TestInstallsDisabledForSessionFacetAndRemovesMethod() {
             PropertyInfo property = FindProperty(typeof (CustomerStatic), "FirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisableForSessionFacetNone);
         }
@@ -860,8 +864,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         [Test]
         public void TestInstallsHiddenForSessionFacetAndRemovesMethod() {
             PropertyInfo property = FindProperty(typeof (CustomerStatic), "FirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForSessionFacetNone);
         }
@@ -870,11 +874,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         public void TestModifyMethodWithNoSetterStillInstallsDisabledAndDerivedFacets() {
             PropertyInfo property = FindProperty(typeof (Customer6), "FirstName");
             MethodInfo propertyModifyMethod = FindMethod(typeof (Customer6), "ModifyFirstName", new[] {typeof (string)});
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (INotPersistedFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (INotPersistedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotPersistedFacetAnnotation);
-            facet = facetHolder.GetFacet(typeof (IDisabledFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAlways);
         }
@@ -882,8 +886,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         [Test]
         public void TestPropertyAccessorFacetIsInstalledAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer), "FirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyAccessorFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacetViaAccessor);
             var propertyAccessorFacetViaAccessor = (PropertyAccessorFacetViaAccessor) facet;
@@ -894,21 +898,20 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         public void TestSetterFacetIsInstalledForModifyMethodAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer4), "FirstName");
             MethodInfo propertyModifyMethod = FindMethod(typeof (Customer4), "ModifyFirstName", new[] {typeof (string)});
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertySetterFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertySetterFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertySetterFacetViaModifyMethod);
             var propertySetterFacet = (PropertySetterFacetViaModifyMethod) facet;
             Assert.AreEqual(propertyModifyMethod, propertySetterFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyModifyMethod));
-            Assert.Fail(); // fix this 
+            AssertMethodRemoved(propertyModifyMethod);
         }
 
         [Test]
         public void TestSetterFacetIsInstalledForSetterMethodAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertySetterFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertySetterFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertySetterFacetViaSetterMethod);
             var propertySetterFacet = (PropertySetterFacetViaSetterMethod) facet;
@@ -918,70 +921,23 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         [Test]
         public void TestSetterFacetIsInstalledMeansNoDisabledOrDerivedFacetsInstalled() {
             PropertyInfo property = FindProperty(typeof (Customer3), "FirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            Assert.IsNull(facetHolder.GetFacet(typeof (INotPersistedFacet)));
-            Assert.IsNull(facetHolder.GetFacet(typeof (IDisabledFacet)));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            Assert.IsNull(FacetHolder.GetFacet(typeof (INotPersistedFacet)));
+            Assert.IsNull(FacetHolder.GetFacet(typeof (IDisabledFacet)));
         }
 
         [Test]
         public void TestValidateFacetFoundAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer12), "FirstName");
             MethodInfo propertyValidateMethod = FindMethod(typeof (Customer12), "ValidateFirstName", new[] {typeof (string)});
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyValidateFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyValidateFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyValidateFacetViaMethod);
             var propertyValidateFacet = (PropertyValidateFacetViaMethod) facet;
             Assert.AreEqual(propertyValidateMethod, propertyValidateFacet.GetMethod());
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
-            Assert.Fail(); // fix this 
+            AssertMethodRemoved(propertyValidateMethod);
         }
-
-        [Test]
-        public void TestAjaxFacetFoundAndMethodRemovedEnabled() {
-            PropertyInfo property = FindProperty(typeof(Customer20), "FirstName");
-            MethodInfo propertyValidateMethod = FindMethod(typeof(Customer20), "ValidateFirstName", new[] { typeof(string) });
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IAjaxFacet));
-            Assert.IsNull(facet);
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
-            Assert.Fail(); // fix this 
-        }
-
-        [Test]
-        public void TestAjaxFacetFoundAndMethodRemovedDisabled() {
-            PropertyInfo property = FindProperty(typeof(Customer19), "FirstName");
-            MethodInfo propertyValidateMethod = FindMethod(typeof(Customer19), "ValidateFirstName", new[] { typeof(string) });
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IAjaxFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AjaxFacetAnnotation);
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
-            Assert.Fail(); // fix this 
-        }
-
-        [Test]
-        public void TestAjaxFacetNotAddedByDefault() {
-            PropertyInfo property = FindProperty(typeof(Customer12), "FirstName");
-            MethodInfo propertyValidateMethod = FindMethod(typeof(Customer12), "ValidateFirstName", new[] { typeof(string) });
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IAjaxFacet));
-            Assert.IsNull(facet);
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(propertyValidateMethod));
-            Assert.Fail(); // fix this 
-        }
-
-        [Test]
-        public void TestAjaxFacetAddedIfNoValidate() {
-            PropertyInfo property = FindProperty(typeof(Customer2), "FirstName");      
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IAjaxFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AjaxFacetAnnotation);
-        }
-
-       
-
     }
 
     // Copyright (c) Naked Objects Group Ltd.

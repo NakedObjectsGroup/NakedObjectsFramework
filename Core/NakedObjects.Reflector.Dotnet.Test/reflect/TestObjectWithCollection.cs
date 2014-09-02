@@ -1,11 +1,12 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Collections;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
-    public class TestObjectWithCollection  {
+    public class TestObjectWithCollection {
         private readonly ArrayList arrayList;
         private readonly bool throwException;
 
@@ -45,9 +46,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             if (obj is TestObjectWithCollection) {
                 return "can't Add this Type of object";
             }
-            else {
-                return null;
-            }
+            return null;
         }
 
         public string validateRemoveFromList(object obj) {
@@ -55,9 +54,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             if (obj is TestObjectWithCollection) {
                 return "can't Remove this Type of object";
             }
-            else {
-                return null;
-            }
+            return null;
         }
     }
 

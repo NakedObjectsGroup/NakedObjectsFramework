@@ -4,11 +4,11 @@
 
 using System;
 using System.Reflection;
-using NUnit.Framework;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Potency;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.DotNet.Facets.Actions.Potency;
+using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     [TestFixture]
@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PotencyAnnotationFacetFactory(reflector);
+            facetFactory = new PotencyAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -71,48 +71,46 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         [Test]
         public void TestIdempotentAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IIdempotentFacet));
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IIdempotentFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IdempotentFacetAnnotation);
+            AssertNoMethodsRemoved();
+        }
+
+        [Test]
+        public void TestIdempotentPriorityAnnotationPickedUp() {
+            MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IIdempotentFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is IdempotentFacetAnnotation);
+            facet = FacetHolder.GetFacet(typeof (IQueryOnlyFacet));
+            Assert.IsNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [Test]
+        public void TestNoAnnotationPickedUp() {
+            MethodInfo actionMethod = FindMethod(typeof (Customer2), "SomeAction");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IQueryOnlyFacet));
+            Assert.IsNull(facet);
+            facet = FacetHolder.GetFacet(typeof (IIdempotentFacet));
+            Assert.IsNull(facet);
+
             AssertNoMethodsRemoved();
         }
 
         [Test]
         public void TestQueryOnlyAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IQueryOnlyFacet));
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IQueryOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is QueryOnlyFacetAnnotation);
             AssertNoMethodsRemoved();
         }
-
-        [Test]
-        public void TestNoAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer2), "SomeAction");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IQueryOnlyFacet));
-            Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof(IIdempotentFacet));
-            Assert.IsNull(facet);
-            
-            AssertNoMethodsRemoved();
-        }
-
-        [Test]
-        public void TestIdempotentPriorityAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeAction");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IIdempotentFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is IdempotentFacetAnnotation);
-            facet = facetHolder.GetFacet(typeof(IQueryOnlyFacet));
-            Assert.IsNull(facet);
-            AssertNoMethodsRemoved();
-        }
-
-
     }
 
     // Copyright (c) Naked Objects Group Ltd.

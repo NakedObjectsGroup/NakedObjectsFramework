@@ -1,6 +1,7 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System.Collections;
 using System.Security.Principal;
 using NUnit.Framework;
@@ -17,13 +18,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         public string One {
             get { return ""; }
-        
         }
 
-        public ReferencedObject FieldTwo {
-            get;
-            set;
-        }
+        public ReferencedObject FieldTwo { get; set; }
 
         public ReferencedObject Three {
             get { return null; }
@@ -31,7 +28,6 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         public static string Four {
             get { return ""; }
-          
         }
 
         public IList Five {
@@ -40,20 +36,16 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         public string Six {
             get { return ""; }
-           
         }
 
         public string Seven {
             get { return ""; }
-           
         }
 
         public string Eight {
             get { return ""; }
-          
         }
 
-       
 
         public ArrayList Nine {
             get { return collection; }
@@ -72,7 +64,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         public string[] ChoicesOne() {
-            return new string[] {"four", "five", "six"};
+            return new[] {"four", "five", "six"};
         }
 
         public static bool OptionalOne() {
@@ -108,7 +100,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         public string[] ChoicesSix() {
-            return new string[] {"one", "two"};
+            return new[] {"one", "two"};
         }
 
         public string DisableSeven() {
@@ -134,21 +126,21 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public void Stop() {}
 
         public static bool[] OptionalStart() {
-            return new bool[] {true};
+            return new[] {true};
         }
 
         public string[] DefaultStart() {
-            return new string[] {"default param"};
+            return new[] {"default param"};
         }
 
         public string[][] ChoicesStart() {
-            return new string[][] {new string[] {"one", "two", "three"}};
+            return new[] {new[] {"one", "two", "three"}};
         }
 
         public void start2(string name) {}
 
         public object[] ChoicesStart2() {
-            return new object[] {new string[] {"three", "two", "one"}};
+            return new object[] {new[] {"three", "two", "one"}};
         }
 
         public static string ValidateTop() {
@@ -156,7 +148,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         public static string[] NamesStart() {
-            return new string[] {"parameter name"};
+            return new[] {"parameter name"};
         }
 
         public int Start(string param) {

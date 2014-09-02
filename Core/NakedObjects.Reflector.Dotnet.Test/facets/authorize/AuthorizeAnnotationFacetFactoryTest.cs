@@ -5,15 +5,16 @@
 using System;
 using System.Reflection;
 using System.Security.Principal;
-using NakedObjects.Core.Context;
-using NUnit.Framework;
+using Moq;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Disable;
 using NakedObjects.Architecture.Facets.Hide;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Reflector.DotNet.Facets.Authorize;
 using NakedObjects.Security;
+using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Hide {
     [TestFixture]
@@ -23,7 +24,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new AuthorizeAnnotationFacetFactory(reflector);
+            facetFactory = new AuthorizeAnnotationFacetFactory(Reflector);
+
+            mockPersistor = new Mock<INakedObjectPersistor>();
+            persistor = mockPersistor.Object;
         }
 
         [TearDown]
@@ -61,6 +65,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         }
 
         private AuthorizeAnnotationFacetFactory facetFactory;
+        private Mock<INakedObjectPersistor> mockPersistor;
+        private INakedObjectPersistor persistor;
 
         protected override Type[] SupportedTypes {
             get { return new[] {typeof (IHiddenFacet)}; }
@@ -70,6 +76,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             get { return facetFactory; }
         }
 
+        // ReSharper disable UnusedMember.Local
         private class Customer {
             public int Property1 {
                 get { return 0; }
@@ -291,448 +298,492 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             public int Property1 {
                 get { return 0; }
             }
+
             [AuthorizeAction(Roles = "anotherRole", Users = "anotherUser")]
             public int Action1() {
                 return 0;
             }
         }
 
+        // ReSharper restore UnusedMember.Local
+
         [Test]
         public void TestAuthorizeAnnotationActionRoleAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action5");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            //Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor ));
+            Assert.IsNull(facet.DisabledReason(testSession, null, persistor));
 
-            var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            //Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionRoleAuthorizedClass() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer13), "Action1");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            MethodInfo actionMethod = FindMethod(typeof (Customer13), "Action1");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            //Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.IsNull(facet.DisabledReason(testSession, null, persistor));
 
-            var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            //Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionRoleAuthorizedClassPriorityOverMethod() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer14), "Action1");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            MethodInfo actionMethod = FindMethod(typeof (Customer14), "Action1");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            //Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.IsNull(facet.DisabledReason(testSession, null, persistor));
 
-            var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            //Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.IsNull(facet1.HiddenReason(testSession, null, persistor));
 
             testSession = new TestSession("anotherRole", "");
-            //Assert.IsNotNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.IsNotNull(facet.DisabledReason(testSession, null, persistor));
 
-            facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
+            facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            //Assert.IsNotNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNotNull(facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionRoleNotAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action5");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
-            //var testSession = new TestSession("anotherRole", "");
-            //Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            var testSession = new TestSession("anotherRole", "");
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionRoleNotAuthorizedClass() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer13), "Action1");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            MethodInfo actionMethod = FindMethod(typeof (Customer13), "Action1");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            //Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionRoleOnlyAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action3");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            //Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.IsNull(facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionRoleOnlyAuthorizedClass() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer11), "Action1");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            MethodInfo actionMethod = FindMethod(typeof (Customer11), "Action1");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            //Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.IsNull(facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet1.HiddenReason(testSession, null, persistor));
         }
 
 
         [Test]
         public void TestAuthorizeAnnotationActionRoleOnlyNotAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action3");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            //Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionRoleOnlyNotAuthorizedClass() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer11), "Action1");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            MethodInfo actionMethod = FindMethod(typeof (Customer11), "Action1");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            //Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionUserAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action5");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            //Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.IsNull(facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionUserAuthorizedClass() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer13), "Action1");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            MethodInfo actionMethod = FindMethod(typeof (Customer13), "Action1");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            //Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.IsNull(facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionUserNotAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action5");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            //Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionUserNotAuthorizedClass() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer13), "Action1");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            MethodInfo actionMethod = FindMethod(typeof (Customer13), "Action1");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            //Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionUserOnlyAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action4");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            //Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.IsNull(facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionUserOnlyAuthorizedClass() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer12), "Action1");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            MethodInfo actionMethod = FindMethod(typeof (Customer12), "Action1");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            //Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.IsNull(facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.IsNull(facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionUserOnlyNotAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action4");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            //Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationActionUserOnlyNotAuthorizedClass() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer12), "Action1");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            MethodInfo actionMethod = FindMethod(typeof (Customer12), "Action1");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            //Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, persistor));
 
-            //var facet1 = facetHolder.GetFacet<IHideForSessionFacet>();
-            //Assert.IsNotNull(facet);
+            var facet1 = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
 
-            //Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to view", facet1.HiddenReason(testSession, null, persistor));
         }
 
 
         [Test]
         public void TestAuthorizeAnnotationEditRoleAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property8");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            //Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet.DisabledReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationEditRoleAuthorizedClass() {
-            PropertyInfo property = FindProperty(typeof(Customer8), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            //Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet.DisabledReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationEditRoleNotAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property8");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            //Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationEditRoleNotAuthorizedClass() {
-            PropertyInfo property = FindProperty(typeof(Customer8), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            //Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationEditUserAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property8");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            //Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet.DisabledReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationEditUserAuthorizedClass() {
-            PropertyInfo property = FindProperty(typeof(Customer8), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            //Assert.IsNull(facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet.DisabledReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationEditUserNotAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property8");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            //Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationEditUserNotAuthorizedClass() {
-            PropertyInfo property = FindProperty(typeof(Customer8), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IDisableForSessionFacet>();
+            PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            //Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to edit", facet.DisabledReason(testSession, null, persistor));
         }
 
 
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action3");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = facetHolder.GetFacet(typeof (IDisableForSessionFacet));
-            Assert.IsNotNull(facet);
-            AssertNoMethodsRemoved();
-        }
-
-        [Test]
-        public void TestAuthorizeAnnotationPickedUpOnClassForAction() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer11), "Action1");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IHideForSessionFacet));
-            Assert.IsNotNull(facet);
-            facet = facetHolder.GetFacet(typeof(IDisableForSessionFacet));
-            Assert.IsNotNull(facet);
-            AssertNoMethodsRemoved();
-        }
-
-        [Test]
-        public void TestAuthorizeAnnotationPickedUpOnPropertyAll() {
-            PropertyInfo property = FindProperty(typeof (Customer), "Property9");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
-            Assert.IsNotNull(facet);
-            facet = facetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
         }
 
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnClassAll() {
-            PropertyInfo property = FindProperty(typeof(Customer9), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IHideForSessionFacet));
+            PropertyInfo property = FindProperty(typeof (Customer9), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = facetHolder.GetFacet(typeof(IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            Assert.IsNotNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [Test]
+        public void TestAuthorizeAnnotationPickedUpOnClassEditRole() {
+            PropertyInfo property = FindProperty(typeof (Customer5), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
+            Assert.IsNull(facet);
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            Assert.IsNotNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [Test]
+        public void TestAuthorizeAnnotationPickedUpOnClassEditRoleUser() {
+            PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
+            Assert.IsNull(facet);
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            Assert.IsNotNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [Test]
+        public void TestAuthorizeAnnotationPickedUpOnClassEditUser() {
+            PropertyInfo property = FindProperty(typeof (Customer6), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
+            Assert.IsNull(facet);
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            Assert.IsNotNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [Test]
+        public void TestAuthorizeAnnotationPickedUpOnClassForAction() {
+            MethodInfo actionMethod = FindMethod(typeof (Customer11), "Action1");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
+            Assert.IsNotNull(facet);
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            Assert.IsNotNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [Test]
+        public void TestAuthorizeAnnotationPickedUpOnClassViewRole() {
+            PropertyInfo property = FindProperty(typeof (Customer3), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
+            Assert.IsNotNull(facet);
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            Assert.IsNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [Test]
+        public void TestAuthorizeAnnotationPickedUpOnClassViewRoleUser() {
+            PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
+            Assert.IsNotNull(facet);
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            Assert.IsNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [Test]
+        public void TestAuthorizeAnnotationPickedUpOnClassViewUser() {
+            PropertyInfo property = FindProperty(typeof (Customer4), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
+            Assert.IsNotNull(facet);
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            Assert.IsNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [Test]
+        public void TestAuthorizeAnnotationPickedUpOnPropertyAll() {
+            PropertyInfo property = FindProperty(typeof (Customer), "Property9");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
+            Assert.IsNotNull(facet);
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
         }
@@ -740,21 +791,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnPropertyEditRole() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property5");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof (IDisableForSessionFacet));
-            Assert.IsNotNull(facet);
-            AssertNoMethodsRemoved();
-        }
-
-        [Test]
-        public void TestAuthorizeAnnotationPickedUpOnClassEditRole() {
-            PropertyInfo property = FindProperty(typeof(Customer5), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IHideForSessionFacet));
-            Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof(IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
         }
@@ -762,21 +802,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnPropertyEditRoleUser() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property8");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof (IDisableForSessionFacet));
-            Assert.IsNotNull(facet);
-            AssertNoMethodsRemoved();
-        }
-
-        [Test]
-        public void TestAuthorizeAnnotationPickedUpOnClassEditRoleUser() {
-            PropertyInfo property = FindProperty(typeof(Customer8), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IHideForSessionFacet));
-            Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof(IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
         }
@@ -784,21 +813,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnPropertyEditUser() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property6");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof (IDisableForSessionFacet));
-            Assert.IsNotNull(facet);
-            AssertNoMethodsRemoved();
-        }
-
-        [Test]
-        public void TestAuthorizeAnnotationPickedUpOnClassEditUser() {
-            PropertyInfo property = FindProperty(typeof(Customer6), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IHideForSessionFacet));
-            Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof(IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             AssertNoMethodsRemoved();
         }
@@ -806,21 +824,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnPropertyViewRole() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property3");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = facetHolder.GetFacet(typeof (IDisableForSessionFacet));
-            Assert.IsNull(facet);
-            AssertNoMethodsRemoved();
-        }
-
-        [Test]
-        public void TestAuthorizeAnnotationPickedUpOnClassViewRole() {
-            PropertyInfo property = FindProperty(typeof(Customer3), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IHideForSessionFacet));
-            Assert.IsNotNull(facet);
-            facet = facetHolder.GetFacet(typeof(IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
@@ -828,21 +835,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnPropertyViewRoleUser() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property7");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = facetHolder.GetFacet(typeof (IDisableForSessionFacet));
-            Assert.IsNull(facet);
-            AssertNoMethodsRemoved();
-        }
-
-        [Test]
-        public void TestAuthorizeAnnotationPickedUpOnClassViewRoleUser() {
-            PropertyInfo property = FindProperty(typeof(Customer7), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IHideForSessionFacet));
-            Assert.IsNotNull(facet);
-            facet = facetHolder.GetFacet(typeof(IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
@@ -851,21 +847,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnPropertyViewUser() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property4");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
-            facet = facetHolder.GetFacet(typeof (IDisableForSessionFacet));
-            Assert.IsNull(facet);
-            AssertNoMethodsRemoved();
-        }
-
-        [Test]
-        public void TestAuthorizeAnnotationPickedUpOnClassViewUser() {
-            PropertyInfo property = FindProperty(typeof(Customer4), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IHideForSessionFacet));
-            Assert.IsNotNull(facet);
-            facet = facetHolder.GetFacet(typeof(IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
@@ -873,159 +858,150 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestAuthorizeAnnotationViewRoleAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property7");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IHideForSessionFacet>();
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            //Assert.IsNull(facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationViewRoleAuthorizedClass() {
-            PropertyInfo property = FindProperty(typeof(Customer7), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IHideForSessionFacet>();
+            PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("aRole", "");
-            //Assert.IsNull(facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationViewRoleNotAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property7");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IHideForSessionFacet>();
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            //Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationViewRoleNotAuthorizedClass() {
-            PropertyInfo property = FindProperty(typeof(Customer7), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IHideForSessionFacet>();
+            PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("anotherRole", "");
-            //Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, persistor));
         }
 
 
         [Test]
         public void TestAuthorizeAnnotationViewUserAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property7");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IHideForSessionFacet>();
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            //Assert.IsNull(facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
-        }
-
-        [Test]
-        public void TestAuthorizeAnnotationViewUserAuthorizedClassOverProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer14), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IHideForSessionFacet>();
-            Assert.IsNotNull(facet);
-
-            var testSession = new TestSession("", "aUser");
-            //Assert.IsNull(facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-
-            //testSession = new TestSession("", "anotherUser");
-            //Assert.IsNotNull(facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet.HiddenReason(testSession, null, persistor));
         }
 
 
         [Test]
         public void TestAuthorizeAnnotationViewUserAuthorizedClass() {
-            PropertyInfo property = FindProperty(typeof(Customer7), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IHideForSessionFacet>();
+            PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "aUser");
-            //Assert.IsNull(facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.IsNull(facet.HiddenReason(testSession, null, persistor));
+        }
+
+        [Test]
+        public void TestAuthorizeAnnotationViewUserAuthorizedClassOverProperty() {
+            PropertyInfo property = FindProperty(typeof (Customer14), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IHideForSessionFacet>();
+            Assert.IsNotNull(facet);
+
+            var testSession = new TestSession("", "aUser");
+            Assert.IsNull(facet.HiddenReason(testSession, null, persistor));
+
+            testSession = new TestSession("", "anotherUser");
+            Assert.IsNotNull(facet.HiddenReason(testSession, null, persistor));
         }
 
 
         [Test]
         public void TestAuthorizeAnnotationViewUserNotAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property7");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IHideForSessionFacet>();
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            //Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, persistor));
         }
 
         [Test]
         public void TestAuthorizeAnnotationViewUserNotAuthorizedClass() {
-            PropertyInfo property = FindProperty(typeof(Customer7), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IHideForSessionFacet>();
+            PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
             var testSession = new TestSession("", "anotherUser");
-            //Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, NakedObjectsContext.ObjectPersistor));
-            Assert.Fail(); // fix this 
+            Assert.AreEqual("Not authorized to view", facet.HiddenReason(testSession, null, persistor));
         }
 
 
         [Test]
         public void TestAuthorizeEmptyAnnotationOnAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action2");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
 
         [Test]
         public void TestAuthorizeEmptyAnnotationOnClassForAction() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer10), "Action1");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IHideForSessionFacet));
+            MethodInfo actionMethod = FindMethod(typeof (Customer10), "Action1");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof(IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
 
-       
-        [Test]
-        public void TestAuthorizeEmptyAnnotationOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer), "Property2");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
-            Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof (IDisableForSessionFacet));
-            Assert.IsNull(facet);
-            AssertNoMethodsRemoved();
-        }
 
         [Test]
         public void TestAuthorizeEmptyAnnotationOnClassForProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer2), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IHideForSessionFacet));
+            PropertyInfo property = FindProperty(typeof (Customer2), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof(IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            Assert.IsNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [Test]
+        public void TestAuthorizeEmptyAnnotationOnProperty() {
+            PropertyInfo property = FindProperty(typeof (Customer), "Property2");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
+            Assert.IsNull(facet);
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
@@ -1033,21 +1009,32 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestAuthorizeNoAnnotationOnAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action1");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
 
         [Test]
         public void TestAuthorizeNoAnnotationOnClassForAction() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer), "Action1");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IHideForSessionFacet));
+            MethodInfo actionMethod = FindMethod(typeof (Customer), "Action1");
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof(IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
+            Assert.IsNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [Test]
+        public void TestAuthorizeNoAnnotationOnClassForProperty() {
+            PropertyInfo property = FindProperty(typeof (Customer1), "Property1");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
+            Assert.IsNull(facet);
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
@@ -1055,21 +1042,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestAuthorizeNoAnnotationOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof (IDisableForSessionFacet));
-            Assert.IsNull(facet);
-            AssertNoMethodsRemoved();
-        }
-
-        [Test]
-        public void TestAuthorizeNoAnnotationOnClassForProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer1), "Property1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IHideForSessionFacet));
-            Assert.IsNull(facet);
-            facet = facetHolder.GetFacet(typeof(IDisableForSessionFacet));
+            facet = FacetHolder.GetFacet(typeof (IDisableForSessionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }

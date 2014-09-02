@@ -10,6 +10,8 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Value {
     [TestFixture]
     public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<DateTime> {
+        #region Setup/Teardown
+
         [SetUp]
         public override void SetUp() {
             base.SetUp();
@@ -17,6 +19,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
             holder = new FacetHolderImpl();
             SetValue(adapter = new DateTimeValueSemanticsProvider(reflector, holder));
         }
+
+        #endregion
 
         private DateTimeValueSemanticsProvider adapter;
         private IFacetHolder holder;
@@ -41,14 +45,6 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public void TestEncode() {
             string encoded = adapter.ToEncodedString(new DateTime(TestClock.GetTicks()));
             Assert.AreEqual("2003-08-17T21:30:25", encoded);
-        }
-
-        [Test]
-        public void TestParseInvariant() {
-            var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc); 
-            var s1 = d1.ToString(CultureInfo.InvariantCulture); 
-            var d2 = adapter.ParseInvariant(s1);
-            Assert.AreEqual(d1, d2);
         }
 
 
@@ -84,6 +80,14 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public void TestEntryWithShortISOFormat() {
             // not currently recognised
             //assertEntry("20070521T1030", 2007, 5, 21, 10, 30, 0);
+        }
+
+        [Test]
+        public void TestParseInvariant() {
+            var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
+            string s1 = d1.ToString(CultureInfo.InvariantCulture);
+            object d2 = adapter.ParseInvariant(s1);
+            Assert.AreEqual(d1, d2);
         }
     }
 

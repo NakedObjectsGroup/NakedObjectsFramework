@@ -1,6 +1,7 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Validation;
@@ -17,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ValidateProgrammaticUpdatesAnnotationFacetFactory(reflector);
+            facetFactory = new ValidateProgrammaticUpdatesAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -43,6 +44,24 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
 
         private class Customer1 {}
 
+
+        [Test]
+        public void TestApplyValidationNotPickup() {
+            facetFactory.Process(typeof (Customer1), MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IValidateProgrammaticUpdatesFacet));
+            Assert.IsNull(facet);
+            AssertNoMethodsRemoved();
+        }
+
+        [Test]
+        public void TestApplyValidationPickup() {
+            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IValidateProgrammaticUpdatesFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is ValidateProgrammaticUpdatesFacetAnnotation);
+            AssertNoMethodsRemoved();
+        }
+
         [Test]
         public override void TestFeatureTypes() {
             NakedObjectFeatureType[] featureTypes = facetFactory.FeatureTypes;
@@ -51,24 +70,6 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
             Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Collection));
             Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Action));
             Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.ActionParameter));
-        }
-
-        [Test]
-        public void TestApplyValidationPickup() {
-            facetFactory.Process(typeof (Customer), methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IValidateProgrammaticUpdatesFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is ValidateProgrammaticUpdatesFacetAnnotation);
-            AssertNoMethodsRemoved();
-        }
-
-
-        [Test]
-        public void TestApplyValidationNotPickup() {
-            facetFactory.Process(typeof(Customer1), methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
-            Assert.IsNull(facet);
-            AssertNoMethodsRemoved();
         }
     }
 

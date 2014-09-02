@@ -1,6 +1,7 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,13 +9,11 @@ using System.Reflection;
 using System.Security.Principal;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
-using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Facets.Disable;
 using NakedObjects.Architecture.Facets.Hide;
 using NakedObjects.Architecture.Facets.Properties.Access;
 using NakedObjects.Architecture.Facets.Properties.Set;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Reflector.DotNet.Facets.Collections.Modify;
 using NakedObjects.Reflector.DotNet.Facets.Propcoll.Access;
 using NUnit.Framework;
 
@@ -27,7 +26,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new CollectionFieldMethodsFacetFactory(reflector);
+            facetFactory = new CollectionFieldMethodsFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -43,18 +42,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         protected override Type[] SupportedTypes {
             get {
                 return new[] {
-                                 typeof (IPropertyAccessorFacet),
-                                 typeof (ITypeOfFacet)
-                             };
+                    typeof (IPropertyAccessorFacet),
+                    typeof (ITypeOfFacet)
+                };
             }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
-
-
-       
 
 
         private class Customer {
@@ -146,9 +142,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
                 get { return null; }
             }
 
-            public void AddToOrders(Customer c) { }
+            public void AddToOrders(Customer c) {}
 
-            public void RemoveFromOrders(Customer c) { }
+            public void RemoveFromOrders(Customer c) {}
         }
 
 
@@ -246,34 +242,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
 
         private class Order {}
 
-      
-
-        [Test]
-        public void TestSetFacetAddedToSet() {
-            Type type = typeof(Customer18);
-            PropertyInfo property = FindProperty(type, "Orders");     
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IIsASetFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsInstanceOf(typeof(IsASetFacet), facet);       
-        }
-
-        [Test]
-        public void TestSetFacetNoAddedToList() {
-            Type type = typeof(Customer17);
-            PropertyInfo property = FindProperty(type, "Orders");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IIsASetFacet));
-            Assert.IsNull(facet);
-        }
-
-       
 
         [Test]
         public void TestCannotInferTypeOfFacetIfNoExplicitAddToOrRemoveFromMethods() {
             PropertyInfo property = FindProperty(typeof (Customer6), "Orders");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            Assert.IsNull(facetHolder.GetFacet(typeof (ITypeOfFacet)));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            Assert.IsNull(FacetHolder.GetFacet(typeof (ITypeOfFacet)));
         }
 
         [Test]
@@ -289,8 +263,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void TestInstallsDisabledAlways() {
             PropertyInfo property = FindProperty(typeof (CustomerStatic), "Orders");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IDisabledFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAlways);
         }
@@ -298,8 +272,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void TestInstallsHiddenForSessionFacetAndRemovesMethod() {
             PropertyInfo property = FindProperty(typeof (CustomerStatic), "Orders");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IHideForSessionFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForSessionFacetNone);
         }
@@ -307,8 +281,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void TestPropertyAccessorFacetIsInstalledForArrayListAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyAccessorFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacetViaAccessor);
             var propertyAccessorFacetViaAccessor = (PropertyAccessorFacetViaAccessor) facet;
@@ -318,8 +292,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void TestPropertyAccessorFacetIsInstalledForIListAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer), "Orders");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyAccessorFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacetViaAccessor);
             var propertyAccessorFacetViaAccessor = (PropertyAccessorFacetViaAccessor) facet;
@@ -329,8 +303,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void TestPropertyAccessorFacetIsInstalledForObjectArrayAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer3), "Orders");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyAccessorFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacetViaAccessor);
             var propertyAccessorFacetViaAccessor = (PropertyAccessorFacetViaAccessor) facet;
@@ -340,8 +314,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void TestPropertyAccessorFacetIsInstalledForOrderArrayAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer4), "Orders");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyAccessorFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacetViaAccessor);
             var propertyAccessorFacetViaAccessor = (PropertyAccessorFacetViaAccessor) facet;
@@ -351,15 +325,32 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void TestPropertyAccessorFacetIsInstalledForSetAndMethodRemoved() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Orders");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPropertyAccessorFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacetViaAccessor);
             var propertyAccessorFacetViaAccessor = (PropertyAccessorFacetViaAccessor) facet;
             Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 
-       
+        [Test]
+        public void TestSetFacetAddedToSet() {
+            Type type = typeof (Customer18);
+            PropertyInfo property = FindProperty(type, "Orders");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IIsASetFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsInstanceOf(typeof (IsASetFacet), facet);
+        }
+
+        [Test]
+        public void TestSetFacetNoAddedToList() {
+            Type type = typeof (Customer17);
+            PropertyInfo property = FindProperty(type, "Orders");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IIsASetFacet));
+            Assert.IsNull(facet);
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -4,18 +4,20 @@
 
 using System;
 using System.Reflection;
-using NUnit.Framework;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Executed;
 using NakedObjects.Architecture.Reflect;
+using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     [TestFixture]
     public class ExecutedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+        #region Setup/Teardown
+
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ExecutedAnnotationFacetFactory(reflector);
+            facetFactory = new ExecutedAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -23,6 +25,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             facetFactory = null;
             base.TearDown();
         }
+
+        #endregion
 
         private ExecutedAnnotationFacetFactory facetFactory;
 
@@ -47,8 +51,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         [Test]
         public void TestExecutedLocallyAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IExecutedFacet));
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IExecutedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ExecutedFacetAbstract);
             var executedFacetAbstract = (ExecutedFacetAbstract) facet;
@@ -59,8 +63,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         [Test]
         public void TestExecutedRemotelyAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IExecutedFacet));
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IExecutedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ExecutedFacetAbstract);
             var executedFacetAbstract = (ExecutedFacetAbstract) facet;

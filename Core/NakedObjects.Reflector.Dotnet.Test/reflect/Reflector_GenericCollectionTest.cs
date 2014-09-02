@@ -1,8 +1,8 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
-using System.Collections.Generic;
 
+using System.Collections.Generic;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Collections.Modify;
@@ -15,17 +15,20 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
     [TestFixture]
     public class Reflector_GenericCollectionTest : AbstractDotNetReflectorTest {
         protected override DotNetSpecification LoadSpecification(DotNetReflector reflector) {
-            return (DotNetSpecification)reflector.LoadSpecification(typeof(List<TestPojo>));
+            return (DotNetSpecification) reflector.LoadSpecification(typeof (List<TestPojo>));
         }
 
         [Test]
-        public void TestType() {
-            Assert.IsTrue(specification.IsCollection);
+        public void TestCollectionFacet() {
+            IFacet facet = specification.GetFacet(typeof (ICollectionFacet));
+            Assert.IsNotNull(facet);
+            //Assert.AreEqual(typeof(ArrayList).FullName, facet);
         }
 
         [Test]
-        public void TestName() {
-            Assert.AreEqual(typeof(List<TestPojo>).FullName, specification.FullName);
+        public void TestDescriptionFaced() {
+            IFacet facet = specification.GetFacet(typeof (IDescribedAsFacet));
+            Assert.IsNotNull(facet);
         }
 
         [Test]
@@ -34,37 +37,33 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         [Test]
-        public void TestCollectionFacet() {
-            IFacet facet = specification.GetFacet(typeof(ICollectionFacet));
-            Assert.IsNotNull(facet);
-            //Assert.AreEqual(typeof(ArrayList).FullName, facet);
+        public void TestName() {
+            Assert.AreEqual(typeof (List<TestPojo>).FullName, specification.FullName);
         }
-
-        [Test]
-        public void TestTypeOfFacet() {
-            ITypeOfFacet facet = (ITypeOfFacet)specification.GetFacet(typeof(ITypeOfFacet));
-            Assert.IsNotNull(facet);
-            Assert.AreEqual(typeof(TestPojo), ((TypeOfFacetAbstract)facet).Value);
-        }
-
 
 
         [Test]
         public void TestNamedFaced() {
-            IFacet facet = specification.GetFacet(typeof(INamedFacet));
+            IFacet facet = specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
         }
 
         [Test]
         public void TestPluralFaced() {
-            IFacet facet = specification.GetFacet(typeof(IPluralFacet));
+            IFacet facet = specification.GetFacet(typeof (IPluralFacet));
             Assert.IsNotNull(facet);
         }
 
         [Test]
-        public void TestDescriptionFaced() {
-            IFacet facet = specification.GetFacet(typeof(IDescribedAsFacet));
+        public void TestType() {
+            Assert.IsTrue(specification.IsCollection);
+        }
+
+        [Test]
+        public void TestTypeOfFacet() {
+            var facet = (ITypeOfFacet) specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(facet);
+            Assert.AreEqual(typeof (TestPojo), ((TypeOfFacetAbstract) facet).Value);
         }
     }
 

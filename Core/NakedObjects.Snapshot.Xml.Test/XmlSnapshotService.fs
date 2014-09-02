@@ -11,31 +11,36 @@ open Snapshot.Xml.Test
 open NakedObjects.Snapshot
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Architecture.Persist
+open NakedObjects.Architecture.Reflect
 open XmlTestData
 open Snapshot.Xml.Test
 open System.Xml.Linq
 open NakedObjects.Persistor.Objectstore
 open NakedObjects.Persistor.Objectstore.Inmemory
 open NakedObjects.Persistor
+open Microsoft.Practices.Unity
 
 [<TestFixture>]
 type DomainTests() = 
     class
         inherit NakedObjects.Xat.AcceptanceTestCase()
-
+        
         override x.RegisterTypes(container) = 
-            base.RegisterTypes(container);
+            base.RegisterTypes(container)
             // replace INakedObjectStore types
-            let sink = container.RegisterType(typeof<IOidGenerator>, typeof<SimpleOidGenerator>, "reflector", null, [||])
+            let sink = 
+                container.RegisterType
+                    (typeof<IOidGenerator>, typeof<SimpleOidGenerator>, null, null, 
+                     [| box (new InjectionConstructor(typeof<INakedObjectReflector>, 100L)) :?> InjectionMember |])
             let sink = container.RegisterType(typeof<IPersistAlgorithm>, typeof<DefaultPersistAlgorithm>, null, null, [||])
             let sink = container.RegisterType(typeof<INakedObjectStore>, typeof<MemoryObjectStore>, null, null, [||])
             let sink = container.RegisterType(typeof<IIdentityMap>, typeof<IdentityMapImpl>, null, null, [||])
             ()
-             
+        
         [<TestFixtureSetUp>]
         member x.FixtureSetup() = x.InitializeNakedObjectsFramework()
         
-        [<TearDown>]
+        [<TestFixtureTearDown>]
         member x.FixtureTearDown() = x.CleanupNakedObjectsFramework()
         
         [<SetUp>]
@@ -52,15 +57,13 @@ type DomainTests() =
                                           (box xmlService)
                                           (box transformService) |])) :?> IServicesInstaller : IServicesInstaller
         
-        override x.Persistor = 
-            let inst = new InMemoryObjectPersistorInstaller()
-            inst.SimpleOidGeneratorStart <- new System.Nullable<int>(100)
-            box (inst) :?> IObjectPersistorInstaller : IObjectPersistorInstaller
-        
         member x.TestService = x.GetTestService("Test Objects")
+        
         member x.TransformService = x.GetTestService("Transform Repository")
+        
         member x.GenerateSnapshot(o : obj) = 
             x.GetTestService(typeof<IXmlSnapshotService>).GetAction("Generate Snapshot").InvokeReturnObject(o).NakedObject.GetDomainObject<IXmlSnapshot>()
+        
         member x.SimpleTestObject() = x.TestService.GetAction("New Instance").InvokeReturnObject().NakedObject.GetDomainObject<TestObject>()
         
         member x.ComplexTestObject() = 
@@ -94,6 +97,7 @@ type DomainTests() =
             testObject1
         
         member x.TransFormFullObject() = x.TransformService.GetAction("Transform Full").InvokeReturnObject().NakedObject.GetDomainObject<One.TransformFull>()
+        
         member x.TransFormWithSubObject() = 
             x.TransformService.GetAction("Transform With Sub Object").InvokeReturnObject().NakedObject.GetDomainObject<Two.TransformFull>()
         
@@ -229,4 +233,3 @@ type DomainTests() =
             let nestedTransformedXsd = nestedSS.TransformedXsd x.stylesheet2
             x.CompareXml nestedXsd nestedTransformedXsd
     end
-

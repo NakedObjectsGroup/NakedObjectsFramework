@@ -1,19 +1,17 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Globalization;
 using NakedObjects.Architecture;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     [TestFixture]
     public class DoubleValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<double> {
-        private Double doubleObj;
-
-        private IFacetHolder holder;
+        #region Setup/Teardown
 
         [SetUp]
         public override void SetUp() {
@@ -25,9 +23,22 @@ namespace NakedObjects.Reflector.DotNet.Value {
             doubleObj = 32.5;
         }
 
+        #endregion
+
+        private Double doubleObj;
+
+        private IFacetHolder holder;
+
         [Test]
-        public void TestValue() {
-            Assert.AreEqual("32.5", GetValue().DisplayTitleOf(doubleObj));
+        public void TestDecode() {
+            Double decoded = GetValue().FromEncodedString("3.042112234E6");
+            Assert.AreEqual(3042112.234, decoded);
+        }
+
+        [Test]
+        public void TestEncode() {
+            string encoded = GetValue().ToEncodedString(0.0000454566);
+            Assert.AreEqual("4.54566E-05", encoded);
         }
 
         [Test]
@@ -37,13 +48,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
                 Assert.Fail();
             }
             catch (Exception e) {
-                Assert.IsInstanceOf( typeof (InvalidEntryException),e);
+                Assert.IsInstanceOf(typeof (InvalidEntryException), e);
             }
-        }
-
-        [Test]
-        public void TestTitleOf() {
-            Assert.AreEqual("35000000", GetValue().DisplayTitleOf(35000000.0));
         }
 
         [Test]
@@ -63,29 +69,28 @@ namespace NakedObjects.Reflector.DotNet.Value {
             try {
                 object newValue = GetValue().ParseTextEntry("");
                 Assert.IsNull(newValue);
-            } catch (Exception ) {
+            }
+            catch (Exception) {
                 Assert.Fail();
             }
         }
 
         [Test]
-        public void TestEncode() {
-            string encoded = GetValue().ToEncodedString(0.0000454566);
-            Assert.AreEqual("4.54566E-05", encoded);
-        }
-
-        [Test]
-        public void TestDecode() {
-            Double decoded = GetValue().FromEncodedString("3.042112234E6");
-            Assert.AreEqual(3042112.234, decoded);
-        }
-
-        [Test]
         public void TestParseInvariant() {
             const double c1 = 123.456;
-            var s1 = c1.ToString(CultureInfo.InvariantCulture);
-            var c2 = GetValue().ParseInvariant(s1);
+            string s1 = c1.ToString(CultureInfo.InvariantCulture);
+            object c2 = GetValue().ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
+        }
+
+        [Test]
+        public void TestTitleOf() {
+            Assert.AreEqual("35000000", GetValue().DisplayTitleOf(35000000.0));
+        }
+
+        [Test]
+        public void TestValue() {
+            Assert.AreEqual("32.5", GetValue().DisplayTitleOf(doubleObj));
         }
     }
 

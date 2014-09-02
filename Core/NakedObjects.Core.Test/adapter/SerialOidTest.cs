@@ -4,6 +4,7 @@
 using System;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Persist;
 using NakedObjects.Persistor;
@@ -20,7 +21,7 @@ namespace NakedObjects.Core {
             base.RegisterTypes(container);
             // replace INakedObjectStore types
 
-            container.RegisterType<IOidGenerator, SimpleOidGenerator>("reflector");
+            container.RegisterType<IOidGenerator, SimpleOidGenerator>(new InjectionConstructor(typeof(INakedObjectReflector), 0L));
             container.RegisterType<IPersistAlgorithm, DefaultPersistAlgorithm>();
             container.RegisterType<INakedObjectStore, MemoryObjectStore>();
             container.RegisterType<IIdentityMap, IdentityMapImpl>();

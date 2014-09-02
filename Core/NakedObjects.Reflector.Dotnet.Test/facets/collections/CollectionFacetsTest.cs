@@ -7,43 +7,48 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Moq;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
-using NakedObjects.Core.Adapter;
-using NUnit.Framework;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Collections.Modify;
+using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Adapter;
+using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     [TestFixture]
     public class CollectionFacetsTest {
-      
         private readonly FacetHolderImpl facetHolder = new FacetHolderImpl();
-        private readonly INakedObjectPersistor persistor = new Mock<INakedObjectPersistor>().Object;
+
+        private readonly Mock<INakedObjectPersistor> mockPersistor = new Mock<INakedObjectPersistor>();
+        private readonly INakedObjectPersistor persistor;
         private readonly INakedObjectReflector reflector = new Mock<INakedObjectReflector>().Object;
         private readonly ISession session = new Mock<ISession>().Object;
         private readonly IOid oid = new Mock<IOid>().Object;
-      
+
+        public CollectionFacetsTest() {
+            persistor = mockPersistor.Object;
+            mockPersistor.Setup(mp => mp.CreateAdapter(It.IsAny<object>(), null, null)).Returns<object, IOid, IVersion>((obj, oid, ver) => AdapterFor(obj));
+        }
 
         private INakedObject AdapterFor(object obj) {
             return new PocoAdapter(reflector, session, persistor, obj, oid);
         }
 
-        private  void Size(ICollectionFacet collectionFacet, INakedObject collection) {
+        private void Size(ICollectionFacet collectionFacet, INakedObject collection) {
             Assert.AreEqual(2, collectionFacet.AsEnumerable(collection, persistor).Count());
         }
 
-        private  void ValidateCollection(ICollectionFacet collectionFacet, INakedObject collection, IEnumerable<object> objects) {
+        private void ValidateCollection(ICollectionFacet collectionFacet, INakedObject collection, IEnumerable<object> objects) {
             IEnumerable<INakedObject> collectionAsEnumerable = collectionFacet.AsEnumerable(collection, persistor);
             Assert.AreEqual(collectionAsEnumerable.Count(), objects.Count());
             IEnumerable<Tuple<object, object>> zippedCollections = collectionAsEnumerable.Zip(objects, (no, o1) => new Tuple<object, object>(no.Object, o1));
             zippedCollections.ForEach(t => Assert.AreSame(t.Item1, t.Item2));
         }
 
-        private  void FirstElement(ICollectionFacet collectionFacet, INakedObject collection, object first) {
+        private void FirstElement(ICollectionFacet collectionFacet, INakedObject collection, object first) {
             Assert.AreSame(first, collectionFacet.AsEnumerable(collection, persistor).First().Object);
         }
 
@@ -53,9 +58,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         }
 
         private void Init(ICollectionFacet collectionFacet, INakedObject collection, IEnumerable<object> data1, IEnumerable<object> data2) {
-            collectionFacet.Init(collection, data1.Cast<object>().Select(x =>AdapterFor(x)).ToArray());
+            collectionFacet.Init(collection, data1.Select(AdapterFor).ToArray());
             ValidateCollection(collectionFacet, collection, data1);
-            collectionFacet.Init(collection, data2.Cast<object>().Select(x => AdapterFor(x)).ToArray());
+            collectionFacet.Init(collection, data2.Select(AdapterFor).ToArray());
             ValidateCollection(collectionFacet, collection, data2);
         }
 

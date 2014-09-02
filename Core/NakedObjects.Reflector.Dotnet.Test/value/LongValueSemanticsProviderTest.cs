@@ -1,19 +1,17 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Globalization;
 using NakedObjects.Architecture;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     [TestFixture]
     public class LongValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<long> {
-        private IFacetHolder holder;
-        private long l;
-        private LongValueSemanticsProvider value;
+        #region Setup/Teardown
 
         [SetUp]
         public override void SetUp() {
@@ -23,6 +21,24 @@ namespace NakedObjects.Reflector.DotNet.Value {
             SetValue(value = new LongValueSemanticsProvider(reflector, holder));
         }
 
+        #endregion
+
+        private IFacetHolder holder;
+        private long l;
+        private LongValueSemanticsProvider value;
+
+        [Test]
+        public void TestDecode() {
+            long decoded = GetValue().FromEncodedString("304211223");
+            Assert.AreEqual(304211223L, decoded);
+        }
+
+        [Test]
+        public void TestEncode() {
+            string encoded = GetValue().ToEncodedString(213434790L);
+            Assert.AreEqual("213434790", encoded);
+        }
+
         [Test]
         public void TestInvalidParse() {
             try {
@@ -30,13 +46,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
                 Assert.Fail();
             }
             catch (Exception e) {
-                Assert.IsInstanceOf( typeof (InvalidEntryException),e);
+                Assert.IsInstanceOf(typeof (InvalidEntryException), e);
             }
-        }
-
-        [Test]
-        public void TestTitleString() {
-            Assert.AreEqual("32", value.DisplayTitleOf(l));
         }
 
         [Test]
@@ -46,40 +57,34 @@ namespace NakedObjects.Reflector.DotNet.Value {
         }
 
         [Test]
-        public void TestParseOddlyFormedEntry() {
-            object newValue = value.ParseTextEntry("1,20.0");
-            Assert.AreEqual(120L, newValue);
-        }
-
-        [Test]
         public new void TestParseEmptyString() {
             try {
                 object newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
-            } catch (Exception ) {
+            }
+            catch (Exception) {
                 Assert.Fail();
             }
         }
 
 
         [Test]
-        public void TestEncode() {
-            string encoded = GetValue().ToEncodedString(213434790L);
-            Assert.AreEqual("213434790", encoded);
-        }
-
-        [Test]
-        public void TestDecode() {
-            long decoded = GetValue().FromEncodedString("304211223");
-            Assert.AreEqual(304211223L, decoded);
-        }
-
-        [Test]
         public void TestParseInvariant() {
             const long c1 = 123456L;
-            var s1 = c1.ToString(CultureInfo.InvariantCulture);
-            var c2 = GetValue().ParseInvariant(s1);
+            string s1 = c1.ToString(CultureInfo.InvariantCulture);
+            object c2 = GetValue().ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
+        }
+
+        [Test]
+        public void TestParseOddlyFormedEntry() {
+            object newValue = value.ParseTextEntry("1,20.0");
+            Assert.AreEqual(120L, newValue);
+        }
+
+        [Test]
+        public void TestTitleString() {
+            Assert.AreEqual("32", value.DisplayTitleOf(l));
         }
     }
 

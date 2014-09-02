@@ -1,6 +1,7 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Linq;
 using System.Reflection;
@@ -19,7 +20,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PageSizeAnnotationFacetFactory(reflector);
+            facetFactory = new PageSizeAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -57,7 +58,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         public void TestDefaultPageSizePickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
             var actionPeer = new DotNetNakedObjectActionPeer(null, null);
-            new FallbackFacetFactory(reflector).Process(actionMethod, methodRemover, actionPeer);
+            new FallbackFacetFactory(Reflector).Process(actionMethod, MethodRemover, actionPeer);
             IFacet facet = actionPeer.GetFacet(typeof (IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetDefault);
@@ -79,8 +80,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         [Test]
         public void TestPageSizeAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
-            facetFactory.Process(actionMethod, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPageSizeFacet));
+            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetAnnotation);
             var pageSizeFacet = (IPageSizeFacet) facet;

@@ -3,19 +3,22 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
-using NUnit.Framework;
+using System.Reflection;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.ViewModel;
 using NakedObjects.Architecture.Reflect;
+using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
     [TestFixture]
     public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
+        #region Setup/Teardown
+
         [SetUp]
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new ViewModelFacetFactory(reflector);
+            facetFactory = new ViewModelFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -23,6 +26,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
             facetFactory = null;
             base.TearDown();
         }
+
+        #endregion
 
         private ViewModelFacetFactory facetFactory;
 
@@ -35,18 +40,21 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
         }
 
         private class Class1 : IViewModel {
+            public string Value1 { get; set; }
+            public string Value2 { get; set; }
+
+            #region IViewModel Members
+
             public string[] DeriveKeys() {
                 return new[] {Value1, Value2};
             }
 
-            public string Value1 { get; set; }
-            public string Value2 { get; set; }
-
             public void PopulateUsingKeys(string[] instanceId) {
                 Value1 = instanceId[0];
                 Value2 = instanceId[1];
-
             }
+
+            #endregion
         }
 
         private class Class2 {
@@ -70,29 +78,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
         }
 
         [Test]
-        public void TestViewModelNotPickedUp() {
-            facetFactory.Process(typeof (Class2), methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IViewModelFacet));
-            Assert.IsNull(facet);
-        }
-
-        [Test]
-        public void TestViewModelPickedUp() {
-            facetFactory.Process(typeof (Class1), methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IViewModelFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is ViewModelFacetConvention);
-
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(typeof(Class1).GetMethod("DeriveKeys")));
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(typeof(Class1).GetMethod("PopulateUsingKeys")));
-
-            Assert.Fail(); // fix this 
-        }
-
-        [Test]
         public void TestViewModelDerive() {
-            facetFactory.Process(typeof (Class1), methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IViewModelFacet>();
+            facetFactory.Process(typeof (Class1), MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IViewModelFacet>();
             Assert.IsNotNull(facet);
 
             var testClass = new Class1 {Value1 = "testValue1", Value2 = "testValue2"};
@@ -104,9 +92,29 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
         }
 
         [Test]
+        public void TestViewModelNotPickedUp() {
+            facetFactory.Process(typeof (Class2), MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IViewModelFacet));
+            Assert.IsNull(facet);
+        }
+
+        [Test]
+        public void TestViewModelPickedUp() {
+            facetFactory.Process(typeof (Class1), MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IViewModelFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is ViewModelFacetConvention);
+
+            MethodInfo m1 = typeof (Class1).GetMethod("DeriveKeys");
+            MethodInfo m2 = typeof (Class1).GetMethod("PopulateUsingKeys");
+
+            AssertMethodsRemoved(new[] {m1, m2});
+        }
+
+        [Test]
         public void TestViewModelPopulate() {
-            facetFactory.Process(typeof (Class1), methodRemover, facetHolder);
-            var facet = facetHolder.GetFacet<IViewModelFacet>();
+            facetFactory.Process(typeof (Class1), MethodRemover, FacetHolder);
+            var facet = FacetHolder.GetFacet<IViewModelFacet>();
             Assert.IsNotNull(facet);
 
             var testClass = new Class1();
@@ -117,6 +125,5 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
             Assert.AreEqual(keys[0], testClass.Value1);
             Assert.AreEqual(keys[1], testClass.Value2);
         }
-
     }
 }

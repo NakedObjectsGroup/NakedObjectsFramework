@@ -3,40 +3,45 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Moq;
-using NakedObjects.Architecture.Reflect;
-using NUnit.Framework;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class AbstractFacetFactoryTest {
-        protected FacetHolderImpl facetHolder;
-        protected IMethodRemover methodRemover;
-        protected INakedObjectReflector reflector;
+        protected FacetHolderImpl FacetHolder;
+        protected IMethodRemover MethodRemover;
+        protected INakedObjectReflector Reflector;
+        private Mock<IMethodRemover> mockMethodRemover;
+        private Mock<INakedObjectReflector> mockReflector;
         protected abstract Type[] SupportedTypes { get; }
         protected abstract IFacetFactory FacetFactory { get; }
 
         public virtual void SetUp() {
-            facetHolder = new FacetHolderImpl();
-            methodRemover = new ProgrammableMethodRemover();
-            reflector = new Mock<INakedObjectReflector>().Object;
+            FacetHolder = new FacetHolderImpl();
+
+            mockMethodRemover = new Mock<IMethodRemover>();
+            mockReflector = new Mock<INakedObjectReflector>();
+
+            MethodRemover = mockMethodRemover.Object;
+            Reflector = mockReflector.Object;
+
+            mockMethodRemover.Setup(remover => remover.RemoveMethod(It.IsAny<MethodInfo>()));
+            mockMethodRemover.Setup(remover => remover.RemoveMethods(It.IsAny<IList<MethodInfo>>()));
         }
 
         public virtual void TearDown() {
-            facetHolder = null;
-            methodRemover = null;
-            reflector = null;
+            FacetHolder = null;
+            MethodRemover = null;
+            Reflector = null;
         }
 
 
         protected static bool Contains<T>(T[] array, T val) {
-            foreach (T t in array) {
-                if (t.Equals(val)) {
-                    return true;
-                }
-            }
-            return false;
+            return array.Contains(val);
         }
 
         protected static MethodInfo FindMethod(Type type, string methodName, Type[] parameterTypes) {
@@ -89,10 +94,25 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             return FindMethod(type, methodName, Type.EmptyTypes);
         }
 
+        protected void AssertRemovedCalled(int count) {
+            mockMethodRemover.Verify(remover => remover.RemoveMethod(It.IsAny<MethodInfo>()), Times.Exactly(count));
+        }
+
         protected void AssertNoMethodsRemoved() {
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Count == 0);
-            //Assert.IsTrue(methodRemover.GetRemoveMethodArgsCalls().Count == 0);
-            Assert.Fail(); // fix this 
+            mockMethodRemover.Verify(remover => remover.RemoveMethod(It.IsAny<MethodInfo>()), Times.Never);
+            mockMethodRemover.Verify(remover => remover.RemoveMethods(It.IsAny<IList<MethodInfo>>()), Times.Never);
+        }
+
+        protected void AssertMethodRemoved(MethodInfo mi) {
+            mockMethodRemover.Verify(remover => remover.RemoveMethod(It.Is<MethodInfo>(i => i == mi)), Times.AtLeastOnce);
+        }
+
+        protected void AssertMethodsRemoved(MethodInfo[] mis) {
+            mockMethodRemover.Verify(remover => remover.RemoveMethods(It.Is<IList<MethodInfo>>(i => i.SequenceEqual(mis))), Times.AtLeastOnce);
+        }
+
+        protected void AssertMethodNotRemoved(MethodInfo mi) {
+            mockMethodRemover.Verify(remover => remover.RemoveMethod(It.Is<MethodInfo>(i => i == mi)), Times.Never);
         }
 
         public abstract void TestFeatureTypes();

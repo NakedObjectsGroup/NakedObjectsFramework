@@ -10,7 +10,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Persist;
-using NakedObjects.Core.Context;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class DotNetCollectionFacet : CollectionFacetAbstract {

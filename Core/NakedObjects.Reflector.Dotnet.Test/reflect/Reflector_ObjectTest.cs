@@ -17,22 +17,19 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
     [TestFixture]
     public class Reflector_ObjectTest : AbstractDotNetReflectorTest {
         protected override DotNetSpecification LoadSpecification(DotNetReflector reflector) {
-            return (DotNetSpecification)reflector.LoadSpecification(typeof(TestDomainObject));
+            return (DotNetSpecification) reflector.LoadSpecification(typeof (TestDomainObject));
         }
 
         [Test]
-        public void TestNotAnAssociatedMetadataTypeTypeDescriptionProvider() {
-            Assert.IsFalse(TypeDescriptor.GetProvider(typeof(TestDomainObject)) is AssociatedMetadataTypeTypeDescriptionProvider);
+        public void TestCollectionFacet() {
+            IFacet facet = specification.GetFacet(typeof (ICollectionFacet));
+            Assert.IsNull(facet);
         }
 
         [Test]
-        public void TestType() {
-            Assert.IsTrue(specification.IsObject);
-        }
-
-        [Test]
-        public void TestName() {
-            Assert.AreEqual(typeof(TestDomainObject).FullName, specification.FullName);
+        public void TestDescriptionFaced() {
+            IFacet facet = specification.GetFacet(typeof (IDescribedAsFacet));
+            Assert.IsNotNull(facet);
         }
 
         [Test]
@@ -41,45 +38,48 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         [Test]
+        public void TestName() {
+            Assert.AreEqual(typeof (TestDomainObject).FullName, specification.FullName);
+        }
+
+        [Test]
+        public void TestNamedFaced() {
+            IFacet facet = specification.GetFacet(typeof (INamedFacet));
+            Assert.IsNotNull(facet);
+        }
+
+        [Test]
         public void TestNoCollectionFacet() {
-            IFacet facet = specification.GetFacet(typeof(ICollectionFacet));
+            IFacet facet = specification.GetFacet(typeof (ICollectionFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestNoTypeOfFacet() {
-            ITypeOfFacet facet = (ITypeOfFacet)specification.GetFacet(typeof(ITypeOfFacet));
+            var facet = (ITypeOfFacet) specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
-        public void TestCollectionFacet() {
-            IFacet facet = specification.GetFacet(typeof(ICollectionFacet));
-            Assert.IsNull(facet);
-        }
-
-        [Test]
-        public void TestTypeOfFacet() {
-            var facet = (ITypeOfFacet)specification.GetFacet(typeof(ITypeOfFacet));
-            Assert.IsNull(facet);
-        }
-
-        [Test]
-        public void TestNamedFaced() {
-            IFacet facet = specification.GetFacet(typeof(INamedFacet));
-            Assert.IsNotNull(facet);
+        public void TestNotAnAssociatedMetadataTypeTypeDescriptionProvider() {
+            Assert.IsFalse(TypeDescriptor.GetProvider(typeof (TestDomainObject)) is AssociatedMetadataTypeTypeDescriptionProvider);
         }
 
         [Test]
         public void TestPluralFaced() {
-            IFacet facet = specification.GetFacet(typeof(IPluralFacet));
+            IFacet facet = specification.GetFacet(typeof (IPluralFacet));
             Assert.IsNotNull(facet);
         }
 
         [Test]
-        public void TestDescriptionFaced() {
-            IFacet facet = specification.GetFacet(typeof(IDescribedAsFacet));
-            Assert.IsNotNull(facet);
+        public void TestType() {
+            Assert.IsTrue(specification.IsObject);
+        }
+
+        [Test]
+        public void TestTypeOfFacet() {
+            var facet = (ITypeOfFacet) specification.GetFacet(typeof (ITypeOfFacet));
+            Assert.IsNull(facet);
         }
     }
 

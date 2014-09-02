@@ -6,18 +6,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NUnit.Framework;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actcoll.Table;
 using NakedObjects.Architecture.Reflect;
+using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
     [TestFixture]
     public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+        #region Setup/Teardown
+
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new TableViewAnnotationFacetFactory(reflector);
+            facetFactory = new TableViewAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -25,6 +27,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
             facetFactory = null;
             base.TearDown();
         }
+
+        #endregion
 
         private TableViewAnnotationFacetFactory facetFactory;
 
@@ -76,11 +80,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
             public ICollection<Order> OrdersAction1() {
                 return null;
             }
-
-          
         }
-
-       
 
 
         private class Order {}
@@ -98,40 +98,40 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
         [Test]
         public void TestTableViewFacetNotPickedUpOnArray() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Orders");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (ITableViewFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (ITableViewFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestTableViewFacetNotPickedUpOnArrayAction() {
             MethodInfo method = FindMethod(typeof (Customer2), "OrdersAction");
-            facetFactory.Process(method, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (ITableViewFacet));
+            facetFactory.Process(method, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (ITableViewFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestTableViewFacetNotPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Orders1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (ITableViewFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (ITableViewFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestTableViewFacetNotPickedUpOnCollectionAction() {
             MethodInfo method = FindMethod(typeof (Customer2), "OrdersAction1");
-            facetFactory.Process(method, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (ITableViewFacet));
+            facetFactory.Process(method, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (ITableViewFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestTableViewFacetPickedUpOnArray() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (ITableViewFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacetFromAnnotation);
             var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation) facet;
@@ -145,8 +145,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
         [Test]
         public void TestTableViewFacetPickedUpOnArrayAction() {
             MethodInfo method = FindMethod(typeof (Customer1), "OrdersAction");
-            facetFactory.Process(method, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (ITableViewFacet));
+            facetFactory.Process(method, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacetFromAnnotation);
             var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation) facet;
@@ -160,8 +160,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
         [Test]
         public void TestTableViewFacetPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Orders1");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (ITableViewFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacetFromAnnotation);
             var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation) facet;
@@ -175,8 +175,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
         [Test]
         public void TestTableViewFacetPickedUpOnCollectionAction() {
             MethodInfo method = FindMethod(typeof (Customer1), "OrdersAction1");
-            facetFactory.Process(method, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (ITableViewFacet));
+            facetFactory.Process(method, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacetFromAnnotation);
             var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation) facet;
@@ -188,30 +188,30 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
         }
 
         [Test]
-        public void TestTableViewFacetPickedUpOnQueryableAction() {
-            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction3");
-            facetFactory.Process(method, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(ITableViewFacet));
+        public void TestTableViewFacetPickedUpOnCollectionActionNoColumns() {
+            MethodInfo method = FindMethod(typeof (Customer1), "OrdersAction2");
+            facetFactory.Process(method, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacetFromAnnotation);
-            var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation)facet;
+            var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation) facet;
             Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
-            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
-            Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
-            Assert.AreEqual("col8", tableViewFacetFromAnnotation.Columns[1]);
+            Assert.AreEqual(0, tableViewFacetFromAnnotation.Columns.Length);
             AssertNoMethodsRemoved();
         }
 
         [Test]
-        public void TestTableViewFacetPickedUpOnCollectionActionNoColumns() {
-            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction2");
-            facetFactory.Process(method, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(ITableViewFacet));
+        public void TestTableViewFacetPickedUpOnQueryableAction() {
+            MethodInfo method = FindMethod(typeof (Customer1), "OrdersAction3");
+            facetFactory.Process(method, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacetFromAnnotation);
-            var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation)facet;
+            var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation) facet;
             Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
-            Assert.AreEqual(0, tableViewFacetFromAnnotation.Columns.Length);
+            Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
+            Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
+            Assert.AreEqual("col8", tableViewFacetFromAnnotation.Columns[1]);
             AssertNoMethodsRemoved();
         }
 

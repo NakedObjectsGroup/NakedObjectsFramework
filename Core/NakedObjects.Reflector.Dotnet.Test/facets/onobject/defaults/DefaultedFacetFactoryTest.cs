@@ -3,20 +3,22 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
-using NUnit.Framework;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Naming.Named;
 using NakedObjects.Architecture.Facets.Objects.Defaults;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
+using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
     [TestFixture]
     public class DefaultedFacetFactoryTest : AbstractFacetFactoryTest {
+        #region Setup/Teardown
+
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new DefaultedFacetFactory (reflector);
+            facetFactory = new DefaultedFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -24,6 +26,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
             facetFactory = null;
             base.TearDown();
         }
+
+        #endregion
 
         private DefaultedFacetFactory facetFactory;
 
@@ -41,7 +45,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
         }
 
         public abstract class DefaultsProviderNoop<T> : IDefaultsProvider<T> {
-            #region IDefaultsProvider Members
+            #region IDefaultsProvider<T> Members
 
             public abstract T DefaultValue { get; }
 
@@ -109,44 +113,44 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
 
         [Test]
         public void TestDefaultedHaveAPublicNoArgConstructor() {
-            facetFactory.Process(typeof (MyDefaultedWithoutPublicNoArgConstructor), methodRemover, facetHolder);
-            var facet = (DefaultedFacetAbstract<MyDefaultedWithoutPublicNoArgConstructor>) facetHolder.GetFacet(typeof (IDefaultedFacet));
+            facetFactory.Process(typeof (MyDefaultedWithoutPublicNoArgConstructor), MethodRemover, FacetHolder);
+            var facet = (DefaultedFacetAbstract<MyDefaultedWithoutPublicNoArgConstructor>) FacetHolder.GetFacet(typeof (IDefaultedFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestDefaultedMustHaveANoArgConstructor() {
-            facetFactory.Process(typeof (MyDefaultedWithoutNoArgConstructor), methodRemover, facetHolder);
-            var facet = (DefaultedFacetAbstract<MyDefaultedWithoutNoArgConstructor>) facetHolder.GetFacet(typeof (IDefaultedFacet));
+            facetFactory.Process(typeof (MyDefaultedWithoutNoArgConstructor), MethodRemover, FacetHolder);
+            var facet = (DefaultedFacetAbstract<MyDefaultedWithoutNoArgConstructor>) FacetHolder.GetFacet(typeof (IDefaultedFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestDefaultedUsingDefaultsProviderClass() {
-            facetFactory.Process(typeof (MyDefaultedUsingDefaultsProviderClass), methodRemover, facetHolder);
-            var facet = (DefaultedFacetAbstract<MyDefaultedUsingDefaultsProviderClass>) facetHolder.GetFacet(typeof (IDefaultedFacet));
+            facetFactory.Process(typeof (MyDefaultedUsingDefaultsProviderClass), MethodRemover, FacetHolder);
+            var facet = (DefaultedFacetAbstract<MyDefaultedUsingDefaultsProviderClass>) FacetHolder.GetFacet(typeof (IDefaultedFacet));
             Assert.AreEqual(typeof (MyDefaultedUsingDefaultsProviderClass), facet.GetDefaultsProviderClass());
         }
 
         [Test]
         public void TestDefaultedUsingDefaultsProviderName() {
-            facetFactory.Process(typeof (MyDefaultedUsingDefaultsProvider), methodRemover, facetHolder);
-            var facet = (DefaultedFacetAbstract<MyDefaultedUsingDefaultsProvider>) facetHolder.GetFacet(typeof (IDefaultedFacet));
+            facetFactory.Process(typeof (MyDefaultedUsingDefaultsProvider), MethodRemover, FacetHolder);
+            var facet = (DefaultedFacetAbstract<MyDefaultedUsingDefaultsProvider>) FacetHolder.GetFacet(typeof (IDefaultedFacet));
             Assert.AreEqual(typeof (MyDefaultedUsingDefaultsProvider), facet.GetDefaultsProviderClass());
         }
 
         [Test]
         public void TestFacetFacetHolderStored() {
-            facetFactory.Process(typeof (MyDefaultedUsingDefaultsProvider), methodRemover, facetHolder);
-            var valueFacet = (DefaultedFacetAbstract<MyDefaultedUsingDefaultsProvider>) facetHolder.GetFacet(typeof (IDefaultedFacet));
-            Assert.AreEqual(facetHolder, valueFacet.FacetHolder);
+            facetFactory.Process(typeof (MyDefaultedUsingDefaultsProvider), MethodRemover, FacetHolder);
+            var valueFacet = (DefaultedFacetAbstract<MyDefaultedUsingDefaultsProvider>) FacetHolder.GetFacet(typeof (IDefaultedFacet));
+            Assert.AreEqual(FacetHolder, valueFacet.FacetHolder);
         }
 
         [Test]
         public void TestFacetPickedUp() {
-            facetFactory.Process(typeof (MyDefaultedUsingDefaultsProvider), methodRemover, facetHolder);
+            facetFactory.Process(typeof (MyDefaultedUsingDefaultsProvider), MethodRemover, FacetHolder);
 
-            var facet = (IDefaultedFacet) facetHolder.GetFacet(typeof (IDefaultedFacet));
+            var facet = (IDefaultedFacet) FacetHolder.GetFacet(typeof (IDefaultedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DefaultedFacetAbstract<MyDefaultedUsingDefaultsProvider>);
         }
@@ -163,7 +167,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
 
         [Test]
         public void TestNoMethodsRemoved() {
-            facetFactory.Process(typeof (MyDefaultedUsingDefaultsProvider), methodRemover, facetHolder);
+            facetFactory.Process(typeof (MyDefaultedUsingDefaultsProvider), MethodRemover, FacetHolder);
             AssertNoMethodsRemoved();
         }
     }

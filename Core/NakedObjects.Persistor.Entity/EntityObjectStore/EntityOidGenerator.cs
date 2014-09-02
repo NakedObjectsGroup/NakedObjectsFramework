@@ -7,8 +7,6 @@ using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.EntityObjectStore {

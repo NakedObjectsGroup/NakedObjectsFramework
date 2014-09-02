@@ -1,6 +1,7 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Collections;
 using System.Reflection;
@@ -11,6 +12,22 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Facets.Actions {
     [TestFixture]
     public class IteratorFilteringFacetFactoryTest : AbstractFacetFactoryTest {
+        #region Setup/Teardown
+
+        [SetUp]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new IteratorFilteringFacetFactory(Reflector);
+        }
+
+        [TearDown]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
+
         private IteratorFilteringFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
@@ -21,17 +38,28 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             get { return facetFactory; }
         }
 
-        [SetUp]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new IteratorFilteringFacetFactory(reflector);
+        // ReSharper disable UnusedMember.Local
+        // ReSharper disable InconsistentNaming
+        // ReSharper disable AssignNullToNotNullAttribute
+        private class Customer : IEnumerable {
+            #region IEnumerable Members
+
+            public IEnumerator GetEnumerator() {
+                return null;
+            }
+
+            #endregion
+
+            public void someAction() {}
         }
 
-        [TearDown]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
+        private class Customer1 {
+            public void someAction() {}
         }
+
+        // ReSharper restore AssignNullToNotNullAttribute
+        // ReSharper restore InconsistentNaming
+        // ReSharper restore UnusedMember.Local
 
         [Test]
         public override void TestFeatureTypes() {
@@ -46,46 +74,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         [Test]
         public void TestRequestsRemoverToRemoveIteratorMethods() {
             MethodInfo enumeratorMethod = FindMethod(typeof (Customer), "GetEnumerator");
-            facetFactory.Process(typeof (Customer), methodRemover, facetHolder);
-            //Assert.IsTrue(methodRemover.GetRemoveMethodMethodCalls().Contains(enumeratorMethod));
-            Assert.Fail(); // fix this 
+            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
+            AssertMethodRemoved(enumeratorMethod);
         }
-
-        [Test]
-        public void TestIterableIteratorMethodFiltered() {
-            MethodInfo enumeratorMethod = FindMethod(typeof (Customer), "GetEnumerator");
-            //Assert.IsTrue(facetFactory.Recognizes(enumeratorMethod));
-        }
-
-        [Test]
-        public void TestNoIteratorMethodFiltered() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer1), "someAction");
-           // Assert.IsFalse(facetFactory.Recognizes(actionMethod));
-        }
-
-        #region Nested Type: Customer
-
-        private class Customer : IEnumerable {
-            #region IEnumerable Members
-
-            public IEnumerator GetEnumerator() {
-                return null;
-            }
-
-            #endregion
-
-            public void someAction() {}
-        }
-
-        #endregion
-
-        #region Nested Type: Customer1
-
-        private class Customer1 {
-            public void someAction() {}
-        }
-
-        #endregion
     }
 
 

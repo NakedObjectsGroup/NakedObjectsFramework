@@ -3,11 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using NakedObjects.Reflector.DotNet.Reflect.Strategy;
-using NUnit.Framework;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Choices;
 using NakedObjects.Architecture.Facets.Actions.Defaults;
@@ -19,16 +15,19 @@ using NakedObjects.Architecture.Facets.Naming.Named;
 using NakedObjects.Architecture.Facets.Propparam.Validate.Mandatory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.DotNet.Reflect;
+using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.Spec;
+using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions {
     [TestFixture]
     public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTest {
+        #region Setup/Teardown
+
         [SetUp]
         public override void SetUp() {
             base.SetUp();
             var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySetImpl(), new FacetDecoratorSet());
-       
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(reflector);
         }
 
@@ -37,6 +36,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             facetFactory = null;
             base.TearDown();
         }
+
+        #endregion
 
         private RemoveEventHandlerMethodsFacetFactory facetFactory;
 
@@ -59,31 +60,32 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             get { return facetFactory; }
         }
 
+        #region TestClass
 
-        private class Customer {
 #pragma warning disable 67
+        // ReSharper disable EventNeverSubscribedTo.Local
+        private class Customer {
             public event EventHandler AnEventHandler;
-#pragma warning restore 67
         }
+
+        // ReSharper restore EventNeverSubscribedTo.Local
+#pragma warning restore 67
+
+        #endregion
 
         [Test]
         public void TestActionWithNoParameters() {
-            //facetFactory.Process(typeof (Customer), methodRemover, facetHolder);
+            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
 
-            //Assert.AreEqual(3, methodRemover.GetRemoveMethodMethodCalls().Count);
+            AssertRemovedCalled(2);
 
-            //IList<MethodInfo> removedMethods = methodRemover.GetRemoveMethodMethodCalls();
+            EventInfo eInfo = typeof (Customer).GetEvent("AnEventHandler");
 
-            //EventInfo eInfo = typeof (Customer).GetEvent("AnEventHandler");
+            var eventMethods = new[] {eInfo.GetAddMethod(), eInfo.GetRemoveMethod()};
 
-            //var eventMethods = new[] {eInfo.GetAddMethod(), eInfo.GetRaiseMethod(), eInfo.GetRemoveMethod()};
-
-            //Assert.AreEqual(removedMethods.Count(), eventMethods.Count());
-
-            //foreach (MethodInfo removedMethod in removedMethods) {
-            //    Assert.IsTrue(eventMethods.Contains(removedMethod));
-            //}
-            Assert.Fail(); // fix this 
+            foreach (MethodInfo removedMethod in eventMethods) {
+                AssertMethodRemoved(removedMethod);
+            }
         }
 
         [Test]

@@ -4,20 +4,22 @@
 
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using NUnit.Framework;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Naming.Named;
 using NakedObjects.Architecture.Facets.Objects.Aggregated;
 using NakedObjects.Architecture.Reflect;
+using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated {
     [TestFixture]
     public class InlineAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
+        #region Setup/Teardown
+
         [SetUp]
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new ComplexTypeAnnotationFacetFactory (reflector);
+            facetFactory = new ComplexTypeAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -25,6 +27,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated {
             facetFactory = null;
             base.TearDown();
         }
+
+        #endregion
 
         private ComplexTypeAnnotationFacetFactory facetFactory;
 
@@ -52,8 +56,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated {
 
         [Test]
         public void TestImmutableAnnotationPickedUpOnClassAndDefaultsToAlways() {
-            facetFactory.Process(typeof (Customer), methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IComplexTypeFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IComplexTypeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ComplexTypeFacetAnnotation);
             AssertNoMethodsRemoved();

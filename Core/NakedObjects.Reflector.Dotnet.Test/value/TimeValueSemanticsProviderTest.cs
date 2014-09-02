@@ -10,8 +10,10 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Value {
     [TestFixture]
     public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TimeSpan> {
+        #region Setup/Teardown
+
         [SetUp]
-        public  override void SetUp() {
+        public override void SetUp() {
             base.SetUp();
             SetupSpecification(typeof (TimeSpan));
             time = new TimeSpan(8, 13, 0);
@@ -19,9 +21,19 @@ namespace NakedObjects.Reflector.DotNet.Value {
             SetValue(adapter = new TimeValueSemanticsProvider(reflector, holder));
         }
 
+        #endregion
+
         private TimeValueSemanticsProvider adapter;
         private IFacetHolder holder;
         private TimeSpan time;
+
+        [Test]
+        public void TestParseInvariant() {
+            var d1 = new TimeSpan(1, 5, 1, 25);
+            string s1 = d1.ToString(null, CultureInfo.InvariantCulture);
+            object d2 = adapter.ParseInvariant(s1);
+            Assert.AreEqual(d1, d2);
+        }
 
 
         [Test]
@@ -42,14 +54,6 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [Test]
         public void TestTimeAsEncodedString() {
             Assert.AreEqual("08:13:00", adapter.ToEncodedString(time));
-        }
-
-        [Test]
-        public void TestParseInvariant() {
-            var d1 = new TimeSpan(1, 5, 1, 25);
-            var s1 = d1.ToString(null, CultureInfo.InvariantCulture);
-            var d2 = adapter.ParseInvariant(s1);
-            Assert.AreEqual(d1, d2);
         }
     }
 

@@ -1,6 +1,7 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -16,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ComplementaryMethodsFilteringFacetFactory(reflector);
+            facetFactory = new ComplementaryMethodsFilteringFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -479,7 +480,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
         [Test]
         public void TestFiltersParameterValidate() {
-            MethodInfo actionMethod = FindMethod(typeof (ActionClass), "ValidateAnAction", new[] {typeof(string)});
+            MethodInfo actionMethod = FindMethod(typeof (ActionClass), "ValidateAnAction", new[] {typeof (string)});
             Assert.IsTrue(facetFactory.Filters(actionMethod));
         }
 
@@ -497,7 +498,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
         [Test]
         public void TestFiltersValidateAction() {
-            MethodInfo actionMethod = FindMethod(typeof (ActionClass), "ValidateAnAction", new Type[]{});
+            MethodInfo actionMethod = FindMethod(typeof (ActionClass), "ValidateAnAction", new Type[] {});
             Assert.IsTrue(facetFactory.Filters(actionMethod));
         }
 
@@ -611,7 +612,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
         [Test]
         public void TestLeavesParameterValidateIfNoAction() {
-            MethodInfo actionMethod = FindMethod(typeof(NoActionClass), "ValidateAnAction", new[] { typeof(string) });
+            MethodInfo actionMethod = FindMethod(typeof (NoActionClass), "ValidateAnAction", new[] {typeof (string)});
             Assert.IsFalse(facetFactory.Filters(actionMethod));
         }
 
@@ -623,7 +624,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
         [Test]
         public void TestLeavesValidateActionIfNoAction() {
-            MethodInfo actionMethod = FindMethod(typeof (NoActionClass), "ValidateAnAction", new Type[]{});
+            MethodInfo actionMethod = FindMethod(typeof (NoActionClass), "ValidateAnAction", new Type[] {});
             Assert.IsFalse(facetFactory.Filters(actionMethod));
         }
 

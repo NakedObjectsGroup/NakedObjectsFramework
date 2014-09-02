@@ -1,19 +1,17 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Globalization;
 using NakedObjects.Architecture;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     [TestFixture]
     public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<sbyte> {
-        private sbyte byteObj;
-        private IFacetHolder holder;
-        private SbyteValueSemanticsProvider value;
+        #region Setup/Teardown
 
         [SetUp]
         public override void SetUp() {
@@ -22,6 +20,12 @@ namespace NakedObjects.Reflector.DotNet.Value {
             holder = new FacetHolderImpl();
             SetValue(value = new SbyteValueSemanticsProvider(reflector, holder));
         }
+
+        #endregion
+
+        private sbyte byteObj;
+        private IFacetHolder holder;
+        private SbyteValueSemanticsProvider value;
 
         public void TestParseValidString() {
             Object parsed = value.ParseTextEntry("21");
@@ -34,7 +38,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
                 Assert.Fail();
             }
             catch (Exception e) {
-                Assert.IsInstanceOf( typeof (InvalidEntryException),e);
+                Assert.IsInstanceOf(typeof (InvalidEntryException), e);
             }
         }
 
@@ -56,16 +60,17 @@ namespace NakedObjects.Reflector.DotNet.Value {
             try {
                 object newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
-            } catch (Exception ) {
+            }
+            catch (Exception) {
                 Assert.Fail();
             }
         }
 
         [Test]
         public void TestParseInvariant() {
-            const sbyte c1 = (sbyte)11;
-            var s1 = c1.ToString(CultureInfo.InvariantCulture);
-            var c2 = GetValue().ParseInvariant(s1);
+            const sbyte c1 = (sbyte) 11;
+            string s1 = c1.ToString(CultureInfo.InvariantCulture);
+            object c2 = GetValue().ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
         }
 

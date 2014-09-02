@@ -1,6 +1,7 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using System.Reflection;
 using NakedObjects.Architecture.Facets;
@@ -11,26 +12,55 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask {
     [TestFixture]
     public class MaskAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private MaskAnnotationFacetFactory facetFactory;
-
-        protected override Type[] SupportedTypes {
-            get { return new Type[] {typeof (IMaskFacet)}; }
-        }
-
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        #region Setup/Teardown
 
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new MaskAnnotationFacetFactory(reflector);
+            facetFactory = new MaskAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]
         public override void TearDown() {
             facetFactory = null;
             base.TearDown();
+        }
+
+        #endregion
+
+        private MaskAnnotationFacetFactory facetFactory;
+
+        protected override Type[] SupportedTypes {
+            get { return new[] {typeof (IMaskFacet)}; }
+        }
+
+        protected override IFacetFactory FacetFactory {
+            get { return facetFactory; }
+        }
+
+        [Mask("###")]
+        private class Customer {}
+
+        private class Customer1 {
+            [Mask("###")]
+            public string FirstName {
+                get { return null; }
+            }
+        }
+
+        private class Customer2 {
+            public void SomeAction([Mask("###")] string foo) {}
+        }
+
+        private class Customer3 {
+            [Mask("###")]
+            public int NumberOfOrders {
+                get { return 0; }
+            }
+        }
+
+        private class Customer4 {
+            public void SomeAction([Mask("###")] int foo) {}
         }
 
         [Test]
@@ -44,95 +74,50 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask {
         }
 
         [Test]
-        public void TestMaskAnnotationPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IMaskFacet));
+        public void TestMaskAnnotationNotIgnoredForNonStringsProperty() {
+            PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            Assert.IsNotNull(FacetHolder.GetFacet(typeof (IMaskFacet)));
+        }
+
+        [Test]
+        public void TestMaskAnnotationNotIgnoredForPrimitiveOnActionParameter() {
+            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
+            facetFactory.ProcessParams(method, 0, FacetHolder);
+            Assert.IsNotNull(FacetHolder.GetFacet(typeof (IMaskFacet)));
+        }
+
+        [Test]
+        public void TestMaskAnnotationPickedUpOnActionParameter() {
+            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            facetFactory.ProcessParams(method, 0, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacetAnnotation);
-            MaskFacetAnnotation maskFacet = (MaskFacetAnnotation) facet;
+            var maskFacet = (MaskFacetAnnotation) facet;
+            Assert.AreEqual("###", maskFacet.Value);
+        }
+
+        [Test]
+        public void TestMaskAnnotationPickedUpOnClass() {
+            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IMaskFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is MaskFacetAnnotation);
+            var maskFacet = (MaskFacetAnnotation) facet;
             Assert.AreEqual("###", maskFacet.Value);
         }
 
         [Test]
         public void TestMaskAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IMaskFacet));
+            facetFactory.Process(property, MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacetAnnotation);
-            MaskFacetAnnotation maskFacet = (MaskFacetAnnotation) facet;
+            var maskFacet = (MaskFacetAnnotation) facet;
             Assert.AreEqual("###", maskFacet.Value);
         }
-
-        [Test]
-        public void TestMaskAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new Type[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IMaskFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MaskFacetAnnotation);
-            MaskFacetAnnotation maskFacet = (MaskFacetAnnotation) facet;
-            Assert.AreEqual("###", maskFacet.Value);
-        }
-
-        [Test]
-        public void TestMaskAnnotationNotIgnoredForNonStringsProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
-            facetFactory.Process(property, methodRemover, facetHolder);
-            Assert.IsNotNull(facetHolder.GetFacet(typeof (IMaskFacet)));
-        }
-
-        [Test]
-        public void TestMaskAnnotationNotIgnoredForPrimitiveOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new Type[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, facetHolder);
-            Assert.IsNotNull(facetHolder.GetFacet(typeof (IMaskFacet)));
-        }
-
-        #region Nested Type: Customer
-
-        [Mask("###")]
-        private class Customer {}
-
-        #endregion
-
-        #region Nested Type: Customer1
-
-        private class Customer1 {
-            [Mask("###")]
-            public string FirstName {
-                get { return null; }
-            }
-        }
-
-        #endregion
-
-        #region Nested Type: Customer2
-
-        private class Customer2 {
-            public void SomeAction([Mask("###")] string foo) {}
-        }
-
-        #endregion
-
-        #region Nested Type: Customer3
-
-        private class Customer3 {
-            [Mask("###")]
-            public int NumberOfOrders {
-                get { return 0; }
-            }
-        }
-
-        #endregion
-
-        #region Nested Type: Customer4
-
-        private class Customer4 {
-            public void SomeAction([Mask("###")] int foo) {}
-        }
-
-        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

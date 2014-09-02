@@ -1,6 +1,7 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Ident.Plural;
@@ -10,20 +11,12 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural {
     [TestFixture]
     public class PluralAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
-        private PluralAnnotationFacetFactory facetFactory;
-
-        protected override Type[] SupportedTypes {
-            get { return new Type[] {typeof (IPluralFacet)}; }
-        }
-
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        #region Setup/Teardown
 
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PluralAnnotationFacetFactory(reflector);
+            facetFactory = new PluralAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -31,6 +24,21 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural {
             facetFactory = null;
             base.TearDown();
         }
+
+        #endregion
+
+        private PluralAnnotationFacetFactory facetFactory;
+
+        protected override Type[] SupportedTypes {
+            get { return new[] {typeof (IPluralFacet)}; }
+        }
+
+        protected override IFacetFactory FacetFactory {
+            get { return facetFactory; }
+        }
+
+        [Plural("Some plural name")]
+        private class Customer {}
 
         [Test]
         public override void TestFeatureTypes() {
@@ -44,21 +52,14 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural {
 
         [Test]
         public void TestPluralAnnotationMethodPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IPluralFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IPluralFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PluralFacetAnnotation);
-            PluralFacetAnnotation pluralFacet = (PluralFacetAnnotation) facet;
+            var pluralFacet = (PluralFacetAnnotation) facet;
             Assert.AreEqual("Some plural name", pluralFacet.Value);
             AssertNoMethodsRemoved();
         }
-
-        #region Nested Type: Customer
-
-        [Plural("Some plural name")]
-        private class Customer {}
-
-        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

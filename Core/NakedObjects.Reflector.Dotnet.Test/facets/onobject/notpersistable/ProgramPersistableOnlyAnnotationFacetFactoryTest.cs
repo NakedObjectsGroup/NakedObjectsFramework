@@ -1,6 +1,7 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 using System;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.NotPersistable;
@@ -16,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ProgramPersistableOnlyAnnotationFacetFactory (reflector);
+            facetFactory = new ProgramPersistableOnlyAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -53,19 +54,19 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
         }
 
         [Test]
-        public void TestProgramPersistableOnlyPickup() {
-            facetFactory.Process(typeof (Customer), methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof (IProgramPersistableOnlyFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is ProgramPersistableOnlyFacetAnnotation);
+        public void TestProgramPersistableOnlyNotPickup() {
+            facetFactory.Process(typeof (Customer1), MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IProgramPersistableOnlyFacet));
+            Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
 
         [Test]
-        public void TestProgramPersistableOnlyNotPickup() {
-            facetFactory.Process(typeof(Customer1), methodRemover, facetHolder);
-            IFacet facet = facetHolder.GetFacet(typeof(IProgramPersistableOnlyFacet));
-            Assert.IsNull(facet);
+        public void TestProgramPersistableOnlyPickup() {
+            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
+            IFacet facet = FacetHolder.GetFacet(typeof (IProgramPersistableOnlyFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is ProgramPersistableOnlyFacetAnnotation);
             AssertNoMethodsRemoved();
         }
     }
