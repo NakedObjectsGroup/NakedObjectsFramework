@@ -15,11 +15,19 @@ namespace NakedObjects {
 
         #endregion
 
-        [Disabled, Hidden]
+        [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
         [Disabled]
         public virtual string RoleObjectOid { get; set; }
+
+        /// <summary>
+        ///     To allow sub-classes to render property visible/invisible
+        /// </summary>
+        public virtual bool HideRoleObjectOid()
+        {
+            return false;
+        }
 
         [NotPersisted, Disabled]
         public virtual TRole AssociatedRoleObject {
@@ -29,22 +37,16 @@ namespace NakedObjects {
             }
         }
 
+        /// <summary>
+        ///     To allow sub-classes to render property visible/invisible
+        /// </summary>
+        public virtual bool AssociatedRoleObject()
+        {
+            return false;
+        }
+
         [Required]
         public virtual TOwner Owner { get; set; }
-
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideAssociatedRoleObjectType() {
-            return false;
-        }
-
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideAssociatedRoleObjectId() {
-            return false;
-        }
 
         /// <summary>
         ///     To allow sub-classes to render property visible/invisible

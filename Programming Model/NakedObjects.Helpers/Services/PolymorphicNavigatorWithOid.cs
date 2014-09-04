@@ -9,7 +9,10 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Services {
     /// <summary>
-
+    ///     Service that provides helper methods for navigating polymorphic associations that make
+    ///     use of Link objects defined by IPolymorphicLinkWithOid.
+    ///     Delegates to an injected implementation of IObjectFinder.
+    /// </summary>
     public class PolymorphicNavigatorWithOid : IPolymorphicNavigatorWithOid {
 
         #region Injected Services
