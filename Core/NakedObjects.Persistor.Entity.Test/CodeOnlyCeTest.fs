@@ -13,6 +13,8 @@ open NakedObjects.Core.Context
 open NakedObjects.Core.Security
 open System.Security.Principal
 open NakedObjects.Reflector.DotNet
+open Moq
+open NakedObjects.Architecture.Reflect
 
 let codeOnlyCePersistor =
     let r = new MockReflector()  

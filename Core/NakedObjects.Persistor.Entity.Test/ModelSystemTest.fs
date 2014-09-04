@@ -17,30 +17,37 @@ open NakedObjects
 open TestCode
 open System.Collections.Generic
 open NakedObjects.Architecture.Util
+open Microsoft.Practices.Unity
 
 
 [<TestFixture>]
 type ModelSystemTests() =
     inherit  NakedObjects.Xat.AcceptanceTestCase()    
 
+    override x.RegisterTypes(container) = 
+        base.RegisterTypes(container)
+        let config = new EntityObjectStoreConfiguration()
+        config.EnforceProxies <- false
+        config.ForceContextSet()
+        let ignore = container.RegisterInstance(typeof<EntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
+        ()
+    
+    [<TestFixtureSetUpAttribute>]
+    member x.SetupFixture() = x.InitializeNakedObjectsFramework()
+    
     [<SetUp>]
-    member x.SetupTest() =  
-        x.InitializeNakedObjectsFramework()
-  
+    member x.SetupTest() = x.StartTest()
     
     [<TearDown>]
-    member x.TearDownTest() = 
-        x.CleanupNakedObjectsFramework()
+    member x.TearDownTest() = ()
+    
+    [<TestFixtureTearDown>]
+    member x.TearDownFixture() = x.CleanupNakedObjectsFramework()
 
     override x.MenuServices = 
         let service = new SimpleRepository<Person>()
         box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller 
         
-    override x.Persistor = 
-        let inst = new EntityPersistorInstaller()
-        inst.EnforceProxies <- false
-        inst.ForceContextSet()
-        box inst :?> IObjectPersistorInstaller
    
     member x.CreatePerson() = 
         let setter (p : Person) = 

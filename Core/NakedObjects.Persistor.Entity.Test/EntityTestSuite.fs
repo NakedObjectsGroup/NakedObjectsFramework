@@ -21,6 +21,8 @@ open TestData
 open NakedObjects.Core.Security
 open System.Security.Principal
 open NakedObjects.Reflector.DotNet
+open Moq
+open NakedObjects.Architecture.Reflect
         
 let assemblyName = "NakedObjects.Persistor.Test.Data"
 
@@ -53,8 +55,9 @@ let db =
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
+    let r = (new Mock<INakedObjectReflector>()).Object
     c.ContextConfiguration <- [|(box Config :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i)
     p
 
 

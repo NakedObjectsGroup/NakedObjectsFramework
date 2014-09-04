@@ -11,14 +11,17 @@ open NakedObjects.Core.Context
 open NakedObjects.Core.Security
 open System.Security.Principal
 open NakedObjects.Reflector.DotNet
+open Moq
+open NakedObjects.Architecture.Reflect
 
 let persistor =
     let c = new EntityObjectStoreConfiguration()
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
+    let r = (new Mock<INakedObjectReflector>()).Object
     c.ContextConfiguration <- [|(box ModelConfig :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i)
     setupPersistorForInjectorTesting p
 
 

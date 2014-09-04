@@ -19,37 +19,41 @@ open NakedObjects
 open TestCode
 open NakedObjects.Architecture.Util
 open NakedObjects.Architecture.Persist
+open Microsoft.Practices.Unity
             
 [<TestFixture>]
 type CodeSystemTests() =
     inherit  NakedObjects.Xat.AcceptanceTestCase()    
 
+    override x.RegisterTypes(container) = 
+        base.RegisterTypes(container)
+        let config = new EntityObjectStoreConfiguration()
+        let f = (fun () -> new CodeFirstContext("CodeSystemTest") :> Data.Entity.DbContext)
+        let ignore = config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) 
+        let ignore = container.RegisterInstance(typeof<EntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
+        ()
+   
     [<TestFixtureSetUpAttribute>]
-    member x.SetupFixture() = 
+    member x.SetupFixture() =       
          CodeFirstSetup()
+         x.InitializeNakedObjectsFramework()
 
     [<SetUp>]
     member x.SetupTest() =        
-        x.InitializeNakedObjectsFramework()
-   
-    
+        x.StartTest()
+      
     [<TearDown>]
-    member x.TearDownTest() = 
-        x.CleanupNakedObjectsFramework();
+    member x.TearDownTest() =   ()
+
+    [<TestFixtureTearDown>]
+    member x.TearDownFixture() = 
+        x.CleanupNakedObjectsFramework()
 
     override x.MenuServices 
         with get() : IServicesInstaller  =
             let service = new SimpleRepository<Person>() 
             box (new ServicesInstaller([|(box service)|])) :?> IServicesInstaller
                
-    override x.Persistor
-        with get() : IObjectPersistorInstaller = 
-            let inst = new EntityPersistorInstaller()
-            let f = (fun () -> new CodeFirstContext("CodeSystemTest") :> Data.Entity.DbContext)
-            let ignore = inst.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) 
-            box (inst) :?> IObjectPersistorInstaller
-                       
-          
     member x.GetPersonDomainObject() = 
        let pp = x.NakedObjectsFramework.ObjectPersistor.Instances<Person>() 
        pp |>  Seq.head

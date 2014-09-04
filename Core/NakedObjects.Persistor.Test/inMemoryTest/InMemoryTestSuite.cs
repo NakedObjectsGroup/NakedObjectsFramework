@@ -4,10 +4,16 @@
 
 
 using System.Linq;
+using Microsoft.Practices.Unity;
+using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
+using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core.Persist;
+using NakedObjects.Persistor.Objectstore;
+using NakedObjects.Persistor.Objectstore.Inmemory;
 using NakedObjects.Persistor.TestData;
 using NakedObjects.Persistor.TestSuite;
 using NakedObjects.Services;
@@ -18,20 +24,39 @@ using TestData;
 namespace NakedObjects.Persistor.InMemoryTest {
     [TestFixture]
     public class InMemoryTestSuite : AcceptanceTestCase {
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            // replace INakedObjectStore types
+
+            container.RegisterType<IOidGenerator, SimpleOidGenerator>(new InjectionConstructor(typeof(INakedObjectReflector), 0L));
+            container.RegisterType<IPersistAlgorithm, DefaultPersistAlgorithm>();
+            container.RegisterType<INakedObjectStore, MemoryObjectStore>();
+            container.RegisterType<IIdentityMap, IdentityMapImpl>();
+        }
+
+
         #region Setup/Teardown
 
+        [TestFixtureSetUp]
+        public void SetupFixture() {
+            InitializeNakedObjectsFramework();
+        }
 
-        private PersistorTestSuite tests;
+        [TestFixtureTearDown]
+        public void TearDownFixture() {
+            CleanupNakedObjectsFramework();
+        }
 
         [SetUp]
         public void Setup() {
-            InitializeNakedObjectsFramework();
+            StartTest();
 
             // reset events from fixtures running
             NakedObjectsFramework.ObjectPersistor.Instances<Person>().ForEach(p => p.ResetEvents());
-            NakedObjectsFramework.ObjectPersistor.Instances<Person>().Select( p => p.Address).ForEach(a => a.ResetEvents());
+            NakedObjectsFramework.ObjectPersistor.Instances<Person>().Select(p => p.Address).ForEach(a => a.ResetEvents());
             NakedObjectsFramework.ObjectPersistor.Instances<Product>().ForEach(p => p.ResetEvents());
-           
+
             NakedObjectsFramework.ObjectPersistor.Reset();
 
             tests = new PersistorTestSuite(NakedObjectsFramework);
@@ -39,8 +64,10 @@ namespace NakedObjects.Persistor.InMemoryTest {
 
         [TearDown]
         public void TearDown() {
-            CleanupNakedObjectsFramework();
+
         }
+
+        private PersistorTestSuite tests;
 
         #endregion
 
