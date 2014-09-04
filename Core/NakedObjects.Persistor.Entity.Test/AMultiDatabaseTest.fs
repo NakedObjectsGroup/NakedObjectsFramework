@@ -23,7 +23,9 @@ let multiDatabasePersistor =
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
-    c.ContextConfiguration <- [|(box (CodeFirstConfig  "AMultiDatabaseTests" ):?> EntityContextConfiguration);(box PocoConfig :?> EntityContextConfiguration)|]
+    c.UsingCodeFirstContext ((CodeFirstConfig "AMultiDatabaseTests").DbContext) |> ignore
+    c.UsingEdmxContext "AdventureWorksEntities" |> ignore
+    //c.ContextConfiguration <- [|(box (CodeFirstConfig  "AMultiDatabaseTests" ):?> EntityContextConfiguration);(box PocoConfig :?> EntityContextConfiguration)|]
     let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i)
     setupPersistorForTesting p
 
@@ -33,7 +35,10 @@ let multiDomainDatabasePersistor =
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
-    c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration);(box ModelTestCode.ModelConfig :?> EntityContextConfiguration)|]
+    c.UsingEdmxContext "Model1Container" |> ignore
+    c.UsingCodeFirstContext ((CodeFirstConfig "AMultiDatabaseTests").DbContext) |> ignore
+   
+    //c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration);(box ModelTestCode.ModelConfig :?> EntityContextConfiguration)|]
     let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i)
     setupPersistorForTesting p
 
