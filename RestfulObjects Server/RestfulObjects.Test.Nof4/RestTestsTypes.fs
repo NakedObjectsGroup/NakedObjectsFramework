@@ -34,7 +34,7 @@ type Nof4TestsTypes() = class
     
     [<SetUp>]
     member x.StartTest() =           
-        x.Fixtures.InstallFixtures(x.NakedObjectsContext.ObjectPersistor, null)
+        x.Fixtures.InstallFixtures(x.NakedObjectsFramework.ObjectPersistor, null)
         UriMtHelper.GetApplicationPath <- Func<string>(fun () -> "")
         RestfulObjectsControllerBase.IsReadOnly <- false  
         let p = new GenericPrincipal(new GenericIdentity("REST"), [||])
@@ -75,10 +75,10 @@ type Nof4TestsTypes() = class
 
     // DomainTypes20
     [<Test>] 
-    member x.GetDomainTypes() = DomainTypes20.GetDomainTypes (api x.NakedObjectsContext)
+    member x.GetDomainTypes() = DomainTypes20.GetDomainTypes (api x.NakedObjectsFramework)
     [<Test>] 
-    member x.GetDomainTypesWithMediaType() = DomainTypes20.GetDomainTypesWithMediaType (api x.NakedObjectsContext) 
+    member x.GetDomainTypesWithMediaType() = DomainTypes20.GetDomainTypesWithMediaType (api x.NakedObjectsFramework) 
     [<Test>] 
-    member x.NotAcceptableGetDomainTypes() = DomainTypes20.NotAcceptableGetDomainTypes (api x.NakedObjectsContext)
+    member x.NotAcceptableGetDomainTypes() = DomainTypes20.NotAcceptableGetDomainTypes (api x.NakedObjectsFramework)
     
 end

@@ -93,136 +93,152 @@ type WifTests() =
     [<Test>] 
     member x.AuthorisedViewProperty() = 
        let cam = x.CreateClaimsAuthManager()
-       let id = new IdentifierImpl("ns.class1", "member1")
-       let authContext = viewAuthContext id
-       let auth = cam.CheckAccess authContext
-       Assert.IsTrue(auth, "expect to be authorised")
+       //let id = new IdentifierImpl("ns.class1", "member1")
+       //let authContext = viewAuthContext id
+       //let auth = cam.CheckAccess authContext
+       //Assert.IsTrue(auth, "expect to be authorised")
+       Assert.Fail("Fix!")
        ()
 
     [<Test>] 
     member x.AuthorisedEditProperty() = 
-       let cam = x.CreateClaimsAuthManager()
-       let id = new IdentifierImpl("ns.class1", "member2")
-       let authContext = editAuthContext id
-       let auth = cam.CheckAccess authContext
-       Assert.IsTrue(auth, "expect to be authorised")
+//       let cam = x.CreateClaimsAuthManager()
+//       let id = new IdentifierImpl("ns.class1", "member2")
+//       let authContext = editAuthContext id
+//       let auth = cam.CheckAccess authContext
+//       Assert.IsTrue(auth, "expect to be authorised")
+       Assert.Fail("Fix!")
        ()
 
     [<Test>] 
     member x.AuthorisedAction() = 
-       let cam = x.CreateClaimsAuthManager()
-       let id = new IdentifierImpl("ns.class1", "member3")
-       let authContext = actionAuthContext id
-       let auth = cam.CheckAccess authContext
-       Assert.IsTrue(auth, "expect to be authorised")
+//       let cam = x.CreateClaimsAuthManager()
+//       let id = new IdentifierImpl("ns.class1", "member3")
+//       let authContext = actionAuthContext id
+//       let auth = cam.CheckAccess authContext
+//       Assert.IsTrue(auth, "expect to be authorised")
+       Assert.Fail("Fix!")
        ()
 
     [<Test>] 
     member x.NotAuthorisedViewProperty() = 
-       let cam = x.CreateClaimsAuthManager()
-       let id = new IdentifierImpl("ns.class1", "member1")
-       let authContext = editAuthContext id
-       let auth = cam.CheckAccess authContext
-       Assert.IsFalse(auth, "expect not to be authorised")
+//       let cam = x.CreateClaimsAuthManager()
+//       let id = new IdentifierImpl("ns.class1", "member1")
+//       let authContext = editAuthContext id
+//       let auth = cam.CheckAccess authContext
+//       Assert.IsFalse(auth, "expect not to be authorised")
+       Assert.Fail("Fix!")
        ()
 
     [<Test>] 
     member x.NotAuthorisedEditProperty() = 
-       let cam = x.CreateClaimsAuthManager()
-       let id = new IdentifierImpl("ns.class1", "member2")
-       let authContext = viewAuthContext id
-       let auth = cam.CheckAccess authContext
-       Assert.IsFalse(auth, "expect not to be authorised")
+//       let cam = x.CreateClaimsAuthManager()
+//       let id = new IdentifierImpl("ns.class1", "member2")
+//       let authContext = viewAuthContext id
+//       let auth = cam.CheckAccess authContext
+//       Assert.IsFalse(auth, "expect not to be authorised")
+       Assert.Fail("Fix!")
        ()
 
     [<Test>] 
     member x.NotAuthorisedActionWrongClaim() = 
-       let cam = x.CreateClaimsAuthManager()
-       let id = new IdentifierImpl("ns.class2", "member3")
-       let authContext = actionAuthContext id 
-       let auth = cam.CheckAccess authContext
-       Assert.IsFalse(auth, "expect not to be authorised")
+//       let cam = x.CreateClaimsAuthManager()
+//       let id = new IdentifierImpl("ns.class2", "member3")
+//       let authContext = actionAuthContext id 
+//       let auth = cam.CheckAccess authContext
+//       Assert.IsFalse(auth, "expect not to be authorised")
+       Assert.Fail("Fix!")
        ()
 
     [<Test>] 
     member x.NotAuthorisedViewPropertyWrongClaim() = 
-       let cam = x.CreateClaimsAuthManager()
-       let id = new IdentifierImpl("ns.class2", "member1")
-       let authContext = viewAuthContext id
-       let auth = cam.CheckAccess authContext
-       Assert.IsFalse(auth, "expect not to be authorised")
+//       let cam = x.CreateClaimsAuthManager()
+//       let id = new IdentifierImpl("ns.class2", "member1")
+//       let authContext = viewAuthContext id
+//       let auth = cam.CheckAccess authContext
+//       Assert.IsFalse(auth, "expect not to be authorised")
+       Assert.Fail("Fix!")
        ()
 
     [<Test>] 
     member x.NotAuthorisedEditPropertyWrongClaim() = 
-       let cam = x.CreateClaimsAuthManager()
-       let id = new IdentifierImpl("ns.class2", "member2")
-       let authContext = editAuthContext id
-       let auth = cam.CheckAccess authContext
-       Assert.IsFalse(auth, "expect not to be authorised")
+//       let cam = x.CreateClaimsAuthManager()
+//       let id = new IdentifierImpl("ns.class2", "member2")
+//       let authContext = editAuthContext id
+//       let auth = cam.CheckAccess authContext
+//       Assert.IsFalse(auth, "expect not to be authorised")
+       Assert.Fail("Fix!")
        ()
 
     [<Test>]
     member x.AuthorisorIsVisible() =
-        let cam = x.CreateClaimsAuthManager()
-        let authorisor = new WifAuthorizer(cam)
-        let id =  new IdentifierImpl("ns.class1", "member1")
-        let isVisible = authorisor.IsVisible(testSession, null, id)
-        Assert.IsTrue(isVisible, "expect to be visible")
+//        let cam = x.CreateClaimsAuthManager()
+//        let authorisor = new WifAuthorizer(cam)
+//        let id =  new IdentifierImpl("ns.class1", "member1")
+//        let isVisible = authorisor.IsVisible(testSession, null, id)
+//        Assert.IsTrue(isVisible, "expect to be visible")
+        Assert.Fail("Fix!")
 
     [<Test>]
     member x.AuthorisorIsEditable() =
-        let cam = x.CreateClaimsAuthManager()
-        let authorisor = new WifAuthorizer(cam)
-        let id =  new IdentifierImpl("ns.class1", "member2")
-        let isUsable = authorisor.IsUsable(testSession, null, id)
-        Assert.IsTrue(isUsable, "expect to be visible")
+//        let cam = x.CreateClaimsAuthManager()
+//        let authorisor = new WifAuthorizer(cam)
+//        let id =  new IdentifierImpl("ns.class1", "member2")
+//        let isUsable = authorisor.IsUsable(testSession, null, id)
+//        Assert.IsTrue(isUsable, "expect to be visible")
+        Assert.Fail("Fix!")
 
     [<Test>]
     member x.AuthorisorIsNotVisible() =
-        let cam = x.CreateClaimsAuthManager()
-        let authorisor = new WifAuthorizer(cam)
-        let id =  new IdentifierImpl("ns.class2", "member1")
-        let isVisible = authorisor.IsVisible(testSession, null, id)
-        Assert.IsFalse(isVisible, "expect not to be visible")
+//        let cam = x.CreateClaimsAuthManager()
+//        let authorisor = new WifAuthorizer(cam)
+//        let id =  new IdentifierImpl("ns.class2", "member1")
+//        let isVisible = authorisor.IsVisible(testSession, null, id)
+//        Assert.IsFalse(isVisible, "expect not to be visible")
+        Assert.Fail("Fix!")
 
     [<Test>]
     member x.AuthorisorIsNotEditable() =
-        let cam = x.CreateClaimsAuthManager()
-        let authorisor = new WifAuthorizer(cam)
-        let id =  new IdentifierImpl("ns.class1", "member1")
-        let isUsable = authorisor.IsUsable(testSession, null, id)
-        Assert.IsFalse(isUsable, "expect not to be editable")
+//        let cam = x.CreateClaimsAuthManager()
+//        let authorisor = new WifAuthorizer(cam)
+//        let id =  new IdentifierImpl("ns.class1", "member1")
+//        let isUsable = authorisor.IsUsable(testSession, null, id)
+//        Assert.IsFalse(isUsable, "expect not to be editable")
+        Assert.Fail("Fix!")
 
 
     [<Test>]
     member x.AuthorisorActionIsVisible() =
-        let cam = x.CreateClaimsAuthManager()
-        let authorisor = new WifAuthorizer(cam)
-        let id =  new IdentifierImpl("ns.class1", "member3", [|""|])
-        let isVisible = authorisor.IsVisible(testSession, null, id)
-        Assert.IsTrue(isVisible, "expect to be visible")
+//        let cam = x.CreateClaimsAuthManager()
+//        let authorisor = new WifAuthorizer(cam)
+//        let id =  new IdentifierImpl("ns.class1", "member3", [|""|])
+//        let isVisible = authorisor.IsVisible(testSession, null, id)
+//        Assert.IsTrue(isVisible, "expect to be visible")
+        Assert.Fail("Fix!")
 
     [<Test>]
     member x.AuthorisorActionIsEditable() =
-        let cam = x.CreateClaimsAuthManager()
-        let authorisor = new WifAuthorizer(cam)
-        let id =  new IdentifierImpl("ns.class1", "member3", [|""|])
-        let isUsable = authorisor.IsUsable(testSession, null, id)
-        Assert.IsTrue(isUsable, "expect to be usable")
+//        let cam = x.CreateClaimsAuthManager()
+//        let authorisor = new WifAuthorizer(cam)
+//        let id =  new IdentifierImpl("ns.class1", "member3", [|""|])
+//        let isUsable = authorisor.IsUsable(testSession, null, id)
+//        Assert.IsTrue(isUsable, "expect to be usable")
+        Assert.Fail("Fix!")
 
     [<Test>]
     member x.AuthorisorActionIsNotVisible() =
-        let cam = x.CreateClaimsAuthManager()
-        let authorisor = new WifAuthorizer(cam)
-        let id =  new IdentifierImpl("ns.class2", "member3", [|""|])
-        let isVisible = authorisor.IsVisible(testSession, null, id)
-        Assert.IsFalse(isVisible, "expect not to be visible")
+//        let cam = x.CreateClaimsAuthManager()
+//        let authorisor = new WifAuthorizer(cam)
+//        let id =  new IdentifierImpl("ns.class2", "member3", [|""|])
+//        let isVisible = authorisor.IsVisible(testSession, null, id)
+//        Assert.IsFalse(isVisible, "expect not to be visible")
+        Assert.Fail("Fix!")
 
     [<Test>]
     member x.AuthorisorActionIsNotEditable() =
-        let cam = x.CreateClaimsAuthManager()
-        let authorisor = new WifAuthorizer(cam)
-        let id =  new IdentifierImpl("ns.class2", "member3", [|""|])
-        let isUsable = authorisor.IsUsable(testSession, null, id)
-        Assert.IsFalse(isUsable, "expect not to be usable")
+//        let cam = x.CreateClaimsAuthManager()
+//        let authorisor = new WifAuthorizer(cam)
+//        let id =  new IdentifierImpl("ns.class2", "member3", [|""|])
+//        let isUsable = authorisor.IsUsable(testSession, null, id)
+//        Assert.IsFalse(isUsable, "expect not to be usable")
+        Assert.Fail("Fix!")

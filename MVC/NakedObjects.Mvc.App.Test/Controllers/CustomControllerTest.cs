@@ -86,12 +86,12 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         private  INakedObject EmployeeRepo {
-            get { return NakedObjectsContext.GetAdaptedService("EmployeeRepository"); }
+            get { return NakedObjectsFramework.GetAdaptedService("EmployeeRepository"); }
         }
 
 
         private  string EmployeeRepoId {
-            get { return NakedObjectsContext.GetObjectId(EmployeeRepo); }
+            get { return NakedObjectsFramework.GetObjectId(EmployeeRepo); }
         }
 
 

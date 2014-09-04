@@ -37,9 +37,9 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [SetUp]
-        public void StartTest() {
+        public new void StartTest() {
             SetUser("sven");
-            Fixtures.InstallFixtures(NakedObjectsContext.ObjectPersistor, null);
+            Fixtures.InstallFixtures(NakedObjectsFramework.ObjectPersistor, null);
         }
 
         [TearDown]
@@ -68,13 +68,13 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMemento() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
-            INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] { null, "" }.Select(o =>  NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
+            INakedObject[] parms = new[] { null, "" }.Select(o =>  NakedObjectsFramework.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
             var claims = (IEnumerable)cm.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
             Assert.AreEqual(cm, cm.RecoverCollection().Oid);
@@ -83,15 +83,15 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMementoToStringWithNull() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
-            INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
+            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsFramework.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
             string[] strings = cm.ToEncodedStrings();
-            var cm2 = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, strings);
+            var cm2 = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, strings);
             var claims = (IEnumerable)cm2.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
             Assert.AreEqual(cm2, cm2.RecoverCollection().Oid);
@@ -100,16 +100,16 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMementoToStringWithObject() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
-            object status = NakedObjectsContext.ObjectPersistor.Instances(typeof(ClaimStatus)).Cast<object>().First();
-            INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
+            object status = NakedObjectsFramework.ObjectPersistor.Instances(typeof(ClaimStatus)).Cast<object>().First();
+            INakedObject service = NakedObjectsFramework.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] { status, "" }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
+            INakedObject[] parms = new[] { status, "" }.Select(o => NakedObjectsFramework.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
             string[] strings = cm.ToEncodedStrings();
-            var cm2 = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, strings);
+            var cm2 = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, strings);
             var claims = (IEnumerable)cm2.RecoverCollection().Object;
             Assert.AreEqual(2, claims.Cast<object>().Count());
             Assert.AreEqual(cm2, cm2.RecoverCollection().Oid);
@@ -118,16 +118,16 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMementoToStringWithEnum() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
-            INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaimsByEnumStatus");
-            INakedObject[] parms = new[] { (object)ClaimStatusEnum.New }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
+            INakedObject[] parms = new[] { (object)ClaimStatusEnum.New }.Select(o => NakedObjectsFramework.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
 
             string[] strings = cm.ToEncodedStrings();
-            var cm2 = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, strings);
+            var cm2 = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, strings);
             var claims = (IEnumerable)cm2.RecoverCollection().Object;
             Assert.AreEqual(2, claims.Cast<object>().Count());
             Assert.AreEqual(cm2, cm2.RecoverCollection().Oid);
@@ -138,19 +138,19 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMementoWithFilterAll() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
-            INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
+            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsFramework.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
             var claims = (IEnumerable)cm.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
 
             object[] selected = claims.Cast<object>().ToArray();
 
-            var newCm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, cm, selected);
+            var newCm = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, cm, selected);
 
             var newClaims = (IEnumerable)newCm.RecoverCollection().Object;
             Assert.AreEqual(5, newClaims.Cast<object>().Count());
@@ -160,17 +160,17 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMementoWithFilterNone() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
-            INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
+            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsFramework.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
             var claims = (IEnumerable)cm.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
 
-            var newCm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, cm, new object[] { });
+            var newCm = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, cm, new object[] { });
 
             var newClaims = (IEnumerable)newCm.RecoverCollection().Object;
             Assert.AreEqual(0, newClaims.Cast<object>().Count());
@@ -180,19 +180,19 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionMementoWithFilterOne() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
-            INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
-            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
+            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsFramework.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
             var claims = (IEnumerable)cm.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
 
             var selected = new[] { claims.Cast<object>().First() };
 
-            var newCm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, cm, selected);
+            var newCm = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, cm, selected);
 
             var newClaims = (IEnumerable)newCm.RecoverCollection().Object;
             Assert.AreEqual(1, newClaims.Cast<object>().Count());

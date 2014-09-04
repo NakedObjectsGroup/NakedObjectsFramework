@@ -6,11 +6,21 @@ using System.Configuration;
 using System.IdentityModel.Configuration;
 using System.Security.Claims;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Reflector.Security.Wif {
     public class WifAuthorizationManager : AuthorizationManagerAbstract, IAuthorizationManager {
         #region IAuthorizationManager Members
+
+        public bool IsVisible(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier) {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsEditable(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier) {
+            throw new System.NotImplementedException();
+        }
 
         public void UpdateAuthorizationCache(INakedObject nakedObject) {
             // do nothing 
@@ -25,7 +35,7 @@ namespace NakedObjects.Reflector.Security.Wif {
         }
 
 
-        protected override void InitAuthorizer() {
+        protected  void InitAuthorizer() {
             Authorizer = new WifAuthorizer(CreateManager());
         }
     }

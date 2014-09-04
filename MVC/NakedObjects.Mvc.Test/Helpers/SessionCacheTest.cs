@@ -37,9 +37,9 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [SetUp]
-        public void StartTest() {
+        public new void  StartTest() {
             SetUser("sven");
-            Fixtures.InstallFixtures(NakedObjectsContext.ObjectPersistor, null);
+            Fixtures.InstallFixtures(NakedObjectsFramework.ObjectPersistor, null);
         }
 
         [TearDown]
@@ -68,46 +68,46 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void AddPersistentToSession() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
-            Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
-            session.AddObjectToSession(NakedObjectsContext, "key1", claim);
+            session.AddObjectToSession(NakedObjectsFramework, "key1", claim);
 
-            Assert.AreSame(claim, session.GetObjectFromSession<Claim>(NakedObjectsContext, "key1"));
+            Assert.AreSame(claim, session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
         }
 
         [Test]
         public void AddStringToSession() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
             const string testvalue = "test string";
 
-            session.AddObjectToSession(NakedObjectsContext, "key1", testvalue);
+            session.AddObjectToSession(NakedObjectsFramework, "key1", testvalue);
 
-            Assert.AreEqual(testvalue, session.GetObjectFromSession<string>(NakedObjectsContext, "key1"));
+            Assert.AreEqual(testvalue, session.GetObjectFromSession<string>(NakedObjectsFramework, "key1"));
         }
 
         [Test]
         public void AddTransientToSession() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
-            var claim = NakedObjectsContext.ObjectPersistor.CreateInstance(NakedObjectsContext.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
+            var claim = NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
 
-            session.AddObjectToSession(NakedObjectsContext, "key1", claim);
+            session.AddObjectToSession(NakedObjectsFramework, "key1", claim);
 
-            Assert.AreSame(claim, session.GetObjectFromSession<Claim>(NakedObjectsContext, "key1"));
+            Assert.AreSame(claim, session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
         }
 
         [Test]
         public void AddValueToSession() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
             const int testvalue = 99;
@@ -120,39 +120,39 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CachedObjectsOfBaseType() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
-            GeneralExpense item1 = NakedObjectsContext.ObjectPersistor.Instances<GeneralExpense>().First();
-            GeneralExpense item2 = NakedObjectsContext.ObjectPersistor.Instances<GeneralExpense>().Last();
+            GeneralExpense item1 = NakedObjectsFramework.ObjectPersistor.Instances<GeneralExpense>().First();
+            GeneralExpense item2 = NakedObjectsFramework.ObjectPersistor.Instances<GeneralExpense>().Last();
 
-            session.AddObjectToSession(NakedObjectsContext, "key1", item1);
-            session.AddObjectToSession(NakedObjectsContext, "key2", item2);
+            session.AddObjectToSession(NakedObjectsFramework, "key1", item1);
+            session.AddObjectToSession(NakedObjectsFramework, "key2", item2);
 
-            Assert.AreEqual(item1, session.GetObjectFromSession<GeneralExpense>(NakedObjectsContext, "key1"));
-            Assert.AreEqual(item2, session.GetObjectFromSession<AbstractExpenseItem>(NakedObjectsContext, "key2"));
+            Assert.AreEqual(item1, session.GetObjectFromSession<GeneralExpense>(NakedObjectsFramework, "key1"));
+            Assert.AreEqual(item2, session.GetObjectFromSession<AbstractExpenseItem>(NakedObjectsFramework, "key2"));
         }
 
         [Test]
         public void CachedObjectsOfDifferentType() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
-            GeneralExpense item1 = NakedObjectsContext.ObjectPersistor.Instances<GeneralExpense>().First();
-            GeneralExpense item2 = NakedObjectsContext.ObjectPersistor.Instances<GeneralExpense>().Last();
+            GeneralExpense item1 = NakedObjectsFramework.ObjectPersistor.Instances<GeneralExpense>().First();
+            GeneralExpense item2 = NakedObjectsFramework.ObjectPersistor.Instances<GeneralExpense>().Last();
 
-            session.AddObjectToSession(NakedObjectsContext, "key1", item1);
-            session.AddObjectToSession(NakedObjectsContext, "key2", item2);
+            session.AddObjectToSession(NakedObjectsFramework, "key1", item1);
+            session.AddObjectToSession(NakedObjectsFramework, "key2", item2);
 
-            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsContext, "key1"));
-            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsContext, "key1"));
+            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
+            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
         }
 
         [Test]
         public void CachedValuesOfBaseType() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
             session.AddValueToSession("key1", 1);
@@ -163,7 +163,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CachedValuesOfDifferentType() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
             session.AddValueToSession("key1", 1);
@@ -174,22 +174,22 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void RemoveObjectFromCache() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
-            Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
-            session.AddObjectToSession(NakedObjectsContext, "key1", claim);
-            Assert.AreSame(claim, session.GetObjectFromSession<Claim>(NakedObjectsContext, "key1"));
+            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            session.AddObjectToSession(NakedObjectsFramework, "key1", claim);
+            Assert.AreSame(claim, session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
 
             session.ClearFromSession("key1");
 
-            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsContext, "key1"));
+            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
         }
 
         [Test]
         public void RemoveValueFromCache() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
  
             session.AddValueToSession("key1", 1);
@@ -204,12 +204,12 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void RemoveFromCacheNotThere() {
             var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
             session.ClearFromSession("key1");
 
-            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsContext, "key1"));
+            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
         }
     }
 }
