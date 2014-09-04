@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InterfaceAssociation\ClassesForPolymorphicAssocTests.cs" />
+    <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorWithOid.cs" />
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorWithTypeCodeMapper.cs" />
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigator.cs" />
     <Compile Include="InterfaceAssociation\TestObjectFinderWithCompoundKeys.cs" />

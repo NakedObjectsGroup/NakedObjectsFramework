@@ -40,7 +40,7 @@ namespace NakedObjects {
         /// <summary>
         ///     To allow sub-classes to render property visible/invisible
         /// </summary>
-        public virtual bool AssociatedRoleObject()
+        public virtual bool HideAssociatedRoleObject()
         {
             return false;
         }
