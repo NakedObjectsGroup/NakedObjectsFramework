@@ -1215,22 +1215,24 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetBooleanFieldValue(this HtmlHelper html, INakedObject valueNakedObject) {
             var state = valueNakedObject.GetDomainObject<bool?>();
-            string src = "Images/unset.png";
+
+            string img = "unset.png";
             string alt = MvcUi.TriState_NotSet;
 
             if (state.HasValue) {
                 if (state.Value) {
-                    src = "Images/checked.png";
+                    img = "checked.png";
                     alt = MvcUi.TriState_True;
                 }
                 else {
-                    src = "Images/unchecked.png";
+                    img = "unchecked.png";
                     alt = MvcUi.TriState_False;
                 }
             }
 
+            var url = new UrlHelper(html.ViewContext.RequestContext);
             var tag = new TagBuilder("img");
-            tag.MergeAttribute("src", src);
+            tag.MergeAttribute("src", url.Content("~/Images/" + img));
             tag.MergeAttribute("alt", alt);
 
             return tag.ToString();
