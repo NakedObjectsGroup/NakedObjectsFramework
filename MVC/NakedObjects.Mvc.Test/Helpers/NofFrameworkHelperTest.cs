@@ -38,15 +38,15 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [SetUp]
-        public void StartTest() {
+        public new void StartTest() {
             SetUser("sven");
-            Fixtures.InstallFixtures(NakedObjectsContext.ObjectPersistor, null);
+            Fixtures.InstallFixtures(NakedObjectsFramework.ObjectPersistor, null);
         }
 
         [TearDown]
         public void EndTest() {
             MemoryObjectStore.DiscardObjects();
-            ((SimpleOidGenerator)NakedObjectsContext.ObjectPersistor.OidGenerator).ResetTo(100L); 
+            ((SimpleOidGenerator)NakedObjectsFramework.ObjectPersistor.OidGenerator).ResetTo(100L); 
         }
 
         #endregion
@@ -69,9 +69,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ActionsForHelper() {
-            Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
-            INakedObject adapter = NakedObjectsContext.GetNakedObject(claim);
-            IEnumerable<INakedObjectAction> actions = NakedObjectsContext.GetActions(adapter);
+            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
+            IEnumerable<INakedObjectAction> actions = NakedObjectsFramework.GetActions(adapter);
             Assert.AreEqual(8, actions.Count());
         }
 
@@ -80,79 +80,79 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GetObjectIdForObject() {
-            Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
-            string id = NakedObjectsContext.GetObjectId(claim);
+            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            string id = NakedObjectsFramework.GetObjectId(claim);
             Assert.AreEqual(id, objectId);
         }
 
         [Test]
         public void GetObjectIdForGenericObject() {
             object repo = GetTestService("Custom Helper Test Classes").NakedObject.Object;
-            string id = NakedObjectsContext.GetObjectId(repo);
+            string id = NakedObjectsFramework.GetObjectId(repo);
             Assert.AreEqual(id, genericObjectId);
         }
 
         [Test]
         public void GetObjectIdForNakedObjectObject() {
-            Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
-            INakedObject adapter = NakedObjectsContext.GetNakedObject(claim);
-            string id = NakedObjectsContext.GetObjectId(adapter);
+            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
+            string id = NakedObjectsFramework.GetObjectId(adapter);
             Assert.AreEqual(id, objectId);
         }
 
         [Test]
         public void GetObjectTypeForObject() {
-            Claim claim = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
-            string typeId = NakedObjectsContext.GetObjectTypeName(claim);
+            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            string typeId = NakedObjectsFramework.GetObjectTypeName(claim);
             Assert.AreEqual(typeId, "Claim");
         }
 
         [Test]
         public void GetServiceId() {
             const string serviceName = "ClaimRepository";
-            string serviceId = NakedObjectsContext.GetServiceId(serviceName);
+            string serviceId = NakedObjectsFramework.GetServiceId(serviceName);
             Assert.AreEqual("Expenses.ExpenseClaims.ClaimRepository;1;False", serviceId );
         }
 
         [Test]
         public void GetObjectFromId() {
-            Claim claim1 = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
-            object claim2 = NakedObjectsContext.GetObjectFromId(objectId);
+            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            object claim2 = NakedObjectsFramework.GetObjectFromId(objectId);
             Assert.AreSame(claim1, claim2);
         }
 
         [Test]
         public void GetGenericObjectFromId() {
             var repo1 = GetTestService("Custom Helper Test Classes").NakedObject.Object;
-            var id = NakedObjectsContext.GetObjectId(repo1);
+            var id = NakedObjectsFramework.GetObjectId(repo1);
 
-            object repo2 = NakedObjectsContext.GetObjectFromId(genericObjectId);
+            object repo2 = NakedObjectsFramework.GetObjectFromId(genericObjectId);
             Assert.AreSame(repo1, repo2);
         }
 
 
         [Test]
         public void GetNakedObjectFromId() {
-            Claim claim1 = NakedObjectsContext.ObjectPersistor.Instances<Claim>().First();
-            INakedObject claim2 = NakedObjectsContext.GetNakedObjectFromId(objectId);
+            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            INakedObject claim2 = NakedObjectsFramework.GetNakedObjectFromId(objectId);
             Assert.AreSame(claim1, claim2.Object);
         }
 
         [Test]
         public void GetCollectionNakedObjectFromId() {
-            IList<Claim> claims = NakedObjectsContext.GetService<ClaimRepository>().FindMyClaims(null, "");
-            INakedObject no = NakedObjectsContext.ObjectPersistor.CreateAdapter(claims, null, null);
+            IList<Claim> claims = NakedObjectsFramework.GetService<ClaimRepository>().FindMyClaims(null, "");
+            INakedObject no = NakedObjectsFramework.ObjectPersistor.CreateAdapter(claims, null, null);
 
-            INakedObject service = NakedObjectsContext.ObjectPersistor.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.ObjectPersistor.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Where(a => a.Id == "FindMyClaims").Single();
-            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsContext.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
+            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsFramework.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
             no.SetATransientOid(cm);
 
-            string id = NakedObjectsContext.GetObjectId(no);
+            string id = NakedObjectsFramework.GetObjectId(no);
 
-            INakedObject no2 = NakedObjectsContext.GetNakedObjectFromId(id);
+            INakedObject no2 = NakedObjectsFramework.GetNakedObjectFromId(id);
 
             List<Claim> claims2 = no2.GetDomainObject<IEnumerable<Claim>>().ToList();
 
@@ -167,7 +167,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GetServices() {    
-            var services = NakedObjectsContext.GetAllServices();
+            var services = NakedObjectsFramework.GetAllServices();
             Assert.AreEqual(6, services.Count());
         }
 
@@ -176,41 +176,41 @@ namespace MvcTestApp.Tests.Helpers {
         public void GetServicesMatch() {
         
 
-            var s1 = NakedObjectsContext.GetAdaptedService("EmployeeRepository");
-            var s2 = NakedObjectsContext.GetAdaptedService("ClaimRepository");
-            var s3 = NakedObjectsContext.GetAdaptedService("RecordedActionRepository");
-            var s4 = NakedObjectsContext.GetAdaptedService("RecordActionService");
-            var s5 = NakedObjectsContext.GetAdaptedService("RecordedActionContributedActions");
-            var s6 = NakedObjectsContext.GetAdaptedService("DummyMailSender");
-            var s7 = NakedObjectsContext.GetAdaptedService("repository#MvcTestApp.Tests.Helpers.CustomHelperTestClass");
-            var s8 = NakedObjectsContext.GetAdaptedService("repository#MvcTestApp.Tests.Helpers.DescribedCustomHelperTestClass");
+            var s1 = NakedObjectsFramework.GetAdaptedService("EmployeeRepository");
+            var s2 = NakedObjectsFramework.GetAdaptedService("ClaimRepository");
+            var s3 = NakedObjectsFramework.GetAdaptedService("RecordedActionRepository");
+            var s4 = NakedObjectsFramework.GetAdaptedService("RecordActionService");
+            var s5 = NakedObjectsFramework.GetAdaptedService("RecordedActionContributedActions");
+            var s6 = NakedObjectsFramework.GetAdaptedService("DummyMailSender");
+            var s7 = NakedObjectsFramework.GetAdaptedService("repository#MvcTestApp.Tests.Helpers.CustomHelperTestClass");
+            var s8 = NakedObjectsFramework.GetAdaptedService("repository#MvcTestApp.Tests.Helpers.DescribedCustomHelperTestClass");
 
-            var s11 = NakedObjectsContext.GetAdaptedService<EmployeeRepository>();
-            var s12 = NakedObjectsContext.GetAdaptedService<ClaimRepository>();
-            var s13 = NakedObjectsContext.GetAdaptedService<RecordedActionRepository>();
-            var s14 = NakedObjectsContext.GetAdaptedService<RecordActionService>();
-            var s15 = NakedObjectsContext.GetAdaptedService<RecordedActionContributedActions>();
-            var s16 = NakedObjectsContext.GetAdaptedService<DummyMailSender>();
-            var s17 = NakedObjectsContext.GetAdaptedService<SimpleRepository<CustomHelperTestClass>>();
-            var s18 = NakedObjectsContext.GetAdaptedService<SimpleRepository<DescribedCustomHelperTestClass>>();
+            var s11 = NakedObjectsFramework.GetAdaptedService<EmployeeRepository>();
+            var s12 = NakedObjectsFramework.GetAdaptedService<ClaimRepository>();
+            var s13 = NakedObjectsFramework.GetAdaptedService<RecordedActionRepository>();
+            var s14 = NakedObjectsFramework.GetAdaptedService<RecordActionService>();
+            var s15 = NakedObjectsFramework.GetAdaptedService<RecordedActionContributedActions>();
+            var s16 = NakedObjectsFramework.GetAdaptedService<DummyMailSender>();
+            var s17 = NakedObjectsFramework.GetAdaptedService<SimpleRepository<CustomHelperTestClass>>();
+            var s18 = NakedObjectsFramework.GetAdaptedService<SimpleRepository<DescribedCustomHelperTestClass>>();
 
-            var s21 = NakedObjectsContext.GetService<EmployeeRepository>();
-            var s22 = NakedObjectsContext.GetService<ClaimRepository>();
-            var s23 = NakedObjectsContext.GetService<RecordedActionRepository>();
-            var s24 = NakedObjectsContext.GetService<RecordActionService>();
-            var s25 = NakedObjectsContext.GetService<RecordedActionContributedActions>();
-            var s26 = NakedObjectsContext.GetService<DummyMailSender>();
-            var s27 = NakedObjectsContext.GetService<SimpleRepository<CustomHelperTestClass>>();
-            var s28 = NakedObjectsContext.GetService<SimpleRepository<DescribedCustomHelperTestClass>>();
+            var s21 = NakedObjectsFramework.GetService<EmployeeRepository>();
+            var s22 = NakedObjectsFramework.GetService<ClaimRepository>();
+            var s23 = NakedObjectsFramework.GetService<RecordedActionRepository>();
+            var s24 = NakedObjectsFramework.GetService<RecordActionService>();
+            var s25 = NakedObjectsFramework.GetService<RecordedActionContributedActions>();
+            var s26 = NakedObjectsFramework.GetService<DummyMailSender>();
+            var s27 = NakedObjectsFramework.GetService<SimpleRepository<CustomHelperTestClass>>();
+            var s28 = NakedObjectsFramework.GetService<SimpleRepository<DescribedCustomHelperTestClass>>();
 
-            var s31 = NakedObjectsContext.GetService("EmployeeRepository");
-            var s32 = NakedObjectsContext.GetService("ClaimRepository");
-            var s33 = NakedObjectsContext.GetService("RecordedActionRepository");
-            var s34 = NakedObjectsContext.GetService("RecordActionService");
-            var s35 = NakedObjectsContext.GetService("RecordedActionContributedActions");
-            var s36 = NakedObjectsContext.GetService("DummyMailSender");
-            var s37 = NakedObjectsContext.GetService("repository#MvcTestApp.Tests.Helpers.CustomHelperTestClass");
-            var s38 = NakedObjectsContext.GetService("repository#MvcTestApp.Tests.Helpers.DescribedCustomHelperTestClass");
+            var s31 = NakedObjectsFramework.GetService("EmployeeRepository");
+            var s32 = NakedObjectsFramework.GetService("ClaimRepository");
+            var s33 = NakedObjectsFramework.GetService("RecordedActionRepository");
+            var s34 = NakedObjectsFramework.GetService("RecordActionService");
+            var s35 = NakedObjectsFramework.GetService("RecordedActionContributedActions");
+            var s36 = NakedObjectsFramework.GetService("DummyMailSender");
+            var s37 = NakedObjectsFramework.GetService("repository#MvcTestApp.Tests.Helpers.CustomHelperTestClass");
+            var s38 = NakedObjectsFramework.GetService("repository#MvcTestApp.Tests.Helpers.DescribedCustomHelperTestClass");
 
 
             Assert.AreSame(s1, s11);
@@ -251,8 +251,8 @@ namespace MvcTestApp.Tests.Helpers {
 
 
             // test getting by base class
-            var s51 = NakedObjectsContext.GetService<IUserFinder>();
-            var s61 = NakedObjectsContext.GetAdaptedService<IUserFinder>();
+            var s51 = NakedObjectsFramework.GetService<IUserFinder>();
+            var s61 = NakedObjectsFramework.GetAdaptedService<IUserFinder>();
 
             Assert.AreSame(s21, s51);
             Assert.AreSame(s11, s61);

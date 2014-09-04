@@ -44,14 +44,14 @@ namespace MvcTestApp.Tests.Controllers {
             CleanupNakedObjectsFramework();
         }
 
-        [SetUp]
-        public void StartTest() {
+        //[SetUp]
+        //public void StartTest() {
            
-        }
+        //}
 
         [TearDown]
         public void EndTest() {
-            NakedObjectsContext.ObjectPersistor.Reset();
+            NakedObjectsFramework.ObjectPersistor.Reset();
         }
 
         protected override IServicesInstaller MenuServices {
@@ -154,7 +154,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private string GetBoundedId<T>(string title) {
-            return NakedObjectsContext.GetObjectId(GetBoundedInstance<T>(title).GetDomainObject());
+            return NakedObjectsFramework.GetObjectId(GetBoundedInstance<T>(title).GetDomainObject());
         }
 
         private static FormCollection GetFormForFindEmployeeByName(INakedObject employeeRepo, string firstName, string secondName) {
@@ -245,8 +245,8 @@ namespace MvcTestApp.Tests.Controllers {
                                                           string t1,
                                                           string t2,
                                                           out IDictionary<string, string> idToRawValue) {
-            INakedObjectSpecification shiftSpec = NakedObjectsContext.Reflector.LoadSpecification(typeof (Shift));
-            INakedObjectSpecification timePeriodSpec = NakedObjectsContext.Reflector.LoadSpecification(typeof (TimePeriod));
+            INakedObjectSpecification shiftSpec = NakedObjectsFramework.Reflector.LoadSpecification(typeof (Shift));
+            INakedObjectSpecification timePeriodSpec = NakedObjectsFramework.Reflector.LoadSpecification(typeof (TimePeriod));
 
             INakedObjectAssociation assocN = shiftSpec.GetProperty("Name");
             INakedObjectAssociation assocTp = shiftSpec.GetProperty("Times");
@@ -277,7 +277,7 @@ namespace MvcTestApp.Tests.Controllers {
                                                            string activeFlag,
                                                            string purchasingWebServiceURL,
                                                            out IDictionary<string, string> idToRawValue) {
-            INakedObjectSpecification nakedObjectSpecification = NakedObjectsContext.Reflector.LoadSpecification(typeof (Vendor));
+            INakedObjectSpecification nakedObjectSpecification = NakedObjectsFramework.Reflector.LoadSpecification(typeof (Vendor));
             INakedObjectAssociation assocAN = nakedObjectSpecification.GetProperty("AccountNumber");
             INakedObjectAssociation assocN = nakedObjectSpecification.GetProperty("Name");
             INakedObjectAssociation assocCR = nakedObjectSpecification.GetProperty("CreditRating");
@@ -309,7 +309,7 @@ namespace MvcTestApp.Tests.Controllers {
                                                          string salesPerson,
                                                          string modifiedDate,
                                                          out IDictionary<string, string> idToRawValue) {
-            INakedObjectSpecification nakedObjectSpecification = NakedObjectsContext.Reflector.LoadSpecification(typeof (Store));
+            INakedObjectSpecification nakedObjectSpecification = NakedObjectsFramework.Reflector.LoadSpecification(typeof (Store));
             INakedObjectAssociation assocSN = nakedObjectSpecification.GetProperty("Name");
             INakedObjectAssociation assocSP = nakedObjectSpecification.GetProperty("SalesPerson");
             INakedObjectAssociation assocMD = nakedObjectSpecification.GetProperty("ModifiedDate");
@@ -333,7 +333,7 @@ namespace MvcTestApp.Tests.Controllers {
                                                               string expiryMonth,
                                                               string expiryYear,
                                                               out IDictionary<string, string> idToRawValue) {
-            INakedObjectSpecification nakedObjectSpecification = NakedObjectsContext.Reflector.LoadSpecification(typeof (CreditCard));
+            INakedObjectSpecification nakedObjectSpecification = NakedObjectsFramework.Reflector.LoadSpecification(typeof (CreditCard));
             INakedObjectAssociation assocCT = nakedObjectSpecification.GetProperty("CardType");
             INakedObjectAssociation assocCN = nakedObjectSpecification.GetProperty("CardNumber");
             INakedObjectAssociation assocEM = nakedObjectSpecification.GetProperty("ExpMonth");
@@ -380,127 +380,127 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         private  Employee Employee {
-            get { return NakedObjectsContext.ObjectPersistor.Instances<Employee>().First(); }
+            get { return NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First(); }
         }
 
         private  string EmployeeId {
-            get { return NakedObjectsContext.GetObjectId(Employee); }
+            get { return NakedObjectsFramework.GetObjectId(Employee); }
         }
 
         private  Employee TransientEmployee {
-            get { return NakedObjectsContext.ObjectPersistor.CreateInstance(NakedObjectsContext.Reflector.LoadSpecification(typeof (Employee))).GetDomainObject<Employee>(); }
+            get { return NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Employee))).GetDomainObject<Employee>(); }
         }
 
         private  Vendor TransientVendor {
-            get { return NakedObjectsContext.ObjectPersistor.CreateInstance(NakedObjectsContext.Reflector.LoadSpecification(typeof (Vendor))).GetDomainObject<Vendor>(); }
+            get { return NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Vendor))).GetDomainObject<Vendor>(); }
         }
 
         private  Shift TransientShift {
-            get { return NakedObjectsContext.ObjectPersistor.CreateInstance(NakedObjectsContext.Reflector.LoadSpecification(typeof (Shift))).GetDomainObject<Shift>(); }
+            get { return NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Shift))).GetDomainObject<Shift>(); }
         }
 
         private  Individual TransientIndividual {
-            get { return NakedObjectsContext.ObjectPersistor.CreateInstance(NakedObjectsContext.Reflector.LoadSpecification(typeof (Individual))).GetDomainObject<Individual>(); }
+            get { return NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Individual))).GetDomainObject<Individual>(); }
         }
 
         private  NotPersistedObject NotPersistedObject {
             get {
-                var repo = NakedObjectsContext.GetAdaptedService("repository#MvcTestApp.Tests.Controllers.NotPersistedObject").Object as SimpleRepository<NotPersistedObject>;
+                var repo = NakedObjectsFramework.GetAdaptedService("repository#MvcTestApp.Tests.Controllers.NotPersistedObject").Object as SimpleRepository<NotPersistedObject>;
                 return repo.NewInstance();
             }
         }
 
         private  SalesOrderHeader Order {
-            get { return NakedObjectsContext.ObjectPersistor.Instances<SalesOrderHeader>().First(); }
+            get { return NakedObjectsFramework.ObjectPersistor.Instances<SalesOrderHeader>().First(); }
         }
 
         private  string OrderId {
-            get { return NakedObjectsContext.GetObjectId(Order); }
+            get { return NakedObjectsFramework.GetObjectId(Order); }
         }
 
         private  Vendor Vendor {
-            get { return NakedObjectsContext.ObjectPersistor.Instances<Vendor>().First(); }
+            get { return NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First(); }
         }
 
         private  Contact Contact {
-            get { return NakedObjectsContext.ObjectPersistor.Instances<Contact>().First(); }
+            get { return NakedObjectsFramework.ObjectPersistor.Instances<Contact>().First(); }
         }
 
         private  Individual Individual {
-            get { return NakedObjectsContext.ObjectPersistor.Instances<Individual>().First(); }
+            get { return NakedObjectsFramework.ObjectPersistor.Instances<Individual>().First(); }
         }
 
         private  Product Product {
-            get { return NakedObjectsContext.ObjectPersistor.Instances<Product>().First(); }
+            get { return NakedObjectsFramework.ObjectPersistor.Instances<Product>().First(); }
         }
 
         private  string ProductId {
-            get { return NakedObjectsContext.GetObjectId(Product); }
+            get { return NakedObjectsFramework.GetObjectId(Product); }
         }
 
 
         private  INakedObject EmployeeRepo {
-            get { return NakedObjectsContext.GetAdaptedService("EmployeeRepository"); }
+            get { return NakedObjectsFramework.GetAdaptedService("EmployeeRepository"); }
         }
 
         private  INakedObject OrderContributedActions {
-            get { return NakedObjectsContext.GetAdaptedService("OrderContributedActions"); }
+            get { return NakedObjectsFramework.GetAdaptedService("OrderContributedActions"); }
         }
 
         private  string OrderContributedActionsId {
-            get { return NakedObjectsContext.GetObjectId(OrderContributedActions); }
+            get { return NakedObjectsFramework.GetObjectId(OrderContributedActions); }
         }
 
         private  INakedObject ProductRepo {
-            get { return NakedObjectsContext.GetAdaptedService("ProductRepository"); }
+            get { return NakedObjectsFramework.GetAdaptedService("ProductRepository"); }
         }
 
         private  string EmployeeRepoId {
-            get { return NakedObjectsContext.GetObjectId(EmployeeRepo); }
+            get { return NakedObjectsFramework.GetObjectId(EmployeeRepo); }
         }
 
         private  string ProductRepoId {
-            get { return NakedObjectsContext.GetObjectId(ProductRepo); }
+            get { return NakedObjectsFramework.GetObjectId(ProductRepo); }
         }
 
         private  INakedObject OrderRepo {
-            get { return NakedObjectsContext.GetAdaptedService("OrderRepository"); }
+            get { return NakedObjectsFramework.GetAdaptedService("OrderRepository"); }
         }
 
         private  string OrderRepoId {
-            get { return NakedObjectsContext.GetObjectId(OrderRepo); }
+            get { return NakedObjectsFramework.GetObjectId(OrderRepo); }
         }
 
         private  INakedObject OrderContrib {
-            get { return NakedObjectsContext.GetAdaptedService("OrderContributedActions"); }
+            get { return NakedObjectsFramework.GetAdaptedService("OrderContributedActions"); }
         }
 
         private  string OrderContribId {
-            get { return NakedObjectsContext.GetObjectId(OrderContrib); }
+            get { return NakedObjectsFramework.GetObjectId(OrderContrib); }
         }
 
         private  INakedObject CustomerRepo {
-            get { return NakedObjectsContext.GetAdaptedService("CustomerRepository"); }
+            get { return NakedObjectsFramework.GetAdaptedService("CustomerRepository"); }
         }
 
         private  string CustomerRepoId {
-            get { return NakedObjectsContext.GetObjectId(CustomerRepo); }
+            get { return NakedObjectsFramework.GetObjectId(CustomerRepo); }
         }
 
         public  Store Store {
-            get { return NakedObjectsContext.ObjectPersistor.Instances<Store>().First(); }
+            get { return NakedObjectsFramework.ObjectPersistor.Instances<Store>().First(); }
         }
 
         private  string StoreId {
-            get { return NakedObjectsContext.GetObjectId(Store); }
+            get { return NakedObjectsFramework.GetObjectId(Store); }
         }
 
         private  SalesPerson SalesPerson {
-            get { return NakedObjectsContext.ObjectPersistor.Instances<SalesPerson>().First(); }
+            get { return NakedObjectsFramework.ObjectPersistor.Instances<SalesPerson>().First(); }
         }
 
         private  Store TransientStore {
-            get { return NakedObjectsContext.ObjectPersistor.CreateInstance(NakedObjectsContext.Reflector.LoadSpecification(typeof (Store))).GetDomainObject<Store>(); }
+            get { return NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Store))).GetDomainObject<Store>(); }
         }
 
 
@@ -535,7 +535,7 @@ namespace MvcTestApp.Tests.Controllers {
             new ContextMocks(controller);
             FormCollection form = GetForm(new Dictionary<string, string> {{IdHelper.DisplayFormatFieldId, "Addresses=list"}});
             const string redisplay = "DepartmentHistory=table&editMode=True";
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(employee), Redisplay = redisplay};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(employee), Redisplay = redisplay};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -550,12 +550,12 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            INakedObject adaptedVendor = NakedObjectsContext.ObjectPersistor.CreateAdapter(vendor, null, null);
+            INakedObject adaptedVendor = NakedObjectsFramework.ObjectPersistor.CreateAdapter(vendor, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(vendor)};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(vendor)};
 
-            NakedObjectsContext.ObjectPersistor.StartTransaction();
+            NakedObjectsFramework.ObjectPersistor.StartTransaction();
             try {
                 var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -566,7 +566,7 @@ namespace MvcTestApp.Tests.Controllers {
                 AssertIsDetailsViewOf<Vendor>(result);
             }
             finally {
-                NakedObjectsContext.ObjectPersistor.EndTransaction();
+                NakedObjectsFramework.ObjectPersistor.EndTransaction();
             }
         }
 
@@ -574,14 +574,14 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
 
-            INakedObject adaptedShift = NakedObjectsContext.ObjectPersistor.CreateAdapter(shift, null, null);
-            INakedObject adaptedTimePeriod = NakedObjectsContext.ObjectPersistor.CreateAdapter(shift.Times, null, null);
+            INakedObject adaptedShift = NakedObjectsFramework.ObjectPersistor.CreateAdapter(shift, null, null);
+            INakedObject adaptedTimePeriod = NakedObjectsFramework.ObjectPersistor.CreateAdapter(shift.Times, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForShiftEdit(adaptedShift, adaptedTimePeriod, DateTime.Now.ToString(), DateTime.Now.ToString(), out idToRawvalue);
 
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(shift)};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(shift)};
 
-            NakedObjectsContext.ObjectPersistor.StartTransaction();
+            NakedObjectsFramework.ObjectPersistor.StartTransaction();
             try {
                 var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -592,7 +592,7 @@ namespace MvcTestApp.Tests.Controllers {
                 AssertIsDetailsViewOf<Shift>(result);
             }
             finally {
-                NakedObjectsContext.ObjectPersistor.EndTransaction();
+                NakedObjectsFramework.ObjectPersistor.EndTransaction();
             }
         }
 
@@ -600,10 +600,10 @@ namespace MvcTestApp.Tests.Controllers {
         public void EditSaveValidationFail(Vendor vendor) {
             var controller = new GenericController(null);
             new ContextMocks(controller);
-            INakedObject adaptedVendor = NakedObjectsContext.ObjectPersistor.CreateAdapter(vendor, null, null);
+            INakedObject adaptedVendor = NakedObjectsFramework.ObjectPersistor.CreateAdapter(vendor, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForVendorEdit(adaptedVendor, "", "", "", "", "", "", out idToRawvalue);
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(vendor)};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(vendor)};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -620,12 +620,12 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
 
-            INakedObject adaptedShift = NakedObjectsContext.ObjectPersistor.CreateAdapter(shift, null, null);
-            INakedObject adaptedTimePeriod = NakedObjectsContext.ObjectPersistor.CreateAdapter(shift.Times, null, null);
+            INakedObject adaptedShift = NakedObjectsFramework.ObjectPersistor.CreateAdapter(shift, null, null);
+            INakedObject adaptedTimePeriod = NakedObjectsFramework.ObjectPersistor.CreateAdapter(shift.Times, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForShiftEdit(adaptedShift, adaptedTimePeriod, DateTime.Now.ToString(), "invalid", out idToRawvalue);
 
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(shift)};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(shift)};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -641,10 +641,10 @@ namespace MvcTestApp.Tests.Controllers {
         public void EditSaveValidationFailEmptyForm(Individual individual) {
             var controller = new GenericController(null);
             new ContextMocks(controller);
-            INakedObject nakedObject = NakedObjectsContext.ObjectPersistor.CreateAdapter(individual, null, null);
+            INakedObject nakedObject = NakedObjectsFramework.ObjectPersistor.CreateAdapter(individual, null, null);
 
             FormCollection form = GetForm(new Dictionary<string, string>());
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(individual)};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(individual)};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -661,19 +661,19 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             var mocks = new ContextMocks(controller);
 
-            SalesPerson salesPerson = NakedObjectsContext.ObjectPersistor.Instances<SalesPerson>().OrderBy(sp => "").First();
-            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, salesPerson);
-            salesPerson = NakedObjectsContext.ObjectPersistor.Instances<SalesPerson>().OrderBy(sp => "").Skip(1).First();
-            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, salesPerson);
+            SalesPerson salesPerson = NakedObjectsFramework.ObjectPersistor.Instances<SalesPerson>().OrderBy(sp => "").First();
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, salesPerson);
+            salesPerson = NakedObjectsFramework.ObjectPersistor.Instances<SalesPerson>().OrderBy(sp => "").Skip(1).First();
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, salesPerson);
 
-            INakedObject adaptedStore = NakedObjectsContext.GetNakedObject(store);
+            INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
-            string data = "contextObjectId=" + NakedObjectsContext.GetObjectId(store) +
+            string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
                           "&contextActionId=";
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(store), Finder = data};
-            FormCollection form = GetFormForStoreEdit(adaptedStore, Store.Name, NakedObjectsContext.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store), Finder = data};
+            FormCollection form = GetFormForStoreEdit(adaptedStore, Store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -684,17 +684,17 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             var mocks = new ContextMocks(controller);
 
-            SalesPerson salesPerson = NakedObjectsContext.ObjectPersistor.Instances<SalesPerson>().First();
-            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsContext, salesPerson);
+            SalesPerson salesPerson = NakedObjectsFramework.ObjectPersistor.Instances<SalesPerson>().First();
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, salesPerson);
 
-            INakedObject adaptedStore = NakedObjectsContext.GetNakedObject(store);
+            INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
-            string data = "contextObjectId=" + NakedObjectsContext.GetObjectId(store) +
+            string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
                           "&contextActionId=";
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(store), Finder = data};
-            FormCollection form = GetFormForStoreEdit(adaptedStore, Store.Name, NakedObjectsContext.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store), Finder = data};
+            FormCollection form = GetFormForStoreEdit(adaptedStore, Store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -704,14 +704,14 @@ namespace MvcTestApp.Tests.Controllers {
         public void EditFindForObject(Store store) {
             var controller = new GenericController(null);
             new ContextMocks(controller);
-            INakedObject adaptedStore = NakedObjectsContext.GetNakedObject(store);
+            INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
-            string data = "contextObjectId=" + NakedObjectsContext.GetObjectId(store) +
+            string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
                           "&contextActionId=";
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(store), Finder = data};
-            FormCollection form = GetFormForStoreEdit(adaptedStore, Store.Name, NakedObjectsContext.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store), Finder = data};
+            FormCollection form = GetFormForStoreEdit(adaptedStore, Store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -721,12 +721,12 @@ namespace MvcTestApp.Tests.Controllers {
         public void EditSelectForObject(Store store) {
             var controller = new GenericController(null);
             new ContextMocks(controller);
-            INakedObject adaptedStore = NakedObjectsContext.GetNakedObject(store);
+            INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
-            SalesPerson salesPerson = NakedObjectsContext.ObjectPersistor.Instances<SalesPerson>().First();
-            string data = "SalesPerson=" + NakedObjectsContext.GetObjectId(salesPerson);
-            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsContext.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(store), Selector = data};
+            SalesPerson salesPerson = NakedObjectsFramework.ObjectPersistor.Instances<SalesPerson>().First();
+            string data = "SalesPerson=" + NakedObjectsFramework.GetObjectId(salesPerson);
+            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store), Selector = data};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -736,18 +736,18 @@ namespace MvcTestApp.Tests.Controllers {
         public void EditActionAsFindNoParmsForObject(Store store) {
             var controller = new GenericController(null);
             new ContextMocks(controller);
-            INakedObject adaptedStore = NakedObjectsContext.GetNakedObject(store);
+            INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
-            INakedObject salesRepo = NakedObjectsContext.GetAdaptedService("SalesRepository");
+            INakedObject salesRepo = NakedObjectsFramework.GetAdaptedService("SalesRepository");
             INakedObjectAction rndSpAction = salesRepo.Specification.GetObjectActions().Single(a => a.Id == "RandomSalesPerson");
-            string data = "contextObjectId=" + NakedObjectsContext.GetObjectId(store) +
+            string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
                           "&targetActionId=RandomSalesPerson" +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(salesRepo) +
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(salesRepo) +
                           "&contextActionId=";
-            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsContext.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(store), ActionAsFinder = data};
+            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store), ActionAsFinder = data};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -760,18 +760,18 @@ namespace MvcTestApp.Tests.Controllers {
         public void EditActionAsFindParmsForObject(Store store) {
             var controller = new GenericController(null);
             new ContextMocks(controller);
-            INakedObject adaptedStore = NakedObjectsContext.GetNakedObject(store);
+            INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
-            INakedObject salesRepo = NakedObjectsContext.GetAdaptedService("SalesRepository");
+            INakedObject salesRepo = NakedObjectsFramework.GetAdaptedService("SalesRepository");
             INakedObjectAction spAction = salesRepo.Specification.GetObjectActions().Single(a => a.Id == "FindSalesPersonByName");
-            string data = "contextObjectId=" + NakedObjectsContext.GetObjectId(store) +
+            string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
                           "&targetActionId=FindSalesPersonByName" +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(salesRepo) +
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(salesRepo) +
                           "&contextActionId=";
-            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsContext.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(store), ActionAsFinder = data};
+            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store), ActionAsFinder = data};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -782,18 +782,18 @@ namespace MvcTestApp.Tests.Controllers {
         public void InvokeEditActionAsFindParmsForObject(Store store) {
             var controller = new GenericController(null);
             new ContextMocks(controller);
-            INakedObject adaptedStore = NakedObjectsContext.GetNakedObject(store);
+            INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
-            INakedObject salesRepo = NakedObjectsContext.GetAdaptedService("SalesRepository");
+            INakedObject salesRepo = NakedObjectsFramework.GetAdaptedService("SalesRepository");
             INakedObjectAction spAction = salesRepo.Specification.GetObjectActions().Single(a => a.Id == "FindSalesPersonByName");
-            string data = "contextObjectId=" + NakedObjectsContext.GetObjectId(store) +
+            string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
                           "&targetActionId=FindSalesPersonByName" +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(salesRepo) +
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(salesRepo) +
                           "&contextActionId=";
-            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsContext.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(store), InvokeActionAsFinder = data};
+            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store), InvokeActionAsFinder = data};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -804,16 +804,16 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
 
-            INakedObject salesRepo = NakedObjectsContext.GetAdaptedService("SalesRepository");
+            INakedObject salesRepo = NakedObjectsFramework.GetAdaptedService("SalesRepository");
             INakedObjectAction spAction = salesRepo.Specification.GetObjectActions().Single(a => a.Id == "FindSalesPersonByName");
-            string data = "contextObjectId=" + NakedObjectsContext.GetObjectId(store) +
+            string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
                           "&targetActionId=FindSalesPersonByName" +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(salesRepo) +
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(salesRepo) +
                           "&contextActionId=";
             FormCollection form = GetFormForFindSalesPersonByName(salesRepo, "", "Carson");
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(store), InvokeActionAsFinder = data};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store), InvokeActionAsFinder = data};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -844,9 +844,9 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             INakedObjectAction action = GetAction(OrderContrib, "CreateNewOrder");
-            Store customer = NakedObjectsContext.ObjectPersistor.Instances<Store>().First();
+            Store customer = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
             IDictionary<string, string> idToRawvalue;
-            string data = "cust=" + NakedObjectsContext.GetObjectId(customer);
+            string data = "cust=" + NakedObjectsFramework.GetObjectId(customer);
             FormCollection form = GetFormForCreateNewOrder(action, "", testValue, out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = OrderContribId, ActionId = action.Id, Selector = data};
 
@@ -889,14 +889,14 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            INakedObject contactRepo = NakedObjectsContext.GetAdaptedService("ContactRepository");
+            INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
             INakedObjectAction randomContact = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "RandomContacts");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
                           "&propertyName=contactDetails" +
                           "&contextActionId=" + FrameworkHelper.GetActionId(action) +
                           "&targetActionId=RandomContacts" +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(contactRepo);
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(contactRepo);
             FormCollection form = GetForm(new Dictionary<string, string>());
             var objectModel = new ObjectAndControlData {Id = EmployeeRepoId, ActionId = action.Id, ActionAsFinder = data};
 
@@ -910,14 +910,14 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            INakedObject contactRepo = NakedObjectsContext.GetAdaptedService("ContactRepository");
+            INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
             INakedObjectAction randomContact = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "RandomContact");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
                           "&propertyName=contactDetails" +
                           "&contextActionId=" + FrameworkHelper.GetActionId(action) +
                           "&targetActionId=RandomContact" +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(contactRepo);
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(contactRepo);
             FormCollection form = GetForm(new Dictionary<string, string>());
             var objectModel = new ObjectAndControlData {Id = EmployeeRepoId, ActionId = action.Id, ActionAsFinder = data};
 
@@ -931,14 +931,14 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            INakedObject contactRepo = NakedObjectsContext.GetAdaptedService("ContactRepository");
+            INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
             INakedObjectAction findByName = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
                           "&propertyName=ContactDetails" +
                           "&contextActionId=" + FrameworkHelper.GetActionId(action) +
                           "&targetActionId=FindContactByName" +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(contactRepo);
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(contactRepo);
             FormCollection form = GetForm(new Dictionary<string, string>());
             var objectModel = new ObjectAndControlData {Id = EmployeeRepoId, ActionId = action.Id, ActionAsFinder = data};
 
@@ -958,14 +958,14 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             INakedObjectAction action = GetAction(OrderContributedActions, "FindRate");
-            INakedObject orderContribAction = NakedObjectsContext.GetAdaptedService("OrderContributedActions");
+            INakedObject orderContribAction = NakedObjectsFramework.GetAdaptedService("OrderContributedActions");
             INakedObjectAction findByName = orderContribAction.Specification.GetObjectActions().Single(a => a.Id == "FindRate");
             string data = "contextObjectId=" + OrderContributedActionsId +
                           "&spec=AdventureWorksModel.CurrencyRate" +
                           "&propertyName=CurrencyRate" +
                           "&contextActionId=" + FrameworkHelper.GetActionId(action) +
                           "&targetActionId=FindRate" +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(orderContribAction);
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(orderContribAction);
             FormCollection form = GetForm(new Dictionary<string, string>());
             var objectModel = new ObjectAndControlData {Id = OrderContributedActionsId, ActionId = action.Id, ActionAsFinder = data};
 
@@ -983,11 +983,11 @@ namespace MvcTestApp.Tests.Controllers {
             new ContextMocks(controller);
             Contact contact = Contact;
 
-            INakedObject adaptedContact = NakedObjectsContext.GetNakedObject(contact);
+            INakedObject adaptedContact = NakedObjectsFramework.GetNakedObject(contact);
             INakedObjectAction action = GetAction(adaptedContact, "ChangePassword");
 
             FormCollection form = GetFormForChangePassword(adaptedContact, "p1", "p2", "p3");
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(contact), ActionId = action.Id};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(contact), ActionId = action.Id};
 
             var result = (ViewResult) controller.Action(objectModel, form);
 
@@ -1001,10 +1001,10 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             SalesOrderHeader order = Order;
-            INakedObjectAction action = GetAction(NakedObjectsContext.GetNakedObject(order), "Recalculate");
+            INakedObjectAction action = GetAction(NakedObjectsFramework.GetNakedObject(order), "Recalculate");
             var objectModel = new ObjectAndControlData {
                 ActionId = "Recalculate",
-                Id = NakedObjectsContext.GetObjectId(order),
+                Id = NakedObjectsFramework.GetObjectId(order),
                 InvokeAction = "action=action"
             };
 
@@ -1018,7 +1018,7 @@ namespace MvcTestApp.Tests.Controllers {
             new ContextMocks(controller);
             NotPersistedObject obj = NotPersistedObject;
 
-            string objectId = NakedObjectsContext.GetObjectId(obj);
+            string objectId = NakedObjectsFramework.GetObjectId(obj);
             var objectModel = new ObjectAndControlData {Id = objectId, InvokeAction = "targetObjectId=" + objectId + "&targetActionId=SimpleAction"};
 
             FormCollection form = GetForm(new Dictionary<string, string> {{"NotPersistedObject-Name-Input", "aName"}});
@@ -1033,7 +1033,7 @@ namespace MvcTestApp.Tests.Controllers {
             new ContextMocks(controller);
             NotPersistedObject obj = NotPersistedObject;
 
-            string objectId = NakedObjectsContext.GetObjectId(obj);
+            string objectId = NakedObjectsFramework.GetObjectId(obj);
             var objectModel = new ObjectAndControlData {Id = objectId, InvokeAction = "targetObjectId=" + objectId + "&targetActionId=SimpleActionWithReturn"};
 
             FormCollection form = GetForm(new Dictionary<string, string> {{"NotPersistedObject-Name-Input", "aName"}});
@@ -1048,12 +1048,12 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             IDictionary<string, string> idToRawvalue;
-            INakedObjectSpecification ccSpec = NakedObjectsContext.Reflector.LoadSpecification(typeof (CreditCard));
-            INakedObject cc = NakedObjectsContext.ObjectPersistor.CreateInstance(ccSpec);
+            INakedObjectSpecification ccSpec = NakedObjectsFramework.Reflector.LoadSpecification(typeof (CreditCard));
+            INakedObject cc = NakedObjectsFramework.ObjectPersistor.CreateInstance(ccSpec);
 
             FormCollection form = GetFormForCeditCardEdit(cc, "Vista", "12345", "1", "2010", out idToRawvalue);
 
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(cc)};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(cc)};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -1067,13 +1067,13 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             IDictionary<string, string> idToRawvalue;
-            INakedObjectSpecification ccSpec = NakedObjectsContext.Reflector.LoadSpecification(typeof (CreditCard));
-            INakedObject cc = NakedObjectsContext.ObjectPersistor.CreateInstance(ccSpec);
+            INakedObjectSpecification ccSpec = NakedObjectsFramework.Reflector.LoadSpecification(typeof (CreditCard));
+            INakedObject cc = NakedObjectsFramework.ObjectPersistor.CreateInstance(ccSpec);
             cc.GetDomainObject<CreditCard>().Creator = new TestCreator();
 
             FormCollection form = GetFormForCeditCardEdit(cc, "Vista", "12345", "1", "2020", out idToRawvalue);
 
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(cc)};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(cc)};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -1178,7 +1178,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             Shift shift = Employee.DepartmentHistory.First().Shift;
 
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(shift)};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(shift)};
             var result = (ViewResult) controller.EditObject(objectModel);
             AssertIsEditViewOf<Shift>(result);
         }
@@ -1204,7 +1204,7 @@ namespace MvcTestApp.Tests.Controllers {
             new ContextMocks(controller);
             NotPersistedObject obj = NotPersistedObject;
 
-            string objectId = NakedObjectsContext.GetObjectId(obj);
+            string objectId = NakedObjectsFramework.GetObjectId(obj);
             var objectModel = new ObjectAndControlData {Id = objectId};
 
             var result = (ViewResult) controller.EditObject(objectModel, GetForm(new Dictionary<string, string>()));
@@ -1241,7 +1241,7 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             var objectModel = new ObjectAndControlData {
-                Id = NakedObjectsContext.GetObjectId(TransientEmployee),
+                Id = NakedObjectsFramework.GetObjectId(TransientEmployee),
                 Redisplay = "editMode=true"
             };
 
@@ -1260,7 +1260,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             Shift shift = Employee.DepartmentHistory.First().Shift;
 
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(shift)};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(shift)};
             var result = (ViewResult) controller.EditObject(objectModel, GetForm(new Dictionary<string, string>()));
             AssertIsEditViewOf<Shift>(result);
         }
@@ -1282,18 +1282,18 @@ namespace MvcTestApp.Tests.Controllers {
 
             const string redisplay = "DepartmentHistory=table&editMode=True";
             Employee employee = TransientEmployee;
-            Employee report1 = NakedObjectsContext.ObjectPersistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(1).First();
-            Employee report2 = NakedObjectsContext.ObjectPersistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(2).First();
-            INakedObject employeeNakedObject = NakedObjectsContext.GetNakedObject(employee);
+            Employee report1 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(1).First();
+            Employee report2 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(2).First();
+            INakedObject employeeNakedObject = NakedObjectsFramework.GetNakedObject(employee);
             INakedObjectAssociation collectionAssoc = employeeNakedObject.Specification.Properties.Single(p => p.Id == "DirectReports");
 
             var form = new FormCollection {
                 {IdHelper.DisplayFormatFieldId, "Addresses=list"},
-                {IdHelper.GetCollectionItemId(employeeNakedObject, collectionAssoc), NakedObjectsContext.GetObjectId(report1)},
-                {IdHelper.GetCollectionItemId(employeeNakedObject, collectionAssoc), NakedObjectsContext.GetObjectId(report2)}
+                {IdHelper.GetCollectionItemId(employeeNakedObject, collectionAssoc), NakedObjectsFramework.GetObjectId(report1)},
+                {IdHelper.GetCollectionItemId(employeeNakedObject, collectionAssoc), NakedObjectsFramework.GetObjectId(report2)}
             };
 
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(employee), Redisplay = redisplay};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(employee), Redisplay = redisplay};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -1309,14 +1309,14 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             Store store = Store;
-            INakedObject adaptedStore = NakedObjectsContext.ObjectPersistor.CreateAdapter(store, null, null);
+            INakedObject adaptedStore = NakedObjectsFramework.ObjectPersistor.CreateAdapter(store, null, null);
             IDictionary<string, string> idToRawvalue;
             string differentDateTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsContext.GetObjectId(store.SalesPerson), differentDateTime, out idToRawvalue);
+            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), differentDateTime, out idToRawvalue);
 
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(store)};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store)};
 
-            NakedObjectsContext.ObjectPersistor.StartTransaction();
+            NakedObjectsFramework.ObjectPersistor.StartTransaction();
             try {
                 controller.Edit(objectModel, form);
 
@@ -1326,7 +1326,7 @@ namespace MvcTestApp.Tests.Controllers {
                 Assert.AreSame(adaptedStore, expected.SourceNakedObject);
             }
             finally {
-                NakedObjectsContext.ObjectPersistor.EndTransaction();
+                NakedObjectsFramework.ObjectPersistor.EndTransaction();
             }
         }
 
@@ -1335,13 +1335,13 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             Store store = Store;
-            INakedObject adaptedStore = NakedObjectsContext.ObjectPersistor.CreateAdapter(store, null, null);
+            INakedObject adaptedStore = NakedObjectsFramework.ObjectPersistor.CreateAdapter(store, null, null);
             IDictionary<string, string> idToRawvalue;
-            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsContext.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
+            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
 
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(store)};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store)};
 
-            NakedObjectsContext.ObjectPersistor.StartTransaction();
+            NakedObjectsFramework.ObjectPersistor.StartTransaction();
             try {
                 var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -1352,7 +1352,7 @@ namespace MvcTestApp.Tests.Controllers {
                 AssertIsDetailsViewOf<Store>(result);
             }
             finally {
-                NakedObjectsContext.ObjectPersistor.EndTransaction();
+                NakedObjectsFramework.ObjectPersistor.EndTransaction();
             }
         }
 
@@ -1430,7 +1430,7 @@ namespace MvcTestApp.Tests.Controllers {
             new ContextMocks(controller);
             Product product = Product;
 
-            FileContentResult result = controller.GetFile(NakedObjectsContext.GetObjectId(Product), "Photo");
+            FileContentResult result = controller.GetFile(NakedObjectsFramework.GetObjectId(Product), "Photo");
 
             Stream stream = product.Photo.GetResourceAsStream();
             byte[] bytes;
@@ -1486,7 +1486,7 @@ namespace MvcTestApp.Tests.Controllers {
             var result = (ViewResult) controller.EditObject(objectModel, GetForm(form));
 
             AssertIsQueryableViewOf<SalesOrderHeader>(result);
-            var warnings = NakedObjectsContext.MessageBroker.Warnings.ToArray();
+            var warnings = NakedObjectsFramework.MessageBroker.Warnings.ToArray();
             Assert.AreEqual("No objects selected", warnings.First());
         }
 
@@ -1521,14 +1521,14 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            INakedObject contactRepo = NakedObjectsContext.GetAdaptedService("ContactRepository");
+            INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
             INakedObjectAction findByName = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
                           "&propertyName=ContactDetails" +
                           "&contextActionId=" + FrameworkHelper.GetActionId(action) +
                           "&targetActionId=FindContactByName" +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(contactRepo);
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(contactRepo);
             FormCollection form = GetForm(new Dictionary<string, string>());
             var objectModel = new ObjectAndControlData {Id = EmployeeRepoId, ActionId = action.Id, InvokeActionAsFinder = data};
 
@@ -1542,14 +1542,14 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            INakedObject contactRepo = NakedObjectsContext.GetAdaptedService("ContactRepository");
+            INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
             INakedObjectAction findByName = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
                           "&propertyName=ContactDetails" +
                           "&contextActionId=" + FrameworkHelper.GetActionId(action) +
                           "&targetActionId=FindContactByName" +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(contactRepo);
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(contactRepo);
             FormCollection form = GetFormForFindContactByName(contactRepo, "", "Carson");
             var objectModel = new ObjectAndControlData {Id = EmployeeRepoId, ActionId = action.Id, InvokeActionAsFinder = data};
 
@@ -1564,9 +1564,9 @@ namespace MvcTestApp.Tests.Controllers {
             new ContextMocks(controller);
             Store store = Store;
             Store transientStore = TransientStore;
-            INakedObject adaptedStore = NakedObjectsContext.GetNakedObject(store);
+            INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            INakedObject contactRepo = NakedObjectsContext.GetAdaptedService("ContactRepository");
+            INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
             IDictionary<string, string> idToRawvalue;
             INakedObjectAction findByName = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
@@ -1574,9 +1574,9 @@ namespace MvcTestApp.Tests.Controllers {
                           "&propertyName=ContactDetails" +
                           "&contextActionId=" + FrameworkHelper.GetActionId(action) +
                           "&targetActionId=FindContactByName" +
-                          "&subEditObjectId=" + NakedObjectsContext.GetObjectId(transientStore) +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(contactRepo);
-            FormCollection form = GetFormForStoreEdit(adaptedStore, "", NakedObjectsContext.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(), out idToRawvalue);
+                          "&subEditObjectId=" + NakedObjectsFramework.GetObjectId(transientStore) +
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(contactRepo);
+            FormCollection form = GetFormForStoreEdit(adaptedStore, "", NakedObjectsFramework.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(), out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = EmployeeRepoId, ActionId = action.Id, InvokeActionAsSave = data};
 
             var result = (ViewResult) controller.Action(objectModel, form);
@@ -1591,9 +1591,9 @@ namespace MvcTestApp.Tests.Controllers {
             new ContextMocks(controller);
             Store store = Store;
             Vendor transientVendor = TransientVendor;
-            INakedObject adaptedStore = NakedObjectsContext.GetNakedObject(store);
+            INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            INakedObject contactRepo = NakedObjectsContext.GetAdaptedService("ContactRepository");
+            INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
             IDictionary<string, string> idToRawvalue;
             INakedObjectAction findByName = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
@@ -1601,10 +1601,10 @@ namespace MvcTestApp.Tests.Controllers {
                           "&propertyName=ContactDetails" +
                           "&contextActionId=" + FrameworkHelper.GetActionId(action) +
                           "&targetActionId=FindContactByName" +
-                          "&subEditObjectId=" + NakedObjectsContext.GetObjectId(transientVendor) +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(contactRepo);
+                          "&subEditObjectId=" + NakedObjectsFramework.GetObjectId(transientVendor) +
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(contactRepo);
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            INakedObject adaptedVendor = NakedObjectsContext.ObjectPersistor.CreateAdapter(transientVendor, null, null);
+            INakedObject adaptedVendor = NakedObjectsFramework.ObjectPersistor.CreateAdapter(transientVendor, null, null);
 
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = EmployeeRepoId, ActionId = action.Id, InvokeActionAsSave = data};
@@ -1619,7 +1619,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void InvokeActionWithMultiSelectObjects() {
             var controller = new GenericController(null);
 
-            string id = NakedObjectsContext.GetObjectId(Order);
+            string id = NakedObjectsFramework.GetObjectId(Order);
 
             new ContextMocks(controller);
             var objectModel = new ObjectAndControlData {
@@ -1632,7 +1632,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;1;False;;0");
             form.Add("SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;2;False;;0");
 
-            INakedObject order = NakedObjectsContext.ObjectPersistor.CreateAdapter(Order, null, null);
+            INakedObject order = NakedObjectsFramework.ObjectPersistor.CreateAdapter(Order, null, null);
             INakedObjectAssociation assocMD = order.Specification.GetProperty("ModifiedDate");
             INakedObjectAction action = order.GetActionLeafNode("AddNewSalesReasons");
 
@@ -1650,7 +1650,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void InvokeActionWithMultiSelectParseable() {
             var controller = new GenericController(null);
 
-            string id = NakedObjectsContext.GetObjectId(Order);
+            string id = NakedObjectsFramework.GetObjectId(Order);
 
             new ContextMocks(controller);
             var objectModel = new ObjectAndControlData {
@@ -1663,7 +1663,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories-Select", @"1");
             form.Add("SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories-Select", @"2");
 
-            INakedObject order = NakedObjectsContext.ObjectPersistor.CreateAdapter(Order, null, null);
+            INakedObject order = NakedObjectsFramework.ObjectPersistor.CreateAdapter(Order, null, null);
             INakedObjectAssociation assocMD = order.Specification.GetProperty("ModifiedDate");
             INakedObjectAction action = order.GetActionLeafNode("AddNewSalesReasonsByCategories");
 
@@ -1753,7 +1753,7 @@ namespace MvcTestApp.Tests.Controllers {
             Store store = Store;
             var objectModel = new ObjectAndControlData {
                 ActionId = "LastOrder",
-                Id = NakedObjectsContext.GetObjectId(store),
+                Id = NakedObjectsFramework.GetObjectId(store),
                 InvokeAction = "action=action"
             };
 
@@ -1773,7 +1773,7 @@ namespace MvcTestApp.Tests.Controllers {
             Store store = Store;
             var objectModel = new ObjectAndControlData {
                 ActionId = "LastOrder",
-                Id = NakedObjectsContext.GetObjectId(store),
+                Id = NakedObjectsFramework.GetObjectId(store),
                 InvokeAction = "action=action"
             };
 
@@ -1798,7 +1798,7 @@ namespace MvcTestApp.Tests.Controllers {
             Store store = Store;
             var objectModel = new ObjectAndControlData {
                 ActionId = "CreateNewOrder",
-                Id = NakedObjectsContext.GetObjectId(store),
+                Id = NakedObjectsFramework.GetObjectId(store),
                 InvokeAction = "action=action"
             };
 
@@ -1809,7 +1809,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             AssertIsDialogViewOfAction(result, "Create New Order");
             Assert.IsTrue(result.ViewData.ContainsKey("OrderContributedActions-CreateNewOrder-Customer-Select"));
-            Assert.AreEqual(NakedObjectsContext.GetNakedObject(store), result.ViewData["OrderContributedActions-CreateNewOrder-Customer-Select"]);
+            Assert.AreEqual(NakedObjectsFramework.GetNakedObject(store), result.ViewData["OrderContributedActions-CreateNewOrder-Customer-Select"]);
         }
 
         [Test]
@@ -1846,19 +1846,19 @@ namespace MvcTestApp.Tests.Controllers {
             new ContextMocks(controller);
             Store store = Store;
             Store transientStore = TransientStore;
-            INakedObject adaptedStore = NakedObjectsContext.GetNakedObject(store);
+            INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
-            INakedObject salesRepo = NakedObjectsContext.GetAdaptedService("SalesRepository");
+            INakedObject salesRepo = NakedObjectsFramework.GetAdaptedService("SalesRepository");
             INakedObjectAction spAction = salesRepo.Specification.GetObjectActions().Single(a => a.Id == "FindSalesPersonByName");
-            string data = "contextObjectId=" + NakedObjectsContext.GetObjectId(store) +
+            string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
                           "&targetActionId=FindSalesPersonByName" +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(salesRepo) +
-                          "&subEditObjectId=" + NakedObjectsContext.GetObjectId(transientStore) +
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(salesRepo) +
+                          "&subEditObjectId=" + NakedObjectsFramework.GetObjectId(transientStore) +
                           "&contextActionId=";
-            FormCollection form = GetFormForStoreEdit(adaptedStore, "", NakedObjectsContext.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(store), InvokeActionAsSave = data};
+            FormCollection form = GetFormForStoreEdit(adaptedStore, "", NakedObjectsFramework.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store), InvokeActionAsSave = data};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -1872,24 +1872,24 @@ namespace MvcTestApp.Tests.Controllers {
             new ContextMocks(controller);
             Store store = Store;
             Vendor transientVendor = TransientVendor;
-            INakedObject adaptedStore = NakedObjectsContext.GetNakedObject(store);
+            INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
-            INakedObject salesRepo = NakedObjectsContext.GetAdaptedService("SalesRepository");
+            INakedObject salesRepo = NakedObjectsFramework.GetAdaptedService("SalesRepository");
             INakedObjectAction spAction = salesRepo.Specification.GetObjectActions().Single(a => a.Id == "FindSalesPersonByName");
-            string data = "contextObjectId=" + NakedObjectsContext.GetObjectId(store) +
+            string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
                           "&targetActionId=FindSalesPersonByName" +
-                          "&targetObjectId=" + NakedObjectsContext.GetObjectId(salesRepo) +
-                          "&subEditObjectId=" + NakedObjectsContext.GetObjectId(transientVendor) +
+                          "&targetObjectId=" + NakedObjectsFramework.GetObjectId(salesRepo) +
+                          "&subEditObjectId=" + NakedObjectsFramework.GetObjectId(transientVendor) +
                           "&contextActionId=";
 
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            INakedObject adaptedVendor = NakedObjectsContext.ObjectPersistor.CreateAdapter(transientVendor, null, null);
+            INakedObject adaptedVendor = NakedObjectsFramework.ObjectPersistor.CreateAdapter(transientVendor, null, null);
 
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
 
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(store), InvokeActionAsSave = data};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store), InvokeActionAsSave = data};
 
             var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -1904,7 +1904,7 @@ namespace MvcTestApp.Tests.Controllers {
             NotPersistedObject obj = NotPersistedObject;
 
             FormCollection form = GetForm(new Dictionary<string, string> {{"NotPersistedObject-Name-Input", "aName"}});
-            var objectModel = new ObjectAndControlData {ActionId = "SimpleAction", Id = NakedObjectsContext.GetObjectId(obj)};
+            var objectModel = new ObjectAndControlData {ActionId = "SimpleAction", Id = NakedObjectsFramework.GetObjectId(obj)};
 
             var result = (ViewResult) controller.Action(objectModel, form);
 
@@ -1918,7 +1918,7 @@ namespace MvcTestApp.Tests.Controllers {
             NotPersistedObject obj = NotPersistedObject;
 
             FormCollection form = GetForm(new Dictionary<string, string> {{"NotPersistedObject-Name-Input", "aName"}});
-            var objectModel = new ObjectAndControlData {ActionId = "SimpleActionWithReturn", Id = NakedObjectsContext.GetObjectId(obj)};
+            var objectModel = new ObjectAndControlData {ActionId = "SimpleActionWithReturn", Id = NakedObjectsFramework.GetObjectId(obj)};
 
             var result = (ViewResult) controller.Action(objectModel, form);
 
@@ -1949,7 +1949,7 @@ namespace MvcTestApp.Tests.Controllers {
             SalesOrderHeader order = Order;
             var objectModel = new ObjectAndControlData {
                 ActionId = "Recalculate",
-                Id = NakedObjectsContext.GetObjectId(order),
+                Id = NakedObjectsFramework.GetObjectId(order),
                 InvokeAction = "action=action"
             };
 
@@ -1962,7 +1962,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void InvokeObjectActionParmsNotSet() {
             var controller = new GenericController(null);
             new ContextMocks(controller);
-            INakedObject adaptedProduct = NakedObjectsContext.ObjectPersistor.CreateAdapter(Product, null, null);
+            INakedObject adaptedProduct = NakedObjectsFramework.ObjectPersistor.CreateAdapter(Product, null, null);
             FormCollection form = GetFormForBestSpecialOffer(adaptedProduct, "");
             var objectModel = new ObjectAndControlData {ActionId = "BestSpecialOffer", Id = ProductId};
 
@@ -1978,7 +1978,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void InvokeObjectActionParmsSet() {
             var controller = new GenericController(null);
             new ContextMocks(controller);
-            INakedObject adaptedProduct = NakedObjectsContext.ObjectPersistor.CreateAdapter(Product, null, null);
+            INakedObject adaptedProduct = NakedObjectsFramework.ObjectPersistor.CreateAdapter(Product, null, null);
             FormCollection form = GetFormForBestSpecialOffer(adaptedProduct, "1");
             var objectModel = new ObjectAndControlData {ActionId = "BestSpecialOffer", Id = ProductId};
 
@@ -2124,9 +2124,9 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            Contact contactDetails = NakedObjectsContext.ObjectPersistor.Instances<Contact>().First();
+            Contact contactDetails = NakedObjectsFramework.ObjectPersistor.Instances<Contact>().First();
             IDictionary<string, string> idToRawvalue;
-            string data = "ContactDetails=" + NakedObjectsContext.GetObjectId(contactDetails);
+            string data = "ContactDetails=" + NakedObjectsFramework.GetObjectId(contactDetails);
             FormCollection form = GetFormForCreateNewEmployeeFromContact(action, "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = EmployeeRepoId, ActionId = action.Id, Selector = data};
 
@@ -2197,7 +2197,7 @@ namespace MvcTestApp.Tests.Controllers {
             new ContextMocks(controller);
             FormCollection form = GetForm(new Dictionary<string, string> {{IdHelper.DisplayFormatFieldId, "Addresses=list"}});
             const string cancel = "cancel=cancel";
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(TransientEmployee), Cancel = cancel};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(TransientEmployee), Cancel = cancel};
 
             var result = (ViewResult) controller.Details(objectModel, form);
             AssertIsSetAfterTransactionViewOf<Employee>(result);
@@ -2224,7 +2224,7 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             var objectModel = new ObjectAndControlData {
-                Id = NakedObjectsContext.GetObjectId(TransientEmployee),
+                Id = NakedObjectsFramework.GetObjectId(TransientEmployee),
                 Redisplay = "editMode=false"
             };
 
@@ -2253,7 +2253,7 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         public Store Store {
-            get { return NakedObjectsContext.ObjectPersistor.Instances<Store>().First(); }
+            get { return NakedObjectsFramework.ObjectPersistor.Instances<Store>().First(); }
         }
 
         public FormCollection GetFormForStoreEdit(INakedObject store,
@@ -2261,7 +2261,7 @@ namespace MvcTestApp.Tests.Controllers {
                                                        string salesPerson,
                                                        string modifiedDate,
                                                        out IDictionary<string, string> idToRawValue) {
-            INakedObjectSpecification nakedObjectSpecification = NakedObjectsContext.Reflector.LoadSpecification(typeof(Store));
+            INakedObjectSpecification nakedObjectSpecification = NakedObjectsFramework.Reflector.LoadSpecification(typeof(Store));
             INakedObjectAssociation assocSN = nakedObjectSpecification.GetProperty("Name");
             INakedObjectAssociation assocSP = nakedObjectSpecification.GetProperty("SalesPerson");
             INakedObjectAssociation assocMD = nakedObjectSpecification.GetProperty("ModifiedDate");
@@ -2323,7 +2323,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private  SalesOrderHeader Order {
-            get { return NakedObjectsContext.ObjectPersistor.Instances<SalesOrderHeader>().First(); }
+            get { return NakedObjectsFramework.ObjectPersistor.Instances<SalesOrderHeader>().First(); }
         }
 
         private static FormCollection GetForm(IDictionary<string, string> nameValues) {
@@ -2340,7 +2340,7 @@ namespace MvcTestApp.Tests.Controllers {
             SalesOrderHeader order = Order;
             var objectModel = new ObjectAndControlData {
                 ActionId = "Recalculate",
-                Id = NakedObjectsContext.GetObjectId(order),
+                Id = NakedObjectsFramework.GetObjectId(order),
                 InvokeAction = "action=action"
             };
 
@@ -2361,14 +2361,14 @@ namespace MvcTestApp.Tests.Controllers {
             var controller = new GenericController(null);
             new ContextMocks(controller);
             Store store = Store;
-            INakedObject adaptedStore = NakedObjectsContext.ObjectPersistor.CreateAdapter(store, null, null);
+            INakedObject adaptedStore = NakedObjectsFramework.ObjectPersistor.CreateAdapter(store, null, null);
             IDictionary<string, string> idToRawvalue;
 
-            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsContext.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
+            FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
 
-            var objectModel = new ObjectAndControlData {Id = NakedObjectsContext.GetObjectId(store)};
+            var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store)};
 
-            NakedObjectsContext.ObjectPersistor.StartTransaction();
+            NakedObjectsFramework.ObjectPersistor.StartTransaction();
             var conn = new SqlConnection(@"Data Source=" + Constants.Server + @";Initial Catalog=AdventureWorks;Integrated Security=True");
 
             conn.Open();
@@ -2390,7 +2390,7 @@ namespace MvcTestApp.Tests.Controllers {
                     cmd.ExecuteNonQuery();
                 }
 
-                NakedObjectsContext.ObjectPersistor.EndTransaction();
+                NakedObjectsFramework.ObjectPersistor.EndTransaction();
 
                 Assert.Fail("Expect concurrency exception");
             }

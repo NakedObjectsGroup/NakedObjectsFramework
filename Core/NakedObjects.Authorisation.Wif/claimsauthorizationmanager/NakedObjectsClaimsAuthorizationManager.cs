@@ -57,7 +57,7 @@ namespace NakedObjects.Reflector.Security.Wif {
 
 
         public override bool CheckAccess(AuthorizationContext context) {
-            IIdentifier identifier = IdentifierImpl.FromIdentityString(context.Resource.Single().Value);
+            IIdentifier identifier = IdentifierImpl.FromIdentityString(null, context.Resource.Single().Value);
             var checkType = (CheckType) int.Parse(context.Action.Single().Value);
 
             if (rules.ContainsKey(identifier)) {
@@ -78,7 +78,7 @@ namespace NakedObjects.Reflector.Security.Wif {
             public AccessRequest(string cls, XElement xElement) {
                 var nameAttr = xElement.Attribute("name");
                 string name = nameAttr == null ? "" : nameAttr.Value;
-                Identifier = new IdentifierImpl(cls, name);
+                Identifier = new IdentifierImpl(null, cls, name);
                 checkType = xElement.Attribute("type").Value;
                 requiredClaims = xElement.Descendants("claim").Select(c => new Claim(c.Attribute("type").Value, c.Attribute("value").Value)).ToList();
             }
