@@ -9,11 +9,11 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Services {
     /// <summary>
-    ///     Service that provides helper methods for navigating polymorphic associations.
-    ///     Will delegate responsibility for determining the string representation of a type to an
-    ///     injected ITypeCodeMapper if one has been registered.  Otherwise uses the default of fully-qualified type name.
+    ///     Service that provides helper methods for navigating polymorphic associations that make
+    ///     use of Link objects defined by IPolymorphicLinkWithOid.
+    ///     Delegates to an injected implementation of IObjectFinder.
     /// </summary>
-    public class PolymorphicLinkWithOidService : IPolymorphicLinkWithOidService {
+    public class PolymorphicNavigatorWithOid : IPolymorphicNavigatorWithOid {
 
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
@@ -111,17 +111,5 @@ namespace NakedObjects.Services {
             }
             return null;
         }
-
-
-        public virtual TRole RoleObjectFromLink<TLink, TRole, TOwner>(ref TRole role, TLink link, TOwner owner)
-            where TRole : class
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
-            where TOwner : class, IHasIntegerId {
-            if (role != null) return role;
-            if (link == null) return null;
-            role = ObjectFinder.FindObject<TRole>(link.RoleObjectOid);
-            return role;
-        }
-
     }
 }
