@@ -246,7 +246,7 @@ param($rootPath, $toolsPath, $package, $project)
 	#>
 	function global:Update-NakedObjectsPackageVersion($Package, $NewVersion) {
 
-		"Calling Update-NakedObjectsPackageVersion -Package " + $Package  + " -NewVersion " + $NewVersion 
+		"Calling Update-NakedObjectsPackageVersion -Package " + $Package  + " -NewVersion " + $NewVersion
 
 		# validate parms 
 
@@ -289,6 +289,11 @@ param($rootPath, $toolsPath, $package, $project)
 
 		# update dependencies 
 
+		# determine valid version range for dependent packages (i.e. exclude next major version)
+		[string] $major = $NewVersion.Substring(0,1)
+		[int] $majorNext = ([int] $major) + 1
+		[string] $range = "["+$NewVersion+ ", "+$majorNext+")"
+
 		$dependentFiles = Get-ChildItem -Filter ("*.nuspec") -Recurse  -Include *.nuspec | ?{ $_.fullname -notmatch "\\build\\?" }
 
 		foreach($dependentFile in $dependentFiles) {
@@ -297,9 +302,9 @@ param($rootPath, $toolsPath, $package, $project)
 	
 			foreach($dependency in $x.package.metadata.dependencies.dependency) {
 				if ($dependency.id -eq $Package) {
-					$dependency.version = $NewVersion
+					$dependency.version = $range
 					$upd = "updated"
-					"Updated dependency to " + $NewVersion + " in " + $dependency.id
+					"Updated dependency on "+$dependency.id+" to " + $Range
 				}
 			} 
 
