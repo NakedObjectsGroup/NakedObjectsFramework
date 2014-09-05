@@ -63,6 +63,7 @@
     <Compile Include="XmlTestData.fs" />
     <Compile Include="XmlSnapshotService.fs" />
     <None Include="packages.config" />
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.FrameworkService\NakedObjects.FrameworkService.csproj">
