@@ -21,7 +21,9 @@ let codeOnlyPersistor =
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
-    c.ContextConfiguration <- [|(box (CodeFirstConfig "CodeOnlyTests") :?> EntityContextConfiguration)|]
+
+    c.UsingCodeFirstContext ((CodeFirstConfig "CodeOnlyTests").DbContext) |> ignore
+    //c.ContextConfiguration <- [|(box (CodeFirstConfig "CodeOnlyTests") :?> EntityContextConfiguration)|]
     let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r),r,i)
     setupPersistorForTesting p
 

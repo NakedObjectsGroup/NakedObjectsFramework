@@ -21,22 +21,22 @@ open NakedObjects.Architecture.Util
 type DomainSystemTests() =
     inherit  NakedObjects.Xat.AcceptanceTestCase()    
 
+    [<TestFixtureSetUpAttribute>]
+    member x.SetupFixture() = x.InitializeNakedObjectsFramework()
+    
     [<SetUp>]
-    member x.SetupTest() = x.InitializeNakedObjectsFramework()
-   
+    member x.SetupTest() = x.StartTest()
+    
     [<TearDown>]
-    member x.TearDownTest() = x.CleanupNakedObjectsFramework()
+    member x.TearDownTest() = ()
+    
+    [<TestFixtureTearDown>]
+    member x.TearDownFixture() = x.CleanupNakedObjectsFramework()
 
     override x.MenuServices = 
         let service = new SimpleRepository<ScrapReason>()
         box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller
         
-    override x.Persistor = 
-        let epi = new EntityPersistorInstaller()
-        epi.ForceContextSet()
-        box epi :?> IObjectPersistorInstaller
-       
-    
     member x.GetScrapReasonDomainObject() = 
         let srs = x.NakedObjectsFramework.ObjectPersistor.Instances<ScrapReason>()
         srs |> Seq.filter (fun s -> s.ScrapReasonID = 2s)

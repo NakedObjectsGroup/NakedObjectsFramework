@@ -22,7 +22,7 @@ using NUnit.Framework;
 using TestData;
 
 namespace NakedObjects.Persistor.InMemoryTest {
-    [TestFixture]
+    [TestFixture, Ignore]
     public class InMemoryTestSuite : AcceptanceTestCase {
 
         protected override void RegisterTypes(IUnityContainer container) {

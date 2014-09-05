@@ -20,10 +20,11 @@ let persistor =
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
-    c.ContextConfiguration <- [|(box ModelConfig :?> EntityContextConfiguration)|]
+
+    c.UsingEdmxContext "Model1Container" |> ignore
+    //c.ContextConfiguration <- [|(box ModelConfig :?> EntityContextConfiguration)|]
     let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i)
     setupPersistorForInjectorTesting p
-
 
 [<TestFixture>]
 type ModelTests() = class              

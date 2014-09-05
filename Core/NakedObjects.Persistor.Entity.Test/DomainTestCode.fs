@@ -24,6 +24,7 @@ open NakedObjects.Core.Context
 open NakedObjects.Core.Security
 open System.Security.Principal
 open NakedObjects.Reflector.DotNet
+open Moq
 
 let PocoConfig = 
     let pc = new NakedObjects.EntityObjectStore.PocoEntityContextConfiguration()
@@ -558,8 +559,9 @@ let CanDetectConcurrency (persistor : EntityObjectStore) =
         let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
         let u = new SimpleUpdateNotifier()
         let i = new DotNetDomainObjectContainerInjector()
+        let r = (new Mock<INakedObjectReflector>()).Object
         c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null, i)
+        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i)
         setupPersistorForTesting p
     let sr2 = otherPersistor.GetInstances<ScrapReason>() |> Seq.head
     Assert.AreEqual(sr1.Name, sr2.Name)
@@ -619,8 +621,9 @@ let ConcurrencyNoCustomOnUpdatingError (persistor : EntityObjectStore) =
         let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
         let u = new SimpleUpdateNotifier()
         let i = new DotNetDomainObjectContainerInjector()
+        let r = (new Mock<INakedObjectReflector>()).Object
         c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(null), null, i)
+        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i)
         setupPersistorForTesting p
     let l2 = otherPersistor.GetInstances<Location>() |> Seq.head
     Assert.AreEqual(l1.Name, l2.Name)

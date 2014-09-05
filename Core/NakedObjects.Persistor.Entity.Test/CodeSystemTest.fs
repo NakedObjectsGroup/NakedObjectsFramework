@@ -101,18 +101,19 @@ type CodeSystemTests() =
     [<Test>]
     member x.CheckResolveStateOfPersistentObject() = 
        let p = x.GetPersonDomainObject()
-       IsNotNullAndPersistent p
+       IsNotNullAndPersistent p x.NakedObjectsFramework
+      
       
     [<Test>]
     member x.CheckResolveStateOfTransientObject() = 
        let p = Create<Person>(x.NakedObjectsFramework)
-       IsNotNullAndTransient p
+       IsNotNullAndTransient p x.NakedObjectsFramework
        
     [<Test>]
     member x.CheckResolveStateOfReference() = 
        let p = x.GetPersonDomainObject()
        let pr = p.Favourite
-       IsNotNullAndPersistent pr
+       IsNotNullAndPersistent pr x.NakedObjectsFramework
               
     [<Test>]
     member x.GetCollectionIndirectly() = 
@@ -125,7 +126,7 @@ type CodeSystemTests() =
        let pp = x.NakedObjectsFramework.ObjectPersistor.Instances<Person>() |> System.Linq.Enumerable.ToArray
        let p = System.Linq.Enumerable.Where (pp, (fun (p : Person) -> p.Favourite <> null)) |> Seq.head
        Assert.IsNotNull(p)
-       IsNotNullAndPersistent p.Favourite
+       IsNotNullAndPersistent p.Favourite x.NakedObjectsFramework
            
     [<Test>]
     member x.CheckIdentitiesAreConsistentWhenNavigating() = 
@@ -152,7 +153,7 @@ type CodeSystemTests() =
     member x.CreateNewObjectWithScalars() =    
        let p = x.CreatePerson()
        save  p x.NakedObjectsFramework
-       IsNotNullAndPersistent p
+       IsNotNullAndPersistent p x.NakedObjectsFramework
           
     [<Test>]
     member x.CreateNewObjectWithPersistentReference() =         
@@ -161,7 +162,7 @@ type CodeSystemTests() =
        let pr = x.NakedObjectsFramework.ObjectPersistor.Instances<Product>() |> Seq.head
        p.Favourite <- pr
        save pNo x.NakedObjectsFramework
-       IsNotNullAndPersistent pNo 
+       IsNotNullAndPersistent pNo x.NakedObjectsFramework
            
     [<Test>]
     member x.CreateNewObjectWithTransientReference() = 
@@ -172,7 +173,7 @@ type CodeSystemTests() =
        p.Favourite <- pr
        save pNo x.NakedObjectsFramework
        IsNotNullAndPersistent pNo x.NakedObjectsFramework
-       IsNotNullAndPersistent prNo 
+       IsNotNullAndPersistent prNo x.NakedObjectsFramework
             
     [<Test>]
     member x.CreatedObjectCallsCreated() = 
