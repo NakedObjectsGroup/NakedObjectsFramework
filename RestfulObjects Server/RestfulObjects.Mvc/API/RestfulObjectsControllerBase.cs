@@ -24,6 +24,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Mvc {
     [ServiceContract]
     public class RestfulObjectsControllerBase : ApiController {
+       
         #region static and routes
 
         private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
@@ -31,6 +32,10 @@ namespace RestfulObjects.Mvc {
         static RestfulObjectsControllerBase() {
             CacheSettings = new Tuple<int, int, int>(0, 3600, 86400);
             DefaultPageSize = 20;
+        }
+
+        protected RestfulObjectsControllerBase(INakedObjectsSurface surface) {
+            Surface = surface;
         }
 
         public static bool IsReadOnly { get; set; }
@@ -54,7 +59,7 @@ namespace RestfulObjects.Mvc {
             set { RestSnapshot.AcceptHeaderStrict = value; }
         }
 
-        public INakedObjectsSurface Surface { get; set; }
+        protected INakedObjectsSurface Surface { get; set; }
 
         private static string PrefixRoute(string segment, string prefix) {
             return string.IsNullOrWhiteSpace(prefix) ? segment : prefix + "/" + segment; 

@@ -23,7 +23,7 @@ namespace RestfulObjects.Test.Data {
             get {
                 if (getCount++ > 5) {
                     // so no errors on startup 
-                    throw new DomainException("An error exception");
+                   // throw new DomainException("An error exception");
                 }
                 return 0;
             }
@@ -35,7 +35,7 @@ namespace RestfulObjects.Test.Data {
             get {
                 if (getCount++ > 4) {
                     // so no errors on startup 
-                    throw new DomainException("An error exception");
+                   // throw new DomainException("An error exception");
                 }
                 return Container.Instances<MostSimple>().FirstOrDefault();
             }
@@ -46,7 +46,7 @@ namespace RestfulObjects.Test.Data {
             get {
                 if (getCount++ > 4) {
                     // so no errors on startup 
-                    throw new DomainException("An error exception");
+                   // throw new DomainException("An error exception");
                 }
                 return anErrorCollection;
             }

@@ -152,6 +152,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeFirstContext.cs" />
     <Compile Include="ContributerService.cs" />
     <Compile Include="WithAttachments.cs" />
     <Compile Include="RedirectedObject.cs" />
@@ -184,7 +185,9 @@
     <Compile Include="WithValueViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

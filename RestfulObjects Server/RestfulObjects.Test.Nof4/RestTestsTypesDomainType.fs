@@ -2,9 +2,15 @@
 open NUnit.Framework
 open NakedObjects
 open NakedObjects.Core.NakedObjectsSystem
+open NakedObjects.Core.Adapter.Map
 open NakedObjects.Boot
 open NakedObjects.Architecture.Adapter
+open NakedObjects.Architecture.Persist
+open NakedObjects.Architecture.Reflect
 open NakedObjects.Core.Context
+open NakedObjects.Core.Persist
+open NakedObjects.Persistor
+open NakedObjects.Persistor.Objectstore
 open NakedObjects.Persistor.Objectstore.Inmemory
 open RestfulObjects.Test.Data
 open RestfulObjects.Mvc
@@ -15,27 +21,44 @@ open RestfulObjects.Snapshot.Constants
 open System.Threading
 open System.Security.Principal
 open System.Web.Http
+open NakedObjects.Core.Context
+open NakedObjects.Core.Util
+open Microsoft.Practices.Unity
+open NakedObjects.EntityObjectStore
+open RestfulObjects.Test.Data
+open NakedObjects.Surface.Nof4.Implementation
+open NakedObjects.Surface
+open MvcTestApp.Controllers
 
 let mapper = new TestTypeCodeMapper()
 let keyMapper = new TestKeyCodeMapper()
 
-let api (fw : INakedObjectsFramework) = 
-    let api = new RestfulObjectsControllerBase()
-    api.Surface <- new NakedObjects.Surface.Nof4.Implementation.NakedObjectsSurface(new NakedObjects.Surface.Nof4.Utility.ExternalOid(fw), fw)
-    api
+//let api (fw : INakedObjectsFramework) = 
+//    let api = new RestfulObjectsControllerBase()
+//    api.Surface <- new NakedObjects.Surface.Nof4.Implementation.NakedObjectsSurface(new NakedObjects.Surface.Nof4.Utility.ExternalOid(fw), fw)
+//    api
 
 [<TestFixture>]
 type Nof4TestsTypeDomainType() = class      
     inherit  NakedObjects.Xat.AcceptanceTestCase()    
+
+    override x.RegisterTypes(container) = 
+        base.RegisterTypes(container)
+        let config = new EntityObjectStoreConfiguration()
+        let f = (fun () -> new CodeFirstContext("RestTest") :> Data.Entity.DbContext)
+        let ignore = config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) 
+        let ignore = container.RegisterInstance(typeof<EntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
+        let ignore = container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new ContainerControlledLifetimeManager()))
+        ()         
             
     [<TestFixtureSetUp>]
     member x.Setup() =     
         x.InitializeNakedObjectsFramework()
-        MemoryObjectStore.DiscardObjects()
+        //MemoryObjectStore.DiscardObjects()
     
     [<SetUp>]
     member x.StartTest() =           
-        x.Fixtures.InstallFixtures(x.NakedObjectsFramework.ObjectPersistor, null)
+        x.Fixtures.InstallFixtures(x.NakedObjectsFramework.ObjectPersistor, x.NakedObjectsFramework.Injector)
         UriMtHelper.GetApplicationPath <- Func<string>(fun () -> "")
         RestfulObjectsControllerBase.IsReadOnly <- false  
         let p = new GenericPrincipal(new GenericIdentity("REST"), [||])
@@ -51,7 +74,7 @@ type Nof4TestsTypeDomainType() = class
         RestfulObjectsControllerBase.DomainModel <- RestControlFlags.DomainModelType.Selectable
         RestfulObjectsControllerBase.ConcurrencyChecking <- false
         RestfulObjectsControllerBase.CacheSettings <- (0, 3600, 86400)
-        MemoryObjectStore.DiscardObjects()
+        //MemoryObjectStore.DiscardObjects()
      
     [<TestFixtureTearDown>]
     member x.TearDown() = 
@@ -80,12 +103,14 @@ type Nof4TestsTypeDomainType() = class
             box (new FixturesInstaller([| box (new RestDataFixtureUnitTests()) |])) :?> IFixturesInstaller 
  
  
+    member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
+
     // DomainTypes20
     [<Test>] 
-    member x.GetDomainTypes() = DomainTypes20.GetDomainTypesDomainType (api x.NakedObjectsFramework) 
+    member x.GetDomainTypes() = DomainTypes20.GetDomainTypesDomainType x.api 
     [<Test>] 
-    member x.GetDomainTypesWithMediaType() = DomainTypes20.GetDomainTypesWithMediaTypeDomainType (api x.NakedObjectsFramework)  
+    member x.GetDomainTypesWithMediaType() = DomainTypes20.GetDomainTypesWithMediaTypeDomainType x.api  
     [<Test>] 
-    member x.NotAcceptableGetDomainTypes() = DomainTypes20.NotAcceptableGetDomainTypes (api x.NakedObjectsFramework) 
+    member x.NotAcceptableGetDomainTypes() = DomainTypes20.NotAcceptableGetDomainTypes x.api 
    
 end

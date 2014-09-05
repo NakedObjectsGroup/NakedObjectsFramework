@@ -73,6 +73,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RestfulObjects.Mvc.App\RestfulObjects.Mvc.App.csproj">
+      <Name>RestfulObjects.Mvc.App</Name>
+      <Project>{8aac6fab-eab9-4255-8bd6-07386dfe543c}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj">
       <Name>RestfulObjects.Mvc</Name>
       <Project>{dfd82203-da17-43a4-96e8-5f2c558cf9a4}</Project>

@@ -32,13 +32,13 @@ namespace RestfulObjects.Test.Data {
         [Optionally]
         [DescribedAs("A string value for testing")]
         [MemberOrder(Sequence = "3")]
-        public string AStringValue { get; set; }
+        public virtual string AStringValue { get; set; }
 
         [Optionally]
         [DescribedAs("A datetime value for testing")]
         [Mask("d")]
         [MemberOrder(Sequence = "4")]
-        public DateTime ADateTimeValue {
+        public virtual DateTime ADateTimeValue {
             get { return aDateTimeValue; }
             set { aDateTimeValue = value; }
         }

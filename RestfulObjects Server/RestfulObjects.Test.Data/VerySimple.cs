@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,30 +22,30 @@ namespace RestfulObjects.Test.Data {
 
         #region SimpleList (collection)
 
-        private ICollection<MostSimple> _SimpleList = new List<MostSimple>();
+        private ICollection<MostSimple> simpleList = new List<MostSimple>();
 
         public virtual ICollection<MostSimple> SimpleList {
-            get { return _SimpleList; }
-            set { _SimpleList = value; }
+            get { return simpleList; }
+            set { simpleList = value; }
         }
 
         public void EmptyTheList() {
-            _SimpleList.Clear();
+            simpleList.Clear();
         }
 
         #endregion
 
         #region SimpleSet (collection)
 
-        private ICollection<MostSimple> _SimpleSet = new HashSet<MostSimple>();
+        private ICollection<MostSimple> simpleSet = new HashSet<MostSimple>();
 
         public virtual ICollection<MostSimple> SimpleSet {
-            get { return _SimpleSet; }
-            set { _SimpleSet = value; }
+            get { return simpleSet; }
+            set { simpleSet = value; }
         }
 
         public void EmptyTheSet() {
-            _SimpleSet.Clear();
+            simpleSet.Clear();
         }
 
         #endregion
