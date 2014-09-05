@@ -23,6 +23,7 @@ open System.Security.Principal
 open NakedObjects.Reflector.DotNet
 open Moq
 open NakedObjects.Architecture.Reflect
+open Microsoft.Practices.Unity
         
 let assemblyName = "NakedObjects.Persistor.Test.Data"
 
@@ -155,20 +156,30 @@ type TestDataInitializer() =
 type EntityTestSuite() =
     inherit  NakedObjects.Xat.AcceptanceTestCase()    
 
-    member x.ClearOldTestData() =
-       ()
-           
-    [<TestFixtureSetUp>]
+    override x.RegisterTypes(container) = 
+        base.RegisterTypes(container)
+        let config = new EntityObjectStoreConfiguration()
+        let f = (fun () -> new TestDataContext() :> Data.Entity.DbContext)
+        let ignore = config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) 
+        let ignore = container.RegisterInstance(typeof<EntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
+        ()
+
+    member x.ClearOldTestData() =    ()
+              
+    [<TestFixtureSetUpAttribute>]
     member x.SetupFixture() = 
-         System.Data.Entity.Database.SetInitializer(new TestDataInitializer())
-            
-    [<SetUp>]
-    member x.Setup() =     
+        System.Data.Entity.Database.SetInitializer(new TestDataInitializer())
         x.InitializeNakedObjectsFramework()
     
+    [<SetUp>]
+    member x.SetupTest() = x.StartTest()
+    
     [<TearDown>]
-    member x.TearDown() = 
-        x.CleanupNakedObjectsFramework()
+    member x.TearDownTest() = ()
+    
+    [<TestFixtureTearDown>]
+    member x.TearDownFixture() = x.CleanupNakedObjectsFramework()
+
 
     override x.Fixtures 
         with get() : IFixturesInstaller =

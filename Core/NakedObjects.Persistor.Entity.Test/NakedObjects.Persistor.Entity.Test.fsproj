@@ -64,6 +64,7 @@
     <Compile Include="ModelTest.fs" />
     <Compile Include="MultiDatabaseTestCode.fs" />
     <Compile Include="AMultiDatabaseTest.fs" />
+    <Compile Include="AMultiDomainDatabaseTest.fs" />
     <Compile Include="SystemTestCode.fs" />
     <Compile Include="DomainSystemTest.fs" />
     <Compile Include="ModelSystemTest.fs" />

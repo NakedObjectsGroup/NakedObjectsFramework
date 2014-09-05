@@ -22,22 +22,29 @@ let persistor =
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
-    c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
+
+    c.UsingEdmxContext "AdventureWorksEntities"  |> ignore
+
+    //c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
     let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i)
     setupPersistorForTesting p
 
 let overwritePersistor =
-    let config = 
-        let pc = new NakedObjects.EntityObjectStore.PocoEntityContextConfiguration()
-        pc.ContextName <- "AdventureWorksEntities"  
-        pc.DefaultMergeOption <- MergeOption.OverwriteChanges
-        pc
+//    let config = 
+//        let pc = new NakedObjects.EntityObjectStore.PocoEntityContextConfiguration()
+//        pc.ContextName <- "AdventureWorksEntities"  
+//        pc.DefaultMergeOption <- MergeOption.OverwriteChanges
+//        pc
     let c = new EntityObjectStoreConfiguration()
+    c.UsingEdmxContext "AdventureWorksEntities"  |> ignore
+    c.DefaultMergeOption <- MergeOption.OverwriteChanges
+
+
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
-    c.ContextConfiguration <- [|(box config :?> EntityContextConfiguration)|]
+    //c.ContextConfiguration <- [|(box config :?> EntityContextConfiguration)|]
     let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i)
     setupPersistorForTesting p
 

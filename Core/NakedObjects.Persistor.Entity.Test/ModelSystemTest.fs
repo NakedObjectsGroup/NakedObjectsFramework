@@ -28,7 +28,7 @@ type ModelSystemTests() =
         base.RegisterTypes(container)
         let config = new EntityObjectStoreConfiguration()
         config.EnforceProxies <- false
-        config.ForceContextSet()
+        let ignore = config.UsingEdmxContext "Model1Container"
         let ignore = container.RegisterInstance(typeof<EntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
         ()
     
@@ -48,7 +48,6 @@ type ModelSystemTests() =
         let service = new SimpleRepository<Person>()
         box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller 
         
-   
     member x.CreatePerson() = 
         let setter (p : Person) = 
             p.Id <- x.GetNextPersonID()
@@ -59,7 +58,7 @@ type ModelSystemTests() =
         SystemTestCode.CreateAndSetup<Person> setter x.NakedObjectsFramework
       
     member x.GetPersonDomainObject() = 
-       let pp = x.NakedObjectsFramework.ObjectPersistor.Instances<Person>()
+       let pp : Person[] = box( x.NakedObjectsFramework.ObjectPersistor.Instances<Person>().ToArray()) :?> Person[]
        pp |> Seq.filter (fun p -> p.Id = 1) |> Seq.head     
           
     member x.GetNextPersonID() = 
@@ -79,19 +78,19 @@ type ModelSystemTests() =
     [<Test>]
     member x.GetInstanceDirectly() = 
        let sr = x.GetPersonDomainObject()
-       IsNotNullAndPersistent sr
+       IsNotNullAndPersistent sr x.NakedObjectsFramework
                   
     [<Test>]
     member x.GetAggregateInstance() = 
        let n = x.GetPersonDomainObject().ComplexProperty
-       IsNotNullAndPersistentAggregate n
+       IsNotNullAndPersistentAggregate n x.NakedObjectsFramework
     
     [<Test>]
     member x.GetTransientAggregateInstance() = 
        let pNo = x.CreatePerson()
        let p = pNo.Object :?> Person
        let co = p.ComplexProperty
-       IsNotNullAndTransientAggregate co
+       IsNotNullAndTransientAggregate co x.NakedObjectsFramework
            
     [<Test>]
     member x.DirectlyLoadedObjectHasContainer() = 
