@@ -9,8 +9,12 @@
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
     <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Naked Objects IDE. Installs C# Code Snippets and Item Templates that are useful when
- creating a domain object model that will be run with Naked Objects. Also PowerShell scripts for building the framework from source.</description>
+    <description>
+      Installs C# Code Snippets and Item Templates that are useful when
+      creating a domain object model that will be run with Naked Objects.
+      Also PowerShell scripts for building the framework from source.
+      Install at solution level.
+    </description>
     <tags>naked objects nakedobjects ide visual studio</tags>
   </metadata>
 </package>

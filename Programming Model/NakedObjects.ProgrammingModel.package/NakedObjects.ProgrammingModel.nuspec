@@ -11,8 +11,5 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Naked Objects Programming Model. Add to a Model project (class library) for useful Attributes and Helper classes.</description>
     <tags>naked objects nakedobjects</tags>
-    <dependencies>
-      <dependency id="NakedObjects.Ide" version="4.7.0" />
-    </dependencies>
   </metadata>
 </package>
