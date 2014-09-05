@@ -155,39 +155,39 @@ param($rootPath, $toolsPath, $package, $project)
 	<#
 	.SYNOPSIS
 
-	Get the versions of the NakedObjects packages and save into a file.  
+	Display the versions of the NakedObjects packages and also save them into nof-package-versions.txt.  
 	.DESCRIPTION
 
-	The versions of all the packages as stored in all the .nuspec files under the solution will be saved into the file "nog-packages.txt".
+	The versions of all the packages as stored in all the .nuspec files under the solution will be saved into the file "nof-package-versions.txt".
 	Packages in the 'build' directory will be ignored. Contents of the file are displayed.  
 
 	.EXAMPLE
 
-	Get-NakedObjectsPackageVersions
+	Get-NakedObjectsAllPackageVersions
 	#>
-	function global:Get-NakedObjectsPackageVersions() {
+	function global:Get-NakedObjectsAllPackageVersions() {
 
 		$dependentFiles = Get-ChildItem -Filter ("*.nuspec") -Recurse  -Include *.nuspec | ?{ $_.fullname -notmatch "\\build\\?" }
 
-		"" > nog-packages.txt
+		"" > nof-package-versions.txt
 
 		foreach($dependentFile in $dependentFiles) {
 			[xml]$x = Get-Content $dependentFile
 	
-			$x.package.metadata.id.PadRight(30) + "`t" + $x.package.metadata.version | out-file "nog-packages.txt"  -Append 
+			$x.package.metadata.id.PadRight(30) + "`t" + $x.package.metadata.version | out-file "nof-package-versions.txt"  -Append 
 		}
 
-		type "nog-packages.txt"
+		type "nof-package-versions.txt"
 	}
 
 	<#
 	.SYNOPSIS
 
-	Set the versions of the Naked Objects packages from a file
+	Reads the new versions from nof-package-versions.txt and calls Update-NakedObjectsPackageVersion for each one.
 	.DESCRIPTION
 
-	A file called nog-packages in the format produced by the Get-NakedObjectsPackageVersions cmdlet is expected in the solution directory. 
-	Update-NakedObjectsPackageVersion will be called for each package in the file. The file format is, for example 
+	A file called nof-package-versions.txt, in the format produced by the Get-NakedObjectsAllPackageVersions cmdlet, is expected in the solution directory. 
+	Update-NakedObjectsPackageVersion will then be called for each package in the file. The file format is, for example 
 	
 	NakedObjects.Batch            	6.0.0
 	NakedObjects.Authorisation.Wif	6.0.0
@@ -195,10 +195,10 @@ param($rootPath, $toolsPath, $package, $project)
 
 	.EXAMPLE
 
-	Set-NakedObjectsPackageVersions
+	Update-NakedObjectsAllPackageVersions
 	#>
-	function global:Set-NakedObjectsPackageVersions() {
-		$versionsFile = Get-ChildItem -Filter "nog-packages.txt"
+	function global:Update-NakedObjectsAllPackageVersions() {
+		$versionsFile = Get-ChildItem -Filter "nof-package-versions.txt"
 		$versions = @(Get-Content $versionsFile) 
 
 		foreach($version in $versions) {
@@ -215,7 +215,7 @@ param($rootPath, $toolsPath, $package, $project)
 	<#
 	.SYNOPSIS
 
-	Update the package version of a NakedObjects Package in the .nuspec files.
+	Update the version of a single NakedObjects package in its NuSpec, and update references to it in other NuSpecs.
 	.DESCRIPTION
 
 	Updates the version of a NakedObjects Package.The version is updated in the package's .nuspec file and also any dependent packages' .nuspec files. 
@@ -313,7 +313,7 @@ param($rootPath, $toolsPath, $package, $project)
 	<#
 	.SYNOPSIS
 
-	Update the pacakge version of a NakedObjects package in the packages.config files and in the .proj files of the solution. 
+	Update all packages.config files and all .csproj files to refer to the specified new version of the package
 	.DESCRIPTION
 
 	The package version is updated in each packages.config file that it appears in. In addition the hint paths in all *proj files in the solution that 
@@ -329,12 +329,12 @@ param($rootPath, $toolsPath, $package, $project)
 	A flag to output additional info during processing.   
 	.EXAMPLE
 
-	Update-NakedObjectsPackageVersion nakedobjects.batch 6.0.0-beta3
+	Update-NakedObjectsPackageConfigAndProjectRefs nakedobjects.batch 6.0.0-beta3
 
 	.EXAMPLE
-	Update-NakedObjectsPackageVersion nakedobjects.batch 6.0.0-beta3 -verbose
+	Update-NakedObjectsPackageConfigAndProjectRefs nakedobjects.batch 6.0.0-beta3 -verbose
 	#>
-	function global:Update-PackageConfig($PackageName, $NewVersion, [switch] $verbose) {
+	function global:Update-NakedObjectsPackageConfigAndProjectRefs($PackageName, $NewVersion, [switch] $verbose) {
     
 		if (!($PackageName -is [string])){
 			return "package is mandatory and must be a string";
