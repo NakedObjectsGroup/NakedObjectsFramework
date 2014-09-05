@@ -101,7 +101,7 @@ namespace NakedObjects.Xat {
             INakedObjectSpecification specification = NakedObject.Specification;
             var facet = specification.GetFacet<IImmutableFacet>();
 
-            bool immutable = facet.Value == When.Always || facet.Value == When.OncePersisted && NakedObject.ResolveState.IsPersistent();
+            bool immutable = facet.Value == WhenTo.Always || facet.Value == WhenTo.OncePersisted && NakedObject.ResolveState.IsPersistent();
 
             Assert.IsTrue(immutable, "Not immutable");
             return (ITestObject) this;

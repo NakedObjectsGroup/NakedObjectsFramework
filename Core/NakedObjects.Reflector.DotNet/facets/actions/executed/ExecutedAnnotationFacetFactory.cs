@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         }
 
         private static IExecutedFacet Create(ExecutedAttribute attribute, IFacetHolder holder) {
-            return attribute == null ? null : new ExecutedFacetAnnotation(attribute.Value.ToWhere(), holder);
+            return attribute == null ? null : new ExecutedFacetAnnotation(attribute.Value, holder);
         }
     }
 }

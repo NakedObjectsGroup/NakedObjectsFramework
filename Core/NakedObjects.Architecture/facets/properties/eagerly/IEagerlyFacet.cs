@@ -6,6 +6,6 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Facets.Properties.Eagerly {
     public interface IEagerlyFacet : IFacet {
-        Do What { get; }
+        EagerlyAttribute.Do What { get; }
     }
 }

@@ -97,11 +97,13 @@ namespace NakedObjects.Architecture.Reflect {
             }
             var immutableFacet = GetFacet<IImmutableFacet>();
             if (immutableFacet != null) {
-                When when = immutableFacet.Value;
-                if (when == When.UntilPersisted && !isPersistent) {
+                WhenTo when = immutableFacet.Value;
+                if (when == WhenTo.UntilPersisted && !isPersistent)
+                {
                     return new Veto(Resources.NakedObjects.FieldDisabledUntil);
                 }
-                if (when == When.OncePersisted && isPersistent) {
+                if (when == WhenTo.OncePersisted && isPersistent)
+                {
                     return new Veto(Resources.NakedObjects.FieldDisabledOnce);
                 }
                 INakedObjectSpecification tgtSpec = target.Specification;
@@ -131,14 +133,17 @@ namespace NakedObjects.Architecture.Reflect {
         private IConsent IsUsableDeclaratively(bool isPersistent) {
             var facet = GetFacet<IDisabledFacet>();
             if (facet != null) {
-                When isProtected = facet.Value;
-                if (isProtected == When.Always) {
+                WhenTo isProtected = facet.Value;
+                if (isProtected == WhenTo.Always)
+                {
                     return new Veto(Resources.NakedObjects.FieldNotEditable);
                 }
-                if (isProtected == When.OncePersisted && isPersistent) {
+                if (isProtected == WhenTo.OncePersisted && isPersistent)
+                {
                     return new Veto(Resources.NakedObjects.FieldNotEditableNow);
                 }
-                if (isProtected == When.UntilPersisted && !isPersistent) {
+                if (isProtected == WhenTo.UntilPersisted && !isPersistent)
+                {
                     return new Veto(Resources.NakedObjects.FieldNotEditableUntil);
                 }
             }

@@ -11,18 +11,18 @@ using NakedObjects.Architecture.Facets.Actions.Executed;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     public class ExecutedFacetAnnotationForControlMethods : ExecutedControlMethodFacetAbstract {
-        private readonly IDictionary<MethodInfo, Architecture.Facets.Where> methodToWhere = new Dictionary<MethodInfo, Architecture.Facets.Where>();
+        private readonly IDictionary<MethodInfo, Where> methodToWhere = new Dictionary<MethodInfo, Where>();
 
-        public ExecutedFacetAnnotationForControlMethods(MethodInfo method, Architecture.Facets.Where where, IFacetHolder holder)
+        public ExecutedFacetAnnotationForControlMethods(MethodInfo method, Where where, IFacetHolder holder)
             : base(holder) {
             methodToWhere[method] = where;
         }
 
-        public override Architecture.Facets.Where ExecutedWhere(MethodInfo method) {
-            return methodToWhere.ContainsKey(method) ? methodToWhere[method] : Architecture.Facets.Where.Default;
+        public override Where ExecutedWhere(MethodInfo method) {
+            return methodToWhere.ContainsKey(method) ? methodToWhere[method] : Where.Default;
         }
 
-        public override void AddMethodExecutedWhere(MethodInfo method, Architecture.Facets.Where where) {
+        public override void AddMethodExecutedWhere(MethodInfo method, Where where) {
             methodToWhere[method] = where;
         }
 

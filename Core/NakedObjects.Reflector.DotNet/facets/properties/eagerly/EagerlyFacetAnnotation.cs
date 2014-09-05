@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
     public class EagerlyFacetAnnotation : FacetAbstract, IEagerlyFacet {
-        public EagerlyFacetAnnotation(Do what, IFacetHolder holder)
+        public EagerlyFacetAnnotation(EagerlyAttribute.Do what, IFacetHolder holder)
             : base(Type, holder) {
             What = what;
         }
@@ -18,6 +18,6 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
             get { return typeof (IEagerlyFacet); }
         }
 
-        public Do What { get; private set; }
+        public EagerlyAttribute.Do What { get; private set; }
     }
 }

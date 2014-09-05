@@ -17,7 +17,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// <seealso cref="NakedObjectActionConstants.LOCAL" />
         /// <seealso cref="NakedObjectActionConstants.REMOTE" />
         /// <seealso cref="NakedObjectActionConstants.DEFAULT" />
-        Target Target { get; }
+        Where Target { get; }
 
         /// <summary>
         ///     Returns the specification for the type of object that this action can be invoked upon

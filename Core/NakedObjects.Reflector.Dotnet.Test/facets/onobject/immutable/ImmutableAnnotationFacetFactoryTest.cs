@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
-            Assert.AreEqual(When.Always, immutableFacetAnnotation.Value);
+            Assert.AreEqual(WhenTo.Always, immutableFacetAnnotation.Value);
             AssertNoMethodsRemoved();
         }
 
@@ -54,7 +54,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
-            Assert.AreEqual(When.Always, immutableFacetAnnotation.Value);
+            Assert.AreEqual(WhenTo.Always, immutableFacetAnnotation.Value);
             AssertNoMethodsRemoved();
         }
 
@@ -64,7 +64,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
-            Assert.AreEqual(When.Never, immutableFacetAnnotation.Value);
+            Assert.AreEqual(WhenTo.Never, immutableFacetAnnotation.Value);
             AssertNoMethodsRemoved();
         }
 
@@ -100,7 +100,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
-            Assert.AreEqual(When.OncePersisted, immutableFacetAnnotation.Value);
+            Assert.AreEqual(WhenTo.OncePersisted, immutableFacetAnnotation.Value);
             AssertNoMethodsRemoved();
         }
 
@@ -111,7 +111,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
-            Assert.AreEqual(When.UntilPersisted, immutableFacetAnnotation.Value);
+            Assert.AreEqual(WhenTo.UntilPersisted, immutableFacetAnnotation.Value);
             AssertNoMethodsRemoved();
         }
     }

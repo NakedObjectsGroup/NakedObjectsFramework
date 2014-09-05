@@ -16,7 +16,7 @@ namespace NakedObjects.Architecture.Spec {
             if (immutableFacet == null) {
                 return false;
             }
-            return immutableFacet.Value == When.Always;
+            return immutableFacet.Value == WhenTo.Always;
         }
 
         public static bool IsImmutableOncePersisted(this INakedObjectSpecification specification) {
@@ -24,7 +24,7 @@ namespace NakedObjects.Architecture.Spec {
             if (immutableFacet == null) {
                 return false;
             }
-            return immutableFacet.Value == When.OncePersisted;
+            return immutableFacet.Value == WhenTo.OncePersisted;
         }
 
         public static bool IsBoundedSet(this INakedObjectSpecification specification) {

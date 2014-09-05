@@ -7,14 +7,14 @@ using NakedObjects.Architecture.Resolve;
 
 namespace NakedObjects.Architecture.Facets.Hide {
     public class HiddenFacetImpl : HiddenFacetAbstract {
-        public HiddenFacetImpl(When when, IFacetHolder holder)
+        public HiddenFacetImpl(WhenTo when, IFacetHolder holder)
             : base(when, holder) {}
 
         public override string HiddenReason(INakedObject target) {
-            if (Value == When.Always) {
+            if (Value == WhenTo.Always) {
                 return Resources.NakedObjects.AlwaysHidden;
             }
-            if (Value == When.Never) {
+            if (Value == WhenTo.Never) {
                 return null;
             }
 
@@ -23,10 +23,12 @@ namespace NakedObjects.Architecture.Facets.Hide {
                 return null;
             }
 
-            if (Value == When.UntilPersisted) {
+            if (Value == WhenTo.UntilPersisted)
+            {
                 return target.ResolveState.IsTransient() ? Resources.NakedObjects.HiddenUntilPersisted : null;
             }
-            if (Value == When.OncePersisted) {
+            if (Value == WhenTo.OncePersisted)
+            {
                 return target.ResolveState.IsPersistent() ? Resources.NakedObjects.HiddenOncePersisted : null;
             }
             return null;

@@ -14,7 +14,6 @@ namespace NakedObjects.Architecture.Facets.Actions.Executed {
     ///     annotating the action method using <see cref="ExecutedAttribute" />
     /// </para>
     public interface IExecutedFacet : IFacet {
-        Target Target { get; }
 
         Where ExecutedWhere();
     }

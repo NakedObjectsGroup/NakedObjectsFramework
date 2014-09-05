@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Hide;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Hide {
     public class HiddenFacetAnnotation : HiddenFacetImpl {
-        public HiddenFacetAnnotation(When value, IFacetHolder holder)
+        public HiddenFacetAnnotation(WhenTo value, IFacetHolder holder)
             : base(value, holder) {}
     }
 

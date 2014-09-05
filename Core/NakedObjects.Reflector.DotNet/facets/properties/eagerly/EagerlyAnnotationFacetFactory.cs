@@ -31,7 +31,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
         }
 
         private static IEagerlyFacet Create(EagerlyAttribute attribute, IFacetHolder holder) {
-            return attribute == null ? null : new EagerlyFacetAnnotation(Do.Rendering, holder);
+            return attribute == null ? null : new EagerlyFacetAnnotation(EagerlyAttribute.Do.Rendering, holder);
         }
     }
 }

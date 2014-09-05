@@ -614,7 +614,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             AssertMethodRemoved(propertyChoicesMethod);
             var facetExecuted = FacetHolder.GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted);
-            Assert.AreEqual(facetExecuted.ExecutedWhere(propertyChoicesMethod), Architecture.Facets.Where.Locally);
+            Assert.AreEqual(facetExecuted.ExecutedWhere(propertyChoicesMethod), Where.Locally);
         }
 
         [Test]
@@ -630,7 +630,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             AssertMethodRemoved(propertyChoicesMethod);
             var facetExecuted = FacetHolder.GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted);
-            Assert.AreEqual(facetExecuted.ExecutedWhere(propertyChoicesMethod), Architecture.Facets.Where.Remotely);
+            Assert.AreEqual(facetExecuted.ExecutedWhere(propertyChoicesMethod), Where.Remotely);
         }
 
         [Test]
@@ -696,7 +696,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             AssertMethodRemoved(propertyDefaultMethod);
             var facetExecuted = FacetHolder.GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted);
-            Assert.AreEqual(facetExecuted.ExecutedWhere(propertyDefaultMethod), Architecture.Facets.Where.Locally);
+            Assert.AreEqual(facetExecuted.ExecutedWhere(propertyDefaultMethod), Where.Locally);
         }
 
         [Test]
@@ -712,7 +712,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             AssertMethodRemoved(propertyDefaultMethod);
             var facetExecuted = FacetHolder.GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted);
-            Assert.AreEqual(facetExecuted.ExecutedWhere(propertyDefaultMethod), Architecture.Facets.Where.Remotely);
+            Assert.AreEqual(facetExecuted.ExecutedWhere(propertyDefaultMethod), Where.Remotely);
         }
 
         [Test]

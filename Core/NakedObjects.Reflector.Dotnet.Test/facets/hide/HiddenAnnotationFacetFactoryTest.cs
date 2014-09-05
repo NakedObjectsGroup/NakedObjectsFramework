@@ -114,7 +114,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
             IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
-            Assert.AreEqual(When.UntilPersisted, hiddenFacetAbstract.Value);
+            Assert.AreEqual(WhenTo.UntilPersisted, hiddenFacetAbstract.Value);
         }
 
         [Test]
@@ -163,7 +163,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
             IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
-            Assert.AreEqual(When.Always, hiddenFacetAbstract.Value);
+            Assert.AreEqual(WhenTo.Always, hiddenFacetAbstract.Value);
         }
 
         [Test]
@@ -172,7 +172,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
             IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
-            Assert.AreEqual(When.Never, hiddenFacetAbstract.Value);
+            Assert.AreEqual(WhenTo.Never, hiddenFacetAbstract.Value);
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
             IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
-            Assert.AreEqual(When.OncePersisted, hiddenFacetAbstract.Value);
+            Assert.AreEqual(WhenTo.OncePersisted, hiddenFacetAbstract.Value);
         }
 
         [Test]
@@ -190,7 +190,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             facetFactory.Process(property, MethodRemover, FacetHolder);
             IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
-            Assert.AreEqual(When.Always, hiddenFacetAbstract.Value);
+            Assert.AreEqual(WhenTo.Always, hiddenFacetAbstract.Value);
         }
 
         [Test]
@@ -219,7 +219,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             facetFactory.Process(property, MethodRemover, FacetHolder);
             IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
-            Assert.AreEqual(When.Never, hiddenFacetAbstract.Value);
+            Assert.AreEqual(WhenTo.Never, hiddenFacetAbstract.Value);
         }
     }
 

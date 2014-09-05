@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Objects.Immutable;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
     public class ImmutableFacetAnnotation : ImmutableFacetImpl {
-        public ImmutableFacetAnnotation(When value, IFacetHolder holder)
+        public ImmutableFacetAnnotation(WhenTo value, IFacetHolder holder)
             : base(value, holder) {}
     }
 

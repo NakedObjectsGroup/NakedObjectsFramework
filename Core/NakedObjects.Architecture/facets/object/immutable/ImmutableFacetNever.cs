@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Architecture.Facets.Objects.Immutable {
     public class ImmutableFacetNever : ImmutableFacetAbstract {
         public ImmutableFacetNever(IFacetHolder holder)
-            : base(When.Never, holder) {}
+            : base(WhenTo.Never, holder) { }
 
         /// <summary>
         ///     Always returns <c>null</c>

@@ -114,7 +114,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Disable {
             facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
             IFacet facet = FacetHolder.GetFacet(typeof (IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
-            Assert.AreEqual(When.Always, disabledFacetAbstract.Value);
+            Assert.AreEqual(WhenTo.Always, disabledFacetAbstract.Value);
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Disable {
             facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
             IFacet facet = FacetHolder.GetFacet(typeof (IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
-            Assert.AreEqual(When.Never, disabledFacetAbstract.Value);
+            Assert.AreEqual(WhenTo.Never, disabledFacetAbstract.Value);
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Disable {
             facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
             IFacet facet = FacetHolder.GetFacet(typeof (IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
-            Assert.AreEqual(When.OncePersisted, disabledFacetAbstract.Value);
+            Assert.AreEqual(WhenTo.OncePersisted, disabledFacetAbstract.Value);
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Disable {
             facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
             IFacet facet = FacetHolder.GetFacet(typeof (IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
-            Assert.AreEqual(When.UntilPersisted, disabledFacetAbstract.Value);
+            Assert.AreEqual(WhenTo.UntilPersisted, disabledFacetAbstract.Value);
         }
 
         [Test]

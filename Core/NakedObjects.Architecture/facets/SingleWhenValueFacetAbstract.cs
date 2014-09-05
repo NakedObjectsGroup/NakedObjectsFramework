@@ -6,16 +6,16 @@ using System;
 
 namespace NakedObjects.Architecture.Facets {
     public abstract class SingleWhenValueFacetAbstract : FacetAbstract, ISingleWhenValueFacet {
-        private readonly When when;
+        private readonly WhenTo when;
 
-        protected SingleWhenValueFacetAbstract(Type facetType, IFacetHolder holder, When when)
+        protected SingleWhenValueFacetAbstract(Type facetType, IFacetHolder holder, WhenTo when)
             : base(facetType, holder) {
             this.when = when;
         }
 
         #region ISingleWhenValueFacet Members
 
-        public virtual When Value {
+        public virtual WhenTo Value {
             get { return when; }
         }
 

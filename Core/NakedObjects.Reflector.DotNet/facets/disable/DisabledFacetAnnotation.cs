@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Disable;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Disable {
     public class DisabledFacetAnnotation : DisabledFacetImpl {
-        public DisabledFacetAnnotation(When value, IFacetHolder holder)
+        public DisabledFacetAnnotation(WhenTo value, IFacetHolder holder)
             : base(value, holder) {}
     }
 

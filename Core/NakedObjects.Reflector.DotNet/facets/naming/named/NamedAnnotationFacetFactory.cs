@@ -105,7 +105,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
 
         private static bool IsAlwaysHidden(IFacetHolder holder) {
             var hiddenfacet = holder.GetFacet<IHiddenFacet>();
-            return hiddenfacet != null && hiddenfacet.Value == When.Always;
+            return hiddenfacet != null && hiddenfacet.Value == WhenTo.Always;
         }
 
         private INamedFacet SaveDefaultName(IFacetHolder holder) {

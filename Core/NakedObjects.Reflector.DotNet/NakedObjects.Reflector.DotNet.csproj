@@ -332,7 +332,6 @@
     <Compile Include="reflect\properties\DotNetOneToOneAssociationPeer.cs" />
     <Compile Include="reflect\proxies\ProxyCreator.cs" />
     <Compile Include="reflect\strategy\DefaultClassStrategy.cs" />
-    <Compile Include="reflect\util\EnumUtils.cs" />
     <Compile Include="reflect\util\InvokeUtils.cs" />
     <Compile Include="facets\RemoveEventHandlerMethodsFacetFactory.cs" />
     <Compile Include="value\BoolValueSemanticsProvider.cs" />

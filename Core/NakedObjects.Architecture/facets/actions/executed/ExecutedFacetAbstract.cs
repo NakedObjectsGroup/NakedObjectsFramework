@@ -20,18 +20,6 @@ namespace NakedObjects.Architecture.Facets.Actions.Executed {
 
         #region IExecutedFacet Members
 
-        public virtual Target Target {
-            get {
-                if (executedWhere == Where.Locally) {
-                    return Target.Local;
-                }
-                if (executedWhere == Where.Remotely) {
-                    return Target.Remote;
-                }
-                return Target.Default;
-            }
-        }
-
         public virtual Where ExecutedWhere() {
             return executedWhere;
         }

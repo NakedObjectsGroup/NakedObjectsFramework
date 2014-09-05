@@ -70,7 +70,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacetAnnotation);
             var propertyDefaultFacetAnnotation = (EagerlyFacetAnnotation) facet;
-            Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
+            Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacetAnnotation);
             var propertyDefaultFacetAnnotation = (EagerlyFacetAnnotation) facet;
-            Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
+            Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacetAnnotation);
             var propertyDefaultFacetAnnotation = (EagerlyFacetAnnotation) facet;
-            Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
+            Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
         }
 
         [Test]
@@ -103,7 +103,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacetAnnotation);
             var propertyDefaultFacetAnnotation = (EagerlyFacetAnnotation) facet;
-            Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
+            Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
         }
 
         [Test]

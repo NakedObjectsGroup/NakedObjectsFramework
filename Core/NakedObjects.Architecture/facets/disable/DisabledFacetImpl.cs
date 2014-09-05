@@ -7,14 +7,16 @@ using NakedObjects.Architecture.Resolve;
 
 namespace NakedObjects.Architecture.Facets.Disable {
     public class DisabledFacetImpl : DisabledFacetAbstract {
-        public DisabledFacetImpl(When when, IFacetHolder holder)
+        public DisabledFacetImpl(WhenTo when, IFacetHolder holder)
             : base(when, holder) {}
 
         public override string DisabledReason(INakedObject target) {
-            if (Value == When.Always) {
+            if (Value == WhenTo.Always)
+            {
                 return Resources.NakedObjects.AlwaysDisabled;
             }
-            if (Value == When.Never) {
+            if (Value == WhenTo.Never)
+            {
                 return null;
             }
 
@@ -22,10 +24,12 @@ namespace NakedObjects.Architecture.Facets.Disable {
             if (target == null) {
                 return null;
             }
-            if (Value == When.UntilPersisted) {
+            if (Value == WhenTo.UntilPersisted)
+            {
                 return target.ResolveState.IsTransient() ? Resources.NakedObjects.DisabledUntilPersisted : null;
             }
-            if (Value == When.OncePersisted) {
+            if (Value == WhenTo.OncePersisted)
+            {
                 return target.ResolveState.IsPersistent() ? Resources.NakedObjects.DisabledOncePersisted : null;
             }
             return null;

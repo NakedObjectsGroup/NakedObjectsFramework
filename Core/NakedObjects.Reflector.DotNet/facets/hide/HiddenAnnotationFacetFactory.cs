@@ -45,11 +45,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         }
 
         private static IHiddenFacet Create(HiddenAttribute attribute, IFacetHolder holder) {
-            return attribute == null ? null : new HiddenFacetAnnotation(attribute.Value.ToWhen(), holder);
+            return attribute == null ? null : new HiddenFacetAnnotation(attribute.Value, holder);
         }
 
         private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, IFacetHolder holder) {
-            return attribute == null ? null : new HiddenFacetAnnotation(attribute.Scaffold ? When.Never : When.Always, holder);
+            return attribute == null ? null : new HiddenFacetAnnotation(attribute.Scaffold ? WhenTo.Never : WhenTo.Always, holder);
         }
     }
 }

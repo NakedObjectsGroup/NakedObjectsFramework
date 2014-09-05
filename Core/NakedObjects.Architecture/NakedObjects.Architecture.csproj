@@ -426,7 +426,6 @@
     <Compile Include="persist\IOidGenerator.cs" />
     <Compile Include="persist\IPersistenceCommand.cs" />
     <Compile Include="reflect\Allow.cs" />
-    <Compile Include="reflect\Do.cs" />
     <Compile Include="reflect\IClassStrategy.cs" />
     <Compile Include="reflect\IConsent.cs" />
     <Compile Include="reflect\ConsentAbstract.cs" />
@@ -471,10 +470,7 @@
     <Compile Include="reflect\IOneToOneAssociation.cs" />
     <Compile Include="reflect\IOneToOneFeature.cs" />
     <Compile Include="reflect\IParseableEntryActionParameter.cs" />
-    <Compile Include="reflect\Target.cs" />
     <Compile Include="reflect\Veto.cs" />
-    <Compile Include="reflect\When.cs" />
-    <Compile Include="reflect\Where.cs" />
     <Compile Include="security\IAuthenticationRequest.cs" />
     <Compile Include="security\IAuthenticator.cs" />
     <Compile Include="security\IConnectionManager.cs" />

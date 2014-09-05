@@ -56,7 +56,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ExecutedFacetAbstract);
             var executedFacetAbstract = (ExecutedFacetAbstract) facet;
-            Assert.AreEqual(Target.Local, executedFacetAbstract.Target);
+            Assert.AreEqual(Where.Locally, executedFacetAbstract.ExecutedWhere());
             AssertNoMethodsRemoved();
         }
 
@@ -68,7 +68,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ExecutedFacetAbstract);
             var executedFacetAbstract = (ExecutedFacetAbstract) facet;
-            Assert.AreEqual(Target.Remote, executedFacetAbstract.Target);
+            Assert.AreEqual(Where.Remotely, executedFacetAbstract.ExecutedWhere());
             AssertNoMethodsRemoved();
         }
 

@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Disable {
         }
 
         private static IDisabledFacet Create(DisabledAttribute attribute, IFacetHolder holder) {
-            return attribute == null ? null : new DisabledFacetAnnotation(attribute.Value.ToWhen(), holder);
+            return attribute == null ? null : new DisabledFacetAnnotation(attribute.Value, holder);
         }
     }
 }

@@ -68,19 +68,9 @@ namespace NakedObjects.Reflector.Spec {
             get { return nakedObjectActionPeer.Parameters.Length; }
         }
 
-        public virtual Target Target {
+        public virtual Where Target {
             get {
-                Architecture.Facets.Where executeWhere = GetFacet<IExecutedFacet>().ExecutedWhere();
-                if (executeWhere == Architecture.Facets.Where.Locally) {
-                    return Target.Local;
-                }
-                if (executeWhere == Architecture.Facets.Where.Remotely) {
-                    return Target.Remote;
-                }
-                if (executeWhere == Architecture.Facets.Where.Default) {
-                    return Target.Default;
-                }
-                throw new UnknownTypeException(executeWhere);
+                return GetFacet<IExecutedFacet>().ExecutedWhere();
             }
         }
 

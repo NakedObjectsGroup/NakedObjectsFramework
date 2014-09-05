@@ -8,7 +8,7 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facets.Objects.Immutable {
     public abstract class ImmutableFacetAbstract : SingleWhenValueFacetAbstract, IImmutableFacet {
-        protected ImmutableFacetAbstract(When when, IFacetHolder holder)
+        protected ImmutableFacetAbstract(WhenTo when, IFacetHolder holder)
             : base(Type, holder, when) {}
 
         public static Type Type {

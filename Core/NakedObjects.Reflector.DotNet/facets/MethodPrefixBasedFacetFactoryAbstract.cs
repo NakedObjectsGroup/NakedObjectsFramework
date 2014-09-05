@@ -195,10 +195,10 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             if (attribute != null && !attribute.IsAjax) {
                 var executedFacet = holder.GetFacet<IExecutedControlMethodFacet>();
                 if (executedFacet == null) {
-                    FacetUtils.AddFacet(new ExecutedFacetAnnotationForControlMethods(method, attribute.Value.ToWhere(), holder));
+                    FacetUtils.AddFacet(new ExecutedFacetAnnotationForControlMethods(method, attribute.Value, holder));
                 }
                 else {
-                    executedFacet.AddMethodExecutedWhere(method, attribute.Value.ToWhere());
+                    executedFacet.AddMethodExecutedWhere(method, attribute.Value);
                 }
             }
         }

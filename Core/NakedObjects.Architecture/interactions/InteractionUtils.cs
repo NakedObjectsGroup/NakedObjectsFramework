@@ -23,7 +23,8 @@ namespace NakedObjects.Architecture.Interactions {
             IFacet[] facets = facetHolder.GetFacets(FacetFilters.IsA(typeof (IHidingInteractionAdvisor)));
             foreach (IHidingInteractionAdvisor advisor in facets) {
                 if (advisor is IHiddenFacet) {
-                    if (((IHiddenFacet) advisor).Value == When.OncePersisted) {
+                    if (((IHiddenFacet)advisor).Value == WhenTo.OncePersisted)
+                    {
                         continue;
                     }
                 }

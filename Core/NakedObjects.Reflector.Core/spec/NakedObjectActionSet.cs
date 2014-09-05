@@ -77,8 +77,8 @@ namespace NakedObjects.Reflector.Spec {
             get { return null; }
         }
 
-        public virtual Target Target {
-            get { return Target.Default; }
+        public virtual Where Target {
+            get { return Where.Default; }
         }
 
         public bool IsContributedTo(INakedObjectSpecification spec) {

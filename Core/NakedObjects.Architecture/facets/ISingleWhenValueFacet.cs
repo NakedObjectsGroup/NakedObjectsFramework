@@ -4,6 +4,6 @@
 
 namespace NakedObjects.Architecture.Facets {
     public interface ISingleWhenValueFacet : IFacet {
-        When Value { get; }
+        WhenTo Value { get; }
     }
 }

@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Objects.Immutable;
 namespace NakedObjects.Architecture.Facets.Objects.Value {
     public class ImmutableFacetViaValueSemantics : ImmutableFacetImpl {
         public ImmutableFacetViaValueSemantics(IFacetHolder holder)
-            : base(When.Always, holder) {}
+            : base(WhenTo.Always, holder) { }
     }
 
 

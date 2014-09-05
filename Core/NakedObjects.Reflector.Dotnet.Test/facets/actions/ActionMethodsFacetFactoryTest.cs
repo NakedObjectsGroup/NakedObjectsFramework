@@ -749,15 +749,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted1);
 
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices1Method), Architecture.Facets.Where.Remotely);
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices0Method), Architecture.Facets.Where.Default);
+            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices1Method), Where.Remotely);
+            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices0Method), Where.Default);
 
             CheckChoicesFacet(choices2Method, facetHolderWithParms.Parameters[2]);
 
             var facetExecuted2 = facetHolderWithParms.Parameters[2].GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted2);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices2Method), Architecture.Facets.Where.Locally);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices0Method), Architecture.Facets.Where.Default);
+            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices2Method), Where.Locally);
+            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices0Method), Where.Default);
         }
 
 
@@ -800,15 +800,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted1);
 
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices1Method), Architecture.Facets.Where.Remotely);
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices0Method), Architecture.Facets.Where.Default);
+            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices1Method), Where.Remotely);
+            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices0Method), Where.Default);
 
             CheckChoicesFacet(choices2Method, facetHolderWithParms.Parameters[2]);
 
             var facetExecuted2 = facetHolderWithParms.Parameters[2].GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted2);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices2Method), Architecture.Facets.Where.Locally);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices0Method), Architecture.Facets.Where.Default);
+            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices2Method), Where.Locally);
+            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices0Method), Where.Default);
         }
 
 
@@ -832,15 +832,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted1);
 
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices1Method), Architecture.Facets.Where.Remotely);
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices0Method), Architecture.Facets.Where.Default);
+            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices1Method), Where.Remotely);
+            Assert.AreEqual(facetExecuted1.ExecutedWhere(choices0Method), Where.Default);
 
             CheckChoicesFacet(choices2Method, facetHolderWithParms.Parameters[2]);
 
             var facetExecuted2 = facetHolderWithParms.Parameters[2].GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted2);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices2Method), Architecture.Facets.Where.Locally);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices0Method), Architecture.Facets.Where.Default);
+            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices2Method), Where.Locally);
+            Assert.AreEqual(facetExecuted2.ExecutedWhere(choices0Method), Where.Default);
         }
 
 
@@ -865,16 +865,16 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted1);
 
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(default1Method), Architecture.Facets.Where.Remotely);
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(default0Method), Architecture.Facets.Where.Default);
+            Assert.AreEqual(facetExecuted1.ExecutedWhere(default1Method), Where.Remotely);
+            Assert.AreEqual(facetExecuted1.ExecutedWhere(default0Method), Where.Default);
 
 
             CheckDefaultFacet(default2Method, facetHolderWithParms.Parameters[2]);
 
             var facetExecuted2 = facetHolderWithParms.Parameters[2].GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted2);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(default2Method), Architecture.Facets.Where.Locally);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(default0Method), Architecture.Facets.Where.Default);
+            Assert.AreEqual(facetExecuted2.ExecutedWhere(default2Method), Where.Locally);
+            Assert.AreEqual(facetExecuted2.ExecutedWhere(default0Method), Where.Default);
         }
 
 
@@ -899,16 +899,16 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted1);
 
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(default1Method), Architecture.Facets.Where.Remotely);
-            Assert.AreEqual(facetExecuted1.ExecutedWhere(default0Method), Architecture.Facets.Where.Default);
+            Assert.AreEqual(facetExecuted1.ExecutedWhere(default1Method), Where.Remotely);
+            Assert.AreEqual(facetExecuted1.ExecutedWhere(default0Method), Where.Default);
 
 
             CheckDefaultFacet(default2Method, facetHolderWithParms.Parameters[2]);
 
             var facetExecuted2 = facetHolderWithParms.Parameters[2].GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNotNull(facetExecuted2);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(default2Method), Architecture.Facets.Where.Locally);
-            Assert.AreEqual(facetExecuted2.ExecutedWhere(default0Method), Architecture.Facets.Where.Default);
+            Assert.AreEqual(facetExecuted2.ExecutedWhere(default2Method), Where.Locally);
+            Assert.AreEqual(facetExecuted2.ExecutedWhere(default0Method), Where.Default);
         }
 
 

@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
         }
 
         private static IImmutableFacet Create(ImmutableAttribute attribute, IFacetHolder holder) {
-            return attribute == null ? null : new ImmutableFacetAnnotation(attribute.Value.ToWhen(), holder);
+            return attribute == null ? null : new ImmutableFacetAnnotation(attribute.Value, holder);
         }
     }
 }
