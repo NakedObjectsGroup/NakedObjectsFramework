@@ -27,7 +27,7 @@ namespace NakedObjects.Architecture.Reflect {
 
         void InstallServiceSpecifications(Type[] types);
 
-        void PopulateContributedActions(INakedObject[] services);
+        void PopulateContributedActions(Type[] services);
 
         void Shutdown();
 

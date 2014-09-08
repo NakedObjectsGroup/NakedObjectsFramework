@@ -23,11 +23,10 @@ namespace RestfulObjects.Test.Data {
         private IList<MostSimple> list = new List<MostSimple>();
         private ISet<MostSimple> set = new HashSet<MostSimple>();
 
-        [Key, Title]
+        [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
 
-        [ConcurrencyCheck, Hidden]
-        public virtual DateTime ModifiedDate { get; set; }
+       
 
         [NotMapped]
         public virtual sbyte SByte { get; set; }

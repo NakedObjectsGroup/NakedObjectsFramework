@@ -11,7 +11,7 @@ namespace RestfulObjects.Test.Data {
 
     [Eagerly(Do.Rendering)]
     public class VerySimpleEager {
-        [Key, Hidden]
+        [Key, Hidden, ConcurrencyCheck]
         public virtual int Id { get; set; }
 
         [Optionally, Title]

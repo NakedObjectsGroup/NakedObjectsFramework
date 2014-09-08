@@ -93,7 +93,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             type.ForEach(InstallServiceSpecification);
         }
 
-        public virtual void PopulateContributedActions(INakedObject[] services) {
+        public virtual void PopulateContributedActions(Type[] services) {
             try {
                 if (!linked) {
                     AllSpecifications.OfType<IIntrospectableSpecification>().ForEach(s => s.PopulateAssociatedActions(services));
@@ -155,7 +155,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                     introspectableSpecification.Introspect(facetDecorator);
 
                     if (!installingServices) {
-                        introspectableSpecification.PopulateAssociatedActions(NonSystemServices);
+                        var services = NonSystemServices ?? new INakedObject[] {};
+                        introspectableSpecification.PopulateAssociatedActions(services.Select(s => s.Object.GetType()).ToArray());
                     }
                 }
 

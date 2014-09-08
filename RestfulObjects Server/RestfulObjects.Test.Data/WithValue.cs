@@ -13,11 +13,8 @@ namespace RestfulObjects.Test.Data {
     public class WithValue {
         private DateTime aDateTimeValue = new DateTime(2012, 2, 10);
 
-        [Key, Title]
+        [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
-
-        [ConcurrencyCheck, Hidden]
-        public virtual DateTime ModifiedDate { get; set; }
 
         [PresentationHint("class3 class4")]
         public virtual int AValue { get; set; }

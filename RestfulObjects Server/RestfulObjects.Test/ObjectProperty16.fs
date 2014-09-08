@@ -3125,8 +3125,8 @@ let DeleteValuePropertyInternalError(api : RestfulObjectsControllerBase) =
         let parsedResult = JObject.Parse(jsonResult)
 
         let expected = [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"));
-                         TProperty(JsonPropertyNames.StackTrace, TArray([ TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12"));
-                                                                          TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12"))]));
+                         TProperty(JsonPropertyNames.StackTrace, TArray([ TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.set_AnErrorValue(Int32 value) in e:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\RestfulObjects Server\\RestfulObjects.Test.Data\\WithError.cs:line 26"));
+                                                                        ]));
                          TProperty(JsonPropertyNames.Links, TArray([]))
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([]))]
 

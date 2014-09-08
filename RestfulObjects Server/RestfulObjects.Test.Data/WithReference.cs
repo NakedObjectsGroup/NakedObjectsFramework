@@ -13,11 +13,10 @@ namespace RestfulObjects.Test.Data {
         public IDomainObjectContainer Container { set; protected get; }
 
 
-        [Key, Title]
+        [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
 
-        [ConcurrencyCheck, Hidden]
-        public virtual DateTime ModifiedDate { get; set; }
+   
 
         public virtual MostSimple AReference { get; set; }
 

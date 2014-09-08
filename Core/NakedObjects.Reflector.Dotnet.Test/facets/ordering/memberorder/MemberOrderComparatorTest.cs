@@ -3,6 +3,8 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using Moq;
+using NakedObjects.Architecture.Persist;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
@@ -21,12 +23,17 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         private MemberOrderComparator comparator;
         private MemberOrderComparator laxComparator;
 
-        private MemberPeerStub m1 = new MemberPeerStub("abc");
-        private MemberPeerStub m2 = new MemberPeerStub("abc");
+        private MemberPeerStub m1;
+        private MemberPeerStub m2;
+
+        public MemberOrderComparatorTest() {
+            Reset();
+        }
 
         private void Reset() {
-            m1 = new MemberPeerStub("abc");
-            m2 = new MemberPeerStub("abc");
+            var p = new Mock<INakedObjectPersistor>().Object;
+            m1 = new MemberPeerStub("abc", p);
+            m2 = new MemberPeerStub("abc", p);
         }
 
 

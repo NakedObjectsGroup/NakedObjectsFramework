@@ -39,7 +39,7 @@ namespace NakedObjects.Xat {
         #region ITestAction Members
 
         public string Name {
-            get { return action.Name; }
+            get { return action.GetName(persistor); }
         }
 
         public string SubMenu { get; private set; }

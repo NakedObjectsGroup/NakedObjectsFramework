@@ -8,10 +8,8 @@ using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
     public class WithActionObject : WithAction {
-        [Key, Title]
+        [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
 
-        [ConcurrencyCheck, Hidden]
-        public virtual DateTime ModifiedDate { get; set; }
     }
 }

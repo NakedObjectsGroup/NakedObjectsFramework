@@ -28,7 +28,7 @@ namespace NakedObjects.Xat {
         #region ITestParameter Members
 
         public string Name {
-            get { return parameter.Name; }
+            get { return parameter.GetName(persistor); }
         }
 
         public INakedObject NakedObject {

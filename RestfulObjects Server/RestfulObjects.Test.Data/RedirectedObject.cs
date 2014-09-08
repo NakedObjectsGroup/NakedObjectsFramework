@@ -8,7 +8,7 @@ using NakedObjects.Redirect;
 
 namespace RestfulObjects.Test.Data {
     public class RedirectedObject : IRedirectedObject {
-        [Key, Title]
+        [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
 
         [Hidden]

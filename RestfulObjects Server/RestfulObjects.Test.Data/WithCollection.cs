@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using NakedObjects;
 using Do = NakedObjects.EagerlyAttribute.Do;
 
@@ -14,41 +13,45 @@ namespace RestfulObjects.Test.Data {
         private IList<MostSimple> anEmptyCollection = new List<MostSimple>();
 
         private ISet<MostSimple> anEmptySet = new HashSet<MostSimple>();
+        private IList<MostSimple> aCollection = new List<MostSimple>();
+        private IList<MostSimpleViewModel> aCollectionViewModels = new List<MostSimpleViewModel>();
+        private ISet<MostSimple> aSet = new HashSet<MostSimple>();
+        private IList<MostSimple> aDisabledCollection = new List<MostSimple>();
+        private IList<MostSimple> aHiddenCollection = new List<MostSimple>();
+        private IList<MostSimple> anEagerCollection = new List<MostSimple>();
 
         public IDomainObjectContainer Container { set; protected get; }
 
-        [Key, Title]
+        [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
 
-        [ConcurrencyCheck, Hidden]
-        public virtual DateTime ModifiedDate { get; set; }
-
+     
         [PresentationHint("class7 class8")]
         public virtual IList<MostSimple> ACollection {
-            get { return  Container == null ? new List<MostSimple>()  : Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList(); }
-            set { }
+            get { return aCollection; }
+            set { aCollection = value; }
         }
 
         public virtual IList<MostSimpleViewModel> ACollectionViewModels {
-            get { return  Container == null ? new List<MostSimpleViewModel>()  :   new[] {1, 2}.Select(NewViewModel).ToList(); }
-            set { }
+            get { return aCollectionViewModels; }
+            set { aCollectionViewModels = value; }
         }
 
         public virtual ISet<MostSimple> ASet {
-            get { return Container == null ? new HashSet<MostSimple>() : new HashSet<MostSimple>(Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2)); }
-            set { }
+            get { return aSet; }
+            set { aSet = value; }
         }
 
         [Disabled]
         public virtual IList<MostSimple> ADisabledCollection {
-            get { return Container == null ? new List<MostSimple>() : Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList(); }
-            set { }
+            get { return aDisabledCollection; }
+            set { aDisabledCollection = value; }
         }
 
         [Hidden]
         public virtual IList<MostSimple> AHiddenCollection {
-            get { return Container == null ? new List<MostSimple>() : Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList(); }
-            set { }
+            get { return aHiddenCollection; }
+            set { aHiddenCollection = value; }
         }
 
         [DescribedAs("an empty collection for testing")]
@@ -65,16 +68,10 @@ namespace RestfulObjects.Test.Data {
             set { anEmptySet = value; }
         }
 
-        private MostSimpleViewModel NewViewModel(int id) {
-            var vm = Container.NewViewModel<MostSimpleViewModel>();
-            vm.Id = id;
-            return vm;
-        }
-
         [Eagerly(Do.Rendering)]
         public virtual IList<MostSimple> AnEagerCollection {
-            get { return Container == null ? new List<MostSimple>() : Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList(); }
-            set { }
+            get { return anEagerCollection; }
+            set { anEagerCollection = value; }
         }
     }
 }

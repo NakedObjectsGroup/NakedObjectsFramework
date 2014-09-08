@@ -4,19 +4,24 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     internal class MemberPeerStub : NamedAndDescribedFacetHolderImpl, INakedObjectMemberPeer {
-        public MemberPeerStub(string name)
-            : base(name) {}
+        private readonly INakedObjectPersistor persistor;
+
+        public MemberPeerStub(string name, INakedObjectPersistor persistor)
+            : base(name) {
+            this.persistor = persistor;
+        }
 
         #region INakedObjectMemberPeer Members
 
         public override IIdentifier Identifier {
-            get { return new IdentifierNull(this); }
+            get { return new IdentifierNull(this, persistor); }
         }
 
         #endregion
@@ -50,21 +55,23 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         }
 
         public override string ToString() {
-            return Name;
+            return GetName(persistor);
         }
 
         #region Nested Type: IdentifierNull
 
         private class IdentifierNull : IdentifierImpl {
             private readonly MemberPeerStub owner;
+            private readonly INakedObjectPersistor persistor;
 
-            public IdentifierNull(MemberPeerStub owner)
+            public IdentifierNull(MemberPeerStub owner, INakedObjectPersistor persistor)
                 : base(null, "", "") {
                 this.owner = owner;
+                this.persistor = persistor;
             }
 
             public override string ToString() {
-                return owner.Name;
+                return owner.GetName(persistor);
             }
         };
 

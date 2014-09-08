@@ -32,50 +32,45 @@ open NakedObjects.Surface
 open MvcTestApp.Controllers
 
 let seedCodeFirstDatabase (context : CodeFirstContext) = 
-    let ms1 = new MostSimple()
-    ms1.Id <- 1
-    let ms2 = new MostSimple()
-    ms2.Id <- 2
-    let ms3 = new MostSimple()
-    ms3.Id <- 3
-
-    ms1.ModifiedDate <- DateTime.UtcNow
-    ms2.ModifiedDate <- DateTime.UtcNow
-    ms3.ModifiedDate <- DateTime.UtcNow
+    let ms1 = new MostSimple(Id = 1)
+    let ms2 = new MostSimple(Id = 2) 
+    //let ms3 = new MostSimple(3)
+  
+    //ms1.ModifiedDate <- DateTime.UtcNow
+    //ms2.ModifiedDate <- DateTime.UtcNow
+    //ms3.ModifiedDate <- DateTime.UtcNow
 
     context.MostSimples.Add(ms1) |> ignore
     context.MostSimples.Add(ms2) |> ignore
-    context.MostSimples.Add(ms3) |> ignore
+    //context.MostSimples.Add(ms3) |> ignore
 
-    
-
-    let wr1 = new WithReference()
-    wr1.Id <- 1
+    let wr1 = new WithReference(Id = 1)
+  
     wr1.AReference <- ms1
     wr1.ADisabledReference <- ms1
     wr1.AChoicesReference <- ms1
     wr1.AnEagerReference <- ms1
     wr1.AnAutoCompleteReference <- ms1
-    wr1.ModifiedDate <- DateTime.UtcNow
-    let wr2 = new WithReference()
-    wr2.Id <- 2
+    //wr1.ModifiedDate <- DateTime.UtcNow
+    let wr2 = new WithReference(Id = 2)
+  
     wr2.AReference <- ms1
     wr2.ADisabledReference <- ms1
     wr2.AChoicesReference <- ms1
     wr2.AnEagerReference <- ms1
     wr2.AnAutoCompleteReference <- ms1
-    wr2.ModifiedDate <- DateTime.UtcNow
+    //wr2.ModifiedDate <- DateTime.UtcNow
     context.WithReferences.Add(wr1) |> ignore
     context.WithReferences.Add(wr2) |> ignore
-    let wv1 = new WithValue()
-    wv1.Id <- 1
+    let wv1 = new WithValue(Id = 1)
+  
     wv1.AValue <- 100
     wv1.ADisabledValue <- 200
     wv1.AStringValue <- ""
-    wv1.ModifiedDate <- DateTime.UtcNow
+    //wv1.ModifiedDate <- DateTime.UtcNow
     context.WithValues.Add(wv1) |> ignore
-    let ws1 = new WithScalars()
-    ws1.Id <- 1
+    let ws1 = new WithScalars(Id = 1)
+    
     ws1.Bool <- true
     ws1.Byte <- (byte) 1
     ws1.ByteArray <- [| (byte) 2 |]
@@ -94,45 +89,64 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
     ws1.ULong <- (uint64) 15
     ws1.UShort <- (uint16) 16
 
-    ws1.ModifiedDate <- DateTime.UtcNow
+    //ws1.ModifiedDate <- DateTime.UtcNow
 
     context.WithScalarses.Add(ws1) |> ignore
-    let wa1 = new WithActionObject()
-    wa1.Id <- 1
-    wa1.ModifiedDate <- DateTime.UtcNow
+    let wa1 = new WithActionObject(Id = 1)
+ 
+    //wa1.ModifiedDate <- DateTime.UtcNow
     context.WithActionObjects.Add(wa1) |> ignore
-    let wc1 = new WithCollection()
-    wc1.Id <- 1
-    wc1.ModifiedDate <- DateTime.UtcNow
+    let wc1 = new WithCollection(Id = 1)
+    
+    //wc1.ModifiedDate <- DateTime.UtcNow
+
+    wc1.ACollection.Add(ms1)
+    wc1.ACollection.Add(ms2)
+
+    wc1.ACollectionViewModels.Add(new MostSimpleViewModel(Id = 1))
+    wc1.ACollectionViewModels.Add(new MostSimpleViewModel(Id = 2))
+
+    wc1.ASet.Add(ms1) |> ignore
+    wc1.ASet.Add(ms2) |> ignore
+
+    wc1.ADisabledCollection.Add(ms1)
+    wc1.ADisabledCollection.Add(ms2)
+
+    wc1.AHiddenCollection.Add(ms1)
+    wc1.AHiddenCollection.Add(ms2)
+
+    wc1.AnEagerCollection.Add(ms1)
+    wc1.AnEagerCollection.Add(ms2)
+
     context.WithCollections.Add(wc1) |> ignore
-    let we1 = new WithError()
-    we1.Id <- 1
+    let we1 = new WithError(Id = 1)
+   
     context.WithErrors.Add(we1) |> ignore
-    let wge1 = new WithGetError()
-    wge1.Id <- 1
+    let wge1 = new WithGetError(Id = 1)
+   
     context.WithGetErrors.Add(wge1) |> ignore
-    let i1 = new Immutable()
-    i1.Id <- 1
+    let i1 = new Immutable(Id = 1)
+   
     context.Immutables.Add(i1) |> ignore
-    let vs1 = new VerySimple()
-    vs1.Id <- 1
+    let vs1 = new VerySimple(Id = 1)
+  
     context.VerySimples.Add(vs1) |> ignore
-    let vse1 = new VerySimpleEager()
-    vse1.Id <- 1
+    let vse1 = new VerySimpleEager(Id = 1)
+  
     context.VerySimpleEagers.Add(vse1) |> ignore
     let dt1 = new WithDateTimeKey()
     dt1.Id <- (new DateTime(634835232000000000L)).Date
     context.WithDateTimeKeys.Add(dt1) |> ignore
-    let rdo1 = new RedirectedObject()
-    rdo1.Id <- 1
+    let rdo1 = new RedirectedObject(Id = 1)
+   
     rdo1.ServerName <- "RedirectedToServer"
     rdo1.Oid <- "RedirectedToOid"
     context.RedirectedObjects.Add(rdo1) |> ignore
-    let wat1 = new WithAttachments()
-    wat1.Id <- 1
+    let wat1 = new WithAttachments(Id = 1)
+   
     context.WithAttachments.Add(wat1) |> ignore
     let added = context.SaveChanges()
-    Assert.AreEqual(27, added)
+    Assert.AreEqual(40, added)
     ()
     
 type CodeFirstInitializer() = 

@@ -26,7 +26,7 @@ namespace NakedObjects.Xat {
 
         public ITestService CreateTestService(Object service) {
             var no = persistor.GetAdapterFor(service);
-            return new TestService(no, this);
+            return new TestService(no, persistor, this);
         }
 
         public ITestCollection CreateTestCollection(INakedObject instances) {

@@ -35,7 +35,7 @@ namespace NakedObjects.Xat {
         #region ITestProperty Members
 
         public string Name {
-            get { return field.Name; }
+            get { return field.GetName(persistor); }
         }
 
         public string Id {

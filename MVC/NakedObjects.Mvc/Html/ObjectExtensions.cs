@@ -138,7 +138,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ActionResult(this HtmlHelper html, ActionResultModel model) {
             INakedObject nakedObject = html.Framework().ObjectPersistor.CreateAdapter(model.Result, null, null);
             string title = GetCollectionTitle(nakedObject, html);
-            title = model.Action.Name + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title);
+            title = model.Action.GetName(html.Framework().ObjectPersistor) + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title);
             return CommonHtmlHelper.WrapInDiv(title, IdHelper.ObjectName);
         }
 

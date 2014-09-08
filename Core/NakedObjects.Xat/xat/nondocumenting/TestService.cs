@@ -3,10 +3,11 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Xat {
     internal class TestService : TestHasActions, ITestService {
-        public TestService(INakedObject service, ITestObjectFactory factory) : base(factory) {
+        public TestService(INakedObject service, INakedObjectPersistor persistor, ITestObjectFactory factory) : base(factory, persistor) {
             NakedObject = service;
         }
 

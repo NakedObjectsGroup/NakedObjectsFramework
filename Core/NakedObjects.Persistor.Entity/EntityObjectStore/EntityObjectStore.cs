@@ -68,6 +68,7 @@ namespace NakedObjects.EntityObjectStore {
         private IDictionary<EntityContextConfiguration, LocalContext> contexts = new Dictionary<EntityContextConfiguration, LocalContext>();
         private IContainerInjector injector;
         private IUpdateNotifier updateNotifier;
+        private INakedObjectManager manager;
 
         #region Delegates
 
@@ -126,7 +127,13 @@ namespace NakedObjects.EntityObjectStore {
             Reset();
         }
 
-        public INakedObjectManager Manager { get; set; }
+        public INakedObjectManager Manager {
+            get { return manager; }
+            set {
+                manager = value;
+                contexts.Values.ForEach(c => c.Manager = manager);
+            }
+        }
 
         #region for testing only
 
@@ -235,6 +242,7 @@ namespace NakedObjects.EntityObjectStore {
                 }
             };
 
+            context.Manager = Manager;
             return context;
         }
 
@@ -349,7 +357,7 @@ namespace NakedObjects.EntityObjectStore {
 
         private  LocalContext ResetPocoContext(PocoEntityContextConfiguration pocoConfig) {
             try {
-                return new LocalContext(pocoConfig, session, Manager) {IsInitialized = true};
+                return new LocalContext(pocoConfig, session) {IsInitialized = true};
             }
             catch (Exception e) {
                 string explain = string.Format(Resources.NakedObjects.StartPersistorErrorMessage, pocoConfig.ContextName);
@@ -359,7 +367,7 @@ namespace NakedObjects.EntityObjectStore {
 
         private  LocalContext ResetCodeOnlyContext(CodeFirstEntityContextConfiguration codeOnlyConfig) {
             try {
-                return new LocalContext(codeOnlyConfig, session, Manager);
+                return new LocalContext(codeOnlyConfig, session);
             }
             catch (Exception e) {
                 throw new InitialisationException(Resources.NakedObjects.StartPersistorErrorCodeFirst, e);
@@ -824,7 +832,6 @@ namespace NakedObjects.EntityObjectStore {
 
         public class LocalContext {
             private readonly ISession session;
-            private readonly INakedObjectManager manager;
             private readonly List<object> added = new List<object>();
             private readonly IDictionary<Type, Type> baseTypeMap = new Dictionary<Type, Type>();
             private readonly ISet<INakedObject> deletedNakedObjects = new HashSet<INakedObject>();
@@ -836,28 +843,30 @@ namespace NakedObjects.EntityObjectStore {
             private List<INakedObject> coUpdating;
             private List<INakedObject> updatingNakedObjects;
 
-            private LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session, INakedObjectManager manager) {
+            private LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session) {
                 this.session = session;
-                this.manager = manager;
+               
                 preCachedTypes.ForEach(t => ownedTypes.Add(t));
                 notPersistedTypes.ForEach(t => this.notPersistedTypes.Add(t));
             }
 
-            public LocalContext(PocoEntityContextConfiguration config, ISession session, INakedObjectManager manager)
-                : this(config.PreCachedTypes(), config.NotPersistedTypes(), session, manager) {
+            public LocalContext(PocoEntityContextConfiguration config, ISession session)
+                : this(config.PreCachedTypes(), config.NotPersistedTypes(), session) {
                 WrappedObjectContext = new ObjectContext("name=" + config.ContextName);
                 Name = config.ContextName;
                 Log.DebugFormat("Context {0} Created", Name);
                 ValidatePreCachedTypes(config);
             }
 
-            public LocalContext(CodeFirstEntityContextConfiguration config, ISession session, INakedObjectManager manager)
-                : this(config.PreCachedTypes(), config.NotPersistedTypes(), session, manager) {
+            public LocalContext(CodeFirstEntityContextConfiguration config, ISession session)
+                : this(config.PreCachedTypes(), config.NotPersistedTypes(), session) {
                 WrappedObjectContext = ((IObjectContextAdapter) config.DbContext()).ObjectContext;
                 Name = WrappedObjectContext.DefaultContainerName;
                 Log.DebugFormat("Context {0} Wrapped", Name);
                 ValidatePreCachedTypes(config);
             }
+
+            public INakedObjectManager Manager { protected get; set; }
 
             public ObjectContext WrappedObjectContext { get; private set; }
 
@@ -980,11 +989,11 @@ namespace NakedObjects.EntityObjectStore {
                 WrappedObjectContext.DetectChanges();
                 added.AddRange(WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added).Where(ose => !ose.IsRelationship).Select(ose => ose.Entity).ToList());
                 updatingNakedObjects = GetChangedObjectsInContext(WrappedObjectContext).Select(obj => createAdapter(null, obj)).ToList();
-                updatingNakedObjects.ForEach(no => updating(no, session, (INakedObjectPersistor)manager));
+                updatingNakedObjects.ForEach(no => updating(no, session, (INakedObjectPersistor)Manager));
 
                 // need to do complextype separately as they'll not be updated in the SavingChangeshandler as they're not proxied. 
                 coUpdating = GetChangedComplexObjectsInContext(this).Select(obj => createAdapter(null, obj)).ToList();
-                coUpdating.ForEach(no => updating(no, session, (INakedObjectPersistor)manager));
+                coUpdating.ForEach(no => updating(no, session, (INakedObjectPersistor)Manager));
             }
 
             public bool HasChanges() {
@@ -995,13 +1004,13 @@ namespace NakedObjects.EntityObjectStore {
 
             public void PostSave(EntityObjectStore store) {
                 try {
-                    updatingNakedObjects.ForEach(no => updated(no, session, (INakedObjectPersistor)manager));
-                    updatingNakedObjects.ForEach(x => x.UpdateVersion(session, manager));
-                    coUpdating.ForEach(no => updated(no, session, (INakedObjectPersistor)manager));
+                    updatingNakedObjects.ForEach(no => updated(no, session, (INakedObjectPersistor)Manager));
+                    updatingNakedObjects.ForEach(x => x.UpdateVersion(session, Manager));
+                    coUpdating.ForEach(no => updated(no, session, (INakedObjectPersistor)Manager));
                     // Take a copy of PersistedNakedObjects and clear original so new ones can be added 
                     INakedObject[] currentPersistedNakedObjects = PersistedNakedObjects.ToArray();
                     PersistedNakedObjects.Clear();
-                    currentPersistedNakedObjects.ForEach(no => persisted(no, session, (INakedObjectPersistor)manager));
+                    currentPersistedNakedObjects.ForEach(no => persisted(no, session, (INakedObjectPersistor)Manager));
                 }
                 finally {
                     coUpdating.ForEach(x => notifyUi(x));

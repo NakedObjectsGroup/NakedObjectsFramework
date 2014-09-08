@@ -41,7 +41,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public string Name {
-            get { return nakedObjectActionParameter.Name; }
+            get { return nakedObjectActionParameter.GetName(framework.ObjectPersistor); }
         }
 
         public string Description {

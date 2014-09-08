@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Reflector.DotNet.Facets;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
@@ -23,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             //context.SetObjectPersistor(new TestProxyPersistor());
 
             specification = LoadSpecification(reflector);
-            specification.PopulateAssociatedActions(new INakedObject[] {});
+            specification.PopulateAssociatedActions(new Type[] {});
         }
 
         protected abstract DotNetSpecification LoadSpecification(DotNetReflector reflector);

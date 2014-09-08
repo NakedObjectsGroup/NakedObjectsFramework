@@ -213,6 +213,7 @@ namespace NakedObjects.Xat {
             Type[] services = s1.Union(s2).Union(s3).ToArray();
 
             reflector.InstallServiceSpecifications(services);
+            reflector.PopulateContributedActions(s1.Union(s2).ToArray());
         }
 
         protected void CleanupNakedObjectsFramework() {

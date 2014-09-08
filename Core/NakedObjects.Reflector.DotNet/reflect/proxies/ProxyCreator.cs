@@ -9,9 +9,9 @@ using System.Reflection.Emit;
 using Common.Logging;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Facets.Objects.Key;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
@@ -41,7 +41,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
             return ns + typeToProxy.FullName;
         }
 
-        public static Type CreateProxyType(INakedObjectReflector reflector, Type typeToProxy) {
+        public static Type CreateProxyType(INakedObjectReflector reflector, INakedObjectPersistor persistor, Type typeToProxy) {
             // do not proxy EF domain objects 
 
             if (TypeUtils.IsEntityDomainObject(typeToProxy) ||
@@ -61,7 +61,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
                         TypeBuilder typeBuilder = ModuleBuilder.DefineType(typeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Sealed, typeToProxy);
                         FieldBuilder containerField = CreateContainerProperty(typeBuilder);
                         CreateProperties(reflector, typeBuilder, typeToProxy, containerField);
-                        SubclassAllCollectionAccessors(reflector, typeBuilder, typeToProxy, containerField);
+                        SubclassAllCollectionAccessors(reflector, persistor, typeBuilder, typeToProxy, containerField);
                         proxyType = typeBuilder.CreateType();
                     }
                     return proxyType;
@@ -149,10 +149,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
                           ForEach(name => SubclassCollectionAccessorIfFound(typeToProxy, name, typeBuilder, containerField));
         }
 
-        private static void SubclassAllCollectionAccessors(INakedObjectReflector reflector, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
+        private static void SubclassAllCollectionAccessors(INakedObjectReflector reflector, INakedObjectPersistor persistor, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
             INakedObjectAssociation[] associations = reflector.LoadSpecification(typeToProxy).Properties.Where(a => a.IsCollection).ToArray();
 
-            associations.ForEach(assoc => SubclassCollectionAccessors(typeBuilder, typeToProxy, containerField, assoc.Name));
+            associations.ForEach(assoc => SubclassCollectionAccessors(typeBuilder, typeToProxy, containerField, assoc.GetName(persistor)));
         }
 
         private static FieldBuilder CreateContainerProperty(TypeBuilder typeBuilder) {

@@ -73,7 +73,7 @@ namespace NakedObjects.Persistor {
                         if (field is IOneToManyAssociation) {
                             INakedObject collection = field.GetNakedObject(nakedObject, persistor);
                             if (collection == null) {
-                                throw new NotPersistableException("Collection " + field.Name + " does not exist in " + nakedObject.Specification.FullName);
+                                throw new NotPersistableException("Collection " + field.GetName(persistor) + " does not exist in " + nakedObject.Specification.FullName);
                             }
                             MakePersistent(collection, persistor, session);
                         }

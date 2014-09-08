@@ -44,7 +44,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObject adapter = html.Framework().GetNakedObject(domainObject);
             var collections = adapter.Specification.Properties.Where(obj => obj.IsCollection && obj.IsVisible(html.Framework().Session, adapter, html.Framework().ObjectPersistor)).Select(a => new { assoc = a, val = a.GetNakedObject(adapter, html.Framework().ObjectPersistor) });
 
-            return collections.Select(coll => string.Format(format, coll.assoc.Name, coll.val.TitleString())).ToArray();
+            return collections.Select(coll => string.Format(format, coll.assoc.GetName(html.Framework().ObjectPersistor), coll.val.TitleString())).ToArray();
         }
 
         #endregion

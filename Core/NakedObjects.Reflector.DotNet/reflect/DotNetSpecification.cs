@@ -32,7 +32,6 @@ using NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural;
 using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.DotNet.Reflect.Actions;
 using NakedObjects.Reflector.DotNet.Reflect.Propcoll;
-using NakedObjects.Reflector.DotNet.Reflect.Proxies;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
@@ -186,7 +185,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return superClassSpecification != null && superClassSpecification.IsOfType(specification);
         }
 
-        public override void PopulateAssociatedActions(INakedObject[] services) {
+        public override void PopulateAssociatedActions(Type[] services) {
             if (string.IsNullOrWhiteSpace(FullName)) {
                 string id = (identifier != null ? identifier.ClassName : "unknown") ?? "unknown";
                 Log.WarnFormat("Specification with id : {0} as has null or empty name", id);
@@ -203,17 +202,16 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             PopulateRelatedActions(services);
         }
 
-        private  void PopulateContributedActions(INakedObject[] services) {
+        private  void PopulateContributedActions(Type[] services) {
             var serviceActionSets = new List<INakedObjectAction>();
 
             if (!IsService) {
-                foreach (INakedObject serviceAdapter in services) {
-                    INakedObjectSpecification specification = serviceAdapter.Specification;
+                foreach (Type serviceType in services) {
+                    INakedObjectSpecification specification = reflector.LoadSpecification(serviceType);
                     if (specification != this) {
                         INakedObjectAction[] matchingServiceActions = specification.GetActionLeafNodes().Where(serviceAction => serviceAction.IsContributedTo(this)).ToArray();
                         if (matchingServiceActions.Any()) {
-                            var nakedObjectActionSet = new NakedObjectActionSet(serviceAdapter.Specification.Identifier.ClassName,
-                                                                                serviceAdapter.TitleString(),
+                            var nakedObjectActionSet = new NakedObjectActionSet(specification.Identifier.ClassName,
                                                                                 matchingServiceActions);
                             serviceActionSets.Add(nakedObjectActionSet);
                         }
@@ -223,11 +221,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             contributedActions = serviceActionSets.ToArray();
         }
 
-        private void PopulateRelatedActions(INakedObject[] services) {
+        private void PopulateRelatedActions(Type[] services) {
             var relatedActionSets = new List<INakedObjectAction>();
-            foreach (INakedObject serviceAdapter in services) {
+            foreach (Type serviceType in services) {
+                INakedObjectSpecification specification = reflector.LoadSpecification(serviceType);
                 var matchingActions = new List<INakedObjectAction>();
-                foreach (INakedObjectAction serviceAction in serviceAdapter.Specification.GetActionLeafNodes().Where(a => a.IsFinderMethod)) {
+                foreach (INakedObjectAction serviceAction in specification.GetActionLeafNodes().Where(a => a.IsFinderMethod)) {
                     INakedObjectSpecification returnType = serviceAction.ReturnType;
                     if (returnType != null && returnType.IsCollection) {
                         INakedObjectSpecification elementType = returnType.GetFacet<ITypeOfFacet>().ValueSpec;
@@ -240,8 +239,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                     }
                 }
                 if (matchingActions.Count > 0) {
-                    var nakedObjectActionSet = new NakedObjectActionSet(serviceAdapter.Specification.Identifier.ClassName,
-                                                                        serviceAdapter.TitleString(),
+                    var nakedObjectActionSet = new NakedObjectActionSet(specification.Identifier.ClassName,
                                                                         matchingActions.ToArray());
                     relatedActionSets.Add(nakedObjectActionSet);
                 }
@@ -443,7 +441,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         public override void MarkAsService() {
             if (Properties.Any(field => field.Id != "Id")) {
-                string fieldNames = Properties.Where(field => field.Id != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") + field.Name);
+                string fieldNames = Properties.Where(field => field.Id != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
                 throw new ModelException(string.Format(Resources.NakedObjects.ServiceObjectWithFieldsError, FullName, fieldNames));
             }
             service = true;

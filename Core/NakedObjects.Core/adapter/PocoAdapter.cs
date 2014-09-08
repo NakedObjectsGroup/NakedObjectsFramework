@@ -145,12 +145,12 @@ namespace NakedObjects.Core.Adapter {
                 INakedObject referencedObject = property.GetNakedObject(this, persistor);
                 if (property.IsUsable(session, this, persistor).IsAllowed && property.IsVisible(session, this, persistor)) {
                     if (property.IsMandatory && property.IsEmpty(this, persistor)) {
-                        return string.Format(Resources.NakedObjects.PropertyMandatory, specification.ShortName, property.Name);
+                        return string.Format(Resources.NakedObjects.PropertyMandatory, specification.ShortName, property.GetName(persistor));
                     }
                     if (property.IsObject) {
                         IConsent valid = ((IOneToOneAssociation) property).IsAssociationValid(this, referencedObject, session);
                         if (valid.IsVetoed) {
-                            return string.Format(Resources.NakedObjects.PropertyInvalid, specification.ShortName, property.Name, valid.Reason);
+                            return string.Format(Resources.NakedObjects.PropertyInvalid, specification.ShortName, property.GetName(persistor), valid.Reason);
                         }
                     }
                 }

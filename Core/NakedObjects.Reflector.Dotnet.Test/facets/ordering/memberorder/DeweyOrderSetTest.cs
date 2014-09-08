@@ -3,6 +3,8 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System.Collections.Generic;
+using Moq;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Reflector.Peer;
 using NUnit.Framework;
 
@@ -13,11 +15,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
 
         [SetUp]
         public void Initialize() {
-            lastNameMember = new MemberPeerStub("LastName");
-            firstNameMember = new MemberPeerStub("FirstName");
-            houseNumberMember = new MemberPeerStub("HouseNumber");
-            streetNameMember = new MemberPeerStub("StreetName");
-            postalTownMember = new MemberPeerStub("PostalTown");
+            var p = new Mock<INakedObjectPersistor>().Object;
+            lastNameMember = new MemberPeerStub("LastName", p);
+            firstNameMember = new MemberPeerStub("FirstName", p);
+            houseNumberMember = new MemberPeerStub("HouseNumber", p);
+            streetNameMember = new MemberPeerStub("StreetName", p);
+            postalTownMember = new MemberPeerStub("PostalTown", p);
             lastNameAndFirstName = new[] {lastNameMember, firstNameMember};
             nameAndAddressMembers = new[] {lastNameMember, firstNameMember, houseNumberMember, streetNameMember, postalTownMember};
             lastNameFirstNameAndPostalTown = new[] {lastNameMember, firstNameMember, postalTownMember};

@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Immutable;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
@@ -17,9 +18,11 @@ using NakedObjects.Reflector.Spec;
 namespace NakedObjects.Xat {
     internal abstract class TestHasActions : ITestHasActions {
         protected readonly ITestObjectFactory factory;
+        private readonly INakedObjectPersistor persistor;
 
-        protected TestHasActions(ITestObjectFactory factory) {
+        protected TestHasActions(ITestObjectFactory factory, INakedObjectPersistor persistor) {
             this.factory = factory;
+            this.persistor = persistor;
         }
 
         #region ITestHasActions Members
@@ -33,7 +36,7 @@ namespace NakedObjects.Xat {
                     Select(x => factory.CreateTestAction(x, this)).ToList();
 
                 foreach (NakedObjectActionSet set in NakedObject.Specification.GetObjectActions().OfType<NakedObjectActionSet>()) {
-                    actions.AddRange(set.Actions.Select(x => factory.CreateTestAction(set.Name, x, this)));
+                    actions.AddRange(set.Actions.Select(x => factory.CreateTestAction(set.GetName(persistor), x, this)));
                 }
 
                 return actions.ToArray();
@@ -114,11 +117,11 @@ namespace NakedObjects.Xat {
             return base.ToString() + " " + NakedObject.Specification.ShortName + "/" + NakedObject;
         }
 
-        private static string AppendActions(INakedObjectAction[] actions) {
+        private  string AppendActions(INakedObjectAction[] actions) {
             var order = new StringBuilder();
             for (int i = 0; i < actions.Length; i++) {
                 INakedObjectAction action = actions[i];
-                string name = action.Name;
+                string name = action.GetName(persistor);
                 if (action is NakedObjectActionSet) {
                     order.Append("(").Append(name).Append(":");
                     order.Append(AppendActions(action.Actions));

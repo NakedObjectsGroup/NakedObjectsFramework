@@ -18,7 +18,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
 
@@ -265,7 +264,7 @@ namespace NakedObjects.Reflector.Spec {
                     return serviceAdapter;
                 }
             }
-            throw new FindObjectException("failed to find service for action " + Name);
+            throw new FindObjectException("failed to find service for action " + GetName(persistor));
         }
 
         private INakedObjectActionParameter GetParameter(int position) {

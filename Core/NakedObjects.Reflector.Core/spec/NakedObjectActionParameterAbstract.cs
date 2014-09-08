@@ -76,12 +76,10 @@ namespace NakedObjects.Reflector.Spec {
             get { return peer.Specification; }
         }
 
-        public virtual string Name {
-            get {
-                var facet = GetFacet<INamedFacet>();
-                string name = facet == null ? null : facet.Value;
-                return name ?? peer.Specification.SingularName;
-            }
+        public string GetName(INakedObjectPersistor persistor) {
+            var facet = GetFacet<INamedFacet>();
+            string name = facet == null ? null : facet.Value;
+            return name ?? peer.Specification.SingularName;
         }
 
         public virtual string Description {

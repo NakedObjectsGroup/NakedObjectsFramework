@@ -11,7 +11,7 @@ using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
     public class VerySimple {
-        [Key, Hidden]
+        [Key, Hidden, ConcurrencyCheck]
         public virtual int Id { get; set; }
 
         [Optionally, Title]

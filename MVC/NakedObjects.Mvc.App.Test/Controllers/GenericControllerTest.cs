@@ -131,11 +131,11 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsInstanceOf(typeof (T), data.Model);
         }
 
-        private static void AssertIsDialogViewOfAction(ViewResult result, string actionName) {
+        private  void AssertIsDialogViewOfAction(ViewResult result, string actionName) {
             Assert.AreEqual("ActionDialog", result.ViewName);
             ViewDataDictionary data = result.ViewData;
             Assert.IsInstanceOf(typeof (FindViewModel), data.Model);
-            Assert.AreEqual(actionName, ((FindViewModel) data.Model).ContextAction.Name);
+            Assert.AreEqual(actionName, ((FindViewModel) data.Model).ContextAction.GetName(NakedObjectsFramework.ObjectPersistor));
         }
 
 

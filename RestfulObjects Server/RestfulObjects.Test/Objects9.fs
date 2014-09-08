@@ -197,13 +197,13 @@ let PersistMostSimpleTransientObject(api : RestfulObjectsControllerBase) =
     let jsonPersist = readSnapshotToJson persistResult
     let parsedPersist = JObject.Parse(jsonPersist)
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-    let oid = roType + "/" + ktc "1"
+    let oid = roType + "/" + ktc "3"
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
-          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
-          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "3"))
+          TProperty(JsonPropertyNames.Title, TObjectVal("3"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object roType)
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "")
@@ -272,13 +272,13 @@ let PersistMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBas
     let jsonPersist = readSnapshotToJson persistResult
     let parsedPersist = JObject.Parse(jsonPersist)
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
-    let oid = oType + "/" + ktc "1"
+    let oid = oType + "/" + ktc "3"
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
-          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "3"))
+          TProperty(JsonPropertyNames.Title, TObjectVal("3"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
                              //TObjectJson(makeIconLink()); 

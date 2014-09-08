@@ -26,7 +26,7 @@ namespace NakedObjects.Xat {
         }
 
         public TestObject(INakedObjectPersistor persistor,   INakedObject nakedObject, ITestObjectFactory factory)
-            : base(factory) {
+            : base(factory, persistor) {
             this.persistor = persistor;
             LOG.DebugFormat("Created test object for {0}", nakedObject);
             NakedObject = nakedObject;

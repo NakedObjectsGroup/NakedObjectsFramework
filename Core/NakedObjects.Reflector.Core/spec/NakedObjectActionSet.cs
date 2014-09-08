@@ -18,9 +18,12 @@ namespace NakedObjects.Reflector.Spec {
         private readonly string id;
         private readonly string name;
 
+        public NakedObjectActionSet(string id, INakedObjectAction[] actions)
+            : this(id, null, actions) {}
+
         public NakedObjectActionSet(string id, string name, INakedObjectAction[] actions) {
-            this.id = id;
             this.name = name;
+            this.id = id;
             this.actions = actions;
         }
 
@@ -61,8 +64,12 @@ namespace NakedObjects.Reflector.Spec {
             get { return id; }
         }
 
-        public virtual string Name {
-            get { return name; }
+        public virtual string GetName(INakedObjectPersistor persistor) {
+            if (name == null) {
+                var service = persistor.GetService(id);
+                return service.TitleString();
+            }
+            return name;
         }
 
         public virtual INakedObjectSpecification OnType {

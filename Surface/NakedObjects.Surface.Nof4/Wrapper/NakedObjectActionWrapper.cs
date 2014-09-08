@@ -32,7 +32,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public string Name {
-            get { return action.Name; }
+            get { return action.GetName(framework.ObjectPersistor); }
         }
 
         protected IDictionary<string, object> ExtensionData {
