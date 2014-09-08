@@ -739,11 +739,11 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             var immutableFacet = target.Specification.GetFacet<IImmutableFacet>();
             if (immutableFacet != null) {
-                When when = immutableFacet.Value;
-                if (when == When.UntilPersisted && !isPersistent) {
+                WhenTo when = immutableFacet.Value;
+                if (when == WhenTo.UntilPersisted && !isPersistent) {
                     return new Veto(Resources.NakedObjects.FieldDisabledUntil);
                 }
-                if (when == When.OncePersisted && isPersistent) {
+                if (when == WhenTo.OncePersisted && isPersistent) {
                     return new Veto(Resources.NakedObjects.FieldDisabledOnce);
                 }
                 INakedObjectSpecification tgtSpec = target.Specification;

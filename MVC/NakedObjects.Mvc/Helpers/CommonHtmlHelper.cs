@@ -1893,7 +1893,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         internal static bool RenderEagerly(IFacetHolder holder) {
             IEagerlyFacet eagerlyFacet = holder == null ? null : holder.GetFacet<IEagerlyFacet>();
-            return eagerlyFacet != null && eagerlyFacet.What == Do.Rendering;
+            return eagerlyFacet != null && eagerlyFacet.What == EagerlyAttribute.Do.Rendering;
         }
 
         internal static bool DoNotCount(IFacetHolder holder) {

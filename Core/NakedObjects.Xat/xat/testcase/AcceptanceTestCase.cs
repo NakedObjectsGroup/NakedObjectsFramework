@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections;
@@ -32,19 +35,18 @@ using NakedObjects.Reflector.DotNet.Facets;
 using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Service;
-using NakedObjects.Xat.Performance;
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
         private static readonly ILog Log;
-        private static Profiler classProfiler;
+
         private readonly Lazy<IUnityContainer> unityContainer;
-        private readonly Profiler methodProfiler = new Profiler("method");
+
         private INakedObjectsFramework nakedObjectsFramework;
         private IDictionary<string, ITestService> servicesCache = new Dictionary<string, ITestService>();
+        private ITestObjectFactory testObjectFactory;
         private IPrincipal testPrincipal;
         private ISession testSession;
-        private ITestObjectFactory testObjectFactory;
 
         static AcceptanceTestCase() {
             Log = LogManager.GetLogger(typeof (AcceptanceTestCase));
@@ -53,13 +55,6 @@ namespace NakedObjects.Xat {
         protected AcceptanceTestCase(string name) {
             Name = name;
 
-            if (classProfiler == null) {
-                classProfiler = new Profiler("class");
-            }
-            else {
-                classProfiler.Reset();
-                classProfiler.Start();
-            }
 
             unityContainer = new Lazy<IUnityContainer>(() => {
                 var c = new UnityContainer();
@@ -200,10 +195,6 @@ namespace NakedObjects.Xat {
             Log.Info("test initialize " + Name);
             servicesCache = new Dictionary<string, ITestService>();
 
-            Log.Info("test initialize complete " + Name + " " + methodProfiler.TimeLog());
-            if (ProfilerOn) {
-                Console.Out.Write(Name + ": \t" + methodProfiler.TimeLog());
-            }
 
             var reflector = GetConfiguredContainer().Resolve<INakedObjectReflector>();
 
@@ -224,29 +215,10 @@ namespace NakedObjects.Xat {
             servicesCache = null;
 
             testObjectFactory = null;
-  
-            Log.Info("test cleanup complete " + Name + " " + methodProfiler.TimeLog());
-            if (ProfilerOn) {
-                Console.Out.WriteLine(" \t" + methodProfiler.TimeLog());
-            }
         }
 
-        protected virtual void StartMethodProfiling() {
-            Log.Info("test run " + Name);
-            methodProfiler.Reset();
-            methodProfiler.Start();
-        }
-
-        protected virtual void StopMethodProfiling() {
-            methodProfiler.Stop();
-            Log.Info("test run complete " + Name + " " + methodProfiler.TimeLog());
-            if (ProfilerOn) {
-                Console.Out.Write(" \t" + methodProfiler.TimeLog());
-            }
-        }
 
         protected virtual void RegisterTypes(IUnityContainer container) {
-        
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
             container.RegisterType<INakedObjectReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
