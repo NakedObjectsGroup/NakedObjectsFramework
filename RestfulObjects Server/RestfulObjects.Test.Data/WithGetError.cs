@@ -37,7 +37,7 @@ namespace RestfulObjects.Test.Data {
                     // so no errors on startup 
                    // throw new DomainException("An error exception");
                 }
-                return Container.Instances<MostSimple>().FirstOrDefault();
+                return Container == null ?  null :  Container.Instances<MostSimple>().FirstOrDefault();
             }
             set { }
         }

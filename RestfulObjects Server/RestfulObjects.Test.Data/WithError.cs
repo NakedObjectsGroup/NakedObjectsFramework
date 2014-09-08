@@ -21,7 +21,10 @@ namespace RestfulObjects.Test.Data {
         public virtual int AnErrorValue {
             get { return 0; }
             set {
-                //throw new DomainException("An error exception");
+                if (Container != null) {
+                    // initialised 
+                    throw new DomainException("An error exception");
+                }
             }
         }
 
@@ -29,14 +32,19 @@ namespace RestfulObjects.Test.Data {
             get {
                 MostSimple last = null;
 
-                foreach (var ms in Container.Instances<MostSimple>()) {
-                    last = ms;
+                if (Container != null) {
+                    foreach (var ms in Container.Instances<MostSimple>()) {
+                        last = ms;
+                    }
                 }
 
                 return last;
             }
             set {
-                //throw new DomainException("An error exception");
+                if (Container != null) {
+                    // initialised 
+                    throw new DomainException("An error exception");
+                }
             }
         }
 

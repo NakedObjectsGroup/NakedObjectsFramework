@@ -16,6 +16,9 @@ namespace RestfulObjects.Test.Data {
         [Key, Title]
         public virtual int Id { get; set; }
 
+        [ConcurrencyCheck, Hidden]
+        public virtual DateTime ModifiedDate { get; set; }
+
         [PresentationHint("class3 class4")]
         public virtual int AValue { get; set; }
 

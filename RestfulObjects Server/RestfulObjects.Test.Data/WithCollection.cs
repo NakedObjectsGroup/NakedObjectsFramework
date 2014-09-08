@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,31 +20,34 @@ namespace RestfulObjects.Test.Data {
         [Key, Title]
         public virtual int Id { get; set; }
 
+        [ConcurrencyCheck, Hidden]
+        public virtual DateTime ModifiedDate { get; set; }
+
         [PresentationHint("class7 class8")]
         public virtual IList<MostSimple> ACollection {
-            get { return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList(); }
+            get { return  Container == null ? new List<MostSimple>()  : Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList(); }
             set { }
         }
 
         public virtual IList<MostSimpleViewModel> ACollectionViewModels {
-            get { return new[] {1, 2}.Select(NewViewModel).ToList(); }
+            get { return  Container == null ? new List<MostSimpleViewModel>()  :   new[] {1, 2}.Select(NewViewModel).ToList(); }
             set { }
         }
 
         public virtual ISet<MostSimple> ASet {
-            get { return new HashSet<MostSimple>(Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2)); }
+            get { return Container == null ? new HashSet<MostSimple>() : new HashSet<MostSimple>(Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2)); }
             set { }
         }
 
         [Disabled]
         public virtual IList<MostSimple> ADisabledCollection {
-            get { return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList(); }
+            get { return Container == null ? new List<MostSimple>() : Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList(); }
             set { }
         }
 
         [Hidden]
         public virtual IList<MostSimple> AHiddenCollection {
-            get { return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList(); }
+            get { return Container == null ? new List<MostSimple>() : Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList(); }
             set { }
         }
 
@@ -69,7 +73,7 @@ namespace RestfulObjects.Test.Data {
 
         [Eagerly(Do.Rendering)]
         public virtual IList<MostSimple> AnEagerCollection {
-            get { return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList(); }
+            get { return Container == null ? new List<MostSimple>() : Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList(); }
             set { }
         }
     }
