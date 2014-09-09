@@ -10,6 +10,10 @@ namespace NakedObjects.App.Demo.Controllers {
     //[Authorize]
     public class HomeController : SystemControllerImpl {
 
+        public HomeController(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {
+            
+        }
+
 
         public ActionResult Index() {
             return View();

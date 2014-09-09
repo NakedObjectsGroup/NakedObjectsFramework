@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using AdventureWorksModel;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
 using NakedObjects.EntityObjectStore;

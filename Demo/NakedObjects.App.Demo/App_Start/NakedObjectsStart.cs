@@ -24,7 +24,7 @@ namespace NakedObjects.App.Demo {
             RegisterBundles(BundleTable.Bundles);
 
             RunWeb.Run();
-            DependencyResolver.SetResolver(new NakedObjectsDependencyResolver());
+           // DependencyResolver.SetResolver(new NakedObjectsDependencyResolver());
             //RestConfig.RestPostStart();
         }
 
