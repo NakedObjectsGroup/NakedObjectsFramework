@@ -64,7 +64,7 @@
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <ItemGroup>
-    <None Include="ExampleXAT.cs" />
+    <Compile Include="RestTestsHelpers.fs" />
     <Compile Include="RestTests.fs" />
     <Compile Include="RestTestsTypes.fs" />
     <Compile Include="RestTestsDomainType.fs" />
