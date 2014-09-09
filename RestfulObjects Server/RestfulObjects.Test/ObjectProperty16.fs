@@ -622,9 +622,6 @@ let GetUserDisabledValuePropertyAuthorised(api : RestfulObjectsControllerBase) =
         let ourl = sprintf "objects/%s/%s"  oType oid
         let purl = sprintf "%s/properties/%s" ourl pid
 
-        let p = new GenericPrincipal(new GenericIdentity("editUser"), [||])
-        System.Threading.Thread.CurrentPrincipal <- p;
-
         let args = CreateReservedArgs ""
         api.Request <- jsonGetMsg(sprintf "http://localhost/%s" purl)
         let result = api.GetProperty(oType, oid, pid, args)
@@ -1310,7 +1307,9 @@ let GetErrorValueProperty(api : RestfulObjectsControllerBase) =
 
         let args = CreateReservedArgs ""
         api.Request <- jsonGetMsg(sprintf "http://localhost/%s" purl)
+        RestfulObjects.Test.Data.WithGetError.ThrowErrors <- true
         let result = api.GetProperty(oType, oid, pid, args)
+        RestfulObjects.Test.Data.WithGetError.ThrowErrors <- false
         let jsonResult = readSnapshotToJson result
         let parsedResult = JObject.Parse(jsonResult)
       
@@ -1334,7 +1333,10 @@ let GetErrorReferenceProperty(api : RestfulObjectsControllerBase) =
 
         let args = CreateReservedArgs ""
         api.Request <- jsonGetMsg(sprintf "http://localhost/%s" purl)
+
+        RestfulObjects.Test.Data.WithGetError.ThrowErrors <- true
         let result = api.GetProperty(oType, oid, pid, args)
+        RestfulObjects.Test.Data.WithGetError.ThrowErrors <- false
         let jsonResult = readSnapshotToJson result
         let parsedResult = JObject.Parse(jsonResult)
       
@@ -1570,9 +1572,6 @@ let PutUserDisabledValuePropertySuccess(api : RestfulObjectsControllerBase) =
 
         let parms =  new JObject (new JProperty(JsonPropertyNames.Value, 101)) 
 
-        let p = new GenericPrincipal(new GenericIdentity("editUser"), [||])
-        System.Threading.Thread.CurrentPrincipal <- p;
-
        // Assert.AreEqual(100, (instances<WithValue>() |> Seq.filter (fun i -> i.Id = 1) |> Seq.head).AValue)
         let msg = jsonPutMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
         let arg = CreateSingleValueArg parms
@@ -1671,6 +1670,8 @@ let DeleteValuePropertySuccess(api : RestfulObjectsControllerBase) =
         assertTransactionalCache  result 
         Assert.IsTrue(result.Headers.ETag.Tag.Length > 0) 
         compareObject expected parsedResult
+        // reset Value 
+        
     //    Assert.AreEqual(0, (instances<WithValue>() |> Seq.filter (fun i -> i.Id = 1) |> Seq.head).AValue)
 
 let DeleteValuePropertySuccessValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -2751,8 +2752,8 @@ let PutWithValuePropertyInternalError(api : RestfulObjectsControllerBase) =
         let parsedResult = JObject.Parse(jsonResult)
 
         let expected = [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"));
-                         TProperty(JsonPropertyNames.StackTrace, TArray([ TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12"));
-                                                                          TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12"))]));
+                         TProperty(JsonPropertyNames.StackTrace, TArray([ TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.set_AnErrorValue(Int32 value) in e:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\RestfulObjects Server\\RestfulObjects.Test.Data\\WithError.cs:line 26"));
+                                                                          ]));
                          TProperty(JsonPropertyNames.Links, TArray([]))
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([]))]
 

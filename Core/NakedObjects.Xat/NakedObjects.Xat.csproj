@@ -118,6 +118,7 @@
     <Compile Include="xat\nondocumenting\TestMessagesAndWarnings.cs" />
     <Compile Include="xat\nondocumenting\TestProperty.cs" />
     <Compile Include="xat\nondocumenting\TestHasActions.cs" />
+    <Compile Include="xat\nondocumenting\TestSession.cs" />
     <Compile Include="xat\testcase\AcceptanceTestCase.cs" />
     <Compile Include="xat\nondocumenting\TestObjectFactory.cs" />
     <Compile Include="xat\nondocumenting\TestParameterObject.cs" />

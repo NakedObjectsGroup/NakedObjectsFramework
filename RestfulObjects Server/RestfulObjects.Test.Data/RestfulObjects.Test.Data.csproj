@@ -164,7 +164,6 @@
     <Compile Include="WithActionViewModel.cs" />
     <Compile Include="WithCollectionViewModel.cs" />
     <Compile Include="WithDateTimeKey.cs" />
-    <Compile Include="RestDataFixture.cs" />
     <Compile Include="VerySimple.cs" />
     <Compile Include="WithNestedViewModel.cs" />
     <Compile Include="WithReferenceViewModel.cs" />
@@ -179,7 +178,6 @@
     <Compile Include="WithValue.cs" />
     <Compile Include="MostSimple.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RestDataFixtureUnitTests.cs" />
     <Compile Include="RestDataRepository.cs" />
     <Compile Include="WithReference.cs" />
     <Compile Include="WithValueViewModel.cs" />

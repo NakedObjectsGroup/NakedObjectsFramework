@@ -130,24 +130,14 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
 
         protected object GetDomainObject(string[] keys, Type type) {
-            try {
-                IDictionary<string, object> keyDict = CreateKeyDictionary(keys, type);
-                return framework.ObjectPersistor.FindByKeys(type, keyDict.Values.ToArray()).GetDomainObject();
-            }
-            catch (Exception) {
-                return null;
-            }
+            IDictionary<string, object> keyDict = CreateKeyDictionary(keys, type);
+            return framework.ObjectPersistor.FindByKeys(type, keyDict.Values.ToArray()).GetDomainObject();
         }
 
         protected object GetViewModel(string[] keys, INakedObjectSpecification spec) {
-            try {
-                INakedObject viewModel = framework.ObjectPersistor.CreateViewModel(spec);
-                spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel);
-                return viewModel.Object;
-            }
-            catch (Exception) {
-                return null;
-            }
+            INakedObject viewModel = framework.ObjectPersistor.CreateViewModel(spec);
+            spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel);
+            return viewModel.Object;
         }
 
         private Type GetType(string typeName) {

@@ -98,9 +98,9 @@ type Nof4TestsTypeDomainType() = class
             inst.SimpleOidGeneratorStart <- new System.Nullable<int>(100)
             box (inst) :?> IObjectPersistorInstaller
 
-    override x.Fixtures 
-        with get() : IFixturesInstaller = 
-            box (new FixturesInstaller([| box (new RestDataFixtureUnitTests()) |])) :?> IFixturesInstaller 
+//    override x.Fixtures 
+//        with get() : IFixturesInstaller = 
+//            box (new FixturesInstaller([| box (new RestDataFixtureUnitTests()) |])) :?> IFixturesInstaller 
  
  
     member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()

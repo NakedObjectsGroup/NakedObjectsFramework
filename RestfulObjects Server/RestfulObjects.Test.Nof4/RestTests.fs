@@ -34,15 +34,11 @@ open MvcTestApp.Controllers
 let seedCodeFirstDatabase (context : CodeFirstContext) = 
     let ms1 = new MostSimple(Id = 1)
     let ms2 = new MostSimple(Id = 2) 
-    //let ms3 = new MostSimple(3)
+    let ms3 = new MostSimple(Id = 4)
   
-    //ms1.ModifiedDate <- DateTime.UtcNow
-    //ms2.ModifiedDate <- DateTime.UtcNow
-    //ms3.ModifiedDate <- DateTime.UtcNow
-
     context.MostSimples.Add(ms1) |> ignore
-    context.MostSimples.Add(ms2) |> ignore
-    //context.MostSimples.Add(ms3) |> ignore
+    context.MostSimples.Add(ms2) |> ignore  
+    context.MostSimples.Add(ms3) |> ignore
 
     let wr1 = new WithReference(Id = 1)
   
@@ -51,7 +47,7 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
     wr1.AChoicesReference <- ms1
     wr1.AnEagerReference <- ms1
     wr1.AnAutoCompleteReference <- ms1
-    //wr1.ModifiedDate <- DateTime.UtcNow
+   
     let wr2 = new WithReference(Id = 2)
   
     wr2.AReference <- ms1
@@ -59,7 +55,7 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
     wr2.AChoicesReference <- ms1
     wr2.AnEagerReference <- ms1
     wr2.AnAutoCompleteReference <- ms1
-    //wr2.ModifiedDate <- DateTime.UtcNow
+   
     context.WithReferences.Add(wr1) |> ignore
     context.WithReferences.Add(wr2) |> ignore
     let wv1 = new WithValue(Id = 1)
@@ -67,7 +63,7 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
     wv1.AValue <- 100
     wv1.ADisabledValue <- 200
     wv1.AStringValue <- ""
-    //wv1.ModifiedDate <- DateTime.UtcNow
+   
     context.WithValues.Add(wv1) |> ignore
     let ws1 = new WithScalars(Id = 1)
     
@@ -102,6 +98,9 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
 
     wc1.ACollection.Add(ms1)
     wc1.ACollection.Add(ms2)
+    wc1.ACollection.Add(ms3)
+   
+
 
     wc1.ACollectionViewModels.Add(new MostSimpleViewModel(Id = 1))
     wc1.ACollectionViewModels.Add(new MostSimpleViewModel(Id = 2))
@@ -146,7 +145,11 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
    
     context.WithAttachments.Add(wat1) |> ignore
     let added = context.SaveChanges()
-    Assert.AreEqual(40, added)
+    Assert.AreEqual(42, added)
+
+    wc1.ACollection.Remove(ms3) |> ignore
+    context.SaveChanges() |> ignore
+
     ()
     
 type CodeFirstInitializer() = 
@@ -156,8 +159,7 @@ type CodeFirstInitializer() =
   
 let CodeFirstSetup() =     
     System.Data.Entity.Database.SetInitializer(new CodeFirstInitializer())
-    ()
-      
+    ()      
 
 [<TestFixture>]
 type Nof4Tests() = class      
@@ -180,17 +182,16 @@ type Nof4Tests() = class
         x.InitializeNakedObjectsFramework()
          
     [<SetUp>]
-    member x.Setup() =   
+    member x.Setup() =
+        
+        CodeFirstSetup()   
         x.StartTest()           
-        //x.Fixtures.InstallFixtures(x.NakedObjectsFramework.ObjectPersistor, x.NakedObjectsFramework.Injector)
         UriMtHelper.GetApplicationPath <- Func<string>(fun () -> "")
         RestfulObjectsControllerBase.IsReadOnly <- false  
-        //let p = new GenericPrincipal(new GenericIdentity("REST"), [||])
-        //Thread.CurrentPrincipal <- p;
         GlobalConfiguration.Configuration.Formatters.[0] <- new JsonNetFormatter(null);
         
     [<TearDown>]
-    member x.TearDown() =    
+    member x.TearDown() =
         RestfulObjectsControllerBase.DomainModel <- RestControlFlags.DomainModelType.Selectable
         RestfulObjectsControllerBase.ConcurrencyChecking <- false
         RestfulObjectsControllerBase.CacheSettings <- (0, 3600, 86400)
@@ -351,11 +352,14 @@ type Nof4Tests() = class
     [<Test>]
     member x.GetVerySimpleEagerObject() = DomainObject14.GetVerySimpleEagerObject x.api  
     [<Test>]
-    member x.GetWithValueObject() = DomainObject14.GetWithValueObject x.api 
+    member x.GetWithValueObject() =      DomainObject14.GetWithValueObject x.api 
     [<Test>]
     member x.GetWithScalarsObject() = DomainObject14.GetWithScalarsObject x.api 
     [<Test>]
-    member x.GetWithValueObjectUserAuth() = DomainObject14.GetWithValueObjectUserAuth x.api 
+    member x.GetWithValueObjectUserAuth() = 
+        x.SetUser("viewUser")
+        DomainObject14.GetWithValueObjectUserAuth x.api 
+        x.SetUser("Test")
     [<Test>]
     member x.GetWithValueObjectWithMediaType() = DomainObject14.GetWithValueObjectWithMediaType x.api 
     [<Test>]
@@ -533,7 +537,10 @@ type Nof4Tests() = class
     [<Test>]
     member x.GetEnumValueProperty() = ObjectProperty16.GetEnumValueProperty x.api 
     [<Test>]
-    member x.GetValuePropertyUserAuth() = ObjectProperty16.GetValuePropertyUserAuth x.api     
+    member x.GetValuePropertyUserAuth() =
+        x.SetUser("viewUser")
+        ObjectProperty16.GetValuePropertyUserAuth x.api 
+        x.SetUser("Test")    
     [<Test>]
     member x.GetValuePropertyFormalOnly() = ObjectProperty16.GetValuePropertyFormalOnly x.api 
     [<Test>]
@@ -553,7 +560,10 @@ type Nof4Tests() = class
     [<Test>]
     member x.GetUserDisabledValueProperty() = ObjectProperty16.GetUserDisabledValueProperty x.api 
     [<Test>]
-    member x.GetUserDisabledValuePropertyAuthorised() = ObjectProperty16.GetUserDisabledValuePropertyAuthorised x.api 
+    member x.GetUserDisabledValuePropertyAuthorised() = 
+        x.SetUser("editUser")
+        ObjectProperty16.GetUserDisabledValuePropertyAuthorised x.api 
+        x.SetUser("Test")
     [<Test>]
     member x.GetReferenceProperty() = ObjectProperty16.GetReferenceProperty x.api 
     [<Test>]
@@ -615,7 +625,16 @@ type Nof4Tests() = class
     [<Test>]
     member x.PutValuePropertySuccess() = ObjectProperty16.PutValuePropertySuccess x.api 
     [<Test>]
-    member x.PutDateTimeValuePropertySuccess() = ObjectProperty16.PutDateTimeValuePropertySuccess x.api 
+    member x.PutDateTimeValuePropertySuccess() =
+    
+        ObjectProperty16.PutDateTimeValuePropertySuccess x.api 
+    
+        x.NakedObjectsFramework.ObjectPersistor.StartTransaction()
+        let o = x.NakedObjectsFramework.ObjectPersistor.Instances<WithValue>() |> Seq.head 
+        o.ADateTimeValue <- new DateTime(2012, 2, 10, 0, 0, 0, 0, DateTimeKind.Utc)
+        x.NakedObjectsFramework.ObjectPersistor.EndTransaction()
+       
+ 
     [<Test>]
     member x.PutValuePropertyConcurrencySuccess() = ObjectProperty16.PutValuePropertyConcurrencySuccess x.api 
     [<Test>]
@@ -623,7 +642,16 @@ type Nof4Tests() = class
     [<Test>]
     member x.PutValuePropertyMissingIfMatch() = ObjectProperty16.PutValuePropertyMissingIfMatch x.api 
     [<Test>]
-    member x.PutUserDisabledValuePropertySuccess() = ObjectProperty16.PutUserDisabledValuePropertySuccess x.api 
+    member x.PutUserDisabledValuePropertySuccess() =
+        x.SetUser("editUser")
+        ObjectProperty16.PutUserDisabledValuePropertySuccess x.api 
+
+        x.NakedObjectsFramework.ObjectPersistor.StartTransaction()
+        let o = x.NakedObjectsFramework.ObjectPersistor.Instances<WithValue>() |> Seq.head 
+        o.AUserDisabledValue <- 0
+        x.NakedObjectsFramework.ObjectPersistor.EndTransaction()
+
+        x.SetUser("Test")
     [<Test>]
     member x.PutValuePropertySuccessValidateOnly() = ObjectProperty16.PutValuePropertySuccessValidateOnly x.api 
     [<Test>]
@@ -631,9 +659,21 @@ type Nof4Tests() = class
     [<Test>]
     member x.PutBlobPropertyBadRequest() = ObjectProperty16.PutBlobPropertyBadRequest x.api 
     [<Test>]
-    member x.DeleteValuePropertySuccess() = ObjectProperty16.DeleteValuePropertySuccess x.api 
+    member x.DeleteValuePropertySuccess() =
+        ObjectProperty16.DeleteValuePropertySuccess x.api
+
+        x.NakedObjectsFramework.ObjectPersistor.StartTransaction()
+        let o = x.NakedObjectsFramework.ObjectPersistor.Instances<WithValue>() |> Seq.head 
+        o.AValue <- 100
+        x.NakedObjectsFramework.ObjectPersistor.EndTransaction()
+       
     [<Test>]
-    member x.DeleteValuePropertySuccessValidateOnly() = ObjectProperty16.DeleteValuePropertySuccessValidateOnly x.api 
+    member x.DeleteValuePropertySuccessValidateOnly() =
+        ObjectProperty16.DeleteValuePropertySuccessValidateOnly x.api
+        x.NakedObjectsFramework.ObjectPersistor.StartTransaction()
+        let o = x.NakedObjectsFramework.ObjectPersistor.Instances<WithValue>() |> Seq.head 
+        o.AValue <- 100
+        x.NakedObjectsFramework.ObjectPersistor.EndTransaction()
     [<Test>]
     member x.PutNullValuePropertySuccess() = ObjectProperty16.PutNullValuePropertySuccess x.api 
     [<Test>]

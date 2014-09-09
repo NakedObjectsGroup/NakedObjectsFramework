@@ -8,7 +8,7 @@ using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
     public class WithDateTimeKey {
-        [Key, Title, Mask("d")]
+        [Key, Title, Mask("d"), ConcurrencyCheck]
         public virtual DateTime Id { get; set; }
     }
 }

@@ -647,14 +647,14 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                                                                            TProperty("Int",       TObjectJson(makePropertyMemberWithNumber "objects" "Int" oid "Int" "" "integer" false (TObjectVal(8) ))); 
                                                                            TProperty("List",      TObjectJson(makeCollectionMember "List" oid "List" "" "list" 0)) ;
                                                                            TProperty("Long",      TObjectJson(makePropertyMemberWithNumber "objects" "Long" oid "Long" "" "integer" false (TObjectVal(9) )));
-                                                                           TProperty("SByte",     TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oid "S Byte" "" "integer" false (TObjectVal(10) ))); 
+                                                                           TProperty("SByte",     TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oid "S Byte" "" "integer" false (TObjectVal(0) ))); 
                                                                            //TProperty("SByteArray",TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "SByteArray" oid "S Byte Array" "" "blob"  false)) ;
                                                                            TProperty("Set",       TObjectJson(makeCollectionMember "Set" oid "Set" "" "set" 0)) ;
                                                                            TProperty("Short",     TObjectJson(makePropertyMemberWithNumber "objects" "Short" oid "Short" "" "integer" false (TObjectVal(12) ))); 
                                                                            TProperty("String",    TObjectJson(makePropertyMemberWithFormat "objects" "String" oid "String" "" "string" false (TObjectVal("13") ))); 
-                                                                           TProperty("UInt",      TObjectJson(makePropertyMemberWithNumber "objects" "UInt" oid "U Int" "" "integer" false (TObjectVal(14) ))); 
-                                                                           TProperty("ULong",     TObjectJson(makePropertyMemberWithNumber "objects" "ULong" oid "U Long" "" "integer" false (TObjectVal(15) ))); 
-                                                                           TProperty("UShort",    TObjectJson(makePropertyMemberWithNumber "objects" "UShort" oid "U Short" "" "integer" false (TObjectVal(16) ))) ]));
+                                                                           TProperty("UInt",      TObjectJson(makePropertyMemberWithNumber "objects" "UInt" oid "U Int" "" "integer" false (TObjectVal(0) ))); 
+                                                                           TProperty("ULong",     TObjectJson(makePropertyMemberWithNumber "objects" "ULong" oid "U Long" "" "integer" false (TObjectVal(0) ))); 
+                                                                           TProperty("UShort",    TObjectJson(makePropertyMemberWithNumber "objects" "UShort" oid "U Short" "" "integer" false (TObjectVal(0) ))) ]));
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(oType));
                                                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Scalars"));
                                                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("With Scalarses"));
@@ -664,7 +664,7 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
         Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
         Assert.AreEqual(new typeType( RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
         assertTransactionalCache  result 
-        Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)    
+        Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)   
         compareObject expected parsedResult
 
 
@@ -672,9 +672,6 @@ let GetWithValueObjectUserAuth(api : RestfulObjectsControllerBase) =
         let oType = ttc "RestfulObjects.Test.Data.WithValue"
         let oid = oType + "/" + ktc "1"
         let url = sprintf "http://localhost/objects/%s"  oid
-
-        let p = new GenericPrincipal(new GenericIdentity("viewUser"), [||])
-        System.Threading.Thread.CurrentPrincipal <- p;
 
         let args = CreateReservedArgs ""
 
@@ -1121,7 +1118,7 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                          TProperty(JsonPropertyNames.Members, TObjectJson([TProperty("Bool",      TObjectJson(makePropertyMemberWithType "objects" "Bool" oid "Bool" "" "boolean" false (TObjectVal(false) ))); 
                                                                            TProperty("Byte",      TObjectJson(makePropertyMemberWithNumber "objects" "Byte" oid "Byte" "" "integer" false (TObjectVal(2) ))); 
                                                                            //TProperty("ByteArray", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) :: makePropertyMemberWithTypeNoValue "objects"  "ByteArray" oid "Byte Array" "" "blob"  false)) ;
-                                                                           TProperty("Char",      TObjectJson(makePropertyMemberWithFormat "objects" "Char" oid "Char" "" "string" false (TObjectVal("A") ))); 
+                                                                           TProperty("Char",      TObjectJson(makePropertyMemberWithFormat "objects" "Char" oid "Char" "" "string" false (TObjectVal("3") ))); 
                                                                            //TProperty("CharArray", TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "CharArray" oid "Char Array" "" "clob"  false)) ;
                                                                            TProperty("Decimal",   TObjectJson(makePropertyMemberWithNumber "objects" "Decimal" oid "Decimal" "" "decimal" false (TObjectVal(100.9) ))); 
                                                                            TProperty("DateTime",  TObjectJson(makePropertyMemberWithFormat "objects" "DateTime" oid "Date Time" "" "date-time" false (TObjectVal(DateTime.Parse("2011-12-25T12:13:14Z").ToUniversalTime()) )));  
@@ -4122,8 +4119,8 @@ let PutWithValueInternalError(api : RestfulObjectsControllerBase) =
       
 
         let expected = [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"));
-                         TProperty(JsonPropertyNames.StackTrace, TArray([ TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12"));
-                                                                          TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12"))]));
+                         TProperty(JsonPropertyNames.StackTrace, TArray([ TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.set_AnErrorValue(Int32 value) in e:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\RestfulObjects Server\\RestfulObjects.Test.Data\\WithError.cs:line 26"));
+                                                                          ]));
                          TProperty(JsonPropertyNames.Links, TArray([]))
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([]))]
 
@@ -4152,8 +4149,8 @@ let PutWithReferenceInternalError(api : RestfulObjectsControllerBase) =
    
 
         let expected = [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"));
-                         TProperty(JsonPropertyNames.StackTrace, TArray([ TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12"));
-                                                                          TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12"))]));
+                         TProperty(JsonPropertyNames.StackTrace, TArray([ TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.set_AnErrorReference(MostSimple value) in e:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\RestfulObjects Server\\RestfulObjects.Test.Data\\WithError.cs:line 46\r"));
+                                                                          TObjectVal( new errorType("   at System.Data.Entity.DynamicProxies.WithError_F256FB918E259D1BE99EB792A8D574127C5E30D8723C163E313BD127B30D9F77.set_AnErrorReference(MostSimple )")) ]));
                          TProperty(JsonPropertyNames.Links, TArray([]))
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([]))]
 

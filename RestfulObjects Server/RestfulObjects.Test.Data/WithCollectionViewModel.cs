@@ -41,6 +41,7 @@ namespace RestfulObjects.Test.Data {
             ASet = new HashSet<MostSimple>(Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2));
             ADisabledCollection =  Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();
             AHiddenCollection = Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();
+            AnEagerCollection = Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();
         }
 
 
@@ -81,9 +82,6 @@ namespace RestfulObjects.Test.Data {
         }
 
         [Eagerly(Do.Rendering)]
-        public virtual IList<MostSimple> AnEagerCollection {
-            get { return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList(); }
-            set { }
-        }
+        public virtual IList<MostSimple> AnEagerCollection { get; set; }
     }
 }

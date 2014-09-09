@@ -21,7 +21,7 @@ let expected =
     [ TProperty(JsonPropertyNames.Links, 
                 TArray([ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.User RepresentationTypes.User "")
                          TObjectJson(makeGetLinkProp RelValues.Up SegmentValues.HomePage RepresentationTypes.HomePage "") ]))
-      TProperty(JsonPropertyNames.UserName, TObjectVal("REST"))
+      TProperty(JsonPropertyNames.UserName, TObjectVal("Test"))
       TProperty(JsonPropertyNames.Roles, TArray([]))
       TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 

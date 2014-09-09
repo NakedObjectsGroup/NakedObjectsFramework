@@ -39,9 +39,7 @@ using NakedObjects.Service;
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
         private static readonly ILog Log;
-
         private readonly Lazy<IUnityContainer> unityContainer;
-
         private INakedObjectsFramework nakedObjectsFramework;
         private IDictionary<string, ITestService> servicesCache = new Dictionary<string, ITestService>();
         private ITestObjectFactory testObjectFactory;
@@ -55,7 +53,6 @@ namespace NakedObjects.Xat {
         protected AcceptanceTestCase(string name) {
             Name = name;
 
-
             unityContainer = new Lazy<IUnityContainer>(() => {
                 var c = new UnityContainer();
                 RegisterTypes(c);
@@ -66,8 +63,6 @@ namespace NakedObjects.Xat {
         protected AcceptanceTestCase() : this("Unnamed") {}
 
         protected string Name { set; get; }
-
-        private bool ProfilerOn { get; set; }
 
         protected virtual ITestObjectFactory TestObjectFactoryClass {
             get {
@@ -81,7 +76,7 @@ namespace NakedObjects.Xat {
         protected virtual ISession TestSession {
             get {
                 if (testSession == null) {
-                    testSession = new SimpleSession(TestPrincipal);
+                    testSession = new TestSession(TestPrincipal);
                 }
                 return testSession;
             }
@@ -185,6 +180,10 @@ namespace NakedObjects.Xat {
 
         protected void SetUser(string username, params string[] roles) {
             testPrincipal = CreatePrincipal(username, roles);
+            var ts = TestSession as TestSession;
+            if (ts != null) {
+                ts.ReplacePrincipal(testPrincipal);
+            }
         }
 
         protected void SetUser(string username) {

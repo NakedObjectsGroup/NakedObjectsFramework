@@ -798,7 +798,9 @@ let GetErrorValueCollection(api : RestfulObjectsControllerBase) =
 
         let args = CreateReservedArgs ""
         api.Request <- jsonGetMsg(sprintf "http://localhost/%s" purl)
+        RestfulObjects.Test.Data.WithGetError.ThrowErrors <- true
         let result = api.GetCollection(oType, oid, pid, args)
+        RestfulObjects.Test.Data.WithGetError.ThrowErrors <- false
         let jsonResult = readSnapshotToJson result
         let parsedResult = JObject.Parse(jsonResult)
       

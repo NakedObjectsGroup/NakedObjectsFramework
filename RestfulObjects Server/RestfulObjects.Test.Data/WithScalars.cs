@@ -19,14 +19,13 @@ namespace RestfulObjects.Test.Data {
 
 
     public class WithScalars {
-        private DateTime dateTime = new DateTime(2012, 03, 27, 08, 42, 36, 0, DateTimeKind.Utc);
+        private DateTime dateTime = DateTime.Parse("2012-03-27T09:42:36");
         private IList<MostSimple> list = new List<MostSimple>();
         private ISet<MostSimple> set = new HashSet<MostSimple>();
+        private char c;
 
         [Key, Title, ConcurrencyCheck]
-        public virtual int Id { get; set; }
-
-       
+        public virtual int Id { get; set; }   
 
         [NotMapped]
         public virtual sbyte SByte { get; set; }
@@ -38,7 +37,13 @@ namespace RestfulObjects.Test.Data {
         public virtual uint UInt { get; set; }
         public virtual long Long { get; set; }
         public virtual ulong ULong { get; set; }
-        public virtual char Char { get; set; }
+
+
+        public virtual char Char {
+            get { return '3'; }
+            set { c = value; }
+        }
+
         public virtual bool Bool { get; set; }
         public virtual string String { get; set; }
         public virtual float Float { get; set; }
@@ -49,17 +54,17 @@ namespace RestfulObjects.Test.Data {
         public virtual char[] CharArray { get; set; }
 
         public virtual DateTime DateTime {
-            get { return dateTime; }
+            get {
+                return dateTime;
+            }
             set { dateTime = value; }
         }
 
-        [NotMapped]
         public virtual IList<MostSimple> List {
             get { return list; }
             set { list = value; }
         }
 
-        [NotMapped]
         public virtual ISet<MostSimple> Set {
             get { return set; }
             set { set = value; }

@@ -68,7 +68,29 @@ namespace RestfulObjects.Test.Data {
         }
 
         public WithCollection CreateTransientWithCollection() {
-            return Container.NewTransientInstance<WithCollection>();
+            var twc = Container.NewTransientInstance<WithCollection>();
+            var ms1 = Container.Instances<MostSimple>().Single(ms => ms.Id == 1);
+            var ms2 = Container.Instances<MostSimple>().Single(ms => ms.Id == 2);
+
+            twc.ACollection.Add(ms1);
+            twc.ACollection.Add(ms2);
+
+            twc.ASet.Add(ms1);
+            twc.ASet.Add(ms2);
+
+            twc.ACollectionViewModels.Add(new MostSimpleViewModel() { Id = 1 });
+            twc.ACollectionViewModels.Add(new MostSimpleViewModel() { Id = 2 });
+
+            twc.ADisabledCollection.Add(ms1);
+            twc.ADisabledCollection.Add(ms2);
+
+            twc.AHiddenCollection.Add(ms1);
+            twc.AHiddenCollection.Add(ms2);
+
+            twc.AnEagerCollection.Add(ms1);
+            twc.AnEagerCollection.Add(ms2);
+
+            return twc;
         }
     }
 }

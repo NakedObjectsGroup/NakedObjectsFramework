@@ -9,10 +9,10 @@ using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
     public class WithGetError {
-        private readonly IList<MostSimple> anErrorCollection = new List<MostSimple>();
-        private int getCount;
-
+        private readonly IList<MostSimple> anErrorCollection = new List<MostSimple>();    
         public IDomainObjectContainer Container { set; protected get; }
+
+        public static bool ThrowErrors { get; set; }
 
 
         [Key, Title]
@@ -21,9 +21,9 @@ namespace RestfulObjects.Test.Data {
 
         public virtual int AnErrorValue {
             get {
-                if (getCount++ > 5) {
+                if (ThrowErrors) {
                     // so no errors on startup 
-                   // throw new DomainException("An error exception");
+                   throw new DomainException("An error exception");
                 }
                 return 0;
             }
@@ -33,9 +33,9 @@ namespace RestfulObjects.Test.Data {
 
         public virtual MostSimple AnErrorReference {
             get {
-                if (getCount++ > 4) {
+                if (ThrowErrors) {
                     // so no errors on startup 
-                   // throw new DomainException("An error exception");
+                    throw new DomainException("An error exception");
                 }
                 return Container == null ?  null :  Container.Instances<MostSimple>().FirstOrDefault();
             }
@@ -44,9 +44,9 @@ namespace RestfulObjects.Test.Data {
 
         public virtual IList<MostSimple> AnErrorCollection {
             get {
-                if (getCount++ > 4) {
+                if (ThrowErrors) {
                     // so no errors on startup 
-                   // throw new DomainException("An error exception");
+                    throw new DomainException("An error exception");
                 }
                 return anErrorCollection;
             }
