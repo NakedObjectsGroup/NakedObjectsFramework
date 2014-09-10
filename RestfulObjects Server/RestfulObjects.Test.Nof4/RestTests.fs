@@ -173,6 +173,7 @@ type Nof4Tests() =
         member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
         
         [<Test>]
+        [<Ignore>]
         member x.PersistWithCollectionTransientObject() = Objects9.PersistWithCollectionTransientObject x.api
         
         [<Test>]

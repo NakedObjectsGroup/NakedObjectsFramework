@@ -4149,8 +4149,7 @@ let PutWithReferenceInternalError(api : RestfulObjectsControllerBase) =
    
 
         let expected = [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"));
-                         TProperty(JsonPropertyNames.StackTrace, TArray([ TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.set_AnErrorReference(MostSimple value) in e:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\RestfulObjects Server\\RestfulObjects.Test.Data\\WithError.cs:line 46\r"));
-                                                                          TObjectVal( new errorType("   at System.Data.Entity.DynamicProxies.WithError_F256FB918E259D1BE99EB792A8D574127C5E30D8723C163E313BD127B30D9F77.set_AnErrorReference(MostSimple )")) ]));
+                         TProperty(JsonPropertyNames.StackTrace, TArray([ TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithError.set_AnErrorReference(MostSimple value) in e:\\Users\\scasc_000\\Documents\\GitHub\\NakedObjectsFramework\\RestfulObjects Server\\RestfulObjects.Test.Data\\WithError.cs:line 46\r")) ]));
                          TProperty(JsonPropertyNames.Links, TArray([]))
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([]))]
 
