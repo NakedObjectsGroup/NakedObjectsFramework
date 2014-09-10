@@ -123,6 +123,9 @@ namespace NakedObjects.Xat {
 
         protected void StartTest() {
             nakedObjectsFramework = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
+        }
+
+        protected void RunFixtures() {
             Fixtures.InstallFixtures(nakedObjectsFramework.ObjectPersistor, nakedObjectsFramework.Injector);
         }
 
@@ -192,7 +195,6 @@ namespace NakedObjects.Xat {
         protected void InitializeNakedObjectsFramework() {
             Log.Info("test initialize " + Name);
             servicesCache = new Dictionary<string, ITestService>();
-
 
             var reflector = GetConfiguredContainer().Resolve<INakedObjectReflector>();
 

@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -15,16 +16,15 @@ using Expenses.ExpenseEmployees;
 using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
-using Moq;
+using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
-using NakedObjects.Persistor.Objectstore;
-using NakedObjects.Persistor.Objectstore.Inmemory;
+using NakedObjects.EntityObjectStore;
+using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -42,10 +42,30 @@ namespace MvcTestApp.Tests.Helpers {
 
     [TestFixture]
     public class NofHtmlHelperTest : AcceptanceTestCase {
+
         #region Setup/Teardown
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetupTest() {
+            StartTest();
+            controller = new DummyController();
+            mocks = new ContextMocks(controller);
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-GB");
+            SetUser("sven");
+        }
+
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
+            config.UsingCodeFirstContext(() => new MvcTestContext("MvcTest"));
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
+            Database.SetInitializer(new DatabaseInitializer());
             InitializeNakedObjectsFramework();
         }
 
@@ -54,20 +74,11 @@ namespace MvcTestApp.Tests.Helpers {
             CleanupNakedObjectsFramework();
         }
 
-        [SetUp]
-        public new void StartTest() {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-GB");
-            SetUser("sven");
-            Fixtures.InstallFixtures(NakedObjectsFramework.ObjectPersistor, null);
-        }
+        private DummyController controller;
+        private ContextMocks mocks;
 
-        [TearDown]
-        public void EndTest() {
-            MemoryObjectStore.DiscardObjects();
-            ((SimpleOidGenerator)NakedObjectsFramework.ObjectPersistor.OidGenerator).ResetTo(100L); 
-        }
 
-        #endregion
+
 
         protected override IServicesInstaller MenuServices {
             get { return new ServicesInstaller(DemoServicesSet.ServicesSet()); }
@@ -83,13 +94,16 @@ namespace MvcTestApp.Tests.Helpers {
             get { return new FixturesInstaller(DemoFixtureSet.FixtureSet()); }
         }
 
-        protected override IObjectPersistorInstaller Persistor {
-            get { return new InMemoryObjectPersistorInstaller { SimpleOidGeneratorStart = 100 }; }
-        }
+     
 
         private class DummyController : Controller {}
 
-        private readonly Controller controller = new DummyController();
+        private void SetupViewData(object model) {
+            mocks.ViewDataContainer.Object.ViewData.Model = model;
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NoFramework] = NakedObjectsFramework;
+        }
+
 
         private static string GetTestData(string name) {
             string file = Path.Combine(@"..\..\Generated Html reference files", name) + ".htm";
@@ -119,7 +133,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ActionDialogId() {
-            var mocks = new ContextMocks(controller);
+            SetupViewData(new object());
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             INakedObjectAction action = NakedObjectsFramework.GetNakedObject(claim).Specification.GetObjectActions().Single(a => a.Id == "CopyAllExpenseItemsFromAnotherClaim");
             Assert.AreEqual(@"Claim-CopyAllExpenseItemsFromAnotherClaim-Dialog", mocks.HtmlHelper.ObjectActionDialogId(claim, action).ToString());
@@ -127,14 +141,17 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ActionName() {
-            var mocks = new ContextMocks(controller);
+            
             Assert.AreEqual(@"<div class=""nof-actionname"">Test</div>", mocks.HtmlHelper.ObjectActionName("Test").ToString());
         }
 
         [Test]
         public void BoolPropertyEdit() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            
+            SetupViewData(new object());
+
+
             var testBool = (BoolTestClass) GetBoundedInstance<BoolTestClass>("BoolClass").GetDomainObject();
 
             string s = mocks.HtmlHelper.PropertyListEdit(testBool).ToString();
@@ -146,8 +163,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void DuplicateAction() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+
+            SetupViewData(new object());
             var testBool = (BoolTestClass)GetBoundedInstance<BoolTestClass>("BoolClass").GetDomainObject();
 
             string s = mocks.GetHtmlHelper<BoolTestClass>().Menu(testBool).ToString();
@@ -157,8 +174,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void BoolPropertyView() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testBool = (BoolTestClass) GetBoundedInstance<BoolTestClass>("BoolClass").GetDomainObject();
 
             string s = mocks.HtmlHelper.PropertyList(testBool).ToString();
@@ -167,8 +184,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void EnumPropertyView() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testEnum = (EnumTestClass)GetBoundedInstance<EnumTestClass>("EnumClass").GetDomainObject();
 
             string s = mocks.HtmlHelper.PropertyList(testEnum).ToString();
@@ -178,8 +195,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ChoicesParameter() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
             testChoices.TestChoicesProperty = testChoices;
             testChoices.TestChoicesStringProperty = "test2";
@@ -192,8 +209,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void MultipleChoicesParameterDomainObject1() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (ChoicesTestClass)GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
             //testChoices.TestChoicesProperty = testChoices;
             //testChoices.TestChoicesStringProperty = "test2";
@@ -206,8 +223,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void MultipleChoicesParameterDomainObject2() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (ChoicesTestClass)GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
             //testChoices.TestChoicesProperty = testChoices;
             //testChoices.TestChoicesStringProperty = "test2";
@@ -220,8 +237,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void MultipleChoicesParameterString() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (ChoicesTestClass)GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
             //testChoices.TestChoicesProperty = testChoices;
             //testChoices.TestChoicesStringProperty = "test2";
@@ -234,8 +251,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void MultipleChoicesParameterInt() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (ChoicesTestClass)GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
             //testChoices.TestChoicesProperty = testChoices;
             //testChoices.TestChoicesStringProperty = "test2";
@@ -248,8 +265,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void MultipleChoicesParameterBounded() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (ChoicesTestClass)GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
             //testChoices.TestChoicesProperty = testChoices;
             //testChoices.TestChoicesStringProperty = "test2";
@@ -263,8 +280,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ChoicesParameterWithDefault() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
 
             var testChoices = (ChoicesTestClass)GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
@@ -283,8 +300,8 @@ namespace MvcTestApp.Tests.Helpers {
        
         [Test]
         public void MultipleChoicesParameterWithDefault() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
 
             var testChoices = (ChoicesTestClass)GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
@@ -303,8 +320,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ChoicesParameterWithExistingValues() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
 
             var testChoices = (ChoicesTestClass)GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
           
@@ -325,8 +342,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ChoicesParameterAlternativeSyntax() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (ChoicesTestClass)GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
             testChoices.TestChoicesProperty = testChoices;
             testChoices.TestChoicesStringProperty = "test2";
@@ -339,8 +356,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ChoicesParameterAlternativeSyntaxWithDefault() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
 
             var testChoices = (ChoicesTestClass)GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
@@ -358,8 +375,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ChoicesParameterAlternativeSyntaxWithExistingValues() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
 
             var testChoices = (ChoicesTestClass)GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
            
@@ -379,8 +396,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void AutoCompleteParameter() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testAC = (AutoCompleteTestClass)GetBoundedInstance<AutoCompleteTestClass>("Class4").GetDomainObject();
             testAC.TestAutoCompleteProperty = DescribedTestClass;
             testAC.TestAutoCompleteStringProperty = "test2";
@@ -393,8 +410,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void AutoCompleteParameterWithDefault() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
 
             var testAC = (AutoCompleteTestClass)GetBoundedInstance<AutoCompleteTestClass>("Class4").GetDomainObject();
 
@@ -412,8 +429,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void AutoCompleteParameterWithExistingValues() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
 
             var testAC = (AutoCompleteTestClass)GetBoundedInstance<AutoCompleteTestClass>("Class4").GetDomainObject();
 
@@ -433,8 +450,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void EnumParameter() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (EnumTestClass)GetBoundedInstance<EnumTestClass>("EnumClass").GetDomainObject();
 
             INakedObjectAction action = NakedObjectsFramework.GetNakedObject(testChoices).Specification.GetObjectActions().Single(p => p.Id == "TestActualEnumParm");
@@ -446,8 +463,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void EnumParameterWithDefault() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             mocks.ViewDataContainer.Object.ViewData["EnumTestClass-TestActualEnumParm-Parm-Input"] = TestEnum.Paris;
             var testChoices = (EnumTestClass)GetBoundedInstance<EnumTestClass>("EnumClass").GetDomainObject();
 
@@ -461,8 +478,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void EnumParameterAnnotation() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (EnumTestClass)GetBoundedInstance<EnumTestClass>("EnumClass").GetDomainObject();
 
             INakedObjectAction action = NakedObjectsFramework.GetNakedObject(testChoices).Specification.GetObjectActions().Single(p => p.Id == "TestAnnotationEnumParm");
@@ -474,8 +491,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void EnumParameterChoices() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (EnumTestClass)GetBoundedInstance<EnumTestClass>("EnumClass").GetDomainObject();
 
             INakedObjectAction action = NakedObjectsFramework.GetNakedObject(testChoices).Specification.GetObjectActions().Single(p => p.Id == "TestActualEnumParmChoices");
@@ -487,8 +504,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void EnumParameterAnnotationChoices() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (EnumTestClass)GetBoundedInstance<EnumTestClass>("EnumClass").GetDomainObject();
 
             INakedObjectAction action = NakedObjectsFramework.GetNakedObject(testChoices).Specification.GetObjectActions().Single(p => p.Id == "TestAnnotationEnumParmChoices");
@@ -501,8 +518,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void EmptyQueryableParameter() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
             INakedObject collectionAdapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(new List<ChoicesTestClass>().AsQueryable(), null, null);
@@ -519,8 +536,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void EmptyEnumerableParameter() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
             INakedObject collectionAdapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(new List<ChoicesTestClass>(), null, null);
@@ -538,8 +555,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableParameter() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
 
@@ -558,8 +575,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void EnumerableParameter() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
             INakedObject collectionAdapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(new List<ChoicesTestClass> { testChoices }, null, null);
@@ -578,8 +595,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ChoicesProperty() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
             testChoices.TestChoicesProperty = testChoices;
             testChoices.TestChoicesStringProperty = "test2";
@@ -593,8 +610,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void AutoCompleteProperty() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testAC = (AutoCompleteTestClass)GetBoundedInstance<AutoCompleteTestClass>("Class4").GetDomainObject();
             testAC.TestAutoCompleteProperty = DescribedTestClass;
             testAC.TestAutoCompleteStringProperty = "test2";
@@ -606,8 +623,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void EnumProperty() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             var testEnum = (EnumTestClass)GetBoundedInstance<EnumTestClass>("EnumClass").GetDomainObject();
   
             string s = mocks.HtmlHelper.PropertyListEdit(testEnum).ToString();
@@ -617,7 +634,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForEmptyCollection() {
-            var mocks = new ContextMocks(controller);
+            
             var collection = new object[] {};
             INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
@@ -630,7 +647,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForEmptyCollection() {
-            var mocks = new ContextMocks(controller);
+            
             var collection = new object[] { }.AsQueryable();
             INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
@@ -643,7 +660,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForOneElementCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
             var collection = new[] {claim};
@@ -658,7 +675,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForOneElementCollectionWithMultiline() {
-            var mocks = new ContextMocks(controller);
+            
             ProjectCode pc = NakedObjectsFramework.ObjectPersistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
@@ -675,7 +692,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForPagedCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -699,7 +716,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForPagedCollectionPage1() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -724,7 +741,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForPagedCollectionPage2() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -750,7 +767,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForOneElementCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
             var collection = new[] { claim }.AsQueryable();
@@ -767,7 +784,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForOneElementCollectionWithMultiline() {
-            var mocks = new ContextMocks(controller);
+            
             ProjectCode pc = NakedObjectsFramework.ObjectPersistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
@@ -786,7 +803,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForPagedCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -812,7 +829,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForPagedCollectionPage1() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -839,7 +856,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForPagedCollectionPage2() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -867,7 +884,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForEmptyCollection() {
-            var mocks = new ContextMocks(controller);
+            
             var collection = new object[] { };
             INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
@@ -879,7 +896,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForEmptyCollectionTableView() {
-            var mocks = new ContextMocks(controller);
+            
             var collection = new object[] { };
             INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
@@ -895,7 +912,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForEagerlyCollectionTableView() {
-            var mocks = new ContextMocks(controller);
+            
          
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             var collection = new[] { claim };
@@ -916,7 +933,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForEmptyCollection() {
-            var mocks = new ContextMocks(controller);
+            
             var collection = new object[] { }.AsQueryable();
             INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
@@ -929,7 +946,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForEmptyCollectionTableView() {
-            var mocks = new ContextMocks(controller);
+            
             var collection = new object[] { }.AsQueryable();
             INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
@@ -948,7 +965,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForOneElementCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
             var collection = new[] { claim };
@@ -963,7 +980,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForOneElementCollectionTableView() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
             var collection = new[] { claim };
@@ -981,7 +998,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionlistViewForOneElementCollectionWithMultiline() {
-            var mocks = new ContextMocks(controller);
+            
             ProjectCode pc = NakedObjectsFramework.ObjectPersistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
@@ -997,7 +1014,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionlistViewForOneElementCollectionWithMultilineTableView() {
-            var mocks = new ContextMocks(controller);
+            
             ProjectCode pc = NakedObjectsFramework.ObjectPersistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
@@ -1019,7 +1036,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -1043,7 +1060,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionTableView() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -1073,7 +1090,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionPage1() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -1097,7 +1114,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionPage1TableView() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -1127,7 +1144,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionPage2() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -1151,7 +1168,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionPage2TableView() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -1183,7 +1200,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForOneElementCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
             var collection = new[] { claim }.AsQueryable();
@@ -1197,7 +1214,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForOneElementCollectionTableView() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
             var collection = new[] { claim }.AsQueryable();
@@ -1217,7 +1234,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForOneElementCollectionWithMultiline() {
-            var mocks = new ContextMocks(controller);
+            
             ProjectCode pc = NakedObjectsFramework.ObjectPersistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
@@ -1235,7 +1252,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForOneElementCollectionWithMultilineTableView() {
-            var mocks = new ContextMocks(controller);
+            
             ProjectCode pc = NakedObjectsFramework.ObjectPersistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
@@ -1256,7 +1273,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -1282,7 +1299,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionTableView() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -1311,7 +1328,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionPage1() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -1337,7 +1354,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionPage1TableView() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -1366,7 +1383,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionPage2() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -1393,7 +1410,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionPage2TableView() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
 
 
@@ -1426,7 +1443,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void DisplayName() {
-            var mocks = new ContextMocks(controller);
+            
             mocks.ViewDataContainer.Object.ViewData.Model = DescribedTestClass;
             string s = mocks.GetHtmlHelper<DescribedCustomHelperTestClass>().Menu(DescribedTestClass).ToString();
          
@@ -1435,7 +1452,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericAction() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.ControllerAction("Text", "Action", null, claim).ToString();
         
@@ -1444,7 +1461,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericActionWithController() {
-            var mocks = new ContextMocks(controller);
+            
             string s = mocks.HtmlHelper.ControllerAction("Text", "Action", "Controller").ToString();
        
             CheckResults("GenericActionWithController", s);
@@ -1452,7 +1469,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericActionWithRVDict() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.ControllerAction("Text", "Action", "Controller", new RouteValueDictionary(new {
                                                                                                                           id = NakedObjectsFramework.GetObjectId(claim)
@@ -1463,7 +1480,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericEditAction() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.ControllerActionOnTransient("Text", "Action", claim).ToString();
           
@@ -1472,7 +1489,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericEditActionWithController() {
-            var mocks = new ContextMocks(controller);
+            
             string s = mocks.HtmlHelper.ControllerActionOnTransient("Text", "Action", "Controller").ToString();
          
             CheckResults("GenericEditActionWithController", s);
@@ -1480,7 +1497,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericEditActionWithRVDict() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.ControllerActionOnTransient("Text", "Action", "Controller", new RouteValueDictionary(new {
                                                                                                                                      id = NakedObjectsFramework.GetObjectId(claim)
@@ -1492,7 +1509,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void MultiLineField() {
-            var mocks = new ContextMocks(controller);
+            
             mocks.ViewDataContainer.Object.ViewData.Model = DescribedTestClass;
             string s = mocks.GetHtmlHelper<DescribedCustomHelperTestClass>().PropertyListEditWith(DescribedTestClass, x => x.TestMultiLineString).ToString();
        
@@ -1502,7 +1519,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void MultiLineFieldView() {
-            var mocks = new ContextMocks(controller);
+            
             DescribedCustomHelperTestClass tc = DescribedTestClass;
             tc.TestMultiLineString = "Test String";
 
@@ -1516,7 +1533,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void MultiLineParameter() {
-            var mocks = new ContextMocks(controller);
+            
             mocks.ViewDataContainer.Object.ViewData.Model = DescribedTestClass;
             string s = mocks.GetHtmlHelper<DescribedCustomHelperTestClass>().ObjectActionAsDialog<DescribedCustomHelperTestClass, string>(DescribedTestClass, x => x.TestMultiLineFunction).ToString();
            
@@ -1526,7 +1543,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void NotPersistedMenu() {
-            var mocks = new ContextMocks(controller);
+            
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(NotPersistedTestClass);
             mocks.ViewDataContainer.Object.ViewData.Model = adapter.Object;
             string s = mocks.GetHtmlHelper<NotPersistedTestClass>().MenuOnTransient(adapter.Object).ToString();
@@ -1537,7 +1554,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void NotPersistedWithoutButton() {
-            var mocks = new ContextMocks(controller);
+            
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(NotPersistedTestClass);
             mocks.ViewDataContainer.Object.ViewData.Model = adapter.Object;
             string s = mocks.GetHtmlHelper<NotPersistedTestClass>().PropertyListEditHidden(adapter.Object).ToString();
@@ -1552,7 +1569,7 @@ namespace MvcTestApp.Tests.Helpers {
             
 
 
-            var mocks = new ContextMocks(controller);
+            
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(NotPersistedTestClass);
             mocks.ViewDataContainer.Object.ViewData.Model = adapter.Object;
             string s = mocks.GetHtmlHelper<NotPersistedTestClass>().PropertyList(adapter.Object).ToString();
@@ -1564,7 +1581,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void Object() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.Object(claim).ToString();
          
@@ -1574,7 +1591,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ViewModel() {
-            var mocks = new ContextMocks(controller);
+            
             Employee employee = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
 
             var no = NakedObjectsFramework.GetNakedObjectFromId("MvcTestApp.Tests.Helpers.ViewModelTestClass;1;" + employee.Name);
@@ -1587,7 +1604,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectActions() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.Menu(claim).ToString();
          
@@ -1596,7 +1613,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectActionsWithHints() {
-            var mocks = new ContextMocks(controller);
+            
             var hint = (HintTestClass)GetBoundedInstance<HintTestClass>("HintTestClass").GetDomainObject();
 
             string s = mocks.HtmlHelper.Menu(hint).ToString();
@@ -1606,7 +1623,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectPropertiesWithHints() {
-            var mocks = new ContextMocks(controller);
+            
             var hint = (HintTestClass)GetBoundedInstance<HintTestClass>("HintTestClass").GetDomainObject();
             string s = mocks.HtmlHelper.PropertyList(hint).ToString();
 
@@ -1615,7 +1632,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditPropertiesWithHints() {
-            var mocks = new ContextMocks(controller);
+            
             var hint = (HintTestClass)GetBoundedInstance<HintTestClass>("HintTestClass").GetDomainObject();
             string s = mocks.HtmlHelper.PropertyListEdit(hint).ToString();
 
@@ -1626,7 +1643,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ViewModelActions() {
-            var mocks = new ContextMocks(controller);
+            
             Employee employee = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
 
             var no = NakedObjectsFramework.GetNakedObjectFromId("MvcTestApp.Tests.Helpers.ViewModelTestClass;1;" + employee.Name);
@@ -1637,7 +1654,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ViewModelProperties() {
-            var mocks = new ContextMocks(controller);
+            
             Employee employee = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
 
             var no = NakedObjectsFramework.GetNakedObjectFromId("MvcTestApp.Tests.Helpers.ViewModelTestClass;1;" + employee.Name);
@@ -1648,7 +1665,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ViewModelPropertiesEdit() {
-            var mocks = new ContextMocks(controller);
+            
             Employee employee = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
 
             var no = NakedObjectsFramework.GetNakedObjectFromId("MvcTestApp.Tests.Helpers.ViewModelTestClass;1;" + employee.Name);
@@ -1660,7 +1677,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectActionsTestNotContributed1() {
-            var mocks = new ContextMocks(controller);
+            
 
             var nc1 = (NotContributedTestClass1) GetBoundedInstance<NotContributedTestClass1>("NC1Class").GetDomainObject();
             string s = mocks.HtmlHelper.Menu(nc1).ToString();
@@ -1671,7 +1688,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectActionsTestNotContributed2() {
-            var mocks = new ContextMocks(controller);
+            
 
             var nc2 = (NotContributedTestClass2) GetBoundedInstance<NotContributedTestClass2>("NC2Class").GetDomainObject();
             string s = mocks.HtmlHelper.Menu(nc2).ToString();
@@ -1682,7 +1699,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectActionsWithConcurrency() {
-            var mocks = new ContextMocks(controller);
+            
             RecordedAction recordedAction = NakedObjectsFramework.ObjectPersistor.Instances<RecordedAction>().First();
             string s = mocks.HtmlHelper.Menu(recordedAction).ToString();
      
@@ -1692,9 +1709,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithActionAsFind() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
 
             INakedObject employeeRepo = NakedObjectsFramework.GetAdaptedService("EmployeeRepository");
             INakedObjectAction action = employeeRepo.Specification.GetObjectActions().Single(a => a.Id == "FindEmployeeByName");
@@ -1707,10 +1724,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithFinder() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             Employee emp = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
             string s = mocks.HtmlHelper.PropertyListEdit(claim, null, null, "Approver", new[] {emp}).ToString();
         
 
@@ -1719,12 +1736,12 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithInlineObject() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             var claim2 = NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
 
             claim2.DateCreated = new DateTime(2010, 5, 19);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
 
             INakedObject employeeRepo = NakedObjectsFramework.GetAdaptedService("EmployeeRepository");
             INakedObjectAction action = employeeRepo.Specification.GetObjectActions().Single(a => a.Id == "FindEmployeeByName");
@@ -1738,10 +1755,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithListCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData["ExpenseItems"] = "list";
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
             string s = mocks.HtmlHelper.PropertyListEdit(claim).ToString();
          
 
@@ -1750,8 +1767,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithListCollectionAndRemove() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
 
             var tc1 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
             var tc2 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
@@ -1773,9 +1790,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithSummaryCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
             string s = mocks.HtmlHelper.PropertyListEdit(claim).ToString();
           
 
@@ -1784,10 +1801,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithSummaryCollectionForTransient() {
-            var mocks = new ContextMocks(controller);
+            
             var claim = NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
             claim.DateCreated = new DateTime(2010, 3, 25);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
             string s = mocks.HtmlHelper.PropertyListEdit(claim).ToString();
           
 
@@ -1796,10 +1813,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithTableCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData["ExpenseItems"] = "table";
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
             string s = mocks.HtmlHelper.PropertyListEdit(claim).ToString();
          
 
@@ -1808,8 +1825,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithTableCollectionAndRemove() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
 
             var tc1 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
             var tc2 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
@@ -1832,7 +1849,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectFieldsWithListCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData["ExpenseItems"] = "list";
             string s = mocks.HtmlHelper.PropertyList(claim).ToString();
@@ -1843,7 +1860,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectFieldsWithSummaryCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.PropertyList(claim).ToString();
        
@@ -1852,7 +1869,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectFieldsWithTableCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData["ExpenseItems"] = "table";
             string s = mocks.HtmlHelper.PropertyList(claim).ToString();
@@ -1864,7 +1881,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectForEnumerable() {
-            var mocks = new ContextMocks(controller);
+            
             IList<Claim> claims = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().Take(2).ToList();
 
             mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = new Dictionary<string, int> {
@@ -1887,7 +1904,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectForQueryable() {
-            var mocks = new ContextMocks(controller);
+            
             IQueryable<Claim> claims = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().Take(2);
 
             mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = new Dictionary<string, int> {
@@ -1910,14 +1927,14 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectHasVisibleFields() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             Assert.IsTrue(mocks.HtmlHelper.ObjectHasVisibleFields(claim));
         }
 
         [Test]
         public void ObjectLinkAndIcon() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.Object("Text", "Action", claim).ToString();
        
@@ -1927,14 +1944,14 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectTitle() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             Assert.AreEqual(@"28th Mar - Sales call, London", mocks.HtmlHelper.ObjectTitle(claim).ToString());
         }
 
         [Test]
         public void ObjectTypeAsCssId() {
-            var mocks = new ContextMocks(controller);
+            
             Employee emp = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
             List<Employee> allEmployees = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().ToList();
 
@@ -1947,7 +1964,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectWithImage() {
-            var mocks = new ContextMocks(controller);
+            
             var currency = (Currency) GetBoundedInstance<Currency>("EUR").GetDomainObject();
 
             string s = mocks.HtmlHelper.PropertyList(currency).ToString();
@@ -1959,9 +1976,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void DialogWithAjaxDisabled() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
 
             INakedObjectAction action = adapter.Specification.GetObjectActions().Single(p => p.Id == "RejectItems");
@@ -1973,9 +1990,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEdit() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
 
             INakedObjectAction action = adapter.Specification.GetObjectActions().First();
@@ -1994,11 +2011,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterListWithHint() {
-            var mocks = new ContextMocks(controller);
+            
 
             var hint = (HintTestClass)GetBoundedInstance<HintTestClass>("HintTestClass").GetDomainObject();
 
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(hint);
 
             INakedObjectAction action = adapter.Specification.GetObjectActions().Single(a => a.Id == "ActionWithParms");
@@ -2012,7 +2029,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditCollection() {
-            var mocks = new ContextMocks(controller);
+            
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
             var tc1 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
@@ -2030,9 +2047,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditWithActionAsFind() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
             INakedObjectAction action = NakedObjectsFramework.GetNakedObject(claim).Specification.GetObjectActions().Single(a => a.Id == "CopyAllExpenseItemsFromAnotherClaim");
@@ -2048,9 +2065,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditWithFinders() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
             INakedObjectAction action = NakedObjectsFramework.GetNakedObject(claim).Specification.GetObjectActions().Single(a => a.Id == "CopyAllExpenseItemsFromAnotherClaim");
@@ -2062,12 +2079,12 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditWithInlineObject() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             var claim2 = NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
 
             claim2.DateCreated = new DateTime(2010, 5, 18);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim1);
             INakedObjectAction action = NakedObjectsFramework.GetNakedObject(claim1).Specification.GetObjectActions().Single(a => a.Id == "CopyAllExpenseItemsFromAnotherClaim");
@@ -2083,9 +2100,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditWithSelection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
             INakedObjectAction action = NakedObjectsFramework.GetNakedObject(claim).Specification.GetObjectActions().Single(a => a.Id == "CopyAllExpenseItemsFromAnotherClaim");
@@ -2097,9 +2114,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditForCollection() {
-            var mocks = new ContextMocks(controller);
+            
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(new object());
 
        
             INakedObject claimRepo = NakedObjectsFramework.GetAdaptedService("ClaimRepository");
@@ -2122,7 +2139,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 //        [Test]
 //        public void PasswordField() {
-//            var mocks = new ContextMocks(controller);
+//            
 //            PasswordTestClass ptc = PasswordTestClass;
 //            mocks.ViewDataContainer.Object.ViewData.Model = ptc;
 //            NakedObjectsFramework.ObjectPersistor.CreateAdapterForTransient(ptc, true);
@@ -2134,7 +2151,7 @@ namespace MvcTestApp.Tests.Helpers {
 
 //        [Test]
 //        public void PasswordParameter() {
-//            var mocks = new ContextMocks(controller);
+//            
 //            PasswordTestClass ptc = PasswordTestClass;
 //            mocks.ViewDataContainer.Object.ViewData.Model = ptc;
 //            NakedObjectsFramework.ObjectPersistor.CreateAdapterForTransient(ptc, true);
@@ -2148,9 +2165,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void BoolParameter() {
-            var mocks = new ContextMocks(controller);
+            
             var btc = new BoolTestClass();
-            mocks.ViewDataContainer.Object.ViewData.Model = btc;
+           
+            SetupViewData(btc);
+
             NakedObjectsFramework.ObjectPersistor.CreateAdapter(btc, null, null);
             string s = mocks.GetHtmlHelper<BoolTestClass>().ObjectActionAsDialog<BoolTestClass,bool>(btc, x => x.TestBoolAction).ToString();
           
@@ -2160,9 +2179,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void NullableBoolParameter() {
-            var mocks = new ContextMocks(controller);
+            
             var btc = new BoolTestClass();
-            mocks.ViewDataContainer.Object.ViewData.Model = btc;
+            SetupViewData(btc);
             NakedObjectsFramework.ObjectPersistor.CreateAdapter(btc, null, null);
             string s = mocks.GetHtmlHelper<BoolTestClass>().ObjectActionAsDialog<BoolTestClass, bool?>(btc, x => x.TestNullableBoolAction).ToString();
 
@@ -2172,11 +2191,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterWithHint() {
-            var mocks = new ContextMocks(controller);
+            
 
             var hint = (HintTestClass)GetBoundedInstance<HintTestClass>("HintTestClass").GetDomainObject();
-            mocks.ViewDataContainer.Object.ViewData.Model = hint;
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+          
+            SetupViewData(hint);
             NakedObjectsFramework.GetNakedObject(hint);
 
             string s = mocks.GetHtmlHelper<HintTestClass>().ObjectActionAsDialog<HintTestClass, int, int>(hint, x => x.ActionWithParms).ToString();
@@ -2188,15 +2207,15 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ServiceHasNoVisibleFields() {
-            var mocks = new ContextMocks(controller);
+            
             INakedObject service = NakedObjectsFramework.GetAdaptedService("ClaimRepository");
             Assert.IsFalse(mocks.HtmlHelper.ObjectHasVisibleFields(service.Object));
         }
 
         [Test]
         public void ServiceList() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
             string s = mocks.HtmlHelper.Services().ToString();
           
 
@@ -2205,8 +2224,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void TransientWithCollection() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+            SetupViewData(new object());
 
 
             var tc1 = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
@@ -2229,7 +2248,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void UploadActions() {
-            var mocks = new ContextMocks(controller);
+            
 
 
             ITestObject testObject = GetBoundedInstance<Currency>("EUR");
@@ -2250,7 +2269,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void UserMessages() {
-            var mocks = new ContextMocks(controller);
+            
 
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofWarnings] = new[] {"Warning1", "Warning2"};
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofMessages] = new[] {"Message1", "Message2"};
@@ -2264,8 +2283,10 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void TestClientValidationHtml() {
 
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData.Model = DescribedTestClass;
+            
+          
+
+            SetupViewData(DescribedTestClass);
             string s = mocks.GetHtmlHelper<DescribedCustomHelperTestClass>().PropertyListEdit(mocks.ViewDataContainer.Object.ViewData.Model).ToString();
 
             CheckResults("ClientValidationHtml", s);
@@ -2273,8 +2294,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void TestClientValidationHtmlDialog() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData.Model = DescribedTestClass;
+
+            SetupViewData(DescribedTestClass);
             string s = mocks.GetHtmlHelper<DescribedCustomHelperTestClass>().ObjectActionAsDialog<DescribedCustomHelperTestClass, string, int, string, string>(DescribedTestClass, x => x.TestClientValidationFunction).ToString();
 
             CheckResults("ClientValidationHtmlDialog", s);

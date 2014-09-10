@@ -2,21 +2,22 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Expenses.ExpenseClaims;
 using Expenses.ExpenseEmployees;
 using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
+using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
-using NakedObjects.Persistor.Objectstore;
-using NakedObjects.Persistor.Objectstore.Inmemory;
+using NakedObjects.EntityObjectStore;
+using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Services;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
@@ -27,8 +28,24 @@ namespace MvcTestApp.Tests.Helpers {
     public class NofFrameworkHelperTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetupTest() {
+            StartTest();
+            SetUser("sven");
+        }
+
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
+            config.UsingCodeFirstContext(() => new MvcTestContext("MvcTest"));
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
+            Database.SetInitializer(new DatabaseInitializer());
             InitializeNakedObjectsFramework();
         }
 
@@ -37,19 +54,6 @@ namespace MvcTestApp.Tests.Helpers {
             CleanupNakedObjectsFramework();
         }
 
-        [SetUp]
-        public new void StartTest() {
-            SetUser("sven");
-            Fixtures.InstallFixtures(NakedObjectsFramework.ObjectPersistor, null);
-        }
-
-        [TearDown]
-        public void EndTest() {
-            MemoryObjectStore.DiscardObjects();
-            ((SimpleOidGenerator)NakedObjectsFramework.ObjectPersistor.OidGenerator).ResetTo(100L); 
-        }
-
-        #endregion
 
         protected override IServicesInstaller MenuServices {
             get { return new ServicesInstaller(DemoServicesSet.ServicesSet()); }
@@ -63,9 +67,7 @@ namespace MvcTestApp.Tests.Helpers {
             get { return new FixturesInstaller(DemoFixtureSet.FixtureSet()); }
         }
 
-        protected override IObjectPersistorInstaller Persistor {
-            get { return new InMemoryObjectPersistorInstaller { SimpleOidGeneratorStart = 100 }; }
-        }
+     
 
         [Test]
         public void ActionsForHelper() {
@@ -75,8 +77,8 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual(8, actions.Count());
         }
 
-        private const string objectId = "NakedObjects.Proxy.Expenses.ExpenseClaims.Claim;132;False";
-        private const string genericObjectId = @"NakedObjects.Services.SimpleRepository`1-MvcTestApp.Tests.Helpers.CustomHelperTestClass;5;False";
+        private const string objectId = "Expenses.ExpenseClaims.Claim;1;System.Int32;1;False;;0";
+        private const string genericObjectId = @"NakedObjects.Services.SimpleRepository`1-MvcTestApp.Tests.Helpers.CustomHelperTestClass;1;System.Int32;0;False;;0";
 
         [Test]
         public void GetObjectIdForObject() {
@@ -111,7 +113,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void GetServiceId() {
             const string serviceName = "ClaimRepository";
             string serviceId = NakedObjectsFramework.GetServiceId(serviceName);
-            Assert.AreEqual("Expenses.ExpenseClaims.ClaimRepository;1;False", serviceId );
+            Assert.AreEqual("Expenses.ExpenseClaims.ClaimRepository;1;System.Int32;0;False;;0", serviceId);
         }
 
         [Test]
@@ -134,6 +136,8 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void GetNakedObjectFromId() {
             Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            var id = NakedObjectsFramework.GetObjectId(claim1);
+
             INakedObject claim2 = NakedObjectsFramework.GetNakedObjectFromId(objectId);
             Assert.AreSame(claim1, claim2.Object);
         }

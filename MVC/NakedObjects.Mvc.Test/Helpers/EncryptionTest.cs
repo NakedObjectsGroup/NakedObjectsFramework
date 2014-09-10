@@ -3,15 +3,17 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System;
 using System.Collections.Specialized;
+using System.Data.Entity;
 using System.Web.Mvc;
 using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
+using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Persistor.Objectstore.Inmemory;
+using NakedObjects.EntityObjectStore;
+using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
@@ -23,10 +25,27 @@ namespace MvcTestApp.Tests.Helpers {
     public class EncryptionTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetupTest() {
-            InitializeNakedObjectsFramework();
+            StartTest();
+            controller = new DummyController();
+            mocks = new ContextMocks(controller);
+            SetUser("sven");
+        }
 
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
+            config.UsingCodeFirstContext(() => new MvcTestContext("MvcTest"));
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
+            Database.SetInitializer(new DatabaseInitializer());
+            InitializeNakedObjectsFramework();
         }
 
         [TestFixtureTearDown]
@@ -34,18 +53,8 @@ namespace MvcTestApp.Tests.Helpers {
             CleanupNakedObjectsFramework();
         }
 
-        [SetUp]
-        public new void StartTest() {
-            SetUser("sven");
-            Fixtures.InstallFixtures(NakedObjectsFramework.ObjectPersistor, null);
-        }
-
-        [TearDown]
-        public void EndTest() {
-            MemoryObjectStore.DiscardObjects();
-        }
-
-        #endregion
+        private DummyController controller;
+        private ContextMocks mocks;
 
         protected override IServicesInstaller MenuServices {
             get { return new ServicesInstaller(DemoServicesSet.ServicesSet()); }
@@ -61,8 +70,6 @@ namespace MvcTestApp.Tests.Helpers {
 
 
         private class DummyController : Controller {}
-
-        private readonly Controller controller = new DummyController();
 
 
         private CustomHelperTestClass TestClass {
@@ -86,7 +93,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CustomEncrypted() {
-            var mocks = new ContextMocks(controller);
+            
             CustomHelperTestClass tc = TestClass;
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofEncryptDecrypt] = new SimpleEncryptDecrypt();
 
@@ -104,7 +111,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void Encrypted() {
-            var mocks = new ContextMocks(controller);
+            
             CustomHelperTestClass tc = TestClass;
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofEncryptDecrypt] = new SimpleEncryptDecrypt();
 
@@ -123,7 +130,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void Decrypt() {
             IEncryptDecrypt encrypter = new SimpleEncryptDecrypt();
-            var mocks = new ContextMocks(controller);
+            
             // keys to make test reproduceable 
             byte[] key = GetConstantKey(32);
             byte[] iv = GetConstantKey(16);
