@@ -53,10 +53,10 @@ namespace Expenses {
             public virtual bool DescriptionIsUniqueForClaimant(Employee employee, string initialDescription) {
                 IQueryable<Claim> query =
                     from claim in Instances<Claim>()
-                    where claim.Claimant.Equals(employee) && claim.Description == initialDescription
+                    where claim.Claimant.Id == employee.Id && claim.Description == initialDescription
                     select claim;
 
-                return query.Count() == 0;
+                return !query.Any();
             }
 
             [Hidden]
@@ -87,10 +87,19 @@ namespace Expenses {
             }
 
             private IList<Claim> FindClaims(Employee employee, ClaimStatus status, string description) {
-                IQueryable<Claim> query =
-                    from claim in Instances<Claim>()
-                    where (employee == null || claim.Claimant.Equals(employee)) && (status == null || claim.Status.Equals(status)) && (description == null || claim.Description.LastIndexOf(description) >= 0)
-                    select claim;
+                IQueryable<Claim> query = Instances<Claim>();
+
+                if (employee != null) {
+                    query = query.Where(c => c.Claimant.Id == employee.Id);
+                }
+
+                if (status != null) {
+                    query = query.Where(c => c.Status.Id == status.Id);
+                }
+
+                if (description != null) {
+                    query = query.Where(c => c.Description.Contains(description));
+                }
 
                 return query.ToList();
             }

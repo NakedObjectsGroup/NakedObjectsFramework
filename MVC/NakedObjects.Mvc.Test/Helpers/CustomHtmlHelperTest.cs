@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,13 +12,13 @@ using System.Web.Mvc;
 using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
+using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Core.Persist;
-using NakedObjects.Persistor.Objectstore.Inmemory;
+using NakedObjects.EntityObjectStore;
+using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -27,8 +28,26 @@ namespace MvcTestApp.Tests.Helpers {
     public class CustomHtmlHelperTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetupTest() {
+            StartTest();
+            controller = new DummyController();
+            mocks = new ContextMocks(controller);
+            SetUser("sven");
+        }
+
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
+            config.UsingCodeFirstContext(() => new MvcTestContext("MvcTest"));
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
+            Database.SetInitializer(new DatabaseInitializer());
             InitializeNakedObjectsFramework();
         }
 
@@ -37,19 +56,8 @@ namespace MvcTestApp.Tests.Helpers {
             CleanupNakedObjectsFramework();
         }
 
-        [SetUp]
-        public new void StartTest() {
-            SetUser("sven");
-            Fixtures.InstallFixtures(NakedObjectsFramework.ObjectPersistor, null);
-        }
-
-        [TearDown]
-        public void EndTest() {
-            MemoryObjectStore.DiscardObjects();
-            ((SimpleOidGenerator) NakedObjectsFramework.ObjectPersistor.OidGenerator).ResetTo(100L);
-        }
-
-        #endregion
+        private DummyController controller;
+        private ContextMocks mocks;
 
         protected override IServicesInstaller MenuServices {
             get { return new ServicesInstaller(DemoServicesSet.ServicesSet()); }
@@ -63,14 +71,11 @@ namespace MvcTestApp.Tests.Helpers {
             get { return new FixturesInstaller(DemoFixtureSet.FixtureSet()); }
         }
 
-        protected override IObjectPersistorInstaller Persistor {
-            get { return new InMemoryObjectPersistorInstaller {SimpleOidGeneratorStart = 100}; }
-        }
-
+    
 
         private class DummyController : Controller {}
 
-        private readonly Controller controller = new DummyController();
+      
 
         private static string GetTestData(string name) {
             string file = Path.Combine(@"..\..\Custom Html reference files", name) + ".htm";
@@ -79,81 +84,93 @@ namespace MvcTestApp.Tests.Helpers {
 
         // for testcreation 
 
+        private static bool Writetests = false;
+
         private static void WriteTestData(string name, string data) {
             string file = Path.Combine(@"..\..\Custom Html reference files", name) + ".htm";
             File.WriteAllText(file, data);
         }
 
         private static void CheckResults(string resultsFile, string s) {
-            string actionView = GetTestData(resultsFile).StripWhiteSpace();
-            Assert.AreEqual(actionView, s.StripWhiteSpace());
-            //WriteTestData(resultsFile, s);
+            if (Writetests) {
+                WriteTestData(resultsFile, s);
+            }
+            else {
+                string actionView = GetTestData(resultsFile).StripWhiteSpace();
+                Assert.AreEqual(actionView, s.StripWhiteSpace());
+            }
         }
 
 
         private void CustomHelperTest(Func<ContextMocks, string> func, string toCompare) {
-            var mocks = new ContextMocks(controller);
+            
             var tc = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
-            mocks.ViewDataContainer.Object.ViewData.Model = tc;
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+          
+            SetupViewData(tc);
             string s = func(mocks);
             CheckResults(toCompare, s);
         }
 
 
         private void CustomHelperTestOtherObj(Func<ContextMocks, string> func, string toCompare) {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData.Model = new object(); // placeholder
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+          
+            SetupViewData(new object());
             string s = func(mocks);
             CheckResults(toCompare, s);
         }
 
 
         private void DescriptionCustomHelperTestCompareDirect(Func<ContextMocks, string> func, string toCompare) {
-            var mocks = new ContextMocks(controller);
+            
             var tc = (DescribedCustomHelperTestClass) GetTestService("Described Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
-            mocks.ViewDataContainer.Object.ViewData.Model = tc;
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+        
+            SetupViewData(tc);
             string s = func(mocks);
             Assert.AreEqual(toCompare, s);
         }
 
         private void DescriptionCustomHelperTestCompareDirectOtherObj(Func<ContextMocks, string> func, string toCompare) {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData.Model = new object();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+          
+            SetupViewData(new object());
             string s = func(mocks);
             Assert.AreEqual(toCompare, s);
         }
 
         private void CustomHelperTestCollection(Func<ContextMocks, string> func, string toCompare) {
-            var mocks = new ContextMocks(controller);
+            
             var tc = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
 
             var collection = new List<CustomHelperTestClass> {tc};
             INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
-            mocks.ViewDataContainer.Object.ViewData.Model = collection;
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+
+            SetupViewData(collection);
             string s = func(mocks);
             CheckResults(toCompare, s);
         }
 
-        private void CustomHelperTestCompareDirect(Func<ContextMocks, string> func, string toCompare) {
-            var mocks = new ContextMocks(controller);
-            var tc = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
-            mocks.ViewDataContainer.Object.ViewData.Model = tc;
+        private void SetupViewData(object model) {
+            mocks.ViewDataContainer.Object.ViewData.Model = model;
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NoFramework] = NakedObjectsFramework;
+        }
+
+        private void CustomHelperTestCompareDirect(Func<ContextMocks, string> func, string toCompare) {
+            
+            var tc = (CustomHelperTestClass) GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
+         
+            SetupViewData(tc);
             string s = func(mocks);
             Assert.AreEqual(toCompare, s);
         }
 
         private void CustomHelperTestCompareDirectOtherObj(Func<ContextMocks, string> func, string toCompare) {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData.Model = new object();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+         
+            SetupViewData(new object());
             string s = func(mocks);
             Assert.AreEqual(toCompare, s);
         }
@@ -372,29 +389,27 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CustomHelperTestAsDialog() {
-            var mocks = new ContextMocks(controller);
+            
             CustomHelperTestClass tc = TestClass;
-            mocks.ViewDataContainer.Object.ViewData.Model = tc;
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(tc);
             string s = mocks.HtmlHelper.ObjectActionAsDialog("FourValueParametersFunction").ToString();
             CheckResults("CustomHelperTestAsDialog", s);
         }
 
         [Test]
         public void CustomHelperTestAsDialogOnOtherObject() {
-            var mocks = new ContextMocks(controller);
+            
             CustomHelperTestClass tc = TestClass;
-            mocks.ViewDataContainer.Object.ViewData.Model = new object();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            SetupViewData(tc);
             string s = mocks.HtmlHelper.ObjectActionAsDialog(tc, "FourValueParametersFunction").ToString();
             CheckResults("CustomHelperTestAsDialog", s);
         }
 
         [Test]
         public void CustomHelperTestStringId() {
-            var mocks = new ContextMocks(controller);
+            
             CustomHelperTestClass tc = TestClass;
-            mocks.ViewDataContainer.Object.ViewData.Model = tc;
+            SetupViewData(tc);
             string s = mocks.HtmlHelper.ObjectAction("NoParameterAction").ToString();
         
 
@@ -403,9 +418,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CustomHelperTestStringIdOnOtherObject() {
-            var mocks = new ContextMocks(controller);
+            
             CustomHelperTestClass tc = TestClass;
-            mocks.ViewDataContainer.Object.ViewData.Model = new object(); // placeholder
+            SetupViewData(new object());
+           
             string s = mocks.HtmlHelper.ObjectAction(tc, "NoParameterAction").ToString();
           
 
@@ -414,27 +430,27 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CustomHelperTestStringIdHidden() {
-            var mocks = new ContextMocks(controller);
+            
             CustomHelperTestClass tc = TestClass;
-            mocks.ViewDataContainer.Object.ViewData.Model = tc;
+            SetupViewData(tc);
             string s = mocks.HtmlHelper.ObjectAction("HiddenAction").ToString();
             Assert.AreEqual("", s);
         }
 
         [Test]
         public void CustomHelperTestStringIdOnOtherObjectHidden() {
-            var mocks = new ContextMocks(controller);
+            
             CustomHelperTestClass tc = TestClass;
-            mocks.ViewDataContainer.Object.ViewData.Model = new object(); // placeholder
+            SetupViewData(new object());
             string s = mocks.HtmlHelper.ObjectAction(tc, "HiddenAction").ToString();
             Assert.AreEqual("", s);
         }
 
         [Test]
         public void CustomHelperTestStringIdDisabled() {
-            var mocks = new ContextMocks(controller);
+            
             CustomHelperTestClass tc = TestClass;
-            mocks.ViewDataContainer.Object.ViewData.Model = tc;
+            SetupViewData(tc);
             string s = mocks.HtmlHelper.ObjectAction("DisabledAction").ToString();
          
 
@@ -443,9 +459,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CustomHelperTestStringIdOnOtherObjectDisabled() {
-            var mocks = new ContextMocks(controller);
+            
             CustomHelperTestClass tc = TestClass;
-            mocks.ViewDataContainer.Object.ViewData.Model = new object(); // placeholder
+            SetupViewData(new object());
             string s = mocks.HtmlHelper.ObjectAction(tc, "DisabledAction").ToString();
            
 
@@ -455,9 +471,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CustomHelperTestStringIdOnOtherObjectEdit() {
-            var mocks = new ContextMocks(controller);
+            
             CustomHelperTestClass tc = TestClass;
-            mocks.ViewDataContainer.Object.ViewData.Model = new object();
+            SetupViewData(new object());
             string s = mocks.HtmlHelper.ObjectActionOnTransient(tc, "NoParameterAction").ToString();
          
 
@@ -817,12 +833,14 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void IntPropertyDefault() {
           
-            var mocks = new ContextMocks(controller);
+            
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(new CustomHelperTestClass());
-            mocks.ViewDataContainer.Object.ViewData.Model = adapter.Object;
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+         
 
+            SetupViewData(adapter.Object);
             mocks.ViewDataContainer.Object.ViewData["CustomHelperTestClass-TestIntDefault-Input"] = NakedObjectsFramework.ObjectPersistor.CreateAdapter(0, null, null);
+
+
 
             string s = mocks.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit(y => y.TestIntDefault).ToString();
 
@@ -832,10 +850,11 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void DateTimePropertyEdit() {
 
-            var mocks = new ContextMocks(controller);
+            
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(new NotPersistedTestClass());
-            mocks.ViewDataContainer.Object.ViewData.Model = adapter.Object;
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+          
+
+            SetupViewData(adapter.Object);
             string s = mocks.GetHtmlHelper<NotPersistedTestClass>().ObjectPropertyEdit(y => y.TestDateTime).ToString();
        
 
@@ -1390,10 +1409,12 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void OneRefParameterPopulatedActionAsDialog() {
 
-            var mocks = new ContextMocks(controller);
+            
             var tc = (CustomHelperTestClass)GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
-            mocks.ViewDataContainer.Object.ViewData.Model = tc;
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            
+
+            SetupViewData(tc);
+
             mocks.ViewDataContainer.Object.ViewData["CustomHelperTestClass-OneRefParameterAction-Parm-Select"] = NakedObjectsFramework.ObjectPersistor.CreateAdapter(tc, null, null);
 
             string s = mocks.GetHtmlHelper<CustomHelperTestClass>().ObjectActionAsDialog<CustomHelperTestClass, CustomHelperTestClass>(y => y.OneRefParameterAction).ToString();
@@ -1811,10 +1832,10 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void RefPropertyStringEditExistingValue() {
 
-            var mocks = new ContextMocks(controller);
+            
             var tc = (CustomHelperTestClass)GetTestService("Custom Helper Test Classes").GetAction("New Instance").InvokeReturnObject().NakedObject.Object;
-            mocks.ViewDataContainer.Object.ViewData.Model = tc;
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+        
+            SetupViewData(tc);
 
             var id = NakedObjectsFramework.GetObjectId(tc);
             mocks.ViewDataContainer.Object.ViewData.ModelState.SetModelValue("CustomHelperTestClass-TestRef-Select", new ValueProviderResult(id, null, null));
@@ -1883,7 +1904,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void SingleServiceMenu() {
-            var mocks = new ContextMocks(controller);
+            
+            SetupViewData(new object());
             object ts = GetTestService("Custom Helper Test Classes").NakedObject.Object;
             string s = mocks.HtmlHelper.ServiceMenu(ts).ToString();
       

@@ -1,0 +1,60 @@
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
+using System.ComponentModel.DataAnnotations;
+using NakedObjects;
+
+namespace MvcTestApp.Tests.Helpers {
+    [Bounded]
+    public class BoolTestClass {
+        private bool testBool1 = true;
+        private bool? testNullableBool1 = true;
+        private bool? testNullableBool2 = false;
+        private bool? testNullableBool3 = null;
+
+        public BoolTestClass() {
+            TestBool2 = false;
+        }
+
+        [Hidden, Key]
+        public int Id { get; set; }
+
+
+        [Title]
+        public string Name { get; set; }
+
+        public bool TestBool1 {
+            get { return testBool1; }
+            set { testBool1 = value; }
+        }
+
+        public bool TestBool2 { get; set; }
+
+        public bool? TestNullableBool1 {
+            get { return testNullableBool1; }
+            set { testNullableBool1 = value; }
+        }
+
+        public bool? TestNullableBool2 {
+            get { return testNullableBool2; }
+            set { testNullableBool2 = value; }
+        }
+
+        public bool? TestNullableBool3 {
+            get { return testNullableBool3; }
+            set { testNullableBool3 = value; }
+        }
+
+
+        public void TestBoolAction(bool parm) {}
+
+        public void TestNullableBoolAction(bool? parm) {}
+
+        public void DuplicateAction() {}
+        public void DuplicateAction(string parm) {}
+    }
+}

@@ -1,12 +1,40 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
 using NakedObjects.Value;
 
 namespace Expenses.Currencies {
     [Bounded, Immutable(WhenTo.OncePersisted)]
     public class Currency {
+        private byte[] currencyFile = new byte[] {};
+        private byte[] currencyImage = new byte[] {};
+
+        [Hidden, Key]
+        public int Id { get; set; }
+
+        [NotMapped]
+        public virtual Image CurrencyImage {
+            get { return new Image(currencyImage, "TestImage.jpg", @"image\jpeg"); }
+            set { currencyImage = value.GetResourceAsByteArray(); }
+        }
+
+        [NotMapped]
+        public virtual FileAttachment CurrencyFile {
+            get { return new FileAttachment(currencyFile, "TestFile.pdf", @"application\pdf"); }
+            set { currencyFile = value.GetResourceAsByteArray(); }
+        }
+
+        public virtual byte[] CurrencyByteArray {
+            get { return new byte[0]; }
+        }
+
         #region Title & Icon
 
         public virtual string Title() {
@@ -32,22 +60,6 @@ namespace Expenses.Currencies {
         public virtual string CurrencyName { get; set; }
 
         #endregion
-
-        private Image currencyImage = new Image(new byte[0], "TestImage.jpg", @"image\jpeg"); // just for testing
-        public virtual Image CurrencyImage {
-            get { return currencyImage; }
-            set { currencyImage = value; }
-        }
-
-        private FileAttachment currencyFile = new FileAttachment(new byte[0] , "TestFile.pdf", @"application\pdf" ); // just for testing
-        public virtual FileAttachment CurrencyFile {
-            get { return currencyFile; }
-            set { currencyFile = value; }
-        }
-
-        public virtual byte[] CurrencyByteArray {
-            get { return new byte[0]; }
-        }
 
         public void UploadImage(Image image) {}
 

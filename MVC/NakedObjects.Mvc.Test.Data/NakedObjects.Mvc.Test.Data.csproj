@@ -107,9 +107,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoCompleteTestClass.cs" />
-    <Compile Include="BoolTestClass.cs" />
-    <Compile Include="ChoicesTestClass.cs" />
+    <Compile Include="contexts\MvcTestContext.cs" />
+    <Compile Include="testclasses\AutoCompleteTestClass.cs" />
+    <Compile Include="testclasses\BoolTestClass.cs" />
+    <Compile Include="testclasses\ChoicesTestClass.cs" />
     <Compile Include="claims\Claim.cs" />
     <Compile Include="claims\ClaimRepository.cs" />
     <Compile Include="claims\ClaimStatus.cs" />
@@ -125,12 +126,12 @@
     <Compile Include="claims\items\Taxi.cs" />
     <Compile Include="claims\ProjectCode.cs" />
     <Compile Include="claims\Status.cs" />
-    <Compile Include="HintTestClass.cs" />
+    <Compile Include="testclasses\HintTestClass.cs" />
     <Compile Include="services\ViewModelTestService.cs" />
-    <Compile Include="ViewModelTestClass.cs" />
-    <Compile Include="EnumTestClass.cs" />
+    <Compile Include="testclasses\ViewModelTestClass.cs" />
+    <Compile Include="testclasses\EnumTestClass.cs" />
     <Compile Include="currency\Currency.cs" />
-    <Compile Include="CustomHelperTestClass.cs" />
+    <Compile Include="testclasses\CustomHelperTestClass.cs" />
     <Compile Include="email\DummyMailSender.cs" />
     <Compile Include="employee\Employee.cs" />
     <Compile Include="employee\EmployeeRepository.cs" />
@@ -148,9 +149,9 @@
     <Compile Include="fixtures\SvenClaim3Returned.cs" />
     <Compile Include="fixtures\SvenClaim4Approved.cs" />
     <Compile Include="fixtures\SvenClaim5New.cs" />
-    <Compile Include="InlineTestClass.cs" />
-    <Compile Include="NotContributedTestClass.cs" />
-    <Compile Include="NotPersistedTestClass.cs" />
+    <Compile Include="testclasses\InlineTestClass.cs" />
+    <Compile Include="testclasses\NotContributedTestClass.cs" />
+    <Compile Include="testclasses\NotPersistedTestClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="recordedAction\IActor.cs" />
     <Compile Include="recordedAction\IRecordedActionContext.cs" />

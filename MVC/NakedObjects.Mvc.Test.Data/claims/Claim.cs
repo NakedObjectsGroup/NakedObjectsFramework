@@ -16,6 +16,9 @@ namespace Expenses {
         public class Claim : IRecordedActionContext {
             public IDomainObjectContainer Container { protected get; set; }
 
+            [Hidden, Key]
+            public int Id { get; set; }
+
             #region Title
 
             public virtual string Title() {
