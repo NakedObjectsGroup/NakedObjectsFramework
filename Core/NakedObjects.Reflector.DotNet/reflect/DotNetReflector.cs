@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
@@ -53,7 +52,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             get { return introspectionControlParameters.FacetFactorySet; }
         }
 
-        public INakedObject[] NonSystemServices { get; set; }
+        private Type[] NonSystemServices { get; set; }
 
         public virtual INakedObjectSpecification[] AllSpecifications {
             get { return cache.AllSpecifications(); }
@@ -91,6 +90,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public virtual void InstallServiceSpecifications(Type[] type) {
             installingServices = true;
             type.ForEach(InstallServiceSpecification);
+            NonSystemServices = type;
         }
 
         public virtual void PopulateContributedActions(Type[] services) {
@@ -155,8 +155,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                     introspectableSpecification.Introspect(facetDecorator);
 
                     if (!installingServices) {
-                        var services = NonSystemServices ?? new INakedObject[] {};
-                        introspectableSpecification.PopulateAssociatedActions(services.Select(s => s.Object.GetType()).ToArray());
+                        var services = NonSystemServices ?? new Type[] {};
+                        introspectableSpecification.PopulateAssociatedActions(services);
                     }
                 }
 

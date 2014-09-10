@@ -96,15 +96,6 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        protected override IObjectPersistorInstaller Persistor {
-            get {
-                var installer = new EntityPersistorInstaller();
-                installer.ForceContextSet();
-                return installer;
-            }
-        }
-
-
         private static void AssertPagingData(ViewResult result, int currentPage, int pageSize, int pageTotal) {
             Assert.AreEqual(currentPage, ((Dictionary<string, int>) result.ViewData[IdHelper.PagingData])[IdHelper.PagingCurrentPage]);
             Assert.AreEqual(pageSize, ((Dictionary<string, int>) result.ViewData[IdHelper.PagingData])[IdHelper.PagingPageSize]);

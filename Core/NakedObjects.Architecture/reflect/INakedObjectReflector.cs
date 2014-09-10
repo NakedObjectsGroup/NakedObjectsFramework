@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 
@@ -14,8 +13,6 @@ namespace NakedObjects.Architecture.Reflect {
         bool IgnoreCase { get; }
 
         INakedObjectSpecification[] AllSpecifications { get; }
-
-        INakedObject[] NonSystemServices { get; set; }
 
         IClassStrategy ClassStrategy { get; }
 
