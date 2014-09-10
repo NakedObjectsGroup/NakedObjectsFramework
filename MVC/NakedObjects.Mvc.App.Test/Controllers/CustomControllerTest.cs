@@ -1,12 +1,18 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 using AdventureWorksModel;
+using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
@@ -20,16 +26,32 @@ using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
-using System.Linq;
 
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]
     public class CustomControllerTest : AcceptanceTestCase {
         #region Setup/Teardown
 
+        [SetUp]
+        public void SetupTest() {
+            StartTest();
+            controller = new CustomControllerWrapper(NakedObjectsFramework);
+            mocks = new ContextMocks(controller);
+        }
+
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingEdmxContext("Model");
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+        }
 
         [TestFixtureSetUp]
-        public void SetupTest() {
+        public void SetupTestFixture() {
+            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
+            SqlConnection.ClearAllPools();
             InitializeNakedObjectsFramework();
         }
 
@@ -38,43 +60,29 @@ namespace MvcTestApp.Tests.Controllers {
             CleanupNakedObjectsFramework();
         }
 
-        #endregion
+        private CustomControllerWrapper controller;
+        private ContextMocks mocks;
 
         protected override IServicesInstaller MenuServices {
             get {
                 return new ServicesInstaller(new object[] {
-                                                              new CustomerRepository(),
-                                                              new OrderRepository(),
-                                                              new ProductRepository(),
-                                                              new EmployeeRepository(),
-                                                              new SalesRepository(),
-                                                              new SpecialOfferRepository(),
-                                                              new ContactRepository(),
-                                                              new VendorRepository(),
-                                                              new PurchaseOrderRepository(),
-                                                              new WorkOrderRepository(),
-                                                              new SimpleRepository<NotPersistedObject>()
-                                                          });
+                    new CustomerRepository(),
+                    new OrderRepository(),
+                    new ProductRepository(),
+                    new EmployeeRepository(),
+                    new SalesRepository(),
+                    new SpecialOfferRepository(),
+                    new ContactRepository(),
+                    new VendorRepository(),
+                    new PurchaseOrderRepository(),
+                    new WorkOrderRepository(),
+                    new SimpleRepository<NotPersistedObject>()
+                });
             }
         }
 
         protected override IServicesInstaller ContributedActions {
             get { return new ServicesInstaller(new object[] {new OrderContributedActions()}); }
-        }
-
-
-        protected override IObjectPersistorInstaller Persistor {
-            get {
-                var installer = new EntityPersistorInstaller();
-                installer.ForceContextSet();
-                return installer;
-            }
-        }
-
-        [TestFixtureSetUp]
-        public void SetupFixture() {
-            DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
-            SqlConnection.ClearAllPools();
         }
 
 
@@ -85,12 +93,12 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
 
-        private  INakedObject EmployeeRepo {
+        private INakedObject EmployeeRepo {
             get { return NakedObjectsFramework.GetAdaptedService("EmployeeRepository"); }
         }
 
 
-        private  string EmployeeRepoId {
+        private string EmployeeRepoId {
             get { return NakedObjectsFramework.GetObjectId(EmployeeRepo); }
         }
 
@@ -239,8 +247,6 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeActionByLambda() {
-            var controller = new CustomControllerWrapper(null);
-            new ContextMocks(controller);
             bool valid;
             Employee result = controller.InvokeAction<EmployeeRepository, Employee>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.RandomEmployee, new FormCollection(), out valid);
             Assert.IsNotNull(result);
@@ -249,8 +255,6 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeActionByLambdaWithInvalidParms() {
-            var controller = new CustomControllerWrapper(null);
-            new ContextMocks(controller);
             bool valid;
             IQueryable<Employee> result = controller.InvokeAction<EmployeeRepository, string, string, IQueryable<Employee>>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.FindEmployeeByName, new FormCollection(), out valid);
             Assert.IsNull(result);
@@ -259,13 +263,11 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeActionByLambdaWithValidParms() {
-            var controller = new CustomControllerWrapper(null);
-            new ContextMocks(controller);
             bool valid;
             FormCollection fc = GetForm(new Dictionary<string, string> {
-                                                                           {"EmployeeRepository-FindEmployeeByName-FirstName-Input", ""},
-                                                                           {"EmployeeRepository-FindEmployeeByName-LastName-Input", "Smith"}
-                                                                       });
+                {"EmployeeRepository-FindEmployeeByName-FirstName-Input", ""},
+                {"EmployeeRepository-FindEmployeeByName-LastName-Input", "Smith"}
+            });
             IQueryable<Employee> result = controller.InvokeAction<EmployeeRepository, string, string, IQueryable<Employee>>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.FindEmployeeByName, fc, out valid);
             Assert.IsNotNull(result);
             Assert.IsTrue(valid);
@@ -273,8 +275,6 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeActionByName() {
-            var controller = new CustomControllerWrapper(null);
-            new ContextMocks(controller);
             bool valid;
             var result = controller.InvokeAction<Employee>(EmployeeRepo.Object, "RandomEmployee", new FormCollection(), out valid);
             Assert.IsNotNull(result);
@@ -284,8 +284,6 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByLambda() {
-            var controller = new CustomControllerWrapper(null);
-            new ContextMocks(controller);
             ViewResult result = controller.InvokeAction<EmployeeRepository, Employee>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.RandomEmployee, new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
             Assert.AreEqual("OKView", result.ViewName);
@@ -293,8 +291,6 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByLambdaWithInvalidParms() {
-            var controller = new CustomControllerWrapper(null);
-            new ContextMocks(controller);
             ViewResult result = controller.InvokeAction<EmployeeRepository, string, string, IQueryable<Employee>>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.FindEmployeeByName, new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
             Assert.AreEqual("FailView", result.ViewName);
@@ -302,8 +298,6 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByLambdaWithInvalidParmsWithOid() {
-            var controller = new CustomControllerWrapper(null);
-            new ContextMocks(controller);
             ViewResult result = controller.InvokeAction<EmployeeRepository, string, string, IQueryable<Employee>>(EmployeeRepoId, x => x.FindEmployeeByName, new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
             Assert.AreEqual("FailView", result.ViewName);
@@ -311,8 +305,6 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByLambdaWithOid() {
-            var controller = new CustomControllerWrapper(null);
-            new ContextMocks(controller);
             ViewResult result = controller.InvokeAction<EmployeeRepository, Employee>(EmployeeRepoId, x => x.RandomEmployee, new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
             Assert.AreEqual("OKView", result.ViewName);
@@ -320,12 +312,10 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByLambdaWithValidParms() {
-            var controller = new CustomControllerWrapper(null);
-            new ContextMocks(controller);
             FormCollection fc = GetForm(new Dictionary<string, string> {
-                                                                           {"EmployeeRepository-FindEmployeeByName-FirstName-Input", ""},
-                                                                           {"EmployeeRepository-FindEmployeeByName-LastName-Input", "Smith"}
-                                                                       });
+                {"EmployeeRepository-FindEmployeeByName-FirstName-Input", ""},
+                {"EmployeeRepository-FindEmployeeByName-LastName-Input", "Smith"}
+            });
             ViewResult result = controller.InvokeAction<EmployeeRepository, string, string, IQueryable<Employee>>(EmployeeRepo.GetDomainObject<EmployeeRepository>(), x => x.FindEmployeeByName, fc, "FailView", "OKView");
             Assert.IsNotNull(result);
             Assert.AreEqual("OKView", result.ViewName);
@@ -333,12 +323,10 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByLambdaWithValidParmsWithOid() {
-            var controller = new CustomControllerWrapper(null);
-            new ContextMocks(controller);
             FormCollection fc = GetForm(new Dictionary<string, string> {
-                                                                           {"EmployeeRepository-FindEmployeeByName-FirstName-Input", ""},
-                                                                           {"EmployeeRepository-FindEmployeeByName-LastName-Input", "Smith"}
-                                                                       });
+                {"EmployeeRepository-FindEmployeeByName-FirstName-Input", ""},
+                {"EmployeeRepository-FindEmployeeByName-LastName-Input", "Smith"}
+            });
             ViewResult result = controller.InvokeAction<EmployeeRepository, string, string, IQueryable<Employee>>(EmployeeRepoId, x => x.FindEmployeeByName, fc, "FailView", "OKView");
             Assert.IsNotNull(result);
             Assert.AreEqual("OKView", result.ViewName);
@@ -346,8 +334,6 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByName() {
-            var controller = new CustomControllerWrapper(null);
-            new ContextMocks(controller);
             ViewResult result = controller.InvokeAction(EmployeeRepo.Object, "RandomEmployee", new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
             Assert.AreEqual("OKView", result.ViewName);
@@ -355,8 +341,6 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeViewActionByNameWithOid() {
-            var controller = new CustomControllerWrapper(null);
-            new ContextMocks(controller);
             ViewResult result = controller.InvokeAction(EmployeeRepoId, "RandomEmployee", new FormCollection(), "FailView", "OKView");
             Assert.IsNotNull(result);
             Assert.AreEqual("OKView", result.ViewName);

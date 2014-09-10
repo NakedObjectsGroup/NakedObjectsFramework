@@ -1,6 +1,10 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,6 +15,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using AdventureWorksModel;
+using Microsoft.Practices.Unity;
 using Moq;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
@@ -30,8 +35,24 @@ namespace MvcTestApp.Tests.Controllers {
     public class AjaxControllerTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetupTest() {
+            StartTest();
+            controller = new AjaxController(NakedObjectsFramework);
+            mocks = new ContextMocks(controller);
+        }
+
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingEdmxContext("Model");
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
             SqlConnection.ClearAllPools();
             InitializeNakedObjectsFramework();
@@ -42,23 +63,25 @@ namespace MvcTestApp.Tests.Controllers {
             CleanupNakedObjectsFramework();
         }
 
-        #endregion
+        private AjaxController controller;
+        private ContextMocks mocks;
+
 
         protected override IServicesInstaller MenuServices {
             get {
                 return new ServicesInstaller(new object[] {
-                                                              new CustomerRepository(),
-                                                              new OrderRepository(),
-                                                              new ProductRepository(),
-                                                              new EmployeeRepository(),
-                                                              new SalesRepository(),
-                                                              new SpecialOfferRepository(),
-                                                              new ContactRepository(),
-                                                              new VendorRepository(),
-                                                              new PurchaseOrderRepository(),
-                                                              new WorkOrderRepository(),
-                                                              new SimpleRepository<NotPersistedObject>()
-                                                          });
+                    new CustomerRepository(),
+                    new OrderRepository(),
+                    new ProductRepository(),
+                    new EmployeeRepository(),
+                    new SalesRepository(),
+                    new SpecialOfferRepository(),
+                    new ContactRepository(),
+                    new VendorRepository(),
+                    new PurchaseOrderRepository(),
+                    new WorkOrderRepository(),
+                    new SimpleRepository<NotPersistedObject>()
+                });
             }
         }
 
@@ -67,338 +90,11 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         protected override IServicesInstaller SystemServices {
-            get {
-                return new ServicesInstaller(new object[] {new ChoicesRepository(), new AutoCompleteRepository()});
-            }
+            get { return new ServicesInstaller(new object[] {new ChoicesRepository(), new AutoCompleteRepository()}); }
         }
 
-        protected override IObjectPersistorInstaller Persistor {
-            get {
-                var installer = new EntityPersistorInstaller();
-                installer.ForceContextSet();
-                return installer;
-            }
-        }
-
-        [Test]
-        public void TestValidateFailRefParameter() {
-            var controller = new AjaxController(null);
-            new ContextMocks(controller);
-
-            Store store = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
-            Vendor vendor = NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First();
-            const string actionName = "CreateNewOrder";
-            const string parameterName = "customer";
-
-            string id = NakedObjectsFramework.GetObjectId(store);
-            string value = NakedObjectsFramework.GetObjectId(vendor);
-
-            JsonResult result = controller.ValidateParameter(id, value, actionName, parameterName);
-            Assert.AreEqual("Not a suitable type; must be a Customer", result.Data);
-        }
-
-        [Test]
-        public void TestValidateFailRefProperty() {
-            var controller = new AjaxController(null);
-            new ContextMocks(controller);
-
-            Store store = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
-            Store store1 = NakedObjectsFramework.ObjectPersistor.Instances<Store>().OrderBy(x => "").Skip(1).First();
-
-            string id = NakedObjectsFramework.GetObjectId(store);
-            string value = NakedObjectsFramework.GetObjectId(store1);
-            const string propertyName = "SalesPerson";
-
-            JsonResult result = controller.ValidateProperty(id, value, propertyName);
-            Assert.AreEqual("Not a suitable type; must be a Sales Person", result.Data);
-        }
-
-        [Test]
-        public void TestValidateFailValueParameter() {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
-            INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
-
-
-            const string actionName = "FindContactByName";
-            const string parameterName = "lastName";
-
-            string id = NakedObjectsFramework.GetObjectId(contactRepo);
-            const string value = "";
-            const string parmId = "ContactRepository-FindContactByName-LastName-Input";
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parmId, value}});
-
-            JsonResult result = controller.ValidateParameter(id, null, actionName, parameterName);
-            Assert.AreEqual("Mandatory", result.Data);
-        }
-
-        [Test]
-        public void TestValidateFailValueProperty() {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
-            Vendor vendor = NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First();
-            string id = NakedObjectsFramework.GetObjectId(vendor);
-            const string value = "";
-            const string propertyName = "AccountNumber";
-            const string fieldId = "Vendor-AccountNumber-Input";
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{fieldId, value}});
-
-            JsonResult result = controller.ValidateProperty(id, null, propertyName);
-            Assert.AreEqual("Mandatory", result.Data);
-        }
-
-        [Test]
-        public void TestValidateOkRefParameter() {
-            var controller = new AjaxController(null);
-            new ContextMocks(controller);
-
-            Store store = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
-            const string actionName = "CreateNewOrder";
-            const string parameterName = "customer";
-
-
-            string id = NakedObjectsFramework.GetObjectId(store);
-            string value = NakedObjectsFramework.GetObjectId(store);
-
-            JsonResult result = controller.ValidateParameter(id, value, actionName, parameterName);
-            Assert.IsTrue((bool) result.Data);
-        }
-
-        [Test]
-        public void TestValidateOkRefProperty() {
-            var controller = new AjaxController(null);
-            new ContextMocks(controller);
-
-            Store store = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
-            SalesPerson salesPerson = NakedObjectsFramework.ObjectPersistor.Instances<SalesPerson>().First();
-
-            string id = NakedObjectsFramework.GetObjectId(store);
-            string value = NakedObjectsFramework.GetObjectId(salesPerson);
-            const string propertyName = "SalesPerson";
-
-            JsonResult result = controller.ValidateProperty(id, value, propertyName);
-            Assert.IsTrue((bool) result.Data);
-        }
-
-        [Test]
-        public void TestValidateOkValueParameter() {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
-            INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
-
-
-            const string actionName = "FindContactByName";
-            const string parameterName = "lastName";
-
-            string id = NakedObjectsFramework.GetObjectId(contactRepo);
-            const string value = "Bloggs";
-            const string parmId = "ContactRepository-FindContactByName-LastName-Input";
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parmId, value}});
-
-            JsonResult result = controller.ValidateParameter(id, null, actionName, parameterName);
-            Assert.IsTrue((bool) result.Data);
-        }
-
-        [Test]
-        public void TestValidateOkValueProperty() {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
-            Vendor vendor = NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First();
-            string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            string id = NakedObjectsFramework.GetObjectId(vendor);
-            string value = uniqueActNum;
-            const string propertyName = "AccountNumber";
-            const string fieldId = "Vendor-AccountNumber-Input";
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{fieldId, value}});
-
-            JsonResult result = controller.ValidateProperty(id, null, propertyName);
-            Assert.IsTrue((bool) result.Data);
-        }
-
-        [Test]
-        public void TestValidateOkInlineValueProperty() {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
-            TimePeriod timePeriod = NakedObjectsFramework.ObjectPersistor.Instances<Shift>().First().Times;
-            string id = NakedObjectsFramework.GetObjectId(timePeriod);
-            string value = DateTime.Now.ToString();
-            const string propertyName = "StartTime";
-            const string fieldId = "Times-TimePeriod-StartTime-Input";
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection { { fieldId, value } });
-
-            JsonResult result = controller.ValidateProperty(id, null, propertyName);
-            Assert.IsTrue((bool)result.Data);
-        }
-
-
-
-        [Test]
-        public void TestJsonp() {
-      
-            const string data = "testData";
-
-            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null).Jsonp(data, "application/json", Encoding.UTF8);
-
-            var mockControllerContext = new Mock<ControllerContext>();
-            var mockHttpContext = new Mock<HttpContextBase>();
-            var mockResponse = new Mock<HttpResponseBase>();
-            var mockRequest = new Mock<HttpRequestBase>(); 
-
-            mockControllerContext.Setup(x => x.HttpContext).Returns(mockHttpContext.Object);
-            mockHttpContext.Setup(x => x.Response).Returns(mockResponse.Object);
-            mockHttpContext.Setup(x => x.Request).Returns(mockRequest.Object);
-            mockRequest.Setup(x => x.Params).Returns(new NameValueCollection() {{"callback", "testCallbackValue"}});
-           
-            jsonpResult.ExecuteResult(mockControllerContext.Object);
-
-            mockResponse.Verify(x => x.Write("testCallbackValue(\"testData\")"));
-            mockResponse.VerifySet(x => x.ContentType = "application/json");
-            mockResponse.VerifySet(x => x.ContentEncoding = Encoding.UTF8);
-        }
-
-        [Test]
-        public void TestJsonpDefaults() {
-        
-
-            const string data = "testData";
-
-            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null).Jsonp(data);
-
-            var mockControllerContext = new Mock<ControllerContext>();
-            var mockHttpContext = new Mock<HttpContextBase>();
-            var mockResponse = new Mock<HttpResponseBase>();
-            var mockRequest = new Mock<HttpRequestBase>();
-
-            mockControllerContext.Setup(x => x.HttpContext).Returns(mockHttpContext.Object);
-            mockHttpContext.Setup(x => x.Response).Returns(mockResponse.Object);
-            mockHttpContext.Setup(x => x.Request).Returns(mockRequest.Object);
-            mockRequest.Setup(x => x.Params).Returns(new NameValueCollection() { { "callback", "testCallbackValue" } });
-
-            jsonpResult.ExecuteResult(mockControllerContext.Object);
-
-            mockResponse.Verify(x => x.Write("testCallbackValue(\"testData\")"));
-            mockResponse.VerifySet(x => x.ContentType = "application/json");
-        }
-
-
-        [Test]
-        public void TestGetActionChoicesDefault() {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
-            INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
-
-            const string actionName = "AnAction";
-          
-            string id = NakedObjectsFramework.GetObjectId(choicesRepo);
-           
-            const string parm1Id = "ChoicesRepository-AnAction-Parm1-Input0";
-            const string parm2Id = "ChoicesRepository-AnAction-Parm2-Input0";
-            const string parm3Id = "ChoicesRepository-AnAction-Parm3-Input0";
-
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection { { parm1Id, "" }, { parm2Id, "" }, { parm3Id, "" }, });
-
-            JsonResult result = controller.GetActionChoices(id, actionName);
-            Assert.IsInstanceOf(typeof(IDictionary<string,string[][]>), result.Data);
-
-            var dict = result.Data as IDictionary<string, string[][]>;
-
-            Assert.AreEqual(2, dict.Count);
-            Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnAction-Parm1-Input"));
-            Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnAction-Parm2-Input"));
-
-            Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm1-Input"][0].SequenceEqual(new[] { "value1", "value2" }));
-            Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm2-Input"][0].SequenceEqual(new string [] {  }));
-
-            Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm1-Input"][1].SequenceEqual(new[] { "value1", "value2" }));
-            Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm2-Input"][1].SequenceEqual(new string[] { }));
-        }
-
-
-        [Test]
-        public void TestGetActionMultipleChoicesDefault() {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
-            INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
-
-            const string actionName = "AnActionMultiple";
-
-            string id = NakedObjectsFramework.GetObjectId(choicesRepo);
-
-            const string parm1Id = "ChoicesRepository-AnActionMultiple-Parm1-Select0";
-            const string parm2Id = "ChoicesRepository-AnActionMultiple-Parm2-Select0";
-            const string parm3Id = "ChoicesRepository-AnActionMultiple-Parm3-Select0";
-
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection { { parm1Id, "" }, { parm2Id, "" }, { parm3Id, "" }, });
-
-            JsonResult result = controller.GetActionChoices(id, actionName);
-            Assert.IsInstanceOf(typeof(IDictionary<string, string[][]>), result.Data);
-
-            var dict = result.Data as IDictionary<string, string[][]>;
-
-            Assert.AreEqual(2, dict.Count);
-            Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnActionMultiple-Parm1-Select"));
-            Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnActionMultiple-Parm2-Select"));
-
-            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm1-Select"][0].SequenceEqual(new[] { "value1", "value2" }));
-            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][0].SequenceEqual(new string[] { }));
-
-            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm1-Select"][1].SequenceEqual(new[] { "value1", "value2" }));
-            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][1].SequenceEqual(new string[] { }));
-        }
-
-
-        [Test]
-        public void TestGetActionAutoComplete() {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
-            INakedObject autoCompleteRepo = NakedObjectsFramework.GetAdaptedService("AutoCompleteRepository");
-
-            const string actionName = "AnAction";
-
-            string id = NakedObjectsFramework.GetObjectId(autoCompleteRepo);
-
-            const string parm1Id = "AutoCompleteRepository-AnAction-name-Input";
-        
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection { { parm1Id, "" } });
-
-            JsonResult result = controller.GetActionCompletions(id, actionName, 0, "avalue");
-            Assert.IsInstanceOf(typeof(List<object>), result.Data);
-
-            var list = result.Data as IList<object>;
-
-            Assert.AreEqual(2, list.Count);
-
-            var nv1 = new RouteValueDictionary(list[0]);
-            var nv2 = new RouteValueDictionary(list[1]);
-
-            Assert.AreEqual("value1", nv1["label"]);
-            Assert.AreEqual("value1", nv1["value"]);
-            Assert.AreEqual("value1", nv1["link"]);
-            Assert.AreEqual("/Images/Default.png", nv1["src"]);
-            Assert.AreEqual("String", nv1["alt"]);
-
-            Assert.AreEqual("value2", nv2["label"]);
-            Assert.AreEqual("value2", nv2["value"]);
-            Assert.AreEqual("value2", nv2["link"]);
-            Assert.AreEqual("/Images/Default.png", nv2["src"]);
-            Assert.AreEqual("String", nv1["alt"]);
-
-        }
-
-      
 
         public void TestGetActionChoicesOtherParms(string value) {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
             INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
 
             const string actionName = "AnAction";
@@ -423,14 +119,11 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm1-Input"][0].SequenceEqual(new[] {"value1", "value2"}));
             Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm2-Input"][0].SequenceEqual(new[] {value + "postfix1", value + "postfix2"}));
 
-            Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm1-Input"][1].SequenceEqual(new[] { "value1", "value2" }));
-            Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm2-Input"][1].SequenceEqual(new[] { value + "postfix1", value + "postfix2" }));
+            Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm1-Input"][1].SequenceEqual(new[] {"value1", "value2"}));
+            Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm2-Input"][1].SequenceEqual(new[] {value + "postfix1", value + "postfix2"}));
         }
 
         public void TestGetActionChoicesOtherParmsMultiple(string value) {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
             INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
 
             const string actionName = "AnActionMultiple";
@@ -441,10 +134,10 @@ namespace MvcTestApp.Tests.Controllers {
             const string parm2Id = "ChoicesRepository-AnActionMultiple-Parm2-Select0";
             const string parm3Id = "ChoicesRepository-AnActionMultiple-Parm3-Select0";
 
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection { { parm1Id, value }, { parm2Id, "" }, { parm3Id, "" } });
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, value}, {parm2Id, ""}, {parm3Id, ""}});
 
             JsonResult result = controller.GetActionChoices(id, actionName);
-            Assert.IsInstanceOf(typeof(IDictionary<string, string[][]>), result.Data);
+            Assert.IsInstanceOf(typeof (IDictionary<string, string[][]>), result.Data);
 
             var dict = result.Data as IDictionary<string, string[][]>;
 
@@ -452,17 +145,14 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnActionMultiple-Parm1-Select"));
             Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnActionMultiple-Parm2-Select"));
 
-            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm1-Select"][0].SequenceEqual(new[] { "value1", "value2" }));
-            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][0].SequenceEqual(new[] { value + "postfix1", value + "postfix2" }));
+            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm1-Select"][0].SequenceEqual(new[] {"value1", "value2"}));
+            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][0].SequenceEqual(new[] {value + "postfix1", value + "postfix2"}));
 
-            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm1-Select"][1].SequenceEqual(new[] { "value1", "value2" }));
-            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][1].SequenceEqual(new[] { value + "postfix1", value + "postfix2" }));
+            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm1-Select"][1].SequenceEqual(new[] {"value1", "value2"}));
+            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][1].SequenceEqual(new[] {value + "postfix1", value + "postfix2"}));
         }
 
         public void TestGetActionChoicesOtherParmsMultipleMultiSelect(string value) {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
             INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
 
             const string actionName = "AnActionMultiple";
@@ -474,10 +164,10 @@ namespace MvcTestApp.Tests.Controllers {
             const string parm2Id = "ChoicesRepository-AnActionMultiple-Parm2-Select0";
             const string parm3Id = "ChoicesRepository-AnActionMultiple-Parm3-Select0";
 
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection { { parm1Id0, value + value }, { parm1Id1, value }, { parm2Id, "" }, { parm3Id, "" } });
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id0, value + value}, {parm1Id1, value}, {parm2Id, ""}, {parm3Id, ""}});
 
             JsonResult result = controller.GetActionChoices(id, actionName);
-            Assert.IsInstanceOf(typeof(IDictionary<string, string[][]>), result.Data);
+            Assert.IsInstanceOf(typeof (IDictionary<string, string[][]>), result.Data);
 
             var dict = result.Data as IDictionary<string, string[][]>;
 
@@ -485,13 +175,77 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnActionMultiple-Parm1-Select"));
             Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnActionMultiple-Parm2-Select"));
 
-            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm1-Select"][0].SequenceEqual(new[] { "value1", "value2" }));
-            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][0].SequenceEqual(new[] { value + value + "postfix1", value + "postfix2" }));
+            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm1-Select"][0].SequenceEqual(new[] {"value1", "value2"}));
+            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][0].SequenceEqual(new[] {value + value + "postfix1", value + "postfix2"}));
 
-            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm1-Select"][1].SequenceEqual(new[] { "value1", "value2" }));
-            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][1].SequenceEqual(new[] { value + value + "postfix1", value + "postfix2" }));
+            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm1-Select"][1].SequenceEqual(new[] {"value1", "value2"}));
+            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][1].SequenceEqual(new[] {value + value + "postfix1", value + "postfix2"}));
         }
 
+        [Test]
+        public void TestGetActionAutoComplete() {
+            INakedObject autoCompleteRepo = NakedObjectsFramework.GetAdaptedService("AutoCompleteRepository");
+
+            const string actionName = "AnAction";
+
+            string id = NakedObjectsFramework.GetObjectId(autoCompleteRepo);
+
+            const string parm1Id = "AutoCompleteRepository-AnAction-name-Input";
+
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, ""}});
+
+            JsonResult result = controller.GetActionCompletions(id, actionName, 0, "avalue");
+            Assert.IsInstanceOf(typeof (List<object>), result.Data);
+
+            var list = result.Data as IList<object>;
+
+            Assert.AreEqual(2, list.Count);
+
+            var nv1 = new RouteValueDictionary(list[0]);
+            var nv2 = new RouteValueDictionary(list[1]);
+
+            Assert.AreEqual("value1", nv1["label"]);
+            Assert.AreEqual("value1", nv1["value"]);
+            Assert.AreEqual("value1", nv1["link"]);
+            Assert.AreEqual("/Images/Default.png", nv1["src"]);
+            Assert.AreEqual("String", nv1["alt"]);
+
+            Assert.AreEqual("value2", nv2["label"]);
+            Assert.AreEqual("value2", nv2["value"]);
+            Assert.AreEqual("value2", nv2["link"]);
+            Assert.AreEqual("/Images/Default.png", nv2["src"]);
+            Assert.AreEqual("String", nv1["alt"]);
+        }
+
+        [Test]
+        public void TestGetActionChoicesDefault() {
+            INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
+
+            const string actionName = "AnAction";
+
+            string id = NakedObjectsFramework.GetObjectId(choicesRepo);
+
+            const string parm1Id = "ChoicesRepository-AnAction-Parm1-Input0";
+            const string parm2Id = "ChoicesRepository-AnAction-Parm2-Input0";
+            const string parm3Id = "ChoicesRepository-AnAction-Parm3-Input0";
+
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, ""}, {parm2Id, ""}, {parm3Id, ""},});
+
+            JsonResult result = controller.GetActionChoices(id, actionName);
+            Assert.IsInstanceOf(typeof (IDictionary<string, string[][]>), result.Data);
+
+            var dict = result.Data as IDictionary<string, string[][]>;
+
+            Assert.AreEqual(2, dict.Count);
+            Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnAction-Parm1-Input"));
+            Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnAction-Parm2-Input"));
+
+            Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm1-Input"][0].SequenceEqual(new[] {"value1", "value2"}));
+            Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm2-Input"][0].SequenceEqual(new string[] {}));
+
+            Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm1-Input"][1].SequenceEqual(new[] {"value1", "value2"}));
+            Assert.IsTrue(dict["ChoicesRepository-AnAction-Parm2-Input"][1].SequenceEqual(new string[] {}));
+        }
 
 
         [Test]
@@ -524,52 +278,50 @@ namespace MvcTestApp.Tests.Controllers {
             TestGetActionChoicesOtherParmsMultipleMultiSelect("value2");
         }
 
-
         [Test]
-        public void TestGetPropertyChoicesDefault() {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
+        public void TestGetActionMultipleChoicesDefault() {
             INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
-            object choicesObject = choicesRepo.GetDomainObject<ChoicesRepository>().GetChoicesObject();
 
+            const string actionName = "AnActionMultiple";
 
-            string id = NakedObjectsFramework.GetObjectId(choicesObject);
+            string id = NakedObjectsFramework.GetObjectId(choicesRepo);
 
-            const string parm1Id = "ChoicesObject-Name-Input";
-            const string parm2Id = "ChoicesObject-AProperty-Input";
-          
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection { { parm1Id, "" }, { parm2Id, "" } });
+            const string parm1Id = "ChoicesRepository-AnActionMultiple-Parm1-Select0";
+            const string parm2Id = "ChoicesRepository-AnActionMultiple-Parm2-Select0";
+            const string parm3Id = "ChoicesRepository-AnActionMultiple-Parm3-Select0";
 
-            JsonResult result = controller.GetPropertyChoices(id);
-            Assert.IsInstanceOf(typeof(IDictionary<string, string[][]>), result.Data);
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, ""}, {parm2Id, ""}, {parm3Id, ""},});
+
+            JsonResult result = controller.GetActionChoices(id, actionName);
+            Assert.IsInstanceOf(typeof (IDictionary<string, string[][]>), result.Data);
 
             var dict = result.Data as IDictionary<string, string[][]>;
 
-            Assert.AreEqual(1, dict.Count);
-            Assert.IsTrue(dict.ContainsKey("ChoicesObject-AProperty-Input"));
-           
+            Assert.AreEqual(2, dict.Count);
+            Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnActionMultiple-Parm1-Select"));
+            Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnActionMultiple-Parm2-Select"));
 
-            Assert.IsTrue(dict["ChoicesObject-AProperty-Input"][0].SequenceEqual(new string [] { }));
-            Assert.IsTrue(dict["ChoicesObject-AProperty-Input"][1].SequenceEqual(new string[] { }));
+            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm1-Select"][0].SequenceEqual(new[] {"value1", "value2"}));
+            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][0].SequenceEqual(new string[] {}));
+
+            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm1-Select"][1].SequenceEqual(new[] {"value1", "value2"}));
+            Assert.IsTrue(dict["ChoicesRepository-AnActionMultiple-Parm2-Select"][1].SequenceEqual(new string[] {}));
         }
+
 
         [Test]
         public void TestGetPropertyAutoComplete() {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
             INakedObject autoCompleteRepo = NakedObjectsFramework.GetAdaptedService("AutoCompleteRepository");
             object autoCompleteObject = autoCompleteRepo.GetDomainObject<AutoCompleteRepository>().GetAutoCompleteObject();
 
             string id = NakedObjectsFramework.GetObjectId(autoCompleteObject);
 
             const string parm1Id = "AutoCompleteObject-Name-Input";
-            
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection { { parm1Id, "" } });
+
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, ""}});
 
             JsonResult result = controller.GetPropertyCompletions(id, "AProperty", "");
-       
+
             var list = result.Data as IList<object>;
 
             Assert.AreEqual(2, list.Count);
@@ -590,12 +342,35 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("String", nv1["alt"]);
         }
 
+        [Test]
+        public void TestGetPropertyChoicesDefault() {
+            INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
+            object choicesObject = choicesRepo.GetDomainObject<ChoicesRepository>().GetChoicesObject();
+
+
+            string id = NakedObjectsFramework.GetObjectId(choicesObject);
+
+            const string parm1Id = "ChoicesObject-Name-Input";
+            const string parm2Id = "ChoicesObject-AProperty-Input";
+
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, ""}, {parm2Id, ""}});
+
+            JsonResult result = controller.GetPropertyChoices(id);
+            Assert.IsInstanceOf(typeof (IDictionary<string, string[][]>), result.Data);
+
+            var dict = result.Data as IDictionary<string, string[][]>;
+
+            Assert.AreEqual(1, dict.Count);
+            Assert.IsTrue(dict.ContainsKey("ChoicesObject-AProperty-Input"));
+
+
+            Assert.IsTrue(dict["ChoicesObject-AProperty-Input"][0].SequenceEqual(new string[] {}));
+            Assert.IsTrue(dict["ChoicesObject-AProperty-Input"][1].SequenceEqual(new string[] {}));
+        }
+
 
         [Test]
         public void TestGetPropertyChoicesOtherValue() {
-            var controller = new AjaxController(null);
-            var mocks = new ContextMocks(controller);
-
             INakedObject choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
             object choicesObject = choicesRepo.GetDomainObject<ChoicesRepository>().GetChoicesObject();
 
@@ -605,21 +380,191 @@ namespace MvcTestApp.Tests.Controllers {
             const string parm1Id = "ChoicesObject-Name-Input0";
             const string parm2Id = "ChoicesObject-AProperty-Input0";
 
-            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection { { parm1Id, "AName" }, { parm2Id, "" } });
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parm1Id, "AName"}, {parm2Id, ""}});
 
             JsonResult result = controller.GetPropertyChoices(id);
-            Assert.IsInstanceOf(typeof(IDictionary<string, string[][]>), result.Data);
+            Assert.IsInstanceOf(typeof (IDictionary<string, string[][]>), result.Data);
 
             var dict = result.Data as IDictionary<string, string[][]>;
 
             Assert.AreEqual(1, dict.Count);
             Assert.IsTrue(dict.ContainsKey("ChoicesObject-AProperty-Input"));
 
-            Assert.IsTrue(dict["ChoicesObject-AProperty-Input"][0].SequenceEqual(new[] {"AName-A", "AName-B" }));
-            Assert.IsTrue(dict["ChoicesObject-AProperty-Input"][1].SequenceEqual(new[] { "AName-A", "AName-B" }));
-
+            Assert.IsTrue(dict["ChoicesObject-AProperty-Input"][0].SequenceEqual(new[] {"AName-A", "AName-B"}));
+            Assert.IsTrue(dict["ChoicesObject-AProperty-Input"][1].SequenceEqual(new[] {"AName-A", "AName-B"}));
         }
 
+        [Test]
+        public void TestJsonp() {
+            const string data = "testData";
 
+            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null).Jsonp(data, "application/json", Encoding.UTF8);
+
+            var mockControllerContext = new Mock<ControllerContext>();
+            var mockHttpContext = new Mock<HttpContextBase>();
+            var mockResponse = new Mock<HttpResponseBase>();
+            var mockRequest = new Mock<HttpRequestBase>();
+
+            mockControllerContext.Setup(x => x.HttpContext).Returns(mockHttpContext.Object);
+            mockHttpContext.Setup(x => x.Response).Returns(mockResponse.Object);
+            mockHttpContext.Setup(x => x.Request).Returns(mockRequest.Object);
+            mockRequest.Setup(x => x.Params).Returns(new NameValueCollection() {{"callback", "testCallbackValue"}});
+
+            jsonpResult.ExecuteResult(mockControllerContext.Object);
+
+            mockResponse.Verify(x => x.Write("testCallbackValue(\"testData\")"));
+            mockResponse.VerifySet(x => x.ContentType = "application/json");
+            mockResponse.VerifySet(x => x.ContentEncoding = Encoding.UTF8);
+        }
+
+        [Test]
+        public void TestJsonpDefaults() {
+            const string data = "testData";
+
+            AjaxControllerImpl.JsonpResult jsonpResult = new AjaxController(null).Jsonp(data);
+
+            var mockControllerContext = new Mock<ControllerContext>();
+            var mockHttpContext = new Mock<HttpContextBase>();
+            var mockResponse = new Mock<HttpResponseBase>();
+            var mockRequest = new Mock<HttpRequestBase>();
+
+            mockControllerContext.Setup(x => x.HttpContext).Returns(mockHttpContext.Object);
+            mockHttpContext.Setup(x => x.Response).Returns(mockResponse.Object);
+            mockHttpContext.Setup(x => x.Request).Returns(mockRequest.Object);
+            mockRequest.Setup(x => x.Params).Returns(new NameValueCollection() {{"callback", "testCallbackValue"}});
+
+            jsonpResult.ExecuteResult(mockControllerContext.Object);
+
+            mockResponse.Verify(x => x.Write("testCallbackValue(\"testData\")"));
+            mockResponse.VerifySet(x => x.ContentType = "application/json");
+        }
+
+        [Test]
+        public void TestValidateFailRefParameter() {
+            Store store = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
+            Vendor vendor = NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First();
+            const string actionName = "CreateNewOrder";
+            const string parameterName = "customer";
+
+            string id = NakedObjectsFramework.GetObjectId(store);
+            string value = NakedObjectsFramework.GetObjectId(vendor);
+
+            JsonResult result = controller.ValidateParameter(id, value, actionName, parameterName);
+            Assert.AreEqual("Not a suitable type; must be a Customer", result.Data);
+        }
+
+        [Test]
+        public void TestValidateFailRefProperty() {
+            Store store = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
+            Store store1 = NakedObjectsFramework.ObjectPersistor.Instances<Store>().OrderBy(x => "").Skip(1).First();
+
+            string id = NakedObjectsFramework.GetObjectId(store);
+            string value = NakedObjectsFramework.GetObjectId(store1);
+            const string propertyName = "SalesPerson";
+
+            JsonResult result = controller.ValidateProperty(id, value, propertyName);
+            Assert.AreEqual("Not a suitable type; must be a Sales Person", result.Data);
+        }
+
+        [Test]
+        public void TestValidateFailValueParameter() {
+            INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
+
+
+            const string actionName = "FindContactByName";
+            const string parameterName = "lastName";
+
+            string id = NakedObjectsFramework.GetObjectId(contactRepo);
+            const string value = "";
+            const string parmId = "ContactRepository-FindContactByName-LastName-Input";
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parmId, value}});
+
+            JsonResult result = controller.ValidateParameter(id, null, actionName, parameterName);
+            Assert.AreEqual("Mandatory", result.Data);
+        }
+
+        [Test]
+        public void TestValidateFailValueProperty() {
+            Vendor vendor = NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First();
+            string id = NakedObjectsFramework.GetObjectId(vendor);
+            const string value = "";
+            const string propertyName = "AccountNumber";
+            const string fieldId = "Vendor-AccountNumber-Input";
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{fieldId, value}});
+
+            JsonResult result = controller.ValidateProperty(id, null, propertyName);
+            Assert.AreEqual("Mandatory", result.Data);
+        }
+
+        [Test]
+        public void TestValidateOkInlineValueProperty() {
+            TimePeriod timePeriod = NakedObjectsFramework.ObjectPersistor.Instances<Shift>().First().Times;
+            string id = NakedObjectsFramework.GetObjectId(timePeriod);
+            string value = DateTime.Now.ToString();
+            const string propertyName = "StartTime";
+            const string fieldId = "Times-TimePeriod-StartTime-Input";
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{fieldId, value}});
+
+            JsonResult result = controller.ValidateProperty(id, null, propertyName);
+            Assert.IsTrue((bool) result.Data);
+        }
+
+        [Test]
+        public void TestValidateOkRefParameter() {
+            Store store = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
+            const string actionName = "CreateNewOrder";
+            const string parameterName = "customer";
+
+
+            string id = NakedObjectsFramework.GetObjectId(store);
+            string value = NakedObjectsFramework.GetObjectId(store);
+
+            JsonResult result = controller.ValidateParameter(id, value, actionName, parameterName);
+            Assert.IsTrue((bool) result.Data);
+        }
+
+        [Test]
+        public void TestValidateOkRefProperty() {
+            Store store = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
+            SalesPerson salesPerson = NakedObjectsFramework.ObjectPersistor.Instances<SalesPerson>().First();
+
+            string id = NakedObjectsFramework.GetObjectId(store);
+            string value = NakedObjectsFramework.GetObjectId(salesPerson);
+            const string propertyName = "SalesPerson";
+
+            JsonResult result = controller.ValidateProperty(id, value, propertyName);
+            Assert.IsTrue((bool) result.Data);
+        }
+
+        [Test]
+        public void TestValidateOkValueParameter() {
+            INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
+
+
+            const string actionName = "FindContactByName";
+            const string parameterName = "lastName";
+
+            string id = NakedObjectsFramework.GetObjectId(contactRepo);
+            const string value = "Bloggs";
+            const string parmId = "ContactRepository-FindContactByName-LastName-Input";
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{parmId, value}});
+
+            JsonResult result = controller.ValidateParameter(id, null, actionName, parameterName);
+            Assert.IsTrue((bool) result.Data);
+        }
+
+        [Test]
+        public void TestValidateOkValueProperty() {
+            Vendor vendor = NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First();
+            string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
+            string id = NakedObjectsFramework.GetObjectId(vendor);
+            string value = uniqueActNum;
+            const string propertyName = "AccountNumber";
+            const string fieldId = "Vendor-AccountNumber-Input";
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection {{fieldId, value}});
+
+            JsonResult result = controller.ValidateProperty(id, null, propertyName);
+            Assert.IsTrue((bool) result.Data);
+        }
     }
 }

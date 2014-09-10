@@ -1,10 +1,15 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Mvc;
 using AdventureWorksModel;
+using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
@@ -18,196 +23,164 @@ using NakedObjects.Xat;
 using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Controllers {
-
     [TestFixture]
     public class HomeControllerTest : AcceptanceTestCase {
-        protected override IServicesInstaller MenuServices {
-            get {
-                return new ServicesInstaller(new object[] {
-                                                                    new CustomerRepository(),
-                                                                    new OrderRepository(),
-                                                                    new ProductRepository(),
-                                                                    new EmployeeRepository(),
-                                                                    new SalesRepository(),
-                                                                    new SpecialOfferRepository(),
-                                                                    new ContactRepository(),
-                                                                    new VendorRepository(),
-                                                                    new PurchaseOrderRepository(),
-                                                                    new WorkOrderRepository()
-                                                                });
-            }
+        #region Setup/Teardown
+
+        [SetUp]
+        public void SetupTest() {
+            StartTest();
+            controller = new HomeController(NakedObjectsFramework);
+            mocks = new ContextMocks(controller);
         }
 
-        public class TestFixture {
-            public void Install() { }
-        }
+        #endregion
 
-        protected override IFixturesInstaller Fixtures {
-            get {
-                return new FixturesInstaller(new object[] {new TestFixture()});
-            }
-        }
-
-        protected override IObjectPersistorInstaller Persistor {
-            get {
-                var installer = new EntityPersistorInstaller();
-                installer.ForceContextSet();
-                return installer;
-            }
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingEdmxContext("Model");
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
         }
 
         [TestFixtureSetUp]
-        public void SetupFixture() {
+        public void SetupTestFixture() {
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
             SqlConnection.ClearAllPools();
             InitializeNakedObjectsFramework();
         }
-
 
         [TestFixtureTearDown]
         public void TearDownTest() {
             CleanupNakedObjectsFramework();
         }
 
+        private HomeController controller;
+        private ContextMocks mocks;
 
-     
 
-        private  Employee Employee {
+        protected override IServicesInstaller MenuServices {
             get {
-                return NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
-            }
-        }
-
-        private  Vendor Vendor {
-            get {
-                return NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First();
-            }
-        }
-
-
-        private  string EmployeeId {
-            get {
-                return NakedObjectsFramework.GetObjectId(Employee);
-            }
-        }
-
-        private  string VendorId {
-            get {
-                return NakedObjectsFramework.GetObjectId(Vendor);
+                return new ServicesInstaller(new object[] {
+                    new CustomerRepository(),
+                    new OrderRepository(),
+                    new ProductRepository(),
+                    new EmployeeRepository(),
+                    new SalesRepository(),
+                    new SpecialOfferRepository(),
+                    new ContactRepository(),
+                    new VendorRepository(),
+                    new PurchaseOrderRepository(),
+                    new WorkOrderRepository()
+                });
             }
         }
 
 
-        [Test]
-        public void ClearHistory() {
-            var controller = new HomeController(null);
-            var mocks = new ContextMocks(controller);
-
-            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
-
-            var result = (ViewResult)controller.ClearHistory(false);
-
-            Assert.AreEqual("ObjectView", result.ViewName);
-            ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOf(typeof(Employee), data.Model);           
+        private Employee Employee {
+            get { return NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First(); }
         }
+
+        private Vendor Vendor {
+            get { return NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First(); }
+        }
+
+
+        private string EmployeeId {
+            get { return NakedObjectsFramework.GetObjectId(Employee); }
+        }
+
+        private string VendorId {
+            get { return NakedObjectsFramework.GetObjectId(Vendor); }
+        }
+
 
         [Test]
         public void ClearAllHistory() {
-            var controller = new HomeController(null);
-            var mocks = new ContextMocks(controller);
-
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
 
-            var result = (RedirectToRouteResult)controller.ClearHistory(true);
+            var result = (RedirectToRouteResult) controller.ClearHistory(true);
 
             Assert.AreEqual("Index", result.RouteValues.Values.ElementAt(0));
             Assert.AreEqual("Home", result.RouteValues.Values.ElementAt(1));
         }
 
         [Test]
-        public void ClearHistoryItemNoNext() {
-            var controller = new HomeController(null);
-            var mocks = new ContextMocks(controller);
-
-            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
-
-            var result = (RedirectToRouteResult)controller.ClearHistoryItem(EmployeeId, "", new ObjectAndControlData());
+        public void ClearEmptyHistory() {
+            var result = (RedirectToRouteResult) controller.ClearHistory(false);
 
             Assert.AreEqual("Index", result.RouteValues.Values.ElementAt(0));
             Assert.AreEqual("Home", result.RouteValues.Values.ElementAt(1));
+        }
+
+        [Test]
+        public void ClearHistory() {
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
+
+            var result = (ViewResult) controller.ClearHistory(false);
+
+            Assert.AreEqual("ObjectView", result.ViewName);
+            ViewDataDictionary data = result.ViewData;
+            Assert.IsInstanceOf(typeof (Employee), data.Model);
         }
 
         [Test]
         public void ClearHistoryItemNext1() {
-            var controller = new HomeController(null);
-            var mocks = new ContextMocks(controller);
-
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Vendor, ObjectCache.ObjectFlag.BreadCrumb);
 
-            var result = (ViewResult)controller.ClearHistoryItem(EmployeeId, VendorId, new ObjectAndControlData());
+            var result = (ViewResult) controller.ClearHistoryItem(EmployeeId, VendorId, new ObjectAndControlData());
 
             Assert.AreEqual("ViewNameSetAfterTransaction", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOf(typeof(Vendor), data.Model);
+            Assert.IsInstanceOf(typeof (Vendor), data.Model);
         }
 
         [Test]
         public void ClearHistoryItemNext2() {
-            var controller = new HomeController(null);
-            var mocks = new ContextMocks(controller);
-
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Vendor, ObjectCache.ObjectFlag.BreadCrumb);
 
-            var result = (ViewResult)controller.ClearHistoryItem(VendorId, EmployeeId, new ObjectAndControlData());
+            var result = (ViewResult) controller.ClearHistoryItem(VendorId, EmployeeId, new ObjectAndControlData());
 
             Assert.AreEqual("ViewNameSetAfterTransaction", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOf(typeof(Employee), data.Model);
+            Assert.IsInstanceOf(typeof (Employee), data.Model);
+        }
+
+        [Test]
+        public void ClearHistoryItemNoNext() {
+            mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
+
+            var result = (RedirectToRouteResult) controller.ClearHistoryItem(EmployeeId, "", new ObjectAndControlData());
+
+            Assert.AreEqual("Index", result.RouteValues.Values.ElementAt(0));
+            Assert.AreEqual("Home", result.RouteValues.Values.ElementAt(1));
         }
 
 
         [Test]
         public void ClearHistoryOthers1() {
-            var controller = new HomeController(null);
-            var mocks = new ContextMocks(controller);
-
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Vendor, ObjectCache.ObjectFlag.BreadCrumb);
 
-            var result = (ViewResult)controller.ClearHistoryOthers(EmployeeId, new ObjectAndControlData());
+            var result = (ViewResult) controller.ClearHistoryOthers(EmployeeId, new ObjectAndControlData());
 
             Assert.AreEqual("ViewNameSetAfterTransaction", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOf(typeof(Employee), data.Model);
+            Assert.IsInstanceOf(typeof (Employee), data.Model);
         }
 
         [Test]
         public void ClearHistoryOthers2() {
-            var controller = new HomeController(null);
-            var mocks = new ContextMocks(controller);
-
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Employee, ObjectCache.ObjectFlag.BreadCrumb);
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, Vendor, ObjectCache.ObjectFlag.BreadCrumb);
 
-            var result = (ViewResult)controller.ClearHistoryOthers(VendorId, new ObjectAndControlData());
+            var result = (ViewResult) controller.ClearHistoryOthers(VendorId, new ObjectAndControlData());
 
             Assert.AreEqual("ViewNameSetAfterTransaction", result.ViewName);
             ViewDataDictionary data = result.ViewData;
-            Assert.IsInstanceOf(typeof(Vendor), data.Model);
-        }
-
-        [Test]
-        public void ClearEmptyHistory() {
-            var controller = new HomeController(null);
-            new ContextMocks(controller);
-
-            var result = (RedirectToRouteResult) controller.ClearHistory(false);
-
-            Assert.AreEqual("Index", result.RouteValues.Values.ElementAt(0));
-            Assert.AreEqual("Home", result.RouteValues.Values.ElementAt(1));
+            Assert.IsInstanceOf(typeof (Vendor), data.Model);
         }
     }
 }

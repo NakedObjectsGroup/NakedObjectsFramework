@@ -25,7 +25,6 @@ using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Reflect;
-using NakedObjects.Core.Security;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Objects;
 using NakedObjects.Persistor;

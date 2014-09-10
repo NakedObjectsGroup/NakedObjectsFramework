@@ -1,6 +1,10 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Security.Principal;
@@ -12,8 +16,6 @@ using NakedObjects.Mvc.App;
 using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Util {
-   
-    
     public static class Constants {
 #if AV
         public static string Server = @"(local)\SQL2012SP1";
@@ -22,8 +24,8 @@ namespace MvcTestApp.Tests.Util {
 #endif
     }
 
-     
-     /// <summary>
+
+    /// <summary>
     /// Helper code lifted from Pro ASP.NET MVC Framework - Sanderson 
     /// </summary>
     public class ContextMocks {
@@ -34,7 +36,7 @@ namespace MvcTestApp.Tests.Util {
             ViewContext = new Mock<ViewContext>();
             View = new Mock<IView>();
             ViewDataContainer = new Mock<IViewDataContainer>();
-            
+
 
             onController.ValueProvider = new DictionaryValueProvider<string>(new Dictionary<string, string>(), null);
 
@@ -49,7 +51,7 @@ namespace MvcTestApp.Tests.Util {
             Request.Setup(x => x.Form).Returns(new NameValueCollection());
             Request.Setup(x => x.ApplicationPath).Returns("/");
             Request.Setup(x => x.Files).Returns(new Mock<HttpFileCollectionBase>().Object);
-          
+
             var rc = new RequestContext(HttpContext.Object, new RouteData());
             onController.ControllerContext = new ControllerContext(rc, onController);
 
@@ -62,7 +64,6 @@ namespace MvcTestApp.Tests.Util {
             ViewDataContainer.Setup(x => x.ViewData).Returns(ViewContext.Object.ViewData);
 
             HtmlHelper = new HtmlHelper(ViewContext.Object, ViewDataContainer.Object);
-
         }
 
         public Mock<ViewContext> ViewContext { get; private set; }
@@ -95,7 +96,7 @@ namespace MvcTestApp.Tests.Util {
                 }
                 else {
                     Assert.AreEqual(expectedVal.Value.ToString(),
-                                    routeData.Values[expectedVal.Key].ToString());
+                        routeData.Values[expectedVal.Key].ToString());
                 }
             }
             return routeData;
@@ -140,7 +141,6 @@ namespace MvcTestApp.Tests.Util {
             public override void Remove(string name) {
                 items.Remove(name);
             }
-
         }
 
         #endregion
