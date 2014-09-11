@@ -1,37 +1,58 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
-using System;
-using System.Collections.Generic;
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Web.Mvc;
 using Expenses.ExpenseClaims;
 using Expenses.ExpenseEmployees;
 using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
+using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Core.Persist;
-using NakedObjects.Persistor.Objectstore;
+using NakedObjects.EntityObjectStore;
+using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Persistor.Objectstore.Inmemory;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
 
 namespace MvcTestApp.Tests.Helpers {
-
     [TestFixture]
     public class SystemHelperTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetupTest() {
+            StartTest();
+            controller = new DummyController();
+            mocks = new ContextMocks(controller);
+            SetUser("sven");
+            SetupViewData();
+        }
+
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingCodeFirstContext(() => new MvcTestContext("MvcTest"));
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
+            Database.SetInitializer(new DatabaseInitializer());
             InitializeNakedObjectsFramework();
+            RunFixtures();
         }
 
         [TestFixtureTearDown]
@@ -39,26 +60,20 @@ namespace MvcTestApp.Tests.Helpers {
             CleanupNakedObjectsFramework();
         }
 
-        [SetUp]
-        public new void StartTest() {
-            SetUser("sven");
-            Fixtures.InstallFixtures(NakedObjectsFramework.ObjectPersistor, null);
-        }
+        private DummyController controller;
+        private ContextMocks mocks;
 
-        [TearDown]
-        public void EndTest() {
-            MemoryObjectStore.DiscardObjects();
-            ((SimpleOidGenerator)NakedObjectsFramework.ObjectPersistor.OidGenerator).ResetTo(100L); 
+        private void SetupViewData() {
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NoFramework] = NakedObjectsFramework;
         }
-
-        #endregion
 
         protected override IServicesInstaller MenuServices {
             get { return new ServicesInstaller(DemoServicesSet.ServicesSet()); }
         }
 
         protected override IServicesInstaller ContributedActions {
-            get { return new ServicesInstaller(new object[] { new RecordedActionContributedActions() }); }
+            get { return new ServicesInstaller(new object[] {new RecordedActionContributedActions()}); }
         }
 
         protected override IFixturesInstaller Fixtures {
@@ -66,11 +81,11 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         protected override IObjectPersistorInstaller Persistor {
-            get { return new InMemoryObjectPersistorInstaller { SimpleOidGeneratorStart = 100 }; }
+            get { return new InMemoryObjectPersistorInstaller {SimpleOidGeneratorStart = 100}; }
         }
 
-        private class DummyController : Controller { }
-        private readonly Controller controller = new DummyController();
+        private class DummyController : Controller {}
+
 
         private static string GetTestData(string name) {
             var file = Path.Combine(@"..\..\Generated Html reference files", name) + ".htm";
@@ -89,56 +104,67 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        public void History() {
-            var mocks = new ContextMocks(controller);
+        [Ignore] // doesn't work now uses urls which are empty in tests
+        public void Cancel() {
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             Employee emp = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+
+
             mocks.HtmlHelper.History(claim);
-            mocks.HtmlHelper.History(emp);     
+            mocks.HtmlHelper.History(emp);
+            string s = mocks.HtmlHelper.CancelButton(null).ToString();
+            string fieldView = GetTestData("Cancel");
+            Assert.AreEqual(fieldView, s);
+        }
+
+        [Test]
+        public void History() {
+            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Employee emp = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
+
+            mocks.HtmlHelper.History(claim);
+            mocks.HtmlHelper.History(emp);
             string s = mocks.HtmlHelper.History().StripWhiteSpace();
             CheckResults("History", s);
         }
 
         [Test]
         public void HistoryWithCount1() {
-            var mocks = new ContextMocks(controller);
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            Employee emp1 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
-            Employee emp2 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().Last();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+
+            Employee emp1 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().OrderBy(c => c.Id).First();
+            Employee emp2 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().OrderByDescending(c => c.Id).First();
+
 
             mocks.HtmlHelper.History(emp2);
             mocks.HtmlHelper.History(claim);
             mocks.HtmlHelper.History(emp1);
-            
+
             string s = mocks.HtmlHelper.History(3).StripWhiteSpace();
             CheckResults("HistoryWithCount", s);
         }
 
         [Test]
         public void HistoryWithCount2() {
-            var mocks = new ContextMocks(controller);
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            Employee emp1 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
-            Employee emp2 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().Last();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            Employee emp1 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().OrderBy(c => c.Id).First();
+            Employee emp2 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().OrderByDescending(c => c.Id).First();
+
 
             mocks.HtmlHelper.History(emp2);
             mocks.HtmlHelper.History(claim);
             mocks.HtmlHelper.History(emp1);
-           
+
             string s = mocks.HtmlHelper.History(2).StripWhiteSpace();
-            CheckResults("History", s); 
+            CheckResults("History", s);
         }
 
         // too hard to mock appropriately - rely on selenium tests
         [Test, Ignore]
         public void TabbedHistory() {
-            var mocks = new ContextMocks(controller);
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
             Employee emp = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+
             mocks.HtmlHelper.TabbedHistory(claim);
             mocks.HtmlHelper.TabbedHistory(emp);
             string s = mocks.HtmlHelper.TabbedHistory().StripWhiteSpace();
@@ -147,11 +173,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test, Ignore]
         public void TabbedHistoryWithCount1() {
-            var mocks = new ContextMocks(controller);
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            Employee emp1 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
-            Employee emp2 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().Last();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            Employee emp1 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().OrderBy(c => c.Id).First();
+            Employee emp2 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().OrderByDescending(c => c.Id).First();
+
 
             mocks.HtmlHelper.TabbedHistory(emp2);
             mocks.HtmlHelper.TabbedHistory(claim);
@@ -163,11 +188,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test, Ignore]
         public void TabbedHistoryWithCount2() {
-            var mocks = new ContextMocks(controller);
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            Employee emp1 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
-            Employee emp2 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().Last();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            Employee emp1 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().OrderBy(c => c.Id).First();
+            Employee emp2 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().OrderByDescending(c => c.Id).First();
+
 
             mocks.HtmlHelper.TabbedHistory(emp2);
             mocks.HtmlHelper.TabbedHistory(claim);
@@ -175,21 +199,6 @@ namespace MvcTestApp.Tests.Helpers {
 
             string s = mocks.HtmlHelper.TabbedHistory(2).StripWhiteSpace();
             CheckResults("TabbedHistory", s);
-        }
-
-        [Test]
-        [Ignore] // doesn't work now uses urls which are empty in tests
-        public void Cancel() {
-            var mocks = new ContextMocks(controller);
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            Employee emp = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
-
-            mocks.HtmlHelper.History(claim);
-            mocks.HtmlHelper.History(emp);
-            string s = mocks.HtmlHelper.CancelButton(null).ToString();
-            string fieldView = GetTestData("Cancel");
-            Assert.AreEqual(fieldView, s);
         }
     }
 }

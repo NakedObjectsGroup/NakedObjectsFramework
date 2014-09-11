@@ -1,6 +1,10 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -38,7 +42,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
             config.UsingCodeFirstContext(() => new MvcTestContext("MvcTest"));
             container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
         }
@@ -61,14 +65,16 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         protected override IServicesInstaller ContributedActions {
-            get { return new ServicesInstaller(new object[] { new RecordedActionContributedActions() }); }
+            get { return new ServicesInstaller(new object[] {new RecordedActionContributedActions()}); }
         }
 
         protected override IFixturesInstaller Fixtures {
             get { return new FixturesInstaller(DemoFixtureSet.FixtureSet()); }
         }
 
-     
+
+        private const string objectId = "Expenses.ExpenseClaims.Claim;1;System.Int32;1;False;;0";
+        private const string genericObjectId = @"NakedObjects.Services.SimpleRepository`1-MvcTestApp.Tests.Helpers.CustomHelperTestClass;1;System.Int32;0;False;;0";
 
         [Test]
         public void ActionsForHelper() {
@@ -78,50 +84,30 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.AreEqual(8, actions.Count());
         }
 
-        private const string objectId = "Expenses.ExpenseClaims.Claim;1;System.Int32;1;False;;0";
-        private const string genericObjectId = @"NakedObjects.Services.SimpleRepository`1-MvcTestApp.Tests.Helpers.CustomHelperTestClass;1;System.Int32;0;False;;0";
-
         [Test]
-        public void GetObjectIdForObject() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            string id = NakedObjectsFramework.GetObjectId(claim);
-            Assert.AreEqual(id, objectId);
-        }
+        public void GetCollectionNakedObjectFromId() {
+            IList<Claim> claims = NakedObjectsFramework.GetService<ClaimRepository>().FindMyClaims(null, "");
+            INakedObject no = NakedObjectsFramework.ObjectPersistor.CreateAdapter(claims, null, null);
 
-        [Test]
-        public void GetObjectIdForGenericObject() {
-            object repo = GetTestService("Custom Helper Test Classes").NakedObject.Object;
-            string id = NakedObjectsFramework.GetObjectId(repo);
-            Assert.AreEqual(genericObjectId, id);
-        }
+            INakedObject service = NakedObjectsFramework.ObjectPersistor.GetService("ClaimRepository");
+            INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Where(a => a.Id == "FindMyClaims").Single();
+            INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
 
-        [Test]
-        public void GetObjectIdForNakedObjectObject() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
-            string id = NakedObjectsFramework.GetObjectId(adapter);
-            Assert.AreEqual(id, objectId);
-        }
+            var cm = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
+            no.SetATransientOid(cm);
 
-        [Test]
-        public void GetObjectTypeForObject() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            string typeId = NakedObjectsFramework.GetObjectTypeName(claim);
-            Assert.AreEqual(typeId, "Claim");
-        }
+            string id = NakedObjectsFramework.GetObjectId(no);
 
-        [Test]
-        public void GetServiceId() {
-            const string serviceName = "ClaimRepository";
-            string serviceId = NakedObjectsFramework.GetServiceId(serviceName);
-            Assert.AreEqual("Expenses.ExpenseClaims.ClaimRepository;1;System.Int32;0;False;;0", serviceId);
-        }
+            INakedObject no2 = NakedObjectsFramework.GetNakedObjectFromId(id);
 
-        [Test]
-        public void GetObjectFromId() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            object claim2 = NakedObjectsFramework.GetObjectFromId(objectId);
-            Assert.AreSame(claim1, claim2);
+            List<Claim> claims2 = no2.GetDomainObject<IEnumerable<Claim>>().ToList();
+
+            Assert.AreEqual(claims.Count(), claims2.Count());
+
+            int index = 0;
+            Dictionary<Claim, Claim> dict = claims.ToDictionary(x => x, y => claims2.Skip(index++).First());
+
+            dict.ForEach(kvp => Assert.AreSame(kvp.Key, kvp.Value));
         }
 
         [Test]
@@ -144,34 +130,51 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
-        public void GetCollectionNakedObjectFromId() {
-            IList<Claim> claims = NakedObjectsFramework.GetService<ClaimRepository>().FindMyClaims(null, "");
-            INakedObject no = NakedObjectsFramework.ObjectPersistor.CreateAdapter(claims, null, null);
+        public void GetObjectFromId() {
+            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            object claim2 = NakedObjectsFramework.GetObjectFromId(objectId);
+            Assert.AreSame(claim1, claim2);
+        }
 
-            INakedObject service = NakedObjectsFramework.ObjectPersistor.GetService("ClaimRepository");
-            INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Where(a => a.Id == "FindMyClaims").Single();
-            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsFramework.ObjectPersistor.CreateAdapter(o, null, null)).ToArray();
+        [Test]
+        public void GetObjectIdForGenericObject() {
+            object repo = GetTestService("Custom Helper Test Classes").NakedObject.Object;
+            string id = NakedObjectsFramework.GetObjectId(repo);
+            Assert.AreEqual(genericObjectId, id);
+        }
 
-            var cm = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
-            no.SetATransientOid(cm);
+        [Test]
+        public void GetObjectIdForNakedObjectObject() {
+            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
+            string id = NakedObjectsFramework.GetObjectId(adapter);
+            Assert.AreEqual(id, objectId);
+        }
 
-            string id = NakedObjectsFramework.GetObjectId(no);
+        [Test]
+        public void GetObjectIdForObject() {
+            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            string id = NakedObjectsFramework.GetObjectId(claim);
+            Assert.AreEqual(id, objectId);
+        }
 
-            INakedObject no2 = NakedObjectsFramework.GetNakedObjectFromId(id);
+        [Test]
+        public void GetObjectTypeForObject() {
+            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            string typeId = NakedObjectsFramework.GetObjectTypeName(claim);
+            Assert.AreEqual(typeId, "Claim");
+        }
 
-            List<Claim> claims2 = no2.GetDomainObject<IEnumerable<Claim>>().ToList();
-
-            Assert.AreEqual(claims.Count(), claims2.Count());
-
-            int index = 0;
-            Dictionary<Claim, Claim> dict = claims.ToDictionary(x => x, y => claims2.Skip(index++).First());
-
-            dict.ForEach(kvp => Assert.AreSame(kvp.Key, kvp.Value));
+        [Test]
+        public void GetServiceId() {
+            const string serviceName = "ClaimRepository";
+            string serviceId = NakedObjectsFramework.GetServiceId(serviceName);
+            Assert.AreEqual("Expenses.ExpenseClaims.ClaimRepository;1;System.Int32;0;False;;0", serviceId);
         }
 
 
         [Test]
-        public void GetServices() {    
+        public void GetServices() {
             var services = NakedObjectsFramework.GetAllServices();
             Assert.AreEqual(6, services.Count());
         }
@@ -179,8 +182,6 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GetServicesMatch() {
-        
-
             var s1 = NakedObjectsFramework.GetAdaptedService("EmployeeRepository");
             var s2 = NakedObjectsFramework.GetAdaptedService("ClaimRepository");
             var s3 = NakedObjectsFramework.GetAdaptedService("RecordedActionRepository");
@@ -261,7 +262,6 @@ namespace MvcTestApp.Tests.Helpers {
 
             Assert.AreSame(s21, s51);
             Assert.AreSame(s11, s61);
-
         }
     }
 }

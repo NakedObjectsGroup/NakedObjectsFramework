@@ -1,6 +1,11 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,12 +14,13 @@ using Expenses.ExpenseClaims.Items;
 using Expenses.Fixtures;
 using Expenses.RecordedActions;
 using Expenses.Services;
+using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Persistor.Objectstore.Inmemory;
+using NakedObjects.EntityObjectStore;
+using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Web.Mvc;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
@@ -25,10 +31,29 @@ namespace MvcTestApp.Tests.Helpers {
     public class SessionCacheTest : AcceptanceTestCase {
         #region Setup/Teardown
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetupTest() {
-            InitializeNakedObjectsFramework();
+            StartTest();
+            controller = new DummyController();
+            mocks = new ContextMocks(controller);
+            SetUser("sven");
+            SetupViewData();
+        }
 
+        #endregion
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingCodeFirstContext(() => new MvcTestContext("MvcTest"));
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [TestFixtureSetUp]
+        public void SetupTestFixture() {
+            Database.SetInitializer(new DatabaseInitializer());
+            InitializeNakedObjectsFramework();
+            RunFixtures();
         }
 
         [TestFixtureTearDown]
@@ -36,25 +61,21 @@ namespace MvcTestApp.Tests.Helpers {
             CleanupNakedObjectsFramework();
         }
 
-        [SetUp]
-        public new void  StartTest() {
-            SetUser("sven");
-            Fixtures.InstallFixtures(NakedObjectsFramework.ObjectPersistor, null);
+        private DummyController controller;
+        private ContextMocks mocks;
+
+        private void SetupViewData() {
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NoFramework] = NakedObjectsFramework;
         }
 
-        [TearDown]
-        public void EndTest() {
-            MemoryObjectStore.DiscardObjects();
-        }
-
-        #endregion
 
         protected override IServicesInstaller MenuServices {
             get { return new ServicesInstaller(DemoServicesSet.ServicesSet()); }
         }
 
         protected override IServicesInstaller ContributedActions {
-            get { return new ServicesInstaller(new object[] { new RecordedActionContributedActions() }); }
+            get { return new ServicesInstaller(new object[] {new RecordedActionContributedActions()}); }
         }
 
         protected override IFixturesInstaller Fixtures {
@@ -63,12 +84,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         private class DummyController : Controller {}
 
-        private readonly Controller controller = new DummyController();
 
         [Test]
         public void AddPersistentToSession() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
@@ -80,8 +98,6 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void AddStringToSession() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
             const string testvalue = "test string";
@@ -93,8 +109,6 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void AddTransientToSession() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
             var claim = NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
@@ -106,8 +120,6 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void AddValueToSession() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
             const int testvalue = 99;
@@ -119,12 +131,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CachedObjectsOfBaseType() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
-            GeneralExpense item1 = NakedObjectsFramework.ObjectPersistor.Instances<GeneralExpense>().First();
-            GeneralExpense item2 = NakedObjectsFramework.ObjectPersistor.Instances<GeneralExpense>().Last();
+            GeneralExpense item1 = NakedObjectsFramework.ObjectPersistor.Instances<GeneralExpense>().OrderBy(c => c.Id).First();
+            GeneralExpense item2 = NakedObjectsFramework.ObjectPersistor.Instances<GeneralExpense>().OrderByDescending(c => c.Id).First();
 
             session.AddObjectToSession(NakedObjectsFramework, "key1", item1);
             session.AddObjectToSession(NakedObjectsFramework, "key2", item2);
@@ -135,12 +145,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CachedObjectsOfDifferentType() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
-            GeneralExpense item1 = NakedObjectsFramework.ObjectPersistor.Instances<GeneralExpense>().First();
-            GeneralExpense item2 = NakedObjectsFramework.ObjectPersistor.Instances<GeneralExpense>().Last();
+            GeneralExpense item1 = NakedObjectsFramework.ObjectPersistor.Instances<GeneralExpense>().OrderBy(c => c.Id).First();
+            GeneralExpense item2 = NakedObjectsFramework.ObjectPersistor.Instances<GeneralExpense>().OrderByDescending(c => c.Id).First();
 
             session.AddObjectToSession(NakedObjectsFramework, "key1", item1);
             session.AddObjectToSession(NakedObjectsFramework, "key2", item2);
@@ -151,8 +159,6 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CachedValuesOfBaseType() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
             session.AddValueToSession("key1", 1);
@@ -162,8 +168,6 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CachedValuesOfDifferentType() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
             session.AddValueToSession("key1", 1);
@@ -172,9 +176,16 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         [Test]
+        public void RemoveFromCacheNotThere() {
+            HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
+
+            session.ClearFromSession("key1");
+
+            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
+        }
+
+        [Test]
         public void RemoveObjectFromCache() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
 
             Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
@@ -188,28 +199,14 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void RemoveValueFromCache() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
- 
+
             session.AddValueToSession("key1", 1);
             Assert.AreEqual(1, session.GetValueFromSession<int>("key1"));
 
             session.ClearFromSession("key1");
 
             Assert.IsNull(session.GetValueFromSession<int>("key1"));
-        }
-
-
-        [Test]
-        public void RemoveFromCacheNotThere() {
-            var mocks = new ContextMocks(controller);
-            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
-            HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
-
-            session.ClearFromSession("key1");
-
-            Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
         }
     }
 }
