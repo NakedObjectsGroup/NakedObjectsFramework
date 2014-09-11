@@ -15,3 +15,5 @@ Getting Started
 There is a comprehensive Developer Manual for the Naked Objects Framework, download it as a .docx from here: https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/DeveloperManual.docx?raw=true
 
 At the start of the manual, under 'Writing your first Naked Objects application' is a very simple worked example.
+
+For help, and to view future development plans, please visit the Naked Objects Forum:  http://nakedobjectsforum.azurewebsites.net/
