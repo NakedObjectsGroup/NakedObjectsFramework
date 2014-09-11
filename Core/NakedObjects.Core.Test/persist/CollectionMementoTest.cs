@@ -105,6 +105,7 @@ namespace NakedObjects.Core.Persist {
 
         [SetUp]
         public void Setup() {
+            RunFixtures();
             StartTest();
         }
 

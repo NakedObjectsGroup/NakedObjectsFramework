@@ -47,6 +47,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void SetupTestFixture() {
             Database.SetInitializer(new DatabaseInitializer());
             InitializeNakedObjectsFramework();
+            RunFixtures();
         }
 
         [TestFixtureTearDown]
@@ -91,7 +92,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void GetObjectIdForGenericObject() {
             object repo = GetTestService("Custom Helper Test Classes").NakedObject.Object;
             string id = NakedObjectsFramework.GetObjectId(repo);
-            Assert.AreEqual(id, genericObjectId);
+            Assert.AreEqual(genericObjectId, id);
         }
 
         [Test]

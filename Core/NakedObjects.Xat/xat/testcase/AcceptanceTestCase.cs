@@ -126,7 +126,10 @@ namespace NakedObjects.Xat {
         }
 
         protected void RunFixtures() {
-            Fixtures.InstallFixtures(nakedObjectsFramework.ObjectPersistor, nakedObjectsFramework.Injector);
+            if (nakedObjectsFramework == null) {
+                 nakedObjectsFramework = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
+            }
+            Fixtures.InstallFixtures(nakedObjectsFramework.ObjectPersistor, nakedObjectsFramework.Injector); 
         }
 
         protected ITestService GetTestService(Type type) {
@@ -213,7 +216,6 @@ namespace NakedObjects.Xat {
 
             servicesCache.Clear();
             servicesCache = null;
-
             testObjectFactory = null;
         }
 

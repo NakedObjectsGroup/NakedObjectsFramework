@@ -44,7 +44,9 @@ type DomainTests() =
         member x.FixtureTearDown() = x.CleanupNakedObjectsFramework()
         
         [<SetUp>]
-        member x.Setup() = x.StartTest()
+        member x.Setup() = 
+            x.RunFixtures()
+            x.StartTest()
         
         [<TearDown>]
         member x.TearDown() = ()

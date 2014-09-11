@@ -49,6 +49,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void SetupTestFixture() {
             Database.SetInitializer(new DatabaseInitializer());
             InitializeNakedObjectsFramework();
+            RunFixtures();
         }
 
         [TestFixtureTearDown]
