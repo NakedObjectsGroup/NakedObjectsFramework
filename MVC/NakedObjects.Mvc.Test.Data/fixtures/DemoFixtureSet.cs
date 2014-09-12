@@ -32,7 +32,7 @@ namespace Expenses.Fixtures {
     public class ClaimsTestFixture : AbstractClaimFixture {
         public void Install() {
             for (int i = 0; i < 200; i++) {
-                var c = CreateNewClaim(EmployeeFixture.DICK, EmployeeFixture.BOB, Guid.NewGuid().ToString(), ProjectCodeFixture.CODE1, new DateTime(2007, 4, 3));
+                var c = CreateNewClaim(EmployeeFixture.DICK, EmployeeFixture.BOB, i.ToString(), ProjectCodeFixture.CODE1, new DateTime(2007, 4, 3));
             }
         }
     }

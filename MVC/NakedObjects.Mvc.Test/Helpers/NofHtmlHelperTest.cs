@@ -112,19 +112,28 @@ namespace MvcTestApp.Tests.Helpers {
 
 
         private static string GetTestData(string name) {
-            string file = Path.Combine(@"..\..\Generated Html reference files", name) + ".htm";
-            return File.ReadAllText(file);
+            return File.ReadAllText(GetFile(name));
+        }
+
+        private static string GetFile(string name) {
+            return Path.Combine(GeneratedHtmlReferenceFiles, name) + ".htm";
         }
 
         private static void WriteTestData(string name, string data) {
-            string file = Path.Combine(@"..\..\Generated Html reference files", name) + ".htm";
-            File.WriteAllText(file, data);
+            File.WriteAllText(GetFile(name), data);
         }
 
+        private static bool Writetests = false;
+        private const string GeneratedHtmlReferenceFiles = @"..\..\Generated Html reference files";
+
         private static void CheckResults(string resultsFile, string s) {
-            string actionView = GetTestData(resultsFile);
-            Assert.AreEqual(actionView, s);
-            //WriteTestData(resultsFile, s);
+            if (Writetests) {
+                WriteTestData(resultsFile, s);
+            }
+            else {
+                string actionView = GetTestData(resultsFile);
+                Assert.AreEqual(actionView, s);
+            }
         }
 
         private DescribedCustomHelperTestClass DescribedTestClass {
@@ -977,7 +986,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             string s = mocks.HtmlHelper.ParameterList(testChoices, action).ToString();
 
-            CheckResults("MultipleChoicesParameterDomainObject", s);
+            CheckResults("MultipleChoicesParameterDomainObject1", s);
         }
 
         [Test]

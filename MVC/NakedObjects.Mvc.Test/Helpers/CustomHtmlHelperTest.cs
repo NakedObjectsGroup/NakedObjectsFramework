@@ -81,17 +81,20 @@ namespace MvcTestApp.Tests.Helpers {
 
 
         private static string GetTestData(string name) {
-            string file = Path.Combine(@"..\..\Custom Html reference files", name) + ".htm";
-            return File.ReadAllText(file);
+            return File.ReadAllText(GetFile(name));
+        }
+
+        private static string GetFile(string name) {
+            return Path.Combine(CustomHtmlReferenceFiles, name) + ".htm";
         }
 
         // for testcreation 
 
         private static bool Writetests = false;
+        private const string CustomHtmlReferenceFiles = @"..\..\Custom Html reference files";
 
         private static void WriteTestData(string name, string data) {
-            string file = Path.Combine(@"..\..\Custom Html reference files", name) + ".htm";
-            File.WriteAllText(file, data);
+            File.WriteAllText(GetFile(name), data);
         }
 
         private static void CheckResults(string resultsFile, string s) {
