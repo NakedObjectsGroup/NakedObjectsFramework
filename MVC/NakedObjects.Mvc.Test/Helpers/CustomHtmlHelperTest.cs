@@ -99,8 +99,8 @@ namespace MvcTestApp.Tests.Helpers {
                 WriteTestData(resultsFile, s);
             }
             else {
-                string actionView = GetTestData(resultsFile).StripWhiteSpace();
-                Assert.AreEqual(actionView, s.StripWhiteSpace());
+                string actionView = GetTestData(resultsFile);
+                Assert.AreEqual(actionView, s);
             }
         }
 
@@ -676,7 +676,7 @@ namespace MvcTestApp.Tests.Helpers {
                 CustomHelperTestClass,
                 CustomHelperTestClass,
                 CustomHelperTestClass>(tc, y => y.FourRefParametersAction).ToString(),
-                "FourRefParametersAction");
+                "FourRefParametersActionOnOtherObject");
         }
 
         [Test]
@@ -688,7 +688,7 @@ namespace MvcTestApp.Tests.Helpers {
                 CustomHelperTestClass,
                 CustomHelperTestClass,
                 CustomHelperTestClass>(tc, y => y.FourRefParametersAction, new {parm1 = TestClass, parm2 = TestClass, parm3 = TestClass, parm4 = TestClass}).ToString(),
-                "FourRefParametersActionWithParameters");
+                "FourRefParametersActionOnOtherObjectWithParameters");
         }
 
         [Test]
@@ -747,7 +747,7 @@ namespace MvcTestApp.Tests.Helpers {
                 CustomHelperTestClass,
                 CustomHelperTestClass,
                 int>(tc, y => y.FourRefParametersFunction, new {parm1 = TestClass, parm2 = TestClass, parm3 = TestClass, parm4 = TestClass}).ToString(),
-                "FourRefParametersFunctionWithParameters");
+                "FourRefParametersFunctionOnOtherObjectWithParameters");
         }
 
         [Test]
@@ -1277,7 +1277,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void OneRefParameterActionDisabledWithParameter() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass>(y => y.DisabledOneRefParameterAction, new {parm = TestClass}).ToString(),
-                "OneRefParameterActionDisabled");
+                "OneRefParameterActionDisabledWithParameter");
         }
 
         [Test]
@@ -1300,7 +1300,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             CustomHelperTestOtherObj(x => x.HtmlHelper.ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass>(tc, y => y.OneRefParameterAction).ToString(),
-                "OneRefParameterAction");
+                "OneRefParameterActionOnOtherObject");
         }
 
 
@@ -1310,7 +1310,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             CustomHelperTestOtherObj(x => x.HtmlHelper.ObjectActionAsDialog<CustomHelperTestClass,
                 CustomHelperTestClass>(tc, y => y.OneRefParameterAction).ToString(),
-                "OneRefParameterActionAsDialog");
+                "OneRefParameterActionOnOtherObjectAsDialog");
         }
 
         [Test]
@@ -1319,7 +1319,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             CustomHelperTestOtherObj(x => x.HtmlHelper.ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass>(tc, y => y.OneRefParameterAction, new {parm = TestClass}).ToString(),
-                "OneRefParameterActionWithParameter");
+                "OneRefParameterActionOnOtherObjectWithParameter");
         }
 
         [Test]
@@ -1349,7 +1349,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             CustomHelperTestOtherObj(x => x.HtmlHelper.ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass, int>(tc, y => y.OneRefParameterFunction).ToString(),
-                "OneRefParameterFunction");
+                "OneRefParameterFunctionOnOtherObject");
         }
 
         [Test]
@@ -1358,7 +1358,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             CustomHelperTestOtherObj(x => x.HtmlHelper.ObjectActionAsDialog<CustomHelperTestClass,
                 CustomHelperTestClass, int>(tc, y => y.OneRefParameterFunction).ToString(),
-                "OneRefParameterFunctionAsDialog");
+                "OneRefParameterFunctionOnOtherObjectAsDialog");
         }
 
         [Test]
@@ -1367,7 +1367,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             CustomHelperTestOtherObj(x => x.HtmlHelper.ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass, int>(tc, y => y.OneRefParameterFunction, new {parm = TestClass}).ToString(),
-                "OneRefParameterFunctionWithParameter");
+                "OneRefParameterFunctionOnOtherObjectWithParameter");
         }
 
         [Test]
@@ -1409,7 +1409,7 @@ namespace MvcTestApp.Tests.Helpers {
             CustomHelperTestClass tc = TestClass;
 
             CustomHelperTestOtherObj(x => x.HtmlHelper.ObjectAction<CustomHelperTestClass, int>(tc, y => y.OneValueParameterAction).ToString(),
-                "OneValueParameterAction");
+                "OneValueParameterActionOnOtherObject");
         }
 
 
@@ -1418,7 +1418,7 @@ namespace MvcTestApp.Tests.Helpers {
             CustomHelperTestClass tc = TestClass;
 
             CustomHelperTestOtherObj(x => x.HtmlHelper.ObjectActionAsDialog<CustomHelperTestClass, int>(tc, y => y.OneValueParameterAction).ToString(),
-                "OneValueParameterActionAsDialog");
+                "OneValueParameterActionOnOtherObjectAsDialog");
         }
 
         [Test]
@@ -1426,7 +1426,7 @@ namespace MvcTestApp.Tests.Helpers {
             CustomHelperTestClass tc = TestClass;
 
             CustomHelperTestOtherObj(x => x.HtmlHelper.ObjectAction<CustomHelperTestClass, int>(tc, y => y.OneValueParameterAction, new {parm = 1}).ToString(),
-                "OneValueParameterActionWithParameter");
+                "OneValueParameterActionOnOtherObjectWithParameter");
         }
 
         [Test]
@@ -1452,7 +1452,7 @@ namespace MvcTestApp.Tests.Helpers {
             CustomHelperTestClass tc = TestClass;
 
             CustomHelperTestOtherObj(x => x.HtmlHelper.ObjectAction<CustomHelperTestClass, int, int>(tc, y => y.OneValueParameterFunction).ToString(),
-                "OneValueParameterFunction");
+                "OneValueParameterFunctionOnOtherObject");
         }
 
         [Test]
@@ -1468,7 +1468,7 @@ namespace MvcTestApp.Tests.Helpers {
             CustomHelperTestClass tc = TestClass;
 
             CustomHelperTestOtherObj(x => x.HtmlHelper.ObjectAction<CustomHelperTestClass, int, int>(tc, y => y.OneValueParameterFunction, new {parm = 1}).ToString(),
-                "OneValueParameterFunctionWithParameter");
+                "OneValueParameterFunctionOnOtherObjectWithParameter");
         }
 
         [Test]
@@ -1495,47 +1495,47 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void PropertyListEditExclusionsGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEditWithout(y => y.TestCollectionOne, y => y.TestInt).ToString(),
-                "PropertyListEditWithExclusions");
+                "PropertyListEditExclusionsGeneric");
         }
 
         [Test]
         public void PropertyListEditExclusionsGenericOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEditWithout(tc, y => y.TestCollectionOne, y => y.TestInt).ToString(),
-                "PropertyListEditWithExclusions");
+                "PropertyListEditExclusionsGenericOtherObj");
         }
 
         [Test]
         public void PropertyListEditExclusionsOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEditWithout(tc, "TestCollectionOne", "TestInt").ToString(),
-                "PropertyListEditWithExclusions");
+                "PropertyListEditExclusionsOtherObj");
         }
 
         [Test]
         public void PropertyListEditInclusions() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEditWith("TestInt", "TestCollectionOne").ToString(),
-                "PropertyListEditWithInclusions");
+                "PropertyListEditInclusions");
         }
 
         [Test]
         public void PropertyListEditInclusionsGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEditWith(y => y.TestInt, y => y.TestCollectionOne).ToString(),
-                "PropertyListEditWithInclusions");
+                "PropertyListEditInclusionsGeneric");
         }
 
         [Test]
         public void PropertyListEditInclusionsGenericOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEditWith(tc, y => y.TestInt, y => y.TestCollectionOne).ToString(),
-                "PropertyListEditWithInclusions");
+                "PropertyListEditInclusionsGenericOtherObj");
         }
 
         [Test]
         public void PropertyListEditInclusionsOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEditWith(tc, "TestInt", "TestCollectionOne").ToString(),
-                "PropertyListEditWithInclusions");
+                "PropertyListEditInclusionsOtherObj");
         }
 
         [Test]
@@ -1547,47 +1547,47 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void PropertyListEditListDict() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit(new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.List)).ToString(),
-                "PropertyListEditList");
+                "PropertyListEditListDict");
         }
 
         [Test]
         public void PropertyListEditListDictGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit(new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List)).ToString(),
-                "PropertyListEditList");
+                "PropertyListEditListDictGeneric");
         }
 
         [Test]
         public void PropertyListEditListGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List).ToString(),
-                "PropertyListEditList");
+                "PropertyListEditListGeneric");
         }
 
         [Test]
         public void PropertyListEditListOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, "TestCollectionOne", PropertyExtensions.CollectionFormat.List).ToString(),
-                "PropertyListEditList");
+                "PropertyListEditListOtherObj");
         }
 
         [Test]
         public void PropertyListEditListOtherObjDict() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.List)).ToString(),
-                "PropertyListEditList");
+                "PropertyListEditListOtherObjDict");
         }
 
         [Test]
         public void PropertyListEditListOtherObjDictGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List)).ToString(),
-                "PropertyListEditList");
+                "PropertyListEditListOtherObjDictGeneric");
         }
 
         [Test]
         public void PropertyListEditListOtherObjGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List).ToString(),
-                "PropertyListEditList");
+                "PropertyListEditListOtherObjGeneric");
         }
 
         [Test]
@@ -1599,66 +1599,66 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void PropertyListEditTableDict() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit(new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.Table)).ToString(),
-                "PropertyListEditTable");
+                "PropertyListEditTableDict");
         }
 
         [Test]
         public void PropertyListEditTableDictGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit(new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table)).ToString(),
-                "PropertyListEditTable");
+                "PropertyListEditTableDictGeneric");
         }
 
         [Test]
         public void PropertyListEditTableGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table).ToString(),
-                "PropertyListEditTable");
+                "PropertyListEditTableGeneric");
         }
 
         [Test]
         public void PropertyListEditTableOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, "TestCollectionOne", PropertyExtensions.CollectionFormat.Table).ToString(),
-                "PropertyListEditTable");
+                "PropertyListEditTableOtherObj");
         }
 
         [Test]
         public void PropertyListEditTableOtherObjDict() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.Table)).ToString(),
-                "PropertyListEditTable");
+                "PropertyListEditTableOtherObjDict");
         }
 
         [Test]
         public void PropertyListEditTableOtherObjDictGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table)).ToString(),
-                "PropertyListEditTable");
+                "PropertyListEditTableOtherObjDictGeneric");
         }
 
         [Test]
         public void PropertyListEditTableOtherObjGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListEdit(tc, y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table).ToString(),
-                "PropertyListEditTable");
+                "PropertyListEditTableOtherObjGeneric");
         }
 
         [Test]
         public void PropertyListExclusions() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListWithout("TestCollectionOne", "TestInt").ToString(),
-                "PropertyListWithExclusions");
+                "PropertyListExclusions");
         }
 
         [Test]
         public void PropertyListExclusionsGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListWithout(y => y.TestCollectionOne, y => y.TestInt).ToString(),
-                "PropertyListWithExclusions");
+                "PropertyListExclusionsGeneric");
         }
 
         [Test]
         public void PropertyListExclusionsGenericOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListWithout(tc, y => y.TestCollectionOne, y => y.TestInt).ToString(),
-                "PropertyListWithExclusions");
+                "PropertyListExclusionsGenericOtherObj");
         }
 
         [Test]
@@ -1671,20 +1671,20 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void PropertyListInclusions() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListWith("TestInt", "TestCollectionOne").ToString(),
-                "PropertyListWithInclusions");
+                "PropertyListInclusions");
         }
 
         [Test]
         public void PropertyListInclusionsGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListWith(y => y.TestInt, y => y.TestCollectionOne).ToString(),
-                "PropertyListWithInclusions");
+                "PropertyListInclusionsGeneric");
         }
 
         [Test]
         public void PropertyListInclusionsGenericOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyListWith(tc, y => y.TestInt, y => y.TestCollectionOne).ToString(),
-                "PropertyListWithInclusions");
+                "PropertyListInclusionsGenericOtherObj");
         }
 
         [Test]
@@ -1703,47 +1703,47 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void PropertyListListDict() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList(new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.List)).ToString(),
-                "PropertyListList");
+                "PropertyListListDict");
         }
 
         [Test]
         public void PropertyListListDictGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList(new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List)).ToString(),
-                "PropertyListList");
+                "PropertyListListDictGeneric");
         }
 
         [Test]
         public void PropertyListListGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List).ToString(),
-                "PropertyListList");
+                "PropertyListListGeneric");
         }
 
         [Test]
         public void PropertyListListOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, "TestCollectionOne", PropertyExtensions.CollectionFormat.List).ToString(),
-                "PropertyListList");
+                "PropertyListListOtherObj");
         }
 
         [Test]
         public void PropertyListListOtherObjDict() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.List)).ToString(),
-                "PropertyListList");
+                "PropertyListListOtherObjDict");
         }
 
         [Test]
         public void PropertyListListOtherObjDictGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List)).ToString(),
-                "PropertyListList");
+                "PropertyListListOtherObjDictGeneric");
         }
 
         [Test]
         public void PropertyListListOtherObjGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.List).ToString(),
-                "PropertyListList");
+                "PropertyListListOtherObjGeneric");
         }
 
         [Test]
@@ -1773,47 +1773,47 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void PropertyListTableDict() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList(new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.Table)).ToString(),
-                "PropertyListTable");
+                "PropertyListTableDict");
         }
 
         [Test]
         public void PropertyListTableDictGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList(new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table)).ToString(),
-                "PropertyListTable");
+                "PropertyListTableDictGeneric");
         }
 
         [Test]
         public void PropertyListTableGeneric() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyList(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table).ToString(),
-                "PropertyListTable");
+                "PropertyListTableGeneric");
         }
 
         [Test]
         public void PropertyListTableOtherObj() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, "TestCollectionOne", PropertyExtensions.CollectionFormat.Table).ToString(),
-                "PropertyListTable");
+                "PropertyListTableOtherObj");
         }
 
         [Test]
         public void PropertyListTableOtherObjDict() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, new Tuple<string, PropertyExtensions.CollectionFormat>("TestCollectionOne", PropertyExtensions.CollectionFormat.Table)).ToString(),
-                "PropertyListTable");
+                "PropertyListTableOtherObjDict");
         }
 
         [Test]
         public void PropertyListTableOtherObjDictGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, new Tuple<Expression<Func<CustomHelperTestClass, IEnumerable>>, PropertyExtensions.CollectionFormat>(y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table)).ToString(),
-                "PropertyListTable");
+                "PropertyListTableOtherObjDictGeneric");
         }
 
         [Test]
         public void PropertyListTableOtherObjGeneric() {
             CustomHelperTestClass tc = TestClass;
             CustomHelperTestOtherObj(x => x.HtmlHelper.PropertyList(tc, y => y.TestCollectionOne, PropertyExtensions.CollectionFormat.Table).ToString(),
-                "PropertyListTable");
+                "PropertyListTableOtherObjGeneric");
         }
 
         [Test]
@@ -1825,7 +1825,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void RefPropertyEdit() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit(y => y.TestRef).ToString(),
-                "TestRefEdit");
+                "RefPropertyEdit");
         }
 
         [Test]
@@ -1839,7 +1839,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void RefPropertyStringEdit() {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().ObjectPropertyEdit("TestRef").ToString(),
-                "TestRefEdit");
+                "RefPropertyStringEdit");
         }
 
         [Test]
@@ -2007,7 +2007,7 @@ namespace MvcTestApp.Tests.Helpers {
                 CustomHelperTestClass,
                 CustomHelperTestClass,
                 CustomHelperTestClass>(tc, y => y.ThreeRefParametersAction, new {parm1 = TestClass, parm2 = TestClass, parm3 = TestClass}).ToString(),
-                "ThreeRefParametersActionWithParameters");
+                "ThreeRefParametersActionOnOtherObjectWithParameters");
         }
 
         [Test]
@@ -2050,7 +2050,7 @@ namespace MvcTestApp.Tests.Helpers {
                 CustomHelperTestClass,
                 CustomHelperTestClass,
                 int>(tc, y => y.ThreeRefParametersFunction, new {parm1 = TestClass, parm2 = TestClass, parm3 = TestClass}).ToString(),
-                "ThreeRefParametersFunctionWithParameters");
+                "ThreeRefParametersFunctionOnOtherObjectWithParameters");
         }
 
         [Test]
@@ -2144,7 +2144,7 @@ namespace MvcTestApp.Tests.Helpers {
             CustomHelperTestOtherObj(x => x.HtmlHelper.ObjectAction<CustomHelperTestClass,
                 CustomHelperTestClass,
                 CustomHelperTestClass>(tc, y => y.TwoRefParametersAction, new {parm1 = TestClass, parm2 = TestClass}).ToString(),
-                "TwoRefParametersActionWithParameters");
+                "TwoRefParametersActionOnOtherObjectWithParameters");
         }
 
         [Test]
@@ -2183,7 +2183,7 @@ namespace MvcTestApp.Tests.Helpers {
                 CustomHelperTestClass,
                 CustomHelperTestClass,
                 int>(tc, y => y.TwoRefParametersFunction, new {parm1 = TestClass, parm2 = TestClass}).ToString(),
-                "TwoRefParametersFunctionWithParameters");
+                "TwoRefParametersFunctionOnOtherObjectWithParameters");
         }
 
         [Test]
