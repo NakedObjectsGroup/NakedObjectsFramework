@@ -11,7 +11,6 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Reflector.Peer {

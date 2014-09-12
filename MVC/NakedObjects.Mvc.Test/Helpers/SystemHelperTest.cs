@@ -92,15 +92,21 @@ namespace MvcTestApp.Tests.Helpers {
             return File.ReadAllText(file);
         }
 
+        private static bool writeTest = false;
+
         private static void WriteTestData(string name, string data) {
             string file = Path.Combine(@"..\..\Generated Html reference files", name) + ".htm";
             File.WriteAllText(file, data);
         }
 
         private static void CheckResults(string resultsFile, string s) {
-            string actionView = GetTestData(resultsFile).StripWhiteSpace();
-            Assert.AreEqual(actionView, s.StripWhiteSpace());
-            //WriteTestData(resultsFile, s);
+            if (writeTest) {
+                WriteTestData(resultsFile, s);
+            }
+            else {
+                string actionView = GetTestData(resultsFile).StripWhiteSpace();
+                Assert.AreEqual(actionView, s.StripWhiteSpace());
+            }
         }
 
         [Test]

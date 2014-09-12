@@ -43,5 +43,13 @@ namespace NakedObjects.Architecture.Util {
             string rootType = type.GetGenericTypeDefinition().FullName;
             return type.GetGenericArguments().Aggregate(rootType, (s, t) => s + separator + t.FullName);
         }
+
+        public static string GetShortName(string name) {
+            name = name.Substring(name.LastIndexOf('.') + 1);
+            if (name.LastIndexOf('`') > 0) {
+                name = name.Substring(0, name.LastIndexOf('`'));
+            }
+            return name;
+        }
     }
 }

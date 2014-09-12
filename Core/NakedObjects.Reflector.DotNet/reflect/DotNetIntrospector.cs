@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facets.Objects.Facets;
 using NakedObjects.Architecture.Facets.Ordering.MemberOrder;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.Util;
 using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder;
 using NakedObjects.Reflector.DotNet.Reflect.Actions;
@@ -91,12 +92,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         public string ShortName {
             get {
-                string name = introspectedType.Name;
-                name = name.Substring(name.LastIndexOf('.') + 1);
-                if (introspectedType.IsGenericType) {
-                    name = name.Substring(0, name.LastIndexOf('`'));
-                }
-                return name;
+                return TypeNameUtils.GetShortName(introspectedType.Name);
             }
         }
 

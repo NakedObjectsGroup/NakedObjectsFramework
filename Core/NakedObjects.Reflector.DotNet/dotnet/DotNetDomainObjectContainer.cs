@@ -10,7 +10,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Validation;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 using NakedObjects.Services;
 using NakedObjects.UtilInternal;
 

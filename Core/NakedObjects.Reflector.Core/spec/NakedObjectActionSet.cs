@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Reflector.Spec {
@@ -17,6 +18,7 @@ namespace NakedObjects.Reflector.Spec {
         private readonly INakedObjectAction[] actions;
         private readonly string id;
         private readonly string name;
+        private readonly string shortId; 
 
         public NakedObjectActionSet(string id, INakedObjectAction[] actions)
             : this(id, null, actions) {}
@@ -25,6 +27,7 @@ namespace NakedObjects.Reflector.Spec {
             this.name = name;
             this.id = id;
             this.actions = actions;
+            this.shortId = TypeNameUtils.GetShortName(id);
         }
 
         public virtual bool OnInstance {
@@ -66,7 +69,7 @@ namespace NakedObjects.Reflector.Spec {
 
         public virtual string GetName(INakedObjectPersistor persistor) {
             if (name == null) {
-                var service = persistor.GetService(id);
+                var service = persistor.GetService(shortId);
                 return service.TitleString();
             }
             return name;
