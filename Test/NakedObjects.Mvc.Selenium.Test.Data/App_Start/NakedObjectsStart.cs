@@ -22,7 +22,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Data {
             RegisterBundles(BundleTable.Bundles);
 
             RunWeb.Run();
-            DependencyResolver.SetResolver(new NakedObjectsDependencyResolver());
+            //DependencyResolver.SetResolver(new NakedObjectsDependencyResolver());
             //RestConfig.RestPostStart();
         }
 

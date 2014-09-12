@@ -20,16 +20,16 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
         }
 
-        protected override IAuthorizerInstaller Authorizer {
-            get { return new CustomAuthorizerInstaller( new MyDefaultAuthorizer(), new FooAbstractAuthorizer()); }
-        }
+        //protected override IAuthorizerInstaller Authorizer {
+        //    get { return new CustomAuthorizerInstaller( new MyDefaultAuthorizer(), new FooAbstractAuthorizer()); }
+        //}
 
         #endregion
 
         [TestMethod]
         public void AttemptToUseAuthorizerForAbstractType() {
             try {
-                InitializeNakedObjectsFramework();
+                InitializeNakedObjectsFramework(this);
             }
             catch (InitialisationException e) {
                 Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", e.Message);

@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -15,7 +18,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects {
-   
     public class GetTypeFromLoadedAssembliesTestAbstract {
         private static readonly IList<string> MasterTypeList = new List<string>();
         private static readonly IDictionary<string, Runs> Results = new Dictionary<string, Runs>();
@@ -62,7 +64,7 @@ namespace NakedObjects {
             return randomSelection;
         }
 
-        
+
         public static void SetupTypeData(TestContext context) {
             for (int i = 0; i < 100; i++) {
                 ModuleBuilder mb = CreateModuleBuilder("Assembly" + i);
@@ -77,7 +79,7 @@ namespace NakedObjects {
             }
             Results.Clear();
         }
-   
+
         private static void DisplayResults() {
             foreach (var result in Results) {
                 string indRuns = result.Value.IndividualRuns.Select(ts => ts.ToString()).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "\t" : "\r\n\t\t") + t);
@@ -87,7 +89,7 @@ namespace NakedObjects {
             }
         }
 
-      
+
         public static void OutputCsv(string name) {
             string fileName = name + DateTime.Now.Ticks;
 
@@ -131,7 +133,7 @@ namespace NakedObjects {
 
         private long FindTypeFromLoadedAssemblies(Func<string, Type> funcUnderTest, IList<string> typeList) {
             var sw = new Stopwatch();
-         
+
             foreach (string s in typeList) {
                 sw.Start();
                 Type t = funcUnderTest(s);
@@ -139,7 +141,7 @@ namespace NakedObjects {
                 Assert.IsNotNull(t);
                 Assert.AreEqual(s, t.FullName);
             }
-            
+
             return sw.ElapsedMilliseconds;
         }
 
@@ -151,7 +153,7 @@ namespace NakedObjects {
 
 
         private long FindTypeFromLoadedAssembliesOnce(Func<string, Type> funcUnderTest, IList<string> typeList) {
-            return FindTypeFromLoadedAssemblies(funcUnderTest, typeList);      
+            return FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
         }
 
         private Runs FindTypeFromLoadedAssembliesTenTimes(Func<string, Type> funcUnderTest, IList<string> typeList) {
@@ -159,7 +161,7 @@ namespace NakedObjects {
             var indRuns = new List<long>();
 
             for (int i = 0; i < 10; i++) {
-                var elapsed = FindTypeFromLoadedAssemblies(funcUnderTest, typeList);      
+                var elapsed = FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
                 totalElapsed += elapsed;
                 indRuns.Add(elapsed);
             }
@@ -167,10 +169,10 @@ namespace NakedObjects {
             return new Runs {IndividualRuns = indRuns.ToArray(), TotalRun = totalElapsed};
         }
 
-      
+
         private Task<long> CreateTask(Func<string, Type> funcUnderTest, IList<string> typeList, IList<long> indRuns) {
             return Task<long>.Factory.StartNew(() => {
-                var elapsed = FindTypeFromLoadedAssemblies(funcUnderTest, typeList);     
+                var elapsed = FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
                 indRuns.Add(elapsed);
                 return elapsed;
             });
@@ -186,7 +188,7 @@ namespace NakedObjects {
             sw.Start();
             Task.WaitAll(tasks);
             sw.Stop();
-           
+
             return new Runs {IndividualRuns = indRuns.ToArray(), TotalRun = sw.ElapsedMilliseconds};
         }
 
@@ -198,10 +200,16 @@ namespace NakedObjects {
             return runsList.ToArray();
         }
 
+        #region Nested type: Runs
+
         private class Runs {
             public long[] IndividualRuns { get; set; }
             public long TotalRun { get; set; }
         }
+
+        #endregion
+
+        #region Nested type: ThreadSafeRandom
 
         private static class ThreadSafeRandom {
             [ThreadStatic] private static Random local;
@@ -211,13 +219,14 @@ namespace NakedObjects {
             }
         }
 
-        #region tests
+        #endregion
 
+        #region tests
 
         public void TestHarnessFindTypeFromLoadedAssembliesOnce(Func<string, Type> funcUnderTest) {
             // find each type in order
             var elapsed = FindTypeFromLoadedAssembliesOnce(funcUnderTest, MasterTypeList);
-            CollateResults(GetCurrentMethod(), new Runs { IndividualRuns = new[] { elapsed }, TotalRun = elapsed });
+            CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
         }
 
 
@@ -225,7 +234,7 @@ namespace NakedObjects {
             // find each type in random order
             IList<string> randomList = Shuffle(MasterTypeList);
             var elapsed = FindTypeFromLoadedAssembliesOnce(funcUnderTest, randomList);
-            CollateResults(GetCurrentMethod(), new Runs { IndividualRuns = new[] { elapsed }, TotalRun = elapsed });
+            CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
         }
 
 
@@ -233,7 +242,7 @@ namespace NakedObjects {
             // find a random selection of types 
             IList<string> randomList = RandomSelection(MasterTypeList);
             var elapsed = FindTypeFromLoadedAssembliesOnce(funcUnderTest, randomList);
-            CollateResults(GetCurrentMethod(), new Runs { IndividualRuns = new[] { elapsed }, TotalRun = elapsed });
+            CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
         }
 
 
@@ -325,8 +334,5 @@ namespace NakedObjects {
         }
 
         #endregion
-
-       
-
     }
 }

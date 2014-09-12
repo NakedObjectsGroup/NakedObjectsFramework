@@ -19,15 +19,15 @@ namespace NakedObjects.SystemTest.Authorization.Installer4 {
             get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
         }
 
-        protected override IAuthorizerInstaller Authorizer {
-            get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer(), new MyDefaultAuthorizer()); }
-        }
+        //protected override IAuthorizerInstaller Authorizer {
+        //    get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer(), new MyDefaultAuthorizer()); }
+        //}
 
         #endregion
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             SetUser("Fred");
         }
 
@@ -46,15 +46,15 @@ namespace NakedObjects.SystemTest.Authorization.Installer4 {
             get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
         }
 
-        protected override IAuthorizerInstaller Authorizer {
-            get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer(), new MyDefaultAuthorizer()); }
-        }
+        //protected override IAuthorizerInstaller Authorizer {
+        //    get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer(), new MyDefaultAuthorizer()); }
+        //}
 
         #endregion
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             SetUser("Anon");
         }
 
@@ -73,15 +73,15 @@ namespace NakedObjects.SystemTest.Authorization.Installer4 {
             get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
         }
 
-        protected override IAuthorizerInstaller Authorizer {
-            get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer(), new MyDefaultAuthorizer()); }
-        }
+        //protected override IAuthorizerInstaller Authorizer {
+        //    get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer(), new MyDefaultAuthorizer()); }
+        //}
 
         #endregion
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             SetUser("Anon", "sysAdmin");
         }
 
@@ -100,15 +100,15 @@ namespace NakedObjects.SystemTest.Authorization.Installer4 {
             get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
         }
 
-        protected override IAuthorizerInstaller Authorizer {
-            get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer(), new MyDefaultAuthorizer()); }
-        }
+        //protected override IAuthorizerInstaller Authorizer {
+        //    get { return new CustomAuthorizerInstaller(new MyDefaultAuthorizer(), new MyDefaultAuthorizer()); }
+        //}
 
         #endregion
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             SetUser("Anon", "service", "sysAdmin");
         }
 

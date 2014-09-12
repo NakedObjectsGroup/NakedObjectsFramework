@@ -10,6 +10,11 @@ namespace NakedObjects.Mvc.App.Controllers {
     //[Authorize] 
     public class GenericController : GenericControllerImpl {
 
+         public GenericController(INakedObjectsFramework framework)
+            : base(framework) {
+            
+        }
+
         #region actions
 
         [HttpGet]

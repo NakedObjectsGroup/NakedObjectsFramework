@@ -15,15 +15,15 @@ namespace NakedObjects.SystemTest.Attributes {
 
             [TestInitialize()]
             public void SetupTest() {
-                InitializeNakedObjectsFramework();
-                base.StartMethodProfiling();
+                InitializeNakedObjectsFramework(this);
+                
                 obj = NewTestObject<Object1>();
             }
 
             [TestCleanup()]
             public void TearDownTest() {
-                CleanupNakedObjectsFramework();
-                base.StopMethodProfiling();
+                CleanupNakedObjectsFramework(this);
+                
                 obj = null;
             }
 

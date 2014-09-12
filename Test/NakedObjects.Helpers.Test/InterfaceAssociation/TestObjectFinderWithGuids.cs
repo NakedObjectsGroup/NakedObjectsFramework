@@ -24,7 +24,7 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
         [TestInitialize]
         public void Setup() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             payment1 = CreatePayment();
             customer1 = CreateCustomer("0c1ced04-7016-11e0-9c44-78544824019b");
             customer2 = CreateCustomer("3d9d6ca0-7016-11e0-b12a-9e544824019b");
@@ -36,7 +36,7 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
         [TestCleanup]
         public void TearDown() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
             countPayments = 0;
             payment1 = null;
             customer1 = null;

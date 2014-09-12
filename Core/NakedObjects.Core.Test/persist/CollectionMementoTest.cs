@@ -95,12 +95,12 @@ namespace NakedObjects.Core.Persist {
 
         [TestFixtureSetUp]
         public void SetupFixture() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
         }
 
         [TestFixtureTearDown]
         public void TearDownFixture() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
         }
 
         [SetUp]

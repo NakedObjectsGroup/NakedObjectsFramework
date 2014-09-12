@@ -22,7 +22,7 @@ namespace NakedObjects.Test.App {
             RegisterBundles(BundleTable.Bundles);
 
             RunWeb.Run();
-            DependencyResolver.SetResolver(new NakedObjectsDependencyResolver());
+            //DependencyResolver.SetResolver(new NakedObjectsDependencyResolver());
             //RestConfig.RestPostStart();
         }
 

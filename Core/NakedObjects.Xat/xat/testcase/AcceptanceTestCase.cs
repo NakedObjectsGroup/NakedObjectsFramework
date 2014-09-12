@@ -195,28 +195,28 @@ namespace NakedObjects.Xat {
             SetUser(username, new string[] {});
         }
 
-        protected void InitializeNakedObjectsFramework() {
-            Log.Info("test initialize " + Name);
-            servicesCache = new Dictionary<string, ITestService>();
+        protected static void InitializeNakedObjectsFramework(AcceptanceTestCase tc) {
+            Log.Info("test initialize " + tc.Name);
+            tc.servicesCache = new Dictionary<string, ITestService>();
 
-            var reflector = GetConfiguredContainer().Resolve<INakedObjectReflector>();
+            var reflector = tc.GetConfiguredContainer().Resolve<INakedObjectReflector>();
 
-            List<Type> s1 = MenuServices.GetServices().Select(s => s.GetType()).ToList();
-            List<Type> s2 = ContributedActions.GetServices().Select(s => s.GetType()).ToList();
-            List<Type> s3 = SystemServices.GetServices().Select(s => s.GetType()).ToList();
+            List<Type> s1 = tc.MenuServices.GetServices().Select(s => s.GetType()).ToList();
+            List<Type> s2 = tc.ContributedActions.GetServices().Select(s => s.GetType()).ToList();
+            List<Type> s3 = tc.SystemServices.GetServices().Select(s => s.GetType()).ToList();
             Type[] services = s1.Union(s2).Union(s3).ToArray();
 
             reflector.InstallServiceSpecifications(services);
             reflector.PopulateContributedActions(s1.Union(s2).ToArray());
         }
 
-        protected void CleanupNakedObjectsFramework() {
-            Log.Info("test cleanup " + Name);
-            Log.Info("cleanup " + Name);
+        protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {
+            Log.Info("test cleanup " + tc.Name);
+            Log.Info("cleanup " + tc.Name);
 
-            servicesCache.Clear();
-            servicesCache = null;
-            testObjectFactory = null;
+            tc.servicesCache.Clear();
+            tc.servicesCache = null;
+            tc.testObjectFactory = null;
         }
 
 

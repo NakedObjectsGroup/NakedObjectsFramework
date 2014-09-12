@@ -16,14 +16,14 @@ namespace NakedObjects.SystemTest.ParentChild {
 
             [TestInitialize()]
             public void SetupTest() {
-                InitializeNakedObjectsFramework();
-                base.StartMethodProfiling();
+                InitializeNakedObjectsFramework(this);
+                
             }
 
             [TestCleanup()]
             public void TearDownTest() {
-                CleanupNakedObjectsFramework();
-                base.StopMethodProfiling();
+                CleanupNakedObjectsFramework(this);
+                
             }
 
             #endregion

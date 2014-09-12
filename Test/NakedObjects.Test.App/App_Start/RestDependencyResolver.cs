@@ -13,12 +13,12 @@ using NakedObjects.Surface.Nof4.Utility;
 
 namespace NakedObjects.Test.App.App_Start {
     public class RestDependencyResolver : IDependencyResolver {
-        private NakedObjectsSurface surface;
+        private NakedObjectsSurface surface = null;
 
         public NakedObjectsSurface Surface {
             get {
                 if (surface == null) {
-                    surface = new NakedObjectsSurface(new ExternalOid());
+                    //surface = new NakedObjectsSurface(new ExternalOid());
                 }
 
                 return surface;

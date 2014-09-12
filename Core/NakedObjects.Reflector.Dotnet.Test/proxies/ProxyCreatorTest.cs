@@ -93,12 +93,12 @@ namespace NakedObjects.Reflector.DotNet.Proxies {
 
         [TestFixtureSetUp]
         public void SetupFixture() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
         }
 
         [TestFixtureTearDown]
         public void TearDownFixture() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
         }
 
         protected override IServicesInstaller MenuServices {

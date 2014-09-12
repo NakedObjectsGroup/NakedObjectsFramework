@@ -29,7 +29,7 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
 
         [TestInitialize]
         public void Setup() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             payment1 = CreatePayment();
             customer1 = CreateCustomer();
             customer2 = CreateCustomer();
@@ -42,7 +42,7 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
 
         [TestCleanup]
         public void TearDown() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
             countPayments = 0;
             countCustomers = 0;
             payment1 = null;

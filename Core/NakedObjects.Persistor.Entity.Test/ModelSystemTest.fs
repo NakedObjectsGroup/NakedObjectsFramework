@@ -33,7 +33,7 @@ type ModelSystemTests() =
         ()
     
     [<TestFixtureSetUpAttribute>]
-    member x.SetupFixture() = x.InitializeNakedObjectsFramework()
+    member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
     
     [<SetUp>]
     member x.SetupTest() = x.StartTest()
@@ -42,7 +42,7 @@ type ModelSystemTests() =
     member x.TearDownTest() = ()
     
     [<TestFixtureTearDown>]
-    member x.TearDownFixture() = x.CleanupNakedObjectsFramework()
+    member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
 
     override x.MenuServices = 
         let service = new SimpleRepository<Person>()

@@ -11,6 +11,11 @@ namespace NakedObjects.Mvc.App.Controllers {
     public class HomeController : SystemControllerImpl {
 
 
+        public HomeController(INakedObjectsFramework framework)
+            : base(framework) {
+            
+        }
+
         public ActionResult Index() {
             return View();
         }

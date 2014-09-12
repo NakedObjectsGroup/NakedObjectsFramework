@@ -59,7 +59,7 @@ type Nof4TestsDomainType() =
         [<TestFixtureSetUp>]
         member x.FixtureSetup() = 
             CodeFirstSetup()
-            x.InitializeNakedObjectsFramework()
+            NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
         
         [<SetUp>]
         member x.Setup() = 
@@ -79,7 +79,7 @@ type Nof4TestsDomainType() =
             RestfulObjectsControllerBase.CacheSettings <- (0, 3600, 86400)
         
         [<TestFixtureTearDown>]
-        member x.FixtureTearDown() = x.CleanupNakedObjectsFramework()
+        member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
         
         override x.MenuServices = 
             box (new ServicesInstaller([| box (new RestDataRepository())

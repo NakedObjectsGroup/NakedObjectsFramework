@@ -20,13 +20,13 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         [TestInitialize]
         public void SetupTest() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             SetUser("sven");
         }
 
         [TestCleanup]
         public void TearDownTest() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
             MemoryObjectStore.DiscardObjects();
         }
 
@@ -43,9 +43,9 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         }
 
 
-        protected override IAuthorizerInstaller Authorizer {
-            get { return new CustomAuthorizerInstaller( new MyDefaultAuthorizer(), new FooAuthorizer(), new QuxAuthorizer()); }
-        }
+        //protected override IAuthorizerInstaller Authorizer {
+        //    get { return new CustomAuthorizerInstaller( new MyDefaultAuthorizer(), new FooAuthorizer(), new QuxAuthorizer()); }
+        //}
 
         #endregion
 

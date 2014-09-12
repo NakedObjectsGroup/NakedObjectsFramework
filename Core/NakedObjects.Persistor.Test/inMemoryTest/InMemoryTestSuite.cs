@@ -40,12 +40,12 @@ namespace NakedObjects.Persistor.InMemoryTest {
 
         [TestFixtureSetUp]
         public void SetupFixture() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
         }
 
         [TestFixtureTearDown]
         public void TearDownFixture() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
         }
 
         [SetUp]

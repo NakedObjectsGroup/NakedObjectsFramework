@@ -22,13 +22,13 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestInitialize]
         public void SetupTest() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             SetUser("sven");
         }
 
         [TestCleanup]
         public void TearDownTest() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
             MemoryObjectStore.DiscardObjects();
         }
 
@@ -49,9 +49,9 @@ namespace NakedObjects.SystemTest.Audit {
         }
 
 
-        protected override IAuditorInstaller Auditor {
-            get { return new AuditInstaller(new Da(), new Fa(), new Qa()); }
-        }
+        //protected override IAuditorInstaller Auditor {
+        //    get { return new AuditInstaller(new Da(), new Fa(), new Qa()); }
+        //}
 
         public class Da : IAuditor {
 

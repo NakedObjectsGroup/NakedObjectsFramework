@@ -15,12 +15,12 @@ namespace NakedObjects.SystemTest.Injection {
 
         [TestInitialize()]
         public void SetUp() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
         }
 
         [TestCleanup()]
         public void TearDown() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
         }
 
         #endregion

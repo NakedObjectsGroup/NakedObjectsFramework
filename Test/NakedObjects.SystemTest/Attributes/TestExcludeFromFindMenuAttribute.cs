@@ -18,12 +18,12 @@ namespace NakedObjects.SystemTest.Attributes {
 
         [TestInitialize()]
         public void SetUp() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
         }
 
         [TestCleanup()]
         public void TearDown() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
         }
 
         #endregion
@@ -73,7 +73,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual void Contributed() {
             var service = (TestService) GetTestService("Test Service").NakedObject.Object;
             Object1 obj = service.NewObject1();
-            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
+            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(obj, null, null);
             INakedObjectAction[] actions = adapter.Specification.GetRelatedServiceActions();
 
             Assert.AreEqual(1, actions.Count());
@@ -81,8 +81,8 @@ namespace NakedObjects.SystemTest.Attributes {
             Assert.AreEqual(2, actions[0].Actions.Count());
             Assert.IsTrue(actions[0].Actions[0] is NakedObjectActionImpl);
             Assert.IsTrue(actions[0].Actions[1] is NakedObjectActionImpl);
-            Assert.AreEqual("Finder Action1", actions[0].Actions[0].Name);
-            Assert.AreEqual("Finder Action2", actions[0].Actions[1].Name);
+            Assert.AreEqual("Finder Action1", actions[0].Actions[0].GetName(NakedObjectsFramework.ObjectPersistor));
+            Assert.AreEqual("Finder Action2", actions[0].Actions[1].GetName(NakedObjectsFramework.ObjectPersistor));
         }
 
     }

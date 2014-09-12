@@ -1,16 +1,24 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.ComponentModel;
+using System.Data.Entity;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.EntityObjectStore;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.Helpers.Test.ViewModel {
+    public class DatabaseInitializer : DropCreateDatabaseAlways<FooContext> {}
+
     [TestClass]
     public class TestViewModel : AcceptanceTestCase {
         private ITestObject foo1;
@@ -43,19 +51,30 @@ namespace NakedObjects.Helpers.Test.ViewModel {
             get { return new FixturesInstaller(new object[] {}); }
         }
 
-        //protected override IObjectPersistorInstaller Persistor
-        //{
-        //    get { return new EntityPersistorInstaller(); }
-        //}
-
         #endregion
 
-        #region Initialize and Cleanup
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingCodeFirstContext(() => new FooContext("HelpersTest"));
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [ClassInitialize]
+        public void SetupTestFixture() {
+            Database.SetInitializer(new DatabaseInitializer());
+            InitializeNakedObjectsFramework(this);
+            RunFixtures();
+        }
+
+        [ClassCleanup]
+        public void TearDownTest() {
+            CleanupNakedObjectsFramework(this);
+        }
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
-            // Use e.g. DatabaseUtils.RestoreDatabase to revert database before each test (or within a [ClassInitialize()] method).
+            StartTest();
             foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             foo1.GetPropertyByName("Id").SetValue("12345");
             foo1.GetPropertyByName("Name").SetValue("Foo1");
@@ -64,11 +83,8 @@ namespace NakedObjects.Helpers.Test.ViewModel {
 
         [TestCleanup]
         public void Cleanup() {
-            CleanupNakedObjectsFramework();
             foo1 = null;
         }
-
-        #endregion
 
         [TestMethod]
         public virtual void ViewModelDerivesKeyFromRoot() {
@@ -98,6 +114,13 @@ namespace NakedObjects.Helpers.Test.ViewModel {
         }
     }
 
+    public class FooContext : DbContext {
+        public FooContext(string name) : base(name) {}
+
+        public DbSet<Foo> Foos { get; set; }
+    }
+
+
     //Persistent object on which ViewModel is based
     public class Foo : IHasIntegerId {
         public IDomainObjectContainer Container { set; protected get; }
@@ -106,7 +129,11 @@ namespace NakedObjects.Helpers.Test.ViewModel {
         [Title]
         public virtual string Name { get; set; }
 
+        #region IHasIntegerId Members
+
         public virtual int Id { get; set; }
+
+        #endregion
 
         public ViewFoo ViewModel() {
             var vm = Container.NewViewModel<ViewFoo>();

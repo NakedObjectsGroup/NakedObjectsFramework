@@ -30,13 +30,13 @@ namespace NakedObjects.SystemTest.PolymorphicLinkService
         //    public void Initialize()
         //    {
 
-        //        InitializeNakedObjectsFramework();
+        //        InitializeNakedObjectsFramework(this);
         //    }
 
         //    [TestCleanup]
         //    public void CleanUp()
         //    {
-        //        CleanupNakedObjectsFramework();
+        //        CleanupNakedObjectsFramework(this);
         //    }
 
         //    #endregion

@@ -17,7 +17,7 @@ namespace NakedObjects.SystemTest.Repositories {
 
         [TestInitialize()]
         public void SetUp() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             ITestObject cust1To = NewTestObject<Customer>();
             cust1 = (Customer) cust1To.GetDomainObject();
             cust1.Id = 1;
@@ -37,7 +37,7 @@ namespace NakedObjects.SystemTest.Repositories {
 
         [TestCleanup()]
         public void TearDown() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
             cust1 = null;
             cust2 = null;
             sup1 = null;

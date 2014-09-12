@@ -169,7 +169,7 @@ type EntityTestSuite() =
     [<TestFixtureSetUpAttribute>]
     member x.SetupFixture() = 
         System.Data.Entity.Database.SetInitializer(new TestDataInitializer())
-        x.InitializeNakedObjectsFramework()
+        NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
     
     [<SetUp>]
     member x.SetupTest() = x.StartTest()
@@ -178,7 +178,7 @@ type EntityTestSuite() =
     member x.TearDownTest() = ()
     
     [<TestFixtureTearDown>]
-    member x.TearDownFixture() = x.CleanupNakedObjectsFramework()
+    member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
 
 
     override x.Fixtures 

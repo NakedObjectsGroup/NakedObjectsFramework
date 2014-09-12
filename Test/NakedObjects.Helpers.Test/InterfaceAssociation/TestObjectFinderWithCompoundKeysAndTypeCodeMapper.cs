@@ -33,7 +33,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             payment1 = CreatePayment();
             customer1 = CreateCustomerOnes();
             customer2a = CreateCustomerTwos();
@@ -47,7 +47,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
 
         [TestCleanup]
         public void CleanUp() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
             countPayments = 0;
             countCustomerTwos = 0;
             countSuppliers = 0;

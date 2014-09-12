@@ -50,13 +50,13 @@ namespace NakedObjects.SystemTest.Persistence {
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             // Use e.g. DatabaseUtils.RestoreDatabase to revert database before each test (or within a [ClassInitialize()] method).
         }
 
         [TestCleanup]
         public void Cleanup() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
         }
 
         #endregion

@@ -16,14 +16,14 @@ namespace NakedObjects.SystemTest.Attributes {
 
             [TestInitialize()]
             public void SetupTest() {
-                InitializeNakedObjectsFramework();
-                base.StartMethodProfiling();
+                InitializeNakedObjectsFramework(this);
+                
             }
 
             [TestCleanup()]
             public void TearDownTest() {
-                CleanupNakedObjectsFramework();
-                base.StopMethodProfiling();
+                CleanupNakedObjectsFramework(this);
+                
                 obj = null;
                 prop1 = null;
             }

@@ -20,13 +20,13 @@ namespace NakedObjects.SystemTest.Attributes.NotContributed {
 
         [TestInitialize()]
         public void SetUp() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             
         }
 
         [TestCleanup()]
         public void TearDown() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
            
         }
 
@@ -66,14 +66,14 @@ namespace NakedObjects.SystemTest.Attributes.NotContributed {
 
             var service = (TestService) GetTestService("Test Service").NakedObject.Object;
             var obj = service.NewObject1();
-            var adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(obj, null, null);
+            var adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(obj, null, null);
             var actions = adapter.Specification.GetObjectActions();
 
             Assert.AreEqual(1, actions.Count());
             Assert.IsTrue(actions[0] is NakedObjectActionSet);
             Assert.AreEqual(1, actions[0].Actions.Count());
             Assert.IsTrue(actions[0].Actions[0] is NakedObjectActionImpl);
-            Assert.AreEqual("Contributed Action", actions[0].Actions[0].Name);
+            Assert.AreEqual("Contributed Action", actions[0].Actions[0].GetName(NakedObjectsFramework.ObjectPersistor));
 
 
 

@@ -59,7 +59,10 @@ type Nof4TestsTypeDomainType() =
         [<TestFixtureSetUp>]
         member x.FixtureSetup() = 
             CodeFirstSetup()
-            x.InitializeNakedObjectsFramework()
+            NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
+
+        [<TestFixtureTearDown>]
+        member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
         
         [<SetUp>]
         member x.Setup() = 

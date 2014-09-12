@@ -1,24 +1,27 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Util;
 using NakedObjects.UtilInternal;
-using PropertyInfo = System.Reflection.PropertyInfo;
 
 namespace NakedObjects {
     [TestClass]
     public class KeyUtilsTest {
         #region Test classes ComponentModel.DataAnnotations.Key 
 
-        public class TestContainer : IDomainObjectContainer, IInternalAccess {
-            #region IDomainObjectContainer Members
+        #region Nested type: TestContainer
 
+        public class TestContainer : IDomainObjectContainer, IInternalAccess {
             #region not impl
 
             public IPrincipal Principal {
@@ -108,6 +111,8 @@ namespace NakedObjects {
 
             #endregion
 
+            #region IDomainObjectContainer Members
+
             public IQueryable<T> Instances<T>() where T : class {
                 if (typeof (T) == typeof (TestKey)) {
                     return new[] {new TestKey {AName = 1}}.Cast<T>().AsQueryable();
@@ -124,7 +129,7 @@ namespace NakedObjects {
             #region IInternalAccess Members
 
             public PropertyInfo[] GetKeys(Type type) {
-                return type.GetProperties().Where(p => p.GetCustomAttribute<KeyAttribute>() != null).ToArray();
+                return type.GetProperties().Where(p => AttributeUtils.GetCustomAttribute<KeyAttribute>(p) != null).ToArray();
             }
 
             public object FindByKeys(Type type, object[] keys) {
@@ -134,10 +139,18 @@ namespace NakedObjects {
             #endregion
         }
 
+        #endregion
+
+        #region Nested type: TestKey
+
         public class TestKey {
             [Key]
             public int AName { get; set; }
         }
+
+        #endregion
+
+        #region Nested type: TestMultiKey
 
         public class TestMultiKey {
             [Key]
@@ -147,14 +160,24 @@ namespace NakedObjects {
             public int AName1 { get; set; }
         }
 
+        #endregion
+
+        #region Nested type: TestNoKey
+
         public class TestNoKey {
             public int AName { get; set; }
         }
+
+        #endregion
+
+        #region Nested type: TestStringKey
 
         public class TestStringKey {
             [Key]
             public string AName { get; set; }
         }
+
+        #endregion
 
         #endregion
 

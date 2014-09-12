@@ -26,7 +26,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             SetUser("Anon");
             foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             prop1 = foo1.GetPropertyByName("Prop1");
@@ -35,7 +35,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
 
         [TestCleanup]
         public void Cleanup() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
             foo1 = null;
             prop1 = null;
             act1 = null;
@@ -69,7 +69,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             SetUser("Fred");
             foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             prop1 = foo1.GetPropertyByName("Prop1");
@@ -78,7 +78,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
 
         [TestCleanup]
         public void Cleanup() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
             foo1 = null;
             prop1 = null;
             act1 = null;
@@ -114,7 +114,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             SetUser("Joe");
             foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             prop1 = foo1.GetPropertyByName("Prop1");
@@ -123,7 +123,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
 
         [TestCleanup]
         public void Cleanup() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
             foo1 = null;
             prop1 = null;
             act1 = null;
@@ -152,7 +152,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             SetUser("Bob");
             foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             prop1 = foo1.GetPropertyByName("Prop1");
@@ -161,7 +161,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
 
         [TestCleanup]
         public void Cleanup() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
             foo1 = null;
             prop1 = null;
             act1 = null;
@@ -191,7 +191,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             SetUser("Anon", "sysAdmin");
             foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             prop1 = foo1.GetPropertyByName("Prop1");
@@ -200,7 +200,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
 
         [TestCleanup]
         public void Cleanup() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
             foo1 = null;
             prop1 = null;
             act1 = null;
@@ -236,7 +236,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             SetUser("Anon", "super");
             foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             prop1 = foo1.GetPropertyByName("Prop1");
@@ -245,7 +245,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
 
         [TestCleanup]
         public void Cleanup() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
             foo1 = null;
             prop1 = null;
             act1 = null;

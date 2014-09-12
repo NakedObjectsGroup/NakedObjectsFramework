@@ -55,13 +55,13 @@ namespace MvcTestApp.Tests.Helpers {
         [TestFixtureSetUp]
         public void SetupTestFixture() {
             Database.SetInitializer(new DatabaseInitializer());
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
             RunFixtures();
         }
 
         [TestFixtureTearDown]
         public void TearDownTest() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
         }
 
         private DummyController controller;

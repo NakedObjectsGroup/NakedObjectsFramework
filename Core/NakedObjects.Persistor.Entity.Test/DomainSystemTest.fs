@@ -22,7 +22,7 @@ type DomainSystemTests() =
     inherit  NakedObjects.Xat.AcceptanceTestCase()    
 
     [<TestFixtureSetUpAttribute>]
-    member x.SetupFixture() = x.InitializeNakedObjectsFramework()
+    member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
     
     [<SetUp>]
     member x.SetupTest() = x.StartTest()
@@ -31,7 +31,7 @@ type DomainSystemTests() =
     member x.TearDownTest() = ()
     
     [<TestFixtureTearDown>]
-    member x.TearDownFixture() = x.CleanupNakedObjectsFramework()
+    member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
 
     override x.MenuServices = 
         let service = new SimpleRepository<ScrapReason>()

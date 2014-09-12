@@ -16,13 +16,13 @@ namespace NakedObjects.SystemTest.Methods {
 
             [TestInitialize()]
             public void SetUp() {
-                InitializeNakedObjectsFramework();
+                InitializeNakedObjectsFramework(this);
                 //Set up any common variables here
             }
 
             [TestCleanup()]
             public void TearDown() {
-                CleanupNakedObjectsFramework();
+                CleanupNakedObjectsFramework(this);
                 //Tear down any common variables here
             }
 

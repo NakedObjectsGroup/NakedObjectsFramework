@@ -44,12 +44,12 @@ namespace NakedObjects.SystemTest.Enum {
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
         }
 
         [TestCleanup]
         public void Cleanup() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
         }
 
         #endregion

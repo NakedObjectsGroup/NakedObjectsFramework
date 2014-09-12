@@ -52,12 +52,12 @@ namespace MvcTestApp.Tests.Controllers {
         public void SetupTestFixture() {
             DatabaseUtils.RestoreDatabase("AdventureWorks", "AdventureWorks", Constants.Server);
             SqlConnection.ClearAllPools();
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
         }
 
         [TestFixtureTearDown]
         public void TearDownTest() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
         }
 
         private CustomControllerWrapper controller;

@@ -15,12 +15,12 @@ namespace NakedObjects.SystemTest.Methods {
 
             [TestInitialize()]
             public void Setup() {
-                InitializeNakedObjectsFramework();
+                InitializeNakedObjectsFramework(this);
             }
 
             [TestCleanup()]
             public void TearDown() {
-                CleanupNakedObjectsFramework();
+                CleanupNakedObjectsFramework(this);
                 rep = null;
                 obj = null;
                 prop1 = null;

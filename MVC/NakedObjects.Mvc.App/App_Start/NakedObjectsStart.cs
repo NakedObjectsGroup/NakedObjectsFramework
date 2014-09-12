@@ -2,15 +2,8 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
-using System.Linq;
 using System.Web.Mvc;
-using Common.Logging;
-using Common.Logging.Configuration;
-using NakedObjects.Architecture.Services;
-using NakedObjects.Core.Context;
 using NakedObjects.Mvc.App;
-using NakedObjects.Reflector.DotNet;
-using NakedObjects.Web.Mvc;
 using WebActivatorEx;
 
 [assembly: PreApplicationStartMethod(typeof (NakedObjectsStart), "PreStart")]
@@ -20,7 +13,7 @@ namespace NakedObjects.Mvc.App {
     public static class NakedObjectsStart {
         public static void PreStart() {
             InitialiseLogging();
-            RestConfig.RestPreStart();           
+            //RestConfig.RestPreStart();           
         }
 
         public static void PostStart() {

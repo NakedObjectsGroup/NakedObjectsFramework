@@ -16,12 +16,12 @@ namespace NakedObjects.SystemTest.Attributes {
 
             [TestInitialize()]
             public void SetUp() {
-                InitializeNakedObjectsFramework();
+                InitializeNakedObjectsFramework(this);
             }
 
             [TestCleanup()]
             public void TearDown() {
-                CleanupNakedObjectsFramework();
+                CleanupNakedObjectsFramework(this);
 
                 rep = null;
                 obj = null;

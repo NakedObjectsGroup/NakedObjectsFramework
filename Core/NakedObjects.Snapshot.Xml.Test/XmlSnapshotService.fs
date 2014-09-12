@@ -13,7 +13,6 @@ open NakedObjects.Architecture.Adapter
 open NakedObjects.Architecture.Persist
 open NakedObjects.Architecture.Reflect
 open XmlTestData
-open Snapshot.Xml.Test
 open System.Xml.Linq
 open NakedObjects.Persistor.Objectstore
 open NakedObjects.Persistor.Objectstore.Inmemory
@@ -38,10 +37,10 @@ type DomainTests() =
             ()
         
         [<TestFixtureSetUp>]
-        member x.FixtureSetup() = x.InitializeNakedObjectsFramework()
+        member x.FixtureSetup() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
         
         [<TestFixtureTearDown>]
-        member x.FixtureTearDown() = x.CleanupNakedObjectsFramework()
+        member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
         
         [<SetUp>]
         member x.Setup() = 

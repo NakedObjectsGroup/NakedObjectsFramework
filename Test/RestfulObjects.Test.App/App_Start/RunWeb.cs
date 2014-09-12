@@ -60,9 +60,9 @@ namespace RestfulObjects.Test.App.App_Start {
             get { return new ServicesInstaller(new TestTypeCodeMapper()); }
         }
 
-        protected override IFixturesInstaller Fixtures {
-            get { return new FixturesInstaller(new object[] {new RestDataFixture()}); }
-        }
+        //protected override IFixturesInstaller Fixtures {
+        //    get { return new FixturesInstaller(new object[] {new RestDataFixture()}); }
+        //}
 
         //protected override IObjectPersistorInstaller Persistor {
         //    get {

@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Linq;
@@ -51,14 +54,14 @@ namespace NakedObjects {
         [TestMethod]
         public void TestIsAfterNullableToday() {
             Enumerable.Range(1, 9).
-                       Select(x => DateTime.Now.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsTrue(x.IsAfterToday()));
+                Select(x => DateTime.Now.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsTrue(x.IsAfterToday()));
 
             Enumerable.Range(-10, 9).
-                       Select(x => DateTime.Now.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsFalse(x.IsAfterToday()));
+                Select(x => DateTime.Now.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsFalse(x.IsAfterToday()));
 
             Assert.IsFalse(((DateTime?) null).IsAfterToday());
         }
@@ -66,12 +69,12 @@ namespace NakedObjects {
         [TestMethod]
         public void TestIsAfterToday() {
             Enumerable.Range(1, 9).
-                       Select(x => DateTime.Now.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsTrue(x.IsAfterToday()));
+                Select(x => DateTime.Now.AddDays(x)).ToList().
+                ForEach(x => Assert.IsTrue(x.IsAfterToday()));
 
             Enumerable.Range(-10, 9).
-                       Select(x => DateTime.Now.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsFalse(x.IsAfterToday()));
+                Select(x => DateTime.Now.AddDays(x)).ToList().
+                ForEach(x => Assert.IsFalse(x.IsAfterToday()));
         }
 
         [TestMethod]
@@ -79,12 +82,12 @@ namespace NakedObjects {
             var wellKnownDay = new DateTime(2002, 4, 4);
 
             Enumerable.Range(1, 9).
-                       Select(x => wellKnownDay.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
+                Select(x => wellKnownDay.AddDays(x)).ToList().
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
 
             Enumerable.Range(-10, 9).
-                       Select(x => wellKnownDay.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
+                Select(x => wellKnownDay.AddDays(x)).ToList().
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
 
             Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(null));
         }
@@ -94,12 +97,12 @@ namespace NakedObjects {
             var wellKnownDay = new DateTime(2002, 4, 4);
 
             Enumerable.Range(-10, 9).
-                       Select(x => wellKnownDay.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
+                Select(x => wellKnownDay.AddDays(x)).ToList().
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
 
             Enumerable.Range(1, 9).
-                       Select(x => wellKnownDay.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
+                Select(x => wellKnownDay.AddDays(x)).ToList().
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
 
             Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(null));
         }
@@ -109,14 +112,14 @@ namespace NakedObjects {
             DateTime? wellKnownDay = new DateTime(2002, 4, 4);
 
             Enumerable.Range(1, 9).
-                       Select(x => wellKnownDay.Value.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
+                Select(x => wellKnownDay.Value.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
 
             Enumerable.Range(-10, 9).
-                       Select(x => wellKnownDay.Value.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
+                Select(x => wellKnownDay.Value.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
 
 
             Assert.IsFalse(((DateTime?) null).IsAtLeastADayAfter(wellKnownDay));
@@ -129,14 +132,14 @@ namespace NakedObjects {
             DateTime? wellKnownDay = new DateTime(2002, 4, 4);
 
             Enumerable.Range(-10, 9).
-                       Select(x => wellKnownDay.Value.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
+                Select(x => wellKnownDay.Value.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
 
             Enumerable.Range(1, 9).
-                       Select(x => wellKnownDay.Value.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
+                Select(x => wellKnownDay.Value.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
 
             Assert.IsFalse(((DateTime?) null).IsAtLeastADayBefore(wellKnownDay));
             Assert.IsFalse(((DateTime?) null).IsAtLeastADayBefore(null));
@@ -146,14 +149,14 @@ namespace NakedObjects {
         [TestMethod]
         public void TestIsBeforeNullableToday() {
             Enumerable.Range(-10, 9).
-                       Select(x => DateTime.Now.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsTrue(x.IsBeforeToday()));
+                Select(x => DateTime.Now.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsTrue(x.IsBeforeToday()));
 
             Enumerable.Range(1, 9).
-                       Select(x => DateTime.Now.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsFalse(x.IsBeforeToday()));
+                Select(x => DateTime.Now.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsFalse(x.IsBeforeToday()));
 
             Assert.IsFalse(((DateTime?) null).IsBeforeToday());
         }
@@ -161,12 +164,12 @@ namespace NakedObjects {
         [TestMethod]
         public void TestIsBeforeToday() {
             Enumerable.Range(-10, 9).
-                       Select(x => DateTime.Now.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsTrue(x.IsBeforeToday()));
+                Select(x => DateTime.Now.AddDays(x)).ToList().
+                ForEach(x => Assert.IsTrue(x.IsBeforeToday()));
 
             Enumerable.Range(1, 9).
-                       Select(x => DateTime.Now.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsFalse(x.IsBeforeToday()));
+                Select(x => DateTime.Now.AddDays(x)).ToList().
+                ForEach(x => Assert.IsFalse(x.IsBeforeToday()));
         }
 
         [TestMethod]

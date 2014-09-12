@@ -18,7 +18,7 @@ namespace NakedObjects.SystemTest.Methods {
 
             [TestInitialize()]
             public void SetUp() {
-                InitializeNakedObjectsFramework();
+                InitializeNakedObjectsFramework(this);
                 //Set up any common variables here
                 obj1 = NewTestObject<Object1>();
                 obj2 = NewTestObject<Object2>();
@@ -34,7 +34,7 @@ namespace NakedObjects.SystemTest.Methods {
 
             [TestCleanup()]
             public void TearDown() {
-                CleanupNakedObjectsFramework();
+                CleanupNakedObjectsFramework(this);
                 obj1 = null;
                 obj2 = null;
             }

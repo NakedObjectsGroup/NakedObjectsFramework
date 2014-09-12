@@ -22,15 +22,15 @@ namespace NakedObjects.SystemTest.XATs {
 
             [TestInitialize]
             public void SetupTest() {
-                InitializeNakedObjectsFramework();
-                base.StartMethodProfiling();
+                InitializeNakedObjectsFramework(this);
+                
                 obj1 = NewTestObject<Object1>();
             }
 
             [TestCleanup]
             public void TearDownTest() {
-                CleanupNakedObjectsFramework();
-                base.StopMethodProfiling();
+                CleanupNakedObjectsFramework(this);
+                
                 obj1 = null;
             }
 

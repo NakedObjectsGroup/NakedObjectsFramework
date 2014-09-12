@@ -36,7 +36,7 @@ type CodeSystemTests() =
     [<TestFixtureSetUpAttribute>]
     member x.SetupFixture() =       
          CodeFirstSetup()
-         x.InitializeNakedObjectsFramework()
+         NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
 
     [<SetUp>]
     member x.SetupTest() =        
@@ -47,7 +47,7 @@ type CodeSystemTests() =
 
     [<TestFixtureTearDown>]
     member x.TearDownFixture() = 
-        x.CleanupNakedObjectsFramework()
+        NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
 
     override x.MenuServices 
         with get() : IServicesInstaller  =

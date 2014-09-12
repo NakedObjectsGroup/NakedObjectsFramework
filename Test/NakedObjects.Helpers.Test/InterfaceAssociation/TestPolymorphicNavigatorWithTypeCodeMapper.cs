@@ -23,12 +23,12 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
 
         [TestInitialize]
         public void Initialize() {
-            InitializeNakedObjectsFramework();
+            InitializeNakedObjectsFramework(this);
         }
 
         [TestCleanup]
         public void CleanUp() {
-            CleanupNakedObjectsFramework();
+            CleanupNakedObjectsFramework(this);
         }
 
         #endregion
