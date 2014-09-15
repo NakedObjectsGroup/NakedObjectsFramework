@@ -12,7 +12,7 @@ using NakedObjects.Reflector.Spec;
 using TestClass.Attributes.Contributed;
 
 namespace NakedObjects.SystemTest.Attributes {
-    [TestClass]
+    [TestClass, Ignore]
     public class TestExcludeFromFindMenuAttribute : AbstractSystemTest {
         #region Setup/Teardown
 

@@ -11,7 +11,7 @@ namespace NakedObjects.SystemTest.Attributes
 {
     namespace StringLength
     {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestStringLengthAttribute : AbstractSystemTest
         {
             #region Setup/Teardown

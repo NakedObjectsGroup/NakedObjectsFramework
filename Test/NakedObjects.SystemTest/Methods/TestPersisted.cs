@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Methods {
     namespace Persisted {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestPersisted : AbstractSystemTest {
             #region Setup/Teardown
 

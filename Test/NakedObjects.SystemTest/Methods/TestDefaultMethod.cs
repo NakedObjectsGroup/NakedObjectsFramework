@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Methods {
     namespace Default {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestDefaultMethod : AbstractSystemTest {
             #region Setup/Teardown
 

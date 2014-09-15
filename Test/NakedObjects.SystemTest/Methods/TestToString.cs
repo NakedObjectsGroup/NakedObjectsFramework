@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Methods {
     namespace ToString {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestToString : AbstractSystemTest {
             #region Setup/Teardown
 

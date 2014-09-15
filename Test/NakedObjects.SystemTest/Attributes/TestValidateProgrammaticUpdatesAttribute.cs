@@ -24,7 +24,7 @@ namespace ValidateProgrammaticUpdates {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TestValidateProgrammaticUpdatesAttribute : AbstractSystemTest {
         #region Setup/Teardown
 

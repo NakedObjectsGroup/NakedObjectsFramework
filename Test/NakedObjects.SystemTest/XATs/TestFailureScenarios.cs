@@ -16,7 +16,7 @@ namespace NakedObjects.SystemTest.XATs {
         /// <summary>
         ///     Tests various functions of the XATs themselves
         /// </summary>
-        [TestClass]
+        [TestClass, Ignore]
         public class TestDefaultValueAttribute : AbstractSystemTest {
             #region Setup/Teardown
 

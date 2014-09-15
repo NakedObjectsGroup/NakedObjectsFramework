@@ -13,7 +13,7 @@ namespace NakedObjects.SystemTest.Attributes
 {
     namespace Range
     {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestRangeAttribute : AbstractSystemTest
         {
             #region Setup/Teardown

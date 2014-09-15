@@ -1,36 +1,60 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity;
 using System.Data.Entity.SqlServer;
 using System.Linq;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.EntityObjectStore;
+using NakedObjects.Helpers.Test.ViewModel;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.PolymorphicAssociations;
+using NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
-    [TestClass]
+    public class DatabaseInitializer : DropCreateDatabaseAlways<MyContext> {}
+
+    [TestClass, Ignore]
     public class TestPolymorphicNavigator : AcceptanceTestCase {
         #region Setup/Teardown
 
         // to get EF SqlServer Dll in memory
         public SqlProviderServices instance = SqlProviderServices.Instance;
 
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingCodeFirstContext(() => new PaymentContext("HelpersTest"));
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [ClassInitialize]
+        public static void SetupTestFixture(TestContext tc) {
+            Database.SetInitializer(new DatabaseInitializer());
+            InitializeNakedObjectsFramework(new TestViewModel());
+        }
+
+        [ClassCleanup]
+        public static void TearDownTest() {
+            CleanupNakedObjectsFramework(new TestViewModel());
+        }
+
         [TestInitialize]
         public void Initialize() {
-           
-            InitializeNakedObjectsFramework(this);
+            StartTest();
         }
 
         [TestCleanup]
-        public void CleanUp() {
-            CleanupNakedObjectsFramework(this);
-        }
+        public void CleanUp() {}
 
         #endregion
 
@@ -45,15 +69,6 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
                     new SimpleRepository<InvoiceAsPayableItem>(),
                     new SimpleRepository<ExpenseClaimAsPayableItem>(),
                     new Services.PolymorphicNavigator());
-            }
-        }
-
-
-        protected override IObjectPersistorInstaller Persistor {
-            get {
-                var p = new EntityPersistorInstaller();
-                p.UsingCodeFirstContext(() => new MyContext());
-                return p;
             }
         }
 

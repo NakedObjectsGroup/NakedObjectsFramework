@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Methods {
     namespace RemoveFrom {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestRemoveFromMethod : AbstractSystemTest {
             #region Setup/Teardown
 

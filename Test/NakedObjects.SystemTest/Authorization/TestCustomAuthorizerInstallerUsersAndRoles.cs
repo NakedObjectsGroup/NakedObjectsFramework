@@ -11,7 +11,7 @@ using NakedObjects.Security;
 using NakedObjects.Services;
 
 namespace NakedObjects.SystemTest.Authorization.Installer4 {
-    [TestClass]
+   [TestClass, Ignore]
     public class TestCustomAuthoriserInstallerUsersAndRoles1 : AbstractSystemTest {
         #region "Services & Fixtures"
 
@@ -38,7 +38,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer4 {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TestCustomAuthoriserInstallerUsersAndRoles2 : AbstractSystemTest {
         #region "Services & Fixtures"
 
@@ -65,7 +65,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer4 {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TestCustomAuthoriserInstallerUsersAndRoles3 : AbstractSystemTest {
         #region "Services & Fixtures"
 
@@ -92,7 +92,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer4 {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TestCustomAuthoriserInstallerUsersAndRoles4 : AbstractSystemTest {
         #region "Services & Fixtures"
 

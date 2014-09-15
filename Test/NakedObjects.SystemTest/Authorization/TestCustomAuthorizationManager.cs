@@ -14,7 +14,7 @@ using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
-    [TestClass]
+    [TestClass, Ignore]
     public class TestCustomAuthorizationManager : AbstractSystemTest {
         #region Setup/Teardown
 

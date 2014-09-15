@@ -11,7 +11,7 @@ using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Enum {
-    [TestClass]
+    [TestClass, Ignore]
     public class EnumTest : AbstractSystemTest {
         #region Run configuration
 

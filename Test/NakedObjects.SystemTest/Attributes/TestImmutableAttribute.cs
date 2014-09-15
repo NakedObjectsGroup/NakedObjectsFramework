@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Attributes {
     namespace Immutable {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestImmutableAttribute : AbstractSystemTest {
             #region Setup/Teardown
 

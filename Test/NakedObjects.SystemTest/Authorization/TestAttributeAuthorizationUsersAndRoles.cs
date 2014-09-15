@@ -10,7 +10,7 @@ using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Authorization.Installer5 {
-    [TestClass]
+    [TestClass, Ignore]
     public class TestAttributeAuthorizationUsersAndRoles1 : AbstractSystemTest {
         private ITestAction act1;
         private ITestObject foo1;
@@ -53,7 +53,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TestAttributeAuthorizationUsersAndRoles2 : AbstractSystemTest {
         private ITestAction act1;
         private ITestObject foo1;
@@ -98,7 +98,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TestAttributeAuthorizationUsersAndRoles3 : AbstractSystemTest {
         private ITestAction act1;
         private ITestObject foo1;
@@ -136,7 +136,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TestAttributeAuthorizationUsersAndRoles4 : AbstractSystemTest {
         private ITestAction act1;
         private ITestObject foo1;
@@ -175,7 +175,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TestAttributeAuthorizationUsersAndRoles5 : AbstractSystemTest {
         private ITestAction act1;
         private ITestObject foo1;
@@ -220,7 +220,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer5 {
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TestAttributeAuthorizationUsersAndRoles6 : AbstractSystemTest {
         private ITestAction act1;
         private ITestObject foo1;

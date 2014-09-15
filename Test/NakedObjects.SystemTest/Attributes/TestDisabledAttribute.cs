@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Attributes {
     namespace Disabled {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestDisabledAttribute : AbstractSystemTest {
             #region Setup/Teardown
 

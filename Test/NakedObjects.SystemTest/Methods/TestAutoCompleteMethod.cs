@@ -13,7 +13,7 @@ using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Methods {
     namespace AutoComplete {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestAutoCompleteMethod : AbstractSystemTest {
             #region Setup/Teardown
 

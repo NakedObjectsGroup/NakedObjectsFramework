@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Methods {
     namespace Clear {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestClearMethod : AbstractSystemTest {
             #region Setup/Teardown
 

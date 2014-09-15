@@ -13,7 +13,7 @@ namespace NakedObjects.SystemTest.Other
     /// <summary>
     /// 
     /// </summary>
-    [TestClass]
+    [TestClass, Ignore]
     public class TestKeyAttribute : AbstractSystemTest
     {
         #region Setup/Teardown

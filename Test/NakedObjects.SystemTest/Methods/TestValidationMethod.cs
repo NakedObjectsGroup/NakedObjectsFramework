@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Methods {
     namespace Validate {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestValidationMethod : AbstractSystemTest {
             #region Setup/Teardown
 

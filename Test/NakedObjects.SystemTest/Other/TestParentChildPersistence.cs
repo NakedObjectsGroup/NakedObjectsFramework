@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace NakedObjects.SystemTest.ParentChild {
     namespace ParentChild {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestParentChildPersistence : AbstractSystemTest {
             #region Setup/Teardown
 

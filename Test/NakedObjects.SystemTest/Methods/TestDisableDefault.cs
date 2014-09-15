@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Methods {
     namespace DisableDefault {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestDisableDefault : AbstractSystemTest {
             #region Setup/Teardown
 

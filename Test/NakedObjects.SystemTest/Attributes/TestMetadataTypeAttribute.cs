@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Attributes {
     namespace MetadataType {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestMetadataTypeAttribute : AbstractSystemTest {
             #region Setup/Teardown
 

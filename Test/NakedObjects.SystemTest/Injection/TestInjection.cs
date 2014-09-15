@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 namespace NakedObjects.SystemTest.Injection {
-    [TestClass]
+    [TestClass, Ignore]
     public class TestInjection : AbstractSystemTest {
         #region Setup/Teardown
 

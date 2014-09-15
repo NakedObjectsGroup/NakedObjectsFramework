@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NakedObjects.SystemTest.Attributes {
     namespace RegEx {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestRegExAttribute : AbstractSystemTest {
             #region Setup/Teardown
 

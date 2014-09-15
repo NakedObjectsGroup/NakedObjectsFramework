@@ -1,17 +1,27 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.EntityObjectStore;
+using NakedObjects.Helpers.Test.ViewModel;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper {
-    [TestClass]
+    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {}
+
+    [TestClass, Ignore]
     public class TestObjectFindTestObjectFinderWithCompoundKeysAndTypeCodeMapper : AcceptanceTestCase {
         private int countCustomerOnes;
         private int countCustomerThrees;
@@ -29,45 +39,6 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
         private ITestObject payment1;
         private ITestObject supplier1;
 
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public void Initialize() {
-            InitializeNakedObjectsFramework(this);
-            payment1 = CreatePayment();
-            customer1 = CreateCustomerOnes();
-            customer2a = CreateCustomerTwos();
-            customer2b = CreateCustomerTwos();
-            customer3 = CreateCustomerThrees();
-            supplier1 = CreateSupplier();
-            payee1 = payment1.GetPropertyByName("Payee");
-            key1 = payment1.GetPropertyByName("Payee Compound Key");
-            emp1 = CreateEmployee("foo");
-        }
-
-        [TestCleanup]
-        public void CleanUp() {
-            CleanupNakedObjectsFramework(this);
-            countPayments = 0;
-            countCustomerTwos = 0;
-            countSuppliers = 0;
-            countEmployees = 0;
-            payment1 = null;
-            customer1 = null;
-            customer2a = null;
-            customer2b = null;
-            customer3 = null;
-            payee1 = null;
-            key1 = null;
-            emp1 = null;
-        }
-
-        #endregion
-
-        protected override IFixturesInstaller Fixtures {
-            get { return new FixturesInstaller(new object[] {}); }
-        }
-
         protected override IServicesInstaller MenuServices {
             get {
                 return new ServicesInstaller(new object[] {
@@ -82,6 +53,55 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
                     new SimpleTypeCodeMapper()
                 });
             }
+        }
+
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingCodeFirstContext(() => new PaymentContext("HelpersTest"));
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [ClassInitialize]
+        public static void SetupTestFixture(TestContext tc) {
+            Database.SetInitializer(new DatabaseInitializer());
+            InitializeNakedObjectsFramework(new TestViewModel());
+        }
+
+        [ClassCleanup]
+        public static void TearDownTest() {
+            CleanupNakedObjectsFramework(new TestViewModel());
+        }
+
+        [TestInitialize]
+        public void Initialize() {
+            StartTest();
+            payment1 = CreatePayment();
+            customer1 = CreateCustomerOnes();
+            customer2a = CreateCustomerTwos();
+            customer2b = CreateCustomerTwos();
+            customer3 = CreateCustomerThrees();
+            supplier1 = CreateSupplier();
+            payee1 = payment1.GetPropertyByName("Payee");
+            key1 = payment1.GetPropertyByName("Payee Compound Key");
+            emp1 = CreateEmployee("foo");
+        }
+
+        [TestCleanup]
+        public void CleanUp() {
+            countPayments = 0;
+            countCustomerTwos = 0;
+            countSuppliers = 0;
+            countEmployees = 0;
+            payment1 = null;
+            customer1 = null;
+            customer2a = null;
+            customer2b = null;
+            customer3 = null;
+            payee1 = null;
+            key1 = null;
+            emp1 = null;
         }
 
         private ITestObject CreatePayment() {
@@ -287,6 +307,19 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
 
     #region Classes used by test
 
+    public class PaymentContext : DbContext {
+        public PaymentContext(string name) : base(name) {}
+
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<CustomerOne> CustomerOnes { get; set; }
+        public DbSet<CustomerTwo> CustomerTwos { get; set; }
+        public DbSet<CustomerThree> CustomerThrees { get; set; }
+        public DbSet<CustomerFour> CustomerFours { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+    }
+
+
     public class Payment {
         public IDomainObjectContainer Container { protected get; set; }
         public virtual int Id { get; set; }
@@ -330,21 +363,26 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
 
     public class CustomerTwo : IPayee {
         [Key]
+        [Column(Order = 1)]
         public virtual int Id { get; set; }
 
         [Key]
+        [Column(Order = 2)]
         public virtual string Id2 { get; set; }
     }
 
 
     public class CustomerThree : IPayee {
         [Key]
+        [Column(Order = 1)]
         public virtual int Id { get; set; }
 
         [Key]
+        [Column(Order = 2)]
         public virtual string Id2 { get; set; }
 
         [Key]
+        [Column(Order = 3)]
         public virtual int Number { get; set; }
     }
 
@@ -355,22 +393,28 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
 
     public class Supplier : IPayee {
         [Key]
+        [Column(Order = 1)]
         public virtual int Id { get; set; }
 
         [Key]
+        [Column(Order = 2)]
         public virtual short Id2 { get; set; }
     }
 
 
     public class Employee : IPayee {
         [Key]
+        [Column(Order = 1)]
         public virtual int Id { get; set; }
 
         [Key]
+        [Column(Order = 2)]
         public virtual string Id2 { get; set; }
     }
 
     public class SimpleTypeCodeMapper : ITypeCodeMapper {
+        #region ITypeCodeMapper Members
+
         public Type TypeFromCode(string code) {
             if (code == "CU1") return typeof (CustomerOne);
             if (code == "CU2") return typeof (CustomerTwo);
@@ -388,6 +432,8 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
             if (type == typeof (Supplier)) return "SUP";
             throw new DomainException("Type not recognised: " + type);
         }
+
+        #endregion
     }
 
     #endregion

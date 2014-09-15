@@ -16,7 +16,7 @@ using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Audit {
-    [TestClass]
+    [TestClass, Ignore]
     public class TestAuditManager : AbstractSystemTest {
         #region Setup/Teardown
 

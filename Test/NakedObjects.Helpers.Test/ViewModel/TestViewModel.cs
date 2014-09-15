@@ -19,7 +19,7 @@ using NakedObjects.Xat;
 namespace NakedObjects.Helpers.Test.ViewModel {
     public class DatabaseInitializer : DropCreateDatabaseAlways<FooContext> {}
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TestViewModel : AcceptanceTestCase {
         private ITestObject foo1;
 
@@ -61,15 +61,15 @@ namespace NakedObjects.Helpers.Test.ViewModel {
         }
 
         [ClassInitialize]
-        public void SetupTestFixture() {
+        public static void SetupTestFixture(TestContext tc) {
             Database.SetInitializer(new DatabaseInitializer());
-            InitializeNakedObjectsFramework(this);
-            RunFixtures();
+            InitializeNakedObjectsFramework(new TestViewModel());
+            //RunFixtures();
         }
 
         [ClassCleanup]
-        public void TearDownTest() {
-            CleanupNakedObjectsFramework(this);
+        public static void TearDownTest() {
+            CleanupNakedObjectsFramework(new TestViewModel());
         }
 
         [TestInitialize]

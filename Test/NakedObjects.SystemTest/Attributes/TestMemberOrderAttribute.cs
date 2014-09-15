@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Attributes {
     namespace MemberOrder {
-        [TestClass]
+        [TestClass, Ignore]
         public class TestMemberOrderAttribute : AbstractSystemTest {
             #region Setup/Teardown
 

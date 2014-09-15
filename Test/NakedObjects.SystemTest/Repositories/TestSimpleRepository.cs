@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace NakedObjects.SystemTest.Repositories {
 
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TestSimpleRepository : AbstractSystemTest {
         #region Setup/Teardown
 

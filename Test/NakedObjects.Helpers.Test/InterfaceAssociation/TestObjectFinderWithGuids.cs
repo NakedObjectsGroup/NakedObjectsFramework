@@ -1,16 +1,26 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.EntityObjectStore;
+using NakedObjects.Helpers.Test.ViewModel;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.ObjectFinderGuid {
-    [TestClass]
+    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {}
+
+    [TestClass, Ignore]
     public class TestObjectFinderWithGuids : AcceptanceTestCase {
         private int countPayments;
         private ITestObject customer1;
@@ -19,36 +29,6 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
         private ITestProperty payee1;
         private ITestObject payment1;
         private ITestObject supplier1;
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public void Setup() {
-            InitializeNakedObjectsFramework(this);
-            payment1 = CreatePayment();
-            customer1 = CreateCustomer("0c1ced04-7016-11e0-9c44-78544824019b");
-            customer2 = CreateCustomer("3d9d6ca0-7016-11e0-b12a-9e544824019b");
-
-            supplier1 = CreateSupplier("89bc90ec-7017-11e0-a08c-57564824019b");
-            payee1 = payment1.GetPropertyByName("Payee");
-            key1 = payment1.GetPropertyByName("Payee Compound Key");
-        }
-
-        [TestCleanup]
-        public void TearDown() {
-            CleanupNakedObjectsFramework(this);
-            countPayments = 0;
-            payment1 = null;
-            customer1 = null;
-            payee1 = null;
-            key1 = null;
-        }
-
-        #endregion
-
-        protected override IFixturesInstaller Fixtures {
-            get { return new FixturesInstaller(new object[] {}); }
-        }
 
         protected override IServicesInstaller MenuServices {
             get {
@@ -60,6 +40,37 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
                 });
             }
         }
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingCodeFirstContext(() => new PaymentContext("HelpersTest"));
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+        }
+
+        [ClassInitialize]
+        public static void SetupTestFixture(TestContext tc) {
+            Database.SetInitializer(new ObjectFinderCompoundKeys.DatabaseInitializer());
+            InitializeNakedObjectsFramework(new TestViewModel());
+        }
+
+        [ClassCleanup]
+        public static void TearDownTest() {
+            CleanupNakedObjectsFramework(new TestViewModel());
+        }
+
+        [TestInitialize]
+        public void Initialize() {
+            StartTest();
+            payment1 = CreatePayment();
+            customer1 = CreateCustomer("0c1ced04-7016-11e0-9c44-78544824019b");
+            customer2 = CreateCustomer("3d9d6ca0-7016-11e0-b12a-9e544824019b");
+
+            supplier1 = CreateSupplier("89bc90ec-7017-11e0-a08c-57564824019b");
+            payee1 = payment1.GetPropertyByName("Payee");
+            key1 = payment1.GetPropertyByName("Payee Compound Key");
+        }
+
 
         private ITestObject CreatePayment() {
             ITestObject pay = GetTestService("Payments").GetAction("New Instance").InvokeReturnObject();
@@ -136,6 +147,15 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
     #region Classes used by test
 
+    public class PaymentContext : DbContext {
+        public PaymentContext(string name) : base(name) {}
+
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+    }
+
     public class Payment {
         public IDomainObjectContainer Container { protected get; set; }
         public virtual int Id { get; set; }
@@ -180,12 +200,20 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
 
     public class Customer : IPayee {
+        #region IPayee Members
+
         public virtual Guid Guid { get; set; }
+
+        #endregion
     }
 
 
     public class Supplier : IPayee {
+        #region IPayee Members
+
         public virtual Guid Guid { get; set; }
+
+        #endregion
     }
 
     #endregion

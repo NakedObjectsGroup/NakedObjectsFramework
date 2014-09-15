@@ -12,7 +12,7 @@ using NakedObjects.Security;
 using NakedObjects.Services;
 
 namespace NakedObjects.SystemTest.Authorization.Installer {
-    [TestClass]
+    [TestClass, Ignore]
     public class TestCustomAuthorizerInstaller1 : AbstractSystemTest {
         #region "Services & Fixtures"
 

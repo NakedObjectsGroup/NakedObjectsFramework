@@ -10,7 +10,7 @@ using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Persistence {
-    [TestClass]
+    [TestClass, Ignore]
     public class TransactionsInRelationToLifecycleMethods : AcceptanceTestCase {
         #region Constructors
 

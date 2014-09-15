@@ -11,8 +11,8 @@ using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Attributes {
     namespace MaxLength {
-     
-        [TestClass]
+
+        [TestClass, Ignore]
         public class TestMaxLengthAttribute : AbstractSystemTest {
             #region Setup/Teardown
 

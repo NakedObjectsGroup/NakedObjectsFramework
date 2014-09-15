@@ -14,7 +14,7 @@ using TestClass.Attributes.NotContributed;
 
 namespace NakedObjects.SystemTest.Attributes.NotContributed {
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TestNotContributedActionAttribute : AbstractSystemTest {
         #region Setup/Teardown
 
