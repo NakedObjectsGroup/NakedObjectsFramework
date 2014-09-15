@@ -1,16 +1,13 @@
 ﻿module RestTestFunctions
+
 open System
-open RestfulObjects.Mvc
 open System.Net.Http
 open System.Net.Http.Headers
 open System.IO
 open Newtonsoft.Json.Linq
-open RestfulObjects.Snapshot.Utility 
 open RestfulObjects.Snapshot.Constants
 open NUnit.Framework
-open System.Collections.Generic
 open System.Linq
-open System.Web
 open RestfulObjects.Mvc.Model
 
 let mapCodeToType (code : string) : string = code

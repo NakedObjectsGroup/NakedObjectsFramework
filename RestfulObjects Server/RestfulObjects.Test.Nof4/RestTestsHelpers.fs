@@ -8,36 +8,8 @@
 module NakedObjects.Rest.Test.RestTestsHelpers
 
 open NUnit.Framework
-open NakedObjects
-open NakedObjects.Core.NakedObjectsSystem
-open NakedObjects.Core.Adapter.Map
-open NakedObjects.Boot
-open NakedObjects.Architecture.Adapter
-open NakedObjects.Architecture.Persist
-open NakedObjects.Architecture.Reflect
-open NakedObjects.Core.Context
-open NakedObjects.Core.Persist
-open NakedObjects.Persistor
-open NakedObjects.Persistor.Objectstore
-open NakedObjects.Persistor.Objectstore.Inmemory
-open RestfulObjects.Test.Data
-open RestfulObjects.Mvc
-open RestfulObjects.Mvc.Media
 open System
-open RestfulObjects.Snapshot.Utility
-open RestfulObjects.Snapshot.Constants
-open System.Threading
-open System.Security.Principal
-open System.Web.Http
-open NakedObjects.Core.Context
-open NakedObjects.Core.Util
-open Microsoft.Practices.Unity
-open NakedObjects.EntityObjectStore
 open RestfulObjects.Test.Data
-open NakedObjects.Surface.Nof4.Implementation
-open NakedObjects.Surface.Nof4.Utility
-open NakedObjects.Surface
-open MvcTestApp.Controllers
 
 let seedCodeFirstDatabase (context : CodeFirstContext) = 
     let ms1 = new MostSimple(Id = 1)
