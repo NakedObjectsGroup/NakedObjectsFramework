@@ -17,7 +17,7 @@ namespace NakedObjects.Rest.App.Demo.App_Start {
         }
 
         public static void PostStart() {
-            RunWeb.Run();
+            //RunWeb.Run();
             RestConfig.RestPostStart();
             CorsConfig.RegisterCors(GlobalConfiguration.Configuration);
         }

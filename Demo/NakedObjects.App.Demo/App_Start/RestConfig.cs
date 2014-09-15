@@ -1,18 +1,24 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
+using System;
 using System.Web.Http;
 using System.Web.Routing;
-using NakedObjects.App.Demo.App_Start;
 using RestfulObjects.Mvc;
 using RestfulObjects.Mvc.Media;
+using RestfulObjects.Snapshot.Utility;
 
 namespace NakedObjects.Mvc.App {
     public class RestConfig {
-        public static void RestPostStart() {
-
+        public static void RegisterRestfulObjectsRoutes(RouteCollection routes) {
             if (RunWeb.RestRoot != null) {
+                RestfulObjectsControllerBase.AddRestRoutes(routes, RunWeb.RestRoot);
+            }
+        }
 
+        public static void RestPostStart() {
+            if (RunWeb.RestRoot != null) {
                 var restDependencyResolver = new RestDependencyResolver();
                 GlobalConfiguration.Configuration.DependencyResolver = restDependencyResolver;
 
@@ -23,12 +29,8 @@ namespace NakedObjects.Mvc.App {
             }
         }
 
-        public static void RestRegisterRoutes(RouteCollection routes) {
-
+        public static void RestPreStart() {
             if (RunWeb.RestRoot != null) {
-
-                RestfulObjectsControllerBase.AddRestRoutes(routes, RunWeb.RestRoot);
-
                 // to make whole application 'read only' 
                 //RestfulObjectsControllerBase.IsReadOnly = true;
 

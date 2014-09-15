@@ -55,25 +55,25 @@ namespace NakedObjects.Rest.App.Demo.App_Start {
             return allTypes.Where(t => t.BaseType == typeof(AWDomainObject) && !t.IsAbstract).ToArray();
         }
 
-        protected override IObjectPersistorInstaller Persistor
-        {
-            get
-            {
-                // Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0"); //For in-memory database
-                // Database.SetInitializer(new DropCreateDatabaseIfModelChanges<MyDbContext>()); //Optional behaviour for CodeFirst
-                var installer = new EntityPersistorInstaller();
+        //protected override IObjectPersistorInstaller Persistor
+        //{
+        //    get
+        //    {
+        //        // Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0"); //For in-memory database
+        //        // Database.SetInitializer(new DropCreateDatabaseIfModelChanges<MyDbContext>()); //Optional behaviour for CodeFirst
+        //        var installer = new EntityPersistorInstaller();
 
-                installer.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
-                installer.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
-                // installer.UsingCodeFirstContext(() => new MyDbContext()).AssociateTypes(CodeFirstTypes);  //For Code First
+        //        installer.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
+        //        installer.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
+        //        // installer.UsingCodeFirstContext(() => new MyDbContext()).AssociateTypes(CodeFirstTypes);  //For Code First
 
-                return installer;
-            }
-        }
+        //        return installer;
+        //    }
+        //}
 
 		public static void Run() {
-		    Assert.AssertNotNull("Rest root may not be null", RestRoot);
-			new RunWeb().Start();
+            //Assert.AssertNotNull("Rest root may not be null", RestRoot);
+            //new RunWeb().Start();
 		}
 	}
 }

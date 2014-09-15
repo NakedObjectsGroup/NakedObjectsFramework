@@ -5,14 +5,12 @@ using System;
 using System.Linq;
 using AdventureWorksModel;
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Core.Util;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Web.Mvc;
 using NakedObjects.Web.Mvc.Helpers;
 
-namespace NakedObjects.App.Demo.App_Start {
+namespace NakedObjects.Mvc.App {
     public class RunWeb : RunMvc {
 
         // Return null for no REST support
@@ -20,10 +18,6 @@ namespace NakedObjects.App.Demo.App_Start {
         public static string RestRoot {
             get { return null; }
         }
-
-        //protected override NakedObjectsContext Context {
-        //    get { return HttpContextContext.CreateInstance(); }
-        //}
 
         protected override IServicesInstaller MenuServices {
             get {
@@ -57,21 +51,17 @@ namespace NakedObjects.App.Demo.App_Start {
 
         protected override IObjectPersistorInstaller Persistor {
             get {
-                // Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0"); //For in-memory database
-                // Database.SetInitializer(new DropCreateDatabaseIfModelChanges<MyDbContext>()); //Optional behaviour for CodeFirst
                 var installer = new EntityPersistorInstaller();
-
                 installer.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
                 installer.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
-                //installer.UsingCodeFirstContext(() => new MyDbContext()).AssociateTypes(CodeFirstTypes);  //For Code First
-
                 return installer;
             }
         }
 
+       
+
         public static void Run() {
-            Assert.AssertTrue("Rest root may not be empty", RestRoot == null || RestRoot.Trim().Length > 0);
-            new RunWeb().Start();
+           
         }
     }
 }

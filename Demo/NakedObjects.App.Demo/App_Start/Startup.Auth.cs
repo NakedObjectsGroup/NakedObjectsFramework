@@ -3,7 +3,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 
-namespace NakedObjects.App.Demo
+namespace NakedObjects.Mvc.App
 {
     public partial class Startup
     {

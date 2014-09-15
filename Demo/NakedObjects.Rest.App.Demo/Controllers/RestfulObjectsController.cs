@@ -1,4 +1,4 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
+﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
@@ -6,11 +6,17 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
+using NakedObjects.Surface;
 using RestfulObjects.Mvc;
 using RestfulObjects.Mvc.Model;
 
-namespace NakedObjects.Rest.App.Demo.Controllers {
+namespace MvcTestApp.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
+
+        public RestfulObjectsController(INakedObjectsSurface surface) :base(surface) {
+            
+        }
+
         [HttpGet]
         public override HttpResponseMessage GetHome([ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetHome(arguments);

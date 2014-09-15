@@ -19,8 +19,8 @@ namespace NakedObjects.Mvc.App {
 
         public static void RestPostStart() {
             if (RunWeb.RestRoot != null) {
-                var restDependencyResolver = new RestDependencyResolver();
-                GlobalConfiguration.Configuration.DependencyResolver = restDependencyResolver;
+                //var restDependencyResolver = new RestDependencyResolver();
+                //GlobalConfiguration.Configuration.DependencyResolver = restDependencyResolver;
 
                 GlobalConfiguration.Configuration.Formatters.Clear();
                 GlobalConfiguration.Configuration.Formatters.Insert(0, new JsonNetFormatter(null));

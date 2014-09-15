@@ -26,6 +26,49 @@ namespace NakedObjects.Mvc.App
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            // NakedObjects specific bundling 
+            RegisterNakedObjectsBundles(bundles);
+
+            // Set EnableOptimizations to false for debugging. For more information,
+            // visit http://go.microsoft.com/fwlink/?LinkId=301862
+            BundleTable.EnableOptimizations = false;
+        }
+
+        private static void RegisterNakedObjectsBundles(BundleCollection bundles) {
+
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+                        "~/Scripts/jquery-ui-{version}.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/nakedobjectsajax").Include(
+                "~/Scripts/jquery.unobtrusive-ajax.js",
+                "~/Scripts/jquery.address-{version}.js",
+                "~/Scripts/jquery.json-{version}.js",
+                "~/Scripts/jstorage.js",
+                "~/Scripts/NakedObjects-Ajax.js"));
+
+            //DATE FORMATS:   This bundle specifies that the JQuery DatePicker uses the en-GB date format (dd/mm/yy).
+            //To use the US format (mm/dd/yy) just remove any references to the bundle. Or to use another locale, specify the appropriate
+            //version of jquery.ui.datepicker
+            bundles.Add(new ScriptBundle("~/bundles/jquerydatepicker").Include(
+                "~/Scripts/ui/i18n/jquery.ui.datepicker-en-GB*"));
+
+            bundles.Add(new StyleBundle("~/Content/nakedobjectscss").Include(
+                "~/Content/NakedObjects.css"));
+
+            bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
+                        "~/Content/themes/base/jquery.ui.core.css",
+                        "~/Content/themes/base/jquery.ui.resizable.css",
+                        "~/Content/themes/base/jquery.ui.selectable.css",
+                        "~/Content/themes/base/jquery.ui.accordion.css",
+                        "~/Content/themes/base/jquery.ui.autocomplete.css",
+                        "~/Content/themes/base/jquery.ui.button.css",
+                        "~/Content/themes/base/jquery.ui.dialog.css",
+                        "~/Content/themes/base/jquery.ui.slider.css",
+                        "~/Content/themes/base/jquery.ui.tabs.css",
+                        "~/Content/themes/base/jquery.ui.datepicker.css",
+                        "~/Content/themes/base/jquery.ui.progressbar.css",
+                        "~/Content/themes/base/jquery.ui.theme.css"));
         }
     }
 }
