@@ -113,7 +113,7 @@
     
     <MSBuild Projects="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\NakedObjects.Mvc.Selenium.Test.Data.csproj"
 						 Targets="_CopyWebApplication"
-						 Properties="ReferencePath=$(RefPath);WebProjectOutputDir=..\..\$(WebProjectTransientOutputDir)\;OutDir=..\..\$(WebProjectTransientOutputDir)\;Configuration=%(Configuration.Identity)" />
+						 Properties="WebProjectOutputDir=..\..\$(WebProjectTransientOutputDir)\;OutDir=..\..\$(WebProjectTransientOutputDir)\;Configuration=%(Configuration.Identity)" />
 
     <ItemGroup>
       <MvcAppTransient Include="$(WebProjectTransientOutputDir)\**\*.*"/>
@@ -124,7 +124,7 @@
     <Copy SourceFiles="@(MvcAppTransient)" DestinationFolder="$(IISTransientPath)\%(RecursiveDir)"/>
 
     <MSBuild Projects="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"
-           Targets="ResolveReferences;_CopyWebApplication"
+           Targets="_CopyWebApplication"
            Properties="WebProjectOutputDir=..\..\$(RestOutputDir)\;OutDir=..\..\$(RestOutputDir)\;Configuration=%(Configuration.Identity)" />
     
     <ItemGroup>
