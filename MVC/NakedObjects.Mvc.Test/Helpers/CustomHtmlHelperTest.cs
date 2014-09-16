@@ -45,7 +45,7 @@ namespace MvcTestApp.Tests.Helpers {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingCodeFirstContext(() => new MvcTestContext("MvcTest"));
+            config.UsingCodeFirstContext(() => new MvcTestContext("CustomHtmlHelperTest"));
             container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
         }
 
@@ -59,6 +59,7 @@ namespace MvcTestApp.Tests.Helpers {
         [TestFixtureTearDown]
         public void TearDownTest() {
             CleanupNakedObjectsFramework(this);
+            Database.Delete("CustomHtmlHelperTest");
         }
 
         private DummyController controller;

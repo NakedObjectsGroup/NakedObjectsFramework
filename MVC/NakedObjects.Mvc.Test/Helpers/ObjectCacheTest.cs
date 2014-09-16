@@ -48,7 +48,7 @@ namespace MvcTestApp.Tests.Helpers {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingCodeFirstContext(() => new MvcTestContext("MvcTest"));
+            config.UsingCodeFirstContext(() => new MvcTestContext("ObjectCacheTest"));
             container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
         }
 
@@ -62,6 +62,7 @@ namespace MvcTestApp.Tests.Helpers {
         [TestFixtureTearDown]
         public void TearDownTest() {
             CleanupNakedObjectsFramework(this);
+            Database.Delete("ObjectCacheTest");
         }
 
         private DummyController controller;
