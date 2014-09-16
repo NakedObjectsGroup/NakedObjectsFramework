@@ -48,7 +48,7 @@ namespace RestfulObjects.Test.Data {
             }
         }
 
-        public IList<MostSimple> ACollection {
+        public virtual IList<MostSimple> ACollection {
             get { return aCollection; }
             set { aCollection = value; }
         }

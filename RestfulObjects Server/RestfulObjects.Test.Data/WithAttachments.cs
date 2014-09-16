@@ -17,16 +17,16 @@ namespace RestfulObjects.Test.Data {
         public virtual int Id { get; set; }
 
         [NakedObjectsIgnore]
-        public byte[] Attachment {
+        public virtual byte[] Attachment {
             get { return attachment; }
             set { attachment = value; }
         }
 
-        public FileAttachment FileAttachment {
+        public virtual FileAttachment FileAttachment {
             get { return new FileAttachment(attachment, "afile", "application/pdf"); }
         }
 
-        public Image Image {
+        public virtual Image Image {
             get { return new Image(attachment, "animage", "image/jpeg"); }
         }
     }

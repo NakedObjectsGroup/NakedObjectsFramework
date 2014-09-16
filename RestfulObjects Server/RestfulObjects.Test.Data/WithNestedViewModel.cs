@@ -11,13 +11,13 @@ namespace RestfulObjects.Test.Data {
         public virtual int Id { get; set; }
 
         [Hidden]
-        public string AggregateKey {
+        public virtual string AggregateKey {
             get { return DeriveKeys().Aggregate("", (s, t) => s + " " + t); } 
         }
 
-        public MostSimple AReference { get; set; }
+        public virtual MostSimple AReference { get; set; }
 
-        public WithReferenceViewModel AViewModelReference { get; set; }
+        public virtual WithReferenceViewModel AViewModelReference { get; set; }
 
         [NakedObjectsIgnore]
         public string[] DeriveKeys() {

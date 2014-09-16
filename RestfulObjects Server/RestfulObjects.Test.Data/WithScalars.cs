@@ -20,8 +20,8 @@ namespace RestfulObjects.Test.Data {
 
     public class WithScalars {
         private DateTime dateTime = DateTime.Parse("2012-03-27T09:42:36");
-        private IList<MostSimple> list = new List<MostSimple>();
-        private ISet<MostSimple> set = new HashSet<MostSimple>();
+        private ICollection<MostSimple> list = new List<MostSimple>();
+        private ICollection<MostSimple> set = new HashSet<MostSimple>();
         private char c;
 
         [Key, Title, ConcurrencyCheck]
@@ -60,12 +60,13 @@ namespace RestfulObjects.Test.Data {
             set { dateTime = value; }
         }
 
-        public virtual IList<MostSimple> List {
+        public virtual ICollection<MostSimple> List {
             get { return list; }
             set { list = value; }
         }
 
-        public virtual ISet<MostSimple> Set {
+        [NotMapped]
+        public virtual ICollection<MostSimple> Set {
             get { return set; }
             set { set = value; }
         }

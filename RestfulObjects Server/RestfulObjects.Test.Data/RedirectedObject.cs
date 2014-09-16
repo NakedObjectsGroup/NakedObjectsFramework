@@ -12,8 +12,8 @@ namespace RestfulObjects.Test.Data {
         public virtual int Id { get; set; }
 
         [Hidden]
-        public string ServerName { get; set; }
+        public virtual string ServerName { get; set; }
         [Hidden]
-        public string Oid { get; set; }
+        public virtual string Oid { get; set; }
     }
 }

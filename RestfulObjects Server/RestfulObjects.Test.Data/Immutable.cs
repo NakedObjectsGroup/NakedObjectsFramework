@@ -9,7 +9,7 @@ using NakedObjects;
 namespace RestfulObjects.Test.Data {
     [Immutable]
     public class Immutable {
-        private IList<MostSimple> aCollection = new List<MostSimple>();
+        private ICollection<MostSimple> aCollection = new List<MostSimple>();
 
         [Key, Title]
         public virtual int Id { get; set; }
@@ -18,7 +18,7 @@ namespace RestfulObjects.Test.Data {
 
         public virtual MostSimple AReference { get; set; }
 
-        public virtual IList<MostSimple> ACollection {
+        public virtual ICollection<MostSimple> ACollection {
             get { return aCollection; }
             set { aCollection = value; }
         }

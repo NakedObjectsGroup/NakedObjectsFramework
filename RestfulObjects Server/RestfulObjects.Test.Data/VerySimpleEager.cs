@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
@@ -38,6 +39,7 @@ namespace RestfulObjects.Test.Data {
 
         private ISet<MostSimple> _SimpleSet = new HashSet<MostSimple>();
 
+        [NotMapped]
         public virtual ISet<MostSimple> SimpleSet {
             get { return _SimpleSet; }
             set { _SimpleSet = value; }
