@@ -3,22 +3,22 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System.Web.Routing;
-using RestfulObjects.Test.App.App_Start;
+using MvcTestApp;
 using WebActivatorEx;
 
 [assembly: PreApplicationStartMethod(typeof (RestfulObjectsStart), "PreStart")]
 [assembly: PostApplicationStartMethod(typeof (RestfulObjectsStart), "PostStart")]
 
-namespace RestfulObjects.Test.App.App_Start {
+namespace MvcTestApp {
     public static class RestfulObjectsStart {
         public static void PreStart() {
-            RestConfig.RestRegisterRoutes(RouteTable.Routes);
+            RestConfig.RestPreStart();
+            RestConfig.RegisterRestfulObjectsRoutes(RouteTable.Routes);
         }
 
         public static void PostStart() {
             RunWeb.Run();
             RestConfig.RestPostStart();
-            //CorsConfig.RegisterCors(GlobalConfiguration.Configuration);
         }
     }
 }

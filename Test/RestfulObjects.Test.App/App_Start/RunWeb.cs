@@ -3,13 +3,12 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Boot;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
 using RestfulObjects.Bootstrap;
 using RestfulObjects.Test.Data;
 
-namespace RestfulObjects.Test.App.App_Start {
+namespace MvcTestApp {
     public class RunWeb : RunRest {
 
         // Return an empty string to support REST on the root application path. 

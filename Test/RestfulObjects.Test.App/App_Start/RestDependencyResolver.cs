@@ -1,4 +1,4 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
+﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System;
@@ -11,14 +11,15 @@ using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 
-namespace RestfulObjects.Test.App.App_Start {
+namespace MvcTestApp {
     public class RestDependencyResolver : IDependencyResolver {
-        private NakedObjectsSurface surface = null;
+        private NakedObjectsSurface surface;
 
         public NakedObjectsSurface Surface {
             get {
                 if (surface == null) {
                     //surface = new NakedObjectsSurface(new ExternalOid());
+                    surface = null;
                 }
 
                 return surface;
