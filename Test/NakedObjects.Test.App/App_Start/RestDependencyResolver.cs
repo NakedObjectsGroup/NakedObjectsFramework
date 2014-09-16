@@ -11,14 +11,15 @@ using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 
-namespace NakedObjects.Test.App.App_Start {
+namespace NakedObjects.Mvc.App {
     public class RestDependencyResolver : IDependencyResolver {
-        private NakedObjectsSurface surface = null;
+        private NakedObjectsSurface surface;
 
         public NakedObjectsSurface Surface {
             get {
                 if (surface == null) {
                     //surface = new NakedObjectsSurface(new ExternalOid());
+                    surface = null;
                 }
 
                 return surface;

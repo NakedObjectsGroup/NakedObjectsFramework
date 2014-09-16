@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using NakedObjects.Mvc.App;
 
 namespace NakedObjects.Test.App {
     public class MvcApplication : System.Web.HttpApplication {
