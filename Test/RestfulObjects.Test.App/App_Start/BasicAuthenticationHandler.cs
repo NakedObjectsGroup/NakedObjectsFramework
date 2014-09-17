@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NakedObjects.Surface;
 
-namespace RestfulObjects.Test.App.App_Start {
+namespace RestfulObjects.Test.App {
     public class BasicAuthenticationHandler : DelegatingHandler {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
             HttpRequestMessage r = request;

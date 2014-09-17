@@ -198,10 +198,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="RestfulObjects.Bootstrap">
-      <HintPath>..\..\packages\RestfulObjects.Server.7.0.0-alpha1\lib\net451\RestfulObjects.Bootstrap.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="RestfulObjects.Mvc">
       <HintPath>..\..\packages\RestfulObjects.Mvc.3.0.0-alpha1\lib\net451\RestfulObjects.Mvc.dll</HintPath>
       <Private>True</Private>

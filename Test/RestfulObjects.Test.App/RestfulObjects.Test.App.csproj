@@ -135,9 +135,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RestfulObjects.Bootstrap">
-      <HintPath>..\..\packages\RestfulObjects.Server.7.0.0-alpha1\lib\net451\RestfulObjects.Bootstrap.dll</HintPath>
-    </Reference>
     <Reference Include="RestfulObjects.Mvc, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\RestfulObjects.Mvc.3.0.0-alpha1\lib\net451\RestfulObjects.Mvc.dll</HintPath>
@@ -185,11 +182,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BasicAuthenticationHandler.cs" />
-    <Compile Include="App_Start\RestConfig.cs" />
-    <Compile Include="App_Start\RestDependencyResolver.cs" />
-    <Compile Include="App_Start\RestfulObjectsStart.cs" />
+    <Compile Include="App_Start\RestfulObjectsActivator.cs" />
+    <Compile Include="App_Start\RestfulObjectsConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\RunWeb.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="Controllers\RestfulObjectsController.cs" />
