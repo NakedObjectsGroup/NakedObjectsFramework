@@ -1,0 +1,34 @@
+@using NakedObjects.Web.Mvc.Html
+@model Object
+
+@{
+    Layout = "~/Views/Shared/_NofLayout.cshtml";
+    ViewBag.Title = Html.ObjectTitle(Model);
+}
+
+<div id="body">
+    <section class="main-content" >
+        @(Html.TabbedHistory(Model))   
+        <div class="@(Html.ObjectViewClass(Model))" id="@(Html.ObjectTypeAsCssId(Model))">
+            @(Html.UserMessages())
+            @if (Html.ObjectIsNotPersistent(Model)) {
+                using (Html.BeginForm(IdHelper.EditObjectAction,
+                    Html.TypeName(Model).ToString(),
+                    new {id = Html.GetObjectId(Model).ToString()},
+                    FormMethod.Post,
+                    new {@class = IdHelper.EditName})) {
+                    @(Html.MenuOnTransient(Model))
+                    if (Html.ObjectHasVisibleFields(Model)) {
+                        @(Html.PropertyList(Model))
+                    }
+                }
+            }
+            else {
+                @(Html.Menu(Model))
+                if (Html.ObjectHasVisibleFields(Model)) {
+                    @(Html.PropertyList(Model))
+                }
+            }
+        </div>
+    </section>
+</div>

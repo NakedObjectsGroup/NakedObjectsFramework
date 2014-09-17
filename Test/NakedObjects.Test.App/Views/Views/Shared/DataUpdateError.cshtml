@@ -1,0 +1,20 @@
+@using NakedObjects.Resources
+@using NakedObjects.Web.Mvc.Html
+@model Exception
+
+@{
+    Layout = "~/Views/Shared/_NofLayout.cshtml";
+    ViewBag.Title = MvcUi.DataUpdateErrorTitle;
+}
+
+<div id="body">
+    <section class="main-content" >
+        @(Html.TabbedHistory()) 
+        <div class="error">
+            <img alt="error"  src="@(Url.Content("~/Images/system-error.png"))" />
+            <h2>@MvcUi.DataUpdateErrorTitle</h2>
+
+            <p>@(Model.Message)</p>
+        </div>
+    </section>
+</div>

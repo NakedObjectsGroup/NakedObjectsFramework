@@ -1,0 +1,60 @@
+﻿@using NakedObjects.Web.Mvc.Html
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title</title>
+        @(Styles.Render("~/Content/css", "~/Content/themes/base/css", "~/Content/nakedobjectscss"))
+        @Scripts.Render("~/bundles/modernizr")
+
+    </head>
+
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Naked Objects MVC", "Index", "Home", null, new {@class = "navbar-brand"})
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>
+                   @* @Html.Partial("_LoginPartial")*@
+                </div>
+            </div>
+        </div>
+        <header>         
+            <div class="content-wrapper">                   
+                @(Html.Services())
+            </div>
+           
+            <div class="no-home-path" style="display: none">@(Html.ActionLink("Home", "Index", "Home"))</div>
+        </header>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @(DateTime.Now.Year) - Naked Objects Group Ltd</p>
+            </footer>
+        </div>
+
+        @RenderSection("Scripts", false)    
+        @(Scripts.Render(
+            "~/bundles/jquery", 
+            "~/bundles/bootstrap", 
+            "~/bundles/jqueryui", 
+            "~/bundles/jqueryval", 
+            "~/bundles/nakedobjectsajax", 
+            "~/bundles/jquerydatepicker" //Specifies UK date format!
+           ))       
+         
+    </body>
+</html>

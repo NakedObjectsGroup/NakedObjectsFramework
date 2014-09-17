@@ -1,0 +1,25 @@
+@using NakedObjects.Resources
+@using NakedObjects.Web.Mvc.Html
+@model global::NakedObjects.Architecture.Persist.ConcurrencyException
+
+@{
+    Layout = "~/Views/Shared/_NofLayout.cshtml";
+    ViewBag.Title = MvcUi.ConcurrencyErrorTitle;
+}
+
+<div id="body">
+    <section class="main-content" >
+        @(Html.TabbedHistory()) 
+        <div class="error">
+            <img alt="error"  src="@(Url.Content("~/Images/concurrency-error.png"))"/>
+            <h2>@MvcUi.ConcurrencyErrorTitle</h2>
+
+            <p>@(Model.Message)</p>
+
+            @if (Model.SourceNakedObject != null) {
+                <h3>@MvcUi.ConcurrencyErrorObject:</h3>
+                @(Html.Object(Html.ObjectTitle(Model.SourceNakedObject.Object).ToString(), IdHelper.ViewAction, Model.SourceNakedObject.Object))
+            }
+        </div>
+    </section>
+</div>

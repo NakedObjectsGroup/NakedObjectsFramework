@@ -1,9 +1,10 @@
 using System.Linq;
+using System.Web.Http;
 using System.Web.Mvc;
-using AdventureWorksModel;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Mvc;
 using NakedObjects.Architecture.Reflect;
+using WebApiResolver = Microsoft.Practices.Unity.WebApi.UnityDependencyResolver;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(NakedObjects.Mvc.App.App_Start.UnityWebActivator), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethod(typeof(NakedObjects.Mvc.App.App_Start.UnityWebActivator), "Shutdown")]
@@ -22,6 +23,10 @@ namespace NakedObjects.Mvc.App.App_Start
             FilterProviders.Providers.Add(new UnityFilterAttributeFilterProvider(container));
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
+
+            // web api
+            var webApiResolver = new WebApiResolver(UnityConfig.GetConfiguredContainer());
+            GlobalConfiguration.Configuration.DependencyResolver = webApiResolver;
 
             // TODO: Uncomment if you want to use PerRequestLifetimeManager
             Microsoft.Web.Infrastructure.DynamicModuleHelper.DynamicModuleUtility.RegisterModule(typeof(UnityPerRequestHttpModule));

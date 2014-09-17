@@ -21,6 +21,9 @@ using NakedObjects.Reflector.DotNet.Facets;
 using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Service;
+using NakedObjects.Surface;
+using NakedObjects.Surface.Nof4.Implementation;
+using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Mvc.App.App_Start
@@ -150,6 +153,10 @@ namespace NakedObjects.Mvc.App.App_Start
             container.RegisterType<IMessageBroker, SimpleMessageBroker>(new PerRequestLifetimeManager());
 
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerRequestLifetimeManager());
+
+            container.RegisterType<IOidStrategy, ExternalOid>(new PerRequestLifetimeManager());
+
+            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerRequestLifetimeManager());
         }
     }
 }
