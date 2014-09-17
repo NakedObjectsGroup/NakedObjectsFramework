@@ -9,9 +9,7 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Web.Mvc.Html {
     public static class ServiceExtensions {
 
-        private static INakedObjectsFramework Framework(this HtmlHelper html) {
-            return (INakedObjectsFramework)html.ViewData["NakedObjectsFramework"];
-        }
+     
 
         #region ServiceMenus
 

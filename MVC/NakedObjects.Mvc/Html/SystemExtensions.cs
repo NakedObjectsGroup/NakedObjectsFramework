@@ -17,8 +17,8 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private const int DefaultHistorySize = 10;
 
-        private static INakedObjectsFramework Framework(this HtmlHelper html) {
-            return (INakedObjectsFramework)html.ViewData["NakedObjectsFramework"];
+        public static INakedObjectsFramework GetFramework(this HtmlHelper html) {
+            return html.Framework();
         }
 
         #region system menus

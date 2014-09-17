@@ -59,7 +59,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
     internal static class CommonHtmlHelper {
 
-        private static INakedObjectsFramework Framework(this HtmlHelper html) {
+        public static INakedObjectsFramework Framework(this HtmlHelper html) {
             return (INakedObjectsFramework)html.ViewData[IdHelper.NoFramework];
         }
 

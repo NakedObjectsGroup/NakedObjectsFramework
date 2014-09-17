@@ -19,11 +19,7 @@ using NakedObjects.Web.Mvc.Helpers;
 namespace NakedObjects.Web.Mvc.Html {
     public static class ActionExtensions {
 
-        private static INakedObjectsFramework Framework(this HtmlHelper html) {
-            return (INakedObjectsFramework) html.ViewData["NakedObjectsFramework"];
-        }
-
-
+       
         #region name and ids
 
         /// <summary>

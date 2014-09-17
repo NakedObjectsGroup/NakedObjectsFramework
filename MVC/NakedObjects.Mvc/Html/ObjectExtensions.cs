@@ -18,9 +18,7 @@ namespace NakedObjects.Web.Mvc.Html {
     public static class ObjectExtensions {
 
 
-        private static INakedObjectsFramework Framework(this HtmlHelper html) {
-            return (INakedObjectsFramework)html.ViewData["NakedObjectsFramework"];
-        }
+      
 
         /// <summary>
         ///     Get the object id

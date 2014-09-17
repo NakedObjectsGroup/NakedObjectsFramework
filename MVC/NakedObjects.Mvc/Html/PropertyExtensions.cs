@@ -14,9 +14,7 @@ using NakedObjects.Architecture.Util;
 namespace NakedObjects.Web.Mvc.Html {
     public static class PropertyExtensions {
 
-        private static INakedObjectsFramework Framework(this HtmlHelper html) {
-            return (INakedObjectsFramework)html.ViewData["NakedObjectsFramework"];
-        }
+      
 
         #region Properties
 

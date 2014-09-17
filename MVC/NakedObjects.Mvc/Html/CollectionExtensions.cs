@@ -14,9 +14,7 @@ using NakedObjects.Core.Persist;
 namespace NakedObjects.Web.Mvc.Html {
     public static class CollectionExtensions {
 
-        private static INakedObjectsFramework Framework(this HtmlHelper html) {
-            return (INakedObjectsFramework)html.ViewData["NakedObjectsFramework"];
-        }
+      
 
         #region all
 
