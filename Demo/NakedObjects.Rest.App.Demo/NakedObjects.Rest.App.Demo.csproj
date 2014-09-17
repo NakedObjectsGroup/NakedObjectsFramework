@@ -216,10 +216,8 @@
   <ItemGroup>
     <Compile Include="App_Start\BasicAuthenticationHandler.cs" />
     <Compile Include="App_Start\CorsConfig.cs" />
-    <Compile Include="App_Start\RestConfig.cs" />
-    <Compile Include="App_Start\RestDependencyResolver.cs" />
-    <Compile Include="App_Start\RestfulObjectsStart.cs" />
-    <Compile Include="App_Start\RunWeb.cs" />
+    <Compile Include="App_Start\RestfulObjectsActivator.cs" />
+    <Compile Include="App_Start\RestfulObjectsConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />

@@ -398,11 +398,9 @@
     <Compile Include="App_Start\BasicAuthenticationHandler.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\NakedObjectsStart.cs" />
-    <Compile Include="App_Start\RestConfig.cs" />
-    <Compile Include="App_Start\RestDependencyResolver.cs" />
+    <Compile Include="App_Start\NakedObjectsActivator.cs" />
+    <Compile Include="App_Start\RestfulObjectsConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\RunWeb.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
