@@ -161,17 +161,22 @@
 
 			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Views*\Home\Index.cshtml"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\Views*\Shared\*.*" Exclude="**\_LoginPartial.cshtml;**\Error.cshtml;**\_Layout.cshtml"/>
-			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\NakedObjectsStart.cs"/>
+			<MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\NakedObjectsActivator.cs"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\BundleConfig.cs"/>
       <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\RouteConfig.cs"/>
-      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\RunWeb.cs.pp"/>
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityConfig.cs"/>
+      <MVCSrcFiles Include="$(MVCPath)\$(NOMVC).App\App_Start*\UnityMvcActivator.cs"/>
 		</ItemGroup>
 
 		<Copy SourceFiles="@(MVCSrcFiles)" DestinationFolder="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\%(RecursiveDir)"/>
 
 		<ItemGroup>
 			<ToUpdatePartialNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\Controllers*\*.cs" Exclude="**\RestfulObjectsController.cs;**\AccountController.cs;**\HomeController.cs"/>
-			<ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\NakedObjectsStart.cs;$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\BundleConfig.cs;$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\RouteConfig.cs"/>
+			<ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\NakedObjectsActivator.cs"/>
+      <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\BundleConfig.cs"/>
+      <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\RouteConfig.cs"/>
+      <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\UnityConfig.cs"/>
+      <ToUpdateWholeNamespace Include="$(MVCPath)\$(NOMVC)-FileTemplates.package\content\App_Start*\UnitMvcActivator.cs"/> 
 		</ItemGroup>
 
 		<FileUpdate Files="@(ToUpdatePartialNamespace)"
