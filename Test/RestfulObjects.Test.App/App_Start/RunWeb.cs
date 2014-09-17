@@ -77,8 +77,8 @@ namespace MvcTestApp {
         //}
 
         public static void Run() {
-            Assert.AssertNotNull("Rest root may not be null", RestRoot);
-            new RunWeb().Start();
+            //Assert.AssertNotNull("Rest root may not be null", RestRoot);
+            //new RunWeb().Start();
         }
     }
 }

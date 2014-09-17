@@ -17,7 +17,7 @@ namespace MvcTestApp {
         }
 
         public static void PostStart() {
-            RunWeb.Run();
+            //RunWeb.Run();
             RestConfig.RestPostStart();
         }
     }
