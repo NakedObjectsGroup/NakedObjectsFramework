@@ -5,16 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Web;
 using System.Web.Http;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.WebApi;
 using NakedObjects.Architecture.Reflect;
 using RestfulObjects.Mvc.App.App_Start;
-using WebActivatorEx;
 
-[assembly: PreApplicationStartMethod(typeof (UnityWebApiActivator), "Start")]
-[assembly: ApplicationShutdownMethod(typeof (UnityWebApiActivator), "Shutdown")]
+
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(UnityWebApiActivator), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethod(typeof(UnityWebApiActivator), "Shutdown")]
 
 namespace RestfulObjects.Mvc.App.App_Start {
     /// <summary>Provides the bootstrapping for integrating Unity with WebApi when it is hosted in ASP.NET</summary>
