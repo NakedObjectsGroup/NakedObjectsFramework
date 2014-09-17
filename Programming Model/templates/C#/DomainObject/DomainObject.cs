@@ -20,11 +20,10 @@ namespace $rootnamespace$
 
         #endregion
 
-        [Key, Hidden]
-        public virtual int $safeitemname$Id {get; set;}
+        [NakedObjectsIgnore]
+        public virtual int Id {get; set;}
 
         //Add properties with 'propv', collections with 'coll', actions with 'act' shortcuts
-
     }
 }
 
