@@ -21,7 +21,7 @@ using NakedObjects.Xat;
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
     public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {}
 
-    [TestClass]
+    [TestClass, Ignore]
     public class TestObjectFinderWithCompoundKeys : AcceptanceTestCase {
         private int countCustomerOnes;
         private int countCustomerThrees;

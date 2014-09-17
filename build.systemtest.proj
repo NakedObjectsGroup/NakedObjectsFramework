@@ -11,7 +11,6 @@
     <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
     <Nuget>..\.nuget\nuget.exe</Nuget>
     <WorkingDir>build\working</WorkingDir>
-    <IISTransientPath>\\Saturn\UnitTestTransient</IISTransientPath>
     <IISRestPath>\\Saturn\UnitTestRest</IISRestPath>
     <IISAjaxPath>\\Saturn\UnitTestAjax</IISAjaxPath>
   </PropertyGroup>
@@ -50,7 +49,6 @@
     <Files Include="$(TestPath)\RestfulObjects.Test.EndToEnd\RestfulObjects.Test.EndToEnd.csproj"/>
     <Files Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test\NakedObjects.Mvc.Selenium.Test.csproj"/>
     <Files Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Helpers\NakedObjects.Mvc.Selenium.Test.Helpers.csproj"/>
-    <Files Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\NakedObjects.Mvc.Selenium.Test.Data.csproj"/>
     <Files Include="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj"/>
     <Files Include="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"/>
   </ItemGroup>
@@ -65,7 +63,7 @@
       <OldTests Include="$(TestResultsPath)\RestfulObjects.Test.EndToEnd.trx"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Mvc.Selenium.Test.trx"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Mvc.Selenium.ReTest.trx"/>
-      <OldDeployment Include="$(IISTransientPath)\**\*.*"/>
+      
       <OldDeployment Include="$(IISRestPath)\**\*.*"/>
       <OldDeployment Include="$(IISAjaxPath)\**\*.*"/>
     </ItemGroup>
@@ -105,23 +103,12 @@
 
   <Target Name="Deploy" DependsOnTargets="BuildTests">
     <PropertyGroup>
-      <WebProjectTransientOutputDir>$(WorkingDir)\bin\%(Configuration.Identity)\UnitTestTransient</WebProjectTransientOutputDir>
+     
       <RestOutputDir>$(WorkingDir)\bin\%(Configuration.Identity)\UnitTest</RestOutputDir>
       <WebProjectAjaxOutputDir>$(WorkingDir)\bin\%(Configuration.Identity)\UnitTestAjax</WebProjectAjaxOutputDir>
     
     </PropertyGroup>
     
-    <MSBuild Projects="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\NakedObjects.Mvc.Selenium.Test.Data.csproj"
-						 Targets="_CopyWebApplication"
-						 Properties="WebProjectOutputDir=..\..\$(WebProjectTransientOutputDir)\;OutDir=..\..\$(WebProjectTransientOutputDir)\;Configuration=%(Configuration.Identity)" />
-
-    <ItemGroup>
-      <MvcAppTransient Include="$(WebProjectTransientOutputDir)\**\*.*"/>
-      <MvcAppLibTransient Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Data\bin\*.dll"/>
-    </ItemGroup>
-
-    <Copy SourceFiles="@(MvcAppLibTransient)" DestinationFolder="$(IISTransientPath)\bin" />
-    <Copy SourceFiles="@(MvcAppTransient)" DestinationFolder="$(IISTransientPath)\%(RecursiveDir)"/>
 
     <MSBuild Projects="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"
            Targets="_CopyWebApplication"

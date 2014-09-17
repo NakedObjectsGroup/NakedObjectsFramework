@@ -90,7 +90,6 @@
     <Compile Include="ConditionalChoicesTests.cs" />
     <Compile Include="TabbedHistoryAndClearTests.cs" />
     <Compile Include="NonAjaxTests.cs" />
-    <Compile Include="TransientTests.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="TEMPLATE.cs" />
     <Compile Include="ImageAndAttachmentTests.cs" />
