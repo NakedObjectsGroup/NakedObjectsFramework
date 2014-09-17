@@ -16,23 +16,33 @@ using NakedObjects.EntityObjectStore;
 using NakedObjects.Helpers.Test.ViewModel;
 using NakedObjects.Services;
 using NakedObjects.Xat;
+using System.Linq;
 
 namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
-    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {}
+    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {
+        protected override void Seed(PaymentContext context)
+        {
+            context.Payments.Add(new Payment());
+            context.Customers.Add(new Customer());
+            context.Customers.Add(new Customer());
+            context.Suppliers.Add(new Supplier());
+            context.Employees.Add(new Employee() { Id = "foo" });
+            context.Employees.Add(new Employee() { Id = "bar" });
+            context.SaveChanges();
+        }
+    }
 
-    [TestClass, Ignore]
+        [TestClass]
     public class TestObjectFinderWithSingleKeys : AcceptanceTestCase {
-        private int countCustomers;
-        private int countPayments;
-        private int countSuppliers;
-        private ITestObject customer1;
-        private ITestObject customer2;
-        private ITestObject emp1;
-        private ITestObject emp2;
-        private ITestProperty key1;
-        private ITestProperty payee1;
-        private ITestObject payment1;
-        private ITestObject supplier1;
+            private const string databaseName = "ObjectFinderSingleKey";
+        private ITestObject customer1 = null;
+        private ITestObject customer2 = null;
+        private ITestObject emp1 = null;
+        private ITestObject emp2 = null;
+        private ITestProperty key1 = null;
+        private ITestProperty payee1 = null;
+        private ITestObject payment1 = null;
+        private ITestObject supplier1 = null;
 
         protected override IServicesInstaller MenuServices {
             get {
@@ -49,7 +59,7 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingCodeFirstContext(() => new PaymentContext("HelpersTest"));
+            config.UsingCodeFirstContext(() => new PaymentContext(databaseName));
             container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
         }
 
@@ -62,25 +72,26 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
         [ClassCleanup]
         public static void TearDownTest() {
             CleanupNakedObjectsFramework(new TestViewModel());
+            Database.Delete(databaseName);
         }
 
         [TestInitialize]
         public void Initialize() {
             StartTest();
-            payment1 = CreatePayment();
-            customer1 = CreateCustomer();
-            customer2 = CreateCustomer();
-            supplier1 = CreateSupplier();
+            payment1 = GetTestService("Payments").GetAction("All Instances").InvokeReturnCollection().ElementAt(0);
             payee1 = payment1.GetPropertyByName("Payee");
             key1 = payment1.GetPropertyByName("Payee Compound Key");
-            emp1 = CreateEmployee("foo");
-            emp2 = CreateEmployee("bar");
+            var findCustomer = GetTestService("Customers").GetAction("Find By Key");
+            customer1 = findCustomer.InvokeReturnObject(1);
+            customer2 = findCustomer.InvokeReturnObject(2);
+            supplier1 = GetTestService("Suppliers").GetAction("Find By Key").InvokeReturnObject(1);
+            var employees = GetTestService("Employees").GetAction("All Instances").InvokeReturnCollection();
+            emp1 = employees.ElementAt(1);
+            emp2 = employees.ElementAt(0);
         }
 
         [TestCleanup]
         public void CleanUp() {
-            countPayments = 0;
-            countCustomers = 0;
             payment1 = null;
             customer1 = null;
             payee1 = null;
@@ -89,36 +100,7 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
             emp2 = null;
         }
 
-        private ITestObject CreatePayment() {
-            ITestObject pay = GetTestService("Payments").GetAction("New Instance").InvokeReturnObject();
-            countPayments++;
-            pay.GetPropertyByName("Id").SetValue(countPayments.ToString());
-            pay.Save();
-            return pay;
-        }
-
-        private ITestObject CreateCustomer() {
-            ITestObject cust = GetTestService("Customers").GetAction("New Instance").InvokeReturnObject();
-            countCustomers++;
-            cust.GetPropertyByName("Id").SetValue(countCustomers.ToString());
-            cust.Save();
-            return cust;
-        }
-
-        private ITestObject CreateSupplier() {
-            ITestObject sup = GetTestService("Suppliers").GetAction("New Instance").InvokeReturnObject();
-            countSuppliers++;
-            sup.GetPropertyByName("Id").SetValue(countCustomers.ToString());
-            sup.Save();
-            return sup;
-        }
-
-        private ITestObject CreateEmployee(string key) {
-            ITestObject emp = GetTestService("Employees").GetAction("New Instance").InvokeReturnObject();
-            emp.GetPropertyByName("Id").SetValue(key);
-            emp.Save();
-            return emp;
-        }
+   
 
 
         [TestMethod]
@@ -140,7 +122,7 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
             payee1.SetObject(supplier1);
             Assert.AreEqual(payee1.ContentAsObject, supplier1);
 
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Supplier|2");
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Supplier|1");
         }
 
 
@@ -206,6 +188,8 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
 
     public class Payment {
         public IDomainObjectContainer Container { protected get; set; }
+
+        [Disabled]
         public virtual int Id { get; set; }
 
         #region Payee Property (Interface Association)
@@ -248,18 +232,21 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
 
 
     public class Customer : IPayee {
-        [Key]
+   
+        [Disabled]
         public virtual int Id { get; set; }
     }
 
 
     public class Supplier : IPayee {
-        [Key]
+
+        [Disabled]
         public virtual int Id { get; set; }
     }
 
 
     public class Employee : IPayee {
+
         [Key]
         public virtual string Id { get; set; }
     }

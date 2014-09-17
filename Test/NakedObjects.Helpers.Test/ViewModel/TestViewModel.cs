@@ -22,6 +22,7 @@ namespace NakedObjects.Helpers.Test.ViewModel {
     [TestClass, Ignore]
     public class TestViewModel : AcceptanceTestCase {
         private ITestObject foo1;
+        private ITestService views;
 
         #region Constructors
 
@@ -77,6 +78,7 @@ namespace NakedObjects.Helpers.Test.ViewModel {
         [TestInitialize]
         public void Initialize() {
             StartTest();
+            views = GetTestService(typeof(ViewModelService));
             foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             foo1.GetPropertyByName("Id").SetValue("12345");
             foo1.GetPropertyByName("Name").SetValue("Foo1");
@@ -90,15 +92,18 @@ namespace NakedObjects.Helpers.Test.ViewModel {
 
         [TestMethod]
         public virtual void ViewModelDerivesKeyFromRoot() {
+            var foo1key = foo1.GetPropertyByName("Id").Title;
             ITestObject vm = foo1.GetAction("View Model").InvokeReturnObject();
             vm.AssertIsType(typeof (ViewFoo));
             vm.AssertCannotBeSaved();
-            vm.GetPropertyByName("Key").AssertTitleIsEqual("12345");
+            var vmkey = vm.GetPropertyByName("Key").Title;
+            Assert.AreEqual(foo1key, vmkey);
         }
 
         [TestMethod]
         public virtual void ViewModelRestoresRootGivenKey() {
-            ITestObject view1 = GetTestService("Views").GetAction("New View Foo").InvokeReturnObject("12345");
+            var foo1key = foo1.GetPropertyByName("Id").Title;
+            ITestObject view1 = views.GetAction("New View Foo").InvokeReturnObject(foo1key);
             ITestProperty root = view1.GetPropertyByName("Root");
             root.AssertTitleIsEqual("Foo1");
         }
@@ -106,7 +111,7 @@ namespace NakedObjects.Helpers.Test.ViewModel {
         [TestMethod]
         public virtual void AttemptRestoreWithInvalidKey() {
             try {
-                ITestObject view1 = GetTestService("Views").GetAction("New View Foo").InvokeReturnObject("54321");
+                ITestObject view1 = views.GetAction("New View Foo").InvokeReturnObject("54321");
                 Assert.Fail("Test should not get to this line");
             }
             catch (Exception e) {

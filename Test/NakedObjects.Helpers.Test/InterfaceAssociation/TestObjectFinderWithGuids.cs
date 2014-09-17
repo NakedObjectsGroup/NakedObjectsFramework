@@ -16,13 +16,25 @@ using NakedObjects.Helpers.Test.ViewModel;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.Xat;
+using System.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace NakedObjects.SystemTest.ObjectFinderGuid {
-    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {}
+    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext>
+    {
+        protected override void Seed(PaymentContext context)
+        {
+            context.Payments.Add(new Payment());
+            context.Customers.Add(new Customer() { Guid = new Guid("0c1ced04-7016-11e0-9c44-78544824019b") });
+            context.Customers.Add(new Customer() { Guid = new Guid("3d9d6ca0-7016-11e0-b12a-9e544824019b") });
+            context.Suppliers.Add(new Supplier() {Guid = new Guid("89bc90ec-7017-11e0-a08c-57564824019b")} );
+            context.SaveChanges();
+        }
+    }
 
-    [TestClass, Ignore]
+    [TestClass]
     public class TestObjectFinderWithGuids : AcceptanceTestCase {
-        private int countPayments;
+        private const string databaseName = "ObjectFinderGuid";
         private ITestObject customer1;
         private ITestObject customer2;
         private ITestProperty key1;
@@ -44,56 +56,36 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingCodeFirstContext(() => new PaymentContext("HelpersTest"));
+            config.UsingCodeFirstContext(() => new PaymentContext(databaseName));
             container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
         }
 
         [ClassInitialize]
         public static void SetupTestFixture(TestContext tc) {
-            Database.SetInitializer(new ObjectFinderCompoundKeys.DatabaseInitializer());
+            Database.SetInitializer(new DatabaseInitializer());
             InitializeNakedObjectsFramework(new TestViewModel());
         }
 
         [ClassCleanup]
         public static void TearDownTest() {
             CleanupNakedObjectsFramework(new TestViewModel());
+            Database.Delete(databaseName);
         }
 
         [TestInitialize]
         public void Initialize() {
             StartTest();
-            payment1 = CreatePayment();
-            customer1 = CreateCustomer("0c1ced04-7016-11e0-9c44-78544824019b");
-            customer2 = CreateCustomer("3d9d6ca0-7016-11e0-b12a-9e544824019b");
 
-            supplier1 = CreateSupplier("89bc90ec-7017-11e0-a08c-57564824019b");
+            payment1 = GetTestService("Payments").GetAction("All Instances").InvokeReturnCollection().ElementAt(0);
             payee1 = payment1.GetPropertyByName("Payee");
             key1 = payment1.GetPropertyByName("Payee Compound Key");
+
+            var customers = GetTestService("Customers").GetAction("All Instances").InvokeReturnCollection();
+            customer1 = customers.ElementAt(0);
+            customer2 = customers.ElementAt(1);
+            supplier1 = GetTestService("Suppliers").GetAction("All Instances").InvokeReturnCollection().ElementAt(0);
         }
 
-
-        private ITestObject CreatePayment() {
-            ITestObject pay = GetTestService("Payments").GetAction("New Instance").InvokeReturnObject();
-            countPayments++;
-            pay.GetPropertyByName("Id").SetValue(countPayments.ToString());
-            pay.Save();
-            return pay;
-        }
-
-        private ITestObject CreateCustomer(string guid) {
-            ITestObject cust = GetTestService("Customers").GetAction("New Instance").InvokeReturnObject();
-            cust.GetPropertyById("Guid").SetValue(guid);
-            cust.Save();
-            return cust;
-        }
-
-
-        private ITestObject CreateSupplier(string guid) {
-            ITestObject sup = GetTestService("Suppliers").GetAction("New Instance").InvokeReturnObject();
-            sup.GetPropertyById("Guid").SetValue(guid);
-            sup.Save();
-            return sup;
-        }
 
         [TestMethod]
         public void SetAssociatedObject() {
@@ -201,7 +193,7 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
     public class Customer : IPayee {
         #region IPayee Members
-
+        [Key]
         public virtual Guid Guid { get; set; }
 
         #endregion
@@ -210,7 +202,7 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
     public class Supplier : IPayee {
         #region IPayee Members
-
+        [Key]
         public virtual Guid Guid { get; set; }
 
         #endregion
