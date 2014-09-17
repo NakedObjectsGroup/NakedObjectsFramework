@@ -4,22 +4,9 @@
 
 using System.Web.Mvc;
 using System.Web.Routing;
-using NakedObjects.Boot;
-using NakedObjects.Core.Adapter.Map;
 
 namespace NakedObjects.Web.Mvc {
-    public class RunMvc : RunStandaloneBase {
-        protected override INakedObjectsClient Client {
-            get { return new MvcUserInterface(); }
-        }
-
-        protected virtual bool StoreTransientsInSession { get { return false; } }
-
-        protected override sealed void ProductSpecificStart(NakedObjectsSystem system) {
-            if (StoreTransientsInSession) {
-               system.ObjectPersistorInstaller.SetupMaps(new MvcIdentityAdapterHashMap(), new MvcPocoAdapterHashMap());
-            }
-        }
+    public class NakedObjectsRouteConfig {
 
         public static void RegisterGenericRoutes(RouteCollection routes) {
             routes.MapRoute(

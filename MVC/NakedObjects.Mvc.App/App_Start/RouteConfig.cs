@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
+using MvcTestApp;
 using NakedObjects.Web.Mvc;
-using RestfulObjects.Mvc;
 
 namespace NakedObjects.Mvc.App
 {
@@ -23,8 +23,8 @@ namespace NakedObjects.Mvc.App
             routes.IgnoreRoute("{*favicon}", new {favicon = @"(.*/)?favicon.ico(/.*)?"});
             routes.IgnoreRoute("{*nakedobjects}", new {nakedobjects = @"(.*/)?nakedobjects.ico(/.*)?"});
 
-            RestConfig.RegisterRestfulObjectsRoutes(routes); // must be rest first 
-            RunMvc.RegisterGenericRoutes(routes);
+            RestfulObjectsConfig.RegisterRestfulObjectsRoutes(routes); // must be rest first 
+            NakedObjectsRouteConfig.RegisterGenericRoutes(routes);
         }
     }
 }
