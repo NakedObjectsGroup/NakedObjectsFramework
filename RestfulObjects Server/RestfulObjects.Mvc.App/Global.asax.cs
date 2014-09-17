@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
+using MvcTestApp;
 
 namespace RestfulObjects.Mvc.App {
     public class WebApiApplication : System.Web.HttpApplication {

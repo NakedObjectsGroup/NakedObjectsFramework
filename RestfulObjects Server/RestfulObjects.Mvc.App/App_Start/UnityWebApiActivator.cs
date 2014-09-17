@@ -8,14 +8,14 @@
 using System.Web.Http;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.WebApi;
+using MvcTestApp;
 using NakedObjects.Architecture.Reflect;
-using RestfulObjects.Mvc.App.App_Start;
 using WebActivatorEx;
 
 [assembly: PreApplicationStartMethod(typeof (UnityWebApiActivator), "Start")]
 [assembly: ApplicationShutdownMethod(typeof (UnityWebApiActivator), "Shutdown")]
 
-namespace RestfulObjects.Mvc.App.App_Start {
+namespace MvcTestApp {
     /// <summary>Provides the bootstrapping for integrating Unity with WebApi when it is hosted in ASP.NET</summary>
     public static class UnityWebApiActivator {
         /// <summary>Integrates Unity when the application starts.</summary>

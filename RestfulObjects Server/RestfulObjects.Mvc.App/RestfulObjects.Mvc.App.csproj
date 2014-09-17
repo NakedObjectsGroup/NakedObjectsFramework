@@ -177,10 +177,8 @@
   <ItemGroup>
     <Compile Include="App_Start\AccessControlExposeHeadersHandler.cs" />
     <Compile Include="App_Start\BasicAuthenticationHandler.cs" />
-    <Compile Include="App_Start\RestConfig.cs" />
-    <Compile Include="App_Start\RestDependencyResolver.cs" />
-    <Compile Include="App_Start\RestfulObjectsStart.cs" />
-    <Compile Include="App_Start\RunWeb.cs" />
+    <Compile Include="App_Start\RestfulObjectsConfig.cs" />
+    <Compile Include="App_Start\RestfulObjectsActivator.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -194,7 +192,6 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Start\RunWeb.cs.pp" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -207,10 +204,6 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RestfulObjects.Bootstrap\RestfulObjects.Bootstrap.csproj">
-      <Project>{274248F9-5DF0-4710-88D0-A0906FF78344}</Project>
-      <Name>RestfulObjects.Bootstrap</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj">
       <Project>{DFD82203-DA17-43A4-96E8-5F2C558CF9A4}</Project>
       <Name>RestfulObjects.Mvc</Name>

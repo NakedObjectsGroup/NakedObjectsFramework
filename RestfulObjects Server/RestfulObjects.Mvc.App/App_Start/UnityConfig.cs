@@ -25,7 +25,7 @@ using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using RestfulObjects.Test.Data;
 
-namespace RestfulObjects.Mvc.App.App_Start
+namespace MvcTestApp
 {
     /// <summary>
     /// Specifies the Unity configuration for the main container.
