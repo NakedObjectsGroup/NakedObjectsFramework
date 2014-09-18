@@ -17,27 +17,13 @@ using NakedObjects.EntityObjectStore;
 using NakedObjects.Helpers.Test.ViewModel;
 using NakedObjects.Services;
 using NakedObjects.Xat;
+using NakedObjects.Helpers.Test;
 
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
-    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {}
 
-    [TestClass, Ignore]
-    public class TestObjectFinderWithCompoundKeys : AcceptanceTestCase {
-        private int countCustomerOnes;
-        private int countCustomerThrees;
-        private int countCustomerTwos;
-        private int countEmployees;
-        private int countPayments;
-        private int countSuppliers;
-        private ITestObject customer1;
-        private ITestObject customer2a;
-        private ITestObject customer2b;
-        private ITestObject customer3;
-        private ITestObject emp1;
-        private ITestProperty key1;
-        private ITestProperty payee1;
-        private ITestObject payment1;
-        private ITestObject supplier1;
+    [TestClass]
+    public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
+      
 
         protected override IServicesInstaller MenuServices {
             get {
@@ -47,120 +33,26 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
                     new SimpleRepository<CustomerOne>(),
                     new SimpleRepository<CustomerTwo>(),
                     new SimpleRepository<CustomerThree>(),
-                    new SimpleRepository<CustomerFour>(),
                     new SimpleRepository<Supplier>(),
                     new SimpleRepository<Employee>()
                 });
             }
         }
 
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingCodeFirstContext(() => new PaymentContext("HelpersTest"));
-            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
-        }
-
         [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc) {
-            Database.SetInitializer(new DatabaseInitializer());
-            InitializeNakedObjectsFramework(new TestViewModel());
+        public  static void SetupTestFixture(TestContext tc) {
+            InitializeNakedObjectsFramework(new TestObjectFinderWithCompoundKeys());
         }
 
         [ClassCleanup]
-        public static void TearDownTest() {
-            CleanupNakedObjectsFramework(new TestViewModel());
-        }
-
-        [TestInitialize]
-        public void Initialize() {
-            StartTest();
-            payment1 = CreatePayment();
-            customer1 = CreateCustomerOnes();
-            customer2a = CreateCustomerTwos();
-            customer2b = CreateCustomerTwos();
-            customer3 = CreateCustomerThrees();
-            supplier1 = CreateSupplier();
-            payee1 = payment1.GetPropertyByName("Payee");
-            key1 = payment1.GetPropertyByName("Payee Compound Key");
-            emp1 = CreateEmployee("foo");
-        }
-
-        [TestCleanup]
-        public void CleanUp() {
-            countPayments = 0;
-            countCustomerTwos = 0;
-            countSuppliers = 0;
-            countEmployees = 0;
-            payment1 = null;
-            customer1 = null;
-            customer2a = null;
-            customer2b = null;
-            customer3 = null;
-            payee1 = null;
-            key1 = null;
-            emp1 = null;
+        public  static void TearDownTest() {
+            CleanupNakedObjectsFramework(new TestObjectFinderWithCompoundKeys());
+            Database.Delete(PaymentContext.DatabaseName);
         }
 
 
-        private ITestObject CreatePayment() {
-            ITestObject pay = GetTestService("Payments").GetAction("New Instance").InvokeReturnObject();
-            countPayments++;
-            pay.GetPropertyByName("Id").SetValue(countPayments.ToString());
-            pay.Save();
-            return pay;
-        }
-
-        private ITestObject CreateCustomerOnes() {
-            ITestObject cust = GetTestService("Customer Ones").GetAction("New Instance").InvokeReturnObject();
-            countCustomerOnes++;
-            cust.GetPropertyByName("Id").SetValue(countCustomerOnes.ToString());
-            cust.Save();
-            return cust;
-        }
-
-        private ITestObject CreateCustomerTwos() {
-            ITestObject cust = GetTestService("Customer Twos").GetAction("New Instance").InvokeReturnObject();
-            countCustomerTwos++;
-            cust.GetPropertyByName("Id").SetValue(countCustomerTwos.ToString());
-            cust.GetPropertyByName("Id2").SetValue((countCustomerTwos + 1000).ToString());
-            cust.Save();
-            return cust;
-        }
-
-        private ITestObject CreateCustomerThrees() {
-            ITestObject cust = GetTestService("Customer Threes").GetAction("New Instance").InvokeReturnObject();
-            countCustomerThrees++;
-            cust.GetPropertyByName("Id").SetValue(countCustomerThrees.ToString());
-            cust.GetPropertyByName("Id2").SetValue((countCustomerThrees + 1000).ToString());
-            cust.GetPropertyByName("Number").SetValue((countCustomerThrees + 2000).ToString());
-            cust.Save();
-            return cust;
-        }
-
-        private ITestObject CreateSupplier() {
-            ITestObject sup = GetTestService("Suppliers").GetAction("New Instance").InvokeReturnObject();
-            countSuppliers++;
-            sup.GetPropertyByName("Id").SetValue(countSuppliers.ToString());
-            sup.GetPropertyByName("Id2").SetValue((countSuppliers + 2000).ToString());
-            sup.Save();
-            return sup;
-        }
-
-
-        private ITestObject CreateEmployee(string stringKey) {
-            ITestObject emp = GetTestService("Employees").GetAction("New Instance").InvokeReturnObject();
-            countEmployees++;
-            emp.GetPropertyByName("Id").SetValue(countEmployees.ToString());
-            emp.GetPropertyByName("Id2").SetValue(stringKey);
-            emp.Save();
-            return emp;
-        }
-
-
-        [TestMethod]
-        public void SetAssociatedObject() {
+               [TestMethod]
+        public virtual void SetAssociatedObject() {
             payee1.SetObject(customer2a);
             key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
 
@@ -171,21 +63,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         }
 
         [TestMethod]
-        public void FailsIfAssociatedObjectHasNoKeys() {
-            ITestObject cust = GetTestService("Customer Fours").GetAction("New Instance").InvokeReturnObject();
-            cust.GetPropertyByName("Id").SetValue("1");
-            cust.Save();
-            try {
-                payee1.SetObject(cust);
-                throw new AssertFailedException("Exception should have been thrown");
-            }
-            catch (Exception e) {
-                Assert.AreEqual("Object: NakedObjects.Proxy.NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerFour has no Keys defined", e.Message);
-            }
-        }
-
-        [TestMethod]
-        public void WorksWithASingleIntegerKey() {
+        public virtual void WorksWithASingleIntegerKey() {
             payee1.SetObject(customer1);
             key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerOne|1");
             payee1.ClearObject();
@@ -196,7 +74,8 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         }
 
         [TestMethod]
-        public void WorksWithTripleIntegerKey() {
+        public virtual void WorksWithTripleIntegerKey()
+        {
             payee1.SetObject(customer3);
             key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree|1|1001|2001");
             payee1.ClearObject();
@@ -207,7 +86,8 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         }
 
         [TestMethod]
-        public void FailsIfTypeNameIsEmpty() {
+        public virtual void FailsIfTypeNameIsEmpty()
+        {
             key1.SetValue("|1|1001|2001");
             try {
                 payee1.AssertIsNotEmpty();
@@ -219,7 +99,8 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         }
 
         [TestMethod]
-        public void FailsIfTypeNameIsWrong() {
+        public virtual void FailsIfTypeNameIsWrong()
+        {
             key1.SetValue("CustomerThree|1|1001|2001");
             try {
                 payee1.AssertIsNotEmpty();
@@ -232,7 +113,8 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
 
 
         [TestMethod]
-        public void FailsIfTooFewKeysSupplied() {
+        public virtual void FailsIfTooFewKeysSupplied()
+        {
             key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree|1|1001");
             try {
                 payee1.AssertIsNotEmpty();
@@ -245,7 +127,8 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
 
 
         [TestMethod]
-        public void FailsIfTooManyKeysSupplied() {
+        public virtual void FailsIfTooManyKeysSupplied()
+        {
             key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001|2001");
             try {
                 payee1.AssertIsNotEmpty();
@@ -258,7 +141,8 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
 
 
         [TestMethod]
-        public void ChangeAssociatedObjectType() {
+        public virtual void ChangeAssociatedObjectType()
+        {
             payee1.SetObject(customer2a);
             key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
             payee1.SetObject(supplier1);
@@ -269,7 +153,8 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
 
 
         [TestMethod]
-        public void ClearAssociatedObject() {
+        public virtual void ClearAssociatedObject()
+        {
             payee1.SetObject(customer2a);
             payee1.ClearObject();
             key1.AssertIsEmpty();
@@ -277,7 +162,8 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
 
 
         [TestMethod]
-        public void GetAssociatedObject() {
+        public virtual void GetAssociatedObject()
+        {
             key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
             payee1.AssertIsNotEmpty();
             payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("1");
@@ -290,117 +176,10 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         }
 
         [TestMethod]
-        public void NoAssociatedObject() {
+        public virtual void NoAssociatedObject()
+        {
             key1.AssertIsEmpty();
         }
     }
 
-    #region Classes used by test
-
-    public class PaymentContext : DbContext {
-        public PaymentContext(string name) : base(name) {}
-
-        public DbSet<Payment> Payments { get; set; }
-        public DbSet<CustomerOne> CustomerOnes { get; set; }
-        public DbSet<CustomerTwo> CustomerTwos { get; set; }
-        public DbSet<CustomerThree> CustomerThrees { get; set; }
-        public DbSet<CustomerFour> CustomerFours { get; set; }
-        public DbSet<Supplier> Suppliers { get; set; }
-        public DbSet<Employee> Employees { get; set; }
-    }
-
-
-    public class Payment {
-        public IDomainObjectContainer Container { protected get; set; }
-        public virtual int Id { get; set; }
-
-        #region Payee Property (Interface Association)
-
-        private IPayee myPayee;
-        public IObjectFinder ObjectFinder { set; protected get; }
-
-        [Optionally]
-        public virtual string PayeeCompoundKey { get; set; }
-
-        [NotPersisted, Optionally]
-        public IPayee Payee {
-            get {
-                if (myPayee == null & !String.IsNullOrEmpty(PayeeCompoundKey)) {
-                    myPayee = ObjectFinder.FindObject<IPayee>(PayeeCompoundKey);
-                }
-                return myPayee;
-            }
-            set {
-                myPayee = value;
-                if (value == null) {
-                    PayeeCompoundKey = null;
-                }
-                else {
-                    PayeeCompoundKey = ObjectFinder.GetCompoundKey(value);
-                }
-            }
-        }
-
-        #endregion
-    }
-
-    public interface IPayee {}
-
-    public class CustomerOne : IPayee {
-        [Key]
-        public virtual int Id { get; set; }
-    }
-
-    public class CustomerTwo : IPayee {
-        [Key]
-        [Column(Order = 1)]
-        public virtual int Id { get; set; }
-
-        [Key]
-        [Column(Order = 2)]
-        public virtual string Id2 { get; set; }
-    }
-
-
-    public class CustomerThree : IPayee {
-        [Key]
-        [Column(Order = 1)]
-        public virtual int Id { get; set; }
-
-        [Key]
-        [Column(Order = 2)]
-        public virtual string Id2 { get; set; }
-
-        [Key]
-        [Column(Order = 3)]
-        public virtual int Number { get; set; }
-    }
-
-    // No Key field
-    public class CustomerFour : IPayee {
-        public virtual int Id { get; set; }
-    }
-
-    public class Supplier : IPayee {
-        [Key]
-        [Column(Order = 1)]
-        public virtual int Id { get; set; }
-
-        [Key]
-        [Column(Order = 2)]
-        public virtual short Id2 { get; set; }
-    }
-
-
-    public class Employee : IPayee {
-        [Key]
-        [Column(Order = 1)]
-        public virtual int Id { get; set; }
-
-        [Key]
-        [Column(Order = 2)]
-        public virtual string Id2 { get; set; }
-    }
-
-    #endregion
 }

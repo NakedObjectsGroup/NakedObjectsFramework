@@ -18,23 +18,13 @@ using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.Xat;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
+using NakedObjects.Helpers.Test;
 
 namespace NakedObjects.SystemTest.ObjectFinderGuid {
-    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext>
-    {
-        protected override void Seed(PaymentContext context)
-        {
-            context.Payments.Add(new Payment());
-            context.Customers.Add(new Customer() { Guid = new Guid("0c1ced04-7016-11e0-9c44-78544824019b") });
-            context.Customers.Add(new Customer() { Guid = new Guid("3d9d6ca0-7016-11e0-b12a-9e544824019b") });
-            context.Suppliers.Add(new Supplier() {Guid = new Guid("89bc90ec-7017-11e0-a08c-57564824019b")} );
-            context.SaveChanges();
-        }
-    }
 
     [TestClass]
-    public class TestObjectFinderWithGuids : AcceptanceTestCase {
-        private const string databaseName = "ObjectFinderGuid";
+    public class TestObjectFinderWithGuids : AbstractHelperTest<PaymentContext> {
+
         private ITestObject customer1;
         private ITestObject customer2;
         private ITestProperty key1;
@@ -53,23 +43,15 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
             }
         }
 
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingCodeFirstContext(() => new PaymentContext(databaseName));
-            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
-        }
-
         [ClassInitialize]
         public static void SetupTestFixture(TestContext tc) {
-            Database.SetInitializer(new DatabaseInitializer());
-            InitializeNakedObjectsFramework(new TestViewModel());
+            InitializeNakedObjectsFramework(new TestObjectFinderWithGuids());
         }
 
         [ClassCleanup]
         public static void TearDownTest() {
-            CleanupNakedObjectsFramework(new TestViewModel());
-            Database.Delete(databaseName);
+            CleanupNakedObjectsFramework(new TestObjectFinderWithGuids());
+            Database.Delete(PaymentContext.DatabaseName);
         }
 
         [TestInitialize]
@@ -140,12 +122,30 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
     #region Classes used by test
 
     public class PaymentContext : DbContext {
-        public PaymentContext(string name) : base(name) {}
+        public const string DatabaseName = "ObjectFinderGuid";
+        public PaymentContext() : base(DatabaseName) { }
 
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Employee> Employees { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            Database.SetInitializer(new DatabaseInitializer());
+        }
+    }
+
+    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext>
+    {
+        protected override void Seed(PaymentContext context)
+        {
+            context.Payments.Add(new Payment());
+            context.Customers.Add(new Customer() { Guid = new Guid("0c1ced04-7016-11e0-9c44-78544824019b") });
+            context.Customers.Add(new Customer() { Guid = new Guid("3d9d6ca0-7016-11e0-b12a-9e544824019b") });
+            context.Suppliers.Add(new Supplier() { Guid = new Guid("89bc90ec-7017-11e0-a08c-57564824019b") });
+            context.SaveChanges();
+        }
     }
 
     public class Payment {

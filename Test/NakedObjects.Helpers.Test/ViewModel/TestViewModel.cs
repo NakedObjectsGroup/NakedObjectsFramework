@@ -19,7 +19,7 @@ using NakedObjects.Xat;
 namespace NakedObjects.Helpers.Test.ViewModel {
     public class DatabaseInitializer : DropCreateDatabaseAlways<FooContext> {}
 
-    [TestClass, Ignore]
+    [TestClass]
     public class TestViewModel : AcceptanceTestCase {
         private ITestObject foo1;
         private ITestService views;

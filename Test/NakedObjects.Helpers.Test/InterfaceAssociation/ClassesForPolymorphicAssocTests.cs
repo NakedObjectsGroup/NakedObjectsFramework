@@ -29,9 +29,6 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
 
         #region Payee Property of type IPayee ('role' interface)
 
-        //TODO:  Create a type 'PolymorphicPaymentPayeeLink', which can either inherit from PolymorphicLink<IPayee, PolymorphicPayment>
-        //or otherwise implement IPolymorphicLink<IPayee, PolymorphicPayment>.
-
         private IPayee _Payee;
 
         [Disabled]
@@ -89,7 +86,6 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
 
     public class PolymorphicPaymentPayeeLink : PolymorphicLink<IPayee, PolymorphicPayment> {}
 
-
     public class CustomerAsPayee : IPayee {
         public Services.PolymorphicNavigator PolymorphicNavigator { set; protected get; }
 
@@ -104,7 +100,6 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
             return PolymorphicNavigator.FindOwners<PolymorphicPaymentPayeeLink, IPayee, PolymorphicPayment>(this);
         }
     }
-
 
     public class SupplierAsPayee : IPayee {
         #region IPayee Members
@@ -134,7 +129,6 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
         }
     }
 
-
     public class ExpenseClaimAsPayableItem : IPayableItem {
         #region IPayableItem Members
 
@@ -148,23 +142,54 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
 
     #region Code First DBContext 
 
-    public class MyContext : DbContext {
-        public MyContext(string name) : base(name) {}
-        public MyContext() {}
+    public class PolymorphicNavigationContext : DbContext {
+        public PolymorphicNavigationContext(string name) : base(name) {}
+        public PolymorphicNavigationContext() {}
         public DbSet<PolymorphicPayment> Payments { get; set; }
+        public DbSet<PolymorphicPaymentPayeeLink> PayeeLinks { get; set; }
+        public DbSet<PolymorphicPaymentPayableItemLink> PayableItemLinks { get; set; }
         public DbSet<CustomerAsPayee> Customers { get; set; }
         public DbSet<SupplierAsPayee> Suppliers { get; set; }
         public DbSet<InvoiceAsPayableItem> Invoices { get; set; }
         public DbSet<ExpenseClaimAsPayableItem> ExpenseClaims { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-            //Initialisation
-            //Use the Naked Objects > DbInitialiser template to add a custom initialiser, then reference thus:
-            Database.SetInitializer(new DropCreateDatabaseAlways<MyContext>());
+ 
+            Database.SetInitializer(new MyDbInitialiser());
+        }
+    }
 
-            //Mappings
-            //Use the Naked Objects > Mapping template to add mapping classes & reference them thus:
-            //modelBuilder.Configurations.Add(new Employee_Mapping());
+    public class MyDbInitialiser : DropCreateDatabaseIfModelChanges<PolymorphicNavigationContext>
+    {
+
+        protected override void Seed(PolymorphicNavigationContext context)
+        {
+            context.Payments.Add(new PolymorphicPayment());
+            context.Payments.Add(new PolymorphicPayment());
+            //3
+            var payment3 = new PolymorphicPayment();
+            context.Payments.Add(payment3);
+            var payeeLink = new PolymorphicPaymentPayeeLink() {
+                AssociatedRoleObjectType = "NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee", 
+                AssociatedRoleObjectId = 1};
+            context.PayeeLinks.Add(payeeLink);
+            payment3.PayeeLink = payeeLink;
+
+            context.Payments.Add(new PolymorphicPayment());
+            context.Payments.Add(new PolymorphicPayment());
+            context.Payments.Add(new PolymorphicPayment());
+            context.Payments.Add(new PolymorphicPayment());
+            context.Payments.Add(new PolymorphicPayment());
+            context.Payments.Add(new PolymorphicPayment());
+            context.Payments.Add(new PolymorphicPayment());
+            context.Payments.Add(new PolymorphicPayment());
+
+            context.Customers.Add(new CustomerAsPayee());
+
+            context.Invoices.Add(new InvoiceAsPayableItem());
+            context.Invoices.Add(new InvoiceAsPayableItem());
+
+            context.SaveChanges();
         }
     }
 

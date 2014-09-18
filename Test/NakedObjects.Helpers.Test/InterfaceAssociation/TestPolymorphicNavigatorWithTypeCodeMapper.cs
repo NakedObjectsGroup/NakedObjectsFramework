@@ -20,42 +20,24 @@ using NakedObjects.SystemTest.PolymorphicAssociations;
 using NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper;
 using NakedObjects.Xat;
 
-namespace NakedObjects.SystemTest.PolymorphicNavigatorWithTypeCodeMapper {
-    public class DatabaseInitializer : DropCreateDatabaseAlways<MyContext> {}
+namespace NakedObjects.SystemTest.PolymorphicNavigator {
 
-
-    [TestClass, Ignore]
-    public class TestPolymorphicNavigatorWithTypeCodeMapper : AcceptanceTestCase {
+    [TestClass]
+    public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract
+    {
         #region Setup/Teardown
 
-        // to get EF SqlServer Dll in memory
-        public SqlProviderServices instance = SqlProviderServices.Instance;
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingCodeFirstContext(() => new PaymentContext("HelpersTest"));
-            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
-        }
 
         [ClassInitialize]
         public static void SetupTestFixture(TestContext tc) {
             Database.SetInitializer(new DatabaseInitializer());
-            InitializeNakedObjectsFramework(new TestViewModel());
+            InitializeNakedObjectsFramework(new TestPolymorphicNavigatorWithTypeCodeMapper());
         }
 
         [ClassCleanup]
         public static void TearDownTest() {
-            CleanupNakedObjectsFramework(new TestViewModel());
+            CleanupNakedObjectsFramework(new TestPolymorphicNavigatorWithTypeCodeMapper());
         }
-
-        [TestInitialize]
-        public void Initialize() {
-            StartTest();
-        }
-
-        [TestCleanup]
-        public void CleanUp() {}
 
         #endregion
 
@@ -79,101 +61,72 @@ namespace NakedObjects.SystemTest.PolymorphicNavigatorWithTypeCodeMapper {
         #endregion
 
         [TestMethod]
-        public void SetPolymorphicProperty() {
-            ITestObject payment1 = GetTestService("Polymorphic Payments").GetAction("New Instance").InvokeReturnObject();
-
-            ITestObject customer1 = GetTestService("Customer As Payees").GetAction("New Instance").InvokeReturnObject().Save();
-            string cusId = customer1.GetPropertyByName("Id").Title;
-
-            ITestProperty payeeProp = payment1.GetPropertyByName("Payee");
-            ITestProperty payeeLinkProp = payment1.GetPropertyByName("Payee Link").AssertIsUnmodifiable().AssertIsEmpty();
-            payeeProp.SetObject(customer1);
-            payment1.Save();
-            ITestObject payeeLink = payeeLinkProp.AssertIsNotEmpty().ContentAsObject;
-            ITestProperty associatedType = payeeLink.GetPropertyByName("Associated Role Object Type").AssertIsUnmodifiable();
-            associatedType.AssertValueIsEqual("CUS");
-            ITestProperty associatedId = payeeLink.GetPropertyByName("Associated Role Object Id").AssertIsUnmodifiable();
-            associatedId.AssertValueIsEqual(cusId);
-
-            ITestObject sup1 = GetTestService("Supplier As Payees").GetAction("New Instance").InvokeReturnObject().Save();
-            string supId = sup1.GetPropertyByName("Id").Title;
-
-            payeeProp.SetObject(sup1);
-            associatedType.AssertValueIsEqual("SUP");
-            associatedId.AssertValueIsEqual(supId);
-
-            payeeProp.ClearObject();
-            payeeLinkProp.AssertIsEmpty();
-            payeeProp.AssertIsEmpty();
+        public void SetPolymorphicPropertyOnTransientObject()
+        {
+            base.SetPolymorphicPropertyOnTransientObject("CUS");
         }
 
         [TestMethod]
-        public void ClearPolymorphicProperty() {
-            ITestObject payment1 = GetTestService("Polymorphic Payments").GetAction("New Instance").InvokeReturnObject();
-
-            ITestObject customer1 = GetTestService("Customer As Payees").GetAction("New Instance").InvokeReturnObject().Save();
-            ITestProperty payeeProp = payment1.GetPropertyByName("Payee");
-            ITestProperty payeeLinkProp = payment1.GetPropertyByName("Payee Link");
-            payeeProp.SetObject(customer1);
-            payment1.Save();
-            payeeLinkProp.AssertIsNotEmpty();
-            payeeProp.AssertIsNotEmpty();
-
-            payeeProp.ClearObject();
-            payeeLinkProp.AssertIsEmpty();
-            payeeProp.AssertIsEmpty();
+        public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject()
+        {
+            base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
         }
 
         [TestMethod]
-        public void PolymorphicCollection() {
-            ITestObject payment = GetTestService("Polymorphic Payments").GetAction("New Instance").InvokeReturnObject().Save();
+        public  void SetPolymorphicPropertyOnPersistentObject()
+        {
+            base.SetPolymorphicPropertyOnPersistentObject("CUS");
+        }
 
-            ITestObject inv = GetTestService("Invoice As Payable Items").GetAction("New Instance").InvokeReturnObject().Save();
-            string invId = inv.GetPropertyByName("Id").Title;
-            ITestObject exp = GetTestService("Expense Claim As Payable Items").GetAction("New Instance").InvokeReturnObject().Save();
-            string expId = exp.GetPropertyByName("Id").Title;
+        [TestMethod, Ignore]
+        public override void ChangePolymorphicPropertyOnPersistentObject()
+        {
+            base.ChangePolymorphicPropertyOnPersistentObject();
+        }
 
-            ITestCollection links = payment.GetPropertyByName("Payable Item Links").ContentAsCollection;
-            ITestProperty items = payment.GetPropertyByName("Payable Items");
+        [TestMethod, Ignore]
+        public override void ClearPolymorphicProperty()
+        {
+            base.ClearPolymorphicProperty();
+        }
 
-            links.AssertCountIs(0);
-            items.ContentAsCollection.AssertCountIs(0);
+        [TestMethod]
+        public  void PolymorphicCollectionAddMutlipleItemsOfOneType()
+        {
+            base.PolymorphicCollectionAddMutlipleItemsOfOneType("INV");
+        }
 
-            //Add an Invoice
-            payment.GetAction("Add Payable Item").InvokeReturnObject(inv);
-            links.AssertCountIs(1);
-            ITestObject link1 = links.ElementAt(0);
-            link1.GetPropertyByName("Associated Role Object Type").AssertValueIsEqual("INV");
-            link1.GetPropertyByName("Associated Role Object Id").AssertValueIsEqual(invId);
-            ITestObject item = items.ContentAsCollection.AssertCountIs(1).ElementAt(0);
-            item.AssertIsType(typeof (InvoiceAsPayableItem));
+        [TestMethod]
+        public  void PolymorphicCollectionAddDifferentItems()
+        {
+            base.PolymorphicCollectionAddDifferentItems("INV", "EXP");
+        }
 
-            //Add an expense claim
-            payment.GetAction("Add Payable Item").InvokeReturnObject(exp);
-            links.AssertCountIs(2);
-            ITestObject link2 = links.ElementAt(1);
-            link2.GetPropertyByName("Associated Role Object Type").AssertValueIsEqual("EXP");
-            link2.GetPropertyByName("Associated Role Object Id").AssertValueIsEqual(expId);
-            item = items.ContentAsCollection.AssertCountIs(2).ElementAt(1);
-            item.AssertIsType(typeof (ExpenseClaimAsPayableItem));
 
-            //Now remove the invoice
-            payment.GetAction("Remove Payable Item").InvokeReturnObject(inv);
-            links.AssertCountIs(1);
-            link1 = links.ElementAt(0);
-            link1.GetPropertyByName("Associated Role Object Type").AssertValueIsEqual("EXP");
-            link1.GetPropertyByName("Associated Role Object Id").AssertValueIsEqual(expId);
-            item = items.ContentAsCollection.AssertCountIs(1).ElementAt(0);
-            item.AssertIsType(typeof (ExpenseClaimAsPayableItem));
+        [TestMethod, Ignore]
+        public override void AttemptToAddSameItemTwice()
+        {
+            base.AttemptToAddSameItemTwice();
+        }
 
-            //Try adding same expense claim again
-            payment.GetAction("Add Payable Item").InvokeReturnObject(exp);
-            links.AssertCountIs(1); //Should still be 1
-            link1 = links.ElementAt(0);
-            link1.GetPropertyByName("Associated Role Object Type").AssertValueIsEqual("EXP");
-            link1.GetPropertyByName("Associated Role Object Id").AssertValueIsEqual(expId);
-            item = items.ContentAsCollection.AssertCountIs(1).ElementAt(0);
-            item.AssertIsType(typeof (ExpenseClaimAsPayableItem));
+        [TestMethod, Ignore]
+        public override void RemoveItem()
+        {
+            base.RemoveItem();
+        }
+
+
+        [TestMethod]
+        public override void AttemptToRemoveNonExistentItem()
+        {
+            base.AttemptToRemoveNonExistentItem();
+        }
+
+
+        [TestMethod, Ignore]
+        public override void FindOwnersForObject()
+        {
+            base.FindOwnersForObject();
         }
     }
 

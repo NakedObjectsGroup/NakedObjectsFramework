@@ -117,7 +117,7 @@ namespace NakedObjects.Services {
                 return link;
             }
             ThrowExceptionIfIdIsZero(value);
-            if (Container.IsPersistent(this) && value != null) {
+            if (Container.IsPersistent(owner) && value != null) {
                 return AddLink<TLink, TRole, TOwner>(value, owner);
             }
             return null;

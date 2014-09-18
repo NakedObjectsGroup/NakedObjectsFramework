@@ -17,24 +17,11 @@ using NakedObjects.Helpers.Test.ViewModel;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using System.Linq;
+using NakedObjects.Helpers.Test;
 
 namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
-    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {
-        protected override void Seed(PaymentContext context)
-        {
-            context.Payments.Add(new Payment());
-            context.Customers.Add(new Customer());
-            context.Customers.Add(new Customer());
-            context.Suppliers.Add(new Supplier());
-            context.Employees.Add(new Employee() { Id = "foo" });
-            context.Employees.Add(new Employee() { Id = "bar" });
-            context.SaveChanges();
-        }
-    }
-
         [TestClass]
-    public class TestObjectFinderWithSingleKeys : AcceptanceTestCase {
-            private const string databaseName = "ObjectFinderSingleKey";
+    public class TestObjectFinderWithSingleKeys : AbstractHelperTest<PaymentContext> {
         private ITestObject customer1 = null;
         private ITestObject customer2 = null;
         private ITestObject emp1 = null;
@@ -56,38 +43,28 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
             }
         }
 
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-            config.UsingCodeFirstContext(() => new PaymentContext(databaseName));
-            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
-        }
-
         [ClassInitialize]
         public static void SetupTestFixture(TestContext tc) {
-            Database.SetInitializer(new DatabaseInitializer());
-            InitializeNakedObjectsFramework(new TestViewModel());
+            InitializeNakedObjectsFramework(new TestObjectFinderWithSingleKeys());
         }
 
         [ClassCleanup]
         public static void TearDownTest() {
-            CleanupNakedObjectsFramework(new TestViewModel());
-            Database.Delete(databaseName);
+            CleanupNakedObjectsFramework(new TestObjectFinderWithSingleKeys());
+            Database.Delete(PaymentContext.DatabaseName);
         }
 
         [TestInitialize]
         public void Initialize() {
             StartTest();
-            payment1 = GetTestService("Payments").GetAction("All Instances").InvokeReturnCollection().ElementAt(0);
+            payment1 = GetAllInstances("Payments", 0);
             payee1 = payment1.GetPropertyByName("Payee");
             key1 = payment1.GetPropertyByName("Payee Compound Key");
-            var findCustomer = GetTestService("Customers").GetAction("Find By Key");
-            customer1 = findCustomer.InvokeReturnObject(1);
-            customer2 = findCustomer.InvokeReturnObject(2);
-            supplier1 = GetTestService("Suppliers").GetAction("Find By Key").InvokeReturnObject(1);
-            var employees = GetTestService("Employees").GetAction("All Instances").InvokeReturnCollection();
-            emp1 = employees.ElementAt(1);
-            emp2 = employees.ElementAt(0);
+            customer1 = GetAllInstances("Customers", 0);
+            customer2 = GetAllInstances("Customers", 1);
+            supplier1 = GetAllInstances("Suppliers", 0);
+            emp1 = GetAllInstances("Employees", 1);
+            emp2 = GetAllInstances("Employees", 0); //They seem to be persisted in reverse order!
         }
 
         [TestCleanup]
@@ -99,9 +76,6 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
             emp1 = null;
             emp2 = null;
         }
-
-   
-
 
         [TestMethod]
         public void SetAssociatedObject() {
@@ -177,12 +151,34 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
     #region Classes used by test
 
     public class PaymentContext : DbContext {
-        public PaymentContext(string name) : base(name) {}
+
+        public const string DatabaseName = "ObjectFinderSingleKey";
+
+        public PaymentContext() : base(DatabaseName) { }
 
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Employee> Employees { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            Database.SetInitializer(new DatabaseInitializer()); 
+        }
+    }
+
+    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext>
+    {
+        protected override void Seed(PaymentContext context)
+        {
+            context.Payments.Add(new Payment());
+            context.Customers.Add(new Customer());
+            context.Customers.Add(new Customer());
+            context.Suppliers.Add(new Supplier());
+            context.Employees.Add(new Employee() { Id = "foo" });
+            context.Employees.Add(new Employee() { Id = "bar" });
+            context.SaveChanges();
+        }
     }
 
 
