@@ -47,13 +47,13 @@ namespace NakedObjects.SystemTest.Attributes.NotContributed {
         }
 
         public class TestService {
-            public void ContributedAction(Object1 obj) {}
+            public void ContributedAction(Default1 obj) {}
 
             [NotContributedAction]
-            public void NotContributedAction(Object1 obj) {}
+            public void NotContributedAction(Default1 obj) {}
 
-            public Object1 NewObject1() {
-                return new Object1();
+            public Default1 NewObject1() {
+                return new Default1();
             }
         }
 

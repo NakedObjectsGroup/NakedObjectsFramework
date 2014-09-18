@@ -4,16 +4,16 @@
 using System.Linq;
 using NakedObjects.Xat;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Practices.Unity;
+using NakedObjects.EntityObjectStore;
+using System;
+using System.Data.Entity;
 
 namespace NakedObjects.SystemTest {
-    public abstract class AbstractSystemTest : AcceptanceTestCase {
-        #region Constructors
+    public abstract class AbstractSystemTest : AcceptanceTestCase 
+    {
 
-        public AbstractSystemTest(string name) : base(name) {}
 
-        public AbstractSystemTest() : this(typeof (AbstractSystemTest).Name) {}
-
-        #endregion
 
         /// <summary>
         /// Assumes that a SimpleRepository for the type T has been registered in Services
@@ -22,14 +22,5 @@ namespace NakedObjects.SystemTest {
             return GetTestService(typeof (T).Name + "s").GetAction("New Instance").InvokeReturnObject();
         }
 
-        /// <summary>
-        /// Assumes that a SimpleRepository for the type T has been registered in Services.
-        /// Throws error if more than one match found.
-        /// </summary>
-        protected ITestObject FindTestObjectByTitle<T>(string match) {
-            ITestCollection results = GetTestService(typeof (T).Name + "s").GetAction("Find By Title").InvokeReturnCollection(match);
-            Assert.AreEqual(1, results.Count());
-            return results.FirstOrDefault();
-        }
     }
 }

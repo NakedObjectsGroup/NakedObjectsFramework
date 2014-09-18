@@ -149,6 +149,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -157,19 +158,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractSystemTest.cs" />
+    <Compile Include="Attributes\TestKeyAttribute.cs" />
     <Compile Include="Attributes\TestValidateProgrammaticUpdatesAttribute.cs" />
-    <Compile Include="Attributes\TestDefaultValueAttribute.cs" />
+    <Compile Include="Attributes\TestAttributes.cs" />
     <Compile Include="Attributes\TestExcludeFromFindMenuAttribute.cs" />
     <Compile Include="Attributes\TestNotContributedActionAttribute.cs" />
-    <Compile Include="Attributes\TestRangeAttribute.cs" />
     <Compile Include="Attributes\TestStringLengthAttribute.cs" />
-    <Compile Include="Attributes\TestDisplayNameAttribute.cs" />
-    <Compile Include="Attributes\TestDescriptionAttribute.cs" />
-    <Compile Include="Attributes\TestDescribedAsAttribute.cs" />
-    <Compile Include="Attributes\TestDisabledAttribute.cs" />
-    <Compile Include="Attributes\TestHiddenAttribute.cs" />
-    <Compile Include="Attributes\TestIconNameAttribute.cs" />
-    <Compile Include="Attributes\TestImmutableAttribute.cs" />
     <Compile Include="Audit\TestAuditManager.cs" />
     <Compile Include="Authorization\TestCustomAuthorizerInstallerUsersAndRoles.cs" />
     <Compile Include="Authorization\TestAttributeAuthorizationUsersAndRoles.cs" />
@@ -177,7 +171,7 @@
     <Compile Include="Authorization\TestCustomAuthorizerInstaller2.cs" />
     <Compile Include="Authorization\TestCustomAuthorizerInstaller3.cs" />
     <Compile Include="Authorization\TestCustomAuthorizationManager.cs" />
-    <Compile Include="Attributes\TestKeyAttribute.cs" />
+    <Compile Include="AbstractSystemTest2.cs" />
     <Compile Include="Methods\TestAutoCompleteMethod.cs" />
     <Compile Include="Other\EnumTest.cs" />
     <Compile Include="Other\TestParentChildPersistence.cs" />
@@ -209,12 +203,6 @@
     <Compile Include="Methods\TestValidationMethod.cs" />
     <Compile Include="Persistence\TransactionsInRelationToLifecycleMethods.cs" />
     <Compile Include="Repositories\TestSimpleRepository.cs" />
-    <Compile Include="Attributes\TestMaskAttribute.cs" />
-    <Compile Include="Attributes\TestMaxLengthAttribute.cs" />
-    <Compile Include="Attributes\TestNamedAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Attributes\TestRegExAttribute.cs" />
     <Compile Include="XATs\TestFailureScenarios.cs" />
   </ItemGroup>
   <ItemGroup>

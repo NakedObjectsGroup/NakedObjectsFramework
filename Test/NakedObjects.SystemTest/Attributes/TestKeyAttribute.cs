@@ -13,7 +13,7 @@ namespace NakedObjects.SystemTest.Other
     /// <summary>
     /// 
     /// </summary>
-    [TestClass, Ignore]
+    [TestClass, Ignore] //Ignore pending deletion of KeyFacet #5168
     public class TestKeyAttribute : AbstractSystemTest
     {
         #region Setup/Teardown
