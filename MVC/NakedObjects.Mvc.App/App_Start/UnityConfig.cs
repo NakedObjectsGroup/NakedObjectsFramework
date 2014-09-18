@@ -67,7 +67,9 @@ namespace NakedObjects.Mvc.App.App_Start
                 typeof (ContactRepository),
                 typeof (VendorRepository),
                 typeof (PurchaseOrderRepository),
-                typeof (WorkOrderRepository)
+                typeof (WorkOrderRepository), 
+                typeof(OrderContributedActions),
+                typeof(CustomerContributedActions)
             };
         }
 

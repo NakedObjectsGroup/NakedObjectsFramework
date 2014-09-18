@@ -27,6 +27,7 @@ namespace RestfulObjects.Mvc.App.App_Start {
             var reflector = UnityConfig.GetConfiguredContainer().Resolve<INakedObjectReflector>();
             var services = UnityConfig.Services();
             reflector.InstallServiceSpecifications(services);
+            reflector.PopulateContributedActions(services);
         }
 
         /// <summary>Disposes the Unity container when the application is shut down.</summary>
