@@ -1,4 +1,5 @@
 using System;
+using System.Data.Entity;
 using System.Security.Principal;
 using System.Web;
 using Microsoft.Practices.Unity;
@@ -95,6 +96,8 @@ namespace RestfulObjects.Test.App
         {
             // NOTE: To load from web.config uncomment the line below. Make sure to add a Microsoft.Practices.Unity.Configuration to the using statements.
             // container.LoadConfiguration();
+
+            Database.SetInitializer(new CodeFirstInitializer());
 
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();

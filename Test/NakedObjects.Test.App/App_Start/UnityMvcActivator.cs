@@ -36,6 +36,7 @@ namespace NakedObjects.Mvc.App.App_Start
             var services = UnityConfig.Services();
 
             reflector.InstallServiceSpecifications(services);
+            reflector.PopulateContributedActions(services);
         }
 
         /// <summary>Disposes the Unity container when the application is shut down.</summary>
