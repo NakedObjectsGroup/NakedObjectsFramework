@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
@@ -24,12 +27,12 @@ namespace NakedObjects.Architecture.Interactions {
         private readonly INakedObject target;
 
         private InteractionContext(InteractionType interactionType,
-                                   ISession session,
-                                   bool programmatic,
-                                   INakedObject target,
-                                   IIdentifier id,
-                                   INakedObject proposedArgument,
-                                   INakedObject[] arguments) {
+            ISession session,
+            bool programmatic,
+            INakedObject target,
+            IIdentifier id,
+            INakedObject proposedArgument,
+            INakedObject[] arguments) {
             this.interactionType = interactionType;
             this.programmatic = programmatic;
             this.id = id;
@@ -138,11 +141,11 @@ namespace NakedObjects.Architecture.Interactions {
         /// </summary>
         public static InteractionContext ViewObject(ISession session, INakedObject target) {
             return new InteractionContext(InteractionType.ObjectView,
-                                          session,
-                                          true, target,
-                                          GetIdentifier(target),
-                                          null,
-                                          null);
+                session,
+                true, target,
+                GetIdentifier(target),
+                null,
+                null);
         }
 
 
@@ -151,15 +154,15 @@ namespace NakedObjects.Architecture.Interactions {
         ///     <see cref="Interactions.InteractionType.ObjectPersist" /> persisting or updating an object.
         /// </summary>
         public static InteractionContext PersistingObject(ISession session,
-                                                          bool programmatic,
-                                                          INakedObject target) {
+            bool programmatic,
+            INakedObject target) {
             return new InteractionContext(InteractionType.ObjectPersist,
-                                          session,
-                                          programmatic,
-                                          target,
-                                          GetIdentifier(target),
-                                          null,
-                                          null);
+                session,
+                programmatic,
+                target,
+                GetIdentifier(target),
+                null,
+                null);
         }
 
         /// <summary>
@@ -167,16 +170,16 @@ namespace NakedObjects.Architecture.Interactions {
         ///     <see cref="Interactions.InteractionType.MemberAccess" />  reading a property.
         /// </summary>
         public static InteractionContext AccessMember(ISession session,
-                                                      bool programmatic,
-                                                      INakedObject target,
-                                                      IIdentifier memberIdentifier) {
+            bool programmatic,
+            INakedObject target,
+            IIdentifier memberIdentifier) {
             return new InteractionContext(InteractionType.MemberAccess,
-                                          session,
-                                          programmatic,
-                                          target,
-                                          memberIdentifier,
-                                          null,
-                                          null);
+                session,
+                programmatic,
+                target,
+                memberIdentifier,
+                null,
+                null);
         }
 
         /// <summary>
@@ -184,17 +187,17 @@ namespace NakedObjects.Architecture.Interactions {
         ///     <see cref="Interactions.InteractionType.PropertyParamModify" />  modifying a property or parameter.
         /// </summary>
         public static InteractionContext ModifyingPropParam(ISession session,
-                                                            bool programmatic,
-                                                            INakedObject target,
-                                                            IIdentifier propertyIdentifier,
-                                                            INakedObject proposedArgument) {
+            bool programmatic,
+            INakedObject target,
+            IIdentifier propertyIdentifier,
+            INakedObject proposedArgument) {
             return new InteractionContext(InteractionType.PropertyParamModify,
-                                          session,
-                                          programmatic,
-                                          target,
-                                          propertyIdentifier,
-                                          proposedArgument,
-                                          null);
+                session,
+                programmatic,
+                target,
+                propertyIdentifier,
+                proposedArgument,
+                null);
         }
 
         /// <summary>
@@ -202,17 +205,17 @@ namespace NakedObjects.Architecture.Interactions {
         ///     <see cref="Interactions.InteractionType.CollectionAddTo" />  adding to a collection.
         /// </summary>
         public static InteractionContext AddingToCollection(ISession session,
-                                                            bool programmatic,
-                                                            INakedObject target,
-                                                            IIdentifier collectionIdentifier,
-                                                            INakedObject proposedArgument) {
+            bool programmatic,
+            INakedObject target,
+            IIdentifier collectionIdentifier,
+            INakedObject proposedArgument) {
             return new InteractionContext(InteractionType.CollectionAddTo,
-                                          session,
-                                          programmatic,
-                                          target,
-                                          collectionIdentifier,
-                                          proposedArgument,
-                                          null);
+                session,
+                programmatic,
+                target,
+                collectionIdentifier,
+                proposedArgument,
+                null);
         }
 
         /// <summary>
@@ -220,17 +223,17 @@ namespace NakedObjects.Architecture.Interactions {
         ///     <see cref="Interactions.InteractionType.CollectionRemoveFrom" />  removing from a collection.
         /// </summary>
         public static InteractionContext RemovingFromCollection(ISession session,
-                                                                bool programmatic,
-                                                                INakedObject target,
-                                                                IIdentifier collectionIdentifier,
-                                                                INakedObject proposedArgument) {
+            bool programmatic,
+            INakedObject target,
+            IIdentifier collectionIdentifier,
+            INakedObject proposedArgument) {
             return new InteractionContext(InteractionType.CollectionRemoveFrom,
-                                          session,
-                                          programmatic,
-                                          target,
-                                          collectionIdentifier,
-                                          proposedArgument,
-                                          null);
+                session,
+                programmatic,
+                target,
+                collectionIdentifier,
+                proposedArgument,
+                null);
         }
 
         /// <summary>
@@ -238,17 +241,17 @@ namespace NakedObjects.Architecture.Interactions {
         ///     <see cref="Interactions.InteractionType.ActionInvoke" />  invoking an action.
         /// </summary>
         public static InteractionContext InvokingAction(ISession session,
-                                                        bool programmatic,
-                                                        INakedObject target,
-                                                        IIdentifier actionIdentifier,
-                                                        INakedObject[] arguments) {
+            bool programmatic,
+            INakedObject target,
+            IIdentifier actionIdentifier,
+            INakedObject[] arguments) {
             return new InteractionContext(InteractionType.ActionInvoke,
-                                          session,
-                                          programmatic,
-                                          target,
-                                          actionIdentifier,
-                                          null,
-                                          arguments);
+                session,
+                programmatic,
+                target,
+                actionIdentifier,
+                null,
+                arguments);
         }
 
         /// <summary>

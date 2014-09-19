@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using NakedObjects.Architecture.Adapter;
@@ -61,6 +64,12 @@ namespace NakedObjects.Architecture.Facets.Propparam.Validate.Range {
             return new InvalidRangeException(ic, Min, Max, Invalidates(ic));
         }
 
+        public IConvertible Min { get; private set; }
+        public IConvertible Max { get; private set; }
+        public bool IsDateRange { get; set; }
+
+        #endregion
+
         protected int Compare<T>(T val, T min, T max) where T : struct, IComparable {
             if (val.CompareTo(min) < 0) {
                 return -1;
@@ -101,11 +110,5 @@ namespace NakedObjects.Architecture.Facets.Propparam.Validate.Range {
         private static bool IsDateTime(object o) {
             return o is DateTime;
         }
-
-        #endregion
-
-        public IConvertible Min { get; private set; }
-        public IConvertible Max { get; private set; }
-        public bool IsDateRange { get; set; }
     }
 }

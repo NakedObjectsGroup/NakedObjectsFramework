@@ -1,6 +1,10 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections;
 using NakedObjects.Architecture.Facets;
@@ -16,34 +20,28 @@ using NUnit.Framework;
 namespace NakedObjects.Architecture.Adapter {
     [TestFixture]
     public class ResolveStateTest {
-
-        #region Helpers
-        private static void ExpectException(Action x)
-        {
-            try
-            {
+        private static void ExpectException(Action x) {
+            try {
                 x();
                 Assert.Fail();
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 Assert.IsTrue(true);
             }
         }
 
-        private static void ExpectNoException(Action x)
-        {
-            try
-            {
+        private static void ExpectNoException(Action x) {
+            try {
                 x();
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 Assert.Fail();
             }
-        } 
+        }
 
         public class TestCallbackFacet : ILoadingCallbackFacet, ILoadedCallbackFacet {
+            #region ILoadingCallbackFacet Members
+
             public IFacetHolder FacetHolder {
                 get { throw new NotImplementedException(); }
                 set { throw new NotImplementedException(); }
@@ -61,12 +59,18 @@ namespace NakedObjects.Architecture.Adapter {
                 get { throw new NotImplementedException(); }
             }
 
-            public void Invoke(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
-                
-            }
+            public void Invoke(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {}
+
+            #endregion
         }
 
         private class TestSpecification : INakedObjectSpecification {
+            public string Help {
+                get { throw new NotImplementedException(); }
+            }
+
+            #region INakedObjectSpecification Members
+
             public INakedObjectAction[] GetRelatedServiceActions() {
                 throw new NotImplementedException();
             }
@@ -84,7 +88,7 @@ namespace NakedObjects.Architecture.Adapter {
             }
 
             public INakedObjectValidation[] ValidateMethods() {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
 
             public Type[] FacetTypes {
@@ -99,7 +103,7 @@ namespace NakedObjects.Architecture.Adapter {
                 throw new NotImplementedException();
             }
 
-            public bool ContainsFacet<T>() where T : IFacet  {
+            public bool ContainsFacet<T>() where T : IFacet {
                 throw new NotImplementedException();
             }
 
@@ -172,10 +176,6 @@ namespace NakedObjects.Architecture.Adapter {
             }
 
             public string Description {
-                get { throw new NotImplementedException(); }
-            }
-
-            public string Help {
                 get { throw new NotImplementedException(); }
             }
 
@@ -255,10 +255,6 @@ namespace NakedObjects.Architecture.Adapter {
                 get { throw new NotImplementedException(); }
             }
 
-            public object CreateObject(INakedObjectPersistor persistor) {
-                throw new NotImplementedException();
-            }
-
             public IEnumerable GetBoundedSet(INakedObjectPersistor persistor) {
                 throw new NotImplementedException();
             }
@@ -274,9 +270,17 @@ namespace NakedObjects.Architecture.Adapter {
             public string UniqueShortName(string sep) {
                 throw new NotImplementedException();
             }
+
+            #endregion
+
+            public object CreateObject(INakedObjectPersistor persistor) {
+                throw new NotImplementedException();
+            }
         }
 
         private class TestAdapter : INakedObject {
+            #region INakedObject Members
+
             public object Object {
                 get { throw new NotImplementedException(); }
             }
@@ -326,10 +330,6 @@ namespace NakedObjects.Architecture.Adapter {
                 throw new NotImplementedException();
             }
 
-            public void FireChangedEvent() {
-                throw new NotImplementedException();
-            }
-
             public string ValidToPersist() {
                 throw new NotImplementedException();
             }
@@ -337,11 +337,13 @@ namespace NakedObjects.Architecture.Adapter {
             public void SetATransientOid(IOid oid) {
                 throw new NotImplementedException();
             }
+
+            #endregion
+
+            public void FireChangedEvent() {
+                throw new NotImplementedException();
+            }
         }
-
-        #endregion
-
-        #region State Machines 
 
         private static IResolveStateMachine NewSM() {
             return new ResolveStateMachine(new TestAdapter(), null, null);
@@ -406,8 +408,6 @@ namespace NakedObjects.Architecture.Adapter {
             sm.Handle(Events.StartSerializingEvent);
             return sm;
         }
-
-        #endregion
 
         [Test]
         public void InvalidChangesFromGhost() {
