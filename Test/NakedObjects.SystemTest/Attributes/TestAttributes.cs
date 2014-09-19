@@ -11,6 +11,11 @@ using System.Data.Entity;
 using NakedObjects;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using NakedObjects.Reflector.Spec;
+using System.Collections.Generic;
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.SystemTest
 {
@@ -96,7 +101,27 @@ namespace NakedObjects.SystemTest
                     new SimpleRepository<Named1>(),
                     new SimpleRepository<Range1>(),
                     new SimpleRepository<Regex1>(),
-                    new SimpleRepository<Regex2>()
+                    new SimpleRepository<Regex2>(),
+                    new SimpleRepository<Memberorder1>(),
+                    new SimpleRepository<Memberorder2>(),
+                    new SimpleRepository<Memberorder3>(),
+                    new SimpleRepository<Stringlength1>(),
+                    new SimpleRepository<Title1>(),
+                    new SimpleRepository<Title2>(),
+                    new SimpleRepository<Title3>(),
+                    new SimpleRepository<Title4>(),
+                    new SimpleRepository<Title5>(),
+                    new SimpleRepository<Title6>(),
+                    new SimpleRepository<Title7>(),
+                    new SimpleRepository<Title8>(),
+                    new SimpleRepository<Title9>(),
+                    new SimpleRepository<Validateprogrammaticupdates1>(), 
+                    new SimpleRepository<Validateprogrammaticupdates2>(), 
+                    new TestServiceValidateProgrammaticUpdates(),
+                    new SimpleRepository<Notcontributedaction1>(),
+                    new TestServiceNotContributedAction(),
+                    new SimpleRepository<Exclude1>(),
+                    new TestServiceExcludeFromFindMenu()
                      );
             }
         }
@@ -734,31 +759,331 @@ namespace NakedObjects.SystemTest
 
         #endregion
 
-#region Regex
-                  [TestMethod]
-            public virtual void SimpleRegExAttributeOnProperty() {
-                ITestObject obj = NewTestObject<Regex1>();
-                ITestProperty email = obj.GetPropertyByName("Email");
-                email.AssertFieldEntryInvalid("richard @hotmail.com");
-                email.AssertFieldEntryInvalid("richardpAThotmail.com");
-                email.AssertFieldEntryInvalid("richardp@hotmail;com");
-                email.AssertFieldEntryInvalid("richardp@hotmail.com (preferred)");
-                email.AssertFieldEntryInvalid("personal richardp@hotmail.com");
-                email.SetValue("richard@hotmail.com");
+        #region Regex
+        [TestMethod]
+        public virtual void SimpleRegExAttributeOnProperty()
+        {
+            ITestObject obj = NewTestObject<Regex1>();
+            ITestProperty email = obj.GetPropertyByName("Email");
+            email.AssertFieldEntryInvalid("richard @hotmail.com");
+            email.AssertFieldEntryInvalid("richardpAThotmail.com");
+            email.AssertFieldEntryInvalid("richardp@hotmail;com");
+            email.AssertFieldEntryInvalid("richardp@hotmail.com (preferred)");
+            email.AssertFieldEntryInvalid("personal richardp@hotmail.com");
+            email.SetValue("richard@hotmail.com");
+        }
+
+        [TestMethod]
+        public virtual void SimpleRegularExpressionAttributeOnProperty()
+        {
+            ITestObject obj = NewTestObject<Regex1>();
+            ITestProperty email = obj.GetPropertyByName("Email");
+            email.AssertFieldEntryInvalid("richard @hotmail.com");
+            email.AssertFieldEntryInvalid("richardpAThotmail.com");
+            email.AssertFieldEntryInvalid("richardp@hotmail;com");
+            email.AssertFieldEntryInvalid("richardp@hotmail.com (preferred)");
+            email.AssertFieldEntryInvalid("personal richardp@hotmail.com");
+            email.SetValue("richard@hotmail.com");
+        }
+        #endregion
+
+        #region MemberOrder
+        [TestMethod]
+        public void PropertyOrder()
+        {
+            ITestObject obj2 = NewTestObject<Memberorder1>();
+            obj2.AssertPropertyOrderIs("Prop2, Prop1");
+
+            ITestProperty[] properties = obj2.Properties;
+            Assert.AreEqual(properties[0].Name, "Prop2");
+            Assert.AreEqual(properties[1].Name, "Prop1");
+        }
+
+        [TestMethod]
+        public void PropertyOrderOnSubClass()
+        {
+            ITestObject obj3 = NewTestObject<Memberorder2>();
+            obj3.AssertPropertyOrderIs("Prop2, Prop4, Prop1, Prop3");
+
+            ITestProperty[] properties = obj3.Properties;
+            Assert.AreEqual(properties[0].Name, "Prop2");
+            Assert.AreEqual(properties[1].Name, "Prop4");
+            Assert.AreEqual(properties[2].Name, "Prop1");
+            Assert.AreEqual(properties[3].Name, "Prop3");
+        }
+
+        [TestMethod]
+        public void ActionOrder()
+        {
+            ITestObject obj2 = NewTestObject<Memberorder1>();
+            ITestAction[] actions = obj2.Actions;
+            Assert.AreEqual(actions[0].Name, "Action2");
+            Assert.AreEqual(actions[1].Name, "Action1");
+
+            obj2.AssertActionOrderIs("Action2, Action1");
+        }
+
+        [TestMethod]
+        public void ActionOrderOnSubClass()
+        {
+            ITestObject obj3 = NewTestObject<Memberorder2>();
+            ITestAction[] actions = obj3.Actions;
+            Assert.AreEqual(actions[0].Name, "Action2");
+            Assert.AreEqual(actions[1].Name, "Action4");
+            Assert.AreEqual(actions[2].Name, "Action1");
+            Assert.AreEqual(actions[3].Name, "Action3");
+
+            obj3.AssertActionOrderIs("Action2, Action4, Action1, Action3");
+        }
+
+        [TestMethod]
+        public void ActionOrderWithSubMenus()
+        {
+            ITestObject obj4 = NewTestObject<Memberorder3>();
+            obj4.AssertActionOrderIs("Action1, Action4, (Sub1:Action3, Action2), (Sub2:Action5)");
+
+            ITestAction[] actions = obj4.Actions;
+            Assert.AreEqual(actions[0].Name, "Action1");
+            Assert.AreEqual(actions[1].Name, "Action4");
+            Assert.AreEqual(actions[2].Name, "Action3");
+            Assert.AreEqual(actions[3].Name, "Action2");
+            Assert.AreEqual(actions[4].Name, "Action5");
+
+            obj4.GetAction("Action1").AssertIsVisible();
+            obj4.GetAction("Action4").AssertIsVisible();
+            obj4.GetAction("Action3", "Sub1").AssertIsVisible();
+            obj4.GetAction("Action2", "Sub1").AssertIsVisible();
+            obj4.GetAction("Action5", "Sub2").AssertIsVisible();
+
+            try
+            {
+                obj4.GetAction("Action1", "Sub1").AssertIsVisible();
+            }
+            catch (System.Exception e)
+            {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Action1' within sub-menu 'Sub1'", e.Message);
             }
 
-            [TestMethod]
-            public virtual void SimpleRegularExpressionAttributeOnProperty() {
-                ITestObject obj = NewTestObject<Regex1>();
-                ITestProperty email = obj.GetPropertyByName("Email");
-                email.AssertFieldEntryInvalid("richard @hotmail.com");
-                email.AssertFieldEntryInvalid("richardpAThotmail.com");
-                email.AssertFieldEntryInvalid("richardp@hotmail;com");
-                email.AssertFieldEntryInvalid("richardp@hotmail.com (preferred)");
-                email.AssertFieldEntryInvalid("personal richardp@hotmail.com");
-                email.SetValue("richard@hotmail.com");
+        }
+        #endregion
+
+        #region StringLength
+        [TestMethod]
+        public virtual void StringLengthOnProperty()
+        {
+            ITestObject obj = NewTestObject<Stringlength1>();
+            ITestProperty prop2 = obj.GetPropertyByName("Prop2");
+            prop2.AssertFieldEntryInvalid("12345678");
+            prop2.AssertFieldEntryInvalid("1234567 ");
+            prop2.SetValue("1234567");
+        }
+
+        [TestMethod]
+        public virtual void StringLengthOnParm()
+        {
+            ITestObject obj = NewTestObject<Stringlength1>();
+            ITestAction act = obj.GetAction("Action");
+
+            act.AssertIsInvalidWithParms("123456789");
+            act.AssertIsInvalidWithParms("12345678 ");
+            act.AssertIsValidWithParms("12345678");
+        }
+        #endregion
+
+        #region Title
+        [TestMethod]
+        public virtual void ObjectWithTitleAttributeOnString()
+        {
+            var obj = NewTestObject<Title1>();
+            obj.AssertTitleEquals("Untitled Title1");
+            var prop1 = obj.GetPropertyByName("Prop1");
+            prop1.SetValue("Foo");
+            obj.AssertTitleEquals("Foo");
+            obj.Save();
+            obj.AssertTitleEquals("Foo");
+        }
+
+        [TestMethod]
+        public virtual void TitleAttributeOnReferencePropertyThatHasATitleAttribute()
+        {
+            var obj1 = NewTestObject<Title1>();
+            obj1.GetPropertyByName("Prop1").SetValue("Foo");
+            obj1.AssertTitleEquals("Foo");
+            obj1.Save();
+
+            var obj8 = NewTestObject<Title8>();
+            obj8.AssertTitleEquals("Untitled Title8");
+            var prop1 = obj8.GetPropertyByName("Prop1");
+            prop1.SetObject(obj1);
+            obj8.AssertTitleEquals("Foo");
+        }
+
+        [TestMethod]
+        public virtual void TitleAttributeOnReferencePropertyThatHasATitleMethod()
+        {
+            var obj4 = NewTestObject<Title4>();
+            obj4.GetPropertyByName("Prop1").SetValue("Foo");
+            obj4.AssertTitleEquals("Foo");
+            obj4.Save();
+
+            var obj7 = NewTestObject<Title7>();
+            obj7.AssertTitleEquals("Untitled Title7");
+            var prop1 = obj7.GetPropertyByName("Prop1");
+            prop1.SetObject(obj4);
+            obj7.AssertTitleEquals("Foo");
+        }
+
+        [TestMethod]
+        public virtual void TitleAttributeOnReferencePropertyThatHasAToString()
+        {
+            var obj2 = NewTestObject<Title2>();
+            obj2.GetPropertyByName("Prop1").SetValue("Foo");
+            var dom2 = (Title2)obj2.GetDomainObject();
+            StringAssert.Equals("Foo", dom2.ToString());
+            obj2.AssertTitleEquals("Foo");
+            obj2.Save();
+
+            var obj9 = NewTestObject<Title9>();
+            obj9.AssertTitleEquals("Untitled Title9");
+            var prop1 = obj9.GetPropertyByName("Prop1");
+            prop1.SetObject(obj2);
+            obj9.AssertTitleEquals("Foo");
+        }
+
+        [TestMethod]
+        public virtual void TitleAttributeTakesPrecedenceOverTitleMethod()
+        {
+            var obj = NewTestObject<Title6>();
+            var dom = (Title6)obj.GetDomainObject();
+            StringAssert.Equals("Bar", dom.ToString());
+            StringAssert.Equals("Hex", dom.Title());
+            obj.AssertTitleEquals("Untitled Title6");
+            var prop1 = obj.GetPropertyByName("Prop1");
+            prop1.SetValue("Foo");
+            obj.AssertTitleEquals("Foo");
+            obj.Save();
+            obj.AssertTitleEquals("Foo");
+
+
+        }
+
+        [TestMethod]
+        public virtual void TitleAttributeTakesPrecedenceOverToString()
+        {
+            var obj = NewTestObject<Title3>();
+            StringAssert.Equals("Bar", obj.GetDomainObject().ToString());
+            obj.AssertTitleEquals("Untitled Title3");
+            var prop1 = obj.GetPropertyByName("Prop1");
+            prop1.SetValue("Foo");
+            obj.AssertTitleEquals("Foo");
+            obj.Save();
+            obj.AssertTitleEquals("Foo");
+
+
+        }
+        #endregion
+
+        #region ValidateProgrammaticUpdates
+
+        [TestMethod]
+        public virtual void ValidateObjectSave()
+        {
+            ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
+            var vpu1 = NewTestObject<Validateprogrammaticupdates1>();
+
+            try
+            {
+                (vpu1.GetDomainObject() as Validateprogrammaticupdates1).Prop1 = "fail";
+
+                service.GetAction("Save Object1").InvokeReturnObject(vpu1);
+                Assert.Fail();
             }
-#endregion
+            catch (Exception /*expected*/) { }
+        }
+
+        [TestMethod]
+        public virtual void ValidateObjectCrossValidationSave()
+        {
+            ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
+            var vpu2 = NewTestObject<Validateprogrammaticupdates2>();
+            try
+            {
+                (vpu2.GetDomainObject() as Validateprogrammaticupdates2).Prop1 = "fail";
+                service.GetAction("Save Object2").InvokeReturnObject(vpu2);
+                Assert.Fail();
+            }
+            catch (Exception /*expected*/) { }
+        }
+
+        [TestMethod]
+        public virtual void ValidateObjectChange()
+        {
+            ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
+            var vpu1 = NewTestObject<Validateprogrammaticupdates1>();
+
+            service.GetAction("Save Object1").InvokeReturnObject(vpu1);
+
+            try
+            {
+                (vpu1.GetDomainObject() as Validateprogrammaticupdates1).Prop1 = "fail";
+                Assert.Fail();
+            }
+            catch (Exception /*expected*/) { }
+        }
+
+        [TestMethod]
+        public virtual void ValidateObjectCrossValidationChange()
+        {
+            ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
+            var vpu2 = NewTestObject<Validateprogrammaticupdates2>();
+
+            service.GetAction("Save Object2").InvokeReturnObject(vpu2);
+
+            try
+            {
+                (vpu2.GetDomainObject() as Validateprogrammaticupdates2).Prop1 = "fail";
+                Assert.Fail();
+            }
+            catch (Exception /*expected*/) { }
+        }
+        #endregion
+
+        #region NotContributedAction
+
+        [TestMethod, Ignore] //Needs re-writing to use new framework
+        public virtual void Contributed()
+        {
+            var service = (TestServiceNotContributedAction) GetTestService(typeof(TestServiceNotContributedAction)).NakedObject.Object;
+            var obj = NewTestObject<Notcontributedaction1>().GetDomainObject();
+            var adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(obj, null, null);
+            var actions = adapter.Specification.GetObjectActions();
+
+            Assert.AreEqual(1, actions.Count());
+            Assert.IsTrue(actions[0] is NakedObjectActionSet);
+            Assert.AreEqual(1, actions[0].Actions.Count());
+            Assert.IsTrue(actions[0].Actions[0] is NakedObjectActionImpl);
+            Assert.AreEqual("Contributed Action", actions[0].Actions[0].GetName(NakedObjectsFramework.ObjectPersistor));
+        }
+        #endregion
+
+        #region ExcludeFromFindMenu
+        [TestMethod, Ignore] //Needs re-writing for new framework
+        public virtual void ActionExcludedFromFindMenu()
+        {
+            var service = (TestServiceExcludeFromFindMenu)GetTestService(typeof(TestServiceExcludeFromFindMenu)).NakedObject.Object;
+            Exclude1 obj = service.NewObject1();
+            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(obj, null, null);
+            INakedObjectAction[] actions = adapter.Specification.GetRelatedServiceActions();
+
+            Assert.AreEqual(1, actions.Count());
+            Assert.IsTrue(actions[0] is NakedObjectActionSet);
+            Assert.AreEqual(2, actions[0].Actions.Count());
+            Assert.IsTrue(actions[0].Actions[0] is NakedObjectActionImpl);
+            Assert.IsTrue(actions[0].Actions[1] is NakedObjectActionImpl);
+            Assert.AreEqual("Finder Action1", actions[0].Actions[0].GetName(NakedObjectsFramework.ObjectPersistor));
+            Assert.AreEqual("Finder Action2", actions[0].Actions[1].GetName(NakedObjectsFramework.ObjectPersistor));
+        }
+        #endregion
     }
 
     #region Classes used in test
@@ -790,8 +1115,23 @@ namespace NakedObjects.SystemTest
 
         public DbSet<Named1> Named1s { get; set; }
         public DbSet<Range1> Range1s { get; set; }
-            public DbSet<Regex1> Regex1s { get; set; }
+        public DbSet<Regex1> Regex1s { get; set; }
         public DbSet<Regex2> Regex2s { get; set; }
+        public DbSet<Memberorder1> Memberorder1s { get; set; }
+        public DbSet<Stringlength1> Stringlength1s { get; set; }
+        public DbSet<Title1> Title1s { get; set; }
+        public DbSet<Title2> Title2s { get; set; }
+        public DbSet<Title3> Title3s { get; set; }
+        public DbSet<Title4> Title4s { get; set; }
+        public DbSet<Title5> Title5s { get; set; }
+        public DbSet<Title6> Title6s { get; set; }
+        public DbSet<Title7> Title7s { get; set; }
+        public DbSet<Title8> Title8s { get; set; }
+        public DbSet<Title9> Title9s { get; set; }
+        public DbSet<Validateprogrammaticupdates1> ValidateProgrammaticUpdates1s { get; set; }
+        public DbSet<Validateprogrammaticupdates2> ValidateProgrammaticUpdates2s { get; set; }
+        public DbSet<Notcontributedaction1> NotContributedAction1s { get; set; }
+        public DbSet<Exclude1> Exclude1s { get; set; }
     }
 
     #region Default
@@ -1060,7 +1400,7 @@ namespace NakedObjects.SystemTest
     }
     #endregion
 
-#region MaxLength
+    #region MaxLength
     public class Maxlength1
     {
 
@@ -1086,9 +1426,9 @@ namespace NakedObjects.SystemTest
 
         public void Action([MaxLength(8)] string parm) { }
     }
-#endregion
+    #endregion
 
-#region Named
+    #region Named
     [Named("Foo")]
     public class Named1
     {
@@ -1101,9 +1441,9 @@ namespace NakedObjects.SystemTest
         [Named("Hex")]
         public void DoSomething([Named("Yop")] string param1) { }
     }
-#endregion
+    #endregion
 
-#region Range
+    #region Range
     public class Range1
     {
         public virtual int Id { get; set; }
@@ -1209,9 +1549,9 @@ namespace NakedObjects.SystemTest
         public void Action25([Range(1, 30)] DateTime parm) { }
 
     }
-#endregion
+    #endregion
 
-#region Regex
+    #region Regex
     public class Regex1
     {
 
@@ -1228,6 +1568,298 @@ namespace NakedObjects.SystemTest
         [RegularExpression(@"^[\-\w\.]+@[\-\w\.]+\.[A-Za-z]+$")]
         public virtual string Email { get; set; }
     }
+    #endregion
+
+    #region MemberOrder
+    public class Memberorder1
+    {
+        [NakedObjectsIgnore]
+        public virtual int Id { get; set; }
+
+        [MemberOrder(3)]
+        public virtual string Prop1 { get; set; }
+
+        [MemberOrder(1)]
+        public virtual string Prop2 { get; set; }
+
+        [MemberOrder(3)]
+        public virtual void Action1() { }
+
+        [MemberOrder(1)]
+        public virtual void Action2() { }
+    }
+
+    public class Memberorder2 : Memberorder1
+    {
+        [MemberOrder(4)]
+        public virtual string Prop3 { get; set; }
+
+        [MemberOrder(2)]
+        public virtual string Prop4 { get; set; }
+
+        [MemberOrder(4)]
+        public void Action3() { }
+
+        [MemberOrder(2)]
+        public void Action4() { }
+    }
+
+    public class Memberorder3
+    {
+        [MemberOrder(1)]
+        public void Action1() { }
+
+        [MemberOrder(Name = "Sub2", Sequence = "1")]
+        public void Action5() { }
+
+        [MemberOrder(Name = "Sub1", Sequence = "2")]
+        public void Action2() { }
+
+        [MemberOrder(Name = "Sub1", Sequence = "1")]
+        public void Action3() { }
+
+        [MemberOrder(2)]
+        public void Action4() { }
+
+
+    }
+    #endregion
+
+    #region StringLength
+    public class Stringlength1
+    {
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop1 { get; set; }
+
+        [System.ComponentModel.DataAnnotations.StringLength(7)]
+        public virtual string Prop2 { get; set; }
+
+        public void Action([System.ComponentModel.DataAnnotations.StringLength(8)]string parm) { }
+    }
+    #endregion
+
+    #region Title
+    public class Title1
+    {
+
+        public virtual int Id { get; set; }
+
+        [Title]
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+    }
+
+    public class Title2
+    {
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop1 { get; set; }
+
+        public override string ToString()
+        {
+            return Prop1;
+        }
+    }
+
+    public class Title3
+    {
+
+        public virtual int Id { get; set; }
+
+        [Title]
+        public virtual string Prop1 { get; set; }
+
+        public override string ToString()
+        {
+            return "Bar";
+        }
+    }
+
+    public class Title4
+    {
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop1 { get; set; }
+
+        public string Title()
+        {
+            return Prop1;
+        }
+    }
+
+    public class Title5
+    {
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop1 { get; set; }
+
+        public string Title()
+        {
+            return Prop1;
+        }
+
+        public override string ToString()
+        {
+            return "Bar";
+        }
+    }
+
+    public class Title6
+    {
+
+        public virtual int Id { get; set; }
+
+        [Title]
+        public virtual string Prop1 { get; set; }
+
+        public string Title()
+        {
+            return "Hex";
+        }
+
+        public override string ToString()
+        {
+            return "Bar";
+        }
+    }
+
+    public class Title7
+    {
+        public virtual int Id { get; set; }
+
+        [Title]
+        public virtual Title4 Prop1 { get; set; }
+    }
+
+    public class Title8
+    {
+        public virtual int Id { get; set; }
+
+        [Title]
+        public virtual Title1 Prop1 { get; set; }
+    }
+
+    public class Title9
+    {
+        public virtual int Id { get; set; }
+
+        [Title]
+        public virtual Title2 Prop1 { get; set; }
+    }
+    #endregion
+
+    #region ValidateProgrammaticUpdates
+    [ValidateProgrammaticUpdates]
+    public class Validateprogrammaticupdates1
+    {
+
+        public virtual int Id { get; set; }
+
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+
+        public string ValidateProp1(string prop1)
+        {
+            return prop1 == "fail" ? "fail" : null;
+        }
+
+        [Optionally]
+        public string Prop2 { get; set; }
+    }
+
+    [ValidateProgrammaticUpdates]
+    public class Validateprogrammaticupdates2
+    {
+        public virtual int Id { get; set; }
+
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+
+        [Optionally]
+        public virtual string Prop2 { get; set; }
+
+        public string Validate(string prop1, string prop2)
+        {
+            return prop1 == "fail" ? "fail" : null;
+        }
+    }
+
+    public class TestServiceValidateProgrammaticUpdates
+
+    {
+        public IDomainObjectContainer Container { set; protected get; }
+
+        public void SaveObject1(Validateprogrammaticupdates1 obj)
+        {
+            Container.Persist(ref obj);
+        }
+
+        public void SaveObject2(Validateprogrammaticupdates2 obj)
+        {
+            Container.Persist(ref obj);
+        }
+    }
 #endregion
+
+#region NotContributedAction
+    public class TestServiceNotContributedAction
+    {
+        public void ContributedAction(Notcontributedaction1 obj) { }
+
+        [NotContributedAction]
+        public void NotContributedAction(Notcontributedaction1 obj) { }
+    }
+
+    public class Notcontributedaction1
+    {
+
+        public virtual int Id { get; set; }
+
+    }
+#endregion
+
+    #region ExcludeFromFindMenu
+    public class TestServiceExcludeFromFindMenu
+    {
+        public Exclude1 FinderAction1()
+        {
+            return null;
+        }
+
+        public ICollection<Exclude1> FinderAction2()
+        {
+            return null;
+        }
+
+        [ExcludeFromFindMenu]
+        public Exclude1 NotFinderAction1()
+        {
+            return null;
+        }
+
+        [ExcludeFromFindMenu]
+        public ICollection<Exclude1> NotFinderAction2()
+        {
+            return null;
+        }
+
+        [ExcludeFromFindMenu]
+        public Exclude1 NewObject1()
+        {
+            return new Exclude1();
+        }
+    }
+
+    public class Exclude1
+    {
+
+        public virtual int Id { get; set; }
+    }
+#endregion 
     #endregion
 }

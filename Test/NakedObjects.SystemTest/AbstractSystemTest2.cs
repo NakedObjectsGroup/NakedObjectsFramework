@@ -30,6 +30,5 @@ namespace NakedObjects.SystemTest {
         protected ITestObject NewTestObject<T>() {
             return GetTestService(typeof (T).Name + "s").GetAction("New Instance").InvokeReturnObject();
         }
-
     }
 }

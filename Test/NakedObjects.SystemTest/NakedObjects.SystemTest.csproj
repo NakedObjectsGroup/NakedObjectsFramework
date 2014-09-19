@@ -159,11 +159,7 @@
   <ItemGroup>
     <Compile Include="AbstractSystemTest.cs" />
     <Compile Include="Attributes\TestKeyAttribute.cs" />
-    <Compile Include="Attributes\TestValidateProgrammaticUpdatesAttribute.cs" />
     <Compile Include="Attributes\TestAttributes.cs" />
-    <Compile Include="Attributes\TestExcludeFromFindMenuAttribute.cs" />
-    <Compile Include="Attributes\TestNotContributedActionAttribute.cs" />
-    <Compile Include="Attributes\TestStringLengthAttribute.cs" />
     <Compile Include="Audit\TestAuditManager.cs" />
     <Compile Include="Authorization\TestCustomAuthorizerInstallerUsersAndRoles.cs" />
     <Compile Include="Authorization\TestAttributeAuthorizationUsersAndRoles.cs" />
@@ -175,8 +171,6 @@
     <Compile Include="Methods\TestAutoCompleteMethod.cs" />
     <Compile Include="Other\EnumTest.cs" />
     <Compile Include="Other\TestParentChildPersistence.cs" />
-    <Compile Include="Attributes\TestMemberOrderAttribute.cs" />
-    <Compile Include="Attributes\TestTitleAttribute.cs" />
     <Compile Include="Injection\TestInjection.cs" />
     <Compile Include="Methods\TestDisableDefault.cs" />
     <Compile Include="Methods\TestHideDefault.cs" />
