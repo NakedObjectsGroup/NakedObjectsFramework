@@ -95,7 +95,14 @@ namespace NakedObjects.SystemTest.Method
                          new SimpleRepository<Title4>(),
                          new SimpleRepository<Title5>(),
                          new SimpleRepository<Updated1>(),
-                         new SimpleRepository<Updated2>()
+                         new SimpleRepository<Updated2>(),
+                         new SimpleRepository<Updating1>(),
+                         new SimpleRepository<Updating2>(),
+                         new SimpleRepository<Validate1>(),
+                         new SimpleRepository<Validate2>(),
+                         new SimpleRepository<Validate3>(),
+                         new SimpleRepository<Validate4>(),
+                         new SimpleRepository<Validate5>()
                      );
             }
         }
@@ -1303,6 +1310,314 @@ namespace NakedObjects.SystemTest.Method
             }
         }
         #endregion
+
+        #region Updating
+        [TestMethod]
+        public void LowerCaseUpdatingNotRecognisedAndShowsAsAction()
+        {
+            ITestObject obj1 = NewTestObject<Updating2>();
+            try
+            {
+                obj1.GetAction("Updating");
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+
+        [TestMethod]
+        public void UpdatingCalled()
+        {
+            ITestObject obj1 = NewTestObject<Updating1>();
+            var dom1 = (Updating1)obj1.GetDomainObject();
+            obj1.Save();
+
+            try
+            {
+                obj1.GetPropertyByName("Prop1").SetValue("Foo");
+                Assert.Fail("Should not get to here");
+            }
+            catch (Exception)
+            {
+
+
+            }
+        }
+
+        [TestMethod]
+        public void UpdatingDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj1 = NewTestObject<Updating1>();
+            try
+            {
+                obj1.GetAction("Updating");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+        #endregion
+
+        #region Validate
+        [TestMethod]
+        public void UnmatchedValidateMethodShowsUpAsAnAction()
+        {
+            ITestObject obj = NewTestObject<Validate3>();
+            obj.GetAction("Validate Prop1");
+            obj.GetAction("Validate Prop2");
+            obj.GetAction("Validate Prop3");
+            obj.GetAction("Validate Do Something");
+            obj.GetAction("Validate 0 Do Something");
+            obj.GetAction("Validate 1 Do Something");
+        }
+
+        [TestMethod]
+        public void ValidateMethodDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj = NewTestObject<Validate1>();
+            try
+            {
+                obj.GetAction("Validate Prop1");
+                Assert.Fail("'Validate Prop1' is showing as an action");
+            }
+            catch (AssertFailedException e)
+            {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Validate Prop1'", e.Message);
+            }
+
+            try
+            {
+                obj.GetAction("Validate0 Do Something");
+                Assert.Fail("'Validate0 Do Something' is showing as an action");
+            }
+            catch (AssertFailedException e)
+            {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Validate0 Do Something'", e.Message);
+            }
+
+            try
+            {
+                obj.GetAction("Validate Do Something Else");
+                Assert.Fail("'Validate Do Something Else' is showing as an action");
+            }
+            catch (AssertFailedException e)
+            {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Validate Do Something Else'", e.Message);
+            }
+        }
+
+        [TestMethod]
+        public virtual void ValidateNumericalProperty()
+        {
+            ITestObject obj = NewTestObject<Validate1>();
+            ITestProperty prop1 = obj.GetPropertyByName("Prop1");
+            prop1.AssertFieldEntryInvalid("2").AssertLastMessageIs("Value must be between 3 & 10");
+            prop1.AssertFieldEntryInvalid("11").AssertLastMessageIs("Value must be between 3 & 10");
+            prop1.SetValue("6").AssertLastMessageIs("");
+            try
+            {
+                prop1.SetValue("11");
+                Assert.Fail();
+            }
+            catch (Exception)
+            {
+                prop1.SetValue("7");
+            }
+        }
+
+        [TestMethod]
+        public virtual void ValidateStringProperty()
+        {
+            ITestObject obj = NewTestObject<Validate1>();
+            ITestProperty prop1 = obj.GetPropertyByName("Prop2");
+            prop1.AssertFieldEntryInvalid("foo").AssertLastMessageIs("Value must start with a");
+            prop1.AssertFieldEntryInvalid("bar").AssertLastMessageIs("Value must start with a");
+            prop1.SetValue("afoo").AssertLastMessageIs("");
+            try
+            {
+                prop1.SetValue("bar");
+                Assert.Fail();
+            }
+            catch (Exception)
+            {
+                prop1.SetValue("abar");
+            }
+        }
+
+
+
+        [TestMethod]
+        public virtual void ValidateReferenceProperty()
+        {
+            ITestObject obj1 = NewTestObject<Validate1>();
+            ITestProperty obj1Prop3 = obj1.GetPropertyByName("Prop3");
+
+            ITestObject obj2a = NewTestObject<Validate2>();
+            obj2a.GetPropertyByName("Prop1").SetValue("a");
+            ITestObject obj2b = NewTestObject<Validate2>();
+            obj2b.GetPropertyByName("Prop1").SetValue("b");
+
+            obj1Prop3.AssertSetObjectInvalid(obj2b).AssertLastMessageIs("Invalid Object");
+            obj1Prop3.AssertSetObjectIsValid(obj2a).AssertLastMessageIs("");
+
+            try
+            {
+                obj1Prop3.SetObject(obj2b);
+                Assert.Fail();
+            }
+            catch (Exception)
+            {
+                obj1Prop3.SetObject(obj2a);
+            }
+        }
+
+        [TestMethod]
+        public void ValidateParametersIndividually()
+        {
+            ITestObject obj1 = NewTestObject<Validate1>();
+            ITestAction action = obj1.GetAction("Do Something");
+
+            ITestObject obj2a = NewTestObject<Validate2>();
+            obj2a.GetPropertyByName("Prop1").SetValue("a");
+            ITestObject obj2b = NewTestObject<Validate2>();
+            obj2b.GetPropertyByName("Prop1").SetValue("b");
+
+            action.InvokeReturnObject(new object[] { 5, "abar", obj2a });
+
+            action.AssertIsInvalidWithParms(new object[] { 2, "abar", obj2a }).AssertLastMessageIs("Value must be between 3 & 10");
+            action.AssertIsInvalidWithParms(new object[] { 5, "bar", obj2a }).AssertLastMessageIs("Value must start with a");
+            action.AssertIsInvalidWithParms(new object[] { 5, "abar", obj2b }).AssertLastMessageIs("Invalid Object");
+        }
+
+        [TestMethod]
+        public void ValidateParametersCollectively()
+        {
+            ITestObject obj1 = NewTestObject<Validate1>();
+            ITestAction action = obj1.GetAction("Do Something Else");
+
+            ITestObject obj2a = NewTestObject<Validate2>();
+            obj2a.GetPropertyByName("Prop1").SetValue("a");
+            ITestObject obj2b = NewTestObject<Validate2>();
+            obj2b.GetPropertyByName("Prop1").SetValue("b");
+
+            action.InvokeReturnObject(new object[] { 5, "abar", obj2a });
+
+            action.AssertIsInvalidWithParms(new object[] { 2, "abar", obj2a }).AssertLastMessageIs("Something amiss");
+            action.AssertIsInvalidWithParms(new object[] { 5, "bar", obj2a }).AssertLastMessageIs("Something amiss");
+            action.AssertIsInvalidWithParms(new object[] { 5, "abar", obj2b }).AssertLastMessageIs("Something amiss");
+        }
+
+
+        [TestMethod]
+        public virtual void ValidateCrossValidationFail4()
+        {
+            ITestObject obj = NewTestObject<Validate4>();
+            obj.GetPropertyByName("Prop1").SetValue("value1");
+            obj.GetPropertyByName("Prop2").SetValue("value2");
+
+            try
+            {
+                obj.Save();
+                Assert.Fail("Expect exception");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Assert.Fail failed. Expect prop1 == prop2", e.Message);
+            }
+        }
+
+        [TestMethod]
+        public virtual void ValidateCrossValidationSuccess4()
+        {
+            ITestObject obj = NewTestObject<Validate4>();
+            obj.GetPropertyByName("Prop1").SetValue("value1");
+            obj.GetPropertyByName("Prop2").SetValue("value1");
+            obj.Save();
+        }
+
+
+        [TestMethod]
+        public virtual void ValidateCrossValidationFail5A()
+        {
+            ITestObject obj = NewTestObject<Validate5>();
+            ITestObject obj4 = NewTestObject<Validate4>();
+            obj.GetPropertyByName("Prop1").SetValue("value1");
+            obj.GetPropertyByName("Prop2").SetValue("value2");
+            obj.GetPropertyByName("Prop3").SetValue("1");
+            obj.GetPropertyByName("Prop4").SetObject(obj4);
+
+            try
+            {
+                obj.Save();
+                Assert.Fail("Expect exception");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Assert.Fail failed. Condition Fail", e.Message);
+            }
+        }
+
+        [TestMethod]
+        public virtual void ValidateCrossValidationFail5B()
+        {
+            ITestObject obj = NewTestObject<Validate5>();
+            ITestObject obj4 = NewTestObject<Validate4>();
+            obj.GetPropertyByName("Prop1").SetValue("value1");
+            obj.GetPropertyByName("Prop2").SetValue("value1");
+            obj.GetPropertyByName("Prop3").SetValue("0");
+            obj.GetPropertyByName("Prop4").SetObject(obj4);
+
+
+            try
+            {
+                obj.Save();
+                Assert.Fail("Expect exception");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Assert.Fail failed. Condition Fail", e.Message);
+            }
+        }
+
+        [TestMethod]
+        public virtual void ValidateCrossValidationFail5C()
+        {
+            ITestObject obj = NewTestObject<Validate5>();
+            obj.GetPropertyByName("Prop1").SetValue("value1");
+            obj.GetPropertyByName("Prop2").SetValue("value1");
+            obj.GetPropertyByName("Prop3").SetValue("1");
+            obj.GetPropertyByName("Prop4").ClearObject();
+
+            try
+            {
+                obj.Save();
+                Assert.Fail("Expect exception");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Assert.Fail failed. Condition Fail", e.Message);
+            }
+        }
+
+
+        [TestMethod]
+        public virtual void ValidateCrossValidationSuccess5()
+        {
+            ITestObject obj = NewTestObject<Validate5>();
+            ITestObject obj4 = NewTestObject<Validate4>();
+            obj.GetPropertyByName("Prop1").SetValue("value1");
+            obj.GetPropertyByName("Prop2").SetValue("value1");
+            obj.GetPropertyByName("Prop3").SetValue("1");
+            obj.GetPropertyByName("Prop4").SetObject(obj4);
+
+            obj.Save();
+        }
+
+
+#endregion
     }
 
     #region Classes used in test
@@ -1354,6 +1669,14 @@ namespace NakedObjects.SystemTest.Method
         public DbSet<Title5> Title5 { get; set; }
         public DbSet<Updated1> Updated1 { get; set; }
         public DbSet<Updated2> Updated2 { get; set; }
+        public DbSet<Updating1> Updating1 { get; set; }
+        public DbSet<Updating2> Updating2 { get; set; }
+        public DbSet<Validate1> Validate1 { get; set; }
+        public DbSet<Validate2> Validate2 { get; set; }
+        public DbSet<Validate3> Validate3 { get; set; }
+        public DbSet<Validate4> Validate4 { get; set; }
+        public DbSet<Validate5> Validate5 { get; set; }
+
     }
 
     #region AutoComplete
@@ -2403,6 +2726,205 @@ namespace NakedObjects.SystemTest.Method
         public void updated()
         {
             UpdatedCalled = true;
+        }
+    }
+#endregion
+
+#region Updating
+    public class Updating1
+    {
+        
+        public virtual int Id { get; set; }
+      
+
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+
+        public void Updating()
+        {
+            throw new DomainException("Updating called");
+        }
+    }
+
+    public class Updating2
+    {
+        public virtual int Id { get; set; }
+      
+        public virtual string Prop1 { get; set; }
+
+        public void updating()
+        {
+            throw new DomainException("Updating called");
+        }
+    }
+#endregion
+
+#region Validate
+
+    public class Validate1
+    {
+        
+        public virtual int Id { get; set; }
+      
+        public virtual int Prop1 { get; set; }
+
+        public virtual string Prop2 { get; set; }
+
+        public virtual Validate2 Prop3 { get; set; }
+
+        public string ValidateProp1(int value)
+        {
+            if (value < 3 || value > 10)
+            {
+                return "Value must be between 3 & 10";
+            }
+            return null;
+        }
+
+        public string ValidateProp2(string value)
+        {
+            if (!value.StartsWith("a"))
+            {
+                return "Value must start with a";
+            }
+            return null;
+        }
+
+        public string ValidateProp3(Validate2 value)
+        {
+            if (!value.Prop1.StartsWith("a"))
+            {
+                return "Invalid Object";
+            }
+            return null;
+        }
+
+        #region Do Something
+
+        public void DoSomething(int param0, string param1, Validate2 param2) { }
+
+        public string Validate0DoSomething(int value)
+        {
+            return ValidateProp1(value);
+        }
+
+        public string Validate1DoSomething(string value)
+        {
+            return ValidateProp2(value);
+        }
+
+        public string Validate2DoSomething(Validate2 value)
+        {
+            return ValidateProp3(value);
+        }
+
+        #endregion
+
+        #region Do Something Else
+
+        public void DoSomethingElse(int param0, string param1, Validate2 param2) { }
+
+        public string ValidateDoSomethingElse(int param0, string param1, Validate2 param2)
+        {
+            if (ValidateProp1(param0) != null || ValidateProp2(param1) != null || ValidateProp3(param2) != null)
+            {
+                return "Something amiss";
+            }
+            return null;
+        }
+
+        #endregion
+    }
+
+    public class Validate2
+    {
+        
+        public virtual int Id { get; set; }
+      
+        public virtual string Prop1 { get; set; }
+    }
+
+    public class Validate3
+    {
+        
+        public virtual int Id { get; set; }
+
+        public virtual string Prop1 { get; set; }
+
+        public virtual string Prop2 { get; set; }
+
+        public string ValidateProp1(int value)
+        {
+            return null;
+        }
+
+        public bool ValidateProp2(string value)
+        {
+            return false;
+        }
+
+        public string ValidateProp3(string value)
+        {
+            return null;
+        }
+
+        public void DoSomething(int par1) { }
+
+        public string ValidateDoSomething(decimal par1)
+        {
+            return null;
+        }
+
+        public string Validate0DoSomething(bool par1)
+        {
+            return null;
+        }
+
+        public string Validate1DoSomething(int par1)
+        {
+            return null;
+        }
+    }
+
+    public class Validate4
+    {
+        
+        public virtual int Id { get; set; }
+
+        public virtual string Prop1 { get; set; }
+
+        public virtual string Prop2 { get; set; }
+
+        public string Validate(string prop1, string prop2)
+        {
+            if (prop1 != prop2)
+            {
+                return "Expect prop1 == prop2";
+            }
+            return null;
+        }
+    }
+
+    public class Validate5
+    {       
+        public virtual int Id { get; set; }
+      
+        public virtual string Prop1 { get; set; }
+
+        public virtual string Prop2 { get; set; }
+
+        public virtual int Prop3 { get; set; }
+
+        [Optionally]
+        public virtual Validate4 Prop4 { get; set; }
+
+        public string Validate(Validate4 prop4, string prop1, int prop3, string prop2)
+        {
+            if (prop1 != prop2 || prop3 == 0 || prop4 == null)
+            {
+                return "Condition Fail";
+            }
+            return null;
         }
     }
 #endregion
