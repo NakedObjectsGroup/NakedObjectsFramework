@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -148,11 +151,11 @@ namespace NakedObjects.Architecture.Resolve {
         #region Nested type: DestroyedState
 
         internal class DestroyedState : ResolveState, IResolveState {
-            #region IResolveState Members
-
             public DestroyedState() {
                 InitialiseEventMap();
             }
+
+            #region IResolveState Members
 
             public override string Name {
                 get { return "Destroyed"; }
@@ -174,11 +177,11 @@ namespace NakedObjects.Architecture.Resolve {
         #region Nested type: GhostState
 
         internal class GhostState : ResolveState, IResolveState {
-            #region IResolveState Members
-
             public GhostState() {
                 InitialiseEventMap();
             }
+
+            #region IResolveState Members
 
             public override string Name {
                 get { return "Ghost"; }
@@ -209,11 +212,11 @@ namespace NakedObjects.Architecture.Resolve {
         #region Nested type: NewState
 
         internal class NewState : ResolveState, IResolveState {
-            #region IResolveState Members
-
             public NewState() {
                 InitialiseEventMap();
             }
+
+            #region IResolveState Members
 
             public override string Name {
                 get { return "New"; }
@@ -241,11 +244,11 @@ namespace NakedObjects.Architecture.Resolve {
         #region Nested type: PartResolvedState
 
         internal class PartResolvedState : ResolveState, IResolveState {
-            #region IResolveState Members
-
             public PartResolvedState() {
                 InitialiseEventMap();
             }
+
+            #region IResolveState Members
 
             public override string Name {
                 get { return "Part Resolved"; }
@@ -265,37 +268,6 @@ namespace NakedObjects.Architecture.Resolve {
                 EventMap[Events.StartSerializingEvent] = (no, rsm, s, p) => States.SerializingPartResolvedState;
                 EventMap[Events.StartSetupEvent] = (no, rsm, s, p) => States.ResolvingState;
                 EventMap[Events.StartPartSetupEvent] = (no, rsm, s, p) => States.ResolvingPartState;
-            }
-        }
-
-        #endregion
-
-        #region Nested type: ResolvedState
-
-        internal class ResolvedState : ResolveState, IResolveState {
-            #region IResolveState Members
-
-            public ResolvedState() {
-                InitialiseEventMap();
-            }
-
-            public override string Name {
-                get { return "Resolved"; }
-            }
-
-            public override string Code {
-                get { return "PR"; }
-            }
-
-            #endregion
-
-            protected void InitialiseEventMap() {
-                EventMap[Events.DestroyEvent] = (no, rsm, s, p) => States.DestroyedState;
-                EventMap[Events.StartUpdatingEvent] = (no, rsm, s, p) => States.UpdatingState;
-                EventMap[Events.StartSerializingEvent] = (no, rsm, s, p) => States.SerializingResolvedState;
-                EventMap[Events.ResetEvent] = (no, rsm, s, p) => States.GhostState;
-                EventMap[Events.StartSetupEvent] = (no, rsm, s, p) => States.UpdatingState;
-                EventMap[Events.StartPartSetupEvent] = (no, rsm, s, p) => States.UpdatingState;
             }
         }
 
@@ -341,6 +313,37 @@ namespace NakedObjects.Architecture.Resolve {
 
         #endregion
 
+        #region Nested type: ResolvedState
+
+        internal class ResolvedState : ResolveState, IResolveState {
+            public ResolvedState() {
+                InitialiseEventMap();
+            }
+
+            #region IResolveState Members
+
+            public override string Name {
+                get { return "Resolved"; }
+            }
+
+            public override string Code {
+                get { return "PR"; }
+            }
+
+            #endregion
+
+            protected void InitialiseEventMap() {
+                EventMap[Events.DestroyEvent] = (no, rsm, s, p) => States.DestroyedState;
+                EventMap[Events.StartUpdatingEvent] = (no, rsm, s, p) => States.UpdatingState;
+                EventMap[Events.StartSerializingEvent] = (no, rsm, s, p) => States.SerializingResolvedState;
+                EventMap[Events.ResetEvent] = (no, rsm, s, p) => States.GhostState;
+                EventMap[Events.StartSetupEvent] = (no, rsm, s, p) => States.UpdatingState;
+                EventMap[Events.StartPartSetupEvent] = (no, rsm, s, p) => States.UpdatingState;
+            }
+        }
+
+        #endregion
+
         #region Nested type: ResolvingPartState
 
         internal class ResolvingPartState : ResolveState, IResolveState {
@@ -373,11 +376,11 @@ namespace NakedObjects.Architecture.Resolve {
         #region Nested type: ResolvingState
 
         internal class ResolvingState : ResolveState, IResolveState {
-            #region IResolveState Members
-
             public ResolvingState() {
                 InitialiseEventMap();
             }
+
+            #region IResolveState Members
 
             public override string Name {
                 get { return "Resolving"; }
@@ -405,11 +408,11 @@ namespace NakedObjects.Architecture.Resolve {
         #region Nested type: SerializingGhostState
 
         internal class SerializingGhostState : ResolveState, IResolveState {
-            #region IResolveState Members
-
             public SerializingGhostState() {
                 InitialiseEventMap();
             }
+
+            #region IResolveState Members
 
             public override string Name {
                 get { return "Serializing Resolved"; } // not sure this is right for compatibility with old code 
@@ -431,11 +434,11 @@ namespace NakedObjects.Architecture.Resolve {
         #region Nested type: SerializingPartResolvedState
 
         internal class SerializingPartResolvedState : ResolveState, IResolveState {
-            #region IResolveState Members
-
             public SerializingPartResolvedState() {
                 InitialiseEventMap();
             }
+
+            #region IResolveState Members
 
             public override string Name {
                 get { return "Serializing Part Resolved"; }
@@ -457,11 +460,11 @@ namespace NakedObjects.Architecture.Resolve {
         #region Nested type: SerializingResolvedState
 
         internal class SerializingResolvedState : ResolveState, IResolveState {
-            #region IResolveState Members
-
             public SerializingResolvedState() {
                 InitialiseEventMap();
             }
+
+            #region IResolveState Members
 
             public override string Name {
                 get { return "Serializing Resolved"; }
@@ -483,11 +486,11 @@ namespace NakedObjects.Architecture.Resolve {
         #region Nested type: SerializingTransientState
 
         internal class SerializingTransientState : ResolveState, IResolveState {
-            #region IResolveState Members
-
             public SerializingTransientState() {
                 InitialiseEventMap();
             }
+
+            #region IResolveState Members
 
             public override string Name {
                 get { return "Serializing Transient"; }
@@ -511,11 +514,11 @@ namespace NakedObjects.Architecture.Resolve {
         #region Nested type: TransientState
 
         internal class TransientState : ResolveState, IResolveState {
-            #region IResolveState Members
-
             public TransientState() {
                 InitialiseEventMap();
             }
+
+            #region IResolveState Members
 
             public override string Name {
                 get { return "Transient"; }
@@ -540,11 +543,11 @@ namespace NakedObjects.Architecture.Resolve {
         #region Nested type: UpdatingState
 
         internal class UpdatingState : ResolveState, IResolveState {
-            #region IResolveState Members
-
             public UpdatingState() {
                 InitialiseEventMap();
             }
+
+            #region IResolveState Members
 
             public override string Name {
                 get { return "Updating"; }

@@ -355,16 +355,13 @@ type Nof4TestsDomainType() =
         [<Ignore>] // Fails first time - fix !
         member x.GetWithReferenceObject() = DomainObject14.GetWithReferenceObject x.api
         
-        [<Test>]
-        [<Ignore>] // fix
+        [<Test>]  
         member x.GetWithCollectionObject() = DomainObject14.GetWithCollectionObject x.api
         
-        [<Test>]
-        [<Ignore>] // fix
+        [<Test>]   
         member x.GetWithCollectionObjectFormalOnly() = DomainObject14.GetWithCollectionObjectFormalOnly x.api
         
         [<Test>]
-        [<Ignore>] // fix
         member x.GetWithCollectionObjectSimpleOnly() = DomainObject14.GetWithCollectionObjectSimpleOnly x.api
         
         [<Test>]

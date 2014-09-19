@@ -335,15 +335,12 @@ type Nof4Tests() =
         member x.GetWithReferenceObject() = DomainObject14.GetWithReferenceObject x.api
         
         [<Test>]
-        [<Ignore>] // fix
         member x.GetWithCollectionObject() = DomainObject14.GetWithCollectionObject x.api
         
-        [<Test>]
-        [<Ignore>] // fix
+        [<Test>]     
         member x.GetWithCollectionObjectFormalOnly() = DomainObject14.GetWithCollectionObjectFormalOnly x.api
         
         [<Test>]
-        [<Ignore>] // fix
         member x.GetWithCollectionObjectSimpleOnly() = DomainObject14.GetWithCollectionObjectSimpleOnly x.api
         
         [<Test>]
@@ -2650,7 +2647,7 @@ type Nof4Tests() =
         member x.GetWithValueObjectType() = DomainType21.GetWithValueObjectType x.api
         
         [<Test>]
-        [<Ignore>] // fix
+        [<Ignore>] // fix 
         member x.GetWithCollectionObjectType() = DomainType21.GetWithCollectionObjectType x.api
         
         [<Test>]

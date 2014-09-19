@@ -2,18 +2,11 @@
 
 open NUnit.Framework
 open RestfulObjects.Mvc
-open NakedObjects.Surface
 open System.Net
-open System.Net.Http
 open System.Net.Http.Headers
-open System.IO
 open Newtonsoft.Json.Linq
-open System.Web
-open System
-open RestfulObjects.Snapshot.Utility
 open RestfulObjects.Snapshot.Constants
 open System.Web.Http
-open System.Collections.Generic
 open System.Linq
 open RestTestFunctions
 
@@ -34,9 +27,18 @@ let getExpected() =
                  TObjectJson(makeGetLinkProp RelValues.Up SegmentValues.HomePage RepresentationTypes.HomePage "") ])
     
     let value = 
-        TArray([ TObjectJson(TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository")) :: makeGetLinkProp srvRel1 (sprintf "services/%s" sName1) RepresentationTypes.Object sName1)
-                 TObjectJson(TProperty(JsonPropertyNames.Title, TObjectVal("With Action Service")) :: makeGetLinkProp srvRel2 (sprintf "services/%s" sName2) RepresentationTypes.Object sName2)
-                 TObjectJson(TProperty(JsonPropertyNames.Title, TObjectVal("Contributor Service")) :: makeGetLinkProp srvRel3 (sprintf "services/%s" sName3) RepresentationTypes.Object sName3) ])
+        TArray
+            ([ TObjectJson
+                   (TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository")) 
+                    :: makeGetLinkProp srvRel1 (sprintf "services/%s" sName1) RepresentationTypes.Object sName1)
+               
+               TObjectJson
+                   (TProperty(JsonPropertyNames.Title, TObjectVal("With Action Service")) 
+                    :: makeGetLinkProp srvRel2 (sprintf "services/%s" sName2) RepresentationTypes.Object sName2)
+               
+               TObjectJson
+                   (TProperty(JsonPropertyNames.Title, TObjectVal("Contributor Service")) 
+                    :: makeGetLinkProp srvRel3 (sprintf "services/%s" sName3) RepresentationTypes.Object sName3) ])
     
     let formalValue = 
         TArray
@@ -114,6 +116,6 @@ let NotAcceptableGetDomainServices(api : RestfulObjectsControllerBase) =
     try 
         let args = CreateReservedArgs ""
         api.Request <- msg
-        let result = api.GetServices(args)
+        api.GetServices(args) |> ignore
         Assert.Fail("expect exception")
     with :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)

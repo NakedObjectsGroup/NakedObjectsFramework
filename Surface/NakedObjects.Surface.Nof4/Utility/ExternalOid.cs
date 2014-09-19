@@ -1,11 +1,15 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.ViewModel;
 using NakedObjects.Architecture.Services;
@@ -18,14 +22,12 @@ using NakedObjects.Util;
 namespace NakedObjects.Surface.Nof4.Utility {
     // to do generalise this 
     public class ExternalOid : IOidStrategy {
+        private static readonly ILog log = LogManager.GetLogger(typeof (ExternalOid));
+
         private readonly INakedObjectsFramework framework;
 
         public ExternalOid(INakedObjectsFramework framework) {
             this.framework = framework;
-        }
-
-        private string GetCode(INakedObjectSpecificationSurface spec) {
-            return GetCode(TypeUtils.GetType(spec.FullName()));
         }
 
         #region IOidStrategy Members
@@ -81,6 +83,10 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         #endregion
 
+        private string GetCode(INakedObjectSpecificationSurface spec) {
+            return GetCode(TypeUtils.GetType(spec.FullName()));
+        }
+
         protected Tuple<string, string> GetCodeAndKeyAsTuple(INakedObjectSurface nakedObject) {
             string code = GetCode(nakedObject.Specification);
             return new Tuple<string, string>(code, GetKeyValues(nakedObject));
@@ -130,14 +136,28 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
 
         protected object GetDomainObject(string[] keys, Type type) {
-            IDictionary<string, object> keyDict = CreateKeyDictionary(keys, type);
-            return framework.ObjectPersistor.FindByKeys(type, keyDict.Values.ToArray()).GetDomainObject();
+            try {
+                IDictionary<string, object> keyDict = CreateKeyDictionary(keys, type);
+                return framework.ObjectPersistor.FindByKeys(type, keyDict.Values.ToArray()).GetDomainObject();
+            }
+            catch (Exception e) {
+                log.Warn("Domain Object not found with exception", e);
+                log.WarnFormat("Domain Object not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => s + " " + t), type == null ? "null" : type.ToString());
+                return null;
+            }
         }
 
         protected object GetViewModel(string[] keys, INakedObjectSpecification spec) {
-            INakedObject viewModel = framework.ObjectPersistor.CreateViewModel(spec);
-            spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel);
-            return viewModel.Object;
+            try {
+                INakedObject viewModel = framework.ObjectPersistor.CreateViewModel(spec);
+                spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel);
+                return viewModel.Object;
+            }
+            catch (Exception e) {
+                log.Warn("View Model not found with exception", e);
+                log.WarnFormat("View Model not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => s + " " + t), spec == null ? "null" : spec.FullName);
+                return null;
+            }
         }
 
         private Type GetType(string typeName) {
