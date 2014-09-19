@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections;
@@ -9,7 +12,6 @@ using System.Linq;
 using System.Security.Principal;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Facets.Objects.Immutable;
@@ -28,8 +30,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Surface.Nof4.Implementation {
     public class NakedObjectsSurface : INakedObjectsSurface {
-        private readonly IOidStrategy oidStrategy;
         private readonly INakedObjectsFramework framework;
+        private readonly IOidStrategy oidStrategy;
 
         public NakedObjectsSurface(IOidStrategy oidStrategy, INakedObjectsFramework framework) {
             oidStrategy.Surface = this;
@@ -42,10 +44,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         public ObjectContextSurface GetImage(string imageId) {
             return null;
-        }
-
-        private INakedObjectSpecificationSurface GetSpecificationWrapper(INakedObjectSpecification spec) {
-            return new NakedObjectSpecificationWrapper(spec, this, framework);
         }
 
 
@@ -171,7 +169,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return MapErrors(() => ChangeProperty(GetObjectAsNakedObject(objectId), propertyName, argument));
         }
 
-       
+
         public ActionResultContextSurface ExecuteObjectAction(LinkObjectId objectId, string actionName, ArgumentsContext arguments) {
             return MapErrors(() => {
                 ActionContext actionContext = GetInvokeActionOnObject(objectId, actionName);
@@ -223,169 +221,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private ListContext GetServicesInternal() {
             INakedObject[] services = framework.ObjectPersistor.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor);
-            INakedObjectSpecification elementType = framework.Reflector.LoadSpecification(typeof(object));
+            INakedObjectSpecification elementType = framework.Reflector.LoadSpecification(typeof (object));
 
             return new ListContext {
                 ElementType = elementType,
                 List = services,
                 IsListOfServices = true
             };
-        }
-
-        private class PropParmAdapter {
-            private readonly INakedObjectActionParameter parm;
-            private readonly IOneToOneFeature prop;
-            private readonly INakedObjectsSurface surface;
-            private readonly INakedObjectsFramework framework;
-
-            private PropParmAdapter(object p, INakedObjectsSurface surface, INakedObjectsFramework framework) {
-                this.surface = surface;
-                this.framework = framework;
-                if (p == null) {
-                    throw new BadRequestNOSException();
-                }
-            }
-
-            public PropParmAdapter(IOneToOneFeature prop, INakedObjectsSurface surface, INakedObjectsFramework framework)
-                : this((object)prop, surface, framework) {
-                this.prop = prop;
-                CheckAutocompleOrConditional();
-            }
-
-            public PropParmAdapter(INakedObjectActionParameter parm, INakedObjectsSurface surface, INakedObjectsFramework framework)
-                : this((object)parm, surface, framework) {
-                this.parm = parm;
-                CheckAutocompleOrConditional();
-            }
-
-            private void CheckAutocompleOrConditional() {
-                if (!(IsAutoCompleteEnabled || GetChoicesParameters().Any())) {
-                    throw new BadRequestNOSException();
-                }
-            }
-
-            private bool IsAutoCompleteEnabled {
-                get { return prop == null ? parm.IsAutoCompleteEnabled : prop.IsAutoCompleteEnabled; }
-            }
-
-            public INakedObjectSpecification Specification {
-                get { return prop == null ? parm.Specification : prop.Specification; }
-            }
-
-            private Func<Tuple<string, INakedObjectSpecification>[]> GetChoicesParameters {
-                get { return prop == null ? (Func<Tuple<string, INakedObjectSpecification>[]>) parm.GetChoicesParameters : prop.GetChoicesParameters; }
-            }
-
-            private Func<INakedObject, IDictionary<string, INakedObject>, INakedObjectPersistor, INakedObject[]> GetChoices {
-                get { return prop == null ? (Func<INakedObject, IDictionary<string, INakedObject>, INakedObjectPersistor, INakedObject[]>)parm.GetChoices : prop.GetChoices; }
-            }
-
-            private Func<INakedObject, string, INakedObjectPersistor, INakedObject[]> GetCompletions {
-                get { return prop == null ? (Func<INakedObject, string, INakedObjectPersistor, INakedObject[]>)parm.GetCompletions : prop.GetCompletions; }
-            }
-
-            public INakedObject[] GetList(INakedObject nakedObject, ArgumentsContext arguments) {
-                return IsAutoCompleteEnabled ? GetAutocompleteList(nakedObject, arguments) : GetConditionalList(nakedObject, arguments);
-            }
-
-            private string CheckForMissingArgument(string key, object value, INakedObjectSpecification expectedType) {
-                if (expectedType.IsParseable) {
-                    var valueAsString = value as string;
-                    return valueAsString == null || string.IsNullOrEmpty(valueAsString) ? string.Format("Missing argument {0}", key) : null;
-                }
-                return value == null ? string.Format("Missing argument {0}", key) : null;
-            }
-
-            private INakedObjectSpecificationSurface GetSpecificationWrapper(INakedObjectSpecification spec) {
-                return new NakedObjectSpecificationWrapper(spec, surface, framework);
-            }
-
-            private INakedObject[] GetConditionalList(INakedObject nakedObject, ArgumentsContext arguments) {
-                
-                Tuple<string, INakedObjectSpecification>[] expectedParms = GetChoicesParameters();
-                IDictionary<string, object> actualParms = arguments.Values;
-
-                string[] expectedParmNames = expectedParms.Select(t => t.Item1).ToArray();
-                string[] actualParmNames = actualParms.Keys.ToArray();
-
-                if (expectedParmNames.Count() < actualParmNames.Count()) {
-                    throw new BadRequestNOSException("Wrong number of conditional arguments");
-                }
-
-                if (!actualParmNames.All(expectedParmNames.Contains)) {
-                    throw new BadRequestNOSException("Unrecognised conditional argument(s)");
-                }
-
-                Func<Tuple<string, INakedObjectSpecification>, object> getValue = ep => {
-                    if (actualParms.ContainsKey(ep.Item1)) {
-                        return actualParms[ep.Item1];
-                    }
-                    return ep.Item2.IsParseable ? "" : null;
-                };
-
-             
-                var matchedParms = expectedParms.ToDictionary(ep => ep.Item1, ep => new {
-                    expectedType = ep.Item2,
-                    value = getValue(ep),
-                    actualType = getValue(ep) == null ? null : framework.Reflector.LoadSpecification(getValue(ep).GetType())
-                });
-
-                var errors = new List<ContextSurface>();
-
-                var mappedArguments = new Dictionary<string, INakedObject>();
-
-                foreach (var ep in expectedParms) {
-                    string key = ep.Item1;
-                    var mp = matchedParms[key];
-                    object value = mp.value;
-                    INakedObjectSpecification expectedType = mp.expectedType;
-                    INakedObjectSpecification actualType = mp.actualType;
-
-                    if (expectedType.IsParseable && actualType.IsParseable) {
-                        string rawValue = value.ToString();
-
-                        try {
-                            mappedArguments[key] = expectedType.GetFacet<IParseableFacet>().ParseTextEntry(rawValue, framework.ObjectPersistor);
-
-                            errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
-                                ProposedValue = rawValue
-                            });
-                        }
-                        catch (Exception e) {
-                            errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
-                                Reason = e.Message,
-                                ProposedValue = rawValue
-                            });
-                        }
-                    }
-                    else if (actualType != null && !actualType.IsOfType(expectedType)) {
-                        errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
-                            Reason = string.Format("Argument is of wrong type is {0} expect {1}", actualType.FullName, expectedType.FullName),
-                            ProposedValue = actualParms[ep.Item1]
-                        });
-                    }
-                    else {
-                        mappedArguments[key] = framework.ObjectPersistor.CreateAdapter(value, null, null);
-
-                        errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
-                            ProposedValue = getValue(ep)
-                        });
-                    }
-                }
-
-                if (errors.Any(e => !string.IsNullOrEmpty(e.Reason))) {
-                    throw new BadRequestNOSException("Wrong type of conditional argument(s)", errors);
-                }
-
-                return GetChoices(nakedObject, mappedArguments, framework.ObjectPersistor);
-            }
-
-            private INakedObject[] GetAutocompleteList(INakedObject nakedObject, ArgumentsContext arguments) {
-                if (arguments.SearchTerm == null) {
-                    throw new BadRequestNOSException("Missing or malformed search term");
-                }
-                return GetCompletions(nakedObject, arguments.SearchTerm, framework.ObjectPersistor);
-            }
         }
 
         private ListContext GetCompletions(PropParmAdapter propParm, INakedObject nakedObject, ArgumentsContext arguments) {
@@ -446,14 +288,14 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             var property = (IOneToOneAssociation) context.Property;
 
             //if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
-                if (toPut != null && ConsentHandler(CanSetPropertyValue(context), context, Cause.WrongType)) {
-                    ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject, framework.Session), context, Cause.Other);
-                }
-                else if (toPut == null && (property.IsMandatory && property.IsUsable(framework.Session, context.Target, framework.ObjectPersistor).IsAllowed)) {
-                    // only check user editable fields
-                    context.Reason = "Mandatory";
-                    context.ErrorCause = Cause.Other;
-                }
+            if (toPut != null && ConsentHandler(CanSetPropertyValue(context), context, Cause.WrongType)) {
+                ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject, framework.Session), context, Cause.Other);
+            }
+            else if (toPut == null && (property.IsMandatory && property.IsUsable(framework.Session, context.Target, framework.ObjectPersistor).IsAllowed)) {
+                // only check user editable fields
+                context.Reason = "Mandatory";
+                context.ErrorCause = Cause.Other;
+            }
             //}
 
             return context;
@@ -492,13 +334,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             PropertyContext context = CanChangeProperty(nakedObject, propertyName, argument.Value);
             if (string.IsNullOrEmpty(context.Reason)) {
                 IEnumerable<PropertyContext> existingValues = context.Target.Specification.Properties.Where(p => p.Id != context.Id).
-                                                                      Select(p => new {p, no = p.GetNakedObject(context.Target, framework.ObjectPersistor)}).
-                                                                      Select(ao => new PropertyContext {
-                                                                          Property = ao.p,
-                                                                          ProposedNakedObject = ao.no,
-                                                                          ProposedValue = ao.no == null ? null : ao.no.Object,
-                                                                          Target = context.Target
-                                                                      }
+                    Select(p => new {p, no = p.GetNakedObject(context.Target, framework.ObjectPersistor)}).
+                    Select(ao => new PropertyContext {
+                        Property = ao.p,
+                        ProposedNakedObject = ao.no,
+                        ProposedValue = ao.no == null ? null : ao.no.Object,
+                        Target = context.Target
+                    }
                     ).Union(new[] {context});
 
                 var objectContext = new ObjectContext(context.Target) {VisibleProperties = existingValues.ToArray()};
@@ -552,8 +394,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                     }
 
                     propertiesToDisplay = nakedObject.Specification.Properties.
-                                                      Where(p => p.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor)).
-                                                      Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
+                        Where(p => p.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor)).
+                        Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
                 }
             }
 
@@ -587,8 +429,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                             framework.ObjectPersistor.ObjectChanged(nakedObject);
                         }
                         propertiesToDisplay = nakedObject.Specification.Properties.
-                                                          Where(p => p.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor)).
-                                                          Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
+                            Where(p => p.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor)).
+                            Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
                     }
                 }
             }
@@ -660,7 +502,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             // check for validity of whole set, including any 'co-validation' involving multiple parameters
             if (isValid) {
-                IConsent consent = actionContext.Action.IsParameterSetValid(framework.Session,  actionContext.Target, orderedParms.Select(kvp => kvp.Value.ProposedNakedObject).ToArray(), framework.ObjectPersistor);
+                IConsent consent = actionContext.Action.IsParameterSetValid(framework.Session, actionContext.Target, orderedParms.Select(kvp => kvp.Value.ProposedNakedObject).ToArray(), framework.ObjectPersistor);
                 if (!consent.IsAllowed) {
                     actionContext.Reason = consent.Reason;
                     isValid = false;
@@ -755,7 +597,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
 
-        private  INakedObject GetValue(INakedObjectSpecification specification, object rawValue) {
+        private INakedObject GetValue(INakedObjectSpecification specification, object rawValue) {
             if (rawValue == null) {
                 return null;
             }
@@ -768,9 +610,9 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 var elementSpec = specification.GetFacet<ITypeOfFacet>().ValueSpec;
 
                 if (elementSpec.IsParseable) {
-                    var elements = ((IEnumerable)rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.ObjectPersistor)).ToArray();
+                    var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.ObjectPersistor)).ToArray();
                     var elementType = TypeUtils.GetType(elementSpec.FullName);
-                    Type collType = typeof(List<>).MakeGenericType(elementType);
+                    Type collType = typeof (List<>).MakeGenericType(elementType);
                     var collection = framework.ObjectPersistor.CreateAdapter(Activator.CreateInstance(collType), null, null);
 
                     collection.Specification.GetFacet<ICollectionFacet>().Init(collection, elements);
@@ -782,7 +624,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return framework.ObjectPersistor.CreateAdapter(rawValue, null, null);
         }
 
-        private  IConsent CanSetPropertyValue(PropertyContext context) {
+        private IConsent CanSetPropertyValue(PropertyContext context) {
             try {
                 context.ProposedNakedObject = GetValue(context.Specification, context.ProposedValue);
                 return new Allow();
@@ -838,12 +680,11 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
             return parms.Select(p => new ParameterContext {
                 Action = action,
-                Parameter = p, 
+                Parameter = p,
                 OverloadedUniqueId = uid
             }).ToArray();
         }
 
-       
 
         private Tuple<INakedObjectAction, string> GetActionInternal(string actionName, INakedObject nakedObject) {
             if (string.IsNullOrWhiteSpace(actionName)) {
@@ -860,7 +701,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return new Tuple<INakedObjectAction, string>(action, SurfaceUtils.GetOverloadedUId(action, nakedObject.Specification));
         }
 
-      
+
         private INakedObjectActionParameter GetParameterInternal(string actionName, string parmName, INakedObject nakedObject) {
             var actionAndUid = GetActionInternal(actionName, nakedObject);
 
@@ -886,7 +727,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 OverloadedUniqueId = actionAndUid.Item2
             };
         }
-     
+
 
         private Tuple<ActionContext, INakedObjectSpecification> GetActionTypeInternal(string typeName, string actionName) {
             if (string.IsNullOrWhiteSpace(typeName) || string.IsNullOrWhiteSpace(actionName)) {
@@ -895,7 +736,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             INakedObjectSpecification spec = GetDomainTypeInternal(typeName);
             var actionAndUid = SurfaceUtils.GetActionandUidFromSpec(spec, actionName, typeName);
-                 
+
             var actionContext = new ActionContext {
                 Action = actionAndUid.Item1,
                 VisibleParameters = FilterParmsForContributedActions(actionAndUid.Item1, spec, actionAndUid.Item2),
@@ -934,7 +775,6 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
 
-
         private ObjectContext GetObjectContext(INakedObject nakedObject) {
             if (nakedObject == null) {
                 return null;
@@ -944,7 +784,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             INakedObjectAssociation[] properties = nakedObject.Specification.Properties.Where(p => p.IsVisible(framework.Session, nakedObject, framework.ObjectPersistor)).ToArray();
 
             return new ObjectContext(nakedObject) {
-                VisibleActions = actions.Select(a => new { action = a, uid = SurfaceUtils.GetOverloadedUId(a, nakedObject.Specification) }).Select(a => new ActionContext {
+                VisibleActions = actions.Select(a => new {action = a, uid = SurfaceUtils.GetOverloadedUId(a, nakedObject.Specification)}).Select(a => new ActionContext {
                     Action = a.action,
                     Target = nakedObject,
                     VisibleParameters = FilterParmsForContributedActions(a.action, nakedObject.Specification, a.uid),
@@ -990,7 +830,166 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return SetObject(nakedObject, arguments);
         }
 
+        private class PropParmAdapter {
+            private readonly INakedObjectsFramework framework;
+            private readonly INakedObjectActionParameter parm;
+            private readonly IOneToOneFeature prop;
+            private readonly INakedObjectsSurface surface;
+
+            private PropParmAdapter(object p, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+                this.surface = surface;
+                this.framework = framework;
+                if (p == null) {
+                    throw new BadRequestNOSException();
+                }
+            }
+
+            public PropParmAdapter(IOneToOneFeature prop, INakedObjectsSurface surface, INakedObjectsFramework framework)
+                : this((object) prop, surface, framework) {
+                this.prop = prop;
+                CheckAutocompleOrConditional();
+            }
+
+            public PropParmAdapter(INakedObjectActionParameter parm, INakedObjectsSurface surface, INakedObjectsFramework framework)
+                : this((object) parm, surface, framework) {
+                this.parm = parm;
+                CheckAutocompleOrConditional();
+            }
+
+            private bool IsAutoCompleteEnabled {
+                get { return prop == null ? parm.IsAutoCompleteEnabled : prop.IsAutoCompleteEnabled; }
+            }
+
+            public INakedObjectSpecification Specification {
+                get { return prop == null ? parm.Specification : prop.Specification; }
+            }
+
+            private Func<Tuple<string, INakedObjectSpecification>[]> GetChoicesParameters {
+                get { return prop == null ? (Func<Tuple<string, INakedObjectSpecification>[]>) parm.GetChoicesParameters : prop.GetChoicesParameters; }
+            }
+
+            private Func<INakedObject, IDictionary<string, INakedObject>, INakedObjectPersistor, INakedObject[]> GetChoices {
+                get { return prop == null ? (Func<INakedObject, IDictionary<string, INakedObject>, INakedObjectPersistor, INakedObject[]>) parm.GetChoices : prop.GetChoices; }
+            }
+
+            private Func<INakedObject, string, INakedObjectPersistor, INakedObject[]> GetCompletions {
+                get { return prop == null ? (Func<INakedObject, string, INakedObjectPersistor, INakedObject[]>) parm.GetCompletions : prop.GetCompletions; }
+            }
+
+            private void CheckAutocompleOrConditional() {
+                if (!(IsAutoCompleteEnabled || GetChoicesParameters().Any())) {
+                    throw new BadRequestNOSException();
+                }
+            }
+
+            public INakedObject[] GetList(INakedObject nakedObject, ArgumentsContext arguments) {
+                return IsAutoCompleteEnabled ? GetAutocompleteList(nakedObject, arguments) : GetConditionalList(nakedObject, arguments);
+            }
+
+            private string CheckForMissingArgument(string key, object value, INakedObjectSpecification expectedType) {
+                if (expectedType.IsParseable) {
+                    var valueAsString = value as string;
+                    return valueAsString == null || string.IsNullOrEmpty(valueAsString) ? string.Format("Missing argument {0}", key) : null;
+                }
+                return value == null ? string.Format("Missing argument {0}", key) : null;
+            }
+
+            private INakedObjectSpecificationSurface GetSpecificationWrapper(INakedObjectSpecification spec) {
+                return new NakedObjectSpecificationWrapper(spec, surface, framework);
+            }
+
+            private INakedObject[] GetConditionalList(INakedObject nakedObject, ArgumentsContext arguments) {
+                Tuple<string, INakedObjectSpecification>[] expectedParms = GetChoicesParameters();
+                IDictionary<string, object> actualParms = arguments.Values;
+
+                string[] expectedParmNames = expectedParms.Select(t => t.Item1).ToArray();
+                string[] actualParmNames = actualParms.Keys.ToArray();
+
+                if (expectedParmNames.Count() < actualParmNames.Count()) {
+                    throw new BadRequestNOSException("Wrong number of conditional arguments");
+                }
+
+                if (!actualParmNames.All(expectedParmNames.Contains)) {
+                    throw new BadRequestNOSException("Unrecognised conditional argument(s)");
+                }
+
+                Func<Tuple<string, INakedObjectSpecification>, object> getValue = ep => {
+                    if (actualParms.ContainsKey(ep.Item1)) {
+                        return actualParms[ep.Item1];
+                    }
+                    return ep.Item2.IsParseable ? "" : null;
+                };
+
+
+                var matchedParms = expectedParms.ToDictionary(ep => ep.Item1, ep => new {
+                    expectedType = ep.Item2,
+                    value = getValue(ep),
+                    actualType = getValue(ep) == null ? null : framework.Reflector.LoadSpecification(getValue(ep).GetType())
+                });
+
+                var errors = new List<ContextSurface>();
+
+                var mappedArguments = new Dictionary<string, INakedObject>();
+
+                foreach (var ep in expectedParms) {
+                    string key = ep.Item1;
+                    var mp = matchedParms[key];
+                    object value = mp.value;
+                    INakedObjectSpecification expectedType = mp.expectedType;
+                    INakedObjectSpecification actualType = mp.actualType;
+
+                    if (expectedType.IsParseable && actualType.IsParseable) {
+                        string rawValue = value.ToString();
+
+                        try {
+                            mappedArguments[key] = expectedType.GetFacet<IParseableFacet>().ParseTextEntry(rawValue, framework.ObjectPersistor);
+
+                            errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
+                                ProposedValue = rawValue
+                            });
+                        }
+                        catch (Exception e) {
+                            errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
+                                Reason = e.Message,
+                                ProposedValue = rawValue
+                            });
+                        }
+                    }
+                    else if (actualType != null && !actualType.IsOfType(expectedType)) {
+                        errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
+                            Reason = string.Format("Argument is of wrong type is {0} expect {1}", actualType.FullName, expectedType.FullName),
+                            ProposedValue = actualParms[ep.Item1]
+                        });
+                    }
+                    else {
+                        mappedArguments[key] = framework.ObjectPersistor.CreateAdapter(value, null, null);
+
+                        errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
+                            ProposedValue = getValue(ep)
+                        });
+                    }
+                }
+
+                if (errors.Any(e => !string.IsNullOrEmpty(e.Reason))) {
+                    throw new BadRequestNOSException("Wrong type of conditional argument(s)", errors);
+                }
+
+                return GetChoices(nakedObject, mappedArguments, framework.ObjectPersistor);
+            }
+
+            private INakedObject[] GetAutocompleteList(INakedObject nakedObject, ArgumentsContext arguments) {
+                if (arguments.SearchTerm == null) {
+                    throw new BadRequestNOSException("Missing or malformed search term");
+                }
+                return GetCompletions(nakedObject, arguments.SearchTerm, framework.ObjectPersistor);
+            }
+        }
+
         #endregion
+
+        private INakedObjectSpecificationSurface GetSpecificationWrapper(INakedObjectSpecification spec) {
+            return new NakedObjectSpecificationWrapper(spec, this, framework);
+        }
 
         private static bool IsGenericType(INakedObjectSpecification spec) {
             Type type = TypeUtils.GetType(spec.FullName);

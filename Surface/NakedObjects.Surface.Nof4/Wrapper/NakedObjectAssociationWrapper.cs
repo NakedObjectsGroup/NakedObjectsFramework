@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -34,7 +37,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         protected IDictionary<string, object> ExtensionData {
             get {
                 var extData = new Dictionary<string, object>();
-             
+
                 if (assoc.ContainsFacet<IPresentationHintFacet>()) {
                     extData[PresentationHint] = assoc.GetFacet<IPresentationHintFacet>().Value;
                 }
@@ -128,12 +131,12 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool IsAutoCompleteEnabled {
-            get { return ((IOneToOneFeature)assoc).IsAutoCompleteEnabled; }
+            get { return ((IOneToOneFeature) assoc).IsAutoCompleteEnabled; }
         }
 
 
         public IConsentSurface IsUsable(INakedObjectSurface target) {
-            IConsent consent = assoc.IsUsable(framework.Session, ((NakedObjectWrapper)target).WrappedNakedObject, framework.ObjectPersistor);
+            IConsent consent = assoc.IsUsable(framework.Session, ((NakedObjectWrapper) target).WrappedNakedObject, framework.ObjectPersistor);
             return new ConsentWrapper(consent);
         }
 
@@ -143,7 +146,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool IsVisible(INakedObjectSurface nakedObject) {
-            return assoc.IsVisible(framework.Session, ((NakedObjectWrapper)nakedObject).WrappedNakedObject, framework.ObjectPersistor);
+            return assoc.IsVisible(framework.Session, ((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.ObjectPersistor);
         }
 
         public bool IsEager(INakedObjectSurface nakedObject) {
@@ -153,11 +156,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, INakedObjectSurface> parameterNameValues) {
             var oneToOneFeature = assoc as IOneToOneFeature;
-            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((NakedObjectWrapper)target).WrappedNakedObject, null, framework.ObjectPersistor).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
-        }
-
-        private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, INakedObjectSpecification> parm) {
-            return new Tuple<string, INakedObjectSpecificationSurface>(parm.Item1, new NakedObjectSpecificationWrapper(parm.Item2, Surface, framework));
+            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((NakedObjectWrapper) target).WrappedNakedObject, null, framework.ObjectPersistor).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
         }
 
         public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
@@ -172,7 +171,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectSurface[] GetCompletions(INakedObjectSurface target, string autoCompleteParm) {
             var oneToOneFeature = assoc as IOneToOneFeature;
-            return oneToOneFeature != null ? oneToOneFeature.GetCompletions(((NakedObjectWrapper)target).WrappedNakedObject, autoCompleteParm, framework.ObjectPersistor).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
+            return oneToOneFeature != null ? oneToOneFeature.GetCompletions(((NakedObjectWrapper) target).WrappedNakedObject, autoCompleteParm, framework.ObjectPersistor).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
         }
 
         public int Count(INakedObjectSurface target) {
@@ -192,9 +191,13 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return titleFacet.GetTitleWithMask(mask.Value, ((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.ObjectPersistor);
         }
 
+        public INakedObjectsSurface Surface { get; set; }
+
         #endregion
 
-        public INakedObjectsSurface Surface { get; set; }
+        private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, INakedObjectSpecification> parm) {
+            return new Tuple<string, INakedObjectSpecificationSurface>(parm.Item1, new NakedObjectSpecificationWrapper(parm.Item2, Surface, framework));
+        }
 
         public override bool Equals(object obj) {
             var nakedObjectAssociationWrapper = obj as NakedObjectAssociationWrapper;

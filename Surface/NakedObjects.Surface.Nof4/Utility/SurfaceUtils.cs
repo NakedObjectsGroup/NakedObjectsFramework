@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Linq;
@@ -41,7 +44,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             INakedObjectAction[] overloadedActions = actions.Where(a => a.Id == action.Id && actions.Count(ac => ac.Id == a.Id) > 1).ToArray();
 
             if (overloadedActions.Any()) {
-                var actionAndParms = overloadedActions.Select(a => new Tuple<INakedObjectAction, string>(a, ((Func<INakedObjectAction, string>)(act => act.Parameters.Aggregate("", (acc, p) => a + p.Id + p.Specification.FullName)))(a)));
+                var actionAndParms = overloadedActions.Select(a => new Tuple<INakedObjectAction, string>(a, ((Func<INakedObjectAction, string>) (act => act.Parameters.Aggregate("", (acc, p) => a + p.Id + p.Specification.FullName)))(a)));
 
                 int index = 0;
                 var orderedActions = actionAndParms.OrderBy(ap => ap.Item2).Select(ap => ap.Item1).ToDictionary(a => a, a => index++);
@@ -57,14 +60,14 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return "";
         }
 
-     
+
         private static Tuple<INakedObjectAction, string>[] GetOverloadedActionsAndUIds(INakedObjectAction[] actions) {
             INakedObjectAction[] overloadedActions = actions.Where(a => actions.Count(ac => ac.Id == a.Id) > 1).ToArray();
 
             if (overloadedActions.Any()) {
                 return overloadedActions.Select(a => new Tuple<INakedObjectAction, string>(a, GetUniqueSuffix(a, actions))).ToArray();
             }
-            return new Tuple<INakedObjectAction, string>[] { };
+            return new Tuple<INakedObjectAction, string>[] {};
         }
 
         public static INakedObjectAction GetOverloadedAction(string actionName, INakedObjectSpecification spec) {
@@ -103,8 +106,5 @@ namespace NakedObjects.Surface.Nof4.Utility {
             INakedObjectAction[] actions = spec.GetActionLeafNodes();
             return actions.Select(action => new Tuple<INakedObjectAction, string>(action, GetOverloadedUId(action, spec))).ToArray();
         }
-
-       
-
     }
 }
