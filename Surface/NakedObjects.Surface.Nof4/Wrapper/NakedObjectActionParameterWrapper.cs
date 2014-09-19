@@ -12,7 +12,6 @@ using NakedObjects.Architecture.Facets.Propparam.Validate.MaxLength;
 using NakedObjects.Architecture.Facets.Propparam.Validate.RegEx;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {

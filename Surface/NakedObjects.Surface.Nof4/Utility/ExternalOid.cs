@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.ViewModel;
 using NakedObjects.Architecture.Services;
@@ -18,6 +19,9 @@ using NakedObjects.Util;
 namespace NakedObjects.Surface.Nof4.Utility {
     // to do generalise this 
     public class ExternalOid : IOidStrategy {
+
+        private static ILog log = LogManager.GetLogger(typeof (ExternalOid));
+
         private readonly INakedObjectsFramework framework;
 
         public ExternalOid(INakedObjectsFramework framework) {
@@ -130,14 +134,28 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
 
         protected object GetDomainObject(string[] keys, Type type) {
-            IDictionary<string, object> keyDict = CreateKeyDictionary(keys, type);
-            return framework.ObjectPersistor.FindByKeys(type, keyDict.Values.ToArray()).GetDomainObject();
+            try {
+                IDictionary<string, object> keyDict = CreateKeyDictionary(keys, type);
+                return framework.ObjectPersistor.FindByKeys(type, keyDict.Values.ToArray()).GetDomainObject();
+            }
+            catch (Exception e) {
+                log.Warn("Domain Object not found with exception", e);
+                log.WarnFormat("Domain Object not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => s + " " + t), type == null ? "null" : type.ToString());
+                return null;
+            }
         }
 
         protected object GetViewModel(string[] keys, INakedObjectSpecification spec) {
-            INakedObject viewModel = framework.ObjectPersistor.CreateViewModel(spec);
-            spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel);
-            return viewModel.Object;
+            try {
+                INakedObject viewModel = framework.ObjectPersistor.CreateViewModel(spec);
+                spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel);
+                return viewModel.Object;
+            }
+            catch (Exception e) {
+                log.Warn("View Model not found with exception", e);
+                log.WarnFormat("View Model not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => s + " " + t), spec == null ? "null" : spec.FullName);
+                return null;
+            }
         }
 
         private Type GetType(string typeName) {

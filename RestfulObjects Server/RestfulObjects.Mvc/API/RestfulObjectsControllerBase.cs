@@ -82,6 +82,7 @@ namespace RestfulObjects.Mvc {
             var version = PrefixRoute(SegmentValues.Version, routePrefix);
             var home = PrefixRoute(SegmentValues.HomePage, routePrefix);
 
+            // ReSharper disable RedundantArgumentName
             routes.MapHttpRoute(
                 name: "GetInvokeIsTypeOf",
                 routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.TypeActions + "/{actionName}/" + SegmentValues.Invoke,
@@ -120,7 +121,6 @@ namespace RestfulObjects.Mvc {
                 routeTemplate: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-
             routes.MapHttpRoute(
                 name: "GetInvoke",
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
@@ -146,7 +146,6 @@ namespace RestfulObjects.Mvc {
                 name: "InvalidInvoke",
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
-
 
             routes.MapHttpRoute(
                 name: "GetActionParameterType",
@@ -210,7 +209,6 @@ namespace RestfulObjects.Mvc {
                 constraints: new { httpMethod = new HttpMethodConstraint("POST") }
                 );
 
-
             routes.MapHttpRoute(
                 name: "GetCollection",
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
@@ -248,7 +246,6 @@ namespace RestfulObjects.Mvc {
                 defaults: new {controller = "RestfulObjects", action = "PutProperty"},
                 constraints: new {httpMethod = new HttpMethodConstraint("PUT")}
                 );
-
 
             routes.MapHttpRoute(
                 name: "GetProperty",
@@ -448,6 +445,7 @@ namespace RestfulObjects.Mvc {
                 name: "InvalidHome",
                 routeTemplate: home,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
+            // ReSharper restore RedundantArgumentName
         }
 
         #endregion
