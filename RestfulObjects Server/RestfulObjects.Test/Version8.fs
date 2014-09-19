@@ -69,6 +69,6 @@ let NotAcceptableGetVersion(api : RestfulObjectsControllerBase) =
     msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue("profile", (makeProfile RepresentationTypes.User)))
     try 
         api.Request <- msg
-        let result = api.GetVersion(args)
+        api.GetVersion(args) |> ignore
         Assert.Fail("expect exception")
     with :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)

@@ -8,18 +8,16 @@
 module DomainTypes20
 open NUnit.Framework
 open RestfulObjects.Mvc
-open NakedObjects.Surface
+
 open System.Net
-open System.Net.Http
+
 open System.Net.Http.Headers
-open System.IO
+
 open Newtonsoft.Json.Linq
-open System.Web
-open System
-open RestfulObjects.Snapshot.Utility 
+
 open RestfulObjects.Snapshot.Constants
 open System.Web.Http
-open System.Collections.Generic
+
 open System.Linq
 open RestTestFunctions
 
@@ -239,7 +237,7 @@ let NotAcceptableGetDomainTypes(api : RestfulObjectsControllerBase) =
 
     try 
         api.Request <- msg
-        let result = api.GetDomainTypes(args)
+        api.GetDomainTypes(args) |> ignore
         Assert.Fail("expect exception")
     with 
         | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
