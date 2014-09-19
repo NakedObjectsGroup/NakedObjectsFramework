@@ -22,7 +22,7 @@ open System.Web.Http
 open System.Collections.Generic
 open System.Linq
 open RestTestFunctions
-// open System.Json
+
 
 
 let GetService(api : RestfulObjectsControllerBase) = 
@@ -73,7 +73,7 @@ let GetService(api : RestfulObjectsControllerBase) =
                          TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository"));
                          TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "services/%s" sName)  RepresentationTypes.Object sName);
                                                                      TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" sName)  RepresentationTypes.DomainType "");
-                                                                     //TObjectJson(makeIconLink())
+                                                                     
                                                                       ]));
                          TProperty(JsonPropertyNames.Members, TObjectJson([TProperty("AzContributedAction", TObjectJson(makeServiceActionMember "AzContributedAction" sName mst [ p1 ]));
                                                                            TProperty("AzContributedActionOnBaseClass", TObjectJson(makeServiceActionMember "AzContributedActionOnBaseClass" sName mst [p2]));
@@ -116,7 +116,7 @@ let GetContributorService(api : RestfulObjectsControllerBase) =
                          TProperty(JsonPropertyNames.Title, TObjectVal("Contributor Service"));
                          TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "services/%s" sName)  RepresentationTypes.Object sName);
                                                                      TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" sName)  RepresentationTypes.DomainType "");
-                                                                     //TObjectJson(makeIconLink())
+                                                                     
                                                                       ]));
                          TProperty(JsonPropertyNames.Members, TObjectJson([TProperty("ANonContributedAction", TObjectJson(makeServiceActionMemberNoParms "ANonContributedAction" sName mst))]));
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(sName));
@@ -173,7 +173,7 @@ let GetServiceFormalOnly(api : RestfulObjectsControllerBase) =
                          TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository"));
                          TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "services/%s" sName)  RepresentationTypes.Object sName "" false);
                                                                      TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" sName)  RepresentationTypes.DomainType "");
-                                                                     //TObjectJson(makeIconLink())
+                                                                     
                                                                       ]));
                          TProperty(JsonPropertyNames.Members, TObjectJson([TProperty("AzContributedAction", TObjectJson(makeActionMemberFormal "services" "AzContributedAction" sName mst [p1]));
                                                                            TProperty("AzContributedActionOnBaseClass", TObjectJson(makeActionMemberFormal "services" "AzContributedActionOnBaseClass" sName mst [p2]));
@@ -243,7 +243,7 @@ let GetServiceSimpleOnly(api : RestfulObjectsControllerBase) =
         let expected = [ TProperty(JsonPropertyNames.ServiceId, TObjectVal(sName));
                          TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository"));
                          TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "services/%s" sName)  RepresentationTypes.Object sName);
-                                                                     //TObjectJson(makeIconLink())
+                                                                     
                                                                       ]));
                          TProperty(JsonPropertyNames.Members, TObjectJson([TProperty("AzContributedAction", TObjectJson(makeServiceActionMemberSimple "AzContributedAction" sName mst [p1]));
                                                                            TProperty("AzContributedActionOnBaseClass", TObjectJson(makeServiceActionMemberSimple "AzContributedActionOnBaseClass" sName mst [p2]));
@@ -322,7 +322,7 @@ let GetServiceWithMediaType(api : RestfulObjectsControllerBase) =
                          TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository"));
                          TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "services/%s" sName)  RepresentationTypes.Object sName);
                                                                      TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" sName)  RepresentationTypes.DomainType "");
-                                                                     //TObjectJson(makeIconLink())
+                                                                     
                                                                       ]));
                          TProperty(JsonPropertyNames.Members, TObjectJson([TProperty("AzContributedAction", TObjectJson(makeServiceActionMember "AzContributedAction" sName mst [p1]));
                                                                            TProperty("AzContributedActionOnBaseClass", TObjectJson(makeServiceActionMember "AzContributedActionOnBaseClass" sName mst [p2]));
@@ -715,7 +715,7 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
                          TProperty(JsonPropertyNames.Title, TObjectVal("With Action Service"));
                          TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson( makeGetLinkProp RelValues.Self (sprintf "services/%s" oid)  RepresentationTypes.Object oType);
                                                                       TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" oid)  RepresentationTypes.DomainType "");
-                                                                      //TObjectJson(makeIconLink())
+                                                                      
                                                                        ]));
                          TProperty(JsonPropertyNames.Members, TObjectJson([TProperty("ADisabledAction", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Always disabled")) ::makeServiceActionMemberNoParms "ADisabledAction"oid mst));
                                                                            TProperty("ADisabledCollectionAction", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Always disabled")) ::makeServiceActionCollectionMemberNoParms "ADisabledCollectionAction"oid mst));

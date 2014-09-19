@@ -22,7 +22,6 @@ open System.Web.Http
 open System.Collections.Generic
 open System.Linq
 open RestTestFunctions
-// open System.Json
 
 let GetCollectionProperty(api : RestfulObjectsControllerBase) = 
         let collectionType = "System.Collections.Generic.List`1[[RestfulObjects.Test.Data.MostSimple"

@@ -22,7 +22,7 @@ open System.Web.Http
 open System.Collections.Generic
 open System.Linq
 open RestTestFunctions
-//// open System.Json
+
 
    // 19.3 post to invoke non-idempotent action no parms 
 let VerifyPostInvokeActionReturnObject refType oType oid f (api : RestfulObjectsControllerBase) =
@@ -46,7 +46,7 @@ let VerifyPostInvokeActionReturnObject refType oType oid f (api : RestfulObjects
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -102,7 +102,7 @@ let VerifyPostInvokeOverloadedActionReturnObject refType oType oid f (api : Rest
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -158,7 +158,7 @@ let VerifyPostInvokeContributedService refType oType oid f (api : RestfulObjects
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -233,7 +233,7 @@ let VerifyPostInvokeActionReturnViewModel refType oType oid f (api : RestfulObje
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -291,7 +291,7 @@ let VerifyPostInvokeActionReturnObjectConcurrencySuccess refType oType oid f tag
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -354,7 +354,7 @@ let VerifyPostInvokeUserDisabledActionReturnObject refType oType oid f (api : Re
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -412,7 +412,7 @@ let PostInvokeContribActionReturnObject (api : RestfulObjectsControllerBase) =
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -455,7 +455,7 @@ let PostInvokeContribActionReturnObjectBaseClass (api : RestfulObjectsController
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -501,7 +501,7 @@ let PostInvokeContribActionReturnObjectWithRefParm (api : RestfulObjectsControll
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid  "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -546,7 +546,7 @@ let PostInvokeContribActionReturnObjectWithValueParm (api : RestfulObjectsContro
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid  "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -703,7 +703,7 @@ let VerifyPutInvokeActionReturnObject refType oType oid f (api : RestfulObjectsC
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid  "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -759,7 +759,7 @@ let VerifyPutInvokeActionReturnViewModel refType oType oid f (api : RestfulObjec
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid  "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -819,7 +819,7 @@ let VerifyPutInvokeActionReturnObjectConcurrencySuccess refType oType oid f tag 
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid  "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -949,7 +949,7 @@ let VerifyGetInvokeActionReturnObject refType oType oid f (api : RestfulObjectsC
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType "" true);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                      
                                                                                        TObjectJson(args :: makeLinkPropWithMethodAndTypes "PUT" RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType "" true) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid  "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -1008,7 +1008,7 @@ let VerifyGetInvokeActionReturnViewModel refType oType oid f (api : RestfulObjec
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType "" true);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makeLinkPropWithMethodAndTypes "PUT" RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType "" true) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid  "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -1069,7 +1069,7 @@ let VerifyGetInvokeActionReturnObjectConcurrencySuccess refType oType oid f (api
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType "" true);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makeLinkPropWithMethodAndTypes "PUT" RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType "" true) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid  "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -1128,7 +1128,7 @@ let VerifyGetInvokeActionReturnObjectConcurrencyNoIfMatch refType oType oid f (a
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType "" true);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makeLinkPropWithMethodAndTypes "PUT" RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType "" true) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid  "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -1262,7 +1262,7 @@ let VerifyPostInvokeActionReturnObjectWithMediaType refType oType oid f (api : R
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                     
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid  "Id"  (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -2010,7 +2010,7 @@ let VerifyGetInvokeActionWithMissingScalarParmsReturnQuerySimple refType oType o
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -2166,7 +2166,7 @@ let VerifyGetInvokeActionWithScalarMissingParmsFormal refType oType oid f (api :
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -2732,7 +2732,7 @@ let VerifyPostInvokeOverloadedAction refType oType oid f (api : RestfulObjectsCo
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args1 :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -3348,7 +3348,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnObject refType oType oid f (ap
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [TProperty("Id",  TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -3453,7 +3453,7 @@ let VerifyPutInvokeActionWithReferenceParmsReturnObject refType oType oid f (api
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson( [ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -3559,7 +3559,7 @@ let VerifyGetInvokeActionWithReferenceParmsReturnObject refType oType oid f (api
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType "" true);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makeLinkPropWithMethodAndTypes "PUT" RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType "" true) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));
@@ -3626,7 +3626,7 @@ let VerifyGetInvokeActionWithParmReturnObject refType oType oid f (api : Restful
                                           TProperty(JsonPropertyNames.Title, TObjectVal("1") );
                                           TProperty(JsonPropertyNames.Links, TArray( [ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "objects/%s" roid)  RepresentationTypes.Object roType "" true);
                                                                                        TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType)  RepresentationTypes.DomainType "");
-                                                                                       //TObjectJson(makeIconLink());
+                                                                                       
                                                                                        TObjectJson(args :: makeLinkPropWithMethodAndTypes "PUT" RelValues.Update (sprintf "objects/%s" roid)  RepresentationTypes.Object roType "" true) ]));
                                           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]));
                                           TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(roType));

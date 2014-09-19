@@ -22,7 +22,7 @@ open System.Web.Http
 open System.Collections.Generic
 open System.Linq
 open RestTestFunctions
-// open System.Json
+
 
 let getExpected() = 
     let value = TArray([TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" "NakedObjects.IViewModel") RepresentationTypes.DomainType "");   
