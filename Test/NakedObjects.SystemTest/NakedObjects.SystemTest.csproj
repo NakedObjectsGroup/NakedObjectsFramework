@@ -206,7 +206,6 @@
     <Compile Include="XATs\TestFailureScenarios.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Finder\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

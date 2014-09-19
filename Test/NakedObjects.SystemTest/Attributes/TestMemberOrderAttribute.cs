@@ -27,22 +27,17 @@ namespace NakedObjects.SystemTest.Attributes {
 
             protected override IServicesInstaller MenuServices {
                 get {
-                    return new ServicesInstaller(new object[]   {  new SimpleRepository<Object2>(),
+                    return new ServicesInstaller(new object[]   {  new SimpleRepository<MemberOrder1>(),
                                                                   new SimpleRepository<Object3>(),
                                                                   new SimpleRepository<Object4>()
                                                               });
                 }
             }
 
-            //Specify as you would for the run class in a prototype
-            protected override IFixturesInstaller Fixtures {
-                get { return new FixturesInstaller(new object[] {}); }
-            }
-
             [TestMethod]
             public void PropertyOrder()
             {
-                ITestObject obj2 = NewTestObject<Object2>();
+                ITestObject obj2 = NewTestObject<MemberOrder1>();
                 obj2.AssertPropertyOrderIs("Prop2, Prop1");
 
                 ITestProperty[] properties = obj2.Properties;
@@ -65,7 +60,7 @@ namespace NakedObjects.SystemTest.Attributes {
             [TestMethod]
             public void ActionOrder()
             {
-                ITestObject obj2 = NewTestObject<Object2>();
+                ITestObject obj2 = NewTestObject<MemberOrder1>();
                 ITestAction[] actions = obj2.Actions;
                 Assert.AreEqual(actions[0].Name, "Action2");
                 Assert.AreEqual(actions[1].Name, "Action1");
@@ -117,7 +112,7 @@ namespace NakedObjects.SystemTest.Attributes {
             }
         }
 
-        public class Object2 {
+        public class MemberOrder1 {
             [MemberOrder(3)]
             public string Prop1 { get; set; }
 
@@ -131,7 +126,7 @@ namespace NakedObjects.SystemTest.Attributes {
             public void Action2() { }
         }
 
-        public class Object3 : Object2 {
+        public class Object3 : MemberOrder1 {
             [MemberOrder(4)]
             public string Prop3 { get; set; }
 
