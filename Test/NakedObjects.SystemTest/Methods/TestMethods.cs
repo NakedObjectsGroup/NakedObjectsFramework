@@ -1,0 +1,2410 @@
+// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
+// All Rights Reserved. This code released under the terms of the 
+// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+using System.ComponentModel;
+using NakedObjects.Boot;
+using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Services;
+using NakedObjects.Xat;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Data.Entity;
+using NakedObjects;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using NakedObjects.Reflector.Spec;
+using System.Collections.Generic;
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Reflect;
+
+namespace NakedObjects.SystemTest.Method
+{
+    [TestClass]
+    public class TestMethods : AbstractSystemTest2<MethodsDbContext>
+    {
+        #region Setup/Teardown
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc)
+        {
+            InitializeNakedObjectsFramework(new TestMethods());
+        }
+
+        [ClassCleanup]
+        public static void ClassCleanup()
+        {
+            CleanupNakedObjectsFramework(new TestMethods());
+            Database.Delete(MethodsDbContext.DatabaseName);
+        }
+
+        [TestInitialize()]
+        public void TestInitialize()
+        {
+            StartTest();
+        }
+
+        [TestCleanup()]
+        public void TestCleanup()
+        {
+        }
+
+        #endregion
+
+        protected override IServicesInstaller MenuServices
+        {
+            get
+            {
+                return new ServicesInstaller(
+                        new SimpleRepository<Auto1>(),
+                        new SimpleRepository<Auto2>(),
+                        new SimpleRepository<Auto3>(),
+                        new SimpleRepository<Choices1>(),
+                        new SimpleRepository<Choices2>(),
+                        new SimpleRepository<Choices3>(),
+                        new SimpleRepository<Choices4>(),
+                        new SimpleRepository<Clear1>(),
+                        new SimpleRepository<Clear2>(),
+                        new SimpleRepository<Clear3>(),
+                        new SimpleRepository<Created1>(),
+                        new SimpleRepository<Created2>(),
+                        new SimpleRepository<Default1>(),
+                        new SimpleRepository<Default2>(),
+                        new SimpleRepository<Default3>(),
+                        new SimpleRepository<Default4>(),
+                        new SimpleRepository<Deleted1>(),
+                        new SimpleRepository<Deleted2>(),
+                        new SimpleRepository<Deleting1>(),
+                        new SimpleRepository<Deleting2>(),
+                        new SimpleRepository<Disable1>(),
+                        new SimpleRepository<Disable2>(),
+                        new SimpleRepository<Disable3>(),
+                        new SimpleRepository<Hide1>(),
+                        new SimpleRepository<Hide2>(),
+                        new SimpleRepository<Hide3>(),
+                        new SimpleRepository<Modify1>(),
+                        new SimpleRepository<Modify2>(),
+                        new SimpleRepository<Modify3>(),
+                        new SimpleRepository<Modify4>(),
+                        new SimpleRepository<Persisted1>(),
+                        new SimpleRepository<Persisted2>(),
+                        new SimpleRepository<Persisting1>(),
+                        new SimpleRepository<Persisting2>(),
+                         new SimpleRepository<Saved1>(),
+                         new SimpleRepository<Title1>(),
+                         new SimpleRepository<Title2>(),
+                         new SimpleRepository<Title3>(),
+                         new SimpleRepository<Title4>(),
+                         new SimpleRepository<Title5>(),
+                         new SimpleRepository<Updated1>(),
+                         new SimpleRepository<Updated2>()
+                     );
+            }
+        }
+
+        #region AutoComplete
+
+        [TestMethod]
+        public void AutoCompleteMethodDoesNotShowUpAsAction()
+        {
+            var obj1 = NewTestObject<Auto1>();
+
+            try
+            {
+                obj1.GetAction("Auto Complete Prop1");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+
+            try
+            {
+                obj1.GetAction("Auto Complete 0 Do Something");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+
+        private void CreateAuto2(string prop1)
+        {
+            var obj2 = NewTestObject<Auto2>();
+            obj2.GetPropertyByName("Prop1").SetValue(prop1);
+            obj2.Save();
+        }
+
+        [TestMethod]
+        public virtual void AutoCompleteParameters()
+        {
+            CreateAuto2("Bar1");
+            CreateAuto2("Bar2");
+            CreateAuto2("Bar3");
+
+            var obj1 = NewTestObject<Auto1>();
+            ITestAction action = obj1.GetAction("Do Something");
+
+            try
+            {
+                action.Parameters[0].GetCompletions("bar");
+                Assert.Fail("expect exception");
+            }
+            catch (Exception)
+            {
+                // expected
+            }
+
+            ITestNaked[] cho1 = action.Parameters[1].GetCompletions("any");
+            Assert.AreEqual(3, cho1.Count());
+            Assert.AreEqual("Fee", cho1[0].Title);
+
+            ITestNaked[] cho2 = action.Parameters[2].GetCompletions("bar");
+            Assert.AreEqual(3, cho2.Count());
+            Assert.AreEqual("Bar1", cho2[0].Title);
+        }
+
+        [TestMethod]
+        public virtual void AutoCompleteReferenceProperty()
+        {
+            CreateAuto2("Foo1");
+            CreateAuto2("Foo2");
+            CreateAuto2("Foo3");
+
+            var obj1 = NewTestObject<Auto1>();
+            ITestProperty prop = obj1.GetPropertyByName("Prop3");
+            ITestNaked[] cho = prop.GetCompletions("foo");
+            Assert.AreEqual(3, cho.Count());
+            Assert.AreEqual("Foo1", cho[0].Title);
+        }
+
+        [TestMethod]
+        public virtual void AutoCompleteStringProperty()
+        {
+            var obj1 = NewTestObject<Auto1>();
+            ITestProperty prop = obj1.GetPropertyByName("Prop2");
+            ITestNaked[] cho = prop.GetCompletions("any");
+            Assert.AreEqual(3, cho.Count());
+            Assert.AreEqual("Fee", cho[0].Title);
+        }
+
+        [TestMethod]
+        public virtual void AutoCompleteIntProperty()
+        {
+            var obj1 = NewTestObject<Auto1>();
+            ITestProperty prop = obj1.GetPropertyByName("Prop1");
+
+            try
+            {
+                prop.GetCompletions("any");
+                Assert.Fail("expect exception");
+            }
+            catch (Exception)
+            {
+                // expected
+            }
+            obj1.GetAction("Auto Complete Prop1");
+        }
+
+
+        [TestMethod]
+        public void UnmatchedAutoCompleteMethodShowsUpAsAction()
+        {
+            ITestObject obj3 = NewTestObject<Auto3>();
+            obj3.GetAction("Auto Complete Prop1");
+            obj3.GetAction("Auto Complete Prop2");
+            obj3.GetAction("Auto Complete Prop3");
+            obj3.GetAction("Auto Complete 0 Do Somthing");
+            obj3.GetAction("Auto Complete 0 Do Something");
+        }
+        #endregion
+
+        #region Choices
+        [TestMethod]
+        public void ChoicesMethodDoesNotShowUpAsAction()
+        {
+            var obj1 = NewTestObject<Choices1>();
+            try
+            {
+                obj1.GetAction("Choices Prop1");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+
+            try
+            {
+                obj1.GetAction("Choices 0 Do Something");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+
+        [TestMethod]
+        public virtual void ChoicesNumericProperty()
+        {
+            var obj1 = NewTestObject<Choices1>();
+            ITestProperty prop = obj1.GetPropertyByName("Prop1");
+            ITestNaked[] cho = prop.GetChoices();
+            Assert.AreEqual(3, cho.Count());
+            Assert.AreEqual("4", cho[0].Title);
+        }
+
+        private void CreateChoices<T>(string prop1)
+        {
+            var obj2 = NewTestObject<T>();
+            obj2.GetPropertyByName("Prop1").SetValue(prop1);
+            obj2.Save();
+        }
+
+        [TestMethod]
+        public virtual void ChoicesParameters()
+        {
+            CreateChoices<Choices2>("Bar1");
+            CreateChoices<Choices2>("Bar2");
+            CreateChoices<Choices2>("Bar3");
+
+            var obj1 = NewTestObject<Choices1>();
+            ITestAction action = obj1.GetAction("Do Something");
+            ITestNaked[] cho0 = action.Parameters[0].GetChoices();
+            Assert.AreEqual(3, cho0.Count());
+            Assert.AreEqual("4", cho0[0].Title);
+
+            ITestNaked[] cho1 = action.Parameters[1].GetChoices();
+            Assert.AreEqual(3, cho1.Count());
+            Assert.AreEqual("Fee", cho1[0].Title);
+
+            ITestNaked[] cho2 = action.Parameters[2].GetChoices();
+            Assert.AreEqual(3, cho2.Count());
+            Assert.AreEqual("Bar1", cho2[0].Title);
+        }
+
+
+        [TestMethod]
+        public virtual void ChoicesReferenceProperty()
+        {
+            CreateChoices<Choices4>("Bar1");
+            CreateChoices<Choices4>("Bar2");
+            CreateChoices<Choices4>("Bar3");
+
+            var obj1 = NewTestObject<Choices1>();
+            ITestProperty prop = obj1.GetPropertyByName("Prop3");
+            ITestNaked[] cho = prop.GetChoices();
+            Assert.AreEqual(3, cho.Count());
+            Assert.AreEqual("Bar1", cho[0].Title);
+        }
+
+        [TestMethod]
+        public virtual void ChoicesStringProperty()
+        {
+            var obj1 = NewTestObject<Choices1>();
+            ITestProperty prop = obj1.GetPropertyByName("Prop2");
+            ITestNaked[] cho = prop.GetChoices();
+            Assert.AreEqual(3, cho.Count());
+            Assert.AreEqual("Fee", cho[0].Title);
+        }
+
+        [TestMethod]
+        public void UnmatchedChoicesMethodShowsUpAsAction()
+        {
+            var obj3 = NewTestObject<Choices3>();
+            obj3.GetAction("Choices Prop1");
+            obj3.GetAction("Choices Prop2");
+            obj3.GetAction("Choices Prop3");
+            obj3.GetAction("Choices 0 Do Somthing");
+            obj3.GetAction("Choices 0 Do Something");
+        }
+        #endregion
+
+        #region Clear
+        private void SetupForClearTests(out ITestProperty prop0, out ITestProperty prop1)
+        {
+            ITestObject obj = NewTestObject<Clear1>();
+            prop0 = obj.GetPropertyByName("Prop0");
+            prop1 = obj.GetPropertyByName("Prop1");
+
+            prop0.AssertIsEmpty();
+            prop1.AssertIsEmpty();
+
+            prop1.SetValue("Foo");
+            prop1.AssertValueIsEqual("Foo");
+            prop0.AssertIsEmpty();
+        }
+
+        private static void CheckForClearTests(ITestProperty prop0, ITestProperty prop1)
+        {
+            prop1.AssertIsEmpty();
+            prop0.AssertValueIsEqual("Prop1 has been cleared");
+        }
+
+        [TestMethod]
+        public void ClearMethodDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj1 = NewTestObject<Clear1>();
+            try
+            {
+                obj1.GetAction("Clear Prop1");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+
+        [TestMethod]
+        public void ClearMethodOnReferenceProperty()
+        {
+            ITestObject obj3 = NewTestObject<Clear3>();
+            obj3.GetPropertyByName("Prop1").SetValue("Foo");
+            obj3.Save();
+
+            ITestObject obj1 = NewTestObject<Clear1>();
+            ITestProperty prop3 = obj1.GetPropertyByName("Prop3");
+            ITestProperty prop4 = obj1.GetPropertyByName("Prop4");
+
+            prop3.AssertIsEmpty();
+            prop4.AssertIsEmpty();
+
+            prop4.SetObject(obj3);
+            prop4.AssertObjectIsEqual(obj3);
+            prop3.AssertIsEmpty();
+
+            prop4.ClearObject();
+            prop3.AssertValueIsEqual("Prop4 has been cleared");
+        }
+
+        [TestMethod]
+        public void ClearMethodOnValueProperty()
+        {
+            ITestProperty prop0, prop1;
+            SetupForClearTests(out prop0, out prop1);
+            prop1.ClearValue();
+            CheckForClearTests(prop0, prop1);
+        }
+
+        [TestMethod]
+        public void SetToEmptyStringOnValueProperty()
+        {
+            ITestProperty prop0, prop1;
+            SetupForClearTests(out prop0, out prop1);
+            prop1.SetValue("");
+            CheckForClearTests(prop0, prop1);
+        }
+
+        [TestMethod]
+        public void UnmatchedClearMethodShowsUpAsAnAction()
+        {
+            ITestObject obj2 = NewTestObject<Clear2>();
+            obj2.GetAction("Clear Prop2");
+            obj2.GetAction("Clear Prop3");
+            obj2.GetAction("Clear Prop4");
+        }
+        #endregion
+
+        #region Created
+
+        [TestMethod]
+        public void CreatedCalled()
+        {
+            ITestObject obj1 = NewTestObject<Created1>();
+            var dom1 = (Created1)obj1.GetDomainObject();
+            Assert.IsTrue(dom1.CreatedCalled);
+        }
+
+        [TestMethod]
+        public void CreatedDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj1 = NewTestObject<Created1>();
+            try
+            {
+                obj1.GetAction("Created");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+
+        [TestMethod]
+        public void LowerCaseCreatedNotRecognisedAndShowsAsAction()
+        {
+            ITestObject obj1 = NewTestObject<Created2>();
+            var dom1 = (Created2)obj1.GetDomainObject();
+            Assert.IsFalse(dom1.CreatedCalled);
+
+            try
+            {
+                obj1.GetAction("created");
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+        #endregion
+
+        #region Default
+        [TestMethod]
+        public void DefaultMethodDoesNotShowUpAsAction()
+        {
+            var obj = NewTestObject<Default1>();
+            try
+            {
+                obj.GetAction("Default Prop1");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+
+            try
+            {
+                obj.GetAction("Default 0 Do Something");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+
+        [TestMethod]
+        public virtual void DefaultNumericProperty()
+        {
+            var obj1 = NewTestObject<Default1>();
+            var prop = obj1.GetPropertyByName("Prop1");
+            string def = prop.GetDefault().Title;
+            Assert.IsNotNull(def);
+            Assert.AreEqual("8", def);
+        }
+
+        [TestMethod]
+        public void DefaultParameters()
+        {
+            //Set up choices
+            var obj2 = NewTestObject<Default4>();
+            obj2.GetPropertyByName("Prop1").SetValue("Bar1");
+            obj2.Save();
+            obj2 = NewTestObject<Default4>();
+            obj2.GetPropertyByName("Prop1").SetValue("Bar2");
+            obj2.Save();
+            obj2 = NewTestObject<Default4>();
+            obj2.GetPropertyByName("Prop1").SetValue("Bar3");
+            obj2.Save();
+
+            var obj1 = NewTestObject<Default1>();
+            var action = obj1.GetAction("Do Something");
+            string def0 = action.Parameters[0].GetDefault().Title;
+            Assert.IsNotNull(def0);
+            Assert.AreEqual("8", def0);
+
+            string def1 = action.Parameters[1].GetDefault().Title;
+            Assert.IsNotNull(def1);
+            Assert.AreEqual("Foo", def1);
+
+            string def2 = action.Parameters[2].GetDefault().Title;
+            Assert.IsNotNull(def2);
+            Assert.AreEqual("Bar2", def2);
+        }
+
+        [TestMethod]
+        public virtual void DefaultReferenceProperty()
+        {
+            //Set up choices
+            var obj2 = NewTestObject<Default2>();
+            obj2.GetPropertyByName("Prop1").SetValue("Bar1");
+            obj2.Save();
+            obj2 = NewTestObject<Default2>();
+            obj2.GetPropertyByName("Prop1").SetValue("Bar2");
+            obj2.Save();
+            obj2 = NewTestObject<Default2>();
+            obj2.GetPropertyByName("Prop1").SetValue("Bar3");
+            obj2.Save();
+
+            var obj1 = NewTestObject<Default1>();
+            var prop = obj1.GetPropertyByName("Prop3");
+            string def = prop.GetDefault().Title;
+            Assert.IsNotNull(def);
+            Assert.AreEqual("Bar2", def);
+        }
+
+        [TestMethod]
+        public virtual void DefaultStringProperty()
+        {
+            var obj1 = NewTestObject<Default1>();
+            var prop = obj1.GetPropertyByName("Prop2");
+            string def = prop.GetDefault().Title;
+            Assert.IsNotNull(def);
+            Assert.AreEqual("Foo", def);
+        }
+
+        [TestMethod]
+        public void UnmatchedDefaultMethodShowsUpAsAction()
+        {
+            var obj = NewTestObject<Default3>();
+            obj.GetAction("Default Prop1");
+            obj.GetAction("Default Prop2");
+            obj.GetAction("Default 0 Do Somthing");
+            obj.GetAction("Default 0 Do Something");
+        }
+
+        [TestMethod]
+        public void DefaultNumericMethodOverAnnotation()
+        {
+            var obj1 = NewTestObject<Default1>();
+            var prop = obj1.GetPropertyByName("Prop4");
+            string def = prop.GetDefault().Title;
+            Assert.IsNotNull(def);
+            Assert.AreEqual("8", def);
+        }
+
+        [TestMethod]
+        public void DefaultStringMethodOverAnnotation()
+        {
+            var obj1 = NewTestObject<Default1>();
+            var prop = obj1.GetPropertyByName("Prop5");
+            string def = prop.GetDefault().Title;
+            Assert.IsNotNull(def);
+            Assert.AreEqual("Foo", def);
+        }
+
+        [TestMethod]
+        public void DefaultParametersOverAnnotation()
+        {
+            var obj1 = NewTestObject<Default1>();
+            var action = obj1.GetAction("Do Something Else");
+            string def0 = action.Parameters[0].GetDefault().Title;
+            Assert.IsNotNull(def0);
+            Assert.AreEqual("8", def0);
+
+            string def1 = action.Parameters[1].GetDefault().Title;
+            Assert.IsNotNull(def1);
+            Assert.AreEqual("Foo", def1);
+        }
+        #endregion
+
+        #region Deleted
+        
+        [TestMethod]
+        public void DeletedCalled()
+        {
+            ITestObject obj1 = NewTestObject<Deleted1>();
+            var dom1 = (Deleted1)obj1.GetDomainObject();
+            obj1.Save();
+
+            Assert.IsFalse(Deleted1.DeletedCalled);
+            obj1.GetAction("Delete").Invoke();
+            Assert.IsTrue(Deleted1.DeletedCalled);
+            Deleted1.DeletedCalled = false;
+        }
+
+        [TestMethod]
+        public void DeletedDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj1 = NewTestObject<Deleted1>();
+            try
+            {
+                obj1.GetAction("Deleted");
+                Assert.Fail("Should not get here");
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        [TestMethod]
+        public void LowerCaseDeletedNotRecognisedAndShowsAsAction()
+        {
+            ITestObject obj1 = NewTestObject<Deleted2>();
+            var dom1 = (Deleted2)obj1.GetDomainObject();
+            Assert.IsFalse(Deleted2.DeletedCalled);
+
+            try
+            {
+                obj1.GetAction("Deleted");
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+        #endregion
+
+        #region Deleting
+        [TestMethod]
+        public void DeletingCalled()
+        {
+            ITestObject obj1 = NewTestObject<Deleting1>();
+            var dom1 = (Deleting1)obj1.GetDomainObject();
+            obj1.Save();
+
+            Assert.IsFalse(Deleting1.DeletingCalled);
+
+            obj1.GetAction("Delete").InvokeReturnObject();
+
+            Assert.IsTrue(Deleting1.DeletingCalled);
+        }
+
+        [TestMethod]
+        public void DeletingDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj1 = NewTestObject<Deleting1>();
+            try
+            {
+                obj1.GetAction("Deleting");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+
+        [TestMethod]
+        public void LowerCaseDeletingNotRecognisedAndShowsAsAction()
+        {
+            ITestObject obj1 = NewTestObject<Deleting2>().Save();
+            var dom1 = (Deleting2)obj1.GetDomainObject();
+
+            //Check method is visible as an action
+            obj1.GetAction("Deleting").AssertIsVisible();
+
+            Assert.IsFalse(Deleting2.DeletingCalled);
+            obj1.GetAction("Delete").InvokeReturnObject();
+            Assert.IsFalse(Deleting2.DeletingCalled); //Still false
+        }
+        #endregion
+
+        #region Disable
+        [TestMethod]
+        public void DisableAction()
+        {
+            ITestObject obj = NewTestObject<Disable3>();
+            obj.GetPropertyByName("Prop4").SetValue("avalue");
+            obj.GetPropertyByName("Prop6").SetValue("avalue");
+            obj.Save();
+            obj.GetAction("Do Something").AssertIsEnabled();
+
+            obj.GetPropertyByName("Prop4").SetValue("Disable 6");
+            obj.GetAction("Do Something").AssertIsDisabled();
+        }
+
+        [TestMethod]
+        public void DisableMethodDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj = NewTestObject<Disable3>();
+            try
+            {
+                obj.GetAction("Disable Prop6");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+                //TODO:  Test exception message (see #804)
+            }
+        }
+
+        [TestMethod]
+        public void DisableProperty()
+        {
+            ITestObject obj = NewTestObject<Disable3>();
+            ITestProperty prop6 = obj.GetPropertyByName("Prop6");
+            prop6.AssertIsModifiable();
+            obj.Save();
+            prop6.AssertIsModifiable();
+
+            ITestProperty prop4 = obj.GetPropertyByName("Prop4");
+            prop4.SetValue("Disable 6");
+            prop6.AssertIsUnmodifiable();
+        }
+
+        [TestMethod]
+        public void UnmatchedDisableMethodShowsUpAsAction()
+        {
+            ITestObject obj = NewTestObject<Disable3>();
+            obj.GetAction("Disable Prop1");
+            obj.GetAction("Disable Prop4");
+        }
+
+        [TestMethod]
+        public void DisableActionDefault()
+        {
+            ITestObject obj = NewTestObject<Disable2>();
+            obj.GetAction("Action1").AssertIsDisabled();
+            obj.GetAction("Action2").AssertIsDisabled();
+        }
+
+        [TestMethod]
+        public void DisableActionDefaultDoesNotDisableProperties()
+        {
+            ITestObject obj = NewTestObject<Disable2>();
+            obj.GetPropertyByName("Prop1").AssertIsModifiable();
+            obj.GetPropertyByName("Prop2").AssertIsModifiable();
+            //obj.GetPropertyByName("Prop4").AssertIsModifiable(); - collection disabled by default
+        }
+
+
+        [TestMethod]
+        public void DisableActionDefaultDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj = NewTestObject<Disable2>();
+            try
+            {
+                obj.GetAction("Disable Action Default");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+                //TODO:  Test exception message (see #804)
+            }
+        }
+
+        [TestMethod]
+        public void DisableActionDefaultOverriddenByActionLevelMethod()
+        {
+            ITestObject obj = NewTestObject<Disable2>();
+            obj.GetAction("Action3").AssertIsEnabled();
+        }
+
+        [TestMethod]
+        public void DisablePropertyDefault()
+        {
+            ITestObject obj = NewTestObject<Disable1>();
+            obj.GetPropertyByName("Prop1").AssertIsUnmodifiable();
+            obj.GetPropertyByName("Prop2").AssertIsUnmodifiable();
+            obj.GetPropertyByName("Prop4").AssertIsUnmodifiable();
+        }
+
+        [TestMethod]
+        public void DisablePropertyDefaultDoesNotDisableActions()
+        {
+            ITestObject obj = NewTestObject<Disable1>();
+            obj.GetAction("Action1").AssertIsEnabled();
+            obj.GetAction("Action2").AssertIsEnabled();
+        }
+
+        [TestMethod]
+        public void DisablePropertyDefaultDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj = NewTestObject<Disable1>();
+            try
+            {
+                obj.GetAction("Disable Property Default ");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+
+        [TestMethod]
+        public void DisablePropertyPropertyOverriddenByPropertyLevelMethod()
+        {
+            ITestObject obj = NewTestObject<Disable1>();
+            obj.GetPropertyByName("Prop3").AssertIsModifiable();
+            //obj.GetPropertyByName("Prop5").AssertIsModifiable(); - collection disabled by default
+        }
+        #endregion
+
+        #region Hide
+        [TestMethod]
+        public void HideAction()
+        {
+            ITestObject obj = NewTestObject<Hide3>();
+            obj.Save();
+            obj.GetAction("Do Something");
+            obj.GetPropertyByName("Prop4").SetValue("Hide 6");
+
+            try
+            {
+                obj.GetAction("Do Something");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+                //TODO:  Test exception message (see #804)
+            }
+        }
+
+        [TestMethod]
+        public void HideMethodDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj = NewTestObject<Hide3>();
+            try
+            {
+                obj.GetAction("Hide Prop6");
+                Assert.Fail("'Hide Prop6' is showing as an action");
+            }
+            catch (AssertFailedException e)
+            {
+                Assert.AreEqual("Assert.Fail failed. No Action named 'Hide Prop6'", e.Message);
+            }
+        }
+
+        [TestMethod]
+        public void HideProperty()
+        {
+            ITestObject obj = NewTestObject<Hide3>();
+            ITestProperty prop6 = obj.GetPropertyByName("Prop6");
+            prop6.AssertIsVisible();
+            obj.Save();
+            prop6.AssertIsVisible();
+
+            ITestProperty prop4 = obj.GetPropertyByName("Prop4");
+            prop4.SetValue("Hide 6");
+            prop6.AssertIsInvisible();
+        }
+
+        [TestMethod]
+        public void UnmatchedHideMethodShowsUpAsAnAction()
+        {
+            ITestObject obj = NewTestObject<Hide3>();
+            obj.GetAction("Hide Prop7");
+            obj.GetAction("Hide Prop4");
+            obj.GetAction("Hide Do Something Else");
+            obj.GetAction("Hide Do Somthing Else");
+        }
+
+        [TestMethod]
+        public void HideActionDefault()
+        {
+            ITestObject obj = NewTestObject<Hide2>();
+            obj.GetAction("Action1").AssertIsInvisible();
+            obj.GetAction("Action2").AssertIsInvisible();
+        }
+
+        [TestMethod]
+        public void HideActionDefaultDoesNotHideProperties()
+        {
+            ITestObject obj = NewTestObject<Hide2>();
+            obj.GetPropertyByName("Prop1").AssertIsVisible();
+            obj.GetPropertyByName("Prop2").AssertIsVisible();
+            obj.GetPropertyByName("Prop4").AssertIsVisible();
+        }
+
+
+        [TestMethod]
+        public void HideActionDefaultDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj = NewTestObject<Hide2>();
+            try
+            {
+                obj.GetAction("Hide Action Default");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+                //TODO:  Test exception message (see #804)
+            }
+        }
+
+        [TestMethod]
+        public void HideActionDefaultOverriddenByActionLevelMethod()
+        {
+            ITestObject obj = NewTestObject<Hide2>();
+            obj.GetAction("Action3").AssertIsVisible();
+        }
+
+        [TestMethod]
+        public void HidePropertyDefault()
+        {
+            ITestObject obj = NewTestObject<Hide1>();
+            obj.GetPropertyByName("Prop1").AssertIsInvisible();
+            obj.GetPropertyByName("Prop2").AssertIsInvisible();
+            obj.GetPropertyByName("Prop4").AssertIsInvisible();
+        }
+
+        [TestMethod]
+        public void HidePropertyDefaultDoesNotHideActions()
+        {
+            ITestObject obj = NewTestObject<Hide1>();
+            obj.GetAction("Action1").AssertIsVisible();
+            obj.GetAction("Action2").AssertIsVisible();
+        }
+
+        [TestMethod]
+        public void HidePropertyDefaultDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj = NewTestObject<Hide1>();
+            try
+            {
+                obj.GetAction("Hide Property Default ");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+
+        [TestMethod]
+        public void HidePropertyPropertyOverriddenByPropertyLevelMethod()
+        {
+            ITestObject obj = NewTestObject<Hide1>();
+            obj.GetPropertyByName("Prop3").AssertIsVisible();
+            obj.GetPropertyByName("Prop5").AssertIsVisible();
+        }
+        #endregion
+
+        #region Modify
+        [TestMethod]
+        public void ModifyMethodDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj1 = NewTestObject<Modify1>();
+            try
+            {
+                obj1.GetAction("Modify Prop1");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+
+        [TestMethod]
+        public void ModifyMethodOnReferenceProperty()
+        {
+            ITestObject obj3 = NewTestObject<Modify3>();
+            obj3.GetPropertyByName("Prop1").SetValue("Foo");
+            obj3.Save();
+
+            ITestObject obj1 = NewTestObject<Modify1>();
+            ITestProperty prop3 = obj1.GetPropertyByName("Prop3");
+            ITestProperty prop4 = obj1.GetPropertyByName("Prop4");
+
+            prop3.AssertIsEmpty();
+            prop4.AssertIsEmpty();
+
+            prop4.SetObject(obj3);
+            prop4.AssertObjectIsEqual(obj3);
+            prop3.AssertValueIsEqual("Prop4 has been modified");
+        }
+
+        [TestMethod]
+        public void ModifyMethodOnValueProperty()
+        {
+            ITestObject obj = NewTestObject<Modify1>();
+            ITestProperty prop0 = obj.GetPropertyByName("Prop0");
+            ITestProperty prop1 = obj.GetPropertyByName("Prop1");
+
+            prop0.AssertIsEmpty();
+            prop1.AssertIsEmpty();
+
+            prop1.SetValue("Foo");
+            prop1.AssertValueIsEqual("Foo");
+            prop0.AssertValueIsEqual("Prop1 has been modified");
+        }
+
+        [TestMethod]
+        public void CalledWhenReferencePropertyCleared()
+        {
+            ITestObject obj3 = NewTestObject<Modify3>();
+            obj3.GetPropertyByName("Prop1").SetValue("Foo");
+            obj3.Save();
+
+            ITestObject obj1 = NewTestObject<Modify1>();
+            ITestProperty prop3 = obj1.GetPropertyByName("Prop3");
+            ITestProperty prop4 = obj1.GetPropertyByName("Prop4");
+
+            prop3.AssertIsEmpty();
+            prop4.AssertIsEmpty();
+
+            prop4.SetObject(obj3);
+            prop4.AssertObjectIsEqual(obj3);
+            prop3.SetValue("Neutral");
+
+            prop4.ClearObject();
+            prop4.AssertIsEmpty();
+            prop3.AssertValueIsEqual("Prop4 has been modified");
+        }
+
+        [TestMethod]
+        public void CalledWhenValuePropertyIsCleared()
+        {
+            ITestObject obj = NewTestObject<Modify1>();
+            ITestProperty prop0 = obj.GetPropertyByName("Prop0");
+            ITestProperty prop1 = obj.GetPropertyByName("Prop1");
+
+            prop1.SetValue("Foo");
+            prop0.SetValue("Foo");
+
+            prop1.ClearValue();
+            prop1.AssertIsEmpty();
+            prop0.AssertValueIsEqual("Prop1 has been modified");
+        }
+
+        [TestMethod]
+        public void NotCalledWhenReferencePropertyClearedIfClear()
+        {
+            ITestObject obj3 = NewTestObject<Modify3>();
+            obj3.GetPropertyByName("Prop1").SetValue("Foo");
+            obj3.Save();
+
+            ITestObject obj1 = NewTestObject<Modify4>();
+            ITestProperty prop3 = obj1.GetPropertyByName("Prop3");
+            ITestProperty prop4 = obj1.GetPropertyByName("Prop4");
+
+            prop3.AssertIsEmpty();
+            prop4.AssertIsEmpty();
+
+            prop4.SetObject(obj3);
+            prop4.AssertObjectIsEqual(obj3);
+            prop3.SetValue("Neutral");
+
+            prop4.ClearObject();
+            prop4.AssertIsEmpty();
+            prop3.AssertValueIsEqual("Neutral");
+        }
+
+        [TestMethod]
+        public void NotCalledWhenValuePropertyIsClearedIfClear()
+        {
+            ITestObject obj = NewTestObject<Modify4>();
+            ITestProperty prop0 = obj.GetPropertyByName("Prop0");
+            ITestProperty prop1 = obj.GetPropertyByName("Prop1");
+
+            prop1.SetValue("Foo");
+            prop0.SetValue("Foo");
+
+            prop1.ClearValue();
+            prop1.AssertIsEmpty();
+            prop0.AssertValueIsEqual("Foo");
+        }
+
+        [TestMethod]
+        public void UnmatchedModifyMethodShowsUpAsAnAction()
+        {
+            ITestObject obj2 = NewTestObject<Modify2>();
+            obj2.GetAction("Modify Prop2");
+            obj2.GetAction("Modify Prop3");
+            obj2.GetAction("Modify Prop4");
+        }
+        #endregion
+
+        #region Persisted
+        [TestMethod]
+        public void LowerCasePersistedNotRecognisedAndShowsAsAction()
+        {
+            ITestObject obj1 = NewTestObject<Persisted2>();
+            var dom1 = (Persisted2)obj1.GetDomainObject();
+            Assert.IsFalse(dom1.PersistedCalled);
+
+            try
+            {
+                obj1.GetAction("persisted");
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+
+        [TestMethod]
+        public void PersistedCalled()
+        {
+            ITestObject obj1 = NewTestObject<Persisted1>();
+            var dom1 = (Persisted1)obj1.GetDomainObject();
+            try
+            {
+                obj1.Save();
+                Assert.Fail("Shouldn't get to here");
+            }
+            catch (Exception)
+            {
+
+            }
+            
+
+        }
+
+        [TestMethod]
+        public void PersistedDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj1 = NewTestObject<Persisted1>();
+            try
+            {
+                obj1.GetAction("Persisted");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+        #endregion
+
+        #region Persisting
+        [TestMethod]
+        public void PersistingCalled()
+        {
+            ITestObject obj1 = NewTestObject<Persisting1>();
+            var dom1 = (Persisting1)obj1.GetDomainObject();
+            Assert.IsFalse(Persisting1.PersistingCalled);
+
+            obj1.Save();
+
+            Assert.IsTrue(Persisting1.PersistingCalled);
+        }
+
+        [TestMethod]
+        public void PersistingDoesNotShowUpAsAnAction()
+        {
+            ITestObject obj1 = NewTestObject<Persisting1>();
+            try
+            {
+                obj1.GetAction("Persisting");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+        #endregion
+
+        #region Saved & Saving
+        [TestMethod]
+        public void SavedAndSavingDoNotShowUpAsActions()
+        {
+            ITestObject obj1 = NewTestObject<Saved1>();
+            try
+            {
+                obj1.GetAction("Saved");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+            try
+            {
+                obj1.GetAction("Saving");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+        #endregion
+
+        #region Title & ToString
+        [TestMethod]
+        public virtual void ObjectWithSimpleToString()
+        {
+
+            var obj = NewTestObject<Title1>();
+            var prop1 = obj.GetPropertyByName("Prop1");
+            prop1.SetValue("Bar");
+            obj.AssertTitleEquals("Bar");
+            obj.Save();
+            obj.AssertTitleEquals("Bar");
+        }
+
+        [TestMethod]
+        public virtual void TitleMethod()
+        {
+            var obj = NewTestObject<Title3>();
+            obj.AssertTitleEquals("Untitled Title3");
+            var prop1 = obj.GetPropertyByName("Prop1");
+            prop1.SetValue("Foo");
+            obj.AssertTitleEquals("Foo");
+            obj.Save();
+            obj.AssertTitleEquals("Foo");
+        }
+
+        [TestMethod]
+        public virtual void TitleMethodTakesPrecedenceOverToString()
+        {
+            var obj = NewTestObject<Title4>();
+            StringAssert.Equals("Bar", obj.GetDomainObject().ToString());
+            obj.AssertTitleEquals("Untitled Title4");
+            var prop1 = obj.GetPropertyByName("Prop1");
+            prop1.SetValue("Foo");
+            obj.AssertTitleEquals("Foo");
+            obj.Save();
+            obj.AssertTitleEquals("Foo");
+        }
+
+        [TestMethod]
+        public virtual void ToStringRecognisedAsATitle()
+        {
+            var obj = NewTestObject<Title5>();
+            var prop1 = obj.GetPropertyByName("Prop1");
+            prop1.SetValue("Bar");
+            obj.AssertTitleEquals("Bar");
+            obj.Save();
+            obj.AssertTitleEquals("Bar");
+        }
+        #endregion
+
+        #region Updated
+        [TestMethod]
+        public void LowerCaseNotRecognisedAndShowsAsAction()
+        {
+            var obj1 = NewTestObject<Updated2>();
+            var dom1 = (Updated2)obj1.GetDomainObject();
+            Assert.IsFalse(Updated2.UpdatedCalled);
+
+            try
+            {
+                obj1.GetAction("updated");
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+
+        [TestMethod]
+        public void UpdatedCalled()
+        {
+            var obj1 = NewTestObject<Updated1>();
+            var dom1 = (Updated1)obj1.GetDomainObject();
+            obj1.Save();
+            try
+            {
+                obj1.GetPropertyByName("Prop1").SetValue("Foo");
+                Assert.Fail("Shouldn't get to here");
+            }
+            catch (Exception)
+            {
+
+            }
+
+        }
+
+        [TestMethod]
+        public void UpdatedDoesNotShowUpAsAnAction()
+        {
+            var obj1 = NewTestObject<Updated1>();
+            try
+            {
+                obj1.GetAction("Updated");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.IsNotNull(e);
+            }
+        }
+        #endregion
+    }
+
+    #region Classes used in test
+
+    public class MethodsDbContext : DbContext
+    {
+        public const string DatabaseName = "TestMethods";
+        public MethodsDbContext() : base(DatabaseName) { }
+
+        public DbSet<Auto1> Auto1 { get; set; }
+        public DbSet<Auto2> Auto2 { get; set; }
+        public DbSet<Auto3> Auto3 { get; set; }
+        public DbSet<Choices1> Choices1 { get; set; }
+        public DbSet<Choices2> Choices2 { get; set; }
+        public DbSet<Choices3> Choices3 { get; set; }
+        public DbSet<Choices4> Choices4 { get; set; }
+        public DbSet<Clear1> Clear1 { get; set; }
+        public DbSet<Clear2> Clear2 { get; set; }
+        public DbSet<Clear3> Clear3 { get; set; }
+        public DbSet<Created1> Created1 { get; set; }
+        public DbSet<Created2> Created2 { get; set; }
+        public DbSet<Default1> Default1 { get; set; }
+        public DbSet<Default2> Default2 { get; set; }
+        public DbSet<Default3> Default3 { get; set; }
+        public DbSet<Default4> Default4 { get; set; }
+        public DbSet<Deleted1> Deleted1 { get; set; }
+        public DbSet<Deleted2> Deleted2 { get; set; }
+        public DbSet<Deleting1> Deleting1 { get; set; }
+        public DbSet<Deleting2> Deleting2 { get; set; }
+        public DbSet<Disable1> Disable1 { get; set; }
+        public DbSet<Disable2> Disable2 { get; set; }
+        public DbSet<Disable3> Disable3 { get; set; }
+        public DbSet<Hide1> Hide1 { get; set; }
+        public DbSet<Hide2> Hide2 { get; set; }
+        public DbSet<Hide3> Hide3 { get; set; }
+        public DbSet<Modify1> Modify1 { get; set; }
+        public DbSet<Modify2> Modify2 { get; set; }
+        public DbSet<Modify3> Modify3 { get; set; }
+        public DbSet<Modify4> Modify4 { get; set; }
+        public DbSet<Persisted1> Persisted1 { get; set; }
+        public DbSet<Persisted2> Persisted2 { get; set; }
+        public DbSet<Persisting1> Persisting1 { get; set; }
+        public DbSet<Persisting2> Persisting2 { get; set; }
+        public DbSet<Saved1> Saved1 { get; set; }
+        public DbSet<Title1> Title1 { get; set; }
+        public DbSet<Title2> Title2 { get; set; }
+        public DbSet<Title3> Title3 { get; set; }
+        public DbSet<Title4> Title4 { get; set; }
+        public DbSet<Title5> Title5 { get; set; }
+        public DbSet<Updated1> Updated1 { get; set; }
+        public DbSet<Updated2> Updated2 { get; set; }
+    }
+
+    #region AutoComplete
+    public class Auto1
+    {
+        public virtual int Id { get; set; }
+
+        public IDomainObjectContainer Container { set; protected get; }
+
+        public virtual string Prop1 { get; set; }
+
+        public virtual string Prop2 { get; set; }
+
+        public virtual Auto2 Prop3 { get; set; }
+
+        public IQueryable<int> AutoCompleteProp1(string autoCompleteParm)
+        {
+            return new List<int> { 4, 8, 9 }.AsQueryable();
+        }
+
+        public IQueryable<string> AutoCompleteProp2(string autoCompleteParm)
+        {
+            return new List<string> { "Fee", "Foo", "Fuu" }.AsQueryable();
+        }
+
+        public IQueryable<Auto2> AutoCompleteProp3(string autoCompleteParm)
+        {
+            return Container.Instances<Auto2>().Where(a => a.Prop1.ToUpper().Contains(autoCompleteParm.ToUpper()));
+        }
+
+        #region Do Something
+
+        public void DoSomething(int param0, string param1, Auto2 param2) { }
+
+        public IQueryable<int> AutoComplete0DoSomething(string autoCompleteParm)
+        {
+            return AutoCompleteProp1(autoCompleteParm);
+        }
+
+        public IQueryable<string> AutoComplete1DoSomething(string autoCompleteParm)
+        {
+            return AutoCompleteProp2(autoCompleteParm);
+        }
+
+        public IQueryable<Auto2> AutoComplete2DoSomething(string autoCompleteParm)
+        {
+            return AutoCompleteProp3(autoCompleteParm);
+        }
+
+        #endregion
+    }
+
+    public class Auto2
+    {
+        public virtual int Id { get; set; }
+
+        [Title]
+        public virtual string Prop1 { get; set; }
+    }
+
+    public class Auto3
+    {
+        public virtual int Id { get; set; }
+
+        public virtual int Prop1 { get; set; }
+
+        public virtual string Prop2 { get; set; }
+
+        public IQueryable<string> AutoCompleteProp1()
+        {
+            return null;
+        }
+
+        public string AutoCompleteProp2(string autoCompleteParm)
+        {
+            return null;
+        }
+
+        public string AutoCompleteProp3(string autoCompleteParm)
+        {
+            return null;
+        }
+
+        public void DoSomething(int param0, string param1, Auto2 param2) { }
+
+        public IQueryable<int> AutoComplete0DoSomthing(string autoCompleteParm)
+        {
+            return null;
+        }
+
+        public IQueryable<string> AutoComplete0DoSomething(string autoCompleteParm)
+        {
+            return null;
+        }
+    }
+#endregion
+
+#region Choices
+
+    public class Choices1
+    {
+        public IDomainObjectContainer Container { set; protected get; }
+
+        public virtual int Id { get; set; }
+
+        public virtual int Prop1 { get; set; }
+
+        public virtual string Prop2 { get; set; }
+
+        public Choices4 Prop3 { get; set; }
+
+        public List<int> ChoicesProp1()
+        {
+            return new List<int> { 4, 8, 9 };
+        }
+
+        public List<string> ChoicesProp2()
+        {
+            return new List<string> { "Fee", "Foo", "Fuu" };
+        }
+
+        public List<Choices4> ChoicesProp3()
+        {
+            return Container.Instances<Choices4>().ToList();
+        }
+
+        #region Do Something
+
+        public void DoSomething(int param0, string param1, Choices2 param2) { }
+
+        public List<int> Choices0DoSomething()
+        {
+            return ChoicesProp1();
+        }
+
+        public List<string> Choices1DoSomething()
+        {
+            return ChoicesProp2();
+        }
+
+        public List<Choices2> Choices2DoSomething()
+        {
+            return Container.Instances<Choices2>().ToList();
+        }
+
+        #endregion
+    }
+
+    public class Choices2
+    {
+
+        public virtual int Id { get; set; }
+
+        [Title]
+        public virtual string Prop1 { get; set; }
+    }
+
+    public class Choices3
+    {
+
+        public virtual int Id { get; set; }
+
+        public virtual int Prop1 { get; set; }
+
+        public virtual string Prop2 { get; set; }
+
+        public List<string> ChoicesProp1()
+        {
+            return null;
+        }
+
+        public string ChoicesProp2()
+        {
+            return null;
+        }
+
+        public string ChoicesProp3()
+        {
+            return null;
+        }
+
+        public void DoSomething(int param0, string param1, Choices2 param2) { }
+
+        public List<int> Choices0DoSomthing()
+        {
+            return null;
+        }
+
+        public List<string> Choices0DoSomething()
+        {
+            return null;
+        }
+    }
+
+    public class Choices4
+    {
+
+        public virtual int Id { get; set; }
+
+        [Title]
+        public virtual string Prop1 { get; set; }
+    }
+
+
+#endregion
+
+#region Clear
+    public class Clear1
+    {
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop0 { get; set; }
+
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+
+        public virtual string Prop3 { get; set; }
+
+        public virtual Clear3 Prop4 { get; set; }
+
+        public void ClearProp1()
+        {
+            Prop1 = null;
+            Prop0 = "Prop1 has been cleared";
+        }
+
+        public void ClearProp4()
+        {
+            Prop4 = null;
+            Prop3 = "Prop4 has been cleared";
+        }
+    }
+
+    public class Clear2
+    {
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop2 { get; set; }
+
+        public virtual string Prop3 { get; set; }
+
+        //Has param
+        public void ClearProp2(string value) { }
+
+        //Non-void method
+        public bool ClearProp3()
+        {
+            return false;
+        }
+
+        //No corresponding Prop4
+        public void ClearProp4() { }
+    }
+
+    public class Clear3
+    {
+
+        public virtual int Id { get; set; }
+
+        [Title]
+        public virtual string Prop1 { get; set; }
+    }
+#endregion
+
+#region Created
+    public class Created1
+    {
+        public virtual int Id { get; set; }
+
+        public bool CreatedCalled;
+
+        public virtual string Prop1 { get; set; }
+
+        public void Created()
+        {
+            CreatedCalled = true;
+        }
+    }
+
+    public class Created2
+    {
+        public virtual int Id { get; set; }
+
+        public bool CreatedCalled;
+
+        public virtual string Prop1 { get; set; }
+
+        public void created()
+        {
+            CreatedCalled = true;
+        }
+    }
+#endregion
+
+#region Default
+    public class Default1
+    {
+        public IDomainObjectContainer Container { set; protected get; }
+
+        public virtual int Id { get; set; }
+
+        public virtual int Prop1 { get; set; }
+
+        public virtual string Prop2 { get; set; }
+
+        public virtual Default2 Prop3 { get; set; }
+
+        public int DefaultProp1()
+        {
+            return 8;
+        }
+
+        public string DefaultProp2()
+        {
+            return "Foo";
+        }
+
+        public Default2 DefaultProp3()
+        {
+            return Container.Instances<Default2>().Where(x => x.Prop1 == "Bar2").FirstOrDefault();
+        }
+
+        [DefaultValue(7)]
+        public virtual int Prop4 { get; set; }
+
+        [DefaultValue("Bar")]
+        public virtual string Prop5 { get; set; }
+
+
+        public int DefaultProp4()
+        {
+            return 8;
+        }
+
+        public string DefaultProp5()
+        {
+            return "Foo";
+        }
+
+        #region Do Something
+
+        public void DoSomething(int param0, string param1, Default4 param2) { }
+
+        public int Default0DoSomething()
+        {
+            return DefaultProp1();
+        }
+
+        public string Default1DoSomething()
+        {
+            return DefaultProp2();
+        }
+
+        public Default4 Default2DoSomething()
+        {
+            return Container.Instances<Default4>().Where(x => x.Prop1 == "Bar2").FirstOrDefault();
+
+        }
+
+        #endregion
+
+        #region Do Something Else
+
+        public void DoSomethingElse([DefaultValue(7)] int param0,
+                                    [DefaultValue("Bar")] string param1) { }
+
+        public int Default0DoSomethingElse()
+        {
+            return DefaultProp1();
+        }
+
+        public string Default1DoSomethingElse()
+        {
+            return DefaultProp2();
+        }
+
+
+
+        #endregion
+
+    }
+
+    public class Default2
+    {
+
+        public virtual int Id { get; set; }
+
+        [Title]
+        public virtual string Prop1 { get; set; }
+    }
+
+    public class Default3
+    {
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop1 { get; set; }
+
+        public virtual int DefaultProp1()
+        {
+            return 0;
+        }
+
+        public virtual string DefaultProp2()
+        {
+            return null;
+        }
+
+        public void DoSomething(int param0, string param1, Default2 param2) { }
+
+        public string Default0DoSomthing(int param0)
+        {
+            return null;
+        }
+
+        public string Default0DoSomething(decimal param0)
+        {
+            return null;
+        }
+    }
+
+    public class Default4
+    {
+
+        public virtual int Id { get; set; }
+
+        [Title]
+        public virtual string Prop1 { get; set; }
+    }
+#endregion
+
+#region Deleted
+    public class Deleted1
+    {
+        public static bool DeletedCalled;
+        public IDomainObjectContainer Container { protected get; set; }
+
+        public virtual int Id { get; set; }
+
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+
+        public void Deleted()
+        {
+            DeletedCalled = true;
+        }
+
+        public void Delete()
+        {
+            Container.DisposeInstance(this);
+        }
+    }
+
+    public class Deleted2
+    {
+        public static bool DeletedCalled;
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop1 { get; set; }
+
+        public void Deleted()
+        {
+            DeletedCalled = true;
+        }
+    }
+#endregion
+
+#region Deleting
+    public class Deleting1
+    {
+        public static bool DeletingCalled;
+
+        public Deleting1()
+        {
+            DeletingCalled = false;
+        }
+
+        public IDomainObjectContainer Container { protected get; set; }
+
+        public virtual int Id { get; set; }
+
+        public void Deleting()
+        {
+            DeletingCalled = true;
+        }
+
+        public void Delete()
+        {
+            Container.DisposeInstance(this);
+        }
+    }
+
+    public class Deleting2
+    {
+        public static bool DeletingCalled;
+
+        public Deleting2()
+        {
+            DeletingCalled = false;
+        }
+
+        public IDomainObjectContainer Container { protected get; set; }
+
+        public virtual int Id { get; set; }
+
+        public void deleting()
+        {
+            DeletingCalled = true;
+        }
+
+        public void Delete()
+        {
+            Container.DisposeInstance(this);
+        }
+    }
+#endregion
+
+#region Disable
+    public class Disable1
+    {
+
+        private ICollection<Disable1> prop4 = new List<Disable1>();
+        private ICollection<Disable1> prop5 = new List<Disable1>();
+
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop1 { get; set; }
+
+        public Disable1 Prop2 { get; set; }
+
+        public virtual string Prop3 { get; set; }
+
+        public virtual ICollection<Disable1> Prop4
+        {
+            get { return prop4; }
+            set { prop4 = value; }
+        }
+
+        public virtual ICollection<Disable1> Prop5
+        {
+            get { return prop5; }
+            set { prop5 = value; }
+        }
+
+        public string DisablePropertyDefault()
+        {
+            return "This property has been disabled by default";
+        }
+
+        public string DisableProp3()
+        {
+            return null;
+        }
+
+        public string DisableProp5()
+        {
+            return null;
+        }
+
+        public void Action1() { }
+
+        public void Action2(string param) { }
+    }
+
+    public class Disable2
+    {
+
+        public virtual int Id { get; set; }
+
+        private ICollection<Disable1> prop4 = new List<Disable1>();
+        public virtual string Prop1 { get; set; }
+
+        public virtual Disable1 Prop2 { get; set; }
+
+        public virtual ICollection<Disable1> Prop4
+        {
+            get { return prop4; }
+            set { prop4 = value; }
+        }
+
+        public string DisableActionDefault()
+        {
+            return "This property has been disabled by default";
+        }
+
+        public void Action1() { }
+
+        public void Action2(string param) { }
+
+        public void Action3() { }
+
+        public string DisableAction3()
+        {
+            return null;
+        }
+    }
+
+    public class Disable3
+    {
+
+        public virtual int Id { get; set; }
+
+        [Disabled(WhenTo.Never)]
+        [Optionally]
+        public virtual string Prop4 { get; set; }
+
+        [Optionally]
+        public virtual string Prop6 { get; set; }
+
+        public string DisableProp6()
+        {
+            if (Prop4 == "Disable 6")
+            {
+                return "Disabled Message";
+            }
+            return null;
+        }
+
+        public string DisableProp1()
+        {
+            return null;
+        }
+
+        public bool DisableProp4()
+        {
+            return false;
+        }
+
+        public void DoSomething() { }
+
+        public string DisableDoSomething()
+        {
+            return DisableProp6();
+        }
+    }
+#endregion
+
+#region Hide
+    public class Hide1
+    {
+        private ICollection<Hide1> prop4 = new List<Hide1>();
+        private ICollection<Hide1> prop5 = new List<Hide1>();
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop1 { get; set; }
+
+        public virtual Hide1 Prop2 { get; set; }
+
+
+        public virtual string Prop3 { get; set; }
+
+        public virtual ICollection<Hide1> Prop4
+        {
+            get { return prop4; }
+            set { prop4 = value; }
+        }
+
+        public virtual ICollection<Hide1> Prop5
+        {
+            get { return prop5; }
+            set { prop5 = value; }
+        }
+
+        public bool HidePropertyDefault()
+        {
+            return true;
+        }
+
+        public bool HideProp3()
+        {
+            return false;
+        }
+
+        public bool HideProp5()
+        {
+            return false;
+        }
+
+        public void Action1() { }
+
+        public void Action2(string param) { }
+    }
+
+    public class Hide2
+    {
+        private ICollection<Hide1> prop4 = new List<Hide1>();
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop1 { get; set; }
+
+        public virtual Hide1 Prop2 { get; set; }
+
+        public virtual ICollection<Hide1> Prop4
+        {
+            get { return prop4; }
+            set { prop4 = value; }
+        }
+
+        public bool HideActionDefault()
+        {
+            return true;
+        }
+
+
+        public void Action1() { }
+
+        public void Action2(string param) { }
+
+        public void Action3() { }
+
+        public bool HideAction3()
+        {
+            return false;
+        }
+    }
+
+    public class Hide3
+    {
+
+        public virtual int Id { get; set; }
+
+        [Optionally]
+        public virtual string Prop4 { get; set; }
+
+        [Optionally]
+        public virtual string Prop6 { get; set; }
+
+        public bool HideProp6()
+        {
+            return Prop4 == "Hide 6";
+        }
+
+        public void DoSomething() { }
+
+        public bool HideDoSomething()
+        {
+            return HideProp6();
+        }
+
+        public void DoSomethingElse() { }
+
+        public bool HideProp7()
+        {
+            return false;
+        }
+
+        public string HideProp4()
+        {
+            return null;
+        }
+
+        public bool HideDoSomthingElse()
+        {
+            return false;
+        }
+
+        public string HideDoSomethingElse()
+        {
+            return null;
+        }
+    }
+#endregion
+
+#region Modify
+    public class Modify1
+    {
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop0 { get; set; }
+
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+
+        public virtual string Prop3 { get; set; }
+
+        public virtual Modify3 Prop4 { get; set; }
+
+        public void ModifyProp1(string value)
+        {
+            Prop1 = value;
+            Prop0 = "Prop1 has been modified";
+        }
+
+        public void ModifyProp4(Modify3 value)
+        {
+            Prop4 = value;
+            Prop3 = "Prop4 has been modified";
+        }
+    }
+
+    public class Modify2
+    {
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop2 { get; set; }
+
+        //Has the wrong type of parameter
+
+        public virtual string Prop3 { get; set; }
+        public void ModifyProp2(int value) { }
+
+        //Non-void method
+        public bool ModifyProp3(string value)
+        {
+            return false;
+        }
+
+        //No corresponding Prop4
+        public void ModifyProp4(string value) { }
+    }
+
+    public class Modify3
+    {
+
+        public virtual int Id { get; set; }
+
+        [Title]
+        public virtual string Prop1 { get; set; }
+    }
+
+    public class Modify4
+    {
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop0 { get; set; }
+
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+
+        public virtual string Prop3 { get; set; }
+
+        public virtual Modify3 Prop4 { get; set; }
+
+        public void ModifyProp1(string value)
+        {
+            Prop1 = value;
+            Prop0 = "Prop1 has been modified";
+        }
+
+        public void ModifyProp4(Modify3 value)
+        {
+            Prop4 = value;
+            Prop3 = "Prop4 has been modified";
+        }
+
+        public void ClearProp1()
+        {
+            Prop1 = null;
+
+        }
+
+        public void ClearProp4()
+        {
+            Prop4 = null;
+
+        }
+    }
+#endregion
+
+#region Persisted
+    public class Persisted1
+    {
+        public virtual int Id { get; set; }
+
+
+        public void Persisted()
+        {
+            throw new DomainException("Persisting");
+        }
+    }
+
+    public class Persisted2
+    {
+        public bool PersistedCalled;
+
+        public virtual int Id { get; set; }
+
+        public void peristed()
+        {
+            PersistedCalled = true;
+        }
+    }
+#endregion
+
+#region Persisting
+    public class Persisting1
+    {
+        public Persisting1()
+        {
+            PersistingCalled = false;
+        }
+        public static bool PersistingCalled;
+
+        public virtual int Id { get; set; }
+
+
+        public void Persisting()
+        {
+            PersistingCalled = true;
+        }
+    }
+
+    public class Persisting2
+    {
+        public static bool PersistingCalled;
+
+        public virtual int Id { get; set; }
+
+        public void peristing()
+        {
+            PersistingCalled = true;
+        }
+    }
+#endregion
+
+#region Saved & Saving
+    public class Saved1
+    {
+
+        public virtual int Id { get; set; }
+
+
+        public void Saved()
+        {
+
+        }
+
+        public void Saving()
+        {
+
+        }
+    }
+#endregion
+
+#region Title & ToString
+
+    public class Title1
+    {
+
+        public virtual int Id { get; set; }
+
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+
+        public override string ToString()
+        {
+            return Prop1;
+        }
+    }
+
+    public class Title2
+    {
+
+        public virtual int Id { get; set; }
+
+        [Title]
+        public virtual string Prop1 { get; set; }
+
+        public override string ToString()
+        {
+            return "Bar";
+        }
+    }
+
+    public class Title3
+    {
+        public virtual int Id { get; set; }
+
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+
+        public string Title()
+        {
+            return Prop1;
+        }
+    }
+
+    public class Title4
+    {
+        public virtual int Id { get; set; }
+
+        public virtual string Prop1 { get; set; }
+
+        public string Title()
+        {
+            return Prop1;
+        }
+
+        public override string ToString()
+        {
+            return "Bar";
+        }
+    }
+
+    public class Title5
+    {
+     
+        public virtual int Id { get; set; }
+      
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+
+        public override string ToString()
+        {
+            return Prop1;
+        }
+    }
+#endregion
+
+#region Updated
+    public class Updated1
+    {
+        public virtual int Id { get; set; }
+
+
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+
+        public void Updated()
+        {
+            throw new DomainException("Update called");
+        }
+    }
+
+    public class Updated2
+    {
+
+        public Updated2()
+        {
+            UpdatedCalled = false;
+        }
+        public static bool UpdatedCalled;
+
+        public virtual int Id { get; set; }
+
+        public virtual string Prop1 { get; set; }
+
+        public void updated()
+        {
+            UpdatedCalled = true;
+        }
+    }
+#endregion
+    #endregion
+}

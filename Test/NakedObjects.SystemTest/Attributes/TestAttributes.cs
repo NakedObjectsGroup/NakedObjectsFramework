@@ -17,10 +17,10 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 
-namespace NakedObjects.SystemTest
+namespace NakedObjects.SystemTest.Attributes
 {
     [TestClass]
-    public class TestAttributes : AbstractSystemTest2<MyDbContext>
+    public class TestAttributes : AbstractSystemTest2<AttributesDbContext>
     {
         #region Setup/Teardown
         [ClassInitialize]
@@ -33,43 +33,18 @@ namespace NakedObjects.SystemTest
         public static void ClassCleanup()
         {
             CleanupNakedObjectsFramework(new TestAttributes());
-            Database.Delete(MyDbContext.DatabaseName);
+            Database.Delete(AttributesDbContext.DatabaseName);
         }
-
-        private ITestObject obj1;
-        private ITestObject describedAs1;
-        private ITestObject describedAs2;
-        private ITestObject description1;
-        private ITestObject description2;
-        private ITestObject displayname1;
-        private ITestObject hidden1;
-        private ITestObject named1;
 
         [TestInitialize()]
         public void TestInitialize()
         {
             StartTest();
-            obj1 = NewTestObject<Default1>();
-            describedAs1 = NewTestObject<Describedas1>();
-            describedAs2 = NewTestObject<Describedas2>();
-            description1 = NewTestObject<Description1>();
-            description2 = NewTestObject<Description2>();
-            displayname1 = NewTestObject<Displayname1>();
-            hidden1 = NewTestObject<Hidden1>();
-            named1 = NewTestObject<Named1>();
         }
 
         [TestCleanup()]
         public void TestCleanup()
         {
-            obj1 = null;
-            describedAs1 = null;
-            describedAs2 = null;
-            description1 = null;
-            description2 = null;
-            displayname1 = null;
-            hidden1 = null;
-            named1 = null;
         }
 
         #endregion
@@ -130,7 +105,8 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void DefaultNumericProperty()
         {
-            ITestProperty prop = obj1.GetPropertyByName("Prop1");
+            var default1 = NewTestObject<Default1>();
+            ITestProperty prop = default1.GetPropertyByName("Prop1");
             string def = prop.GetDefault().Title;
             Assert.IsNotNull(def);
             Assert.AreEqual("8", def);
@@ -139,7 +115,8 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public void DefaultParameters()
         {
-            ITestAction action = obj1.GetAction("Do Something");
+            var default1 = NewTestObject<Default1>();
+            ITestAction action = default1.GetAction("Do Something");
             string def0 = action.Parameters[0].GetDefault().Title;
             Assert.IsNotNull(def0);
             Assert.AreEqual("8", def0);
@@ -152,7 +129,8 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void DefaultStringProperty()
         {
-            ITestProperty prop = obj1.GetPropertyByName("Prop2");
+            var default1 = NewTestObject<Default1>();
+            ITestProperty prop = default1.GetPropertyByName("Prop2");
             string def = prop.GetDefault().Title;
             Assert.IsNotNull(def);
             Assert.AreEqual("Foo", def);
@@ -163,6 +141,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void DescribedAsAppliedToAction()
         {
+            var describedAs1 = NewTestObject<Describedas1>();
             ITestAction action = describedAs1.GetAction("Do Something");
             Assert.IsNotNull(action);
             action.AssertIsDescribedAs("Hex");
@@ -171,12 +150,14 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void DescribedAsAppliedToObject()
         {
+            var describedAs1 = NewTestObject<Describedas1>();
             describedAs1.AssertIsDescribedAs("Foo");
         }
 
         [TestMethod]
         public virtual void DescribedAsAppliedToParameter()
         {
+            var describedAs1 = NewTestObject<Describedas1>();
             ITestAction action = describedAs1.GetAction("Do Something");
             ITestParameter param = action.Parameters[0];
             param.AssertIsDescribedAs("Yop");
@@ -185,6 +166,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void DescribedAsAppliedToProperty()
         {
+            var describedAs1 = NewTestObject<Describedas1>();
             ITestProperty prop = describedAs1.GetPropertyByName("Prop1");
             prop.AssertIsDescribedAs("Bar");
         }
@@ -192,6 +174,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void NullDescribedAsAppliedToAction()
         {
+            var describedAs2 = NewTestObject<Describedas2>();
             ITestAction action = describedAs2.GetAction("Do Something");
             Assert.IsNotNull(action);
             action.AssertIsDescribedAs("");
@@ -200,12 +183,14 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void NullDescribedAsAppliedToObject()
         {
+            var describedAs2 = NewTestObject<Describedas2>();
             describedAs2.AssertIsDescribedAs("");
         }
 
         [TestMethod]
         public virtual void NullDescribedAsAppliedToParameter()
         {
+            var describedAs2 = NewTestObject<Describedas2>();
             ITestAction action = describedAs2.GetAction("Do Something");
             ITestParameter param = action.Parameters[0];
             param.AssertIsDescribedAs("");
@@ -214,6 +199,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void NullDescribedAsAppliedToProperty()
         {
+            var describedAs2 = NewTestObject<Describedas2>();
             ITestProperty prop = describedAs2.GetPropertyByName("Prop1");
             prop.AssertIsDescribedAs("");
         }
@@ -223,6 +209,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void DescriptionAppliedToAction()
         {
+            var description1 = NewTestObject<Description1>();
             ITestAction action = description1.GetAction("Do Something");
             Assert.IsNotNull(action);
             action.AssertIsDescribedAs("Hex");
@@ -231,12 +218,14 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void DescriptionAppliedToObject()
         {
+            var description1 = NewTestObject<Description1>();
             description1.AssertIsDescribedAs("Foo");
         }
 
         [TestMethod]
         public virtual void DescriptionAppliedToParameter()
         {
+            var description1 = NewTestObject<Description1>();
             ITestAction action = description1.GetAction("Do Something");
             ITestParameter param = action.Parameters[0];
             param.AssertIsDescribedAs("Yop");
@@ -245,6 +234,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void DescriptionAppliedToProperty()
         {
+            var description1 = NewTestObject<Description1>();
             ITestProperty prop = description1.GetPropertyByName("Prop1");
             prop.AssertIsDescribedAs("Bar");
         }
@@ -252,6 +242,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void NullDescriptionAppliedToAction()
         {
+            var description2 = NewTestObject<Description2>();
             ITestAction action = description2.GetAction("Do Something");
             Assert.IsNotNull(action);
             action.AssertIsDescribedAs("");
@@ -260,12 +251,14 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void NullDescriptionAppliedToObject()
         {
+            var description2 = NewTestObject<Description2>();
             description2.AssertIsDescribedAs("");
         }
 
         [TestMethod]
         public virtual void NullDescriptionAppliedToParameter()
         {
+            var description2 = NewTestObject<Description2>();
             ITestAction action = description2.GetAction("Do Something");
             ITestParameter param = action.Parameters[0];
             param.AssertIsDescribedAs("");
@@ -274,6 +267,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void NullDescriptionAppliedToProperty()
         {
+            var description2 = NewTestObject<Description2>();
             ITestProperty prop = description2.GetPropertyByName("Prop1");
             prop.AssertIsDescribedAs("");
         }
@@ -336,6 +330,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void DisplayNameAppliedToAction()
         {
+            var displayname1 = NewTestObject<Displayname1>();
             ITestAction hex = displayname1.GetAction("Hex");
             Assert.IsNotNull(hex);
             StringAssert.Equals("Hex", hex.Name);
@@ -344,6 +339,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void DisplayNameAppliedToObject()
         {
+            var displayname1 = NewTestObject<Displayname1>();
             displayname1.AssertTitleEquals("Untitled Foo");
         }
         #endregion
@@ -353,6 +349,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void Hidden()
         {
+            var hidden1 = NewTestObject<Hidden1>();
             ITestProperty prop1 = hidden1.GetPropertyByName("Prop1");
             prop1.AssertIsInvisible();
 
@@ -363,6 +360,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void HiddenAlways()
         {
+            var hidden1 = NewTestObject<Hidden1>();
             ITestProperty prop5 = hidden1.GetPropertyByName("Prop5");
             prop5.AssertIsInvisible();
             hidden1.Save();
@@ -372,6 +370,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void HiddenNever()
         {
+            var hidden1 = NewTestObject<Hidden1>();
             ITestProperty prop4 = hidden1.GetPropertyByName("Prop4");
             prop4.AssertIsVisible();
             hidden1.Save();
@@ -381,6 +380,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void HiddenOncePersisted()
         {
+            var hidden1 = NewTestObject<Hidden1>();
             ITestProperty prop2 = hidden1.GetPropertyByName("Prop2");
             prop2.AssertIsVisible();
             hidden1.Save();
@@ -390,6 +390,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void HiddenUntilPersisted()
         {
+            var hidden1 = NewTestObject<Hidden1>();
             ITestProperty prop3 = hidden1.GetPropertyByName("Prop3");
             prop3.AssertIsInvisible();
             hidden1.Save();
@@ -541,6 +542,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void NamedAppliedToAction()
         {
+            var named1 = NewTestObject<Named1>();
             ITestAction hex = named1.GetAction("Hex");
             Assert.IsNotNull(hex);
             StringAssert.Equals("Hex", hex.Name);
@@ -549,12 +551,14 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void NamedAppliedToObject()
         {
+            var named1 = NewTestObject<Named1>();
             named1.AssertTitleEquals("Untitled Foo");
         }
 
         [TestMethod]
         public virtual void NamedAppliedToParameter()
         {
+            var named1 = NewTestObject<Named1>();
             ITestAction hex = named1.GetAction("Hex");
             ITestParameter param = hex.Parameters[0];
             StringAssert.Equals("Yop", param.Name);
@@ -563,6 +567,7 @@ namespace NakedObjects.SystemTest
         [TestMethod]
         public virtual void NamedAppliedToProperty()
         {
+            var named1 = NewTestObject<Named1>();
             ITestProperty bar = named1.GetPropertyByName("Bar");
             Assert.IsNotNull(bar);
         }
@@ -1088,10 +1093,10 @@ namespace NakedObjects.SystemTest
 
     #region Classes used in test
 
-    public class MyDbContext : DbContext
+    public class AttributesDbContext : DbContext
     {
         public const string DatabaseName = "TestAttributes";
-        public MyDbContext() : base(DatabaseName) { }
+        public AttributesDbContext() : base(DatabaseName) { }
 
         public DbSet<Default1> Default1s { get; set; }
         public DbSet<Describedas1> DescribedAs1s { get; set; }
