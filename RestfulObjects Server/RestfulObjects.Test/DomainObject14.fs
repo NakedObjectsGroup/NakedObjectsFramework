@@ -650,9 +650,9 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                                                                            TProperty("Set",       TObjectJson(makeCollectionMember "Set" oid "Set" "" "set" 0)) ;
                                                                            TProperty("Short",     TObjectJson(makePropertyMemberWithNumber "objects" "Short" oid "Short" "" "integer" false (TObjectVal(12) ))); 
                                                                            TProperty("String",    TObjectJson(makePropertyMemberWithFormat "objects" "String" oid "String" "" "string" false (TObjectVal("13") ))); 
-                                                                           TProperty("UInt",      TObjectJson(makePropertyMemberWithNumber "objects" "UInt" oid "U Int" "" "integer" false (TObjectVal(0) ))); 
-                                                                           TProperty("ULong",     TObjectJson(makePropertyMemberWithNumber "objects" "ULong" oid "U Long" "" "integer" false (TObjectVal(0) ))); 
-                                                                           TProperty("UShort",    TObjectJson(makePropertyMemberWithNumber "objects" "UShort" oid "U Short" "" "integer" false (TObjectVal(0) ))) ]));
+                                                                           TProperty("UInt",      TObjectJson(makePropertyMemberWithNumber "objects" "UInt" oid "U Int" "" "integer" false (TObjectVal(14) ))); 
+                                                                           TProperty("ULong",     TObjectJson(makePropertyMemberWithNumber "objects" "ULong" oid "U Long" "" "integer" false (TObjectVal(15) ))); 
+                                                                           TProperty("UShort",    TObjectJson(makePropertyMemberWithNumber "objects" "UShort" oid "U Short" "" "integer" false (TObjectVal(16) ))) ]));
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.DomainType, TObjectVal(oType));
                                                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Scalars"));
                                                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("With Scalarses"));

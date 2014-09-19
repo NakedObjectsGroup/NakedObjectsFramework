@@ -61,3 +61,4 @@ let NotAcceptableGetUser(api : RestfulObjectsControllerBase) =
         api.GetUser(args) |> ignore
         Assert.Fail("expect exception")
     with :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
+

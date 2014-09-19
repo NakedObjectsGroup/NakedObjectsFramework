@@ -8,16 +8,11 @@ module Version8
 
 open NUnit.Framework
 open RestfulObjects.Mvc
-
 open System.Net
-
 open System.Net.Http.Headers
-
 open Newtonsoft.Json.Linq
-
 open RestfulObjects.Snapshot.Constants
 open System.Web.Http
-
 open System.Linq
 open RestTestFunctions
 
