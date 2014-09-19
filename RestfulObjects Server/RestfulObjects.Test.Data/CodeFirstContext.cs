@@ -50,17 +50,32 @@ namespace RestfulObjects.Test.Data {
             context.WithValues.Add(wv1);
 
             var ws1 = new WithScalars {
-                Id = 1, Bool = true, Byte = 1, ByteArray = new[] {
+                Id = 1,
+                Bool = true,
+                Byte = 1,
+                ByteArray = new[] {
                     (byte) 2
                 },
-                Char = '3', CharArray = new[] {
+                Char = '3',
+                CharArray = new[] {
                     (char) 4
                 },
-                Decimal = 5.1M, Double = 6.2, Float = 7.3F, Int = 8, Long = 9L, SByte = 10, SByteArray = new[] {
+                Decimal = 5.1M,
+                Double = 6.2,
+                Float = 7.3F,
+                Int = 8,
+                Long = 9L,
+                SByte = 10,
+                SByteArray = new[] {
                     (sbyte) 11
                 },
-                Short = 12, String = "13", UInt = 14, ULong = 15, UShort = 16
+                Short = 12,
+                String = "13",
+                UInt = 14,
+                ULong = 15,
+                UShort = 16
             };
+
             context.WithScalarses.Add(ws1);
 
             var wa1 = new WithActionObject {Id = 1};
@@ -95,6 +110,9 @@ namespace RestfulObjects.Test.Data {
 
             var vs1 = new VerySimple {Id = 1};
             context.VerySimples.Add(vs1);
+
+            var vs2 = new VerySimple { Id = 2 };
+            context.VerySimples.Add(vs2);
 
             var vse1 = new VerySimpleEager {Id = 1};
             context.VerySimpleEagers.Add(vse1);
