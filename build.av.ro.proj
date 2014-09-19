@@ -140,19 +140,7 @@
   </Target>
 
   <Target Name="RestfulObjectsServerPackage" DependsOnTargets="RestfulObjects">
-    <ItemGroup>
-      <ROSLib Include="$(ROPath)\RestfulObjects.Bootstrap\bin\%(Configuration.Identity)\RestfulObjects.Bootstrap.dll"/>
-      <ROSLib Include="$(ROPath)\RestfulObjects.Bootstrap\bin\%(Configuration.Identity)\RestfulObjects.Bootstrap.pdb"/>
-    </ItemGroup>
-
-    <Copy SourceFiles="@(ROSLib)" DestinationFolder="$(ROPath)\$(ROSVR).package\lib\net451" />
-
-    <ItemGroup>
-      <ROSSrc Include="*$(ROPath)\RestfulObjects.Bootstrap\**\*.cs" />
-    </ItemGroup>
-
-    <Copy SourceFiles="@(ROSSrc)" DestinationFolder="$(ROPath)\$(ROSVR).package\src\%(RecursiveDir)" />
-
+    
 
     <ItemGroup>
       <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsConfig.cs"/>
