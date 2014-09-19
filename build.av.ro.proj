@@ -42,7 +42,6 @@
     <Files Include="$(ROPath)\RestfulObjects.Snapshot\RestfulObjects.Snapshot.csproj"/>
     <Files Include="$(ROPath)\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj"/>
     <Files Include="$(ROPath)\RestfulObjects.Mvc.App\RestfulObjects.Mvc.App.csproj"/>
-    <Files Include="$(ROPath)\RestfulObjects.Bootstrap\RestfulObjects.Bootstrap.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
@@ -106,9 +105,10 @@
 
     <ItemGroup>
       <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\BasicAuthenticationHandler.cs"/>
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestDependencyResolver.cs"/>
-      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestConfig.cs"/>
-      <!--<RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Web.config.transform"/>-->
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsConfig.cs"/>
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsActivator.cs"/>
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityConfig.cs"/>
+      <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityWebApiActivator.cs"/>
       <RestSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Controllers*\RestfulObjectsController.cs"/>
     </ItemGroup>
 
@@ -116,8 +116,10 @@
 
     <ItemGroup>
       <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\BasicAuthenticationHandler.cs"/>
-      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestConfig.cs"/>
-      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestDependencyResolver.cs"/>
+      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestfulObjectsConfig.cs"/>
+      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\RestfulObjectsActivator.cs"/>
+      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\UnityConfig.cs"/>
+      <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\App_Start*\UnityWebApiActivator.cs"/>
       <ToUpdateRo Include="$(ROPath)\$(ROMVC).package\content\Controllers*\RestfulObjectsController.cs"/>
     </ItemGroup>
 
@@ -151,16 +153,23 @@
 
     <Copy SourceFiles="@(ROSSrc)" DestinationFolder="$(ROPath)\$(ROSVR).package\src\%(RecursiveDir)" />
 
+
     <ItemGroup>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RunWeb.cs.pp"/>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsStart.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsConfig.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsActivator.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityConfig.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityWebApiActivator.cs"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(ROSSrcFiles)" DestinationFolder="$(ROPath)\$(ROSVR).package\content\%(RecursiveDir)" />
 
     <ItemGroup>
-      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\RestfulObjectsStart.cs"/>
+      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\RestfulObjectsConfig.cs"/>
+      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\RestfulObjectsActivator.cs"/>
+      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\UnityConfig.cs"/>
+      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\UnityWebApiActivator.cs"/>
     </ItemGroup>
+       
 
     <FileUpdate Files="@(ROSUpdate)"
 							 RegEx= 'MvcTestApp'
