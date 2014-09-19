@@ -8,7 +8,7 @@ namespace RestfulObjects.Test.EndToEnd {
     /// </summary>
     public static class Urls {
         public const string BaseUrl = @"http://mvc.nakedobjects.net:1081/UnitTestRest/";
-        //public const string BaseUrl = @"http://localhost:49477/";
+        //public const string BaseUrl = @"http://localhost:56703/";
 
         public const string NameSpace = "";
 
