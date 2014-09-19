@@ -4,22 +4,14 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-
 module Error10
 
 open NUnit.Framework
 open RestfulObjects.Mvc
-open NakedObjects.Surface
 open System.Net
-open System.Net.Http
 open System.Net.Http.Headers
-open System.IO
 open Newtonsoft.Json.Linq
-open System.Web
-open System
-open RestfulObjects.Snapshot.Utility
 open RestfulObjects.Snapshot.Constants
-open System.Collections.Generic
 open System.Linq
 open RestTestFunctions
 
@@ -37,7 +29,8 @@ let Error(api : RestfulObjectsControllerBase) =
     let parsedResult = JObject.Parse(jsonResult)
     
     let expected = 
-        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
+        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
+          
           TProperty
               (JsonPropertyNames.StackTrace, 
                
@@ -77,4 +70,3 @@ let NotAcceptableError(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(new typeType(RepresentationTypes.Error), result.Content.Headers.ContentType)
     compareObject expected parsedResult
-

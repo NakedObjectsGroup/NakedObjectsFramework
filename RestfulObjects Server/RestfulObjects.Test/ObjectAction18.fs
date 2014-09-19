@@ -8,18 +8,11 @@
 module ObjectAction18
 open NUnit.Framework
 open RestfulObjects.Mvc
-open NakedObjects.Surface
 open System.Net
-open System.Net.Http
 open System.Net.Http.Headers
-open System.IO
 open Newtonsoft.Json.Linq
-open System.Web
-open System
-open RestfulObjects.Snapshot.Utility 
 open RestfulObjects.Snapshot.Constants
 open System.Web.Http
-open System.Collections.Generic
 open System.Linq
 open RestTestFunctions
 
@@ -78,7 +71,6 @@ let GetActionPropertyObject(api : RestfulObjectsControllerBase) =
 let GetActionPropertyService(api : RestfulObjectsControllerBase) = 
         let oType = ttc "RestfulObjects.Test.Data.WithActionService"
         let oid = oType
-        //let f = wrap api.GetServiceAction
         VerifyActionProperty  "services" oType oid (wrap api.GetServiceAction) api
 
 let VerifyActionPropertyWithDateTime refType oType oid f (api : RestfulObjectsControllerBase) = 
@@ -86,7 +78,6 @@ let VerifyActionPropertyWithDateTime refType oType oid f (api : RestfulObjectsCo
         let pmid = "parm"
         let ourl = sprintf "%s/%s" refType oid      
         let purl = sprintf "%s/actions/%s" ourl pid
-        let rturl =  sprintf "domain-types/%s"  (ttc "RestfulObjects.Test.Data.MostSimple")
         let dburl = sprintf "domain-types/%s/actions/%s" oType pid
         let pmurl = sprintf "%s/params/%s" dburl pmid
 
@@ -153,7 +144,6 @@ let VerifyActionPropertyWithCollection refType oType oid f (api : RestfulObjects
         let pmid = "parm"
         let ourl = sprintf "%s/%s" refType oid      
         let purl = sprintf "%s/actions/%s" ourl pid
-        let rturl =  sprintf "domain-types/%s"  (ttc "RestfulObjects.Test.Data.MostSimple")
         let dburl = sprintf "domain-types/%s/actions/%s" oType pid
         let pmurl = sprintf "%s/params/%s" dburl pmid
 
@@ -552,9 +542,6 @@ let VerifyActionPropertyWithOptParmSimpleOnly refType oType oid f (api : Restful
         let pmid = "parm"
         let ourl = sprintf "%s/%s" refType oid      
         let purl = sprintf "%s/actions/%s" ourl pid
-        let rturl =  sprintf "domain-types/%s"  (ttc "RestfulObjects.Test.Data.MostSimple")
-        let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
         let argS = "x-ro-domain-model=simple"
 
         let url = sprintf "%s?%s"  purl  argS
@@ -1064,10 +1051,6 @@ let VerifyCollectionActionWithParmsSimpleOnly refType oType oid  f (api : Restfu
          
         let ourl = sprintf "%s/%s" refType oid      
         let purl = sprintf "%s/actions/%s" ourl pid
-        let rturl =  sprintf "domain-types/%s"  (ttc "RestfulObjects.Test.Data.MostSimple")
-        let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-        let pmurl1 = sprintf "%s/params/%s" dburl pmid1
-        let pmurl2 = sprintf "%s/params/%s" dburl pmid2
         let argS = "x-ro-domain-model=simple"
         let url = sprintf "%s?%s"  purl  argS
 
@@ -1614,7 +1597,6 @@ let VerifyActionWithReferenceParmsWithAutoComplete refType oType oid f (api : Re
                                                                       TObjectJson(TProperty(JsonPropertyNames.Id, TObjectVal(pmid0)) :: makeGetLinkProp RelValues.ActionParam dburl0 RepresentationTypes.ActionParamDescription "");
                                                                       TObjectJson(TProperty(JsonPropertyNames.Id, TObjectVal(pmid1)) :: makeGetLinkProp RelValues.ActionParam dburl1 RepresentationTypes.ActionParamDescription "")]))]
         
-        let ps = parsedResult.ToString();
 
         Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
         Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
@@ -1658,7 +1640,6 @@ let VerifyInvokeParmWithAutoComplete refType oType oid f (api : RestfulObjectsCo
         let jsonResult = readSnapshotToJson result
         let parsedResult = JObject.Parse(jsonResult)
         
-        let roid = mst + "/" + ktc "1"
    
         let choiceRel = RelValues.Choice + makeParm RelParamValues.Action pid + makeParm RelParamValues.Param pmid0
 
@@ -1698,12 +1679,9 @@ let InvokeParmWithAutoCompleteViewModel(api : RestfulObjectsControllerBase) =
 let VerifyInvokeParmWithAutoCompleteErrorNoParm refType oType oid f (api : RestfulObjectsControllerBase) =    
         let pid = "AnActionWithReferenceParametersWithAutoComplete"
         let pmid0 = "parm0"
-        //  let pmid1 = "parm1"
 
-        let mst = (ttc "RestfulObjects.Test.Data.MostSimple")
         let ourl = sprintf "%s/%s" refType oid      
         let purl = sprintf "%s/actions/%s/params/%s/autoComplete" ourl pid pmid0
-        let prurl = sprintf "%s/actions/%s/params/%s/prompt" ourl pid pmid0
 
         let parms =  new JObject ();
 
@@ -1736,12 +1714,9 @@ let InvokeParmWithAutoCompleteViewModelErrorNoParm(api : RestfulObjectsControlle
 let VerifyInvokeParmWithAutoCompleteErrorMalformedParm refType oType oid f (api : RestfulObjectsControllerBase) =    
         let pid = "AnActionWithReferenceParametersWithAutoComplete"
         let pmid0 = "parm0"
-        //  let pmid1 = "parm1"
 
-        let mst = (ttc "RestfulObjects.Test.Data.MostSimple")
         let ourl = sprintf "%s/%s" refType oid      
         let purl = sprintf "%s/actions/%s/params/%s/autoComplete" ourl pid pmid0
-        let prurl = sprintf "%s/actions/%s/params/%s/prompt" ourl pid pmid0
 
         let parms =  new JObject (new JProperty("x-ro-search-term", new JObject("12")));
 
@@ -1774,12 +1749,9 @@ let InvokeParmWithAutoCompleteViewModelErrorMalformedParm(api : RestfulObjectsCo
 let VerifyInvokeParmWithAutoCompleteErrorUnrecognisedParm refType oType oid f (api : RestfulObjectsControllerBase) =    
         let pid = "AnActionWithReferenceParametersWithAutoComplete"
         let pmid0 = "parm0"
-        //  let pmid1 = "parm1"
 
-        let mst = (ttc "RestfulObjects.Test.Data.MostSimple")
         let ourl = sprintf "%s/%s" refType oid      
         let purl = sprintf "%s/actions/%s/params/%s/autoComplete" ourl pid pmid0
-        let prurl = sprintf "%s/actions/%s/params/%s/prompt" ourl pid pmid0
 
         let parms =  new JObject (new JProperty("x-ro-unknown", new JObject(new JProperty("value", "12"))));
 
@@ -1831,7 +1803,6 @@ let VerifyInvokeParmWithConditionalChoices refType oType oid f (api : RestfulObj
         let jsonResult = readSnapshotToJson result
         let parsedResult = JObject.Parse(jsonResult)
         
-        let roid = mst + "/" + ktc "1"
    
         let choiceRel = RelValues.Choice + makeParm RelParamValues.Action pid + makeParm RelParamValues.Param pmid0
 
@@ -1872,7 +1843,6 @@ let VerifyInvokeParmWithConditionalChoicesErrorMalformedParm refType oType oid f
         let pmid0 = "parm4"
      
 
-        let mst = (ttc "RestfulObjects.Test.Data.MostSimple")
         let ourl = sprintf "%s/%s" refType oid      
         let prurl = sprintf "%s/actions/%s/params/%s/prompt" ourl pid pmid0
 
@@ -1931,7 +1901,6 @@ let VerifyInvokeValueParmWithConditionalChoices refType oType oid f (api : Restf
         let jsonResult = readSnapshotToJson result
         let parsedResult = JObject.Parse(jsonResult)
            
-        let choiceRel = RelValues.Choice + makeParm RelParamValues.Action pid + makeParm RelParamValues.Param pmid0
      
         let expected =  [ TProperty(JsonPropertyNames.Id, TObjectVal(pmid0)); 
                           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl  RepresentationTypes.Object oType);
@@ -1957,7 +1926,6 @@ let VerifyInvokeValueParmWithConditionalChoices refType oType oid f (api : Restf
         let jsonResult = readSnapshotToJson result
         let parsedResult = JObject.Parse(jsonResult)
            
-        let choiceRel = RelValues.Choice + makeParm RelParamValues.Action pid + makeParm RelParamValues.Param pmid0
      
         let expected =  [ TProperty(JsonPropertyNames.Id, TObjectVal(pmid0)); 
                           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl  RepresentationTypes.Object oType);
@@ -1993,7 +1961,6 @@ let VerifyInvokeValueParmWithConditionalChoicesMissingParm refType oType oid f (
         let pmid0 = "parm3"
      
         let roType1 = (ttc "integer")
-        let roType2 = (ttc "string")
         let ourl = sprintf "%s/%s" refType oid      
         let prurl = sprintf "%s/actions/%s/params/%s/prompt" ourl pid pmid0
 
@@ -2007,7 +1974,6 @@ let VerifyInvokeValueParmWithConditionalChoicesMissingParm refType oType oid f (
       
         let parsedResult = JObject.Parse(jsonResult)
            
-        let choiceRel = RelValues.Choice + makeParm RelParamValues.Action pid + makeParm RelParamValues.Param pmid0
      
         let expected =  [ TProperty(JsonPropertyNames.Id, TObjectVal(pmid0)); 
                           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl  RepresentationTypes.Object oType);

@@ -8,23 +8,16 @@
 module ObjectCollection17
 open NUnit.Framework
 open RestfulObjects.Mvc
-open NakedObjects.Surface
 open System.Net
-open System.Net.Http
 open System.Net.Http.Headers
-open System.IO
 open Newtonsoft.Json.Linq
 open System.Web
-open System
-open RestfulObjects.Snapshot.Utility 
 open RestfulObjects.Snapshot.Constants
 open System.Web.Http
-open System.Collections.Generic
 open System.Linq
 open RestTestFunctions
 
 let GetCollectionProperty(api : RestfulObjectsControllerBase) = 
-        let collectionType = "System.Collections.Generic.List`1[[RestfulObjects.Test.Data.MostSimple"
         let oType = ttc "RestfulObjects.Test.Data.WithCollection"
         let oid = ktc "1"
         let oid2 = ktc "2"
@@ -45,8 +38,6 @@ let GetCollectionProperty(api : RestfulObjectsControllerBase) =
         let obj1 =  TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType oid)  RepresentationTypes.Object roType
         let obj2 =  TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType oid2)  RepresentationTypes.Object roType
 
-        let addToRel = RelValues.AddTo + makeParm RelParamValues.Collection "ACollection"
-        let removeFromRel = RelValues.RemoveFrom + makeParm RelParamValues.Collection "ACollection"
 
         let expected = [ TProperty(JsonPropertyNames.Id, TObjectVal(pid));
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.ReturnType, TObjectVal(ResultTypes.List));
@@ -70,7 +61,6 @@ let GetCollectionProperty(api : RestfulObjectsControllerBase) =
         compareObject expected parsedResult
 
 let GetCollectionPropertyViewModel(api : RestfulObjectsControllerBase) = 
-        let collectionType = "System.Collections.Generic.List`1[[RestfulObjects.Test.Data.MostSimple"
         let oType = ttc "RestfulObjects.Test.Data.WithCollectionViewModel"
         let oid = ktc "1-2"
         let oid1 = ktc "1"
@@ -92,8 +82,6 @@ let GetCollectionPropertyViewModel(api : RestfulObjectsControllerBase) =
         let obj1 =  TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType oid1)  RepresentationTypes.Object roType
         let obj2 =  TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType oid2)  RepresentationTypes.Object roType
 
-        let addToRel = RelValues.AddTo + makeParm RelParamValues.Collection "ACollection"
-        let removeFromRel = RelValues.RemoveFrom + makeParm RelParamValues.Collection "ACollection"
 
         let expected = [ TProperty(JsonPropertyNames.Id, TObjectVal(pid));
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.ReturnType, TObjectVal(ResultTypes.List));
@@ -117,7 +105,6 @@ let GetCollectionPropertyViewModel(api : RestfulObjectsControllerBase) =
 
 
 let GetCollectionPropertyFormalOnly(api : RestfulObjectsControllerBase) = 
-        let collectionType = "System.Collections.Generic.List`1[[RestfulObjects.Test.Data.MostSimple"
         let oType = ttc "RestfulObjects.Test.Data.WithCollection"
         let oid = ktc "1"
         let oid2 = ktc "2"
@@ -135,8 +122,6 @@ let GetCollectionPropertyFormalOnly(api : RestfulObjectsControllerBase) =
         
         let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 
-        let addToRel = RelValues.AddTo + makeParm RelParamValues.Collection pid
-        let removeFromRel = RelValues.RemoveFrom + makeParm RelParamValues.Collection pid
         let valueRel = RelValues.Value + makeParm RelParamValues.Collection pid
 
         let obj1 =  TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeLinkPropWithMethodAndTypes "GET" valueRel (sprintf "objects/%s/%s" roType oid)  RepresentationTypes.Object roType "" false
@@ -158,7 +143,6 @@ let GetCollectionPropertyFormalOnly(api : RestfulObjectsControllerBase) =
         compareObject expected parsedResult
 
 let GetCollectionPropertySimpleOnly(api : RestfulObjectsControllerBase) = 
-        let collectionType = "System.Collections.Generic.List`1[[RestfulObjects.Test.Data.MostSimple"
         let oType = ttc "RestfulObjects.Test.Data.WithCollection"
         let oid = ktc "1"
         let pid = "ACollection"
@@ -180,8 +164,6 @@ let GetCollectionPropertySimpleOnly(api : RestfulObjectsControllerBase) =
         let obj1 =  TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType oid)  RepresentationTypes.Object roType
         let obj2 =  TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType (ktc "2"))  RepresentationTypes.Object roType
 
-        let addToRel = RelValues.AddTo + makeParm RelParamValues.Collection "ACollection"
-        let removeFromRel = RelValues.RemoveFrom + makeParm RelParamValues.Collection "ACollection"
 
         let expected = [ TProperty(JsonPropertyNames.Id, TObjectVal(pid));
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.ReturnType, TObjectVal(ResultTypes.List));
@@ -223,8 +205,6 @@ let GetCollectionSetProperty(api : RestfulObjectsControllerBase) =
         let obj1 =  TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType oid)  RepresentationTypes.Object roType
         let obj2 =  TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType (ktc "2"))  RepresentationTypes.Object roType
 
-        let addToRel = RelValues.AddTo + makeParm RelParamValues.Collection "ASet"
-        let removeFromRel = RelValues.RemoveFrom + makeParm RelParamValues.Collection "ASet"
 
         let expected = [ TProperty(JsonPropertyNames.Id, TObjectVal(pid));
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.ReturnType, TObjectVal("set"));
@@ -247,7 +227,6 @@ let GetCollectionSetProperty(api : RestfulObjectsControllerBase) =
         compareObject expected parsedResult
 
 let GetCollectionSetPropertyFormalOnly(api : RestfulObjectsControllerBase) = 
-        let collectionType = "System.Collections.Generic.List`1[[RestfulObjects.Test.Data.MostSimple"
         let oType = ttc "RestfulObjects.Test.Data.WithCollection"
         let oid = ktc "1"
         let pid = "ASet"
@@ -264,8 +243,6 @@ let GetCollectionSetPropertyFormalOnly(api : RestfulObjectsControllerBase) =
         
         let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 
-        let addToRel = RelValues.AddTo + makeParm RelParamValues.Collection pid
-        let removeFromRel = RelValues.RemoveFrom + makeParm RelParamValues.Collection pid
         let valueRel = RelValues.Value + makeParm RelParamValues.Collection pid
 
         let obj1 =  TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeLinkPropWithMethodAndTypes "GET" valueRel (sprintf "objects/%s/%s" roType oid)  RepresentationTypes.Object roType "" false
@@ -287,7 +264,6 @@ let GetCollectionSetPropertyFormalOnly(api : RestfulObjectsControllerBase) =
         compareObject expected parsedResult
 
 let GetCollectionSetPropertySimpleOnly(api : RestfulObjectsControllerBase) = 
-        let collectionType = "System.Collections.Generic.List`1[[RestfulObjects.Test.Data.MostSimple"
         let oType = ttc "RestfulObjects.Test.Data.WithCollection"
         let oid = ktc "1"
         let pid = "ASet"
@@ -309,8 +285,6 @@ let GetCollectionSetPropertySimpleOnly(api : RestfulObjectsControllerBase) =
         let obj1 =  TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType oid)  RepresentationTypes.Object roType
         let obj2 =  TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType (ktc "2"))  RepresentationTypes.Object roType
 
-        let addToRel = RelValues.AddTo + makeParm RelParamValues.Collection "ASet"
-        let removeFromRel = RelValues.RemoveFrom + makeParm RelParamValues.Collection "ASet"
 
         let expected = [ TProperty(JsonPropertyNames.Id, TObjectVal(pid));
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.ReturnType, TObjectVal("set"));
@@ -332,7 +306,6 @@ let GetCollectionSetPropertySimpleOnly(api : RestfulObjectsControllerBase) =
         compareObject expected parsedResult
 
 let GetCollectionPropertyWithMediaType(api : RestfulObjectsControllerBase) = 
-        let collectionType = "System.Collections.Generic.List`1[[RestfulObjects.Test.Data.MostSimple"
         let oType = ttc "RestfulObjects.Test.Data.WithCollection"
         let oid = ktc "1"
         let pid = "ACollection"
@@ -354,8 +327,6 @@ let GetCollectionPropertyWithMediaType(api : RestfulObjectsControllerBase) =
         let obj1 =  TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType oid)  RepresentationTypes.Object roType
         let obj2 =  TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel (sprintf "objects/%s/%s" roType (ktc "2"))  RepresentationTypes.Object roType
 
-        let addToRel = RelValues.AddTo + makeParm RelParamValues.Collection "ACollection"
-        let removeFromRel = RelValues.RemoveFrom + makeParm RelParamValues.Collection "ACollection"
 
         let expected = [ TProperty(JsonPropertyNames.Id, TObjectVal(pid));
                          TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.ReturnType, TObjectVal(ResultTypes.List));
@@ -379,7 +350,6 @@ let GetCollectionPropertyWithMediaType(api : RestfulObjectsControllerBase) =
         compareObject expected parsedResult
 
 let GetDisabledCollectionProperty(api : RestfulObjectsControllerBase) = 
-        let collectionType = "System.Collections.Generic.List`1[[RestfulObjects.Test.Data.MostSimple"
         let msg = "Field not editable"
         let oType = ttc "RestfulObjects.Test.Data.WithCollection"
         let oid = ktc "1"
@@ -421,7 +391,6 @@ let GetDisabledCollectionProperty(api : RestfulObjectsControllerBase) =
         compareObject expected parsedResult
 
 let GetCollectionValue(api : RestfulObjectsControllerBase) = 
-        let collectionType = "System.Collections.Generic.List`1[[RestfulObjects.Test.Data.MostSimple"
         let oType = ttc "RestfulObjects.Test.Data.WithCollection"
         let oid = ktc "1"
         let oid2 = ktc "2"
@@ -457,7 +426,6 @@ let GetCollectionValue(api : RestfulObjectsControllerBase) =
                                                                      TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.ElementType eturl RepresentationTypes.DomainType "" "" true); ]))];                                                     
                                                                     
         
-        let ps = parsedResult.ToString()
 
         Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
         Assert.AreEqual(new typeType(RepresentationTypes.CollectionValue, "", "", true), result.Content.Headers.ContentType)
@@ -467,7 +435,6 @@ let GetCollectionValue(api : RestfulObjectsControllerBase) =
 
 
 let AddToAndDeleteFromCollectionProperty (api : RestfulObjectsControllerBase) = 
-        let desc = "an empty collection for testing"
         let oType = ttc "RestfulObjects.Test.Data.WithCollection"
         let oid = ktc "1"
         let pid = "AnEmptyCollection"
@@ -484,7 +451,7 @@ let AddToAndDeleteFromCollectionProperty (api : RestfulObjectsControllerBase) =
         
         try
             api.Request <-  jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-            let result = api.PostCollection(oType, oid, pid, arg)
+            api.PostCollection(oType, oid, pid, arg) |> ignore
             Assert.Fail("expect exception")
         with 
             | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.Forbidden, ex.Response.StatusCode)
@@ -493,7 +460,7 @@ let AddToAndDeleteFromCollectionProperty (api : RestfulObjectsControllerBase) =
 
         try
             api.Request <-  jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-            let result = api.DeleteCollection(oType, oid, pid, arg)
+            api.DeleteCollection(oType, oid, pid, arg)  |> ignore
             Assert.Fail("expect exception")
         with 
             | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.Forbidden, ex.Response.StatusCode)
@@ -501,7 +468,6 @@ let AddToAndDeleteFromCollectionProperty (api : RestfulObjectsControllerBase) =
        
 
 let AddToAndDeleteFromCollectionPropertyViewModel (api : RestfulObjectsControllerBase) = 
-        let desc = "an empty collection for testing"
         let oType = ttc "RestfulObjects.Test.Data.WithCollectionViewModel"
         let oid = ktc "1-2"
         let oid1 = ktc "1"
@@ -519,7 +485,7 @@ let AddToAndDeleteFromCollectionPropertyViewModel (api : RestfulObjectsControlle
 
         try
             api.Request <-  jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-            let result = api.PostCollection(oType, oid, pid, arg)
+            api.PostCollection(oType, oid, pid, arg)  |> ignore
             Assert.Fail("expect exception")
          with 
             | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.Forbidden, ex.Response.StatusCode)
@@ -529,203 +495,17 @@ let AddToAndDeleteFromCollectionPropertyViewModel (api : RestfulObjectsControlle
 
         try 
             api.Request <-  jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-            let result = api.DeleteCollection(oType, oid, pid, arg)
+            api.DeleteCollection(oType, oid, pid, arg)  |> ignore
             Assert.Fail("expect exception")
         with 
             | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.Forbidden, ex.Response.StatusCode)
     
 
-//let AddToAndDeleteFromSetCollectionProperty (api : RestfulObjectsControllerBase) = 
-//        let desc = "an empty set for testing"
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptySet"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//    
-//        
-//        api.Request <-  jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual(null, result.Content.Headers.ContentType)
-//        assertTransactionalCache  result 
-//   
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <-  jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual(null, result.Content.Headers.ContentType)
-//        assertTransactionalCache  result 
 
 
-//let AddToAndDeleteFromCollectionPropertyConcurrencySuccess (api : RestfulObjectsControllerBase) = 
-//        let desc = "an empty collection for testing"
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let url = sprintf "http://localhost/objects/%s/%s"  oType oid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//      //  Assert.AreEqual(0, (instances<WithCollection>() |> Seq.filter (fun i -> i.Id = 1) |> Seq.head).AnEmptyCollection |> Seq.length )
-//        
-//        RestfulObjectsControllerBase.ConcurrencyChecking <- true
-//
-//        let args = CreateReservedArgs ""
-//        api.Request <- jsonGetMsg(url)
-//        let result = api.GetObject(oType, oid, args)
-//        let tag = result.Headers.ETag.Tag 
-//
-//        api.Request <- jsonPostMsgAndTag (sprintf "http://localhost/%s" purl) (parms.ToString()) tag
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual(null, result.Content.Headers.ContentType)
-//        assertTransactionalCache  result 
-//  
-//        let args = CreateReservedArgs ""
-//        api.Request <-  jsonGetMsg(url)
-//        let result = api.GetObject(oType, oid, args)
-//        let tag = result.Headers.ETag.Tag 
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsgAndTag (sprintf "http://localhost/%s?%s" purl parmsEncoded) tag
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual(null, result.Content.Headers.ContentType)
-//        assertTransactionalCache  result 
 
-//let AddToAndDeleteFromSetCollectionPropertyConcurrencySuccess (api : RestfulObjectsControllerBase) = 
-//        let desc = "an empty set for testing"
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptySet"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let url = sprintf "http://localhost/objects/%s/%s"  oType oid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//      //  Assert.AreEqual(0, (instances<WithCollection>() |> Seq.filter (fun i -> i.Id = 1) |> Seq.head).AnEmptyCollection |> Seq.length )
-//        
-//        RestfulObjectsControllerBase.ConcurrencyChecking <- true
-//
-//        let args = CreateReservedArgs ""
-//        api.Request <- jsonGetMsg(url)
-//        let result = api.GetObject(oType, oid, args)
-//        let tag = result.Headers.ETag.Tag 
-//
-//        api.Request <- jsonPostMsgAndTag (sprintf "http://localhost/%s" purl) (parms.ToString()) tag
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual(null, result.Content.Headers.ContentType)
-//        assertTransactionalCache  result 
-//
-//        let args = CreateReservedArgs ""
-//        api.Request <-  jsonGetMsg(url)
-//        let result = api.GetObject(oType, oid, args)
-//        let tag = result.Headers.ETag.Tag 
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsgAndTag (sprintf "http://localhost/%s?%s" purl parmsEncoded) tag
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual(null, result.Content.Headers.ContentType)
-//        assertTransactionalCache  result 
 
-//let AddToCollectionPropertyValidateOnly(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple";
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm), new JProperty("x-ro-validate-only", true)) 
-//
-//        let arg = CreateSingleValueArg parms
-//  
-//        
-//        api.Request <-  jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual(null, result.Content.Headers.ContentType)
-//        assertTransactionalCache  result 
 
-//let DeleteFromCollectionPropertyValidateOnly(api : RestfulObjectsControllerBase)  = 
-//        let desc = "an empty collection for testing"
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple";
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//
-//        let arg = CreateSingleValueArg parms
-//
-//    
-//        
-//        api.Request <-  jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        
-//        let jsonResult = readSnapshotToJson result
-//       
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-//    
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm), new JProperty("x-ro-validate-only", true)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//       
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
 
     
 let GetInvalidCollection(api : RestfulObjectsControllerBase) = 
@@ -790,7 +570,7 @@ let NotAcceptableGetCollectionWrongMediaType(api : RestfulObjectsControllerBase)
             msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue ("profile", (makeProfile RepresentationTypes.ObjectProperty)))
             let args = CreateReservedArgs ""
             api.Request <- msg
-            let result = api.GetCollection(oType, oid, pid, args)
+            api.GetCollection(oType, oid, pid, args) |> ignore
             Assert.Fail("expect exception")
         with 
             | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
@@ -807,21 +587,13 @@ let GetErrorValueCollection(api : RestfulObjectsControllerBase) =
         RestfulObjects.Test.Data.WithGetError.ThrowErrors <- true
         let result = api.GetCollection(oType, oid, pid, args)
         RestfulObjects.Test.Data.WithGetError.ThrowErrors <- false
-        let jsonResult = readSnapshotToJson result
-        let parsedResult = JObject.Parse(jsonResult)
-      
-        let expected = [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"));
-                         TProperty(JsonPropertyNames.StackTrace, TArray([ TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithGetError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12"))]));
-                         TProperty(JsonPropertyNames.Links, TArray([]))
-                         TProperty(JsonPropertyNames.Extensions, TObjectJson([]))]
+       
 
         Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
         // for some resaon stack trace has different depth on my machine when not debugging (only) ! 
         Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
-        //compareObject expected  parsedResult
 
 let GetCollectionAsProperty(api : RestfulObjectsControllerBase) = 
-        let collectionType = "System.Collections.Generic.List`1[[RestfulObjects.Test.Data.MostSimple"
         let oType = ttc "RestfulObjects.Test.Data.WithCollection"
         let oid = ktc "1"
         let pid = "ACollection"
@@ -837,865 +609,3 @@ let GetCollectionAsProperty(api : RestfulObjectsControllerBase) =
         Assert.AreEqual("199 RestfulObjects \"No such property ACollection\"", result.Headers.Warning.ToString())
         Assert.AreEqual("", jsonResult)
 
-//let AddToCollectionMissingArgs(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//
-//        let arg = CreateSingleValueArg (new JObject())
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//       
-//        Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-//let AddToCollectionMalformedArgs(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty("malformed", refParm)) 
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-  
-//let AddToCollectionInvalidArgs(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.WithValue"
-//        let mst = ttc "RestfulObjects.Test.Data.MostSimple" 
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-//let AddToCollectionDisabledValue(api : RestfulObjectsControllerBase) =
-//        let msg = "Always Disabled" 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "ADisabledCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"" +  msg + "\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-//let AddToCollectionInvisibleValue(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AHiddenCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <-  jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-//let AddToCollectionImmutableObject(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.Immutable"
-//        let oid = ktc "1"
-//        let pid = "ACollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href,  (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//       
-//        Assert.AreEqual("", jsonResult)
-
-//let AddToCollectionInvalidArgsName(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "ANonExistentCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//       
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-//let NotAcceptableAddCollectionWrongMediaType(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "ACollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//
-//        let arg = CreateSingleValueArg parms
-//
-//       
-//          
-//        let msg = jsonPostMsg(sprintf "http://localhost/%s" purl) (parms.ToString())
-//        msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue ("profile", (makeProfile RepresentationTypes.ObjectProperty)))
-//        api.Request <- msg
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//     
-    
-     
-//let AddToCollectionMissingArgsValidateOnly(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//
-//        let parms =  new JObject (new JProperty("x-ro-validate-only", true)) 
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//       
-//        Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-  
-//let AddToCollectionMalformedArgsValidateOnly(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty("malformed", refParm), new JProperty("x-ro-validate-only", true)) 
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
- 
-//let AddToCollectionInvalidArgsValidateOnly(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.WithValue"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm), new JProperty("x-ro-validate-only", true)) 
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-//let AddToCollectionDisabledValueValidateOnly(api : RestfulObjectsControllerBase) = 
-//        let msg = "Always Disabled"
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "ADisabledCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm), new JProperty("x-ro-validate-only", true)) 
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"" +  msg + "\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-//let AddToCollectionInvisibleValueValidateOnly(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AHiddenCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm), new JProperty("x-ro-validate-only", true)) 
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-//let AddToCollectionImmutableObjectValidateOnly(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.Immutable"
-//        let oid = ktc "1"
-//        let pid = "ACollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm), new JProperty("x-ro-validate-only", true)) 
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <-  jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//       
-//        Assert.AreEqual("", jsonResult)
-
-//let AddToCollectionInvalidArgsNameValidateOnly(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "ANonExistentCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm), new JProperty("x-ro-validate-only", true)) 
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-//let AddToCollectionInternalError(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithGetError"
-//        let oid = ktc "1"
-//        let pid = "AnErrorCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-//
-//let AddToCollectionForPreTest(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        ()
-
-
-//    
-//let DeleteFromCollectionMissingArgs(api : RestfulObjectsControllerBase) = 
-//        AddToCollectionForPreTest api
-//
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//
-//        let arg = CreateSingleValueArg (new JObject())
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s" purl ) 
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//       
-//        Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-//
-//    
-//let DeleteFromCollectionMalformedArgs(api : RestfulObjectsControllerBase) = 
-//        AddToCollectionForPreTest api
-//
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty("malformed", refParm)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-//    
-//let DeleteFromCollectionInvalidArgs(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.WithValue"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-    // 401 
-
-    // Field not editable
-//let DeleteFromCollectionDisabledValue(api : RestfulObjectsControllerBase) =
-//        let msg = "Always Disabled" 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "ADisabledCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"" + msg + "\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-    // 14.2 405 
-
-//
-//    
-//let DeleteFromCollectionInvisibleValue(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AHiddenCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-//
-//let DeleteFromCollectionImmutableObject(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.Immutable"
-//        let oid = ktc "1"
-//        let pid = "ACollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-    // 14.2 404 
-//
-//    
-//let DeleteFromCollectionInvalidArgsName(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "ANonExistentCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-//
-//    // 14.2 40 
-//let NotAcceptableDeleteFromCollectionWrongMediaType(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "ACollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//        let msg = jsonDeleteMsg(sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue ("profile", (makeProfile RepresentationTypes.ObjectProperty)))
-//        api.Request <- msg
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//       
-     
-     
- // new 
-//
-//let DeleteFromCollectionMissingArgsValidateOnly(api : RestfulObjectsControllerBase) = 
-//        AddToCollectionForPreTest api
-//
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//
-//        let parms =  new JObject (new JProperty("x-ro-validate-only", true)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-//
-//    
-//let DeleteFromCollectionMalformedArgsValidateOnly(api : RestfulObjectsControllerBase) = 
-//        AddToCollectionForPreTest api
-//
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty("malformed", refParm),  new JProperty("x-ro-validate-only", true)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-//
-//    
-//let DeleteFromCollectionInvalidArgsValidateOnly(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.WithValue"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm),  new JProperty("x-ro-validate-only", true)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-    // 401 
-
-    // Field not editable
-//let DeleteFromCollectionDisabledValueValidateOnly(api : RestfulObjectsControllerBase) = 
-//        let msg = "Always Disabled"
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "ADisabledCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm),  new JProperty("x-ro-validate-only", true)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"" + msg + "\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-    // 14.2 405 
-
-//  
-//let DeleteFromCollectionInvisibleValueValidateOnly(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AHiddenCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm),  new JProperty("x-ro-validate-only", true)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-//  
-//let DeleteFromCollectionImmutableObjectValidateOnly(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.Immutable"
-//        let oid = ktc "1"
-//        let pid = "ACollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm),  new JProperty("x-ro-validate-only", true)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-
-    // 14.2 404 
-
-//    
-//let DeleteFromCollectionInvalidArgsNameValidateOnly(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "ANonExistentCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm),  new JProperty("x-ro-validate-only", true)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded )
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-//
-//let DeleteFromCollectionInternalError(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithGetError"
-//        let oid = ktc "1"
-//        let pid = "AnErrorCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <-  jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//        let result = api.DeleteCollection(oType, oid, pid, arg)
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-//
-//let AddToCollectionPropertyConcurrencyFail(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//
-//        RestfulObjectsControllerBase.ConcurrencyChecking <- true
-//   
-//        let tag = "\"fail\""
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsgAndTag (sprintf "http://localhost/%s" purl) (parms.ToString()) tag
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-//
-//let AddToCollectionPropertyMissingIfMatchHeader(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//
-//        RestfulObjectsControllerBase.ConcurrencyChecking <- true
-//
-//        let arg = CreateSingleValueArg parms
-//  
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        
-//        let jsonResult = readSnapshotToJson result
-//       
-//        Assert.AreEqual(preconditionHeaderMissing, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"If-Match header required with last-known value of ETag for the resource in order to modify its state\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-//
-//let DeleteFromCollectionPropertyConcurrencyFail(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//
-//        let arg = CreateSingleValueArg parms
-//        
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)
-//
-//let DeleteFromCollectionPropertyMissingIfMatchHeader(api : RestfulObjectsControllerBase) = 
-//        let oType = ttc "RestfulObjects.Test.Data.WithCollection"
-//        let oid = ktc "1"
-//        let pid = "AnEmptyCollection"
-//        let ourl = sprintf "objects/%s/%s"  oType oid
-//        let purl = sprintf "%s/collections/%s" ourl pid
-//        let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//
-//        let refParm = new JObject( new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType oid)).ToString())) 
-//
-//        let parms =  new JObject (new JProperty(JsonPropertyNames.Value, refParm)) 
-//        
-//        let arg = CreateSingleValueArg parms
-//
-//        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//        let result = api.PostCollection(oType, oid, pid, arg)
-//        
-//        let jsonResult = readSnapshotToJson result
-//        
-//        Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
-//        Assert.AreEqual("199 RestfulObjects \"Always Disabled\"", result.Headers.Warning.ToString())
-//        Assert.AreEqual("", jsonResult)

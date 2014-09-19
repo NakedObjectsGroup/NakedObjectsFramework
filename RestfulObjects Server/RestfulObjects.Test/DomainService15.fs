@@ -8,18 +8,11 @@
 module DomainService15
 open NUnit.Framework
 open RestfulObjects.Mvc
-open NakedObjects.Surface
 open System.Net
-open System.Net.Http
 open System.Net.Http.Headers
-open System.IO
 open Newtonsoft.Json.Linq
-open System.Web
-open System
-open RestfulObjects.Snapshot.Utility 
 open RestfulObjects.Snapshot.Constants
 open System.Web.Http
-open System.Collections.Generic
 open System.Linq
 open RestTestFunctions
 
@@ -146,7 +139,7 @@ let GetServiceFormalOnly(api : RestfulObjectsControllerBase) =
         let parsedResult = JObject.Parse(jsonResult)
         let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 
-        let makeParm pmid pid fid rt = 
+        let makeParm pmid pid  = 
             let dburl = sprintf "domain-types/%s/actions/%s" sName pid
             let pmurl = sprintf "%s/params/%s" dburl pmid
 
@@ -154,7 +147,7 @@ let GetServiceFormalOnly(api : RestfulObjectsControllerBase) =
                                    TProperty(JsonPropertyNames.Extensions, TObjectJson([]))])
             TProperty(pmid, p)
 
-        let makeValueParm pmid pid fid rt = 
+        let makeValueParm pmid pid  = 
             let dburl = sprintf "domain-types/%s/actions/%s" sName pid
             let pmurl = sprintf "%s/params/%s" dburl pmid
 
@@ -162,12 +155,12 @@ let GetServiceFormalOnly(api : RestfulObjectsControllerBase) =
                                    TProperty(JsonPropertyNames.Extensions, TObjectJson([]))])
             TProperty(pmid, p)
 
-        let p1 = makeParm "withAction" "AzContributedAction" "With Action" (ttc "RestfulObjects.Test.Data.WithActionObject")
-        let p2 = makeParm "withAction" "AzContributedActionOnBaseClass" "With Action" (ttc "RestfulObjects.Test.Data.WithAction")
-        let p3 = makeParm "withAction" "AzContributedActionWithRefParm" "With Action" (ttc "RestfulObjects.Test.Data.WithActionObject")
-        let p4 = makeParm "withOtherAction" "AzContributedActionWithRefParm" "With Other Action" (ttc "RestfulObjects.Test.Data.WithActionObject")
-        let p5 = makeParm "withAction" "AzContributedActionWithValueParm" "With Action" (ttc "RestfulObjects.Test.Data.WithActionObject")
-        let p6 = makeValueParm "parm" "AzContributedActionWithValueParm" "Parm" (ttc "string")
+        let p1 = makeParm "withAction" "AzContributedAction" 
+        let p2 = makeParm "withAction" "AzContributedActionOnBaseClass" 
+        let p3 = makeParm "withAction" "AzContributedActionWithRefParm" 
+        let p4 = makeParm "withOtherAction" "AzContributedActionWithRefParm" 
+        let p5 = makeParm "withAction" "AzContributedActionWithValueParm" 
+        let p6 = makeValueParm "parm" "AzContributedActionWithValueParm" 
 
         let expected = [ TProperty(JsonPropertyNames.ServiceId, TObjectVal(sName));
                          TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository"));
@@ -210,7 +203,6 @@ let GetServiceSimpleOnly(api : RestfulObjectsControllerBase) =
 
         let makeParm pmid pid fid rt = 
             let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-            let pmurl = sprintf "%s/params/%s" dburl pmid
 
             let p = TObjectJson( [ TProperty(JsonPropertyNames.Links,  TArray( []));
                                    TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid));
@@ -221,7 +213,6 @@ let GetServiceSimpleOnly(api : RestfulObjectsControllerBase) =
 
         let makeValueParm pmid pid fid rt = 
             let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-            let pmurl = sprintf "%s/params/%s" dburl pmid
 
             let p = TObjectJson( [ TProperty(JsonPropertyNames.Links,  TArray([]));
                                    TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid));
@@ -266,7 +257,6 @@ let GetServiceSimpleOnly(api : RestfulObjectsControllerBase) =
         assertNonExpiringCache result 
         Assert.IsTrue(result.Headers.ETag =  null)
 
-        let ps = parsedResult.ToString()
 
         compareObject expected parsedResult
  
@@ -444,8 +434,6 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
             let dburl = sprintf "domain-types/%s/actions/%s" oType pid
             let pmurl = sprintf "%s/params/%s" dburl pmid
         
-            let defaultRel = RelValues.Default + mp RelParamValues.Action pid + mp RelParamValues.Param pmid
-            let obj1 =  TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp defaultRel (sprintf "objects/%s/%s" mst (ktc "1"))  RepresentationTypes.Object mst
 
             let p = TObjectJson( [ TProperty(JsonPropertyNames.Choices,  TArray( [TObjectVal("string1");TObjectVal("string2");TObjectVal("string3")]));                                   
                                    TProperty(JsonPropertyNames.Default, TArray([TObjectVal("string2"); TObjectVal("string3")]));
@@ -579,7 +567,7 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
                                                                                         TProperty(JsonPropertyNames.Optional, TObjectVal(true))]))])
             TProperty(pmid, p)
 
-        let makeDTParm pmid pid fid rt = 
+        let makeDTParm pmid pid  = 
             let dburl = sprintf "domain-types/%s/actions/%s" oType pid
             let pmurl = sprintf "%s/params/%s" dburl pmid
 
@@ -687,8 +675,6 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
         let p20 = makeIntParm "parm1" "AnActionWithValueParameter" "Parm1" (ttc "number")
         let p21 = makeIntParmWithChoices "parm3" "AnActionWithValueParameterWithChoices" "Parm3" (ttc "number")
         let p22 = makeIntParmWithDefault "parm5" "AnActionWithValueParameterWithDefault" "Parm5" (ttc "number")
-        let p23 = makeParm "withOtherAction" "AzContributedActionWithRefParm" "With Other Action" (ttc "RestfulObjects.Test.Data.WithActionObject")
-        let p24 = makeValueParm "parm" "AzContributedActionWithValueParm" "Parm" (ttc "string")
         let p25 = makeIntParm "parm1" "AnActionReturnsCollectionWithParameters" "Parm1" (ttc "number")
         let p26 = makeParm "parm2" "AnActionReturnsCollectionWithParameters" "Parm2" (ttc "RestfulObjects.Test.Data.MostSimple")
         let p27 = makeIntParmWithHint "parm1" "AnActionReturnsCollectionWithScalarParameters" "Parm1" (ttc "number")
@@ -703,7 +689,7 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
         let p36 = makeParm "parm2" "AnActionReturnsVoidWithParameters" "Parm2" (ttc "RestfulObjects.Test.Data.MostSimple")
         let p37 = makeIntParm "parm1" "AnActionValidateParameters" "Parm1" (ttc "number")
         let p38 = makeIntParm "parm2" "AnActionValidateParameters" "Parm2" (ttc "number")
-        let p39 = makeDTParm "parm" "AnActionWithDateTimeParm" "Parm" (ttc "datetime")
+        let p39 = makeDTParm "parm" "AnActionWithDateTimeParm" 
         let p40 = makeParmWithConditionalChoices "parm4" "AnActionWithReferenceParameterWithConditionalChoices" "Parm4" (ttc "RestfulObjects.Test.Data.MostSimple")
         let p41 = makeIntParmWithConditionalChoices "parm3" "AnActionWithValueParametersWithConditionalChoices" "Parm3" (ttc "number")
         let p42 = makeStringParmWithConditionalChoices "parm4" "AnActionWithValueParametersWithConditionalChoices" "Parm4" (ttc "string")
@@ -826,7 +812,7 @@ let NotAcceptableGetServiceWrongMediaType(api : RestfulObjectsControllerBase) =
             msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue ("profile", (makeProfile RepresentationTypes.ObjectCollection)))
 
             api.Request <- msg
-            let result = api.GetService(sName, args)
+            api.GetService(sName, args) |> ignore
             Assert.Fail("expect exception")
         with 
             | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)

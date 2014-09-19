@@ -8,18 +8,13 @@
 module ObjectProperty16
 open NUnit.Framework
 open RestfulObjects.Mvc
-open NakedObjects.Surface
 open System.Net
-open System.Net.Http
 open System.Net.Http.Headers
-open System.IO
 open Newtonsoft.Json.Linq
 open System.Web
 open System
-open RestfulObjects.Snapshot.Utility 
 open RestfulObjects.Snapshot.Constants
 open System.Web.Http
-open System.Collections.Generic
 open System.Linq
 open RestTestFunctions
 
@@ -144,7 +139,7 @@ let GetAttachmentValueWrongMediaType(api : RestfulObjectsControllerBase) =
      
        
         try 
-           let result = api.GetProperty(oType, oid, pid, args)
+           api.GetProperty(oType, oid, pid, args) |> ignore
            Assert.Fail("expect exception")
         with 
             | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
@@ -753,7 +748,6 @@ let InvokeAutoComplete(api : RestfulObjectsControllerBase) =
         let purl = sprintf "%s/properties/%s" ourl pid
         let prurl = sprintf "%s/properties/%s/prompt" ourl pid
         let acurl = purl + "/prompt"
-        let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 
         let parms =  new JObject (new JProperty(JsonPropertyNames.XRoSearchTerm, new JObject(new JProperty("value", "12"))));
 
@@ -765,7 +759,6 @@ let InvokeAutoComplete(api : RestfulObjectsControllerBase) =
         let parsedResult = JObject.Parse(jsonResult)
 
         let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-        let roid = roType + "/" + ktc "1"
 
         let choiceRel = RelValues.Choice + makeParm RelParamValues.Property "AnAutoCompleteReference"
    
@@ -780,7 +773,6 @@ let InvokeAutoComplete(api : RestfulObjectsControllerBase) =
                           TProperty(JsonPropertyNames.Extensions, TObjectJson([]))] 
 
 
-        let ds = parsedResult.ToString()
 
         Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
         Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
@@ -794,9 +786,7 @@ let InvokeAutoCompleteErrorNoParm(api : RestfulObjectsControllerBase) =
         let pid = "AnAutoCompleteReference"
         let ourl = sprintf "objects/%s/%s"  oType oid
         let purl = sprintf "%s/properties/%s" ourl pid
-        let prurl = sprintf "%s/properties/%s/prompt" ourl pid
         let acurl = purl + "/prompt"
-        let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 
         let parms =  new JObject ();
 
@@ -817,9 +807,7 @@ let InvokeAutoCompleteErrorMalformedParm(api : RestfulObjectsControllerBase) =
         let pid = "AnAutoCompleteReference"
         let ourl = sprintf "objects/%s/%s"  oType oid
         let purl = sprintf "%s/properties/%s" ourl pid
-        let prurl = sprintf "%s/properties/%s/prompt" ourl pid
         let acurl = purl + "/prompt"
-        let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 
         let parms =  new JObject (new JProperty("x-ro-search-term", "12"));
 
@@ -840,9 +828,7 @@ let InvokeAutoCompleteErrorUnrecognisedParm(api : RestfulObjectsControllerBase) 
         let pid = "AnAutoCompleteReference"
         let ourl = sprintf "objects/%s/%s"  oType oid
         let purl = sprintf "%s/properties/%s" ourl pid
-        let prurl = sprintf "%s/properties/%s/prompt" ourl pid
         let acurl = purl + "/prompt"
-        let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 
         let parms =  new JObject (new JProperty("x-ro-noSuchParm", new JObject(new JProperty("value", "12"))));
 
@@ -880,7 +866,6 @@ let InvokeConditionalChoicesReference(api : RestfulObjectsControllerBase) =
         let parsedResult = JObject.Parse(jsonResult)
 
         let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-        let roid = roType + "/" + ktc "1"
 
         let choiceRel = RelValues.Choice + makeParm RelParamValues.Property "AConditionalChoicesReference"
    
@@ -895,7 +880,6 @@ let InvokeConditionalChoicesReference(api : RestfulObjectsControllerBase) =
                           TProperty(JsonPropertyNames.Extensions, TObjectJson([]))] 
 
 
-        let ds = parsedResult.ToString()
 
         Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
         Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
@@ -909,9 +893,7 @@ let InvokeConditionalChoicesReferenceErrorMalformedParm(api : RestfulObjectsCont
         let pid = "AConditionalChoicesReference"
         let ourl = sprintf "objects/%s/%s"  oType oid
         let purl = sprintf "%s/properties/%s" ourl pid
-        let prurl = sprintf "%s/properties/%s/prompt" ourl pid
         let acurl = purl + "/prompt"
-        let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 
         let parms =  new JObject (new JProperty("areference",  new JObject(new JProperty("value", "12"))));
 
@@ -939,7 +921,6 @@ let InvokeConditionalChoicesReferenceErrorNoParm(api : RestfulObjectsControllerB
         let purl = sprintf "%s/properties/%s" ourl pid
         let prurl = sprintf "%s/properties/%s/prompt" ourl pid
         let acurl = purl + "/prompt"
-        let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 
         let parms =  new JObject ();
 
@@ -970,7 +951,6 @@ let InvokeConditionalChoicesReferenceErrorUnrecognisedParm(api : RestfulObjectsC
         let pid = "AConditionalChoicesReference"
         let ourl = sprintf "objects/%s/%s"  oType oid
         let purl = sprintf "%s/properties/%s" ourl pid
-        let prurl = sprintf "%s/properties/%s/prompt" ourl pid
         let acurl = purl + "/prompt"
         let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 
@@ -985,7 +965,6 @@ let InvokeConditionalChoicesReferenceErrorUnrecognisedParm(api : RestfulObjectsC
         let jsonResult = readSnapshotToJson result
         
         Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
-        //Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
         Assert.AreEqual("199 RestfulObjects \"Unrecognised conditional argument(s)\"", result.Headers.Warning.ToString())
         Assert.AreEqual("", jsonResult)
 
@@ -997,7 +976,6 @@ let InvokeConditionalChoicesValue(api : RestfulObjectsControllerBase) =
         let purl = sprintf "%s/properties/%s" ourl pid
         let prurl = sprintf "%s/properties/%s/prompt" ourl pid
         let acurl = purl + "/prompt"
-        let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 
         let parms =  new JObject (new JProperty("avalue",  new JObject(new JProperty("value", "100"))),
                                   new JProperty("astringvalue",  new JObject(new JProperty("value", "2"))));
@@ -1019,12 +997,10 @@ let InvokeConditionalChoicesValue(api : RestfulObjectsControllerBase) =
                           TProperty(JsonPropertyNames.Extensions, TObjectJson([]))] 
 
 
-        let ds = parsedResult.ToString()
 
         Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
         Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
         assertTransactionalCache  result 
-        //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
         compareObject expected parsedResult
 
 let InvokeConditionalChoicesValueErrorMalformedParm(api : RestfulObjectsControllerBase) = 
@@ -1033,9 +1009,7 @@ let InvokeConditionalChoicesValueErrorMalformedParm(api : RestfulObjectsControll
         let pid = "AConditionalChoicesValue"
         let ourl = sprintf "objects/%s/%s"  oType oid
         let purl = sprintf "%s/properties/%s" ourl pid
-        let prurl = sprintf "%s/properties/%s/prompt" ourl pid
         let acurl = purl + "/prompt"
-        let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 
     
         let parms =  new JObject (new JProperty("avalue",  new JObject(new JProperty("value", "fred"))),
@@ -1065,7 +1039,6 @@ let InvokeConditionalChoicesValueErrorMissingParm(api : RestfulObjectsController
         let purl = sprintf "%s/properties/%s" ourl pid
         let prurl = sprintf "%s/properties/%s/prompt" ourl pid
         let acurl = purl + "/prompt"
-        let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 
         let parms =  new JObject (new JProperty("avalue",  new JObject(new JProperty("value", 100))));
 
@@ -1086,12 +1059,10 @@ let InvokeConditionalChoicesValueErrorMissingParm(api : RestfulObjectsController
                           TProperty(JsonPropertyNames.Extensions, TObjectJson([]))] 
 
 
-        let ds = parsedResult.ToString()
 
         Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
         Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
         assertTransactionalCache  result 
-        //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
         compareObject expected parsedResult
 
 let GetReferencePropertyViewModel(api : RestfulObjectsControllerBase) = 
@@ -1317,18 +1288,11 @@ let GetErrorValueProperty(api : RestfulObjectsControllerBase) =
         RestfulObjects.Test.Data.WithGetError.ThrowErrors <- true
         let result = api.GetProperty(oType, oid, pid, args)
         RestfulObjects.Test.Data.WithGetError.ThrowErrors <- false
-        let jsonResult = readSnapshotToJson result
-        let parsedResult = JObject.Parse(jsonResult)
-      
-        let expected = [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"));
-                         TProperty(JsonPropertyNames.StackTrace, TArray([ TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithGetError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12"))]));
-                         TProperty(JsonPropertyNames.Links, TArray([]))
-                         TProperty(JsonPropertyNames.Extensions, TObjectJson([]))]
+       
 
         Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
         // for some resaon stack trace has different depth on my machine when not debugging (only) ! 
         Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
-        //compareObject expected  parsedResult
 
 // 500    
 let GetErrorReferenceProperty(api : RestfulObjectsControllerBase) = 
@@ -1345,18 +1309,12 @@ let GetErrorReferenceProperty(api : RestfulObjectsControllerBase) =
         let result = api.GetProperty(oType, oid, pid, args)
         RestfulObjects.Test.Data.WithGetError.ThrowErrors <- false
         let jsonResult = readSnapshotToJson result
-        let parsedResult = JObject.Parse(jsonResult)
       
-        let expected = [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"));
-                         TProperty(JsonPropertyNames.StackTrace, TArray([ TObjectVal( new errorType("   at RestfulObjects.Test.Data.WithGetError.AnError() in C:\Naked Objects Internal\REST\RestfulObjects.Test.Data\WithError.cs:line 12"))]));
-                         TProperty(JsonPropertyNames.Links, TArray([]))
-                         TProperty(JsonPropertyNames.Extensions, TObjectJson([]))]
-
+      
         Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
         // for some resaon stack trace has different depth on my machine when not debugging (only) ! 
         Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
-        //compareObject expected  parsedResult
-
+        
 let GetPropertyAsCollection(api : RestfulObjectsControllerBase) = 
         let oType = ttc "RestfulObjects.Test.Data.WithValue"
         let oid = ktc "1"
@@ -1717,7 +1675,6 @@ let PutNullValuePropertySuccess(api : RestfulObjectsControllerBase) =
 
         api.Request <- msg
         let result = api.PutProperty(oType, oid, pid, arg)
-        let arg = CreateSingleValueArg parms
       
         let jsonResult = readSnapshotToJson result
         let parsedResult = JObject.Parse(jsonResult)
@@ -2067,7 +2024,7 @@ let PutWithValuePropertyFailCrossValidation(api : RestfulObjectsControllerBase) 
         let arg = CreateSingleValueArg parm1
 
         api.Request <- msg
-        let sink = api.PutProperty(oType, oid, pid, arg)
+        api.PutProperty(oType, oid, pid, arg) |> ignore
         let pid = "AChoicesValue"
         let purl = sprintf "%s/properties/%s" ourl pid
 
@@ -2115,7 +2072,6 @@ let PutWithReferencePropertyInvalidArgsValue(api : RestfulObjectsControllerBase)
         let jsonResult = readSnapshotToJson result
         let parsedResult = JObject.Parse(jsonResult)
         
-        let valueRel = RelValues.Value + makeParm RelParamValues.Property pid
 
         let expected = [TProperty(JsonPropertyNames.Value, TObjectJson([TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s"  wvt (ktc "1") )))]));
                         TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error))]
@@ -2143,7 +2099,7 @@ let PutWithReferencePropertyFailCrossValidation(api : RestfulObjectsControllerBa
         let arg = CreateSingleValueArg parms
 
         api.Request <- msg
-        let sink = api.PutProperty(oType, oid, pid, arg)
+        api.PutProperty(oType, oid, pid, arg) |> ignore
 
         let pid = "AChoicesReference"
         let purl = sprintf "%s/properties/%s" ourl pid
@@ -2159,7 +2115,6 @@ let PutWithReferencePropertyFailCrossValidation(api : RestfulObjectsControllerBa
         let jsonResult = readSnapshotToJson result
         let parsedResult = JObject.Parse(jsonResult)
         
-        let valueRel = RelValues.Value + makeParm RelParamValues.Property pid
 
         let expected = [TProperty(JsonPropertyNames.Value, TObjectJson([TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" mst (ktc "2"))))]));
                         TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Cross validation failed"))]
@@ -2388,7 +2343,7 @@ let NotAcceptablePutPropertyWrongMediaType(api : RestfulObjectsControllerBase) =
 
         try 
            api.Request <- msg
-           let result = api.PutProperty(oType, oid, pid, arg)
+           api.PutProperty(oType, oid, pid, arg) |> ignore
            Assert.Fail("expect exception")
         with 
             | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
@@ -2478,7 +2433,7 @@ let PutWithValuePropertyFailCrossValidationValidateOnly(api : RestfulObjectsCont
         let arg = CreateSingleValueArg parm1
        
         api.Request <- msg
-        let sink = api.PutProperty(oType, oid, pid, arg)
+        api.PutProperty(oType, oid, pid, arg) |> ignore
 
         let pid = "AChoicesValue"
         let purl = sprintf "%s/properties/%s" ourl pid
@@ -2524,7 +2479,6 @@ let PutWithReferencePropertyInvalidArgsValueValidateOnly(api : RestfulObjectsCon
         let jsonResult = readSnapshotToJson result
         let parsedResult = JObject.Parse(jsonResult)
         
-        let valueRel = RelValues.Value + makeParm RelParamValues.Property pid
 
         let expected = [TProperty(JsonPropertyNames.Value, TObjectJson([TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" (ttc "RestfulObjects.Test.Data.WithValue") (ktc "1")  )))]));
                         TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error))]
@@ -2552,7 +2506,7 @@ let PutWithReferencePropertyFailCrossValidationValidateOnly(api : RestfulObjects
         let arg = CreateSingleValueArg parms
       
         api.Request <- msg
-        let sink = api.PutProperty(oType, oid, pid, arg)
+        api.PutProperty(oType, oid, pid, arg) |> ignore
 
         let pid = "AChoicesReference"
         let purl = sprintf "%s/properties/%s" ourl pid
@@ -2568,7 +2522,6 @@ let PutWithReferencePropertyFailCrossValidationValidateOnly(api : RestfulObjects
         let jsonResult = readSnapshotToJson result
         let parsedResult = JObject.Parse(jsonResult)
         
-        let valueRel = RelValues.Value + makeParm RelParamValues.Property pid
 
         let expected = [TProperty(JsonPropertyNames.Value, TObjectJson([TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" mst (ktc "2"))))]));
                         TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Cross validation failed"))]
@@ -2951,7 +2904,7 @@ let NotAcceptableDeletePropertyWrongMediaType(api : RestfulObjectsControllerBase
         try 
            let args = CreateReservedArgs ""
            api.Request <- msg
-           let result = api.DeleteProperty(oType, oid, pid, args)
+           api.DeleteProperty(oType, oid, pid, args) |> ignore
            Assert.Fail("expect exception")
         with 
             | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
@@ -3158,7 +3111,7 @@ let DeleteReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
         let arg = CreateSingleValueArg parms
 
         api.Request <- msg
-        let result = api.PutProperty(oType, oid, pid, arg)
+        api.PutProperty(oType, oid, pid, arg) |> ignore
 
         let msg = jsonDeleteMsg (sprintf "http://localhost/%s" purl) 
        
@@ -3188,7 +3141,7 @@ let VerifyNotAcceptableGetPropertyWrongMediaType refType oType oid f (api : Rest
             let msg = jsonGetMsg(sprintf "http://localhost/%s" purl)
             msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue ("profile", (makeProfile RepresentationTypes.ObjectCollection)))
             api.Request <- msg
-            let result = f(oType, ktc "1", pid, args)
+            f(oType, ktc "1", pid, args) |> ignore
             Assert.Fail("expect exception")
         with 
             | :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
@@ -3205,7 +3158,6 @@ let PropertyNotFound(api : RestfulObjectsControllerBase) =
         let oType = ttc "RestfulObjects.Test.Data.WithValue"
         let oid = ktc "1"
         let pid = "ADoesNotExistValue"
-        let ourl = sprintf "http://localhost/objects/%s/%s"  oType oid
         let purl = sprintf "http://localhost/objects/%s/properties/%s" oid pid
 
         let args = CreateReservedArgs ""
@@ -3222,7 +3174,6 @@ let PutValuePropertyConcurrencyFail(api : RestfulObjectsControllerBase) =
         let pid = "AValue"
         let ourl = sprintf "objects/%s/%s"  oType oid
         let purl = sprintf "%s/properties/%s" ourl pid
-        let url = sprintf "http://localhost/objects/%s/%s"  oType oid
 
         let parms =  new JObject (new JProperty(JsonPropertyNames.Value, 101)) 
 

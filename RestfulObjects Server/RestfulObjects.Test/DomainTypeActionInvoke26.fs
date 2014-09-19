@@ -8,18 +8,12 @@ module DomainTypeActionInvoke26
 
 open NUnit.Framework
 open RestfulObjects.Mvc
-open NakedObjects.Surface
 open System.Net
-open System.Net.Http
 open System.Net.Http.Headers
-open System.IO
 open Newtonsoft.Json.Linq
 open System.Web
-open System
-open RestfulObjects.Snapshot.Utility
 open RestfulObjects.Snapshot.Constants
 open System.Web.Http
-open System.Collections.Generic
 open System.Linq
 open RestTestFunctions
 
@@ -108,7 +102,6 @@ let GetIsSubTypeOfReturnFalseFormalParms(api : RestfulObjectsControllerBase) =
     let oourl = sprintf "http://localhost/domain-types/%s" ooType
     let parms = 
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
-    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
@@ -124,7 +117,6 @@ let GetIsSuperTypeOfReturnFalseFormalParms(api : RestfulObjectsControllerBase) =
     let oourl = sprintf "http://localhost/domain-types/%s" ooType
     let parms = 
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
-    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
@@ -140,7 +132,6 @@ let GetIsSubTypeOfReturnTrueFormalParms(api : RestfulObjectsControllerBase) =
     let oourl = sprintf "http://localhost/domain-types/%s" ooType
     let parms = 
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
-    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
@@ -156,7 +147,6 @@ let GetIsSuperTypeOfReturnTrueFormalParms(api : RestfulObjectsControllerBase) =
     let oourl = sprintf "http://localhost/domain-types/%s" ooType
     let parms = 
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
-    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
@@ -331,9 +321,7 @@ let NotFoundSubTypeIsSuperTypeOfFormalParms(api : RestfulObjectsControllerBase) 
 // not acceptable 
 let MissingParmsIsSubTypeOf(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
-    let ooType = ttc "RestfulObjects.Test.Data.WithAction"
     let oRel = "isSubtypeOf"
-    let ooRel = JsonPropertyNames.SuperType
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke" oType oRel
     let args = CreateArgMapFromUrl ""
     api.Request <- jsonGetMsg (url)
@@ -389,6 +377,6 @@ let NotAcceptableIsSubTypeOf(api : RestfulObjectsControllerBase) =
         msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue("profile", (makeProfile RepresentationTypes.ActionDescription)))
         api.Request <- msg
         let result = api.GetInvokeIsTypeOf(oType, oRel, args)
-        let jsonResult = readSnapshotToJson result
+        readSnapshotToJson result |> ignore
         Assert.Fail("expect exception")
     with :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
