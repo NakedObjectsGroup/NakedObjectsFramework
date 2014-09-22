@@ -621,7 +621,7 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                                                                            TProperty("Int",       TObjectJson(makePropertyMemberWithNumber "objects" "Int" oid "Int" "" "integer" false (TObjectVal(8) ))); 
                                                                            TProperty("List",      TObjectJson(makeCollectionMember "List" oid "List" "" "list" 0)) ;
                                                                            TProperty("Long",      TObjectJson(makePropertyMemberWithNumber "objects" "Long" oid "Long" "" "integer" false (TObjectVal(9) )));
-                                                                           TProperty("SByte",     TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oid "S Byte" "" "integer" false (TObjectVal(0) ))); 
+                                                                           TProperty("SByte",     TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oid "S Byte" "" "integer" false (TObjectVal(10) ))); 
                                                                            //TProperty("SByteArray",TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "SByteArray" oid "S Byte Array" "" "blob"  false)) ;
                                                                            TProperty("Set",       TObjectJson(makeCollectionMember "Set" oid "Set" "" "set" 0)) ;
                                                                            TProperty("Short",     TObjectJson(makePropertyMemberWithNumber "objects" "Short" oid "Short" "" "integer" false (TObjectVal(12) ))); 
