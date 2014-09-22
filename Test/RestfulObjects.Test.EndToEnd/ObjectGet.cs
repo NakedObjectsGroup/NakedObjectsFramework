@@ -83,6 +83,13 @@ namespace RestfulObjects.Test.EndToEnd {
 
 
         [TestMethod]
+        public void WithAttachments() {
+            Object(Urls.WithAttachments1, "WithAttachments");
+        }
+
+
+
+        [TestMethod]
         public void AttemptGetNonExistentInstance() {
             Object(Urls.NameSpace + @"MostSimple/999", null, null, Methods.Get, Codes.NotFound);
         }

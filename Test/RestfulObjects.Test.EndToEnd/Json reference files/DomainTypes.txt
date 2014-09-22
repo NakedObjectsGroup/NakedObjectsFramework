@@ -157,18 +157,6 @@
       "rel": "urn:org.restfulobjects:rels/domain-type",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithError"
-    },
-    {
-      "rel": "urn:org.restfulobjects:rels/domain-type",
-      "method": "GET",
-      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithGetError"
-    },
-    {
-      "rel": "urn:org.restfulobjects:rels/domain-type",
-      "method": "GET",
-      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
       "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithReference"
     },
     {

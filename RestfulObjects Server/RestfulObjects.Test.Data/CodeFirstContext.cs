@@ -49,6 +49,9 @@ namespace RestfulObjects.Test.Data {
             var wv1 = new WithValue {Id = 1, AValue = 100, ADisabledValue = 200, AStringValue = ""};
             context.WithValues.Add(wv1);
 
+            var wv2 = new WithValue { Id = 2, AValue = 100, ADisabledValue = 200, AStringValue = "" };
+            context.WithValues.Add(wv2);
+
             var ws1 = new WithScalars {
                 Id = 1,
                 Bool = true,

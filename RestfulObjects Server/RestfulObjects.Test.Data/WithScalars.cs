@@ -21,6 +21,7 @@ namespace RestfulObjects.Test.Data {
     public class WithScalars {
 
         public WithScalars() {
+            SByte = 10;
             UInt = 14;
             ULong = 15;
             UShort = 16;

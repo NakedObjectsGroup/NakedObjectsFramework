@@ -232,6 +232,7 @@
     <Content Include="Json reference files\Object-Get-MostSimple.txt" />
     <Content Include="Json reference files\Object-Get-VerySimpleEager.txt" />
     <Content Include="Json reference files\Object-Get-WithAction.txt" />
+    <Content Include="Json reference files\Object-Get-WithAttachments.txt" />
     <Content Include="Json reference files\Object-Get-WithCollection.txt" />
     <Content Include="Json reference files\Object-Get-WithFormalDomainModel.txt" />
     <Content Include="Json reference files\Object-Get-WithReference.txt" />

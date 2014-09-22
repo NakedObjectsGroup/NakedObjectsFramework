@@ -7,10 +7,15 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
     public class VerySimple {
+
+        private ICollection<MostSimple> aSetAsCollection = new List<MostSimple>();
+
+
         [Key, Hidden, ConcurrencyCheck]
         public virtual int Id { get; set; }
 
@@ -35,17 +40,22 @@ namespace RestfulObjects.Test.Data {
 
         #endregion
 
+        [Hidden]
+        public virtual ICollection<MostSimple> ASetAsCollection {
+            get { return aSetAsCollection; }
+            set { aSetAsCollection = value; }
+        }
+
         #region SimpleSet (collection)
 
-        private ICollection<MostSimple> simpleSet = new HashSet<MostSimple>();
-
-        public virtual ICollection<MostSimple> SimpleSet {
-            get { return simpleSet; }
-            set { simpleSet = value; }
+        [NotMapped]
+        public virtual ISet<MostSimple> SimpleSet {
+            get { return new SetWrapper<MostSimple>(ASetAsCollection); }
+            set { ASetAsCollection = value; }
         }
 
         public void EmptyTheSet() {
-            simpleSet.Clear();
+            SimpleSet.Clear();
         }
 
         #endregion

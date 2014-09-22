@@ -36,6 +36,7 @@ namespace RestfulObjects.Test.EndToEnd {
         public const string VerySimple2 = NameSpace + @"VerySimple/2";
         public const string WithActionService = NameSpace + @"WithActionService";
         public const string WithActionObject1 = NameSpace + @"WithActionObject/1";
+        public const string WithAttachments1 = NameSpace + @"WithAttachments/1";
         //ViewModels
         public const string VMMostSimple = NameSpace + @"MostSimpleViewModel/";
         public const string VMWithValue = NameSpace + @"WithValueViewModel/";

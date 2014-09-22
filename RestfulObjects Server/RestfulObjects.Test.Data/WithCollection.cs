@@ -80,7 +80,7 @@ namespace RestfulObjects.Test.Data {
         }
 
         public void Clear() {
-            throw new System.NotImplementedException();
+           wrapped.Clear();
         }
 
         public bool Contains(T item) {
