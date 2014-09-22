@@ -133,6 +133,7 @@
     <Compile Include="objectstore\ObjectStorePersistor.cs" />
     <Compile Include="objectstore\ObjectStoreTransaction.cs" />
     <Compile Include="objectstore\ObjectStoreTransactionManager.cs" />
+    <Compile Include="objectstore\ServicesConfiguration.cs" />
     <Compile Include="persist\AbstractObjectPersistorInstaller.cs" />
     <Compile Include="persist\DefaultPersistAlgorithm.cs" />
     <Compile Include="persist\IPersistAlgorithm.cs" />
