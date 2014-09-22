@@ -7,57 +7,56 @@ using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Data.Entity;
 
 namespace NakedObjects.SystemTest.Repositories {
 
 
-    [TestClass, Ignore]
-    public class TestSimpleRepository : AbstractSystemTest {
-        #region Setup/Teardown
+    [TestClass]
+    public class TestSimpleRepository : AbstractSystemTest2<SimpleRepositoryDbContext> {
+                #region Setup/Teardown
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc)
+        {
+            InitializeNakedObjectsFramework(new TestSimpleRepository());
+        }
+
+        [ClassCleanup]
+        public static void ClassCleanup()
+        {
+            CleanupNakedObjectsFramework(new TestSimpleRepository());
+            Database.Delete(SimpleRepositoryDbContext.DatabaseName);
+        }
+
+        private Customer cust1;
+        private Customer cust2;
 
         [TestInitialize()]
-        public void SetUp() {
-            InitializeNakedObjectsFramework(this);
+        public void TestInitialize()
+        {
+            StartTest();
             ITestObject cust1To = NewTestObject<Customer>();
-            cust1 = (Customer) cust1To.GetDomainObject();
+            cust1 = (Customer)cust1To.GetDomainObject();
             cust1.Id = 1;
             cust1To.Save();
 
             ITestObject cust2To = NewTestObject<Customer>();
-            cust2 = (Customer) cust2To.GetDomainObject();
+            cust2 = (Customer)cust2To.GetDomainObject();
             cust2.Id = 2;
             cust2To.Save();
-
-            ITestObject sup1To = NewTestObject<Supplier>();
-            sup1 = (Supplier) sup1To.GetDomainObject();
-            sup1.Id = 1;
-            sup1To.Save();
-
         }
 
         [TestCleanup()]
-        public void TearDown() {
-            CleanupNakedObjectsFramework(this);
-            cust1 = null;
-            cust2 = null;
-            sup1 = null;
+        public void TestCleanup()
+        {
         }
 
         #endregion
 
-
-
-
-        private Customer cust1;
-        private Customer cust2;
-        private Supplier sup1;
-
-
         protected override IServicesInstaller MenuServices {
             get {
                 return new ServicesInstaller(new object[] {
-                           new SimpleRepository<Customer>(),
-                           new SimpleRepository<Supplier>(),
+                           new SimpleRepository<Customer>()
                 });
             }
         }
@@ -74,40 +73,27 @@ namespace NakedObjects.SystemTest.Repositories {
         [TestMethod]
         public void KeyValueDoesNotExist() {
             var find = GetTestService("Customers").GetAction("Find By Key");
-            var result = find.InvokeReturnObject(5);
+            var result = find.InvokeReturnObject(1000);
             Assert.IsNull(result);
         }
-
-        [TestMethod]
-        public void TestKeyNotSpecified() {
-            var find = GetTestService("Suppliers").GetAction("Find By Key");
-            try
-            {
-                var result = find.InvokeReturnObject(1);
-                Assert.Fail();
-            }
-            catch (NakedObjectDomainException e)
-            {
-                Assert.AreEqual("Cannot find key for NakedObjects.SystemTest.Repositories.Supplier", e.Message);
-            }
-        }
-
     }
 
     #region Classes used in tests
-    public interface IPayee { }
 
-    public class Customer : IPayee
+    public class SimpleRepositoryDbContext : DbContext
     {
-        [System.ComponentModel.DataAnnotations.Key]
-        public int Id { get; set; }
+        public const string DatabaseName = "TestSimpleRepository";
+        public SimpleRepositoryDbContext() : base(DatabaseName) { }
+
+        public DbSet<Customer> Customer { get; set; }
+    }
+
+    public class Customer 
+    {
+        public virtual int Id { get; set; }
 
     }
 
-    public class Supplier : IPayee
-    {
-        public int Id { get; set; }
-    }
 
     #endregion
 }
