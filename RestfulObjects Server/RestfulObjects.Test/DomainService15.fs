@@ -1182,3 +1182,4 @@ let NotAcceptableGetServiceWrongMediaType(api : RestfulObjectsControllerBase) =
         api.GetService(sName, args) |> ignore
         Assert.Fail("expect exception")
     with :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
+

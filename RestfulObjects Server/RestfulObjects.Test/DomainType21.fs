@@ -40,7 +40,6 @@ let GetMostSimpleObjectType(api : RestfulObjectsControllerBase) =
               (JsonPropertyNames.Links, 
                TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "domain-types/%s" oType) RepresentationTypes.DomainType "") ]))
           
-          
           TProperty
               (JsonPropertyNames.Members, 
                
@@ -93,7 +92,6 @@ let GetWithActionObjectType(api : RestfulObjectsControllerBase) =
           TProperty
               (JsonPropertyNames.Links, 
                TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "domain-types/%s" oType) RepresentationTypes.DomainType "") ]))
-          
           
           TProperty
               (JsonPropertyNames.Members, 
@@ -386,7 +384,6 @@ let GetWithActionServiceType(api : RestfulObjectsControllerBase) =
               (JsonPropertyNames.Links, 
                TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "domain-types/%s" oType) RepresentationTypes.DomainType "") ]))
           
-          
           TProperty
               (JsonPropertyNames.Members, 
                
@@ -659,7 +656,6 @@ let GetWithReferenceObjectType(api : RestfulObjectsControllerBase) =
               (JsonPropertyNames.Links, 
                TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "domain-types/%s" oType) RepresentationTypes.DomainType "") ]))
           
-          
           TProperty
               (JsonPropertyNames.Members, 
                
@@ -744,7 +740,6 @@ let GetWithValueObjectType(api : RestfulObjectsControllerBase) =
           TProperty
               (JsonPropertyNames.Links, 
                TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "domain-types/%s" oType) RepresentationTypes.DomainType "") ]))
-          
           
           TProperty
               (JsonPropertyNames.Members, 
@@ -834,7 +829,6 @@ let GetWithCollectionObjectType(api : RestfulObjectsControllerBase) =
           TProperty
               (JsonPropertyNames.Links, 
                TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "domain-types/%s" oType) RepresentationTypes.DomainType "") ]))
-          
           
           TProperty
               (JsonPropertyNames.Members, 

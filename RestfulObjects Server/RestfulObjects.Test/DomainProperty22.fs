@@ -171,4 +171,3 @@ let NotAcceptableGetValuePropertyType(api : RestfulObjectsControllerBase) =
         api.GetPropertyType(oType, pid, args) |> ignore
         Assert.Fail("expect exception")
     with :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
-
