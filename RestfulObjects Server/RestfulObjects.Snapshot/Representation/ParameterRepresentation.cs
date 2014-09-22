@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -107,17 +110,17 @@ namespace RestfulObjects.Snapshot.Representations {
 
             if (Flags.SimpleDomainModel) {
                 Extensions = RestUtils.GetExtensions(friendlyname: parameter.Name(),
-                                                     description: parameter.Description(),
-                                                     pluralName: null,
-                                                     domainType: null,
-                                                     isService: null,
-                                                     hasParams: null,
-                                                     optional: !parameter.IsMandatory(),
-                                                     maxLength: parameter.MaxLength(),
-                                                     pattern: parameter.Pattern(),
-                                                     memberOrder: null,
-                                                     customExtensions: custom,
-                                                     returnType: parameter.Specification);
+                    description: parameter.Description(),
+                    pluralName: null,
+                    domainType: null,
+                    isService: null,
+                    hasParams: null,
+                    optional: !parameter.IsMandatory(),
+                    maxLength: parameter.MaxLength(),
+                    pattern: parameter.Pattern(),
+                    memberOrder: null,
+                    customExtensions: custom,
+                    returnType: parameter.Specification);
             }
             else {
                 Extensions = MapRepresentation.Create();
@@ -134,16 +137,16 @@ namespace RestfulObjects.Snapshot.Representations {
             return LinkRepresentation.Create(new DefaultRelType(parameter, new UriMtHelper(req, defaultNakedObject)), flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
-        private static object CreateDefaultLinks(HttpRequestMessage req, INakedObjectActionParameterSurface parameter, INakedObjectSurface defaultNakedObject, string title, RestControlFlags flags)  {
+        private static object CreateDefaultLinks(HttpRequestMessage req, INakedObjectActionParameterSurface parameter, INakedObjectSurface defaultNakedObject, string title, RestControlFlags flags) {
             if (defaultNakedObject.Specification.IsCollection()) {
-                return  defaultNakedObject.ToEnumerable().Select(i => CreateDefaultLink(req, parameter, i, i.TitleString(), flags)).ToArray();
+                return defaultNakedObject.ToEnumerable().Select(i => CreateDefaultLink(req, parameter, i, i.TitleString(), flags)).ToArray();
             }
             return CreateDefaultLink(req, parameter, defaultNakedObject, title, flags);
         }
 
         public static ParameterRepresentation Create(HttpRequestMessage req, INakedObjectSurface nakedObject, INakedObjectActionParameterSurface parameter, RestControlFlags flags) {
             var optionals = new List<OptionalProperty>();
-            
+
             if (parameter.IsChoicesEnabled && !parameter.GetChoicesParameters().Any()) {
                 INakedObjectSurface[] choices = parameter.GetChoices(nakedObject, null);
                 object[] choicesArray = choices.Select(c => RestUtils.GetChoiceValue(req, c, parameter, flags)).ToArray();
@@ -161,7 +164,7 @@ namespace RestfulObjects.Snapshot.Representations {
                     optionals.Add(new OptionalProperty(JsonPropertyNames.Default, defaultValue));
                 }
             }
-                 
+
             if (optionals.Count == 0) {
                 return new ParameterRepresentation(req, nakedObject, parameter, flags);
             }

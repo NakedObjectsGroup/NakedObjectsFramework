@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -98,7 +101,7 @@ namespace RestfulObjects.Snapshot.Utility {
                 }
                 else {
                     representation = RequestingAttachment() ? AttachmentRepresentation.Create(req, propertyContext, flags) :
-                                         MemberAbstractRepresentation.Create(req, propertyContext, flags);
+                        MemberAbstractRepresentation.Create(req, propertyContext, flags);
                 }
                 SetHeaders();
             };
@@ -240,10 +243,8 @@ namespace RestfulObjects.Snapshot.Utility {
 
         public EntityTagHeaderValue Etag { get; set; }
 
-      
 
         public HttpResponseMessage ConfigureMsg(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
-         
             HttpResponseMessage msg = Representation.GetAsMessage(formatter, cacheSettings);
 
             foreach (WarningHeaderValue w in WarningHeaders) {
@@ -381,7 +382,7 @@ namespace RestfulObjects.Snapshot.Utility {
                     representation = ArgumentsRepresentation.Create(req, contextNosException.Contexts, format, flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments));
                 }
                 else {
-                    representation = NullRepresentation.Create(); 
+                    representation = NullRepresentation.Create();
                 }
             }
             else if (e is ResourceNotFoundNOSException ||
@@ -389,7 +390,7 @@ namespace RestfulObjects.Snapshot.Utility {
                      e is PreconditionFailedNOSException ||
                      e is PreconditionHeaderMissingNOSException ||
                      e is NoContentNOSException) {
-                representation = NullRepresentation.Create(); 
+                representation = NullRepresentation.Create();
             }
             else {
                 representation = ErrorRepresentation.Create(e);

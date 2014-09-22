@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections;
@@ -36,17 +39,17 @@ namespace RestfulObjects.Snapshot.Utility {
         };
 
         public static MapRepresentation GetExtensions(string friendlyname,
-                                                      string description,
-                                                      string pluralName,
-                                                      string domainType,
-                                                      bool? isService,
-                                                      bool? hasParams,
-                                                      bool? optional,
-                                                      int? maxLength,
-                                                      string pattern,
-                                                      int? memberOrder,
-                                                      IDictionary<string, object> customExtensions,
-                                                      INakedObjectSpecificationSurface returnType) {
+            string description,
+            string pluralName,
+            string domainType,
+            bool? isService,
+            bool? hasParams,
+            bool? optional,
+            int? maxLength,
+            string pattern,
+            int? memberOrder,
+            IDictionary<string, object> customExtensions,
+            INakedObjectSpecificationSurface returnType) {
             var exts = new Dictionary<string, object> {
                 {JsonPropertyNames.FriendlyName, friendlyname},
                 {JsonPropertyNames.Description, description}
@@ -110,7 +113,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return MapRepresentation.Create(parms);
         }
 
-        
+
         public static void AddChoices(HttpRequestMessage req, PropertyContextSurface propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             if (propertyContext.Property.IsChoicesEnabled && !propertyContext.Property.GetChoicesParameters().Any()) {
                 INakedObjectSurface[] choices = propertyContext.Property.GetChoices(propertyContext.Target, null);
@@ -270,8 +273,8 @@ namespace RestfulObjects.Snapshot.Utility {
                 tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(req, pnt.Item2)), flags));
             }
 
-            return new OptionalProperty(pnt.Item1, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)),
-                                                                            new OptionalProperty(JsonPropertyNames.Links, tempLinks.ToArray())));
+            return new OptionalProperty(pnt.Item1, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)),
+                new OptionalProperty(JsonPropertyNames.Links, tempLinks.ToArray())));
         }
     }
 }

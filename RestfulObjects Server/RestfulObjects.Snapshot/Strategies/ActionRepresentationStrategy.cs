@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -89,21 +92,21 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         private LinkRepresentation CreateActionParamLink(ParameterContextSurface p) {
             return LinkRepresentation.Create(new ParamTypeRelType(new UriMtHelper(req,
-                                                                                  new ParameterTypeContextSurface {
-                                                                                      Action = actionContext.Action,
-                                                                                      OwningSpecification = actionContext.Target.Specification,
-                                                                                      Parameter = p.Parameter
-                                                                                  })), Flags,
-                                             new OptionalProperty(JsonPropertyNames.Id, p.Id));
+                new ParameterTypeContextSurface {
+                    Action = actionContext.Action,
+                    OwningSpecification = actionContext.Target.Specification,
+                    Parameter = p.Parameter
+                })), Flags,
+                new OptionalProperty(JsonPropertyNames.Id, p.Id));
         }
 
         private LinkRepresentation CreateDescribedByLink() {
             return LinkRepresentation.Create(new TypeMemberRelType(RelValues.DescribedBy,
-                                                                   new UriMtHelper(req,
-                                                                                   new ActionTypeContextSurface {
-                                                                                       ActionContext = actionContext,
-                                                                                       OwningSpecification = actionContext.Target.Specification
-                                                                                   })), Flags);
+                new UriMtHelper(req,
+                    new ActionTypeContextSurface {
+                        ActionContext = actionContext,
+                        OwningSpecification = actionContext.Target.Specification
+                    })), Flags);
         }
 
         private LinkRepresentation CreateElementTypeLink() {
@@ -126,17 +129,17 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         protected override MapRepresentation GetExtensionsForSimple() {
             return RestUtils.GetExtensions(friendlyname: actionContext.Action.Name(),
-                                           description: actionContext.Action.Description(),
-                                           pluralName: null,
-                                           domainType: null,
-                                           isService: null,
-                                           hasParams: actionContext.VisibleParameters.Any(),
-                                           optional: null,
-                                           maxLength: null,
-                                           pattern: null,
-                                           memberOrder: actionContext.Action.MemberOrder(),
-                                           customExtensions: actionContext.Action.ExtensionData(),
-                                           returnType: actionContext.Action.ReturnType);
+                description: actionContext.Action.Description(),
+                pluralName: null,
+                domainType: null,
+                isService: null,
+                hasParams: actionContext.VisibleParameters.Any(),
+                optional: null,
+                maxLength: null,
+                pattern: null,
+                memberOrder: actionContext.Action.MemberOrder(),
+                customExtensions: actionContext.Action.ExtensionData(),
+                returnType: actionContext.Action.ReturnType);
         }
 
         private LinkRepresentation CreateActionLink() {
@@ -144,7 +147,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
             RelMethod method = GetRelMethod();
             return LinkRepresentation.Create(new InvokeRelType(new UriMtHelper(req, actionContext)) {Method = method}, Flags,
-                                             new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(optionalProperties.ToArray())));
+                new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(optionalProperties.ToArray())));
         }
 
         private RelMethod GetRelMethod() {

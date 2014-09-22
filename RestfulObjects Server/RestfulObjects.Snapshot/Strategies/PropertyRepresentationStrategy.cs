@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -25,7 +28,6 @@ namespace RestfulObjects.Snapshot.Strategies {
             }
         }
 
-        
 
         private LinkRepresentation CreatePromptLink() {
             var opts = new List<OptionalProperty>();
@@ -63,7 +65,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         private LinkRepresentation CreateModifyLink() {
             return LinkRepresentation.Create(new MemberRelType(RelValues.Modify, new UriMtHelper(req, propertyContext)) {Method = RelMethod.Put}, Flags,
-                                             new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)))));
+                new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)))));
         }
 
 
@@ -106,22 +108,22 @@ namespace RestfulObjects.Snapshot.Strategies {
         private bool IsUnconditionalChoices() {
             return propertyContext.Property.IsChoicesEnabled &&
                    (propertyContext.Property.Specification.IsParseable() || (propertyContext.Property.Specification.IsCollection() && propertyContext.Property.Specification.ElementType.IsParseable())) &&
-                  !propertyContext.Property.GetChoicesParameters().Any();
+                   !propertyContext.Property.GetChoicesParameters().Any();
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {
             return RestUtils.GetExtensions(friendlyname: propertyContext.Property.Name(),
-                                           description: propertyContext.Property.Description(),
-                                           pluralName: null,
-                                           domainType: null,
-                                           isService: null,
-                                           hasParams: null,
-                                           optional: !propertyContext.Property.IsMandatory(),
-                                           maxLength: propertyContext.Property.MaxLength(),
-                                           pattern: propertyContext.Property.Pattern(),
-                                           memberOrder: propertyContext.Property.MemberOrder(),
-                                           customExtensions: GetCustomPropertyExtensions(),
-                                           returnType: propertyContext.Specification);
+                description: propertyContext.Property.Description(),
+                pluralName: null,
+                domainType: null,
+                isService: null,
+                hasParams: null,
+                optional: !propertyContext.Property.IsMandatory(),
+                maxLength: propertyContext.Property.MaxLength(),
+                pattern: propertyContext.Property.Pattern(),
+                memberOrder: propertyContext.Property.MemberOrder(),
+                customExtensions: GetCustomPropertyExtensions(),
+                returnType: propertyContext.Specification);
         }
 
         public bool GetHasChoices() {

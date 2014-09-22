@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -79,11 +82,11 @@ namespace RestfulObjects.Snapshot.Representations {
         private void SetTypeActions(INakedObjectSpecificationSurface spec, HttpRequestMessage req) {
             TypeActions = new[] {
                 LinkRepresentation.Create(new TypeActionRelType(new UriMtHelper(req, spec), WellKnownIds.IsSubtypeOf), Flags,
-                                          new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSubtypeOf),
-                                          new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object))))))),
+                    new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSubtypeOf),
+                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object))))))),
                 LinkRepresentation.Create(new TypeActionRelType(new UriMtHelper(req, spec), WellKnownIds.IsSupertypeOf), Flags,
-                                          new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSupertypeOf),
-                                          new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object)))))))
+                    new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSupertypeOf),
+                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object)))))))
             };
         }
 
