@@ -10,28 +10,37 @@ using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Services;
 using NakedObjects.Xat;
+using System.Data.Entity;
 
 namespace NakedObjects.SystemTest.XATs {
-    namespace FailureScenarios {
         /// <summary>
         ///     Tests various functions of the XATs themselves
         /// </summary>
-        [TestClass, Ignore]
-        public class TestDefaultValueAttribute : AbstractSystemTest {
+        [TestClass]
+        public class TestFailureScenarios : AbstractSystemTest2<XatDbContext> {
             #region Setup/Teardown
-
-            [TestInitialize]
-            public void SetupTest() {
-                InitializeNakedObjectsFramework(this);
-                
-                obj1 = NewTestObject<Object1>();
+            [ClassInitialize]
+            public static void ClassInitialize(TestContext tc)
+            {
+                InitializeNakedObjectsFramework(new TestFailureScenarios());
             }
 
-            [TestCleanup]
-            public void TearDownTest() {
-                CleanupNakedObjectsFramework(this);
-                
-                obj1 = null;
+            [ClassCleanup]
+            public static void ClassCleanup()
+            {
+                CleanupNakedObjectsFramework(new TestFailureScenarios());
+                Database.Delete(XatDbContext.DatabaseName);
+            }
+
+            [TestInitialize()]
+            public void TestInitialize()
+            {
+                StartTest();
+            }
+
+            [TestCleanup()]
+            public void TestCleanup()
+            {
             }
 
             #endregion
@@ -40,12 +49,6 @@ namespace NakedObjects.SystemTest.XATs {
                 Value1,
                 Value2
             };
-
-            private ITestObject obj1;
-
-            protected override IFixturesInstaller Fixtures {
-                get { return new FixturesInstaller(new object[] {}); }
-            }
 
             protected override IServicesInstaller MenuServices {
                 get { return new ServicesInstaller(new object[] {new SimpleRepository<Object1>()}); }
@@ -198,7 +201,13 @@ namespace NakedObjects.SystemTest.XATs {
                 }
             }
         }
-    }
-}
 
-//end of root namespace
+#region Classes used by tests
+        public class XatDbContext : DbContext
+    {
+        public const string DatabaseName = "TestXats";
+        public XatDbContext() : base(DatabaseName) { }
+
+    }
+#endregion
+}
