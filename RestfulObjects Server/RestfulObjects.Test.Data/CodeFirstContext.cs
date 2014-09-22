@@ -49,7 +49,7 @@ namespace RestfulObjects.Test.Data {
             var wv1 = new WithValue {Id = 1, AValue = 100, ADisabledValue = 200, AStringValue = ""};
             context.WithValues.Add(wv1);
 
-            var wv2 = new WithValue { Id = 2, AValue = 100, ADisabledValue = 200, AStringValue = "" };
+            var wv2 = new WithValue {Id = 2, AValue = 100, ADisabledValue = 200, AStringValue = ""};
             context.WithValues.Add(wv2);
 
             var ws1 = new WithScalars {
@@ -114,7 +114,7 @@ namespace RestfulObjects.Test.Data {
             var vs1 = new VerySimple {Id = 1};
             context.VerySimples.Add(vs1);
 
-            var vs2 = new VerySimple { Id = 2 };
+            var vs2 = new VerySimple {Id = 2};
             context.VerySimples.Add(vs2);
 
             var vse1 = new VerySimpleEager {Id = 1};

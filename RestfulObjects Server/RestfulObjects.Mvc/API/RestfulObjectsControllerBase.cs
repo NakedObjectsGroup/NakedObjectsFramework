@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -24,7 +27,6 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Mvc {
     [ServiceContract]
     public class RestfulObjectsControllerBase : ApiController {
-       
         #region static and routes
 
         private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
@@ -62,11 +64,10 @@ namespace RestfulObjects.Mvc {
         protected INakedObjectsSurface Surface { get; set; }
 
         private static string PrefixRoute(string segment, string prefix) {
-            return string.IsNullOrWhiteSpace(prefix) ? segment : prefix + "/" + segment; 
+            return string.IsNullOrWhiteSpace(prefix) ? segment : prefix + "/" + segment;
         }
 
         public static void AddRestRoutes(RouteCollection routes, string routePrefix = "") {
-
             if (!string.IsNullOrWhiteSpace(routePrefix)) {
                 UriMtHelper.GetApplicationPath = () => {
                     var appPath = HttpContext.Current.Request.ApplicationPath ?? "";
@@ -198,15 +199,15 @@ namespace RestfulObjects.Mvc {
             routes.MapHttpRoute(
                 name: "DeleteCollection",
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
-                defaults: new { controller = "RestfulObjects", action = "DeleteCollection" },
-                constraints: new { httpMethod = new HttpMethodConstraint("DELETE") }
+                defaults: new {controller = "RestfulObjects", action = "DeleteCollection"},
+                constraints: new {httpMethod = new HttpMethodConstraint("DELETE")}
                 );
 
             routes.MapHttpRoute(
                 name: "PostCollection",
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
-                defaults: new { controller = "RestfulObjects", action = "PostCollection" },
-                constraints: new { httpMethod = new HttpMethodConstraint("POST") }
+                defaults: new {controller = "RestfulObjects", action = "PostCollection"},
+                constraints: new {httpMethod = new HttpMethodConstraint("POST")}
                 );
 
             routes.MapHttpRoute(
@@ -650,15 +651,11 @@ namespace RestfulObjects.Mvc {
         }
 
         public virtual HttpResponseMessage PostCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
-            return InitAndHandleErrors(() => {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
-            });
+            return InitAndHandleErrors(() => { throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden)); });
         }
 
         public virtual HttpResponseMessage DeleteCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
-            return InitAndHandleErrors(() => {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden));
-            });
+            return InitAndHandleErrors(() => { throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden)); });
         }
 
         public virtual HttpResponseMessage GetInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
@@ -994,7 +991,7 @@ namespace RestfulObjects.Mvc {
             return new Tuple<ArgumentsContext, RestControlFlags>(new ArgumentsContext {
                 Digest = ignoreConcurrency ? null : GetIfMatchTag(),
                 Values = valuesAndFlags.Item1,
-                ValidateOnly = valuesAndFlags.Item2.ValidateOnly, 
+                ValidateOnly = valuesAndFlags.Item2.ValidateOnly,
                 SearchTerm = arguments.SearchTerm
             }, valuesAndFlags.Item2);
         }

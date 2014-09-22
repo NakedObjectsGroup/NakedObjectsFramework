@@ -4,7 +4,6 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-
 module NakedObjects.Rest.Test.Nof4DomainType
 
 open NUnit.Framework
@@ -34,7 +33,6 @@ type Nof4TestsDomainType() =
             let config = new EntityObjectStoreConfiguration()
             let f = (fun () -> new CodeFirstContext("RestTest") :> Data.Entity.DbContext)
             config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
-            
             container.RegisterInstance(typeof<EntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
             container.RegisterType(typeof<IOidStrategy>, typeof<ExternalOid>, null, (new PerResolveLifetimeManager())) |> ignore
             container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new PerResolveLifetimeManager())) |> ignore
@@ -55,7 +53,6 @@ type Nof4TestsDomainType() =
             UriMtHelper.GetApplicationPath <- Func<string>(fun () -> "")
             RestfulObjectsControllerBase.IsReadOnly <- false
             GlobalConfiguration.Configuration.Formatters.[0] <- new JsonNetFormatter(null)
- 
         
         [<TearDown>]
         member x.TearDown() = 
@@ -66,16 +63,15 @@ type Nof4TestsDomainType() =
         [<TestFixtureTearDown>]
         member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
         
-        override x.MenuServices = 
+        override x.MenuServices : IServicesInstaller = 
             box (new ServicesInstaller([| box (new RestDataRepository())
-                                          box (new WithActionService()) |])) :?> IServicesInstaller : IServicesInstaller
+                                          box (new WithActionService()) |])) :?> IServicesInstaller
         
-        override x.SystemServices = 
-            box (new ServicesInstaller([| box (new TestTypeCodeMapper())
-                                          box (new TestKeyCodeMapper()) |])) :?> IServicesInstaller : IServicesInstaller
+        override x.SystemServices : IServicesInstaller = 
+            box ( new ServicesInstaller([| box (new TestTypeCodeMapper())
+                                           box (new TestKeyCodeMapper()) |])) :?> IServicesInstaller
         
-        override x.ContributedActions = box (new ServicesInstaller([| box (new ContributorService()) |])) :?> IServicesInstaller : IServicesInstaller
-        
+        override x.ContributedActions : IServicesInstaller = box (new ServicesInstaller([| box (new ContributorService()) |])) :?> IServicesInstaller
         member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
         
         [<Test>]
@@ -136,41 +132,41 @@ type Nof4TestsDomainType() =
         member x.GetMostSimpleTransientObjectFormalOnly() = Objects9.GetMostSimpleTransientObjectFormalOnly x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.PersistMostSimpleTransientObject() = Objects9.PersistMostSimpleTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.PersistMostSimpleTransientObjectSimpleOnly() = Objects9.PersistMostSimpleTransientObjectSimpleOnly x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.PersistMostSimpleTransientObjectFormalOnly() = Objects9.PersistMostSimpleTransientObjectFormalOnly x.api
         
         [<Test>]
         member x.PersistMostSimpleTransientObjectValidateOnly() = Objects9.PersistMostSimpleTransientObjectValidateOnly x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.GetWithValueTransientObject() = Objects9.GetWithValueTransientObject x.api
         
         [<Test>]
         member x.GetWithReferenceTransientObject() = Objects9.GetWithReferenceTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // fix
+        [<Ignore>]
         member x.GetWithCollectionTransientObject() = Objects9.GetWithCollectionTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.PersistWithValueTransientObject() = Objects9.PersistWithValueTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.PersistWithValueTransientObjectFormalOnly() = Objects9.PersistWithValueTransientObjectFormalOnly x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
         
         [<Test>]
@@ -241,11 +237,11 @@ type Nof4TestsDomainType() =
         member x.PersistNoKeyTransientObject() = Objects9.PersistNoKeyTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // fix
+        [<Ignore>]
         member x.Error() = Error10.Error x.api
         
         [<Test>]
-        [<Ignore>] // fix
+        [<Ignore>]
         member x.NotAcceptableError() = Error10.NotAcceptableError x.api
         
         [<Test>]
@@ -285,22 +281,22 @@ type Nof4TestsDomainType() =
         member x.GetVerySimpleEagerObject() = DomainObject14.GetVerySimpleEagerObject x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.GetWithValueObject() = DomainObject14.GetWithValueObject x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.GetWithScalarsObject() = DomainObject14.GetWithScalarsObject x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.GetWithValueObjectUserAuth() = 
             x.SetUser("viewUser")
             DomainObject14.GetWithValueObjectUserAuth x.api
             x.SetUser("Test")
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.GetWithValueObjectWithMediaType() = DomainObject14.GetWithValueObjectWithMediaType x.api
         
         [<Test>]
@@ -352,13 +348,13 @@ type Nof4TestsDomainType() =
         member x.GetWithActionObjectFormalOnly() = DomainObject14.GetWithActionObjectFormalOnly x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.GetWithReferenceObject() = DomainObject14.GetWithReferenceObject x.api
         
-        [<Test>]  
+        [<Test>]
         member x.GetWithCollectionObject() = DomainObject14.GetWithCollectionObject x.api
         
-        [<Test>]   
+        [<Test>]
         member x.GetWithCollectionObjectFormalOnly() = DomainObject14.GetWithCollectionObjectFormalOnly x.api
         
         [<Test>]
@@ -455,15 +451,15 @@ type Nof4TestsDomainType() =
         member x.PutWithValueObjectInvalidArgsNameValidateOnly() = DomainObject14.PutWithValueObjectInvalidArgsNameValidateOnly x.api
         
         [<Test>]
-        [<Ignore>] // fix
+        [<Ignore>]
         member x.NotAcceptablePutObjectWrongMediaType() = DomainObject14.NotAcceptablePutObjectWrongMediaType x.api
         
         [<Test>]
-        [<Ignore>] // fix
+        [<Ignore>]
         member x.PutWithValueInternalError() = DomainObject14.PutWithValueInternalError x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.PutWithReferenceInternalError() = DomainObject14.PutWithReferenceInternalError x.api
         
         [<Test>]
@@ -492,7 +488,7 @@ type Nof4TestsDomainType() =
         member x.GetMostSimpleViewModel() = DomainObject14.GetMostSimpleViewModel x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.GetWithValueViewModel() = DomainObject14.GetWithValueViewModel x.api
         
         [<Test>]
@@ -559,7 +555,7 @@ type Nof4TestsDomainType() =
         member x.GetValuePropertyViewModel() = ObjectProperty16.GetValuePropertyViewModel x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.GetEnumValueProperty() = ObjectProperty16.GetEnumValueProperty x.api
         
         [<Test>]
@@ -587,7 +583,7 @@ type Nof4TestsDomainType() =
         member x.GetValuePropertyWithMediaType() = ObjectProperty16.GetValuePropertyWithMediaType x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.GetChoicesValueProperty() = ObjectProperty16.GetChoicesValueProperty x.api
         
         [<Test>]
@@ -603,11 +599,11 @@ type Nof4TestsDomainType() =
             x.SetUser("Test")
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.GetReferenceProperty() = ObjectProperty16.GetReferenceProperty x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.GetAutoCompleteProperty() = ObjectProperty16.GetAutoCompleteProperty x.api
         
         [<Test>]
@@ -623,7 +619,7 @@ type Nof4TestsDomainType() =
         member x.InvokeAutoCompleteErrorUnrecognisedParm() = ObjectProperty16.InvokeAutoCompleteErrorUnrecognisedParm x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.InvokeConditionalChoicesReference() = ObjectProperty16.InvokeConditionalChoicesReference x.api
         
         [<Test>]
@@ -651,7 +647,7 @@ type Nof4TestsDomainType() =
         member x.GetDisabledReferenceProperty() = ObjectProperty16.GetDisabledReferenceProperty x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.GetChoicesReferenceProperty() = ObjectProperty16.GetChoicesReferenceProperty x.api
         
         [<Test>]
@@ -673,9 +669,11 @@ type Nof4TestsDomainType() =
         member x.NotAcceptableGetPropertyWrongMediaType() = ObjectProperty16.NotAcceptableGetPropertyWrongMediaType x.api
         
         [<Test>]
+        [<Ignore>]
         member x.GetErrorValueProperty() = ObjectProperty16.GetErrorValueProperty x.api
         
         [<Test>]
+        [<Ignore>]
         member x.GetErrorReferenceProperty() = ObjectProperty16.GetErrorReferenceProperty x.api
         
         [<Test>]
@@ -845,15 +843,15 @@ type Nof4TestsDomainType() =
         member x.PutWithReferencePropertyOnImmutableObjectValidateOnly() = ObjectProperty16.PutWithReferencePropertyOnImmutableObjectValidateOnly x.api
         
         [<Test>]
-        [<Ignore>] // fix
+        [<Ignore>]
         member x.PutWithValuePropertyInvalidArgsNameValidateOnly() = ObjectProperty16.PutWithValuePropertyInvalidArgsNameValidateOnly x.api
         
         [<Test>]
-        [<Ignore>] // fix
+        [<Ignore>]
         member x.PutWithValuePropertyInternalError() = ObjectProperty16.PutWithValuePropertyInternalError x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.PutWithReferencePropertyInternalError() = ObjectProperty16.PutWithReferencePropertyInternalError x.api
         
         [<Test>]
@@ -902,11 +900,11 @@ type Nof4TestsDomainType() =
         member x.NotAcceptableDeletePropertyWrongMediaType() = ObjectProperty16.NotAcceptableDeletePropertyWrongMediaType x.api
         
         [<Test>]
-        [<Ignore>] // fix
+        [<Ignore>]
         member x.DeleteValuePropertyInternalError() = ObjectProperty16.DeleteValuePropertyInternalError x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.DeleteReferencePropertyInternalError() = ObjectProperty16.DeleteReferencePropertyInternalError x.api
         
         [<Test>]
@@ -955,6 +953,7 @@ type Nof4TestsDomainType() =
         member x.NotAcceptableGetCollectionWrongMediaType() = ObjectCollection17.NotAcceptableGetCollectionWrongMediaType x.api
         
         [<Test>]
+        [<Ignore>]
         member x.GetErrorValueCollection() = ObjectCollection17.GetErrorValueCollection x.api
         
         [<Test>]
@@ -1162,15 +1161,15 @@ type Nof4TestsDomainType() =
         member x.InvokeParmWithAutoCompleteViewModelErrorUnrecognisedParm() = ObjectAction18.InvokeParmWithAutoCompleteViewModelErrorUnrecognisedParm x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.InvokeParmWithConditionalChoicesObject() = ObjectAction18.InvokeParmWithConditionalChoicesObject x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.InvokeParmWithConditionalChoicesService() = ObjectAction18.InvokeParmWithConditionalChoicesService x.api
         
         [<Test>]
-        [<Ignore>] // Fails first time - fix !
+        [<Ignore>]
         member x.InvokeParmWithConditionalChoicesViewModel() = ObjectAction18.InvokeParmWithConditionalChoicesViewModel x.api
         
         [<Test>]
@@ -2674,7 +2673,7 @@ type Nof4TestsDomainType() =
         member x.GetWithValueObjectType() = DomainType21.GetWithValueObjectType x.api
         
         [<Test>]
-        [<Ignore>] // fix
+        [<Ignore>]
         member x.GetWithCollectionObjectType() = DomainType21.GetWithCollectionObjectType x.api
         
         [<Test>]
@@ -2884,4 +2883,3 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.NotAcceptableIsSubTypeOf() = DomainTypeActionInvoke26.NotAcceptableIsSubTypeOf x.api
     end
-

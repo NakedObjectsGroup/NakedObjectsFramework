@@ -1,15 +1,18 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
-using NUnit.Framework;
 using NakedObjects;
 using NakedObjects.Security;
+using NUnit.Framework;
 
 namespace RestfulObjects.Test.Data {
     public abstract class WithAction {
@@ -49,7 +52,7 @@ namespace RestfulObjects.Test.Data {
         }
 
 
-        public virtual MostSimple AnActionWithOptionalParm([Optionally, Named("Optional Parm"), DescribedAs("an optional parm"), System.ComponentModel.DataAnnotations.MaxLength(101), RegEx(Validation = @"[A-Z]")] string parm) {
+        public virtual MostSimple AnActionWithOptionalParm([Optionally, Named("Optional Parm"), DescribedAs("an optional parm"), MaxLength(101), RegEx(Validation = @"[A-Z]")] string parm) {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
 
@@ -139,7 +142,7 @@ namespace RestfulObjects.Test.Data {
             return null;
         }
 
-        public virtual void AnActionWithDateTimeParm([Mask("d")]DateTime parm) {}
+        public virtual void AnActionWithDateTimeParm([Mask("d")] DateTime parm) {}
 
         public virtual IQueryable<MostSimple> AnActionReturnsQueryableWithScalarParameters(int parm1, string parm2) {
             Assert.AreEqual(100, parm1);
@@ -147,7 +150,7 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2);
         }
 
-        public virtual ICollection<MostSimple> AnActionReturnsCollectionWithScalarParameters([PresentationHint("class9 class10")]int parm1, string parm2) {
+        public virtual ICollection<MostSimple> AnActionReturnsCollectionWithScalarParameters([PresentationHint("class9 class10")] int parm1, string parm2) {
             Assert.AreEqual(100, parm1);
             Assert.AreEqual("fred", parm2);
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();
@@ -318,14 +321,14 @@ namespace RestfulObjects.Test.Data {
             return parm0;
         }
 
-        public virtual IQueryable<MostSimple> AutoComplete0AnActionWithReferenceParametersWithAutoComplete([MinLength(3)]string name) {
+        public virtual IQueryable<MostSimple> AutoComplete0AnActionWithReferenceParametersWithAutoComplete([MinLength(3)] string name) {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2);
         }
 
-        public virtual IQueryable<MostSimple> AutoComplete1AnActionWithReferenceParametersWithAutoComplete([MinLength(3)]string name) {
+        public virtual IQueryable<MostSimple> AutoComplete1AnActionWithReferenceParametersWithAutoComplete([MinLength(3)] string name) {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 2);
         }
-   
+
         public virtual MostSimple AnOverloadedAction() {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
@@ -334,8 +337,7 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
 
-        public void AnActionWithCollectionParameter(IEnumerable<string> parm) {
-        }
+        public void AnActionWithCollectionParameter(IEnumerable<string> parm) {}
 
         public string[] Choices0AnActionWithCollectionParameter() {
             return new[] {
@@ -352,8 +354,7 @@ namespace RestfulObjects.Test.Data {
             };
         }
 
-        public void AnActionWithCollectionParameterRef(IEnumerable<MostSimple> parm) {
-        }
+        public void AnActionWithCollectionParameterRef(IEnumerable<MostSimple> parm) {}
 
         public MostSimple[] Choices0AnActionWithCollectionParameterRef() {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToArray();
@@ -362,6 +363,5 @@ namespace RestfulObjects.Test.Data {
         public MostSimple[] Default0AnActionWithCollectionParameterRef() {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToArray();
         }
-
     }
 }

@@ -12,7 +12,6 @@ using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
     public class VerySimple {
-
         private ICollection<MostSimple> aSetAsCollection = new List<MostSimple>();
 
 
@@ -24,21 +23,6 @@ namespace RestfulObjects.Test.Data {
 
         [Optionally, Title]
         public virtual MostSimple MostSimple { get; set; }
-
-        #region SimpleList (collection)
-
-        private ICollection<MostSimple> simpleList = new List<MostSimple>();
-
-        public virtual ICollection<MostSimple> SimpleList {
-            get { return simpleList; }
-            set { simpleList = value; }
-        }
-
-        public void EmptyTheList() {
-            simpleList.Clear();
-        }
-
-        #endregion
 
         [Hidden]
         public virtual ICollection<MostSimple> ASetAsCollection {
@@ -56,6 +40,21 @@ namespace RestfulObjects.Test.Data {
 
         public void EmptyTheSet() {
             SimpleSet.Clear();
+        }
+
+        #endregion
+
+        #region SimpleList (collection)
+
+        private ICollection<MostSimple> simpleList = new List<MostSimple>();
+
+        public virtual ICollection<MostSimple> SimpleList {
+            get { return simpleList; }
+            set { simpleList = value; }
+        }
+
+        public void EmptyTheList() {
+            simpleList.Clear();
         }
 
         #endregion
