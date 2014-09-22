@@ -171,9 +171,6 @@
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigator.cs" />
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorAbstract.cs" />
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorWithTypeCodeMapper.cs" />
-    <Compile Include="OldAbstractSystemTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="util\DateTimeExtensionsTest.cs" />
     <Compile Include="util\GetTypeFromLoadedAssembliesInternalTest.cs" />
     <Compile Include="util\GetTypeFromLoadedAssembliesTestAbstract.cs" />

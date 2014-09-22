@@ -9,50 +9,46 @@ using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Services;
 using NakedObjects.Xat;
+using System.Data.Entity;
 
 namespace NakedObjects.SystemTest.Enum {
-    [TestClass, Ignore]
-    public class EnumTest : OldAbstractSystemTest {
+    [TestClass]
+    public class EnumTest : AbstractSystemTest<EnumDbContext> {
+        #region Setup/Teardown
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc)
+        {
+            InitializeNakedObjectsFramework(new EnumTest());
+        }
+
+        [ClassCleanup]
+        public static void ClassCleanup()
+        {
+            CleanupNakedObjectsFramework(new EnumTest());
+            Database.Delete(EnumDbContext.DatabaseName);
+        }
+
+        [TestInitialize()]
+        public void TestInitialize()
+        {
+            StartTest();
+        }
+
+        [TestCleanup()]
+        public void TestCleanup()
+        {
+        }
+
+        #endregion
+
         #region Run configuration
-
-        //Set up the properties in this region exactly the same way as in your Run class
-
         protected override IServicesInstaller MenuServices {
             get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
         }
 
-        protected override IServicesInstaller ContributedActions {
-            get { return new ServicesInstaller(new object[] {}); }
-        }
-
-        protected override IServicesInstaller SystemServices {
-            get { return new ServicesInstaller(new object[] {}); }
-        }
-
-        protected override IFixturesInstaller Fixtures {
-            get { return new FixturesInstaller(new object[] {}); }
-        }
-
-        //protected override IObjectPersistorInstaller Persistor
-        //{
-        //    get { return new EntityPersistorInstaller(); }
-        //}
-
         #endregion
 
-        #region Initialize and Cleanup
 
-        [TestInitialize]
-        public void Initialize() {
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [TestCleanup]
-        public void Cleanup() {
-            CleanupNakedObjectsFramework(this);
-        }
-
-        #endregion
 
         [TestMethod]
         public virtual void EnumPropertyBasic() {
@@ -148,8 +144,22 @@ namespace NakedObjects.SystemTest.Enum {
             Assert.AreEqual("Unknown", act2.Parameters[0].GetDefault().Title);
         }
     }
+    #region Classes used in tests
+
+    public class EnumDbContext : DbContext
+    {
+        public const string DatabaseName = "TestEnums";
+        public EnumDbContext() : base(DatabaseName) { }
+
+        public DbSet<Foo> Foos { get; set; }
+
+    }
 
     public class Foo {
+
+        
+        public virtual int Id { get; set; }
+      
         #region Sex1
 
         public virtual Sexes Sex1 { get; set; }
@@ -235,4 +245,6 @@ namespace NakedObjects.SystemTest.Enum {
         Grey = 4,
         White = 5
     }
+
+#endregion
 }

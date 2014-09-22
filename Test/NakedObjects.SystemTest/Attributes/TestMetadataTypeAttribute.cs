@@ -11,7 +11,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace NakedObjects.SystemTest.Attributes {
     namespace MetadataType {
         [TestClass, Ignore] // Pending deletion  -  see #5169  
-        public class TestMetadataTypeAttribute : OldAbstractSystemTest {
+        public class TestMetadataTypeAttribute : AcceptanceTestCase {
+
+
+            /// <summary>
+            /// Assumes that a SimpleRepository for the type T has been registered in Services
+            /// </summary>
+            protected ITestObject NewTestObject<T>()
+            {
+                return GetTestService(typeof(T).Name + "s").GetAction("New Instance").InvokeReturnObject();
+            }
+
             #region Setup/Teardown
 
             [TestInitialize()]

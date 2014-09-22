@@ -7,6 +7,7 @@ using NakedObjects.Persistor.Objectstore.Inmemory;
 using NakedObjects.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel.DataAnnotations;
+using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Other
 {
@@ -14,8 +15,16 @@ namespace NakedObjects.SystemTest.Other
     /// 
     /// </summary>
     [TestClass, Ignore] //Ignore pending deletion of KeyFacet #5168
-    public class TestKeyAttribute : OldAbstractSystemTest
+    public class TestKeyAttribute : AcceptanceTestCase
     {
+
+        /// <summary>
+        /// Assumes that a SimpleRepository for the type T has been registered in Services
+        /// </summary>
+        protected ITestObject NewTestObject<T>()
+        {
+            return GetTestService(typeof(T).Name + "s").GetAction("New Instance").InvokeReturnObject();
+        }
         #region Setup/Teardown
 
         [TestInitialize()]

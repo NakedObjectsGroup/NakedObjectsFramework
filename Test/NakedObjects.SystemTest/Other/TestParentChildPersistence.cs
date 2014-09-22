@@ -7,30 +7,39 @@ using NakedObjects.Services;
 using NakedObjects.Xat;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Data.Entity;
 
 namespace NakedObjects.SystemTest.ParentChild {
     namespace ParentChild {
         [TestClass, Ignore]
-        public class TestParentChildPersistence : OldAbstractSystemTest {
+        public class TestParentChildPersistence : AbstractSystemTest<ParentChildDbContext> {
+
             #region Setup/Teardown
+            [ClassInitialize]
+            public static void ClassInitialize(TestContext tc)
+            {
+                InitializeNakedObjectsFramework(new TestParentChildPersistence());
+            }
+
+            [ClassCleanup]
+            public static void ClassCleanup()
+            {
+                CleanupNakedObjectsFramework(new TestParentChildPersistence());
+                Database.Delete(ParentChildDbContext.DatabaseName);
+            }
 
             [TestInitialize()]
-            public void SetupTest() {
-                InitializeNakedObjectsFramework(this);
-                
+            public void TestInitialize()
+            {
+                StartTest();
             }
 
             [TestCleanup()]
-            public void TearDownTest() {
-                CleanupNakedObjectsFramework(this);
-                
+            public void TestCleanup()
+            {
             }
 
             #endregion
-
-            protected override IFixturesInstaller Fixtures {
-                get { return new FixturesInstaller(new object[] {}); }
-            }
 
             protected override IServicesInstaller MenuServices {
                 get {
@@ -64,56 +73,42 @@ namespace NakedObjects.SystemTest.ParentChild {
                 parent.AssertCanBeSaved();
                 parent.Save();
             }
+        }
 
-            [TestMethod, Ignore] // now that collectiona are disable dby default 
-            public virtual void ParentWithCollectionOfChildren()
-            {
-                var parent = NewTestObject<Parent2>();
-                parent.AssertCannotBeSaved();
-                parent.GetPropertyByName("Prop0").AssertIsMandatory().AssertIsEmpty().SetValue("Joe");
-                parent.AssertCanBeSaved();
-                
-                var child1 = NewTestObject<Child>();
-                var child2 = NewTestObject<Child>();
+        #region Classes used in tests
 
-                var children = parent.GetPropertyByName("Children");
-                children.SetObject(child1);
-                children.SetObject(child2);
+        public class ParentChildDbContext : DbContext
+        {
+            public const string DatabaseName = "TestParentChild";
+            public ParentChildDbContext() : base(DatabaseName) { }
 
-                children.ContentAsCollection.AssertCountIs(2);
+            public DbSet<Parent> Parents { get; set; }
+            public DbSet<Parent2> Parent2s { get; set; }
+            public DbSet<Child> Children { get; set; }
 
-                parent.AssertCannotBeSaved();
-
-                child1.GetPropertyByName("Prop0").SetValue("Bar");
-                child1.Save();
-
-                parent.AssertCannotBeSaved();
-
-                child2.GetPropertyByName("Prop0").SetValue("Foo");
-                child2.Save();
-
-                parent.Save();
-            }
         }
 
         public class Parent {
+            [NakedObjectsIgnore]
+            public virtual int Id { get; set; }
 
             public Parent()
             {
                 Child = new Child();
             }
 
-            public string Prop0 { get; set; }
+            public virtual string Prop0 { get; set; }
 
-            public Child Child { get; set; }
+            public virtual  Child Child { get; set; }
            
         }
 
         public class Parent2
         {
+            [NakedObjectsIgnore]
+            public virtual int Id { get; set; }
 
-
-            public string Prop0 { get; set; }
+            public virtual string Prop0 { get; set; }
 
             #region Children (collection)
             private ICollection<Child> myChildren = new List<Child>();
@@ -152,9 +147,12 @@ namespace NakedObjects.SystemTest.ParentChild {
 
         public class Child
         {
-            public string Prop0 { get; set; }
+            [NakedObjectsIgnore]
+            public virtual int Id { get; set; }
+
+            public virtual string Prop0 { get; set; }
 
         }
-
+#endregion
     }
-} //end of root namespace
+} 
