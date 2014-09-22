@@ -20,6 +20,8 @@ namespace NakedObjects {
 
         INakedObjectPersistor ObjectPersistor { get; }
 
+        INakedObjectManager Manager { get; }
+
         INakedObjectReflector Reflector { get; }
 
         IAuthorizationManager AuthorizationManager { get; }

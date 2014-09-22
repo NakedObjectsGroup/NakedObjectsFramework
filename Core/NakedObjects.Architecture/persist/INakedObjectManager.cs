@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Persist {
@@ -19,10 +20,7 @@ namespace NakedObjects.Architecture.Persist {
 
         INakedObject RecreateInstance(IOid oid, INakedObjectSpecification specification);
 
-        /// <summary>
-        ///     Forces a reload of this object from the persistent object store
-        /// </summary>
-        void Reload(INakedObject nakedObject);
+      
 
         void RemoveAdapter(INakedObject objectToDispose);
 
@@ -33,13 +31,24 @@ namespace NakedObjects.Architecture.Persist {
         INakedObject CreateAdapter(object domainObject, IOid oid, IVersion version);
 
         void ReplacePoco(INakedObject nakedObject, object newDomainObject);
-        object CreateObject(INakedObjectSpecification specification);
-
+     
         INakedObject GetViewModel(IOid oid);
 
         INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj);
 
         INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid);
+
+        INakedObject[] ServiceAdapters { get; }
+
+        INakedObject GetService(string id);
+
+        ServiceTypes GetServiceType(INakedObjectSpecification spec);
+
+        INakedObject[] GetServices();
+
+        INakedObject[] GetServicesWithVisibleActions(ServiceTypes serviceType);
+
+        INakedObject[] GetServices(ServiceTypes serviceType);
     }
 
 

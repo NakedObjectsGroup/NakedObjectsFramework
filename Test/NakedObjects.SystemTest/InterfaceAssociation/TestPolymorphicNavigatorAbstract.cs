@@ -6,20 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity;
 using System.Data.Entity.SqlServer;
 using System.Linq;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.EntityObjectStore;
-using NakedObjects.Helpers.Test.ViewModel;
-using NakedObjects.Services;
 using NakedObjects.SystemTest.PolymorphicAssociations;
-using NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper;
 using NakedObjects.Xat;
-using NakedObjects.Helpers.Test;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
 

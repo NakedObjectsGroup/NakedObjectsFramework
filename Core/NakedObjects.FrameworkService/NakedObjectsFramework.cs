@@ -48,6 +48,9 @@ namespace NakedObjects.Service {
             get { return objectPersistor; }
         }
 
+        public INakedObjectManager Manager {
+            get { return objectPersistor; }
+        }
         public INakedObjectReflector Reflector {
             get { return reflector; }
         }

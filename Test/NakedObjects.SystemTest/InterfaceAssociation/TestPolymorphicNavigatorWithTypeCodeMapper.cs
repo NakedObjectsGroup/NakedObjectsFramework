@@ -7,18 +7,12 @@
 
 using System;
 using System.Data.Entity;
-using System.Data.Entity.SqlServer;
-using System.Linq;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.EntityObjectStore;
-using NakedObjects.Helpers.Test.ViewModel;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.SystemTest.PolymorphicAssociations;
-using NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper;
-using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
 

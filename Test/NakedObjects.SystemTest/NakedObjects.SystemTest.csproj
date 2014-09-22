@@ -156,7 +156,6 @@
     <Compile Include="Attributes\TestKeyAttribute.cs" />
     <Compile Include="Attributes\TestAttributes.cs" />
     <Compile Include="Audit\TestAuditManager.cs" />
-    <Compile Include="Authorization\TestAttributeAuthorization.cs" />
     <Compile Include="Authorization\TestCustomAuthorizer.cs" />
     <Compile Include="Authorization\TestCustomAuthorizationManager.cs" />
     <Compile Include="AbstractSystemTest.cs" />
@@ -191,11 +190,11 @@
     <Compile Include="Attributes\TestMetadataTypeAttribute.cs" />
     <Compile Include="Persistence\TestPersistence.cs" />
     <Compile Include="Repositories\TestSimpleRepository.cs" />
-    <Compile Include="ViewModel\TestViewModel.cs" />
     <Compile Include="XATs\TestFailureScenarios.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

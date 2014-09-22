@@ -26,9 +26,13 @@ namespace NakedObjects.Architecture.Persist {
         /// </para>
         bool IsInitialized { get; set; }
 
-        INakedObject[] ServiceAdapters { get; }
+       
         IOidGenerator OidGenerator { get; }
 
+        /// <summary>
+        ///     Forces a reload of this object from the persistent object store
+        /// </summary>
+        void Reload(INakedObject nakedObject);
 
         /// <summary>
         ///     Primarily for testing
@@ -90,13 +94,7 @@ namespace NakedObjects.Architecture.Persist {
 
         void DestroyObject(INakedObject nakedObject);
 
-        INakedObject GetService(string id);
-
-        ServiceTypes GetServiceType(INakedObjectSpecification spec);
-
-        INakedObject[] GetServices();
-
-        INakedObject[] GetServicesWithVisibleActions(ServiceTypes serviceType);
+       
 
         PropertyInfo[] GetKeys(Type type);
 
@@ -105,11 +103,14 @@ namespace NakedObjects.Architecture.Persist {
         int CountField(INakedObject nakedObject, string fieldName);
 
         INakedObject FindByKeys(Type type, object[] keys);
-        INakedObject[] GetServices(ServiceTypes serviceType);
+      
 
         List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);
         IOid RestoreGenericOid(string[] encodedData);
         void PopulateViewModelKeys(INakedObject nakedObject);
+
+        object CreateObject(INakedObjectSpecification specification);
+
     }
 
     // Copyright (c) Naked Objects Group Ltd.

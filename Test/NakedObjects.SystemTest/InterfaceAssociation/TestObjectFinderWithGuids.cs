@@ -7,18 +7,14 @@
 
 using System;
 using System.Data.Entity;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.EntityObjectStore;
-using NakedObjects.Helpers.Test.ViewModel;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.Xat;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects.Helpers.Test;
 
 namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
