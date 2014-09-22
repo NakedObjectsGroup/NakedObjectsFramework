@@ -168,6 +168,7 @@
     <Compile Include="Authorization\TestCustomAuthorizerInstaller3.cs" />
     <Compile Include="Authorization\TestCustomAuthorizationManager.cs" />
     <Compile Include="AbstractSystemTest2.cs" />
+    <Compile Include="Authorization\TestNamespaceAuthorization.cs" />
     <Compile Include="Methods\TestMethods.cs" />
     <Compile Include="Other\EnumTest.cs" />
     <Compile Include="Other\TestParentChildPersistence.cs" />

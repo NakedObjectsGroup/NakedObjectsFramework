@@ -18,7 +18,7 @@ using NotMyApp.MyCluster2;
 
 namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization
 {
-    [TestClass]
+    [TestClass, Ignore]
     public class TestCustomAuthorizationManager : AbstractSystemTest
     {
         #region Setup/Teardown
@@ -26,14 +26,14 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization
         [TestInitialize()]
         public void SetupTest()
         {
-            InitializeNakedObjectsFramework();
+            //InitializeNakedObjectsFramework();
             SetUser("sven");
         }
 
         [TestCleanup()]
         public void TearDownTest()
         {
-            CleanupNakedObjectsFramework();
+            ///CleanupNakedObjectsFramework();
             MemoryObjectStore.DiscardObjects();
         }
 
@@ -52,18 +52,18 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization
             }
         }
 
-        protected override IAuthorizerInstaller Authorizer
-        {
-            get
-            {
-                return new CustomAuthorizerInstaller(
-                    new MyDefaultAuthorizer(),
-                    new MyAppAuthorizer(),
-                    new MyCluster1Authorizer(),
-                    new MyBar1Authorizer()
-                    );
-            }
-        }
+        //protected override IAuthorizerInstaller Authorizer
+        //{
+        //    get
+        //    {
+        //        return new CustomAuthorizerInstaller(
+        //            new MyDefaultAuthorizer(),
+        //            new MyAppAuthorizer(),
+        //            new MyCluster1Authorizer(),
+        //            new MyBar1Authorizer()
+        //            );
+        //    }
+        //}
         #endregion
 
         [TestMethod]
