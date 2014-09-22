@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.DotNet")]
-[assembly: InternalsVisibleTo("NakedObjects.Attributes.Test")]
+[assembly: InternalsVisibleTo("NakedObjects.SystemTest")]
 [assembly: InternalsVisibleTo("NakedObjects.Helpers.Test")]
 
 namespace NakedObjects.UtilInternal {

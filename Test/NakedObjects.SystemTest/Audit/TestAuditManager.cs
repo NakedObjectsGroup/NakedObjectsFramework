@@ -14,24 +14,36 @@ using NakedObjects.Persistor.Objectstore.Inmemory;
 using NakedObjects.Reflector.Audit;
 using NakedObjects.Services;
 using NakedObjects.Xat;
+using System.Data.Entity;
 
 namespace NakedObjects.SystemTest.Audit {
     [TestClass, Ignore]
-    public class TestAuditManager : AbstractSystemTest {
+    public class TestAuditManager : AbstractSystemTest<AuditDbContext> {
         #region Setup/Teardown
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc)
+        {
+            InitializeNakedObjectsFramework(new TestAuditManager());
+        }
 
-        [TestInitialize]
-        public void SetupTest() {
-            InitializeNakedObjectsFramework(this);
+        [ClassCleanup]
+        public static void ClassCleanup()
+        {
+            CleanupNakedObjectsFramework(new TestAuditManager());
+            Database.Delete(AuditDbContext.DatabaseName);
+        }
+
+        [TestInitialize()]
+        public void TestInitialize()
+        {
+            StartTest();
             SetUser("sven");
         }
 
-        [TestCleanup]
-        public void TearDownTest() {
-            CleanupNakedObjectsFramework(this);
-            MemoryObjectStore.DiscardObjects();
+        [TestCleanup()]
+        public void TestCleanup()
+        {
         }
-
         #endregion
 
         #region "Services & Fixtures"
@@ -569,6 +581,17 @@ namespace NakedObjects.SystemTest.Audit {
         }
     }
 
+    #region Classes used by tests
+
+    public class AuditDbContext : DbContext
+    {
+        public const string DatabaseName = "TestAudit";
+        public AuditDbContext() : base(DatabaseName) { }
+
+        public DbSet<Foo> Foos { get; set; }
+        public DbSet<Bar> Bars { get; set; }
+        public DbSet<Qux> Quxes { get; set; }
+    }
     public abstract class Auditor : IAuditor {
         public Action<IPrincipal, string, object, bool, object[]> actionInvokedCallback;
         public Action<IPrincipal, object> objectPersistedCallback;
@@ -606,7 +629,6 @@ namespace NakedObjects.SystemTest.Audit {
         }
     }
 
-
     public class MyDefaultAuditor : Auditor {
         public MyDefaultAuditor() : base("default") {
             actionInvokedCallback = (p, a, o, b, pp) => { };
@@ -623,7 +645,6 @@ namespace NakedObjects.SystemTest.Audit {
             serviceActionInvokedCallback = TestAuditManager.UnexpectedServiceActionCallback("default");
         }
     }
-
 
     public class FooAuditor : Auditor, INamespaceAuditor {
         public FooAuditor()
@@ -644,6 +665,9 @@ namespace NakedObjects.SystemTest.Audit {
     }
 
     public class Foo {
+        
+        public virtual int Id { get; set; }
+      
         [Optionally]
         public virtual string Prop1 { get; set; }
 
@@ -656,19 +680,24 @@ namespace NakedObjects.SystemTest.Audit {
         public virtual IQueryable<Foo> AnotherQueryOnlyAction() { return new QueryableList<Foo>(); }
     }
 
-    public class Qux {
+    public class Bar
+    {
+        public virtual int Id { get; set; }
+
         [Optionally]
         public virtual string Prop1 { get; set; }
 
-        public void AnAction() {}
-        public void AnActionWithParm(int aParm) {}
-        public void AnActionWithParms(int parm1, Foo parm2) {}
+        public void AnAction() { }
+        public void AnActionWithParm(int aParm) { }
+        public void AnActionWithParms(int parm1, Foo parm2) { }
 
         [QueryOnly]
-        public virtual void AQueryOnlyAction() {}
+        public virtual void AQueryOnlyAction() { }
     }
 
-    public class Bar {
+    public class Qux {
+        public virtual int Id { get; set; }
+
         [Optionally]
         public virtual string Prop1 { get; set; }
 
@@ -706,4 +735,6 @@ namespace NakedObjects.SystemTest.Audit {
         [QueryOnly]
         public virtual void AQueryOnlyAction() {}
     }
+
+ #endregion
 }

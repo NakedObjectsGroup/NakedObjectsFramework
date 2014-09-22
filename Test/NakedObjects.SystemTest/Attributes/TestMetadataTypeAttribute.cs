@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace NakedObjects.SystemTest.Attributes {
     namespace MetadataType {
         [TestClass, Ignore] // Pending deletion  -  see #5169  
-        public class TestMetadataTypeAttribute : AbstractSystemTest {
+        public class TestMetadataTypeAttribute : OldAbstractSystemTest {
             #region Setup/Teardown
 
             [TestInitialize()]

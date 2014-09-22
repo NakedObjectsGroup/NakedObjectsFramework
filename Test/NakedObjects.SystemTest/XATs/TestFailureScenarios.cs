@@ -17,7 +17,7 @@ namespace NakedObjects.SystemTest.XATs {
         ///     Tests various functions of the XATs themselves
         /// </summary>
         [TestClass]
-        public class TestFailureScenarios : AbstractSystemTest2<XatDbContext> {
+        public class TestFailureScenarios : AbstractSystemTest<XatDbContext> {
             #region Setup/Teardown
             [ClassInitialize]
             public static void ClassInitialize(TestContext tc)

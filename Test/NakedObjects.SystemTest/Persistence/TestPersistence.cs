@@ -13,7 +13,7 @@ namespace NakedObjects.SystemTest.Persistence
 {
     [TestClass]
     public class TestPersistence : 
-        AbstractSystemTest2<PersistenceDbContext>
+        AbstractSystemTest<PersistenceDbContext>
     {
             #region Setup/Teardown
             [ClassInitialize]

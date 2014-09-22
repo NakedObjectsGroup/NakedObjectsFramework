@@ -10,19 +10,10 @@ using System;
 using System.Data.Entity;
 
 namespace NakedObjects.SystemTest {
-    public abstract class AbstractSystemTest2<TContext> : AcceptanceTestCase 
-        where TContext : DbContext
+    public abstract class OldAbstractSystemTest : AcceptanceTestCase 
     {
 
-        #region Run Configuration
-        protected override void RegisterTypes(IUnityContainer container)
-        {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
-            config.UsingCodeFirstContext(() => Activator.CreateInstance<TContext>());
-            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
-        }
-        #endregion
+
 
         /// <summary>
         /// Assumes that a SimpleRepository for the type T has been registered in Services
@@ -30,5 +21,6 @@ namespace NakedObjects.SystemTest {
         protected ITestObject NewTestObject<T>() {
             return GetTestService(typeof (T).Name + "s").GetAction("New Instance").InvokeReturnObject();
         }
+
     }
 }

@@ -110,10 +110,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha1\lib\net451\NakedObjects.FWResources.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Helpers">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="NakedObjects.Persistor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha1\lib\net451\NakedObjects.Persistor.dll</HintPath>
@@ -157,18 +153,40 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractSystemTest.cs" />
     <Compile Include="Attributes\TestKeyAttribute.cs" />
     <Compile Include="Attributes\TestAttributes.cs" />
     <Compile Include="Audit\TestAuditManager.cs" />
-    <Compile Include="Authorization\TestCustomAuthorizerInstallerUsersAndRoles.cs" />
-    <Compile Include="Authorization\TestAttributeAuthorizationUsersAndRoles.cs" />
-    <Compile Include="Authorization\TestCustomAuthorizerInstaller1.cs" />
-    <Compile Include="Authorization\TestCustomAuthorizerInstaller2.cs" />
-    <Compile Include="Authorization\TestCustomAuthorizerInstaller3.cs" />
+    <Compile Include="Authorization\TestAttributeAuthorization.cs" />
+    <Compile Include="Authorization\TestCustomAuthorizer.cs" />
     <Compile Include="Authorization\TestCustomAuthorizationManager.cs" />
-    <Compile Include="AbstractSystemTest2.cs" />
+    <Compile Include="AbstractSystemTest.cs" />
     <Compile Include="Authorization\TestNamespaceAuthorization.cs" />
+    <Compile Include="InterfaceAssociation\ClassesForPolymorphicAssocTests.cs" />
+    <Compile Include="InterfaceAssociation\ClassesUsedByObjectFinderWithCompoundKeys.cs" />
+    <Compile Include="InterfaceAssociation\TestObjectFinderWithCompoundKeys.cs" />
+    <Compile Include="InterfaceAssociation\TestObjectFinderWithCompoundKeysAbstract.cs" />
+    <Compile Include="InterfaceAssociation\TestObjectFinderWithCompoundKeysAndTypeCodeMapper.cs" />
+    <Compile Include="InterfaceAssociation\TestObjectFinderWithGuids.cs" />
+    <Compile Include="InterfaceAssociation\TestObjectFinderWithSingleKeys.cs" />
+    <Compile Include="InterfaceAssociation\TestPolymorphicNavigator.cs" />
+    <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorAbstract.cs" />
+    <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorWithTypeCodeMapper.cs" />
+    <Compile Include="OldAbstractSystemTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="util\DateTimeExtensionsTest.cs" />
+    <Compile Include="util\GetTypeFromLoadedAssembliesInternalTest.cs" />
+    <Compile Include="util\GetTypeFromLoadedAssembliesTestAbstract.cs" />
+    <Compile Include="util\KeyUtilsTest.cs" />
+    <Compile Include="util\NewTitleBuilderWithInitialContentTest.cs" />
+    <Compile Include="util\NewTitleBuilderWithNoInitialContentTest.cs" />
+    <Compile Include="util\ReasonBuilderTest.cs" />
+    <Compile Include="util\TitleBuilderWithInitialContentTest.cs" />
+    <Compile Include="util\TitleBuilderWithNoInitialContentTest.cs" />
+    <Compile Include="util\TitleBuilderWithStartingContentTest.cs" />
+    <Compile Include="util\TypeUtilsTest.cs" />
+    <Compile Include="value\FileAttachmentTest.cs" />
+    <Compile Include="value\ImageTest.cs" />
     <Compile Include="Methods\TestMethods.cs" />
     <Compile Include="Other\EnumTest.cs" />
     <Compile Include="Other\TestParentChildPersistence.cs" />
@@ -176,6 +194,7 @@
     <Compile Include="Attributes\TestMetadataTypeAttribute.cs" />
     <Compile Include="Persistence\TestPersistence.cs" />
     <Compile Include="Repositories\TestSimpleRepository.cs" />
+    <Compile Include="ViewModel\TestViewModel.cs" />
     <Compile Include="XATs\TestFailureScenarios.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +203,12 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Programming Model\NakedObjects.Helpers\NakedObjects.Helpers.csproj">
+      <Project>{8b62cb10-ecd9-4814-9211-d252e5b5d48b}</Project>
+      <Name>NakedObjects.Helpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />

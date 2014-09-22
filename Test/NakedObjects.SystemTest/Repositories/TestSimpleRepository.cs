@@ -13,7 +13,7 @@ namespace NakedObjects.SystemTest.Repositories {
 
 
     [TestClass]
-    public class TestSimpleRepository : AbstractSystemTest2<SimpleRepositoryDbContext> {
+    public class TestSimpleRepository : AbstractSystemTest<SimpleRepositoryDbContext> {
                 #region Setup/Teardown
         [ClassInitialize]
         public static void ClassInitialize(TestContext tc)

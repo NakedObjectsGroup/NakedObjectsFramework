@@ -48,34 +48,34 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IHasGuid.cs" />
+    <Compile Include="Interfaces\IHasIntegerId.cs" />
+    <Compile Include="Interfaces\IPolymorphicLink.cs" />
     <Compile Include="Interfaces\IPolymorphicLinkWithOid.cs" />
     <Compile Include="Interfaces\IPolymorphicNavigatorWithOid.cs" />
     <Compile Include="RecognisedMethods.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AbstractFactoryAndRepository.cs" />
-    <Compile Include="Interfaces\IHasIntegerId.cs" />
     <Compile Include="Services\IKeyCodeMapper.cs" />
-    <Compile Include="Interfaces\IPolymorphicLink.cs" />
-    <Compile Include="Services\ObjectFinderWithTypeCodeMapper.cs" />
-    <Compile Include="Interfaces\IHasGuid.cs" />
+    <Compile Include="Services\IObjectFinder.cs" />
     <Compile Include="Services\ITypeCodeMapper.cs" />
     <Compile Include="Services\ObjectFinder.cs" />
-    <Compile Include="Services\IObjectFinder.cs" />
-    <Compile Include="Services\PolymorphicNavigatorWithOid.cs" />
-    <Compile Include="Util\PolymorphicLink.cs" />
+    <Compile Include="Services\ObjectFinderWithTypeCodeMapper.cs" />
     <Compile Include="Services\PolymorphicNavigator.cs" />
+    <Compile Include="Services\PolymorphicNavigatorWithOid.cs" />
     <Compile Include="Services\SimpleRepository.cs" />
-    <Compile Include="Util\PolymorphicLinkWithOid.cs" />
-    <Compile Include="Util\ViewModel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\IInternalAccess.cs" />
     <Compile Include="Util\AttributeUtils.cs" />
     <Compile Include="Util\DateTimeExtensions.cs" />
+    <Compile Include="Util\IInternalAccess.cs" />
     <Compile Include="Util\KeyUtils.cs" />
     <Compile Include="Util\NameUtils.cs" />
     <Compile Include="Util\NewTitleBuilder.cs" />
+    <Compile Include="Util\PolymorphicLink.cs" />
+    <Compile Include="Util\PolymorphicLinkWithOid.cs" />
     <Compile Include="Util\ReasonBuilder.cs" />
     <Compile Include="Util\TitleBuilder.cs" />
     <Compile Include="Util\TypeUtils.cs" />
+    <Compile Include="Util\ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Attributes\NakedObjects.Attributes.csproj">

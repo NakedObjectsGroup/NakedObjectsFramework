@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace NakedObjects.SystemTest.ParentChild {
     namespace ParentChild {
         [TestClass, Ignore]
-        public class TestParentChildPersistence : AbstractSystemTest {
+        public class TestParentChildPersistence : OldAbstractSystemTest {
             #region Setup/Teardown
 
             [TestInitialize()]

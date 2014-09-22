@@ -12,7 +12,7 @@ using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Enum {
     [TestClass, Ignore]
-    public class EnumTest : AbstractSystemTest {
+    public class EnumTest : OldAbstractSystemTest {
         #region Run configuration
 
         //Set up the properties in this region exactly the same way as in your Run class

@@ -11,7 +11,7 @@ using System.Data.Entity;
 
 namespace NakedObjects.SystemTest.Injection {
     [TestClass]
-    public class TestInjection : AbstractSystemTest2<InjectionDbContext> {
+    public class TestInjection : AbstractSystemTest<InjectionDbContext> {
         #region Setup/Teardown
         [ClassInitialize]
         public static void ClassInitialize(TestContext tc)

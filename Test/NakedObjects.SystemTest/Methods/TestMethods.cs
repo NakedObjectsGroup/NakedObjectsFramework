@@ -20,7 +20,7 @@ using NakedObjects.Architecture.Reflect;
 namespace NakedObjects.SystemTest.Method
 {
     [TestClass]
-    public class TestMethods : AbstractSystemTest2<MethodsDbContext>
+    public class TestMethods : AbstractSystemTest<MethodsDbContext>
     {
         #region Setup/Teardown
         [ClassInitialize]

@@ -15,44 +15,14 @@ using NakedObjects;
 using MyApp.MyCluster1;
 using MyApp.MyCluster2;
 using NotMyApp.MyCluster2;
+using System.Data.Entity;
 
 namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization
 {
     [TestClass, Ignore]
-    public class TestCustomAuthorizationManager : AbstractSystemTest
+    public class TestNamespaceAuthorization : AbstractSystemTest<NamespaceAuthorizationDbContext>
     {
-        #region Setup/Teardown
-
-        [TestInitialize()]
-        public void SetupTest()
-        {
-            //InitializeNakedObjectsFramework();
-            SetUser("sven");
-        }
-
-        [TestCleanup()]
-        public void TearDownTest()
-        {
-            ///CleanupNakedObjectsFramework();
-            MemoryObjectStore.DiscardObjects();
-        }
-
-        #endregion
-
-        #region "Services & Fixtures"
-        protected override IServicesInstaller MenuServices
-        {
-            get
-            {
-                return new ServicesInstaller(
-                    new SimpleRepository<Foo1>(),
-                    new SimpleRepository<Bar1>(),
-                    new SimpleRepository<Foo2>(),
-                    new SimpleRepository<Bar2>());
-            }
-        }
-
-        //protected override IAuthorizerInstaller Authorizer
+                //protected override IAuthorizerInstaller Authorizer
         //{
         //    get
         //    {
@@ -64,6 +34,49 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization
         //            );
         //    }
         //}
+
+            
+
+                #region Setup/Teardown
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc)
+        {
+            InitializeNakedObjectsFramework(new TestNamespaceAuthorization());
+        }
+
+        [ClassCleanup]
+        public static void ClassCleanup()
+        {
+            CleanupNakedObjectsFramework(new TestNamespaceAuthorization());
+            Database.Delete(NamespaceAuthorizationDbContext.DatabaseName);
+        }
+
+        [TestInitialize()]
+        public void TestInitialize()
+        {
+            StartTest();
+            SetUser("sven");
+        }
+
+        [TestCleanup()]
+        public void TestCleanup()
+        {
+        }
+
+        #endregion
+
+        #region Services & Fixtures
+        protected override IServicesInstaller MenuServices
+        {
+            get
+            {
+                return new ServicesInstaller(
+                    new SimpleRepository<Foo1>(),
+                    new SimpleRepository<Bar1>(),
+                    new SimpleRepository<Foo2>(),
+                    new SimpleRepository<Bar2>());
+            }
+        }
         #endregion
 
         [TestMethod]
@@ -110,6 +123,19 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization
             bar2.GetPropertyByName("Prop1").AssertIsVisible();
         }
     }
+
+#region Classes used by tests 
+
+        public class NamespaceAuthorizationDbContext : DbContext
+    {
+        public const string DatabaseName = "TestAttributes";
+        public NamespaceAuthorizationDbContext() : base(DatabaseName) { }
+
+        public DbSet<Foo1> Foo1s { get; set; }
+            public DbSet<Bar1> Bar1s { get; set; }
+            public DbSet<Foo2> Foo2s { get; set; }
+            public DbSet<Bar2> Bar2s { get; set; }
+        }
 
     public class MyDefaultAuthorizer : ITypeAuthorizer<object>
     {
@@ -249,7 +275,6 @@ namespace MyApp.MyCluster1
         public virtual string Prop1 { get; set; }
         public void Act1() { }
     }
-
 }
 
 namespace MyApp.MyCluster2
@@ -280,4 +305,5 @@ namespace NotMyApp.MyCluster2
         public virtual string Prop1 { get; set; }
         public void Act1() { }
     }
+#endregion
 }

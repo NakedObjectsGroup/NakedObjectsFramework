@@ -8,19 +8,54 @@ using Microsoft.Practices.Unity;
 using NakedObjects.EntityObjectStore;
 using System;
 using System.Data.Entity;
+using NakedObjects.Util;
 
 namespace NakedObjects.SystemTest {
-    public abstract class AbstractSystemTest : AcceptanceTestCase 
+    public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase 
+        where TContext : DbContext
     {
 
-
+        #region Run Configuration
+        protected override void RegisterTypes(IUnityContainer container)
+        {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
+            config.UsingCodeFirstContext(() => Activator.CreateInstance<TContext>());
+            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+        }
+        #endregion
 
         /// <summary>
         /// Assumes that a SimpleRepository for the type T has been registered in Services
         /// </summary>
         protected ITestObject NewTestObject<T>() {
-            return GetTestService(typeof (T).Name + "s").GetAction("New Instance").InvokeReturnObject();
+            return GetTestService<T>().GetAction("New Instance").InvokeReturnObject();
         }
 
+        private ITestService GetTestService<T>()
+        {
+            var name = NameUtils.NaturalName(typeof(T).Name) + "s";
+            return GetTestService(name);
+        }
+
+        protected ITestObject GetAllInstances<T>(int number)
+        {
+            return GetTestService<T>().GetAction("All Instances").InvokeReturnCollection().ElementAt(number);
+        }
+
+        protected ITestObject GetAllInstances(string simpleRepositoryName, int number)
+        {
+            return GetTestService(simpleRepositoryName).GetAction("All Instances").InvokeReturnCollection().ElementAt(number);
+        }
+
+        protected ITestObject FindById<T>(int id)
+        {
+            return GetTestService<T>().GetAction("Find By Key").InvokeReturnObject(id);
+        }
+
+        protected ITestObject FindById(string simpleRepositoryName, int id)
+        {
+            return GetTestService(simpleRepositoryName).GetAction("Find By Key").InvokeReturnObject(id);
+        }
     }
 }

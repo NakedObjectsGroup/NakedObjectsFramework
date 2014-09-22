@@ -12,24 +12,37 @@ using NakedObjects.Reflector.Security;
 using NakedObjects.Security;
 using NakedObjects.Services;
 using NakedObjects.Xat;
+using System.Data.Entity;
 
 namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     [TestClass, Ignore]
-    public class TestCustomAuthorizationManager : AbstractSystemTest {
+    public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthorizationManagerDbContext>
+    {
         #region Setup/Teardown
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc)
+        {
+            InitializeNakedObjectsFramework(new TestCustomAuthorizationManager());
+        }
 
-        [TestInitialize]
-        public void SetupTest() {
-            InitializeNakedObjectsFramework(this);
+        [ClassCleanup]
+        public static void ClassCleanup()
+        {
+            CleanupNakedObjectsFramework(new TestCustomAuthorizationManager());
+            Database.Delete(CustomAuthorizationManagerDbContext.DatabaseName);
+        }
+
+        [TestInitialize()]
+        public void TestInitialize()
+        {
+            StartTest();
             SetUser("sven");
         }
 
-        [TestCleanup]
-        public void TearDownTest() {
-            CleanupNakedObjectsFramework(this);
-            MemoryObjectStore.DiscardObjects();
+        [TestCleanup()]
+        public void TestCleanup()
+        {
         }
-
         #endregion
 
         #region "Services & Fixtures"
@@ -49,10 +62,9 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         #endregion
 
+        #region Tests
         [TestMethod]
         public void VisibilityUsingSpecificTypeAuthorizer() {
-
-           
 
             ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
             try {
@@ -63,7 +75,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
                 Assert.AreEqual("FooAuthorizer#IsVisible, user: sven, target: foo1, memberName: Prop1", e.InnerException.Message);
             }
         }
-
 
         [TestMethod]
         public void EditabilityUsingSpecificTypeAuthorizer() {
@@ -92,6 +103,19 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
             prop1.AssertIsVisible();
             prop1.AssertIsModifiable();
         }
+
+        #endregion
+    }
+
+    #region Classes used by tests
+    public class CustomAuthorizationManagerDbContext : DbContext
+    {
+        public const string DatabaseName = "TestCustomAuthorizationManager";
+        public CustomAuthorizationManagerDbContext() : base(DatabaseName) { }
+
+        public DbSet<Foo> Foos { get; set; }
+        public DbSet<Bar> Bars { get; set; }
+        public DbSet<Qux> Quxes { get; set; }
     }
 
     public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
@@ -120,7 +144,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
             //Does nothing
         }
     }
-
 
     public class FooAuthorizer : ITypeAuthorizer<Foo> {
         public IDomainObjectContainer Container { get; set; }
@@ -182,15 +205,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         }
     }
 
-    public class Qux {
-        [Optionally]
-        public virtual string Prop1 { get; set; }
-
-        public override string ToString() {
-            return "qux1";
-        }
-    }
-
     public class Bar {
         [Optionally]
         public virtual string Prop1 { get; set; }
@@ -198,8 +212,20 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         public void Act1() {}
     }
 
+    public class Qux
+    {
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+
+        public override string ToString()
+        {
+            return "qux1";
+        }
+    }
+
     public class FooSub : Foo {
         [Optionally]
         public virtual string Prop2 { get; set; }
     }
+ #endregion
 }
