@@ -1,27 +1,32 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using NUnit.Framework;
 using NakedObjects;
 using NakedObjects.Security;
+using NUnit.Framework;
 
 namespace RestfulObjects.Test.Data {
     public class WithActionViewModel : WithAction, IViewModel {
-        private MostSimple ms1;
         private WithDateTimeKey dt1;
+        private MostSimple ms1;
         private MostSimpleViewModel vm1;
 
         [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
 
+        #region IViewModel Members
+
         [NakedObjectsIgnore]
         public string[] DeriveKeys() {
-            return new[] { Id.ToString() };
+            return new[] {Id.ToString()};
         }
 
         [NakedObjectsIgnore]
@@ -32,8 +37,9 @@ namespace RestfulObjects.Test.Data {
             this.dt1 = Container.Instances<WithDateTimeKey>().FirstOrDefault();
             this.vm1 = Container.NewViewModel<MostSimpleViewModel>();
             vm1.Id = 1;
-            
         }
+
+        #endregion
 
         public override MostSimpleViewModel AnActionReturnsViewModel() {
             return vm1;
@@ -59,7 +65,7 @@ namespace RestfulObjects.Test.Data {
         }
 
 
-        public override MostSimple AnActionWithOptionalParm([Optionally, Named("Optional Parm"), DescribedAs("an optional parm"), System.ComponentModel.DataAnnotations.MaxLength(101), RegEx(Validation = @"[A-Z]")] string parm) {
+        public override MostSimple AnActionWithOptionalParm([Optionally, Named("Optional Parm"), DescribedAs("an optional parm"), MaxLength(101), RegEx(Validation = @"[A-Z]")] string parm) {
             return ms1;
         }
 
@@ -74,7 +80,7 @@ namespace RestfulObjects.Test.Data {
         }
 
         [QueryOnly]
-        public override  MostSimpleViewModel AnActionAnnotatedQueryOnlyReturnsViewModel() {
+        public override MostSimpleViewModel AnActionAnnotatedQueryOnlyReturnsViewModel() {
             return vm1;
         }
 
@@ -131,7 +137,7 @@ namespace RestfulObjects.Test.Data {
         }
 
 
-        public override void AnActionReturnsVoid() { }
+        public override void AnActionReturnsVoid() {}
 
         public override IQueryable<MostSimple> AnActionReturnsQueryable() {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2);
@@ -149,7 +155,7 @@ namespace RestfulObjects.Test.Data {
             return null;
         }
 
-        public override void AnActionWithDateTimeParm(DateTime parm) { }
+        public override void AnActionWithDateTimeParm(DateTime parm) {}
 
         public override IQueryable<MostSimple> AnActionReturnsQueryableWithScalarParameters(int parm1, string parm2) {
             Assert.AreEqual(100, parm1);
@@ -227,7 +233,7 @@ namespace RestfulObjects.Test.Data {
         }
 
         public override IList<int> Choices0AnActionWithValueParameterWithChoices() {
-            return new[] { 1, 2, 3 };
+            return new[] {1, 2, 3};
         }
 
         public override int Default0AnActionWithValueParameterWithDefault() {
@@ -259,7 +265,7 @@ namespace RestfulObjects.Test.Data {
         }
 
         public override IList<int> Choices1AnActionWithParametersWithChoicesWithDefaults() {
-            return new[] { 1, 2, 3 };
+            return new[] {1, 2, 3};
         }
 
         public override int Default1AnActionWithParametersWithChoicesWithDefaults() {
@@ -285,6 +291,5 @@ namespace RestfulObjects.Test.Data {
         public override ICollection<MostSimple> AnErrorCollection() {
             throw new DomainException("An error exception");
         }
-
     }
 }

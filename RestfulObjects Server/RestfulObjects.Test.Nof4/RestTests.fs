@@ -4,7 +4,6 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-
 module NakedObjects.Rest.Test.Nof4
 
 open NUnit.Framework
@@ -24,7 +23,6 @@ open NakedObjects.Surface
 open MvcTestApp.Controllers
 open NakedObjects.Rest.Test.RestTestsHelpers
 
-
 [<TestFixture>]
 type Nof4Tests() = 
     class
@@ -35,7 +33,6 @@ type Nof4Tests() =
             let config = new EntityObjectStoreConfiguration()
             let f = (fun () -> new CodeFirstContext("RestTest") :> Data.Entity.DbContext)
             config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
-            
             container.RegisterInstance(typeof<EntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
             container.RegisterType(typeof<IOidStrategy>, typeof<ExternalOid>, null, (new PerResolveLifetimeManager())) |> ignore
             container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new PerResolveLifetimeManager())) |> ignore
@@ -145,8 +142,9 @@ type Nof4Tests() =
         member x.GetWithReferenceTransientObject() = Objects9.GetWithReferenceTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // fix
-        member x.GetWithCollectionTransientObject() = Objects9.GetWithCollectionTransientObject x.api
+        [<Ignore>]
+         // fix
+         member x.GetWithCollectionTransientObject() = Objects9.GetWithCollectionTransientObject x.api
         
         [<Test>]
         member x.PersistWithValueTransientObject() = Objects9.PersistWithValueTransientObject x.api
@@ -225,12 +223,14 @@ type Nof4Tests() =
         member x.PersistNoKeyTransientObject() = Objects9.PersistNoKeyTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // fix
-        member x.Error() = Error10.Error x.api
+        [<Ignore>]
+         // fix
+         member x.Error() = Error10.Error x.api
         
         [<Test>]
-        [<Ignore>] // fix
-        member x.NotAcceptableError() = Error10.NotAcceptableError x.api
+        [<Ignore>]
+         // fix
+         member x.NotAcceptableError() = Error10.NotAcceptableError x.api
         
         [<Test>]
         member x.GetMostSimpleObject() = DomainObject14.GetMostSimpleObject x.api
@@ -337,7 +337,7 @@ type Nof4Tests() =
         [<Test>]
         member x.GetWithCollectionObject() = DomainObject14.GetWithCollectionObject x.api
         
-        [<Test>]     
+        [<Test>]
         member x.GetWithCollectionObjectFormalOnly() = DomainObject14.GetWithCollectionObjectFormalOnly x.api
         
         [<Test>]
@@ -437,12 +437,14 @@ type Nof4Tests() =
         member x.NotAcceptablePutObjectWrongMediaType() = DomainObject14.NotAcceptablePutObjectWrongMediaType x.api
         
         [<Test>]
-        [<Ignore>] // fix
-        member x.PutWithValueInternalError() = DomainObject14.PutWithValueInternalError x.api
+        [<Ignore>]
+         // fix
+         member x.PutWithValueInternalError() = DomainObject14.PutWithValueInternalError x.api
         
         [<Test>]
-        [<Ignore>] // fails on server - fix 
-        member x.PutWithReferenceInternalError() = DomainObject14.PutWithReferenceInternalError x.api
+        [<Ignore>]
+         // fails on server - fix 
+         member x.PutWithReferenceInternalError() = DomainObject14.PutWithReferenceInternalError x.api
         
         [<Test>]
         member x.PutWithValueObjectFailCrossValidation() = DomainObject14.PutWithValueObjectFailCrossValidation x.api
@@ -644,12 +646,14 @@ type Nof4Tests() =
         member x.NotAcceptableGetPropertyWrongMediaType() = ObjectProperty16.NotAcceptableGetPropertyWrongMediaType x.api
         
         [<Test>]
-         [<Ignore>] // temp ignore fails on server
-        member x.GetErrorValueProperty() = ObjectProperty16.GetErrorValueProperty x.api
+        [<Ignore>]
+         // temp ignore fails on server
+         member x.GetErrorValueProperty() = ObjectProperty16.GetErrorValueProperty x.api
         
         [<Test>]
-        [<Ignore>] // temp ignore fails on server
-        member x.GetErrorReferenceProperty() = ObjectProperty16.GetErrorReferenceProperty x.api
+        [<Ignore>]
+         // temp ignore fails on server
+         member x.GetErrorReferenceProperty() = ObjectProperty16.GetErrorReferenceProperty x.api
         
         [<Test>]
         member x.GetPropertyAsCollection() = ObjectProperty16.GetPropertyAsCollection x.api
@@ -821,12 +825,14 @@ type Nof4Tests() =
         member x.PutWithValuePropertyInvalidArgsNameValidateOnly() = ObjectProperty16.PutWithValuePropertyInvalidArgsNameValidateOnly x.api
         
         [<Test>]
-        [<Ignore>] // fix
-        member x.PutWithValuePropertyInternalError() = ObjectProperty16.PutWithValuePropertyInternalError x.api
+        [<Ignore>]
+         // fix
+         member x.PutWithValuePropertyInternalError() = ObjectProperty16.PutWithValuePropertyInternalError x.api
         
         [<Test>]
-        [<Ignore>] // fails on server - fix 
-        member x.PutWithReferencePropertyInternalError() = ObjectProperty16.PutWithReferencePropertyInternalError x.api
+        [<Ignore>]
+         // fails on server - fix 
+         member x.PutWithReferencePropertyInternalError() = ObjectProperty16.PutWithReferencePropertyInternalError x.api
         
         [<Test>]
         member x.DeleteValuePropertyDisabledValueValidateOnly() = ObjectProperty16.DeleteValuePropertyDisabledValueValidateOnly x.api
@@ -874,12 +880,14 @@ type Nof4Tests() =
         member x.NotAcceptableDeletePropertyWrongMediaType() = ObjectProperty16.NotAcceptableDeletePropertyWrongMediaType x.api
         
         [<Test>]
-        [<Ignore>] // fix
-        member x.DeleteValuePropertyInternalError() = ObjectProperty16.DeleteValuePropertyInternalError x.api
+        [<Ignore>]
+         // fix
+         member x.DeleteValuePropertyInternalError() = ObjectProperty16.DeleteValuePropertyInternalError x.api
         
         [<Test>]
-        [<Ignore>] // fails on server - fix 
-        member x.DeleteReferencePropertyInternalError() = ObjectProperty16.DeleteReferencePropertyInternalError x.api
+        [<Ignore>]
+         // fails on server - fix 
+         member x.DeleteReferencePropertyInternalError() = ObjectProperty16.DeleteReferencePropertyInternalError x.api
         
         [<Test>]
         member x.PropertyNotFound() = ObjectProperty16.PropertyNotFound x.api
@@ -933,8 +941,9 @@ type Nof4Tests() =
         member x.NotAcceptableGetCollectionWrongMediaType() = ObjectCollection17.NotAcceptableGetCollectionWrongMediaType x.api
         
         [<Test>]
-        [<Ignore>] // temp ignore fails on server
-        member x.GetErrorValueCollection() = ObjectCollection17.GetErrorValueCollection x.api
+        [<Ignore>]
+         // temp ignore fails on server
+         member x.GetErrorValueCollection() = ObjectCollection17.GetErrorValueCollection x.api
         
         [<Test>]
         member x.GetCollectionAsProperty() = ObjectCollection17.GetCollectionAsProperty x.api
@@ -2650,8 +2659,9 @@ type Nof4Tests() =
         member x.GetWithValueObjectType() = DomainType21.GetWithValueObjectType x.api
         
         [<Test>]
-        [<Ignore>] // fix 
-        member x.GetWithCollectionObjectType() = DomainType21.GetWithCollectionObjectType x.api
+        [<Ignore>]
+         // fix 
+         member x.GetWithCollectionObjectType() = DomainType21.GetWithCollectionObjectType x.api
         
         [<Test>]
         member x.GetPredefinedDomainTypes() = DomainType21.GetPredefinedDomainTypes x.api
@@ -2860,4 +2870,3 @@ type Nof4Tests() =
         [<Test>]
         member x.NotAcceptableIsSubTypeOf() = DomainTypeActionInvoke26.NotAcceptableIsSubTypeOf x.api
     end
-

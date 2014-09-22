@@ -4,7 +4,6 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-
 module NakedObjects.Rest.Test.Nof4Types
 
 open NUnit.Framework
@@ -34,7 +33,6 @@ type Nof4TestsTypes() =
             let config = new EntityObjectStoreConfiguration()
             let f = (fun () -> new CodeFirstContext("RestTest") :> Data.Entity.DbContext)
             config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
-            
             container.RegisterInstance(typeof<EntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
             container.RegisterType(typeof<IOidStrategy>, typeof<ExternalOid>, null, (new PerResolveLifetimeManager())) |> ignore
             container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new PerResolveLifetimeManager())) |> ignore
@@ -64,9 +62,8 @@ type Nof4TestsTypes() =
         override x.MenuServices : IServicesInstaller = 
             box (new ServicesInstaller([| box (new RestDataRepository())
                                           box (new WithActionService()) |])) :?> IServicesInstaller
-
-        override x.ContributedActions : IServicesInstaller = 
-            box (new ServicesInstaller([| box (new ContributorService()) |])) :?> IServicesInstaller
+        
+        override x.ContributedActions : IServicesInstaller = box (new ServicesInstaller([| box (new ContributorService()) |])) :?> IServicesInstaller
         member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
         
         [<Test>]
@@ -78,4 +75,3 @@ type Nof4TestsTypes() =
         [<Test>]
         member x.NotAcceptableGetDomainTypes() = DomainTypes20.NotAcceptableGetDomainTypes x.api
     end
-

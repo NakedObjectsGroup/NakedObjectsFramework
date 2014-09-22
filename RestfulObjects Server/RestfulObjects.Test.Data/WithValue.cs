@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +11,6 @@ using NakedObjects;
 using NakedObjects.Security;
 
 namespace RestfulObjects.Test.Data {
-
     [PresentationHint("class1 class2")]
     public class WithValue {
         private DateTime aDateTimeValue = new DateTime(2012, 2, 10);
@@ -27,7 +29,7 @@ namespace RestfulObjects.Test.Data {
 
         public virtual int AChoicesValue { get; set; }
 
-        [System.ComponentModel.DataAnnotations.MaxLength(101)]
+        [MaxLength(101)]
         [RegEx(Validation = @"[A-Z]")]
         [Optionally]
         [DescribedAs("A string value for testing")]
@@ -49,6 +51,8 @@ namespace RestfulObjects.Test.Data {
         [AuthorizeProperty(EditUsers = "editUser")]
         public virtual int AUserDisabledValue { get; set; }
 
+        public virtual int AConditionalChoicesValue { get; set; }
+
         public virtual int[] ChoicesAChoicesValue() {
             return new[] {1, 2, 3};
         }
@@ -60,10 +64,8 @@ namespace RestfulObjects.Test.Data {
             return "";
         }
 
-        public virtual int AConditionalChoicesValue { get; set; }
-
         public virtual int[] ChoicesAConditionalChoicesValue(int aValue, string aStringValue) {
-            return new[] {  aValue, aStringValue == null ? 0 : int.Parse(aStringValue)  };
+            return new[] {aValue, aStringValue == null ? 0 : int.Parse(aStringValue)};
         }
     }
 }
