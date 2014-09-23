@@ -50,7 +50,7 @@ namespace NakedObjects.EntityObjectStore {
             return persistor.RestoreGenericOid(encodedData) ?? new EntityOid(reflector, encodedData);
         }
 
-        public EntityOid CreateOid(string typeName, object[] keys) {
+        public IOid CreateOid(string typeName, object[] keys) {
             return new EntityOid(reflector, typeName, keys);
         }
 

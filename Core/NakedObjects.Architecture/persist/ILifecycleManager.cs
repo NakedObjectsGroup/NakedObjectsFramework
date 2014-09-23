@@ -5,14 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.persist;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Persist {
@@ -34,17 +30,7 @@ namespace NakedObjects.Architecture.Persist {
         /// </summary>
         void Reset();
 
-      
-      
-
-        /// <summary>
-        ///     Re-initialises the fields of an object. If the object is unresolved then the object's missing data
-        ///     should be retrieved from the persistence mechanism and be used to set up the value objects and
-        ///     associations.
-        /// </summary>
-        void ResolveImmediately(INakedObject nakedObject);
-
-        void ObjectChanged(INakedObject nakedObject);
+        
 
 
         /// <summary>
@@ -65,14 +51,14 @@ namespace NakedObjects.Architecture.Persist {
 
         void MadePersistent(INakedObject nakedObject);
 
-        void DestroyObject(INakedObject nakedObject);
+        
       
 
         List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);
         IOid RestoreGenericOid(string[] encodedData);
         void PopulateViewModelKeys(INakedObject nakedObject);
 
-        object CreateObject(INakedObjectSpecification specification);
+       
 
     }
 

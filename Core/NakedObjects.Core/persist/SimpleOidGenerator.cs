@@ -69,6 +69,10 @@ namespace NakedObjects.Core.Persist {
             return persistor.RestoreGenericOid(encodedData) ?? new SerialOid(reflector, encodedData);
         }
 
+        public IOid CreateOid(string typeName, object[] keys) {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
     }
 

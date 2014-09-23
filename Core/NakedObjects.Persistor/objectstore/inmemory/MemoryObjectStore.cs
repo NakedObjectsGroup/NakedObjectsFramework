@@ -114,10 +114,10 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public T CreateInstance<T>(ILifecycleManager persistor) where T : class {
             Log.Debug("CreateInstance<T> of: " + typeof (T));
-            return (T) CreateInstance(typeof (T), persistor);
+            return (T) CreateInstance(typeof (T));
         }
 
-        public object CreateInstance(Type type, ILifecycleManager persistor) {
+        public object CreateInstance(Type type) {
             Log.Debug("CreateInstance of: " + type);
             Log.Debug("CreateInstance of: " + type);
             if (type.IsArray) {
@@ -145,17 +145,17 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             throw new NotImplementedException();
         }
 
-        public virtual IOid GetOidForService(string name, string typeName) {
-            Log.DebugFormat("GetOidForService name: {0}", name);
-            lock (services) {
-                if (services.ContainsKey(name)) {
-                    return services[name];
-                }
-                SerialOid oid = SerialOid.CreatePersistent(reflector, services.Count(), typeName);
-                services[name] = oid;
-                return oid;
-            }
-        }
+        //public virtual IOid GetOidForService(string name, string typeName) {
+        //    Log.DebugFormat("GetOidForService name: {0}", name);
+        //    lock (services) {
+        //        if (services.ContainsKey(name)) {
+        //            return services[name];
+        //        }
+        //        SerialOid oid = SerialOid.CreatePersistent(reflector, services.Count(), typeName);
+        //        services[name] = oid;
+        //        return oid;
+        //    }
+        //}
 
 
        
@@ -166,15 +166,15 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public IUpdateNotifier UpdateNotifier { get; set; }
 
-        public virtual void RegisterService(string name, IOid oid) {
-            Log.DebugFormat("RegisterService name: {0} oid : {1}", name, oid);
-            lock (services) {
-                if (services.ContainsKey(name)) {
-                    throw new InitialisationException(string.Format(Resources.NakedObjects.ServiceRegisterError, name));
-                }
-                services[name] = oid;
-            }
-        }
+        //public virtual void RegisterService(string name, IOid oid) {
+        //    Log.DebugFormat("RegisterService name: {0} oid : {1}", name, oid);
+        //    lock (services) {
+        //        if (services.ContainsKey(name)) {
+        //            throw new InitialisationException(string.Format(Resources.NakedObjects.ServiceRegisterError, name));
+        //        }
+        //        services[name] = oid;
+        //    }
+        //}
 
 
         public PropertyInfo[] GetKeys(Type type) {

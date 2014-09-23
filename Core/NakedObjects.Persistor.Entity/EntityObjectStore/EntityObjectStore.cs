@@ -459,7 +459,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         public INakedObject CreateAdapterForKnownObject(object domainObject) {
-            EntityOid oid = oidGenerator.CreateOid(EntityUtils.GetProxiedTypeName(domainObject), GetContext(domainObject).GetKey(domainObject));
+            var oid = oidGenerator.CreateOid(EntityUtils.GetProxiedTypeName(domainObject), GetContext(domainObject).GetKey(domainObject));
             return Manager.NewAdapterForKnownObject(domainObject, oid);
         }
 
@@ -513,7 +513,7 @@ namespace NakedObjects.EntityObjectStore {
 
         private void LoadObject(object domainObject, LocalContext context) {
             CheckProxies(domainObject);
-            EntityOid oid = oidGenerator.CreateOid(EntityUtils.GetProxiedTypeName(domainObject), context.GetKey(domainObject));
+            var oid = oidGenerator.CreateOid(EntityUtils.GetProxiedTypeName(domainObject), context.GetKey(domainObject));
             INakedObject nakedObject = createAdapter(oid, domainObject);
             injector.InitDomainObject(nakedObject.Object);
             LoadComplexTypes(nakedObject, nakedObject.ResolveState.IsGhost());
@@ -1162,10 +1162,10 @@ namespace NakedObjects.EntityObjectStore {
             throw new NakedObjectSystemException("Unexpected oid type: " + oid.GetType());
         }
 
-        public IOid GetOidForService(string name, string typeName) {
-            Log.DebugFormat("GetOidForService name: {0}", name);
-            return oidGenerator.CreateOid(typeName, new object[] {0});
-        }
+        //public IOid GetOidForService(string name, string typeName) {
+        //    Log.DebugFormat("GetOidForService name: {0}", name);
+        //    return oidGenerator.CreateOid(typeName, new object[] {0});
+        //}
 
         public bool IsInitialized {
             get { return IsInitializedCheck(); }
@@ -1177,10 +1177,10 @@ namespace NakedObjects.EntityObjectStore {
         }
 
 
-        public void RegisterService(string name, IOid oid) {
-            Log.DebugFormat("RegisterService name: {0} oid : {1}", name, oid);
-            // do nothing 
-        }
+        //public void RegisterService(string name, IOid oid) {
+        //    Log.DebugFormat("RegisterService name: {0} oid : {1}", name, oid);
+        //    // do nothing 
+        //}
 
         public void ResolveField(INakedObject nakedObject, INakedObjectAssociation field) {
             Log.DebugFormat("ResolveField nakedobject: {0} field: {1}", nakedObject, field);
@@ -1194,7 +1194,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         public INakedObject FindByKeys(Type type, object[] keys) {
-            EntityOid eoid = oidGenerator.CreateOid(type.FullName, keys);
+            var eoid = oidGenerator.CreateOid(type.FullName, keys);
             INakedObjectSpecification hint = loadSpecification(type);
             return GetObject(eoid, hint);
         }
@@ -1253,7 +1253,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
 
-        public object CreateInstance(Type type, ILifecycleManager persistor) {
+        public object CreateInstance(Type type) {
             Log.Debug("CreateInstance of: " + type);
             if (type.IsArray) {
                 return Array.CreateInstance(type.GetElementType(), 0);
@@ -1281,7 +1281,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public T CreateInstance<T>(ILifecycleManager persistor) where T : class {
             Log.Debug("CreateInstance<T> of: " + typeof (T));
-            return (T) CreateInstance(typeof (T), persistor);
+            return (T) CreateInstance(typeof (T));
         }
 
         public PropertyInfo[] GetKeys(Type type) {

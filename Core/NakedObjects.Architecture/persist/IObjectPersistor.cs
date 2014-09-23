@@ -24,5 +24,9 @@ namespace NakedObjects.Architecture.persist {
         PropertyInfo[] GetKeys(Type type);
         INakedObject FindByKeys(Type type, object[] keys);
         void Refresh(INakedObject nakedObject);
+        void ResolveImmediately(INakedObject nakedObject);
+        void ObjectChanged(INakedObject nakedObject);
+        void DestroyObject(INakedObject nakedObject);
+        object CreateObject(INakedObjectSpecification specification);
     }
 }

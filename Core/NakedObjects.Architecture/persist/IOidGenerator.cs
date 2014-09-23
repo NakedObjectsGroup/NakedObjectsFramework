@@ -23,6 +23,8 @@ namespace NakedObjects.Architecture.Persist {
         IOid CreateTransientOid(object obj);
 
         IOid RestoreOid(ILifecycleManager persistor, string[] encodedData);
+
+        IOid CreateOid(string typeName, object[] keys);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

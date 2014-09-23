@@ -50,7 +50,7 @@ namespace NakedObjects.Persistor.Objectstore {
         /// </para>
         ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session);
 
-        void RegisterService(string name, IOid oid);
+       // void RegisterService(string name, IOid oid);
 
         /// <summary>
         ///     Removes the specified object from the object store. The specified object's data should be removed from
@@ -75,7 +75,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
         T CreateInstance<T>(ILifecycleManager persistor) where T : class;
 
-        object CreateInstance(Type type, ILifecycleManager persistor);
+        object CreateInstance(Type type);
 
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace NakedObjects.Persistor.Objectstore {
         /// <summary>
         ///     Returns the OID for the adapted service
         /// </summary>
-        IOid GetOidForService(string name, string typeName);
+        //IOid GetOidForService(string name, string typeName);
 
         void ResolveField(INakedObject nakedObject, INakedObjectAssociation field);
 
