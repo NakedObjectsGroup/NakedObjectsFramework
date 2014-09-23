@@ -140,7 +140,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("ActionDialog", result.ViewName);
             ViewDataDictionary data = result.ViewData;
             Assert.IsInstanceOf(typeof (FindViewModel), data.Model);
-            Assert.AreEqual(actionName, ((FindViewModel) data.Model).ContextAction.GetName(NakedObjectsFramework.ObjectPersistor));
+            Assert.AreEqual(actionName, ((FindViewModel) data.Model).ContextAction.GetName(NakedObjectsFramework.LifecycleManager));
         }
 
 
@@ -385,7 +385,7 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         private Employee Employee {
-            get { return NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First(); }
+            get { return NakedObjectsFramework.LifecycleManager.Instances<Employee>().First(); }
         }
 
         private string EmployeeId {
@@ -393,19 +393,19 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private Employee TransientEmployee {
-            get { return NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Employee))).GetDomainObject<Employee>(); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Employee))).GetDomainObject<Employee>(); }
         }
 
         private Vendor TransientVendor {
-            get { return NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Vendor))).GetDomainObject<Vendor>(); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Vendor))).GetDomainObject<Vendor>(); }
         }
 
         private Shift TransientShift {
-            get { return NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Shift))).GetDomainObject<Shift>(); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Shift))).GetDomainObject<Shift>(); }
         }
 
         private Individual TransientIndividual {
-            get { return NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Individual))).GetDomainObject<Individual>(); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Individual))).GetDomainObject<Individual>(); }
         }
 
         private NotPersistedObject NotPersistedObject {
@@ -416,7 +416,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private SalesOrderHeader Order {
-            get { return NakedObjectsFramework.ObjectPersistor.Instances<SalesOrderHeader>().First(); }
+            get { return NakedObjectsFramework.LifecycleManager.Instances<SalesOrderHeader>().First(); }
         }
 
         private string OrderId {
@@ -424,19 +424,19 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private Vendor Vendor {
-            get { return NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First(); }
+            get { return NakedObjectsFramework.LifecycleManager.Instances<Vendor>().First(); }
         }
 
         private Contact Contact {
-            get { return NakedObjectsFramework.ObjectPersistor.Instances<Contact>().First(); }
+            get { return NakedObjectsFramework.LifecycleManager.Instances<Contact>().First(); }
         }
 
         private Individual Individual {
-            get { return NakedObjectsFramework.ObjectPersistor.Instances<Individual>().First(); }
+            get { return NakedObjectsFramework.LifecycleManager.Instances<Individual>().First(); }
         }
 
         private Product Product {
-            get { return NakedObjectsFramework.ObjectPersistor.Instances<Product>().First(); }
+            get { return NakedObjectsFramework.LifecycleManager.Instances<Product>().First(); }
         }
 
         private string ProductId {
@@ -493,7 +493,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public Store Store {
-            get { return NakedObjectsFramework.ObjectPersistor.Instances<Store>().First(); }
+            get { return NakedObjectsFramework.LifecycleManager.Instances<Store>().First(); }
         }
 
         private string StoreId {
@@ -501,11 +501,11 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private SalesPerson SalesPerson {
-            get { return NakedObjectsFramework.ObjectPersistor.Instances<SalesPerson>().First(); }
+            get { return NakedObjectsFramework.LifecycleManager.Instances<SalesPerson>().First(); }
         }
 
         private Store TransientStore {
-            get { return NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Store))).GetDomainObject<Store>(); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Store))).GetDomainObject<Store>(); }
         }
 
 
@@ -551,12 +551,12 @@ namespace MvcTestApp.Tests.Controllers {
 
         public void EditSaveValidationOk(Vendor vendor) {
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            INakedObject adaptedVendor = NakedObjectsFramework.ObjectPersistor.CreateAdapter(vendor, null, null);
+            INakedObject adaptedVendor = NakedObjectsFramework.LifecycleManager.CreateAdapter(vendor, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(vendor)};
 
-            NakedObjectsFramework.ObjectPersistor.StartTransaction();
+            NakedObjectsFramework.LifecycleManager.StartTransaction();
             try {
                 var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -567,19 +567,19 @@ namespace MvcTestApp.Tests.Controllers {
                 AssertIsDetailsViewOf<Vendor>(result);
             }
             finally {
-                NakedObjectsFramework.ObjectPersistor.EndTransaction();
+                NakedObjectsFramework.LifecycleManager.EndTransaction();
             }
         }
 
         public void EditInlineSaveValidationOk(Shift shift) {
-            INakedObject adaptedShift = NakedObjectsFramework.ObjectPersistor.CreateAdapter(shift, null, null);
-            INakedObject adaptedTimePeriod = NakedObjectsFramework.ObjectPersistor.CreateAdapter(shift.Times, null, null);
+            INakedObject adaptedShift = NakedObjectsFramework.LifecycleManager.CreateAdapter(shift, null, null);
+            INakedObject adaptedTimePeriod = NakedObjectsFramework.LifecycleManager.CreateAdapter(shift.Times, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForShiftEdit(adaptedShift, adaptedTimePeriod, DateTime.Now.ToString(), DateTime.Now.ToString(), out idToRawvalue);
 
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(shift)};
 
-            NakedObjectsFramework.ObjectPersistor.StartTransaction();
+            NakedObjectsFramework.LifecycleManager.StartTransaction();
             try {
                 var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -590,13 +590,13 @@ namespace MvcTestApp.Tests.Controllers {
                 AssertIsDetailsViewOf<Shift>(result);
             }
             finally {
-                NakedObjectsFramework.ObjectPersistor.EndTransaction();
+                NakedObjectsFramework.LifecycleManager.EndTransaction();
             }
         }
 
 
         public void EditSaveValidationFail(Vendor vendor) {
-            INakedObject adaptedVendor = NakedObjectsFramework.ObjectPersistor.CreateAdapter(vendor, null, null);
+            INakedObject adaptedVendor = NakedObjectsFramework.LifecycleManager.CreateAdapter(vendor, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForVendorEdit(adaptedVendor, "", "", "", "", "", "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(vendor)};
@@ -613,8 +613,8 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         public void EditInlineSaveValidationFail(Shift shift) {
-            INakedObject adaptedShift = NakedObjectsFramework.ObjectPersistor.CreateAdapter(shift, null, null);
-            INakedObject adaptedTimePeriod = NakedObjectsFramework.ObjectPersistor.CreateAdapter(shift.Times, null, null);
+            INakedObject adaptedShift = NakedObjectsFramework.LifecycleManager.CreateAdapter(shift, null, null);
+            INakedObject adaptedTimePeriod = NakedObjectsFramework.LifecycleManager.CreateAdapter(shift.Times, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForShiftEdit(adaptedShift, adaptedTimePeriod, DateTime.Now.ToString(), "invalid", out idToRawvalue);
 
@@ -632,7 +632,7 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         public void EditSaveValidationFailEmptyForm(Individual individual) {
-            INakedObject nakedObject = NakedObjectsFramework.ObjectPersistor.CreateAdapter(individual, null, null);
+            INakedObject nakedObject = NakedObjectsFramework.LifecycleManager.CreateAdapter(individual, null, null);
 
             FormCollection form = GetForm(new Dictionary<string, string>());
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(individual)};
@@ -649,9 +649,9 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         public void EditFindForObjectMultiCached(Store store) {
-            SalesPerson salesPerson = NakedObjectsFramework.ObjectPersistor.Instances<SalesPerson>().OrderBy(sp => "").First();
+            SalesPerson salesPerson = NakedObjectsFramework.LifecycleManager.Instances<SalesPerson>().OrderBy(sp => "").First();
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, salesPerson);
-            salesPerson = NakedObjectsFramework.ObjectPersistor.Instances<SalesPerson>().OrderBy(sp => "").Skip(1).First();
+            salesPerson = NakedObjectsFramework.LifecycleManager.Instances<SalesPerson>().OrderBy(sp => "").Skip(1).First();
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, salesPerson);
 
             INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
@@ -669,7 +669,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void EditFindForObjectOneCached(Store store) {
-            SalesPerson salesPerson = NakedObjectsFramework.ObjectPersistor.Instances<SalesPerson>().First();
+            SalesPerson salesPerson = NakedObjectsFramework.LifecycleManager.Instances<SalesPerson>().First();
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, salesPerson);
 
             INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
@@ -704,7 +704,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void EditSelectForObject(Store store) {
             INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
-            SalesPerson salesPerson = NakedObjectsFramework.ObjectPersistor.Instances<SalesPerson>().First();
+            SalesPerson salesPerson = NakedObjectsFramework.LifecycleManager.Instances<SalesPerson>().First();
             string data = "SalesPerson=" + NakedObjectsFramework.GetObjectId(salesPerson);
             FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store), Selector = data};
@@ -812,7 +812,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         public void SelectForActionUpdatesViewState(bool testValue) {
             INakedObjectAction action = GetAction(OrderContrib, "CreateNewOrder");
-            Store customer = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
+            Store customer = NakedObjectsFramework.LifecycleManager.Instances<Store>().First();
             IDictionary<string, string> idToRawvalue;
             string data = "cust=" + NakedObjectsFramework.GetObjectId(customer);
             FormCollection form = GetFormForCreateNewOrder(action, "", testValue, out idToRawvalue);
@@ -1023,7 +1023,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void CrossFieldValidationFail() {
             IDictionary<string, string> idToRawvalue;
             INakedObjectSpecification ccSpec = NakedObjectsFramework.Reflector.LoadSpecification(typeof (CreditCard));
-            INakedObject cc = NakedObjectsFramework.ObjectPersistor.CreateInstance(ccSpec);
+            INakedObject cc = NakedObjectsFramework.LifecycleManager.CreateInstance(ccSpec);
 
             FormCollection form = GetFormForCeditCardEdit(cc, "Vista", "12345", "1", "2010", out idToRawvalue);
 
@@ -1040,7 +1040,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void CrossFieldValidationSuccess() {
             IDictionary<string, string> idToRawvalue;
             INakedObjectSpecification ccSpec = NakedObjectsFramework.Reflector.LoadSpecification(typeof (CreditCard));
-            INakedObject cc = NakedObjectsFramework.ObjectPersistor.CreateInstance(ccSpec);
+            INakedObject cc = NakedObjectsFramework.LifecycleManager.CreateInstance(ccSpec);
             cc.GetDomainObject<CreditCard>().Creator = new TestCreator();
 
             FormCollection form = GetFormForCeditCardEdit(cc, "Vista", "12345", "1", "2020", out idToRawvalue);
@@ -1233,8 +1233,8 @@ namespace MvcTestApp.Tests.Controllers {
         public void EditRefreshTransient() {
             const string redisplay = "DepartmentHistory=table&editMode=True";
             Employee employee = TransientEmployee;
-            Employee report1 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(1).First();
-            Employee report2 = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(2).First();
+            Employee report1 = NakedObjectsFramework.LifecycleManager.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(1).First();
+            Employee report2 = NakedObjectsFramework.LifecycleManager.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(2).First();
             INakedObject employeeNakedObject = NakedObjectsFramework.GetNakedObject(employee);
             INakedObjectAssociation collectionAssoc = employeeNakedObject.Specification.Properties.Single(p => p.Id == "DirectReports");
 
@@ -1258,14 +1258,14 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void EditSaveConcurrencyFail() {
             Store store = Store;
-            INakedObject adaptedStore = NakedObjectsFramework.ObjectPersistor.CreateAdapter(store, null, null);
+            INakedObject adaptedStore = NakedObjectsFramework.LifecycleManager.CreateAdapter(store, null, null);
             IDictionary<string, string> idToRawvalue;
             string differentDateTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), differentDateTime, out idToRawvalue);
 
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store)};
 
-            NakedObjectsFramework.ObjectPersistor.StartTransaction();
+            NakedObjectsFramework.LifecycleManager.StartTransaction();
             try {
                 controller.Edit(objectModel, form);
 
@@ -1275,20 +1275,20 @@ namespace MvcTestApp.Tests.Controllers {
                 Assert.AreSame(adaptedStore, expected.SourceNakedObject);
             }
             finally {
-                NakedObjectsFramework.ObjectPersistor.EndTransaction();
+                NakedObjectsFramework.LifecycleManager.EndTransaction();
             }
         }
 
         [Test]
         public void EditSaveConcurrencyOk() {
             Store store = Store;
-            INakedObject adaptedStore = NakedObjectsFramework.ObjectPersistor.CreateAdapter(store, null, null);
+            INakedObject adaptedStore = NakedObjectsFramework.LifecycleManager.CreateAdapter(store, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
 
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store)};
 
-            NakedObjectsFramework.ObjectPersistor.StartTransaction();
+            NakedObjectsFramework.LifecycleManager.StartTransaction();
             try {
                 var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -1299,7 +1299,7 @@ namespace MvcTestApp.Tests.Controllers {
                 AssertIsDetailsViewOf<Store>(result);
             }
             finally {
-                NakedObjectsFramework.ObjectPersistor.EndTransaction();
+                NakedObjectsFramework.LifecycleManager.EndTransaction();
             }
         }
 
@@ -1510,7 +1510,7 @@ namespace MvcTestApp.Tests.Controllers {
                           "&subEditObjectId=" + NakedObjectsFramework.GetObjectId(transientVendor) +
                           "&targetObjectId=" + NakedObjectsFramework.GetObjectId(contactRepo);
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            INakedObject adaptedVendor = NakedObjectsFramework.ObjectPersistor.CreateAdapter(transientVendor, null, null);
+            INakedObject adaptedVendor = NakedObjectsFramework.LifecycleManager.CreateAdapter(transientVendor, null, null);
 
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = EmployeeRepoId, ActionId = action.Id, InvokeActionAsSave = data};
@@ -1536,7 +1536,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;1;False;;0");
             form.Add("SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;2;False;;0");
 
-            INakedObject order = NakedObjectsFramework.ObjectPersistor.CreateAdapter(Order, null, null);
+            INakedObject order = NakedObjectsFramework.LifecycleManager.CreateAdapter(Order, null, null);
             INakedObjectAssociation assocMD = order.Specification.GetProperty("ModifiedDate");
             INakedObjectAction action = order.GetActionLeafNode("AddNewSalesReasons");
 
@@ -1565,7 +1565,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories-Select", @"1");
             form.Add("SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories-Select", @"2");
 
-            INakedObject order = NakedObjectsFramework.ObjectPersistor.CreateAdapter(Order, null, null);
+            INakedObject order = NakedObjectsFramework.LifecycleManager.CreateAdapter(Order, null, null);
             INakedObjectAssociation assocMD = order.Specification.GetProperty("ModifiedDate");
             INakedObjectAction action = order.GetActionLeafNode("AddNewSalesReasonsByCategories");
 
@@ -1766,7 +1766,7 @@ namespace MvcTestApp.Tests.Controllers {
                           "&contextActionId=";
 
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            INakedObject adaptedVendor = NakedObjectsFramework.ObjectPersistor.CreateAdapter(transientVendor, null, null);
+            INakedObject adaptedVendor = NakedObjectsFramework.LifecycleManager.CreateAdapter(transientVendor, null, null);
 
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
 
@@ -1832,7 +1832,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeObjectActionParmsNotSet() {
-            INakedObject adaptedProduct = NakedObjectsFramework.ObjectPersistor.CreateAdapter(Product, null, null);
+            INakedObject adaptedProduct = NakedObjectsFramework.LifecycleManager.CreateAdapter(Product, null, null);
             FormCollection form = GetFormForBestSpecialOffer(adaptedProduct, "");
             var objectModel = new ObjectAndControlData {ActionId = "BestSpecialOffer", Id = ProductId};
 
@@ -1846,7 +1846,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeObjectActionParmsSet() {
-            INakedObject adaptedProduct = NakedObjectsFramework.ObjectPersistor.CreateAdapter(Product, null, null);
+            INakedObject adaptedProduct = NakedObjectsFramework.LifecycleManager.CreateAdapter(Product, null, null);
             FormCollection form = GetFormForBestSpecialOffer(adaptedProduct, "1");
             var objectModel = new ObjectAndControlData {ActionId = "BestSpecialOffer", Id = ProductId};
 
@@ -1974,7 +1974,7 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void SelectForAction() {
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            Contact contactDetails = NakedObjectsFramework.ObjectPersistor.Instances<Contact>().First();
+            Contact contactDetails = NakedObjectsFramework.LifecycleManager.Instances<Contact>().First();
             IDictionary<string, string> idToRawvalue;
             string data = "ContactDetails=" + NakedObjectsFramework.GetObjectId(contactDetails);
             FormCollection form = GetFormForCreateNewEmployeeFromContact(action, "", out idToRawvalue);
@@ -2122,7 +2122,7 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         public Store Store {
-            get { return NakedObjectsFramework.ObjectPersistor.Instances<Store>().First(); }
+            get { return NakedObjectsFramework.LifecycleManager.Instances<Store>().First(); }
         }
 
         public FormCollection GetFormForStoreEdit(INakedObject store,
@@ -2172,7 +2172,7 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         private SalesOrderHeader Order {
-            get { return NakedObjectsFramework.ObjectPersistor.Instances<SalesOrderHeader>().First(); }
+            get { return NakedObjectsFramework.LifecycleManager.Instances<SalesOrderHeader>().First(); }
         }
 
         private static FormCollection GetForm(IDictionary<string, string> nameValues) {
@@ -2188,14 +2188,14 @@ namespace MvcTestApp.Tests.Controllers {
         //  ----> System.Data.SqlClient.SqlException : A transport-level error has occurred when sending the request to the server. (provider: Shared Memory Provider, error: 0 - No process is on the other end of the pipe.)
         public void EditSaveEFConcurrencyFail() {
             Store store = Store;
-            INakedObject adaptedStore = NakedObjectsFramework.ObjectPersistor.CreateAdapter(store, null, null);
+            INakedObject adaptedStore = NakedObjectsFramework.LifecycleManager.CreateAdapter(store, null, null);
             IDictionary<string, string> idToRawvalue;
 
             FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
 
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store)};
 
-            NakedObjectsFramework.ObjectPersistor.StartTransaction();
+            NakedObjectsFramework.LifecycleManager.StartTransaction();
             var conn = new SqlConnection(@"Data Source=" + Constants.Server + @";Initial Catalog=AdventureWorks;Integrated Security=True");
 
             conn.Open();
@@ -2217,7 +2217,7 @@ namespace MvcTestApp.Tests.Controllers {
                     cmd.ExecuteNonQuery();
                 }
 
-                NakedObjectsFramework.ObjectPersistor.EndTransaction();
+                NakedObjectsFramework.LifecycleManager.EndTransaction();
 
                 Assert.Fail("Expect concurrency exception");
             }

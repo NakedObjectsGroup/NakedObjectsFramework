@@ -18,7 +18,7 @@ namespace NakedObjects {
 
         ISession Session { get; }
 
-        ILifecycleManager ObjectPersistor { get; }
+        ILifecycleManager LifecycleManager { get; }
 
         INakedObjectManager Manager { get; }
 

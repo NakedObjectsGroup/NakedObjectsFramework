@@ -147,7 +147,7 @@ namespace NakedObjects.EntityObjectStore {
 
             //var identityMap = new EntityIdentityMapImpl(oidGenerator, identityAdapterMap ?? new IdentityAdapterHashMap(), pocoAdapterMap ?? new PocoAdapterHashMap(), objectStore);
 
-            //var op = new ObjectStorePersistor(
+            //var op = new LifeCycleManager(
             //    reflector,             
             //    objectStore, 
             //    new EntityPersistAlgorithm(),

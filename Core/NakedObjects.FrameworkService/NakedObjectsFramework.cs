@@ -44,7 +44,7 @@ namespace NakedObjects.Service {
             get { return session; }
         }
 
-        public ILifecycleManager ObjectPersistor {
+        public ILifecycleManager LifecycleManager {
             get { return objectPersistor; }
         }
 

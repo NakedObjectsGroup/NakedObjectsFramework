@@ -43,7 +43,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public string Name {
-            get { return nakedObjectActionParameter.GetName(framework.ObjectPersistor); }
+            get { return nakedObjectActionParameter.GetName(framework.LifecycleManager); }
         }
 
         public string Description {
@@ -110,7 +110,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSurface[] GetChoices(INakedObjectSurface nakedObject, IDictionary<string, INakedObjectSurface> parameterNameValues) {
-            return nakedObjectActionParameter.GetChoices(((NakedObjectWrapper) nakedObject).WrappedNakedObject, null, framework.ObjectPersistor).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray();
+            return nakedObjectActionParameter.GetChoices(((NakedObjectWrapper) nakedObject).WrappedNakedObject, null, framework.LifecycleManager).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray();
         }
 
         public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
@@ -123,15 +123,15 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSurface[] GetCompletions(INakedObjectSurface nakedObject, string autoCompleteParm) {
-            return nakedObjectActionParameter.GetCompletions(((NakedObjectWrapper) nakedObject).WrappedNakedObject, autoCompleteParm, framework.ObjectPersistor).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray();
+            return nakedObjectActionParameter.GetCompletions(((NakedObjectWrapper) nakedObject).WrappedNakedObject, autoCompleteParm, framework.LifecycleManager).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray();
         }
 
         public bool DefaultTypeIsExplicit(INakedObjectSurface nakedObject) {
-            return nakedObjectActionParameter.GetDefaultType(((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.ObjectPersistor) == TypeOfDefaultValue.Explicit;
+            return nakedObjectActionParameter.GetDefaultType(((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.LifecycleManager) == TypeOfDefaultValue.Explicit;
         }
 
         public INakedObjectSurface GetDefault(INakedObjectSurface nakedObject) {
-            return NakedObjectWrapper.Wrap(nakedObjectActionParameter.GetDefault(((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.ObjectPersistor), Surface, framework);
+            return NakedObjectWrapper.Wrap(nakedObjectActionParameter.GetDefault(((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.LifecycleManager), Surface, framework);
         }
 
         public INakedObjectsSurface Surface { get; set; }

@@ -17,14 +17,14 @@ namespace NakedObjects.Boot {
         }
 
         protected void Inject(object obj) {
-            //object[] services = NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray();
+            //object[] services = NakedObjectsContext.LifecycleManager.GetServices().Select(no => no.Object).ToArray();
             //IContainerInjector injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector,
             //    services);
             //injector.InitDomainObject(obj);
         }
 
         protected static void StartTransaction() {
-           // NakedObjectsContext.ObjectPersistor.StartTransaction();
+           // NakedObjectsContext.LifecycleManager.StartTransaction();
         }
 
         protected static void EnsureReady() {
@@ -36,11 +36,11 @@ namespace NakedObjects.Boot {
         }
 
         protected static void EndTransaction() {
-         //   NakedObjectsContext.ObjectPersistor.EndTransaction();
+         //   NakedObjectsContext.LifecycleManager.EndTransaction();
         }
 
         protected static void AbortTransaction() {
-         //   NakedObjectsContext.ObjectPersistor.AbortTransaction();
+         //   NakedObjectsContext.LifecycleManager.AbortTransaction();
         }
 
         #region INakedObjectsClient Members

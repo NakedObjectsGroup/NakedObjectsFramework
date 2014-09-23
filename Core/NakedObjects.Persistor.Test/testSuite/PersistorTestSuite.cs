@@ -31,7 +31,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private  ILifecycleManager Persistor {
             get {
-                return framework.ObjectPersistor;
+                return framework.LifecycleManager;
             }
         }
 
@@ -48,12 +48,12 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         private  INakedObject AdapterFor(object domainObject) {
-            return framework.ObjectPersistor.CreateAdapter(domainObject, null, null);
+            return framework.LifecycleManager.CreateAdapter(domainObject, null, null);
         }
 
 
         private  Person GetPerson(int id) {
-            return framework.ObjectPersistor.Instances<Person>().Single(p => p.PersonId == id);
+            return framework.LifecycleManager.Instances<Person>().Single(p => p.PersonId == id);
         }
 
 

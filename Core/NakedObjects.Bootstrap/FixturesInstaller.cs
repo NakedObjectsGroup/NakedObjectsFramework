@@ -22,9 +22,9 @@ namespace NakedObjects.Boot {
         #region IFixturesInstaller Members
 
         public void InstallFixtures(ILifecycleManager persistor, IContainerInjector injector) {
-            //NakedObjectsContext.ObjectPersistor.Reset();
+            //NakedObjectsContext.LifecycleManager.Reset();
 
-            //if (NakedObjectsContext.ObjectPersistor.IsInitialized) {
+            //if (NakedObjectsContext.LifecycleManager.IsInitialized) {
             //    Log.Info("skipping fixtures, as already loaded");
             //    return;
             //}

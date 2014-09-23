@@ -11,12 +11,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.persist;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Persist {
-    public interface ILifecycleManager : INakedObjectTransactionManager, INakedObjectManager, IPersistedObjectAdder {
+    public interface ILifecycleManager : INakedObjectTransactionManager, INakedObjectManager, IObjectPersistor, IServicesManager {
         /// <summary>
         ///     Determine if the object store has been initialized with its set of start up objects.
         /// </summary>
@@ -39,15 +39,9 @@ namespace NakedObjects.Architecture.Persist {
         /// </summary>
         void Reset();
 
-        //void AddServices(IEnumerable<ServiceWrapper> services);
+       
 
-        IQueryable<T> Instances<T>() where T : class;
-
-        IQueryable Instances(Type type);
-
-        IQueryable Instances(INakedObjectSpecification specification);
-
-        INakedObject LoadObject(IOid oid, INakedObjectSpecification spec);
+      
 
         /// <summary>
         ///     Hint that specified field within the specified object is likely to be needed soon. This allows the

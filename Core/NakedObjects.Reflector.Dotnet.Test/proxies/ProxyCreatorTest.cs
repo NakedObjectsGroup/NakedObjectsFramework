@@ -107,7 +107,7 @@ namespace NakedObjects.Reflector.DotNet.Proxies {
 
         [Test]
         public void CreateProxyWithNonVirtualAccessors() {
-            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, NakedObjectsFramework.ObjectPersistor, typeof (HasCollectionWithNonVirtualAccessors));
+            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, NakedObjectsFramework.LifecycleManager, typeof (HasCollectionWithNonVirtualAccessors));
             var proxy = (HasCollectionWithNonVirtualAccessors) Activator.CreateInstance(proxyType);
             NakedObjectsFramework.Injector.InitDomainObject(proxy);
 
@@ -120,7 +120,7 @@ namespace NakedObjects.Reflector.DotNet.Proxies {
 
         [Test]
         public void CreateProxyWithVirtualAddTo() {
-            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, NakedObjectsFramework.ObjectPersistor, typeof(HasCollectionWithVirtualAccessors));
+            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, NakedObjectsFramework.LifecycleManager, typeof(HasCollectionWithVirtualAccessors));
             var proxy = (HasCollectionWithVirtualAccessors) Activator.CreateInstance(proxyType);
             NakedObjectsFramework.Injector.InitDomainObject(proxy);
 
@@ -133,7 +133,7 @@ namespace NakedObjects.Reflector.DotNet.Proxies {
 
         [Test]
         public void CreateProxyWithVirtualClear() {
-            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, NakedObjectsFramework.ObjectPersistor, typeof(HasCollectionWithVirtualAccessors));
+            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, NakedObjectsFramework.LifecycleManager, typeof(HasCollectionWithVirtualAccessors));
             var proxy = (HasCollectionWithVirtualAccessors) Activator.CreateInstance(proxyType);
             NakedObjectsFramework.Injector.InitDomainObject(proxy);
             var hasProperty = new HasProperty();
@@ -150,7 +150,7 @@ namespace NakedObjects.Reflector.DotNet.Proxies {
 
         [Test]
         public void CreateProxyWithVirtualProperty() {
-            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, NakedObjectsFramework.ObjectPersistor, typeof(HasProperty));
+            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, NakedObjectsFramework.LifecycleManager, typeof(HasProperty));
             var proxy = (HasProperty) Activator.CreateInstance(proxyType);
             NakedObjectsFramework.Injector.InitDomainObject(proxy);
             const string testValue = "A Test Value";
@@ -162,7 +162,7 @@ namespace NakedObjects.Reflector.DotNet.Proxies {
 
         [Test]
         public void CreateProxyWithVirtualRemoveFrom() {
-            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, NakedObjectsFramework.ObjectPersistor, typeof(HasCollectionWithVirtualAccessors));
+            Type proxyType = ProxyCreator.CreateProxyType(NakedObjectsFramework.Reflector, NakedObjectsFramework.LifecycleManager, typeof(HasCollectionWithVirtualAccessors));
             var proxy = (HasCollectionWithVirtualAccessors) Activator.CreateInstance(proxyType);
             NakedObjectsFramework.Injector.InitDomainObject(proxy);
             var hasProperty = new HasProperty();

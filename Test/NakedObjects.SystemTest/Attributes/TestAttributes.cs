@@ -1060,14 +1060,14 @@ namespace NakedObjects.SystemTest.Attributes
         {
             var service = (TestServiceNotContributedAction) GetTestService(typeof(TestServiceNotContributedAction)).NakedObject.Object;
             var obj = NewTestObject<Notcontributedaction1>().GetDomainObject();
-            var adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(obj, null, null);
+            var adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(obj, null, null);
             var actions = adapter.Specification.GetObjectActions();
 
             Assert.AreEqual(1, actions.Count());
             Assert.IsTrue(actions[0] is NakedObjectActionSet);
             Assert.AreEqual(1, actions[0].Actions.Count());
             Assert.IsTrue(actions[0].Actions[0] is NakedObjectActionImpl);
-            Assert.AreEqual("Contributed Action", actions[0].Actions[0].GetName(NakedObjectsFramework.ObjectPersistor));
+            Assert.AreEqual("Contributed Action", actions[0].Actions[0].GetName(NakedObjectsFramework.LifecycleManager));
         }
         #endregion
 
@@ -1077,7 +1077,7 @@ namespace NakedObjects.SystemTest.Attributes
         {
             var service = (TestServiceExcludeFromFindMenu)GetTestService(typeof(TestServiceExcludeFromFindMenu)).NakedObject.Object;
             Exclude1 obj = service.NewObject1();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(obj, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(obj, null, null);
             INakedObjectAction[] actions = adapter.Specification.GetRelatedServiceActions();
 
             Assert.AreEqual(1, actions.Count());
@@ -1085,8 +1085,8 @@ namespace NakedObjects.SystemTest.Attributes
             Assert.AreEqual(2, actions[0].Actions.Count());
             Assert.IsTrue(actions[0].Actions[0] is NakedObjectActionImpl);
             Assert.IsTrue(actions[0].Actions[1] is NakedObjectActionImpl);
-            Assert.AreEqual("Finder Action1", actions[0].Actions[0].GetName(NakedObjectsFramework.ObjectPersistor));
-            Assert.AreEqual("Finder Action2", actions[0].Actions[1].GetName(NakedObjectsFramework.ObjectPersistor));
+            Assert.AreEqual("Finder Action1", actions[0].Actions[0].GetName(NakedObjectsFramework.LifecycleManager));
+            Assert.AreEqual("Finder Action2", actions[0].Actions[1].GetName(NakedObjectsFramework.LifecycleManager));
         }
         #endregion
     }

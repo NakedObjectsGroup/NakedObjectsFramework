@@ -26,8 +26,8 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static MvcHtmlString[] Collections(this HtmlHelper html, object domainObject, string defaultTo = IdHelper.ListDisplayFormat) {
             INakedObject adapter = html.Framework().GetNakedObject(domainObject);
-            IEnumerable<INakedObject> collections = adapter.Specification.Properties.Where(obj => obj.IsCollection).Select(a => a.GetNakedObject(adapter, html.Framework().ObjectPersistor));
-            return collections.Select(c => html.Collection(c.GetAsEnumerable(html.Framework().ObjectPersistor), null, defaultTo)).ToArray();
+            IEnumerable<INakedObject> collections = adapter.Specification.Properties.Where(obj => obj.IsCollection).Select(a => a.GetNakedObject(adapter, html.Framework().LifecycleManager));
+            return collections.Select(c => html.Collection(c.GetAsEnumerable(html.Framework().LifecycleManager), null, defaultTo)).ToArray();
         }
 
         public static MvcHtmlString CollectionTable(this HtmlHelper html, IEnumerable collection, INakedObjectAction action) {
@@ -40,9 +40,9 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static string[] CollectionTitles(this HtmlHelper html, object domainObject, string format) {
             INakedObject adapter = html.Framework().GetNakedObject(domainObject);
-            var collections = adapter.Specification.Properties.Where(obj => obj.IsCollection && obj.IsVisible(html.Framework().Session, adapter, html.Framework().ObjectPersistor)).Select(a => new { assoc = a, val = a.GetNakedObject(adapter, html.Framework().ObjectPersistor) });
+            var collections = adapter.Specification.Properties.Where(obj => obj.IsCollection && obj.IsVisible(html.Framework().Session, adapter, html.Framework().LifecycleManager)).Select(a => new { assoc = a, val = a.GetNakedObject(adapter, html.Framework().LifecycleManager) });
 
-            return collections.Select(coll => string.Format(format, coll.assoc.GetName(html.Framework().ObjectPersistor), coll.val.TitleString())).ToArray();
+            return collections.Select(coll => string.Format(format, coll.assoc.GetName(html.Framework().LifecycleManager), coll.val.TitleString())).ToArray();
         }
 
         #endregion

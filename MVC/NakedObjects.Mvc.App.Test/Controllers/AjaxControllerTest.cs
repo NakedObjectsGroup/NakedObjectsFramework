@@ -441,8 +441,8 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateFailRefParameter() {
-            Store store = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
-            Vendor vendor = NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First();
+            Store store = NakedObjectsFramework.LifecycleManager.Instances<Store>().First();
+            Vendor vendor = NakedObjectsFramework.LifecycleManager.Instances<Vendor>().First();
             const string actionName = "CreateNewOrder";
             const string parameterName = "customer";
 
@@ -455,8 +455,8 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateFailRefProperty() {
-            Store store = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
-            Store store1 = NakedObjectsFramework.ObjectPersistor.Instances<Store>().OrderBy(x => "").Skip(1).First();
+            Store store = NakedObjectsFramework.LifecycleManager.Instances<Store>().First();
+            Store store1 = NakedObjectsFramework.LifecycleManager.Instances<Store>().OrderBy(x => "").Skip(1).First();
 
             string id = NakedObjectsFramework.GetObjectId(store);
             string value = NakedObjectsFramework.GetObjectId(store1);
@@ -485,7 +485,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateFailValueProperty() {
-            Vendor vendor = NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First();
+            Vendor vendor = NakedObjectsFramework.LifecycleManager.Instances<Vendor>().First();
             string id = NakedObjectsFramework.GetObjectId(vendor);
             const string value = "";
             const string propertyName = "AccountNumber";
@@ -498,7 +498,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateOkInlineValueProperty() {
-            TimePeriod timePeriod = NakedObjectsFramework.ObjectPersistor.Instances<Shift>().First().Times;
+            TimePeriod timePeriod = NakedObjectsFramework.LifecycleManager.Instances<Shift>().First().Times;
             string id = NakedObjectsFramework.GetObjectId(timePeriod);
             string value = DateTime.Now.ToString();
             const string propertyName = "StartTime";
@@ -511,7 +511,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateOkRefParameter() {
-            Store store = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
+            Store store = NakedObjectsFramework.LifecycleManager.Instances<Store>().First();
             const string actionName = "CreateNewOrder";
             const string parameterName = "customer";
 
@@ -525,8 +525,8 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateOkRefProperty() {
-            Store store = NakedObjectsFramework.ObjectPersistor.Instances<Store>().First();
-            SalesPerson salesPerson = NakedObjectsFramework.ObjectPersistor.Instances<SalesPerson>().First();
+            Store store = NakedObjectsFramework.LifecycleManager.Instances<Store>().First();
+            SalesPerson salesPerson = NakedObjectsFramework.LifecycleManager.Instances<SalesPerson>().First();
 
             string id = NakedObjectsFramework.GetObjectId(store);
             string value = NakedObjectsFramework.GetObjectId(salesPerson);
@@ -555,7 +555,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void TestValidateOkValueProperty() {
-            Vendor vendor = NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First();
+            Vendor vendor = NakedObjectsFramework.LifecycleManager.Instances<Vendor>().First();
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
             string id = NakedObjectsFramework.GetObjectId(vendor);
             string value = uniqueActNum;

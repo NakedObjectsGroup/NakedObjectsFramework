@@ -123,7 +123,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
          
             if (spec.IsParseable) {
-                return spec.GetFacet<IParseableFacet>().ParseTextEntry(values.First(), NakedObjectsContext.ObjectPersistor);
+                return spec.GetFacet<IParseableFacet>().ParseTextEntry(values.First(), NakedObjectsContext.LifecycleManager);
             }
             if (spec.IsCollection) {
                 return NakedObjectsContext.GetTypedCollection(spec, values);
@@ -180,7 +180,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             foreach (INakedObjectActionParameter p in action.Parameters) {
                 if (p.IsChoicesEnabled || p.IsMultipleChoicesEnabled) {
-                    INakedObject[] nakedObjectChoices = p.GetChoices(nakedObject, otherValues, NakedObjectsContext.ObjectPersistor);
+                    INakedObject[] nakedObjectChoices = p.GetChoices(nakedObject, otherValues, NakedObjectsContext.LifecycleManager);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
                     string[] value = NakedObjectsContext.IsParseableOrCollectionOfParseable(p.Specification) ? content : nakedObjectChoices.Select(NakedObjectsContext.GetObjectId).ToArray();
 
@@ -200,7 +200,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             foreach (IOneToOneAssociation assoc in nakedObject.Specification.Properties.Where(p => p.IsObject)) {
                 if (assoc.IsChoicesEnabled) {
-                    INakedObject[] nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues, NakedObjectsContext.ObjectPersistor);
+                    INakedObject[] nakedObjectChoices = assoc.GetChoices(nakedObject, otherValues, NakedObjectsContext.LifecycleManager);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
                     string[] value = assoc.Specification.IsParseable ? content : nakedObjectChoices.Select(NakedObjectsContext.GetObjectId).ToArray();
 
@@ -235,7 +235,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var assoc = (IOneToOneAssociation) nakedObject.Specification.Properties.Single(p => p.IsObject && p.Id == propertyId);
 
             if (assoc.IsAutoCompleteEnabled) {
-                INakedObject[] nakedObjectCompletions = assoc.GetCompletions(nakedObject, autoCompleteParm, NakedObjectsContext.ObjectPersistor);
+                INakedObject[] nakedObjectCompletions = assoc.GetCompletions(nakedObject, autoCompleteParm, NakedObjectsContext.LifecycleManager);
                 completions = nakedObjectCompletions.Select(no => GetCompletionData(no, assoc.Specification)).ToList();
             }
 
@@ -250,7 +250,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             INakedObjectActionParameter p = action.Parameters[parameterIndex];
             if (p.IsAutoCompleteEnabled) {
-                INakedObject[] nakedObjectCompletions = p.GetCompletions(nakedObject, autoCompleteParm, NakedObjectsContext.ObjectPersistor);
+                INakedObject[] nakedObjectCompletions = p.GetCompletions(nakedObject, autoCompleteParm, NakedObjectsContext.LifecycleManager);
                 completions = nakedObjectCompletions.Select(no => GetCompletionData(no, p.Specification)).ToList();
             }
 

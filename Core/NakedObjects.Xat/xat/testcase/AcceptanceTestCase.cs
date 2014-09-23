@@ -66,7 +66,7 @@ namespace NakedObjects.Xat {
         protected virtual ITestObjectFactory TestObjectFactoryClass {
             get {
                 if (testObjectFactory == null) {
-                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, NakedObjectsFramework.ObjectPersistor);
+                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager);
                 }
                 return testObjectFactory;
             }
@@ -129,11 +129,11 @@ namespace NakedObjects.Xat {
             if (nakedObjectsFramework == null) {
                  nakedObjectsFramework = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
             }
-            Fixtures.InstallFixtures(nakedObjectsFramework.ObjectPersistor, nakedObjectsFramework.Injector); 
+            Fixtures.InstallFixtures(nakedObjectsFramework.LifecycleManager, nakedObjectsFramework.Injector); 
         }
 
         protected ITestService GetTestService(Type type) {
-            return NakedObjectsFramework.ObjectPersistor.GetServices().
+            return NakedObjectsFramework.LifecycleManager.GetServices().
                 Where(no => type.IsAssignableFrom(no.Object.GetType())).
                 Select(no => TestObjectFactoryClass.CreateTestService(no.Object)).
                 FirstOrDefault();
@@ -141,7 +141,7 @@ namespace NakedObjects.Xat {
 
         protected ITestService GetTestService(string serviceName) {
             if (!servicesCache.ContainsKey(serviceName.ToLower())) {
-                foreach (INakedObject service in NakedObjectsFramework.ObjectPersistor.GetServices()) {
+                foreach (INakedObject service in NakedObjectsFramework.LifecycleManager.GetServices()) {
                     if (service.TitleString().Equals(serviceName, StringComparison.CurrentCultureIgnoreCase)) {
                         ITestService testService = TestObjectFactoryClass.CreateTestService(service.Object);
                         if (testService == null) {
@@ -174,9 +174,9 @@ namespace NakedObjects.Xat {
             if (spec.GetFacet<IBoundedFacet>() == null) {
                 Assert.Fail(spec.SingularName + " is not a Bounded type");
             }
-            IEnumerable allInstances = NakedObjectsFramework.ObjectPersistor.Instances(spec);
-            object inst = allInstances.Cast<object>().Single(o => NakedObjectsFramework.ObjectPersistor.CreateAdapter(o, null, null).TitleString() == title);
-            return TestObjectFactoryClass.CreateTestObject(NakedObjectsFramework.ObjectPersistor.CreateAdapter(inst, null, null));
+            IEnumerable allInstances = NakedObjectsFramework.LifecycleManager.Instances(spec);
+            object inst = allInstances.Cast<object>().Single(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null).TitleString() == title);
+            return TestObjectFactoryClass.CreateTestObject(NakedObjectsFramework.LifecycleManager.CreateAdapter(inst, null, null));
         }
 
         private static IPrincipal CreatePrincipal(string name, string[] roles) {
@@ -253,7 +253,7 @@ namespace NakedObjects.Xat {
             container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerResolveLifetimeManager());
 
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerResolveLifetimeManager());
-            container.RegisterType<ILifecycleManager, ObjectStorePersistor>(new PerResolveLifetimeManager());
+            container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerResolveLifetimeManager());
 
             container.RegisterType<ISession>(new PerResolveLifetimeManager(), new InjectionFactory(c => TestSession));
 

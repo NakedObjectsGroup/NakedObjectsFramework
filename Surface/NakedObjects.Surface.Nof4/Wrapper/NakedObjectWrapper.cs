@@ -45,7 +45,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 INakedObjectSpecification spec = WrappedNakedObject.Specification;
 
                 if (spec.IsService) {
-                    ServiceTypes st = framework.ObjectPersistor.GetServiceType(spec);
+                    ServiceTypes st = framework.LifecycleManager.GetServiceType(spec);
                     extData[ServiceType] = st.ToString();
                 }
 
@@ -79,7 +79,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IEnumerable<INakedObjectSurface> ToEnumerable() {
-            return WrappedNakedObject.GetAsEnumerable(framework.ObjectPersistor).Select(no => new NakedObjectWrapper(no, Surface, framework));
+            return WrappedNakedObject.GetAsEnumerable(framework.LifecycleManager).Select(no => new NakedObjectWrapper(no, Surface, framework));
         }
 
         // todo move into adapterutils
@@ -110,7 +110,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 // services don't have keys
                 return new PropertyInfo[] {};
             }
-            return framework.ObjectPersistor.GetKeys(nakedObject.Object.GetType());
+            return framework.LifecycleManager.GetKeys(nakedObject.Object.GetType());
         }
 
         public IVersionSurface Version {
@@ -130,7 +130,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         private INakedObject Page(INakedObject objectRepresentingCollection, int page, int size) {
-            return objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.ObjectPersistor, true);
+            return objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.LifecycleManager, true);
         }
 
         public override object GetScalarProperty(ScalarProperty name) {

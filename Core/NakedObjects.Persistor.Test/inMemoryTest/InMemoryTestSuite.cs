@@ -53,11 +53,11 @@ namespace NakedObjects.Persistor.InMemoryTest {
             StartTest();
 
             // reset events from fixtures running
-            NakedObjectsFramework.ObjectPersistor.Instances<Person>().ForEach(p => p.ResetEvents());
-            NakedObjectsFramework.ObjectPersistor.Instances<Person>().Select(p => p.Address).ForEach(a => a.ResetEvents());
-            NakedObjectsFramework.ObjectPersistor.Instances<Product>().ForEach(p => p.ResetEvents());
+            NakedObjectsFramework.LifecycleManager.Instances<Person>().ForEach(p => p.ResetEvents());
+            NakedObjectsFramework.LifecycleManager.Instances<Person>().Select(p => p.Address).ForEach(a => a.ResetEvents());
+            NakedObjectsFramework.LifecycleManager.Instances<Product>().ForEach(p => p.ResetEvents());
 
-            NakedObjectsFramework.ObjectPersistor.Reset();
+            NakedObjectsFramework.LifecycleManager.Reset();
 
             tests = new PersistorTestSuite(NakedObjectsFramework);
         }

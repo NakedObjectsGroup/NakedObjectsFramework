@@ -148,7 +148,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ActionDialogId() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             INakedObjectAction action = NakedObjectsFramework.GetNakedObject(claim).Specification.GetObjectActions().Single(a => a.Id == "CopyAllExpenseItemsFromAnotherClaim");
             Assert.AreEqual(@"Claim-CopyAllExpenseItemsFromAnotherClaim-Dialog", mocks.HtmlHelper.ObjectActionDialogId(claim, action).ToString());
         }
@@ -219,7 +219,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             SetupViewData(btc);
 
-            NakedObjectsFramework.ObjectPersistor.CreateAdapter(btc, null, null);
+            NakedObjectsFramework.LifecycleManager.CreateAdapter(btc, null, null);
             string s = mocks.GetHtmlHelper<BoolTestClass>().ObjectActionAsDialog<BoolTestClass, bool>(btc, x => x.TestBoolAction).ToString();
 
 
@@ -351,10 +351,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForEagerlyCollectionTableView() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             var collection = new[] {claim};
 
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -371,7 +371,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionListViewForEmptyCollection() {
             var collection = new object[] {};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -382,7 +382,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionListViewForEmptyCollectionTableView() {
             var collection = new object[] {};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -397,10 +397,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForOneElementCollection() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
             var collection = new[] {claim};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -411,10 +411,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForOneElementCollectionTableView() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
             var collection = new[] {claim};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -429,11 +429,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollection() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -453,11 +453,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionPage1() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -476,11 +476,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionPage1TableView() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -505,11 +505,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionPage2() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -528,11 +528,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionPage2TableView() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -556,11 +556,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionTableView() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -584,7 +584,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CollectionViewForEmptyCollection() {
             var collection = new object[] {};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -595,10 +595,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForOneElementCollection() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
             var collection = new[] {claim};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -609,11 +609,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForOneElementCollectionWithMultiline() {
-            ProjectCode pc = NakedObjectsFramework.ObjectPersistor.Instances<ProjectCode>().Single(c => c.Code == "005");
+            ProjectCode pc = NakedObjectsFramework.LifecycleManager.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
             var collection = new[] {pc};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -625,11 +625,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForPagedCollection() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -648,11 +648,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForPagedCollectionPage1() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -672,11 +672,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForPagedCollectionPage2() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -695,11 +695,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionlistViewForOneElementCollectionWithMultiline() {
-            ProjectCode pc = NakedObjectsFramework.ObjectPersistor.Instances<ProjectCode>().Single(c => c.Code == "005");
+            ProjectCode pc = NakedObjectsFramework.LifecycleManager.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
             var collection = new[] {pc};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -710,11 +710,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionlistViewForOneElementCollectionWithMultilineTableView() {
-            ProjectCode pc = NakedObjectsFramework.ObjectPersistor.Instances<ProjectCode>().Single(c => c.Code == "005");
+            ProjectCode pc = NakedObjectsFramework.LifecycleManager.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
             var collection = new[] {pc};
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -729,7 +729,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void DialogWithAjaxDisabled() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
 
@@ -767,7 +767,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void EmptyEnumerableParameter() {
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
-            INakedObject collectionAdapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(new List<ChoicesTestClass>(), null, null);
+            INakedObject collectionAdapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(new List<ChoicesTestClass>(), null, null);
             collectionAdapter.SetATransientOid(new DummyOid());
             mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestEnumerableAction-Parm1-Select"] = collectionAdapter;
 
@@ -783,7 +783,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void EmptyQueryableParameter() {
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
-            INakedObject collectionAdapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(new List<ChoicesTestClass>().AsQueryable(), null, null);
+            INakedObject collectionAdapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(new List<ChoicesTestClass>().AsQueryable(), null, null);
             collectionAdapter.SetATransientOid(new DummyOid());
             mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestQueryableAction-Parm1-Select"] = collectionAdapter;
 
@@ -872,7 +872,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void EnumerableParameter() {
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
-            INakedObject collectionAdapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(new List<ChoicesTestClass> {testChoices}, null, null);
+            INakedObject collectionAdapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(new List<ChoicesTestClass> {testChoices}, null, null);
             collectionAdapter.SetATransientOid(new DummyOid());
             mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestEnumerableAction-Parm1-Select"] = collectionAdapter;
 
@@ -886,7 +886,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericAction() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             string s = mocks.HtmlHelper.ControllerAction("Text", "Action", null, claim).ToString();
 
             CheckResults("GenericAction", s);
@@ -901,7 +901,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericActionWithRVDict() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             string s = mocks.HtmlHelper.ControllerAction("Text", "Action", "Controller", new RouteValueDictionary(new {
                 id = NakedObjectsFramework.GetObjectId(claim)
             })).ToString();
@@ -911,7 +911,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericEditAction() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             string s = mocks.HtmlHelper.ControllerActionOnTransient("Text", "Action", claim).ToString();
 
             CheckResults("GenericEditAction", s);
@@ -926,7 +926,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericEditActionWithRVDict() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             string s = mocks.HtmlHelper.ControllerActionOnTransient("Text", "Action", "Controller", new RouteValueDictionary(new {
                 id = NakedObjectsFramework.GetObjectId(claim)
             })).ToString();
@@ -1031,7 +1031,7 @@ namespace MvcTestApp.Tests.Helpers {
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
             mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestMultipleChoicesAction4-Parm1-Select"] = NakedObjectsFramework.GetNakedObject(testChoices);
-            mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestMultipleChoicesAction4-Parm2-Select"] = NakedObjectsFramework.ObjectPersistor.CreateAdapter(new List<string> {"test1", "test2"}, null, null);
+            mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestMultipleChoicesAction4-Parm2-Select"] = NakedObjectsFramework.LifecycleManager.CreateAdapter(new List<string> {"test1", "test2"}, null, null);
 
             testChoices.TestChoicesProperty = testChoices;
             testChoices.TestChoicesStringProperty = "test2";
@@ -1076,7 +1076,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void NullableBoolParameter() {
             var btc = new BoolTestClass();
             SetupViewData(btc);
-            NakedObjectsFramework.ObjectPersistor.CreateAdapter(btc, null, null);
+            NakedObjectsFramework.LifecycleManager.CreateAdapter(btc, null, null);
             string s = mocks.GetHtmlHelper<BoolTestClass>().ObjectActionAsDialog<BoolTestClass, bool?>(btc, x => x.TestNullableBoolAction).ToString();
 
 
@@ -1086,7 +1086,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void Object() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             string s = mocks.HtmlHelper.Object(claim).ToString();
 
 
@@ -1096,7 +1096,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectActions() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData.Model = claim;
             string s = mocks.HtmlHelper.Menu(claim).ToString();
 
@@ -1124,7 +1124,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectActionsWithConcurrency() {
-            RecordedAction recordedAction = NakedObjectsFramework.ObjectPersistor.Instances<RecordedAction>().First();
+            RecordedAction recordedAction = NakedObjectsFramework.LifecycleManager.Instances<RecordedAction>().First();
             string s = mocks.HtmlHelper.Menu(recordedAction).ToString();
 
 
@@ -1142,7 +1142,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithActionAsFind() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             INakedObject employeeRepo = NakedObjectsFramework.GetAdaptedService("EmployeeRepository");
@@ -1156,8 +1156,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithFinder() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            Employee emp = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Employee emp = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
 
             string s = mocks.HtmlHelper.PropertyListEdit(claim, null, null, "Approver", new[] {emp}).ToString();
 
@@ -1167,8 +1167,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithInlineObject() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            var claim2 = NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            var claim2 = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
 
             claim2.DateCreated = new DateTime(2010, 5, 19);
 
@@ -1185,7 +1185,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithListCollection() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData["ExpenseItems"] = "list";
 
             string s = mocks.HtmlHelper.PropertyListEdit(claim).ToString();
@@ -1215,7 +1215,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithSummaryCollection() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
             string s = mocks.HtmlHelper.PropertyListEdit(claim).ToString();
 
@@ -1225,7 +1225,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithSummaryCollectionForTransient() {
-            var claim = NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
+            var claim = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
             claim.DateCreated = new DateTime(2010, 3, 25);
 
             string s = mocks.HtmlHelper.PropertyListEdit(claim).ToString();
@@ -1236,7 +1236,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithTableCollection() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData["ExpenseItems"] = "table";
 
             string s = mocks.HtmlHelper.PropertyListEdit(claim).ToString();
@@ -1275,7 +1275,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectFieldsWithListCollection() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData["ExpenseItems"] = "list";
             string s = mocks.HtmlHelper.PropertyList(claim).ToString();
 
@@ -1285,7 +1285,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectFieldsWithSummaryCollection() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             string s = mocks.HtmlHelper.PropertyList(claim).ToString();
 
             CheckResults("ObjectFieldsWithSummaryCollection", s);
@@ -1293,7 +1293,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectFieldsWithTableCollection() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData["ExpenseItems"] = "table";
             string s = mocks.HtmlHelper.PropertyList(claim).ToString();
 
@@ -1304,16 +1304,16 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectForEnumerable() {
-            IList<Claim> claims = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().Take(2).ToList();
+            IList<Claim> claims = NakedObjectsFramework.LifecycleManager.Instances<Claim>().Take(2).ToList();
 
             mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = new Dictionary<string, int> {
                 {IdHelper.PagingCurrentPage, 1},
                 {IdHelper.PagingPageSize, 2},
                 {IdHelper.PagingTotal, 2}
             };
-            var claimAdapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(claims.First(), null, null);
-            var adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(claims, null, null);
-            var mockOid = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] {});
+            var claimAdapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims.First(), null, null);
+            var adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims, null, null);
+            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] {});
 
             adapter.SetATransientOid(mockOid);
 
@@ -1326,7 +1326,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectForQueryable() {
-            IQueryable<Claim> claims = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().Take(2);
+            IQueryable<Claim> claims = NakedObjectsFramework.LifecycleManager.Instances<Claim>().Take(2);
 
             mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = new Dictionary<string, int> {
                 {IdHelper.PagingCurrentPage, 1},
@@ -1334,9 +1334,9 @@ namespace MvcTestApp.Tests.Helpers {
                 {IdHelper.PagingTotal, 2}
             };
 
-            var claimAdapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(claims.First(), null, null);
-            var adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(claims, null, null);
-            var mockOid = new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] {});
+            var claimAdapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims.First(), null, null);
+            var adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims, null, null);
+            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] {});
 
             adapter.SetATransientOid(mockOid);
 
@@ -1348,13 +1348,13 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectHasVisibleFields() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             Assert.IsTrue(mocks.HtmlHelper.ObjectHasVisibleFields(claim));
         }
 
         [Test]
         public void ObjectLinkAndIcon() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             string s = mocks.HtmlHelper.Object("Text", "Action", claim).ToString();
 
 
@@ -1371,14 +1371,14 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectTitle() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
             Assert.AreEqual(@"28th Mar - Sales call, London", mocks.HtmlHelper.ObjectTitle(claim).ToString());
         }
 
         [Test]
         public void ObjectTypeAsCssId() {
-            Employee emp = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
-            List<Employee> allEmployees = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().ToList();
+            Employee emp = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
+            List<Employee> allEmployees = NakedObjectsFramework.LifecycleManager.Instances<Employee>().ToList();
 
             string empId = mocks.HtmlHelper.ObjectTypeAsCssId(emp).ToString();
             string allEmpId = mocks.HtmlHelper.ObjectTypeAsCssId(allEmployees).ToString();
@@ -1400,7 +1400,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEdit() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
 
@@ -1437,7 +1437,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditForCollection() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             INakedObject claimRepo = NakedObjectsFramework.GetAdaptedService("ClaimRepository");
@@ -1445,8 +1445,8 @@ namespace MvcTestApp.Tests.Helpers {
 
             var selected = claimRepo.GetDomainObject<ClaimRepository>().MyRecentClaims().First();
 
-            INakedObject target = NakedObjectsFramework.ObjectPersistor.CreateAdapter(new[] {claim}.AsQueryable(), null, null);
-            target.SetATransientOid(new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, new CollectionMemento(NakedObjectsFramework.ObjectPersistor, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, claimRepo, action, new INakedObject[] {}), new object[] {selected}));
+            INakedObject target = NakedObjectsFramework.LifecycleManager.CreateAdapter(new[] {claim}.AsQueryable(), null, null);
+            target.SetATransientOid(new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, claimRepo, action, new INakedObject[] {}), new object[] {selected}));
 
             INakedObjectAction targetAction = claimRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "ApproveClaims");
 
@@ -1458,7 +1458,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditWithActionAsFind() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
@@ -1475,7 +1475,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditWithFinders() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
@@ -1488,8 +1488,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditWithInlineObject() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
-            var claim2 = NakedObjectsFramework.ObjectPersistor.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            var claim2 = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
 
             claim2.DateCreated = new DateTime(2010, 5, 18);
 
@@ -1508,7 +1508,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditWithSelection() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
@@ -1548,7 +1548,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void QueryableListViewForEmptyCollection() {
             var collection = new object[] {}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -1560,7 +1560,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void QueryableListViewForEmptyCollectionTableView() {
             var collection = new object[] {}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -1576,10 +1576,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForOneElementCollection() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
             var collection = new[] {claim}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -1589,10 +1589,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForOneElementCollectionTableView() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
             var collection = new[] {claim}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -1608,11 +1608,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForOneElementCollectionWithMultiline() {
-            ProjectCode pc = NakedObjectsFramework.ObjectPersistor.Instances<ProjectCode>().Single(c => c.Code == "005");
+            ProjectCode pc = NakedObjectsFramework.LifecycleManager.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
             var collection = new[] {pc}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
 
@@ -1624,11 +1624,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForOneElementCollectionWithMultilineTableView() {
-            ProjectCode pc = NakedObjectsFramework.ObjectPersistor.Instances<ProjectCode>().Single(c => c.Code == "005");
+            ProjectCode pc = NakedObjectsFramework.LifecycleManager.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
             var collection = new[] {pc}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             // use FindMyClaims action for TableView
@@ -1644,11 +1644,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollection() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1668,11 +1668,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionPage1() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1692,11 +1692,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionPage1TableView() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1720,11 +1720,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionPage2() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1745,11 +1745,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionPage2TableView() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1772,11 +1772,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionTableView() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1802,7 +1802,7 @@ namespace MvcTestApp.Tests.Helpers {
             var testChoices = (ChoicesTestClass) GetBoundedInstance<ChoicesTestClass>("Class1").GetDomainObject();
 
 
-            INakedObject collectionAdapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(new List<ChoicesTestClass> {testChoices}.AsQueryable(), null, null);
+            INakedObject collectionAdapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(new List<ChoicesTestClass> {testChoices}.AsQueryable(), null, null);
             collectionAdapter.SetATransientOid(new DummyOid());
             mocks.ViewDataContainer.Object.ViewData["ChoicesTestClass-TestQueryableAction-Parm1-Select"] = collectionAdapter;
 
@@ -1817,7 +1817,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void QueryableViewForEmptyCollection() {
             var collection = new object[] {}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             string s = mocks.HtmlHelper.CollectionTable(collection, null).ToString();
@@ -1828,10 +1828,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForOneElementCollection() {
-            Claim claim = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
             var collection = new[] {claim}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
 
@@ -1843,11 +1843,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForOneElementCollectionWithMultiline() {
-            ProjectCode pc = NakedObjectsFramework.ObjectPersistor.Instances<ProjectCode>().Single(c => c.Code == "005");
+            ProjectCode pc = NakedObjectsFramework.LifecycleManager.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
             var collection = new[] {pc}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
 
@@ -1860,11 +1860,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForPagedCollection() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1884,11 +1884,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForPagedCollectionPage1() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -1909,11 +1909,11 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForPagedCollectionPage2() {
-            Claim claim1 = NakedObjectsFramework.ObjectPersistor.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
-            INakedObject adapter = NakedObjectsFramework.ObjectPersistor.CreateAdapter(collection, null, null);
+            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
             adapter.SetATransientOid(new DummyOid());
 
             var pagingData = new Dictionary<string, int> {
@@ -2010,7 +2010,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ViewModel() {
-            Employee employee = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
+            Employee employee = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
 
             var no = NakedObjectsFramework.GetNakedObjectFromId("MvcTestApp.Tests.Helpers.ViewModelTestClass;1;" + employee.Name);
 
@@ -2021,7 +2021,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ViewModelActions() {
-            Employee employee = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
+            Employee employee = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
 
             var no = NakedObjectsFramework.GetNakedObjectFromId("MvcTestApp.Tests.Helpers.ViewModelTestClass;1;" + employee.Name);
             string s = mocks.HtmlHelper.Menu(no.Object).ToString();
@@ -2031,7 +2031,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ViewModelProperties() {
-            Employee employee = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
+            Employee employee = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
 
             var no = NakedObjectsFramework.GetNakedObjectFromId("MvcTestApp.Tests.Helpers.ViewModelTestClass;1;" + employee.Name);
             string s = mocks.HtmlHelper.PropertyList(no.Object).ToString();
@@ -2041,7 +2041,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ViewModelPropertiesEdit() {
-            Employee employee = NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First();
+            Employee employee = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
 
             var no = NakedObjectsFramework.GetNakedObjectFromId("MvcTestApp.Tests.Helpers.ViewModelTestClass;1;" + employee.Name);
             string s = mocks.HtmlHelper.PropertyListEdit(no.Object).ToString();

@@ -81,7 +81,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static bool ObjectHasVisibleFields(this HtmlHelper html, object domainObject) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
-            return nakedObject.Specification.Properties.Any(p => p.IsVisible(html.Framework().Session, nakedObject, html.Framework().ObjectPersistor));
+            return nakedObject.Specification.Properties.Any(p => p.IsVisible(html.Framework().Session, nakedObject, html.Framework().LifecycleManager));
         }
 
 
@@ -113,7 +113,7 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Display name of object
         /// </summary>
         public static MvcHtmlString ObjectTitle(this HtmlHelper html, object model) {
-            INakedObject nakedObject = html.Framework().ObjectPersistor.CreateAdapter(model, null, null);
+            INakedObject nakedObject = html.Framework().LifecycleManager.CreateAdapter(model, null, null);
             return html.ObjectTitle(nakedObject);
         }
 
@@ -127,22 +127,22 @@ namespace NakedObjects.Web.Mvc.Html {
         ///     Display name of object with icon
         /// </summary>
         public static MvcHtmlString Object(this HtmlHelper html, object model) {
-            INakedObject nakedObject = html.Framework().ObjectPersistor.CreateAdapter(model, null, null);
+            INakedObject nakedObject = html.Framework().LifecycleManager.CreateAdapter(model, null, null);
             string title = nakedObject.Specification.IsCollection ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString();
             title = string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title;
             return CommonHtmlHelper.WrapInDiv(html.ObjectIcon(nakedObject) + title, IdHelper.ObjectName);
         }
 
         public static MvcHtmlString ActionResult(this HtmlHelper html, ActionResultModel model) {
-            INakedObject nakedObject = html.Framework().ObjectPersistor.CreateAdapter(model.Result, null, null);
+            INakedObject nakedObject = html.Framework().LifecycleManager.CreateAdapter(model.Result, null, null);
             string title = GetCollectionTitle(nakedObject, html);
-            title = model.Action.GetName(html.Framework().ObjectPersistor) + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title);
+            title = model.Action.GetName(html.Framework().LifecycleManager) + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title);
             return CommonHtmlHelper.WrapInDiv(title, IdHelper.ObjectName);
         }
 
         private static string GetCollectionTitle(INakedObject nakedObject, HtmlHelper html) {
             int pageSize, maxPage, currentPage, total;
-            int count = nakedObject.GetAsEnumerable(html.Framework().ObjectPersistor).Count();
+            int count = nakedObject.GetAsEnumerable(html.Framework().LifecycleManager).Count();
             if (!html.GetPagingValues(out pageSize, out maxPage, out currentPage, out total)) {
                 total = count;
             }

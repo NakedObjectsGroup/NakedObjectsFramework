@@ -52,7 +52,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public INakedObject GetValue(INakedObjectsFramework framework) {
-            return Property.GetNakedObject(Target, framework.ObjectPersistor);
+            return Property.GetNakedObject(Target, framework.LifecycleManager);
         }
 
         public bool IsEdit { get; private set; }

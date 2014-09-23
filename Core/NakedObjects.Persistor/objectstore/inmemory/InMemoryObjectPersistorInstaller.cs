@@ -41,7 +41,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
             //    identityAdapterMap ?? new IdentityAdapterHashMap(),
             //    new CreateIfNullPocoAdapterDecorator(inMemoryObjectStore, pocoAdapterMap ?? new PocoAdapterHashMap()));
 
-            //var persistor = new ObjectStorePersistor(
+            //var persistor = new LifeCycleManager(
             //    null, 
             //    null,
             //    reflector,  

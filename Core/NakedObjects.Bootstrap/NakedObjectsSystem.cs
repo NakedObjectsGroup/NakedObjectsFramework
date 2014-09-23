@@ -177,7 +177,7 @@ namespace NakedObjects.Boot {
           //      NakedObjectsContext.EnsureReady();
                
           //      context.SetSession(session);
-          //      fixtureInstaller.InstallFixtures(NakedObjectsContext.ObjectPersistor);
+          //      fixtureInstaller.InstallFixtures(NakedObjectsContext.LifecycleManager);
           //  }
 
           //  // remove all unneeded details in the initialisation context
@@ -189,7 +189,7 @@ namespace NakedObjects.Boot {
 
         private void ResetContext() {
             //context.ClearSession();
-            //NakedObjectsContext.ObjectPersistor.Reset();
+            //NakedObjectsContext.LifecycleManager.Reset();
         }
     }
 

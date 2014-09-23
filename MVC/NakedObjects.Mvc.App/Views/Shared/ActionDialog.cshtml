@@ -3,7 +3,7 @@
 
 @{
     Layout = "~/Views/Shared/_NofLayout.cshtml";
-    ViewBag.Title = Model.ContextAction.GetName(Html.GetFramework().ObjectPersistor);
+    ViewBag.Title = Model.ContextAction.GetName(Html.GetFramework().LifecycleManager);
 }
 
 <div id="body">

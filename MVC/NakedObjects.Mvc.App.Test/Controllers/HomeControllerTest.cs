@@ -78,11 +78,11 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         private Employee Employee {
-            get { return NakedObjectsFramework.ObjectPersistor.Instances<Employee>().First(); }
+            get { return NakedObjectsFramework.LifecycleManager.Instances<Employee>().First(); }
         }
 
         private Vendor Vendor {
-            get { return NakedObjectsFramework.ObjectPersistor.Instances<Vendor>().First(); }
+            get { return NakedObjectsFramework.LifecycleManager.Instances<Vendor>().First(); }
         }
 
 

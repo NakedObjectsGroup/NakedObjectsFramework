@@ -18,9 +18,7 @@ namespace NakedObjects.Architecture.Persist {
 
         INakedObject CreateViewModel(INakedObjectSpecification specification);
 
-        INakedObject RecreateInstance(IOid oid, INakedObjectSpecification specification);
-
-      
+        INakedObject RecreateInstance(IOid oid, INakedObjectSpecification specification);  
 
         void RemoveAdapter(INakedObject objectToDispose);
 
@@ -38,17 +36,6 @@ namespace NakedObjects.Architecture.Persist {
 
         INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid);
 
-        INakedObject[] ServiceAdapters { get; }
-
-        INakedObject GetService(string id);
-
-        ServiceTypes GetServiceType(INakedObjectSpecification spec);
-
-        INakedObject[] GetServices();
-
-        INakedObject[] GetServicesWithVisibleActions(ServiceTypes serviceType);
-
-        INakedObject[] GetServices(ServiceTypes serviceType);
     }
 
 

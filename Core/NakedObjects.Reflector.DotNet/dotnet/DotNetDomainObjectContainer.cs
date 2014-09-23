@@ -24,23 +24,23 @@ namespace NakedObjects.Reflector.DotNet {
         #region IDomainObjectContainer Members
 
         public IQueryable<T> Instances<T>() where T : class {
-            return framework.ObjectPersistor.Instances<T>();
+            return framework.LifecycleManager.Instances<T>();
         }
 
         public IQueryable Instances(Type type) {
-            return framework.ObjectPersistor.Instances(type);
+            return framework.LifecycleManager.Instances(type);
         }
 
         public void DisposeInstance(object persistentObject) {
             if (persistentObject == null) {
                 throw new ArgumentException(Resources.NakedObjects.DisposeReferenceError);
             }
-            INakedObject adapter = framework.ObjectPersistor.GetAdapterFor(persistentObject);
+            INakedObject adapter = framework.LifecycleManager.GetAdapterFor(persistentObject);
             if (!IsPersistent(persistentObject)) {
                 throw new DisposeFailedException(string.Format(Resources.NakedObjects.NotPersistentMessage, adapter));
             }
             framework.UpdateNotifier.AddDisposedObject(adapter);
-            framework.ObjectPersistor.DestroyObject(adapter);
+            framework.LifecycleManager.DestroyObject(adapter);
         }
 
         public IPrincipal Principal {
@@ -56,12 +56,12 @@ namespace NakedObjects.Reflector.DotNet {
         }
 
         public void Persist<T>(ref T transientObject) {
-            INakedObject adapter = framework.ObjectPersistor.GetAdapterFor(transientObject);
+            INakedObject adapter = framework.LifecycleManager.GetAdapterFor(transientObject);
             if (IsPersistent(transientObject)) {
                 throw new PersistFailedException(string.Format(Resources.NakedObjects.AlreadyPersistentMessage, adapter));
             }
             Validate(adapter);
-            framework.ObjectPersistor.MakePersistent(adapter);
+            framework.LifecycleManager.MakePersistent(adapter);
             transientObject = adapter.GetDomainObject<T>();
         }
 
@@ -76,21 +76,21 @@ namespace NakedObjects.Reflector.DotNet {
         public IViewModel NewViewModel(Type type) {
             INakedObjectSpecification spec = framework.Reflector.LoadSpecification(type);
             if (spec.IsViewModel) {
-                return framework.ObjectPersistor.CreateViewModel(spec).GetDomainObject<IViewModel>();
+                return framework.LifecycleManager.CreateViewModel(spec).GetDomainObject<IViewModel>();
             }
             return null;
         }
 
         public object NewTransientInstance(Type type) {
             INakedObjectSpecification spec = framework.Reflector.LoadSpecification(type);
-            return framework.ObjectPersistor.CreateInstance(spec).Object;
+            return framework.LifecycleManager.CreateInstance(spec).Object;
         }
 
         public void ObjectChanged(object obj) {
             if (obj != null) {
                 INakedObject adapter = AdapterFor(obj);
                 Validate(adapter);
-                framework.ObjectPersistor.ObjectChanged(adapter);
+                framework.LifecycleManager.ObjectChanged(adapter);
             }
         }
 
@@ -100,14 +100,14 @@ namespace NakedObjects.Reflector.DotNet {
 
         public void Refresh(object obj) {
             INakedObject nakedObject = AdapterFor(obj);
-            framework.ObjectPersistor.Refresh(nakedObject);
+            framework.LifecycleManager.Refresh(nakedObject);
             ObjectChanged(obj);
         }
 
         public void Resolve(object parent) {
             INakedObject adapter = AdapterFor(parent);
             if (adapter.ResolveState.IsResolvable()) {
-                framework.ObjectPersistor.ResolveImmediately(adapter);
+                framework.LifecycleManager.ResolveImmediately(adapter);
             }
         }
 
@@ -122,7 +122,7 @@ namespace NakedObjects.Reflector.DotNet {
         }
 
         public void AbortCurrentTransaction() {
-            framework.ObjectPersistor.UserAbortTransaction();
+            framework.LifecycleManager.UserAbortTransaction();
         }
 
         #endregion
@@ -130,11 +130,11 @@ namespace NakedObjects.Reflector.DotNet {
         #region IInternalAccess Members
 
         public PropertyInfo[] GetKeys(Type type) {
-            return framework.ObjectPersistor.GetKeys(type);
+            return framework.LifecycleManager.GetKeys(type);
         }
 
         public object FindByKeys(Type type, object[] keys) {
-            return framework.ObjectPersistor.FindByKeys(type, keys).GetDomainObject();
+            return framework.LifecycleManager.FindByKeys(type, keys).GetDomainObject();
         }
 
         #endregion
@@ -149,7 +149,7 @@ namespace NakedObjects.Reflector.DotNet {
         }
 
         private INakedObject AdapterFor(object obj) {
-            return framework.ObjectPersistor.CreateAdapter(obj, null, null);
+            return framework.LifecycleManager.CreateAdapter(obj, null, null);
         }
     }
 

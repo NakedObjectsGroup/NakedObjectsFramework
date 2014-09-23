@@ -419,7 +419,8 @@
     <Compile Include="persist\INakedObjectManager.cs" />
     <Compile Include="persist\ILifecycleManager.cs" />
     <Compile Include="persist\INakedObjectTransactionManager.cs" />
-    <Compile Include="persist\IPersistedObjectAdder.cs" />
+    <Compile Include="persist\IObjectPersistor.cs" />
+    <Compile Include="persist\IServicesManager.cs" />
     <Compile Include="persist\NotPersistableException.cs" />
     <Compile Include="persist\FindObjectException.cs" />
     <Compile Include="persist\ObjectPersistenceException.cs" />

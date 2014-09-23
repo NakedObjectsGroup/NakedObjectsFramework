@@ -69,16 +69,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
             //SetSession();
             SetServices();
             SetFramework();
-            NakedObjectsContext.ObjectPersistor.StartTransaction();
+            NakedObjectsContext.LifecycleManager.StartTransaction();
         }
 
         protected override void OnActionExecuted(ActionExecutedContext filterContext) {
             if (filterContext.Exception == null) {
-                NakedObjectsContext.ObjectPersistor.EndTransaction();
+                NakedObjectsContext.LifecycleManager.EndTransaction();
             }
             else {
                 try {
-                    NakedObjectsContext.ObjectPersistor.AbortTransaction();
+                    NakedObjectsContext.LifecycleManager.AbortTransaction();
                 }
                 catch {
                     // fail abort silently 
@@ -170,7 +170,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (ModelState.IsValid) {
                 IEnumerable<INakedObject> parms = action.Parameters.Select(p => GetParameterValue(p, IdHelper.GetParameterInputId(action, p), controlData));
 
-                IConsent consent = action.IsParameterSetValid(NakedObjectsContext.Session,  targetNakedObject, parms.ToArray(), NakedObjectsContext.ObjectPersistor);
+                IConsent consent = action.IsParameterSetValid(NakedObjectsContext.Session,  targetNakedObject, parms.ToArray(), NakedObjectsContext.LifecycleManager);
                 if (!consent.IsAllowed) {
                     ModelState.AddModelError(string.Empty, consent.Reason);
                 }
@@ -180,7 +180,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public void ValidateParameter(INakedObjectAction action, INakedObjectActionParameter parm, INakedObject targetNakedObject, INakedObject valueNakedObject) {
-            IConsent consent = parm.IsValid(targetNakedObject, valueNakedObject, NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Session);
+            IConsent consent = parm.IsValid(targetNakedObject, valueNakedObject, NakedObjectsContext.LifecycleManager, NakedObjectsContext.Session);
             if (!consent.IsAllowed) {
                 ModelState.AddModelError(IdHelper.GetParameterInputId(action, parm), consent.Reason);
             }
@@ -215,7 +215,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         var itemvalues = values.Select(v => itemSpec.IsParseable ? (object) v : NakedObjectsContext.GetNakedObjectFromId(v).GetDomainObject()).ToList();
 
                         if (itemvalues.Any()) {
-                            AddAttemptedValue(name, NakedObjectsContext.ObjectPersistor.CreateAdapter(itemvalues, null, null));
+                            AddAttemptedValue(name, NakedObjectsContext.LifecycleManager.CreateAdapter(itemvalues, null, null));
                         }
                     }
                 }
@@ -254,11 +254,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var fromStreamFacet = parm.Specification.GetFacet<IFromStreamFacet>();
             if (fromStreamFacet != null) {
                 var httpPostedFileBase = (HttpPostedFileBase) value;
-                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.ObjectPersistor);
+                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.LifecycleManager);
             }
             var stringValue = value as string;
             if (parm.Specification.IsParseable) {
-                return parm.Specification.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.ObjectPersistor);
+                return parm.Specification.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.LifecycleManager);
             }
 
             var collectionValue = value as IEnumerable;
@@ -368,8 +368,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         internal void SetDefaults(INakedObject nakedObject, INakedObjectAction action) {
             foreach (INakedObjectActionParameter parm in action.Parameters) {
-                INakedObject value = parm.GetDefault(nakedObject, NakedObjectsContext.ObjectPersistor);
-                TypeOfDefaultValue typeOfValue = parm.GetDefaultType(nakedObject, NakedObjectsContext.ObjectPersistor);
+                INakedObject value = parm.GetDefault(nakedObject, NakedObjectsContext.LifecycleManager);
+                TypeOfDefaultValue typeOfValue = parm.GetDefaultType(nakedObject, NakedObjectsContext.LifecycleManager);
 
                 bool ignore = value == null || (value.Object is DateTime && ((DateTime) value.Object).Ticks == 0) || typeOfValue == TypeOfDefaultValue.Implicit;
                 if (!ignore) {
@@ -414,12 +414,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var fromStreamFacet = assoc.Specification.GetFacet<IFromStreamFacet>();
             if (fromStreamFacet != null) {
                 var httpPostedFileBase = (HttpPostedFileBase)value;
-                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.ObjectPersistor);
+                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.LifecycleManager);
             }
             var stringValue = value as string;
             if (assoc.Specification.IsParseable) {
 
-                return assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.ObjectPersistor);
+                return assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.LifecycleManager);
             }
        
             if (assoc.IsObject) {
@@ -437,8 +437,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 foreach (var pair in fieldsAndMatchingValues) {
                     if (pair.Item1.Specification.IsParseable) {
-                        INakedObject currentValue = pair.Item1.GetNakedObject(nakedObject, NakedObjectsContext.ObjectPersistor);
-                        INakedObject concurrencyValue = pair.Item1.Specification.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.ObjectPersistor);
+                        INakedObject currentValue = pair.Item1.GetNakedObject(nakedObject, NakedObjectsContext.LifecycleManager);
+                        INakedObject concurrencyValue = pair.Item1.Specification.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.LifecycleManager);
 
                         if (concurrencyValue != null && currentValue != null) {
                             if (concurrencyValue.TitleString() != currentValue.TitleString()) {
@@ -523,7 +523,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var form = controlData.Form;
             // inline or one or more keys in form starts with the property id which indicates we have nested values for the subobject 
             foreach (INakedObjectAssociation assoc in assocs.Where(a => a.IsInline || form.AllKeys.Any(k => k.KeyPrefixIs(a.Id)))) {
-                INakedObject inlineNakedObject = assoc.GetNakedObject(nakedObject, NakedObjectsContext.ObjectPersistor);
+                INakedObject inlineNakedObject = assoc.GetNakedObject(nakedObject, NakedObjectsContext.LifecycleManager);
                 if (inlineNakedObject != null) {
                     validateOrApply(inlineNakedObject, controlData, assoc);
                 }
@@ -553,10 +553,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 CanPersist(nakedObject, usableAndVisibleFields);
                 if (ModelState.IsValid) {
                     if (nakedObject.Specification.Persistable == Persistable.USER_PERSISTABLE) {
-                        NakedObjectsContext.ObjectPersistor.MakePersistent(nakedObject);
+                        NakedObjectsContext.LifecycleManager.MakePersistent(nakedObject);
                     }
                     else {
-                        NakedObjectsContext.ObjectPersistor.ObjectChanged(nakedObject);
+                        NakedObjectsContext.LifecycleManager.ObjectChanged(nakedObject);
                     }
                 }
             }
@@ -613,18 +613,18 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             foreach (INakedObjectAssociation assoc in nakedObject.Specification.Properties.Where(p => p.IsInline)) {
-                var inlineNakedObject = assoc.GetNakedObject(nakedObject, NakedObjectsContext.ObjectPersistor);
+                var inlineNakedObject = assoc.GetNakedObject(nakedObject, NakedObjectsContext.LifecycleManager);
                 AddAttemptedValues(inlineNakedObject, controlData, assoc);
             }
 
         }
 
         internal  bool IsUsable(INakedObjectAssociation assoc, INakedObject nakedObject) {
-            return assoc.IsUsable(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor).IsAllowed;
+            return assoc.IsUsable(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.LifecycleManager).IsAllowed;
         }
 
         internal  bool IsVisible(INakedObjectAssociation assoc, INakedObject nakedObject) {
-            return assoc.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.ObjectPersistor);
+            return assoc.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.LifecycleManager);
         }
 
         internal  bool IsConcurrency(INakedObjectAssociation assoc) {
@@ -644,8 +644,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
                                 try {
                                  
                                     var oneToOneAssoc = ((IOneToOneAssociation) assoc);
-                                    INakedObject value = assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry((string)newValue, NakedObjectsContext.ObjectPersistor);
-                                    oneToOneAssoc.SetAssociation(nakedObject, value, NakedObjectsContext.ObjectPersistor);
+                                    INakedObject value = assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry((string)newValue, NakedObjectsContext.LifecycleManager);
+                                    oneToOneAssoc.SetAssociation(nakedObject, value, NakedObjectsContext.LifecycleManager);
                                 }
                                 catch (InvalidEntryException) {
                                     ModelState.AddModelError(name, MvcUi.InvalidEntry);
@@ -654,7 +654,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                             else if (assoc.IsObject) {
                                 INakedObject value = NakedObjectsContext.GetNakedObjectFromId((string) newValue);
                                 var oneToOneAssoc = ((IOneToOneAssociation) assoc);
-                                oneToOneAssoc.SetAssociation(nakedObject, value, NakedObjectsContext.ObjectPersistor);
+                                oneToOneAssoc.SetAssociation(nakedObject, value, NakedObjectsContext.LifecycleManager);
                             }
                         }
                     }
@@ -664,16 +664,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     string name = IdHelper.GetCollectionItemId(nakedObject, assoc);
                     ValueProviderResult items = form.GetValue(name);
 
-                    if (items != null && assoc.Count(nakedObject, NakedObjectsContext.ObjectPersistor) == 0) {
+                    if (items != null && assoc.Count(nakedObject, NakedObjectsContext.LifecycleManager) == 0) {
                         var itemIds = (string[]) items.RawValue;
                         var values = itemIds.Select(NakedObjectsContext.GetNakedObjectFromId).ToArray();
-                        var collection = assoc.GetNakedObject(nakedObject, NakedObjectsContext.ObjectPersistor);
+                        var collection = assoc.GetNakedObject(nakedObject, NakedObjectsContext.LifecycleManager);
                         collection.Specification.GetFacet<ICollectionFacet>().Init(collection, values);
                     }
                 }
 
                 foreach (INakedObjectAssociation assoc in nakedObject.Specification.Properties.Where(p => p.IsInline)) {
-                    var inlineNakedObject = assoc.GetNakedObject(nakedObject, NakedObjectsContext.ObjectPersistor);
+                    var inlineNakedObject = assoc.GetNakedObject(nakedObject, NakedObjectsContext.LifecycleManager);
                     RefreshTransient(inlineNakedObject, form, assoc);
                 }
 
@@ -692,7 +692,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private bool CanPersist(INakedObject nakedObject, IEnumerable<INakedObjectAssociation> usableAndVisibleFields) {
             foreach (INakedObjectAssociation assoc in usableAndVisibleFields) {
-                INakedObject value = assoc.GetNakedObject(nakedObject, NakedObjectsContext.ObjectPersistor);
+                INakedObject value = assoc.GetNakedObject(nakedObject, NakedObjectsContext.LifecycleManager);
 
                 if (value != null && value.Specification.IsObject) {
                     if (!IsObjectCompleteAndSaved(value)) {
@@ -707,7 +707,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private bool IsObjectCompleteAndSaved(INakedObject fieldTarget) {
             if (fieldTarget.Specification.IsCollection) {         
-                if (fieldTarget.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Any(no => !IsReferenceValidToPersist(no))) {
+                if (fieldTarget.GetAsEnumerable(NakedObjectsContext.LifecycleManager).Any(no => !IsReferenceValidToPersist(no))) {
                     ModelState.AddModelError("", MvcUi.CollectionIncomplete);
                     return false;
                 }
@@ -739,7 +739,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject, NakedObjectsContext.Session);
             string key = IdHelper.GetFieldInputId(nakedObject, oneToOneAssoc);
             if (consent.IsAllowed) {
-                oneToOneAssoc.SetAssociation(nakedObject, valueNakedObject, NakedObjectsContext.ObjectPersistor);
+                oneToOneAssoc.SetAssociation(nakedObject, valueNakedObject, NakedObjectsContext.LifecycleManager);
             }
             else {
                 ModelState.AddModelError(key, consent.Reason);
@@ -804,7 +804,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void SetPagingValues(ObjectAndControlData controlData, INakedObject nakedObject) {
             if (nakedObject.Specification.IsCollection) {
                 int sink1, sink2;
-                CurrentlyPaging(controlData, nakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Count(), out sink1, out sink2);
+                CurrentlyPaging(controlData, nakedObject.GetAsEnumerable(NakedObjectsContext.LifecycleManager).Count(), out sink1, out sink2);
             }
         }
 
@@ -860,9 +860,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private  INakedObject DoPaging(INakedObject nakedObject, ICollectionFacet collectionfacet, int page, int pageSize, bool forceEnumerable) {
-            INakedObject newNakedObject = collectionfacet.Page(page, pageSize, nakedObject, NakedObjectsContext.ObjectPersistor, forceEnumerable);
-            object[] objects = newNakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).Select(no => no.Object).ToArray();
-            newNakedObject.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, nakedObject.Oid as CollectionMemento, objects) { IsPaged = true });
+            INakedObject newNakedObject = collectionfacet.Page(page, pageSize, nakedObject, NakedObjectsContext.LifecycleManager, forceEnumerable);
+            object[] objects = newNakedObject.GetAsEnumerable(NakedObjectsContext.LifecycleManager).Select(no => no.Object).ToArray();
+            newNakedObject.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Reflector, NakedObjectsContext.Session, nakedObject.Oid as CollectionMemento, objects) { IsPaged = true });
             return newNakedObject;
         }
 
@@ -870,7 +870,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var form = controlData.Form;
             if (form != null && nakedObject != null && nakedObject.Specification.IsCollection && nakedObject.Oid is CollectionMemento) {
                 nakedObject = Page(nakedObject, nakedObject.GetAsQueryable().Count(), controlData, false);
-                var map = nakedObject.GetAsEnumerable(NakedObjectsContext.ObjectPersistor).ToDictionary(NakedObjectsContext.GetObjectId, y => y.Object);
+                var map = nakedObject.GetAsEnumerable(NakedObjectsContext.LifecycleManager).ToDictionary(NakedObjectsContext.GetObjectId, y => y.Object);
                 var selected = map.Where(kvp => form.Keys.Cast<string>().Contains(kvp.Key) && form[kvp.Key].Contains("true")).Select(kvp => kvp.Value).ToArray();
                 return CloneAndPopulateCollection(nakedObject, selected, false);
             }
@@ -880,8 +880,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private  INakedObject CloneAndPopulateCollection(INakedObject nakedObject, object[] selected, bool forceEnumerable) {
             IList result = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
-            INakedObject adapter = NakedObjectsContext.ObjectPersistor.CreateAdapter(nakedObject.Specification.IsQueryable && !forceEnumerable ? (IEnumerable)result.AsQueryable() : result, null, null);
-            adapter.SetATransientOid(new CollectionMemento(NakedObjectsContext.ObjectPersistor, NakedObjectsContext.Reflector, NakedObjectsContext.Session, nakedObject.Oid as CollectionMemento, selected));
+            INakedObject adapter = NakedObjectsContext.LifecycleManager.CreateAdapter(nakedObject.Specification.IsQueryable && !forceEnumerable ? (IEnumerable)result.AsQueryable() : result, null, null);
+            adapter.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Reflector, NakedObjectsContext.Session, nakedObject.Oid as CollectionMemento, selected));
             return adapter;
         }
 

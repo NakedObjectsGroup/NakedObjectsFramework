@@ -18,7 +18,7 @@ namespace NakedObjects.Mvc.App {
 
         public static void PostStart() {
            
-            //var injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector, NakedObjectsContext.ObjectPersistor.GetServices().Select(no => no.Object).ToArray());
+            //var injector = new DotNetDomainObjectContainerInjector(NakedObjectsContext.Reflector, NakedObjectsContext.LifecycleManager.GetServices().Select(no => no.Object).ToArray());
             //DependencyResolver.SetResolver(new NakedObjectsDependencyResolver(injector));
             //RestConfig.RestPostStart();
 

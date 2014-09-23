@@ -59,7 +59,7 @@ namespace NakedObjects.Reflector.spec {
 
         //[Test]
         //public void TestCount() {
-        //    Assert.AreEqual(0, association.Count(nakedObject, NakedObjectsContext.ObjectPersistor));
+        //    Assert.AreEqual(0, association.Count(nakedObject, NakedObjectsContext.LifecycleManager));
         //}
     }
 }

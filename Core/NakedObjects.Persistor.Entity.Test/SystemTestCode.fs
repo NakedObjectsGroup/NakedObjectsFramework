@@ -18,7 +18,7 @@ open NakedObjects.Architecture.Adapter
 let getNo (obj : obj) (ctx : INakedObjectsFramework) = 
     match obj with
     | :? INakedObject as no -> no
-    | _ -> ctx.ObjectPersistor.CreateAdapter(obj, null, null)
+    | _ -> ctx.LifecycleManager.CreateAdapter(obj, null, null)
 
 let IsPersistentObject obj ctx = 
     let no = getNo obj ctx
@@ -76,7 +76,7 @@ let IsNotNullAndTransientAggregate obj ctx =
 
 let Create<'t when 't : not struct>(ctx : INakedObjectsFramework) = 
     let spec = ctx.Reflector.LoadSpecification(typeof<'t>)
-    ctx.ObjectPersistor.CreateInstance(spec)
+    ctx.LifecycleManager.CreateInstance(spec)
 
 let CreateAndSetup<'t when 't : not struct> setter ctx = 
     let no = Create<'t>(ctx)
@@ -85,10 +85,10 @@ let CreateAndSetup<'t when 't : not struct> setter ctx =
     no
 
 let makeAndSaveChanges change (ctx : INakedObjectsFramework) = 
-    ctx.ObjectPersistor.StartTransaction()
+    ctx.LifecycleManager.StartTransaction()
     change()
-    ctx.ObjectPersistor.EndTransaction()
+    ctx.LifecycleManager.EndTransaction()
 
 let save no (ctx : INakedObjectsFramework) = 
-    let saveNo() = no |> ctx.ObjectPersistor.MakePersistent
+    let saveNo() = no |> ctx.LifecycleManager.MakePersistent
     makeAndSaveChanges saveNo ctx

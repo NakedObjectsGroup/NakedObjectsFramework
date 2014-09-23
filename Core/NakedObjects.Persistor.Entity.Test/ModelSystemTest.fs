@@ -58,21 +58,21 @@ type ModelSystemTests() =
         SystemTestCode.CreateAndSetup<Person> setter x.NakedObjectsFramework
       
     member x.GetPersonDomainObject() = 
-       let pp : Person[] = box( x.NakedObjectsFramework.ObjectPersistor.Instances<Person>().ToArray()) :?> Person[]
+       let pp : Person[] = box( x.NakedObjectsFramework.LifecycleManager.Instances<Person>().ToArray()) :?> Person[]
        pp |> Seq.filter (fun p -> p.Id = 1) |> Seq.head     
           
     member x.GetNextPersonID() = 
-       let pp = x.NakedObjectsFramework.ObjectPersistor.Instances<Person>()
+       let pp = x.NakedObjectsFramework.LifecycleManager.Instances<Person>()
        (pp |> Seq.map (fun i -> i.Id) |> Seq.max)   + 1 
             
     [<Test>]
     member x.GetService() = 
-        let service = x.NakedObjectsFramework.ObjectPersistor.GetService("repository#ModelFirst.Person")
+        let service = x.NakedObjectsFramework.LifecycleManager.GetService("repository#ModelFirst.Person")
         Assert.IsNotNull(service.Object)     
         
     [<Test>]
     member x.GetCollectionDirectly() = 
-        let pp = x.NakedObjectsFramework.ObjectPersistor.Instances<Person>()
+        let pp = x.NakedObjectsFramework.LifecycleManager.Instances<Person>()
         Assert.Greater(pp |> Seq.length , 0)   
                          
     [<Test>]
@@ -207,21 +207,21 @@ type ModelSystemTests() =
      
     [<Test>]
     member x.UpdateComplexTypeUpdatesUI() = 
-         x.NakedObjectsFramework.ObjectPersistor.StartTransaction()
+         x.NakedObjectsFramework.LifecycleManager.StartTransaction()
          let p = x.GetPersonDomainObject()
          let co = p.ComplexProperty
          co.Firstname <- uniqueName()
          x.NakedObjectsFramework.UpdateNotifier.EnsureEmpty()
-         x.NakedObjectsFramework.ObjectPersistor.EndTransaction()
+         x.NakedObjectsFramework.LifecycleManager.EndTransaction()
          let updates =  CollectionUtils.ToEnumerable<INakedObject>(x.NakedObjectsFramework.UpdateNotifier.AllChangedObjects())
          Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box co), "complex object")
      
     [<Test>]
     member x.ComplexTypeObjectCallsLoadingLoaded() = 
-        x.NakedObjectsFramework.ObjectPersistor.StartTransaction();
+        x.NakedObjectsFramework.LifecycleManager.StartTransaction();
         let p = x.GetPersonDomainObject()
         let co = p.ComplexProperty
-        x.NakedObjectsFramework.ObjectPersistor.EndTransaction();
+        x.NakedObjectsFramework.LifecycleManager.EndTransaction();
         let m = co.GetCallbackStatus()
         let findValue key = 
             let entry = m |> Seq.find (fun kvp -> kvp.Key = key)
@@ -241,7 +241,7 @@ type ModelSystemTests() =
     member x.SavePersonWithInheritedTypeProperty() =
        let ctx = x.NakedObjectsFramework
        let GetNextFruitID() = 
-            (ctx.ObjectPersistor.Instances<Fruit>() |> Seq.map (fun i -> i.Id) |> Seq.max) + 1
+            (ctx.LifecycleManager.Instances<Fruit>() |> Seq.map (fun i -> i.Id) |> Seq.max) + 1
 
        let fSet (f : Fruit) =
           f.Id <- GetNextFruitID()
@@ -264,7 +264,7 @@ type ModelSystemTests() =
     member x.AddToCollectionNotifiesUI() =
        let ctx = x.NakedObjectsFramework
        let GetNextFruitID() = 
-            (ctx.ObjectPersistor.Instances<Fruit>() |> Seq.map (fun i -> i.Id) |> Seq.max) + 1
+            (ctx.LifecycleManager.Instances<Fruit>() |> Seq.map (fun i -> i.Id) |> Seq.max) + 1
 
        let fSet (f : Fruit) =
           f.Id <- GetNextFruitID()
@@ -283,9 +283,9 @@ type ModelSystemTests() =
        save noP ctx
        let p =  noP.Object :?> Person
        ctx.UpdateNotifier.EnsureEmpty()
-       ctx.ObjectPersistor.StartTransaction()
+       ctx.LifecycleManager.StartTransaction()
        p.Food.Add(fruit)
-       ctx.ObjectPersistor.EndTransaction()
+       ctx.LifecycleManager.EndTransaction()
 
        let updates =  CollectionUtils.ToEnumerable<INakedObject>(ctx.UpdateNotifier.AllChangedObjects())
 

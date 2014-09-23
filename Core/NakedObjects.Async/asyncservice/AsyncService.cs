@@ -17,15 +17,15 @@ namespace NakedObjects.Async {
         public INakedObjectsFramework Framework { set; protected get; }
 
         protected  void AbortTransaction() {
-            Framework.ObjectPersistor.AbortTransaction();
+            Framework.LifecycleManager.AbortTransaction();
         }
 
         protected  void EndTransaction() {
-            Framework.ObjectPersistor.EndTransaction();
+            Framework.LifecycleManager.EndTransaction();
         }
 
         protected  void StartTransaction() {
-            Framework.ObjectPersistor.StartTransaction();
+            Framework.LifecycleManager.StartTransaction();
         }
 
         protected  void EnsureReady() {

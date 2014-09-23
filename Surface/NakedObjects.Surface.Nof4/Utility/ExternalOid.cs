@@ -58,7 +58,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             if (spec == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
-            INakedObject service = framework.ObjectPersistor.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor).SingleOrDefault(no => no.Specification.IsOfType(spec));
+            INakedObject service = framework.LifecycleManager.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor).SingleOrDefault(no => no.Specification.IsOfType(spec));
             if (service == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
@@ -124,7 +124,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         private IDictionary<string, object> CreateKeyDictionary(string[] keys, Type type) {
-            PropertyInfo[] keyProperties = framework.ObjectPersistor.GetKeys(type);
+            PropertyInfo[] keyProperties = framework.LifecycleManager.GetKeys(type);
             int index = 0;
             return keyProperties.ToDictionary(kp => kp.Name, kp => CoerceType(kp.PropertyType, keys[index++]));
         }
@@ -138,7 +138,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         protected object GetDomainObject(string[] keys, Type type) {
             try {
                 IDictionary<string, object> keyDict = CreateKeyDictionary(keys, type);
-                return framework.ObjectPersistor.FindByKeys(type, keyDict.Values.ToArray()).GetDomainObject();
+                return framework.LifecycleManager.FindByKeys(type, keyDict.Values.ToArray()).GetDomainObject();
             }
             catch (Exception e) {
                 log.Warn("Domain Object not found with exception", e);
@@ -149,7 +149,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         protected object GetViewModel(string[] keys, INakedObjectSpecification spec) {
             try {
-                INakedObject viewModel = framework.ObjectPersistor.CreateViewModel(spec);
+                INakedObject viewModel = framework.LifecycleManager.CreateViewModel(spec);
                 spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel);
                 return viewModel.Object;
             }
@@ -165,12 +165,12 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         private ITypeCodeMapper GetTypeCodeMapper() {
-            return (ITypeCodeMapper) framework.ObjectPersistor.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
+            return (ITypeCodeMapper) framework.LifecycleManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultTypeCodeMapper();
         }
 
         private IKeyCodeMapper GetKeyCodeMapper() {
-            return (IKeyCodeMapper) framework.ObjectPersistor.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
+            return (IKeyCodeMapper) framework.LifecycleManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultKeyCodeMapper();
         }
 

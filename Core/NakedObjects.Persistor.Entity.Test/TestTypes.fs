@@ -141,16 +141,16 @@ type MockNakedObject(obj, oid) =
         member x.ValidToPersist() : string = null
         member x.SetATransientOid (oid : IOid) = ()
 
-type MockPersistedObjectAdder(p : EntityObjectStore) = 
-    let persistor = p
-    interface IPersistedObjectAdder with 
-        member x.AddPersistedObject(nakedObject : INakedObject) =
-            let cmd = persistor.CreateCreateObjectCommand(nakedObject, null, null)
-            ()
-        member x.MadePersistent(nakedObject : INakedObject) =            
-            nakedObject.ResolveState.Handle Events.StartResolvingEvent
-            nakedObject.ResolveState.Handle Events.EndResolvingEvent
-            
+//type MockPersistedObjectAdder(p : EntityObjectStore) = 
+//    let persistor = p
+//    interface IPersistedObjectAdder with 
+//        member x.AddPersistedObject(nakedObject : INakedObject) =
+//            let cmd = persistor.CreateCreateObjectCommand(nakedObject, null, null)
+//            ()
+//        member x.MadePersistent(nakedObject : INakedObject) =            
+//            nakedObject.ResolveState.Handle Events.StartResolvingEvent
+//            nakedObject.ResolveState.Handle Events.EndResolvingEvent
+//            
 
 
 let objects = new Dictionary<Object, INakedObject>()

@@ -53,9 +53,9 @@ namespace NakedObjects.Core.Util {
         }
 
         //public static INakedObject CloneInlineObject(object domainObject, INakedObject parent, INakedObjectAssociation field) {
-        //    object clone = NakedObjectsContext.ObjectPersistor.CreateObject(reflector.LoadSpecification(domainObject.GetType()));
+        //    object clone = NakedObjectsContext.LifecycleManager.CreateObject(reflector.LoadSpecification(domainObject.GetType()));
         //    INakedObject nakedObject = PersistorUtils.CreateAggregatedAdapterClone(parent, field, clone);
-        //    NakedObjectsContext.ObjectPersistor.InitInlineObject(parent, clone);
+        //    NakedObjectsContext.LifecycleManager.InitInlineObject(parent, clone);
         //    CopyProperties(domainObject, clone);
         //    return nakedObject;
         //}

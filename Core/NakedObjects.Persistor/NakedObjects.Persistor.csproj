@@ -130,7 +130,7 @@
     <Compile Include="objectstore\inmemory\MemoryObjectStore.cs" />
     <Compile Include="objectstore\inmemory\MemoryObjectStoreInstances.cs" />
     <Compile Include="objectstore\INakedObjectStore.cs" />
-    <Compile Include="objectstore\ObjectStorePersistor.cs" />
+    <Compile Include="objectstore\LifeCycleManager.cs" />
     <Compile Include="objectstore\ObjectStoreTransaction.cs" />
     <Compile Include="objectstore\ObjectStoreTransactionManager.cs" />
     <Compile Include="objectstore\ServicesConfiguration.cs" />
