@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.persist {
@@ -15,6 +17,12 @@ namespace NakedObjects.Architecture.persist {
 
         void AddPersistedObject(INakedObject nakedObject);
 
-        void MadePersistent(INakedObject nakedObject);
+        void Reload(INakedObject nakedObject);
+        void ResolveField(INakedObject nakedObject, INakedObjectAssociation field);
+        void LoadField(INakedObject nakedObject, string field);
+        int CountField(INakedObject nakedObject, string field);
+        PropertyInfo[] GetKeys(Type type);
+        INakedObject FindByKeys(Type type, object[] keys);
+        void Refresh(INakedObject nakedObject);
     }
 }

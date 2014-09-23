@@ -8,6 +8,7 @@ using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
@@ -16,7 +17,7 @@ using NakedObjects.Core.Persist;
 using NakedObjects.Persistor.Transaction;
 
 namespace NakedObjects.Persistor.Objectstore {
-    public interface INakedObjectStore : IRequiresSetup {
+    public interface INakedObjectStore  {
         /// <summary>
         ///     Determine if the object store has been initialized with its set of start up objects. This method is
         ///     called only once after <see cref="IRequiresSetup.Init" /> has been called. If this flag returns
@@ -47,7 +48,7 @@ namespace NakedObjects.Persistor.Objectstore {
         ///     If the object to be persisted is a collection, then each element of that collection, that is not
         ///     already persistent, should be made persistent by recursively calling this method.
         /// </para>
-        ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session, ILifecycleManager persistor);
+        ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session);
 
         void RegisterService(string name, IOid oid);
 
@@ -62,7 +63,7 @@ namespace NakedObjects.Persistor.Objectstore {
         ///     updated to reflect the state of the specified objects. Once updated, the object store should issue a
         ///     notification to all of the object's users via the <see cref="IUpdateNotifier" /> object.
         /// </summary>
-        ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session, ILifecycleManager persistor);
+        ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session);
 
         void EndTransaction();
 
@@ -121,8 +122,6 @@ namespace NakedObjects.Persistor.Objectstore {
 
         // TODO this should be done by the execute method
         bool Flush(IPersistenceCommand[] commands);
-
-        void Reset();
 
         PropertyInfo[] GetKeys(Type type);
 

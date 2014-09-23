@@ -7,7 +7,6 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Facets.Objects.Callbacks {
@@ -20,7 +19,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Callbacks {
 
         #region ICallbackFacet Members
 
-        public abstract void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager persistor);
+        public abstract void Invoke(INakedObject nakedObject, ISession session);
 
         #endregion
     }

@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Aggregated;
 using NakedObjects.Architecture.Facets.Objects.ViewModel;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Security;
@@ -33,8 +34,131 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Persistor.Objectstore {
 
-  
+    class ObjectPersistor : IObjectPersistor {
+        private readonly INakedObjectStore objectStore;
+        private readonly INakedObjectTransactionManager transactionManager;
+        private readonly ISession session;
+        private readonly INakedObjectManager manager;
 
+        private static readonly ILog Log;
+
+        static ObjectPersistor() {
+            Log = LogManager.GetLogger(typeof(ObjectPersistor));
+        }
+
+        public ObjectPersistor(INakedObjectStore objectStore, INakedObjectTransactionManager transactionManager, ISession session, INakedObjectManager manager) {
+            this.objectStore = objectStore;
+            this.transactionManager = transactionManager;
+            this.session = session;
+            this.manager = manager;
+        }
+
+        protected IQueryable<T> GetInstances<T>() where T : class {
+            Log.Debug("GetInstances<T> of: " + typeof(T));
+            return objectStore.GetInstances<T>();
+        }
+
+        protected IQueryable GetInstances(Type type) {
+            Log.Debug("GetInstances of: " + type);
+            return objectStore.GetInstances(type);
+        }
+
+        protected IQueryable GetInstances(INakedObjectSpecification specification) {
+            Log.Debug("GetInstances<T> of: " + specification);
+            return objectStore.GetInstances(specification);
+        }
+
+        public virtual IQueryable<T> Instances<T>() where T : class {
+            Log.DebugFormat("Instances<T> of: {0}", typeof(T));
+            return GetInstances<T>();
+        }
+
+        public virtual IQueryable Instances(Type type) {
+            Log.DebugFormat("Instances of: {0}", type);
+            return GetInstances(type);
+        }
+
+        public virtual IQueryable Instances(INakedObjectSpecification specification) {
+            Log.DebugFormat("Instances of: {0}", specification);
+            return GetInstances(specification);
+        }
+
+        public INakedObject LoadObject(IOid oid, INakedObjectSpecification specification) {
+            Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, specification);
+
+            Assert.AssertNotNull("needs an OID", oid);
+            Assert.AssertNotNull("needs a specification", specification);
+
+            return objectStore.GetObject(oid, specification);
+        }
+
+        public void AddPersistedObject(INakedObject nakedObject) {
+            if (nakedObject.Specification.ContainsFacet(typeof(IComplexTypeFacet))) {
+                return;
+            }
+            ICreateObjectCommand createObjectCommand = objectStore.CreateCreateObjectCommand(nakedObject, session);
+            transactionManager.AddCommand(createObjectCommand);
+        }
+
+        public void Reload(INakedObject nakedObject) {
+            Log.DebugFormat("Reload nakedObject: {0}", nakedObject);
+            objectStore.Reload(nakedObject);
+        }
+
+        public void ResolveField(INakedObject nakedObject, INakedObjectAssociation field) {
+            Log.DebugFormat("ResolveField nakedObject: {0} field: {1}", nakedObject, field);
+            if (field.Specification.HasNoIdentity) {
+                return;
+            }
+            INakedObject reference = field.GetNakedObject(nakedObject, manager);
+            if (reference == null || reference.ResolveState.IsResolved()) {
+                return;
+            }
+            if (!reference.ResolveState.IsPersistent()) {
+                return;
+            }
+            if (Log.IsInfoEnabled) {
+                // don't log object - its ToString() may use the unresolved field or unresolved collection
+                Log.Info("resolve field " + nakedObject.Specification.ShortName + "." + field.Id + ": " + reference.Specification.ShortName + " " + reference.ResolveState.CurrentState.Code + " " + reference.Oid);
+            }
+            objectStore.ResolveField(nakedObject, field);
+        }
+
+        public void LoadField(INakedObject nakedObject, string field) {
+            Log.DebugFormat("LoadField nakedObject: {0} field: {1}", nakedObject, field);
+            INakedObjectAssociation association = nakedObject.Specification.Properties.Single(x => x.Id == field);
+            ResolveField(nakedObject, association);
+        }
+
+        public int CountField(INakedObject nakedObject, string field) {
+            Log.DebugFormat("CountField nakedObject: {0} field: {1}", nakedObject, field);
+
+            INakedObjectAssociation association = nakedObject.Specification.Properties.Single(x => x.Id == field);
+
+            if (nakedObject.Specification.IsViewModel) {
+                INakedObject collection = association.GetNakedObject(nakedObject, manager);
+                return collection.GetCollectionFacetFromSpec().AsEnumerable(collection, manager).Count();
+            }
+
+            return objectStore.CountField(nakedObject, association);
+        }
+
+        public PropertyInfo[] GetKeys(Type type) {
+            Log.Debug("GetKeys of: " + type);
+            return objectStore.GetKeys(type);
+        }
+
+        public INakedObject FindByKeys(Type type, object[] keys) {
+            Log.Debug("FindByKeys");
+            return objectStore.FindByKeys(type, keys);
+        }
+
+        public void Refresh(INakedObject nakedObject) {
+            Log.DebugFormat("Refresh nakedObject: {0}", nakedObject);
+            objectStore.Refresh(nakedObject);
+        }
+
+    }
 
 
     public class LifeCycleManager : ILifecycleManager {
@@ -51,6 +175,9 @@ namespace NakedObjects.Persistor.Objectstore {
         private readonly IContainerInjector injector;
         private bool servicesInit;
 
+        private readonly IObjectPersistor objectPersistor;
+
+
         static LifeCycleManager() {
             Log = LogManager.GetLogger(typeof (LifeCycleManager));
         }
@@ -61,6 +188,9 @@ namespace NakedObjects.Persistor.Objectstore {
             Assert.AssertNotNull(oidGenerator);
             Assert.AssertNotNull(identityMap);
             Assert.AssertNotNull(reflector);
+
+            transactionManager = new ObjectStoreTransactionManager(objectStore);
+            objectPersistor = new ObjectPersistor(objectStore, transactionManager, session, this);
 
             this.session = session;
             this.reflector = reflector;
@@ -75,8 +205,6 @@ namespace NakedObjects.Persistor.Objectstore {
             // TODO - fix !
             objectStore.Manager = this; 
 
-
-            transactionManager = new ObjectStoreTransactionManager(objectStore);
             Log.DebugFormat("Creating {0}", this);
 
             AddServices(servicesConfig.Services);
@@ -207,18 +335,15 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public virtual IQueryable<T> Instances<T>() where T : class {
-            Log.DebugFormat("Instances<T> of: {0}", typeof (T));
-            return GetInstances<T>();
+            return objectPersistor.Instances<T>();
         }
 
         public virtual IQueryable Instances(Type type) {
-            Log.DebugFormat("Instances of: {0}", type);
-            return GetInstances(type);
+            return objectPersistor.Instances(type);
         }
 
         public virtual IQueryable Instances(INakedObjectSpecification specification) {
-            Log.DebugFormat("Instances of: {0}", specification);
-            return GetInstances(specification);
+            return objectPersistor.Instances(specification);
         }
 
         public virtual void InitDomainObject(object obj) {
@@ -263,10 +388,10 @@ namespace NakedObjects.Persistor.Objectstore {
             get { return Services.Select(x => CreateAdapter(x.Service, null, null)).ToArray(); }
         }
 
-        public bool IsInitialized {
-            get { return objectStore.IsInitialized; }
-            set { objectStore.IsInitialized = value; }
-        }
+        //public bool IsInitialized {
+        //    get { return objectStore.IsInitialized; }
+        //    set { objectStore.IsInitialized = value; }
+        //}
 
         /// <summary>
         ///     Initialize the object store so that calls to this object store access persisted objects and persist
@@ -274,7 +399,7 @@ namespace NakedObjects.Persistor.Objectstore {
         /// </summary>
         public void Init() {
             Log.Debug("Init");
-            objectStore.Init();
+        
             transactionManager.Init();
             persistAlgorithm.Init();
             identityMap.Init();
@@ -288,13 +413,12 @@ namespace NakedObjects.Persistor.Objectstore {
             OidGenerator.Shutdown();
             transactionManager.Shutdown();
             persistAlgorithm.Shutdown();
-            objectStore.Shutdown();
+           
         }
 
 
         public void Reset() {
             Log.Debug("Reset");
-            objectStore.Reset();
             identityMap.Reset();
             adapterCache.Reset();
             GetServices();
@@ -306,52 +430,23 @@ namespace NakedObjects.Persistor.Objectstore {
             Assert.AssertNotNull("needs an OID", oid);
             Assert.AssertNotNull("needs a specification", specification);
 
-            INakedObject nakedObject = identityMap.IsIdentityKnown(oid) ? GetAdapterFor(oid) : objectStore.GetObject(oid, specification);
-            return nakedObject;
+            return identityMap.IsIdentityKnown(oid) ? GetAdapterFor(oid) : objectPersistor.LoadObject(oid, specification);
         }
 
-
         public void Reload(INakedObject nakedObject) {
-            Log.DebugFormat("Reload nakedObject: {0}", nakedObject);
-            objectStore.Reload(nakedObject);
+            objectPersistor.Reload(nakedObject);
         }
 
         public void ResolveField(INakedObject nakedObject, INakedObjectAssociation field) {
-            Log.DebugFormat("ResolveField nakedObject: {0} field: {1}", nakedObject, field);
-            if (field.Specification.HasNoIdentity) {
-                return;
-            }
-            INakedObject reference = field.GetNakedObject(nakedObject, this);
-            if (reference == null || reference.ResolveState.IsResolved()) {
-                return;
-            }
-            if (!reference.ResolveState.IsPersistent()) {
-                return;
-            }
-            if (Log.IsInfoEnabled) {
-                // don't log object - its ToString() may use the unresolved field or unresolved collection
-                Log.Info("resolve field " + nakedObject.Specification.ShortName + "." + field.Id + ": " + reference.Specification.ShortName + " " + reference.ResolveState.CurrentState.Code + " " + reference.Oid);
-            }
-            objectStore.ResolveField(nakedObject, field);
+            objectPersistor.ResolveField(nakedObject, field);
         }
 
         public void LoadField(INakedObject nakedObject, string field) {
-            Log.DebugFormat("LoadField nakedObject: {0} field: {1}", nakedObject, field);
-            INakedObjectAssociation association = nakedObject.Specification.Properties.Single(x => x.Id == field);
-            ResolveField(nakedObject, association);
+            objectPersistor.LoadField(nakedObject, field);
         }
 
         public int CountField(INakedObject nakedObject, string field) {
-            Log.DebugFormat("CountField nakedObject: {0} field: {1}", nakedObject, field);
-
-            INakedObjectAssociation association = nakedObject.Specification.Properties.Single(x => x.Id == field);
-
-            if (nakedObject.Specification.IsViewModel) {
-                INakedObject collection = association.GetNakedObject(nakedObject, this);
-                return collection.GetCollectionFacetFromSpec().AsEnumerable(collection, this).Count();
-            }
-
-            return objectStore.CountField(nakedObject, association);
+            return objectPersistor.CountField(nakedObject, field);
         }
 
         public void ResolveImmediately(INakedObject nakedObject) {
@@ -374,8 +469,8 @@ namespace NakedObjects.Persistor.Objectstore {
             Log.DebugFormat("ObjectChanged nakedObject: {0}", nakedObject);
             if (nakedObject.ResolveState.RespondToChangesInPersistentObjects()) {
                 if (nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
-                    nakedObject.Updating(session, this);
-                    nakedObject.Updated(session, this);
+                    nakedObject.Updating(session);
+                    nakedObject.Updated(session);
                     updateNotifier.AddChangedObject(nakedObject);
                 }
                 else {
@@ -383,10 +478,10 @@ namespace NakedObjects.Persistor.Objectstore {
                     if (specification.IsAlwaysImmutable() || (specification.IsImmutableOncePersisted() && nakedObject.ResolveState.IsPersistent())) {
                         throw new NotPersistableException("cannot change immutable object");
                     }
-                    nakedObject.Updating(session, this);
-                    ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject, session, this);
+                    nakedObject.Updating(session);
+                    ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject, session);
                     transactionManager.AddCommand(saveObjectCommand);
-                    nakedObject.Updated(session, this);
+                    nakedObject.Updated(session);
                     updateNotifier.AddChangedObject(nakedObject);
                 }
             }
@@ -433,11 +528,11 @@ namespace NakedObjects.Persistor.Objectstore {
         public void DestroyObject(INakedObject nakedObject) {
             Log.DebugFormat("DestroyObject nakedObject: {0}", nakedObject);
 
-            nakedObject.Deleting(session, this);
+            nakedObject.Deleting(session);
             IDestroyObjectCommand command = objectStore.CreateDestroyObjectCommand(nakedObject);
             transactionManager.AddCommand(command);
             nakedObject.ResolveState.Handle(Events.DestroyEvent);
-            nakedObject.Deleted(session, this);
+            nakedObject.Deleted(session);
         }
 
         public object CreateObject(INakedObjectSpecification specification) {
@@ -485,17 +580,17 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public PropertyInfo[] GetKeys(Type type) {
             Log.Debug("GetKeys of: " + type);
-            return objectStore.GetKeys(type);
+            return objectPersistor.GetKeys(type);
         }
 
         public INakedObject FindByKeys(Type type, object[] keys) {
             Log.Debug("FindByKeys");
-            return objectStore.FindByKeys(type, keys);
+            return objectPersistor.FindByKeys(type, keys);
         }
 
         public void Refresh(INakedObject nakedObject) {
             Log.DebugFormat("Refresh nakedObject: {0}", nakedObject);
-            objectStore.Refresh(nakedObject);
+            objectPersistor.Refresh(nakedObject);
         }
 
         public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid) {
@@ -564,11 +659,7 @@ namespace NakedObjects.Persistor.Objectstore {
         #region IPersistedObjectAdder Members
 
         public virtual void AddPersistedObject(INakedObject nakedObject) {
-            if (nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
-                return;
-            }
-            ICreateObjectCommand createObjectCommand = objectStore.CreateCreateObjectCommand(nakedObject, session, this);
-            transactionManager.AddCommand(createObjectCommand);
+            objectPersistor.AddPersistedObject(nakedObject);
         }
 
         public virtual void MadePersistent(INakedObject nakedObject) {
@@ -706,7 +797,7 @@ namespace NakedObjects.Persistor.Objectstore {
         private void InitializeNewObject(INakedObject nakedObject, object rootObject) {
             nakedObject.Specification.Properties.ForEach(field => field.ToDefault(nakedObject, this));
             CreateInlineObjects(nakedObject, rootObject);
-            nakedObject.Created(session, this);
+            nakedObject.Created(session);
         }
 
         private void InitializeNewObject(INakedObject nakedObject) {
@@ -716,21 +807,6 @@ namespace NakedObjects.Persistor.Objectstore {
         private static bool IsPersistent(INakedObject nakedObject) {
             Log.DebugFormat("IsPersistent nakedObject: {0}", nakedObject);
             return nakedObject.ResolveState.IsPersistent();
-        }
-
-        protected IQueryable<T> GetInstances<T>() where T : class {
-            Log.Debug("GetInstances<T> of: " + typeof (T));
-            return objectStore.GetInstances<T>();
-        }
-
-        protected IQueryable GetInstances(Type type) {
-            Log.Debug("GetInstances of: " + type);
-            return objectStore.GetInstances(type);
-        }
-
-        protected IQueryable GetInstances(INakedObjectSpecification specification) {
-            Log.Debug("GetInstances<T> of: " + specification);
-            return objectStore.GetInstances(specification);
         }
 
         protected IOid GetOidForService(string name, string typeName) {

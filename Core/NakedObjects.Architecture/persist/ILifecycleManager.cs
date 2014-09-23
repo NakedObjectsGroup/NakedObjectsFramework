@@ -24,41 +24,18 @@ namespace NakedObjects.Architecture.Persist {
         ///     This method is called only once after the <see cref="IRequiresSetup.Init" /> has been called.
         ///     If this flag returns <c>false</c> the framework will run the fixtures to initialise the persistor.
         /// </para>
-        bool IsInitialized { get; set; }
+        //bool IsInitialized { get; set; }
 
        
         IOidGenerator OidGenerator { get; }
-
-        /// <summary>
-        ///     Forces a reload of this object from the persistent object store
-        /// </summary>
-        void Reload(INakedObject nakedObject);
 
         /// <summary>
         ///     Primarily for testing
         /// </summary>
         void Reset();
 
-       
-
       
-
-        /// <summary>
-        ///     Hint that specified field within the specified object is likely to be needed soon. This allows the
-        ///     object's data to be loaded, ready for use.
-        /// </summary>
-        /// <para>
-        ///     This method need not do anything, but offers the object store the opportunity to load in objects before
-        ///     their use. Contrast this with <see cref="ResolveImmediately" />, which requires an object to be loaded before
-        ///     continuing.
-        /// </para>
-        /// <seealso cref="ResolveImmediately(INakedObject)" />
-        void ResolveField(INakedObject nakedObject, INakedObjectAssociation field);
-
-
-        // Investigate and remove this if no longer needed 
-        void LoadField(INakedObject nakedObject, string fieldName);
-
+      
 
         /// <summary>
         ///     Re-initialises the fields of an object. If the object is unresolved then the object's missing data
@@ -86,17 +63,9 @@ namespace NakedObjects.Architecture.Persist {
         /// </para>
         void MakePersistent(INakedObject nakedObject);
 
+        void MadePersistent(INakedObject nakedObject);
+
         void DestroyObject(INakedObject nakedObject);
-
-       
-
-        PropertyInfo[] GetKeys(Type type);
-
-        void Refresh(INakedObject nakedObject);
-
-        int CountField(INakedObject nakedObject, string fieldName);
-
-        INakedObject FindByKeys(Type type, object[] keys);
       
 
         List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);

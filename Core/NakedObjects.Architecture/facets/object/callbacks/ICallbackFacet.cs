@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Facets.Objects.Callbacks {
@@ -14,7 +13,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Callbacks {
     ///     A <see cref="IFacet" /> that represents some type of lifecycle callback on the object (eg about to be persisted).
     /// </summary>
     public interface ICallbackFacet : IFacet {
-        void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager persistor);
+        void Invoke(INakedObject nakedObject, ISession session);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

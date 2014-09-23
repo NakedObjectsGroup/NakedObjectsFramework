@@ -192,19 +192,19 @@ let mutable persistedCount = 0
 let mutable persistingCount = 0
 
  
-let updated (nakedObject : INakedObject) (sess : ISession) (p : ILifecycleManager) = 
+let updated (nakedObject : INakedObject) (sess : ISession) = 
     updatedCount <- updatedCount + 1
     ()
  
-let updating (nakedObject : INakedObject) (sess : ISession) (p : ILifecycleManager) = 
+let updating (nakedObject : INakedObject) (sess : ISession) = 
     updatingCount <- updatingCount + 1
     ()
  
-let persisted (nakedObject : INakedObject) (sess : ISession) (p : ILifecycleManager) = 
+let persisted (nakedObject : INakedObject) (sess : ISession) = 
     persistedCount <- persistedCount + 1
     ()
  
-let persisting (nakedObject : INakedObject) (sess : ISession) (p : ILifecycleManager) = 
+let persisting (nakedObject : INakedObject) (sess : ISession) = 
     persistingCount <- persistingCount + 1
     ()
 
@@ -225,10 +225,10 @@ let setupPersistorForTesting (p : EntityObjectStore) =
                       EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), 
                       EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
                       EntityObjectStore.NotifyUiDelegate(NotifyUIForTest),
-                      Action<INakedObject, ISession, ILifecycleManager>(updated), 
-                      Action<INakedObject, ISession, ILifecycleManager>(updating),
-                      Action<INakedObject, ISession, ILifecycleManager>(persisted), 
-                      Action<INakedObject, ISession, ILifecycleManager>(persisting),
+                      Action<INakedObject, ISession>(updated), 
+                      Action<INakedObject, ISession>(updating),
+                      Action<INakedObject, ISession>(persisted), 
+                      Action<INakedObject, ISession>(persisting),
                       Action<INakedObject>(handleLoadingTest),
                       EventHandler(savingChangesHandler),
                       Func<Type, INakedObjectSpecification>(loadSpecificationHandler))

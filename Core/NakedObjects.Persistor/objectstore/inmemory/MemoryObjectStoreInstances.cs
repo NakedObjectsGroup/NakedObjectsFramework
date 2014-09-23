@@ -9,6 +9,7 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Key;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Security;
@@ -90,7 +91,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
         }
 
 
-        public virtual void Save(INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
+        public virtual void Save(INakedObject nakedObject, ISession session) {
             lock (objectInstances) {
                 SerialNumberVersion version;
                 if (objectInstances.ContainsKey(nakedObject.Oid)) {
@@ -100,7 +101,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                 else {
                     version = new SerialNumberVersion(1, session.UserName, DateTime.Now);
                     SetKey(nakedObject);
-                    nakedObject.Persisted(session, persistor);
+                    nakedObject.Persisted(session);
                 }
                 objectInstances[nakedObject.Oid] = new ObjectAndVersion(nakedObject.Object, version);
                 nakedObject.OptimisticLock = version;

@@ -90,12 +90,12 @@ namespace NakedObjects.Reflector.Audit {
             }
 
             public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, ILifecycleManager persistor, ISession session) {
-                auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session, persistor);
+                auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session);
                 return underlyingFacet.Invoke(nakedObject, parameters, persistor, session);
             }
 
             public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager persistor, ISession session) {
-                auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session, persistor);
+                auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session);
                 return underlyingFacet.Invoke(nakedObject, parameters, resultPage, persistor, session);
             }
         }
@@ -114,9 +114,9 @@ namespace NakedObjects.Reflector.Audit {
                 manager = auditManager;
             }
 
-            public override void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
-                manager.Updated(nakedObject, session, persistor);
-                underlyingFacet.Invoke(nakedObject, session, persistor);
+            public override void Invoke(INakedObject nakedObject, ISession session) {
+                manager.Updated(nakedObject, session);
+                underlyingFacet.Invoke(nakedObject, session);
             }
         }
 
@@ -134,9 +134,9 @@ namespace NakedObjects.Reflector.Audit {
                 manager = auditManager;
             }
 
-            public override void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
-                manager.Persisted(nakedObject, session, persistor);
-                underlyingFacet.Invoke(nakedObject, session, persistor);
+            public override void Invoke(INakedObject nakedObject, ISession session) {
+                manager.Persisted(nakedObject, session);
+                underlyingFacet.Invoke(nakedObject, session);
             }
         }
 

@@ -61,7 +61,7 @@ namespace NakedObjects.Persistor {
                 INakedObjectAssociation[] fields = nakedObject.Specification.Properties;
                 if (!nakedObject.Specification.IsEncodeable && fields.Length > 0) {
                     Log.Info("make persistent " + nakedObject);
-                    nakedObject.Persisting(session, persistor);
+                    nakedObject.Persisting(session);
                     if (!nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
                         persistor.MadePersistent(nakedObject);
                     }

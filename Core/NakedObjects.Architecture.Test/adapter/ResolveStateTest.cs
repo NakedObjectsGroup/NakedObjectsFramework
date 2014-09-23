@@ -59,7 +59,7 @@ namespace NakedObjects.Architecture.Adapter {
                 get { throw new NotImplementedException(); }
             }
 
-            public void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager persistor) {}
+            public void Invoke(INakedObject nakedObject, ISession session) {}
 
             #endregion
         }

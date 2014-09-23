@@ -290,12 +290,12 @@ namespace NakedObjects.Architecture.Resolve {
             }
 
             protected virtual void Loading(INakedObject no, IResolveStateMachine rsm, ISession s, ILifecycleManager p) {
-                no.Loading(s, p);
+                no.Loading(s);
                 rsm.AddHistoryNote("Loading");
             }
 
             protected virtual void Loaded(INakedObject no, IResolveStateMachine rsm, ISession s, ILifecycleManager p) {
-                no.Loaded(s, p);
+                no.Loaded(s);
                 rsm.AddHistoryNote("Loaded");
             }
 
