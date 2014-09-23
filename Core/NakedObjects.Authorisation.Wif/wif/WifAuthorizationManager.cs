@@ -14,11 +14,11 @@ namespace NakedObjects.Reflector.Security.Wif {
     public class WifAuthorizationManager : AuthorizationManagerAbstract, IAuthorizationManager {
         #region IAuthorizationManager Members
 
-        public bool IsVisible(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier) {
+        public bool IsVisible(ISession session, ILifecycleManager persistor, INakedObject target, IIdentifier identifier) {
             throw new System.NotImplementedException();
         }
 
-        public bool IsEditable(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier) {
+        public bool IsEditable(ISession session, ILifecycleManager persistor, INakedObject target, IIdentifier identifier) {
             throw new System.NotImplementedException();
         }
 

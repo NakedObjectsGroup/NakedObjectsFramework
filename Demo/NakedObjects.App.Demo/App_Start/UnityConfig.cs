@@ -144,7 +144,7 @@ namespace NakedObjects.Mvc.App.App_Start {
             container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerRequestLifetimeManager());
 
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerRequestLifetimeManager());
-            container.RegisterType<INakedObjectPersistor, ObjectStorePersistor>(new PerRequestLifetimeManager());
+            container.RegisterType<ILifecycleManager, ObjectStorePersistor>(new PerRequestLifetimeManager());
             container.RegisterType<ISession, WindowsSession>(new PerRequestLifetimeManager());
             container.RegisterType<IUpdateNotifier, SimpleUpdateNotifier>(new PerRequestLifetimeManager());
             container.RegisterType<IMessageBroker, SimpleMessageBroker>(new PerRequestLifetimeManager());

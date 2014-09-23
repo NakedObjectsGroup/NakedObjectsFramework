@@ -868,12 +868,12 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 get { return prop == null ? (Func<Tuple<string, INakedObjectSpecification>[]>) parm.GetChoicesParameters : prop.GetChoicesParameters; }
             }
 
-            private Func<INakedObject, IDictionary<string, INakedObject>, INakedObjectPersistor, INakedObject[]> GetChoices {
-                get { return prop == null ? (Func<INakedObject, IDictionary<string, INakedObject>, INakedObjectPersistor, INakedObject[]>) parm.GetChoices : prop.GetChoices; }
+            private Func<INakedObject, IDictionary<string, INakedObject>, ILifecycleManager, INakedObject[]> GetChoices {
+                get { return prop == null ? (Func<INakedObject, IDictionary<string, INakedObject>, ILifecycleManager, INakedObject[]>) parm.GetChoices : prop.GetChoices; }
             }
 
-            private Func<INakedObject, string, INakedObjectPersistor, INakedObject[]> GetCompletions {
-                get { return prop == null ? (Func<INakedObject, string, INakedObjectPersistor, INakedObject[]>) parm.GetCompletions : prop.GetCompletions; }
+            private Func<INakedObject, string, ILifecycleManager, INakedObject[]> GetCompletions {
+                get { return prop == null ? (Func<INakedObject, string, ILifecycleManager, INakedObject[]>) parm.GetCompletions : prop.GetCompletions; }
             }
 
             private void CheckAutocompleOrConditional() {

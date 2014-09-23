@@ -117,6 +117,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulObjects.Test.App", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulObjects.Test.EndToEnd", "Test\RestfulObjects.Test.EndToEnd\RestfulObjects.Test.EndToEnd.csproj", "{C178C7AB-4238-49C1-B005-7264AD6F967A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Authorisation.Wif", "Core\NakedObjects.Authorisation.Wif\NakedObjects.Authorisation.Wif.csproj", "{233B2E95-FC9E-4E1B-9909-D3CBC81D3F1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Helpers", "Programming Model\NakedObjects.Helpers\NakedObjects.Helpers.csproj", "{8B62CB10-ECD9-4814-9211-D252E5B5D48B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -465,6 +469,18 @@ Global
 		{C178C7AB-4238-49C1-B005-7264AD6F967A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C178C7AB-4238-49C1-B005-7264AD6F967A}.Release|x86.ActiveCfg = Release|x86
 		{C178C7AB-4238-49C1-B005-7264AD6F967A}.Release|x86.Build.0 = Release|x86
+		{233B2E95-FC9E-4E1B-9909-D3CBC81D3F1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{233B2E95-FC9E-4E1B-9909-D3CBC81D3F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{233B2E95-FC9E-4E1B-9909-D3CBC81D3F1E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{233B2E95-FC9E-4E1B-9909-D3CBC81D3F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{233B2E95-FC9E-4E1B-9909-D3CBC81D3F1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{233B2E95-FC9E-4E1B-9909-D3CBC81D3F1E}.Release|x86.ActiveCfg = Release|Any CPU
+		{8B62CB10-ECD9-4814-9211-D252E5B5D48B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B62CB10-ECD9-4814-9211-D252E5B5D48B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B62CB10-ECD9-4814-9211-D252E5B5D48B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8B62CB10-ECD9-4814-9211-D252E5B5D48B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B62CB10-ECD9-4814-9211-D252E5B5D48B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B62CB10-ECD9-4814-9211-D252E5B5D48B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
