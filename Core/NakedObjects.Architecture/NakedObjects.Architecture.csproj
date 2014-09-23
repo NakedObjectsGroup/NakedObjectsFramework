@@ -417,7 +417,7 @@
     <Compile Include="persist\IExecutionContext.cs" />
     <Compile Include="persist\IIdentityMap.cs" />
     <Compile Include="persist\INakedObjectManager.cs" />
-    <Compile Include="persist\INakedObjectPersistor.cs" />
+    <Compile Include="persist\ILifecycleManager.cs" />
     <Compile Include="persist\INakedObjectTransactionManager.cs" />
     <Compile Include="persist\IPersistedObjectAdder.cs" />
     <Compile Include="persist\NotPersistableException.cs" />

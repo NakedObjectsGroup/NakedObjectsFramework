@@ -47,7 +47,7 @@ namespace NakedObjects.Persistor.Objectstore {
         ///     If the object to be persisted is a collection, then each element of that collection, that is not
         ///     already persistent, should be made persistent by recursively calling this method.
         /// </para>
-        ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor);
+        ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session, ILifecycleManager persistor);
 
         void RegisterService(string name, IOid oid);
 
@@ -62,7 +62,7 @@ namespace NakedObjects.Persistor.Objectstore {
         ///     updated to reflect the state of the specified objects. Once updated, the object store should issue a
         ///     notification to all of the object's users via the <see cref="IUpdateNotifier" /> object.
         /// </summary>
-        ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor);
+        ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session, ILifecycleManager persistor);
 
         void EndTransaction();
 
@@ -72,9 +72,9 @@ namespace NakedObjects.Persistor.Objectstore {
 
         IQueryable GetInstances(INakedObjectSpecification specification);
 
-        T CreateInstance<T>(INakedObjectPersistor persistor) where T : class;
+        T CreateInstance<T>(ILifecycleManager persistor) where T : class;
 
-        object CreateInstance(Type type, INakedObjectPersistor persistor);
+        object CreateInstance(Type type, ILifecycleManager persistor);
 
 
         /// <summary>

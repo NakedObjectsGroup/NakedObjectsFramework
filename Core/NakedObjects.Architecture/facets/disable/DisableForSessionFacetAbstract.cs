@@ -21,7 +21,7 @@ namespace NakedObjects.Architecture.Facets.Disable {
 
         #region IDisableForSessionFacet Members
 
-        public abstract string DisabledReason(ISession session, INakedObject target, INakedObjectPersistor persistor);
+        public abstract string DisabledReason(ISession session, INakedObject target, ILifecycleManager persistor);
 
         #endregion
     }

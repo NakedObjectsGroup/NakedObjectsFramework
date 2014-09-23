@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.DotNet {
     public abstract class ValueSemanticsProviderAbstractTestCase<T> {
         private EncodeableFacetUsingEncoderDecoder<T> encodeableFacet;
         private ParseableFacetUsingParser<T> parseableFacet;
-        protected INakedObjectPersistor persistor = new Mock<INakedObjectPersistor>().Object;
+        protected ILifecycleManager persistor = new Mock<ILifecycleManager>().Object;
         protected INakedObjectReflector reflector = new Mock<INakedObjectReflector>().Object;
         private ValueSemanticsProviderAbstract<T> value;
 

@@ -27,7 +27,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
 
         #endregion
 
-        public override void Invoke(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public override void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             InvokeUtils.Invoke(method, nakedObject);
         }
 

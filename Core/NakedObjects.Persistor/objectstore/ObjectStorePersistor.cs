@@ -32,7 +32,7 @@ using NakedObjects.Persistor.Transaction;
 using NakedObjects.Util;
 
 namespace NakedObjects.Persistor.Objectstore {
-    public class ObjectStorePersistor : INakedObjectPersistor {
+    public class ObjectStorePersistor : ILifecycleManager {
         private static readonly ILog Log;
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
         private readonly IIdentityMap identityMap;
@@ -95,7 +95,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
         // property Injected dependencies as temp workarounds while refactoring 
 
-        #region INakedObjectPersistor Members       
+        #region ILifecycleManager Members       
 
         public IOidGenerator OidGenerator { get; private set; }
 
@@ -521,7 +521,7 @@ namespace NakedObjects.Persistor.Objectstore {
             return adaptedObjects;
         }
 
-        public void Abort(INakedObjectPersistor objectManager, IFacetHolder holder) {
+        public void Abort(ILifecycleManager objectManager, IFacetHolder holder) {
             Log.Info("exception executing " + holder + ", aborting transaction");
             try {
                 objectManager.AbortTransaction();

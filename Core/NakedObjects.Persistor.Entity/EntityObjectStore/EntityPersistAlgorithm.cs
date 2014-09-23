@@ -18,7 +18,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public void Init() {}
 
-        public void MakePersistent(INakedObject nakedObject, INakedObjectPersistor persistor, ISession session) {
+        public void MakePersistent(INakedObject nakedObject, ILifecycleManager persistor, ISession session) {
             if (nakedObject.Specification.IsCollection) {
                 MakeCollectionPersistent(nakedObject, persistor, session);
             }
@@ -35,7 +35,7 @@ namespace NakedObjects.EntityObjectStore {
 
         #endregion
 
-        public static void MakeObjectPersistent(INakedObject nakedObject, INakedObjectPersistor persistor) {
+        public static void MakeObjectPersistent(INakedObject nakedObject, ILifecycleManager persistor) {
             if (nakedObject.ResolveState.IsAggregated() ||
                 nakedObject.ResolveState.IsPersistent() ||
                 nakedObject.Specification.Persistable == Persistable.TRANSIENT ||
@@ -46,7 +46,7 @@ namespace NakedObjects.EntityObjectStore {
             persistor.AddPersistedObject(nakedObject);
         }
 
-        private void MakeCollectionPersistent(INakedObject collection, INakedObjectPersistor persistor, ISession session) {
+        private void MakeCollectionPersistent(INakedObject collection, ILifecycleManager persistor, ISession session) {
             if (collection.ResolveState.IsPersistent() || collection.Specification.Persistable == Persistable.TRANSIENT) {
                 return;
             }

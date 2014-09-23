@@ -20,7 +20,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Callbacks {
 
         #region ICallbackFacet Members
 
-        public abstract void Invoke(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor);
+        public abstract void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager persistor);
 
         #endregion
     }

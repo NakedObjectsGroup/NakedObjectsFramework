@@ -28,6 +28,6 @@ namespace NakedObjects.Architecture.Reflect {
         ///     may be <c>null</c> if just checking for authorization
         /// </param>
         /// <param name="persistor"></param>
-        bool IsVisible(ISession session, INakedObject target, INakedObjectPersistor persistor);
+        bool IsVisible(ISession session, INakedObject target, ILifecycleManager persistor);
     }
 }

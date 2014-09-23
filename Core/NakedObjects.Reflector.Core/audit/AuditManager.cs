@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.Audit {
 
         public INakedObjectReflector Reflector { protected get; set; }
 
-        public void Invoke(INakedObject nakedObject, INakedObject[] parameters, bool queryOnly, IIdentifier identifier, ISession session, INakedObjectPersistor persistor) {
+        public void Invoke(INakedObject nakedObject, INakedObject[] parameters, bool queryOnly, IIdentifier identifier, ISession session, ILifecycleManager persistor) {
 
             IAuditor auditor = GetNamespaceAuditorFor(nakedObject, persistor) ?? GetDefaultAuditor(persistor);
 
@@ -38,17 +38,17 @@ namespace NakedObjects.Reflector.Audit {
             }
         }
 
-        public void Updated(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public void Updated(INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             IAuditor auditor = GetNamespaceAuditorFor(nakedObject, persistor) ?? GetDefaultAuditor(persistor);
             auditor.ObjectUpdated(session.Principal, nakedObject.GetDomainObject());
         }
 
-        public void Persisted(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public void Persisted(INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             IAuditor auditor = GetNamespaceAuditorFor(nakedObject, persistor) ?? GetDefaultAuditor(persistor);
             auditor.ObjectPersisted(session.Principal, nakedObject.GetDomainObject());
         }
 
-        private IAuditor GetNamespaceAuditorFor(INakedObject target, INakedObjectPersistor persistor) {
+        private IAuditor GetNamespaceAuditorFor(INakedObject target, ILifecycleManager persistor) {
             Assert.AssertNotNull(target);
             string fullyQualifiedOfTarget = target.Specification.FullName;
             var auditor = namespaceAuditors.
@@ -59,12 +59,12 @@ namespace NakedObjects.Reflector.Audit {
             return auditor != null ? CreateAuditor(auditor, persistor) : null;
         }
 
-        private IAuditor CreateAuditor(IAuditor auditor, INakedObjectPersistor persistor) {
+        private IAuditor CreateAuditor(IAuditor auditor, ILifecycleManager persistor) {
             return (IAuditor)persistor.CreateObject(Reflector.LoadSpecification(auditor.GetType()));
             //return (IAuditor)Reflector.LoadSpecification(auditor.GetType()).CreateObject(persistor);
         }
 
-        private IAuditor GetDefaultAuditor(INakedObjectPersistor persistor) {
+        private IAuditor GetDefaultAuditor(ILifecycleManager persistor) {
             return CreateAuditor(defaultAuditor, persistor);
         }
     }

@@ -41,7 +41,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
             return ns + typeToProxy.FullName;
         }
 
-        public static Type CreateProxyType(INakedObjectReflector reflector, INakedObjectPersistor persistor, Type typeToProxy) {
+        public static Type CreateProxyType(INakedObjectReflector reflector, ILifecycleManager persistor, Type typeToProxy) {
             // do not proxy EF domain objects 
 
             if (TypeUtils.IsEntityDomainObject(typeToProxy) ||
@@ -149,7 +149,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
                           ForEach(name => SubclassCollectionAccessorIfFound(typeToProxy, name, typeBuilder, containerField));
         }
 
-        private static void SubclassAllCollectionAccessors(INakedObjectReflector reflector, INakedObjectPersistor persistor, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
+        private static void SubclassAllCollectionAccessors(INakedObjectReflector reflector, ILifecycleManager persistor, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
             INakedObjectAssociation[] associations = reflector.LoadSpecification(typeToProxy).Properties.Where(a => a.IsCollection).ToArray();
 
             associations.ForEach(assoc => SubclassCollectionAccessors(typeBuilder, typeToProxy, containerField, assoc.GetName(persistor)));

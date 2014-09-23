@@ -85,14 +85,14 @@ namespace NakedObjects.Architecture.Reflect {
 
         public abstract INakedObject GetNakedObject(INakedObject fromObject, INakedObjectManager manager);
 
-        public abstract bool IsEmpty(INakedObject adapter, INakedObjectPersistor persistor);
+        public abstract bool IsEmpty(INakedObject adapter, ILifecycleManager persistor);
         public abstract bool IsInline { get; }
 
         public abstract INakedObject GetDefault(INakedObject nakedObject, INakedObjectManager manager);
         public abstract TypeOfDefaultValue GetDefaultType(INakedObject nakedObject, INakedObjectManager manager);
         public abstract void ToDefault(INakedObject nakedObject, INakedObjectManager manager);
 
-        public override IConsent IsUsable(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+        public override IConsent IsUsable(ISession session, INakedObject target, ILifecycleManager persistor) {
             bool isPersistent = target.ResolveState.IsPersistent();
             IConsent disabledConsent = IsUsableDeclaratively(isPersistent);
             if (disabledConsent != null) {
@@ -125,11 +125,11 @@ namespace NakedObjects.Architecture.Reflect {
 
         #endregion
 
-        public abstract INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, INakedObjectPersistor persistor);
+        public abstract INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, ILifecycleManager persistor);
 
         public abstract Tuple<string, INakedObjectSpecification>[] GetChoicesParameters();
 
-        public abstract INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, INakedObjectPersistor persistor);
+        public abstract INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, ILifecycleManager persistor);
 
         private IConsent IsUsableDeclaratively(bool isPersistent) {
             var facet = GetFacet<IDisabledFacet>();

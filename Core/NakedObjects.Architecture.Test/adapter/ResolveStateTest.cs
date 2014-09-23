@@ -59,7 +59,7 @@ namespace NakedObjects.Architecture.Adapter {
                 get { throw new NotImplementedException(); }
             }
 
-            public void Invoke(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {}
+            public void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager persistor) {}
 
             #endregion
         }
@@ -255,7 +255,7 @@ namespace NakedObjects.Architecture.Adapter {
                 get { throw new NotImplementedException(); }
             }
 
-            public IEnumerable GetBoundedSet(INakedObjectPersistor persistor) {
+            public IEnumerable GetBoundedSet(ILifecycleManager persistor) {
                 throw new NotImplementedException();
             }
 
@@ -273,7 +273,7 @@ namespace NakedObjects.Architecture.Adapter {
 
             #endregion
 
-            public object CreateObject(INakedObjectPersistor persistor) {
+            public object CreateObject(ILifecycleManager persistor) {
                 throw new NotImplementedException();
             }
         }

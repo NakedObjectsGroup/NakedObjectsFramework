@@ -150,7 +150,7 @@ namespace NakedObjects.Boot {
             }
 
           //  context.SetReflector(reflector);
-          //  INakedObjectPersistor objectPersistor = objectPersistorInstaller.CreateObjectPersistor();
+          //  ILifecycleManager objectPersistor = objectPersistorInstaller.CreateObjectPersistor();
           //  NakedObjectsContext.PersistorInstaller = objectPersistorInstaller;
           //  NakedObjectsContext.MenuServicesInstaller = menuServicesInstaller;
           //  NakedObjectsContext.ContributedActionsInstaller = contributedActionsInstaller;

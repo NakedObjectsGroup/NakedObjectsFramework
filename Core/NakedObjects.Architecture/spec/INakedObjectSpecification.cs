@@ -129,9 +129,9 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         IConsent ValidToPersist(INakedObject transientObject, ISession session);
 
-        //object CreateObject(INakedObjectPersistor persistor);
+        //object CreateObject(ILifecycleManager persistor);
 
-        IEnumerable GetBoundedSet(INakedObjectPersistor persistor);
+        IEnumerable GetBoundedSet(ILifecycleManager persistor);
 
         void MarkAsService();
 

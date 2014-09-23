@@ -253,7 +253,7 @@ namespace NakedObjects.Xat {
             container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerResolveLifetimeManager());
 
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerResolveLifetimeManager());
-            container.RegisterType<INakedObjectPersistor, ObjectStorePersistor>(new PerResolveLifetimeManager());
+            container.RegisterType<ILifecycleManager, ObjectStorePersistor>(new PerResolveLifetimeManager());
 
             container.RegisterType<ISession>(new PerResolveLifetimeManager(), new InjectionFactory(c => TestSession));
 

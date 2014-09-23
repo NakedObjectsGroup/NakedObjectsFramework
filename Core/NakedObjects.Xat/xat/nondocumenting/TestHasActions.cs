@@ -18,9 +18,9 @@ using NakedObjects.Reflector.Spec;
 namespace NakedObjects.Xat {
     internal abstract class TestHasActions : ITestHasActions {
         protected readonly ITestObjectFactory factory;
-        private readonly INakedObjectPersistor persistor;
+        private readonly ILifecycleManager persistor;
 
-        protected TestHasActions(ITestObjectFactory factory, INakedObjectPersistor persistor) {
+        protected TestHasActions(ITestObjectFactory factory, ILifecycleManager persistor) {
             this.factory = factory;
             this.persistor = persistor;
         }

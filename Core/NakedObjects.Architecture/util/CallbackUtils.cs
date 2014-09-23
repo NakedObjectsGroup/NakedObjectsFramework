@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Util {
     public static class CallbackUtils {
-        private static void CallCallback<T>(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) where T : ICallbackFacet {
+        private static void CallCallback<T>(INakedObject nakedObject, ISession session, ILifecycleManager persistor) where T : ICallbackFacet {
             if (nakedObject != null && nakedObject.Specification != null) {
                 // TODO this is for testing where the adapter or specification may be null 
                 // remove when this is no longer true. 
@@ -20,39 +20,39 @@ namespace NakedObjects.Architecture.Util {
             }
         }
 
-        public static void Created(this INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public static void Created(this INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             CallCallback<ICreatedCallbackFacet>(nakedObject, session, persistor);
         }
 
-        public static void Deleting(this INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public static void Deleting(this INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             CallCallback<IDeletingCallbackFacet>(nakedObject, session, persistor);
         }
 
-        public static void Deleted(this INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public static void Deleted(this INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             CallCallback<IDeletedCallbackFacet>(nakedObject, session, persistor);
         }
 
-        public static void Loading(this INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public static void Loading(this INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             CallCallback<ILoadingCallbackFacet>(nakedObject, session, persistor);
         }
 
-        public static void Loaded(this INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public static void Loaded(this INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             CallCallback<ILoadedCallbackFacet>(nakedObject, session, persistor);
         }
 
-        public static void Persisting(this INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public static void Persisting(this INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             CallCallback<IPersistingCallbackFacet>(nakedObject, session, persistor);
         }
 
-        public static void Persisted(this INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public static void Persisted(this INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             CallCallback<IPersistedCallbackFacet>(nakedObject, session, persistor);
         }
 
-        public static void Updating(this INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public static void Updating(this INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             CallCallback<IUpdatingCallbackFacet>(nakedObject, session, persistor);
         }
 
-        public static void Updated(this INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public static void Updated(this INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             CallCallback<IUpdatedCallbackFacet>(nakedObject, session, persistor);
         }
     }

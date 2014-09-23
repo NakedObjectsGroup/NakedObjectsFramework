@@ -20,7 +20,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public class XmlSnapshot : IXmlSnapshot {
-        private readonly INakedObjectPersistor persistor;
+        private readonly ILifecycleManager persistor;
         private static readonly ILog Log = LogManager.GetLogger(typeof (XmlSnapshot));
 
         private readonly Place rootPlace;
@@ -29,10 +29,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
 
         //  Start a snapshot at the root object, using own namespace manager.
-        public XmlSnapshot(object obj, INakedObjectPersistor persistor) : this(obj, new XmlSchema(), persistor) { }
+        public XmlSnapshot(object obj, ILifecycleManager persistor) : this(obj, new XmlSchema(), persistor) { }
 
         // Start a snapshot at the root object, using supplied namespace manager.
-        public XmlSnapshot(object obj, XmlSchema schema, INakedObjectPersistor persistor) {
+        public XmlSnapshot(object obj, XmlSchema schema, ILifecycleManager persistor) {
             this.persistor = persistor;
             INakedObject rootObject = persistor.CreateAdapter(obj, null, null);
             Log.Debug(".ctor(" + DoLog("rootObj", rootObject) + AndLog("schema", schema) + AndLog("addOids", "" + true) + ")");

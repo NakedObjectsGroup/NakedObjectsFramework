@@ -20,13 +20,13 @@ namespace NakedObjects.Xat {
         private readonly ITestObjectFactory factory;
         private readonly INakedObjectReflector reflector;
         private readonly ISession session;
-        private readonly INakedObjectPersistor persistor;
+        private readonly ILifecycleManager persistor;
         private readonly ITestHasActions owningObject;
 
-        public TestAction(INakedObjectReflector reflector, ISession session, INakedObjectPersistor persistor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory)
+        public TestAction(INakedObjectReflector reflector, ISession session, ILifecycleManager persistor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory)
             : this(reflector, session, persistor, string.Empty, action, owningObject, factory) {}
 
-        public TestAction(INakedObjectReflector reflector, ISession session, INakedObjectPersistor persistor, string contributor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory) {
+        public TestAction(INakedObjectReflector reflector, ISession session, ILifecycleManager persistor, string contributor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory) {
             SubMenu = contributor;
             this.reflector = reflector;
             this.session = session;

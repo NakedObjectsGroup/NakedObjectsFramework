@@ -24,7 +24,7 @@ namespace NakedObjects.Persistor {
 
         public virtual void Init() {}
 
-        public virtual void MakePersistent(INakedObject nakedObject, INakedObjectPersistor persistor, ISession session) {
+        public virtual void MakePersistent(INakedObject nakedObject, ILifecycleManager persistor, ISession session) {
             if (nakedObject.Specification.IsCollection) {
                 Log.Info("Persist " + nakedObject);
 
@@ -54,7 +54,7 @@ namespace NakedObjects.Persistor {
 
         #endregion
 
-        protected void Persist(INakedObject nakedObject, INakedObjectPersistor persistor, ISession session) {
+        protected void Persist(INakedObject nakedObject, ILifecycleManager persistor, ISession session) {
             if (nakedObject.ResolveState.IsAggregated() ||
                 (nakedObject.ResolveState.IsTransient() &&
                  nakedObject.Specification.Persistable != Persistable.TRANSIENT)) {

@@ -35,7 +35,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             return AsCollection(collection).Contains(element.Object);
         }
 
-        private IEnumerable PageInternal(int page, int size, INakedObject collection, INakedObjectPersistor persistor) {
+        private IEnumerable PageInternal(int page, int size, INakedObject collection, ILifecycleManager persistor) {
             int firstIndex = (page - 1)*size;
             for (int index = firstIndex; index < firstIndex + size; index++) {
                 if (index >= AsEnumerable(collection, persistor).Count()) {
@@ -45,7 +45,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             }
         }
 
-        public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectPersistor persistor, bool forceEnumerable) {
+        public override INakedObject Page(int page, int size, INakedObject collection, ILifecycleManager persistor, bool forceEnumerable) {
             return persistor.CreateAdapter(PageInternal(page, size, collection, persistor), null, null);
         }
 

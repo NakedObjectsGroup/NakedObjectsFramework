@@ -37,7 +37,7 @@ namespace NakedObjects.Core.Persist {
         /// <para>
         ///     Once done the set of fixtures is cleared and <see cref="Fixtures" /> returns an empty array.
         /// </para>
-        public void InstallFixtures(INakedObjectPersistor persistor, IContainerInjector injector) {
+        public void InstallFixtures(ILifecycleManager persistor, IContainerInjector injector) {
             PreInstallFixtures(persistor);
             InstallFixtures(persistor, injector, Fixtures);
             PostInstallFixtures(persistor);
@@ -45,7 +45,7 @@ namespace NakedObjects.Core.Persist {
             fixtures.Clear();
         }
 
-        public void InstallFixture(INakedObjectPersistor persistor, IContainerInjector injector, string fixtureName) {
+        public void InstallFixture(ILifecycleManager persistor, IContainerInjector injector, string fixtureName) {
             InstallFixtures(persistor, injector, Fixtures);
         }
 
@@ -59,13 +59,13 @@ namespace NakedObjects.Core.Persist {
             fixtures.Add(fixture);
         }
 
-        private void InstallFixtures(INakedObjectPersistor persistor, IContainerInjector injector, object[] newFixtures) {
+        private void InstallFixtures(ILifecycleManager persistor, IContainerInjector injector, object[] newFixtures) {
             foreach (object fixture in newFixtures) {
                 InstallFixture(persistor, injector, fixture);
             }
         }
 
-        private void InstallFixture(INakedObjectPersistor persistor, IContainerInjector injector, object fixture) {
+        private void InstallFixture(ILifecycleManager persistor, IContainerInjector injector, object fixture) {
             injector.InitDomainObject(fixture);
 
             // first, install any child fixtures (if this is a composite.
@@ -102,8 +102,8 @@ namespace NakedObjects.Core.Persist {
         /// </summary>
         protected abstract object[] GetFixtures(object fixture);
 
-        protected virtual void PostInstallFixtures(INakedObjectPersistor objectManager) {}
+        protected virtual void PostInstallFixtures(ILifecycleManager objectManager) {}
 
-        protected virtual void PreInstallFixtures(INakedObjectPersistor objectManager) {}
+        protected virtual void PreInstallFixtures(ILifecycleManager objectManager) {}
     }
 }

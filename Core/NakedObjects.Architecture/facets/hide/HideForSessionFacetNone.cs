@@ -21,7 +21,7 @@ namespace NakedObjects.Architecture.Facets.Hide {
         /// <summary>
         ///     Always returns <c>null</c>
         /// </summary>
-        public override string HiddenReason(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+        public override string HiddenReason(ISession session, INakedObject target, ILifecycleManager persistor) {
             return null;
         }
     }

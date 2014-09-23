@@ -11,9 +11,9 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     internal class MemberPeerStub : NamedAndDescribedFacetHolderImpl, INakedObjectMemberPeer {
-        private readonly INakedObjectPersistor persistor;
+        private readonly ILifecycleManager persistor;
 
-        public MemberPeerStub(string name, INakedObjectPersistor persistor)
+        public MemberPeerStub(string name, ILifecycleManager persistor)
             : base(name) {
             this.persistor = persistor;
         }
@@ -62,9 +62,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
 
         private class IdentifierNull : IdentifierImpl {
             private readonly MemberPeerStub owner;
-            private readonly INakedObjectPersistor persistor;
+            private readonly ILifecycleManager persistor;
 
-            public IdentifierNull(MemberPeerStub owner, INakedObjectPersistor persistor)
+            public IdentifierNull(MemberPeerStub owner, ILifecycleManager persistor)
                 : base(null, "", "") {
                 this.owner = owner;
                 this.persistor = persistor;

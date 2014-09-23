@@ -65,7 +65,7 @@ namespace NakedObjects.Core.Persist {
             }
         }
 
-        public IOid RestoreOid(INakedObjectPersistor persistor, string[] encodedData) {
+        public IOid RestoreOid(ILifecycleManager persistor, string[] encodedData) {
             return persistor.RestoreGenericOid(encodedData) ?? new SerialOid(reflector, encodedData);
         }
 

@@ -108,14 +108,14 @@ namespace NakedObjects.Reflector.Spec {
             get { return null; }
         }
 
-        public virtual INakedObject Execute(INakedObject nakedObject, INakedObject[] parameterSet, INakedObjectPersistor persistor, ISession session) {
+        public virtual INakedObject Execute(INakedObject nakedObject, INakedObject[] parameterSet, ILifecycleManager persistor, ISession session) {
             Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);
             INakedObject[] parms = RealParameters(nakedObject, parameterSet);
             INakedObject target = RealTarget(nakedObject, persistor);
             return GetFacet<IActionInvocationFacet>().Invoke(target, parms, persistor, session);
         }
 
-        public virtual INakedObject RealTarget(INakedObject target, INakedObjectPersistor persistor) {
+        public virtual INakedObject RealTarget(INakedObject target, ILifecycleManager persistor) {
             if (target == null) {
                 return FindService(persistor);
             }
@@ -203,7 +203,7 @@ namespace NakedObjects.Reflector.Spec {
         /// <summary>
         ///     Checks declarative constraints, and then checks imperatively.
         /// </summary>
-        public virtual IConsent IsParameterSetValid(ISession session, INakedObject nakedObject, INakedObject[] parameterSet, INakedObjectPersistor persistor) {
+        public virtual IConsent IsParameterSetValid(ISession session, INakedObject nakedObject, INakedObject[] parameterSet, ILifecycleManager persistor) {
             InteractionContext ic;
             var buf = new InteractionBuffer();
             if (parameterSet != null) {
@@ -219,12 +219,12 @@ namespace NakedObjects.Reflector.Spec {
             return InteractionUtils.IsValid(buf);
         }
 
-        public override IConsent IsUsable(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+        public override IConsent IsUsable(ISession session, INakedObject target, ILifecycleManager persistor) {
             InteractionContext ic = InteractionContext.InvokingAction(session, false, RealTarget(target, persistor), Identifier, new[] {target});
             return InteractionUtils.IsUsable(this, ic);
         }
 
-        public override bool IsVisible(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+        public override bool IsVisible(ISession session, INakedObject target, ILifecycleManager persistor) {
             return base.IsVisible(session, RealTarget(target, persistor), persistor);
         }
 
@@ -258,7 +258,7 @@ namespace NakedObjects.Reflector.Spec {
             return FindServiceOnSpecOrSpecSuperclass(spec.Superclass);
         }
 
-        private INakedObject FindService(INakedObjectPersistor persistor) {
+        private INakedObject FindService(ILifecycleManager persistor) {
             foreach (INakedObject serviceAdapter in persistor.GetServices(ServiceTypes.Menu | ServiceTypes.Contributor)) {
                 if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Specification)) {
                     return serviceAdapter;

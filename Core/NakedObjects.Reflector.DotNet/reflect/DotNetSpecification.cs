@@ -460,7 +460,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return str.ToString();
         }
 
-        //public override object CreateObject(INakedObjectPersistor persistor) {
+        //public override object CreateObject(ILifecycleManager persistor) {
         //    if (Type.IsArray) {
         //        return Array.CreateInstance(Type.GetElementType(), 0);
         //    }
@@ -479,7 +479,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return new[] {spec};
         }
 
-        public override IEnumerable GetBoundedSet(INakedObjectPersistor persistor) {
+        public override IEnumerable GetBoundedSet(ILifecycleManager persistor) {
             if (this.IsBoundedSet()) {
                 if (Type.IsInterface) {
                     IList<object> instances = new List<object>();

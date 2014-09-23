@@ -21,11 +21,11 @@ namespace NakedObjects.Architecture.Facets.Hide {
 
         #region IHiddenFacet Members
 
-        public virtual string Hides(InteractionContext ic, INakedObjectPersistor persistor) {
+        public virtual string Hides(InteractionContext ic, ILifecycleManager persistor) {
             return HiddenReason(ic.Target);
         }
 
-        public virtual HiddenException CreateExceptionFor(InteractionContext ic, INakedObjectPersistor persistor) {
+        public virtual HiddenException CreateExceptionFor(InteractionContext ic, ILifecycleManager persistor) {
             return new HiddenException(ic, Hides(ic, persistor));
         }
 

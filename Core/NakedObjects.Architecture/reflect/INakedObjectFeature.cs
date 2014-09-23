@@ -25,6 +25,6 @@ namespace NakedObjects.Architecture.Reflect {
         INakedObjectSpecification Specification { get; }
 
         bool IsNullable { get; }
-        IConsent IsUsable(ISession session, INakedObject target, INakedObjectPersistor persistor);
+        IConsent IsUsable(ISession session, INakedObject target, ILifecycleManager persistor);
     }
 }

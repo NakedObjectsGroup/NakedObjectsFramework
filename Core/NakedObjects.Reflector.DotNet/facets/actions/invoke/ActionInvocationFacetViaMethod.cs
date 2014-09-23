@@ -50,7 +50,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Invoke {
 
         #endregion
 
-        public override INakedObject Invoke(INakedObject inObject, INakedObject[] parameters, INakedObjectPersistor persistor, ISession session) {
+        public override INakedObject Invoke(INakedObject inObject, INakedObject[] parameters, ILifecycleManager persistor, ISession session) {
             if (parameters.Length != paramCount) {
                 Log.Error(actionMethod + " requires " + paramCount + " parameters, not " + parameters.Length);
             }
@@ -62,7 +62,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Invoke {
             return adaptedResult;
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectPersistor persistor, ISession session) {
+        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager persistor, ISession session) {
             return Invoke(nakedObject, parameters, persistor, session);
         }
 

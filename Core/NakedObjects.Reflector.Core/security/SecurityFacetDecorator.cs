@@ -56,7 +56,7 @@ namespace NakedObjects.Reflector.Security {
                 this.decorator = decorator;
             }
 
-            public override string DisabledReason(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+            public override string DisabledReason(ISession session, INakedObject target, ILifecycleManager persistor) {
                 return decorator.manager.IsEditable(session, persistor, target, identifier) ? null : "Not authorized to edit";
             }
         }
@@ -77,7 +77,7 @@ namespace NakedObjects.Reflector.Security {
                 this.decorator = decorator;
             }
 
-            public override string HiddenReason(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+            public override string HiddenReason(ISession session, INakedObject target, ILifecycleManager persistor) {
                 return decorator.manager.IsVisible(session, persistor, target, identifier) ? null : "Not authorized to view";
             }
         }

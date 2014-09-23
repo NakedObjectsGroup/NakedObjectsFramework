@@ -14,7 +14,7 @@ namespace NakedObjects.Persistor {
 
         #region IObjectPersistorInstaller Members
 
-        public abstract INakedObjectPersistor CreateObjectPersistor();
+        public abstract ILifecycleManager CreateObjectPersistor();
 
         public abstract string Name { get; }
 

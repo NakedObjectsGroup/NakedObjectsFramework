@@ -46,7 +46,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public void Shutdown() {}
 
-        public IOid RestoreOid(INakedObjectPersistor persistor, string[] encodedData) {
+        public IOid RestoreOid(ILifecycleManager persistor, string[] encodedData) {
             return persistor.RestoreGenericOid(encodedData) ?? new EntityOid(reflector, encodedData);
         }
 

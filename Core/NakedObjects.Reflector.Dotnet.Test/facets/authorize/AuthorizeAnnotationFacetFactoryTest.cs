@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             base.SetUp();
             facetFactory = new AuthorizeAnnotationFacetFactory(Reflector);
 
-            mockPersistor = new Mock<INakedObjectPersistor>();
+            mockPersistor = new Mock<ILifecycleManager>();
             persistor = mockPersistor.Object;
         }
 
@@ -65,8 +65,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         }
 
         private AuthorizeAnnotationFacetFactory facetFactory;
-        private Mock<INakedObjectPersistor> mockPersistor;
-        private INakedObjectPersistor persistor;
+        private Mock<ILifecycleManager> mockPersistor;
+        private ILifecycleManager persistor;
 
         protected override Type[] SupportedTypes {
             get { return new[] {typeof (IHiddenFacet)}; }

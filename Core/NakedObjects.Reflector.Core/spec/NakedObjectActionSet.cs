@@ -67,7 +67,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return id; }
         }
 
-        public virtual string GetName(INakedObjectPersistor persistor) {
+        public virtual string GetName(ILifecycleManager persistor) {
             if (name == null) {
                 var service = persistor.GetService(shortId);
                 return service.TitleString();
@@ -118,7 +118,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return null; }
         }
 
-        public virtual INakedObject Execute(INakedObject target, INakedObject[] parameterSet, INakedObjectPersistor persistor, ISession session) {
+        public virtual INakedObject Execute(INakedObject target, INakedObject[] parameterSet, ILifecycleManager persistor, ISession session) {
             throw new UnexpectedCallException();
         }
 
@@ -193,11 +193,11 @@ namespace NakedObjects.Reflector.Spec {
             return false;
         }
 
-        public virtual IConsent IsParameterSetValid(ISession session, INakedObject nakedObject, INakedObject[] parameterSet, INakedObjectPersistor persistor) {
+        public virtual IConsent IsParameterSetValid(ISession session, INakedObject nakedObject, INakedObject[] parameterSet, ILifecycleManager persistor) {
             throw new UnexpectedCallException();
         }
 
-        public virtual IConsent IsUsable(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+        public virtual IConsent IsUsable(ISession session, INakedObject target, ILifecycleManager persistor) {
             return Allow.Default;
         }
 
@@ -205,11 +205,11 @@ namespace NakedObjects.Reflector.Spec {
             get { return false; }
         }
 
-        public virtual bool IsVisible(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+        public virtual bool IsVisible(ISession session, INakedObject target, ILifecycleManager persistor) {
             return true;
         }
 
-        public virtual INakedObject RealTarget(INakedObject target, INakedObjectPersistor persistor) {
+        public virtual INakedObject RealTarget(INakedObject target, ILifecycleManager persistor) {
             return null;
         }
 

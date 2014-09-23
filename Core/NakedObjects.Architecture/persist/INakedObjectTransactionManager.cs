@@ -21,7 +21,7 @@ namespace NakedObjects.Architecture.Persist {
 
         void AddCommand(IPersistenceCommand command);
 
-        void Abort(INakedObjectPersistor objectManager, IFacetHolder holder);
+        void Abort(ILifecycleManager objectManager, IFacetHolder holder);
     }
 
 

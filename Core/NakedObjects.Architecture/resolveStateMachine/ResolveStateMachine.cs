@@ -18,7 +18,7 @@ namespace NakedObjects.Architecture.Resolve {
     public class ResolveStateMachine : IResolveStateMachine {
         #region Delegates
 
-        public delegate IResolveState EventHandler(INakedObject no, IResolveStateMachine rsm, ISession s, INakedObjectPersistor p);
+        public delegate IResolveState EventHandler(INakedObject no, IResolveStateMachine rsm, ISession s, ILifecycleManager p);
 
         #endregion
 
@@ -289,12 +289,12 @@ namespace NakedObjects.Architecture.Resolve {
                 get { return eventMap; }
             }
 
-            protected virtual void Loading(INakedObject no, IResolveStateMachine rsm, ISession s, INakedObjectPersistor p) {
+            protected virtual void Loading(INakedObject no, IResolveStateMachine rsm, ISession s, ILifecycleManager p) {
                 no.Loading(s, p);
                 rsm.AddHistoryNote("Loading");
             }
 
-            protected virtual void Loaded(INakedObject no, IResolveStateMachine rsm, ISession s, INakedObjectPersistor p) {
+            protected virtual void Loaded(INakedObject no, IResolveStateMachine rsm, ISession s, ILifecycleManager p) {
                 no.Loaded(s, p);
                 rsm.AddHistoryNote("Loaded");
             }
@@ -303,7 +303,7 @@ namespace NakedObjects.Architecture.Resolve {
                 return string.Format("ResolveState [name={0},code={1}]", Name, Code);
             }
 
-            public IResolveState Handle(IResolveEvent rEvent, INakedObject owner, IResolveStateMachine rsm, ISession s, INakedObjectPersistor p) {
+            public IResolveState Handle(IResolveEvent rEvent, INakedObject owner, IResolveStateMachine rsm, ISession s, ILifecycleManager p) {
                 if (EventMap.ContainsKey(rEvent)) {
                     return EventMap[rEvent](owner, rsm, s, p);
                 }
@@ -572,7 +572,7 @@ namespace NakedObjects.Architecture.Resolve {
 
         private readonly List<HistoryEvent> history = new List<HistoryEvent>();
 
-        public ResolveStateMachine(INakedObject owner, ISession session, INakedObjectPersistor persistor) {
+        public ResolveStateMachine(INakedObject owner, ISession session, ILifecycleManager persistor) {
             CurrentState = States.NewState;
             Owner = owner;
             Session = session;
@@ -580,7 +580,7 @@ namespace NakedObjects.Architecture.Resolve {
         }
 
         private ISession Session { get; set; }
-        private INakedObjectPersistor Persistor { get; set; }
+        private ILifecycleManager Persistor { get; set; }
 
         private INakedObject Owner { get; set; }
         public bool FullTrace { get; set; }

@@ -26,7 +26,7 @@ namespace NakedObjects.Core.Adapter {
         private IOid oid;
         private readonly INakedObjectReflector reflector;
         private readonly ISession session;
-        private readonly INakedObjectPersistor persistor;
+        private readonly ILifecycleManager persistor;
         private object poco;
         private INakedObjectSpecification specification;
         private ITypeOfFacet typeOfFacet;
@@ -36,7 +36,7 @@ namespace NakedObjects.Core.Adapter {
             Log = LogManager.GetLogger(typeof (PocoAdapter));
         }
 
-        public PocoAdapter(INakedObjectReflector reflector, ISession session,  INakedObjectPersistor persistor, object poco, IOid oid) {
+        public PocoAdapter(INakedObjectReflector reflector, ISession session,  ILifecycleManager persistor, object poco, IOid oid) {
             Assert.AssertNotNull(reflector);
             //Assert.AssertNotNull(session);
 

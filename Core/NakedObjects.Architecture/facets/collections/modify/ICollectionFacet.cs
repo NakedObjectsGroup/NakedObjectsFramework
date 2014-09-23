@@ -15,7 +15,7 @@ namespace NakedObjects.Architecture.Facets.Collections.Modify {
         bool IsASet { get; }
         bool Contains(INakedObject collection, INakedObject element);
         void Init(INakedObject collection, INakedObject[] initData);
-        INakedObject Page(int page, int size, INakedObject collection, INakedObjectPersistor persistor, bool forceEnumerable);
+        INakedObject Page(int page, int size, INakedObject collection, ILifecycleManager persistor, bool forceEnumerable);
         IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager);
         IQueryable AsQueryable(INakedObject objectRepresentingCollection);
     }

@@ -22,8 +22,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class CollectionFacetsTest {
         private readonly FacetHolderImpl facetHolder = new FacetHolderImpl();
 
-        private readonly Mock<INakedObjectPersistor> mockPersistor = new Mock<INakedObjectPersistor>();
-        private readonly INakedObjectPersistor persistor;
+        private readonly Mock<ILifecycleManager> mockPersistor = new Mock<ILifecycleManager>();
+        private readonly ILifecycleManager persistor;
         private readonly INakedObjectReflector reflector = new Mock<INakedObjectReflector>().Object;
         private readonly ISession session = new Mock<ISession>().Object;
         private readonly IOid oid = new Mock<IOid>().Object;

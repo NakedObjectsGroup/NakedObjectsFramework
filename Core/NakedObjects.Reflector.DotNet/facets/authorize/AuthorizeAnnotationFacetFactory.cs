@@ -118,7 +118,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
                 this.users = SplitOnComma(users);
             }
 
-            public override string DisabledReason(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+            public override string DisabledReason(ISession session, INakedObject target, ILifecycleManager persistor) {
                 return IsAllowed(session, roles, users) ? null : "Not authorized to edit";
             }
         }
@@ -139,7 +139,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
                 this.users = SplitOnComma(users);
             }
 
-            public override string HiddenReason(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+            public override string HiddenReason(ISession session, INakedObject target, ILifecycleManager persistor) {
                 return IsAllowed(session, roles, users) ? null : "Not authorized to view";
             }
         }

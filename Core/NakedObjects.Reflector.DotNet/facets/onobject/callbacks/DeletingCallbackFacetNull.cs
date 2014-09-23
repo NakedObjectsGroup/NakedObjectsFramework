@@ -13,7 +13,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
         public DeletingCallbackFacetNull(IFacetHolder holder)
             : base(holder) {}
 
-        public override void Invoke(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {}
+        public override void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager persistor) {}
     }
 
     // Copyright (c) Naked Objects Group Ltd.

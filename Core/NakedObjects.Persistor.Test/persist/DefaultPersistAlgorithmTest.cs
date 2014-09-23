@@ -49,7 +49,7 @@ namespace NakedObjects.Persistor.Persist {
         //private INakedObject roleAdapter;
         //private INakedObject personAdapter;
       
-        //private class PersistedObjectAdderSpy : INakedObjectPersistor {
+        //private class PersistedObjectAdderSpy : ILifecycleManager {
         //    private readonly IList<INakedObject> persistedObjects = new List<INakedObject>();
 
         //    public IList<INakedObject> PersistedObjects {
@@ -210,7 +210,7 @@ namespace NakedObjects.Persistor.Persist {
         //        throw new NotImplementedException();
         //    }
 
-        //    public void Abort(INakedObjectPersistor objectManager, IFacetHolder holder) {
+        //    public void Abort(ILifecycleManager objectManager, IFacetHolder holder) {
         //        throw new NotImplementedException();
         //    }
 

@@ -53,11 +53,11 @@ namespace NakedObjects.Security {
 
         #region IAuthorizationManager Members
 
-        public bool IsEditable(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier) {
+        public bool IsEditable(ISession session, ILifecycleManager persistor, INakedObject target, IIdentifier identifier) {
             return IsEditableOrVisible(session, persistor, target, identifier, "IsEditable");
         }
 
-        public bool IsVisible(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier) {
+        public bool IsVisible(ISession session, ILifecycleManager persistor, INakedObject target, IIdentifier identifier) {
             return IsEditableOrVisible(session, persistor, target, identifier, "IsVisible");
         }
 
@@ -67,14 +67,14 @@ namespace NakedObjects.Security {
 
         #endregion
 
-        private bool IsEditableOrVisible(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier, string toInvoke) {
+        private bool IsEditableOrVisible(ISession session, ILifecycleManager persistor, INakedObject target, IIdentifier identifier, string toInvoke) {
             Assert.AssertNotNull(target);
 
             object authorizer = GetNamespaceAuthorizerFor(target, persistor) ?? GetTypeAuthorizerFor(target, persistor) ?? GetDefaultAuthorizor(persistor);
             return (bool) authorizer.GetType().GetMethod(toInvoke).Invoke(authorizer, new[] {session.Principal, target.Object, identifier.MemberName});
         }
 
-        private object GetTypeAuthorizerFor(INakedObject target, INakedObjectPersistor persistor) {
+        private object GetTypeAuthorizerFor(INakedObject target, ILifecycleManager persistor) {
             Assert.AssertNotNull(target);
             Type domainType = TypeUtils.GetType(target.Specification.FullName).GetProxiedType();
             object authorizer;
@@ -82,17 +82,17 @@ namespace NakedObjects.Security {
             return authorizer == null ? null : CreateAuthorizer(authorizer, persistor);
         }
 
-        private object GetDefaultAuthorizor(INakedObjectPersistor persistor) {
+        private object GetDefaultAuthorizor(ILifecycleManager persistor) {
             return CreateAuthorizer(defaultAuthorizer, persistor);
         }
 
-        private object CreateAuthorizer(object authorizer, INakedObjectPersistor persistor) {
+        private object CreateAuthorizer(object authorizer, ILifecycleManager persistor) {
             return persistor.CreateObject(Reflector.LoadSpecification(authorizer.GetType())); 
             //return Reflector.LoadSpecification(authorizer.GetType()).CreateObject(persistor);
         }
 
         //TODO:  Change return type to INamespaceAuthorizer when TypeAuthorization has been obsoleted.
-        private object GetNamespaceAuthorizerFor(INakedObject target, INakedObjectPersistor persistor) {
+        private object GetNamespaceAuthorizerFor(INakedObject target, ILifecycleManager persistor) {
             Assert.AssertNotNull(target);
             string fullyQualifiedOfTarget = target.Specification.FullName;
             INamespaceAuthorizer authorizer = namespaceAuthorizers.

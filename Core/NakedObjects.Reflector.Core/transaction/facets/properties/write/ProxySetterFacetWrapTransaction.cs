@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.Transaction.Facets.Properties.Write {
             this.underlyingFacet = underlyingFacet;
         }
 
-        public override void SetProperty(INakedObject inObject, INakedObject parameter, INakedObjectPersistor persistor) {
+        public override void SetProperty(INakedObject inObject, INakedObject parameter, ILifecycleManager persistor) {
            
             if (inObject.ResolveState.IsPersistent()) {
                 try {

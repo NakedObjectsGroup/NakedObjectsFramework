@@ -26,7 +26,7 @@ namespace NakedObjects.Architecture.Facets {
 
         #region INamedAndDescribedFacetHolder Members
 
-        public string GetName(INakedObjectPersistor persistor) {
+        public string GetName(ILifecycleManager persistor) {
             return name;
         }
 

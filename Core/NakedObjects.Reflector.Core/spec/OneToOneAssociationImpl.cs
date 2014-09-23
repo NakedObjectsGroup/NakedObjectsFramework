@@ -60,7 +60,7 @@ namespace NakedObjects.Reflector.Spec {
             return propertyChoicesFacet != null ? propertyChoicesFacet.ParameterNamesAndTypes : new Tuple<string, INakedObjectSpecification>[] {};
         }
 
-        public override INakedObject[] GetChoices(INakedObject target, IDictionary<string, INakedObject> parameterNameValues, INakedObjectPersistor persistor) {
+        public override INakedObject[] GetChoices(INakedObject target, IDictionary<string, INakedObject> parameterNameValues, ILifecycleManager persistor) {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
             var enumFacet = GetFacet<IEnumFacet>();
 
@@ -83,7 +83,7 @@ namespace NakedObjects.Reflector.Spec {
             return null;
         }
 
-        public override INakedObject[] GetCompletions(INakedObject target, string autoCompleteParm, INakedObjectPersistor persistor) {
+        public override INakedObject[] GetCompletions(INakedObject target, string autoCompleteParm, ILifecycleManager persistor) {
             var propertyAutoCompleteFacet = GetFacet<IAutoCompleteFacet>();
             return propertyAutoCompleteFacet == null ? null : persistor.GetCollectionOfAdaptedObjects(propertyAutoCompleteFacet.GetCompletions(target, autoCompleteParm)).ToArray();
         }
@@ -112,7 +112,7 @@ namespace NakedObjects.Reflector.Spec {
             return InteractionUtils.IsValid(buf);
         }
 
-        public override bool IsEmpty(INakedObject inObject, INakedObjectPersistor persistor) {
+        public override bool IsEmpty(INakedObject inObject, ILifecycleManager persistor) {
             return GetAssociation(inObject, persistor) == null;
         }
 
@@ -135,7 +135,7 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public virtual void SetAssociation(INakedObject inObject, INakedObject associate, INakedObjectPersistor persistor) {
+        public virtual void SetAssociation(INakedObject inObject, INakedObject associate, ILifecycleManager persistor) {
             INakedObject currentValue = GetAssociation(inObject, persistor);
             if (currentValue != associate) {
                 if (associate == null && ContainsFacet<IPropertyClearFacet>()) {

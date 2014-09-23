@@ -19,12 +19,12 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 namespace NakedObjects.Xat {
     public class TestProperty : ITestProperty {
         private readonly ITestObjectFactory factory;
-        private readonly INakedObjectPersistor persistor;
+        private readonly ILifecycleManager persistor;
         private readonly ISession session;
         private readonly INakedObjectAssociation field;
         private readonly ITestHasActions owningObject;
 
-        public TestProperty(INakedObjectPersistor persistor, ISession session,  INakedObjectAssociation field, ITestHasActions owningObject, ITestObjectFactory factory) {
+        public TestProperty(ILifecycleManager persistor, ISession session,  INakedObjectAssociation field, ITestHasActions owningObject, ITestObjectFactory factory) {
             this.persistor = persistor;
             this.session = session;
             this.field = field;

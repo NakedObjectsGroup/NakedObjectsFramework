@@ -29,7 +29,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
 
         public int? SimpleOidGeneratorStart { get; set; }
 
-        public override INakedObjectPersistor CreateObjectPersistor() {
+        public override ILifecycleManager CreateObjectPersistor() {
             Log.Info("installing " + GetType().FullName);
 
             //var reflector = NakedObjectsContext.Reflector;

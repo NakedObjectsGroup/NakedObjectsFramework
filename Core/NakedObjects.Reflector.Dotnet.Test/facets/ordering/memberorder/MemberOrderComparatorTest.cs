@@ -31,7 +31,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         }
 
         private void Reset() {
-            var p = new Mock<INakedObjectPersistor>().Object;
+            var p = new Mock<ILifecycleManager>().Object;
             m1 = new MemberPeerStub("abc", p);
             m2 = new MemberPeerStub("abc", p);
         }

@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Security;
 namespace NakedObjects.Persistor {
     public interface IPersistAlgorithm : IRequiresSetup {
         string Name { get; }
-        void MakePersistent(INakedObject nakedObject, INakedObjectPersistor adders, ISession session);
+        void MakePersistent(INakedObject nakedObject, ILifecycleManager adders, ISession session);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

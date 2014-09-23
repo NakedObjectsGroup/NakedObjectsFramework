@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Interactions {
     public static class InteractionUtils {
-        public static bool IsVisible(IFacetHolder facetHolder, InteractionContext ic, INakedObjectPersistor persistor) {
+        public static bool IsVisible(IFacetHolder facetHolder, InteractionContext ic, ILifecycleManager persistor) {
             var buf = new InteractionBuffer();
             IFacet[] facets = facetHolder.GetFacets(FacetFilters.IsA(typeof (IHidingInteractionAdvisor)));
             foreach (IHidingInteractionAdvisor advisor in facets) {
@@ -21,7 +21,7 @@ namespace NakedObjects.Architecture.Interactions {
             return IsVisible(buf);
         }
 
-        public static bool IsVisibleWhenPersistent(IFacetHolder facetHolder, InteractionContext ic, INakedObjectPersistor persistor) {
+        public static bool IsVisibleWhenPersistent(IFacetHolder facetHolder, InteractionContext ic, ILifecycleManager persistor) {
             var buf = new InteractionBuffer();
             IFacet[] facets = facetHolder.GetFacets(FacetFilters.IsA(typeof (IHidingInteractionAdvisor)));
             foreach (IHidingInteractionAdvisor advisor in facets) {

@@ -103,7 +103,7 @@ namespace NakedObjects.Persistor.Objectstore {
             Transaction.AddCommand(command);
         }
 
-        public  void Abort(INakedObjectPersistor objectManager, IFacetHolder holder) {
+        public  void Abort(ILifecycleManager objectManager, IFacetHolder holder) {
             throw new NotImplementedException();
         }
 

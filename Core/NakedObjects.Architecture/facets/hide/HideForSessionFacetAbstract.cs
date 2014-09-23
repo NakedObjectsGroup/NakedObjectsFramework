@@ -29,15 +29,15 @@ namespace NakedObjects.Architecture.Facets.Hide {
 
         #region IHideForSessionFacet Members
 
-        public virtual string Hides(InteractionContext ic, INakedObjectPersistor persistor) {
+        public virtual string Hides(InteractionContext ic, ILifecycleManager persistor) {
             return HiddenReason(ic.Session, ic.Target, persistor);
         }
 
-        public virtual HiddenException CreateExceptionFor(InteractionContext ic, INakedObjectPersistor persistor) {
+        public virtual HiddenException CreateExceptionFor(InteractionContext ic, ILifecycleManager persistor) {
             return new HiddenException(ic, Hides(ic, persistor));
         }
 
-        public abstract string HiddenReason(ISession session, INakedObject target, INakedObjectPersistor persistor);
+        public abstract string HiddenReason(ISession session, INakedObject target, ILifecycleManager persistor);
 
         #endregion
     }

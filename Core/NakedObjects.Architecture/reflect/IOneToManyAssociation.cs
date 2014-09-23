@@ -13,7 +13,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Return the count of elements in this collection field on the specified object
         /// </summary>
-        int Count(INakedObject nakedObject, INakedObjectPersistor persistor);
+        int Count(INakedObject nakedObject, ILifecycleManager persistor);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

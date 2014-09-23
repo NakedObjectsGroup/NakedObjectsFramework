@@ -11,7 +11,7 @@ namespace NakedObjects.Core.NakedObjectsSystem {
     ///     Installs a NakedObjectPersistor during system start up
     /// </summary>
     public interface IObjectPersistorInstaller : IInstaller {
-        INakedObjectPersistor CreateObjectPersistor();
+        ILifecycleManager CreateObjectPersistor();
 
         void SetupMaps(IIdentityAdapterMap adapterMap, IPocoAdapterMap pocoMap);
     }

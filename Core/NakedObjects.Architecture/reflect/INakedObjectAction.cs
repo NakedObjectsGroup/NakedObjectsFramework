@@ -83,7 +83,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Determine the real target for this action. If this action represents an object action than the target
         ///     is returned. If this action is on a service then that service will be returned.
         /// </summary>
-        INakedObject RealTarget(INakedObject target, INakedObjectPersistor persistor);
+        INakedObject RealTarget(INakedObject target, ILifecycleManager persistor);
 
 
         /// <summary>
@@ -94,13 +94,13 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Invokes the action's method on the target object given the specified set of parameters
         /// </summary>
-        INakedObject Execute(INakedObject target, INakedObject[] parameterSet, INakedObjectPersistor persistor, ISession session);
+        INakedObject Execute(INakedObject target, INakedObject[] parameterSet, ILifecycleManager persistor, ISession session);
 
 
         /// <summary>
         ///     Whether the provided parameter set is valid
         /// </summary>
-        IConsent IsParameterSetValid(ISession session, INakedObject nakedObject, INakedObject[] parameterSet, INakedObjectPersistor persistor);
+        IConsent IsParameterSetValid(ISession session, INakedObject nakedObject, INakedObject[] parameterSet, ILifecycleManager persistor);
 
 
         /// <summary>

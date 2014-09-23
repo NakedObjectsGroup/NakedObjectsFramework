@@ -33,7 +33,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             return AsGenericCollection(collection).Contains((T) element.Object);
         }
 
-        public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectPersistor persistor, bool forceEnumerable) {
+        public override INakedObject Page(int page, int size, INakedObject collection, ILifecycleManager persistor, bool forceEnumerable) {
             return persistor.CreateAdapter(AsGenericCollection(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
         }
 

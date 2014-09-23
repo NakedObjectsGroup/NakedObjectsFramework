@@ -29,12 +29,12 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Returns a list of possible references/values for this field, which the user can choose from
         /// </summary>
-        INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, INakedObjectPersistor persistor);
+        INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, ILifecycleManager persistor);
 
         /// <summary>
         ///     Returns a list of possible autocompletions for this field, which the user can choose from
         /// </summary>
-        INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, INakedObjectPersistor persistor);
+        INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, ILifecycleManager persistor);
 
         /// <summary>
         ///     Returns a parameter names and types if the field supports conditional choices

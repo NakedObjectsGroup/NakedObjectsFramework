@@ -13,11 +13,11 @@ namespace NakedObjects.Architecture.Security {
     public class NullAuthorizationManager : IAuthorizationManager {
         #region IAuthorizationManager Members
 
-        public bool IsVisible(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier) {
+        public bool IsVisible(ISession session, ILifecycleManager persistor, INakedObject target, IIdentifier identifier) {
             return true;
         }
 
-        public bool IsEditable(ISession session, INakedObjectPersistor persistor, INakedObject target, IIdentifier identifier) {
+        public bool IsEditable(ISession session, ILifecycleManager persistor, INakedObject target, IIdentifier identifier) {
             return true;
         }
 

@@ -10,12 +10,12 @@ namespace NakedObjects.Service {
         private readonly IAuthorizationManager authorizationManager;
         private readonly IContainerInjector injector;
         private readonly IMessageBroker messageBroker;
-        private readonly INakedObjectPersistor objectPersistor;
+        private readonly ILifecycleManager objectPersistor;
         private readonly INakedObjectReflector reflector;
         private readonly ISession session;
         private readonly IUpdateNotifier updateNotifier;
 
-        public NakedObjectsFramework(IMessageBroker messageBroker, IUpdateNotifier updateNotifier, ISession session, INakedObjectPersistor objectPersistor, INakedObjectReflector reflector, IAuthorizationManager authorizationManager, IContainerInjector injector) {
+        public NakedObjectsFramework(IMessageBroker messageBroker, IUpdateNotifier updateNotifier, ISession session, ILifecycleManager objectPersistor, INakedObjectReflector reflector, IAuthorizationManager authorizationManager, IContainerInjector injector) {
             this.messageBroker = messageBroker;
             this.updateNotifier = updateNotifier;
             this.session = session;
@@ -44,7 +44,7 @@ namespace NakedObjects.Service {
             get { return session; }
         }
 
-        public INakedObjectPersistor ObjectPersistor {
+        public ILifecycleManager ObjectPersistor {
             get { return objectPersistor; }
         }
 

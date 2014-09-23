@@ -52,14 +52,14 @@ namespace NakedObjects.EntityObjectStore {
         private static CreateAggregatedAdapterDelegate createAggregatedAdapter;
         private static NotifyUiDelegate notifyUi;
 
-        private static Action<INakedObject, ISession, INakedObjectPersistor> persisted;
-        private static Action<INakedObject, ISession, INakedObjectPersistor> persisting;
+        private static Action<INakedObject, ISession, ILifecycleManager> persisted;
+        private static Action<INakedObject, ISession, ILifecycleManager> persisting;
         private static RemoveAdapterDelegate removeAdapter;
         private static ReplacePocoDelegate replacePoco;
 
         private static EventHandler savingChangesHandlerDelegate;
-        private static Action<INakedObject, ISession, INakedObjectPersistor> updated;
-        private static Action<INakedObject, ISession, INakedObjectPersistor> updating;
+        private static Action<INakedObject, ISession, ILifecycleManager> updated;
+        private static Action<INakedObject, ISession, ILifecycleManager> updating;
         private static Action<INakedObject> handleLoaded;
         private static Func<Type, INakedObjectSpecification> loadSpecification;
 
@@ -143,10 +143,10 @@ namespace NakedObjects.EntityObjectStore {
                                     RemoveAdapterDelegate removeAdapterDelegate,
                                     CreateAggregatedAdapterDelegate createAggregatedAdapterDelegate,
                                     NotifyUiDelegate notifyUiDelegate,
-                                    Action<INakedObject, ISession, INakedObjectPersistor> updatedFunc,
-                                    Action<INakedObject, ISession, INakedObjectPersistor> updatingFunc,
-                                    Action<INakedObject, ISession, INakedObjectPersistor> persistedFunc,
-                                    Action<INakedObject, ISession, INakedObjectPersistor> persistingFunc,
+                                    Action<INakedObject, ISession, ILifecycleManager> updatedFunc,
+                                    Action<INakedObject, ISession, ILifecycleManager> updatingFunc,
+                                    Action<INakedObject, ISession, ILifecycleManager> persistedFunc,
+                                    Action<INakedObject, ISession, ILifecycleManager> persistingFunc,
                                     Action<INakedObject> handleLoadedTest,
                                     EventHandler savingChangeshandler,
                                     Func<Type, INakedObjectSpecification> loadSpecificationHandler) {
@@ -604,11 +604,11 @@ namespace NakedObjects.EntityObjectStore {
         private class EntityCreateObjectCommand : ICreateObjectCommand {
             private readonly LocalContext context;
             private readonly ISession session;
-            private readonly INakedObjectPersistor persistor;
+            private readonly ILifecycleManager persistor;
             private readonly INakedObject nakedObject;
             private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
 
-            public EntityCreateObjectCommand(INakedObject nakedObject, LocalContext context, ISession session, INakedObjectPersistor persistor) {
+            public EntityCreateObjectCommand(INakedObject nakedObject, LocalContext context, ISession session, ILifecycleManager persistor) {
                 this.context = context;
                 this.session = session;
                 this.persistor = persistor;
@@ -989,11 +989,11 @@ namespace NakedObjects.EntityObjectStore {
                 WrappedObjectContext.DetectChanges();
                 added.AddRange(WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added).Where(ose => !ose.IsRelationship).Select(ose => ose.Entity).ToList());
                 updatingNakedObjects = GetChangedObjectsInContext(WrappedObjectContext).Select(obj => createAdapter(null, obj)).ToList();
-                updatingNakedObjects.ForEach(no => updating(no, session, (INakedObjectPersistor)Manager));
+                updatingNakedObjects.ForEach(no => updating(no, session, (ILifecycleManager)Manager));
 
                 // need to do complextype separately as they'll not be updated in the SavingChangeshandler as they're not proxied. 
                 coUpdating = GetChangedComplexObjectsInContext(this).Select(obj => createAdapter(null, obj)).ToList();
-                coUpdating.ForEach(no => updating(no, session, (INakedObjectPersistor)Manager));
+                coUpdating.ForEach(no => updating(no, session, (ILifecycleManager)Manager));
             }
 
             public bool HasChanges() {
@@ -1004,13 +1004,13 @@ namespace NakedObjects.EntityObjectStore {
 
             public void PostSave(EntityObjectStore store) {
                 try {
-                    updatingNakedObjects.ForEach(no => updated(no, session, (INakedObjectPersistor)Manager));
+                    updatingNakedObjects.ForEach(no => updated(no, session, (ILifecycleManager)Manager));
                     updatingNakedObjects.ForEach(x => x.UpdateVersion(session, Manager));
-                    coUpdating.ForEach(no => updated(no, session, (INakedObjectPersistor)Manager));
+                    coUpdating.ForEach(no => updated(no, session, (ILifecycleManager)Manager));
                     // Take a copy of PersistedNakedObjects and clear original so new ones can be added 
                     INakedObject[] currentPersistedNakedObjects = PersistedNakedObjects.ToArray();
                     PersistedNakedObjects.Clear();
-                    currentPersistedNakedObjects.ForEach(no => persisted(no, session, (INakedObjectPersistor)Manager));
+                    currentPersistedNakedObjects.ForEach(no => persisted(no, session, (ILifecycleManager)Manager));
                 }
                 finally {
                     coUpdating.ForEach(x => notifyUi(x));
@@ -1057,7 +1057,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
 
-        public ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             Log.DebugFormat("CreateCreateObjectCommand : {0}", nakedObject);
             try {
                 return ExecuteCommand(new EntityCreateObjectCommand(nakedObject, GetContext(nakedObject), session, persistor));
@@ -1083,7 +1083,7 @@ namespace NakedObjects.EntityObjectStore {
             }
         }
 
-        public ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             Log.DebugFormat("CreateSaveObjectCommand : {0}", nakedObject);
             try {
                 return ExecuteCommand(new EntitySaveObjectCommand(nakedObject, GetContext(nakedObject)));
@@ -1259,7 +1259,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
 
-        public object CreateInstance(Type type, INakedObjectPersistor persistor) {
+        public object CreateInstance(Type type, ILifecycleManager persistor) {
             Log.Debug("CreateInstance of: " + type);
             if (type.IsArray) {
                 return Array.CreateInstance(type.GetElementType(), 0);
@@ -1285,7 +1285,7 @@ namespace NakedObjects.EntityObjectStore {
             Refresh(nakedObject);
         }
 
-        public T CreateInstance<T>(INakedObjectPersistor persistor) where T : class {
+        public T CreateInstance<T>(ILifecycleManager persistor) where T : class {
             Log.Debug("CreateInstance<T> of: " + typeof (T));
             return (T) CreateInstance(typeof (T), persistor);
         }
@@ -1298,9 +1298,9 @@ namespace NakedObjects.EntityObjectStore {
         public void Refresh(INakedObject nakedObject) {
             Log.Debug("Refresh nakedobject: " + nakedObject);
             if (nakedObject.Specification.GetFacet<IComplexTypeFacet>() == null) {
-                updating(nakedObject, session, (INakedObjectPersistor)Manager);
+                updating(nakedObject, session, (ILifecycleManager)Manager);
                 GetContext(nakedObject.Object.GetType()).WrappedObjectContext.Refresh(RefreshMode.StoreWins, nakedObject.Object);
-                updated(nakedObject, session, (INakedObjectPersistor)Manager);
+                updated(nakedObject, session, (ILifecycleManager)Manager);
             }
         }
 

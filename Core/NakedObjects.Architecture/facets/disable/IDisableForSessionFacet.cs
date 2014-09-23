@@ -21,7 +21,7 @@ namespace NakedObjects.Architecture.Facets.Disable {
         /// <summary>
         ///     The reason this is disabled, or <c>null</c> if not
         /// </summary>
-        string DisabledReason(ISession session, INakedObject target, INakedObjectPersistor persistor);
+        string DisabledReason(ISession session, INakedObject target, ILifecycleManager persistor);
     }
 
 

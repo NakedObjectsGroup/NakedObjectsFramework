@@ -29,7 +29,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         #region helpers
 
-        private  INakedObjectPersistor Persistor {
+        private  ILifecycleManager Persistor {
             get {
                 return framework.ObjectPersistor;
             }

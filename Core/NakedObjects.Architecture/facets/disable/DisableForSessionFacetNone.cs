@@ -18,7 +18,7 @@ namespace NakedObjects.Architecture.Facets.Disable {
             get { return true; }
         }
 
-        public override string DisabledReason(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+        public override string DisabledReason(ISession session, INakedObject target, ILifecycleManager persistor) {
             return null;
         }
     }

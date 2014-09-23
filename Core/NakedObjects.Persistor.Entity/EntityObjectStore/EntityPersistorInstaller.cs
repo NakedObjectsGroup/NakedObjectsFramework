@@ -128,7 +128,7 @@ namespace NakedObjects.EntityObjectStore {
            // isContextSet = true;
         }
 
-        public override INakedObjectPersistor CreateObjectPersistor() {
+        public override ILifecycleManager CreateObjectPersistor() {
             //if (!isContextSet) {
             //    throw new InitialisationException(@"No context set on EntityPersistorInstaller, must call either ""UsingCodeFirstContext"" or ""UsingEdmxContext""");
             //}

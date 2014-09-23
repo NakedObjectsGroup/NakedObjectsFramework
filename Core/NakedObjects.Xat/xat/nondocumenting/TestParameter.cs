@@ -14,10 +14,10 @@ namespace NakedObjects.Xat {
         private readonly ITestObjectFactory factory;
         private readonly ITestHasActions owningObject;
         private readonly INakedObjectActionParameter parameter;
-        private readonly INakedObjectPersistor persistor;
+        private readonly ILifecycleManager persistor;
         private INakedObjectAction action;
 
-        public TestParameter(INakedObjectPersistor persistor, INakedObjectAction action, INakedObjectActionParameter parameter, ITestHasActions owningObject, ITestObjectFactory factory) {
+        public TestParameter(ILifecycleManager persistor, INakedObjectAction action, INakedObjectActionParameter parameter, ITestHasActions owningObject, ITestObjectFactory factory) {
             this.persistor = persistor;
             this.action = action;
             this.parameter = parameter;

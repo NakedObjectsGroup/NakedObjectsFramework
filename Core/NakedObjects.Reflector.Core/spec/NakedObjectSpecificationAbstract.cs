@@ -196,8 +196,8 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-       // public abstract object CreateObject(INakedObjectPersistor persistor);
-        public abstract IEnumerable GetBoundedSet(INakedObjectPersistor persistor);
+       // public abstract object CreateObject(ILifecycleManager persistor);
+        public abstract IEnumerable GetBoundedSet(ILifecycleManager persistor);
         public abstract void Introspect(FacetDecoratorSet decoratorSet);
         public abstract void PopulateAssociatedActions(Type[] services);
         public abstract string PluralName { get; }

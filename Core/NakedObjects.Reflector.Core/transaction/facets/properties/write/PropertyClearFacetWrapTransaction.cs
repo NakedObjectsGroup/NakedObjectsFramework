@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.Transaction.Facets.Properties.Write {
             this.underlyingFacet = underlyingFacet;
         }
 
-        public override void ClearProperty(INakedObject inObject, INakedObjectPersistor persistor) {
+        public override void ClearProperty(INakedObject inObject, ILifecycleManager persistor) {
           
             if (inObject.ResolveState.IsPersistent()) {
                 try {

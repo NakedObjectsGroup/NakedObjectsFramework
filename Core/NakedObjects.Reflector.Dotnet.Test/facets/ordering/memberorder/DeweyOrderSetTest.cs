@@ -15,7 +15,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
 
         [SetUp]
         public void Initialize() {
-            var p = new Mock<INakedObjectPersistor>().Object;
+            var p = new Mock<ILifecycleManager>().Object;
             lastNameMember = new MemberPeerStub("LastName", p);
             firstNameMember = new MemberPeerStub("FirstName", p);
             houseNumberMember = new MemberPeerStub("HouseNumber", p);

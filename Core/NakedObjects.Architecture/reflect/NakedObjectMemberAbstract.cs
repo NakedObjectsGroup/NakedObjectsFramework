@@ -50,7 +50,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Return the default label for this member. This is based on the name of this member.
         /// </summary>
         /// <seealso cref="Id()" />
-        public virtual string GetName(INakedObjectPersistor persistor) {
+        public virtual string GetName(ILifecycleManager persistor) {
             return GetFacet<INamedFacet>().Value ?? defaultName;
         }
 
@@ -102,7 +102,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Loops over all <see cref="IHidingInteractionAdvisor" /> <see cref="IFacet" />s and
         ///     returns <c>true</c> only if none hide the member.
         /// </summary>
-        public virtual bool IsVisible(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+        public virtual bool IsVisible(ISession session, INakedObject target, ILifecycleManager persistor) {
             InteractionContext ic = InteractionContext.AccessMember(session, false, target, Identifier);
             return InteractionUtils.IsVisible(this, ic, persistor);
         }
@@ -112,7 +112,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Loops over all <see cref="IDisablingInteractionAdvisor" /> <see cref="IFacet" />s and
         ///     returns <c>true</c> only if none disables the member.
         /// </summary>
-        public virtual IConsent IsUsable(ISession session, INakedObject target, INakedObjectPersistor persistor) {
+        public virtual IConsent IsUsable(ISession session, INakedObject target, ILifecycleManager persistor) {
             InteractionContext ic = InteractionContext.AccessMember(session, false, target, Identifier);
             return InteractionUtils.IsUsable(this, ic);
         }

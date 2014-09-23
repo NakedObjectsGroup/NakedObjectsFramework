@@ -20,7 +20,7 @@ namespace NakedObjects.Architecture.Facets.Properties.Modify {
 
         #region IPropertySetterFacet Members
 
-        public abstract void SetProperty(INakedObject nakedObject, INakedObject nakedValue, INakedObjectPersistor persistor);
+        public abstract void SetProperty(INakedObject nakedObject, INakedObject nakedValue, ILifecycleManager persistor);
 
         #endregion
     }

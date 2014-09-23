@@ -12,9 +12,9 @@ namespace NakedObjects.Xat {
     public class TestObjectFactory : ITestObjectFactory {
         private readonly INakedObjectReflector reflector;
       
-        private readonly INakedObjectPersistor persistor;
+        private readonly ILifecycleManager persistor;
 
-        public TestObjectFactory(INakedObjectReflector reflector, ISession session, INakedObjectPersistor persistor) {
+        public TestObjectFactory(INakedObjectReflector reflector, ISession session, ILifecycleManager persistor) {
             this.reflector = reflector;
             this.Session = session;
             this.persistor = persistor;

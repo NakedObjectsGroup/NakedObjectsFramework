@@ -58,11 +58,11 @@ namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
             }
         }
 
-        public override INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectPersistor persistor, ISession session) {
+        public override INakedObject Invoke(INakedObject target, INakedObject[] parameters, ILifecycleManager persistor, ISession session) {
             return InvokeInTransaction(() => underlyingFacet.Invoke(target, parameters, persistor, session), persistor);
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectPersistor persistor, ISession session) {
+        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager persistor, ISession session) {
             return InvokeInTransaction(() => underlyingFacet.Invoke(nakedObject, parameters, resultPage, persistor, session), persistor);
         }
 

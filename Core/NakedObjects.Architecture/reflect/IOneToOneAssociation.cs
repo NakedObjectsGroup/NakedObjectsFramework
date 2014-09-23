@@ -32,7 +32,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     association (such as back-links or bidirectional association). To initialise a recreated object to this
         ///     logical state the <see cref="InitAssociation" /> method should be used on each of the objects.
         /// </summary>
-        void SetAssociation(INakedObject inObject, INakedObject associate, INakedObjectPersistor persistor);
+        void SetAssociation(INakedObject inObject, INakedObject associate, ILifecycleManager persistor);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

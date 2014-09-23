@@ -20,7 +20,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Core.Persist {
     public class CollectionMemento : IEncodedToStrings, IOid {
-        private readonly INakedObjectPersistor persistor;
+        private readonly ILifecycleManager persistor;
         private readonly INakedObjectReflector reflector;
         private readonly ISession session;
 
@@ -31,7 +31,7 @@ namespace NakedObjects.Core.Persist {
             ObjectCollection
         }
 
-        public CollectionMemento(INakedObjectPersistor persistor, INakedObjectReflector reflector, ISession session,  CollectionMemento otherMemento, object[] selectedObjects) {
+        public CollectionMemento(ILifecycleManager persistor, INakedObjectReflector reflector, ISession session,  CollectionMemento otherMemento, object[] selectedObjects) {
             Assert.AssertNotNull(persistor);
             Assert.AssertNotNull(reflector);
             Assert.AssertNotNull(otherMemento);
@@ -47,7 +47,7 @@ namespace NakedObjects.Core.Persist {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(INakedObjectPersistor persistor, INakedObjectReflector reflector, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
+        public CollectionMemento(ILifecycleManager persistor, INakedObjectReflector reflector, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
             Assert.AssertNotNull(persistor);
             Assert.AssertNotNull(reflector);
             this.persistor = persistor;
@@ -62,7 +62,7 @@ namespace NakedObjects.Core.Persist {
             }
         }
 
-        public CollectionMemento(INakedObjectPersistor persistor, INakedObjectReflector reflector, ISession session, string[] strings) {
+        public CollectionMemento(ILifecycleManager persistor, INakedObjectReflector reflector, ISession session, string[] strings) {
             Assert.AssertNotNull(persistor);
             Assert.AssertNotNull(reflector);
             this.persistor = persistor;

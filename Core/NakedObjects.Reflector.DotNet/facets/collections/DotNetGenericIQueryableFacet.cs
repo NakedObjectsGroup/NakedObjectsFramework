@@ -38,7 +38,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             return IsOrdered(queryable) ? queryable : queryable.OrderBy(x => "");
         }
 
-        public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectPersistor persistor, bool forceEnumerable) {
+        public override INakedObject Page(int page, int size, INakedObject collection, ILifecycleManager persistor, bool forceEnumerable) {
             // page = 0 causes empty collection to be returned
             IEnumerable<T> newCollection = page == 0 ? AsGenericIQueryable(collection).Take(0) : AsGenericIQueryable(collection).Skip((page - 1)*size).Take(size);
             if (forceEnumerable) {

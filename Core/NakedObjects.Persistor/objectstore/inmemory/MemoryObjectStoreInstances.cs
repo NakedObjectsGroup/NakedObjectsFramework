@@ -90,7 +90,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
         }
 
 
-        public virtual void Save(INakedObject nakedObject, ISession session, INakedObjectPersistor persistor) {
+        public virtual void Save(INakedObject nakedObject, ISession session, ILifecycleManager persistor) {
             lock (objectInstances) {
                 SerialNumberVersion version;
                 if (objectInstances.ContainsKey(nakedObject.Oid)) {

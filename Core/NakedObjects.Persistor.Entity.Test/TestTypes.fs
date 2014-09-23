@@ -72,8 +72,8 @@ type MockNakedObjectSpecification() =
         member x.GetTitle(nakedObject : INakedObject, m) = ""
         member x.ValidToPersist(transientObject : INakedObject, sess : ISession) : IConsent = null
         member x.Persistable = null : Persistable
-        //member x.CreateObject(persistor : INakedObjectPersistor) : obj = null
-        member x.GetBoundedSet(persistor : INakedObjectPersistor) : System.Collections.IEnumerable = null
+        //member x.CreateObject(persistor : ILifecycleManager) : obj = null
+        member x.GetBoundedSet(persistor : ILifecycleManager) : System.Collections.IEnumerable = null
         member x.MarkAsService() = ()
         member x.GetInvariantString(nakedObject : INakedObject) = ""
         member x.UniqueShortName(sep) = ""
@@ -192,19 +192,19 @@ let mutable persistedCount = 0
 let mutable persistingCount = 0
 
  
-let updated (nakedObject : INakedObject) (sess : ISession) (p : INakedObjectPersistor) = 
+let updated (nakedObject : INakedObject) (sess : ISession) (p : ILifecycleManager) = 
     updatedCount <- updatedCount + 1
     ()
  
-let updating (nakedObject : INakedObject) (sess : ISession) (p : INakedObjectPersistor) = 
+let updating (nakedObject : INakedObject) (sess : ISession) (p : ILifecycleManager) = 
     updatingCount <- updatingCount + 1
     ()
  
-let persisted (nakedObject : INakedObject) (sess : ISession) (p : INakedObjectPersistor) = 
+let persisted (nakedObject : INakedObject) (sess : ISession) (p : ILifecycleManager) = 
     persistedCount <- persistedCount + 1
     ()
  
-let persisting (nakedObject : INakedObject) (sess : ISession) (p : INakedObjectPersistor) = 
+let persisting (nakedObject : INakedObject) (sess : ISession) (p : ILifecycleManager) = 
     persistingCount <- persistingCount + 1
     ()
 
@@ -225,10 +225,10 @@ let setupPersistorForTesting (p : EntityObjectStore) =
                       EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), 
                       EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
                       EntityObjectStore.NotifyUiDelegate(NotifyUIForTest),
-                      Action<INakedObject, ISession, INakedObjectPersistor>(updated), 
-                      Action<INakedObject, ISession, INakedObjectPersistor>(updating),
-                      Action<INakedObject, ISession, INakedObjectPersistor>(persisted), 
-                      Action<INakedObject, ISession, INakedObjectPersistor>(persisting),
+                      Action<INakedObject, ISession, ILifecycleManager>(updated), 
+                      Action<INakedObject, ISession, ILifecycleManager>(updating),
+                      Action<INakedObject, ISession, ILifecycleManager>(persisted), 
+                      Action<INakedObject, ISession, ILifecycleManager>(persisting),
                       Action<INakedObject>(handleLoadingTest),
                       EventHandler(savingChangesHandler),
                       Func<Type, INakedObjectSpecification>(loadSpecificationHandler))

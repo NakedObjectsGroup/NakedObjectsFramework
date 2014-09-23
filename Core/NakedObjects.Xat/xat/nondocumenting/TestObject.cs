@@ -18,14 +18,14 @@ using System.Text;
 
 namespace NakedObjects.Xat {
     internal class TestObject : TestHasActions, ITestObject {
-        private readonly INakedObjectPersistor persistor;
+        private readonly ILifecycleManager persistor;
         private static readonly ILog LOG;
 
         static TestObject() {
             LOG = LogManager.GetLogger(typeof (TestObject));
         }
 
-        public TestObject(INakedObjectPersistor persistor,   INakedObject nakedObject, ITestObjectFactory factory)
+        public TestObject(ILifecycleManager persistor,   INakedObject nakedObject, ITestObjectFactory factory)
             : base(factory, persistor) {
             this.persistor = persistor;
             LOG.DebugFormat("Created test object for {0}", nakedObject);
