@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NakedObjects.Architecture.Adapter;
+﻿using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.persist {
+namespace NakedObjects.Architecture.Persist {
     public interface IServicesManager {
 
         INakedObject[] ServiceAdapters { get; }

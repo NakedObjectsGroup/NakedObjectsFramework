@@ -23,6 +23,6 @@ namespace NakedObjects.Architecture.Spec {
         ///     Return the name for this member - the field or action. This is based on the name of this member.
         /// </summary>
         /// <seealso cref="INakedObjectMember.Id" />
-        string GetName(ILifecycleManager persistor);
+        string GetName(IServicesManager services);
     }
 }

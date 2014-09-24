@@ -139,7 +139,7 @@ namespace NakedObjects.Reflector.DotNet {
 
         #endregion
 
-        public static void Validate(INakedObject adapter) {
+        private void Validate(INakedObject adapter) {
             if (adapter.Specification.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
                 string state = adapter.ValidToPersist();
                 if (state != null) {

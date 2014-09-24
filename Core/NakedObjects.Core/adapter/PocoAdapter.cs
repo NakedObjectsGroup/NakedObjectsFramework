@@ -26,6 +26,7 @@ namespace NakedObjects.Core.Adapter {
         private IOid oid;
         private readonly INakedObjectReflector reflector;
         private readonly ISession session;
+        private readonly INakedObjectManager manager;
         private readonly ILifecycleManager persistor;
         private object poco;
         private INakedObjectSpecification specification;
@@ -36,7 +37,7 @@ namespace NakedObjects.Core.Adapter {
             Log = LogManager.GetLogger(typeof (PocoAdapter));
         }
 
-        public PocoAdapter(INakedObjectReflector reflector, ISession session,  ILifecycleManager persistor, object poco, IOid oid) {
+        public PocoAdapter(INakedObjectReflector reflector, ISession session, ILifecycleManager persistor, object poco, IOid oid) {
             Assert.AssertNotNull(reflector);
             //Assert.AssertNotNull(session);
 
@@ -45,10 +46,12 @@ namespace NakedObjects.Core.Adapter {
             }
             this.reflector = reflector;
             this.session = session;
+            this.manager = persistor;
             this.persistor = persistor;
+
             this.poco = poco;
             this.oid = oid;
-            ResolveState = new ResolveStateMachine(this, session, persistor);
+            ResolveState = new ResolveStateMachine(this, session);
             version = new NullVersion();
         }
 
@@ -115,7 +118,7 @@ namespace NakedObjects.Core.Adapter {
                 if (Specification.IsCollection && !Specification.IsParseable) {
                     return CollectionTitleString(Specification.GetFacet<ICollectionFacet>());
                 }
-                return ObjectTitleString();
+                return Specification.GetTitle(this, manager) ?? DefaultTitle;
             }
             catch (Exception e) {
                 Log.Error("Exception on ToString", e);
@@ -142,7 +145,7 @@ namespace NakedObjects.Core.Adapter {
         public string ValidToPersist() {
             INakedObjectAssociation[] properties = Specification.Properties;
             foreach (INakedObjectAssociation property in properties) {
-                INakedObject referencedObject = property.GetNakedObject(this, persistor);
+                INakedObject referencedObject = property.GetNakedObject(this, manager);
                 if (property.IsUsable(session, this, persistor).IsAllowed && property.IsVisible(session, this, persistor)) {
                     if (property.IsMandatory && property.IsEmpty(this, persistor)) {
                         return string.Format(Resources.NakedObjects.PropertyMandatory, specification.ShortName, property.GetName(persistor));
@@ -200,12 +203,8 @@ namespace NakedObjects.Core.Adapter {
 
         #endregion
 
-        private string ObjectTitleString() {
-             return Specification.GetTitle(this, persistor) ?? DefaultTitle;
-        }
-
         private string CollectionTitleString(ICollectionFacet facet) {
-            int size = ElementsLoaded() ? facet.AsEnumerable(this, persistor).Count() : CollectionUtils.IncompleteCollection;
+            int size = ElementsLoaded() ? facet.AsEnumerable(this, manager).Count() : CollectionUtils.IncompleteCollection;
             INakedObjectSpecification elementSpecification = TypeOfFacet == null ? null : TypeOfFacet.ValueSpec;
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
         }

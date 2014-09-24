@@ -34,7 +34,7 @@ namespace NakedObjects.Architecture.Persist {
 
         INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj);
 
-        INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid);
+        INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid, ILifecycleManager persistor);
 
     }
 

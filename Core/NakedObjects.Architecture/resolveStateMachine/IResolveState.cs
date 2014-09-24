@@ -6,13 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Resolve {
     public interface IResolveState {
         string Name { get; }
         string Code { get; }
-        IResolveState Handle(IResolveEvent rEvent, INakedObject owner, IResolveStateMachine rsm, ISession s, ILifecycleManager p);
+        IResolveState Handle(IResolveEvent rEvent, INakedObject owner, IResolveStateMachine rsm, ISession s);
     }
 }

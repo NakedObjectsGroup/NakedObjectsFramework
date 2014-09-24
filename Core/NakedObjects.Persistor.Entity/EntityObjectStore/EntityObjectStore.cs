@@ -21,8 +21,8 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Objects.Aggregated;
 using NakedObjects.Architecture.Facets.Objects.Callbacks;
+using NakedObjects.Architecture.Facets.Objects.Validation;
 using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Security;
@@ -35,7 +35,6 @@ using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Persistor.Transaction;
-using NakedObjects.Reflector.DotNet;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
@@ -458,10 +457,10 @@ namespace NakedObjects.EntityObjectStore {
             return false;
         }
 
-        public INakedObject CreateAdapterForKnownObject(object domainObject) {
-            var oid = oidGenerator.CreateOid(EntityUtils.GetProxiedTypeName(domainObject), GetContext(domainObject).GetKey(domainObject));
-            return Manager.NewAdapterForKnownObject(domainObject, oid);
-        }
+        //public INakedObject CreateAdapterForKnownObject(object domainObject) {
+        //    var oid = oidGenerator.CreateOid(EntityUtils.GetProxiedTypeName(domainObject), GetContext(domainObject).GetKey(domainObject));
+        //    return Manager.NewAdapterForKnownObject(domainObject, oid, this);
+        //}
 
         private static string ConcatenateMessages(Exception e) {
             bool isConcurrency = e is OptimisticConcurrencyException;
@@ -579,7 +578,12 @@ namespace NakedObjects.EntityObjectStore {
 
         private static void ValidateIfRequired(INakedObject adapter) {
             if (adapter.ResolveState.IsPersistent()) {
-                DotNetDomainObjectContainer.Validate(adapter);
+                if (adapter.Specification.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
+                    string state = adapter.ValidToPersist();
+                    if (state != null) {
+                        throw new PersistFailedException(string.Format(Resources.NakedObjects.PersistStateError, adapter.Specification.ShortName, adapter.TitleString(), state));
+                    }
+                }
             }
         }
 

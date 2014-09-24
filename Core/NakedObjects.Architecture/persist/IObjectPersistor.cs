@@ -5,7 +5,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.persist {
+namespace NakedObjects.Architecture.Persist {
     public interface IObjectPersistor {
         IQueryable<T> Instances<T>() where T : class;
 

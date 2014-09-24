@@ -5,6 +5,7 @@
 using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 
@@ -72,6 +73,8 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         public string ValidToPersist() {
             throw new NotImplementedException();
         }
+
+       
 
         public void SetATransientOid(IOid oid) {
             throw new NotImplementedException();

@@ -67,7 +67,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return id; }
         }
 
-        public virtual string GetName(ILifecycleManager persistor) {
+        public virtual string GetName(IServicesManager persistor) {
             if (name == null) {
                 var service = persistor.GetService(shortId);
                 return service.TitleString();

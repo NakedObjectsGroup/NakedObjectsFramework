@@ -21,7 +21,6 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
@@ -76,7 +75,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return peer.Specification; }
         }
 
-        public string GetName(ILifecycleManager persistor) {
+        public string GetName(IServicesManager services) {
             var facet = GetFacet<INamedFacet>();
             string name = facet == null ? null : facet.Value;
             return name ?? peer.Specification.SingularName;

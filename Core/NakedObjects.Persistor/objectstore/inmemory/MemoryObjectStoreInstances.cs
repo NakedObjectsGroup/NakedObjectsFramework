@@ -9,7 +9,6 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Key;
 using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Security;
@@ -120,7 +119,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                     ObjectAndVersion holder = objectInstances[oid];
                     object domainObject = holder.DomainObject;
                     if (domainObject == poco) {
-                        var adapter = manager.NewAdapterForKnownObject(poco, oid);
+                        var adapter = manager.NewAdapterForKnownObject(poco, oid, null);
                         adapter.OptimisticLock = holder.Version;
                         adapter.ResolveState.Handle(Events.InitializePersistentEvent);
                         adapter.ResolveState.Handle(Events.StartResolvingEvent);

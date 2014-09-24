@@ -50,7 +50,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Return the default label for this member. This is based on the name of this member.
         /// </summary>
         /// <seealso cref="Id()" />
-        public virtual string GetName(ILifecycleManager persistor) {
+        public virtual string GetName(IServicesManager persistor) {
             return GetFacet<INamedFacet>().Value ?? defaultName;
         }
 

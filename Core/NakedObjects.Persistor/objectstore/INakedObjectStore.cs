@@ -5,10 +5,8 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;

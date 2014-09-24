@@ -42,9 +42,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Returns the type of action: user, exploration or debug, or that it is a set of actions.
         /// </summary>
         /// <seealso cref="NakedObjectActionType.User" />
-        /// <seealso cref="NakedObjectActionConstants.PROTOTYPE" />
-        /// <seealso cref="NakedObjectActionConstants.DEBUG" />
-        /// <seealso cref="NakedObjectActionConstants.SET" />
+    
         NakedObjectActionType ActionType { get; }
 
         /// <summary>

@@ -126,7 +126,7 @@ type MockNakedObject(obj, oid) =
         member x.ResolveState 
             with get() : ResolveStateMachine = 
                 match rsm with 
-                | null -> rsm <- new ResolveStateMachine(x, null, null)
+                | null -> rsm <- new ResolveStateMachine(x, null)
                 | _ -> ()          
                 rsm 
         member x.CheckLock (v : IVersion) = ()

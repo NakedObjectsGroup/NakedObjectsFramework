@@ -334,6 +334,7 @@ namespace NakedObjects.Architecture.Adapter {
                 throw new NotImplementedException();
             }
 
+
             public void SetATransientOid(IOid oid) {
                 throw new NotImplementedException();
             }
@@ -346,7 +347,7 @@ namespace NakedObjects.Architecture.Adapter {
         }
 
         private static IResolveStateMachine NewSM() {
-            return new ResolveStateMachine(new TestAdapter(), null, null);
+            return new ResolveStateMachine(new TestAdapter(), null);
         }
 
         private static IResolveStateMachine GhostSM() {
