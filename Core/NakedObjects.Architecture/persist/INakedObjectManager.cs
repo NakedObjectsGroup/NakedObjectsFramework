@@ -6,20 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Services;
-using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Persist {
     /// <summary>
     ///     Broadly speaking, keeps track of the oid/adapter/domain object tuple
     /// </summary>
     public interface INakedObjectManager {
-        INakedObject CreateInstance(INakedObjectSpecification specification);
-
-        INakedObject CreateViewModel(INakedObjectSpecification specification);
-
-        INakedObject RecreateInstance(IOid oid, INakedObjectSpecification specification);  
-
         void RemoveAdapter(INakedObject objectToDispose);
 
         INakedObject GetAdapterFor(object obj);
@@ -29,13 +21,12 @@ namespace NakedObjects.Architecture.Persist {
         INakedObject CreateAdapter(object domainObject, IOid oid, IVersion version);
 
         void ReplacePoco(INakedObject nakedObject, object newDomainObject);
-     
+
         INakedObject GetViewModel(IOid oid);
 
         INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj);
 
-        INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid, ILifecycleManager persistor);
-
+        INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid);
     }
 
 

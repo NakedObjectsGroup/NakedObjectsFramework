@@ -35,6 +35,24 @@ using NakedObjects.Persistor.Transaction;
 using NakedObjects.Util;
 
 namespace NakedObjects.Persistor.Objectstore {
+
+    internal class NakedObjectFactory {
+        private INakedObjectReflector reflector;
+        private ISession session;
+        private ILifecycleManager persistor;
+
+        public void Initialize(INakedObjectReflector reflector, ISession session, ILifecycleManager persistor) {
+            this.reflector = reflector;
+            this.session = session;
+            this.persistor = persistor;
+        }
+
+        public INakedObject CreateAdapter(object obj, IOid oid) {
+            return new PocoAdapter(reflector, session, persistor, obj, oid);
+        }
+    }
+
+
     internal class ObjectPersistor : IObjectPersistor {
         private static readonly ILog Log;
         private readonly INakedObjectManager manager;
@@ -233,6 +251,9 @@ namespace NakedObjects.Persistor.Objectstore {
         private readonly INakedObjectReflector reflector;
         private readonly ISession session;
         private readonly IIdentityMap identityMap;
+        private readonly IOidGenerator oidGenerator;
+        private readonly NakedObjectFactory nakedObjectFactory;
+        private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
 
         private static readonly ILog Log;
      
@@ -240,44 +261,60 @@ namespace NakedObjects.Persistor.Objectstore {
             Log = LogManager.GetLogger(typeof(NakedObjectManager));
         }
 
-
-        public NakedObjectManager(INakedObjectReflector reflector, ISession session, IIdentityMap identityMap) {
+        public NakedObjectManager(INakedObjectReflector reflector, ISession session, IIdentityMap identityMap, IOidGenerator oidGenerator, NakedObjectFactory nakedObjectFactory) {
             this.reflector = reflector;
             this.session = session;
             this.identityMap = identityMap;
-        }
-
-
-        public INakedObject CreateInstance(INakedObjectSpecification specification) {
-            throw new NotImplementedException();
-        }
-
-        public INakedObject CreateViewModel(INakedObjectSpecification specification) {
-            throw new NotImplementedException();
-        }
-
-        public INakedObject RecreateInstance(IOid oid, INakedObjectSpecification specification) {
-            throw new NotImplementedException();
+            this.oidGenerator = oidGenerator;
+            this.nakedObjectFactory = nakedObjectFactory;
         }
 
         public void RemoveAdapter(INakedObject objectToDispose) {
-            throw new NotImplementedException();
+            Log.DebugFormat("RemoveAdapter nakedObject: {0}", objectToDispose);
+            identityMap.Unloaded(objectToDispose);
         }
 
         public INakedObject GetAdapterFor(object obj) {
-            throw new NotImplementedException();
+            Log.DebugFormat("GetAdapterFor: {0}", obj);
+            Assert.AssertNotNull("must have a domain object", obj);
+            INakedObject nakedObject = identityMap.GetAdapterFor(obj);
+            if (nakedObject != null && nakedObject.Object != obj) {
+                throw new AdapterException("Mapped adapter is for different domain object: " + obj + "; " + nakedObject);
+            }
+            return nakedObject;
         }
 
         public INakedObject GetAdapterFor(IOid oid) {
-            throw new NotImplementedException();
+            Log.DebugFormat("GetAdapterFor oid: {0}", oid);
+            Assert.AssertNotNull("must have an OID", oid);
+            return identityMap.GetAdapterFor(oid);
         }
 
         public INakedObject CreateAdapter(object domainObject, IOid oid, IVersion version) {
-            throw new NotImplementedException();
+            Log.DebugFormat("AdapterFor domainObject: {0} oid: {1} version: {2}", domainObject, oid, version);
+            if (domainObject == null) {
+                return null;
+            }
+            if (oid == null) {
+                INakedObjectSpecification nakedObjectSpecification = reflector.LoadSpecification(domainObject.GetType());
+                if (nakedObjectSpecification.ContainsFacet(typeof(IComplexTypeFacet))) {
+                    return GetAdapterFor(domainObject);
+                }
+                if (nakedObjectSpecification.HasNoIdentity) {
+                    return AdapterForNoIdentityObject(domainObject);
+                }
+                return AdapterForExistingObject(domainObject, nakedObjectSpecification);
+            }
+            return AdapterForExistingObject(domainObject, oid);
         }
 
         public void ReplacePoco(INakedObject nakedObject, object newDomainObject) {
-            throw new NotImplementedException();
+          
+            Log.DebugFormat("ReplacePoco nakedObject: {0} newDomainOject: {1}", nakedObject, newDomainObject);
+            RemoveAdapter(nakedObject);
+            identityMap.Replaced(nakedObject.Object);
+            nakedObject.ReplacePoco(newDomainObject);
+            identityMap.AddAdapter(nakedObject);
         }
 
         public INakedObject GetViewModel(IOid oid) {
@@ -285,11 +322,113 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj) {
-            throw new NotImplementedException();
+            GetAdapterFor(obj);
+
+            IOid oid = new AggregateOid(reflector, parent.Oid, fieldId, obj.GetType().FullName);
+            INakedObject adapterFor = GetAdapterFor(oid);
+            if (adapterFor == null || adapterFor.Object != obj) {
+                if (adapterFor != null) {
+                    RemoveAdapter(adapterFor);
+                }
+                adapterFor = CreateAdapter(obj, oid, null);
+                adapterFor.OptimisticLock = new NullVersion();
+            }
+            Assert.AssertNotNull(adapterFor);
+            return adapterFor;
         }
 
-        public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid, ILifecycleManager persistor) {
-            return new PocoAdapter(reflector, session, persistor, domainObject, transientOid);
+        public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid) {
+            return nakedObjectFactory.CreateAdapter(domainObject, transientOid);
+        }
+
+        private INakedObject AdapterForNoIdentityObject(object domainObject) {
+            INakedObject pocoAdapter = adapterCache.GetAdapter(domainObject);
+
+            if (pocoAdapter == null) {
+                pocoAdapter = NewAdapterForKnownObject(domainObject, null);
+                NewTransientsResolvedState(pocoAdapter);
+                adapterCache.AddAdapter(pocoAdapter);
+            }
+
+            return pocoAdapter;
+        }
+
+        private INakedObject AdapterForExistingObject(object domainObject, INakedObjectSpecification spec) {
+            return identityMap.GetAdapterFor(domainObject) ?? NewAdapterForViewModel(domainObject, spec) ?? NewAdapterForTransient(domainObject);
+        }
+
+        public INakedObject AdapterForExistingObject(object domainObject, IOid oid) {
+            return GetAdapterFor(domainObject) ?? NewAdapterBasedOnOid(domainObject, oid);
+        }
+
+        private static void NewTransientsResolvedState(INakedObject pocoAdapter) {
+            pocoAdapter.ResolveState.Handle(pocoAdapter.Specification.IsAggregated ? Events.InitializeAggregateEvent : Events.InitializeTransientEvent);
+        }
+
+        private INakedObject NewAdapterBasedOnOid(object domainObject, IOid oid) {
+            INakedObject nakedObject = NewAdapterForKnownObject(domainObject, oid);
+            identityMap.AddAdapter(nakedObject);
+
+            if (oid is AggregateOid && nakedObject.Specification.IsObject) {
+                nakedObject.ResolveState.Handle(Events.InitializeAggregateEvent);
+            }
+            else {
+                nakedObject.ResolveState.Handle(oid.IsTransient ? Events.InitializeTransientEvent : Events.InitializePersistentEvent);
+            }
+
+            return nakedObject;
+        }
+
+        private INakedObject NewAdapterForViewModel(object domainObject, INakedObjectSpecification spec)  {
+            if (spec.IsViewModel) {
+                INakedObject adapter = CreateAdapterForViewModel(domainObject, spec);
+                adapter.ResolveState.Handle(Events.InitializePersistentEvent);
+                return adapter;
+            }
+            return null;
+        }
+
+        private INakedObject NewAdapterForTransient(object domainObject) {
+            INakedObject adapter = CreateAdapterForNewObject(domainObject);
+            NewTransientsResolvedState(adapter);
+            return adapter;
+        }
+
+        private INakedObject CreateAdapterForViewModel(object viewModel, INakedObjectSpecification spec) {
+            var oid = new ViewModelOid(reflector, spec);
+            INakedObject adapter = NewAdapterForKnownObject(viewModel, oid);
+
+            object versionObject = adapter.GetVersion(this);
+            if (versionObject != null) {
+                adapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
+                Log.DebugFormat("CreateAdapterForViewModel: Updating Version {0} on {1}", adapter.Version, adapter);
+            }
+
+            Log.DebugFormat("Creating adapter (ViewModel) {0}", adapter);
+            identityMap.AddAdapter(adapter);
+            return adapter;
+        }
+
+        private INakedObject CreateAdapterForNewObject(object domainObject) {
+            IOid transientOid = oidGenerator.CreateTransientOid(domainObject);
+            INakedObject adapter = NewAdapterForKnownObject(domainObject, transientOid);
+            Log.DebugFormat("Creating adapter (transient) {0}", adapter);
+            identityMap.AddAdapter(adapter);
+            return adapter;
+        }
+
+        // TODO add to interface
+
+        public  INakedObject CreateInstanceAdapter(object obj) {
+            INakedObject adapter = CreateAdapterForNewObject(obj);
+            NewTransientsResolvedState(adapter);
+            return adapter;
+        }
+
+        public  INakedObject CreateViewModelAdapter(INakedObjectSpecification specification, object viewModel) {
+            INakedObject adapter = CreateAdapterForViewModel(viewModel, specification);
+            adapter.ResolveState.Handle(Events.InitializePersistentEvent);
+            return adapter;
         }
     }
 
@@ -308,7 +447,7 @@ namespace NakedObjects.Persistor.Objectstore {
         private readonly INakedObjectTransactionManager transactionManager;
         private readonly IUpdateNotifier updateNotifier;
         private bool servicesInit;
-        private NakedObjectManager manager;
+        private readonly NakedObjectManager manager;
 
 
         static LifeCycleManager() {
@@ -325,7 +464,9 @@ namespace NakedObjects.Persistor.Objectstore {
             transactionManager = new ObjectStoreTransactionManager(objectStore);
             objectPersistor = new ObjectPersistor(objectStore, transactionManager, session, this, updateNotifier);
 
-            manager = new NakedObjectManager(reflector, session, identityMap);
+            var nakedObjectFactory = new NakedObjectFactory();
+
+            manager = new NakedObjectManager(reflector, session, identityMap, oidGenerator, nakedObjectFactory);
 
             this.session = session;
             this.reflector = reflector;
@@ -336,6 +477,8 @@ namespace NakedObjects.Persistor.Objectstore {
             OidGenerator = oidGenerator;
             this.identityMap = identityMap;
             this.injector = injector;
+
+            nakedObjectFactory.Initialize(reflector, session, this);
 
             // TODO - fix !
             objectStore.Manager = this;
@@ -377,25 +520,31 @@ namespace NakedObjects.Persistor.Objectstore {
             }
             object obj = CreateObject(specification);
 
-            INakedObject adapter = CreateAdapterForNewObject(obj);
+            var adapter = manager.CreateInstanceAdapter(obj);
+
             InitializeNewObject(adapter);
-            NewTransientsResolvedState(adapter);
             return adapter;
         }
+
+       
 
         public INakedObject CreateViewModel(INakedObjectSpecification specification) {
             Log.DebugFormat("CreateViewModel of: {0}", specification);
 
             object viewModel = CreateObject(specification);
-            INakedObject adapter = CreateAdapterForViewModel(viewModel, specification);
+
+            var adapter = manager.CreateViewModelAdapter(specification, viewModel);
+
             InitializeNewObject(adapter);
-            adapter.ResolveState.Handle(Events.InitializePersistentEvent);
             return adapter;
         }
 
+       
+
         public virtual INakedObject RecreateInstance(IOid oid, INakedObjectSpecification specification) {
             Log.DebugFormat("RecreateInstance oid: {0} hint: {1}", oid, specification);
-            INakedObject adapter = identityMap.GetAdapterFor(oid);
+            INakedObject adapter = manager.GetAdapterFor(oid);
+                     
             if (adapter != null) {
                 if (adapter.Specification != specification) {
                     throw new AdapterException(string.Format("Mapped adapter is for a different type of object: {0}; {1}", specification.FullName, adapter));
@@ -406,7 +555,7 @@ namespace NakedObjects.Persistor.Objectstore {
             Log.DebugFormat("Recreating instance for {0}", specification);
             object obj = CreateObject(specification);
 
-            return AdapterForExistingObject(obj, oid);
+            return manager.AdapterForExistingObject(obj, oid);
         }
 
         public virtual INakedObject GetViewModel(IOid oid) {
@@ -418,50 +567,23 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public virtual INakedObject GetAdapterFor(object obj) {
-            Log.DebugFormat("GetAdapterFor: {0}", obj);
-            Assert.AssertNotNull("must have a domain object", obj);
-            INakedObject nakedObject = identityMap.GetAdapterFor(obj);
-            if (nakedObject != null && nakedObject.Object != obj) {
-                throw new AdapterException("Mapped adapter is for different domain object: " + obj + "; " + nakedObject);
-            }
-            return nakedObject;
+            return manager.GetAdapterFor(obj);
         }
 
         public virtual INakedObject GetAdapterFor(IOid oid) {
-            Log.DebugFormat("GetAdapterFor oid: {0}", oid);
-            Assert.AssertNotNull("must have an OID", oid);
-            return identityMap.GetAdapterFor(oid);
+            return manager.GetAdapterFor(oid);
         }
 
         public virtual INakedObject CreateAdapter(object domainObject, IOid oid, IVersion version) {
-            Log.DebugFormat("AdapterFor domainObject: {0} oid: {1} version: {2}", domainObject, oid, version);
-            if (domainObject == null) {
-                return null;
-            }
-            if (oid == null) {
-                INakedObjectSpecification nakedObjectSpecification = reflector.LoadSpecification(domainObject.GetType());
-                if (nakedObjectSpecification.ContainsFacet(typeof (IComplexTypeFacet))) {
-                    return GetAdapterFor(domainObject);
-                }
-                if (nakedObjectSpecification.HasNoIdentity) {
-                    return AdapterForNoIdentityObject(domainObject);
-                }
-                return AdapterForExistingObject(domainObject, nakedObjectSpecification);
-            }
-            return AdapterForExistingObject(domainObject, oid);
+            return manager.CreateAdapter(domainObject, oid, version);
         }
 
         public void ReplacePoco(INakedObject nakedObject, object newDomainObject) {
-            Log.DebugFormat("ReplacePoco nakedObject: {0} newDomainOject: {1}", nakedObject, newDomainObject);
-            RemoveAdapter(nakedObject);
-            identityMap.Replaced(nakedObject.Object);
-            nakedObject.ReplacePoco(newDomainObject);
-            identityMap.AddAdapter(nakedObject);
+            manager.ReplacePoco(nakedObject, newDomainObject);
         }
 
         public virtual void RemoveAdapter(INakedObject nakedObject) {
-            Log.DebugFormat("RemoveAdapter nakedObject: {0}", nakedObject);
-            identityMap.Unloaded(nakedObject);
+           manager.RemoveAdapter(nakedObject);
         }
 
         public virtual IQueryable<T> Instances<T>() where T : class {
@@ -505,7 +627,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public virtual INakedObject[] ServiceAdapters {
-            get { return Services.Select(x => CreateAdapter(x.Service, null, null)).ToArray(); }
+            get { return Services.Select(x => manager.CreateAdapter(x.Service, null, null)).ToArray(); }
         }
 
 
@@ -644,30 +766,18 @@ namespace NakedObjects.Persistor.Objectstore {
             objectPersistor.Refresh(nakedObject);
         }
 
-        public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid, ILifecycleManager persistor) {
-            return manager.NewAdapterForKnownObject(domainObject, transientOid, this);
+        public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid) {
+            return manager.NewAdapterForKnownObject(domainObject, transientOid);
         }
 
         public INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj) {
-            GetAdapterFor(obj);
-
-            IOid oid = new AggregateOid(reflector, parent.Oid, fieldId, obj.GetType().FullName);
-            INakedObject adapterFor = GetAdapterFor(oid);
-            if (adapterFor == null || adapterFor.Object != obj) {
-                if (adapterFor != null) {
-                    RemoveAdapter(adapterFor);
-                }
-                adapterFor = CreateAdapter(obj, oid, null);
-                adapterFor.OptimisticLock = new NullVersion();
-            }
-            Assert.AssertNotNull(adapterFor);
-            return adapterFor;
+            return manager.CreateAggregatedAdapter(parent, fieldId, obj);
         }
 
         public List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects) {
             var adaptedObjects = new List<INakedObject>();
             foreach (object domainObject in domainObjects) {
-                adaptedObjects.Add(CreateAdapter(domainObject, null, null));
+                adaptedObjects.Add(manager.CreateAdapter(domainObject, null, null));
             }
             return adaptedObjects;
         }
@@ -746,72 +856,6 @@ namespace NakedObjects.Persistor.Objectstore {
             identityMap.UpdateViewModel(adapter, keys);
         }
 
-        private INakedObject CreateAdapterForViewModel(object viewModel, INakedObjectSpecification spec) {
-            var oid = new ViewModelOid(reflector, spec);
-            INakedObject adapter = NewAdapterForKnownObject(viewModel, oid, this);
-
-            object versionObject = adapter.GetVersion(this);
-            if (versionObject != null) {
-                adapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
-                Log.DebugFormat("CreateAdapterForViewModel: Updating Version {0} on {1}", adapter.Version, adapter);
-            }
-
-            Log.DebugFormat("Creating adapter (ViewModel) {0}", adapter);
-            identityMap.AddAdapter(adapter);
-            return adapter;
-        }
-
-        private INakedObject AdapterForExistingObject(object domainObject, INakedObjectSpecification spec) {
-            return identityMap.GetAdapterFor(domainObject) ?? NewAdapterForViewModel(domainObject, spec) ?? NewAdapterForTransient(domainObject);
-        }
-
-        private INakedObject AdapterForExistingObject(object domainObject, IOid oid) {
-            return GetAdapterFor(domainObject) ?? NewAdapterBasedOnOid(domainObject, oid);
-        }
-
-        private INakedObject NewAdapterBasedOnOid(object domainObject, IOid oid) {
-            INakedObject nakedObject = NewAdapterForKnownObject(domainObject, oid, this);
-            identityMap.AddAdapter(nakedObject);
-
-            if (oid is AggregateOid && nakedObject.Specification.IsObject) {
-                nakedObject.ResolveState.Handle(Events.InitializeAggregateEvent);
-            }
-            else {
-                nakedObject.ResolveState.Handle(oid.IsTransient ? Events.InitializeTransientEvent : Events.InitializePersistentEvent);
-            }
-
-            return nakedObject;
-        }
-
-        private INakedObject NewAdapterForViewModel(object domainObject, INakedObjectSpecification spec) {
-            if (spec.IsViewModel) {
-                INakedObject adapter = CreateAdapterForViewModel(domainObject, spec);
-                adapter.ResolveState.Handle(Events.InitializePersistentEvent);
-                return adapter;
-            }
-            return null;
-        }
-
-
-        private INakedObject NewAdapterForTransient(object domainObject) {
-            INakedObject adapter = CreateAdapterForNewObject(domainObject);
-            NewTransientsResolvedState(adapter);
-            return adapter;
-        }
-
-        private INakedObject AdapterForNoIdentityObject(object domainObject) {
-            INakedObject pocoAdapter = adapterCache.GetAdapter(domainObject);
-
-            if (pocoAdapter == null) {
-                pocoAdapter = NewAdapterForKnownObject(domainObject, null, this);
-                NewTransientsResolvedState(pocoAdapter);
-                adapterCache.AddAdapter(pocoAdapter);
-            }
-
-            return pocoAdapter;
-        }
-
-
         private INakedObject GetServiceAdapter(object service) {
             IOid oid = GetOidForService(ServiceUtils.GetId(service), service.GetType().FullName);
             return AdapterForService(oid, service);
@@ -827,7 +871,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
         private INakedObject AdapterForService(IOid oid, object serv) {
             // do not use PersistorUtils here we want to avoid calling into NakedObjectsContext to avoid a stack overflow ! 
-            INakedObject adapter = CreateAdapter(serv, oid, null);
+            INakedObject adapter = manager.CreateAdapter(serv, oid, null);
             if (adapter.ResolveState.IsResolvable()) {
                 adapter.ResolveState.Handle(Events.StartResolvingEvent);
                 adapter.ResolveState.Handle(Events.EndResolvingEvent);
@@ -835,24 +879,15 @@ namespace NakedObjects.Persistor.Objectstore {
             return adapter;
         }
 
-        private static void NewTransientsResolvedState(INakedObject pocoAdapter) {
-            pocoAdapter.ResolveState.Handle(pocoAdapter.Specification.IsAggregated ? Events.InitializeAggregateEvent : Events.InitializeTransientEvent);
-        }
-
-        private INakedObject CreateAdapterForNewObject(object domainObject) {
-            IOid transientOid = OidGenerator.CreateTransientOid(domainObject);
-            INakedObject adapter = NewAdapterForKnownObject(domainObject, transientOid, this);
-            Log.DebugFormat("Creating adapter (transient) {0}", adapter);
-            identityMap.AddAdapter(adapter);
-            return adapter;
-        }
+     
+      
 
         private void CreateInlineObjects(INakedObject parentObject, object rootObject) {
             foreach (IOneToOneAssociation assoc in parentObject.Specification.Properties.Where(p => p.IsInline)) {
                 object inlineObject = CreateObject(assoc.Specification);
 
                 InitInlineObject(rootObject, inlineObject);
-                INakedObject inlineNakedObject = CreateAggregatedAdapter(parentObject, assoc.Id, inlineObject);
+                INakedObject inlineNakedObject = manager.CreateAggregatedAdapter(parentObject, assoc.Id, inlineObject);
                 InitializeNewObject(inlineNakedObject, rootObject);
                 assoc.InitAssociation(parentObject, inlineNakedObject);
             }

@@ -119,7 +119,7 @@ namespace NakedObjects.Persistor.Objectstore.Inmemory {
                     ObjectAndVersion holder = objectInstances[oid];
                     object domainObject = holder.DomainObject;
                     if (domainObject == poco) {
-                        var adapter = manager.NewAdapterForKnownObject(poco, oid, null);
+                        var adapter = manager.NewAdapterForKnownObject(poco, oid);
                         adapter.OptimisticLock = holder.Version;
                         adapter.ResolveState.Handle(Events.InitializePersistentEvent);
                         adapter.ResolveState.Handle(Events.StartResolvingEvent);
