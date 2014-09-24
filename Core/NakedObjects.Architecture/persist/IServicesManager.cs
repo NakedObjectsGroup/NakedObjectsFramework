@@ -13,7 +13,7 @@ namespace NakedObjects.Architecture.Persist {
 
         INakedObject[] GetServices();
 
-        INakedObject[] GetServicesWithVisibleActions(ServiceTypes serviceType);
+        INakedObject[] GetServicesWithVisibleActions(ServiceTypes serviceType, ILifecycleManager persistor);
 
         INakedObject[] GetServices(ServiceTypes serviceType);
     }

@@ -5,14 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections;
-using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Persist {
     public interface ILifecycleManager : INakedObjectTransactionManager, INakedObjectManager, IObjectPersistor, IServicesManager {
-        IOidGenerator OidGenerator { get; }
+        
 
         INakedObject CreateInstance(INakedObjectSpecification specification);
 
@@ -36,13 +34,11 @@ namespace NakedObjects.Architecture.Persist {
         /// </para>
         void MakePersistent(INakedObject nakedObject);
 
-        List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);
-
-        IOid RestoreGenericOid(string[] encodedData);
-
         void PopulateViewModelKeys(INakedObject nakedObject);
 
         INakedObject GetViewModel(IOid oid);
+
+        IOid RestoreGenericOid(string[] encodedData);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

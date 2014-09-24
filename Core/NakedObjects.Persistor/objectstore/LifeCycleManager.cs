@@ -51,7 +51,6 @@ namespace NakedObjects.Persistor.Objectstore {
         }
     }
 
-
     internal class ObjectPersistor : IObjectPersistor {
         private static readonly ILog Log;
         private readonly INakedObjectManager manager;
@@ -265,9 +264,12 @@ namespace NakedObjects.Persistor.Objectstore {
             this.identityMap = identityMap;
             this.oidGenerator = oidGenerator;
             this.nakedObjectFactory = nakedObjectFactory;
+            this.OidGenerator = oidGenerator;
         }
 
         #region INakedObjectManager Members
+
+        public IOidGenerator OidGenerator { get; private set; }
 
         public void RemoveAdapter(INakedObject objectToDispose) {
             Log.DebugFormat("RemoveAdapter nakedObject: {0}", objectToDispose);
@@ -344,7 +346,22 @@ namespace NakedObjects.Persistor.Objectstore {
             return nakedObjectFactory.CreateAdapter(domainObject, transientOid);
         }
 
+        public List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects) {
+            return (from object domainObject in domainObjects
+                select CreateAdapter(domainObject, null, null)).ToList();
+        }
+
+        public INakedObject GetServiceAdapter(object service) {
+            IOid oid = GetOidForService(ServiceUtils.GetId(service), service.GetType().FullName);
+            return AdapterForService(oid, service);
+        }
+
         #endregion
+
+        public IOid GetOidForService(string name, string typeName) {
+            Log.DebugFormat("GetOidForService name: {0}", name);
+            return OidGenerator.CreateOid(typeName, new object[] {0});
+        }
 
         public INakedObject GetKnownAdapter(IOid oid) {
             if (identityMap.IsIdentityKnown(oid)) {
@@ -429,8 +446,6 @@ namespace NakedObjects.Persistor.Objectstore {
             return adapter;
         }
 
-        // TODO add to interface
-
         public INakedObject CreateInstanceAdapter(object obj) {
             INakedObject adapter = CreateAdapterForNewObject(obj);
             NewTransientsResolvedState(adapter);
@@ -442,25 +457,100 @@ namespace NakedObjects.Persistor.Objectstore {
             adapter.ResolveState.Handle(Events.InitializePersistentEvent);
             return adapter;
         }
+
+        private INakedObject AdapterForService(IOid oid, object serv) {
+            // do not use PersistorUtils here we want to avoid calling into NakedObjectsContext to avoid a stack overflow ! 
+            INakedObject adapter = CreateAdapter(serv, oid, null);
+            if (adapter.ResolveState.IsResolvable()) {
+                adapter.ResolveState.Handle(Events.StartResolvingEvent);
+                adapter.ResolveState.Handle(Events.EndResolvingEvent);
+            }
+            return adapter;
+        }
     }
 
+    internal class ServicesManager : IServicesManager {
+        private static readonly ILog Log;
+        private readonly IContainerInjector injector;
+        private readonly INakedObjectManager manager;
+        private readonly List<ServiceWrapper> services = new List<ServiceWrapper>();
+        private readonly ISession session;
+        private bool servicesInit;
+
+        static ServicesManager() {
+            Log = LogManager.GetLogger(typeof (ServicesManager));
+        }
+
+        public ServicesManager(IContainerInjector injector, INakedObjectManager manager, ServicesConfiguration servicesConfig, ISession session) {
+            this.injector = injector;
+            this.manager = manager;
+            this.session = session;
+
+            AddServices(servicesConfig.Services);
+        }
+
+        protected virtual List<ServiceWrapper> Services {
+            get {
+                if (!servicesInit) {
+                    services.ForEach(sw => injector.InitDomainObject(sw.Service));
+                    servicesInit = true;
+                }
+
+                return services;
+            }
+        }
+
+        #region IServicesManager Members
+
+        public virtual ServiceTypes GetServiceType(INakedObjectSpecification spec) {
+            return Services.Where(sw => manager.GetServiceAdapter(sw.Service).Specification == spec).Select(sw => sw.ServiceType).FirstOrDefault();
+        }
+
+        public virtual INakedObject GetService(string id) {
+            Log.DebugFormat("GetService: {0}", id);
+            return (Services.Where(sw => id.Equals(ServiceUtils.GetId(sw.Service))).Select(sw => manager.GetServiceAdapter(sw.Service))).FirstOrDefault();
+        }
+
+        public virtual INakedObject[] GetServices() {
+            Log.Debug("GetServices");
+            return Services.Select(sw => manager.GetServiceAdapter(sw.Service)).ToArray();
+        }
+
+        public virtual INakedObject[] GetServicesWithVisibleActions(ServiceTypes serviceType, ILifecycleManager persistor) {
+            Log.DebugFormat("GetServicesWithVisibleActions of: {0}", serviceType);
+            return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
+                Select(sw => manager.GetServiceAdapter(sw.Service)).
+                Where(no => no.Specification.GetObjectActions().Any(a => a.IsVisible(session, no, persistor))).ToArray();
+        }
+
+        public virtual INakedObject[] GetServices(ServiceTypes serviceType) {
+            Log.DebugFormat("GetServices of: {0}", serviceType);
+            return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
+                Select(sw => manager.GetServiceAdapter(sw.Service)).ToArray();
+        }
+
+        public virtual INakedObject[] ServiceAdapters {
+            get { return Services.Select(x => manager.CreateAdapter(x.Service, null, null)).ToArray(); }
+        }
+
+        #endregion
+
+        public void AddServices(IEnumerable<ServiceWrapper> ss) {
+            Log.DebugFormat("AddServices count: {0}", ss.Count());
+            services.AddRange(ss);
+        }
+    }
 
     public class LifeCycleManager : ILifecycleManager {
         private static readonly ILog Log;
-        //private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
-        //private readonly IIdentityMap identityMap;
         private readonly IContainerInjector injector;
-        private readonly NakedObjectManager manager;
+        private readonly INakedObjectManager manager;
         private readonly IObjectPersistor objectPersistor;
-
         private readonly IPersistAlgorithm persistAlgorithm;
         private readonly INakedObjectReflector reflector;
-        private readonly List<ServiceWrapper> services = new List<ServiceWrapper>();
+        private readonly IServicesManager servicesManager;
         private readonly ISession session;
         private readonly INakedObjectTransactionManager transactionManager;
-        private readonly IUpdateNotifier updateNotifier;
-        private bool servicesInit;
-
 
         static LifeCycleManager() {
             Log = LogManager.GetLogger(typeof (LifeCycleManager));
@@ -480,14 +570,13 @@ namespace NakedObjects.Persistor.Objectstore {
 
             manager = new NakedObjectManager(reflector, session, identityMap, oidGenerator, nakedObjectFactory);
 
+            servicesManager = new ServicesManager(injector, manager, servicesConfig, session);
+
             this.session = session;
             this.reflector = reflector;
-            this.updateNotifier = updateNotifier;
-
 
             this.persistAlgorithm = persistAlgorithm;
-            OidGenerator = oidGenerator;
-            //this.identityMap = identityMap;
+
             this.injector = injector;
 
             nakedObjectFactory.Initialize(reflector, session, this);
@@ -497,30 +586,19 @@ namespace NakedObjects.Persistor.Objectstore {
 
             Log.DebugFormat("Creating {0}", this);
 
-            AddServices(servicesConfig.Services);
+
             this.injector.ServiceTypes = servicesConfig.Services.Select(sw => sw.Service.GetType()).ToArray();
-        }
-
-        protected virtual List<ServiceWrapper> Services {
-            get {
-                if (!servicesInit) {
-                    services.ForEach(sw => injector.InitDomainObject(sw.Service));
-                    servicesInit = true;
-                }
-
-                return services;
-            }
         }
 
         public string DebugTitle {
             get { return "Object Store Persistor"; }
         }
 
-        // property Injected dependencies as temp workarounds while refactoring 
-
         #region ILifecycleManager Members
 
-        public IOidGenerator OidGenerator { get; private set; }
+        public IOidGenerator OidGenerator {
+            get { return manager.OidGenerator; }
+        }
 
         /// <summary>
         ///     Factory (for transient instance)
@@ -531,21 +609,15 @@ namespace NakedObjects.Persistor.Objectstore {
                 throw new TransientReferenceException(Resources.NakedObjects.NoTransientInline);
             }
             object obj = CreateObject(specification);
-
             var adapter = manager.CreateInstanceAdapter(obj);
-
             InitializeNewObject(adapter);
             return adapter;
         }
 
-
         public INakedObject CreateViewModel(INakedObjectSpecification specification) {
             Log.DebugFormat("CreateViewModel of: {0}", specification);
-
             object viewModel = CreateObject(specification);
-
             var adapter = manager.CreateViewModelAdapter(specification, viewModel);
-
             InitializeNewObject(adapter);
             return adapter;
         }
@@ -554,17 +626,14 @@ namespace NakedObjects.Persistor.Objectstore {
         public virtual INakedObject RecreateInstance(IOid oid, INakedObjectSpecification specification) {
             Log.DebugFormat("RecreateInstance oid: {0} hint: {1}", oid, specification);
             INakedObject adapter = manager.GetAdapterFor(oid);
-
             if (adapter != null) {
                 if (adapter.Specification != specification) {
                     throw new AdapterException(string.Format("Mapped adapter is for a different type of object: {0}; {1}", specification.FullName, adapter));
                 }
                 return adapter;
             }
-
             Log.DebugFormat("Recreating instance for {0}", specification);
             object obj = CreateObject(specification);
-
             return manager.AdapterForExistingObject(obj, oid);
         }
 
@@ -605,43 +674,34 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public virtual ServiceTypes GetServiceType(INakedObjectSpecification spec) {
-            return Services.Where(sw => GetServiceAdapter(sw.Service).Specification == spec).Select(sw => sw.ServiceType).FirstOrDefault();
+            return servicesManager.GetServiceType(spec);
         }
 
         public virtual INakedObject GetService(string id) {
-            Log.DebugFormat("GetService: {0}", id);
-            return (Services.Where(sw => id.Equals(ServiceUtils.GetId(sw.Service))).Select(sw => GetServiceAdapter(sw.Service))).FirstOrDefault();
+            return servicesManager.GetService(id);
         }
 
         // TODO REVIEW why does this get called multiple times when starting up
         public virtual INakedObject[] GetServices() {
-            Log.Debug("GetServices");
-            return Services.Select(sw => GetServiceAdapter(sw.Service)).ToArray();
+            return servicesManager.GetServices();
         }
 
-        public virtual INakedObject[] GetServicesWithVisibleActions(ServiceTypes serviceType) {
-            Log.DebugFormat("GetServicesWithVisibleActions of: {0}", serviceType);
-            return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
-                Select(sw => GetServiceAdapter(sw.Service)).
-                Where(no => no.Specification.GetObjectActions().Any(a => a.IsVisible(session, no, this))).ToArray();
+        public virtual INakedObject[] GetServicesWithVisibleActions(ServiceTypes serviceType, ILifecycleManager persistor) {
+            return servicesManager.GetServicesWithVisibleActions(serviceType, this);
         }
 
         public virtual INakedObject[] GetServices(ServiceTypes serviceType) {
-            Log.DebugFormat("GetServices of: {0}", serviceType);
-            return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
-                Select(sw => GetServiceAdapter(sw.Service)).ToArray();
+            return servicesManager.GetServices(serviceType);
         }
 
         public virtual INakedObject[] ServiceAdapters {
-            get { return Services.Select(x => manager.CreateAdapter(x.Service, null, null)).ToArray(); }
+            get { return servicesManager.ServiceAdapters; }
         }
 
         public INakedObject LoadObject(IOid oid, INakedObjectSpecification specification) {
             Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, specification);
-
             Assert.AssertNotNull("needs an OID", oid);
             Assert.AssertNotNull("needs a specification", specification);
-
             return manager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, specification);
         }
 
@@ -773,11 +833,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects) {
-            var adaptedObjects = new List<INakedObject>();
-            foreach (object domainObject in domainObjects) {
-                adaptedObjects.Add(manager.CreateAdapter(domainObject, null, null));
-            }
-            return adaptedObjects;
+            return manager.GetCollectionOfAdaptedObjects(domainObjects);
         }
 
         public void Abort(ILifecycleManager objectManager, IFacetHolder holder) {
@@ -806,13 +862,16 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public void PopulateViewModelKeys(INakedObject nakedObject) {
-            var vmoid = (ViewModelOid) nakedObject.Oid;
+            var vmoid = nakedObject.Oid as ViewModelOid;
+
+            if (vmoid == null) {
+                throw new UnknownTypeException(string.Format("Expect ViewModelOid got {0}", nakedObject.Oid == null ? "null" : nakedObject.Oid.GetType().ToString()));
+            }
 
             if (!vmoid.IsFinal) {
                 vmoid.UpdateKeys(nakedObject.Specification.GetFacet<IViewModelFacet>().Derive(nakedObject), true);
             }
         }
-
 
         public virtual void AddPersistedObject(INakedObject nakedObject) {
             objectPersistor.AddPersistedObject(nakedObject);
@@ -826,57 +885,46 @@ namespace NakedObjects.Persistor.Objectstore {
             manager.UpdateViewModel(adapter, keys);
         }
 
-        #endregion
-
-        public void AddServices(IEnumerable<ServiceWrapper> services) {
-            Log.DebugFormat("AddServices count: {0}", services.Count());
-            this.services.AddRange(services);
+        public INakedObject GetServiceAdapter(object service) {
+            return manager.GetServiceAdapter(service);
         }
 
-        public virtual void InitDomainObject(object obj) {
+        public INakedObject GetKnownAdapter(IOid oid) {
+            return manager.GetKnownAdapter(oid);
+        }
+
+        public INakedObject CreateViewModelAdapter(INakedObjectSpecification specification, object viewModel) {
+            return manager.CreateViewModelAdapter(specification, viewModel);
+        }
+
+        public INakedObject CreateInstanceAdapter(object obj) {
+            return manager.CreateInstanceAdapter(obj);
+        }
+
+        public INakedObject AdapterForExistingObject(object domainObject, IOid oid) {
+            return manager.AdapterForExistingObject(domainObject, oid);
+        }
+
+        #endregion
+
+        private void InitDomainObject(object obj) {
             Log.DebugFormat("InitDomainObject: {0}", obj);
             injector.InitDomainObject(obj);
         }
 
-        public void InitInlineObject(object root, object inlineObject) {
+        private void InitInlineObject(object root, object inlineObject) {
             Log.DebugFormat("InitInlineObject root: {0} inlineObject: {1}", root, inlineObject);
             injector.InitInlineObject(root, inlineObject);
         }
 
-
         private INakedObject RecreateViewModel(ViewModelOid oid) {
             string[] keys = oid.Keys;
             INakedObjectSpecification spec = oid.Specification;
-
             INakedObject vm = CreateViewModel(spec);
             vm.Specification.GetFacet<IViewModelFacet>().Populate(keys, vm);
             UpdateViewModel(vm, keys);
             return vm;
         }
-
-        private INakedObject GetServiceAdapter(object service) {
-            IOid oid = GetOidForService(ServiceUtils.GetId(service), service.GetType().FullName);
-            return AdapterForService(oid, service);
-        }
-
-        //private void InitServices() {
-        //    reflector.InstallServiceSpecifications(Services.Select(s => s.Service.GetType()).ToArray());
-        //    reflector.PopulateContributedActions(GetServices(ServiceTypes.Menu | ServiceTypes.Contributor));
-        //    foreach (ServiceWrapper service in Services) {
-        //        InitDomainObject(service.Service);
-        //    }
-        //}
-
-        private INakedObject AdapterForService(IOid oid, object serv) {
-            // do not use PersistorUtils here we want to avoid calling into NakedObjectsContext to avoid a stack overflow ! 
-            INakedObject adapter = manager.CreateAdapter(serv, oid, null);
-            if (adapter.ResolveState.IsResolvable()) {
-                adapter.ResolveState.Handle(Events.StartResolvingEvent);
-                adapter.ResolveState.Handle(Events.EndResolvingEvent);
-            }
-            return adapter;
-        }
-
 
         private void CreateInlineObjects(INakedObject parentObject, object rootObject) {
             foreach (IOneToOneAssociation assoc in parentObject.Specification.Properties.Where(p => p.IsInline)) {
@@ -903,27 +951,6 @@ namespace NakedObjects.Persistor.Objectstore {
             Log.DebugFormat("IsPersistent nakedObject: {0}", nakedObject);
             return nakedObject.ResolveState.IsPersistent();
         }
-
-        protected IOid GetOidForService(string name, string typeName) {
-            Log.DebugFormat("GetOidForService name: {0}", name);
-            return OidGenerator.CreateOid(typeName, new object[] {0});
-        }
-
-        //protected void RegisterService(string name, IOid oid) {
-        //    Log.DebugFormat("RegisterService name: {0} oid : {1}", name, oid);
-        //    objectStore.RegisterService(name, oid);
-        //}
-
-        //public override string ToString() {
-        //    var asString = new AsString(this);
-        //    if (objectStore != null) {
-        //        asString.Append("objectStore", objectStore.Name);
-        //    }
-        //    if (persistAlgorithm != null) {
-        //        asString.Append("persistAlgorithm", persistAlgorithm.Name);
-        //    }
-        //    return asString.ToString();
-        //}
     }
 
     // Copyright (c) Naked Objects Group Ltd.

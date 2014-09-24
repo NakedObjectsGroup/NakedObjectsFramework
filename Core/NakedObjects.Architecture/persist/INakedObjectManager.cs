@@ -5,13 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections;
+using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Persist {
     /// <summary>
     ///     Broadly speaking, keeps track of the oid/adapter/domain object tuple
     /// </summary>
     public interface INakedObjectManager {
+        IOidGenerator OidGenerator { get; }
+
         void RemoveAdapter(INakedObject objectToDispose);
 
         INakedObject GetAdapterFor(object obj);
@@ -29,6 +34,13 @@ namespace NakedObjects.Architecture.Persist {
 
         void MadePersistent(INakedObject nakedObject);
         void UpdateViewModel(INakedObject adapter, string[] keys);
+        List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);
+        
+        INakedObject GetServiceAdapter(object service);
+        INakedObject GetKnownAdapter(IOid oid);
+        INakedObject CreateViewModelAdapter(INakedObjectSpecification specification, object viewModel);
+        INakedObject CreateInstanceAdapter(object obj);
+        INakedObject AdapterForExistingObject(object domainObject, IOid oid);
     }
 
 
