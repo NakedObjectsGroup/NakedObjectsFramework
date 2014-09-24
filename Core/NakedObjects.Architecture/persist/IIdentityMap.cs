@@ -23,22 +23,14 @@ namespace NakedObjects.Architecture.Persist {
     ///     persistent storage.
     /// </para>
     public interface IIdentityMap : IEnumerable<INakedObject> {
-        /// <summary>
-        ///     Indicates to the component that it is to initialise itself as it will soon be receiving requests
-        /// </summary>
-        void Init();
+       
 
         /// <summary>
         ///     Resets the loader to a known state
         /// </summary>
         void Reset();
 
-        /// <summary>
-        ///     Indicates to the component that no more requests will be made of it and it can safely release any
-        ///     services it has hold of.
-        /// </summary>
-        void Shutdown();
-
+      
         void AddAdapter(INakedObject nakedObject);
 
         /// <summary>

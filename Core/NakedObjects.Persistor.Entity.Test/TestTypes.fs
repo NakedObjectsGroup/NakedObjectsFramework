@@ -27,7 +27,7 @@ type MockReflector() =
     interface INakedObjectReflector with 
         member x.AllSpecifications with get() = [||]
         member x.IgnoreCase with get() = false
-        member x.Shutdown() = ()
+        //member x.Shutdown() = ()
         member x.LoadSpecification(typ : Type) : INakedObjectSpecification = null
         member x.LoadSpecification(str : string) : INakedObjectSpecification = null
         member x.InstallServiceSpecifications(types : Type[]) = ()

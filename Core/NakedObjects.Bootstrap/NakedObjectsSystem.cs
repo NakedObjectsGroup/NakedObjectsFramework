@@ -94,7 +94,7 @@ namespace NakedObjects.Boot {
                 host = null;
             }
 
-            reflector.Shutdown();
+           // reflector.Shutdown();
         }
 
         #endregion

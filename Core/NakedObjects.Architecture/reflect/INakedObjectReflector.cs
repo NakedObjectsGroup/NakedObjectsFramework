@@ -29,8 +29,6 @@ namespace NakedObjects.Architecture.Reflect {
 
         void PopulateContributedActions(Type[] services);
 
-        void Shutdown();
-
         void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore);
     }
 

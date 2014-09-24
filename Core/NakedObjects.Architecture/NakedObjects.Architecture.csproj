@@ -411,7 +411,6 @@
     <Compile Include="capabilities\ValueSemanticsProviderImpl.cs" />
     <Compile Include="noa\NakedObjectSystemException.cs" />
     <Compile Include="noa\NakedObjectDomainException.cs" />
-    <Compile Include="noa\IRequiresSetup.cs" />
     <Compile Include="persist\ConcurrencyException.cs" />
     <Compile Include="persist\DataUpdateException.cs" />
     <Compile Include="persist\IExecutionContext.cs" />

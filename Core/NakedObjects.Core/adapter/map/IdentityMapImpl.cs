@@ -39,13 +39,7 @@ namespace NakedObjects.Core.Adapter.Map {
             return pocoAdapterMap.GetEnumerator();
         }
 
-        public virtual void Init() {
-        }
-
-        public virtual void Shutdown() {
-            identityAdapterMap.Shutdown();
-            pocoAdapterMap.Shutdown();
-        }
+     
 
         public virtual void Reset() {
             identityAdapterMap.Reset();

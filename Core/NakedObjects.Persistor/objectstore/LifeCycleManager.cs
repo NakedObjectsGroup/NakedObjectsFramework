@@ -39,10 +39,10 @@ namespace NakedObjects.Persistor.Objectstore {
     internal class ObjectPersistor : IObjectPersistor {
         private static readonly ILog Log;
         private readonly INakedObjectManager manager;
-        private readonly IUpdateNotifier updateNotifier;
         private readonly INakedObjectStore objectStore;
         private readonly ISession session;
         private readonly INakedObjectTransactionManager transactionManager;
+        private readonly IUpdateNotifier updateNotifier;
 
         static ObjectPersistor() {
             Log = LogManager.GetLogger(typeof (ObjectPersistor));
@@ -171,7 +171,7 @@ namespace NakedObjects.Persistor.Objectstore {
         public void ObjectChanged(INakedObject nakedObject) {
             Log.DebugFormat("ObjectChanged nakedObject: {0}", nakedObject);
             if (nakedObject.ResolveState.RespondToChangesInPersistentObjects()) {
-                if (nakedObject.Specification.ContainsFacet(typeof(IComplexTypeFacet))) {
+                if (nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
                     nakedObject.Updating(session);
                     nakedObject.Updated(session);
                     updateNotifier.AddChangedObject(nakedObject);
@@ -207,7 +207,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public object CreateObject(INakedObjectSpecification specification) {
             Log.DebugFormat("CreateObject: " + specification);
-          
+
             Type type = TypeUtils.GetType(specification.FullName);
             return objectStore.CreateInstance(type);
         }
@@ -237,7 +237,7 @@ namespace NakedObjects.Persistor.Objectstore {
         private readonly IIdentityMap identityMap;
         private readonly IContainerInjector injector;
         private readonly IObjectPersistor objectPersistor;
-        //private readonly INakedObjectStore objectStore;
+
         private readonly IPersistAlgorithm persistAlgorithm;
         private readonly INakedObjectReflector reflector;
         private readonly List<ServiceWrapper> services = new List<ServiceWrapper>();
@@ -265,7 +265,7 @@ namespace NakedObjects.Persistor.Objectstore {
             this.reflector = reflector;
             this.updateNotifier = updateNotifier;
 
-            //this.objectStore = objectStore;
+
             this.persistAlgorithm = persistAlgorithm;
             OidGenerator = oidGenerator;
             this.identityMap = identityMap;
@@ -440,33 +440,6 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public virtual INakedObject[] ServiceAdapters {
             get { return Services.Select(x => CreateAdapter(x.Service, null, null)).ToArray(); }
-        }
-
-        //public bool IsInitialized {
-        //    get { return objectStore.IsInitialized; }
-        //    set { objectStore.IsInitialized = value; }
-        //}
-
-        /// <summary>
-        ///     Initialize the object store so that calls to this object store access persisted objects and persist
-        ///     changes to the object that are saved.
-        /// </summary>
-        public void Init() {
-            Log.Debug("Init");
-
-            transactionManager.Init();
-            persistAlgorithm.Init();
-            identityMap.Init();
-            OidGenerator.Init();
-            //InitServices();
-        }
-
-        public void Shutdown() {
-            Log.Debug("Shutdown");
-            identityMap.Shutdown();
-            OidGenerator.Shutdown();
-            transactionManager.Shutdown();
-            persistAlgorithm.Shutdown();
         }
 
 

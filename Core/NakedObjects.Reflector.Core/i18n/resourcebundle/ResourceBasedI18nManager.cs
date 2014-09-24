@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -11,7 +14,6 @@ using System.Threading;
 using Common.Logging;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
 using NakedObjects.Objects;
 using NakedObjects.Resources;
 
@@ -28,9 +30,9 @@ namespace NakedObjects.Reflector.I18n.Resourcebundle {
         //private ResXResourceWriter resourceWriter;
 
         private readonly IDictionary<string, string> keyCache = new Dictionary<string, string>();
-        private readonly string resourceFile;
         private readonly IMessageBroker messageBroker;
-        private IDictionary<string, string> resources;
+        private readonly string resourceFile;
+        private readonly IDictionary<string, string> resources;
 
         static ResourceBasedI18nManager() {
             Log = LogManager.GetLogger(typeof (ResourceBasedI18nManager));
@@ -40,11 +42,6 @@ namespace NakedObjects.Reflector.I18n.Resourcebundle {
             this.resourceFile = resourceFile;
             this.messageBroker = messageBroker;
             Log.Info(this);
-        }
-
-        #region II18nManager Members
-
-        public virtual void Init() {
             if (resourceFile != null && resources == null) {
                 try {
                     Log.Info("Creating localization resource file: " + resourceFile);
@@ -59,14 +56,7 @@ namespace NakedObjects.Reflector.I18n.Resourcebundle {
             }
         }
 
-        public virtual void Shutdown() {
-            if (resources != null) {
-                using (var resourceWriter = new ResXResourceWriter(resourceFile)) {
-                    resources.ForEach(kvp => resourceWriter.AddResource(kvp.Key, kvp.Value));
-                }
-            }
-        }
-
+        #region II18nManager Members
 
         public virtual string GetName(IIdentifier identifier, string original) {
             return GetText(identifier, Name, original);
@@ -151,10 +141,14 @@ namespace NakedObjects.Reflector.I18n.Resourcebundle {
 
         ~ResourceBasedI18nManager() {
             try {
-                Shutdown();
+                if (resources != null) {
+                    using (var resourceWriter = new ResXResourceWriter(resourceFile)) {
+                        resources.ForEach(kvp => resourceWriter.AddResource(kvp.Key, kvp.Value));
+                    }
+                }
             }
             catch (Exception) {
-/*do nothing*/
+                //do nothing
             }
         }
     }

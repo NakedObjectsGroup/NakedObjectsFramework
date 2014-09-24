@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facets;
 
 namespace NakedObjects.Architecture.Persist {
-    public interface INakedObjectTransactionManager : IRequiresSetup {
+    public interface INakedObjectTransactionManager  {
         void StartTransaction();
 
         bool FlushTransaction();

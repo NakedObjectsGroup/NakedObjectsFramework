@@ -43,9 +43,9 @@ namespace NakedObjects.Core.Persist {
 
         #region IOidGenerator Members
 
-        public virtual void Init() {}
+        
 
-        public virtual void Shutdown() {}
+      
 
         public virtual void ConvertPersistentToTransientOid(IOid oid) {
             throw new UnexpectedCallException();

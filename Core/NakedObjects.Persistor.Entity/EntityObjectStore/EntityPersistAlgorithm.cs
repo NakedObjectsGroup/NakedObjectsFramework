@@ -16,7 +16,7 @@ namespace NakedObjects.EntityObjectStore {
 
         #region IPersistAlgorithm Members
 
-        public void Init() {}
+       
 
         public void MakePersistent(INakedObject nakedObject, ILifecycleManager persistor, ISession session) {
             if (nakedObject.Specification.IsCollection) {
@@ -31,7 +31,7 @@ namespace NakedObjects.EntityObjectStore {
             get { return "Entity Framework Persist Algorithm"; }
         }
 
-        public void Shutdown() {}
+      
 
         #endregion
 

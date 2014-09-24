@@ -36,7 +36,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             Assert.AssertNotNull(facetFactorySet);
             Assert.AssertNotNull(facetDecoratorSet);
             facetDecorator = facetDecoratorSet;
-            facetDecorator.Init();
+           
             facetFactorySet.Init(this);
             introspectionControlParameters = new IntrospectionControlParameters(facetFactorySet, classStrategy);
             IgnoreCase = false;
@@ -56,12 +56,6 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         public virtual INakedObjectSpecification[] AllSpecifications {
             get { return cache.AllSpecifications(); }
-        }
-
-        public virtual void Shutdown() {
-            Log.InfoFormat("shutting down {0}", this);
-            cache.Clear();
-            facetDecorator.Shutdown();
         }
 
         public virtual INakedObjectSpecification LoadSpecification(Type type) {

@@ -68,13 +68,6 @@ namespace NakedObjects.Core.Adapter.Map {
             }
         }
 
-        public virtual void Shutdown() {
-            Log.Debug("Shutdown");
-            lock (adapters) {
-                adapters.Clear();
-            }
-        }
-
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }

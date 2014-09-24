@@ -2,14 +2,13 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Facets;
 
 namespace NakedObjects.Reflector.I18n {
     /// <summary>
     ///     Authorizes the user in the current session view and use members of an object
     /// </summary>
-    public interface II18nManager : IRequiresSetup {
+    public interface II18nManager  {
         /// <summary>
         ///     Get the localized description for the specified identified action/property. Returns null if no
         ///     description available.

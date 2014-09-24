@@ -34,8 +34,6 @@ namespace NakedObjects.Core.Adapter.Map {
         ///     Clear out all mappings
         /// </summary>
         void Reset();
-
-        void Shutdown();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

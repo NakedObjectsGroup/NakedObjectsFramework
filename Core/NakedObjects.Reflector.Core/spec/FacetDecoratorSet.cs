@@ -4,40 +4,15 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Facets;
 
 namespace NakedObjects.Reflector.Spec {
-    public class FacetDecoratorSet : IRequiresSetup {
+    public class FacetDecoratorSet  {
         private readonly IDictionary<Type, IList<IFacetDecorator>> facetDecorators = new Dictionary<Type, IList<IFacetDecorator>>();
 
         public virtual bool IsEmpty {
             get { return (facetDecorators.Count == 0); }
         }
-
-        #region IRequiresSetup Members
-
-        public virtual void Init() {
-            foreach (var decoratorlist in facetDecorators.Values) {
-                foreach (IFacetDecorator decorator in decoratorlist) {
-                    if (decorator is IRequiresSetup) {
-                        ((IRequiresSetup) decorator).Init();
-                    }
-                }
-            }
-        }
-
-        public virtual void Shutdown() {
-            foreach (var decoratorlist in facetDecorators.Values) {
-                foreach (IFacetDecorator decorator in decoratorlist) {
-                    if (decorator is IRequiresSetup) {
-                        ((IRequiresSetup) decorator).Shutdown();
-                    }
-                }
-            }
-        }
-
-        #endregion
 
         public virtual void Add(IFacetDecorator decorator) {
             foreach (Type type in decorator.ForFacetTypes) {

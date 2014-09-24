@@ -22,7 +22,7 @@ namespace NakedObjects.Persistor {
 
         #region IPersistAlgorithm Members
 
-        public virtual void Init() {}
+       
 
         public virtual void MakePersistent(INakedObject nakedObject, ILifecycleManager persistor, ISession session) {
             if (nakedObject.Specification.IsCollection) {
@@ -50,7 +50,7 @@ namespace NakedObjects.Persistor {
             get { return "Simple Bottom Up Persistence Walker"; }
         }
 
-        public virtual void Shutdown() {}
+        
 
         #endregion
 

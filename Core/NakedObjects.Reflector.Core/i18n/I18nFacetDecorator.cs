@@ -3,7 +3,6 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
-using NakedObjects.Architecture;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Naming.DescribedAs;
 using NakedObjects.Architecture.Facets.Naming.Named;
@@ -11,7 +10,7 @@ using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.I18n {
-    public class I18nFacetDecorator : IFacetDecorator, IRequiresSetup {
+    public class I18nFacetDecorator : IFacetDecorator {
         private readonly II18nManager i18nManager;
         private readonly bool staticFacets;
 
@@ -42,17 +41,7 @@ namespace NakedObjects.Reflector.I18n {
 
         #endregion
 
-        #region IRequiresSetup Members
-
-        public void Init() {
-            i18nManager.Init();
-        }
-
-        public void Shutdown() {
-            i18nManager.Shutdown();
-        }
-
-        #endregion
+       
 
     
         private IFacet GetDescriptionFacet(IFacetHolder holder, IDescribedAsFacet facet, IIdentifier identifier) {

@@ -36,23 +36,6 @@ namespace NakedObjects.Persistor.Objectstore {
 
         #region INakedObjectTransactionManager Members
 
-        public virtual void Init() {
-            // does nothing
-        }
-
-        public virtual void Shutdown() {
-            if (transaction == null) {
-                return;
-            }
-            try {
-                AbortTransaction();
-            }
-            catch (Exception e2) {
-                Log.Error("failure during abort", e2);
-            }
-        }
-
-
         public virtual void StartTransaction() {
             if (transaction == null) {
                 transaction = new ObjectStoreTransaction(objectStore);

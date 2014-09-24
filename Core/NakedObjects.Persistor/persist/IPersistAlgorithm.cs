@@ -8,7 +8,7 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Persistor {
-    public interface IPersistAlgorithm : IRequiresSetup {
+    public interface IPersistAlgorithm  {
         string Name { get; }
         void MakePersistent(INakedObject nakedObject, ILifecycleManager adders, ISession session);
     }
