@@ -22,11 +22,13 @@ namespace NakedObjects.Architecture.Persist {
 
         void ReplacePoco(INakedObject nakedObject, object newDomainObject);
 
-        INakedObject GetViewModel(IOid oid);
-
+     
         INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj);
 
         INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid);
+
+        void MadePersistent(INakedObject nakedObject);
+        void UpdateViewModel(INakedObject adapter, string[] keys);
     }
 
 

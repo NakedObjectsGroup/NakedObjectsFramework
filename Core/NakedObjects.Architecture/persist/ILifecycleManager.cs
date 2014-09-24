@@ -12,31 +12,13 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Persist {
     public interface ILifecycleManager : INakedObjectTransactionManager, INakedObjectManager, IObjectPersistor, IServicesManager {
-        /// <summary>
-        ///     Determine if the object store has been initialized with its set of start up objects.
-        /// </summary>
-        /// <para>
-        ///     This method is called only once after the <see cref="IRequiresSetup.Init" /> has been called.
-        ///     If this flag returns <c>false</c> the framework will run the fixtures to initialise the persistor.
-        /// </para>
-        //bool IsInitialized { get; set; }
-
+        IOidGenerator OidGenerator { get; }
 
         INakedObject CreateInstance(INakedObjectSpecification specification);
 
         INakedObject CreateViewModel(INakedObjectSpecification specification);
 
-        INakedObject RecreateInstance(IOid oid, INakedObjectSpecification specification);  
-       
-        IOidGenerator OidGenerator { get; }
-
-        /// <summary>
-        ///     Primarily for testing
-        /// </summary>
-        void Reset();
-
-        
-
+        INakedObject RecreateInstance(IOid oid, INakedObjectSpecification specification);
 
         /// <summary>
         ///     Makes a naked object persistent. The specified object should be stored away via this object store's
@@ -54,17 +36,13 @@ namespace NakedObjects.Architecture.Persist {
         /// </para>
         void MakePersistent(INakedObject nakedObject);
 
-        void MadePersistent(INakedObject nakedObject);
-
-        
-      
-
         List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);
+
         IOid RestoreGenericOid(string[] encodedData);
+
         void PopulateViewModelKeys(INakedObject nakedObject);
 
-       
-
+        INakedObject GetViewModel(IOid oid);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -35,11 +35,10 @@ using NakedObjects.Persistor.Transaction;
 using NakedObjects.Util;
 
 namespace NakedObjects.Persistor.Objectstore {
-
     internal class NakedObjectFactory {
+        private ILifecycleManager persistor;
         private INakedObjectReflector reflector;
         private ISession session;
-        private ILifecycleManager persistor;
 
         public void Initialize(INakedObjectReflector reflector, ISession session, ILifecycleManager persistor) {
             this.reflector = reflector;
@@ -248,17 +247,16 @@ namespace NakedObjects.Persistor.Objectstore {
     }
 
     internal class NakedObjectManager : INakedObjectManager {
+        private static readonly ILog Log;
+        private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
+        private readonly IIdentityMap identityMap;
+        private readonly NakedObjectFactory nakedObjectFactory;
+        private readonly IOidGenerator oidGenerator;
         private readonly INakedObjectReflector reflector;
         private readonly ISession session;
-        private readonly IIdentityMap identityMap;
-        private readonly IOidGenerator oidGenerator;
-        private readonly NakedObjectFactory nakedObjectFactory;
-        private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
 
-        private static readonly ILog Log;
-     
         static NakedObjectManager() {
-            Log = LogManager.GetLogger(typeof(NakedObjectManager));
+            Log = LogManager.GetLogger(typeof (NakedObjectManager));
         }
 
         public NakedObjectManager(INakedObjectReflector reflector, ISession session, IIdentityMap identityMap, IOidGenerator oidGenerator, NakedObjectFactory nakedObjectFactory) {
@@ -268,6 +266,8 @@ namespace NakedObjects.Persistor.Objectstore {
             this.oidGenerator = oidGenerator;
             this.nakedObjectFactory = nakedObjectFactory;
         }
+
+        #region INakedObjectManager Members
 
         public void RemoveAdapter(INakedObject objectToDispose) {
             Log.DebugFormat("RemoveAdapter nakedObject: {0}", objectToDispose);
@@ -297,7 +297,7 @@ namespace NakedObjects.Persistor.Objectstore {
             }
             if (oid == null) {
                 INakedObjectSpecification nakedObjectSpecification = reflector.LoadSpecification(domainObject.GetType());
-                if (nakedObjectSpecification.ContainsFacet(typeof(IComplexTypeFacet))) {
+                if (nakedObjectSpecification.ContainsFacet(typeof (IComplexTypeFacet))) {
                     return GetAdapterFor(domainObject);
                 }
                 if (nakedObjectSpecification.HasNoIdentity) {
@@ -309,7 +309,6 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public void ReplacePoco(INakedObject nakedObject, object newDomainObject) {
-          
             Log.DebugFormat("ReplacePoco nakedObject: {0} newDomainOject: {1}", nakedObject, newDomainObject);
             RemoveAdapter(nakedObject);
             identityMap.Replaced(nakedObject.Object);
@@ -317,8 +316,12 @@ namespace NakedObjects.Persistor.Objectstore {
             identityMap.AddAdapter(nakedObject);
         }
 
-        public INakedObject GetViewModel(IOid oid) {
-            throw new NotImplementedException();
+        public virtual void MadePersistent(INakedObject nakedObject) {
+            identityMap.MadePersistent(nakedObject);
+        }
+
+        public virtual void UpdateViewModel(INakedObject adapter, string[] keys) {
+            identityMap.UpdateViewModel(adapter, keys);
         }
 
         public INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj) {
@@ -339,6 +342,15 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid) {
             return nakedObjectFactory.CreateAdapter(domainObject, transientOid);
+        }
+
+        #endregion
+
+        public INakedObject GetKnownAdapter(IOid oid) {
+            if (identityMap.IsIdentityKnown(oid)) {
+                return GetAdapterFor(oid);
+            }
+            return null;
         }
 
         private INakedObject AdapterForNoIdentityObject(object domainObject) {
@@ -379,7 +391,7 @@ namespace NakedObjects.Persistor.Objectstore {
             return nakedObject;
         }
 
-        private INakedObject NewAdapterForViewModel(object domainObject, INakedObjectSpecification spec)  {
+        private INakedObject NewAdapterForViewModel(object domainObject, INakedObjectSpecification spec) {
             if (spec.IsViewModel) {
                 INakedObject adapter = CreateAdapterForViewModel(domainObject, spec);
                 adapter.ResolveState.Handle(Events.InitializePersistentEvent);
@@ -419,13 +431,13 @@ namespace NakedObjects.Persistor.Objectstore {
 
         // TODO add to interface
 
-        public  INakedObject CreateInstanceAdapter(object obj) {
+        public INakedObject CreateInstanceAdapter(object obj) {
             INakedObject adapter = CreateAdapterForNewObject(obj);
             NewTransientsResolvedState(adapter);
             return adapter;
         }
 
-        public  INakedObject CreateViewModelAdapter(INakedObjectSpecification specification, object viewModel) {
+        public INakedObject CreateViewModelAdapter(INakedObjectSpecification specification, object viewModel) {
             INakedObject adapter = CreateAdapterForViewModel(viewModel, specification);
             adapter.ResolveState.Handle(Events.InitializePersistentEvent);
             return adapter;
@@ -435,9 +447,10 @@ namespace NakedObjects.Persistor.Objectstore {
 
     public class LifeCycleManager : ILifecycleManager {
         private static readonly ILog Log;
-        private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
-        private readonly IIdentityMap identityMap;
+        //private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
+        //private readonly IIdentityMap identityMap;
         private readonly IContainerInjector injector;
+        private readonly NakedObjectManager manager;
         private readonly IObjectPersistor objectPersistor;
 
         private readonly IPersistAlgorithm persistAlgorithm;
@@ -447,7 +460,6 @@ namespace NakedObjects.Persistor.Objectstore {
         private readonly INakedObjectTransactionManager transactionManager;
         private readonly IUpdateNotifier updateNotifier;
         private bool servicesInit;
-        private readonly NakedObjectManager manager;
 
 
         static LifeCycleManager() {
@@ -475,7 +487,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
             this.persistAlgorithm = persistAlgorithm;
             OidGenerator = oidGenerator;
-            this.identityMap = identityMap;
+            //this.identityMap = identityMap;
             this.injector = injector;
 
             nakedObjectFactory.Initialize(reflector, session, this);
@@ -526,7 +538,6 @@ namespace NakedObjects.Persistor.Objectstore {
             return adapter;
         }
 
-       
 
         public INakedObject CreateViewModel(INakedObjectSpecification specification) {
             Log.DebugFormat("CreateViewModel of: {0}", specification);
@@ -539,12 +550,11 @@ namespace NakedObjects.Persistor.Objectstore {
             return adapter;
         }
 
-       
 
         public virtual INakedObject RecreateInstance(IOid oid, INakedObjectSpecification specification) {
             Log.DebugFormat("RecreateInstance oid: {0} hint: {1}", oid, specification);
             INakedObject adapter = manager.GetAdapterFor(oid);
-                     
+
             if (adapter != null) {
                 if (adapter.Specification != specification) {
                     throw new AdapterException(string.Format("Mapped adapter is for a different type of object: {0}; {1}", specification.FullName, adapter));
@@ -559,11 +569,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public virtual INakedObject GetViewModel(IOid oid) {
-            if (identityMap.IsIdentityKnown(oid)) {
-                return GetAdapterFor(oid);
-            }
-
-            return RecreateViewModel((ViewModelOid) oid);
+            return manager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid);
         }
 
         public virtual INakedObject GetAdapterFor(object obj) {
@@ -583,7 +589,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public virtual void RemoveAdapter(INakedObject nakedObject) {
-           manager.RemoveAdapter(nakedObject);
+            manager.RemoveAdapter(nakedObject);
         }
 
         public virtual IQueryable<T> Instances<T>() where T : class {
@@ -630,21 +636,13 @@ namespace NakedObjects.Persistor.Objectstore {
             get { return Services.Select(x => manager.CreateAdapter(x.Service, null, null)).ToArray(); }
         }
 
-
-        public void Reset() {
-            Log.Debug("Reset");
-            identityMap.Reset();
-            adapterCache.Reset();
-            GetServices();
-        }
-
         public INakedObject LoadObject(IOid oid, INakedObjectSpecification specification) {
             Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, specification);
 
             Assert.AssertNotNull("needs an OID", oid);
             Assert.AssertNotNull("needs a specification", specification);
 
-            return identityMap.IsIdentityKnown(oid) ? GetAdapterFor(oid) : objectPersistor.LoadObject(oid, specification);
+            return manager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, specification);
         }
 
         public void Reload(INakedObject nakedObject) {
@@ -821,7 +819,11 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public virtual void MadePersistent(INakedObject nakedObject) {
-            identityMap.MadePersistent(nakedObject);
+            manager.MadePersistent(nakedObject);
+        }
+
+        public virtual void UpdateViewModel(INakedObject adapter, string[] keys) {
+            manager.UpdateViewModel(adapter, keys);
         }
 
         #endregion
@@ -852,10 +854,6 @@ namespace NakedObjects.Persistor.Objectstore {
             return vm;
         }
 
-        public virtual void UpdateViewModel(INakedObject adapter, string[] keys) {
-            identityMap.UpdateViewModel(adapter, keys);
-        }
-
         private INakedObject GetServiceAdapter(object service) {
             IOid oid = GetOidForService(ServiceUtils.GetId(service), service.GetType().FullName);
             return AdapterForService(oid, service);
@@ -879,8 +877,6 @@ namespace NakedObjects.Persistor.Objectstore {
             return adapter;
         }
 
-     
-      
 
         private void CreateInlineObjects(INakedObject parentObject, object rootObject) {
             foreach (IOneToOneAssociation assoc in parentObject.Specification.Properties.Where(p => p.IsInline)) {

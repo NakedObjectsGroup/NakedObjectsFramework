@@ -57,7 +57,7 @@ namespace NakedObjects.Persistor.InMemoryTest {
             NakedObjectsFramework.LifecycleManager.Instances<Person>().Select(p => p.Address).ForEach(a => a.ResetEvents());
             NakedObjectsFramework.LifecycleManager.Instances<Product>().ForEach(p => p.ResetEvents());
 
-            NakedObjectsFramework.LifecycleManager.Reset();
+           
 
             tests = new PersistorTestSuite(NakedObjectsFramework);
         }

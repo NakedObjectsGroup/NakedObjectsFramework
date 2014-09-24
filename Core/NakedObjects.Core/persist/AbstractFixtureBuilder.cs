@@ -41,7 +41,6 @@ namespace NakedObjects.Core.Persist {
             PreInstallFixtures(persistor);
             InstallFixtures(persistor, injector, Fixtures);
             PostInstallFixtures(persistor);
-            persistor.Reset();
             fixtures.Clear();
         }
 
