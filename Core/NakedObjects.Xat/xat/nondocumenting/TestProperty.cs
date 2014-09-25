@@ -351,13 +351,13 @@ namespace NakedObjects.Xat {
 
         public ITestProperty AssertIsNotEmpty() {
             AssertIsVisible();
-            Assert.IsFalse(field.IsEmpty(owningObject.NakedObject, persistor), "Expected" + " '" + Name + "' to contain something but it was empty");
+            Assert.IsFalse(field.IsEmpty(owningObject.NakedObject, persistor, persistor), "Expected" + " '" + Name + "' to contain something but it was empty");
             return this;
         }
 
         public ITestProperty AssertIsEmpty() {
             AssertIsVisible();
-            Assert.IsTrue(field.IsEmpty(owningObject.NakedObject, persistor), "Expected" + " '" + Name + "' to be empty");
+            Assert.IsTrue(field.IsEmpty(owningObject.NakedObject, persistor, persistor), "Expected" + " '" + Name + "' to be empty");
             return this;
         }
 
@@ -381,7 +381,7 @@ namespace NakedObjects.Xat {
 
         public ITestProperty AssertIsValidToSave() {
             if (field.IsMandatory && field.IsVisible(session, owningObject.NakedObject, persistor) && field.IsUsable(session, owningObject.NakedObject, persistor).IsAllowed) {
-                Assert.IsFalse(field.IsEmpty(owningObject.NakedObject, persistor), "Cannot save object as mandatory field " + " '" + Name + "' is empty");
+                Assert.IsFalse(field.IsEmpty(owningObject.NakedObject, persistor, persistor), "Cannot save object as mandatory field " + " '" + Name + "' is empty");
                 Assert.IsTrue(field.GetNakedObject(owningObject.NakedObject, persistor).ValidToPersist() == null);
             }
             if (field.IsCollection) {

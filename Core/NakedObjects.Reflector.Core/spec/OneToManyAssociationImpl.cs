@@ -51,11 +51,11 @@ namespace NakedObjects.Reflector.Spec {
             get { return isASet; }
         }
 
-        public override bool IsEmpty(INakedObject inObject, ILifecycleManager persistor) {
+        public override bool IsEmpty(INakedObject inObject, INakedObjectManager manager, IObjectPersistor persistor) {
             return Count(inObject, persistor) == 0;
         }
 
-        public virtual int Count(INakedObject inObject, ILifecycleManager persistor) {
+        public virtual int Count(INakedObject inObject, IObjectPersistor persistor) {
             return persistor.CountField(inObject, Id);
         }
 
@@ -80,7 +80,7 @@ namespace NakedObjects.Reflector.Spec {
 
         #endregion
 
-        public override INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, ILifecycleManager persistor) {
+        public override INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, ILifecycleManager lifecycleManager) {
             return new INakedObject[0];
         }
 
@@ -88,7 +88,7 @@ namespace NakedObjects.Reflector.Spec {
             return new Tuple<string, INakedObjectSpecification>[0];
         }
 
-        public override INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, ILifecycleManager persistor) {
+        public override INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, ILifecycleManager lifecycleManager) {
             return new INakedObject[0];
         }
 

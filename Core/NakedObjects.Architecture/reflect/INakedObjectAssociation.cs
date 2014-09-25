@@ -85,7 +85,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Returns <c>true</c> if this field on the specified object is deemed to be empty, or has no content
         /// </summary>
-        bool IsEmpty(INakedObject target, ILifecycleManager persistor);
+        bool IsEmpty(INakedObject inObject, INakedObjectManager manager, IObjectPersistor persistor);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

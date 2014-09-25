@@ -14,21 +14,30 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Persistor {
     public class DefaultPersistAlgorithm : IPersistAlgorithm {
+        private readonly IObjectPersistor persistor;
+        private readonly INakedObjectManager manager;
+        private readonly IServicesManager services;
         private static readonly ILog Log;
 
         static DefaultPersistAlgorithm() {
             Log = LogManager.GetLogger(typeof (DefaultPersistAlgorithm));
         }
 
+        public DefaultPersistAlgorithm(IObjectPersistor persistor, INakedObjectManager manager, IServicesManager services) {
+            this.persistor = persistor;
+            this.manager = manager;
+            this.services = services;
+        }
+
+
         #region IPersistAlgorithm Members
 
        
-
-        public virtual void MakePersistent(INakedObject nakedObject, ILifecycleManager persistor, ISession session) {
+        public virtual void MakePersistent(INakedObject nakedObject,  ISession session) {
             if (nakedObject.Specification.IsCollection) {
                 Log.Info("Persist " + nakedObject);
 
-                nakedObject.GetAsEnumerable(persistor).ForEach(no => Persist(no, persistor, session));
+                nakedObject.GetAsEnumerable(manager).ForEach(no => Persist(no, session));
 
                 if (nakedObject.ResolveState.IsGhost()) {
                     nakedObject.ResolveState.Handle(Events.StartResolvingEvent);
@@ -42,7 +51,7 @@ namespace NakedObjects.Persistor {
                 if (nakedObject.Specification.Persistable == Persistable.TRANSIENT) {
                     throw new NotPersistableException("can't make object persistent as it is not persistable: " + nakedObject);
                 }
-                Persist(nakedObject, persistor, session);
+                Persist(nakedObject, session);
             }
         }
 
@@ -54,7 +63,7 @@ namespace NakedObjects.Persistor {
 
         #endregion
 
-        protected void Persist(INakedObject nakedObject, ILifecycleManager persistor, ISession session) {
+        protected void Persist(INakedObject nakedObject, ISession session) {
             if (nakedObject.ResolveState.IsAggregated() ||
                 (nakedObject.ResolveState.IsTransient() &&
                  nakedObject.Specification.Persistable != Persistable.TRANSIENT)) {
@@ -63,7 +72,7 @@ namespace NakedObjects.Persistor {
                     Log.Info("make persistent " + nakedObject);
                     nakedObject.Persisting(session);
                     if (!nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
-                        persistor.MadePersistent(nakedObject);
+                        manager.MadePersistent(nakedObject);
                     }
 
                     foreach (INakedObjectAssociation field in fields) {
@@ -71,18 +80,18 @@ namespace NakedObjects.Persistor {
                             continue;
                         }
                         if (field is IOneToManyAssociation) {
-                            INakedObject collection = field.GetNakedObject(nakedObject, persistor);
+                            INakedObject collection = field.GetNakedObject(nakedObject, manager);
                             if (collection == null) {
-                                throw new NotPersistableException("Collection " + field.GetName(persistor) + " does not exist in " + nakedObject.Specification.FullName);
+                                throw new NotPersistableException("Collection " + field.GetName(services) + " does not exist in " + nakedObject.Specification.FullName);
                             }
-                            MakePersistent(collection, persistor, session);
+                            MakePersistent(collection,  session);
                         }
                         else {
-                            INakedObject fieldValue = field.GetNakedObject(nakedObject, persistor);
+                            INakedObject fieldValue = field.GetNakedObject(nakedObject, manager);
                             if (fieldValue == null) {
                                 continue;
                             }
-                            Persist(fieldValue, persistor, session);
+                            Persist(fieldValue, session);
                         }
                     }
                     persistor.AddPersistedObject(nakedObject);

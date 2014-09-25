@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         }
 
         private INakedObject AdapterFor(object obj) {
-            return new PocoAdapter(reflector, session, persistor, obj, oid);
+            return new PocoAdapter(reflector, session, persistor, persistor, obj, oid);
         }
 
         private void Size(ICollectionFacet collectionFacet, INakedObject collection) {

@@ -249,7 +249,7 @@ namespace NakedObjects.Xat {
             container.RegisterType<IContainerInjector, DotNetDomainObjectContainerInjector>(new PerResolveLifetimeManager());
 
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerResolveLifetimeManager());
-            container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerResolveLifetimeManager());
+            
             container.RegisterType<INakedObjectStore, EntityObjectStore.EntityObjectStore>(new PerResolveLifetimeManager());
             container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerResolveLifetimeManager());
 
@@ -257,7 +257,7 @@ namespace NakedObjects.Xat {
             container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerResolveLifetimeManager());
             container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerResolveLifetimeManager());
             container.RegisterType<IServicesManager, ServicesManager>(new PerResolveLifetimeManager());
-
+            container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerResolveLifetimeManager());
 
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerResolveLifetimeManager());
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerResolveLifetimeManager());

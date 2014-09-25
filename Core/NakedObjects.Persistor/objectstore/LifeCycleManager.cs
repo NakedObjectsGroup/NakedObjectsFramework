@@ -51,7 +51,7 @@ namespace NakedObjects.Persistor.Objectstore {
             Assert.AssertNotNull(session);
             Assert.AssertNotNull(persistor);
 
-            return new PocoAdapter(reflector, session, persistor, obj, oid);
+            return new PocoAdapter(reflector, session, persistor, persistor, obj, oid);
         }
     }
 
@@ -769,7 +769,7 @@ namespace NakedObjects.Persistor.Objectstore {
                 throw new NotPersistableException("Cannot persist services: " + nakedObject);
             }
 
-            persistAlgorithm.MakePersistent(nakedObject, this, session);
+            persistAlgorithm.MakePersistent(nakedObject, session);
         }
 
         /// <summary>
@@ -865,7 +865,7 @@ namespace NakedObjects.Persistor.Objectstore {
             INakedObjectSpecification spec = reflector.LoadSpecification(typeName);
 
             if (spec.IsCollection) {
-                return new CollectionMemento(this, reflector, session, encodedData);
+                return new CollectionMemento(this, this, reflector, session, encodedData);
             }
 
             if (spec.ContainsFacet<IViewModelFacet>()) {

@@ -26,8 +26,9 @@ namespace NakedObjects.Core.Adapter {
         private IOid oid;
         private readonly INakedObjectReflector reflector;
         private readonly ISession session;
+        private readonly IObjectPersistor persistor;
         private readonly INakedObjectManager manager;
-        private readonly ILifecycleManager persistor;
+        private readonly ILifecycleManager lifecycleManager;
         private object poco;
         private INakedObjectSpecification specification;
         private ITypeOfFacet typeOfFacet;
@@ -37,7 +38,7 @@ namespace NakedObjects.Core.Adapter {
             Log = LogManager.GetLogger(typeof (PocoAdapter));
         }
 
-        public PocoAdapter(INakedObjectReflector reflector, ISession session, ILifecycleManager persistor, object poco, IOid oid) {
+        public PocoAdapter(INakedObjectReflector reflector, ISession session, IObjectPersistor persistor,  ILifecycleManager lifecycleManager, object poco, IOid oid) {
             Assert.AssertNotNull(reflector);
             //Assert.AssertNotNull(session);
 
@@ -46,8 +47,9 @@ namespace NakedObjects.Core.Adapter {
             }
             this.reflector = reflector;
             this.session = session;
-            this.manager = persistor;
             this.persistor = persistor;
+            this.manager = lifecycleManager;
+            this.lifecycleManager = lifecycleManager;
 
             this.poco = poco;
             this.oid = oid;
@@ -146,14 +148,14 @@ namespace NakedObjects.Core.Adapter {
             INakedObjectAssociation[] properties = Specification.Properties;
             foreach (INakedObjectAssociation property in properties) {
                 INakedObject referencedObject = property.GetNakedObject(this, manager);
-                if (property.IsUsable(session, this, persistor).IsAllowed && property.IsVisible(session, this, persistor)) {
-                    if (property.IsMandatory && property.IsEmpty(this, persistor)) {
-                        return string.Format(Resources.NakedObjects.PropertyMandatory, specification.ShortName, property.GetName(persistor));
+                if (property.IsUsable(session, this, lifecycleManager).IsAllowed && property.IsVisible(session, this, lifecycleManager)) {
+                    if (property.IsMandatory && property.IsEmpty(this, lifecycleManager, persistor)) {
+                        return string.Format(Resources.NakedObjects.PropertyMandatory, specification.ShortName, property.GetName(lifecycleManager));
                     }
                     if (property.IsObject) {
                         IConsent valid = ((IOneToOneAssociation) property).IsAssociationValid(this, referencedObject, session);
                         if (valid.IsVetoed) {
-                            return string.Format(Resources.NakedObjects.PropertyInvalid, specification.ShortName, property.GetName(persistor), valid.Reason);
+                            return string.Format(Resources.NakedObjects.PropertyInvalid, specification.ShortName, property.GetName(lifecycleManager), valid.Reason);
                         }
                     }
                 }
@@ -168,7 +170,7 @@ namespace NakedObjects.Core.Adapter {
             }
 
             foreach (INakedObjectValidation validator in specification.ValidateMethods()) {
-                IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => specification.Properties.Single(p => p.Id.ToLower() == name).GetNakedObject(this, persistor));
+                IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => specification.Properties.Single(p => p.Id.ToLower() == name).GetNakedObject(this, lifecycleManager));
                 string result = validator.Execute(this, parameters.ToArray());
                 if (result != null) {
                     return result;

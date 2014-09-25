@@ -14,13 +14,13 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Core.Persist {
     public class CollectionMemento : IEncodedToStrings, IOid {
-        private readonly ILifecycleManager persistor;
+        private readonly ILifecycleManager lifecycleManager;
+        private readonly IObjectPersistor persistor;
         private readonly INakedObjectReflector reflector;
         private readonly ISession session;
 
@@ -31,11 +31,12 @@ namespace NakedObjects.Core.Persist {
             ObjectCollection
         }
 
-        public CollectionMemento(ILifecycleManager persistor, INakedObjectReflector reflector, ISession session,  CollectionMemento otherMemento, object[] selectedObjects) {
-            Assert.AssertNotNull(persistor);
+        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor,  INakedObjectReflector reflector, ISession session,  CollectionMemento otherMemento, object[] selectedObjects) {
+            Assert.AssertNotNull(lifecycleManager);
             Assert.AssertNotNull(reflector);
             Assert.AssertNotNull(otherMemento);
 
+            this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.reflector = reflector;
             this.session = session;
@@ -47,9 +48,10 @@ namespace NakedObjects.Core.Persist {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(ILifecycleManager persistor, INakedObjectReflector reflector, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
-            Assert.AssertNotNull(persistor);
+        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectReflector reflector, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
+            Assert.AssertNotNull(lifecycleManager);
             Assert.AssertNotNull(reflector);
+            this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.reflector = reflector;
             this.session = session;
@@ -58,13 +60,14 @@ namespace NakedObjects.Core.Persist {
             Parameters = parameters;
 
             if (Target.Specification.IsViewModel) {
-                persistor.PopulateViewModelKeys(Target);
+                lifecycleManager.PopulateViewModelKeys(Target);
             }
         }
 
-        public CollectionMemento(ILifecycleManager persistor, INakedObjectReflector reflector, ISession session, string[] strings) {
-            Assert.AssertNotNull(persistor);
+        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectReflector reflector, ISession session, string[] strings) {
+            Assert.AssertNotNull(lifecycleManager);
             Assert.AssertNotNull(reflector);
+            this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.reflector = reflector;
             this.session = session;
@@ -84,7 +87,7 @@ namespace NakedObjects.Core.Persist {
                 switch (parmType) {
                     case ParameterType.Value:
                         object obj = helper.GetNextObject();
-                        parameters.Add(persistor.CreateAdapter(obj, null, null));
+                        parameters.Add(lifecycleManager.CreateAdapter(obj, null, null));
                         break;
                     case ParameterType.Object:
                         var oid = (IOid) helper.GetNextEncodedToStrings();
@@ -95,13 +98,13 @@ namespace NakedObjects.Core.Persist {
                         Type vInstanceType;
                         IList<object> vColl = helper.GetNextValueCollection(out vInstanceType);
                         IList typedVColl = CollectionUtils.ToTypedIList(vColl, vInstanceType);
-                        parameters.Add(persistor.CreateAdapter(typedVColl, null, null));
+                        parameters.Add(lifecycleManager.CreateAdapter(typedVColl, null, null));
                         break;
                     case ParameterType.ObjectCollection:
                         Type oInstanceType;
                         List<object> oColl = helper.GetNextObjectCollection(out oInstanceType).Cast<IOid>().Select(o => RestoreObject(o).Object).ToList();
                         IList typedOColl = CollectionUtils.ToTypedIList(oColl, oInstanceType);
-                        parameters.Add(persistor.CreateAdapter(typedOColl, null, null));
+                        parameters.Add(lifecycleManager.CreateAdapter(typedOColl, null, null));
                         break;
                     default:
                         throw new ArgumentException(string.Format("Unexpected parameter type value: {0}", parmType));
@@ -145,7 +148,7 @@ namespace NakedObjects.Core.Persist {
                     }
                     else {
                         helper.Add(ParameterType.ObjectCollection);
-                        helper.Add(parameter.GetCollectionFacetFromSpec().AsEnumerable(parameter, persistor).Select(p => p.Oid).Cast<IEncodedToStrings>(), instanceType);
+                        helper.Add(parameter.GetCollectionFacetFromSpec().AsEnumerable(parameter, lifecycleManager).Select(p => p.Oid).Cast<IEncodedToStrings>(), instanceType);
                     }
                 }
                 else {
@@ -196,23 +199,23 @@ namespace NakedObjects.Core.Persist {
 
         private INakedObject RestoreObject(IOid oid) {
             if (oid.IsTransient) {
-                return persistor.RecreateInstance(oid, oid.Specification);
+                return lifecycleManager.RecreateInstance(oid, oid.Specification);
             }
 
             if (oid is ViewModelOid) {
-                return persistor.GetViewModel(oid as ViewModelOid);
+                return lifecycleManager.GetViewModel(oid as ViewModelOid);
             }
 
             return persistor.LoadObject(oid, oid.Specification);
         }
 
         public INakedObject RecoverCollection() {
-            INakedObject nakedObject = Action.Execute(Target, Parameters, persistor, session);
+            INakedObject nakedObject = Action.Execute(Target, Parameters, lifecycleManager, session);
 
             if (selectedObjects != null) {
                 IEnumerable<object> selected = nakedObject.GetDomainObject<IEnumerable>().Cast<object>().Where(x => selectedObjects.Contains(x));
                 IList newResult = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
-                nakedObject = persistor.CreateAdapter(newResult, null, null);
+                nakedObject = lifecycleManager.CreateAdapter(newResult, null, null);
             }
 
             nakedObject.SetATransientOid(this);

@@ -59,7 +59,7 @@ namespace NakedObjects.Reflector.DotNet {
 
         protected INakedObject CreateAdapter(object obj) {
             ISession session = new Mock<ISession>().Object;
-            return new PocoAdapter(reflector, session, persistor, obj, null);
+            return new PocoAdapter(reflector, session, persistor, persistor, obj, null);
         }
 
 

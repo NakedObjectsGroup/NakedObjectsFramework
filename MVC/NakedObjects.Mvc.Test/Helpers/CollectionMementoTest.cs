@@ -90,7 +90,7 @@ namespace MvcTestApp.Tests.Helpers {
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
             var claims = (IEnumerable) cm.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
             Assert.AreEqual(cm, cm.RecoverCollection().Oid);
@@ -104,10 +104,10 @@ namespace MvcTestApp.Tests.Helpers {
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaimsByEnumStatus");
             INakedObject[] parms = new[] {(object) ClaimStatusEnum.New}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager,  NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
 
             string[] strings = cm.ToEncodedStrings();
-            var cm2 = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, strings);
+            var cm2 = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager,  NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, strings);
             var claims = (IEnumerable) cm2.RecoverCollection().Object;
             Assert.AreEqual(2, claims.Cast<object>().Count());
             Assert.AreEqual(cm2, cm2.RecoverCollection().Oid);
@@ -121,9 +121,9 @@ namespace MvcTestApp.Tests.Helpers {
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
             string[] strings = cm.ToEncodedStrings();
-            var cm2 = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, strings);
+            var cm2 = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, strings);
             var claims = (IEnumerable) cm2.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
             Assert.AreEqual(cm2, cm2.RecoverCollection().Oid);
@@ -138,9 +138,9 @@ namespace MvcTestApp.Tests.Helpers {
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new object[] {status, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
             string[] strings = cm.ToEncodedStrings();
-            var cm2 = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, strings);
+            var cm2 = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, strings);
             var claims = (IEnumerable) cm2.RecoverCollection().Object;
             Assert.AreEqual(2, claims.Cast<object>().Count());
             Assert.AreEqual(cm2, cm2.RecoverCollection().Oid);
@@ -155,13 +155,13 @@ namespace MvcTestApp.Tests.Helpers {
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
             var claims = (IEnumerable) cm.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
 
             object[] selected = claims.Cast<object>().ToArray();
 
-            var newCm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, cm, selected);
+            var newCm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, cm, selected);
 
             var newClaims = (IEnumerable) newCm.RecoverCollection().Object;
             Assert.AreEqual(5, newClaims.Cast<object>().Count());
@@ -176,11 +176,11 @@ namespace MvcTestApp.Tests.Helpers {
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
             var claims = (IEnumerable) cm.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
 
-            var newCm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, cm, new object[] {});
+            var newCm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, cm, new object[] { });
 
             var newClaims = (IEnumerable) newCm.RecoverCollection().Object;
             Assert.AreEqual(0, newClaims.Cast<object>().Count());
@@ -195,13 +195,13 @@ namespace MvcTestApp.Tests.Helpers {
             INakedObjectAction action = service.Specification.GetObjectActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, service, action, parms);
             var claims = (IEnumerable) cm.RecoverCollection().Object;
             Assert.AreEqual(5, claims.Cast<object>().Count());
 
             var selected = new[] {claims.Cast<object>().First()};
 
-            var newCm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, cm, selected);
+            var newCm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, cm, selected);
 
             var newClaims = (IEnumerable) newCm.RecoverCollection().Object;
             Assert.AreEqual(1, newClaims.Cast<object>().Count());

@@ -19,7 +19,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
 
@@ -112,8 +111,8 @@ namespace NakedObjects.Reflector.Spec {
             return InteractionUtils.IsValid(buf);
         }
 
-        public override bool IsEmpty(INakedObject inObject, ILifecycleManager persistor) {
-            return GetAssociation(inObject, persistor) == null;
+        public override bool IsEmpty(INakedObject inObject, INakedObjectManager manager, IObjectPersistor persistor) {
+            return GetAssociation(inObject, manager) == null;
         }
 
         public override bool IsInline {

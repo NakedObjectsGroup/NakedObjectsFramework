@@ -85,7 +85,7 @@ namespace NakedObjects.Architecture.Reflect {
 
         public abstract INakedObject GetNakedObject(INakedObject fromObject, INakedObjectManager manager);
 
-        public abstract bool IsEmpty(INakedObject adapter, ILifecycleManager persistor);
+        public abstract bool IsEmpty(INakedObject inObject, INakedObjectManager manager, IObjectPersistor persistor);
         public abstract bool IsInline { get; }
 
         public abstract INakedObject GetDefault(INakedObject nakedObject, INakedObjectManager manager);
