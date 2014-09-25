@@ -9,8 +9,6 @@ open TestCodeOnly
 open NakedObjects.Services
 open System
 open NakedObjects.EntityObjectStore
-open NakedObjects.Core.Context
-open NakedObjects.Architecture.Resolve
 open NakedObjects.Architecture.Adapter
 open SystemTestCode
 open System.Collections.Generic

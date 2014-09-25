@@ -490,7 +490,8 @@ namespace NakedObjects.Persistor.Objectstore {
             this.injector = injector;
             this.manager = manager;
             this.servicesConfig = servicesConfig;
-            this.session = session;         
+            this.session = session;
+            injector.ServiceTypes = servicesConfig.Services.Select(sw => sw.Service.GetType()).ToArray();
         }
 
         protected virtual List<ServiceWrapper> Services {
@@ -543,7 +544,6 @@ namespace NakedObjects.Persistor.Objectstore {
         private void AddServices(IEnumerable<ServiceWrapper> ss) {
             Log.DebugFormat("AddServices count: {0}", ss.Count());
             services.AddRange(ss);
-            injector.ServiceTypes = servicesConfig.Services.Select(sw => sw.Service.GetType()).ToArray();
         }
     }
 

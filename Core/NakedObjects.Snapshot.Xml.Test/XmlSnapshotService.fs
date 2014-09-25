@@ -3,22 +3,30 @@
 open NUnit.Framework
 open NakedObjects
 open NakedObjects.Core.NakedObjectsSystem
-open NakedObjects.Core.Persist
-open NakedObjects.Core.Adapter.Map
 open NakedObjects.Services
 open NakedObjects.Boot
 open Snapshot.Xml.Test
 open NakedObjects.Snapshot
 open NakedObjects.Architecture.Adapter
-open NakedObjects.Architecture.Persist
-open NakedObjects.Architecture.Reflect
 open XmlTestData
 open System.Xml.Linq
-open NakedObjects.Persistor.Objectstore
-open NakedObjects.Persistor.Objectstore.Inmemory
-open NakedObjects.Persistor
 open Microsoft.Practices.Unity
+open NakedObjects.EntityObjectStore
+open System.Data.Entity
+open System
+open System.IO
 
+let writetests = false
+let testFiles = @"..\..\testfiles"
+let getFile name = Path.Combine(testFiles, name) + ".htm"
+let getTestData name = File.ReadAllText(getFile name)
+let writeTestData name data = File.WriteAllText(getFile name, data)
+let checkResults resultsFile s = 
+    if writetests then writeTestData resultsFile s
+    else 
+        let actionView = getTestData resultsFile
+        Assert.AreEqual(actionView, s)
+                 
 [<TestFixture>]
 type DomainTests() = 
     class
@@ -26,14 +34,10 @@ type DomainTests() =
         
         override x.RegisterTypes(container) = 
             base.RegisterTypes(container)
-            // replace INakedObjectStore types
-            let sink = 
-                container.RegisterType
-                    (typeof<IOidGenerator>, typeof<SimpleOidGenerator>, null, null, 
-                     [| box (new InjectionConstructor(typeof<INakedObjectReflector>, 100L)) :?> InjectionMember |])
-            let sink = container.RegisterType(typeof<IPersistAlgorithm>, typeof<DefaultPersistAlgorithm>, null, null, [||])
-            let sink = container.RegisterType(typeof<INakedObjectStore>, typeof<MemoryObjectStore>, null, null, [||])
-            let sink = container.RegisterType(typeof<IIdentityMap>, typeof<IdentityMapImpl>, null, null, [||])
+            let config = new EntityObjectStoreConfiguration()
+            let f = (fun () -> new TestObjectContext("XmlSnapshotTest") :> DbContext)
+            let ignore = config.UsingCodeFirstContext(Func<DbContext>(f)) 
+            let ignore = container.RegisterInstance(typeof<EntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
             ()
         
         [<TestFixtureSetUp>]
@@ -106,14 +110,14 @@ type DomainTests() =
         member x.XmlForSimpleObject() = 
             let testObject = x.SimpleTestObject()
             let ss = x.GenerateSnapshot testObject
-            Assert.AreEqual(simpleTestData, ss.Xml)
+            checkResults "simpleTestData" ss.Xml
             ()
         
         [<Test>]
         member x.XmlForComplexObject() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
-            Assert.AreEqual(complexTestData, ss.Xml)
+            checkResults "complexTestData" ss.Xml
             ()
         
         [<Test>]
@@ -121,7 +125,7 @@ type DomainTests() =
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
             ss.Include "TestReference"
-            Assert.AreEqual(complexTestDataWithReference, ss.Xml)
+            checkResults "complexTestDataWithReference" ss.Xml
             ()
         
         [<Test>]
@@ -129,7 +133,7 @@ type DomainTests() =
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
             ss.Include "TestCollection"
-            Assert.AreEqual(complexTestDataWithCollection, ss.Xml)
+            checkResults "complexTestDataWithCollection" ss.Xml
             ()
         
         [<Test>]
@@ -137,7 +141,7 @@ type DomainTests() =
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
             ss.Include("TestReference", "test annotation")
-            Assert.AreEqual(complexTestDataWithReferenceAnnotation, ss.Xml)
+            checkResults "complexTestDataWithReferenceAnnotation" ss.Xml
             ()
         
         [<Test>]
@@ -145,7 +149,7 @@ type DomainTests() =
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
             ss.Include("TestCollection", "test annotation")
-            Assert.AreEqual(complexTestDataWithCollectionAnnotation, ss.Xml)
+            checkResults "complexTestDataWithCollectionAnnotation" ss.Xml
             ()
         
         [<Test>]
@@ -153,16 +157,9 @@ type DomainTests() =
             let testObject = x.NestedComplexTestObject()
             let ss = x.GenerateSnapshot testObject
             ss.Include "TestReference/TestReference"
-            Assert.AreEqual(complexTestDataWithNestedReference, ss.Xml)
+            checkResults "complexTestDataWithNestedReference" ss.Xml
             ()
         
-        [<Test>]
-        member x.XmlForComplexObjectIncludeNestedCollection() = 
-            let testObject = x.NestedComplexTestObject()
-            let ss = x.GenerateSnapshot testObject
-            ss.Include "TestCollection/TestReference"
-            Assert.AreEqual(complexTestDataWithNestedCollection, ss.Xml)
-            ()
         
         member x.stylesheet1 = @"<xsl:stylesheet xmlns:xsl=""http://www.w3.org/1999/XSL/Transform"" version=""1.0"" xmlns:app=""http://www.nakedobjects.org/ns/app/Snapshot.Xml.Test.Two/TransformFull"">
             <xsl:output method=""xml""/>
@@ -217,7 +214,7 @@ type DomainTests() =
             let nestedXml = nestedSS.Xml
             let nestedTransformedXml = nestedSS.TransformedXml x.stylesheet1
             let nestedTransformedXml = nestedTransformedXml.Replace("Snapshot.Xml.Test.Two", "Snapshot.Xml.Test.One")
-            let nestedTransformedXml = nestedTransformedXml.Replace("TOID#FFFFFFFFFFFFFF9E", "TOID#FFFFFFFFFFFFFF9C")
+            let nestedTransformedXml = nestedTransformedXml.Replace("TEOID#3", "TEOID#1")
             try 
                 x.CompareXml fullXml nestedXml
                 Assert.Fail("expected not equal")

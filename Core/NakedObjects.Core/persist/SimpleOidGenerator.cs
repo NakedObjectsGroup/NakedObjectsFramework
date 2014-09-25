@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
@@ -43,10 +44,7 @@ namespace NakedObjects.Core.Persist {
 
         #region IOidGenerator Members
 
-        
-
-      
-
+       
         public virtual void ConvertPersistentToTransientOid(IOid oid) {
             throw new UnexpectedCallException();
         }
@@ -70,7 +68,9 @@ namespace NakedObjects.Core.Persist {
         }
 
         public IOid CreateOid(string typeName, object[] keys) {
-            throw new System.NotImplementedException();
+            lock (this) {
+                return SerialOid.CreateTransient(reflector, transientSerialNumber++, typeName);
+            }
         }
 
         #endregion

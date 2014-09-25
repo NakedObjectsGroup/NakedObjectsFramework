@@ -71,6 +71,11 @@
       <Project>{7095e1c3-2c43-4802-9930-522e1bbf27c1}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj">
+      <Name>NakedObjects.Persistor.Entity</Name>
+      <Project>{3e188cc2-9f88-47f1-a197-22518958ae25}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.Core.csproj">
       <Name>NakedObjects.Reflector.Core</Name>
       <Project>{91153c56-313c-426e-8b0d-43fa39bd567a}</Project>
@@ -82,6 +87,14 @@
     </Reference>
     <Reference Include="Common.Logging.Core">
       <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity">

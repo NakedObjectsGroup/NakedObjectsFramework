@@ -152,11 +152,8 @@ namespace NakedObjects.Mvc.App.App_Start
             container.RegisterType<IUpdateNotifier, SimpleUpdateNotifier>(new PerRequestLifetimeManager());
 
             container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerRequestLifetimeManager());
-
             container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerRequestLifetimeManager());
-
             container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerRequestLifetimeManager());
-
             container.RegisterType<IServicesManager, ServicesManager>(new PerRequestLifetimeManager());
 
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerRequestLifetimeManager());
