@@ -133,6 +133,14 @@ namespace MvcTestApp {
             container.RegisterType<INakedObjectStore, EntityObjectStore>(new PerResolveLifetimeManager());
             container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerResolveLifetimeManager());
 
+            container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerResolveLifetimeManager());
+
+
+            container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerResolveLifetimeManager());
+            container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerResolveLifetimeManager());
+            
+            container.RegisterType<IServicesManager, ServicesManager>(new PerResolveLifetimeManager());
+
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerResolveLifetimeManager());
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerResolveLifetimeManager());
             container.RegisterType<ISession, WindowsSession>(new PerResolveLifetimeManager());

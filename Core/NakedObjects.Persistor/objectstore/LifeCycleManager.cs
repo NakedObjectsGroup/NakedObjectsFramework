@@ -35,7 +35,7 @@ using NakedObjects.Persistor.Transaction;
 using NakedObjects.Util;
 
 namespace NakedObjects.Persistor.Objectstore {
-    internal class NakedObjectFactory {
+    public class NakedObjectFactory {
         private ILifecycleManager persistor;
         private INakedObjectReflector reflector;
         private ISession session;
@@ -47,11 +47,15 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public INakedObject CreateAdapter(object obj, IOid oid) {
+            Assert.AssertNotNull(reflector);
+            Assert.AssertNotNull(session);
+            Assert.AssertNotNull(persistor);
+
             return new PocoAdapter(reflector, session, persistor, obj, oid);
         }
     }
 
-    internal class ObjectPersistor : IObjectPersistor {
+    public class ObjectPersistor : IObjectPersistor {
         private static readonly ILog Log;
         private readonly INakedObjectManager manager;
         private readonly INakedObjectStore objectStore;
@@ -245,7 +249,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
     }
 
-    internal class NakedObjectManager : INakedObjectManager {
+    public class NakedObjectManager : INakedObjectManager {
         private static readonly ILog Log;
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
         private readonly IIdentityMap identityMap;
@@ -469,10 +473,11 @@ namespace NakedObjects.Persistor.Objectstore {
         }
     }
 
-    internal class ServicesManager : IServicesManager {
+    public class ServicesManager : IServicesManager {
         private static readonly ILog Log;
         private readonly IContainerInjector injector;
         private readonly INakedObjectManager manager;
+        private readonly ServicesConfiguration servicesConfig;
         private readonly List<ServiceWrapper> services = new List<ServiceWrapper>();
         private readonly ISession session;
         private bool servicesInit;
@@ -484,14 +489,14 @@ namespace NakedObjects.Persistor.Objectstore {
         public ServicesManager(IContainerInjector injector, INakedObjectManager manager, ServicesConfiguration servicesConfig, ISession session) {
             this.injector = injector;
             this.manager = manager;
-            this.session = session;
-
-            AddServices(servicesConfig.Services);
+            this.servicesConfig = servicesConfig;
+            this.session = session;         
         }
 
         protected virtual List<ServiceWrapper> Services {
             get {
                 if (!servicesInit) {
+                    AddServices(servicesConfig.Services);
                     services.ForEach(sw => injector.InitDomainObject(sw.Service));
                     servicesInit = true;
                 }
@@ -535,9 +540,10 @@ namespace NakedObjects.Persistor.Objectstore {
 
         #endregion
 
-        public void AddServices(IEnumerable<ServiceWrapper> ss) {
+        private void AddServices(IEnumerable<ServiceWrapper> ss) {
             Log.DebugFormat("AddServices count: {0}", ss.Count());
             services.AddRange(ss);
+            injector.ServiceTypes = servicesConfig.Services.Select(sw => sw.Service.GetType()).ToArray();
         }
     }
 
@@ -556,27 +562,38 @@ namespace NakedObjects.Persistor.Objectstore {
             Log = LogManager.GetLogger(typeof (LifeCycleManager));
         }
 
-        public LifeCycleManager(ISession session, IUpdateNotifier updateNotifier, INakedObjectReflector reflector, INakedObjectStore objectStore, IPersistAlgorithm persistAlgorithm, IOidGenerator oidGenerator, IIdentityMap identityMap, IContainerInjector injector, ServicesConfiguration servicesConfig) {
+        public LifeCycleManager(ISession session,
+                                INakedObjectReflector reflector,
+                                INakedObjectStore objectStore,
+                                IPersistAlgorithm persistAlgorithm, 
+                                IOidGenerator oidGenerator,
+                                IIdentityMap identityMap, 
+                                IContainerInjector injector,
+                                INakedObjectTransactionManager transactionManager,
+                                IObjectPersistor objectPersistor, 
+                                INakedObjectManager manager, 
+                                IServicesManager servicesManager, 
+                                NakedObjectFactory nakedObjectFactory
+                                ) {
+
             Assert.AssertNotNull(objectStore);
             Assert.AssertNotNull(persistAlgorithm);
             Assert.AssertNotNull(oidGenerator);
             Assert.AssertNotNull(identityMap);
             Assert.AssertNotNull(reflector);
 
-            transactionManager = new ObjectStoreTransactionManager(objectStore);
-            objectPersistor = new ObjectPersistor(objectStore, transactionManager, session, this, updateNotifier);
-
-            var nakedObjectFactory = new NakedObjectFactory();
-
-            manager = new NakedObjectManager(reflector, session, identityMap, oidGenerator, nakedObjectFactory);
-
-            servicesManager = new ServicesManager(injector, manager, servicesConfig, session);
+            this.transactionManager = transactionManager;
+            this.objectPersistor = objectPersistor;
+            this.manager = manager;
+            this.servicesManager = servicesManager;
+            this.session = session;
+            this.reflector = reflector;
+            this.persistAlgorithm = persistAlgorithm;
+            this.injector = injector;
 
             this.session = session;
             this.reflector = reflector;
-
             this.persistAlgorithm = persistAlgorithm;
-
             this.injector = injector;
 
             nakedObjectFactory.Initialize(reflector, session, this);
@@ -585,9 +602,6 @@ namespace NakedObjects.Persistor.Objectstore {
             objectStore.Manager = this;
 
             Log.DebugFormat("Creating {0}", this);
-
-
-            this.injector.ServiceTypes = servicesConfig.Services.Select(sw => sw.Service.GetType()).ToArray();
         }
 
         public string DebugTitle {

@@ -211,12 +211,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static IEnumerable<object> GetContributingServices(this INakedObjectsFramework framework) {
-            return framework.LifecycleManager.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
+            return framework.LifecycleManager.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
         public static IEnumerable<object> GetServices(this INakedObjectsFramework framework) {
             framework.GetAllServices();
-            return framework.LifecycleManager.GetServicesWithVisibleActions(ServiceTypes.Menu).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
+            return framework.LifecycleManager.GetServicesWithVisibleActions(ServiceTypes.Menu, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
         public static string GetActionId(INakedObjectAction action) {

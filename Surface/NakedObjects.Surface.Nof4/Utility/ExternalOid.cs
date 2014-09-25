@@ -58,7 +58,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             if (spec == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
-            INakedObject service = framework.LifecycleManager.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor).SingleOrDefault(no => no.Specification.IsOfType(spec));
+            INakedObject service = framework.LifecycleManager.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager).SingleOrDefault(no => no.Specification.IsOfType(spec));
             if (service == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }

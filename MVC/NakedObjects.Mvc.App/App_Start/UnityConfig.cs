@@ -26,6 +26,7 @@ using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 
+
 namespace NakedObjects.Mvc.App.App_Start
 {
     /// <summary>
@@ -137,9 +138,10 @@ namespace NakedObjects.Mvc.App.App_Start
 
             container.RegisterInstance(typeof(ServicesConfiguration), serviceConfig, new ContainerControlledLifetimeManager());
 
+
+            container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerRequestLifetimeManager());
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
-
 
             container.RegisterType<IContainerInjector, DotNetDomainObjectContainerInjector>(new PerRequestLifetimeManager());
 
@@ -147,11 +149,22 @@ namespace NakedObjects.Mvc.App.App_Start
             container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerRequestLifetimeManager());
             container.RegisterType<INakedObjectStore, EntityObjectStore.EntityObjectStore>(new PerRequestLifetimeManager());
             container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerRequestLifetimeManager());
+            container.RegisterType<IUpdateNotifier, SimpleUpdateNotifier>(new PerRequestLifetimeManager());
+
+            container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerRequestLifetimeManager());
+
+            container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerRequestLifetimeManager());
+
+            container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerRequestLifetimeManager());
+
+            container.RegisterType<IServicesManager, ServicesManager>(new PerRequestLifetimeManager());
 
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerRequestLifetimeManager());
+            
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerRequestLifetimeManager());
+          
             container.RegisterType<ISession, WindowsSession>(new PerRequestLifetimeManager());
-            container.RegisterType<IUpdateNotifier, SimpleUpdateNotifier>(new PerRequestLifetimeManager());
+            
             container.RegisterType<IMessageBroker, SimpleMessageBroker>(new PerRequestLifetimeManager());
 
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerRequestLifetimeManager());
