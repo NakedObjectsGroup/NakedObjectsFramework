@@ -122,6 +122,7 @@ namespace MvcTestApp {
 
             container.RegisterInstance(typeof (ServicesConfiguration), serviceConfig, new ContainerControlledLifetimeManager());
 
+            container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new ContainerControlledLifetimeManager());
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
 
@@ -134,11 +135,8 @@ namespace MvcTestApp {
             container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerResolveLifetimeManager());
 
             container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerResolveLifetimeManager());
-
-
             container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerResolveLifetimeManager());
             container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerResolveLifetimeManager());
-            
             container.RegisterType<IServicesManager, ServicesManager>(new PerResolveLifetimeManager());
 
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerResolveLifetimeManager());

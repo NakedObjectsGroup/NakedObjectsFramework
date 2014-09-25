@@ -139,7 +139,7 @@ namespace RestfulObjects.Mvc.App.App_Start
             serviceConfig.AddSystemServices(SystemServices);
 
             container.RegisterInstance(typeof(ServicesConfiguration), serviceConfig, new ContainerControlledLifetimeManager());
-
+            container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new ContainerControlledLifetimeManager());
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
 
@@ -150,6 +150,12 @@ namespace RestfulObjects.Mvc.App.App_Start
             container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectStore, EntityObjectStore>(new PerResolveLifetimeManager());
             container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerResolveLifetimeManager());
+
+            container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerResolveLifetimeManager());
+            container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerResolveLifetimeManager());
+            container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerResolveLifetimeManager());
+            container.RegisterType<IServicesManager, ServicesManager>(new PerResolveLifetimeManager());
+
 
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerResolveLifetimeManager());
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerResolveLifetimeManager());
