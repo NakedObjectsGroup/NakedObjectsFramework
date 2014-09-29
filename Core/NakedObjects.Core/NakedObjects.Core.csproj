@@ -155,8 +155,6 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="context\SimpleMessageBroker.cs" />
     <Compile Include="context\SimpleUpdateNotifier.cs" />
-    <Compile Include="context\IUpdateNotifier.cs" />
-    <Compile Include="object\IMessageBroker.cs" />
     <Compile Include="persist\AbstractFixtureBuilder.cs" />
     <Compile Include="persist\AdapterException.cs" />
     <Compile Include="persist\CollectionMemento.cs" />
@@ -168,8 +166,6 @@
     <Compile Include="persist\TransactionException.cs" />
     <Compile Include="persist\AggregateOid.cs" />
     <Compile Include="persist\ViewModelOid.cs" />
-    <Compile Include="reflect\IContainerInjector.cs" />
-    <Compile Include="reflect\INakedObjectsFramework.cs" />
     <Compile Include="security\IAuthenticatorInstaller.cs" />
     <Compile Include="security\SimpleSession.cs" />
     <Compile Include="service\ServiceUtils.cs" />
@@ -251,6 +247,10 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="object\" />
+    <Folder Include="reflect\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

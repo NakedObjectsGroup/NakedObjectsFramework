@@ -160,6 +160,10 @@
     <Compile Include="adapter\IVersion.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="attributes\FacetsAttribute.cs" />
+    <Compile Include="Component\IContainerInjector.cs" />
+    <Compile Include="Component\IMessageBroker.cs" />
+    <Compile Include="Component\IUpdateNotifier.cs" />
+    <Compile Include="Framework\INakedObjectsFramework.cs" />
     <Compile Include="exceptions\InvalidEntryException.cs" />
     <Compile Include="exceptions\NakedObjectApplicationException.cs" />
     <Compile Include="exceptions\NakedObjectException.cs" />
@@ -415,11 +419,11 @@
     <Compile Include="persist\DataUpdateException.cs" />
     <Compile Include="persist\IExecutionContext.cs" />
     <Compile Include="persist\IIdentityMap.cs" />
-    <Compile Include="persist\INakedObjectManager.cs" />
-    <Compile Include="persist\ILifecycleManager.cs" />
+    <Compile Include="Component\INakedObjectManager.cs" />
+    <Compile Include="Component\ILifecycleManager.cs" />
     <Compile Include="persist\INakedObjectTransactionManager.cs" />
-    <Compile Include="persist\IObjectPersistor.cs" />
-    <Compile Include="persist\IServicesManager.cs" />
+    <Compile Include="Component\IObjectPersistor.cs" />
+    <Compile Include="Component\IServicesManager.cs" />
     <Compile Include="persist\NotPersistableException.cs" />
     <Compile Include="persist\FindObjectException.cs" />
     <Compile Include="persist\ObjectPersistenceException.cs" />
