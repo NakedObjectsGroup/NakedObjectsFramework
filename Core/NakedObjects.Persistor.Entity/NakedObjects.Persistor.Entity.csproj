@@ -111,6 +111,7 @@
     <Compile Include="EntityObjectStore\EntityPersistAlgorithm.cs" />
     <Compile Include="EntityObjectStore\EntityPersistorInstaller.cs" />
     <Compile Include="EntityObjectStore\EntityUtils.cs" />
+    <Compile Include="EntityObjectStore\IEntityObjectStoreConfiguration.cs" />
     <Compile Include="EntityObjectStore\ObjectContextUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

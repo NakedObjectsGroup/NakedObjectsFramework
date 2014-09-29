@@ -146,7 +146,6 @@
     <Compile Include="adapter\map\INoIdentityAdapterCache.cs" />
     <Compile Include="adapter\map\NoIdentityAdapterCache.cs" />
     <Compile Include="adapter\map\PocoAdapterHashMap.cs" />
-    <Compile Include="adapter\map\IPocoAdapterMap.cs" />
     <Compile Include="adapter\NullVersion.cs" />
     <Compile Include="adapter\PocoAdapter.cs" />
     <Compile Include="adapter\SerialNumberVersion.cs" />

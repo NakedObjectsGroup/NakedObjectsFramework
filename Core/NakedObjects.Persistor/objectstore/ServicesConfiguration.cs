@@ -3,7 +3,7 @@ using System.Linq;
 using NakedObjects.Architecture.Services;
 
 namespace NakedObjects.Persistor.Objectstore {
-    public class ServicesConfiguration {
+    public class ServicesConfiguration : IServicesConfiguration {
         public ServicesConfiguration() {
             Services = new List<ServiceWrapper>();
         }

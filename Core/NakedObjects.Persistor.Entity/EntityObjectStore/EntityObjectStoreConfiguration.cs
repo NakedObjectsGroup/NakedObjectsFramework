@@ -10,7 +10,7 @@ using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Resources;
 
 namespace NakedObjects.EntityObjectStore {
-    public class EntityObjectStoreConfiguration {
+    public class EntityObjectStoreConfiguration : IEntityObjectStoreConfiguration {
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStoreConfiguration));
 
         private bool isContextSet;
@@ -43,17 +43,17 @@ namespace NakedObjects.EntityObjectStore {
             }
         }
 
-        protected IList<Tuple<Func<DbContext>, Func<Type[]>>> DbContextConstructors { get; set; }
+        public IList<Tuple<Func<DbContext>, Func<Type[]>>> DbContextConstructors { get; set; }
 
-        protected IDictionary<string, Func<Type[]>> NamedContextTypes { get; set; }
-        protected Func<Type[]> NotPersistedTypes { get; set; }
+        public IDictionary<string, Func<Type[]>> NamedContextTypes { get; set; }
+        public Func<Type[]> NotPersistedTypes { get; set; }
 
         /// <summary>
         ///     Indicates that persistor will run in code first mode.
         ///     1. Any connection strings in App.Config will still be picked up for model first contexts
         ///     2. If CodeFirstConfig is NOT set then the entry assembly will be used
         /// </summary>
-        protected bool CodeFirst { get; set; }
+        public bool CodeFirst { get; set; }
 
         /// <summary>
         ///     If set the persistor will throw an exception if any type is seen that cannot be fully proxied.
@@ -130,7 +130,7 @@ namespace NakedObjects.EntityObjectStore {
             isContextSet = true;
         }
 
-        protected IEnumerable<EntityContextConfiguration> PocoConfiguration() {
+        public IEnumerable<EntityContextConfiguration> PocoConfiguration() {
             string[] connectionStringNames = GetConnectionStringNamesFromConfig();
 
             FlagConnectionStringMismatches(connectionStringNames);
@@ -148,7 +148,7 @@ namespace NakedObjects.EntityObjectStore {
             return new EntityContextConfiguration[] {};
         }
 
-        private void FlagConnectionStringMismatches(string[] connectionStringNames) {
+        public void FlagConnectionStringMismatches(string[] connectionStringNames) {
             ICollection<string> configuredContextNames = NamedContextTypes.Keys;
 
             IEnumerable<string> configuredButNotUsed = configuredContextNames.Where(s => !connectionStringNames.Contains(s));
@@ -159,7 +159,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
 
-        private string[] GetConnectionStringNamesFromConfig() {
+        public string[] GetConnectionStringNamesFromConfig() {
             ConnectionStringSettings[] connectionStrings = ConfigurationManager.ConnectionStrings.Cast<ConnectionStringSettings>().Where(x => x.ProviderName == "System.Data.EntityClient").ToArray();
 
             if (!connectionStrings.Any() && !CodeFirst) {

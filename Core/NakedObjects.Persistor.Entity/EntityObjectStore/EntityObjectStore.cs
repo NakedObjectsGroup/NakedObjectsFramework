@@ -114,7 +114,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
 
-        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, EntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, INakedObjectReflector reflector, IContainerInjector injector)
+        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, INakedObjectReflector reflector, IContainerInjector injector)
             : this(reflector, session, updateNotifier, injector) {
             this.oidGenerator = oidGenerator;
             contexts = config.ContextConfiguration.ToDictionary<EntityContextConfiguration, EntityContextConfiguration, LocalContext>(c => c, c => null);

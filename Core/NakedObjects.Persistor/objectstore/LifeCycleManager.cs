@@ -477,7 +477,7 @@ namespace NakedObjects.Persistor.Objectstore {
         private static readonly ILog Log;
         private readonly IContainerInjector injector;
         private readonly INakedObjectManager manager;
-        private readonly ServicesConfiguration servicesConfig;
+        private readonly IServicesConfiguration servicesConfig;
         private readonly List<ServiceWrapper> services = new List<ServiceWrapper>();
         private readonly ISession session;
         private bool servicesInit;
@@ -486,7 +486,7 @@ namespace NakedObjects.Persistor.Objectstore {
             Log = LogManager.GetLogger(typeof (ServicesManager));
         }
 
-        public ServicesManager(IContainerInjector injector, INakedObjectManager manager, ServicesConfiguration servicesConfig, ISession session) {
+        public ServicesManager(IContainerInjector injector, INakedObjectManager manager, IServicesConfiguration servicesConfig, ISession session) {
             this.injector = injector;
             this.manager = manager;
             this.servicesConfig = servicesConfig;

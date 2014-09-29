@@ -129,18 +129,12 @@
     <Compile Include="objectstore\inmemory\InMemoryObjectPersistorInstaller.cs" />
     <Compile Include="objectstore\inmemory\MemoryObjectStore.cs" />
     <Compile Include="objectstore\inmemory\MemoryObjectStoreInstances.cs" />
-    <Compile Include="objectstore\INakedObjectStore.cs" />
     <Compile Include="objectstore\LifeCycleManager.cs" />
     <Compile Include="objectstore\ObjectStoreTransaction.cs" />
     <Compile Include="objectstore\ObjectStoreTransactionManager.cs" />
     <Compile Include="objectstore\ServicesConfiguration.cs" />
     <Compile Include="persist\AbstractObjectPersistorInstaller.cs" />
     <Compile Include="persist\DefaultPersistAlgorithm.cs" />
-    <Compile Include="persist\IPersistAlgorithm.cs" />
-    <Compile Include="transaction\ICreateObjectCommand.cs" />
-    <Compile Include="transaction\IDestroyObjectCommand.cs" />
-    <Compile Include="transaction\ISaveObjectCommand.cs" />
-    <Compile Include="transaction\ITransaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

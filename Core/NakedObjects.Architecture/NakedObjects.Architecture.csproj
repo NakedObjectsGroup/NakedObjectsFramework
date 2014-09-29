@@ -162,7 +162,11 @@
     <Compile Include="attributes\FacetsAttribute.cs" />
     <Compile Include="Component\IContainerInjector.cs" />
     <Compile Include="Component\IMessageBroker.cs" />
+    <Compile Include="Component\INakedObjectStore.cs" />
+    <Compile Include="Component\IPersistAlgorithm.cs" />
+    <Compile Include="Component\IPocoAdapterMap.cs" />
     <Compile Include="Component\IUpdateNotifier.cs" />
+    <Compile Include="Configuration\IServicesConfiguration.cs" />
     <Compile Include="Framework\INakedObjectsFramework.cs" />
     <Compile Include="exceptions\InvalidEntryException.cs" />
     <Compile Include="exceptions\NakedObjectApplicationException.cs" />
@@ -466,6 +470,10 @@
     <Compile Include="security\IAuthorisationManager.cs" />
     <Compile Include="security\NullAuthorisationManager.cs" />
     <Compile Include="services\ServiceWrapper.cs" />
+    <Compile Include="transaction\ICreateObjectCommand.cs" />
+    <Compile Include="transaction\IDestroyObjectCommand.cs" />
+    <Compile Include="transaction\ISaveObjectCommand.cs" />
+    <Compile Include="transaction\ITransaction.cs" />
     <Compile Include="util\CallbackUtils.cs" />
     <Compile Include="util\IdentifierUtils.cs" />
     <Compile Include="util\MimeUtils.cs" />
