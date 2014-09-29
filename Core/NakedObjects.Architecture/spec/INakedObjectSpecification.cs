@@ -16,7 +16,13 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Spec {
-    public interface INakedObjectSpecification : IActionContainer,
+
+    /// <summary>
+    /// Gives access to the full metadata (as created during initial reflection)
+    /// for any given domain object type (defined by the FullName property).
+    /// </summary>
+    public interface INakedObjectSpecification :
+        IActionContainer,
         IPropertyContainer,
         IFacetHolder,
         IHierarchical,

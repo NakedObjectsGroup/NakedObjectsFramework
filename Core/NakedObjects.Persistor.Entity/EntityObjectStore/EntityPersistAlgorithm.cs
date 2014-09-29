@@ -14,6 +14,9 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Persistor;
 
 namespace NakedObjects.EntityObjectStore {
+
+    //TODO: Rename to something that describes the nature of this algorithm, which is not
+    //specific to EF.  This also suggests it should be moved out of this assembly.
     public class EntityPersistAlgorithm : IPersistAlgorithm {
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityPersistAlgorithm));
         private readonly INakedObjectManager manager;

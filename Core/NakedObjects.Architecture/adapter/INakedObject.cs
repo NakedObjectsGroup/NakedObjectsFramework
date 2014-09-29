@@ -12,9 +12,9 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Adapter {
     /// <summary>
-    ///     Naked objects are adapters to domain objects, where the application is written in terms of domain objects
-    ///     and those objects are represented within the NOF through these adapter, and not directly. Objects with the
-    ///     NOF are divided into two distinct groups: value object and reference objects.
+    ///     An INakedObject is an adapter to domain objects. The NOF alsways deals with domain objects via these
+    ///     adapters. The adapter gives access to the metadata (INakedObjectSpecification) for the domain object type,
+    ///     provides a unique identifier for the object (Oid), and its current 'lifecycle' state.
     /// </summary>
     public interface INakedObject {
         /// <summary>
@@ -30,7 +30,7 @@ namespace NakedObjects.Architecture.Adapter {
         INakedObjectSpecification Specification { get; }
 
         /// <summary>
-        ///     The objects unique id. This id allows the object to added to, stored by, and retrieved from the object
+        ///     The object's unique id. This id allows the object to added to, stored by, and retrieved from the object
         ///     store
         /// </summary>
         IOid Oid { get; }
@@ -68,7 +68,7 @@ namespace NakedObjects.Architecture.Adapter {
         ///     Returns a list in priority order of names of icons to use if this object is to be displayed graphically
         /// </summary>
         /// <para>
-        ///     Should always return at lesat one item
+        ///     Should always return at least one item
         /// </para>
         string IconName();
 

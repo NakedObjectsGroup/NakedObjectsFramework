@@ -25,6 +25,7 @@ using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Web.Mvc.Helpers;
+using NakedObjects;
 
 
 namespace NakedObjects.Mvc.App.App_Start
@@ -34,6 +35,106 @@ namespace NakedObjects.Mvc.App.App_Start
     /// </summary>
     public class UnityConfig
     {
+        #region Application Configuration
+
+        //TODO: Add similar Configuration mechanisms for Authentication, Auditing
+        //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
+        //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
+
+        //TODO: Rename this method to Services() once the other Services() function is removed.
+        private static ServicesConfiguration ServicesConfiguration()
+        {
+            var config = new ServicesConfiguration();
+            config.AddMenuServices(
+                new CustomerRepository(),
+                new OrderRepository(),
+                new ProductRepository(),
+                new EmployeeRepository(),
+                new SalesRepository(),
+                new SpecialOfferRepository(),
+                new ContactRepository(),
+                new VendorRepository(),
+                new PurchaseOrderRepository(),
+                new WorkOrderRepository());
+            config.AddContributedActions(
+                new OrderContributedActions(),
+                new CustomerContributedActions());
+            config.AddSystemServices(
+                new SimpleEncryptDecrypt());
+            return config;
+        }
+
+        private static EntityObjectStoreConfiguration EntityObjectStore()
+        {
+            var config = new EntityObjectStoreConfiguration();
+            config.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
+            config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
+            return config;
+        }
+
+        private static Type[] AdventureWorksTypes()
+        {
+            var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
+            return allTypes.Where(t => t.BaseType == typeof(AWDomainObject) && !t.IsAbstract).ToArray();
+        }
+
+        //TODO: The need for this (in addition to the ServicesConfiguration) should be removed.
+        public static Type[] Services()
+        {
+            return new[] {
+                typeof (CustomerRepository),
+                typeof (OrderRepository),
+                typeof (ProductRepository),
+                typeof (EmployeeRepository),
+                typeof (SalesRepository),
+                typeof (SpecialOfferRepository),
+                typeof (ContactRepository),
+                typeof (VendorRepository),
+                typeof (PurchaseOrderRepository),
+                typeof (WorkOrderRepository), 
+                typeof(OrderContributedActions),
+                typeof(CustomerContributedActions)
+            };
+        }
+        #endregion
+
+        #region Framework Configuration
+        /// <summary>Registers the type mappings with the Unity container.</summary>
+        /// <param name="container">The unity container to configure.</param>
+        /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
+        /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
+        public static void RegisterTypes(IUnityContainer container)
+        {
+            container.RegisterInstance(typeof(ServicesConfiguration), Services(), new ContainerControlledLifetimeManager());
+            container.RegisterInstance(typeof(EntityObjectStoreConfiguration), EntityObjectStore(), new ContainerControlledLifetimeManager());
+            
+            container.RegisterType<IClassStrategy, DefaultClassStrategy>();
+            container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
+            container.RegisterType<INakedObjectReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
+            container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerRequestLifetimeManager());
+            container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
+            container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
+            container.RegisterType<IContainerInjector, DotNetDomainObjectContainerInjector>(new PerRequestLifetimeManager());
+            container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerRequestLifetimeManager());
+            container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerRequestLifetimeManager());
+            container.RegisterType<INakedObjectStore, EntityObjectStore.EntityObjectStore>(new PerRequestLifetimeManager());
+            container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerRequestLifetimeManager());
+            container.RegisterType<IUpdateNotifier, SimpleUpdateNotifier>(new PerRequestLifetimeManager());
+            container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerRequestLifetimeManager());
+            container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerRequestLifetimeManager());
+            container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerRequestLifetimeManager());
+            container.RegisterType<IServicesManager, ServicesManager>(new PerRequestLifetimeManager());
+            container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerRequestLifetimeManager());            
+            container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerRequestLifetimeManager());       
+            container.RegisterType<ISession, WindowsSession>(new PerRequestLifetimeManager());            
+            container.RegisterType<IMessageBroker, SimpleMessageBroker>(new PerRequestLifetimeManager());
+            container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerRequestLifetimeManager());
+            container.RegisterType<IOidStrategy, ExternalOid>(new PerRequestLifetimeManager());
+            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerRequestLifetimeManager());
+        }
+        #endregion
+
         #region Unity Container
         private static Lazy<IUnityContainer> container = new Lazy<IUnityContainer>(() =>
         {
@@ -50,125 +151,5 @@ namespace NakedObjects.Mvc.App.App_Start
             return container.Value;
         }
         #endregion
-
-        private static Type[] AdventureWorksTypes() {
-            var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-            return allTypes.Where(t => t.BaseType == typeof(AWDomainObject) && !t.IsAbstract).ToArray();
-        }
-
-
-        public static Type[] Services() {
-            return new[] {
-                typeof (CustomerRepository),
-                typeof (OrderRepository),
-                typeof (ProductRepository),
-                typeof (EmployeeRepository),
-                typeof (SalesRepository),
-                typeof (SpecialOfferRepository),
-                typeof (ContactRepository),
-                typeof (VendorRepository),
-                typeof (PurchaseOrderRepository),
-                typeof (WorkOrderRepository), 
-                typeof(OrderContributedActions),
-                typeof(CustomerContributedActions)
-            };
-        }
-
-        private static object[] MenuServices {
-            get {
-                return new object[] {
-                    new CustomerRepository(),
-                    new OrderRepository(),
-                    new ProductRepository(),
-                    new EmployeeRepository(),
-                    new SalesRepository(),
-                    new SpecialOfferRepository(),
-                    new ContactRepository(),
-                    new VendorRepository(),
-                    new PurchaseOrderRepository(),
-                    new WorkOrderRepository()
-                };
-            }
-        }
-
-        private static object[] ContributedActions {
-            get {
-                return new object[] {
-                    new OrderContributedActions(),
-                    new CustomerContributedActions()
-                };
-            }
-        }
-
-        private static object[] SystemServices {
-            get {
-                return new object[] {
-                    new SimpleEncryptDecrypt()
-                };
-            }
-        }
-
-
-        /// <summary>Registers the type mappings with the Unity container.</summary>
-        /// <param name="container">The unity container to configure.</param>
-        /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
-        /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
-        public static void RegisterTypes(IUnityContainer container)
-        {
-           
-            container.RegisterType<IClassStrategy, DefaultClassStrategy>();
-            container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
-            container.RegisterType<INakedObjectReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
-
-
-            container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
-
-            var config = new EntityObjectStoreConfiguration();
-
-            config.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
-            config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
-
-            container.RegisterInstance(typeof(EntityObjectStoreConfiguration), config, new ContainerControlledLifetimeManager());
-
-            var serviceConfig = new ServicesConfiguration();
-
-            serviceConfig.AddMenuServices(MenuServices);
-            serviceConfig.AddContributedActions(ContributedActions);
-            serviceConfig.AddSystemServices(SystemServices);
-
-            container.RegisterInstance(typeof(ServicesConfiguration), serviceConfig, new ContainerControlledLifetimeManager());
-
-
-            container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerRequestLifetimeManager());
-            container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
-            container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
-
-            container.RegisterType<IContainerInjector, DotNetDomainObjectContainerInjector>(new PerRequestLifetimeManager());
-
-            container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerRequestLifetimeManager());
-            container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerRequestLifetimeManager());
-            container.RegisterType<INakedObjectStore, EntityObjectStore.EntityObjectStore>(new PerRequestLifetimeManager());
-            container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerRequestLifetimeManager());
-            container.RegisterType<IUpdateNotifier, SimpleUpdateNotifier>(new PerRequestLifetimeManager());
-
-            container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerRequestLifetimeManager());
-            container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerRequestLifetimeManager());
-            container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerRequestLifetimeManager());
-            container.RegisterType<IServicesManager, ServicesManager>(new PerRequestLifetimeManager());
-
-            container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerRequestLifetimeManager());
-            
-            container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerRequestLifetimeManager());
-          
-            container.RegisterType<ISession, WindowsSession>(new PerRequestLifetimeManager());
-            
-            container.RegisterType<IMessageBroker, SimpleMessageBroker>(new PerRequestLifetimeManager());
-
-            container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerRequestLifetimeManager());
-
-            container.RegisterType<IOidStrategy, ExternalOid>(new PerRequestLifetimeManager());
-
-            container.RegisterType<INakedObjectsSurface, NakedObjectsSurface>(new PerRequestLifetimeManager());
-        }
     }
 }

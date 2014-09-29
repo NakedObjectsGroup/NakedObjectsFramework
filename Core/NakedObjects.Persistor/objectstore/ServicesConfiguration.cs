@@ -10,17 +10,19 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public List<ServiceWrapper> Services { get; set; }
 
-        public void AddMenuServices(object[] services) {
+        public void AddMenuServices(params object[] services) {
             IEnumerable<ServiceWrapper> ss = services.Select(s => new ServiceWrapper(ServiceTypes.Menu, s));
             Services.AddRange(ss);
         }
 
-        public void AddContributedActions(object[] services) {
+        public void AddContributedActions(params object[] services)
+        {
             IEnumerable<ServiceWrapper> ss = services.Select(s => new ServiceWrapper(ServiceTypes.Contributor, s));
             Services.AddRange(ss);
         }
 
-        public void AddSystemServices(object[] services) {
+        public void AddSystemServices(params object[] services)
+        {
             IEnumerable<ServiceWrapper> ss = services.Select(s => new ServiceWrapper(ServiceTypes.System, s));
             Services.AddRange(ss);
         }
