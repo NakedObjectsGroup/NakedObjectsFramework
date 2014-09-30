@@ -43,22 +43,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Attributes.dll</HintPath>
-    </Reference>
-    <Reference Include="NakedObjects.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.PMResources.dll</HintPath>
-    </Reference>
-    <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Types.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -95,6 +79,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Attributes\NakedObjects.Attributes.csproj">
+      <Project>{8879084C-BD4A-4AD0-9418-A2C1DFB617D1}</Project>
+      <Name>NakedObjects.Attributes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.PMResources\NakedObjects.PMResources.csproj">
+      <Project>{69D471E4-1471-4DFA-B199-EB3EA5757A1B}</Project>
+      <Name>NakedObjects.PMResources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Types\NakedObjects.Types.csproj">
+      <Project>{F67B7823-5A02-41E0-B0AF-08AC438AA882}</Project>
+      <Name>NakedObjects.Types</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
