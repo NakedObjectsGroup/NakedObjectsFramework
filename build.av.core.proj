@@ -32,8 +32,7 @@
     <FWFiles Include="$(CorePath)\NakedObjects.Core\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.FrameworkService\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Persistor.Entity\*.csproj"/>
-    <FWFiles Include="$(CorePath)\NakedObjects.Reflector.Core\*.csproj"/>
-    <FWFiles Include="$(CorePath)\NakedObjects.Reflector.Dotnet\*.csproj"/>
+    <FWFiles Include="$(CorePath)\NakedObjects.Reflector\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Snapshot.Xml\*.csproj"/>
   </ItemGroup>
 
@@ -112,8 +111,7 @@
       <FWPdb Include="$(CorePath)\NakedObjects.Bootstrap\bin\%(Configuration.Identity)\NakedObjects.Bootstrap.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Core\bin\%(Configuration.Identity)\NakedObjects.Core.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Persistor.Entity\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.pdb"/>
-      <FWPdb Include="$(CorePath)\NakedObjects.Reflector.Core\bin\%(Configuration.Identity)\NakedObjects.Reflector.Core.pdb"/>
-      <FWPdb Include="$(CorePath)\NakedObjects.Reflector.Dotnet\bin\%(Configuration.Identity)\NakedObjects.Reflector.Dotnet.pdb"/>
+      <FWPdb Include="$(CorePath)\NakedObjects.Reflector\bin\%(Configuration.Identity)\NakedObjects.Reflector.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Snapshot.Xml\bin\%(Configuration.Identity)\NakedObjects.Snapshot.Xml.pdb"/>
     </ItemGroup>
 
@@ -126,8 +124,8 @@
       <FWSrc Include="$(CorePath)\*NakedObjects.Bootstrap\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Core\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Persistor.Entity\**\*.cs"/>
-      <FWSrc Include="$(CorePath)\*NakedObjects.Reflector.Core\**\*.cs"/>
-      <FWSrc Include="$(CorePath)\*NakedObjects.Reflector.Dotnet\**\*.cs"/>
+      <FWSrc Include="$(CorePath)\*NakedObjects.Reflector\**\*.cs"/>
+  
       <FWSrc Include="$(CorePath)\*NakedObjects.Snapshot.Xml\**\*.cs"/>
     </ItemGroup>
     <Copy SourceFiles="@(FWSrc)" DestinationFolder="$(CorePath)\$(NOCore).package\src\%(RecursiveDir)" />
