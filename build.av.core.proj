@@ -31,7 +31,6 @@
     <FWFiles Include="$(CorePath)\NakedObjects.Bootstrap\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Core\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.FrameworkService\*.csproj"/>
-    <FWFiles Include="$(CorePath)\NakedObjects.Persistor\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Persistor.Entity\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Reflector.Core\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Reflector.Dotnet\*.csproj"/>
@@ -112,7 +111,6 @@
       <FWPdb Include="$(CorePath)\NakedObjects.Async\bin\%(Configuration.Identity)\NakedObjects.Async.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Bootstrap\bin\%(Configuration.Identity)\NakedObjects.Bootstrap.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Core\bin\%(Configuration.Identity)\NakedObjects.Core.pdb"/>
-      <FWPdb Include="$(CorePath)\NakedObjects.Persistor\bin\%(Configuration.Identity)\NakedObjects.Persistor.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Persistor.Entity\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Reflector.Core\bin\%(Configuration.Identity)\NakedObjects.Reflector.Core.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Reflector.Dotnet\bin\%(Configuration.Identity)\NakedObjects.Reflector.Dotnet.pdb"/>
@@ -127,7 +125,6 @@
       <FWSrc Include="$(CorePath)\*NakedObjects.Async\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Bootstrap\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Core\**\*.cs"/>
-      <FWSrc Include="$(CorePath)\*NakedObjects.Persistor\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Persistor.Entity\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Reflector.Core\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Reflector.Dotnet\**\*.cs"/>
