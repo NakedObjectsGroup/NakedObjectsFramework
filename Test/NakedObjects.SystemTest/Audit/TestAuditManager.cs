@@ -10,8 +10,6 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Audit;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Persistor.Objectstore.Inmemory;
-using NakedObjects.Reflector.Audit;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using System.Data.Entity;

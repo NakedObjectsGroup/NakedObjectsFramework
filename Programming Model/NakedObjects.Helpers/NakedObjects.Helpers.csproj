@@ -43,6 +43,22 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Attributes.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.PMResources.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Types.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -76,20 +92,6 @@
     <Compile Include="Util\TitleBuilder.cs" />
     <Compile Include="Util\TypeUtils.cs" />
     <Compile Include="Util\ViewModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NakedObjects.Attributes\NakedObjects.Attributes.csproj">
-      <Project>{8879084C-BD4A-4AD0-9418-A2C1DFB617D1}</Project>
-      <Name>NakedObjects.Attributes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.PMResources\NakedObjects.PMResources.csproj">
-      <Project>{7494A00E-6A3F-4BDE-84FF-20AA538ED575}</Project>
-      <Name>NakedObjects.PMResources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Types\NakedObjects.Types.csproj">
-      <Project>{f67b7823-5a02-41e0-b0af-08ac438aa882}</Project>
-      <Name>NakedObjects.Types</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

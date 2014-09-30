@@ -70,7 +70,7 @@
     </Reference>
     <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Attributes.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Bootstrap">
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Bootstrap.dll</HintPath>
@@ -84,26 +84,23 @@
     <Reference Include="NakedObjects.FWResources">
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.FWResources.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Persistor">
-      <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Persistor.dll</HintPath>
+    <Reference Include="NakedObjects.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Persistor.Entity">
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.PMResources">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
-    </Reference>
-    <Reference Include="NakedObjects.Reflector.Core">
-      <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="NakedObjects.Reflector.DotNet">
-      <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Reflector.DotNet.dll</HintPath>
+    <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.PMResources.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml">
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Types">
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.6.0.0\lib\net40\NakedObjects.Types.dll</HintPath>
+    <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Types.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Xat, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -129,12 +126,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Programming Model\NakedObjects.Helpers\NakedObjects.Helpers.csproj">
-      <Project>{8b62cb10-ecd9-4814-9211-d252e5b5d48b}</Project>
-      <Name>NakedObjects.Helpers</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

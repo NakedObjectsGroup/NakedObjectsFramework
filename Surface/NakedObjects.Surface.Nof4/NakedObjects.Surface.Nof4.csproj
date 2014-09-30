@@ -107,10 +107,6 @@
     <Reference Include="NakedObjects.Reflector">
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Reflector.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Reflector.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Reflector.Core.dll</HintPath>
-    </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>

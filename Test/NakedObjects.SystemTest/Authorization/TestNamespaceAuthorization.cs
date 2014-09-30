@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Persistor.Objectstore.Inmemory;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Boot;
 using NakedObjects.Services;
-using NakedObjects.Reflector.Security;
 using NakedObjects.Security;
 using System.Security.Principal;
-using NakedObjects.Xat;
 using NakedObjects;
 using MyApp.MyCluster1;
 using MyApp.MyCluster2;

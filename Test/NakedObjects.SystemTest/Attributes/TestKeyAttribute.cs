@@ -3,7 +3,6 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Persistor.Objectstore.Inmemory;
 using NakedObjects.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel.DataAnnotations;
@@ -39,7 +38,7 @@ namespace NakedObjects.SystemTest.Other
         {
             CleanupNakedObjectsFramework(this);
             
-            MemoryObjectStore.DiscardObjects();
+           
         }
 
         #endregion

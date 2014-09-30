@@ -7,8 +7,6 @@ using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Persistor.Objectstore.Inmemory;
-using NakedObjects.Reflector.Security;
 using NakedObjects.Security;
 using NakedObjects.Services;
 using NakedObjects.Xat;
