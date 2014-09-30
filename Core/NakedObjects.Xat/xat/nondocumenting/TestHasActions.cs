@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Immutable;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;

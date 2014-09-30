@@ -20,7 +20,6 @@ using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Mvc.Test.Data;
-using NakedObjects.Persistor.Objectstore.Inmemory;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -81,9 +80,7 @@ namespace MvcTestApp.Tests.Helpers {
             get { return new FixturesInstaller(DemoFixtureSet.FixtureSet()); }
         }
 
-        protected override IObjectPersistorInstaller Persistor {
-            get { return new InMemoryObjectPersistorInstaller {SimpleOidGeneratorStart = 100}; }
-        }
+     
 
         private class DummyController : Controller {}
 
