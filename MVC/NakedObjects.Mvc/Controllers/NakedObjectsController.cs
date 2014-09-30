@@ -552,7 +552,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (nakedObject.ResolveState.IsTransient()) {
                 CanPersist(nakedObject, usableAndVisibleFields);
                 if (ModelState.IsValid) {
-                    if (nakedObject.Specification.Persistable == Persistable.USER_PERSISTABLE) {
+                    if (nakedObject.Specification.Persistable == PersistableType.UserPersistable) {
                         NakedObjectsContext.LifecycleManager.MakePersistent(nakedObject);
                     }
                     else {

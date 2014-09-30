@@ -57,7 +57,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (controlData.SubAction == ObjectAndControlData.SubActionType.Cancel &&
                 nakedObject.ResolveState.IsTransient() &&
-                nakedObject.Specification.Persistable == Persistable.USER_PERSISTABLE) {
+                nakedObject.Specification.Persistable == PersistableType.UserPersistable) {
                 // remove from cache and return to last object 
                 Session.RemoveFromCache(NakedObjectsContext, nakedObject, ObjectCache.ObjectFlag.BreadCrumb);
                 return AppropriateView(controlData, null);

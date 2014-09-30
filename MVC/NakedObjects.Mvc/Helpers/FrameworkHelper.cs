@@ -232,8 +232,8 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static bool IsNotPersistent(this INakedObject nakedObject) {
-            return (nakedObject.ResolveState.IsTransient() && nakedObject.Specification.Persistable == Persistable.PROGRAM_PERSISTABLE) ||
-                   nakedObject.Specification.Persistable == Persistable.TRANSIENT;
+            return (nakedObject.ResolveState.IsTransient() && nakedObject.Specification.Persistable == PersistableType.ProgramPersistable) ||
+                   nakedObject.Specification.Persistable == PersistableType.Transient;
         }
 
         public static bool IsImage(this INakedObjectSpecification spec, INakedObjectsFramework framework) {

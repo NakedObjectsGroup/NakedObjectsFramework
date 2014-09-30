@@ -422,7 +422,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                     if (!arguments.ValidateOnly) {
                         Array.ForEach(objectContext.VisibleProperties, SetProperty);
 
-                        if (nakedObject.Specification.Persistable == Persistable.USER_PERSISTABLE) {
+                        if (nakedObject.Specification.Persistable == PersistableType.UserPersistable) {
                             framework.LifecycleManager.MakePersistent(nakedObject);
                         }
                         else {
