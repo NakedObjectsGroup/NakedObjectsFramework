@@ -5,10 +5,8 @@
 using System;
 using System.IO;
 using Common.Logging;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
-using NakedObjects.Persistor.Objectstore.Inmemory;
 using NakedObjects.Reflector.Audit;
 using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.I18n.Resourcebundle;
@@ -92,7 +90,7 @@ namespace NakedObjects.Boot {
         }
 
         protected virtual IObjectPersistorInstaller Persistor {
-            get { return new InMemoryObjectPersistorInstaller(); }
+            get { return null; }
         }
 
         protected virtual IAuthorizerInstaller Authorizer {

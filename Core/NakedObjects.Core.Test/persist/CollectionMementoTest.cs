@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Persist;
-using NakedObjects.Core.Adapter.Map;
 using NakedObjects.EntityObjectStore;
-using NakedObjects.Persistor;
-using NakedObjects.Persistor.Objectstore;
-using NakedObjects.Persistor.Objectstore.Inmemory;
 using NUnit.Framework;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;

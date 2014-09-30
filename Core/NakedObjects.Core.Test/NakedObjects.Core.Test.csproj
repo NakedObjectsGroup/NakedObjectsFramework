@@ -153,10 +153,6 @@
       <Project>{3E188CC2-9F88-47F1-A197-22518958AE25}</Project>
       <Name>NakedObjects.Persistor.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Persistor\NakedObjects.Persistor.csproj">
-      <Project>{26DE3AD7-424B-4246-89C3-DB675BE02628}</Project>
-      <Name>NakedObjects.Persistor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Xat\NakedObjects.Xat.csproj">
       <Project>{C818DFD4-6020-419A-8274-F59803956180}</Project>
       <Name>NakedObjects.Xat</Name>

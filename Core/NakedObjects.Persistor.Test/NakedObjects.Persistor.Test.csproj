@@ -97,7 +97,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="inMemoryTest\InMemoryTestSuite.cs" />
     <Compile Include="persist\DefaultPersistAlgorithmTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="testSuite\PersistorTestSuite.cs" />
@@ -118,10 +117,6 @@
     <ProjectReference Include="..\NakedObjects.Persistor.Test.Data\NakedObjects.Persistor.Test.Data.csproj">
       <Project>{25F3DE0C-94DA-4B32-95E5-BA4BB90DD79B}</Project>
       <Name>NakedObjects.Persistor.Test.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Persistor\NakedObjects.Persistor.csproj">
-      <Project>{26DE3AD7-424B-4246-89C3-DB675BE02628}</Project>
-      <Name>NakedObjects.Persistor</Name>
     </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Reflector.DotNet\NakedObjects.Reflector.DotNet.csproj">
       <Project>{47D00690-5B24-42D3-A9A7-C87469B6A088}</Project>

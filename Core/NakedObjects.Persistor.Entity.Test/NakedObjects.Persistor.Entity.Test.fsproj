@@ -191,11 +191,6 @@
       <Project>{55b3b255-ef04-411d-9b07-c1e4f6fb5441}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Persistor\NakedObjects.Persistor.csproj">
-      <Name>NakedObjects.Persistor</Name>
-      <Project>{26de3ad7-424b-4246-89c3-db675be02628}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.Core.csproj">
       <Name>NakedObjects.Reflector.Core</Name>
       <Project>{91153c56-313c-426e-8b0d-43fa39bd567a}</Project>

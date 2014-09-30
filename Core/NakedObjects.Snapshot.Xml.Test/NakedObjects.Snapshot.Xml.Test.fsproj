@@ -156,11 +156,6 @@
       <Project>{3f1e438c-020c-4751-a65a-63c2990d8278}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Persistor\NakedObjects.Persistor.csproj">
-      <Name>NakedObjects.Persistor</Name>
-      <Project>{26de3ad7-424b-4246-89c3-db675be02628}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Snapshot.Xml.Test.Data\NakedObjects.Snapshot.Xml.Test.Data.csproj">
       <Name>NakedObjects.Snapshot.Xml.Test.Data</Name>
       <Project>{80269255-d420-463d-92da-6cd1137c4633}</Project>

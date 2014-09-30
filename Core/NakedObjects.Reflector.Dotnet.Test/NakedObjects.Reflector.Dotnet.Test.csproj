@@ -228,10 +228,6 @@
       <Project>{7095e1c3-2c43-4802-9930-522e1bbf27c1}</Project>
       <Name>NakedObjects.FrameworkService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Persistor\NakedObjects.Persistor.csproj">
-      <Project>{26DE3AD7-424B-4246-89C3-DB675BE02628}</Project>
-      <Name>NakedObjects.Persistor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.Core.csproj">
       <Project>{91153C56-313C-426E-8B0D-43FA39BD567A}</Project>
       <Name>NakedObjects.Reflector.Core</Name>

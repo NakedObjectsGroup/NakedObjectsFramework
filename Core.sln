@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Core", "Core\N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Core.Test", "Core\NakedObjects.Core.Test\NakedObjects.Core.Test.csproj", "{34CD2E76-7C5C-4DF2-AAAC-2AD167480649}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Persistor", "Core\NakedObjects.Persistor\NakedObjects.Persistor.csproj", "{26DE3AD7-424B-4246-89C3-DB675BE02628}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Persistor.Entity", "Core\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj", "{3E188CC2-9F88-47F1-A197-22518958AE25}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NakedObjects.Persistor.Entity.Test", "Core\NakedObjects.Persistor.Entity.Test\NakedObjects.Persistor.Entity.Test.fsproj", "{F0C4DD78-2CD8-4EB9-A3B1-158E8315D4EE}"
@@ -109,12 +107,6 @@ Global
 		{34CD2E76-7C5C-4DF2-AAAC-2AD167480649}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34CD2E76-7C5C-4DF2-AAAC-2AD167480649}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34CD2E76-7C5C-4DF2-AAAC-2AD167480649}.Release|x86.ActiveCfg = Release|Any CPU
-		{26DE3AD7-424B-4246-89C3-DB675BE02628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26DE3AD7-424B-4246-89C3-DB675BE02628}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26DE3AD7-424B-4246-89C3-DB675BE02628}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{26DE3AD7-424B-4246-89C3-DB675BE02628}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26DE3AD7-424B-4246-89C3-DB675BE02628}.Release|Any CPU.Build.0 = Release|Any CPU
-		{26DE3AD7-424B-4246-89C3-DB675BE02628}.Release|x86.ActiveCfg = Release|Any CPU
 		{3E188CC2-9F88-47F1-A197-22518958AE25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3E188CC2-9F88-47F1-A197-22518958AE25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E188CC2-9F88-47F1-A197-22518958AE25}.Debug|x86.ActiveCfg = Debug|Any CPU

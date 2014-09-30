@@ -154,10 +154,16 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="context\SimpleMessageBroker.cs" />
     <Compile Include="context\SimpleUpdateNotifier.cs" />
+    <Compile Include="objectstore\LifeCycleManager.cs" />
+    <Compile Include="objectstore\ObjectStoreTransaction.cs" />
+    <Compile Include="objectstore\ObjectStoreTransactionManager.cs" />
+    <Compile Include="objectstore\ServicesConfiguration.cs" />
     <Compile Include="persist\AbstractFixtureBuilder.cs" />
+    <Compile Include="persist\AbstractObjectPersistorInstaller.cs" />
     <Compile Include="persist\AdapterException.cs" />
     <Compile Include="persist\CollectionMemento.cs" />
     <Compile Include="persist\CollectionMementoHelper.cs" />
+    <Compile Include="persist\DefaultPersistAlgorithm.cs" />
     <Compile Include="persist\EntityOid.cs" />
     <Compile Include="persist\SerialOid.cs" />
     <Compile Include="persist\SimpleOidGenerator.cs" />
