@@ -76,11 +76,6 @@
       <Project>{3e188cc2-9f88-47f1-a197-22518958ae25}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.Core.csproj">
-      <Name>NakedObjects.Reflector.Core</Name>
-      <Project>{91153c56-313c-426e-8b0d-43fa39bd567a}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <Reference Include="Common.Logging">
       <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
       <Private>True</Private>
@@ -154,6 +149,11 @@
     <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj">
       <Name>NakedObjects.Core</Name>
       <Project>{3f1e438c-020c-4751-a65a-63c2990d8278}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.csproj">
+      <Name>NakedObjects.Reflector</Name>
+      <Project>{91153c56-313c-426e-8b0d-43fa39bd567a}</Project>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Snapshot.Xml.Test.Data\NakedObjects.Snapshot.Xml.Test.Data.csproj">

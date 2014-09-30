@@ -83,9 +83,9 @@
       <Project>{3F1E438C-020C-4751-A65A-63C2990D8278}</Project>
       <Name>NakedObjects.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.Core.csproj">
+    <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.csproj">
       <Project>{91153C56-313C-426E-8B0D-43FA39BD567A}</Project>
-      <Name>NakedObjects.Reflector.Core</Name>
+      <Name>NakedObjects.Reflector</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

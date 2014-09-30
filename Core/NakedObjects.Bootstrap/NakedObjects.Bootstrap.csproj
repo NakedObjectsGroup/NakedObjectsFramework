@@ -198,13 +198,9 @@
       <Project>{7494A00E-6A3F-4BDE-84FF-20AA538ED575}</Project>
       <Name>NakedObjects.FWResources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.Core.csproj">
+    <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.csproj">
       <Project>{91153C56-313C-426E-8B0D-43FA39BD567A}</Project>
-      <Name>NakedObjects.Reflector.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Reflector.DotNet\NakedObjects.Reflector.DotNet.csproj">
-      <Project>{47D00690-5B24-42D3-A9A7-C87469B6A088}</Project>
-      <Name>NakedObjects.Reflector.DotNet</Name>
+      <Name>NakedObjects.Reflector</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

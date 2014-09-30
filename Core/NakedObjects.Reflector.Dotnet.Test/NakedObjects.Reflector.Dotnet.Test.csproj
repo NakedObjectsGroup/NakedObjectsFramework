@@ -228,13 +228,9 @@
       <Project>{7095e1c3-2c43-4802-9930-522e1bbf27c1}</Project>
       <Name>NakedObjects.FrameworkService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.Core.csproj">
+    <ProjectReference Include="..\NakedObjects.Reflector.Core\NakedObjects.Reflector.csproj">
       <Project>{91153C56-313C-426E-8B0D-43FA39BD567A}</Project>
-      <Name>NakedObjects.Reflector.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Reflector.DotNet\NakedObjects.Reflector.DotNet.csproj">
-      <Project>{47D00690-5B24-42D3-A9A7-C87469B6A088}</Project>
-      <Name>NakedObjects.Reflector.DotNet</Name>
+      <Name>NakedObjects.Reflector</Name>
     </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Xat\NakedObjects.Xat.csproj">
       <Project>{C818DFD4-6020-419A-8274-F59803956180}</Project>

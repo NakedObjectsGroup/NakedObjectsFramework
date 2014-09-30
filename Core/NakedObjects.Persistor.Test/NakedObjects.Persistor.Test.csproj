@@ -118,10 +118,6 @@
       <Project>{25F3DE0C-94DA-4B32-95E5-BA4BB90DD79B}</Project>
       <Name>NakedObjects.Persistor.Test.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Reflector.DotNet\NakedObjects.Reflector.DotNet.csproj">
-      <Project>{47D00690-5B24-42D3-A9A7-C87469B6A088}</Project>
-      <Name>NakedObjects.Reflector.DotNet</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Bootstrap\NakedObjects.Bootstrap.csproj">
       <Project>{027C99E2-2AD7-4700-A871-DE543C9D83C8}</Project>
       <Name>NakedObjects.Bootstrap</Name>
