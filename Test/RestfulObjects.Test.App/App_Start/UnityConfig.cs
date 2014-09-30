@@ -112,7 +112,7 @@ namespace RestfulObjects.Test.App
 
             config.UsingCodeFirstContext(() => new CodeFirstContext("RestTest"));
 
-            container.RegisterInstance(typeof(EntityObjectStoreConfiguration), config, new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IEntityObjectStoreConfiguration>( config, new ContainerControlledLifetimeManager());
 
             var serviceConfig = new ServicesConfiguration();
 
@@ -120,7 +120,7 @@ namespace RestfulObjects.Test.App
             serviceConfig.AddContributedActions(ContributedActions);
             serviceConfig.AddSystemServices(SystemServices);
 
-            container.RegisterInstance(typeof(ServicesConfiguration), serviceConfig, new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IServicesConfiguration>(serviceConfig, new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));

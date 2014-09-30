@@ -21,7 +21,7 @@ namespace NakedObjects.SystemTest {
             base.RegisterTypes(container);
             var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
             config.UsingCodeFirstContext(() => Activator.CreateInstance<TContext>());
-            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
         #endregion
 

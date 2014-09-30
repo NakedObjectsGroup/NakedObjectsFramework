@@ -44,7 +44,7 @@ namespace MvcTestApp.Tests.Helpers {
             base.RegisterTypes(container);
             var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
             config.UsingCodeFirstContext(() => new MvcTestContext("SystemHelperTest"));
-            container.RegisterInstance(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
         }
 
         [TestFixtureSetUp]

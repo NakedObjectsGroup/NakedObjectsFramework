@@ -161,6 +161,9 @@
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NakedObjects.Metadata">
+      <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Metadata.dll</HintPath>
+    </Reference>
     <Reference Include="NakedObjects.Persistor.Entity">
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
       <Private>True</Private>

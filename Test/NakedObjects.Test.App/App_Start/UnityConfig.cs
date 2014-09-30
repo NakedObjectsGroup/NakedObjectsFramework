@@ -127,7 +127,7 @@ namespace NakedObjects.Mvc.App.App_Start
             config.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
             config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
 
-            container.RegisterInstance(typeof(EntityObjectStoreConfiguration), config, new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IEntityObjectStoreConfiguration>( config, new ContainerControlledLifetimeManager());
 
             var serviceConfig = new ServicesConfiguration();
 
@@ -135,7 +135,7 @@ namespace NakedObjects.Mvc.App.App_Start
             serviceConfig.AddContributedActions(ContributedActions);
             serviceConfig.AddSystemServices(SystemServices);
 
-            container.RegisterInstance(typeof(ServicesConfiguration), serviceConfig, new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IServicesConfiguration> (serviceConfig, new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
