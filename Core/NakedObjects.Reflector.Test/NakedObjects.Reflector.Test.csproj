@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DD0F2C26-D425-48FF-A22B-3B4E8EFA63C1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NakedObjects.Reflector</RootNamespace>
+    <AssemblyName>NakedObjects.Reflector.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\..\packages\Moq.4.2.1408.0717\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Attributes">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Helpers">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.PMResources">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.PMResources.dll</HintPath>
+    </Reference>
+    <Reference Include="NakedObjects.Types">
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="annotations\ObjectAnnotatedAsImmutable.cs" />
+    <Compile Include="annotations\ObjectWithAnnotations.cs" />
+    <Compile Include="dotnet\ValueSemanticsProviderAbstractTestCase.cs" />
+    <Compile Include="facets\AbstractFacetFactoryTest.cs" />
+    <Compile Include="facets\actcoll\table\TableViewAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\actcoll\typeof\TypeOfAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\actions\ActionMethodsFacetFactoryTest.cs" />
+    <Compile Include="facets\actions\contributed\ExcludeFromFindMenuAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\actions\contributed\NotContributedActionAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\actions\ComplementaryMethodsFilteringFacetFactoryTest.cs" />
+    <Compile Include="facets\actions\RemoveEventHandlerMethodsFacetFactoryTest.cs" />
+    <Compile Include="facets\actions\executed\ExecutedAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\actions\IteratorFilteringFacetFactoryTest.cs" />
+    <Compile Include="facets\actions\ActionDefaultAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\actions\pagesize\PageSizeAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\actions\potency\PotencyAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\actions\UnsupportedParameterTypesMethodFilteringFactoryTest.cs" />
+    <Compile Include="facets\actions\Validate\ActionParameterValidationFacetViaMethodTest.cs" />
+    <Compile Include="facets\authorize\AuthorizeAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\collections\CollectionFacetsTest.cs" />
+    <Compile Include="facets\collections\CollectionFieldMethodsFacetFactoryTest.cs" />
+    <Compile Include="facets\disable\DisabledAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\hide\HiddenAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\MetadataAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\naming\describedas\DescribedAsAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\naming\named\NamedAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\aggregated\InlineAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\bounded\BoundedAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\callback\CallbackMethodsFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\defaults\DefaultedFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\encodeable\EncodeableFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\facets\FacetsAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\ident\icon\IconMethodFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\ident\plural\PluralAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\ident\title\TitleMethodFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\immutable\ImmutableAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\notpersistable\ProgramPersistableOnlyAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\parseable\ParseableFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\validate\ValidateProgrammaticUpdatesAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\value\ValueFacetFactoryTest.cs" />
+    <Compile Include="facets\onobject\viewmodel\ViewModelFacetFactoryTest.cs" />
+    <Compile Include="facets\ordering\actionorder\ActionOrderAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\ordering\fieldorder\FieldOrderAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\ordering\memberorder\DeweyOrderSetTest.cs" />
+    <Compile Include="facets\ordering\memberorder\MemberOrderAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\ordering\memberorder\MemberOrderComparatorTest.cs" />
+    <Compile Include="facets\ordering\memberorder\MemberPeerStub.cs" />
+    <Compile Include="facets\password\PasswordAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\presentation\PresentationHintAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\ProgrammableMethodRemover.cs" />
+    <Compile Include="facets\ProgrammableNakedObject.cs" />
+    <Compile Include="facets\propcoll\notpersisted\NotPersistedAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\properties\EagerlyAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\properties\PropertyFieldMethodsFacetFactoryTest.cs" />
+    <Compile Include="facets\properties\PropertyDefaultAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\propparam\enum\EnumFacetFactoryTest.cs" />
+    <Compile Include="facets\propparam\key\KeyAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\propparam\multiline\MultiLineAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\propparam\typicallength\TypicalLengthAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\propparam\validate\mandatory\OptionalDefaultFacetFactoryTest.cs" />
+    <Compile Include="facets\propparam\validate\mandatory\MandatoryDefaultFacetFactoryTest.cs" />
+    <Compile Include="facets\propparam\validate\mandatory\RequiredAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\propparam\validate\mandatory\OptionalAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\propparam\validate\mask\MaskAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\propparam\validate\maxlength\MaxLengthAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\propparam\validate\range\RangeAnnotationFacetFactoryTest.cs" />
+    <Compile Include="facets\propparam\validate\regex\RegExAnnotationFacetFactoryTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="proxies\ProxyCreatorTest.cs" />
+    <Compile Include="reflect\AbstractDotNetReflectorTest.cs" />
+    <Compile Include="reflect\ActionTestObject.cs" />
+    <Compile Include="reflect\Reflector_ValidateTest.cs" />
+    <Compile Include="reflect\Reflector_MetadataTest.cs" />
+    <Compile Include="reflect\ObjectWithBasicProgramConventions.cs" />
+    <Compile Include="reflect\ObjectWithGenericList.cs" />
+    <Compile Include="reflect\ObjectWithList.cs" />
+    <Compile Include="reflect\ObjectWithOneToOneAssociations.cs" />
+    <Compile Include="reflect\ReferencedObject.cs" />
+    <Compile Include="reflect\Reflector_ArrayTest.cs" />
+    <Compile Include="reflect\Reflector_CollectionTest.cs" />
+    <Compile Include="reflect\Reflector_GenericCollectionTest.cs" />
+    <Compile Include="reflect\Reflector_ObjectTest.cs" />
+    <Compile Include="reflect\Reflector_ValueTest.cs" />
+    <Compile Include="reflect\TestObject.cs" />
+    <Compile Include="reflect\TestObjectAsAggregated.cs" />
+    <Compile Include="reflect\TestObjectAsService.cs" />
+    <Compile Include="reflect\TestObjectWithCollection.cs" />
+    <Compile Include="spec\OneToManyAssociationTest.cs" />
+    <Compile Include="test\dom\TestDomainObject.cs" />
+    <Compile Include="value\BoolValueSemanticsProviderTest.cs" />
+    <Compile Include="value\CharValueSemanticsProviderTest.cs" />
+    <Compile Include="value\ByteArrayValueSemanticsProviderTest.cs" />
+    <Compile Include="value\EnumValueSemanticsProviderTest.cs" />
+    <Compile Include="value\SbyteValueSemanticsProviderTest.cs" />
+    <Compile Include="value\ShortValueSemanticsProviderTest.cs" />
+    <Compile Include="value\LongValueSemanticsProviderTest.cs" />
+    <Compile Include="value\IntValueSemanticsProviderTest.cs" />
+    <Compile Include="value\FloatValueSemanticsProviderTest.cs" />
+    <Compile Include="value\DoubleValueSemanticsProviderTest.cs" />
+    <Compile Include="value\DateTimeValueSemanticsProviderTest.cs" />
+    <Compile Include="value\TimeValueSemanticsProviderTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj">
+      <Project>{BF6D9655-B873-4980-ACE7-A122EA45F045}</Project>
+      <Name>NakedObjects.Architecture</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Bootstrap\NakedObjects.Bootstrap.csproj">
+      <Project>{027C99E2-2AD7-4700-A871-DE543C9D83C8}</Project>
+      <Name>NakedObjects.Bootstrap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj">
+      <Project>{3F1E438C-020C-4751-A65A-63C2990D8278}</Project>
+      <Name>NakedObjects.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.FrameworkService\NakedObjects.FrameworkService.csproj">
+      <Project>{7095e1c3-2c43-4802-9930-522e1bbf27c1}</Project>
+      <Name>NakedObjects.FrameworkService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj">
+      <Project>{91153C56-313C-426E-8B0D-43FA39BD567A}</Project>
+      <Name>NakedObjects.Reflector</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Xat\NakedObjects.Xat.csproj">
+      <Project>{C818DFD4-6020-419A-8274-F59803956180}</Project>
+      <Name>NakedObjects.Xat</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="facets\onobject\ident\singular\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

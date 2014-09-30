@@ -191,6 +191,11 @@
       <Project>{55b3b255-ef04-411d-9b07-c1e4f6fb5441}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj">
+      <Name>NakedObjects.Reflector</Name>
+      <Project>{91153c56-313c-426e-8b0d-43fa39bd567a}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Xat\NakedObjects.Xat.csproj">
       <Name>NakedObjects.Xat</Name>
       <Project>{c818dfd4-6020-419a-8274-f59803956180}</Project>
