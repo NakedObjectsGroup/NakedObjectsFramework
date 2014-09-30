@@ -232,7 +232,7 @@ namespace NakedObjects.Xat {
             //config.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
             //config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
 
-            container.RegisterInstance(typeof (EntityObjectStoreConfiguration), config, new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
 
             var serviceConfig = new ServicesConfiguration();
 
@@ -240,7 +240,7 @@ namespace NakedObjects.Xat {
             serviceConfig.AddContributedActions(ContributedActions.GetServices());
             serviceConfig.AddSystemServices(SystemServices.GetServices());
 
-            container.RegisterInstance(typeof (ServicesConfiguration), serviceConfig, new ContainerControlledLifetimeManager());
+            container.RegisterInstance <IServicesConfiguration> (serviceConfig, new ContainerControlledLifetimeManager());
 
             container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerResolveLifetimeManager());
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));

@@ -161,7 +161,7 @@ type EntityTestSuite() =
         let config = new EntityObjectStoreConfiguration()
         let f = (fun () -> new TestDataContext() :> Data.Entity.DbContext)
         let ignore = config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) 
-        let ignore = container.RegisterInstance(typeof<EntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
+        let ignore = container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
         ()
 
     member x.ClearOldTestData() =    ()

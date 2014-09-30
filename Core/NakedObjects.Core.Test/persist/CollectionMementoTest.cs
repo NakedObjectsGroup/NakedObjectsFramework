@@ -94,7 +94,7 @@ namespace NakedObjects.Core.Persist {
             // replace INakedObjectStore types
             var c = new EntityObjectStoreConfiguration();
             c.UsingCodeFirstContext(() => new TestContext("TestContext"));
-            container.RegisterInstance(typeof (EntityObjectStoreConfiguration), null, c, (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(c, (new ContainerControlledLifetimeManager()));
         }
 
         [TestFixtureSetUp]

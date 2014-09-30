@@ -28,7 +28,7 @@ type CodeSystemTests() =
         let config = new EntityObjectStoreConfiguration()
         let f = (fun () -> new CodeFirstContext("CodeSystemTest") :> Data.Entity.DbContext)
         let ignore = config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) 
-        let ignore = container.RegisterInstance(typeof<EntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
+        let ignore = container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
         ()
    
     [<TestFixtureSetUpAttribute>]

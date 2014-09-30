@@ -4,14 +4,14 @@
 
 using NUnit.Framework;
 
-// TODI Write new tests for this 
+// TODO Write new tests for this 
 
 
 namespace NakedObjects.Persistor.Persist {
     /// <summary>
     /// Summary description for DefaultPersistAlgorithmTest
     /// </summary>
-    [TestFixture]
+    [TestFixture, Ignore]
     public class DefaultPersistAlgorithmTest  {
         //#region Setup/Teardown
 

@@ -29,7 +29,7 @@ type ModelSystemTests() =
         let config = new EntityObjectStoreConfiguration()
         config.EnforceProxies <- false
         let ignore = config.UsingEdmxContext "Model1Container"
-        let ignore = container.RegisterInstance(typeof<EntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
+        let ignore = container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
         ()
     
     [<TestFixtureSetUpAttribute>]

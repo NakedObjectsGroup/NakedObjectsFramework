@@ -37,7 +37,7 @@ type DomainTests() =
             let config = new EntityObjectStoreConfiguration()
             let f = (fun () -> new TestObjectContext("XmlSnapshotTest") :> DbContext)
             let ignore = config.UsingCodeFirstContext(Func<DbContext>(f)) 
-            let ignore = container.RegisterInstance(typeof<EntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
+            let ignore = container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
             ()
         
         [<TestFixtureSetUp>]
