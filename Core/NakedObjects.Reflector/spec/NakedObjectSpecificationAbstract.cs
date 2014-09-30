@@ -182,8 +182,8 @@ namespace NakedObjects.Reflector.Spec {
             get { return false; }
         }
 
-        public virtual Persistable Persistable {
-            get { return Persistable.USER_PERSISTABLE; }
+        public virtual PersistableType Persistable {
+            get { return PersistableType.UserPersistable; }
         }
 
         public bool IsASet {

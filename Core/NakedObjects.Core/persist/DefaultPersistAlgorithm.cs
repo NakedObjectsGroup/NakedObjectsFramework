@@ -48,7 +48,7 @@ namespace NakedObjects.Persistor {
                 if (nakedObject.ResolveState.IsPersistent()) {
                     throw new NotPersistableException("can't make object persistent as it is already persistent: " + nakedObject);
                 }
-                if (nakedObject.Specification.Persistable == Persistable.TRANSIENT) {
+                if (nakedObject.Specification.Persistable == PersistableType.Transient) {
                     throw new NotPersistableException("can't make object persistent as it is not persistable: " + nakedObject);
                 }
                 Persist(nakedObject, session);
@@ -66,7 +66,7 @@ namespace NakedObjects.Persistor {
         protected void Persist(INakedObject nakedObject, ISession session) {
             if (nakedObject.ResolveState.IsAggregated() ||
                 (nakedObject.ResolveState.IsTransient() &&
-                 nakedObject.Specification.Persistable != Persistable.TRANSIENT)) {
+                 nakedObject.Specification.Persistable != PersistableType.Transient)) {
                 INakedObjectAssociation[] fields = nakedObject.Specification.Properties;
                 if (!nakedObject.Specification.IsEncodeable && fields.Length > 0) {
                     Log.Info("make persistent " + nakedObject);

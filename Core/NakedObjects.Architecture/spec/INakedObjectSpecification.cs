@@ -115,7 +115,7 @@ namespace NakedObjects.Architecture.Spec {
         ///     returns something other than <see cref="NakedObjects.Architecture.Adapter.Persistable.TRANSIENT" /> then
         ///     <see cref="IDomainObjectContainer.IsPersistent" /> will indicate whether the object is persistent or not.
         /// </summary>
-        Persistable Persistable { get; }
+        PersistableType Persistable { get; }
 
         bool IsASet { get; }
         bool IsViewModel { get; }

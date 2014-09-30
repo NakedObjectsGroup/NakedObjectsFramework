@@ -761,7 +761,7 @@ namespace NakedObjects.Persistor.Objectstore {
             if (IsPersistent(nakedObject)) {
                 throw new NotPersistableException("Object already persistent: " + nakedObject);
             }
-            if (nakedObject.Specification.Persistable == Persistable.TRANSIENT) {
+            if (nakedObject.Specification.Persistable == PersistableType.Transient) {
                 throw new NotPersistableException("Object must be kept transient: " + nakedObject);
             }
             INakedObjectSpecification specification = nakedObject.Specification;

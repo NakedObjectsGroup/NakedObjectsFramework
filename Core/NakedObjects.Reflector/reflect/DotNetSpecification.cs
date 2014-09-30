@@ -131,18 +131,18 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             get { return whetherVoid; }
         }
 
-        public override Persistable Persistable {
+        public override PersistableType Persistable {
             get {
                 if (service) {
-                    return Persistable.PROGRAM_PERSISTABLE;
+                    return PersistableType.ProgramPersistable;
                 }
                 if (ContainsFacet<INotPersistedFacet>()) {
-                    return Persistable.TRANSIENT;
+                    return PersistableType.Transient;
                 }
                 if (ContainsFacet<IProgramPersistableOnlyFacet>()) {
-                    return Persistable.PROGRAM_PERSISTABLE;
+                    return PersistableType.ProgramPersistable;
                 }
-                return Persistable.USER_PERSISTABLE;
+                return PersistableType.UserPersistable;
             }
         }
 

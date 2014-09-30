@@ -98,7 +98,7 @@ namespace NakedObjects.Xat {
 
         public ITestObject AssertCanBeSaved() {
             Assert.IsTrue(NakedObject.ResolveState.IsTransient(), "Can only persist a transient object: " + NakedObject);
-            Assert.IsTrue(NakedObject.Specification.Persistable == Persistable.USER_PERSISTABLE, "Object not persistable by user: " + NakedObject);
+            Assert.IsTrue(NakedObject.Specification.Persistable == PersistableType.UserPersistable, "Object not persistable by user: " + NakedObject);
 
             Properties.ForEach(p => p.AssertIsValidToSave());
 

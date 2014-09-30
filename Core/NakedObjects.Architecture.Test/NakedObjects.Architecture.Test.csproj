@@ -82,6 +82,10 @@
       <Project>{BF6D9655-B873-4980-ACE7-A122EA45F045}</Project>
       <Name>NakedObjects.Architecture</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Metadata\NakedObjects.Metadata.csproj">
+      <Project>{51310042-B65B-4480-A8C0-11E6B39C7587}</Project>
+      <Name>NakedObjects.Metadata</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

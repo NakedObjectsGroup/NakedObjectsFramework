@@ -243,7 +243,7 @@ namespace NakedObjects.Architecture.Adapter {
                 throw new NotImplementedException();
             }
 
-            public Persistable Persistable {
+            public PersistableType Persistable {
                 get { throw new NotImplementedException(); }
             }
 
