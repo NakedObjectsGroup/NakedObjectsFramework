@@ -11,7 +11,6 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.EntityObjectStore {
     public class ConcurrencyCheckVersion : IVersion, IEncodedToStrings {
-        private readonly INakedObjectReflector reflector;
         private readonly DateTime time;
         private readonly string user;
         private readonly object version;
@@ -22,10 +21,9 @@ namespace NakedObjects.EntityObjectStore {
             this.version = version;
         }
 
-        public ConcurrencyCheckVersion(INakedObjectReflector reflector, string[] strings) {
-            Assert.AssertNotNull(reflector);
-            this.reflector = reflector;
-            var helper = new StringDecoderHelper(reflector, strings);
+        public ConcurrencyCheckVersion(IMetadata metadata, string[] strings) {
+            Assert.AssertNotNull(metadata);
+            var helper = new StringDecoderHelper(metadata, strings);
 
             user = helper.GetNextString();
             time = new DateTime(helper.GetNextLong());

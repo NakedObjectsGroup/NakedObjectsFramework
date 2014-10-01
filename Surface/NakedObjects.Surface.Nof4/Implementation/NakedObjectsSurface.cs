@@ -67,7 +67,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         public INakedObjectSpecificationSurface[] GetDomainTypes() {
-            return MapErrors(() => framework.Reflector.AllSpecifications.
+            return MapErrors(() => framework.Metadata.AllSpecifications.
                 Where(s => !IsGenericType(s)).
                 Select(GetSpecificationWrapper).ToArray());
         }
@@ -221,7 +221,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private ListContext GetServicesInternal() {
             INakedObject[] services = framework.LifecycleManager.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager);
-            INakedObjectSpecification elementType = framework.Reflector.LoadSpecification(typeof (object));
+            INakedObjectSpecification elementType = framework.Metadata.GetSpecification(typeof (object));
 
             return new ListContext {
                 ElementType = elementType,
@@ -924,7 +924,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 var matchedParms = expectedParms.ToDictionary(ep => ep.Item1, ep => new {
                     expectedType = ep.Item2,
                     value = getValue(ep),
-                    actualType = getValue(ep) == null ? null : framework.Reflector.LoadSpecification(getValue(ep).GetType())
+                    actualType = getValue(ep) == null ? null : framework.Metadata.GetSpecification(getValue(ep).GetType())
                 });
 
                 var errors = new List<ContextSurface>();

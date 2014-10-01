@@ -5,14 +5,15 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using NakedObjects.Reflector.Spec;
 using NakedObjects.Test;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     [TestFixture]
     public class Reflector_MetaDataTest : AbstractDotNetReflectorTest {
-        protected override DotNetSpecification LoadSpecification(DotNetReflector reflector) {
-            return (DotNetSpecification) reflector.LoadSpecification(typeof (TestDomainObject2));
+        protected override NakedObjectSpecification LoadSpecification(DotNetReflector reflector) {
+            return (NakedObjectSpecification) reflector.LoadSpecification(typeof (TestDomainObject2));
         }
 
 

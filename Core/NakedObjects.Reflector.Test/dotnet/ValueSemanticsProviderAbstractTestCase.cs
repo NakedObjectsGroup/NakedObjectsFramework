@@ -22,6 +22,7 @@ namespace NakedObjects.Reflector.DotNet {
         private ParseableFacetUsingParser<T> parseableFacet;
         protected ILifecycleManager persistor = new Mock<ILifecycleManager>().Object;
         protected INakedObjectReflector reflector = new Mock<INakedObjectReflector>().Object;
+        protected IMetadata metadata = new Mock<IMetadata>().Object;
         private ValueSemanticsProviderAbstract<T> value;
 
         protected void SetValue(ValueSemanticsProviderAbstract<T> newValue) {
@@ -59,7 +60,7 @@ namespace NakedObjects.Reflector.DotNet {
 
         protected INakedObject CreateAdapter(object obj) {
             ISession session = new Mock<ISession>().Object;
-            return new PocoAdapter(reflector, session, persistor, persistor, obj, null);
+            return new PocoAdapter(metadata, session, persistor, persistor, obj, null);
         }
 
 

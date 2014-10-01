@@ -24,7 +24,7 @@ namespace NakedObjects.Core.Adapter {
         private static readonly ILog Log;
         private string defaultTitle;
         private IOid oid;
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
         private readonly ISession session;
         private readonly IObjectPersistor persistor;
         private readonly INakedObjectManager manager;
@@ -38,14 +38,14 @@ namespace NakedObjects.Core.Adapter {
             Log = LogManager.GetLogger(typeof (PocoAdapter));
         }
 
-        public PocoAdapter(INakedObjectReflector reflector, ISession session, IObjectPersistor persistor,  ILifecycleManager lifecycleManager, object poco, IOid oid) {
-            Assert.AssertNotNull(reflector);
+        public PocoAdapter(IMetadata metadata, ISession session, IObjectPersistor persistor,  ILifecycleManager lifecycleManager, object poco, IOid oid) {
+            Assert.AssertNotNull(metadata);
             //Assert.AssertNotNull(session);
 
             if (poco is INakedObject) {
                 throw new AdapterException("Adapter can't be used to adapt an adapter: " + poco);
             }
-            this.reflector = reflector;
+            this.metadata = metadata;
             this.session = session;
             this.persistor = persistor;
             this.manager = lifecycleManager;
@@ -90,7 +90,7 @@ namespace NakedObjects.Core.Adapter {
         public virtual INakedObjectSpecification Specification {
             get {
                 if (specification == null) {
-                    specification = reflector.LoadSpecification(Object.GetType());
+                    specification = metadata.GetSpecification(Object.GetType());
                     defaultTitle = "A" + (" " + specification.SingularName).ToLower();
                 }
                 return specification;

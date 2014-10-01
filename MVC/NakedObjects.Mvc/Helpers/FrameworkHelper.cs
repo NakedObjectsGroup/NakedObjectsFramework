@@ -154,7 +154,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static INakedObjectSpecification GetSpecificationFromObjectId(this INakedObjectsFramework framework, string[] asArray, out string[] restOfArray) {
             string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(asArray.First()));
-            INakedObjectSpecification spec = framework.Reflector.LoadSpecification(typeName);
+            INakedObjectSpecification spec = framework.Metadata.GetSpecification(typeName);
             restOfArray = asArray.ToArray();
             return spec;
         }
@@ -225,7 +225,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static INakedObjectAction GetActionFromId(this INakedObjectsFramework framework, string actionId) {
             string[] asArray = actionId.Split(';');
-            INakedObjectSpecification spec = framework.Reflector.LoadSpecification(asArray.First());
+            INakedObjectSpecification spec = framework.Metadata.GetSpecification(asArray.First());
             string id = asArray.Skip(1).First();
 
             return spec.GetObjectActions().Single(a => a.Id == id);
@@ -237,12 +237,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static bool IsImage(this INakedObjectSpecification spec, INakedObjectsFramework framework) {
-            INakedObjectSpecification imageSpec = framework.Reflector.LoadSpecification(typeof (Image));
+            INakedObjectSpecification imageSpec = framework.Metadata.GetSpecification(typeof(Image));
             return spec != null && spec.IsOfType(imageSpec);
         }
 
         private static bool IsFileAttachment(this INakedObjectSpecification spec, INakedObjectsFramework framework) {
-            INakedObjectSpecification fileSpec = framework.Reflector.LoadSpecification(typeof (FileAttachment));
+            INakedObjectSpecification fileSpec = framework.Metadata.GetSpecification(typeof(FileAttachment));
             return spec != null && spec.IsOfType(fileSpec);
         }
 

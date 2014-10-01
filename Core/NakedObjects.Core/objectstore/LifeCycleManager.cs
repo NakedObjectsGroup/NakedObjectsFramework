@@ -37,21 +37,21 @@ using NakedObjects.Util;
 namespace NakedObjects.Persistor.Objectstore {
     public class NakedObjectFactory {
         private ILifecycleManager persistor;
-        private INakedObjectReflector reflector;
+        private IMetadata metadata;
         private ISession session;
 
-        public void Initialize(INakedObjectReflector reflector, ISession session, ILifecycleManager persistor) {
-            this.reflector = reflector;
+        public void Initialize(IMetadata metadata, ISession session, ILifecycleManager persistor) {
+            this.metadata = metadata;
             this.session = session;
             this.persistor = persistor;
         }
 
         public INakedObject CreateAdapter(object obj, IOid oid) {
-            Assert.AssertNotNull(reflector);
+            Assert.AssertNotNull(metadata);
             Assert.AssertNotNull(session);
             Assert.AssertNotNull(persistor);
 
-            return new PocoAdapter(reflector, session, persistor, persistor, obj, oid);
+            return new PocoAdapter(metadata, session, persistor, persistor, obj, oid);
         }
     }
 
@@ -255,15 +255,15 @@ namespace NakedObjects.Persistor.Objectstore {
         private readonly IIdentityMap identityMap;
         private readonly NakedObjectFactory nakedObjectFactory;
         private readonly IOidGenerator oidGenerator;
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
         private readonly ISession session;
 
         static NakedObjectManager() {
             Log = LogManager.GetLogger(typeof (NakedObjectManager));
         }
 
-        public NakedObjectManager(INakedObjectReflector reflector, ISession session, IIdentityMap identityMap, IOidGenerator oidGenerator, NakedObjectFactory nakedObjectFactory) {
-            this.reflector = reflector;
+        public NakedObjectManager(IMetadata metadata, ISession session, IIdentityMap identityMap, IOidGenerator oidGenerator, NakedObjectFactory nakedObjectFactory) {
+            this.metadata = metadata;
             this.session = session;
             this.identityMap = identityMap;
             this.oidGenerator = oidGenerator;
@@ -302,7 +302,7 @@ namespace NakedObjects.Persistor.Objectstore {
                 return null;
             }
             if (oid == null) {
-                INakedObjectSpecification nakedObjectSpecification = reflector.LoadSpecification(domainObject.GetType());
+                INakedObjectSpecification nakedObjectSpecification = metadata.GetSpecification(domainObject.GetType());
                 if (nakedObjectSpecification.ContainsFacet(typeof (IComplexTypeFacet))) {
                     return GetAdapterFor(domainObject);
                 }
@@ -333,7 +333,7 @@ namespace NakedObjects.Persistor.Objectstore {
         public INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj) {
             GetAdapterFor(obj);
 
-            IOid oid = new AggregateOid(reflector, parent.Oid, fieldId, obj.GetType().FullName);
+            IOid oid = new AggregateOid(metadata, parent.Oid, fieldId, obj.GetType().FullName);
             INakedObject adapterFor = GetAdapterFor(oid);
             if (adapterFor == null || adapterFor.Object != obj) {
                 if (adapterFor != null) {
@@ -428,7 +428,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         private INakedObject CreateAdapterForViewModel(object viewModel, INakedObjectSpecification spec) {
-            var oid = new ViewModelOid(reflector, spec);
+            var oid = new ViewModelOid(metadata, spec);
             INakedObject adapter = NewAdapterForKnownObject(viewModel, oid);
 
             object versionObject = adapter.GetVersion(this);
@@ -553,7 +553,7 @@ namespace NakedObjects.Persistor.Objectstore {
         private readonly INakedObjectManager manager;
         private readonly IObjectPersistor objectPersistor;
         private readonly IPersistAlgorithm persistAlgorithm;
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
         private readonly IServicesManager servicesManager;
         private readonly ISession session;
         private readonly INakedObjectTransactionManager transactionManager;
@@ -563,7 +563,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public LifeCycleManager(ISession session,
-                                INakedObjectReflector reflector,
+                                IMetadata metadata,
                                 INakedObjectStore objectStore,
                                 IPersistAlgorithm persistAlgorithm, 
                                 IOidGenerator oidGenerator,
@@ -580,23 +580,23 @@ namespace NakedObjects.Persistor.Objectstore {
             Assert.AssertNotNull(persistAlgorithm);
             Assert.AssertNotNull(oidGenerator);
             Assert.AssertNotNull(identityMap);
-            Assert.AssertNotNull(reflector);
+            Assert.AssertNotNull(metadata);
 
             this.transactionManager = transactionManager;
             this.objectPersistor = objectPersistor;
             this.manager = manager;
             this.servicesManager = servicesManager;
             this.session = session;
-            this.reflector = reflector;
+            this.metadata = metadata;
             this.persistAlgorithm = persistAlgorithm;
             this.injector = injector;
 
             this.session = session;
-            this.reflector = reflector;
+            this.metadata = metadata;
             this.persistAlgorithm = persistAlgorithm;
             this.injector = injector;
 
-            nakedObjectFactory.Initialize(reflector, session, this);
+            nakedObjectFactory.Initialize(metadata, session, this);
 
             // TODO - fix !
             objectStore.Manager = this;
@@ -862,17 +862,17 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public IOid RestoreGenericOid(string[] encodedData) {
             string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(encodedData.First()));
-            INakedObjectSpecification spec = reflector.LoadSpecification(typeName);
+            INakedObjectSpecification spec = metadata.GetSpecification(typeName);
 
             if (spec.IsCollection) {
-                return new CollectionMemento(this, this, reflector, session, encodedData);
+                return new CollectionMemento(this, this, metadata, session, encodedData);
             }
 
             if (spec.ContainsFacet<IViewModelFacet>()) {
-                return new ViewModelOid(reflector, encodedData);
+                return new ViewModelOid(metadata, encodedData);
             }
 
-            return spec.ContainsFacet<IComplexTypeFacet>() ? new AggregateOid(reflector, encodedData) : null;
+            return spec.ContainsFacet<IComplexTypeFacet>() ? new AggregateOid(metadata, encodedData) : null;
         }
 
         public void PopulateViewModelKeys(INakedObject nakedObject) {

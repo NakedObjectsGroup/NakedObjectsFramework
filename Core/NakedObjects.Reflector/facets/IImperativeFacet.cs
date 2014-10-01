@@ -14,7 +14,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
     ///     <see cref="MethodInfo" />, for a implementation of a <see cref="INakedObjectMember" />
     /// </summary>
     /// <para>
-    ///     Used by <see cref="DotNetSpecification.GetMember" /> in order to
+    ///     Used by <see cref="NakedObjectSpecification.GetMember" /> in order to
     ///     reverse lookup <see cref="INakedObjectMember" />s from underlying <see cref="MethodInfo" />s.
     ///     So, for example, the facets that represent an action Xxx, or a ValidateXxx method, or
     ///     an AddToXxx collection, can all be used to lookup the member.

@@ -14,36 +14,36 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityOid : IOid, IEncodedToStrings {
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
         private int cachedHashCode;
         private string cachedToString;
         private EntityOid previous;
 
         #region Constructors
 
-        public EntityOid(INakedObjectReflector reflector, Type type, object[] key, bool isTransient)
-            : this(reflector, type.FullName, key) {     
+        public EntityOid(IMetadata metadata, Type type, object[] key, bool isTransient)
+            : this(metadata, type.FullName, key) {     
             IsTransient = isTransient;
             CacheState();
         }
 
-        public EntityOid(INakedObjectReflector reflector, Type type, object[] key) : this(reflector, type.FullName, key) { }
+        public EntityOid(IMetadata metadata, Type type, object[] key) : this(metadata, type.FullName, key) { }
 
-        public EntityOid(INakedObjectReflector reflector, string typeName, object[] key) {
-            Assert.AssertNotNull(reflector);
-            this.reflector = reflector;
+        public EntityOid(IMetadata metadata, string typeName, object[] key) {
+            Assert.AssertNotNull(metadata);
+            this.metadata = metadata;
             TypeName = TypeNameUtils.EncodeTypeName(typeName);
             Key = key;
             IsTransient = false;
             CacheState();
         }
 
-        public EntityOid(INakedObjectReflector reflector, object pojo, object[] key) : this(reflector, pojo.GetType(), key) { }
+        public EntityOid(IMetadata metadata, object pojo, object[] key) : this(metadata, pojo.GetType(), key) { }
 
-        public EntityOid(INakedObjectReflector reflector, string[] strings) {
-            Assert.AssertNotNull(reflector);
-            this.reflector = reflector;
-            var helper = new StringDecoderHelper(reflector, strings);
+        public EntityOid(IMetadata metadata, string[] strings) {
+            Assert.AssertNotNull(metadata);
+            this.metadata = metadata;
+            var helper = new StringDecoderHelper(metadata, strings);
 
             TypeName = helper.GetNextString();
             Key = helper.GetNextObjectArray();
@@ -108,7 +108,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         public INakedObjectSpecification Specification {
-            get { return reflector.LoadSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
+            get { return metadata.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
         }
 
         public IOid Previous {
@@ -135,7 +135,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public void MakePersistent() {
             ThrowErrorIfNotTransient();
-            previous = new EntityOid(reflector, TypeName, Key) {IsTransient = IsTransient};
+            previous = new EntityOid(metadata, TypeName, Key) {IsTransient = IsTransient};
             IsTransient = false;
             CacheState();
         }
@@ -150,7 +150,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public void MakePersistentAndUpdateKey(object[] newKey) {
             ThrowErrorIfNotTransient(newKey);
-            previous = new EntityOid(reflector, TypeName, Key) {IsTransient = IsTransient};
+            previous = new EntityOid(metadata, TypeName, Key) {IsTransient = IsTransient};
             Key = newKey; // after old key is saved ! 
             IsTransient = false;
             CacheState();

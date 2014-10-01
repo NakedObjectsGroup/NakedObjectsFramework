@@ -4,6 +4,7 @@
 
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     /// <summary>
@@ -11,7 +12,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
     ///     that influence what is built
     /// </summary>
     /// <para>
-    ///     Assembled by <see cref="DotNetReflector" />, passed onto <see cref="DotNetSpecification" /> and
+    ///     Assembled by <see cref="DotNetReflector" />, passed onto <see cref="NakedObjectSpecification" /> and
     ///     (in turn) <see cref="DotNetIntrospector" />.
     /// </para>
     public class IntrospectionControlParameters {

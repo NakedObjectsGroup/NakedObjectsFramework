@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
 
         private readonly Mock<ILifecycleManager> mockPersistor = new Mock<ILifecycleManager>();
         private readonly ILifecycleManager persistor;
-        private readonly INakedObjectReflector reflector = new Mock<INakedObjectReflector>().Object;
+        private readonly IMetadata metadata = new Mock<IMetadata>().Object;
         private readonly ISession session = new Mock<ISession>().Object;
         private readonly IOid oid = new Mock<IOid>().Object;
 
@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         }
 
         private INakedObject AdapterFor(object obj) {
-            return new PocoAdapter(reflector, session, persistor, persistor, obj, oid);
+            return new PocoAdapter(metadata, session, persistor, persistor, obj, oid);
         }
 
         private void Size(ICollectionFacet collectionFacet, INakedObject collection) {

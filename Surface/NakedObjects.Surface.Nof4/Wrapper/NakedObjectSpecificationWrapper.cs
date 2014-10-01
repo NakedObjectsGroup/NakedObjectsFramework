@@ -75,14 +75,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         protected bool IsImage {
             get {
-                var imageSpec = framework.Reflector.LoadSpecification(typeof (Image));
+                var imageSpec = framework.Metadata.GetSpecification(typeof(Image));
                 return spec.IsOfType(imageSpec);
             }
         }
 
         protected bool IsFileAttachment {
             get {
-                var fileSpec = framework.Reflector.LoadSpecification(typeof (FileAttachment));
+                var fileSpec = framework.Metadata.GetSpecification(typeof(FileAttachment));
                 return spec.IsOfType(fileSpec);
             }
         }

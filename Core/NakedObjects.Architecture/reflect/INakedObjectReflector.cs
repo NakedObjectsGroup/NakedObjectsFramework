@@ -15,8 +15,6 @@ namespace NakedObjects.Architecture.Reflect {
     public interface INakedObjectReflector {
         bool IgnoreCase { get; }
 
-        INakedObjectSpecification[] AllSpecifications { get; }
-
         IClassStrategy ClassStrategy { get; }
 
         IFacetFactorySet FacetFactorySet { get; }

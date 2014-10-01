@@ -18,9 +18,9 @@ using NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder;
 using NakedObjects.Reflector.DotNet.Reflect.Actions;
 using NakedObjects.Reflector.DotNet.Reflect.Collections;
 using NakedObjects.Reflector.DotNet.Reflect.Properties;
-using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.spec;
+using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 using MemberInfo = System.Reflection.MemberInfo;
 using MethodInfo = System.Reflection.MethodInfo;
@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DotNetIntrospector));
 
         private static readonly object[] NoParameters = new object[0];
-        private readonly DotNetSpecification dotnetSpecification;
+        private readonly NakedObjectSpecification dotnetSpecification;
         private readonly Type introspectedType;
 
         private readonly MethodInfo[] methods;
@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private OrderSet orderedObjectActions;
 
         public DotNetIntrospector(Type typeToIntrospect,
-                                  DotNetSpecification dotnetSpecification,
+                                  NakedObjectSpecification dotnetSpecification,
                                   INakedObjectReflector reflector) {
             Log.DebugFormat("Creating DotNetIntrospector for {0}", typeToIntrospect);
 

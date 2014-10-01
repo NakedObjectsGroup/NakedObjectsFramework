@@ -311,6 +311,7 @@
     <Compile Include="reflect\IClassStrategy.cs" />
     <Compile Include="reflect\IConsent.cs" />
     <Compile Include="reflect\ConsentAbstract.cs" />
+    <Compile Include="reflect\IMetadata.cs" />
     <Compile Include="reflect\INakedObjectValidation.cs" />
     <Compile Include="reflect\InitiatedBy.cs" />
     <Compile Include="reflect\INakedObjectAction.cs" />

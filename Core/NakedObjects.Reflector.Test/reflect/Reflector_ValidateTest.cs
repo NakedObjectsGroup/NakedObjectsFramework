@@ -4,13 +4,14 @@
 
 using System;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Reflector.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     [TestFixture]
     public class Reflector_ValidateTest : AbstractDotNetReflectorTest {
-        protected override DotNetSpecification LoadSpecification(DotNetReflector reflector) {
-            return (DotNetSpecification) reflector.LoadSpecification(typeof (Product));
+        protected override NakedObjectSpecification LoadSpecification(DotNetReflector reflector) {
+            return (NakedObjectSpecification) reflector.LoadSpecification(typeof (Product));
         }
 
         [Test]

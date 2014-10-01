@@ -25,7 +25,7 @@ let injectedObjects = new List<Object>()
 
 type MockReflector() = 
     interface INakedObjectReflector with 
-        member x.AllSpecifications with get() = [||]
+        
         member x.IgnoreCase with get() = false
         //member x.Shutdown() = ()
         member x.LoadSpecification(typ : Type) : INakedObjectSpecification = null
@@ -35,6 +35,10 @@ type MockReflector() =
         member x.ClassStrategy with get() = (null)
         member x.FacetFactorySet with get() = (null)
         member x.LoadSpecificationForReturnTypes(properties, classToIgnore) = ()
+    interface IMetadata with 
+        member x.AllSpecifications with get() = [||]
+        member x.GetSpecification(typ : Type) : INakedObjectSpecification = null
+        member x.GetSpecification(str : string) : INakedObjectSpecification = null
       
 
 

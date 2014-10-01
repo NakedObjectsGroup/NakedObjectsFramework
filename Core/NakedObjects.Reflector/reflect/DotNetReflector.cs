@@ -18,7 +18,7 @@ using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
-    public class DotNetReflector : INakedObjectReflector {
+    public class DotNetReflector : INakedObjectReflector, IMetadata {
         private static readonly ILog Log;
         private readonly ISpecificationCache cache = new SimpleSpecificationCache();
         private readonly FacetDecoratorSet facetDecorator;
@@ -56,6 +56,14 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         public virtual INakedObjectSpecification[] AllSpecifications {
             get { return cache.AllSpecifications(); }
+        }
+
+        public INakedObjectSpecification GetSpecification(Type type) {
+            return LoadSpecification(type);
+        }
+
+        public INakedObjectSpecification GetSpecification(string name) {
+            return LoadSpecification(name);
         }
 
         public virtual INakedObjectSpecification LoadSpecification(Type type) {
@@ -117,7 +125,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 return;
             }
 
-            NakedObjectSpecificationAbstract specification = Install(type);
+            NakedObjectSpecification specification = Install(type);
             cache.Cache(type.GetProxiedTypeFullName(), specification);
             specification.Introspect(facetDecorator);
             specification.MarkAsService();
@@ -159,11 +167,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         private INakedObjectSpecification CreateSpecification(Type type) {
-            return new DotNetSpecification(type, this);
+            return new NakedObjectSpecification(type, this);
         }
 
-        private NakedObjectSpecificationAbstract Install(Type type) {
-            return new DotNetSpecification(type, this);
+        private NakedObjectSpecification Install(Type type) {
+            return new NakedObjectSpecification(type, this);
         }
     }
 

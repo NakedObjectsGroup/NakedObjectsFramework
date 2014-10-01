@@ -26,10 +26,12 @@ let persistor  =
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
+    let m = (new Mock<IMetadata>()).Object
+
     c.UsingEdmxContext "AdventureWorksEntities" |> ignore
 
     //c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), r, i)
     let p = setupPersistorForTesting p
     p
 
@@ -45,12 +47,13 @@ let overwritePersistor =
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
+    let m = (new Mock<IMetadata>()).Object
 
     let cc = c.UsingEdmxContext "AdventureWorksEntities"
     c.DefaultMergeOption <- MergeOption.OverwriteChanges
   
     //c.ContextConfiguration <- [|(box config :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), r, i)
     let p = setupPersistorForTesting p
     p
 

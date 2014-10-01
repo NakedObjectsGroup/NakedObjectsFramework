@@ -35,6 +35,8 @@ namespace NakedObjects {
 
         INakedObjectReflector Reflector { get; }
 
+        IMetadata Metadata { get; }
+
         IAuthorizationManager AuthorizationManager { get; }
 
         IContainerInjector Injector { get; }

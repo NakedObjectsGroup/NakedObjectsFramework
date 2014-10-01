@@ -13,7 +13,7 @@ using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     public abstract class AbstractDotNetReflectorTest {
-        protected DotNetSpecification specification;
+        protected NakedObjectSpecification specification;
 
         [SetUp]
         public virtual void SetUp() {
@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             specification.PopulateAssociatedActions(new Type[] {});
         }
 
-        protected abstract DotNetSpecification LoadSpecification(DotNetReflector reflector);
+        protected abstract NakedObjectSpecification LoadSpecification(DotNetReflector reflector);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

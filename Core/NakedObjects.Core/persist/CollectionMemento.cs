@@ -21,7 +21,6 @@ namespace NakedObjects.Core.Persist {
     public class CollectionMemento : IEncodedToStrings, IOid {
         private readonly ILifecycleManager lifecycleManager;
         private readonly IObjectPersistor persistor;
-        private readonly INakedObjectReflector reflector;
         private readonly ISession session;
 
         public enum ParameterType {
@@ -31,14 +30,13 @@ namespace NakedObjects.Core.Persist {
             ObjectCollection
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor,  INakedObjectReflector reflector, ISession session,  CollectionMemento otherMemento, object[] selectedObjects) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor,  IMetadata metadata, ISession session,  CollectionMemento otherMemento, object[] selectedObjects) {
             Assert.AssertNotNull(lifecycleManager);
-            Assert.AssertNotNull(reflector);
+            Assert.AssertNotNull(metadata);
             Assert.AssertNotNull(otherMemento);
 
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
-            this.reflector = reflector;
             this.session = session;
             IsPaged = otherMemento.IsPaged;
             IsNotQueryable = otherMemento.IsNotQueryable;
@@ -48,12 +46,11 @@ namespace NakedObjects.Core.Persist {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectReflector reflector, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, IMetadata metadata, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
             Assert.AssertNotNull(lifecycleManager);
-            Assert.AssertNotNull(reflector);
+            Assert.AssertNotNull(metadata);
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
-            this.reflector = reflector;
             this.session = session;
             Target = target;
             Action = action;
@@ -64,14 +61,13 @@ namespace NakedObjects.Core.Persist {
             }
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectReflector reflector, ISession session, string[] strings) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, IMetadata metadata, ISession session, string[] strings) {
             Assert.AssertNotNull(lifecycleManager);
-            Assert.AssertNotNull(reflector);
+            Assert.AssertNotNull(metadata);
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
-            this.reflector = reflector;
             this.session = session;
-            var helper = new StringDecoderHelper(reflector, strings, true);
+            var helper = new StringDecoderHelper(metadata, strings, true);
             string specName = helper.GetNextString();
             string actionId = helper.GetNextString();
             var targetOid = (IOid) helper.GetNextEncodedToStrings();

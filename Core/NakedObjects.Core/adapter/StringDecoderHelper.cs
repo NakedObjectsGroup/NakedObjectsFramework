@@ -11,7 +11,6 @@ using System.Runtime.Serialization;
 using System.Web;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
@@ -21,13 +20,13 @@ namespace NakedObjects.Core.Adapter {
     /// </summary>
     /// <seealso cref="StringEncoderHelper" />
     public class StringDecoderHelper {
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
         private readonly string[] strings;
         private int index;
 
-        public StringDecoderHelper(INakedObjectReflector reflector,  string[] strings, bool decode = false) {
-            Assert.AssertNotNull(reflector);
-            this.reflector = reflector;
+        public StringDecoderHelper(IMetadata metadata,  string[] strings, bool decode = false) {
+            Assert.AssertNotNull(metadata);
+            this.metadata = metadata;
             this.strings = decode ? strings.Select(HttpUtility.UrlDecode).ToArray() : strings;
         }
 
@@ -179,7 +178,7 @@ namespace NakedObjects.Core.Adapter {
             if (!typeof (IEncodedToStrings).IsAssignableFrom(objectType)) {
                 throw new Exception(string.Format("Type: {0} needs to be: {1} ", objectType, typeof (IEncodedToStrings)));
             }
-            return (IEncodedToStrings)Activator.CreateInstance(objectType, new object[] { reflector, encodedData });
+            return (IEncodedToStrings)Activator.CreateInstance(objectType, new object[] { metadata, encodedData });
         }
 
         private void CheckCurrentIndex() {

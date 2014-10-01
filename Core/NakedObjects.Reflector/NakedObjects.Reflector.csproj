@@ -370,7 +370,6 @@
     <Compile Include="reflect\DotNetNakedObjectMemberPeer.cs" />
     <Compile Include="reflect\DotNetReflector.cs" />
     <Compile Include="reflect\DotNetReflectorInstaller.cs" />
-    <Compile Include="reflect\DotNetSpecification.cs" />
     <Compile Include="reflect\IntrospectionControlParameters.cs" />
     <Compile Include="reflect\MethodFinderUtils.cs" />
     <Compile Include="reflect\propcoll\DotNetNakedObjectAssociationPeer.cs" />
@@ -391,7 +390,7 @@
     <Compile Include="spec\NakedObjectActionParameterParseable.cs" />
     <Compile Include="spec\NakedObjectActionSet.cs" />
     <Compile Include="spec\NakedObjectMemberSessionAware.cs" />
-    <Compile Include="spec\NakedObjectSpecificationAbstract.cs" />
+    <Compile Include="spec\NakedObjectSpecification.cs" />
     <Compile Include="spec\OneToManyActionParameterImpl.cs" />
     <Compile Include="spec\OneToManyAssociationImpl.cs" />
     <Compile Include="spec\OneToOneActionParameterImpl.cs" />

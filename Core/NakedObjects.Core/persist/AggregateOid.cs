@@ -12,23 +12,23 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Persist {
     public class AggregateOid : IOid, IEncodedToStrings {
         private readonly string fieldName;
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
         private readonly IOid parentOid;
         private readonly string typeName;
 
-        public AggregateOid(INakedObjectReflector reflector, IOid oid, string id, string typeName) {
-            Assert.AssertNotNull(reflector);
+        public AggregateOid(IMetadata metadata, IOid oid, string id, string typeName) {
+            Assert.AssertNotNull(metadata);
 
-            this.reflector = reflector;
+            this.metadata = metadata;
             parentOid = oid;
             fieldName = id;
             this.typeName = typeName;
         }
 
-        public AggregateOid(INakedObjectReflector reflector, string[] strings) {
-            Assert.AssertNotNull(reflector);
-            this.reflector = reflector;
-            var helper = new StringDecoderHelper(reflector, strings);
+        public AggregateOid(IMetadata metadata, string[] strings) {
+            Assert.AssertNotNull(metadata);
+            this.metadata = metadata;
+            var helper = new StringDecoderHelper(metadata, strings);
             typeName = helper.GetNextString();
             fieldName = helper.GetNextString();
             if (helper.HasNext) {
@@ -73,7 +73,7 @@ namespace NakedObjects.Core.Persist {
         }
 
         public INakedObjectSpecification Specification {
-            get { return reflector.LoadSpecification(typeName); }
+            get { return metadata.GetSpecification(typeName); }
         }
 
         public virtual bool HasPrevious {

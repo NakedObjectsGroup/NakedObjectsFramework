@@ -17,9 +17,9 @@ namespace NakedObjects.Architecture.Reflect {
         ///     the server; or where it normally should be executed. By default instance methods should execute on the
         ///     server, static methods should execute on the client.
         /// </summary>
-        /// <seealso cref="NakedObjectActionConstants.LOCAL" />
-        /// <seealso cref="NakedObjectActionConstants.REMOTE" />
-        /// <seealso cref="NakedObjectActionConstants.DEFAULT" />
+        /// <seealso cref="Where.Locally" />
+        /// <seealso cref="Where.Remotely" />
+        /// <seealso cref="Where.Default" />
         Where Target { get; }
 
         /// <summary>

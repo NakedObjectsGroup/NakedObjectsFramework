@@ -16,7 +16,7 @@ namespace NakedObjects.Core {
     public class SerialOidTest {
         [Test]
         public void TestEquals() {
-            var r = new Mock<INakedObjectReflector>().Object;
+            var r = new Mock<IMetadata>().Object;
             SerialOid oid1 = SerialOid.CreateTransient(r, 123, typeof (object).FullName);
             SerialOid oid2 = SerialOid.CreateTransient(r, 123, typeof (object).FullName);
             SerialOid oid3 = SerialOid.CreateTransient(r, 321, typeof (object).FullName);

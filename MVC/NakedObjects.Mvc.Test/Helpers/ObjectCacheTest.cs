@@ -94,7 +94,7 @@ namespace MvcTestApp.Tests.Helpers {
             var claimAdapter = NakedObjectsFramework.GetNakedObject(claim);
             var claimsAdapter = NakedObjectsFramework.GetNakedObject(claims);
 
-            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Metadata, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             claimsAdapter.SetATransientOid(mockOid);
 
@@ -228,7 +228,7 @@ namespace MvcTestApp.Tests.Helpers {
             INakedObject claim = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim)));
 
             // mangle oid 
-            new EntityOidGenerator(NakedObjectsFramework.Reflector).ConvertTransientToPersistentOid(claim.Oid);
+            new EntityOidGenerator(NakedObjectsFramework.Metadata).ConvertTransientToPersistentOid(claim.Oid);
 
             mocks.HtmlHelper.ViewContext.HttpContext.Session.TestAddToCache(NakedObjectsFramework, claim);
 

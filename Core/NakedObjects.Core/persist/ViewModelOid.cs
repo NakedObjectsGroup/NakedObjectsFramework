@@ -12,24 +12,24 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Persist {
     public class ViewModelOid : IOid, IEncodedToStrings {
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
         private int cachedHashCode;
         private string cachedToString;
         private ViewModelOid previous;
        
-        public ViewModelOid(INakedObjectReflector reflector, INakedObjectSpecification specification) {
-            Assert.AssertNotNull(reflector);
-            this.reflector = reflector;
+        public ViewModelOid(IMetadata metadata, INakedObjectSpecification specification) {
+            Assert.AssertNotNull(metadata);
+            this.metadata = metadata;
             IsTransient = false;
             TypeName = TypeNameUtils.EncodeTypeName(specification.FullName);
             Keys = new[] {System.Guid.NewGuid().ToString()};
             CacheState();
         }
 
-        public ViewModelOid(INakedObjectReflector reflector, string[] strings) {
-            Assert.AssertNotNull(reflector);
-            this.reflector = reflector;
-            var helper = new StringDecoderHelper(reflector, strings);
+        public ViewModelOid(IMetadata metadata, string[] strings) {
+            Assert.AssertNotNull(metadata);
+            this.metadata = metadata;
+            var helper = new StringDecoderHelper(metadata, strings);
             TypeName = helper.GetNextString();
 
             Keys = helper.HasNext ? helper.GetNextArray() : new[] {System.Guid.NewGuid().ToString()};
@@ -80,11 +80,11 @@ namespace NakedObjects.Core.Persist {
         }
 
         public INakedObjectSpecification Specification {
-            get { return reflector.LoadSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
+            get { return metadata.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
         }
 
         public void UpdateKeys(string[] newKeys, bool final) { 
-            previous = new ViewModelOid(reflector, Specification) { Keys = Keys };
+            previous = new ViewModelOid(metadata, Specification) { Keys = Keys };
             Keys = newKeys; // after old key is saved ! 
             IsFinal = final; 
             CacheState();
