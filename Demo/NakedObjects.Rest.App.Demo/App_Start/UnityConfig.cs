@@ -120,6 +120,7 @@ namespace RestfulObjects.Mvc.App.App_Start
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
             container.RegisterType<INakedObjectReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetadata, DotNetReflector>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
 
