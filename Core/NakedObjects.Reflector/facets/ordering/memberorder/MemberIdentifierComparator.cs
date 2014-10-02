@@ -10,10 +10,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     /// <summary>
     ///     Compares <see cref="INakedObjectMemberPeer" /> by <see cref="IFacetHolder.Identifier" />
     /// </summary>
-    public class MemberIdentifierComparator : IComparer<INakedObjectMemberPeer> {
+    public class MemberIdentifierComparator<T> : IComparer<T> where T : IOrderableElement<T>, IFacetHolder  {
         #region IComparer<INakedObjectMemberPeer> Members
 
-        public int Compare(INakedObjectMemberPeer o1, INakedObjectMemberPeer o2) {
+        public int Compare(T o1, T o2) {
             return o1.Identifier.CompareTo(o2.Identifier);
         }
 

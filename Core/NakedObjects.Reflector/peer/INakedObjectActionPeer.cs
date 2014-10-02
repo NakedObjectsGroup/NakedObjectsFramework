@@ -3,7 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 namespace NakedObjects.Reflector.Peer {
-    public interface INakedObjectActionPeer : INakedObjectMemberPeer {
+    public interface INakedObjectActionPeer : INakedObjectMemberPeer, IOrderableElement<INakedObjectActionPeer> {
         INakedObjectActionParamPeer[] Parameters { get; }
     }
 

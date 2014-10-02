@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System.Collections.Generic;
+using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Ordering.MemberOrder;
 using NakedObjects.Reflector.Peer;
 
@@ -37,36 +38,36 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     ///  MemberOrder(name="abc,def", sequence="1")     // group is def, parent is abc
     ///  MemberOrder(name="abc,def", sequence="1.2")
     ///  </code>
-    public class DeweyOrderSet : OrderSet {
+    public class DeweyOrderSet<T> : OrderSet<T> where T : IOrderableElement<T>, IFacetHolder {
         private DeweyOrderSet(string groupName)
             : base(groupName) {}
 
-        public static DeweyOrderSet CreateOrderSet(INakedObjectMemberPeer[] members) {
-            var sortedMembersByGroup = new SortedList<string, List<INakedObjectMemberPeer>>();
-            var nonAnnotatedGroup = new List<INakedObjectMemberPeer>();
+        public static DeweyOrderSet<T> CreateOrderSet(T[] members) {
+            var sortedMembersByGroup = new SortedList<string, List<T>>();
+            var nonAnnotatedGroup = new List<T>();
 
             // spin over all the members and put them into a Map of SortedSets
             // any non-annotated members go into additional nonAnnotatedGroup set.
-            foreach (INakedObjectMemberPeer member in members) {
-                var memberOrder = member.GetFacet<IMemberOrderFacet>();
+            foreach (var member in members) {
+                var memberOrder = member.Peer.GetFacet<IMemberOrderFacet>();
                 if (memberOrder != null) {
-                    List<INakedObjectMemberPeer> sortedMembersForGroup = GetSortedSet(sortedMembersByGroup, memberOrder.Name);
+                    List<T> sortedMembersForGroup = GetSortedSet(sortedMembersByGroup, memberOrder.Name);
                     sortedMembersForGroup.Add(member);
                 }
                 else {
-                    nonAnnotatedGroup.Add(member);
+                    nonAnnotatedGroup.Add(member.Peer);
                 }
             }
 
-            nonAnnotatedGroup.Sort(new MemberIdentifierComparator());
+            nonAnnotatedGroup.Sort(new MemberIdentifierComparator<T>());
 
             foreach (var list in sortedMembersByGroup.Values) {
-                list.Sort(new MemberOrderComparator(true));
+                list.Sort(new MemberOrderComparator<T>(true));
             }
 
             // add the non-annotated group to the first "" group.
-            IList<INakedObjectMemberPeer> defaultSet = GetSortedSet(sortedMembersByGroup, "");
-            foreach (INakedObjectMemberPeer member in nonAnnotatedGroup) {
+            IList<T> defaultSet = GetSortedSet(sortedMembersByGroup, "");
+            foreach (var member in nonAnnotatedGroup) {
                 defaultSet.Add(member);
             }
 
@@ -75,19 +76,19 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             // since sortedMembersByGroup is a SortedMap, the 
             // iteration will be in alphabetical order (ie parent groups before their children). 
             ICollection<string> groupNames = sortedMembersByGroup.Keys;
-            IDictionary<string, DeweyOrderSet> orderSetsByGroup = new SortedList<string, DeweyOrderSet>();
+            IDictionary<string, DeweyOrderSet<T>> orderSetsByGroup = new SortedList<string, DeweyOrderSet<T>>();
 
             foreach (string groupName in groupNames) {
-                var deweyOrderSet = new DeweyOrderSet(groupName);
+                var deweyOrderSet = new DeweyOrderSet<T>(groupName);
                 orderSetsByGroup.Add(groupName, deweyOrderSet);
                 EnsureParentFor(orderSetsByGroup, deweyOrderSet);
             }
 
             // now populate the OrderSets
             foreach (string groupName in groupNames) {
-                DeweyOrderSet deweyOrderSet = orderSetsByGroup[groupName];
-                IList<INakedObjectMemberPeer> sortedMembers = sortedMembersByGroup[groupName];
-                foreach (INakedObjectMemberPeer ordeableElement in sortedMembers) {
+                DeweyOrderSet<T> deweyOrderSet = orderSetsByGroup[groupName];
+                IList<T> sortedMembers = sortedMembersByGroup[groupName];
+                foreach (var ordeableElement in sortedMembers) {
                     deweyOrderSet.AddElement(ordeableElement);
                 }
                 deweyOrderSet.CopyOverChildren();
@@ -101,11 +102,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         ///     along the way associating each child with its parent and adding
         ///     the child as an element of its parent.
         /// </summary>
-        private static void EnsureParentFor(IDictionary<string, DeweyOrderSet> orderSetsByGroup, DeweyOrderSet deweyOrderSet) {
+        private static void EnsureParentFor(IDictionary<string, DeweyOrderSet<T>> orderSetsByGroup, DeweyOrderSet<T> deweyOrderSet) {
             string parentGroup = deweyOrderSet.GroupPath;
-            DeweyOrderSet parentOrderSet = orderSetsByGroup[parentGroup];
+            var parentOrderSet = orderSetsByGroup[parentGroup];
             if (parentOrderSet == null) {
-                parentOrderSet = new DeweyOrderSet(parentGroup);
+                parentOrderSet = new DeweyOrderSet<T>(parentGroup);
                 orderSetsByGroup[parentGroup] = parentOrderSet;
                 if (!parentGroup.Equals("")) {
                     EnsureParentFor(orderSetsByGroup, deweyOrderSet);
@@ -124,10 +125,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         /// <para>
         ///     If there is no such SortedSet, creates.
         /// </para>
-        private static List<INakedObjectMemberPeer> GetSortedSet(IDictionary<string, List<INakedObjectMemberPeer>> sortedMembersByGroup,
+        private static List<T> GetSortedSet(IDictionary<string, List<T>> sortedMembersByGroup,
                                                                  string groupName) {
             if (!sortedMembersByGroup.ContainsKey(groupName)) {
-                sortedMembersByGroup[groupName] = new List<INakedObjectMemberPeer>(); // (new MemberOrderComparator(true));
+                sortedMembersByGroup[groupName] = new List<T>(); // (new MemberOrderComparator(true));
             }
             return sortedMembersByGroup[groupName];
         }

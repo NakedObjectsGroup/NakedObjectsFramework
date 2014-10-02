@@ -8,7 +8,7 @@ namespace NakedObjects.Reflector.Peer {
     /// <summary>
     ///     Details about action and field members gained via reflection.
     /// </summary>
-    public interface INakedObjectMemberPeer : IFacetHolder, IOrderableElement {}
+    public interface INakedObjectMemberPeer : IFacetHolder {}
 
     // Copyright (c) Naked Objects Group Ltd.
 }

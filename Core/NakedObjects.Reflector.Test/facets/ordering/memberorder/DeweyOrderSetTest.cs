@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using Moq;
+using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Reflector.Peer;
 using NUnit.Framework;
@@ -30,10 +31,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
 
         private MemberPeerStub firstNameMember;
         private MemberPeerStub houseNumberMember;
-        private INakedObjectMemberPeer[] lastNameAndFirstName;
-        private INakedObjectMemberPeer[] lastNameFirstNameAndPostalTown;
+        private MemberPeerStub[] lastNameAndFirstName;
+        private MemberPeerStub[] lastNameFirstNameAndPostalTown;
         private MemberPeerStub lastNameMember;
-        private INakedObjectMemberPeer[] nameAndAddressMembers;
+        private MemberPeerStub[] nameAndAddressMembers;
         private MemberPeerStub postalTownMember;
         private MemberPeerStub streetNameMember;
 
@@ -41,7 +42,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         public void TestDefaultGroup() {
             lastNameMember.AddFacet(new MemberOrderFacetAnnotation("", "1", lastNameMember));
             firstNameMember.AddFacet(new MemberOrderFacetAnnotation("", "2", firstNameMember));
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(lastNameAndFirstName);
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(lastNameAndFirstName);
             Assert.AreEqual("", orderSet.GroupName);
             Assert.AreEqual("", orderSet.GroupFullName);
             Assert.AreEqual("", orderSet.GroupPath);
@@ -51,7 +52,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         public void TestDefaultGroupMixOfAnnotatedAndNotOrderedWithAnnotatedFirst() {
             lastNameMember.AddFacet(new MemberOrderFacetAnnotation("", "1", lastNameMember));
             postalTownMember.AddFacet(new MemberOrderFacetAnnotation("", "2", postalTownMember));
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(lastNameFirstNameAndPostalTown);
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(lastNameFirstNameAndPostalTown);
             Assert.AreEqual(lastNameMember, orderSet.ElementList()[0]);
             Assert.AreEqual(postalTownMember, orderSet.ElementList()[1]);
             Assert.AreEqual(firstNameMember, orderSet.ElementList()[2]);
@@ -61,20 +62,20 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         public void TestDefaultGroupMixOfAnnotatedAndNotSize() {
             lastNameMember.AddFacet(new MemberOrderFacetAnnotation("", "1", lastNameMember));
             postalTownMember.AddFacet(new MemberOrderFacetAnnotation("address", "2", postalTownMember));
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(lastNameFirstNameAndPostalTown);
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(lastNameFirstNameAndPostalTown);
             Assert.AreEqual(3, orderSet.ElementList().Count);
         }
 
         [Test]
         public void TestDefaultGroupNeitherAnnotatedOrderedByName() {
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(lastNameAndFirstName);
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(lastNameAndFirstName);
             Assert.AreEqual(firstNameMember, orderSet.ElementList()[0]);
             Assert.AreEqual(lastNameMember, orderSet.ElementList()[1]);
         }
 
         [Test]
         public void TestDefaultGroupNeitherAnnotatedSize() {
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(lastNameAndFirstName);
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(lastNameAndFirstName);
             Assert.AreEqual(2, orderSet.ElementList().Count);
         }
 
@@ -82,7 +83,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         public void TestDefaultGroupSize() {
             lastNameMember.AddFacet(new MemberOrderFacetAnnotation("", "1", lastNameMember));
             firstNameMember.AddFacet(new MemberOrderFacetAnnotation("", "2", firstNameMember));
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(lastNameAndFirstName);
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(lastNameAndFirstName);
             Assert.AreEqual(2, orderSet.Size());
             Assert.AreEqual(2, orderSet.ElementList().Count);
             Assert.AreEqual(0, orderSet.Children.Count);
@@ -92,7 +93,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         public void TestDefaultGroupTwoMembersSorted() {
             lastNameMember.AddFacet(new MemberOrderFacetAnnotation("", "1", lastNameMember));
             firstNameMember.AddFacet(new MemberOrderFacetAnnotation("", "2", firstNameMember));
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(lastNameAndFirstName);
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(lastNameAndFirstName);
             Assert.AreEqual(lastNameMember, orderSet.ElementList()[0]);
             Assert.AreEqual(firstNameMember, orderSet.ElementList()[1]);
         }
@@ -101,7 +102,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         public void TestTwoMembersAtDefaultGroupOtherWay() {
             lastNameMember.AddFacet(new MemberOrderFacetAnnotation("", "2", lastNameMember));
             firstNameMember.AddFacet(new MemberOrderFacetAnnotation("", "1", firstNameMember));
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(lastNameAndFirstName);
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(lastNameAndFirstName);
             Assert.AreEqual(firstNameMember, orderSet.ElementList()[0]);
             Assert.AreEqual(lastNameMember, orderSet.ElementList()[1]);
         }
@@ -113,8 +114,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             houseNumberMember.AddFacet(new MemberOrderFacetAnnotation("address", "6", houseNumberMember));
             streetNameMember.AddFacet(new MemberOrderFacetAnnotation("address", "5", streetNameMember));
             postalTownMember.AddFacet(new MemberOrderFacetAnnotation("address", "4", postalTownMember));
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(nameAndAddressMembers);
-            var childOrderSet = (OrderSet) orderSet.Children[0];
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(nameAndAddressMembers);
+            var childOrderSet = orderSet.Children[0].Set;
             Assert.AreEqual(postalTownMember, childOrderSet.ElementList()[0]);
             Assert.AreEqual(streetNameMember, childOrderSet.ElementList()[1]);
             Assert.AreEqual(houseNumberMember, childOrderSet.ElementList()[2]);
@@ -127,9 +128,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             houseNumberMember.AddFacet(new MemberOrderFacetAnnotation("address", "1", houseNumberMember));
             streetNameMember.AddFacet(new MemberOrderFacetAnnotation("address", "2", streetNameMember));
             postalTownMember.AddFacet(new MemberOrderFacetAnnotation("address", "3", postalTownMember));
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(nameAndAddressMembers);
-            IList<IOrderableElement> children = orderSet.Children;
-            var childOrderSet = (OrderSet) children[0];
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(nameAndAddressMembers);
+            var children = orderSet.Children;
+            var childOrderSet = children[0].Set;
             Assert.AreEqual("Address", childOrderSet.GroupName);
             Assert.AreEqual("address", childOrderSet.GroupFullName);
             Assert.AreEqual("", childOrderSet.GroupPath);
@@ -142,8 +143,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             houseNumberMember.AddFacet(new MemberOrderFacetAnnotation("address", "1", houseNumberMember));
             streetNameMember.AddFacet(new MemberOrderFacetAnnotation("address", "2", streetNameMember));
             postalTownMember.AddFacet(new MemberOrderFacetAnnotation("address", "3", postalTownMember));
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(nameAndAddressMembers);
-            var childOrderSet = (OrderSet) orderSet.Children[0];
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(nameAndAddressMembers);
+            var childOrderSet = orderSet.Children[0].Set;
             Assert.AreEqual(3, childOrderSet.Size());
             Assert.AreEqual(0, childOrderSet.Children.Count);
         }
@@ -155,7 +156,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             houseNumberMember.AddFacet(new MemberOrderFacetAnnotation("address", "1", houseNumberMember));
             streetNameMember.AddFacet(new MemberOrderFacetAnnotation("address", "2", streetNameMember));
             postalTownMember.AddFacet(new MemberOrderFacetAnnotation("address", "3", postalTownMember));
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(nameAndAddressMembers);
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(nameAndAddressMembers);
             Assert.AreEqual("", orderSet.GroupName);
             Assert.AreEqual("", orderSet.GroupFullName);
             Assert.AreEqual("", orderSet.GroupPath);
@@ -168,10 +169,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             postalTownMember.AddFacet(new MemberOrderFacetAnnotation("address", "4", postalTownMember));
             lastNameMember.AddFacet(new MemberOrderFacetAnnotation("", "3", lastNameMember));
             firstNameMember.AddFacet(new MemberOrderFacetAnnotation("", "2", firstNameMember));
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(nameAndAddressMembers);
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(nameAndAddressMembers);
             Assert.AreEqual(firstNameMember, orderSet.ElementList()[0]);
             Assert.AreEqual(lastNameMember, orderSet.ElementList()[1]);
-            Assert.IsTrue(orderSet.ElementList()[2] is OrderSet);
+            Assert.IsTrue(orderSet.ElementList()[2] is OrderSet<MemberPeerStub>);
         }
 
         [Test]
@@ -181,7 +182,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             houseNumberMember.AddFacet(new MemberOrderFacetAnnotation("address", "1", houseNumberMember));
             streetNameMember.AddFacet(new MemberOrderFacetAnnotation("address", "2", streetNameMember));
             postalTownMember.AddFacet(new MemberOrderFacetAnnotation("address", "3", postalTownMember));
-            DeweyOrderSet orderSet = DeweyOrderSet.CreateOrderSet(nameAndAddressMembers);
+            var orderSet = DeweyOrderSet<MemberPeerStub>.CreateOrderSet(nameAndAddressMembers);
             Assert.AreEqual(1, orderSet.Children.Count);
             Assert.AreEqual(3, orderSet.Size());
         }

@@ -252,13 +252,13 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        private INakedObjectAssociation[] OrderFields(OrderSet order) {
+        private INakedObjectAssociation[] OrderFields(OrderSet<INakedObjectAssociationPeer> order) {
             var orderedFields = new List<INakedObjectAssociation>();
-            foreach (IOrderableElement element in order) {
-                if (element is DotNetNakedObjectAssociationPeer) {
-                    orderedFields.Add(CreateNakedObjectField((DotNetNakedObjectAssociationPeer) element));
+            foreach (var element in order) {
+                if (element.Peer != null) {
+                    orderedFields.Add(CreateNakedObjectField(element.Peer));
                 }
-                else if (element is OrderSet) {
+                else if (element.Set != null) {
                     // Not supported at present
                 }
                 else {
@@ -268,14 +268,14 @@ namespace NakedObjects.Reflector.Spec {
             return orderedFields.ToArray();
         }
 
-        private static INakedObjectAction[] OrderActions(OrderSet order) {
+        private static INakedObjectAction[] OrderActions(OrderSet<INakedObjectActionPeer> order) {
             var actions = new List<INakedObjectAction>();
-            foreach (IOrderableElement element in order) {
-                if (element is DotNetNakedObjectActionPeer) {
-                    actions.Add(CreateNakedObjectAction((DotNetNakedObjectActionPeer) element));
+            foreach (var element in order) {
+                if (element.Peer != null) {
+                    actions.Add(CreateNakedObjectAction(element.Peer));
                 }
-                else if (element is OrderSet) {
-                    actions.Add(CreateNakedObjectActionSet((OrderSet) element));
+                else if (element.Set != null) {
+                    actions.Add(CreateNakedObjectActionSet(element.Set));
                 }
                 else {
                     throw new UnknownTypeException(element);
@@ -285,7 +285,7 @@ namespace NakedObjects.Reflector.Spec {
             return actions.ToArray();
         }
 
-        private static NakedObjectActionSet CreateNakedObjectActionSet(OrderSet orderSet) {
+        private static NakedObjectActionSet CreateNakedObjectActionSet(OrderSet<INakedObjectActionPeer> orderSet) {
             return new NakedObjectActionSet(orderSet.GroupFullName.Replace(" ", ""), orderSet.GroupFullName, OrderActions(orderSet));
         }
 

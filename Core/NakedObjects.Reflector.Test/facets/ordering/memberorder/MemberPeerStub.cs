@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
-    internal class MemberPeerStub : NamedAndDescribedFacetHolderImpl, INakedObjectMemberPeer {
+    internal class MemberPeerStub : NamedAndDescribedFacetHolderImpl, INakedObjectMemberPeer, IOrderableElement<MemberPeerStub> {
         private readonly ILifecycleManager persistor;
 
         public MemberPeerStub(string name, ILifecycleManager persistor)
@@ -76,5 +76,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         };
 
         #endregion
+
+        public MemberPeerStub Peer {
+            get { return this; } 
+        }
+        public OrderSet<MemberPeerStub> Set {
+            get { return null; }
+        }
     }
 }

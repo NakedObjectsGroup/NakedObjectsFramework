@@ -2,21 +2,22 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using NakedObjects.Architecture.Facets;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
-    public class SimpleOrderSet : OrderSet {
-        private readonly INakedObjectMemberPeer[] members;
-        private readonly SimpleOrderSet parent;
+    public class SimpleOrderSet<T> : OrderSet<T> where T : IOrderableElement<T>, IFacetHolder {
+        private readonly T[] members;
+        private readonly SimpleOrderSet<T> parent;
 
-        private SimpleOrderSet(INakedObjectMemberPeer[] members)
+        private SimpleOrderSet(T[] members)
             : base("") {
             this.members = members;
             parent = null;
         }
 
-        private SimpleOrderSet(SimpleOrderSet set, string groupName, string name, INakedObjectMemberPeer[] members)
+        private SimpleOrderSet(SimpleOrderSet<T> set, string groupName, string name, T[] members)
             : base(groupName) {
             parent = set;
             parent.AddElement(this);
@@ -24,8 +25,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
             Add(name);
         }
 
-        public static SimpleOrderSet CreateOrderSet(string order, INakedObjectMemberPeer[] members) {
-            var set = new SimpleOrderSet(members);
+        public static SimpleOrderSet<T> CreateOrderSet(string order, T[] members) {
+            var set = new SimpleOrderSet<T>(members);
 
             string[] st = order.Split(new[] {','});
             foreach (string element in st) {
@@ -55,7 +56,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
         }
 
         private void Add(string name) {
-            INakedObjectMemberPeer memberWithName = GetMemberWithName(name);
+            T memberWithName = GetMemberWithName(name);
             if (memberWithName != null) {
                 AddElement(memberWithName);
             }
@@ -69,23 +70,23 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
             }
         }
 
-        private SimpleOrderSet CreateSubOrderSet(string groupName, string memberName) {
-            return new SimpleOrderSet(this, groupName, memberName, members);
+        private SimpleOrderSet<T> CreateSubOrderSet(string groupName, string memberName) {
+            return new SimpleOrderSet<T>(this, groupName, memberName, members);
         }
 
-        private INakedObjectMemberPeer GetMemberWithName(string name) {
+        private T GetMemberWithName(string name) {
             string searchName = NameUtils.SimpleName(name);
             for (int i = 0; i < members.Length; i++) {
-                INakedObjectMemberPeer member = members[i];
+                T member = members[i];
                 if (member != null) {
-                    string testName = NameUtils.SimpleName(member.Identifier.MemberName);
+                    string testName = NameUtils.SimpleName(member.Peer.Identifier.MemberName);
                     if (testName.Equals(searchName)) {
-                        members[i] = null;
+                        members[i] = default(T);
                         return member;
                     }
                 }
             }
-            return null;
+            return default(T);
         }
     }
 

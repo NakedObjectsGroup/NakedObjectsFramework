@@ -9,7 +9,7 @@ namespace NakedObjects.Reflector.Peer {
     /// <summary>
     ///     Additional reflective details about field members
     /// </summary>
-    public interface INakedObjectAssociationPeer : INakedObjectMemberPeer {
+    public interface INakedObjectAssociationPeer : INakedObjectMemberPeer, IOrderableElement<INakedObjectAssociationPeer> {
         /// <summary>
         ///     The <see cref="INakedObjectSpecification" /> of the associated
         ///     object if <see cref="IsOneToOne" /> is <c>true</c>, or, the type of the

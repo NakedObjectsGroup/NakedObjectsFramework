@@ -39,9 +39,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private readonly PropertyInfo[] properties;
         private readonly INakedObjectReflector reflector;
 
-        private OrderSet orderedClassActions;
-        private OrderSet orderedFields;
-        private OrderSet orderedObjectActions;
+        private OrderSet<INakedObjectActionPeer> orderedClassActions;
+        private OrderSet<INakedObjectAssociationPeer> orderedFields;
+        private OrderSet<INakedObjectActionPeer> orderedObjectActions;
 
         public DotNetIntrospector(Type typeToIntrospect,
                                   IIntrospectableSpecification specification,
@@ -96,15 +96,15 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
         }
 
-        public OrderSet Fields {
+        public OrderSet<INakedObjectAssociationPeer> Fields {
             get { return orderedFields; }
         }
 
-        public OrderSet ClassActions {
+        public OrderSet<INakedObjectActionPeer> ClassActions {
             get { return orderedClassActions; }
         }
 
-        public OrderSet ObjectActions {
+        public OrderSet<INakedObjectActionPeer> ObjectActions {
             get { return orderedObjectActions; }
         }
 
@@ -157,7 +157,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             Log.InfoFormat("introspecting {0}: properties and collections", ClassName);
 
             // find the properties and collections (fields) ...
-            INakedObjectMemberPeer[] findFieldMethods = FindAndCreateFieldPeers();
+            INakedObjectAssociationPeer[] findFieldMethods = FindAndCreateFieldPeers();
 
             // ... and the ordering of the properties and collections  
             var fieldOrderFacet = specification.GetFacet<IFieldOrderFacet>();
@@ -195,10 +195,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             orderedClassActions = CreateOrderSet(actionOrder, findClassActionMethods);
         }
 
-        private INakedObjectMemberPeer[] FindAndCreateFieldPeers() {
+        private INakedObjectAssociationPeer[] FindAndCreateFieldPeers() {
             if (ClassStrategy.IsSystemClass(introspectedType)) {
                 Log.DebugFormat("Skipping fields in {0} (system class according to ClassStrategy)", introspectedType.Name);
-                return new INakedObjectMemberPeer[0];
+                return new INakedObjectAssociationPeer[0];
             }
 
             Log.DebugFormat("Looking for fields for {0}", introspectedType);
@@ -207,7 +207,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             reflector.LoadSpecificationForReturnTypes(candidates, introspectedType);
 
             // now create FieldPeers for value properties, for collections and for reference properties
-            var fieldPeers = new List<INakedObjectMemberPeer>();
+            var fieldPeers = new List<INakedObjectAssociationPeer>();
 
             FindCollectionPropertiesAndCreateCorrespondingFieldPeers(candidates, fieldPeers);
             // every other accessor is assumed to be a reference property.
@@ -216,7 +216,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return fieldPeers.ToArray();
         }
 
-        private void FindCollectionPropertiesAndCreateCorrespondingFieldPeers(IList<PropertyInfo> candidates, ICollection<INakedObjectMemberPeer> fieldPeers) {
+        private void FindCollectionPropertiesAndCreateCorrespondingFieldPeers(IList<PropertyInfo> candidates, ICollection<INakedObjectAssociationPeer> fieldPeers) {
             var collectionProperties = new List<PropertyInfo>();
             FacetFactorySet.FindCollectionProperties(candidates, collectionProperties);
             CreateCollectionPeersFromAccessors(collectionProperties, fieldPeers);
@@ -226,13 +226,13 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         ///     Since the value properties and collections have already been processed, this will
         ///     pick up the remaining reference properties
         /// </summary>
-        private void FindPropertiesAndCreateCorrespondingFieldPeers(IList<PropertyInfo> candidates, ICollection<INakedObjectMemberPeer> fieldPeers) {
+        private void FindPropertiesAndCreateCorrespondingFieldPeers(IList<PropertyInfo> candidates, ICollection<INakedObjectAssociationPeer> fieldPeers) {
             var foundProperties = new List<PropertyInfo>();
             FacetFactorySet.FindProperties(candidates, foundProperties);
             CreatePropertyPeersFromAccessors(foundProperties, fieldPeers);
         }
 
-        private void CreateCollectionPeersFromAccessors(IEnumerable<PropertyInfo> collectionProperties, ICollection<INakedObjectMemberPeer> fieldsListToAppendto) {
+        private void CreateCollectionPeersFromAccessors(IEnumerable<PropertyInfo> collectionProperties, ICollection<INakedObjectAssociationPeer> fieldsListToAppendto) {
             foreach (PropertyInfo property in collectionProperties) {
                 Log.DebugFormat("Identified one-many association method {0}", property);
 
@@ -252,7 +252,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         /// <summary>
         ///     Creates a list of Association fields for all the properties that use NakedObjects.
         /// </summary>
-        private void CreatePropertyPeersFromAccessors(IEnumerable<PropertyInfo> foundProperties, ICollection<INakedObjectMemberPeer> fieldListToAppendto) {
+        private void CreatePropertyPeersFromAccessors(IEnumerable<PropertyInfo> foundProperties, ICollection<INakedObjectAssociationPeer> fieldListToAppendto) {
             foreach (PropertyInfo property in foundProperties) {
                 Log.DebugFormat("Identified 1-1 association method {0}", property);
                 Log.DebugFormat("One-to-One association {0} -> {1}", property.Name, property);
@@ -317,7 +317,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         private bool ContainsField(string name) {
-            foreach (IOrderableElement field in Fields) {
+            foreach (var field in Fields) {
                 var field1 = (INakedObjectAssociationPeer) field;
                 if (field1.IsOneToOne && ((DotNetOneToOneAssociationPeer) field1).Identifier.MemberName.Equals(name)) {
                     return true;
@@ -392,11 +392,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return MethodFinderUtils.RemoveMethod(methods, methodType, name, returnType, paramTypes);
         }
 
-        private static OrderSet CreateOrderSet(string order, INakedObjectMemberPeer[] members) {
+        private static OrderSet<T> CreateOrderSet<T>(string order, T[] members) where T : IOrderableElement<T>, IFacetHolder {
             if (order != null) {
-                return SimpleOrderSet.CreateOrderSet(order, members);
+                return SimpleOrderSet<T>.CreateOrderSet(order, members);
             }
-            return DeweyOrderSet.CreateOrderSet(members);
+            return DeweyOrderSet<T>.CreateOrderSet(members);
         }
 
         private string InvokeSortOrderMethod(string name) {

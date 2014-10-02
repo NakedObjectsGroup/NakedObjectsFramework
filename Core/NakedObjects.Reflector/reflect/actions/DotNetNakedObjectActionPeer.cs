@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
@@ -28,6 +29,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
         }
 
         #endregion
+
+        public INakedObjectActionPeer Peer { get { return this; }}
+        public OrderSet<INakedObjectActionPeer> Set { get { return null; } }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

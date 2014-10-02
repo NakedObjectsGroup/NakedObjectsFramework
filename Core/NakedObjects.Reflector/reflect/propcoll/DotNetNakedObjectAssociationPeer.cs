@@ -9,6 +9,7 @@ using System;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Propcoll {
@@ -39,6 +40,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Propcoll {
         }
 
         #endregion
+
+        public INakedObjectAssociationPeer Peer { get { return this; } }
+        public OrderSet<INakedObjectAssociationPeer> Set { get { return null; } }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

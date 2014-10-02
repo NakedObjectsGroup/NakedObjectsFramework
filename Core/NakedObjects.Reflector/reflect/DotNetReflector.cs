@@ -50,20 +50,15 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         #region IMetadata Members
 
         public virtual INakedObjectSpecification[] AllSpecifications {
-            get {
-                //return cache.AllSpecifications();
-                throw new NotImplementedException();
-            }
+            get { return cache.AllSpecifications().Select(s => new NakedObjectSpecification(this, s)).Cast<INakedObjectSpecification>().ToArray(); }
         }
 
         public INakedObjectSpecification GetSpecification(Type type) {
-            //return LoadSpecification(type);
-            throw new NotImplementedException();
+            return new NakedObjectSpecification(this, LoadSpecification(type));
         }
 
         public INakedObjectSpecification GetSpecification(string name) {
-            //return LoadSpecification(name);
-            throw new NotImplementedException();
+            return new NakedObjectSpecification(this, LoadSpecification(name));
         }
 
         #endregion

@@ -14,14 +14,14 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
 
         [SetUp]
         public virtual void SetUp() {
-            comparator = new MemberOrderComparator(true);
-            laxComparator = new MemberOrderComparator(false);
+            comparator = new MemberOrderComparator<MemberPeerStub>(true);
+            laxComparator = new MemberOrderComparator<MemberPeerStub>(false);
         }
 
         #endregion
 
-        private MemberOrderComparator comparator;
-        private MemberOrderComparator laxComparator;
+        private MemberOrderComparator<MemberPeerStub> comparator;
+        private MemberOrderComparator<MemberPeerStub> laxComparator;
 
         private MemberPeerStub m1;
         private MemberPeerStub m2;

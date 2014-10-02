@@ -21,9 +21,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     /// <para>
     ///     Can specify if requires that members are in the same (group) name.
     /// </para>
-    public class MemberOrderComparator : IComparer<INakedObjectMemberPeer> {
+    public class MemberOrderComparator<T> : IComparer<T> where T : IOrderableElement<T>, IFacetHolder {
         private readonly bool ensureInSameGroup;
-        private readonly MemberIdentifierComparator fallbackComparator = new MemberIdentifierComparator();
+        private readonly MemberIdentifierComparator<T> fallbackComparator = new MemberIdentifierComparator<T>();
 
         public MemberOrderComparator(bool ensureGroupIsSame) {
             ensureInSameGroup = ensureGroupIsSame;
@@ -31,7 +31,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
 
         #region IComparer<INakedObjectMemberPeer> Members
 
-        public int Compare(INakedObjectMemberPeer o1, INakedObjectMemberPeer o2) {
+        public int Compare(T o1, T o2) {
             IMemberOrderFacet m1 = GetMemberOrder(o1);
             IMemberOrderFacet m2 = GetMemberOrder(o2);
 
@@ -39,11 +39,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
                 return fallbackComparator.Compare(o1, o2);
             }
 
-            if (m1 == null && m2 != null) {
+            if (m1 == null) {
                 return +1; // annotated before non-annotated
             }
 
-            if (m1 != null && m2 == null) {
+            if (m2 == null) {
                 return -1; // annotated before non-annotated
             }
 
@@ -65,15 +65,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             // continue to loop until we run out of components.
             int n = 0;
             while (true) {
-                int Length = n + 1;
+                int length = n + 1;
                 // check if run out of components in either side
-                if (length1 < Length && length2 >= Length) {
+                if (length1 < length && length2 >= length) {
                     return -1; // o1 before o2
                 }
-                if (length2 < Length && length1 >= Length) {
+                if (length2 < length && length1 >= length) {
                     return +1; // o2 before o1
                 }
-                if (length1 < Length && length2 < Length) {
+                if (length1 < length && length2 < length) {
                     // run out of components
                     return fallbackComparator.Compare(o1, o2);
                 }

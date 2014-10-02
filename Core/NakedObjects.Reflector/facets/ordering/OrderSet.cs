@@ -5,13 +5,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using NakedObjects.Architecture.Facets;
 using NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
-    public class OrderSet : IComparable<OrderSet>, IOrderableElement {
-        private readonly List<IOrderableElement> childOrderSets = new List<IOrderableElement>();
-        private readonly List<IOrderableElement> elements = new List<IOrderableElement>();
+    public class OrderSet<T> : IComparable<OrderSet<T>>, IOrderableElement<T> where T : IOrderableElement<T>, IFacetHolder {
+        private readonly List<IOrderableElement<T>> childOrderSets = new List<IOrderableElement<T>>();
+        private readonly List<IOrderableElement<T>> elements = new List<IOrderableElement<T>>();
         private readonly string groupFullName;
         private readonly string groupName;
         private readonly string groupPath;
@@ -22,10 +23,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
             groupPath = DeriveGroupPath(groupFullName);
         }
 
-        public OrderSet Parent { set; get; }
+        public OrderSet<T> Parent { set; get; }
 
-        public IList<IOrderableElement> Children {
-            get { return new ReadOnlyCollection<IOrderableElement>(childOrderSets); }
+        public IList<IOrderableElement<T>> Children {
+            get { return new ReadOnlyCollection<IOrderableElement<T>>(childOrderSets); }
         }
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
         /// <summary>
         ///     Natural ordering is to compare by <see cref="OrderSet.GroupFullName" />
         /// </summary>
-        public int CompareTo(OrderSet o) {
+        public int CompareTo(OrderSet<T> o) {
             return GroupFullName.CompareTo(o.GroupFullName);
         }
 
@@ -103,7 +104,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
         ///     A staging area until we are ready to add the child sets to the collection of elements owned by the
         ///     superclass.
         /// </summary>
-        protected void AddChild(DeweyOrderSet childOrderSet) {
+        protected void AddChild(DeweyOrderSet<T> childOrderSet) {
             childOrderSets.Add(childOrderSet);
         }
 
@@ -115,26 +116,33 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
         /// <summary>
         ///     Returns a copy of the elements, in sequence.
         /// </summary>
-        public IList<IOrderableElement> ElementList() {
-            return new ReadOnlyCollection<IOrderableElement>(elements);
+        public IList<IOrderableElement<T>> ElementList() {
+            return new ReadOnlyCollection<IOrderableElement<T>>(elements);
         }
 
         public int Size() {
             return elements.Count;
         }
 
-        protected void AddElement(IOrderableElement element) {
+        protected void AddElement(IOrderableElement<T> element) {
             elements.Add(element);
         }
 
-        public IEnumerator<IOrderableElement> GetEnumerator() {
+        public IEnumerator<IOrderableElement<T>> GetEnumerator() {
             return elements.GetEnumerator();
         }
 
-        protected void AddAll(IEnumerable<IOrderableElement> sortedMembers) {
-            foreach (IOrderableElement o in sortedMembers) {
+        protected void AddAll(IEnumerable<IOrderableElement<T>> sortedMembers) {
+            foreach (IOrderableElement<T> o in sortedMembers) {
                 AddElement(o);
             }
+        }
+
+        public T Peer {
+            get { return default(T); }
+        }
+        public OrderSet<T> Set {
+            get { return this; }
         }
     }
 
