@@ -169,6 +169,10 @@
     <Compile Include="Component\IUpdateNotifier.cs" />
     <Compile Include="Configuration\IServicesConfiguration.cs" />
     <Compile Include="facets\FacetFilters.cs" />
+    <Compile Include="facets\types\IAbstractFacet.cs" />
+    <Compile Include="facets\types\IInterfaceFacet.cs" />
+    <Compile Include="facets\types\ISealedFacet.cs" />
+    <Compile Include="facets\types\IVoidFacet.cs" />
     <Compile Include="Framework\INakedObjectsFramework.cs" />
     <Compile Include="exceptions\InvalidEntryException.cs" />
     <Compile Include="exceptions\NakedObjectApplicationException.cs" />

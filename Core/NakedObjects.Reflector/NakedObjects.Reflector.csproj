@@ -340,6 +340,10 @@
     <Compile Include="facets\RemoveEventHandlerMethodsFacetFactory.cs" />
     <Compile Include="facets\RemoveInitMethodFacetFactory.cs" />
     <Compile Include="facets\RemoveSuperclassMethodsFacetFactory.cs" />
+    <Compile Include="facets\types\SealedFacet.cs" />
+    <Compile Include="facets\types\InterfaceFacet.cs" />
+    <Compile Include="facets\types\VoidFacet.cs.cs" />
+    <Compile Include="facets\types\AbstractFacet.cs" />
     <Compile Include="fixture\DotNetFixtureBuilder.cs" />
     <Compile Include="fixture\DotnetFixtureServices.cs" />
     <Compile Include="i18n\DescribedAsFacetDynamicWrapI18n.cs" />
