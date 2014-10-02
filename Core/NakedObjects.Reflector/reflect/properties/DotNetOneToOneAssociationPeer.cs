@@ -9,8 +9,8 @@ using NakedObjects.Reflector.DotNet.Reflect.Propcoll;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Properties {
     public class DotNetOneToOneAssociationPeer : DotNetNakedObjectAssociationPeer {
-        public DotNetOneToOneAssociationPeer(INakedObjectReflector reflector, IIdentifier identifier, Type returnType)
-            : base(reflector, identifier, returnType, false) {}
+        public DotNetOneToOneAssociationPeer(IMetadata metadata, IIdentifier identifier, Type returnType)
+            : base(metadata, identifier, returnType, false) {}
 
         public override string ToString() {
             return "Reference Association [name=\"" + Identifier + ", Type=" + Specification + " ]";

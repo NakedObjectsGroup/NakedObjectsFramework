@@ -14,8 +14,8 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Reflect {
     [TestFixture]
     public class Reflector_ValueTest : AbstractDotNetReflectorTest {
-        protected override NakedObjectSpecification LoadSpecification(DotNetReflector reflector) {
-            return (NakedObjectSpecification) reflector.LoadSpecification(typeof (string));
+        protected override IIntrospectableSpecification LoadSpecification(DotNetReflector reflector) {
+            return  reflector.LoadSpecification(typeof (string));
         }
 
         [Test]
@@ -37,12 +37,14 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void TestIsParseable() {
-            Assert.IsTrue(specification.IsParseable);
+            Assert.Fail();
+           // Assert.IsTrue(specification.IsParseable);
         }
 
         [Test]
         public void TestName() {
-            Assert.AreEqual(typeof (string).FullName, specification.FullName);
+            Assert.Fail();
+            //Assert.AreEqual(typeof (string).FullName, specification.FullName);
         }
 
         [Test]
@@ -59,7 +61,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void TestType() {
-            Assert.IsTrue(specification.IsCollection);
+            Assert.Fail();
+            //Assert.IsTrue(specification.IsCollection);
         }
 
         [Test]

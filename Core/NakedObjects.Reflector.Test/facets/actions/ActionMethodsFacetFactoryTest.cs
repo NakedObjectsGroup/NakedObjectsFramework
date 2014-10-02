@@ -34,6 +34,7 @@ using NakedObjects.Reflector.DotNet.Facets.Disable;
 using NakedObjects.Reflector.DotNet.Facets.Hide;
 using NakedObjects.Reflector.DotNet.Reflect.Actions;
 using NakedObjects.Reflector.Peer;
+using NakedObjects.Reflector.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions {
@@ -44,7 +45,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ActionMethodsFacetFactory(Reflector);
+            facetFactory = new ActionMethodsFacetFactory(Metadata);
         }
 
         [TearDown]
@@ -78,9 +79,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         }
 
         private static DotNetNakedObjectActionPeer CreateHolderWithParms() {
-            var tps1 = new Mock<INakedObjectSpecification>(); //"System.Int32"
-            var tps2 = new Mock<INakedObjectSpecification>(); //System.Int64"
-            var tps3 = new Mock<INakedObjectSpecification>(); //"System.Int64"
+            var tps1 = new Mock<IIntrospectableSpecification>(); //"System.Int32"
+            var tps2 = new Mock<IIntrospectableSpecification>(); //System.Int64"
+            var tps3 = new Mock<IIntrospectableSpecification>(); //"System.Int64"
 
             var param1 = new DotNetNakedObjectActionParamPeer(tps1.Object);
             var param2 = new DotNetNakedObjectActionParamPeer(tps2.Object);

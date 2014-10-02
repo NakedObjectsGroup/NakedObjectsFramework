@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -36,11 +39,34 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             Assert.AssertNotNull(facetFactorySet);
             Assert.AssertNotNull(facetDecoratorSet);
             facetDecorator = facetDecoratorSet;
-           
+
             facetFactorySet.Init(this);
             introspectionControlParameters = new IntrospectionControlParameters(facetFactorySet, classStrategy);
             IgnoreCase = false;
         }
+
+        private Type[] NonSystemServices { get; set; }
+
+        #region IMetadata Members
+
+        public virtual INakedObjectSpecification[] AllSpecifications {
+            get {
+                //return cache.AllSpecifications();
+                throw new NotImplementedException();
+            }
+        }
+
+        public INakedObjectSpecification GetSpecification(Type type) {
+            //return LoadSpecification(type);
+            throw new NotImplementedException();
+        }
+
+        public INakedObjectSpecification GetSpecification(string name) {
+            //return LoadSpecification(name);
+            throw new NotImplementedException();
+        }
+
+        #endregion
 
         #region INakedObjectReflector Members
 
@@ -52,26 +78,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             get { return introspectionControlParameters.FacetFactorySet; }
         }
 
-        private Type[] NonSystemServices { get; set; }
-
-        public virtual INakedObjectSpecification[] AllSpecifications {
-            get { return cache.AllSpecifications(); }
-        }
-
-        public INakedObjectSpecification GetSpecification(Type type) {
-            return LoadSpecification(type);
-        }
-
-        public INakedObjectSpecification GetSpecification(string name) {
-            return LoadSpecification(name);
-        }
-
-        public virtual INakedObjectSpecification LoadSpecification(Type type) {
+        public virtual IIntrospectableSpecification LoadSpecification(Type type) {
             Assert.AssertNotNull(type);
             return LoadSpecificationAndCache(ClassStrategy.GetType(type));
         }
 
-        public INakedObjectSpecification LoadSpecification(string className) {
+        public IIntrospectableSpecification LoadSpecification(string className) {
             Assert.AssertNotNull("specification class must be specified", className);
 
             try {
@@ -80,7 +92,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
             catch (Exception e) {
                 Log.InfoFormat("Failed to Load Specification for: {0} error: {1} trying cache", className, e);
-                INakedObjectSpecification spec = cache.GetSpecification(className);
+                var spec = cache.GetSpecification(className);
                 if (spec != null) {
                     Log.InfoFormat("Found {0} in cache", className);
                     return spec;
@@ -107,7 +119,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
         }
 
-        public bool IgnoreCase { get; set; }
+        public static bool IgnoreCase { get; set; }
 
         public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) {
             foreach (PropertyInfo property in properties) {
@@ -120,24 +132,24 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         #endregion
 
         private void InstallServiceSpecification(Type type) {
-            INakedObjectSpecification spec = cache.GetSpecification(type.GetProxiedTypeFullName());
+            var spec = cache.GetSpecification(type.GetProxiedTypeFullName());
             if (spec != null) {
                 return;
             }
 
-            NakedObjectSpecification specification = Install(type);
+            var specification = Install(type);
             cache.Cache(type.GetProxiedTypeFullName(), specification);
             specification.Introspect(facetDecorator);
             specification.MarkAsService();
         }
 
-        private INakedObjectSpecification LoadSpecificationAndCache(Type type) {
+        private IIntrospectableSpecification LoadSpecificationAndCache(Type type) {
             string proxiedTypeName = type.GetProxiedTypeFullName();
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
             lock (cache) {
                 // this is a double check on the cache to check it was not written to during the unguarded 
                 // internal between the last check and the lock
-                INakedObjectSpecification specification = cache.GetSpecification(proxiedTypeName);
+                var specification = cache.GetSpecification(proxiedTypeName);
                 if (specification != null) {
                     return specification;
                 }
@@ -152,26 +164,25 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 // need to be careful no other thread reads until introspected
                 cache.Cache(proxiedTypeName, specification);
 
-                var introspectableSpecification = specification as IIntrospectableSpecification;
-                if (introspectableSpecification != null) {
-                    introspectableSpecification.Introspect(facetDecorator);
 
-                    if (!installingServices) {
-                        var services = NonSystemServices ?? new Type[] {};
-                        introspectableSpecification.PopulateAssociatedActions(services);
-                    }
+                specification.Introspect(facetDecorator);
+
+                if (!installingServices) {
+                    var services = NonSystemServices ?? new Type[] {};
+                    specification.PopulateAssociatedActions(services);
                 }
+
 
                 return specification;
             }
         }
 
-        private INakedObjectSpecification CreateSpecification(Type type) {
-            return new NakedObjectSpecification(type, this);
+        private IIntrospectableSpecification CreateSpecification(Type type) {
+            return new IntrospectableSpecification(type, this);
         }
 
-        private NakedObjectSpecification Install(Type type) {
-            return new NakedObjectSpecification(type, this);
+        private IIntrospectableSpecification Install(Type type) {
+            return new IntrospectableSpecification(type, this);
         }
     }
 

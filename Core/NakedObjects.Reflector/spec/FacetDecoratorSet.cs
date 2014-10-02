@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Facets;
 
 namespace NakedObjects.Reflector.Spec {
-    public class FacetDecoratorSet  {
+    public class FacetDecoratorSet : IFacetDecoratorSet {
         private readonly IDictionary<Type, IList<IFacetDecorator>> facetDecorators = new Dictionary<Type, IList<IFacetDecorator>>();
 
         public virtual bool IsEmpty {

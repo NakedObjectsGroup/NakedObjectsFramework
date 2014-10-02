@@ -9,12 +9,12 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ShortValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<short> {
-        public ShortValueTypeFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, typeof (IShortValueFacet)) {}
+        public ShortValueTypeFacetFactory(IMetadata metadata)
+            : base(metadata, typeof (IShortValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (ShortValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new ShortValueSemanticsProvider(Reflector, holder));
+                AddFacets(new ShortValueSemanticsProvider(Metadata, holder));
                 return true;
             }
             return false;

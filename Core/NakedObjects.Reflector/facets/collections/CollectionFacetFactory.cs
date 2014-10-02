@@ -13,12 +13,12 @@ using NakedObjects.Reflector.DotNet.Facets.Collections.Modify;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class CollectionFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public CollectionFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndCollections) { }
+        public CollectionFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.ObjectsPropertiesAndCollections) { }
 
         private bool ProcessArray(Type type, IFacetHolder holder) {
             holder.AddFacet(new DotNetArrayFacet(holder, type.GetElementType()));
-            holder.AddFacet(new TypeOfFacetInferredFromArray(type.GetElementType(), holder, Reflector));
+            holder.AddFacet(new TypeOfFacetInferredFromArray(type.GetElementType(), holder, Metadata));
             return true;
         }
 
@@ -33,7 +33,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             }
             else {
                 collectionElementType = CollectionUtils.ElementType(type);
-                holder.AddFacet(new TypeOfFacetInferredFromGenerics(collectionElementType, holder, Reflector));
+                holder.AddFacet(new TypeOfFacetInferredFromGenerics(collectionElementType, holder, Metadata));
             }
 
             Type facetType = isQueryable ? typeof (DotNetGenericIQueryableFacet<>) : (isCollection ? typeof (DotNetGenericCollectionFacet<>) : typeof (DotNetGenericIEnumerableFacet<>));
@@ -55,7 +55,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             }
             else {
                 collectionElementType = typeof (object);
-                holder.AddFacet(new TypeOfFacetDefaultToObject(holder, Reflector));
+                holder.AddFacet(new TypeOfFacetDefaultToObject(holder, Metadata));
             }
             holder.AddFacet(new DotNetCollectionFacet(holder, collectionElementType));
             return true;

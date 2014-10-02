@@ -13,8 +13,8 @@ using PropertyInfo = System.Reflection.PropertyInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Disable {
     public class DisabledAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public DisabledAnnotationFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.PropertiesCollectionsAndActions) { }
+        public DisabledAnnotationFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.PropertiesCollectionsAndActions) { }
 
         private static bool Process(MemberInfo member, IFacetHolder holder) {
             var attribute = member.GetCustomAttribute<DisabledAttribute>();

@@ -161,12 +161,12 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestObject GetBoundedInstance(Type type, string title) {
-            INakedObjectSpecification spec = NakedObjectsFramework.Reflector.LoadSpecification(type);
+            INakedObjectSpecification spec = NakedObjectsFramework.Metadata.GetSpecification(type);
             return GetBoundedInstance(title, spec);
         }
 
         protected ITestObject GetBoundedInstance(string classname, string title) {
-            INakedObjectSpecification spec = NakedObjectsFramework.Reflector.LoadSpecification(classname);
+            INakedObjectSpecification spec = NakedObjectsFramework.Metadata.GetSpecification(classname);
             return GetBoundedInstance(title, spec);
         }
 

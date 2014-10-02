@@ -27,13 +27,17 @@ namespace NakedObjects.Security {
 
         #region IAuthorizerInstaller Members
 
-        public IFacetDecorator[] CreateDecorators(INakedObjectReflector reflector) {
-            authManager.Reflector = reflector;
+        public IFacetDecorator[] CreateDecorators(IMetadata metadata) {
+            authManager.Metadata = metadata;
             return new IFacetDecorator[] {new SecurityFacetDecorator(authManager)};
         }
 
         public string Name {
             get { return "TypeAuthorizerInstaller"; }
+        }
+
+        public IFacetDecorator[] CreateDecorators(INakedObjectReflector reflector) {
+            throw new System.NotImplementedException();
         }
 
         #endregion

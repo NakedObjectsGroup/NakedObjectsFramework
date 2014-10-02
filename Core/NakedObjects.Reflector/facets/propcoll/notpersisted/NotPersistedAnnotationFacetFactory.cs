@@ -15,8 +15,8 @@ using ParameterInfo = System.Reflection.ParameterInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
     public class NotPersistedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public NotPersistedAnnotationFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndCollections) { }
+        public NotPersistedAnnotationFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.ObjectsPropertiesAndCollections) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             var attribute = type.GetCustomAttributeByReflection<NotPersistedAttribute>();

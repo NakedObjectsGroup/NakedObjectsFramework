@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
 
             holder = new FacetHolderImpl();
-            SetValue(new FloatValueSemanticsProvider(reflector, holder));
+            SetValue(new FloatValueSemanticsProvider(metadata, holder));
 
             floatObj = 32.5F;
         }

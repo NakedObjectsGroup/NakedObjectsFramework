@@ -9,12 +9,12 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class DecimalValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<decimal> {
-        public DecimalValueTypeFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, typeof(IDecimalValueFacet)) { }
+        public DecimalValueTypeFacetFactory(IMetadata metadata)
+            : base(metadata, typeof(IDecimalValueFacet)) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (DecimalValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new DecimalValueSemanticsProvider(Reflector, holder));
+                AddFacets(new DecimalValueSemanticsProvider(Metadata, holder));
                 return true;
             }
             return false;

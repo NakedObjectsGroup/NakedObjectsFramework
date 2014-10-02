@@ -12,8 +12,8 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Reflect {
     [TestFixture]
     public class Reflector_MetaDataTest : AbstractDotNetReflectorTest {
-        protected override NakedObjectSpecification LoadSpecification(DotNetReflector reflector) {
-            return (NakedObjectSpecification) reflector.LoadSpecification(typeof (TestDomainObject2));
+        protected override IIntrospectableSpecification LoadSpecification(DotNetReflector reflector) {
+            return  reflector.LoadSpecification(typeof (TestDomainObject2));
         }
 
 

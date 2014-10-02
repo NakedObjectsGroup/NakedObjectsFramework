@@ -25,11 +25,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public SbyteValueSemanticsProvider(INakedObjectReflector reflector)
-            : this(reflector, null) {}
+        public SbyteValueSemanticsProvider(IMetadata metadata)
+            : this(metadata, null) {}
 
-        public SbyteValueSemanticsProvider(INakedObjectReflector reflector, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, reflector) { }
+        public SbyteValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, metadata) { }
 
         public static Type Type {
             get { return typeof (ISbyteValueFacet); }

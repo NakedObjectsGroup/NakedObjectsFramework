@@ -8,7 +8,7 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
     public class TypeOfFacetDefaultToObject : TypeOfFacetAbstract {
-        public TypeOfFacetDefaultToObject(IFacetHolder holder, INakedObjectReflector reflector)
-            : base(typeof (object), true, holder, reflector) {}
+        public TypeOfFacetDefaultToObject(IFacetHolder holder, IMetadata metadata)
+            : base(typeof (object), true, holder, metadata) {}
     }
 }

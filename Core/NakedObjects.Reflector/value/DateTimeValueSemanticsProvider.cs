@@ -21,11 +21,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public DateTimeValueSemanticsProvider(INakedObjectReflector reflector)
-            : this(reflector, null) { }
+        public DateTimeValueSemanticsProvider(IMetadata metadata)
+            : this(metadata, null) { }
 
-        public DateTimeValueSemanticsProvider(INakedObjectReflector reflector, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, Immutable, EqualByContent, defaultValue, reflector) { }
+        public DateTimeValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, Immutable, EqualByContent, defaultValue, metadata) { }
 
         // inject for testing 
         public static DateTime? TestDateTime { get; set; }

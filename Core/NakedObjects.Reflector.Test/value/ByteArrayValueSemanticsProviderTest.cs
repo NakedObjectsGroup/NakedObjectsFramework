@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             byteArray = new byte[0];
             byteArrayNakedObject = CreateAdapter(byteArray);
             facetHolder = new FacetHolderImpl();
-            SetValue(value = new ArrayValueSemanticsProvider<byte>(reflector, facetHolder));
+            SetValue(value = new ArrayValueSemanticsProvider<byte>(metadata, facetHolder));
         }
 
         #endregion

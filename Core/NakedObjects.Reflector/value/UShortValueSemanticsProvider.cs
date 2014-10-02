@@ -11,7 +11,6 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Properties.Defaults;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
-using NakedObjects.Core.Context;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class UShortValueSemanticsProvider : ValueSemanticsProviderAbstract<ushort>, IPropertyDefaultFacet {
@@ -23,11 +22,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public UShortValueSemanticsProvider(INakedObjectReflector reflector)
-            : this(reflector, null) {}
+        public UShortValueSemanticsProvider(IMetadata metadata)
+            : this(metadata, null) {}
 
-        public UShortValueSemanticsProvider(INakedObjectReflector reflector, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, reflector) { }
+        public UShortValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, metadata) { }
 
         public static Type Type {
             get { return typeof (IShortValueFacet); }

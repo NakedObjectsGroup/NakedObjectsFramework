@@ -150,7 +150,7 @@ namespace NakedObjects.Core.Persist {
 
         [Test]
         public void TestActionNoParmsTransient() {
-            var targetNo = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof(TestDomainObject)));
+            var targetNo = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metadata.GetSpecification(typeof(TestDomainObject)));
 
             INakedObjectAction action = targetNo.Specification.GetObjectActions().Single(a => a.Id == "Action1");
 

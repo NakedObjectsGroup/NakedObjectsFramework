@@ -13,20 +13,18 @@ using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     public abstract class AbstractDotNetReflectorTest {
-        protected NakedObjectSpecification specification;
+        protected IIntrospectableSpecification specification;
 
         [SetUp]
         public virtual void SetUp() {
-            var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySetImpl(), new FacetDecoratorSet()) {
-                
-            };
+            var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySetImpl(), new FacetDecoratorSet());
 
 
             specification = LoadSpecification(reflector);
             specification.PopulateAssociatedActions(new Type[] {});
         }
 
-        protected abstract NakedObjectSpecification LoadSpecification(DotNetReflector reflector);
+        protected abstract IIntrospectableSpecification LoadSpecification(DotNetReflector reflector);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

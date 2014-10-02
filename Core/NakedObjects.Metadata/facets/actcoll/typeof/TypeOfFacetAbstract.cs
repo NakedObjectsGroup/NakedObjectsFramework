@@ -12,8 +12,8 @@ namespace NakedObjects.Architecture.Facets.Actcoll.Typeof {
     public abstract class TypeOfFacetAbstract : SingleClassValueFacetAbstract, ITypeOfFacet {
         private readonly bool inferred;
 
-        protected TypeOfFacetAbstract(Type valueType, bool inferred, IFacetHolder holder, INakedObjectReflector reflector)
-            : base(Type, holder, valueType, reflector) {
+        protected TypeOfFacetAbstract(Type valueType, bool inferred, IFacetHolder holder, IMetadata metadata)
+            : base(Type, holder, valueType, metadata) {
             this.inferred = inferred;
         }
 

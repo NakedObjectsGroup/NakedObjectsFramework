@@ -34,8 +34,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             };
         }
 
-        public CallbackMethodsFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
+        public CallbackMethodsFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.ObjectsOnly) { }
 
         public override string[] Prefixes {
             get { return prefixes; }

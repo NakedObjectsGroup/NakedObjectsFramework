@@ -16,8 +16,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
     public class DefaultedFacetFactory : AnnotationBasedFacetFactoryAbstract, INakedObjectConfigurationAware {
-        public DefaultedFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
+        public DefaultedFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             return FacetUtils.AddFacet(Create(type, holder));
@@ -83,7 +83,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
         }
 
         private IDefaultedFacet GetDefaultedFacet(Type paramType) {
-            INakedObjectSpecification paramTypeSpec = Reflector.LoadSpecification(paramType);
+            INakedObjectSpecification paramTypeSpec = Metadata.GetSpecification(paramType);
             return paramTypeSpec.GetFacet<IDefaultedFacet>();
         }
     }

@@ -24,11 +24,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public DoubleValueSemanticsProvider(INakedObjectReflector reflector)
-            : this(reflector, null) { }
+        public DoubleValueSemanticsProvider(IMetadata metadata)
+            : this(metadata, null) { }
 
-        public DoubleValueSemanticsProvider(INakedObjectReflector reflector, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLenth, immutable, equalByContent, defaultValue, reflector) { }
+        public DoubleValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLenth, immutable, equalByContent, defaultValue, metadata) { }
 
         private static Type Type {
             get { return typeof (IDoubleFloatingPointValueFacet); }

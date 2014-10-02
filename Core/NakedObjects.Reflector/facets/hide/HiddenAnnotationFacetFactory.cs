@@ -14,8 +14,8 @@ using PropertyInfo = System.Reflection.PropertyInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Hide {
     public class HiddenAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public HiddenAnnotationFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.PropertiesCollectionsAndActions) { }
+        public HiddenAnnotationFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.PropertiesCollectionsAndActions) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             return Process(type.GetCustomAttributeByReflection<HiddenAttribute>,

@@ -10,8 +10,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural {
     public class PluralAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PluralAnnotationFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
+        public PluralAnnotationFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.ObjectsOnly) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             var attribute = type.GetCustomAttributeByReflection<PluralAttribute>();

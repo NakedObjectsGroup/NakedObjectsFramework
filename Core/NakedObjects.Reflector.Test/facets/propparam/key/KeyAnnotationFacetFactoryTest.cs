@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Key {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new KeyAnnotationFacetFactory(Reflector);
+            facetFactory = new KeyAnnotationFacetFactory(Metadata);
         }
 
         [TearDown]

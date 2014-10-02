@@ -31,7 +31,7 @@ let persistor  =
     c.UsingEdmxContext "AdventureWorksEntities" |> ignore
 
     //c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), r, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
     let p = setupPersistorForTesting p
     p
 
@@ -53,7 +53,7 @@ let overwritePersistor =
     c.DefaultMergeOption <- MergeOption.OverwriteChanges
   
     //c.ContextConfiguration <- [|(box config :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), r, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
     let p = setupPersistorForTesting p
     p
 

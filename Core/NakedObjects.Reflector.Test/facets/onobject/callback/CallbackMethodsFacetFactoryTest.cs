@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new CallbackMethodsFacetFactory(Reflector);
+            facetFactory = new CallbackMethodsFacetFactory(Metadata);
         }
 
         [TearDown]

@@ -13,24 +13,23 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.Audit {
     public class AuditFacetDecorator : IFacetDecorator {
         private readonly AuditManager manager;
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
 
-        public AuditFacetDecorator(AuditManager manager, INakedObjectReflector reflector) {
+        public AuditFacetDecorator(AuditManager manager, IMetadata metadata) {
             this.manager = manager;
-            this.reflector = reflector;
+            this.metadata = metadata;
         }
 
         #region IFacetDecorator Members
 
         public virtual IFacet Decorate(IFacet facet, IFacetHolder holder) {
             if (facet.FacetType == typeof (IActionInvocationFacet)) {
-                return new AuditActionInvocationFacet((IActionInvocationFacet) facet, manager, reflector);
+                return new AuditActionInvocationFacet((IActionInvocationFacet) facet, manager, metadata);
             }
 
             if (facet.FacetType == typeof (IUpdatedCallbackFacet)) {
@@ -55,22 +54,22 @@ namespace NakedObjects.Reflector.Audit {
         private class AuditActionInvocationFacet : ActionInvocationFacetAbstract {
             private readonly IIdentifier identifier;
             private readonly AuditManager auditManager;
-            private readonly INakedObjectReflector reflector;
+            private readonly IMetadata metadata;
             private readonly IActionInvocationFacet underlyingFacet;
             private bool? isQueryOnly;
 
-            public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, AuditManager auditManager, INakedObjectReflector reflector)
+            public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, AuditManager auditManager, IMetadata metadata)
                 : base(underlyingFacet.FacetHolder) {
                 this.underlyingFacet = underlyingFacet;
                 this.auditManager = auditManager;
-                this.reflector = reflector;
+                this.metadata = metadata;
                 identifier = underlyingFacet.FacetHolder.Identifier;
             }
 
             private bool IsQueryOnly {
                 get {
                     if (!isQueryOnly.HasValue) {
-                        INakedObjectAction action = reflector.LoadSpecification(identifier.ClassName).GetActionLeafNodes().FirstOrDefault(a => a.Id == identifier.MemberName);
+                        INakedObjectAction action = metadata.GetSpecification(identifier.ClassName).GetActionLeafNodes().FirstOrDefault(a => a.Id == identifier.MemberName);
                         isQueryOnly = action.ReturnType.IsQueryable || action.ContainsFacet<IQueryOnlyFacet>();
                     }
                     return isQueryOnly.Value;

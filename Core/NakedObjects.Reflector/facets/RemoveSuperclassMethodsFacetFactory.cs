@@ -23,8 +23,8 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             typeToMethods = new Dictionary<Type, MethodInfo[]>();
         }
 
-        public RemoveSuperclassMethodsFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
+        public RemoveSuperclassMethodsFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.ObjectsOnly) { }
 
         private static void InitForType(Type type) {
             if (!typeToMethods.ContainsKey(type)) {

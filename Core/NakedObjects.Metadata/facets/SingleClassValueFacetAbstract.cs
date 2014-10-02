@@ -11,17 +11,13 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets {
     public abstract class SingleClassValueFacetAbstract : FacetAbstract, ISingleClassValueFacet {
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
         private readonly Type valueType;
 
-        protected SingleClassValueFacetAbstract(Type facetType, IFacetHolder holder, Type valueType, INakedObjectReflector reflector)
+        protected SingleClassValueFacetAbstract(Type facetType, IFacetHolder holder, Type valueType, IMetadata metadata)
             : base(facetType, holder) {
             this.valueType = valueType;
-            this.reflector = reflector;
-        }
-
-        private INakedObjectReflector Reflector {
-            get { return reflector; }
+            this.metadata = metadata;
         }
 
         #region ISingleClassValueFacet Members
@@ -34,7 +30,7 @@ namespace NakedObjects.Architecture.Facets {
         ///     The <see cref="INakedObjectSpecification" /> of the <see cref="Value" />
         /// </summary>
         public virtual INakedObjectSpecification ValueSpec {
-            get { return Value != null ? Reflector.LoadSpecification(Value) : null; }
+            get { return Value != null ? metadata.GetSpecification(Value) : null; }
         }
 
         #endregion

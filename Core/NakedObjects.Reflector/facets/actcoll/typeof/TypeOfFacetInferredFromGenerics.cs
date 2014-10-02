@@ -9,8 +9,8 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
     public class TypeOfFacetInferredFromGenerics : TypeOfFacetAbstract {
-        public TypeOfFacetInferredFromGenerics(Type type, IFacetHolder holder, INakedObjectReflector reflector)
-            : base(type, true, holder, reflector) {}
+        public TypeOfFacetInferredFromGenerics(Type type, IFacetHolder holder, IMetadata metadata)
+            : base(type, true, holder, metadata) {}
     }
 
     // Copyright (c) Naked Objects Group Ltd.

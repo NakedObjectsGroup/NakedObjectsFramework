@@ -20,16 +20,17 @@ open NakedObjects.Architecture.Facets
 open NakedObjects.Architecture.Security
 open NakedObjects.Core.Context
 open NakedObjects.Core.Reflect
+open NakedObjects.Reflector.Spec
 
 let injectedObjects = new List<Object>()
 
 type MockReflector() = 
     interface INakedObjectReflector with 
         
-        member x.IgnoreCase with get() = false
+        //member x.IgnoreCase with get() = false
         //member x.Shutdown() = ()
-        member x.LoadSpecification(typ : Type) : INakedObjectSpecification = null
-        member x.LoadSpecification(str : string) : INakedObjectSpecification = null
+        member x.LoadSpecification(typ : Type) : IIntrospectableSpecification = null
+        member x.LoadSpecification(str : string) : IIntrospectableSpecification  = null
         member x.InstallServiceSpecifications(types : Type[]) = ()
         member x.PopulateContributedActions(services : Type[]) = ()
         member x.ClassStrategy with get() = (null)
@@ -77,7 +78,7 @@ type MockNakedObjectSpecification() =
         member x.ValidToPersist(transientObject : INakedObject, sess : ISession) : IConsent = null
         member x.Persistable = PersistableType.UserPersistable : PersistableType
         member x.GetBoundedSet(persistor : ILifecycleManager) : System.Collections.IEnumerable = null
-        member x.MarkAsService() = ()
+        //member x.MarkAsService() = ()
         member x.GetInvariantString(nakedObject : INakedObject) = ""
         member x.UniqueShortName(sep) = ""
 
@@ -92,7 +93,7 @@ type MockNakedObjectSpecification() =
         member x.Properties with get() : INakedObjectAssociation[] = null 
         member x.ValidateMethods() : INakedObjectValidation[] = null
     interface IHierarchical with 
-        member x.AddSubclass (specification : INakedObjectSpecification) = ()
+        //member x.AddSubclass (specification : INakedObjectSpecification) = ()
         member x.HasSubclasses with get() : bool = false
         member x.Interfaces with get() : INakedObjectSpecification[] = null 
         member x.IsOfType (specification : INakedObjectSpecification) = false

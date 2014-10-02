@@ -22,11 +22,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Choices {
         private readonly Tuple<string, INakedObjectSpecification>[] parameterNamesAndTypes;
         private readonly string[] parameterNames;
 
-        public PropertyChoicesFacetViaMethod(INakedObjectReflector reflector, MethodInfo optionsMethod, IFacetHolder holder)
+        public PropertyChoicesFacetViaMethod(IMetadata metadata, MethodInfo optionsMethod, IFacetHolder holder)
             : base(holder) {
             method = optionsMethod;
 
-            parameterNamesAndTypes = optionsMethod.GetParameters().Select(p => new Tuple<string, INakedObjectSpecification>(p.Name.ToLower(), reflector.LoadSpecification(p.ParameterType))).ToArray();
+            parameterNamesAndTypes = optionsMethod.GetParameters().Select(p => new Tuple<string, INakedObjectSpecification>(p.Name.ToLower(), metadata.GetSpecification(p.ParameterType))).ToArray();
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
         }
 

@@ -22,11 +22,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public StringValueSemanticsProvider(INakedObjectReflector reflector)
-            : this(reflector, null) {}
+        public StringValueSemanticsProvider(IMetadata metadata)
+            : this(metadata, null) {}
 
-        public StringValueSemanticsProvider(INakedObjectReflector reflector, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, reflector) { }
+        public StringValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, metadata) { }
 
         public static Type Type {
             get { return typeof (IStringValueFacet); }

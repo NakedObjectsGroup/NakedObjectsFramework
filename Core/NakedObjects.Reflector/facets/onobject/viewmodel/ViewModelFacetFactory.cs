@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
     public class ViewModelFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ViewModelFacetFactory(INakedObjectReflector reflector) : base(reflector, NakedObjectFeatureType.ObjectsOnly) {}
+        public ViewModelFacetFactory(IMetadata metadata) : base(metadata, NakedObjectFeatureType.ObjectsOnly) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             IFacet facet = null;

@@ -12,8 +12,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
     public class UnsupportedParameterTypesMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (UnsupportedParameterTypesMethodFilteringFactory));
 
-        public UnsupportedParameterTypesMethodFilteringFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ActionsOnly) {}
+        public UnsupportedParameterTypesMethodFilteringFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.ActionsOnly) {}
 
         #region IMethodFilteringFacetFactory Members
 
@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             }
 
             foreach (ParameterInfo parameterInfo in method.GetParameters()) {
-                if (((DotNetReflector) Reflector).ClassStrategy.IsTypeUnsupportedByReflector(parameterInfo.ParameterType)) {
+                if (((DotNetReflector) Metadata).ClassStrategy.IsTypeUnsupportedByReflector(parameterInfo.ParameterType)) {
                     Log.InfoFormat("Ignoring method: {0}.{1} because parameter '{2}' is of type {3}", method.DeclaringType.FullName, method.Name, parameterInfo.Name, parameterInfo.ParameterType);
                     return true;
                 }

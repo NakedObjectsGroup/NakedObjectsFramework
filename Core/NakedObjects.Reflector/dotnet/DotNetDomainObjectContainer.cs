@@ -74,7 +74,7 @@ namespace NakedObjects.Reflector.DotNet {
         }
 
         public IViewModel NewViewModel(Type type) {
-            INakedObjectSpecification spec = framework.Reflector.LoadSpecification(type);
+            INakedObjectSpecification spec = framework.Metadata.GetSpecification(type);
             if (spec.IsViewModel) {
                 return framework.LifecycleManager.CreateViewModel(spec).GetDomainObject<IViewModel>();
             }
@@ -82,7 +82,7 @@ namespace NakedObjects.Reflector.DotNet {
         }
 
         public object NewTransientInstance(Type type) {
-            INakedObjectSpecification spec = framework.Reflector.LoadSpecification(type);
+            INakedObjectSpecification spec = framework.Metadata.GetSpecification(type);
             return framework.LifecycleManager.CreateInstance(spec).Object;
         }
 

@@ -9,19 +9,19 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
     public interface INakedObjectReflector {
-        bool IgnoreCase { get; }
+       
 
         IClassStrategy ClassStrategy { get; }
 
         IFacetFactorySet FacetFactorySet { get; }
 
-        INakedObjectSpecification LoadSpecification(Type type);
+        IIntrospectableSpecification LoadSpecification(Type type);
 
-        INakedObjectSpecification LoadSpecification(string name);
+        IIntrospectableSpecification LoadSpecification(string name);
 
         void InstallServiceSpecifications(Type[] types);
 

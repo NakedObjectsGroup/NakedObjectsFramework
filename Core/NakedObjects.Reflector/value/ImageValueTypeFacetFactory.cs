@@ -10,12 +10,12 @@ using NakedObjects.Value;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ImageValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<Image> {
-        public ImageValueTypeFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, typeof(IImageValueFacet)) { }
+        public ImageValueTypeFacetFactory(IMetadata metadata)
+            : base(metadata, typeof(IImageValueFacet)) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (ImageValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new ImageValueSemanticsProvider(Reflector, holder));
+                AddFacets(new ImageValueSemanticsProvider(Metadata, holder));
                 return true;
             }
             return false;

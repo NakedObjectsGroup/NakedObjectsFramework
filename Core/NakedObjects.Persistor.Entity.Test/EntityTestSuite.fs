@@ -59,7 +59,7 @@ let db =
     let r = (new Mock<INakedObjectReflector>()).Object
     let m = (new Mock<IMetadata>()).Object
     c.ContextConfiguration <- [|(box Config :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), r, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
     p
 
 

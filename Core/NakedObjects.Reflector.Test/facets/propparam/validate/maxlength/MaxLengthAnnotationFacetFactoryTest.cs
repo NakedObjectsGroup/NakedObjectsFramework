@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MaxLength {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new MaxLengthAnnotationFacetFactory(Reflector);
+            facetFactory = new MaxLengthAnnotationFacetFactory(Metadata);
         }
 
         [TearDown]

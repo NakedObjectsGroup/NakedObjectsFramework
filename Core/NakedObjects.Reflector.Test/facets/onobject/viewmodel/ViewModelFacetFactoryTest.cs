@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new ViewModelFacetFactory(Reflector);
+            facetFactory = new ViewModelFacetFactory(Metadata);
         }
 
         [TearDown]

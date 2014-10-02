@@ -9,12 +9,12 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ArrayValueTypeFacetFactory<T> : ValueUsingValueSemanticsProviderFacetFactory<T[]> {
-        public ArrayValueTypeFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, typeof (IArrayValueFacet<T>)) {}
+        public ArrayValueTypeFacetFactory(IMetadata metadata)
+            : base(metadata, typeof (IArrayValueFacet<T>)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (ArrayValueSemanticsProvider<T>.IsAdaptedType(type)) {
-                AddFacets(new ArrayValueSemanticsProvider<T>(Reflector, holder));
+                AddFacets(new ArrayValueSemanticsProvider<T>(Metadata, holder));
                 return true;
             }
             return false;

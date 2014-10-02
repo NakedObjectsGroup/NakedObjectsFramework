@@ -8,13 +8,12 @@ using NakedObjects.Architecture.Facets.Properties.Defaults;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
-using NakedObjects.Core.Context;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T>, IEncoderDecoder<T>, IParser<T>, IDefaultsProvider<T> {
         private readonly Type adaptedType;
         private readonly T defaultValue;
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
         private readonly bool equalByContent;
         private readonly bool immutable;
         private readonly int typicalLength;
@@ -24,27 +23,27 @@ namespace NakedObjects.Reflector.DotNet.Value {
         ///     Lazily looked up per <see cref="Specification" />
         /// </summary>
         protected ValueSemanticsProviderAbstract(Type adapterFacetType,
-            IFacetHolder holder,
-            Type adaptedType,
-            int typicalLength,
-            bool immutable,
-            bool equalByContent,
-            T defaultValue, 
-            INakedObjectReflector reflector)
+                                                IFacetHolder holder,
+                                                Type adaptedType,
+                                                int typicalLength,
+                                                bool immutable,
+                                                bool equalByContent,
+                                                T defaultValue, 
+                                                IMetadata metadata)
             : base(adapterFacetType, holder) {
             this.adaptedType = adaptedType;
             this.typicalLength = typicalLength;
             this.immutable = immutable;
             this.equalByContent = equalByContent;
             this.defaultValue = defaultValue;
-            this.reflector = reflector;
+            this.metadata = metadata;
         }
 
 
         public INakedObjectSpecification Specification {
             get {
                 if (specification == null) {
-                    specification = reflector.LoadSpecification(GetAdaptedClass());
+                    specification = metadata.GetSpecification(GetAdaptedClass());
                 }
                 return specification;
             }

@@ -10,8 +10,8 @@ using NakedObjects.Reflector.DotNet.Reflect.Propcoll;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Collections {
     public class DotNetOneToManyAssociationPeer : DotNetNakedObjectAssociationPeer {
-        public DotNetOneToManyAssociationPeer(INakedObjectReflector reflector, IIdentifier name, Type returnType)
-            : base(reflector, name, returnType, true) {}
+        public DotNetOneToManyAssociationPeer(IMetadata metadata, IIdentifier name, Type returnType)
+            : base(metadata, name, returnType, true) {}
 
         public Type ElementType { get; set; }
 
@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Collections {
         ///     Return the <see cref="INakedObjectSpecification" /> for the  Type that the collection holds.
         /// </summary>
         public override INakedObjectSpecification Specification {
-            get { return reflector.LoadSpecification(ElementType ?? typeof (object)); }
+            get { return Metadata.GetSpecification(ElementType ?? typeof (object)); }
         }
 
         #endregion

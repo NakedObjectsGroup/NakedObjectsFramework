@@ -3,7 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
-using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.Spec {
@@ -11,7 +11,7 @@ namespace NakedObjects.Reflector.Spec {
     ///     Introduced to remove special-case processing for <see cref="INakedObjectSpecification" />s that
     ///     are not introspectable.
     /// </summary>
-    public interface IIntrospectableSpecification : INakedObjectSpecification {
+    public interface IIntrospectableSpecification : IFacetHolder  {
         /// <summary>
         ///     Discovers what attributes and behaviour the type specified by this specification. As specification are
         ///     cyclic (specifically a class will reference its subclasses, which in turn reference their superclass)
@@ -19,9 +19,18 @@ namespace NakedObjects.Reflector.Spec {
         ///     the be accommodated as there should always a specification available even though it might not be
         ///     complete.
         /// </summary>
-        void Introspect(FacetDecoratorSet decorator);
-
+        void Introspect(IFacetDecoratorSet decorator);
         void PopulateAssociatedActions(Type[] services);
+        void MarkAsService();
+        void AddSubclass(IIntrospectableSpecification subclass);
+
+
+        // TODO expose lots of stuff while refactoring 
+
+
+
+
+
     }
 
 

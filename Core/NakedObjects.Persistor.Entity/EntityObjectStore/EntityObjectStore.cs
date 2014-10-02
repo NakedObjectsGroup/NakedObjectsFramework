@@ -45,7 +45,7 @@ using IsolationLevel = System.Transactions.IsolationLevel;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityObjectStore : INakedObjectStore {
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
         private readonly ISession session;
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStore));
         private static CreateAdapterDelegate createAdapter;
@@ -92,8 +92,8 @@ namespace NakedObjects.EntityObjectStore {
             IsInitializedCheck = () => true;
         }
 
-        internal EntityObjectStore(INakedObjectReflector reflector, ISession session, IUpdateNotifier updateNotifier, IContainerInjector injector) {
-            this.reflector = reflector;
+        internal EntityObjectStore(IMetadata metadata, ISession session, IUpdateNotifier updateNotifier, IContainerInjector injector) {
+            this.metadata = metadata;
             this.session = session;
             this.updateNotifier = updateNotifier;
             this.injector = injector;
@@ -109,13 +109,13 @@ namespace NakedObjects.EntityObjectStore {
             persisted = (x, s) => x.Persisted(s);
             handleLoaded = HandleLoadedDefault;
             savingChangesHandlerDelegate = SavingChangesHandler;
-            loadSpecification = reflector.LoadSpecification;
+            loadSpecification = metadata.GetSpecification;
             notifyUi = updateNotifier.AddChangedObject;
         }
 
 
-        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, INakedObjectReflector reflector, IContainerInjector injector)
-            : this(reflector, session, updateNotifier, injector) {
+        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetadata metadata, IContainerInjector injector)
+            : this(metadata, session, updateNotifier, injector) {
             this.oidGenerator = oidGenerator;
             contexts = config.ContextConfiguration.ToDictionary<EntityContextConfiguration, EntityContextConfiguration, LocalContext>(c => c, c => null);
         
@@ -1158,7 +1158,7 @@ namespace NakedObjects.EntityObjectStore {
             if (aggregateOid != null) {
                 var parentOid = (EntityOid) aggregateOid.ParentOid;
                 string parentType = parentOid.TypeName;
-                INakedObjectSpecification parentSpec = reflector.LoadSpecification(parentType);
+                INakedObjectSpecification parentSpec = metadata.GetSpecification(parentType);
                 INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
 
                 return parent.Specification.GetProperty(aggregateOid.FieldName).GetNakedObject(parent, Manager);

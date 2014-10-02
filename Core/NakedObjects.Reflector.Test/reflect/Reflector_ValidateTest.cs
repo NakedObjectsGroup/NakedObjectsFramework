@@ -10,31 +10,35 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Reflect {
     [TestFixture]
     public class Reflector_ValidateTest : AbstractDotNetReflectorTest {
-        protected override NakedObjectSpecification LoadSpecification(DotNetReflector reflector) {
-            return (NakedObjectSpecification) reflector.LoadSpecification(typeof (Product));
+        protected override IIntrospectableSpecification LoadSpecification(DotNetReflector reflector) {
+            return  reflector.LoadSpecification(typeof (Product));
         }
 
         [Test]
         public void TestSetup() {
-            Assert.AreEqual("Product", specification.ShortName);
-            Assert.AreEqual(3, specification.Properties.Length);
+            Assert.Fail();
+            //Assert.AreEqual("Product", specification.ShortName);
+            //Assert.AreEqual(3, specification.Properties.Length);
         }
 
         [Test]
         public void ValidateMethodThatDontMatchAreIgnored() {
-            INakedObjectAction[] actions = specification.GetObjectActions();
-            Assert.AreEqual(4, actions.Length);
+            Assert.Fail();
+            //INakedObjectAction[] actions = specification.GetObjectActions();
+            //Assert.AreEqual(4, actions.Length);
         }
 
         [Test]
         public void ValidateMethodsDetected() {
-            INakedObjectValidation[] validation = specification.ValidateMethods();
-            Assert.AreEqual(2, validation.Length);
+            Assert.Fail();
+            //INakedObjectValidation[] validation = specification.ValidateMethods();
+            //Assert.AreEqual(2, validation.Length);
         }
 
         [Test]
         public void ValidateMethodsRun() {
-            INakedObjectValidation[] validation = specification.ValidateMethods();
+            Assert.Fail();
+            //INakedObjectValidation[] validation = specification.ValidateMethods();
         }
     }
 

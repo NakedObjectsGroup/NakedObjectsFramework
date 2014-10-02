@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public override void SetUp() {
             base.SetUp();
             holder = new FacetHolderImpl();
-            SetValue(value = new EnumValueSemanticsProvider<TestEnum>(reflector, holder));
+            SetValue(value = new EnumValueSemanticsProvider<TestEnum>(metadata, holder));
         }
 
         #endregion

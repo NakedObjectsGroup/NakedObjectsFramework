@@ -9,12 +9,12 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ByteValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<byte> {
-        public ByteValueTypeFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, typeof(IByteValueFacet)) { }
+        public ByteValueTypeFacetFactory(IMetadata metadata)
+            : base(metadata, typeof(IByteValueFacet)) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (ByteValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new ByteValueSemanticsProvider(Reflector, holder));
+                AddFacets(new ByteValueSemanticsProvider(Metadata, holder));
                 return true;
             }
             return false;

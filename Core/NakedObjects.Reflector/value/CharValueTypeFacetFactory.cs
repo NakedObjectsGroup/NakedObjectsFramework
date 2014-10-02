@@ -9,12 +9,12 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class CharValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<char> {
-        public CharValueTypeFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, typeof(ICharValueFacet)) { }
+        public CharValueTypeFacetFactory(IMetadata metadata)
+            : base(metadata, typeof(ICharValueFacet)) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (CharValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new CharValueSemanticsProvider(Reflector, holder));
+                AddFacets(new CharValueSemanticsProvider(Metadata, holder));
                 return true;
             }
             return false;

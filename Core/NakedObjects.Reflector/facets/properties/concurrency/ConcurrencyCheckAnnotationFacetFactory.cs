@@ -12,8 +12,8 @@ using PropertyInfo = System.Reflection.PropertyInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Version {
     public class ConcurrencyCheckAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ConcurrencyCheckAnnotationFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
+        public ConcurrencyCheckAnnotationFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.PropertiesOnly) { }
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
             Attribute attribute = property.GetCustomAttribute<ConcurrencyCheckAttribute>();

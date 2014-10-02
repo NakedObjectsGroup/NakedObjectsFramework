@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
             character = 'r';
             holder = new FacetHolderImpl();
-            SetValue(value = new CharValueSemanticsProvider(reflector, holder));
+            SetValue(value = new CharValueSemanticsProvider(metadata, holder));
         }
 
         #endregion

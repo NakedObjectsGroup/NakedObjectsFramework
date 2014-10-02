@@ -15,7 +15,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Reflector.Peer {
     public class IdentifierImpl : IIdentifier {
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
         private readonly string className;
         private readonly bool isField;
         private readonly string name;
@@ -24,20 +24,20 @@ namespace NakedObjects.Reflector.Peer {
         private string asString;
         private string identityString;
 
-        public IdentifierImpl(INakedObjectReflector reflector, string className)
-            : this(reflector, className, "", new string[0], new string[0], false) { }
+        public IdentifierImpl(IMetadata metadata, string className)
+            : this(metadata, className, "", new string[0], new string[0], false) { }
 
-        public IdentifierImpl(INakedObjectReflector reflector, string className, string fieldName)
-            : this(reflector, className, fieldName, new string[0], new string[0], true) { }
+        public IdentifierImpl(IMetadata metadata, string className, string fieldName)
+            : this(metadata, className, fieldName, new string[0], new string[0], true) { }
 
-        public IdentifierImpl(INakedObjectReflector reflector, string className, string methodName, ParameterInfo[] parameters)
-            : this(reflector, className, methodName, parameters.Select(p => p.Name).ToArray(), ToParameterStringArray(parameters.Select(p => p.ParameterType).ToArray()), false) { }
+        public IdentifierImpl(IMetadata metadata, string className, string methodName, ParameterInfo[] parameters)
+            : this(metadata, className, methodName, parameters.Select(p => p.Name).ToArray(), ToParameterStringArray(parameters.Select(p => p.ParameterType).ToArray()), false) { }
 
-        public IdentifierImpl(INakedObjectReflector reflector, string className, string methodName, string[] parameterTypeNames)
-            : this(reflector, className, methodName, parameterTypeNames.Select(p => "").ToArray(), parameterTypeNames, false) { }
+        public IdentifierImpl(IMetadata metadata, string className, string methodName, string[] parameterTypeNames)
+            : this(metadata, className, methodName, parameterTypeNames.Select(p => "").ToArray(), parameterTypeNames, false) { }
 
-        private IdentifierImpl(INakedObjectReflector reflector, string className, string fieldName, string[] parameterNames, string[] parameterTypeNames, bool isField) {
-            this.reflector = reflector;
+        private IdentifierImpl(IMetadata metadata, string className, string fieldName, string[] parameterNames, string[] parameterTypeNames, bool isField) {
+            this.metadata = metadata;
             this.className = className;
             name = fieldName;
             parameterTypes = parameterTypeNames;
@@ -71,7 +71,7 @@ namespace NakedObjects.Reflector.Peer {
             get {
                 var specifications = new List<INakedObjectSpecification>();
 
-                parameterTypes.ForEach(x => specifications.Add(reflector.LoadSpecification(TypeNameUtils.DecodeTypeName(x))));
+                parameterTypes.ForEach(x => specifications.Add(metadata.GetSpecification(TypeNameUtils.DecodeTypeName(x))));
                 return specifications.ToArray();
             }
         }
@@ -214,24 +214,24 @@ namespace NakedObjects.Reflector.Peer {
             return identityString;
         }
 
-        public static IdentifierImpl FromIdentityString(INakedObjectReflector reflector, string asString) {
+        public static IdentifierImpl FromIdentityString(IMetadata metadata, string asString) {
             Assert.AssertNotNull(asString);
             int indexOfHash = asString.IndexOf("#");
             int indexOfOpenBracket = asString.IndexOf("(");
             int indexOfCloseBracket = asString.IndexOf(")");
             string className = asString.Substring(0, (indexOfHash == -1 ? asString.Length : indexOfHash) - (0));
             if (indexOfHash == -1 || indexOfHash == (asString.Length - 1)) {
-                return new IdentifierImpl(reflector, className);
+                return new IdentifierImpl(metadata, className);
             }
             string name;
             if (indexOfOpenBracket == -1) {
                 name = asString.Substring(indexOfHash + 1);
-                return new IdentifierImpl(reflector, className, name);
+                return new IdentifierImpl(metadata, className, name);
             }
             name = asString.Substring(indexOfHash + 1, (indexOfOpenBracket) - (indexOfHash + 1));
             string allParms = asString.Substring(indexOfOpenBracket + 1, (indexOfCloseBracket) - (indexOfOpenBracket + 1)).Trim();
             string[] parms = allParms.Length > 0 ? allParms.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries) : new string[] {};
-            return new IdentifierImpl(reflector, className, name, parms);
+            return new IdentifierImpl(metadata, className, name, parms);
         }
 
         public override int GetHashCode() {

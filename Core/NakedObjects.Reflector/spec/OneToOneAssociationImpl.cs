@@ -24,12 +24,12 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class OneToOneAssociationImpl : NakedObjectAssociationAbstract, IOneToOneAssociation {
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
         private readonly INakedObjectAssociationPeer reflectiveAdapter;
 
-        public OneToOneAssociationImpl(INakedObjectReflector reflector, INakedObjectAssociationPeer association)
+        public OneToOneAssociationImpl(IMetadata metadata, INakedObjectAssociationPeer association)
             : base(association.Identifier.MemberName, association.Specification, association) {
-            this.reflector = reflector;
+            this.metadata = metadata;
             reflectiveAdapter = association;
         }
 
@@ -157,7 +157,7 @@ namespace NakedObjects.Reflector.Spec {
             if (obj == null) {
                 return null;
             }
-            INakedObjectSpecification specification = reflector.LoadSpecification(obj.GetType());
+            INakedObjectSpecification specification = metadata.GetSpecification(obj.GetType());
             if (specification.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return manager.CreateAggregatedAdapter(fromObject, ((INakedObjectAssociation)this).Id, obj);
             }

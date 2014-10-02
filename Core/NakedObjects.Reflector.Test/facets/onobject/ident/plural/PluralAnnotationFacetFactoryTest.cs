@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PluralAnnotationFacetFactory(Reflector);
+            facetFactory = new PluralAnnotationFacetFactory(Metadata);
         }
 
         [TearDown]

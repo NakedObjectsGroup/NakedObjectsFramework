@@ -25,8 +25,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
             };
         }
 
-        public TitleMethodFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
+        public TitleMethodFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.ObjectsOnly) { }
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

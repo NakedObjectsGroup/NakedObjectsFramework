@@ -15,8 +15,8 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Reflect {
     [TestFixture]
     public class Reflector_CollectionTest : AbstractDotNetReflectorTest {
-        protected override NakedObjectSpecification LoadSpecification(DotNetReflector reflector) {
-            return (NakedObjectSpecification) reflector.LoadSpecification(typeof (ArrayList));
+        protected override IIntrospectableSpecification LoadSpecification(DotNetReflector reflector) {
+            return reflector.LoadSpecification(typeof (ArrayList));
         }
 
         [Test]
@@ -39,7 +39,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void TestName() {
-            Assert.AreEqual(typeof (ArrayList).FullName, specification.FullName);
+            Assert.Fail();
+            //Assert.AreEqual(typeof (ArrayList).FullName, specification.FullName);
         }
 
 
@@ -57,7 +58,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void TestType() {
-            Assert.IsTrue(specification.IsCollection);
+            Assert.Fail();
+            //Assert.IsTrue(specification.IsCollection);
         }
 
         [Test]

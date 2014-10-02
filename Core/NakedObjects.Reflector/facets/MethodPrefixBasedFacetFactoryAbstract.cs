@@ -14,14 +14,15 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.DotNet.Facets.Actions.Executed;
 using NakedObjects.Reflector.DotNet.Facets.Disable;
 using NakedObjects.Reflector.DotNet.Facets.Hide;
+using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 using MethodInfo = System.Reflection.MethodInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class MethodPrefixBasedFacetFactoryAbstract : FacetFactoryAbstract, IMethodPrefixBasedFacetFactory {
-        protected MethodPrefixBasedFacetFactoryAbstract(INakedObjectReflector reflector, NakedObjectFeatureType[] featureTypes)
-            : base(reflector, featureTypes) {}
+        protected MethodPrefixBasedFacetFactoryAbstract(IMetadata metadata, NakedObjectFeatureType[] featureTypes)
+            : base(metadata, featureTypes) {}
 
         #region IMethodPrefixBasedFacetFactory Members
 
@@ -117,7 +118,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         private BindingFlags GetBindingFlagsForMethodType(MethodType methodType) {
             return BindingFlags.Public |
                    (methodType == MethodType.Object ? BindingFlags.Instance : BindingFlags.Static) |
-                   (Reflector.IgnoreCase ? BindingFlags.IgnoreCase : BindingFlags.Default);
+                   (DotNetReflector.IgnoreCase ? BindingFlags.IgnoreCase : BindingFlags.Default);
         }
 
         protected static void RemoveMethod(IMethodRemover methodRemover, MethodInfo method) {

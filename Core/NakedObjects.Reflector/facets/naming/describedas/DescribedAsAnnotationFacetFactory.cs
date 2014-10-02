@@ -15,8 +15,8 @@ using ParameterInfo = System.Reflection.ParameterInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Naming.DescribedAs {
     public class DescribedAsAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public DescribedAsAnnotationFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.Everything) { }
+        public DescribedAsAnnotationFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.Everything) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             Attribute attribute = type.GetCustomAttributeByReflection<DescriptionAttribute>() ?? (Attribute) type.GetCustomAttributeByReflection<DescribedAsAttribute>();

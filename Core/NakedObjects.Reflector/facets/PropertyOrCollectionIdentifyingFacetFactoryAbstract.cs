@@ -9,8 +9,8 @@ using NakedObjects.Architecture.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class PropertyOrCollectionIdentifyingFacetFactoryAbstract : MethodPrefixBasedFacetFactoryAbstract, IPropertyOrCollectionIdentifyingFacetFactory {
-        protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(INakedObjectReflector reflector, NakedObjectFeatureType[] featureTypes)
-            : base(reflector, featureTypes) {}
+        protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(IMetadata metadata, NakedObjectFeatureType[] featureTypes)
+            : base(metadata, featureTypes) {}
 
         protected static bool IsCollectionOrArray(Type type) {
             return CollectionUtils.IsCollection(type);

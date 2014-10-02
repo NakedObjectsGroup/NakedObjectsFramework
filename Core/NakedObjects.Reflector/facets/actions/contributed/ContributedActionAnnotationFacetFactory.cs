@@ -17,11 +17,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     ///     <see cref="NotContributedActionAttribute" /> annotation
     /// </summary>
     public class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetadata metadata;
 
-        public ContributedActionAnnotationFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ActionsOnly) {
-            this.reflector = reflector;
+        public ContributedActionAnnotationFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.ActionsOnly) {
+            this.metadata = metadata;
         }
 
         private bool Process(MemberInfo member, IFacetHolder holder) {
@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         }
 
         private INotContributedActionFacet Create(NotContributedActionAttribute attribute, IFacetHolder holder) {
-            return attribute == null ? null : new NotContributedActionFacetImpl(holder, attribute.NotContributedToTypes.Select(t => Reflector.LoadSpecification(t)).ToArray());
+            return attribute == null ? null : new NotContributedActionFacetImpl(holder, attribute.NotContributedToTypes.Select(t => Metadata.GetSpecification(t)).ToArray());
         }
     }
 }

@@ -26,7 +26,7 @@ let persistor =
     c.UsingEdmxContext "AdventureWorksEntities"  |> ignore
 
     //c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), r, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
     setupPersistorForTesting p
 
 let overwritePersistor =
@@ -46,7 +46,7 @@ let overwritePersistor =
     let r = (new Mock<INakedObjectReflector>()).Object
     let m = (new Mock<IMetadata>()).Object
     //c.ContextConfiguration <- [|(box config :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), r, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
     setupPersistorForTesting p
 
 [<TestFixture>]

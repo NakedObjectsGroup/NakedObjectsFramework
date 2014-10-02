@@ -14,8 +14,8 @@ using ParameterInfo = System.Reflection.ParameterInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.TypicalLength {
     public class TypicalLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TypicalLengthAnnotationFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
+        public TypicalLengthAnnotationFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             var attribute = type.GetCustomAttributeByReflection<TypicalLengthAttribute>();

@@ -24,7 +24,7 @@ let persistor =
 
     c.UsingEdmxContext "Model1Container" |> ignore
     //c.ContextConfiguration <- [|(box ModelConfig :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), r, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
     setupPersistorForInjectorTesting p
 
 [<TestFixture>]

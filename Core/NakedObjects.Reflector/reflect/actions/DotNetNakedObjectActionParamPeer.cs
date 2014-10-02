@@ -6,18 +6,19 @@ using System;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.Peer;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
     public class DotNetNakedObjectActionParamPeer : FacetHolderImpl, INakedObjectActionParamPeer {
-        private readonly INakedObjectSpecification specification;
+        private readonly IIntrospectableSpecification specification;
 
-        public DotNetNakedObjectActionParamPeer(INakedObjectSpecification specification) {
+        public DotNetNakedObjectActionParamPeer(IIntrospectableSpecification specification) {
             this.specification = specification;
         }
 
         #region INakedObjectActionParamPeer Members
 
-        public INakedObjectSpecification Specification {
+        public IIntrospectableSpecification Specification {
             get { return specification; }
         }
 

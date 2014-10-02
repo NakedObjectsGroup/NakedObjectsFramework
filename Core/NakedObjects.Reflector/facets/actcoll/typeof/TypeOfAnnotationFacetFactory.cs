@@ -10,8 +10,8 @@ using NakedObjects.Architecture.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
     public class TypeOfAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TypeOfAnnotationFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.CollectionsAndActions) { }
+        public TypeOfAnnotationFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.CollectionsAndActions) { }
 
         private bool Process(Type methodReturnType, IFacetHolder holder) {
             if (!CollectionUtils.IsCollection(methodReturnType)) {
@@ -19,13 +19,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
             }
 
             if (methodReturnType.IsArray) {
-                return FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(methodReturnType.GetElementType(), holder, Reflector));
+                return FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(methodReturnType.GetElementType(), holder, Metadata));
             }
 
             if (methodReturnType.IsGenericType) {
                 Type[] actualTypeArguments = methodReturnType.GetGenericArguments();
                 if (actualTypeArguments.Length > 0) {
-                    return FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(actualTypeArguments[0], holder, Reflector));
+                    return FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(actualTypeArguments[0], holder, Metadata));
                 }
             }
             return false;

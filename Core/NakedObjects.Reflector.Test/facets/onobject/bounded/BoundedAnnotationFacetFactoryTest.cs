@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Bounded {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new BoundedAnnotationFacetFactory(Reflector);
+            facetFactory = new BoundedAnnotationFacetFactory(Metadata);
         }
 
         [TearDown]

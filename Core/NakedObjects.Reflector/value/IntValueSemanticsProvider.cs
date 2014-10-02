@@ -25,11 +25,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public IntValueSemanticsProvider(INakedObjectReflector reflector)
-            : this(reflector, null) { }
+        public IntValueSemanticsProvider(IMetadata metadata)
+            : this(metadata, null) { }
 
-        public IntValueSemanticsProvider(INakedObjectReflector reflector, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalBycontent, defaultValue, reflector) { }
+        public IntValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, immutable, equalBycontent, defaultValue, metadata) { }
 
         public static Type Type {
             get { return typeof (IIntegerValueFacet); }

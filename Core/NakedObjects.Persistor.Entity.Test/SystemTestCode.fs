@@ -75,7 +75,7 @@ let IsNotNullAndTransientAggregate obj ctx =
     IsTransientAggregateOid obj ctx
 
 let Create<'t when 't : not struct>(ctx : INakedObjectsFramework) = 
-    let spec = ctx.Reflector.LoadSpecification(typeof<'t>)
+    let spec = ctx.Metadata.GetSpecification(typeof<'t>)
     ctx.LifecycleManager.CreateInstance(spec)
 
 let CreateAndSetup<'t when 't : not struct> setter ctx = 

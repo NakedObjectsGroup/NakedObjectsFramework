@@ -41,6 +41,13 @@ namespace NakedObjects.Persistor.TestSuite {
             }
         }
 
+
+        private IMetadata Metadata {
+            get {
+                return framework.Metadata;
+            }
+        }
+
         private  IUpdateNotifier Notifier {
             get {
                 return framework.UpdateNotifier;
@@ -138,7 +145,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private  Person CreateNewTransientPerson() {
             int nextIndex = Persistor.Instances<Person>().Select(p => p.PersonId).Max() + 1;
-            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof (Person));
+            INakedObjectSpecification spec = Metadata.GetSpecification(typeof (Person));
             INakedObject newPersonAdapter = Persistor.CreateInstance(spec);
             Person person = (Person)newPersonAdapter.Object;
             person.PersonId = nextIndex;
@@ -146,7 +153,7 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         private  Order CreateNewTransientOrder() {
-            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof(Order));
+            INakedObjectSpecification spec = Metadata.GetSpecification(typeof(Order));
             INakedObject newOrderAdapter = Persistor.CreateInstance(spec);
             Order order = (Order)newOrderAdapter.Object;
             order.OrderId = 0;
@@ -154,7 +161,7 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         private  OrderFail CreateNewTransientOrderFail() {
-            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof(OrderFail));
+            INakedObjectSpecification spec = Metadata.GetSpecification(typeof(OrderFail));
             INakedObject newOrderAdapter = Persistor.CreateInstance(spec);
             OrderFail order = (OrderFail)newOrderAdapter.Object;
             order.OrderFailId = 0;
@@ -164,7 +171,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private  Product CreateNewTransientProduct() {
             int nextIndex = Persistor.Instances<Product>().Select(p => p.Id).Max() + 1;
-            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof(Product));
+            INakedObjectSpecification spec = Metadata.GetSpecification(typeof(Product));
             INakedObject newProductAdapter = Persistor.CreateInstance(spec);
             Product product = (Product)newProductAdapter.Object;
             product.Id = nextIndex;
@@ -173,7 +180,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private  Pet CreateNewTransientPet() {
             int nextIndex = Persistor.Instances<Pet>().Select(p => p.PetId).Max() + 1;
-            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof(Pet));
+            INakedObjectSpecification spec = Metadata.GetSpecification(typeof(Pet));
             INakedObject newPetAdapter = Persistor.CreateInstance(spec);
             Pet pet = (Pet)newPetAdapter.Object;
             pet.PetId = nextIndex;
@@ -240,13 +247,13 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         public  void GetInstanceFromInstancesOfSpecification() {
-            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof(Person));
+            INakedObjectSpecification spec = Metadata.GetSpecification(typeof(Person));
             Person person = Persistor.Instances(spec).Cast<Person>().Where(p => p.PersonId == 1).Single();
             AssertIsPerson(person, 1);
         }
 
         public  void GetInstanceIsAlwaysSameObject() {
-            INakedObjectSpecification spec = Reflector.LoadSpecification(typeof(Person));
+            INakedObjectSpecification spec = Metadata.GetSpecification(typeof(Person));
             Person person1 = GetPerson(1);
             Person person2 = Persistor.Instances(typeof(Person)).Cast<Person>().Where(p => p.PersonId == 1).Single();
             Person person3 = Persistor.Instances(spec).Cast<Person>().Where(p => p.PersonId == 1).Single();

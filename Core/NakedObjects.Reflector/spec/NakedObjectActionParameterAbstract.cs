@@ -72,13 +72,16 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public virtual INakedObjectSpecification Specification {
-            get { return peer.Specification; }
+            get {
+                //return peer.Specification;
+                throw new NotImplementedException();
+            }
         }
 
         public string GetName(IServicesManager services) {
             var facet = GetFacet<INamedFacet>();
             string name = facet == null ? null : facet.Value;
-            return name ?? peer.Specification.SingularName;
+            return name ?? Specification.SingularName;
         }
 
         public virtual string Description {

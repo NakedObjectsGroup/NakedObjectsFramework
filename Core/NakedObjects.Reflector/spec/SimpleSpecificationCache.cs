@@ -3,15 +3,14 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System.Collections.Generic;
-using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.Spec {
     public class SimpleSpecificationCache : ISpecificationCache {
-        private readonly Dictionary<string, INakedObjectSpecification> specs = new Dictionary<string, INakedObjectSpecification>();
+        private readonly Dictionary<string, IIntrospectableSpecification> specs = new Dictionary<string, IIntrospectableSpecification>();
 
         #region ISpecificationCache Members
 
-        public virtual INakedObjectSpecification GetSpecification(string className) {
+        public virtual IIntrospectableSpecification GetSpecification(string className) {
             lock (specs) {
                 if (specs.ContainsKey(className)) {
                     return specs[className];
@@ -20,7 +19,7 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public virtual void Cache(string className, INakedObjectSpecification spec) {
+        public virtual void Cache(string className, IIntrospectableSpecification spec) {
             lock (specs) {
                 specs[className] = spec;
             }
@@ -32,11 +31,11 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public virtual INakedObjectSpecification[] AllSpecifications() {
-            var returnSpecs = new List<INakedObjectSpecification>();
+        public virtual IIntrospectableSpecification[] AllSpecifications() {
+            var returnSpecs = new List<IIntrospectableSpecification>();
 
             lock (specs) {
-                foreach (INakedObjectSpecification spec in specs.Values) {
+                foreach (IIntrospectableSpecification spec in specs.Values) {
                     returnSpecs.Add(spec);
                 }
             }

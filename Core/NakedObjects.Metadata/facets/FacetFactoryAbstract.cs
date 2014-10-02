@@ -14,15 +14,15 @@ namespace NakedObjects.Architecture.Facets {
     public abstract class FacetFactoryAbstract : IFacetFactory {
         private readonly NakedObjectFeatureType[] featureTypes;
 
-        protected FacetFactoryAbstract(INakedObjectReflector reflector, NakedObjectFeatureType[] featureTypes) {
-            Reflector = reflector;
+        protected FacetFactoryAbstract(IMetadata metadata, NakedObjectFeatureType[] featureTypes) {
+            Metadata = metadata;
             this.featureTypes = featureTypes;
         }
 
         /// <summary>
         ///     Injected
         /// </summary>
-        protected INakedObjectReflector Reflector { get; private set; }
+        protected IMetadata Metadata { get; private set; }
 
         #region IFacetFactory Members
 

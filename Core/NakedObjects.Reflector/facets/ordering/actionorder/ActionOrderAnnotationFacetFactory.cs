@@ -10,8 +10,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.ActionOrder {
     public class ActionOrderAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ActionOrderAnnotationFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsOnly) {}
+        public ActionOrderAnnotationFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder facetHolder) {
             var attribute = type.GetCustomAttributeByReflection<ActionOrderAttribute>();

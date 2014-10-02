@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             SetupSpecification(typeof (TimeSpan));
             time = new TimeSpan(8, 13, 0);
             holder = new FacetHolderImpl();
-            SetValue(adapter = new TimeValueSemanticsProvider(reflector, holder));
+            SetValue(adapter = new TimeValueSemanticsProvider(metadata, holder));
         }
 
         #endregion

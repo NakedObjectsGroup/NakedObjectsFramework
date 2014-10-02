@@ -24,12 +24,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Choices {
         private readonly string[] parameterNames;
 
 
-        public ActionChoicesFacetViaMethod(INakedObjectReflector reflector, MethodInfo choicesMethod, Type choicesType, IFacetHolder holder, bool isMultiple = false)
+        public ActionChoicesFacetViaMethod(IMetadata metadata, MethodInfo choicesMethod, Type choicesType, IFacetHolder holder, bool isMultiple = false)
             : base(holder) {
             this.choicesMethod = choicesMethod;
             this.choicesType = choicesType;
             this.isMultiple = isMultiple;
-            parameterNamesAndTypes = choicesMethod.GetParameters().Select(p => new Tuple<string, INakedObjectSpecification>(p.Name.ToLower(), reflector.LoadSpecification(p.ParameterType))).ToArray();
+            parameterNamesAndTypes = choicesMethod.GetParameters().Select(p => new Tuple<string, INakedObjectSpecification>(p.Name.ToLower(), metadata.GetSpecification(p.ParameterType))).ToArray();
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
         }
 

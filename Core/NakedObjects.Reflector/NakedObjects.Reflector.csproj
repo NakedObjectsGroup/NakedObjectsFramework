@@ -65,7 +65,7 @@
     </NoWarn>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningLevel>4</WarningLevel>
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
@@ -382,9 +382,8 @@
     <Compile Include="security\CustomAuthorizerInstaller.cs" />
     <Compile Include="security\IAuthorizer.cs" />
     <Compile Include="security\SecurityFacetDecorator.cs" />
-    <Compile Include="spec\IFacetDecorator.cs" />
     <Compile Include="spec\FacetDecoratorSet.cs" />
-    <Compile Include="spec\IIntrospectableSpecification.cs" />
+    <Compile Include="spec\IntrospectableSpecification.cs" />
     <Compile Include="spec\NakedObjectActionImpl.cs" />
     <Compile Include="spec\NakedObjectActionParameterAbstract.cs" />
     <Compile Include="spec\NakedObjectActionParameterParseable.cs" />

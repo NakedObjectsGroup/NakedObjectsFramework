@@ -159,29 +159,32 @@ namespace NakedObjects.Reflector.Spec {
         // TODO :REVIEW is it a good idea to lazily load this as it a static object and more than one thread might call
         public virtual INakedObjectActionParameter[] Parameters {
             get {
-                lock (parameterLock) {
-                    if (parameters == null) {
-                        var list = new List<INakedObjectActionParameter>();
-                        INakedObjectActionParamPeer[] paramPeers = nakedObjectActionPeer.Parameters;
-                        for (int i = 0; i < paramPeers.Length; i++) {
-                            INakedObjectSpecification specification = paramPeers[i].Specification;
-                            if (specification.IsParseable) {
-                                list.Add(new NakedObjectActionParameterParseable(i, this, paramPeers[i]));
-                            }
-                            else if (specification.IsObject) {
-                                list.Add(new OneToOneActionParameterImpl(i, this, paramPeers[i]));
-                            }
-                            else if (specification.IsCollection) {
-                                list.Add(new OneToManyActionParameterImpl(i, this, paramPeers[i]));
-                            }
-                            else {
-                                throw new UnknownTypeException(specification);
-                            }
-                        }
-                        parameters = list.ToArray();
-                    }
-                    return parameters;
-                }
+                throw new NotImplementedException();
+                //lock (parameterLock) {
+                //    if (parameters == null) {
+                //        var list = new List<INakedObjectActionParameter>();
+                //        INakedObjectActionParamPeer[] paramPeers = nakedObjectActionPeer.Parameters;
+                //        for (int i = 0; i < paramPeers.Length; i++) {
+                //            var specification = paramPeers[i].Specification;
+
+
+                //            if (specification.IsParseable) {
+                //                list.Add(new NakedObjectActionParameterParseable(i, this, paramPeers[i]));
+                //            }
+                //            else if (specification.IsObject) {
+                //                list.Add(new OneToOneActionParameterImpl(i, this, paramPeers[i]));
+                //            }
+                //            else if (specification.IsCollection) {
+                //                list.Add(new OneToManyActionParameterImpl(i, this, paramPeers[i]));
+                //            }
+                //            else {
+                //                throw new UnknownTypeException(specification);
+                //            }
+                //        }
+                //        parameters = list.ToArray();
+                //    }
+                //    return parameters;
+                //}
             }
         }
 

@@ -29,7 +29,7 @@ namespace NakedObjects.Security {
             this.namespaceAuthorizers = namespaceAuthorizers;
         }
 
-        public INakedObjectReflector Reflector { get; set; }
+        public IMetadata Metadata { get; set; }
 
         /// <summary>
         /// </summary>
@@ -87,7 +87,7 @@ namespace NakedObjects.Security {
         }
 
         private object CreateAuthorizer(object authorizer, ILifecycleManager persistor) {
-            return persistor.CreateObject(Reflector.LoadSpecification(authorizer.GetType())); 
+            return persistor.CreateObject(Metadata.GetSpecification(authorizer.GetType())); 
             //return Reflector.LoadSpecification(authorizer.GetType()).CreateObject(persistor);
         }
 

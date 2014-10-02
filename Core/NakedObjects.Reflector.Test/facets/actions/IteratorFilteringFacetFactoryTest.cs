@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new IteratorFilteringFacetFactory(Reflector);
+            facetFactory = new IteratorFilteringFacetFactory(Metadata);
         }
 
         [TearDown]

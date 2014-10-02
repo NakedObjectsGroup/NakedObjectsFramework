@@ -31,35 +31,30 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.DotNet.Facets.Collections;
-using NakedObjects.Reflector.DotNet.Facets.Naming.Named;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural;
-using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.DotNet.Reflect;
-using NakedObjects.Reflector.DotNet.Reflect.Actions;
-using NakedObjects.Reflector.DotNet.Reflect.Propcoll;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.Spec {
-   
-    public class NakedObjectSpecification : FacetHolderImpl, IIntrospectableSpecification {
+
+    public class NakedObjectSpecification : FacetHolderImpl, INakedObjectSpecification {
+        private readonly IIntrospectableSpecification innerSpec;
         private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectSpecification));
-        private readonly DotNetReflector reflector;
-        private INakedObjectAction[] contributedActions = new INakedObjectAction[] {};
+     
+        private INakedObjectAction[] contributedActions = {};
         private INakedObjectAssociation[] fields;
         private string fullName;
         private IIconFacet iconFacet;
         private IIdentifier identifier;
-        private INakedObjectSpecification[] interfaces = new INakedObjectSpecification[] {};
+        private INakedObjectSpecification[] interfaces = {};
         private DotNetIntrospector introspector;
-        private INakedObjectAction[] objectActions = new INakedObjectAction[] {};
-        private INakedObjectAction[] relatedActions = new INakedObjectAction[] {};
+        private INakedObjectAction[] objectActions = {};
+        private INakedObjectAction[] relatedActions = {};
         private bool service;
         private string shortName;
-        private INakedObjectSpecification[] subclasses = new INakedObjectSpecification[] {};
+        private INakedObjectSpecification[] subclasses = {};
         private INakedObjectSpecification superClassSpecification;
         private ITitleFacet titleFacet;
         private INakedObjectValidation[] validationMethods;
@@ -68,10 +63,8 @@ namespace NakedObjects.Reflector.Spec {
         private bool whetherSealed;
         private bool whetherVoid;
 
-        public NakedObjectSpecification(Type type, DotNetReflector reflector) {
-            this.reflector = reflector;
-            introspector = new DotNetIntrospector(type, this, reflector);
-            identifier = new IdentifierImpl(reflector, type.FullName);
+        public NakedObjectSpecification(IIntrospectableSpecification innerSpec) {
+            this.innerSpec = innerSpec;
         }
 
         public bool IsSealed {
@@ -80,8 +73,7 @@ namespace NakedObjects.Reflector.Spec {
 
         public Type Type { get; set; }
 
-        #region IIntrospectableSpecification Members
-
+      
         public virtual string FullName {
             get { return fullName; }
         }
@@ -95,66 +87,31 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public virtual bool IsParseable {
-            get { return ContainsFacet(typeof (IParseableFacet)); }
+            get { return innerSpec.ContainsFacet(typeof (IParseableFacet)); }
         }
 
         public virtual bool IsEncodeable {
-            get { return ContainsFacet(typeof (IEncodeableFacet)); }
+            get { return innerSpec.ContainsFacet(typeof (IEncodeableFacet)); }
         }
 
         public virtual bool IsAggregated {
-            get { return ContainsFacet(typeof (IAggregatedFacet)) || ContainsFacet(typeof (IValueFacet)); }
+            get { return innerSpec.ContainsFacet(typeof (IAggregatedFacet)) || innerSpec.ContainsFacet(typeof (IValueFacet)); }
         }
 
         public virtual bool IsCollection {
-            get { return ContainsFacet(typeof (ICollectionFacet)); }
+            get { return innerSpec.ContainsFacet(typeof (ICollectionFacet)); }
         }
 
         public virtual bool IsViewModel {
-            get { return ContainsFacet(typeof (IViewModelFacet)); }
+            get { return innerSpec.ContainsFacet(typeof (IViewModelFacet)); }
         }
-
 
         public virtual bool IsObject {
             get { return !IsCollection; }
         }
 
-
         public virtual INakedObjectSpecification Superclass {
             get { return superClassSpecification; }
-        }
-
-
-        public override IFacet GetFacet(Type facetType) {
-            IFacet facet = base.GetFacet(facetType);
-            if (FacetUtils.IsNotANoopFacet(facet)) {
-                return facet;
-            }
-
-            IFacet noopFacet = facet;
-
-            if (Superclass != null) {
-                IFacet superClassFacet = Superclass.GetFacet(facetType);
-                if (FacetUtils.IsNotANoopFacet(superClassFacet)) {
-                    return superClassFacet;
-                }
-                if (noopFacet == null) {
-                    noopFacet = superClassFacet;
-                }
-            }
-            if (Interfaces != null) {
-                INakedObjectSpecification[] interfaceSpecs = Interfaces;
-                foreach (INakedObjectSpecification interfaceSpec in interfaceSpecs) {
-                    IFacet interfaceFacet = interfaceSpec.GetFacet(facetType);
-                    if (FacetUtils.IsNotANoopFacet(interfaceFacet)) {
-                        return interfaceFacet;
-                    }
-                    if (noopFacet == null) {
-                        noopFacet = interfaceFacet;
-                    }
-                }
-            }
-            return noopFacet;
         }
 
         public virtual INakedObjectAssociation[] Properties {
@@ -172,7 +129,6 @@ namespace NakedObjects.Reflector.Spec {
             return combinedActions.ToArray();
         }
 
-
         public virtual INakedObjectAction[] GetRelatedServiceActions() {
             return relatedActions;
         }
@@ -180,7 +136,7 @@ namespace NakedObjects.Reflector.Spec {
 
         public bool IsASet {
             get {
-                var collectionFacet = GetFacet<ICollectionFacet>();
+                var collectionFacet = innerSpec.GetFacet<ICollectionFacet>();
                 if (collectionFacet != null) {
                     return collectionFacet.IsASet;
                 }
@@ -217,7 +173,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public string SingularName {
-            get { return GetFacet<INamedFacet>().Value; }
+            get { return innerSpec.GetFacet<INamedFacet>().Value; }
         }
 
         public string UntitledName {
@@ -225,23 +181,23 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public string PluralName {
-            get { return GetFacet<IPluralFacet>().Value; }
+            get { return innerSpec.GetFacet<IPluralFacet>().Value; }
         }
 
         public string Description {
-            get { return GetFacet<IDescribedAsFacet>().Value ?? ""; }
+            get { return innerSpec.GetFacet<IDescribedAsFacet>().Value ?? ""; }
         }
 
         public bool HasNoIdentity {
             get {
                 // TODO need to tell whether an obj should be treated as a value or not
-                return GetFacet<ICollectionFacet>() != null || GetFacet<IParseableFacet>() != null;
+                return innerSpec.GetFacet<ICollectionFacet>() != null || innerSpec.GetFacet<IParseableFacet>() != null;
             }
         }
 
         public bool IsQueryable {
             get {
-                var collectionFacet = GetFacet<ICollectionFacet>();
+                var collectionFacet = innerSpec.GetFacet<ICollectionFacet>();
                 if (collectionFacet != null && collectionFacet.GetType().IsGenericType) {
                     return collectionFacet.GetType().GetGenericTypeDefinition() == typeof (DotNetGenericIQueryableFacet<>);
                 }
@@ -258,20 +214,14 @@ namespace NakedObjects.Reflector.Spec {
                 if (service) {
                     return PersistableType.ProgramPersistable;
                 }
-                if (ContainsFacet<INotPersistedFacet>()) {
+                if (innerSpec.ContainsFacet<INotPersistedFacet>()) {
                     return PersistableType.Transient;
                 }
-                if (ContainsFacet<IProgramPersistableOnlyFacet>()) {
+                if (innerSpec.ContainsFacet<IProgramPersistableOnlyFacet>()) {
                     return PersistableType.ProgramPersistable;
                 }
                 return PersistableType.UserPersistable;
             }
-        }
-
-
-        public void AddSubclass(INakedObjectSpecification subclass) {
-            var subclassList = new List<INakedObjectSpecification>(subclasses) {subclass};
-            subclasses = subclassList.ToArray();
         }
 
         /// <summary>
@@ -305,93 +255,7 @@ namespace NakedObjects.Reflector.Spec {
             return superClassSpecification != null && superClassSpecification.IsOfType(specification);
         }
 
-        public void PopulateAssociatedActions(Type[] services) {
-            if (string.IsNullOrWhiteSpace(FullName)) {
-                string id = (identifier != null ? identifier.ClassName : "unknown") ?? "unknown";
-                Log.WarnFormat("Specification with id : {0} as has null or empty name", id);
-            }
-
-            if (TypeUtils.IsSystem(FullName) && !IsCollection) {
-                return;
-            }
-            if (TypeUtils.IsNakedObjects(FullName)) {
-                return;
-            }
-
-            PopulateContributedActions(services);
-            PopulateRelatedActions(services);
-        }
-
-        public void Introspect(FacetDecoratorSet decorator) {
-            if (introspector == null) {
-                throw new ReflectionException("Introspection already taken place, cannot introspect again");
-            }
-
-            introspector.IntrospectClass();
-
-            Type = introspector.IntrospectedType;
-            fullName = introspector.FullName;
-            shortName = introspector.ShortName;
-            var namedFacet = GetFacet<INamedFacet>();
-            if (namedFacet == null) {
-                namedFacet = new NamedFacetInferred(NameUtils.NaturalName(shortName), this);
-                AddFacet(namedFacet);
-            }
-
-            var pluralFacet = GetFacet<IPluralFacet>();
-            if (pluralFacet == null) {
-                pluralFacet = new PluralFacetInferred(NameUtils.PluralName(namedFacet.Value), this);
-                AddFacet(pluralFacet);
-            }
-
-            whetherAbstract = introspector.IsAbstract;
-            whetherInterface = introspector.IsInterface;
-            whetherSealed = introspector.IsSealed;
-            whetherVoid = introspector.IsVoid;
-
-            string superclassName = introspector.SuperclassName;
-            string[] interfaceNames = introspector.InterfacesNames;
-
-
-            if (superclassName != null && !TypeUtils.IsSystem(superclassName)) {
-                superClassSpecification = reflector.LoadSpecification(superclassName);
-                if (superClassSpecification != null) {
-                    Log.DebugFormat("Superclass {0}", superclassName);
-                    superClassSpecification.AddSubclass(this);
-                }
-            }
-            else if (Type != typeof (object)) {
-                // always root in object (unless this is object!) 
-                superClassSpecification = reflector.LoadSpecification(typeof (object));
-                if (superClassSpecification != null) {
-                    Log.DebugFormat("Superclass {0}", typeof (object).Name);
-                    superClassSpecification.AddSubclass(this);
-                }
-            }
-
-            var interfaceList = new List<INakedObjectSpecification>();
-            foreach (string interfaceName in interfaceNames) {
-                INakedObjectSpecification interfaceSpec = reflector.LoadSpecification(interfaceName);
-                interfaceSpec.AddSubclass(this);
-                interfaceList.Add(interfaceSpec);
-            }
-
-            interfaces = interfaceList.ToArray();
-
-            introspector.IntrospectPropertiesAndCollections();
-            fields = OrderFields(introspector.Fields);
-
-            validationMethods = introspector.IntrospectObjectValidationMethods();
-
-            introspector.IntrospectActions();
-            objectActions = OrderActions(introspector.ObjectActions);
-
-            introspector = null;
-
-            DecorateAllFacets(decorator);
-            iconFacet = GetFacet<IIconFacet>();
-        }
-
+      
         public INakedObjectAssociation GetProperty(string id) {
             try {
                 return fields.First(f => f.Id.Equals(id));
@@ -437,13 +301,7 @@ namespace NakedObjects.Reflector.Spec {
             return cons;
         }
 
-        public void MarkAsService() {
-            if (Properties.Any(field => field.Id != "Id")) {
-                string fieldNames = Properties.Where(field => field.Id != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
-                throw new ModelException(string.Format(Resources.NakedObjects.ServiceObjectWithFieldsError, FullName, fieldNames));
-            }
-            service = true;
-        }
+     
 
         public IEnumerable GetBoundedSet(ILifecycleManager persistor) {
             if (this.IsBoundedSet()) {
@@ -465,131 +323,12 @@ namespace NakedObjects.Reflector.Spec {
             string postfix = string.Empty;
             Type type = TypeUtils.GetType(FullName);
 
-            if (type.IsGenericType) {
-                postfix = type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + sep + reflector.LoadSpecification(y).UniqueShortName(sep));
-            }
+            //if (type.IsGenericType) {
+            //    postfix = type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + sep + reflector.LoadSpecification(y).UniqueShortName(sep));
+            //}
+            throw new NotImplementedException();
 
-            return ShortName + postfix;
-        }
-
-        #endregion
-
-        private void PopulateContributedActions(Type[] services) {
-            var serviceActionSets = new List<INakedObjectAction>();
-
-            if (!IsService) {
-                foreach (Type serviceType in services) {
-                    INakedObjectSpecification specification = reflector.LoadSpecification(serviceType);
-                    if (specification != this) {
-                        INakedObjectAction[] matchingServiceActions = specification.GetActionLeafNodes().Where(serviceAction => serviceAction.IsContributedTo(this)).ToArray();
-                        if (matchingServiceActions.Any()) {
-                            var nakedObjectActionSet = new NakedObjectActionSet(specification.Identifier.ClassName,
-                                matchingServiceActions);
-                            serviceActionSets.Add(nakedObjectActionSet);
-                        }
-                    }
-                }
-            }
-            contributedActions = serviceActionSets.ToArray();
-        }
-
-        private void PopulateRelatedActions(Type[] services) {
-            var relatedActionSets = new List<INakedObjectAction>();
-            foreach (Type serviceType in services) {
-                INakedObjectSpecification specification = reflector.LoadSpecification(serviceType);
-                var matchingActions = new List<INakedObjectAction>();
-                foreach (INakedObjectAction serviceAction in specification.GetActionLeafNodes().Where(a => a.IsFinderMethod)) {
-                    INakedObjectSpecification returnType = serviceAction.ReturnType;
-                    if (returnType != null && returnType.IsCollection) {
-                        INakedObjectSpecification elementType = returnType.GetFacet<ITypeOfFacet>().ValueSpec;
-                        if (elementType.IsOfType(this)) {
-                            matchingActions.Add(serviceAction);
-                        }
-                    }
-                    else if (returnType != null && returnType.IsOfType(this)) {
-                        matchingActions.Add(serviceAction);
-                    }
-                }
-                if (matchingActions.Count > 0) {
-                    var nakedObjectActionSet = new NakedObjectActionSet(specification.Identifier.ClassName,
-                        matchingActions.ToArray());
-                    relatedActionSets.Add(nakedObjectActionSet);
-                }
-            }
-            relatedActions = relatedActionSets.ToArray();
-        }
-
-
-        private void DecorateAllFacets(FacetDecoratorSet decorator) {
-            decorator.DecorateAllHoldersFacets(this);
-            foreach (INakedObjectAssociation field in fields) {
-                decorator.DecorateAllHoldersFacets(field);
-            }
-            foreach (INakedObjectAction action in objectActions) {
-                DecorateAction(decorator, action);
-            }
-        }
-
-        private static void DecorateAction(FacetDecoratorSet decorator, INakedObjectAction action) {
-            decorator.DecorateAllHoldersFacets(action);
-            foreach (INakedObjectActionParameter parm in action.Parameters) {
-                decorator.DecorateAllHoldersFacets(parm);
-            }
-            if (action.ActionType == NakedObjectActionType.Set) {
-                action.Actions.ForEach(a => DecorateAction(decorator, a));
-            }
-        }
-
-
-        private INakedObjectAssociation[] OrderFields(OrderSet order) {
-            var orderedFields = new List<INakedObjectAssociation>();
-            foreach (IOrderableElement element in order) {
-                if (element is DotNetNakedObjectAssociationPeer) {
-                    orderedFields.Add(CreateNakedObjectField((DotNetNakedObjectAssociationPeer) element));
-                }
-                else if (element is OrderSet) {
-                    // Not supported at present
-                }
-                else {
-                    throw new UnknownTypeException(element);
-                }
-            }
-            return orderedFields.ToArray();
-        }
-
-        private static INakedObjectAction[] OrderActions(OrderSet order) {
-            var actions = new List<INakedObjectAction>();
-            foreach (IOrderableElement element in order) {
-                if (element is DotNetNakedObjectActionPeer) {
-                    actions.Add(CreateNakedObjectAction((DotNetNakedObjectActionPeer) element));
-                }
-                else if (element is OrderSet) {
-                    actions.Add(CreateNakedObjectActionSet((OrderSet) element));
-                }
-                else {
-                    throw new UnknownTypeException(element);
-                }
-            }
-
-            return actions.ToArray();
-        }
-
-        private static NakedObjectActionSet CreateNakedObjectActionSet(OrderSet orderSet) {
-            return new NakedObjectActionSet(orderSet.GroupFullName.Replace(" ", ""), orderSet.GroupFullName, OrderActions(orderSet));
-        }
-
-        private static NakedObjectActionImpl CreateNakedObjectAction(INakedObjectActionPeer peer) {
-            return new NakedObjectActionImpl(peer.Identifier.MemberName, peer);
-        }
-
-        private INakedObjectAssociation CreateNakedObjectField(INakedObjectAssociationPeer peer) {
-            if (peer.IsOneToOne) {
-                return new OneToOneAssociationImpl(reflector, peer);
-            }
-            if (peer.IsOneToMany) {
-                return new OneToManyAssociationImpl(peer);
-            }
-            throw new ReflectionException("Unknown peer type: " + peer);
+            //return ShortName + postfix;
         }
 
         private string DefaultTitle() {

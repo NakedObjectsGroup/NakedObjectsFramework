@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
             byteObj = 102;
             holder = new FacetHolderImpl();
-            SetValue(value = new SbyteValueSemanticsProvider(reflector, holder));
+            SetValue(value = new SbyteValueSemanticsProvider(metadata, holder));
         }
 
         #endregion

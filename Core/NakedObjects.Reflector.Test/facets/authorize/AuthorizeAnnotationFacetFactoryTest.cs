@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new AuthorizeAnnotationFacetFactory(Reflector);
+            facetFactory = new AuthorizeAnnotationFacetFactory(Metadata);
 
             mockPersistor = new Mock<ILifecycleManager>();
             persistor = mockPersistor.Object;

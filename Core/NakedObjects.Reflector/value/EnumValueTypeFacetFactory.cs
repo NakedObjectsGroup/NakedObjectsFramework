@@ -9,13 +9,13 @@ using NakedObjects.Reflector.DotNet.Facets.Objects.Value;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class EnumValueTypeFacetFactory : FacetFactoryAbstract {
-        public EnumValueTypeFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsOnly) {}
+        public EnumValueTypeFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (typeof (Enum).IsAssignableFrom(type)) {
                 Type semanticsProviderType = typeof (EnumValueSemanticsProvider<>).MakeGenericType(type);
-                object semanticsProvider = Activator.CreateInstance(semanticsProviderType, Reflector, holder);
+                object semanticsProvider = Activator.CreateInstance(semanticsProviderType, Metadata, holder);
                 Type facetType = typeof (ValueFacetUsingSemanticsProvider<>).MakeGenericType(type);
                 var facet = (IFacet) Activator.CreateInstance(facetType, semanticsProvider, semanticsProvider);
                 FacetUtils.AddFacet(facet);

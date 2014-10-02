@@ -139,7 +139,7 @@ namespace NakedObjects.Architecture.Spec {
 
         IEnumerable GetBoundedSet(ILifecycleManager persistor);
 
-        void MarkAsService();
+       // void MarkAsService();
 
         string GetInvariantString(INakedObject nakedObject);
         string UniqueShortName(string sep);

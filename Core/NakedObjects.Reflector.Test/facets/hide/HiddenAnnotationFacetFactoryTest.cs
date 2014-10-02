@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new HiddenAnnotationFacetFactory(Reflector);
+            facetFactory = new HiddenAnnotationFacetFactory(Metadata);
         }
 
         [TearDown]

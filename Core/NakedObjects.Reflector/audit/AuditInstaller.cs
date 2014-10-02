@@ -23,13 +23,17 @@ namespace NakedObjects.Reflector.Audit {
             auditManager = new AuditManager(defaultAuditor, namespaceAuditors);
         }
 
-        public IFacetDecorator[] CreateDecorators(INakedObjectReflector reflector) {
-            auditManager.Reflector = reflector;
-            return new IFacetDecorator[] {new AuditFacetDecorator(auditManager, reflector)};
+        public IFacetDecorator[] CreateDecorators(IMetadata metadata) {
+            auditManager.Reflector = metadata;
+            return new IFacetDecorator[] {new AuditFacetDecorator(auditManager, metadata)};
         }
 
         public string Name {
             get { return "AuditInstaller"; }
+        }
+
+        public IFacetDecorator[] CreateDecorators(INakedObjectReflector reflector) {
+            throw new System.NotImplementedException();
         }
     }
 }

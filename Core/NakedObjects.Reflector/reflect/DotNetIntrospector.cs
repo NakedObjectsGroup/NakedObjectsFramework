@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DotNetIntrospector));
 
         private static readonly object[] NoParameters = new object[0];
-        private readonly NakedObjectSpecification dotnetSpecification;
+        private readonly IIntrospectableSpecification specification;
         private readonly Type introspectedType;
 
         private readonly MethodInfo[] methods;
@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private OrderSet orderedObjectActions;
 
         public DotNetIntrospector(Type typeToIntrospect,
-                                  NakedObjectSpecification dotnetSpecification,
+                                  IIntrospectableSpecification specification,
                                   INakedObjectReflector reflector) {
             Log.DebugFormat("Creating DotNetIntrospector for {0}", typeToIntrospect);
 
@@ -53,7 +53,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
 
             introspectedType = typeToIntrospect;
-            this.dotnetSpecification = dotnetSpecification;
+            this.specification = specification;
             this.reflector = reflector;
             properties = typeToIntrospect.GetProperties();
             methods = GetFilteredMethods();
@@ -133,7 +133,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return allMethods.ToArray();
         }
 
-        private INakedObjectSpecification GetSpecification(Type returnType) {
+        private IIntrospectableSpecification GetSpecification(Type returnType) {
             return reflector.LoadSpecification(returnType);
         }
 
@@ -142,13 +142,13 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             // Process facets at object level
             // this will also remove some methods, such as the superclass methods.
             var methodRemover = new DotnetIntrospectorMethodRemover(methods);
-            FacetFactorySet.Process(introspectedType, methodRemover, dotnetSpecification);
+            FacetFactorySet.Process(introspectedType, methodRemover, specification);
             // if this class has additional facets then Process them.
-            var facetsFacet = dotnetSpecification.GetFacet<IFacetsFacet>();
+            var facetsFacet = specification.GetFacet<IFacetsFacet>();
             if (facetsFacet != null) {
                 foreach (Type facetFactory in facetsFacet.FacetFactories) {
                     var facetFactoryInstance = (IFacetFactory) Activator.CreateInstance(facetFactory, reflector);
-                    facetFactoryInstance.Process(introspectedType, methodRemover, dotnetSpecification);
+                    facetFactoryInstance.Process(introspectedType, methodRemover, specification);
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             INakedObjectMemberPeer[] findFieldMethods = FindAndCreateFieldPeers();
 
             // ... and the ordering of the properties and collections  
-            var fieldOrderFacet = dotnetSpecification.GetFacet<IFieldOrderFacet>();
+            var fieldOrderFacet = specification.GetFacet<IFieldOrderFacet>();
 
             // TODO: the calling of fieldOrder() should be a facet
             string fieldOrder = fieldOrderFacet == null ? InvokeSortOrderMethod("Field") : fieldOrderFacet.Value;
@@ -179,7 +179,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             INakedObjectActionPeer[] findObjectActionMethods = FindActionMethods(MethodType.Object);
 
             // ... and the ordering of actions ...
-            var actionOrderFacet = dotnetSpecification.GetFacet<IActionOrderFacet>();
+            var actionOrderFacet = specification.GetFacet<IActionOrderFacet>();
 
             // TODO: the calling of actionOrder() should be a facet
             string actionOrder = actionOrderFacet == null ? InvokeSortOrderMethod("Action") : actionOrderFacet.Value;
@@ -236,10 +236,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             foreach (PropertyInfo property in collectionProperties) {
                 Log.DebugFormat("Identified one-many association method {0}", property);
 
-                IIdentifier identifier = new IdentifierImpl(reflector, FullName, property.Name);
+                IIdentifier identifier = new IdentifierImpl((IMetadata)reflector, FullName, property.Name);
 
                 // create property and add facets
-                var collection = new DotNetOneToManyAssociationPeer(reflector, identifier, property.PropertyType);
+                var collection = new DotNetOneToManyAssociationPeer((IMetadata)reflector, identifier, property.PropertyType);
                 FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), collection, NakedObjectFeatureType.Collection);
 
                 // figure out what the Type is
@@ -257,10 +257,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 Log.DebugFormat("Identified 1-1 association method {0}", property);
                 Log.DebugFormat("One-to-One association {0} -> {1}", property.Name, property);
 
-                IIdentifier identifier = new IdentifierImpl(reflector, FullName, property.Name);
+                IIdentifier identifier = new IdentifierImpl((IMetadata)reflector, FullName, property.Name);
 
                 // create a reference property
-                var referenceProperty = new DotNetOneToOneAssociationPeer(reflector, identifier, property.PropertyType);
+                var referenceProperty = new DotNetOneToOneAssociationPeer((IMetadata)reflector, identifier, property.PropertyType);
 
                 // Process facets for the property
                 FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), referenceProperty, NakedObjectFeatureType.Property);
@@ -360,7 +360,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
                 Type[] parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
 
-                IIdentifier identifier = new IdentifierImpl(reflector, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
+                IIdentifier identifier = new IdentifierImpl((IMetadata)reflector, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
 
                 // build action & its parameters
 

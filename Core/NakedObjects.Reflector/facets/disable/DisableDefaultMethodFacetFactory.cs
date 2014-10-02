@@ -21,8 +21,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             };
         }
 
-        public DisableDefaultMethodFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
+        public DisableDefaultMethodFacetFactory(IMetadata metadata)
+            : base(metadata, NakedObjectFeatureType.ObjectsOnly) { }
 
 
         public override string[] Prefixes {

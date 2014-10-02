@@ -9,12 +9,12 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class TimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<TimeSpan> {
-        public TimeValueTypeFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, typeof (IDateValueFacet)) {}
+        public TimeValueTypeFacetFactory(IMetadata metadata)
+            : base(metadata, typeof (IDateValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (TimeValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new TimeValueSemanticsProvider(Reflector, holder));
+                AddFacets(new TimeValueSemanticsProvider(Metadata, holder));
                 return true;
             }
             return false;
