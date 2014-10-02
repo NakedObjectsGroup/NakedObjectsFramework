@@ -8,14 +8,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Facets.Naming.Named;
-using NakedObjects.Architecture.Facets.Objects.Ident.Icon;
 using NakedObjects.Architecture.Facets.Objects.Ident.Plural;
+using NakedObjects.Architecture.Facets.Types;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
@@ -30,51 +31,60 @@ using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.Spec {
-
-
-
-
-
     public class IntrospectableSpecification : FacetHolderImpl, IIntrospectableSpecification {
         private static readonly ILog Log = LogManager.GetLogger(typeof (IntrospectableSpecification));
 
-        private readonly IdentifierImpl identifier;
+        private readonly IIdentifier identifier;
         private readonly INakedObjectReflector reflector;
-        private INakedObjectAction[] contributedActions;
-        private INakedObjectAssociation[] fields;
-        private string fullName;
-        private IIconFacet iconFacet;
-        private IIntrospectableSpecification[] interfaces;
         private DotNetIntrospector introspector;
-        private INakedObjectAction[] objectActions = {};
-        private INakedObjectAction[] relatedActions;
-        private bool service;
-        private string shortName;
-        private IIntrospectableSpecification[] subclasses = {};
-        private IIntrospectableSpecification superClassSpecification;
-        private INakedObjectValidation[] validationMethods;
-        private bool whetherAbstract;
-        private bool whetherInterface;
-        private bool whetherSealed;
-        private bool whetherVoid;
 
         public IntrospectableSpecification(Type type, INakedObjectReflector reflector) {
+            Subclasses = new IIntrospectableSpecification[] {};
             this.reflector = reflector;
             introspector = new DotNetIntrospector(type, this, reflector);
             identifier = new IdentifierImpl((IMetadata) reflector, type.FullName);
+            ObjectActions = new INakedObjectAction[] {};
+            ContributedActions = new INakedObjectAction[] {};
+            RelatedActions = new INakedObjectAction[] {};
+            Fields = new INakedObjectAssociation[] {};
+            Interfaces = new IIntrospectableSpecification[] {};
+            Subclasses = new IIntrospectableSpecification[] {};
+            ValidationMethods = new INakedObjectValidation[] {};
         }
 
         private bool IsCollection {
             get { return ContainsFacet(typeof (ICollectionFacet)); }
         }
 
-        private IIntrospectableSpecification Superclass {
-            get { return superClassSpecification; }
+        #region IIntrospectableSpecification Members
+
+        public IIntrospectableSpecification Superclass { get; private set; }
+
+        public override IIdentifier Identifier {
+            get { return identifier; }
         }
 
         public Type Type { get; set; }
 
-        #region IIntrospectableSpecification Members
+        public string FullName { get; set; }
+
+        public string ShortName { get; set; }
+
+        public INakedObjectAction[] ObjectActions { get; private set; }
+
+        public INakedObjectAction[] ContributedActions { get; private set; }
+
+        public INakedObjectAction[] RelatedActions { get; private set; }
+
+        public INakedObjectAssociation[] Fields { get; set; }
+
+        public IIntrospectableSpecification[] Interfaces { get; set; }
+
+        public IIntrospectableSpecification[] Subclasses { get; set; }
+
+        public bool Service { get; set; }
+
+        public INakedObjectValidation[] ValidationMethods { get; set; }
 
         public override IFacet GetFacet(Type facetType) {
             IFacet facet = base.GetFacet(facetType);
@@ -93,8 +103,8 @@ namespace NakedObjects.Reflector.Spec {
                     noopFacet = superClassFacet;
                 }
             }
-            if (interfaces != null) {
-                var interfaceSpecs = interfaces;
+            if (Interfaces != null) {
+                var interfaceSpecs = Interfaces;
                 foreach (var interfaceSpec in interfaceSpecs) {
                     IFacet interfaceFacet = interfaceSpec.GetFacet(facetType);
                     if (FacetUtils.IsNotANoopFacet(interfaceFacet)) {
@@ -116,11 +126,11 @@ namespace NakedObjects.Reflector.Spec {
             introspector.IntrospectClass();
 
             Type = introspector.IntrospectedType;
-            fullName = introspector.FullName;
-            shortName = introspector.ShortName;
+            FullName = introspector.FullName;
+            ShortName = introspector.ShortName;
             var namedFacet = GetFacet<INamedFacet>();
             if (namedFacet == null) {
-                namedFacet = new NamedFacetInferred(NameUtils.NaturalName(shortName), this);
+                namedFacet = new NamedFacetInferred(NameUtils.NaturalName(ShortName), this);
                 AddFacet(namedFacet);
             }
 
@@ -130,27 +140,39 @@ namespace NakedObjects.Reflector.Spec {
                 AddFacet(pluralFacet);
             }
 
-            whetherAbstract = introspector.IsAbstract;
-            whetherInterface = introspector.IsInterface;
-            whetherSealed = introspector.IsSealed;
-            whetherVoid = introspector.IsVoid;
+            // TODO can we do this in the introspector 
+            if (introspector.IsAbstract) {
+                AddFacet(new AbstractFacet(this));
+            }
+
+            if (introspector.IsInterface) {
+                AddFacet(new InterfaceFacet(this));
+            }
+
+            if (introspector.IsSealed) {
+                AddFacet(new SealedFacet(this));
+            }
+
+            if (introspector.IsVoid) {
+                AddFacet(new VoidFacet(this));
+            }
 
             string superclassName = introspector.SuperclassName;
             string[] interfaceNames = introspector.InterfacesNames;
 
             if (superclassName != null && !TypeUtils.IsSystem(superclassName)) {
-                superClassSpecification = reflector.LoadSpecification(superclassName);
-                if (superClassSpecification != null) {
+                Superclass = reflector.LoadSpecification(superclassName);
+                if (Superclass != null) {
                     Log.DebugFormat("Superclass {0}", superclassName);
-                    superClassSpecification.AddSubclass(this);
+                    Superclass.AddSubclass(this);
                 }
             }
             else if (Type != typeof (object)) {
                 // always root in object (unless this is object!) 
-                superClassSpecification = reflector.LoadSpecification(typeof (object));
-                if (superClassSpecification != null) {
+                Superclass = reflector.LoadSpecification(typeof(object));
+                if (Superclass != null) {
                     Log.DebugFormat("Superclass {0}", typeof (object).Name);
-                    superClassSpecification.AddSubclass(this);
+                    Superclass.AddSubclass(this);
                 }
             }
 
@@ -161,32 +183,31 @@ namespace NakedObjects.Reflector.Spec {
                 interfaceList.Add(interfaceSpec);
             }
 
-            interfaces = interfaceList.ToArray();
+            Interfaces = interfaceList.ToArray();
 
             introspector.IntrospectPropertiesAndCollections();
-            fields = OrderFields(introspector.Fields);
+            Fields = OrderFields(introspector.Fields);
 
-            validationMethods = introspector.IntrospectObjectValidationMethods();
+            ValidationMethods = introspector.IntrospectObjectValidationMethods();
 
             introspector.IntrospectActions();
-            objectActions = OrderActions(introspector.ObjectActions);
+            ObjectActions = OrderActions(introspector.ObjectActions);
 
             introspector = null;
 
             DecorateAllFacets(decorator);
-            iconFacet = GetFacet<IIconFacet>();
         }
 
         public void PopulateAssociatedActions(Type[] services) {
-            if (string.IsNullOrWhiteSpace(fullName)) {
+            if (string.IsNullOrWhiteSpace(FullName)) {
                 string id = (identifier != null ? identifier.ClassName : "unknown") ?? "unknown";
                 Log.WarnFormat("Specification with id : {0} as has null or empty name", id);
             }
 
-            if (TypeUtils.IsSystem(fullName) && !IsCollection) {
+            if (TypeUtils.IsSystem(FullName) && !IsCollection) {
                 return;
             }
-            if (TypeUtils.IsNakedObjects(fullName)) {
+            if (TypeUtils.IsNakedObjects(FullName)) {
                 return;
             }
 
@@ -195,26 +216,28 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public void MarkAsService() {
-            if (fields.Any(field => field.Id != "Id")) {
-                string fieldNames = fields.Where(field => field.Id != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
-                throw new ModelException(string.Format(Resources.NakedObjects.ServiceObjectWithFieldsError, fullName, fieldNames));
+            if (Fields.Any(field => field.Id != "Id")) {
+                string fieldNames = Fields.Where(field => field.Id != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
+                throw new ModelException(string.Format(Resources.NakedObjects.ServiceObjectWithFieldsError, FullName, fieldNames));
             }
-            service = true;
+            Service = true;
         }
 
         public void AddSubclass(IIntrospectableSpecification subclass) {
-            var subclassList = new List<IIntrospectableSpecification>(subclasses) {subclass};
-            subclasses = subclassList.ToArray();
+            var subclassList = new List<IIntrospectableSpecification>(Subclasses) {subclass};
+            Subclasses = subclassList.ToArray();
         }
 
         #endregion
 
+
+
         private void DecorateAllFacets(IFacetDecoratorSet decorator) {
             decorator.DecorateAllHoldersFacets(this);
-            foreach (INakedObjectAssociation field in fields) {
+            foreach (INakedObjectAssociation field in Fields) {
                 decorator.DecorateAllHoldersFacets(field);
             }
-            foreach (INakedObjectAction action in objectActions) {
+            foreach (INakedObjectAction action in ObjectActions) {
                 DecorateAction(decorator, action);
             }
         }
@@ -283,7 +306,7 @@ namespace NakedObjects.Reflector.Spec {
         private void PopulateContributedActions(Type[] services) {
             var serviceActionSets = new List<INakedObjectAction>();
 
-            if (!service) {
+            if (!Service) {
                 foreach (Type serviceType in services) {
                     var serviceSpecification = ((IMetadata) reflector).GetSpecification(serviceType);
                     if (serviceType != Type) {
@@ -297,13 +320,13 @@ namespace NakedObjects.Reflector.Spec {
                     }
                 }
             }
-            contributedActions = serviceActionSets.ToArray();
+            ContributedActions = serviceActionSets.ToArray();
         }
 
         private void PopulateRelatedActions(Type[] services) {
             var relatedActionSets = new List<INakedObjectAction>();
             foreach (Type serviceType in services) {
-                var thisSpecification = new NakedObjectSpecification(this);
+                var thisSpecification = new NakedObjectSpecification((IMetadata) reflector, this);
                 var serviceSpecification = ((IMetadata) reflector).GetSpecification(serviceType);
                 var matchingActions = new List<INakedObjectAction>();
                 foreach (INakedObjectAction serviceAction in serviceSpecification.GetActionLeafNodes().Where(a => a.IsFinderMethod)) {
@@ -324,7 +347,7 @@ namespace NakedObjects.Reflector.Spec {
                     relatedActionSets.Add(nakedObjectActionSet);
                 }
             }
-            relatedActions = relatedActionSets.ToArray();
+            RelatedActions = relatedActionSets.ToArray();
         }
     }
 }

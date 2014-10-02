@@ -8,8 +8,8 @@
 using System;
 
 namespace NakedObjects.Architecture.Facets.Types {
-    public abstract class InterfaceFacet : MarkerFacetAbstract, IInterfaceFacet {
-        protected InterfaceFacet(IFacetHolder holder)
+    public  class InterfaceFacet : MarkerFacetAbstract, IInterfaceFacet {
+        public InterfaceFacet(IFacetHolder holder)
             : base(Type, holder) {}
 
         public static Type Type {

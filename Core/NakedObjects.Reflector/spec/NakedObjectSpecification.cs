@@ -26,6 +26,7 @@ using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Facets.Objects.Value;
 using NakedObjects.Architecture.Facets.Objects.ViewModel;
 using NakedObjects.Architecture.Facets.Propcoll.NotPersisted;
+using NakedObjects.Architecture.Facets.Types;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
@@ -33,49 +34,31 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.DotNet.Facets.Collections;
-using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.Spec {
 
     public class NakedObjectSpecification : FacetHolderImpl, INakedObjectSpecification {
+        private readonly IMetadata metadata;
         private readonly IIntrospectableSpecification innerSpec;
         private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectSpecification));
      
-        private INakedObjectAction[] contributedActions = {};
-        private INakedObjectAssociation[] fields;
-        private string fullName;
-        private IIconFacet iconFacet;
-        private IIdentifier identifier;
-        private INakedObjectSpecification[] interfaces = {};
-        private DotNetIntrospector introspector;
-        private INakedObjectAction[] objectActions = {};
-        private INakedObjectAction[] relatedActions = {};
-        private bool service;
-        private string shortName;
-        private INakedObjectSpecification[] subclasses = {};
-        private INakedObjectSpecification superClassSpecification;
-        private ITitleFacet titleFacet;
-        private INakedObjectValidation[] validationMethods;
-        private bool whetherAbstract;
-        private bool whetherInterface;
-        private bool whetherSealed;
-        private bool whetherVoid;
-
-        public NakedObjectSpecification(IIntrospectableSpecification innerSpec) {
+        public NakedObjectSpecification(IMetadata metadata, IIntrospectableSpecification innerSpec) {
+            this.metadata = metadata;
             this.innerSpec = innerSpec;
         }
 
         public bool IsSealed {
-            get { return whetherSealed; }
+            get { return innerSpec.ContainsFacet(typeof (ISealedFacet)); }
         }
 
-        public Type Type { get; set; }
-
-      
+        public Type Type {
+            get { return innerSpec.Type; }
+        }
+    
         public virtual string FullName {
-            get { return fullName; }
+            get { return innerSpec.FullName; }
         }
 
         public virtual object DefaultValue {
@@ -83,7 +66,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public override IIdentifier Identifier {
-            get { return identifier; }
+            get { return innerSpec.Identifier; }
         }
 
         public virtual bool IsParseable {
@@ -111,28 +94,27 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public virtual INakedObjectSpecification Superclass {
-            get { return superClassSpecification; }
+            get { return new NakedObjectSpecification(metadata, innerSpec.Superclass); }
         }
 
         public virtual INakedObjectAssociation[] Properties {
-            get { return fields; }
+            get { return innerSpec.Fields; }
         }
 
         public INakedObjectValidation[] ValidateMethods() {
-            return validationMethods;
+            return innerSpec.ValidationMethods;
         }
 
         public virtual INakedObjectAction[] GetObjectActions() {
             var combinedActions = new List<INakedObjectAction>();
-            combinedActions.AddRange(objectActions);
-            combinedActions.AddRange(contributedActions);
+            combinedActions.AddRange( innerSpec.ObjectActions);
+            combinedActions.AddRange(innerSpec.ContributedActions);
             return combinedActions.ToArray();
         }
 
         public virtual INakedObjectAction[] GetRelatedServiceActions() {
-            return relatedActions;
+            return innerSpec.RelatedActions;
         }
-
 
         public bool IsASet {
             get {
@@ -145,31 +127,31 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public bool HasSubclasses {
-            get { return subclasses.Length > 0; }
+            get { return innerSpec.Subclasses.Length > 0; }
         }
 
         public INakedObjectSpecification[] Interfaces {
-            get { return interfaces; }
+            get { return innerSpec.Interfaces.Select(i => new NakedObjectSpecification(metadata, i)).Cast<INakedObjectSpecification>().ToArray(); }
         }
 
         public INakedObjectSpecification[] Subclasses {
-            get { return subclasses; }
+            get { return innerSpec.Subclasses.Select(i => new NakedObjectSpecification(metadata, i)).Cast<INakedObjectSpecification>().ToArray(); }
         }
 
         public bool IsAbstract {
-            get { return whetherAbstract; }
+            get { return innerSpec.ContainsFacet(typeof(IAbstractFacet)); }
         }
 
         public bool IsInterface {
-            get { return whetherInterface; }
+            get { return innerSpec.ContainsFacet(typeof(IInterfaceFacet)); }
         }
 
         public bool IsService {
-            get { return service; }
+            get { return innerSpec.Service; }
         }
 
         public string ShortName {
-            get { return shortName; }
+            get { return innerSpec.ShortName; }
         }
 
         public string SingularName {
@@ -206,12 +188,12 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public bool IsVoid {
-            get { return whetherVoid; }
+            get { return innerSpec.ContainsFacet(typeof(IVoidFacet)); }
         }
 
         public PersistableType Persistable {
             get {
-                if (service) {
+                if (IsService) {
                     return PersistableType.ProgramPersistable;
                 }
                 if (innerSpec.ContainsFacet<INotPersistedFacet>()) {
@@ -228,10 +210,12 @@ namespace NakedObjects.Reflector.Spec {
         ///     Determines if this class represents the same class, or a subclass, of the specified class.
         /// </summary>
         public bool IsOfType(INakedObjectSpecification specification) {
+
+
             if (specification == this) {
                 return true;
             }
-            if (interfaces.Any(interfaceSpec => interfaceSpec.IsOfType(specification))) {
+            if (Interfaces.Any(interfaceSpec => interfaceSpec.IsOfType(specification))) {
                 return true;
             }
 
@@ -252,13 +236,13 @@ namespace NakedObjects.Reflector.Spec {
                 }
             }
 
-            return superClassSpecification != null && superClassSpecification.IsOfType(specification);
+            return Superclass != null && Superclass.IsOfType(specification);
         }
 
       
         public INakedObjectAssociation GetProperty(string id) {
             try {
-                return fields.First(f => f.Id.Equals(id));
+                return Properties.First(f => f.Id.Equals(id));
             }
             catch (InvalidOperationException) {
                 throw new ReflectionException(string.Format("No field called '{0}' in '{1}'", id, SingularName));
@@ -266,9 +250,10 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public string GetTitle(INakedObject nakedObject, INakedObjectManager manager) {
-            if (titleFacet == null) {
-                titleFacet = GetFacet<ITitleFacet>();
-            }
+
+           
+                var titleFacet = GetFacet<ITitleFacet>();
+         
             if (titleFacet != null) {
                 return titleFacet.GetTitle(nakedObject, manager) ?? DefaultTitle();
             }
@@ -284,6 +269,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public string GetIconName(INakedObject forObject) {
+            var iconFacet = innerSpec.GetFacet<IIconFacet>();
             string iconName = null;
             if (iconFacet != null) {
                 iconName = forObject == null ? iconFacet.GetIconName() : iconFacet.GetIconName(forObject);
@@ -323,12 +309,11 @@ namespace NakedObjects.Reflector.Spec {
             string postfix = string.Empty;
             Type type = TypeUtils.GetType(FullName);
 
-            //if (type.IsGenericType) {
-            //    postfix = type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + sep + reflector.LoadSpecification(y).UniqueShortName(sep));
-            //}
-            throw new NotImplementedException();
+            if (type.IsGenericType) {
+                postfix = type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + sep + metadata.GetSpecification(y).UniqueShortName(sep));
+            }
 
-            //return ShortName + postfix;
+            return ShortName + postfix;
         }
 
         private string DefaultTitle() {
@@ -341,10 +326,10 @@ namespace NakedObjects.Reflector.Spec {
 
         public override string ToString() {
             var str = new AsString(this);
-            str.Append("class", fullName);
+            str.Append("class", FullName);
             str.Append("type", TypeNameFor());
             str.Append("persistable", Persistable);
-            str.Append("superclass", superClassSpecification == null ? "object" : superClassSpecification.FullName);
+            str.Append("superclass", innerSpec.Superclass  == null ? "object" : innerSpec.Superclass.FullName);
             return str.ToString();
         }
 

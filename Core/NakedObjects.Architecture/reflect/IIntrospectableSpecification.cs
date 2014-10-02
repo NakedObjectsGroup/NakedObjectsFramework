@@ -4,6 +4,7 @@
 
 using System;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.Spec {
@@ -28,9 +29,19 @@ namespace NakedObjects.Reflector.Spec {
         // TODO expose lots of stuff while refactoring 
 
 
-
-
-
+        Type Type { get;  }
+        string FullName { get;  }
+        string ShortName { get;  }
+        INakedObjectAction[] ObjectActions { get;  }
+        INakedObjectAction[] ContributedActions { get; }
+        INakedObjectAction[] RelatedActions { get; }
+        INakedObjectAssociation[] Fields { get; set; }
+        IIntrospectableSpecification[] Interfaces { get; set; }
+        IIntrospectableSpecification[] Subclasses { get; set; }
+        bool Service { get; set; }
+        INakedObjectValidation[] ValidationMethods { get; set; }
+        IIntrospectableSpecification Superclass { get; }
+      
     }
 
 

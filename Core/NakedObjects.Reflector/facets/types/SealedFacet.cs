@@ -8,8 +8,8 @@
 using System;
 
 namespace NakedObjects.Architecture.Facets.Types {
-    public abstract class SealedFacet : MarkerFacetAbstract, ISealedFacet {
-        protected SealedFacet(IFacetHolder holder)
+    public  class SealedFacet : MarkerFacetAbstract, ISealedFacet {
+        public SealedFacet(IFacetHolder holder)
             : base(Type, holder) {}
 
         public static Type Type {
