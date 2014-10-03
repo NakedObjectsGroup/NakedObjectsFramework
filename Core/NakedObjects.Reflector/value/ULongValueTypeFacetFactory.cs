@@ -9,12 +9,13 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ULongValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<ulong> {
-        public ULongValueTypeFacetFactory(IMetadata metadata)
-            : base(metadata, typeof (IUnsignedLongValueFacet)) {}
+        public ULongValueTypeFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, typeof (IUnsignedLongValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (ULongValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new ULongValueSemanticsProvider(Metadata, holder));
+                var spec = Reflector.LoadSpecification(ULongValueSemanticsProvider.AdaptedType);
+                AddFacets(new ULongValueSemanticsProvider(spec, holder));
                 return true;
             }
             return false;

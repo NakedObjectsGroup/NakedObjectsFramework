@@ -40,6 +40,7 @@ type MockReflector() =
         member x.AllSpecifications with get() = [||]
         member x.GetSpecification(typ : Type) : INakedObjectSpecification = null
         member x.GetSpecification(str : string) : INakedObjectSpecification = null
+        member x.GetSpecification(spec : IIntrospectableSpecification) : INakedObjectSpecification = null
       
 
 

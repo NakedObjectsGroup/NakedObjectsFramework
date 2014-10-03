@@ -18,8 +18,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Range {
     public class RangeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (RangeAnnotationFacetFactory));
 
-        public RangeAnnotationFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.PropertiesAndParameters) { }
+        public RangeAnnotationFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.PropertiesAndParameters) { }
 
 
         private static bool Process(MemberInfo member, bool isDate, IFacetHolder holder) {

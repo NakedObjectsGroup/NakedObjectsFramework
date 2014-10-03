@@ -3,9 +3,12 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.DotNet.Facets.Ordering;
+using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     /// <summary>
@@ -32,16 +35,20 @@ namespace NakedObjects.Reflector.Spec {
         Type Type { get;  }
         string FullName { get;  }
         string ShortName { get;  }
-        INakedObjectAction[] ObjectActions { get;  }
-        INakedObjectAction[] ContributedActions { get; }
-        INakedObjectAction[] RelatedActions { get; }
-        INakedObjectAssociation[] Fields { get; set; }
+        IOrderSet<INakedObjectActionPeer> ObjectActions { get; }
+        IOrderSet<INakedObjectActionPeer> ContributedActions { get; }
+        IOrderSet<INakedObjectActionPeer> RelatedActions { get; }
+        IOrderSet<INakedObjectAssociationPeer> Fields { get; set; }
         IIntrospectableSpecification[] Interfaces { get; set; }
         IIntrospectableSpecification[] Subclasses { get; set; }
         bool Service { get; set; }
         INakedObjectValidation[] ValidationMethods { get; set; }
         IIntrospectableSpecification Superclass { get; }
-      
+        bool IsObject { get;  }
+        bool IsCollection { get;  }
+        bool IsParseable { get;  }
+        bool IsOfType(IIntrospectableSpecification specification);
+        string GetIconName(INakedObject forObject);
     }
 
 

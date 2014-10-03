@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ValidateProgrammaticUpdatesAnnotationFacetFactory(Metadata);
+            facetFactory = new ValidateProgrammaticUpdatesAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]

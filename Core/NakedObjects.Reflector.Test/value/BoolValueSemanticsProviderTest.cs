@@ -4,11 +4,14 @@
 
 using System;
 using System.Globalization;
+using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Reflector.Spec;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     [TestFixture]
@@ -21,7 +24,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
             booleanObj = true;
             booleanNO = CreateAdapter(booleanObj);
             facetHolder = new FacetHolderImpl();
-            SetValue(value = new BooleanValueSemanticsProvider(metadata, facetHolder));
+            var spec = new Mock<IIntrospectableSpecification>().Object;
+            SetValue(value = new BooleanValueSemanticsProvider(spec, facetHolder));
         }
 
         #endregion

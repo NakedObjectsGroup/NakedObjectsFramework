@@ -15,8 +15,8 @@ using ParameterInfo = System.Reflection.ParameterInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.MaxLength {
     public class MaxLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MaxLengthAnnotationFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
+        public MaxLengthAnnotationFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             Attribute attribute = type.GetCustomAttributeByReflection<StringLengthAttribute>() ?? (Attribute) type.GetCustomAttributeByReflection<MaxLengthAttribute>();

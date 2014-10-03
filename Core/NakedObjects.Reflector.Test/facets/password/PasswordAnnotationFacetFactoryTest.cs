@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Password {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PasswordAnnotationFacetFactory(Metadata);
+            facetFactory = new PasswordAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]

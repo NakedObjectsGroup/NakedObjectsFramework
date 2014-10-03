@@ -10,8 +10,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.NotPersistable {
     public class ProgramPersistableOnlyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ProgramPersistableOnlyAnnotationFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.ObjectsOnly) {}
+        public ProgramPersistableOnlyAnnotationFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             var attribute = type.GetCustomAttributeByReflection<ProgramPersistableOnlyAttribute>();

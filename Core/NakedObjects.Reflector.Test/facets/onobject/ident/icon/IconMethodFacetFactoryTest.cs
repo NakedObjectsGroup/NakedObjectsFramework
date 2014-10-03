@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new IconMethodFacetFactory(Metadata);
+            facetFactory = new IconMethodFacetFactory(Reflector);
         }
 
         [TearDown]

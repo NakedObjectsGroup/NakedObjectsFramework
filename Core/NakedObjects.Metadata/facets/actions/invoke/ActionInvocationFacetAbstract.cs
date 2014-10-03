@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Invoke {
     public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvocationFacet {
@@ -22,8 +23,8 @@ namespace NakedObjects.Architecture.Facets.Actions.Invoke {
 
         #region IActionInvocationFacet Members
 
-        public abstract INakedObjectSpecification OnType { get; }
-        public abstract INakedObjectSpecification ReturnType { get; }
+        public abstract IIntrospectableSpecification OnType { get; }
+        public abstract IIntrospectableSpecification ReturnType { get; }
 
         public abstract INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, ILifecycleManager persistor, ISession session);
 

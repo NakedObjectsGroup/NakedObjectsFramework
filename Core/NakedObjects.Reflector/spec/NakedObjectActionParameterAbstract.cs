@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
@@ -25,11 +26,13 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public abstract class NakedObjectActionParameterAbstract : INakedObjectActionParameter {
+        private readonly IMetadata metadata;
         private readonly int number;
         private readonly INakedObjectAction parentAction;
         private readonly INakedObjectActionParamPeer peer;
 
-        protected internal NakedObjectActionParameterAbstract(int number, INakedObjectAction nakedObjectAction, INakedObjectActionParamPeer peer) {
+        protected internal NakedObjectActionParameterAbstract(IMetadata metadata, int number, INakedObjectAction nakedObjectAction, INakedObjectActionParamPeer peer) {
+            this.metadata = metadata;
             this.number = number;
             parentAction = nakedObjectAction;
             this.peer = peer;
@@ -73,8 +76,7 @@ namespace NakedObjects.Reflector.Spec {
 
         public virtual INakedObjectSpecification Specification {
             get {
-                //return peer.Specification;
-                throw new NotImplementedException();
+                return  metadata.GetSpecification(peer.Specification);
             }
         }
 
@@ -168,7 +170,8 @@ namespace NakedObjects.Reflector.Spec {
 
         public Tuple<string, INakedObjectSpecification>[] GetChoicesParameters() {
             var choicesFacet = GetFacet<IActionChoicesFacet>();
-            return choicesFacet != null ? choicesFacet.ParameterNamesAndTypes : new Tuple<string, INakedObjectSpecification>[]{};
+            return choicesFacet == null ? new Tuple<string, INakedObjectSpecification>[] {} :
+                choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, INakedObjectSpecification>(t.Item1, metadata.GetSpecification(t.Item2))).ToArray();
         }
 
         public INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, ILifecycleManager persistor) {
@@ -194,7 +197,7 @@ namespace NakedObjects.Reflector.Spec {
             }
 
             if (Specification.IsCollectionOfBoundedSet() || Specification.IsCollectionOfEnum()) {
-                INakedObjectSpecification instanceSpec = Specification.GetFacet<ITypeOfFacet>().ValueSpec;
+                var instanceSpec =  metadata.GetSpecification(Specification.GetFacet<ITypeOfFacet>().ValueSpec);
 
                 var instanceEnumFacet = instanceSpec.GetFacet<IEnumFacet>();
 

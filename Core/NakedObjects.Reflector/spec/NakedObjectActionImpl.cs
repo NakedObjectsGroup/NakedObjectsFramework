@@ -24,6 +24,7 @@ using NakedObjects.Reflector.Peer;
 namespace NakedObjects.Reflector.Spec {
     public class NakedObjectActionImpl : NakedObjectMemberSessionAware, INakedObjectAction {
         private static readonly ILog Log;
+        private readonly IMetadata metadata;
         private readonly INakedObjectActionPeer nakedObjectActionPeer;
         private readonly object parameterLock = true;
         private INakedObjectActionParameter[] parameters;
@@ -32,8 +33,9 @@ namespace NakedObjects.Reflector.Spec {
             Log = LogManager.GetLogger(typeof (NakedObjectActionImpl));
         }
 
-        public NakedObjectActionImpl(string methodId, INakedObjectActionPeer nakedObjectActionPeer)
-            : base(methodId, nakedObjectActionPeer) {
+        public NakedObjectActionImpl(IMetadata metadata, INakedObjectActionPeer nakedObjectActionPeer)
+            : base(nakedObjectActionPeer.Identifier.MemberName, nakedObjectActionPeer) {
+            this.metadata = metadata;
             this.nakedObjectActionPeer = nakedObjectActionPeer;
         }
 
@@ -44,11 +46,11 @@ namespace NakedObjects.Reflector.Spec {
         #region INakedObjectAction Members
 
         public virtual INakedObjectSpecification ReturnType {
-            get { return ActionInvocationFacet.ReturnType; }
+            get { return metadata.GetSpecification(ActionInvocationFacet.ReturnType); }
         }
 
         public virtual INakedObjectSpecification OnType {
-            get { return ActionInvocationFacet.OnType; }
+            get { return metadata.GetSpecification(ActionInvocationFacet.OnType); }
         }
 
         public virtual INakedObjectAction[] Actions {
@@ -232,13 +234,14 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         private bool ContributeTo(INakedObjectSpecification parmSpec, INakedObjectSpecification contributeeSpec) {
-            var ncf = GetFacet<INotContributedActionFacet>();
+            //var ncf = GetFacet<INotContributedActionFacet>();
 
-            if (ncf == null) {
-                return contributeeSpec.IsOfType(parmSpec);
-            }
+            //if (ncf == null) {
+            //    return contributeeSpec.IsOfType(parmSpec);
+            //}
 
-            return contributeeSpec.IsOfType(parmSpec) && !ncf.NotContributedTo(contributeeSpec);
+            //return contributeeSpec.IsOfType(parmSpec) && !ncf.NotContributedTo(contributeeSpec);
+            throw new NotImplementedException();
         }
 
         private bool IsCollection(INakedObjectSpecification spec) {

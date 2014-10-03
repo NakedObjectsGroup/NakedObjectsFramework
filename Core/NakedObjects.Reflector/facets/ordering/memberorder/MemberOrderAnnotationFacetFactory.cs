@@ -13,8 +13,8 @@ using PropertyInfo = System.Reflection.PropertyInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     public class MemberOrderAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MemberOrderAnnotationFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.PropertiesCollectionsAndActions) { }
+        public MemberOrderAnnotationFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.PropertiesCollectionsAndActions) { }
 
         private static bool Process(MemberInfo member, IFacetHolder holder) {
             var attribute =  member.GetCustomAttribute<MemberOrderAttribute>();

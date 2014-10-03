@@ -55,6 +55,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
             return set;
         }
 
+
         private void Add(string name) {
             T memberWithName = GetMemberWithName(name);
             if (memberWithName != null) {

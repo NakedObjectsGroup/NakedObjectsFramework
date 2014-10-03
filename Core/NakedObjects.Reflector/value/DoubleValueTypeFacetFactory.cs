@@ -9,12 +9,13 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class DoubleValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<double> {
-        public DoubleValueTypeFacetFactory(IMetadata metadata)
-            : base(metadata, typeof (IDoubleFloatingPointValueFacet)) {}
+        public DoubleValueTypeFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, typeof (IDoubleFloatingPointValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (DoubleValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new DoubleValueSemanticsProvider(Metadata, holder));
+                var spec = Reflector.LoadSpecification(DoubleValueSemanticsProvider.AdaptedType);
+                AddFacets(new DoubleValueSemanticsProvider(spec, holder));
                 return true;
             }
             return false;

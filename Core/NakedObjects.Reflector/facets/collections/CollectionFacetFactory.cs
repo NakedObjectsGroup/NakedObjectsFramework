@@ -13,12 +13,15 @@ using NakedObjects.Reflector.DotNet.Facets.Collections.Modify;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class CollectionFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public CollectionFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.ObjectsPropertiesAndCollections) { }
+        public CollectionFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndCollections) { }
 
         private bool ProcessArray(Type type, IFacetHolder holder) {
             holder.AddFacet(new DotNetArrayFacet(holder, type.GetElementType()));
-            holder.AddFacet(new TypeOfFacetInferredFromArray(type.GetElementType(), holder, Metadata));
+
+            var elementType = type.GetElementType();
+            var elementSpec = Reflector.LoadSpecification(elementType);
+            holder.AddFacet(new TypeOfFacetInferredFromArray(elementType, holder, elementSpec));
             return true;
         }
 
@@ -33,7 +36,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             }
             else {
                 collectionElementType = CollectionUtils.ElementType(type);
-                holder.AddFacet(new TypeOfFacetInferredFromGenerics(collectionElementType, holder, Metadata));
+                var collectionElementSpec = Reflector.LoadSpecification(collectionElementType);
+                holder.AddFacet(new TypeOfFacetInferredFromGenerics(collectionElementType, holder, collectionElementSpec));
             }
 
             Type facetType = isQueryable ? typeof (DotNetGenericIQueryableFacet<>) : (isCollection ? typeof (DotNetGenericCollectionFacet<>) : typeof (DotNetGenericIEnumerableFacet<>));
@@ -55,7 +59,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             }
             else {
                 collectionElementType = typeof (object);
-                holder.AddFacet(new TypeOfFacetDefaultToObject(holder, Metadata));
+                var spec = Reflector.LoadSpecification(collectionElementType);
+                holder.AddFacet(new TypeOfFacetDefaultToObject(holder, collectionElementType, spec));
             }
             holder.AddFacet(new DotNetCollectionFacet(holder, collectionElementType));
             return true;

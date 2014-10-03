@@ -297,6 +297,10 @@
     <Compile Include="interactions\IValidatingInteractionAdvisor.cs" />
     <Compile Include="noa\NakedObjectSystemException.cs" />
     <Compile Include="noa\NakedObjectDomainException.cs" />
+    <Compile Include="peer\INakedObjectActionParamPeer.cs" />
+    <Compile Include="peer\INakedObjectActionPeer.cs" />
+    <Compile Include="peer\INakedObjectAssociationPeer.cs" />
+    <Compile Include="peer\INakedObjectMemberPeer.cs" />
     <Compile Include="persist\ConcurrencyException.cs" />
     <Compile Include="persist\DataUpdateException.cs" />
     <Compile Include="persist\IExecutionContext.cs" />
@@ -322,12 +326,13 @@
     <Compile Include="reflect\INakedObjectValidation.cs" />
     <Compile Include="reflect\InitiatedBy.cs" />
     <Compile Include="reflect\INakedObjectAction.cs" />
+    <Compile Include="reflect\IOrderableElement.cs" />
+    <Compile Include="reflect\IOrderSet.cs" />
     <Compile Include="reflect\NakedObjectActionContext.cs" />
     <Compile Include="reflect\INakedObjectActionParameter.cs" />
     <Compile Include="reflect\INakedObjectActionParameterFilter.cs" />
     <Compile Include="reflect\NakedObjectActionType.cs" />
     <Compile Include="reflect\INakedObjectAssociation.cs" />
-    <Compile Include="reflect\NakedObjectAssociationAbstract.cs" />
     <Compile Include="reflect\INakedObjectFeature.cs" />
     <Compile Include="reflect\NakedObjectFeatureType.cs" />
     <Compile Include="reflect\NakedObjectFeatureUtils.cs" />

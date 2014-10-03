@@ -14,8 +14,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Properties.Defaults;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
-using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T[]>, IPropertyDefaultFacet, IArrayValueFacet<T>, IFromStream {
@@ -27,11 +26,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public ArrayValueSemanticsProvider(IMetadata metadata)
-            : this(metadata, null) { }
+        public ArrayValueSemanticsProvider(IIntrospectableSpecification spec)
+            : this(spec, null) { }
 
-        public ArrayValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, metadata) { }
+        public ArrayValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
         public static Type Type {
             get { return typeof (IArrayValueFacet<T>); }

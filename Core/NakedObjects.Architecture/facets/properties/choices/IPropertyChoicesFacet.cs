@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Properties.Choices {
     /// <summary>
@@ -26,7 +26,7 @@ namespace NakedObjects.Architecture.Facets.Properties.Choices {
     ///     against the referenced class.
     /// </para>
     public interface IPropertyChoicesFacet : IFacet {
-        Tuple<string, INakedObjectSpecification>[] ParameterNamesAndTypes { get; }
+        Tuple<string, IIntrospectableSpecification>[] ParameterNamesAndTypes { get; }
 
         /// <summary>
         ///     Gets the available choices for this property

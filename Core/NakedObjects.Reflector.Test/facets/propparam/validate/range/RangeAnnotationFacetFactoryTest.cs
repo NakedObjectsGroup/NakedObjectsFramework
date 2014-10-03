@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Range {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new RangeAnnotationFacetFactory(Metadata);
+            facetFactory = new RangeAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]

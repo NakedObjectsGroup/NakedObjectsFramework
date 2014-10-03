@@ -207,7 +207,7 @@ namespace NakedObjects.Core.Adapter {
 
         private string CollectionTitleString(ICollectionFacet facet) {
             int size = ElementsLoaded() ? facet.AsEnumerable(this, manager).Count() : CollectionUtils.IncompleteCollection;
-            INakedObjectSpecification elementSpecification = TypeOfFacet == null ? null : TypeOfFacet.ValueSpec;
+            var elementSpecification = TypeOfFacet == null ? null : TypeOfFacet.ValueSpec;
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
         }
 

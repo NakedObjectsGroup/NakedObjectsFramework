@@ -16,8 +16,8 @@ using ParameterInfo = System.Reflection.ParameterInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Enums {
     public class EnumFacetFactory : FacetFactoryAbstract {
-        public EnumFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.PropertiesAndParameters) {}
+        public EnumFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.PropertiesAndParameters) {}
 
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {

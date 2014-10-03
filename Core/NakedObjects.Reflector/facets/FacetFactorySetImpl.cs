@@ -55,101 +55,101 @@ using NakedObjects.Reflector.DotNet.Value;
 namespace NakedObjects.Reflector.DotNet.Facets {
     public class FacetFactorySetImpl : FacetFactorySetAbstract {
 
-        public override void Init(IMetadata metadata) {
-            RegisterFactories(metadata);
+        public override void Init(INakedObjectReflector reflector) {
+            RegisterFactories(reflector);
         }
 
-        private void RegisterFactories(IMetadata metadata) {
+        private void RegisterFactories(INakedObjectReflector reflector) {
             // must be first, so any Facets created can be replaced by other FacetFactorys later.
-            RegisterFactory(new FallbackFacetFactory(metadata));
-            RegisterFactory(new IteratorFilteringFacetFactory(metadata));
-            RegisterFactory(new UnsupportedParameterTypesMethodFilteringFactory(metadata));
-            RegisterFactory(new RemoveSuperclassMethodsFacetFactory(metadata));
-            RegisterFactory(new RemoveInitMethodFacetFactory(metadata));
-            RegisterFactory(new RemoveDynamicProxyMethodsFacetFactory(metadata));
-            RegisterFactory(new RemoveEventHandlerMethodsFacetFactory(metadata));
+            RegisterFactory(new FallbackFacetFactory(reflector));
+            RegisterFactory(new IteratorFilteringFacetFactory(reflector));
+            RegisterFactory(new UnsupportedParameterTypesMethodFilteringFactory(reflector));
+            RegisterFactory(new RemoveSuperclassMethodsFacetFactory(reflector));
+            RegisterFactory(new RemoveInitMethodFacetFactory(reflector));
+            RegisterFactory(new RemoveDynamicProxyMethodsFacetFactory(reflector));
+            RegisterFactory(new RemoveEventHandlerMethodsFacetFactory(reflector));
             // must be before any other FacetFactories that install MandatoryFacet.class facets
-            RegisterFactory(new MandatoryDefaultFacetFactory(metadata));
-            RegisterFactory(new PropertyValidateDefaultFacetFactory(metadata));
-            RegisterFactory(new ComplementaryMethodsFilteringFacetFactory(metadata));
-            RegisterFactory(new ActionMethodsFacetFactory(metadata));
-            RegisterFactory(new CollectionFieldMethodsFacetFactory(metadata));
-            RegisterFactory(new PropertyMethodsFacetFactory(metadata));
-            RegisterFactory(new IconMethodFacetFactory(metadata));
-            RegisterFactory(new CallbackMethodsFacetFactory(metadata));
-            RegisterFactory(new TitleMethodFacetFactory(metadata));
-            RegisterFactory(new ActionOrderAnnotationFacetFactory(metadata));
-            RegisterFactory(new ComplexTypeAnnotationFacetFactory(metadata));
-            RegisterFactory(new ViewModelFacetFactory(metadata));
-            RegisterFactory(new BoundedAnnotationFacetFactory(metadata));
-            RegisterFactory(new EnumFacetFactory(metadata));
-            RegisterFactory(new ActionDefaultAnnotationFacetFactory(metadata));
-            RegisterFactory(new PropertyDefaultAnnotationFacetFactory(metadata));
-            RegisterFactory(new DefaultedFacetFactory(metadata));
-            RegisterFactory(new DescribedAsAnnotationFacetFactory(metadata));
-            RegisterFactory(new DisabledAnnotationFacetFactory(metadata));
-            RegisterFactory(new PasswordAnnotationFacetFactory(metadata));
-            RegisterFactory(new EncodeableFacetFactory(metadata));
-            RegisterFactory(new ExecutedAnnotationFacetFactory(metadata));
-            RegisterFactory(new PotencyAnnotationFacetFactory(metadata));
-            RegisterFactory(new PageSizeAnnotationFacetFactory(metadata));
-            RegisterFactory(new FieldOrderAnnotationFacetFactory(metadata));
-            RegisterFactory(new HiddenAnnotationFacetFactory(metadata));
-            RegisterFactory(new HiddenDefaultMethodFacetFactory(metadata));
-            RegisterFactory(new DisableDefaultMethodFacetFactory(metadata));
-            RegisterFactory(new AuthorizeAnnotationFacetFactory(metadata));
-            RegisterFactory(new ValidateProgrammaticUpdatesAnnotationFacetFactory(metadata));
-            RegisterFactory(new ImmutableAnnotationFacetFactory(metadata));
-            RegisterFactory(new MaxLengthAnnotationFacetFactory(metadata));
-            RegisterFactory(new RangeAnnotationFacetFactory(metadata));
-            RegisterFactory(new MemberOrderAnnotationFacetFactory(metadata));
-            RegisterFactory(new MultiLineAnnotationFacetFactory(metadata));
-            RegisterFactory(new NamedAnnotationFacetFactory(metadata));
-            RegisterFactory(new NotPersistedAnnotationFacetFactory(metadata));
-            RegisterFactory(new ProgramPersistableOnlyAnnotationFacetFactory(metadata));
-            RegisterFactory(new OptionalAnnotationFacetFactory(metadata));
-            RegisterFactory(new RequiredAnnotationFacetFactory(metadata));
-            RegisterFactory(new ParseableFacetFactory(metadata));
-            RegisterFactory(new PluralAnnotationFacetFactory(metadata));
-            RegisterFactory(new KeyAnnotationFacetFactory(metadata));
-            RegisterFactory(new ConcurrencyCheckAnnotationFacetFactory(metadata));
-            RegisterFactory(new ContributedActionAnnotationFacetFactory(metadata));
-            RegisterFactory(new ExcludeFromFindMenuAnnotationFacetFactory(metadata));
+            RegisterFactory(new MandatoryDefaultFacetFactory(reflector));
+            RegisterFactory(new PropertyValidateDefaultFacetFactory(reflector));
+            RegisterFactory(new ComplementaryMethodsFilteringFacetFactory(reflector));
+            RegisterFactory(new ActionMethodsFacetFactory(reflector));
+            RegisterFactory(new CollectionFieldMethodsFacetFactory(reflector));
+            RegisterFactory(new PropertyMethodsFacetFactory(reflector));
+            RegisterFactory(new IconMethodFacetFactory(reflector));
+            RegisterFactory(new CallbackMethodsFacetFactory(reflector));
+            RegisterFactory(new TitleMethodFacetFactory(reflector));
+            RegisterFactory(new ActionOrderAnnotationFacetFactory(reflector));
+            RegisterFactory(new ComplexTypeAnnotationFacetFactory(reflector));
+            RegisterFactory(new ViewModelFacetFactory(reflector));
+            RegisterFactory(new BoundedAnnotationFacetFactory(reflector));
+            RegisterFactory(new EnumFacetFactory(reflector));
+            RegisterFactory(new ActionDefaultAnnotationFacetFactory(reflector));
+            RegisterFactory(new PropertyDefaultAnnotationFacetFactory(reflector));
+            RegisterFactory(new DefaultedFacetFactory(reflector));
+            RegisterFactory(new DescribedAsAnnotationFacetFactory(reflector));
+            RegisterFactory(new DisabledAnnotationFacetFactory(reflector));
+            RegisterFactory(new PasswordAnnotationFacetFactory(reflector));
+            RegisterFactory(new EncodeableFacetFactory(reflector));
+            RegisterFactory(new ExecutedAnnotationFacetFactory(reflector));
+            RegisterFactory(new PotencyAnnotationFacetFactory(reflector));
+            RegisterFactory(new PageSizeAnnotationFacetFactory(reflector));
+            RegisterFactory(new FieldOrderAnnotationFacetFactory(reflector));
+            RegisterFactory(new HiddenAnnotationFacetFactory(reflector));
+            RegisterFactory(new HiddenDefaultMethodFacetFactory(reflector));
+            RegisterFactory(new DisableDefaultMethodFacetFactory(reflector));
+            RegisterFactory(new AuthorizeAnnotationFacetFactory(reflector));
+            RegisterFactory(new ValidateProgrammaticUpdatesAnnotationFacetFactory(reflector));
+            RegisterFactory(new ImmutableAnnotationFacetFactory(reflector));
+            RegisterFactory(new MaxLengthAnnotationFacetFactory(reflector));
+            RegisterFactory(new RangeAnnotationFacetFactory(reflector));
+            RegisterFactory(new MemberOrderAnnotationFacetFactory(reflector));
+            RegisterFactory(new MultiLineAnnotationFacetFactory(reflector));
+            RegisterFactory(new NamedAnnotationFacetFactory(reflector));
+            RegisterFactory(new NotPersistedAnnotationFacetFactory(reflector));
+            RegisterFactory(new ProgramPersistableOnlyAnnotationFacetFactory(reflector));
+            RegisterFactory(new OptionalAnnotationFacetFactory(reflector));
+            RegisterFactory(new RequiredAnnotationFacetFactory(reflector));
+            RegisterFactory(new ParseableFacetFactory(reflector));
+            RegisterFactory(new PluralAnnotationFacetFactory(reflector));
+            RegisterFactory(new KeyAnnotationFacetFactory(reflector));
+            RegisterFactory(new ConcurrencyCheckAnnotationFacetFactory(reflector));
+            RegisterFactory(new ContributedActionAnnotationFacetFactory(reflector));
+            RegisterFactory(new ExcludeFromFindMenuAnnotationFacetFactory(reflector));
             // must come after any facets that install titles
-            RegisterFactory(new MaskAnnotationFacetFactory(metadata));
+            RegisterFactory(new MaskAnnotationFacetFactory(reflector));
             // must come after any facets that install titles, and after mask
             // if takes precedence over mask.
-            RegisterFactory(new RegExAnnotationFacetFactory(metadata));
-            RegisterFactory(new TypeOfAnnotationFacetFactory(metadata));
-            RegisterFactory(new TableViewAnnotationFacetFactory(metadata));
-            RegisterFactory(new TypicalLengthDerivedFromTypeFacetFactory(metadata));
-            RegisterFactory(new TypicalLengthAnnotationFacetFactory(metadata));
-            RegisterFactory(new EagerlyAnnotationFacetFactory(metadata));
-            RegisterFactory(new PresentationHintAnnotationFacetFactory(metadata));
-            RegisterFactory(new BooleanValueTypeFacetFactory(metadata));
-            RegisterFactory(new ByteValueTypeFacetFactory(metadata));
-            RegisterFactory(new SbyteValueTypeFacetFactory(metadata));
-            RegisterFactory(new ShortValueTypeFacetFactory(metadata));
-            RegisterFactory(new IntValueTypeFacetFactory(metadata));
-            RegisterFactory(new LongValueTypeFacetFactory(metadata));
-            RegisterFactory(new UShortValueTypeFacetFactory(metadata));
-            RegisterFactory(new UIntValueTypeFacetFactory(metadata));
-            RegisterFactory(new ULongValueTypeFacetFactory(metadata));
-            RegisterFactory(new FloatValueTypeFacetFactory(metadata));
-            RegisterFactory(new DoubleValueTypeFacetFactory(metadata));
-            RegisterFactory(new DecimalValueTypeFacetFactory(metadata));
-            RegisterFactory(new CharValueTypeFacetFactory(metadata));
-            RegisterFactory(new DateTimeValueTypeFacetFactory(metadata));
-            RegisterFactory(new TimeValueTypeFacetFactory(metadata));
-            RegisterFactory(new StringValueTypeFacetFactory(metadata));
-            RegisterFactory(new GuidValueTypeFacetFactory(metadata));
-            RegisterFactory(new EnumValueTypeFacetFactory(metadata));
-            RegisterFactory(new FileAttachmentValueTypeFacetFactory(metadata));
-            RegisterFactory(new ImageValueTypeFacetFactory(metadata));
-            RegisterFactory(new ArrayValueTypeFacetFactory<byte>(metadata));
-            RegisterFactory(new CollectionFacetFactory(metadata)); // written to not trample over TypeOf if already installed
-            RegisterFactory(new ValueFacetFactory(metadata)); // so we can dogfood the NO applib "value" types
-            RegisterFactory(new FacetsAnnotationFacetFactory(metadata));
+            RegisterFactory(new RegExAnnotationFacetFactory(reflector));
+            RegisterFactory(new TypeOfAnnotationFacetFactory(reflector));
+            RegisterFactory(new TableViewAnnotationFacetFactory(reflector));
+            RegisterFactory(new TypicalLengthDerivedFromTypeFacetFactory(reflector));
+            RegisterFactory(new TypicalLengthAnnotationFacetFactory(reflector));
+            RegisterFactory(new EagerlyAnnotationFacetFactory(reflector));
+            RegisterFactory(new PresentationHintAnnotationFacetFactory(reflector));
+            RegisterFactory(new BooleanValueTypeFacetFactory(reflector));
+            RegisterFactory(new ByteValueTypeFacetFactory(reflector));
+            RegisterFactory(new SbyteValueTypeFacetFactory(reflector));
+            RegisterFactory(new ShortValueTypeFacetFactory(reflector));
+            RegisterFactory(new IntValueTypeFacetFactory(reflector));
+            RegisterFactory(new LongValueTypeFacetFactory(reflector));
+            RegisterFactory(new UShortValueTypeFacetFactory(reflector));
+            RegisterFactory(new UIntValueTypeFacetFactory(reflector));
+            RegisterFactory(new ULongValueTypeFacetFactory(reflector));
+            RegisterFactory(new FloatValueTypeFacetFactory(reflector));
+            RegisterFactory(new DoubleValueTypeFacetFactory(reflector));
+            RegisterFactory(new DecimalValueTypeFacetFactory(reflector));
+            RegisterFactory(new CharValueTypeFacetFactory(reflector));
+            RegisterFactory(new DateTimeValueTypeFacetFactory(reflector));
+            RegisterFactory(new TimeValueTypeFacetFactory(reflector));
+            RegisterFactory(new StringValueTypeFacetFactory(reflector));
+            RegisterFactory(new GuidValueTypeFacetFactory(reflector));
+            RegisterFactory(new EnumValueTypeFacetFactory(reflector));
+            RegisterFactory(new FileAttachmentValueTypeFacetFactory(reflector));
+            RegisterFactory(new ImageValueTypeFacetFactory(reflector));
+            RegisterFactory(new ArrayValueTypeFacetFactory<byte>(reflector));
+            RegisterFactory(new CollectionFacetFactory(reflector)); // written to not trample over TypeOf if already installed
+            RegisterFactory(new ValueFacetFactory(reflector)); // so we can dogfood the NO applib "value" types
+            RegisterFactory(new FacetsAnnotationFacetFactory(reflector));
         }
     }
 }

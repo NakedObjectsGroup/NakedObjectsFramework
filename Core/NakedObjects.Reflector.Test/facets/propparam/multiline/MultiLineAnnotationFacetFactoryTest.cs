@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new MultiLineAnnotationFacetFactory(Metadata);
+            facetFactory = new MultiLineAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]

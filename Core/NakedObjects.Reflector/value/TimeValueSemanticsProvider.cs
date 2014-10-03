@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<TimeSpan>, ITimeValueFacet {
@@ -19,8 +20,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
         private const int typicalLength = 6;
         private static readonly TimeSpan defaultValue = new TimeSpan();
 
-        public TimeValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, Immutable, EqualByContent, defaultValue, metadata) { }
+        public TimeValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, Immutable, EqualByContent, defaultValue, spec) { }
 
         public static Type Type {
             get { return typeof (ITimeValueFacet); }

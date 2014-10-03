@@ -18,8 +18,8 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             methodsToRemove = new List<string> {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
         }
 
-        public RemoveDynamicProxyMethodsFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.ObjectsAndProperties) {}
+        public RemoveDynamicProxyMethodsFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ObjectsAndProperties) {}
 
         private static bool IsDynamicProxyType(Type type) {
             return type.FullName.StartsWith("System.Data.Entity.DynamicProxies");

@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new EncodeableFacetFactory(Metadata);
+            facetFactory = new EncodeableFacetFactory(Reflector);
         }
 
         [TearDown]

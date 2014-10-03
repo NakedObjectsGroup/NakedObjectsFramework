@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class SbyteValueSemanticsProvider : ValueSemanticsProviderAbstract<sbyte>, IPropertyDefaultFacet {
@@ -25,11 +26,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public SbyteValueSemanticsProvider(IMetadata metadata)
-            : this(metadata, null) {}
+        public SbyteValueSemanticsProvider(IIntrospectableSpecification spec)
+            : this(spec, null) { }
 
-        public SbyteValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, metadata) { }
+        public SbyteValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) { }
 
         public static Type Type {
             get { return typeof (ISbyteValueFacet); }

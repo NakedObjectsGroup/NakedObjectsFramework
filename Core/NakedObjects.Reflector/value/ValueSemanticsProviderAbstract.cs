@@ -5,19 +5,18 @@
 using System;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Properties.Defaults;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T>, IEncoderDecoder<T>, IParser<T>, IDefaultsProvider<T> {
         private readonly Type adaptedType;
         private readonly T defaultValue;
-        private readonly IMetadata metadata;
+      
         private readonly bool equalByContent;
         private readonly bool immutable;
         private readonly int typicalLength;
-        private INakedObjectSpecification specification;
+        private readonly IIntrospectableSpecification specification;
 
         /// <summary>
         ///     Lazily looked up per <see cref="Specification" />
@@ -29,22 +28,18 @@ namespace NakedObjects.Reflector.DotNet.Value {
                                                 bool immutable,
                                                 bool equalByContent,
                                                 T defaultValue, 
-                                                IMetadata metadata)
+                                                IIntrospectableSpecification specification)
             : base(adapterFacetType, holder) {
             this.adaptedType = adaptedType;
             this.typicalLength = typicalLength;
             this.immutable = immutable;
             this.equalByContent = equalByContent;
             this.defaultValue = defaultValue;
-            this.metadata = metadata;
+            this.specification = specification;
         }
 
-
-        public INakedObjectSpecification Specification {
+        public IIntrospectableSpecification Specification {
             get {
-                if (specification == null) {
-                    specification = metadata.GetSpecification(GetAdaptedClass());
-                }
                 return specification;
             }
         }

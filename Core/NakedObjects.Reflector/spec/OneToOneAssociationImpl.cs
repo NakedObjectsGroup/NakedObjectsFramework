@@ -1,9 +1,13 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.AutoComplete;
 using NakedObjects.Architecture.Facets.Objects.Aggregated;
@@ -24,14 +28,8 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class OneToOneAssociationImpl : NakedObjectAssociationAbstract, IOneToOneAssociation {
-        private readonly IMetadata metadata;
-        private readonly INakedObjectAssociationPeer reflectiveAdapter;
-
         public OneToOneAssociationImpl(IMetadata metadata, INakedObjectAssociationPeer association)
-            : base(association.Identifier.MemberName, association.Specification, association) {
-            this.metadata = metadata;
-            reflectiveAdapter = association;
-        }
+            : base(metadata, association) {}
 
         #region IOneToOneAssociation Members
 
@@ -56,7 +54,8 @@ namespace NakedObjects.Reflector.Spec {
 
         public override Tuple<string, INakedObjectSpecification>[] GetChoicesParameters() {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
-            return propertyChoicesFacet != null ? propertyChoicesFacet.ParameterNamesAndTypes : new Tuple<string, INakedObjectSpecification>[] {};
+            return propertyChoicesFacet == null ? new Tuple<string, INakedObjectSpecification>[] {} :
+                propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, INakedObjectSpecification>(t.Item1, Metadata.GetSpecification(t.Item2))).ToArray();
         }
 
         public override INakedObject[] GetChoices(INakedObject target, IDictionary<string, INakedObject> parameterNameValues, ILifecycleManager persistor) {
@@ -66,7 +65,7 @@ namespace NakedObjects.Reflector.Spec {
             object[] objectOptions = propertyChoicesFacet == null ? null : propertyChoicesFacet.GetChoices(target, parameterNameValues);
             if (objectOptions != null) {
                 if (enumFacet == null) {
-                    return persistor .GetCollectionOfAdaptedObjects(objectOptions).ToArray();
+                    return persistor.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
                 }
                 return persistor.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(target, objectOptions)).ToArray();
             }
@@ -157,9 +156,9 @@ namespace NakedObjects.Reflector.Spec {
             if (obj == null) {
                 return null;
             }
-            INakedObjectSpecification specification = metadata.GetSpecification(obj.GetType());
+            INakedObjectSpecification specification = Metadata.GetSpecification(obj.GetType());
             if (specification.ContainsFacet(typeof (IComplexTypeFacet))) {
-                return manager.CreateAggregatedAdapter(fromObject, ((INakedObjectAssociation)this).Id, obj);
+                return manager.CreateAggregatedAdapter(fromObject, ((INakedObjectAssociation) this).Id, obj);
             }
             return manager.CreateAdapter(obj, null, null);
         }

@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new TitleMethodFacetFactory(Metadata);
+            facetFactory = new TitleMethodFacetFactory(Reflector);
         }
 
         [TearDown]

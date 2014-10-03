@@ -75,6 +75,6 @@ namespace NakedObjects.Architecture.Facets {
         /// </returns>
         bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder facetHolder);
 
-        void Init(IMetadata reflector);
+        void Init(INakedObjectReflector reflector);
     }
 }

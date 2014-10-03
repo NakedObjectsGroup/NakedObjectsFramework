@@ -10,7 +10,7 @@ using NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
-    public class OrderSet<T> : IComparable<OrderSet<T>>, IOrderableElement<T> where T : IOrderableElement<T>, IFacetHolder {
+    public class OrderSet<T> : IComparable<IOrderSet<T>>, IOrderSet<T> where T : IOrderableElement<T>, IFacetHolder {
         private readonly List<IOrderableElement<T>> childOrderSets = new List<IOrderableElement<T>>();
         private readonly List<IOrderableElement<T>> elements = new List<IOrderableElement<T>>();
         private readonly string groupFullName;
@@ -23,11 +23,28 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
             groupPath = DeriveGroupPath(groupFullName);
         }
 
-        public OrderSet<T> Parent { set; get; }
+        public IOrderSet<T> Parent { set; get; }
 
         public IList<IOrderableElement<T>> Children {
             get { return new ReadOnlyCollection<IOrderableElement<T>>(childOrderSets); }
         }
+
+        public IList<T> Flattened {
+            get {
+                var list = new List<T>();
+                foreach (var e in this) {
+                    if (e.Peer != null) {
+                        list.Add(e.Peer);
+                    }
+                    else {
+                        list.AddRange(e.Set.Flattened);
+                    }
+                }
+                return list; 
+            }
+        }
+
+
 
         /// <summary>
         ///     Last component of the comma-separated group name supplied in the constructor (analogous to the file
@@ -69,7 +86,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
         /// <summary>
         ///     Natural ordering is to compare by <see cref="OrderSet.GroupFullName" />
         /// </summary>
-        public int CompareTo(OrderSet<T> o) {
+        public int CompareTo(IOrderSet<T> o) {
             return GroupFullName.CompareTo(o.GroupFullName);
         }
 
@@ -141,7 +158,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
         public T Peer {
             get { return default(T); }
         }
-        public OrderSet<T> Set {
+        public IOrderSet<T> Set {
             get { return this; }
         }
     }

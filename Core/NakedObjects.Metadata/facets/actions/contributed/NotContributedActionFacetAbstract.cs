@@ -8,13 +8,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Contributed {
     public abstract class NotContributedActionFacetAbstract : FacetAbstract, INotContributedActionFacet {
-        private readonly List<INakedObjectSpecification> notContributedToTypes = new List<INakedObjectSpecification>();
+        private readonly List<IIntrospectableSpecification> notContributedToTypes = new List<IIntrospectableSpecification>();
 
-        protected NotContributedActionFacetAbstract(IFacetHolder holder, INakedObjectSpecification[] notContributedToTypes) : base(Type, holder) {
+        protected NotContributedActionFacetAbstract(IFacetHolder holder, IIntrospectableSpecification[] notContributedToTypes)
+            : base(Type, holder) {
             this.notContributedToTypes.AddRange(notContributedToTypes);
         }
 
@@ -24,7 +25,7 @@ namespace NakedObjects.Architecture.Facets.Actions.Contributed {
 
         #region INotContributedActionFacet Members
 
-        public bool NotContributedTo(INakedObjectSpecification spec) {
+        public bool NotContributedTo(IIntrospectableSpecification spec) {
             return NeverContributed() || notContributedToTypes.Any(spec.IsOfType);
         }
 

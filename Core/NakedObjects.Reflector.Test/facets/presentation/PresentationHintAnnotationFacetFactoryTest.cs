@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PresentationHintAnnotationFacetFactory(Metadata);
+            facetFactory = new PresentationHintAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]

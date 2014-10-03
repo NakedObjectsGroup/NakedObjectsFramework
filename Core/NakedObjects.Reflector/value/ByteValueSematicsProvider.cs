@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ByteValueSemanticsProvider : ValueSemanticsProviderAbstract<byte>, IPropertyDefaultFacet, IByteValueFacet {
@@ -24,11 +25,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public ByteValueSemanticsProvider(IMetadata metadata)
-            : this(metadata, null) {}
+        public ByteValueSemanticsProvider(IIntrospectableSpecification spec)
+            : this(spec, null) { }
 
-        public ByteValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, metadata) { }
+        public ByteValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) { }
 
         public static Type Type {
             get { return typeof (IByteValueFacet); }

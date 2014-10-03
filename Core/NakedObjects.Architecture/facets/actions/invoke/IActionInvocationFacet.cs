@@ -9,6 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Invoke {
     /// <summary>
@@ -21,9 +22,9 @@ namespace NakedObjects.Architecture.Facets.Actions.Invoke {
     ///     methods).
     /// </para>
     public interface IActionInvocationFacet : IFacet {
-        INakedObjectSpecification ReturnType { get; }
+        IIntrospectableSpecification ReturnType { get; }
 
-        INakedObjectSpecification OnType { get; }
+        IIntrospectableSpecification OnType { get; }
 
         INakedObject Invoke(INakedObject target, INakedObject[] parameters, ILifecycleManager persistor, ISession session);
 

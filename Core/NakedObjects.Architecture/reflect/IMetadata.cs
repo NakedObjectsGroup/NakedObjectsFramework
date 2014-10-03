@@ -7,6 +7,7 @@
 
 using System;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
     public interface IMetadata {
@@ -15,6 +16,8 @@ namespace NakedObjects.Architecture.Reflect {
         INakedObjectSpecification GetSpecification(Type type);
 
         INakedObjectSpecification GetSpecification(string name);
+
+        INakedObjectSpecification GetSpecification(IIntrospectableSpecification spec);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

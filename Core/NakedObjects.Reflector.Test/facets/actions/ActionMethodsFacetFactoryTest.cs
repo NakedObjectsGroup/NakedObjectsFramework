@@ -45,7 +45,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ActionMethodsFacetFactory(Metadata);
+            facetFactory = new ActionMethodsFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -92,7 +92,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             var tpi = new Mock<IIdentifier>(); // ""action"
 
             IIdentifier id = tpi.Object;
-            return new DotNetNakedObjectActionPeer(id, parms);
+            return new DotNetNakedObjectActionPeer(id, null, parms);
         }
 
         private void CheckDefaultFacet(MethodInfo defaultMethod, INakedObjectActionParamPeer parameter) {

@@ -8,6 +8,7 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Reflector.Peer;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     internal class MemberPeerStub : NamedAndDescribedFacetHolderImpl, INakedObjectMemberPeer, IOrderableElement<MemberPeerStub> {
@@ -80,8 +81,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         public MemberPeerStub Peer {
             get { return this; } 
         }
-        public OrderSet<MemberPeerStub> Set {
+
+        IOrderSet<MemberPeerStub> IOrderableElement<MemberPeerStub>.Set {
             get { return null; }
         }
+
+        public IIntrospectableSpecification Specification { get; private set; }
     }
 }

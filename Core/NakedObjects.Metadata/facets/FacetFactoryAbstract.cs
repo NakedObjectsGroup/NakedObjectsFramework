@@ -12,22 +12,25 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Facets {
     public abstract class FacetFactoryAbstract : IFacetFactory {
+        private readonly INakedObjectReflector reflector;
         private readonly NakedObjectFeatureType[] featureTypes;
 
-        protected FacetFactoryAbstract(IMetadata metadata, NakedObjectFeatureType[] featureTypes) {
-            Metadata = metadata;
+        protected FacetFactoryAbstract(INakedObjectReflector reflector, NakedObjectFeatureType[] featureTypes) {
+            
+            this.reflector = reflector;
             this.featureTypes = featureTypes;
         }
 
-        /// <summary>
-        ///     Injected
-        /// </summary>
-        protected IMetadata Metadata { get; private set; }
+
 
         #region IFacetFactory Members
 
         public virtual NakedObjectFeatureType[] FeatureTypes {
             get { return featureTypes; }
+        }
+
+        public INakedObjectReflector Reflector {
+            get { return reflector; }
         }
 
         public virtual bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {

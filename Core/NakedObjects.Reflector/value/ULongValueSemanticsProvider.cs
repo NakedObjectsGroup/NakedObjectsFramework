@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract<ulong>, IPropertyDefaultFacet {
@@ -24,11 +25,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public ULongValueSemanticsProvider(IMetadata metadata)
-            : this(metadata, null) {}
+        public ULongValueSemanticsProvider(IIntrospectableSpecification spec)
+            : this(spec, null) { }
 
-        public ULongValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, metadata) { }
+        public ULongValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) { }
 
         public static Type Type {
             get { return typeof (IUnsignedLongValueFacet); }

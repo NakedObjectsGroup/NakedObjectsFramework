@@ -21,7 +21,7 @@ namespace NakedObjects.Architecture.Reflect {
     public abstract class NakedObjectMemberAbstract : INakedObjectMember {
         private readonly IFacetHolder facetHolder;
         private readonly string id;
-        protected internal string defaultName;
+        private readonly string defaultName;
 
         protected internal NakedObjectMemberAbstract(string id, IFacetHolder facetHolder) {
             if (id == null) {

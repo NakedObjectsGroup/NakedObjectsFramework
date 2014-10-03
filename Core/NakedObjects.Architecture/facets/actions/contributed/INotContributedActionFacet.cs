@@ -5,11 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Contributed {
     public interface INotContributedActionFacet : IFacet {
-        bool NotContributedTo(INakedObjectSpecification spec);
+        bool NotContributedTo(IIntrospectableSpecification spec);
 
         bool NeverContributed();
     }

@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class IntValueSemanticsProvider : ValueSemanticsProviderAbstract<int>, IPropertyDefaultFacet {
@@ -25,11 +26,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public IntValueSemanticsProvider(IMetadata metadata)
-            : this(metadata, null) { }
+        public IntValueSemanticsProvider(IIntrospectableSpecification spec)
+            : this(spec, null) { }
 
-        public IntValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalBycontent, defaultValue, metadata) { }
+        public IntValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLength, immutable, equalBycontent, defaultValue, spec) { }
 
         public static Type Type {
             get { return typeof (IIntegerValueFacet); }

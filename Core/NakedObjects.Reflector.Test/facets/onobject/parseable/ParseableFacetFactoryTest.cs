@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ParseableFacetFactory(Metadata);
+            facetFactory = new ParseableFacetFactory(Reflector);
         }
 
         [TearDown]

@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PotencyAnnotationFacetFactory(Metadata);
+            facetFactory = new PotencyAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]

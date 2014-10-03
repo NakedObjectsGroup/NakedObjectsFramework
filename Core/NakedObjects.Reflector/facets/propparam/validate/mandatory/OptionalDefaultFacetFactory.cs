@@ -17,8 +17,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
     ///     makes everything optional by default. Requiring the use of annotations to indicate mandatoryness.
     /// </para>
     public class OptionalDefaultFacetFactory : FacetFactoryAbstract {
-        public OptionalDefaultFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.PropertiesAndParameters) {}
+        public OptionalDefaultFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.PropertiesAndParameters) {}
 
         public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
             return FacetUtils.AddFacet(method.ReturnType.IsPrimitive ? CreateMandatory(holder) : CreateOptional(holder));

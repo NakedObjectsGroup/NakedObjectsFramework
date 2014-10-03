@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Disable {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new DisabledAnnotationFacetFactory(Metadata);
+            facetFactory = new DisabledAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]

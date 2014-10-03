@@ -7,6 +7,7 @@
 
 using System;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets {
     public interface ISingleClassValueFacet : IFacet {
@@ -16,6 +17,6 @@ namespace NakedObjects.Architecture.Facets {
         ///     Convenience to return the <see cref="INakedObjectSpecification" /> corresponding to this facet's
         ///     <see cref="Value" />
         /// </summary>
-        INakedObjectSpecification ValueSpec { get; }
+        IIntrospectableSpecification ValueSpec { get; }
     }
 }

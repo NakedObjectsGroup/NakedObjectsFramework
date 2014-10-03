@@ -8,8 +8,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Actions.Invoke;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
     public class ActionInvocationFacetWrapTransaction : ActionInvocationFacetAbstract {
@@ -25,11 +24,11 @@ namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
             this.underlyingFacet = underlyingFacet;
         }
 
-        public override INakedObjectSpecification ReturnType {
+        public override IIntrospectableSpecification ReturnType {
             get { return underlyingFacet.ReturnType; }
         }
 
-        public override INakedObjectSpecification OnType {
+        public override IIntrospectableSpecification OnType {
             get { return underlyingFacet.OnType; }
         }
 

@@ -9,12 +9,13 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class SbyteValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<sbyte> {
-        public SbyteValueTypeFacetFactory(IMetadata metadata)
-            : base(metadata, typeof (ISbyteValueFacet)) {}
+        public SbyteValueTypeFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, typeof (ISbyteValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (SbyteValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new SbyteValueSemanticsProvider(Metadata, holder));
+                var spec = Reflector.LoadSpecification(SbyteValueSemanticsProvider.AdaptedType);
+                AddFacets(new SbyteValueSemanticsProvider(spec, holder));
                 return true;
             }
             return false;

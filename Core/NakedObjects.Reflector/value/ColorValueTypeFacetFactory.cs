@@ -10,12 +10,13 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ColorValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<Color> {
-        public ColorValueTypeFacetFactory(IMetadata metadata)
-            : base(metadata, typeof (IColorValueFacet)) {}
+        public ColorValueTypeFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, typeof (IColorValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (ColorValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new ColorValueSemanticsProvider(Metadata, holder));
+                var spec = Reflector.LoadSpecification(ColorValueSemanticsProvider.AdaptedType);
+                AddFacets(new ColorValueSemanticsProvider(spec, holder));
                 return true;
             }
             return false;

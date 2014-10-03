@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new NotPersistedAnnotationFacetFactory(Metadata);
+            facetFactory = new NotPersistedAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]

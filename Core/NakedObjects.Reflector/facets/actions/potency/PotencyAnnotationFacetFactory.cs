@@ -18,8 +18,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Potency {
     ///     <see cref="QueryOnlyAttribute" /> or <see cref="IdempotentAttribute" /> annotation
     /// </summary>
     public class PotencyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PotencyAnnotationFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.ActionsOnly) { }
+        public PotencyAnnotationFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.ActionsOnly) { }
 
         private static bool Process(MemberInfo member, IFacetHolder holder) {
             // give priority to Idempotent as more restrictive 

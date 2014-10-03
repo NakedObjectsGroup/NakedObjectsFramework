@@ -9,12 +9,13 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class UIntValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<uint> {
-        public UIntValueTypeFacetFactory(IMetadata metadata)
-            : base(metadata, typeof (IUnsignedIntegerValueFacet)) {}
+        public UIntValueTypeFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, typeof (IUnsignedIntegerValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (UIntValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new UIntValueSemanticsProvider(Metadata, holder));
+                var spec = Reflector.LoadSpecification(UIntValueSemanticsProvider.AdaptedType);
+                AddFacets(new UIntValueSemanticsProvider(spec, holder));
                 return true;
             }
             return false;

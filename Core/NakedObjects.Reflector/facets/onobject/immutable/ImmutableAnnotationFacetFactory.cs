@@ -10,8 +10,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
     public class ImmutableAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ImmutableAnnotationFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.ObjectsOnly) { }
+        public ImmutableAnnotationFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             var attribute = type.GetCustomAttributeByReflection<ImmutableAttribute>();

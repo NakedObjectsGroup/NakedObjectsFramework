@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new MemberOrderAnnotationFacetFactory(Metadata);
+            facetFactory = new MemberOrderAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]

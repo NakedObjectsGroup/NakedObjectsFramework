@@ -4,6 +4,7 @@
 
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Reflector.Peer;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     public abstract class DotNetNakedObjectMemberPeer : FacetHolderImpl, INakedObjectMemberPeer {
@@ -18,6 +19,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public override IIdentifier Identifier {
             get { return identifier; }
         }
+
+        public abstract IIntrospectableSpecification Specification { get; }
 
         #endregion
 

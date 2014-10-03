@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Choices {
     public class ActionChoicesFacetNone : ActionChoicesFacetAbstract {
@@ -19,8 +20,8 @@ namespace NakedObjects.Architecture.Facets.Actions.Choices {
             get { return true; }
         }
 
-        public override Tuple<string, INakedObjectSpecification>[] ParameterNamesAndTypes {
-            get { return new Tuple<string, INakedObjectSpecification>[] {}; }
+        public override Tuple<string, IIntrospectableSpecification>[] ParameterNamesAndTypes {
+            get { return new Tuple<string, IIntrospectableSpecification>[] { }; }
         }
 
         public override bool IsMultiple {

@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Defaults {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PropertyDefaultAnnotationFacetFactory(Metadata);
+            facetFactory = new PropertyDefaultAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]

@@ -34,6 +34,7 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.DotNet.Facets.Collections;
+using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
@@ -43,7 +44,12 @@ namespace NakedObjects.Reflector.Spec {
         private readonly IMetadata metadata;
         private readonly IIntrospectableSpecification innerSpec;
         private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectSpecification));
-     
+        private INakedObjectAction[] objectActions;
+        private INakedObjectAssociation[] objectFields;
+        private INakedObjectAction[] contributedActions;
+        private INakedObjectAction[] relatedActions;
+        private INakedObjectAction[] combinedActions;
+
         public NakedObjectSpecification(IMetadata metadata, IIntrospectableSpecification innerSpec) {
             this.metadata = metadata;
             this.innerSpec = innerSpec;
@@ -98,22 +104,58 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public virtual INakedObjectAssociation[] Properties {
-            get { return innerSpec.Fields; }
+            get {
+                if (objectFields == null) {
+                    objectFields = OrderFields(innerSpec.Fields);
+                }
+                return objectFields;
+            }
         }
+
+        private  INakedObjectAction[] ObjectActions {
+            get {
+                if (objectActions == null) {
+                    objectActions = OrderActions(innerSpec.ObjectActions);
+                }
+                return objectActions;
+            }
+        }
+
+        private INakedObjectAction[] ContributedActions {
+            get {
+                if (contributedActions == null) {
+                    contributedActions = OrderActions(innerSpec.ContributedActions);
+                }
+                return contributedActions;
+            }
+        }
+
+        private INakedObjectAction[] RelatedActions {
+            get {
+                if (relatedActions == null) {
+                    relatedActions = OrderActions(innerSpec.RelatedActions);
+                }
+                return relatedActions;
+            }
+        }
+
 
         public INakedObjectValidation[] ValidateMethods() {
             return innerSpec.ValidationMethods;
         }
 
         public virtual INakedObjectAction[] GetObjectActions() {
-            var combinedActions = new List<INakedObjectAction>();
-            combinedActions.AddRange( innerSpec.ObjectActions);
-            combinedActions.AddRange(innerSpec.ContributedActions);
-            return combinedActions.ToArray();
+            if (combinedActions == null) {
+                var ca = new List<INakedObjectAction>();
+                ca.AddRange(ObjectActions);
+                ca.AddRange(ContributedActions);
+                combinedActions = ca.ToArray();
+            }
+            return combinedActions;
         }
 
         public virtual INakedObjectAction[] GetRelatedServiceActions() {
-            return innerSpec.RelatedActions;
+            return RelatedActions;
         }
 
         public bool IsASet {
@@ -269,16 +311,8 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public string GetIconName(INakedObject forObject) {
-            var iconFacet = innerSpec.GetFacet<IIconFacet>();
-            string iconName = null;
-            if (iconFacet != null) {
-                iconName = forObject == null ? iconFacet.GetIconName() : iconFacet.GetIconName(forObject);
-            }
-            else if (IsCollection) {
-                iconName = GetFacet<ITypeOfFacet>().ValueSpec.GetIconName(null);
-            }
-
-            return string.IsNullOrEmpty(iconName) ? "Default" : iconName;
+            return innerSpec.GetIconName(forObject);
+         
         }
 
         public IConsent ValidToPersist(INakedObject target, ISession session) {
@@ -339,6 +373,51 @@ namespace NakedObjects.Reflector.Spec {
                 return spec.Subclasses.SelectMany(GetLeafNodes);
             }
             return new[] {spec};
+        }
+
+        private INakedObjectAction[] OrderActions(IOrderSet<INakedObjectActionPeer> order) {
+            var actions = new List<INakedObjectAction>();
+            foreach (var element in order) {
+                if (element.Peer != null) {
+                    actions.Add(CreateNakedObjectAction(element.Peer));
+                }
+                else if (element.Set != null) {
+                    actions.Add(CreateNakedObjectActionSet(element.Set));
+                }
+                else {
+                    throw new UnknownTypeException(element);
+                }
+            }
+
+            return actions.ToArray();
+        }
+
+        private NakedObjectActionSet CreateNakedObjectActionSet(IOrderSet<INakedObjectActionPeer> orderSet) {
+            return new NakedObjectActionSet(orderSet.GroupFullName.Replace(" ", ""), orderSet.GroupFullName, OrderActions(orderSet));
+        }
+
+        private NakedObjectActionImpl CreateNakedObjectAction(INakedObjectActionPeer peer) {
+            return new NakedObjectActionImpl(metadata, peer);
+        }
+
+        private INakedObjectAssociation CreateNakedObjectField(INakedObjectAssociationPeer peer) {
+            return NakedObjectAssociationAbstract.CreateAssociation(metadata, peer);
+        }
+
+        private INakedObjectAssociation[] OrderFields(IOrderSet<INakedObjectAssociationPeer> order) {
+            var orderedFields = new List<INakedObjectAssociation>();
+            foreach (var element in order) {
+                if (element.Peer != null) {
+                    orderedFields.Add(CreateNakedObjectField(element.Peer));
+                }
+                else if (element.Set != null) {
+                    // Not supported at present
+                }
+                else {
+                    throw new UnknownTypeException(element);
+                }
+            }
+            return orderedFields.ToArray();
         }
     }
 }

@@ -135,7 +135,7 @@ namespace NakedObjects.Core.Persist {
                     helper.Add(parameter.Object);
                 }
                 else if (parameter.Specification.IsCollection) {
-                    INakedObjectSpecification instanceSpec = parameter.Specification.GetFacet<ITypeOfFacet>().ValueSpec;
+                    var instanceSpec = parameter.Specification.GetFacet<ITypeOfFacet>().ValueSpec;
                     Type instanceType = TypeUtils.GetType(instanceSpec.FullName);
 
                     if (instanceSpec.IsParseable) {

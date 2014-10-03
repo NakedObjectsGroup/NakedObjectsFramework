@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Choices {
     /// <summary>
@@ -20,7 +21,7 @@ namespace NakedObjects.Architecture.Facets.Actions.Choices {
     ///     action
     /// </para>
     public interface IActionChoicesFacet : IFacet {
-        Tuple<string, INakedObjectSpecification>[] ParameterNamesAndTypes { get; }
+        Tuple<string, IIntrospectableSpecification>[] ParameterNamesAndTypes { get; }
         bool IsMultiple { get; }
         object[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
     }

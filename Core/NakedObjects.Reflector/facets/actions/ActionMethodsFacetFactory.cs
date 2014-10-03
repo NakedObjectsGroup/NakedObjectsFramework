@@ -20,6 +20,7 @@ using NakedObjects.Reflector.DotNet.Facets.AutoComplete;
 using NakedObjects.Reflector.DotNet.Facets.Naming.Named;
 using NakedObjects.Reflector.DotNet.Reflect.Actions;
 using NakedObjects.Reflector.Peer;
+using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 using MethodInfo = System.Reflection.MethodInfo;
 using ParameterInfo = System.Reflection.ParameterInfo;
@@ -29,7 +30,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
     public class ActionMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-        private readonly IMetadata metadata;
+   
         private static readonly string[] FixedPrefixes;
 
         private static readonly ILog Log;
@@ -50,9 +51,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         /// <summary>
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)
         /// </summary>
-        public ActionMethodsFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.ActionsAndParameters) {
-            this.metadata = metadata;
+        public ActionMethodsFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.ActionsAndParameters) {
+           
         }
 
         public override string[] Prefixes {
@@ -64,8 +65,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
             Type type = actionMethod.DeclaringType;
             var facets = new List<IFacet>();
-            INakedObjectSpecification onType = Metadata.GetSpecification(type);
-            INakedObjectSpecification returnSpec = Metadata.GetSpecification(actionMethod.ReturnType);
+            var onType = Reflector.LoadSpecification(type);
+            var returnSpec = Reflector.LoadSpecification(actionMethod.ReturnType);
 
             RemoveMethod(methodRemover, actionMethod);
             facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, action));
@@ -208,7 +209,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
                     RemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions 
-                    FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(metadata, methodToUse, returnType, parameters[i], isMultiple));
+                    var parameterNamesAndTypes = methodToUse.GetParameters().Select(p => new Tuple<string, IIntrospectableSpecification>(p.Name.ToLower(), Reflector.LoadSpecification(p.ParameterType))).ToArray();
+                    FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes, returnType, parameters[i], isMultiple));
                     AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                 }
             }

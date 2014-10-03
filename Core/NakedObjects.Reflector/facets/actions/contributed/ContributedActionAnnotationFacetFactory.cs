@@ -1,15 +1,16 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
+using System.Reflection;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Contributed;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Core.Context;
 using NakedObjects.Util;
-using MemberInfo = System.Reflection.MemberInfo;
-using MethodInfo = System.Reflection.MethodInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     /// <summary>
@@ -17,15 +18,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     ///     <see cref="NotContributedActionAttribute" /> annotation
     /// </summary>
     public class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private readonly IMetadata metadata;
-
-        public ContributedActionAnnotationFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.ActionsOnly) {
-            this.metadata = metadata;
-        }
+        public ContributedActionAnnotationFacetFactory(INakedObjectReflector reflector)
+            : base(reflector, NakedObjectFeatureType.ActionsOnly) {}
 
         private bool Process(MemberInfo member, IFacetHolder holder) {
-            var attribute = member.GetCustomAttribute<NotContributedActionAttribute>();
+            var attribute = AttributeUtils.GetCustomAttribute<NotContributedActionAttribute>(member);
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -34,7 +31,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         }
 
         private INotContributedActionFacet Create(NotContributedActionAttribute attribute, IFacetHolder holder) {
-            return attribute == null ? null : new NotContributedActionFacetImpl(holder, attribute.NotContributedToTypes.Select(t => Metadata.GetSpecification(t)).ToArray());
+            return attribute == null ? null : new NotContributedActionFacetImpl(holder, attribute.NotContributedToTypes.Select(t => Reflector.LoadSpecification(t)).ToArray());
         }
     }
 }

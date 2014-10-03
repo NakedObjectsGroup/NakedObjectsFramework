@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new ComplexTypeAnnotationFacetFactory(Metadata);
+            facetFactory = new ComplexTypeAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]

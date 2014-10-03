@@ -76,11 +76,11 @@ namespace NakedObjects.Reflector.Audit {
                 }
             }
 
-            public override INakedObjectSpecification ReturnType {
+            public override IIntrospectableSpecification ReturnType {
                 get { return underlyingFacet.ReturnType; }
             }
 
-            public override INakedObjectSpecification OnType {
+            public override IIntrospectableSpecification OnType {
                 get { return underlyingFacet.OnType; }
             }
 

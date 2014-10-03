@@ -3,9 +3,11 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Reflector.DotNet.Facets;
+using NakedObjects.Reflector.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Value {
@@ -24,7 +26,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public override void SetUp() {
             base.SetUp();
             holder = new FacetHolderImpl();
-            SetValue(value = new EnumValueSemanticsProvider<TestEnum>(metadata, holder));
+            var spec = new Mock<IIntrospectableSpecification>().Object;
+            SetValue(value = new EnumValueSemanticsProvider<TestEnum>(spec, holder));
         }
 
         #endregion

@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            annotationFacetFactory = new EagerlyAnnotationFacetFactory(Metadata);
+            annotationFacetFactory = new EagerlyAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]

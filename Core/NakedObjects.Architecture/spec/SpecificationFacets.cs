@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Objects.Bounded;
 using NakedObjects.Architecture.Facets.Objects.Immutable;
 using NakedObjects.Architecture.Facets.Properties.Enums;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Spec {
     public static class SpecificationFacets {
@@ -38,6 +39,18 @@ namespace NakedObjects.Architecture.Spec {
         }
 
         public static bool IsCollectionOfEnum(this INakedObjectSpecification specification) {
+            return specification.IsCollection && specification.GetFacet<ITypeOfFacet>().ValueSpec.ContainsFacet<IEnumFacet>();
+        }
+
+        public static bool IsBoundedSet(this IIntrospectableSpecification specification) {
+            return specification.ContainsFacet<IBoundedFacet>() || specification.ContainsFacet<IEnumValueFacet>();
+        }
+
+        public static bool IsCollectionOfBoundedSet(this IIntrospectableSpecification specification) {
+            return specification.IsCollection && specification.GetFacet<ITypeOfFacet>().ValueSpec.IsBoundedSet();
+        }
+
+        public static bool IsCollectionOfEnum(this IIntrospectableSpecification specification) {
             return specification.IsCollection && specification.GetFacet<ITypeOfFacet>().ValueSpec.ContainsFacet<IEnumFacet>();
         }
     }

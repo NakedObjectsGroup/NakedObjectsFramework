@@ -11,25 +11,25 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Choices;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Choices {
     public class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, IImperativeFacet {
         private readonly MethodInfo choicesMethod;
         private readonly Type choicesType;
         private readonly bool isMultiple;
-        private readonly Tuple<string, INakedObjectSpecification>[] parameterNamesAndTypes;
+        private readonly Tuple<string, IIntrospectableSpecification>[] parameterNamesAndTypes;
         private readonly string[] parameterNames;
 
 
-        public ActionChoicesFacetViaMethod(IMetadata metadata, MethodInfo choicesMethod, Type choicesType, IFacetHolder holder, bool isMultiple = false)
+        public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, Tuple<string, IIntrospectableSpecification>[] parameterNamesAndTypes, Type choicesType, IFacetHolder holder, bool isMultiple = false)
             : base(holder) {
             this.choicesMethod = choicesMethod;
             this.choicesType = choicesType;
             this.isMultiple = isMultiple;
-            parameterNamesAndTypes = choicesMethod.GetParameters().Select(p => new Tuple<string, INakedObjectSpecification>(p.Name.ToLower(), metadata.GetSpecification(p.ParameterType))).ToArray();
+            this.parameterNamesAndTypes = parameterNamesAndTypes;
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
         }
 
@@ -41,7 +41,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Choices {
 
         #endregion
 
-        public override Tuple<string, INakedObjectSpecification>[] ParameterNamesAndTypes {
+        public override Tuple<string, IIntrospectableSpecification>[] ParameterNamesAndTypes {
             get { return parameterNamesAndTypes; }
         }
 

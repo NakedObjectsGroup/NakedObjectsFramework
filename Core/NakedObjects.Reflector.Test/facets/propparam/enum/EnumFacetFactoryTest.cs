@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Enums {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new EnumFacetFactory(Metadata);
+            facetFactory = new EnumFacetFactory(Reflector);
         }
 
         [TearDown]

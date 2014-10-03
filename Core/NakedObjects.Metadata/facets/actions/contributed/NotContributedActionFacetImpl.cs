@@ -6,9 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Contributed {
     public class NotContributedActionFacetImpl : NotContributedActionFacetAbstract {
-        public NotContributedActionFacetImpl(IFacetHolder holder, INakedObjectSpecification[] notContributedToTypes) : base(holder, notContributedToTypes) {}
+        public NotContributedActionFacetImpl(IFacetHolder holder, IIntrospectableSpecification[] notContributedToTypes) : base(holder, notContributedToTypes) { }
     }
 }

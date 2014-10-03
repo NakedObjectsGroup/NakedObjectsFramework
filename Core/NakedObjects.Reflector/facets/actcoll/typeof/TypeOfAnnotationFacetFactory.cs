@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
@@ -10,8 +11,8 @@ using NakedObjects.Architecture.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
     public class TypeOfAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TypeOfAnnotationFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.CollectionsAndActions) { }
+        public TypeOfAnnotationFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.CollectionsAndActions) { }
 
         private bool Process(Type methodReturnType, IFacetHolder holder) {
             if (!CollectionUtils.IsCollection(methodReturnType)) {
@@ -19,13 +20,17 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
             }
 
             if (methodReturnType.IsArray) {
-                return FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(methodReturnType.GetElementType(), holder, Metadata));
+                var elementType = methodReturnType.GetElementType();
+                var elementSpec = Reflector.LoadSpecification(elementType);
+                return FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(elementType, holder, elementSpec));
             }
 
             if (methodReturnType.IsGenericType) {
                 Type[] actualTypeArguments = methodReturnType.GetGenericArguments();
-                if (actualTypeArguments.Length > 0) {
-                    return FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(actualTypeArguments[0], holder, Metadata));
+                if (actualTypeArguments.Any()) {
+                    var elementType = actualTypeArguments.First();
+                    var elementSpec = Reflector.LoadSpecification(elementType);
+                    return FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(elementType, holder, elementSpec));
                 }
             }
             return false;

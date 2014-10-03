@@ -11,8 +11,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
     public class ParseableFacetFactory : AnnotationBasedFacetFactoryAbstract, INakedObjectConfigurationAware {
-        public ParseableFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.ObjectsOnly) { }
+        public ParseableFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             return FacetUtils.AddFacet(Create(type, holder));

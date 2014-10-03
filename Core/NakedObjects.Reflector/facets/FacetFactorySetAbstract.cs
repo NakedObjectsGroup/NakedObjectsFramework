@@ -134,7 +134,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             return facetsAdded;
         }
 
-        public abstract void Init(IMetadata metadata);
+        public abstract void Init(INakedObjectReflector reflector);
 
         #endregion
 

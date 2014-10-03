@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract<float>, IPropertyDefaultFacet {
@@ -24,11 +25,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public FloatValueSemanticsProvider(IMetadata metadata)
-            : this(metadata, null) { }
+        public FloatValueSemanticsProvider(IIntrospectableSpecification spec)
+            : this(spec, null) { }
 
-        public FloatValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, typicalLenth, immutable, equalByContent, defaultValue, metadata) { }
+        public FloatValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, typicalLenth, immutable, equalByContent, defaultValue, spec) { }
 
         public static Type Type {
             get { return typeof (IFloatingPointValueFacet); }

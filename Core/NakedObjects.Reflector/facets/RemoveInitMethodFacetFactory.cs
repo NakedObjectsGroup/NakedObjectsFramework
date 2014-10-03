@@ -12,8 +12,8 @@ namespace NakedObjects.Reflector.DotNet.Facets {
     ///     Removes any calls to <c>Init</c>
     /// </summary>
     public class RemoveInitMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-        public RemoveInitMethodFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.ObjectsOnly) { }
+        public RemoveInitMethodFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
         public override string[] Prefixes {
             get { return new string[] {}; }

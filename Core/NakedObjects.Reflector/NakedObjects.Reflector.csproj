@@ -359,13 +359,8 @@
     <Compile Include="i18n\resourcebundle\ResourceBasedI18nManager.cs" />
     <Compile Include="peer\IAuthoriserInstaller.cs" />
     <Compile Include="peer\IdentifierImpl.cs" />
-    <Compile Include="peer\IOrderableElement.cs" />
-    <Compile Include="peer\ModelException.cs" />
-    <Compile Include="peer\INakedObjectActionParamPeer.cs" />
-    <Compile Include="peer\INakedObjectActionPeer.cs" />
-    <Compile Include="peer\INakedObjectAssociationPeer.cs" />
-    <Compile Include="peer\INakedObjectMemberPeer.cs" />
     <Compile Include="peer\IReflectionDecoratorInstaller.cs" />
+    <Compile Include="peer\ModelException.cs" />
     <Compile Include="peer\ReflectionException.cs" />
     <Compile Include="reflect\actions\DotNetNakedObjectActionParamPeer.cs" />
     <Compile Include="reflect\actions\DotNetNakedObjectActionPeer.cs" />
@@ -376,6 +371,7 @@
     <Compile Include="reflect\DotNetReflectorInstaller.cs" />
     <Compile Include="reflect\IntrospectionControlParameters.cs" />
     <Compile Include="reflect\MethodFinderUtils.cs" />
+    <Compile Include="reflect\NakedObjectAssociationAbstract.cs" />
     <Compile Include="reflect\propcoll\DotNetNakedObjectAssociationPeer.cs" />
     <Compile Include="reflect\properties\DotNetOneToOneAssociationPeer.cs" />
     <Compile Include="reflect\proxies\ProxyCreator.cs" />

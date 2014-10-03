@@ -9,6 +9,7 @@ using NakedObjects.Architecture.Adapter.Value;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
+using NakedObjects.Reflector.Spec;
 using NakedObjects.Value;
 
 namespace NakedObjects.Reflector.DotNet.Value {
@@ -21,11 +22,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public FileAttachmentValueSemanticsProvider(IMetadata metadata)
-            : this(metadata, null) {}
+        public FileAttachmentValueSemanticsProvider(IIntrospectableSpecification spec)
+            : this(spec, null) { }
 
-        public FileAttachmentValueSemanticsProvider(IMetadata metadata, IFacetHolder holder)
-            : base(Type, holder, AdaptedType, TypicalLengthDefault, Immutable, EqualByContent, null, metadata) { }
+        public FileAttachmentValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+            : base(Type, holder, AdaptedType, TypicalLengthDefault, Immutable, EqualByContent, null, spec) { }
 
         public static Type Type {
             get { return typeof (IFileAttachmentValueFacet); }

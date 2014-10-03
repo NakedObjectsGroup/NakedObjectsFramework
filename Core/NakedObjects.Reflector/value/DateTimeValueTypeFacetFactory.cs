@@ -9,12 +9,13 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class DateTimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<DateTime> {
-        public DateTimeValueTypeFacetFactory(IMetadata metadata)
-            : base(metadata, typeof (IDateValueFacet)) {}
+        public DateTimeValueTypeFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, typeof (IDateValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (DateTimeValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new DateTimeValueSemanticsProvider(Metadata, holder));
+                var spec = Reflector.LoadSpecification(DateTimeValueSemanticsProvider.AdaptedType);
+                AddFacets(new DateTimeValueSemanticsProvider(spec, holder));
                 return true;
             }
             return false;

@@ -17,8 +17,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
     public class RequiredAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (RequiredAnnotationFacetFactory));
 
-        public RequiredAnnotationFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.PropertiesAndParameters) { }
+        public RequiredAnnotationFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.PropertiesAndParameters) { }
 
         private static bool Process(MemberInfo member, IFacetHolder holder) {
             var attribute = member.GetCustomAttribute<RequiredAttribute>();

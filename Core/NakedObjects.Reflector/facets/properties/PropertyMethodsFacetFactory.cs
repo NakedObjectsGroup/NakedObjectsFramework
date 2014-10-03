@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Disable;
 using NakedObjects.Architecture.Facets.Propparam.Modify;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Reflector.DotNet.Facets.AutoComplete;
 using NakedObjects.Reflector.DotNet.Facets.Propcoll.Access;
@@ -19,6 +20,7 @@ using NakedObjects.Reflector.DotNet.Facets.Properties.Choices;
 using NakedObjects.Reflector.DotNet.Facets.Properties.Defaults;
 using NakedObjects.Reflector.DotNet.Facets.Properties.Modify;
 using NakedObjects.Reflector.DotNet.Facets.Properties.Validate;
+using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 using MemberInfo = System.Reflection.MemberInfo;
 using MethodInfo = System.Reflection.MethodInfo;
@@ -40,11 +42,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             };
         }
 
-        public PropertyMethodsFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.PropertiesOnly) { }
+        public PropertyMethodsFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
 
-        public PropertyMethodsFacetFactory(IMetadata metadata, string[] subPefixes)
-            : base(metadata, NakedObjectFeatureType.PropertiesOnly) { }
+        public PropertyMethodsFacetFactory(INakedObjectReflector reflector, string[] subPefixes)
+            :base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
 
         public override string[] Prefixes {
             get { return prefixes; }
@@ -162,7 +164,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             MethodInfo method = methods.FirstOrDefault();
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                propertyFacets.Add(new PropertyChoicesFacetViaMethod(Metadata, method, property));
+                var parameterNamesAndTypes = method.GetParameters().Select(p => new Tuple<string, IIntrospectableSpecification>(p.Name.ToLower(), Reflector.LoadSpecification(p.ParameterType))).ToArray();
+                propertyFacets.Add(new PropertyChoicesFacetViaMethod(method, parameterNamesAndTypes, property));
                 AddOrAddToExecutedWhereFacet(method, property);
             }
         }

@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PageSizeAnnotationFacetFactory(Metadata);
+            facetFactory = new PageSizeAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -57,8 +57,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         [Test]
         public void TestDefaultPageSizePickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
-            var actionPeer = new DotNetNakedObjectActionPeer(null, null);
-            new FallbackFacetFactory(Metadata).Process(actionMethod, MethodRemover, actionPeer);
+            var actionPeer = new DotNetNakedObjectActionPeer(null, null, null);
+            new FallbackFacetFactory(Reflector).Process(actionMethod, MethodRemover, actionPeer);
             IFacet facet = actionPeer.GetFacet(typeof (IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetDefault);

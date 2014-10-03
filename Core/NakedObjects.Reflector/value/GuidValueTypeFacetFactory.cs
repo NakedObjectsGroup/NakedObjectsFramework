@@ -9,12 +9,13 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class GuidValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<Guid> {
-        public GuidValueTypeFacetFactory(IMetadata metadata)
-            : base(metadata, typeof(IGuidValueFacet)) { }
+        public GuidValueTypeFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, typeof(IGuidValueFacet)) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (GuidValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new GuidValueSemanticsProvider(Metadata, holder));
+                var spec = Reflector.LoadSpecification(GuidValueSemanticsProvider.AdaptedType);
+                AddFacets(new GuidValueSemanticsProvider(spec, holder));
                 return true;
             }
             return false;

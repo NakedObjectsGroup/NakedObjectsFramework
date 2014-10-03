@@ -14,8 +14,8 @@ using ParameterInfo = System.Reflection.ParameterInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
     public class PresentationHintAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PresentationHintAnnotationFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.Everything) { }
+        public PresentationHintAnnotationFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.Everything) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             var attribute = type.GetCustomAttributeByReflection<PresentationHintAttribute>();

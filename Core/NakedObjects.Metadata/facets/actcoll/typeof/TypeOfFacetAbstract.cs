@@ -6,14 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actcoll.Typeof {
     public abstract class TypeOfFacetAbstract : SingleClassValueFacetAbstract, ITypeOfFacet {
         private readonly bool inferred;
 
-        protected TypeOfFacetAbstract(Type valueType, bool inferred, IFacetHolder holder, IMetadata metadata)
-            : base(Type, holder, valueType, metadata) {
+        protected TypeOfFacetAbstract(Type valueType, bool inferred, IFacetHolder holder, IIntrospectableSpecification spec)
+            : base(Type, holder, valueType, spec) {
             this.inferred = inferred;
         }
 

@@ -13,8 +13,8 @@ namespace NakedObjects.Reflector.DotNet.Facets {
     ///     Removes any calls to <c>Init</c>
     /// </summary>
     public class RemoveEventHandlerMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-        public RemoveEventHandlerMethodsFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.ObjectsOnly) {}
+        public RemoveEventHandlerMethodsFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.ObjectsOnly) {}
 
         public override string[] Prefixes {
             get { return new string[] {}; }

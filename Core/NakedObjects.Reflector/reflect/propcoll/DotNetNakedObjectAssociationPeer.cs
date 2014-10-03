@@ -11,38 +11,36 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.Peer;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Propcoll {
     public abstract class DotNetNakedObjectAssociationPeer : DotNetNakedObjectMemberPeer, INakedObjectAssociationPeer {
-        protected readonly IMetadata Metadata;
-        protected readonly Type ReturnType;
-        private readonly bool oneToMany;
 
-        protected DotNetNakedObjectAssociationPeer(IMetadata metadata, IIdentifier identifier, Type returnType, bool oneToMany)
+        protected readonly Type ReturnType;
+        private readonly IIntrospectableSpecification returnSpec;
+
+        protected DotNetNakedObjectAssociationPeer(IIdentifier identifier, Type returnType, IIntrospectableSpecification returnSpec)
             : base(identifier) {
-            Metadata = metadata;
+       
             ReturnType = returnType;
-            this.oneToMany = oneToMany;
+            this.returnSpec = returnSpec;
         }
 
         #region INakedObjectAssociationPeer Members
 
-        public virtual INakedObjectSpecification Specification {
-            get { return ReturnType == null ? null : Metadata.GetSpecification(ReturnType); }
+        public override  IIntrospectableSpecification Specification {
+            get {
+                return returnSpec;
+            }
         }
 
-        public bool IsOneToMany {
-            get { return oneToMany; }
-        }
-
-        public bool IsOneToOne {
-            get { return !IsOneToMany; }
-        }
+        public abstract bool IsOneToMany { get; }
+        public abstract bool IsOneToOne { get; }
 
         #endregion
 
         public INakedObjectAssociationPeer Peer { get { return this; } }
-        public OrderSet<INakedObjectAssociationPeer> Set { get { return null; } }
+        public IOrderSet<INakedObjectAssociationPeer> Set { get { return null; } }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

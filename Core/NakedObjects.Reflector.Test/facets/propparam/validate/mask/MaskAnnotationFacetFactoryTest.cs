@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new MaskAnnotationFacetFactory(Metadata);
+            facetFactory = new MaskAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]

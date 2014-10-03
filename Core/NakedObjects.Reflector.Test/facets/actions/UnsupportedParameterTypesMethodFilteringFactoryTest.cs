@@ -30,7 +30,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             base.SetUp();
             Reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySetImpl(), new FacetDecoratorSet());
 
-            facetFactory = new UnsupportedParameterTypesMethodFilteringFactory(Metadata);
+            facetFactory = new UnsupportedParameterTypesMethodFilteringFactory(Reflector);
         }
 
         [TearDown]

@@ -6,18 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets {
     public abstract class SingleClassValueFacetAbstract : FacetAbstract, ISingleClassValueFacet {
-        private readonly IMetadata metadata;
+        private readonly IIntrospectableSpecification valueSpec;
         private readonly Type valueType;
 
-        protected SingleClassValueFacetAbstract(Type facetType, IFacetHolder holder, Type valueType, IMetadata metadata)
+        protected SingleClassValueFacetAbstract(Type facetType, IFacetHolder holder, Type valueType, IIntrospectableSpecification valueSpec)
             : base(facetType, holder) {
             this.valueType = valueType;
-            this.metadata = metadata;
+            this.valueSpec = valueSpec;
         }
 
         #region ISingleClassValueFacet Members
@@ -29,8 +29,8 @@ namespace NakedObjects.Architecture.Facets {
         /// <summary>
         ///     The <see cref="INakedObjectSpecification" /> of the <see cref="Value" />
         /// </summary>
-        public virtual INakedObjectSpecification ValueSpec {
-            get { return Value != null ? metadata.GetSpecification(Value) : null; }
+        public virtual IIntrospectableSpecification ValueSpec {
+            get { return valueSpec; }
         }
 
         #endregion

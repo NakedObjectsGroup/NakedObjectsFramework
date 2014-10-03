@@ -9,12 +9,13 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class BooleanValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<bool> {
-        public BooleanValueTypeFacetFactory(IMetadata metadata)
-            : base(metadata, typeof(IBooleanValueFacet)) { }
+        public BooleanValueTypeFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, typeof(IBooleanValueFacet)) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (BooleanValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new BooleanValueSemanticsProvider(Metadata, holder));
+                var spec = Reflector.LoadSpecification(BooleanValueSemanticsProvider.AdaptedType);
+                AddFacets(new BooleanValueSemanticsProvider(spec, holder));
                 return true;
             }
             return false;

@@ -4,8 +4,10 @@
 
 using System;
 using System.Globalization;
+using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Reflector.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Value {
@@ -18,7 +20,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
 
             holder = new FacetHolderImpl();
-            SetValue(new DoubleValueSemanticsProvider(metadata, holder));
+            var spec = new Mock<IIntrospectableSpecification>().Object;
+            SetValue(new DoubleValueSemanticsProvider(spec, holder));
 
             doubleObj = 32.5;
         }

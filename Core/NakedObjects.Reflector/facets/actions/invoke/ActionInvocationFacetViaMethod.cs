@@ -10,20 +10,19 @@ using NakedObjects.Architecture.Facets.Actions.Invoke;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Invoke {
     public class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionInvocationFacetViaMethod));
 
         private readonly MethodInfo actionMethod;
-        private readonly INakedObjectSpecification onType;
+        private readonly IIntrospectableSpecification onType;
         private readonly int paramCount;
-        private readonly INakedObjectSpecification returnType;
+        private readonly IIntrospectableSpecification returnType;
 
-        public ActionInvocationFacetViaMethod(MethodInfo method, INakedObjectSpecification onType, INakedObjectSpecification returnType, IFacetHolder holder)
+        public ActionInvocationFacetViaMethod(MethodInfo method, IIntrospectableSpecification onType, IIntrospectableSpecification returnType, IFacetHolder holder)
             : base(holder) {
             actionMethod = method;
             paramCount = method.GetParameters().Length;
@@ -31,11 +30,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Invoke {
             this.returnType = returnType;
         }
 
-        public override INakedObjectSpecification ReturnType {
+        public override IIntrospectableSpecification ReturnType {
             get { return returnType; }
         }
 
-        public override INakedObjectSpecification OnType {
+        public override IIntrospectableSpecification OnType {
             get { return onType; }
         }
 

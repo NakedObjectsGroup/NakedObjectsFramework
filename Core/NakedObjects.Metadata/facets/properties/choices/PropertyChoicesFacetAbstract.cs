@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Properties.Choices {
     public abstract class PropertyChoicesFacetAbstract : FacetAbstract, IPropertyChoicesFacet {
@@ -22,7 +22,7 @@ namespace NakedObjects.Architecture.Facets.Properties.Choices {
         #region IPropertyChoicesFacet Members
 
         public abstract object[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
-        public abstract Tuple<string, INakedObjectSpecification>[] ParameterNamesAndTypes { get; }
+        public abstract Tuple<string, IIntrospectableSpecification>[] ParameterNamesAndTypes { get; }
 
         #endregion
     }

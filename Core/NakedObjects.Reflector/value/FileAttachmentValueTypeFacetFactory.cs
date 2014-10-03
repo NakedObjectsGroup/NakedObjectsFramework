@@ -10,12 +10,13 @@ using NakedObjects.Value;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class FileAttachmentValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<FileAttachment> {
-        public FileAttachmentValueTypeFacetFactory(IMetadata metadata)
-            : base(metadata, typeof(IFileAttachmentValueFacet)) { }
+        public FileAttachmentValueTypeFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, typeof(IFileAttachmentValueFacet)) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
             if (FileAttachmentValueSemanticsProvider.IsAdaptedType(type)) {
-                AddFacets(new FileAttachmentValueSemanticsProvider(Metadata, holder));
+                var spec = Reflector.LoadSpecification(FileAttachmentValueSemanticsProvider.AdaptedType);
+                AddFacets(new FileAttachmentValueSemanticsProvider(spec, holder));
                 return true;
             }
             return false;

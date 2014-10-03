@@ -4,7 +4,9 @@
 
 using System;
 using System.Globalization;
+using Moq;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Reflector.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Value {
@@ -17,7 +19,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
             SetupSpecification(typeof (DateTime));
             holder = new FacetHolderImpl();
-            SetValue(adapter = new DateTimeValueSemanticsProvider(metadata, holder));
+            var spec = new Mock<IIntrospectableSpecification>().Object;
+            SetValue(adapter = new DateTimeValueSemanticsProvider(spec, holder));
         }
 
         #endregion

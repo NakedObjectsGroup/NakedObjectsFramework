@@ -61,6 +61,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return new NakedObjectSpecification(this, LoadSpecification(name));
         }
 
+        public INakedObjectSpecification GetSpecification(IIntrospectableSpecification spec) {
+            return new NakedObjectSpecification(this, LoadSpecification(spec.Type));
+        }
+
         #endregion
 
         #region INakedObjectReflector Members

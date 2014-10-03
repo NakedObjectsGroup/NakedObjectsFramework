@@ -12,8 +12,8 @@ using PropertyInfo = System.Reflection.PropertyInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Defaults {
     public class PropertyDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PropertyDefaultAnnotationFacetFactory(IMetadata metadata)
-            : base(metadata, NakedObjectFeatureType.PropertiesOnly) { }
+        public PropertyDefaultAnnotationFacetFactory(INakedObjectReflector reflector)
+            :base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
 
 
         private static bool Process(MemberInfo member, IFacetHolder holder) {

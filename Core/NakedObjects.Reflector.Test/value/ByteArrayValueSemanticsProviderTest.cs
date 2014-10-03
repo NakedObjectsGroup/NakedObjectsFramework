@@ -5,9 +5,11 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Reflector.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Value {
@@ -21,7 +23,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
             byteArray = new byte[0];
             byteArrayNakedObject = CreateAdapter(byteArray);
             facetHolder = new FacetHolderImpl();
-            SetValue(value = new ArrayValueSemanticsProvider<byte>(metadata, facetHolder));
+            var spec = new Mock<IIntrospectableSpecification>().Object;
+            SetValue(value = new ArrayValueSemanticsProvider<byte>(spec, facetHolder));
         }
 
         #endregion

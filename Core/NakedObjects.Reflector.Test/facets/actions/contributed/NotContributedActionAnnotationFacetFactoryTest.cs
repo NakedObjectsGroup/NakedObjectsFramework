@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facets.Actions.Contributed;
 using NakedObjects.Architecture.Facets.Actions.Executed;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
@@ -20,7 +21,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ContributedActionAnnotationFacetFactory(Metadata);
+            facetFactory = new ContributedActionAnnotationFacetFactory(Reflector);
         }
 
         [TearDown]
@@ -101,7 +102,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotContributedActionFacetImpl);
 
-            var sp = new Mock<INakedObjectSpecification>();
+            var sp = new Mock<IIntrospectableSpecification>();
             sp.Setup(s => s.IsOfType(null)).Returns(true);
 
             Assert.IsTrue(facet.NotContributedTo(sp.Object));
@@ -118,9 +119,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotContributedActionFacetImpl);
 
-            var sp = new Mock<INakedObjectSpecification>();
+            var sp = new Mock<IIntrospectableSpecification>();
             sp.Setup(s => s.IsOfType(null)).Returns(true);
-            var sp1 = new Mock<INakedObjectSpecification>();
+            var sp1 = new Mock<IIntrospectableSpecification>();
             sp1.Setup(s => s.IsOfType(null)).Returns(true);
 
             Assert.IsTrue(facet.NotContributedTo(sp.Object));

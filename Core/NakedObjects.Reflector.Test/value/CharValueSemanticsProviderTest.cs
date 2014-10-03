@@ -4,8 +4,10 @@
 
 using System;
 using System.Globalization;
+using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Reflector.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Value {
@@ -18,7 +20,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
             character = 'r';
             holder = new FacetHolderImpl();
-            SetValue(value = new CharValueSemanticsProvider(metadata, holder));
+            var spec = new Mock<IIntrospectableSpecification>().Object;
+            SetValue(value = new CharValueSemanticsProvider(spec, holder));
         }
 
         #endregion

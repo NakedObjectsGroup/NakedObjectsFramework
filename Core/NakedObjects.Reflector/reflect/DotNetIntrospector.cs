@@ -239,12 +239,18 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 IIdentifier identifier = new IdentifierImpl((IMetadata)reflector, FullName, property.Name);
 
                 // create property and add facets
-                var collection = new DotNetOneToManyAssociationPeer((IMetadata)reflector, identifier, property.PropertyType);
+                var returnType = property.PropertyType;
+                var returnSpec = reflector.LoadSpecification(returnType);
+
+                var collection = new DotNetOneToManyAssociationPeer(identifier, returnType, returnSpec);
                 FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), collection, NakedObjectFeatureType.Collection);
 
                 // figure out what the Type is
                 var typeOfFacet = collection.GetFacet<ITypeOfFacet>();
-                collection.ElementType = typeOfFacet != null ? typeOfFacet.Value : typeof (object);
+                var elementType = typeOfFacet != null ? typeOfFacet.Value : typeof (object);
+                var elementSpec = typeOfFacet != null ? typeOfFacet.ValueSpec : reflector.LoadSpecification(typeof (object));
+
+                collection.SetupElementType(elementType, elementSpec);
                 fieldsListToAppendto.Add(collection);
             }
         }
@@ -260,7 +266,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 IIdentifier identifier = new IdentifierImpl((IMetadata)reflector, FullName, property.Name);
 
                 // create a reference property
-                var referenceProperty = new DotNetOneToOneAssociationPeer((IMetadata)reflector, identifier, property.PropertyType);
+                var propertyType = property.PropertyType;
+                var propertySpec = reflector.LoadSpecification(propertyType);
+                var referenceProperty = new DotNetOneToOneAssociationPeer(identifier, propertyType, propertySpec);
 
                 // Process facets for the property
                 FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), referenceProperty, NakedObjectFeatureType.Property);
@@ -364,8 +372,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
                 // build action & its parameters
 
-                DotNetNakedObjectActionParamPeer[] actionParams = parameterTypes.Select(pt => new DotNetNakedObjectActionParamPeer(GetSpecification(pt))).ToArray();
-                var action = new DotNetNakedObjectActionPeer(identifier, actionParams);
+                INakedObjectActionParamPeer[] actionParams = parameterTypes.Select(pt => new DotNetNakedObjectActionParamPeer(GetSpecification(pt))).Cast<INakedObjectActionParamPeer>().ToArray();
+            
+                var action = new DotNetNakedObjectActionPeer(identifier, null, actionParams);
 
                 // Process facets on the action & parameters
                 FacetFactorySet.Process(actionMethod, new DotnetIntrospectorMethodRemover(methods), action, NakedObjectFeatureType.Action);

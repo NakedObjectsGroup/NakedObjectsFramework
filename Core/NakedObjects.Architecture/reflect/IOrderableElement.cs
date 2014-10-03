@@ -8,6 +8,6 @@ using NakedObjects.Reflector.DotNet.Facets.Ordering;
 namespace NakedObjects.Reflector.Peer {
     public interface IOrderableElement<T> where T : IOrderableElement<T>, IFacetHolder {
         T Peer { get; }
-        OrderSet<T> Set { get; }  
+        IOrderSet<T> Set { get; }  
     }
 }
