@@ -1,16 +1,22 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace NakedObjects {
+namespace NakedObjects
+{
     [TestClass]
-    public class DateTimeExtensionsTest {
+    public class DateTimeExtensionsTest
+    {
         [TestMethod]
-        public void TestEndOfMonth() {
+        public void TestEndOfMonth()
+        {
             var wellKnownMonth1 = new DateTime(2009, 2, 11);
             var endOfWellKnownMonth1 = new DateTime(2009, 2, 28);
             var wellKnownMonth2 = new DateTime(2007, 10, 20);
@@ -23,7 +29,8 @@ namespace NakedObjects {
         }
 
         [TestMethod]
-        public void TestEndOfWeek() {
+        public void TestEndOfWeek()
+        {
             var wellKnownWeek1 = new DateTime(2009, 2, 11);
             var endOfWellKnownWeek1 = new DateTime(2009, 2, 14);
             var wellKnownWeek2 = new DateTime(2007, 10, 20);
@@ -36,7 +43,8 @@ namespace NakedObjects {
         }
 
         [TestMethod]
-        public void TestEndOfYear() {
+        public void TestEndOfYear()
+        {
             var wellKnownYear1 = new DateTime(2009, 12, 31);
             var endOfWellKnownYear1 = new DateTime(2009, 12, 31);
             var wellKnownYear2 = new DateTime(2007, 12, 31);
@@ -49,128 +57,151 @@ namespace NakedObjects {
         }
 
         [TestMethod]
-        public void TestIsAfterNullableToday() {
+        public void TestIsAfterNullableToday()
+        {
             Enumerable.Range(1, 9).
-                       Select(x => DateTime.Now.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsTrue(x.IsAfterToday()));
+                Select(x => DateTime.Now.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsTrue(x.IsAfterToday()));
 
             Enumerable.Range(-10, 9).
-                       Select(x => DateTime.Now.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsFalse(x.IsAfterToday()));
+                Select(x => DateTime.Now.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsFalse(x.IsAfterToday()));
 
-            Assert.IsFalse(((DateTime?) null).IsAfterToday());
+            Assert.IsFalse(((DateTime?)null).IsAfterToday());
         }
 
         [TestMethod]
-        public void TestIsAfterToday() {
+        public void TestIsAfterToday()
+        {
             Enumerable.Range(1, 9).
-                       Select(x => DateTime.Now.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsTrue(x.IsAfterToday()));
+                Select(x => DateTime.Now.AddDays(x)).ToList().
+                ForEach(x => Assert.IsTrue(x.IsAfterToday()));
 
             Enumerable.Range(-10, 9).
-                       Select(x => DateTime.Now.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsFalse(x.IsAfterToday()));
+                Select(x => DateTime.Now.AddDays(x)).ToList().
+                ForEach(x => Assert.IsFalse(x.IsAfterToday()));
         }
 
         [TestMethod]
-        public void TestIsAtLeastADayAfter() {
+        public void TestIsAtLeastOneDayAfter()
+        {
             var wellKnownDay = new DateTime(2002, 4, 4);
+            var nextDay = wellKnownDay.AddDays(1);
+
+            //Simple test
+            Assert.IsTrue(nextDay.IsAtLeastOneDayAfter(wellKnownDay));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayAfter(nextDay));
 
             Enumerable.Range(1, 9).
-                       Select(x => wellKnownDay.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
+                Select(x => wellKnownDay.AddDays(x)).ToList().
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastOneDayAfter(x)));
 
             Enumerable.Range(-10, 9).
-                       Select(x => wellKnownDay.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
+                Select(x => wellKnownDay.AddDays(x)).ToList().
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastOneDayAfter(x)));
 
-            Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayAfter(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayAfter(wellKnownDay));
         }
 
         [TestMethod]
-        public void TestIsAtLeastADayBefore() {
+        public void TestIsAtLeastOneDayBefore()
+        {
             var wellKnownDay = new DateTime(2002, 4, 4);
+            var nextDay = wellKnownDay.AddDays(1);
+
+            //Simple test
+            Assert.IsFalse(nextDay.IsAtLeastOneDayBefore(wellKnownDay));
+            Assert.IsTrue(wellKnownDay.IsAtLeastOneDayBefore(nextDay));
 
             Enumerable.Range(-10, 9).
-                       Select(x => wellKnownDay.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
+                Select(x => wellKnownDay.AddDays(x)).ToList().
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastOneDayBefore(x)));
 
             Enumerable.Range(1, 9).
-                       Select(x => wellKnownDay.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
+                Select(x => wellKnownDay.AddDays(x)).ToList().
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastOneDayBefore(x)));
 
-            Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayBefore(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayBefore(wellKnownDay));
         }
 
         [TestMethod]
-        public void TestIsAtLeastANullableDayAfter() {
+        public void TestIsAtLeastANullableDayAfter()
+        {
             DateTime? wellKnownDay = new DateTime(2002, 4, 4);
 
             Enumerable.Range(1, 9).
-                       Select(x => wellKnownDay.Value.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
+                Select(x => wellKnownDay.Value.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastOneDayAfter(x)));
 
             Enumerable.Range(-10, 9).
-                       Select(x => wellKnownDay.Value.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
+                Select(x => wellKnownDay.Value.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastOneDayAfter(x)));
 
 
-            Assert.IsFalse(((DateTime?) null).IsAtLeastADayAfter(wellKnownDay));
-            Assert.IsFalse(((DateTime?) null).IsAtLeastADayAfter(null));
-            Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(null));
+            Assert.IsFalse(((DateTime?)null).IsAtLeastOneDayAfter(wellKnownDay));
+            Assert.IsFalse(((DateTime?)null).IsAtLeastOneDayAfter(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayAfter(null));
+            Assert.IsFalse(((DateTime?)wellKnownDay).IsAtLeastOneDayAfter(wellKnownDay));
         }
 
         [TestMethod]
-        public void TestIsAtLeastANullableDayBefore() {
+        public void TestIsAtLeastANullableDayBefore()
+        {
             DateTime? wellKnownDay = new DateTime(2002, 4, 4);
 
             Enumerable.Range(-10, 9).
-                       Select(x => wellKnownDay.Value.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
+                Select(x => wellKnownDay.Value.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastOneDayBefore(x)));
 
             Enumerable.Range(1, 9).
-                       Select(x => wellKnownDay.Value.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
+                Select(x => wellKnownDay.Value.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastOneDayBefore(x)));
 
-            Assert.IsFalse(((DateTime?) null).IsAtLeastADayBefore(wellKnownDay));
-            Assert.IsFalse(((DateTime?) null).IsAtLeastADayBefore(null));
-            Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(null));
+            Assert.IsFalse(((DateTime?)wellKnownDay).IsAtLeastOneDayBefore(wellKnownDay));
+            Assert.IsFalse(((DateTime?)null).IsAtLeastOneDayBefore(wellKnownDay));
+            Assert.IsFalse(((DateTime?)null).IsAtLeastOneDayBefore(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayBefore(null));
         }
 
         [TestMethod]
-        public void TestIsBeforeNullableToday() {
+        public void TestIsBeforeNullableToday()
+        {
             Enumerable.Range(-10, 9).
-                       Select(x => DateTime.Now.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsTrue(x.IsBeforeToday()));
+                Select(x => DateTime.Now.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsTrue(x.IsBeforeToday()));
 
             Enumerable.Range(1, 9).
-                       Select(x => DateTime.Now.AddDays(x)).
-                       Select(x => new DateTime?(x)).ToList().
-                       ForEach(x => Assert.IsFalse(x.IsBeforeToday()));
+                Select(x => DateTime.Now.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsFalse(x.IsBeforeToday()));
 
-            Assert.IsFalse(((DateTime?) null).IsBeforeToday());
+            Assert.IsFalse(((DateTime?)null).IsBeforeToday());
         }
 
         [TestMethod]
-        public void TestIsBeforeToday() {
+        public void TestIsBeforeToday()
+        {
             Enumerable.Range(-10, 9).
-                       Select(x => DateTime.Now.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsTrue(x.IsBeforeToday()));
+                Select(x => DateTime.Now.AddDays(x)).ToList().
+                ForEach(x => Assert.IsTrue(x.IsBeforeToday()));
 
             Enumerable.Range(1, 9).
-                       Select(x => DateTime.Now.AddDays(x)).ToList().
-                       ForEach(x => Assert.IsFalse(x.IsBeforeToday()));
+                Select(x => DateTime.Now.AddDays(x)).ToList().
+                ForEach(x => Assert.IsFalse(x.IsBeforeToday()));
         }
 
         [TestMethod]
-        public void TestIsNullableToday() {
+        public void TestIsNullableToday()
+        {
             DateTime? today = DateTime.Now;
             DateTime? tomorrow = today.Value.AddDays(1);
             DateTime? yesterday = today.Value.AddDays(-1);
@@ -179,11 +210,12 @@ namespace NakedObjects {
             Assert.IsFalse(tomorrow.IsToday());
             Assert.IsFalse(yesterday.IsToday());
 
-            Assert.IsFalse(((DateTime?) null).IsToday());
+            Assert.IsFalse(((DateTime?)null).IsToday());
         }
 
         [TestMethod]
-        public void TestIsSameDayAs() {
+        public void TestIsSameDayAs()
+        {
             var wellKnownDay = new DateTime(2005, 5, 18);
             DateTime afterWellKnownDay = wellKnownDay.AddDays(1);
             DateTime beforeWellKnownDay = wellKnownDay.AddDays(-1);
@@ -195,7 +227,8 @@ namespace NakedObjects {
         }
 
         [TestMethod]
-        public void TestIsSameMonthAs() {
+        public void TestIsSameMonthAs()
+        {
             var wellKnownDay = new DateTime(2005, 5, 18);
             DateTime afterWellKnownDay = wellKnownDay.AddMonths(1);
             DateTime beforeWellKnownDay = wellKnownDay.AddMonths(-1);
@@ -207,7 +240,8 @@ namespace NakedObjects {
         }
 
         [TestMethod]
-        public void TestIsSameNullableDayAs() {
+        public void TestIsSameNullableDayAs()
+        {
             DateTime? wellKnownDay = new DateTime(2005, 5, 18);
             DateTime? afterWellKnownDay = wellKnownDay.Value.AddDays(1);
             DateTime? beforeWellKnownDay = wellKnownDay.Value.AddDays(-1);
@@ -216,12 +250,13 @@ namespace NakedObjects {
             Assert.IsFalse(wellKnownDay.IsSameDayAs(afterWellKnownDay));
             Assert.IsFalse(wellKnownDay.IsSameDayAs(beforeWellKnownDay));
             Assert.IsFalse(wellKnownDay.IsSameDayAs(null));
-            Assert.IsFalse(((DateTime?) null).IsSameDayAs(wellKnownDay));
-            Assert.IsFalse(((DateTime?) null).IsSameDayAs(null));
+            Assert.IsFalse(((DateTime?)null).IsSameDayAs(wellKnownDay));
+            Assert.IsFalse(((DateTime?)null).IsSameDayAs(null));
         }
 
         [TestMethod]
-        public void TestIsSameNullableMonthAs() {
+        public void TestIsSameNullableMonthAs()
+        {
             DateTime? wellKnownDay = new DateTime(2005, 5, 18);
             DateTime? afterWellKnownDay = wellKnownDay.Value.AddMonths(1);
             DateTime? beforeWellKnownDay = wellKnownDay.Value.AddMonths(-1);
@@ -230,12 +265,13 @@ namespace NakedObjects {
             Assert.IsFalse(wellKnownDay.IsSameMonthAs(afterWellKnownDay));
             Assert.IsFalse(wellKnownDay.IsSameMonthAs(beforeWellKnownDay));
             Assert.IsFalse(wellKnownDay.IsSameMonthAs(null));
-            Assert.IsFalse(((DateTime?) null).IsSameMonthAs(wellKnownDay));
-            Assert.IsFalse(((DateTime?) null).IsSameMonthAs(null));
+            Assert.IsFalse(((DateTime?)null).IsSameMonthAs(wellKnownDay));
+            Assert.IsFalse(((DateTime?)null).IsSameMonthAs(null));
         }
 
         [TestMethod]
-        public void TestIsSameNullableWeekAs() {
+        public void TestIsSameNullableWeekAs()
+        {
             DateTime? wellKnownDay = new DateTime(2005, 5, 18);
             DateTime? afterWellKnownDay = wellKnownDay.Value.AddDays(7);
             DateTime? beforeWellKnownDay = wellKnownDay.Value.AddDays(-7);
@@ -244,12 +280,13 @@ namespace NakedObjects {
             Assert.IsFalse(wellKnownDay.IsSameWeekAs(afterWellKnownDay));
             Assert.IsFalse(wellKnownDay.IsSameWeekAs(beforeWellKnownDay));
             Assert.IsFalse(wellKnownDay.IsSameWeekAs(null));
-            Assert.IsFalse(((DateTime?) null).IsSameWeekAs(wellKnownDay));
-            Assert.IsFalse(((DateTime?) null).IsSameWeekAs(null));
+            Assert.IsFalse(((DateTime?)null).IsSameWeekAs(wellKnownDay));
+            Assert.IsFalse(((DateTime?)null).IsSameWeekAs(null));
         }
 
         [TestMethod]
-        public void TestIsSameNullableYearAs() {
+        public void TestIsSameNullableYearAs()
+        {
             DateTime? wellKnownDay = new DateTime(2005, 5, 18);
             DateTime? afterWellKnownDay = wellKnownDay.Value.AddYears(1);
             DateTime? beforeWellKnownDay = wellKnownDay.Value.AddYears(-1);
@@ -258,12 +295,13 @@ namespace NakedObjects {
             Assert.IsFalse(wellKnownDay.IsSameYearAs(afterWellKnownDay));
             Assert.IsFalse(wellKnownDay.IsSameYearAs(beforeWellKnownDay));
             Assert.IsFalse(wellKnownDay.IsSameYearAs(null));
-            Assert.IsFalse(((DateTime?) null).IsSameYearAs(wellKnownDay));
-            Assert.IsFalse(((DateTime?) null).IsSameYearAs(null));
+            Assert.IsFalse(((DateTime?)null).IsSameYearAs(wellKnownDay));
+            Assert.IsFalse(((DateTime?)null).IsSameYearAs(null));
         }
 
         [TestMethod]
-        public void TestIsSameWeekAs() {
+        public void TestIsSameWeekAs()
+        {
             var wellKnownDay = new DateTime(2005, 5, 18);
             DateTime afterWellKnownDay = wellKnownDay.AddDays(7);
             DateTime beforeWellKnownDay = wellKnownDay.AddDays(-7);
@@ -275,7 +313,8 @@ namespace NakedObjects {
         }
 
         [TestMethod]
-        public void TestIsSameYearAs() {
+        public void TestIsSameYearAs()
+        {
             var wellKnownDay = new DateTime(2005, 5, 18);
             DateTime afterWellKnownDay = wellKnownDay.AddYears(1);
             DateTime beforeWellKnownDay = wellKnownDay.AddYears(-1);
@@ -287,7 +326,8 @@ namespace NakedObjects {
         }
 
         [TestMethod]
-        public void TestIsToday() {
+        public void TestIsToday()
+        {
             DateTime today = DateTime.Now;
             DateTime tomorrow = today.AddDays(1);
             DateTime yesterday = today.AddDays(-1);
@@ -298,7 +338,8 @@ namespace NakedObjects {
         }
 
         [TestMethod]
-        public void TestStartOfMonth() {
+        public void TestStartOfMonth()
+        {
             var wellKnownMonth1 = new DateTime(2009, 2, 11);
             var startOfWellKnownMonth1 = new DateTime(2009, 2, 1);
             var wellKnownMonth2 = new DateTime(2007, 10, 20);
@@ -311,7 +352,8 @@ namespace NakedObjects {
         }
 
         [TestMethod]
-        public void TestStartOfWeek() {
+        public void TestStartOfWeek()
+        {
             var wellKnownWeek1 = new DateTime(2009, 2, 11);
             var startOfWellKnownWeek1 = new DateTime(2009, 2, 8);
             var wellKnownWeek2 = new DateTime(2007, 10, 20);
@@ -324,7 +366,8 @@ namespace NakedObjects {
         }
 
         [TestMethod]
-        public void TestStartOfYear() {
+        public void TestStartOfYear()
+        {
             var wellKnownYear1 = new DateTime(2009, 1, 1);
             var startOfWellKnownYear1 = new DateTime(2009, 1, 1);
             var wellKnownYear2 = new DateTime(2007, 1, 1);
