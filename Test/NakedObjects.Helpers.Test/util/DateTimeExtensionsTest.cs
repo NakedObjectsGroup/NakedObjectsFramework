@@ -78,33 +78,45 @@ namespace NakedObjects {
         }
 
         [TestMethod]
-        public void TestIsAtLeastADayAfter() {
+        public void TestIsAtLeastOneDayAfter() {
             var wellKnownDay = new DateTime(2002, 4, 4);
+            var nextDay = wellKnownDay.AddDays(1);
+
+            //Simple test
+            Assert.IsTrue(nextDay.IsAtLeastOneDayAfter(wellKnownDay));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayAfter(nextDay));
 
             Enumerable.Range(1, 9).
                 Select(x => wellKnownDay.AddDays(x)).ToList().
-                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastOneDayAfter(x)));
 
             Enumerable.Range(-10, 9).
                 Select(x => wellKnownDay.AddDays(x)).ToList().
-                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastOneDayAfter(x)));
 
-            Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayAfter(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayAfter(wellKnownDay));
         }
 
         [TestMethod]
-        public void TestIsAtLeastADayBefore() {
+        public void TestIsAtLeastOneDayBefore() {
             var wellKnownDay = new DateTime(2002, 4, 4);
+            var nextDay = wellKnownDay.AddDays(1);
+
+            //Simple test
+            Assert.IsFalse(nextDay.IsAtLeastOneDayBefore(wellKnownDay));
+            Assert.IsTrue(wellKnownDay.IsAtLeastOneDayBefore(nextDay));
 
             Enumerable.Range(-10, 9).
                 Select(x => wellKnownDay.AddDays(x)).ToList().
-                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastOneDayBefore(x)));
 
             Enumerable.Range(1, 9).
                 Select(x => wellKnownDay.AddDays(x)).ToList().
-                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastOneDayBefore(x)));
 
-            Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayBefore(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayBefore(wellKnownDay));
         }
 
         [TestMethod]
@@ -114,17 +126,18 @@ namespace NakedObjects {
             Enumerable.Range(1, 9).
                 Select(x => wellKnownDay.Value.AddDays(x)).
                 Select(x => new DateTime?(x)).ToList().
-                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastOneDayAfter(x)));
 
             Enumerable.Range(-10, 9).
                 Select(x => wellKnownDay.Value.AddDays(x)).
                 Select(x => new DateTime?(x)).ToList().
-                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastOneDayAfter(x)));
 
 
-            Assert.IsFalse(((DateTime?) null).IsAtLeastADayAfter(wellKnownDay));
-            Assert.IsFalse(((DateTime?) null).IsAtLeastADayAfter(null));
-            Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(null));
+            Assert.IsFalse(((DateTime?) null).IsAtLeastOneDayAfter(wellKnownDay));
+            Assert.IsFalse(((DateTime?) null).IsAtLeastOneDayAfter(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayAfter(null));
+            Assert.IsFalse(((DateTime?)wellKnownDay).IsAtLeastOneDayAfter(wellKnownDay));
         }
 
         [TestMethod]
@@ -134,16 +147,17 @@ namespace NakedObjects {
             Enumerable.Range(-10, 9).
                 Select(x => wellKnownDay.Value.AddDays(x)).
                 Select(x => new DateTime?(x)).ToList().
-                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastOneDayBefore(x)));
 
             Enumerable.Range(1, 9).
                 Select(x => wellKnownDay.Value.AddDays(x)).
                 Select(x => new DateTime?(x)).ToList().
-                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastOneDayBefore(x)));
 
-            Assert.IsFalse(((DateTime?) null).IsAtLeastADayBefore(wellKnownDay));
-            Assert.IsFalse(((DateTime?) null).IsAtLeastADayBefore(null));
-            Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(null));
+            Assert.IsFalse(((DateTime?) wellKnownDay).IsAtLeastOneDayBefore(wellKnownDay));
+            Assert.IsFalse(((DateTime?) null).IsAtLeastOneDayBefore(wellKnownDay));
+            Assert.IsFalse(((DateTime?) null).IsAtLeastOneDayBefore(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastOneDayBefore(null));
         }
 
         [TestMethod]
