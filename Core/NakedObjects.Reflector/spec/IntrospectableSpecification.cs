@@ -209,12 +209,11 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public void MarkAsService() {
-            //if (Fields.Flattened.Any(field => field.Id != "Id")) {
-            //    string fieldNames = Fields.Flattened.Where(field => field.Id != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
-            //    throw new ModelException(string.Format(Resources.NakedObjects.ServiceObjectWithFieldsError, FullName, fieldNames));
-            //}
-            throw new NotImplementedException();
-            //Service = true;
+            if (Fields.Flattened.Any(field => field.Identifier.MemberName != "Id")) {
+                string fieldNames = Fields.Flattened.Where(field => field.Identifier.MemberName != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
+                throw new ModelException(string.Format(Resources.NakedObjects.ServiceObjectWithFieldsError, FullName, fieldNames));
+            }
+            Service = true;
         }
 
         public void AddSubclass(IIntrospectableSpecification subclass) {
@@ -228,21 +227,18 @@ namespace NakedObjects.Reflector.Spec {
 
         private void DecorateAllFacets(IFacetDecoratorSet decorator) {
             decorator.DecorateAllHoldersFacets(this);
-            foreach (INakedObjectAssociation field in Fields) {
+            foreach (INakedObjectAssociationPeer field in Fields.Flattened) {
                 decorator.DecorateAllHoldersFacets(field);
             }
-            foreach (INakedObjectAction action in ObjectActions) {
+            foreach (INakedObjectActionPeer action in ObjectActions.Flattened) {
                 DecorateAction(decorator, action);
             }
         }
 
-        private static void DecorateAction(IFacetDecoratorSet decorator, INakedObjectAction action) {
+        private static void DecorateAction(IFacetDecoratorSet decorator, INakedObjectActionPeer action) {
             decorator.DecorateAllHoldersFacets(action);
-            foreach (INakedObjectActionParameter parm in action.Parameters) {
+            foreach (INakedObjectActionParamPeer parm in action.Parameters) {
                 decorator.DecorateAllHoldersFacets(parm);
-            }
-            if (action.ActionType == NakedObjectActionType.Set) {
-                action.Actions.ForEach(a => DecorateAction(decorator, a));
             }
         }
 

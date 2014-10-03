@@ -40,7 +40,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.Spec {
 
-    public class NakedObjectSpecification : FacetHolderImpl, INakedObjectSpecification {
+    public class NakedObjectSpecification :  INakedObjectSpecification {
         private readonly IMetadata metadata;
         private readonly IIntrospectableSpecification innerSpec;
         private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectSpecification));
@@ -71,8 +71,46 @@ namespace NakedObjects.Reflector.Spec {
             get { return null; }
         }
 
-        public override IIdentifier Identifier {
+        public Type[] FacetTypes { get; private set; }
+
+        public IIdentifier Identifier {
             get { return innerSpec.Identifier; }
+        }
+
+        public bool ContainsFacet(Type facetType) {
+            return innerSpec.ContainsFacet(facetType);
+        }
+
+        public bool ContainsFacet<T>() where T : IFacet {
+            return innerSpec.ContainsFacet<T>();
+        }
+
+        public IFacet GetFacet(Type type) {
+            return innerSpec.GetFacet(type);
+        }
+
+        public T GetFacet<T>() where T : IFacet {
+            return innerSpec.GetFacet<T>();
+        }
+
+        public IFacet[] GetFacets(IFacetFilter filter) {
+            return innerSpec.GetFacets(filter);
+        }
+
+        public void AddFacet(IFacet facet) {
+            throw new NotImplementedException();
+        }
+
+        public void AddFacet(IMultiTypedFacet facet) {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveFacet(IFacet facet) {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveFacet(Type facetType) {
+            throw new NotImplementedException();
         }
 
         public virtual bool IsParseable {
