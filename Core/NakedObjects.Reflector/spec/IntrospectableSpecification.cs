@@ -43,9 +43,9 @@ namespace NakedObjects.Reflector.Spec {
             Interfaces = new IIntrospectableSpecification[] {};
             Subclasses = new IIntrospectableSpecification[] {};
             ValidationMethods = new INakedObjectValidation[] {};
-            ObjectActions = new INakedObjectActionPeer[]{};
-            ContributedActions = new INakedObjectActionPeer[]{};
-            RelatedActions = new INakedObjectActionPeer[]{};
+            //ObjectActions = new INakedObjectActionPeer[]{};
+            ContributedActions = new Dictionary<string, IOrderSet<INakedObjectActionPeer>>();
+            RelatedActions = new Dictionary<string, IOrderSet<INakedObjectActionPeer>>();
         }
 
       
@@ -64,11 +64,11 @@ namespace NakedObjects.Reflector.Spec {
 
         public string ShortName { get; set; }
 
-        public INakedObjectActionPeer[] ObjectActions { get; private set; }
+        public IOrderSet<INakedObjectActionPeer> ObjectActions { get; private set; }
 
-        public INakedObjectActionPeer[] ContributedActions { get; private set; }
+        public IDictionary<string, IOrderSet<INakedObjectActionPeer>> ContributedActions { get; private set; }
 
-        public INakedObjectActionPeer[] RelatedActions { get; private set; }
+        public IDictionary<string, IOrderSet<INakedObjectActionPeer>> RelatedActions { get; private set; }
 
         public INakedObjectAssociationPeer[] Fields { get; set; }
 
@@ -185,7 +185,7 @@ namespace NakedObjects.Reflector.Spec {
             ValidationMethods = introspector.IntrospectObjectValidationMethods();
 
             introspector.IntrospectActions();
-            ObjectActions = introspector.ObjectActions;
+            ObjectActions =   introspector.ObjectActions;
 
             introspector = null;
 
@@ -230,7 +230,7 @@ namespace NakedObjects.Reflector.Spec {
             foreach (INakedObjectAssociationPeer field in Fields) {
                 decorator.DecorateAllHoldersFacets(field);
             }
-            foreach (INakedObjectActionPeer action in ObjectActions) {
+            foreach (INakedObjectActionPeer action in ObjectActions.Flattened) {
                 DecorateAction(decorator, action);
             }
         }
@@ -243,37 +243,29 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         private void PopulateContributedActions(Type[] services) {
-            //var serviceActionSets = SimpleOrderSet<INakedObjectActionPeer>.CreateOrderSet("", new INakedObjectActionPeer[] {});
-
-            ContributedActions = new INakedObjectActionPeer[] {};
-
             if (!Service) {
                 foreach (Type serviceType in services) {
                     if (serviceType != Type) {
                         var serviceSpecification = reflector.LoadSpecification(serviceType);
 
-                        INakedObjectActionPeer[] matchingServiceActions = serviceSpecification.ObjectActions.Where(serviceAction => serviceAction.IsContributedTo(this)).ToArray();
+                        INakedObjectActionPeer[] matchingServiceActions = serviceSpecification.ObjectActions.Flattened.Where(serviceAction => serviceAction.IsContributedTo(this)).ToArray();
 
                         if (matchingServiceActions.Any()) {
-                            //var os = SimpleOrderSet<INakedObjectActionPeer>.CreateOrderSet(serviceSpecification.Identifier.ClassName, matchingServiceActions);
-                            //serviceActionSets.AddChild(os);
-                            ContributedActions = ContributedActions.Union(matchingServiceActions).ToArray();
+                            var os = SimpleOrderSet<INakedObjectActionPeer>.CreateOrderSet("", matchingServiceActions);
+
+                            ContributedActions.Add(serviceSpecification.Identifier.ClassName, os);
                         }
                     }
                 }
             }
-            //ContributedActions = serviceActionSets;
         }
 
         private void PopulateRelatedActions(Type[] services) {
-            //var relatedActionSets = SimpleOrderSet<INakedObjectActionPeer>.CreateOrderSet("", new INakedObjectActionPeer[] {});
-
-            RelatedActions = new INakedObjectActionPeer[] { };
             foreach (Type serviceType in services) {
                 var serviceSpecification = reflector.LoadSpecification(serviceType);
                 var matchingActions = new List<INakedObjectActionPeer>();
 
-                foreach (var serviceAction in serviceSpecification.ObjectActions.Where(a => a.IsFinderMethod)) {
+                foreach (var serviceAction in serviceSpecification.ObjectActions.Flattened.Where(a => a.IsFinderMethod)) {
                     var returnType = serviceAction.ReturnType;
                     if (returnType != null && returnType.IsCollection) {
                         var elementType = returnType.GetFacet<ITypeOfFacet>().ValueSpec;
@@ -287,12 +279,11 @@ namespace NakedObjects.Reflector.Spec {
                 }
 
                 if (matchingActions.Any()) {
-                    //var os = SimpleOrderSet<INakedObjectActionPeer>.CreateOrderSet(serviceSpecification.Identifier.ClassName, matchingActions.ToArray());
-                    //relatedActionSets.AddChild(os);
-                    RelatedActions = RelatedActions.Union(matchingActions).ToArray();
+                    var os = SimpleOrderSet<INakedObjectActionPeer>.CreateOrderSet("", matchingActions.ToArray());
+
+                    RelatedActions.Add(serviceSpecification.Identifier.ClassName, os);
                 }
             }
-            //RelatedActions = relatedActionSets;
         }
 
         public virtual bool IsCollection {

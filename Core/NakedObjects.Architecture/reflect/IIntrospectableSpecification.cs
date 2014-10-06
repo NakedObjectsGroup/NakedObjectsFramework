@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
@@ -35,9 +36,9 @@ namespace NakedObjects.Reflector.Spec {
         Type Type { get;  }
         string FullName { get;  }
         string ShortName { get;  }
-        INakedObjectActionPeer[] ObjectActions { get; }
-        INakedObjectActionPeer[] ContributedActions { get; }
-        INakedObjectActionPeer[] RelatedActions { get; }
+        IOrderSet<INakedObjectActionPeer> ObjectActions { get; }
+        IDictionary<string, IOrderSet<INakedObjectActionPeer>> ContributedActions { get; }
+        IDictionary<string, IOrderSet<INakedObjectActionPeer>> RelatedActions { get; }
         INakedObjectAssociationPeer[] Fields { get; set; }
         IIntrospectableSpecification[] Interfaces { get; set; }
         IIntrospectableSpecification[] Subclasses { get; set; }

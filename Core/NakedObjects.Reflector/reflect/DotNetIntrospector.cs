@@ -39,9 +39,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private readonly PropertyInfo[] properties;
         private readonly INakedObjectReflector reflector;
 
-        private INakedObjectActionPeer[] orderedClassActions;
+        private IOrderSet<INakedObjectActionPeer> orderedClassActions;
         private INakedObjectAssociationPeer[] orderedFields;
-        private INakedObjectActionPeer[] orderedObjectActions;
+        private IOrderSet<INakedObjectActionPeer> orderedObjectActions;
 
         public DotNetIntrospector(Type typeToIntrospect,
                                   IIntrospectableSpecification specification,
@@ -100,11 +100,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             get { return orderedFields; }
         }
 
-        public INakedObjectActionPeer[] ClassActions {
+        public IOrderSet<INakedObjectActionPeer> ClassActions {
             get { return orderedClassActions; }
         }
 
-        public INakedObjectActionPeer[] ObjectActions {
+        public IOrderSet<INakedObjectActionPeer> ObjectActions {
             get { return orderedObjectActions; }
         }
 
@@ -183,21 +183,21 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             var actionOrderFacet = specification.GetFacet<IActionOrderFacet>();
 
             // TODO: the calling of actionOrder() should be a facet
-            //string actionOrder = actionOrderFacet == null ? InvokeSortOrderMethod("Action") : actionOrderFacet.Value;
-            //orderedObjectActions = CreateOrderSet(actionOrder, findObjectActionMethods);
+            string actionOrder = actionOrderFacet == null ? InvokeSortOrderMethod("Action") : actionOrderFacet.Value;
+            orderedObjectActions = CreateOrderSet(actionOrder, findObjectActionMethods);
 
-            orderedObjectActions = findObjectActionMethods;
+            //orderedObjectActions = findObjectActionMethods;
 
             // find the class actions ...
             INakedObjectActionPeer[] findClassActionMethods = FindActionMethods(MethodType.Class);
 
             // ... and the ordering of class actions
             // TODO: the calling of classActionOrder() should be a facet
-            //actionOrder = InvokeSortOrderMethod("ClassAction");
+            actionOrder = InvokeSortOrderMethod("ClassAction");
 
-            //orderedClassActions = CreateOrderSet(actionOrder, findClassActionMethods);
+            orderedClassActions = CreateOrderSet(actionOrder, findClassActionMethods);
 
-            orderedClassActions = findClassActionMethods;
+            //orderedClassActions = findClassActionMethods;
         }
 
         private INakedObjectAssociationPeer[] FindAndCreateFieldPeers() {

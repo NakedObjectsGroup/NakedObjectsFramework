@@ -32,6 +32,7 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.DotNet.Facets.Collections;
+using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
@@ -415,14 +416,14 @@ namespace NakedObjects.Reflector.Spec {
             return new[] {spec};
         }
 
-        private INakedObjectAction[] OrderActions(INakedObjectActionPeer[] order) {
+        private INakedObjectAction[] OrderActions(IOrderSet<INakedObjectActionPeer> order) {
             var actions = new List<INakedObjectAction>();
             foreach (var element in order) {
                 if (element.Peer != null) {
                     actions.Add(CreateNakedObjectAction(element.Peer));
                 }
                 else if (element.Set != null) {
-                    //actions.Add(CreateNakedObjectActionSet(element.Set));
+                    actions.Add(CreateNakedObjectActionSet(element.Set));
                 }
                 else {
                     throw new UnknownTypeException(element);
@@ -432,9 +433,17 @@ namespace NakedObjects.Reflector.Spec {
             return actions.ToArray();
         }
 
-        //private NakedObjectActionSet CreateNakedObjectActionSet(IOrderSet<INakedObjectActionPeer> orderSet) {
-        //    return new NakedObjectActionSet(orderSet.GroupFullName.Replace(" ", ""), orderSet.GroupFullName, OrderActions(orderSet));
-        //}
+        private INakedObjectAction[] OrderActions(IDictionary<string, IOrderSet<INakedObjectActionPeer>> order) {
+            return order.Select(element => CreateNakedObjectActionSet(element.Key, element.Value)).Cast<INakedObjectAction>().ToArray();
+        }
+
+        private NakedObjectActionSet CreateNakedObjectActionSet(IOrderSet<INakedObjectActionPeer> orderSet) {
+            return new NakedObjectActionSet(orderSet.GroupFullName.Replace(" ", ""), orderSet.GroupFullName, OrderActions(orderSet));
+        }
+
+        private NakedObjectActionSet CreateNakedObjectActionSet(string name, IOrderSet<INakedObjectActionPeer> orderSet) {
+            return new NakedObjectActionSet(name.Replace(" ", ""), name, OrderActions(orderSet));
+        }
 
         private NakedObjectActionImpl CreateNakedObjectAction(INakedObjectActionPeer peer) {
             return new NakedObjectActionImpl(metadata, peer);
