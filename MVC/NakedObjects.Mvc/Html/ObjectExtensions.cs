@@ -150,7 +150,7 @@ namespace NakedObjects.Web.Mvc.Html {
             string queryInd = nakedObject.Specification.IsQueryable ? MvcUi.QueryResult + ": " : "";
             int viewSize = count;
 
-            INakedObjectSpecification typeSpec = nakedObject.GetTypeOfFacetFromSpec().ValueSpec;
+            INakedObjectSpecification typeSpec =  html.Framework().Metadata.GetSpecification(nakedObject.GetTypeOfFacetFromSpec().ValueSpec);
             string type = total == 1 ? typeSpec.SingularName : typeSpec.PluralName;
 
             return queryInd + string.Format(MvcUi.ViewingNofXType, viewSize, total, type);

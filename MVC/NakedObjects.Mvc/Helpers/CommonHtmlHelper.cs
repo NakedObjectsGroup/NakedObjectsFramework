@@ -905,7 +905,9 @@ namespace NakedObjects.Web.Mvc.Html {
             string innerHtml = "";
 
             INakedObject[] collection = collectionNakedObject.GetAsEnumerable(html.Framework().LifecycleManager).ToArray();
-            INakedObjectSpecification collectionSpec = collectionNakedObject.GetTypeOfFacetFromSpec().ValueSpec;
+            
+            var collectionSpec =  html.Framework().Metadata.GetSpecification( collectionNakedObject.GetTypeOfFacetFromSpec().ValueSpec);
+                   
             INakedObjectAssociation[] collectionAssocs = html.CollectionAssociations(collection, collectionSpec, filter, order);
 
             int index = 0;
@@ -1002,7 +1004,10 @@ namespace NakedObjects.Web.Mvc.Html {
 
                 var tagTotalCount = new TagBuilder("div");
                 tagTotalCount.AddCssClass(IdHelper.TotalCountClass);
-                INakedObjectSpecification typeSpec = pagedCollectionNakedObject.GetTypeOfFacetFromSpec().ValueSpec;
+                
+                INakedObjectSpecification typeSpec = html.Framework().Metadata.GetSpecification(pagedCollectionNakedObject.GetTypeOfFacetFromSpec().ValueSpec);
+
+
                 tagTotalCount.InnerHtml += string.Format(MvcUi.TotalOfXType, total, total == 1 ? typeSpec.SingularName : typeSpec.PluralName);
                 tagPaging.InnerHtml += tagTotalCount;
                 string displayType = html.ViewData.ContainsKey(IdHelper.CollectionFormat) ? (string) html.ViewData[IdHelper.CollectionFormat] : IdHelper.ListDisplayFormat;
@@ -1482,7 +1487,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 }
                 if (context.Parameter.IsCollection) {
                     var facet = context.Parameter.Specification.GetFacet<ITypeOfFacet>();
-                    INakedObjectSpecification itemSpec = facet.ValueSpec;
+                    INakedObjectSpecification itemSpec = html.Framework().Metadata.GetSpecification(facet.ValueSpec);
 
                     if (itemSpec.IsParseable) {
                         var collection = (INakedObject) rawvalue;
@@ -1716,12 +1721,12 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.GetReferenceParameter(context, id, tooltip, childElements, context.Parameter.Id == propertyName);
         }
 
-        private static INakedObjectAssociation[] CollectionAssociations(this HtmlHelper html, 
-            INakedObject[] collection,
+        private static INakedObjectAssociation[] CollectionAssociations(this HtmlHelper html,
+                                                                        INakedObject[] collection,
                                                                         INakedObjectSpecification collectionSpec,
                                                                         Func<INakedObjectAssociation, bool> filter,
                                                                         Func<INakedObjectAssociation, int> order) {
-                                                                            IEnumerable<INakedObjectAssociation> assocs = collectionSpec.Properties.Where(filter).Where(a => collection.Any(item => a.IsVisible(html.Framework().Session, item, html.Framework().LifecycleManager)));
+            IEnumerable<INakedObjectAssociation> assocs = collectionSpec.Properties.Where(filter).Where(a => collection.Any(item => a.IsVisible(html.Framework().Session, item, html.Framework().LifecycleManager)));
 
             if (order != null) {
                 assocs = assocs.OrderBy(order);

@@ -43,8 +43,8 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static IEnumerable<INakedObjectAction> GetTopLevelActionsByReturnType(this INakedObjectsFramework framework, INakedObject nakedObject, INakedObjectSpecification spec) {
             return framework.GetTopLevelActions(nakedObject).
-                Where(a => a is NakedObjectActionSet || (IsOfTypeOrCollectionOfType(a.ReturnType, spec) && a.IsFinderMethod)).
-                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible(framework.Session, nakedObject, framework.LifecycleManager) && IsOfTypeOrCollectionOfType(sa.ReturnType, spec) && sa.IsFinderMethod));
+                Where(a => a is NakedObjectActionSet || (framework.IsOfTypeOrCollectionOfType(a.ReturnType, spec) && a.IsFinderMethod)).
+                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible(framework.Session, nakedObject, framework.LifecycleManager) && framework.IsOfTypeOrCollectionOfType(sa.ReturnType, spec) && sa.IsFinderMethod));
         }
 
         public static IEnumerable<INakedObjectAction> GetChildActions(this INakedObjectsFramework framework, ActionContext actionContext) {
@@ -58,15 +58,15 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static IEnumerable<INakedObjectAction> GetChildActionsByReturnType(this INakedObjectsFramework framework, ActionContext actionContext, INakedObjectSpecification spec) {
-            return framework.GetChildActions(actionContext).Where(a => IsOfTypeOrCollectionOfType(a.ReturnType, spec)).
+            return framework.GetChildActions(actionContext).Where(a => framework.IsOfTypeOrCollectionOfType(a.ReturnType, spec)).
                                                   Where(action => action.Parameters.All(parm => parm.Specification.IsParseable || parm.IsChoicesEnabled || parm.Specification.IsOfType(actionContext.Target.Specification)));
         }
 
-        private static bool IsOfTypeOrCollectionOfType(INakedObjectSpecification returnType, INakedObjectSpecification spec) {
+        private static bool IsOfTypeOrCollectionOfType(this INakedObjectsFramework framework, INakedObjectSpecification returnType, INakedObjectSpecification spec) {
             if (returnType.IsOfType(spec)) {
                 return true;
             }
-            return returnType.IsCollection && returnType.GetFacet<ITypeOfFacet>().ValueSpec.IsOfType(spec);
+            return returnType.IsCollection && framework.Metadata.GetSpecification( returnType.GetFacet<ITypeOfFacet>().ValueSpec).IsOfType(spec);
         }
 
         public static string GetObjectType(Type type) {
@@ -280,7 +280,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static INakedObject GetTypedCollection(this INakedObjectsFramework framework, INakedObjectSpecification spec, IEnumerable collectionValue) {
-            INakedObjectSpecification collectionitemSpec = spec.GetFacet<ITypeOfFacet>().ValueSpec;
+            INakedObjectSpecification collectionitemSpec = framework.Metadata.GetSpecification(spec.GetFacet<ITypeOfFacet>().ValueSpec);
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
             object[] objCollection;
 

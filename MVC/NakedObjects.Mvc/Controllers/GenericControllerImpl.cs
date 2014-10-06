@@ -274,7 +274,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             string propertyName = controlData.DataDict["propertyName"];
             string contextActionId = controlData.DataDict["contextActionId"];
 
-            var objectSet = Session.CachedObjectsOfType(NakedObjectsContext, NakedObjectsContext.Reflector.LoadSpecification(spec)).ToList();
+            var objectSet = Session.CachedObjectsOfType(NakedObjectsContext, NakedObjectsContext.Metadata.GetSpecification(spec)).ToList();
 
             if (!objectSet.Any()) {
                 Log.InfoFormat("No Cached objects of type {0} found", spec);

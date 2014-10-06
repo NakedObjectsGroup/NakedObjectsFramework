@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
@@ -137,7 +138,9 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public INakedObjectSpecificationSurface ElementType {
             get {
                 if (IsCollection) {
-                    return new NakedObjectSpecificationWrapper(spec.GetFacet<ITypeOfFacet>().ValueSpec, Surface, framework);
+                    var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().ValueSpec;
+                    var elementSpec = framework.Metadata.GetSpecification(introspectableSpecification);
+                    return new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
                 }
                 return null;
             }

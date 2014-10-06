@@ -121,7 +121,7 @@ namespace NakedObjects.Architecture.Util {
             return typedList;
         }
 
-        public static string CollectionTitleString(IIntrospectableSpecification elementSpecification, int size) {
+        public static string CollectionTitleString(INakedObjectSpecification elementSpecification, int size) {
             if (elementSpecification == null || elementSpecification.FullName.Equals(typeof (object).FullName)) {
                 return CollectionTitleStringUnknownType(size);
             }
@@ -170,19 +170,19 @@ namespace NakedObjects.Architecture.Util {
             return type.IsGenericType ? (type.GetGenericTypeDefinition() == typeof (IEnumerable<>) ? type : type.GetInterfaces().FirstOrDefault(IsGenericEnumerable)) : null;
         }
 
-        private static string CollectionTitleStringKnownType(IIntrospectableSpecification elementSpecification, int size) {
+        private static string CollectionTitleStringKnownType(INakedObjectSpecification elementSpecification, int size) {
             switch (size) {
                 case IncompleteCollection:
-                    return string.Format(Resources.NakedObjects.CollectionTitleUnloaded, elementSpecification.GetFacet<IPluralFacet>().Value);
+                    return string.Format(Resources.NakedObjects.CollectionTitleUnloaded, elementSpecification.PluralName);
 
                 case 0:
-                    return string.Format(Resources.NakedObjects.CollectionTitleEmpty, elementSpecification.GetFacet<IPluralFacet>().Value);
+                    return string.Format(Resources.NakedObjects.CollectionTitleEmpty, elementSpecification.PluralName);
 
                 case 1:
-                    return string.Format(Resources.NakedObjects.CollectionTitleOne, elementSpecification.GetFacet<INamedFacet>().Value);
+                    return string.Format(Resources.NakedObjects.CollectionTitleOne, elementSpecification.SingularName);
 
                 default:
-                    return string.Format(Resources.NakedObjects.CollectionTitleMany, size, elementSpecification.GetFacet<IPluralFacet>().Value);
+                    return string.Format(Resources.NakedObjects.CollectionTitleMany, size, elementSpecification.PluralName);
             }
         }
 

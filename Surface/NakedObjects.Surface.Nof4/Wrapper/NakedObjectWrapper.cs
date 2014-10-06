@@ -70,7 +70,9 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public INakedObjectSpecificationSurface ElementSpecification {
             get {
                 ITypeOfFacet typeOfFacet = nakedObject.GetTypeOfFacetFromSpec();
-                return new NakedObjectSpecificationWrapper(typeOfFacet.ValueSpec, Surface, framework);
+                var introspectableSpecification = typeOfFacet.ValueSpec;
+                var spec = framework.Metadata.GetSpecification(introspectableSpecification);
+                return new NakedObjectSpecificationWrapper(spec, Surface, framework);
             }
         }
 

@@ -520,10 +520,12 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             INakedObject collectionNakedObject = property.GetNakedObject(context.Target, framework.LifecycleManager);
             ITypeOfFacet facet = collectionNakedObject.GetTypeOfFacetFromSpec();
 
-            if (context.ProposedNakedObject.Specification.IsOfType(facet.ValueSpec)) {
+            var introspectableSpecification = facet.ValueSpec;
+            var spec = framework.Metadata.GetSpecification(introspectableSpecification);
+            if (context.ProposedNakedObject.Specification.IsOfType(spec)) {
                 return new Allow();
             }
-            return new Veto(string.Format("Not a suitable type; must be a {0}", facet.ValueSpec.FullName));
+            return new Veto(string.Format("Not a suitable type; must be a {0}", introspectableSpecification.FullName));
         }
 
         private bool ConsentHandler(IConsent consent, Context.Context context, Cause cause) {
