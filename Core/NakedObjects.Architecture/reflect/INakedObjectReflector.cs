@@ -14,10 +14,11 @@ using NakedObjects.Reflector.Spec;
 namespace NakedObjects.Architecture.Reflect {
     public interface INakedObjectReflector {
        
-
         IClassStrategy ClassStrategy { get; }
 
         IFacetFactorySet FacetFactorySet { get; }
+
+        IIntrospectableSpecification[] AllIntrospectableSpecifications { get; }
 
         IIntrospectableSpecification LoadSpecification(Type type);
 

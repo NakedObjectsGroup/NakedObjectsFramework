@@ -53,6 +53,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             get { return cache.AllSpecifications().Select(s => new NakedObjectSpecification(this, s)).Cast<INakedObjectSpecification>().ToArray(); }
         }
 
+        public virtual IIntrospectableSpecification[] AllIntrospectableSpecifications {
+            get { return cache.AllSpecifications().ToArray(); }
+        }
+
         public INakedObjectSpecification GetSpecification(Type type) {
             return new NakedObjectSpecification(this, LoadSpecification(type));
         }
@@ -109,7 +113,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public virtual void PopulateContributedActions(Type[] services) {
             try {
                 if (!linked) {
-                    AllSpecifications.OfType<IIntrospectableSpecification>().ForEach(s => s.PopulateAssociatedActions(services));
+                    AllIntrospectableSpecifications.ForEach(s => s.PopulateAssociatedActions(services));
                 }
             }
             finally {

@@ -39,9 +39,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private readonly PropertyInfo[] properties;
         private readonly INakedObjectReflector reflector;
 
-        private OrderSet<INakedObjectActionPeer> orderedClassActions;
-        private OrderSet<INakedObjectAssociationPeer> orderedFields;
-        private OrderSet<INakedObjectActionPeer> orderedObjectActions;
+        private INakedObjectActionPeer[] orderedClassActions;
+        private INakedObjectAssociationPeer[] orderedFields;
+        private INakedObjectActionPeer[] orderedObjectActions;
 
         public DotNetIntrospector(Type typeToIntrospect,
                                   IIntrospectableSpecification specification,
@@ -96,15 +96,15 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
         }
 
-        public OrderSet<INakedObjectAssociationPeer> Fields {
+        public INakedObjectAssociationPeer[] Fields {
             get { return orderedFields; }
         }
 
-        public OrderSet<INakedObjectActionPeer> ClassActions {
+        public INakedObjectActionPeer[] ClassActions {
             get { return orderedClassActions; }
         }
 
-        public OrderSet<INakedObjectActionPeer> ObjectActions {
+        public INakedObjectActionPeer[] ObjectActions {
             get { return orderedObjectActions; }
         }
 
@@ -164,7 +164,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
             // TODO: the calling of fieldOrder() should be a facet
             string fieldOrder = fieldOrderFacet == null ? InvokeSortOrderMethod("Field") : fieldOrderFacet.Value;
-            orderedFields = CreateOrderSet(fieldOrder, findFieldMethods);
+            //orderedFields = CreateOrderSet(fieldOrder, findFieldMethods);
+            orderedFields = findFieldMethods.ToArray();
         }
 
         public INakedObjectValidation[] IntrospectObjectValidationMethods() {
@@ -182,17 +183,21 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             var actionOrderFacet = specification.GetFacet<IActionOrderFacet>();
 
             // TODO: the calling of actionOrder() should be a facet
-            string actionOrder = actionOrderFacet == null ? InvokeSortOrderMethod("Action") : actionOrderFacet.Value;
-            orderedObjectActions = CreateOrderSet(actionOrder, findObjectActionMethods);
+            //string actionOrder = actionOrderFacet == null ? InvokeSortOrderMethod("Action") : actionOrderFacet.Value;
+            //orderedObjectActions = CreateOrderSet(actionOrder, findObjectActionMethods);
+
+            orderedObjectActions = findObjectActionMethods;
 
             // find the class actions ...
             INakedObjectActionPeer[] findClassActionMethods = FindActionMethods(MethodType.Class);
 
             // ... and the ordering of class actions
             // TODO: the calling of classActionOrder() should be a facet
-            actionOrder = InvokeSortOrderMethod("ClassAction");
+            //actionOrder = InvokeSortOrderMethod("ClassAction");
 
-            orderedClassActions = CreateOrderSet(actionOrder, findClassActionMethods);
+            //orderedClassActions = CreateOrderSet(actionOrder, findClassActionMethods);
+
+            orderedClassActions = findClassActionMethods;
         }
 
         private INakedObjectAssociationPeer[] FindAndCreateFieldPeers() {
@@ -370,11 +375,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
                 IIdentifier identifier = new IdentifierImpl((IMetadata)reflector, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
 
-                // build action & its parameters
+                // build action & its parameters          
 
                 INakedObjectActionParamPeer[] actionParams = parameterTypes.Select(pt => new DotNetNakedObjectActionParamPeer(GetSpecification(pt))).Cast<INakedObjectActionParamPeer>().ToArray();
-            
-                var action = new DotNetNakedObjectActionPeer(identifier, null, actionParams);
+
+                var action = new DotNetNakedObjectActionPeer(identifier, specification, actionParams);
 
                 // Process facets on the action & parameters
                 FacetFactorySet.Process(actionMethod, new DotnetIntrospectorMethodRemover(methods), action, NakedObjectFeatureType.Action);
@@ -406,6 +411,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 return SimpleOrderSet<T>.CreateOrderSet(order, members);
             }
             return DeweyOrderSet<T>.CreateOrderSet(members);
+
         }
 
         private string InvokeSortOrderMethod(string name) {

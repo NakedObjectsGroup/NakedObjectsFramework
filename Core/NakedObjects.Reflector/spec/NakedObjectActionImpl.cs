@@ -26,7 +26,6 @@ namespace NakedObjects.Reflector.Spec {
         private static readonly ILog Log;
         private readonly IMetadata metadata;
         private readonly INakedObjectActionPeer nakedObjectActionPeer;
-        private readonly object parameterLock = true;
         private INakedObjectActionParameter[] parameters;
 
         static NakedObjectActionImpl() {
@@ -37,6 +36,7 @@ namespace NakedObjects.Reflector.Spec {
             : base(nakedObjectActionPeer.Identifier.MemberName, nakedObjectActionPeer) {
             this.metadata = metadata;
             this.nakedObjectActionPeer = nakedObjectActionPeer;
+            BuildParameters();
         }
 
         private IActionInvocationFacet ActionInvocationFacet {
@@ -84,7 +84,6 @@ namespace NakedObjects.Reflector.Spec {
                 return false;
             }
         }
-
 
         public bool IsContributedTo(INakedObjectSpecification spec) {
             return IsContributedMethod
@@ -154,40 +153,32 @@ namespace NakedObjects.Reflector.Spec {
             nakedObjectActionPeer.RemoveFacet(facetType);
         }
 
-
-        /// <summary>
-        ///     Build lazily by <see cref="GetParameters" />
-        /// </summary>
-        // TODO :REVIEW is it a good idea to lazily load this as it a static object and more than one thread might call
         public virtual INakedObjectActionParameter[] Parameters {
-            get {
-                throw new NotImplementedException();
-                //lock (parameterLock) {
-                //    if (parameters == null) {
-                //        var list = new List<INakedObjectActionParameter>();
-                //        INakedObjectActionParamPeer[] paramPeers = nakedObjectActionPeer.Parameters;
-                //        for (int i = 0; i < paramPeers.Length; i++) {
-                //            var specification = paramPeers[i].Specification;
-
-
-                //            if (specification.IsParseable) {
-                //                list.Add(new NakedObjectActionParameterParseable(i, this, paramPeers[i]));
-                //            }
-                //            else if (specification.IsObject) {
-                //                list.Add(new OneToOneActionParameterImpl(i, this, paramPeers[i]));
-                //            }
-                //            else if (specification.IsCollection) {
-                //                list.Add(new OneToManyActionParameterImpl(i, this, paramPeers[i]));
-                //            }
-                //            else {
-                //                throw new UnknownTypeException(specification);
-                //            }
-                //        }
-                //        parameters = list.ToArray();
-                //    }
-                //    return parameters;
-                //}
+            get {              
+                return parameters;
             }
+        }
+
+        private void BuildParameters() {
+            var list = new List<INakedObjectActionParameter>();
+            INakedObjectActionParamPeer[] paramPeers = nakedObjectActionPeer.Parameters;
+            for (int i = 0; i < paramPeers.Length; i++) {
+                var specification = paramPeers[i].Specification;
+
+                if (specification.IsParseable) {
+                    list.Add(new NakedObjectActionParameterParseable(metadata, i, this, paramPeers[i]));
+                }
+                else if (specification.IsObject) {
+                    list.Add(new OneToOneActionParameterImpl(metadata, i, this, paramPeers[i]));
+                }
+                else if (specification.IsCollection) {
+                    list.Add(new OneToManyActionParameterImpl(metadata, i, this, paramPeers[i]));
+                }
+                else {
+                    throw new UnknownTypeException(specification);
+                }
+            }
+            parameters = list.ToArray();
         }
 
         public virtual INakedObjectActionParameter[] GetParameters(INakedObjectActionParameterFilter filter) {

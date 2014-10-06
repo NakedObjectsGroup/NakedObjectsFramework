@@ -35,10 +35,10 @@ namespace NakedObjects.Reflector.Spec {
         Type Type { get;  }
         string FullName { get;  }
         string ShortName { get;  }
-        IOrderSet<INakedObjectActionPeer> ObjectActions { get; }
-        IOrderSet<INakedObjectActionPeer> ContributedActions { get; }
-        IOrderSet<INakedObjectActionPeer> RelatedActions { get; }
-        IOrderSet<INakedObjectAssociationPeer> Fields { get; set; }
+        INakedObjectActionPeer[] ObjectActions { get; }
+        INakedObjectActionPeer[] ContributedActions { get; }
+        INakedObjectActionPeer[] RelatedActions { get; }
+        INakedObjectAssociationPeer[] Fields { get; set; }
         IIntrospectableSpecification[] Interfaces { get; set; }
         IIntrospectableSpecification[] Subclasses { get; set; }
         bool Service { get; set; }

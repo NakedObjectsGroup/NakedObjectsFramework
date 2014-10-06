@@ -121,7 +121,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
         ///     A staging area until we are ready to add the child sets to the collection of elements owned by the
         ///     superclass.
         /// </summary>
-        protected void AddChild(DeweyOrderSet<T> childOrderSet) {
+        public void AddChild(IOrderSet<T> childOrderSet) {
             childOrderSets.Add(childOrderSet);
         }
 

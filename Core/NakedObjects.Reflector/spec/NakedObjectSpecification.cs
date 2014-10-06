@@ -413,14 +413,14 @@ namespace NakedObjects.Reflector.Spec {
             return new[] {spec};
         }
 
-        private INakedObjectAction[] OrderActions(IOrderSet<INakedObjectActionPeer> order) {
+        private INakedObjectAction[] OrderActions(INakedObjectActionPeer[] order) {
             var actions = new List<INakedObjectAction>();
             foreach (var element in order) {
                 if (element.Peer != null) {
                     actions.Add(CreateNakedObjectAction(element.Peer));
                 }
                 else if (element.Set != null) {
-                    actions.Add(CreateNakedObjectActionSet(element.Set));
+                    //actions.Add(CreateNakedObjectActionSet(element.Set));
                 }
                 else {
                     throw new UnknownTypeException(element);
@@ -430,9 +430,9 @@ namespace NakedObjects.Reflector.Spec {
             return actions.ToArray();
         }
 
-        private NakedObjectActionSet CreateNakedObjectActionSet(IOrderSet<INakedObjectActionPeer> orderSet) {
-            return new NakedObjectActionSet(orderSet.GroupFullName.Replace(" ", ""), orderSet.GroupFullName, OrderActions(orderSet));
-        }
+        //private NakedObjectActionSet CreateNakedObjectActionSet(IOrderSet<INakedObjectActionPeer> orderSet) {
+        //    return new NakedObjectActionSet(orderSet.GroupFullName.Replace(" ", ""), orderSet.GroupFullName, OrderActions(orderSet));
+        //}
 
         private NakedObjectActionImpl CreateNakedObjectAction(INakedObjectActionPeer peer) {
             return new NakedObjectActionImpl(metadata, peer);
@@ -442,7 +442,7 @@ namespace NakedObjects.Reflector.Spec {
             return NakedObjectAssociationAbstract.CreateAssociation(metadata, peer);
         }
 
-        private INakedObjectAssociation[] OrderFields(IOrderSet<INakedObjectAssociationPeer> order) {
+        private INakedObjectAssociation[] OrderFields(INakedObjectAssociationPeer[] order) {
             var orderedFields = new List<INakedObjectAssociation>();
             foreach (var element in order) {
                 if (element.Peer != null) {
