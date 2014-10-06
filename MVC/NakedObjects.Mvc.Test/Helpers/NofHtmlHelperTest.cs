@@ -1168,7 +1168,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void ObjectEditFieldsWithInlineObject() {
             Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
-            var claim2 = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
+            var claim2 = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metadata.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
 
             claim2.DateCreated = new DateTime(2010, 5, 19);
 
@@ -1225,7 +1225,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithSummaryCollectionForTransient() {
-            var claim = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
+            var claim = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metadata.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
             claim.DateCreated = new DateTime(2010, 3, 25);
 
             string s = mocks.HtmlHelper.PropertyListEdit(claim).ToString();
@@ -1490,7 +1490,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void ParameterEditWithInlineObject() {
             Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
-            var claim2 = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Claim))).GetDomainObject<Claim>();
+            var claim2 = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metadata.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
 
             claim2.DateCreated = new DateTime(2010, 5, 18);
 

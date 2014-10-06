@@ -13,12 +13,10 @@ using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Facets.Naming.DescribedAs;
 using NakedObjects.Architecture.Facets.Naming.Named;
 using NakedObjects.Architecture.Facets.Objects.Encodeable;
-using NakedObjects.Architecture.Facets.Objects.Ident.Icon;
 using NakedObjects.Architecture.Facets.Objects.Ident.Plural;
 using NakedObjects.Architecture.Facets.Objects.Ident.Title;
 using NakedObjects.Architecture.Facets.Objects.NotPersistable;
@@ -34,13 +32,14 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.DotNet.Facets.Collections;
-using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.Spec {
 
     public class NakedObjectSpecification :  INakedObjectSpecification {
+       
+
         private readonly IMetadata metadata;
         private readonly IIntrospectableSpecification innerSpec;
         private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectSpecification));
@@ -53,6 +52,9 @@ namespace NakedObjects.Reflector.Spec {
         public NakedObjectSpecification(IMetadata metadata, IIntrospectableSpecification innerSpec) {
             this.metadata = metadata;
             this.innerSpec = innerSpec;
+
+            Assert.AssertNotNull(metadata);
+            Assert.AssertNotNull(innerSpec);
         }
 
         public bool IsSealed {
@@ -138,7 +140,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public virtual INakedObjectSpecification Superclass {
-            get { return new NakedObjectSpecification(metadata, innerSpec.Superclass); }
+            get { return  innerSpec.Superclass == null ? null : new NakedObjectSpecification(metadata, innerSpec.Superclass); }
         }
 
         public virtual INakedObjectAssociation[] Properties {
@@ -457,6 +459,23 @@ namespace NakedObjects.Reflector.Spec {
             }
             return orderedFields.ToArray();
         }
+
+        protected bool Equals(NakedObjectSpecification other) {
+            return Equals(innerSpec, other.innerSpec);
+        }
+
+        public override bool Equals(object obj) {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((NakedObjectSpecification)obj);
+        }
+
+        public override int GetHashCode() {
+            return (innerSpec != null ? innerSpec.GetHashCode() : 0);
+        }
+
+       
     }
 }
 

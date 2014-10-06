@@ -245,11 +245,11 @@ namespace NakedObjects.Reflector.Spec {
             return parameterSet ?? (IsContributedMethod ? new[] {target} : new INakedObject[0]);
         }
 
-        private bool FindServiceOnSpecOrSpecSuperclass(IHierarchical spec) {
+        private bool FindServiceOnSpecOrSpecSuperclass(INakedObjectSpecification spec) {
             if (spec == null) {
                 return false;
             }
-            if (spec == OnType) {
+            if (spec.Equals(OnType)) {
                 return true;
             }
             return FindServiceOnSpecOrSpecSuperclass(spec.Superclass);

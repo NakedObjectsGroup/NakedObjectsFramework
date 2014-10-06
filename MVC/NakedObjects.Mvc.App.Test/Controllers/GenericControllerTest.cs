@@ -250,8 +250,8 @@ namespace MvcTestApp.Tests.Controllers {
             string t1,
             string t2,
             out IDictionary<string, string> idToRawValue) {
-            INakedObjectSpecification shiftSpec = NakedObjectsFramework.Reflector.LoadSpecification(typeof (Shift));
-            INakedObjectSpecification timePeriodSpec = NakedObjectsFramework.Reflector.LoadSpecification(typeof (TimePeriod));
+            INakedObjectSpecification shiftSpec = NakedObjectsFramework.Metadata.GetSpecification(typeof (Shift));
+            INakedObjectSpecification timePeriodSpec = NakedObjectsFramework.Metadata.GetSpecification(typeof(TimePeriod));
 
             INakedObjectAssociation assocN = shiftSpec.GetProperty("Name");
             INakedObjectAssociation assocTp = shiftSpec.GetProperty("Times");
@@ -282,7 +282,7 @@ namespace MvcTestApp.Tests.Controllers {
             string activeFlag,
             string purchasingWebServiceURL,
             out IDictionary<string, string> idToRawValue) {
-            INakedObjectSpecification nakedObjectSpecification = NakedObjectsFramework.Reflector.LoadSpecification(typeof (Vendor));
+            INakedObjectSpecification nakedObjectSpecification = NakedObjectsFramework.Metadata.GetSpecification(typeof (Vendor));
             INakedObjectAssociation assocAN = nakedObjectSpecification.GetProperty("AccountNumber");
             INakedObjectAssociation assocN = nakedObjectSpecification.GetProperty("Name");
             INakedObjectAssociation assocCR = nakedObjectSpecification.GetProperty("CreditRating");
@@ -314,7 +314,7 @@ namespace MvcTestApp.Tests.Controllers {
             string salesPerson,
             string modifiedDate,
             out IDictionary<string, string> idToRawValue) {
-            INakedObjectSpecification nakedObjectSpecification = NakedObjectsFramework.Reflector.LoadSpecification(typeof (Store));
+                INakedObjectSpecification nakedObjectSpecification = NakedObjectsFramework.Metadata.GetSpecification(typeof(Store));
             INakedObjectAssociation assocSN = nakedObjectSpecification.GetProperty("Name");
             INakedObjectAssociation assocSP = nakedObjectSpecification.GetProperty("SalesPerson");
             INakedObjectAssociation assocMD = nakedObjectSpecification.GetProperty("ModifiedDate");
@@ -338,7 +338,7 @@ namespace MvcTestApp.Tests.Controllers {
             string expiryMonth,
             string expiryYear,
             out IDictionary<string, string> idToRawValue) {
-            INakedObjectSpecification nakedObjectSpecification = NakedObjectsFramework.Reflector.LoadSpecification(typeof (CreditCard));
+                INakedObjectSpecification nakedObjectSpecification = NakedObjectsFramework.Metadata.GetSpecification(typeof(CreditCard));
             INakedObjectAssociation assocCT = nakedObjectSpecification.GetProperty("CardType");
             INakedObjectAssociation assocCN = nakedObjectSpecification.GetProperty("CardNumber");
             INakedObjectAssociation assocEM = nakedObjectSpecification.GetProperty("ExpMonth");
@@ -393,19 +393,19 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private Employee TransientEmployee {
-            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Employee))).GetDomainObject<Employee>(); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metadata.GetSpecification(typeof(Employee))).GetDomainObject<Employee>(); }
         }
 
         private Vendor TransientVendor {
-            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Vendor))).GetDomainObject<Vendor>(); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metadata.GetSpecification(typeof(Vendor))).GetDomainObject<Vendor>(); }
         }
 
         private Shift TransientShift {
-            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Shift))).GetDomainObject<Shift>(); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metadata.GetSpecification(typeof(Shift))).GetDomainObject<Shift>(); }
         }
 
         private Individual TransientIndividual {
-            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Individual))).GetDomainObject<Individual>(); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metadata.GetSpecification(typeof(Individual))).GetDomainObject<Individual>(); }
         }
 
         private NotPersistedObject NotPersistedObject {
@@ -505,7 +505,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private Store TransientStore {
-            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Reflector.LoadSpecification(typeof (Store))).GetDomainObject<Store>(); }
+            get { return NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metadata.GetSpecification(typeof(Store))).GetDomainObject<Store>(); }
         }
 
 
@@ -1022,7 +1022,7 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void CrossFieldValidationFail() {
             IDictionary<string, string> idToRawvalue;
-            INakedObjectSpecification ccSpec = NakedObjectsFramework.Reflector.LoadSpecification(typeof (CreditCard));
+            INakedObjectSpecification ccSpec = NakedObjectsFramework.Metadata.GetSpecification(typeof (CreditCard));
             INakedObject cc = NakedObjectsFramework.LifecycleManager.CreateInstance(ccSpec);
 
             FormCollection form = GetFormForCeditCardEdit(cc, "Vista", "12345", "1", "2010", out idToRawvalue);
@@ -1039,7 +1039,7 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void CrossFieldValidationSuccess() {
             IDictionary<string, string> idToRawvalue;
-            INakedObjectSpecification ccSpec = NakedObjectsFramework.Reflector.LoadSpecification(typeof (CreditCard));
+            INakedObjectSpecification ccSpec = NakedObjectsFramework.Metadata.GetSpecification(typeof (CreditCard));
             INakedObject cc = NakedObjectsFramework.LifecycleManager.CreateInstance(ccSpec);
             cc.GetDomainObject<CreditCard>().Creator = new TestCreator();
 
@@ -2130,7 +2130,7 @@ namespace MvcTestApp.Tests.Controllers {
             string salesPerson,
             string modifiedDate,
             out IDictionary<string, string> idToRawValue) {
-            INakedObjectSpecification nakedObjectSpecification = NakedObjectsFramework.Reflector.LoadSpecification(typeof (Store));
+            INakedObjectSpecification nakedObjectSpecification = NakedObjectsFramework.Metadata.GetSpecification(typeof (Store));
             INakedObjectAssociation assocSN = nakedObjectSpecification.GetProperty("Name");
             INakedObjectAssociation assocSP = nakedObjectSpecification.GetProperty("SalesPerson");
             INakedObjectAssociation assocMD = nakedObjectSpecification.GetProperty("ModifiedDate");
