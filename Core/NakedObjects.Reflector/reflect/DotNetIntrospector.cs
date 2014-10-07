@@ -40,7 +40,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private readonly INakedObjectReflector reflector;
 
         private IOrderSet<INakedObjectActionPeer> orderedClassActions;
-        private INakedObjectAssociationPeer[] orderedFields;
+        private IOrderSet<INakedObjectAssociationPeer> orderedFields;
         private IOrderSet<INakedObjectActionPeer> orderedObjectActions;
 
         public DotNetIntrospector(Type typeToIntrospect,
@@ -96,7 +96,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
         }
 
-        public INakedObjectAssociationPeer[] Fields {
+        public IOrderSet<INakedObjectAssociationPeer> Fields {
             get { return orderedFields; }
         }
 
@@ -164,8 +164,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
             // TODO: the calling of fieldOrder() should be a facet
             string fieldOrder = fieldOrderFacet == null ? InvokeSortOrderMethod("Field") : fieldOrderFacet.Value;
-            //orderedFields = CreateOrderSet(fieldOrder, findFieldMethods);
-            orderedFields = findFieldMethods.ToArray();
+            orderedFields = CreateOrderSet(fieldOrder, findFieldMethods);
+           
         }
 
         public INakedObjectValidation[] IntrospectObjectValidationMethods() {

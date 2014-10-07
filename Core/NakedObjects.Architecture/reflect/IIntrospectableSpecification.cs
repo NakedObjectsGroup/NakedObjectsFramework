@@ -39,7 +39,7 @@ namespace NakedObjects.Reflector.Spec {
         IOrderSet<INakedObjectActionPeer> ObjectActions { get; }
         IDictionary<string, IOrderSet<INakedObjectActionPeer>> ContributedActions { get; }
         IDictionary<string, IOrderSet<INakedObjectActionPeer>> RelatedActions { get; }
-        INakedObjectAssociationPeer[] Fields { get; set; }
+        IOrderSet<INakedObjectAssociationPeer> Fields { get; set; }
         IIntrospectableSpecification[] Interfaces { get; set; }
         IIntrospectableSpecification[] Subclasses { get; set; }
         bool Service { get; set; }

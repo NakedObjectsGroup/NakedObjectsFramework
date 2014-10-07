@@ -453,7 +453,7 @@ namespace NakedObjects.Reflector.Spec {
             return NakedObjectAssociationAbstract.CreateAssociation(metadata, peer);
         }
 
-        private INakedObjectAssociation[] OrderFields(INakedObjectAssociationPeer[] order) {
+        private INakedObjectAssociation[] OrderFields(IOrderSet<INakedObjectAssociationPeer> order) {
             var orderedFields = new List<INakedObjectAssociation>();
             foreach (var element in order) {
                 if (element.Peer != null) {

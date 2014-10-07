@@ -156,18 +156,21 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();
         }
 
+        [NotContributedAction]
         public virtual IQueryable<MostSimple> AnActionReturnsQueryableWithParameters(int parm1, MostSimple parm2) {
             Assert.AreEqual(101, parm1);
             Assert.AreEqual(Container.Instances<MostSimple>().First(), parm2);
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2);
         }
 
+        [NotContributedAction]
         public virtual ICollection<MostSimple> AnActionReturnsCollectionWithParameters(int parm1, MostSimple parm2) {
             Assert.AreEqual(101, parm1);
             Assert.AreEqual(Container.Instances<MostSimple>().First(), parm2);
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();
         }
 
+        [NotContributedAction]
         public virtual int AnActionReturnsScalarWithParameters(int parm1, MostSimple parm2) {
             Assert.AreEqual(101, parm1);
             Assert.AreEqual(Container.Instances<MostSimple>().First(), parm2);
@@ -176,11 +179,13 @@ namespace RestfulObjects.Test.Data {
 
         [DescribedAs("an action for testing")]
         [MemberOrder(Sequence = "1")]
+        [NotContributedAction]
         public virtual void AnActionReturnsVoidWithParameters(int parm1, MostSimple parm2) {
             Assert.AreEqual(101, parm1);
             Assert.AreEqual(Container.Instances<MostSimple>().First(), parm2);
         }
 
+        [NotContributedAction]
         public virtual MostSimple AnActionReturnsObjectWithParameters(int parm1, MostSimple parm2) {
             Assert.AreEqual(101, parm1);
             Assert.AreEqual(Container.Instances<MostSimple>().First(), parm2);
@@ -188,6 +193,7 @@ namespace RestfulObjects.Test.Data {
         }
 
         [QueryOnly]
+        [NotContributedAction]
         public virtual MostSimple AnActionReturnsObjectWithParametersAnnotatedQueryOnly(int parm1, MostSimple parm2) {
             Assert.AreEqual(101, parm1);
             Assert.AreEqual(Container.Instances<MostSimple>().First(), parm2);
@@ -201,6 +207,7 @@ namespace RestfulObjects.Test.Data {
         }
 
         [Idempotent]
+        [NotContributedAction]
         public virtual MostSimple AnActionReturnsObjectWithParametersAnnotatedIdempotent(int parm1, MostSimple parm2) {
             Assert.AreEqual(101, parm1);
             Assert.AreEqual(Container.Instances<MostSimple>().First(), parm2);
@@ -239,18 +246,22 @@ namespace RestfulObjects.Test.Data {
             return new[] {parm3.ToString(CultureInfo.InvariantCulture), parm4};
         }
 
+        [NotContributedAction]
         public virtual MostSimple AnActionWithReferenceParameter(MostSimple parm2) {
             return Container.Instances<MostSimple>().Single(x => x.Id == parm2.Id);
         }
 
+        [NotContributedAction]
         public virtual MostSimple AnActionWithReferenceParameterWithChoices(MostSimple parm4) {
             return Container.Instances<MostSimple>().Single(x => x.Id == parm4.Id);
         }
 
+        [NotContributedAction]
         public virtual MostSimple AnActionWithReferenceParameterWithConditionalChoices(MostSimple parm4) {
             return Container.Instances<MostSimple>().Single(x => x.Id == parm4.Id);
         }
 
+        [NotContributedAction]
         public virtual MostSimple AnActionWithReferenceParameterWithDefault(MostSimple parm6) {
             return Container.Instances<MostSimple>().Single(x => x.Id == parm6.Id);
         }
@@ -267,6 +278,7 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().First();
         }
 
+        [NotContributedAction]
         public virtual MostSimple AnActionWithParametersWithChoicesWithDefaults(int parm1, int parm7, MostSimple parm2, MostSimple parm8) {
             return Container.Instances<MostSimple>().First();
         }
@@ -317,6 +329,7 @@ namespace RestfulObjects.Test.Data {
             return null;
         }
 
+        [NotContributedAction]
         public virtual MostSimple AnActionWithReferenceParametersWithAutoComplete(MostSimple parm0, MostSimple parm1) {
             return parm0;
         }
@@ -354,6 +367,7 @@ namespace RestfulObjects.Test.Data {
             };
         }
 
+        [NotContributedAction]
         public void AnActionWithCollectionParameterRef(IEnumerable<MostSimple> parm) {}
 
         public MostSimple[] Choices0AnActionWithCollectionParameterRef() {

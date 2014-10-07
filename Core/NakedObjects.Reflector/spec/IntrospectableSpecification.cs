@@ -70,7 +70,7 @@ namespace NakedObjects.Reflector.Spec {
 
         public IDictionary<string, IOrderSet<INakedObjectActionPeer>> RelatedActions { get; private set; }
 
-        public INakedObjectAssociationPeer[] Fields { get; set; }
+        public IOrderSet<INakedObjectAssociationPeer> Fields { get; set; }
 
         public IIntrospectableSpecification[] Interfaces { get; set; }
 
@@ -210,8 +210,8 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public void MarkAsService() {
-            if (Fields.Any(field => field.Identifier.MemberName != "Id")) {
-                string fieldNames = Fields.Where(field => field.Identifier.MemberName != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
+            if (Fields.Flattened.Any(field => field.Identifier.MemberName != "Id")) {
+                string fieldNames = Fields.Flattened.Where(field => field.Identifier.MemberName != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
                 throw new ModelException(string.Format(Resources.NakedObjects.ServiceObjectWithFieldsError, FullName, fieldNames));
             }
             Service = true;
