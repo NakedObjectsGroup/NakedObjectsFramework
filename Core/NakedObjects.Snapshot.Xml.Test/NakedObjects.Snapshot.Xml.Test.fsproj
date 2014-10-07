@@ -60,10 +60,16 @@
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <ItemGroup>
-    <Compile Include="XmlTestData.fs" />
     <Compile Include="XmlSnapshotService.fs" />
     <None Include="packages.config" />
     <None Include="app.config" />
+    <None Include="complexTestData.htm" />
+    <None Include="complexTestDataWithCollection.htm" />
+    <None Include="complexTestDataWithCollectionAnnotation.htm" />
+    <None Include="complexTestDataWithNestedReference.htm" />
+    <None Include="complexTestDataWithReference.htm" />
+    <None Include="complexTestDataWithReferenceAnnotation.htm" />
+    <None Include="simpleTestData.htm" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.FrameworkService\NakedObjects.FrameworkService.csproj">

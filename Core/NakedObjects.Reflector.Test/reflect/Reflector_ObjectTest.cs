@@ -40,8 +40,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void TestName() {
-            Assert.Fail();
-            //Assert.AreEqual(typeof (TestDomainObject).FullName, specification.FullName);
+       
+            Assert.AreEqual(typeof (TestDomainObject).FullName, specification.FullName);
         }
 
         [Test]
@@ -76,8 +76,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         [Test]
         public void TestType() {
 
-            Assert.Fail();
-            //Assert.IsTrue(specification.IsObject);
+       
+            Assert.IsTrue(specification.IsObject);
         }
 
         [Test]

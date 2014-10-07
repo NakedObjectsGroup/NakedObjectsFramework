@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using System.Collections;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Collections.Modify;
@@ -24,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public void TestCollectionFacet() {
             IFacet facet = specification.GetFacet(typeof (ICollectionFacet));
             Assert.IsNotNull(facet);
-            //        Assert.AreEqual(typeof(ArrayList).getName(), facet);
+            //Assert.AreEqual(typeof(ArrayList).getName(), facet);
         }
 
         [Test]
@@ -35,13 +36,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void TestFacets() {
-            Assert.AreEqual(18, specification.FacetTypes.Length);
+            Assert.AreEqual(19, specification.FacetTypes.Length);
         }
 
         [Test]
-        public void TestName() {
-            Assert.Fail();
-            //Assert.AreEqual(typeof (TestPojo[]).FullName, specification.FullName);
+        public void TestName() {           
+            Assert.AreEqual(typeof (TestPojo[]).FullName, specification.FullName);
         }
 
 
@@ -59,8 +59,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void TestType() {
-            Assert.Fail();
-            //Assert.IsTrue(specification.IsCollection);
+           
+            Assert.IsTrue(specification.IsCollection);
         }
 
         [Test]

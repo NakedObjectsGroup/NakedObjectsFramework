@@ -295,7 +295,7 @@ namespace NakedObjects.Reflector.Spec {
         public bool IsOfType(INakedObjectSpecification specification) {
 
 
-            if (specification == this) {
+            if (specification.Equals(this)) {
                 return true;
             }
             if (Interfaces.Any(interfaceSpec => interfaceSpec.IsOfType(specification))) {

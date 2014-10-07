@@ -39,8 +39,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void TestName() {
-            Assert.Fail();
-            //Assert.AreEqual(typeof (List<TestPojo>).FullName, specification.FullName);
+         
+            Assert.AreEqual(typeof (List<TestPojo>).FullName, specification.FullName);
         }
 
 
@@ -58,8 +58,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void TestType() {
-            Assert.Fail();
-            //Assert.IsTrue(specification.IsCollection);
+        
+            Assert.IsTrue(specification.IsCollection);
         }
 
         [Test]

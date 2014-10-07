@@ -641,7 +641,7 @@ namespace NakedObjects.Persistor.Objectstore {
             Log.DebugFormat("RecreateInstance oid: {0} hint: {1}", oid, specification);
             INakedObject adapter = manager.GetAdapterFor(oid);
             if (adapter != null) {
-                if (adapter.Specification != specification) {
+                if (!adapter.Specification.Equals(specification)) {
                     throw new AdapterException(string.Format("Mapped adapter is for a different type of object: {0}; {1}", specification.FullName, adapter));
                 }
                 return adapter;

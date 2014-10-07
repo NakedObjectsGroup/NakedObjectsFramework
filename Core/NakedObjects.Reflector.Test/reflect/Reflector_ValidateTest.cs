@@ -16,29 +16,25 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void TestSetup() {
-            Assert.Fail();
-            //Assert.AreEqual("Product", specification.ShortName);
-            //Assert.AreEqual(3, specification.Properties.Length);
+           Assert.AreEqual("Product", specification.ShortName);
+           Assert.AreEqual(3,  Metadata.GetSpecification(specification).Properties.Length);
         }
 
         [Test]
         public void ValidateMethodThatDontMatchAreIgnored() {
-            Assert.Fail();
-            //INakedObjectAction[] actions = specification.GetObjectActions();
-            //Assert.AreEqual(4, actions.Length);
+            INakedObjectAction[] actions = Metadata.GetSpecification(specification).GetObjectActions();
+            Assert.AreEqual(4, actions.Length);
         }
 
         [Test]
         public void ValidateMethodsDetected() {
-            Assert.Fail();
-            //INakedObjectValidation[] validation = specification.ValidateMethods();
-            //Assert.AreEqual(2, validation.Length);
+            INakedObjectValidation[] validation = Metadata.GetSpecification(specification).ValidateMethods();
+            Assert.AreEqual(2, validation.Length);
         }
 
         [Test]
         public void ValidateMethodsRun() {
-            Assert.Fail();
-            //INakedObjectValidation[] validation = specification.ValidateMethods();
+            INakedObjectValidation[] validation = Metadata.GetSpecification(specification).ValidateMethods();
         }
     }
 

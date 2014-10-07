@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.DotNet.Facets;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.Spec;
@@ -14,6 +15,7 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Reflect {
     public abstract class AbstractDotNetReflectorTest {
         protected IIntrospectableSpecification specification;
+        protected IMetadata Metadata;
 
         [SetUp]
         public virtual void SetUp() {
@@ -21,6 +23,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
             specification = LoadSpecification(reflector);
             specification.PopulateAssociatedActions(new Type[] {});
+            Metadata = (IMetadata) reflector;
         }
 
         protected abstract IIntrospectableSpecification LoadSpecification(DotNetReflector reflector);

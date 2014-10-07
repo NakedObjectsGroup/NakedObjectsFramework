@@ -8,7 +8,6 @@ open NakedObjects.Boot
 open Snapshot.Xml.Test
 open NakedObjects.Snapshot
 open NakedObjects.Architecture.Adapter
-open XmlTestData
 open System.Xml.Linq
 open Microsoft.Practices.Unity
 open NakedObjects.EntityObjectStore
