@@ -14,6 +14,6 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Returns an array of actions of the specified type
         /// </summary>
-        INakedObjectAction[] GetObjectActions();
+        INakedObjectAction[] GetAllActions();
     }
 }

@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
         public INakedObjectActionPeer Peer { get { return this; }}
         public IOrderSet<INakedObjectActionPeer> Set { get { return null; } }
 
-        private  bool IsContributedMethod {
+        public  bool IsContributedMethod {
             get {
                 if (Specification.Service && parameters.Any() &&
                     (!ContainsFacet(typeof(INotContributedActionFacet)) || !GetFacet<INotContributedActionFacet>().NeverContributed())) {

@@ -63,7 +63,7 @@ namespace NakedObjects.Architecture.Adapter {
         }
 
         public static INakedObjectAction[] GetActionLeafNodes(this INakedObjectSpecification spec) {
-            return spec.GetObjectActions().SelectMany(GetActionLeafNodes).ToArray();
+            return spec.GetAllActions().SelectMany(GetActionLeafNodes).ToArray();
         }
 
         public static INakedObjectAction GetActionLeafNode(this INakedObject nakedObject, string actionName) {

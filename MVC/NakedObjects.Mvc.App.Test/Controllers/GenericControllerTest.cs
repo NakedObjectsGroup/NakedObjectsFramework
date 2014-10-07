@@ -163,7 +163,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private static FormCollection GetFormForFindEmployeeByName(INakedObject employeeRepo, string firstName, string secondName) {
-            INakedObjectAction actionFindEmployeeByname = employeeRepo.Specification.GetObjectActions().Single(a => a.Id == "FindEmployeeByName");
+            INakedObjectAction actionFindEmployeeByname = employeeRepo.Specification.GetAllActions().Single(a => a.Id == "FindEmployeeByName");
 
             INakedObjectActionParameter parmFirstName = actionFindEmployeeByname.Parameters[0];
             INakedObjectActionParameter parmSecondName = actionFindEmployeeByname.Parameters[1];
@@ -178,7 +178,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private static FormCollection GetFormForFindSalesPersonByName(INakedObject salesRepo, string firstName, string secondName) {
-            INakedObjectAction action = salesRepo.Specification.GetObjectActions().Single(a => a.Id == "FindSalesPersonByName");
+            INakedObjectAction action = salesRepo.Specification.GetAllActions().Single(a => a.Id == "FindSalesPersonByName");
 
             INakedObjectActionParameter parmFirstName = action.Parameters[0];
             INakedObjectActionParameter parmSecondName = action.Parameters[1];
@@ -193,7 +193,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private static FormCollection GetFormForFindContactByName(INakedObject contactRepo, string firstName, string secondName) {
-            INakedObjectAction action = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "FindContactByName");
+            INakedObjectAction action = contactRepo.Specification.GetAllActions().Single(a => a.Id == "FindContactByName");
 
             INakedObjectActionParameter parmFirstName = action.Parameters[0];
             INakedObjectActionParameter parmSecondName = action.Parameters[1];
@@ -209,7 +209,7 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         private static FormCollection GetFormForBestSpecialOffer(INakedObject productRepo, string quantity) {
-            INakedObjectAction action = productRepo.Specification.GetObjectActions().Single(a => a.Id == "BestSpecialOffer");
+            INakedObjectAction action = productRepo.Specification.GetAllActions().Single(a => a.Id == "BestSpecialOffer");
             INakedObjectActionParameter parmQuantity = action.Parameters[0];
             string idQuantity = IdHelper.GetParameterInputId(action, parmQuantity);
             return GetForm(new Dictionary<string, string> {
@@ -218,7 +218,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private static FormCollection GetFormForChangePassword(INakedObject contact, string p1, string p2, string p3) {
-            INakedObjectAction action = contact.Specification.GetObjectActions().Single(a => a.Id == "ChangePassword");
+            INakedObjectAction action = contact.Specification.GetAllActions().Single(a => a.Id == "ChangePassword");
             INakedObjectActionParameter pp1 = action.Parameters[0];
             INakedObjectActionParameter pp2 = action.Parameters[1];
             INakedObjectActionParameter pp3 = action.Parameters[2];
@@ -236,7 +236,7 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         private static FormCollection GetFormForListProductsBySubCategory(INakedObject productRepo, string pscId) {
-            INakedObjectAction action = productRepo.Specification.GetObjectActions().Single(a => a.Id == "ListProductsBySubCategory");
+            INakedObjectAction action = productRepo.Specification.GetAllActions().Single(a => a.Id == "ListProductsBySubCategory");
             INakedObjectActionParameter parmPsc = action.Parameters[0];
             string idPsc = IdHelper.GetParameterInputId(action, parmPsc);
 
@@ -510,7 +510,7 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         private static INakedObjectAction GetAction(INakedObject owner, string id) {
-            return owner.Specification.GetObjectActions().Single(a => a.Id == id);
+            return owner.Specification.GetAllActions().Single(a => a.Id == id);
         }
 
         private static void AssertNameAndParms(ViewResult result, string name, int? count, object contextObject, INakedObjectAction contextAction, object targetObject, INakedObjectAction targetAction, string pName) {
@@ -718,7 +718,7 @@ namespace MvcTestApp.Tests.Controllers {
             INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
             INakedObject salesRepo = NakedObjectsFramework.GetAdaptedService("SalesRepository");
-            INakedObjectAction rndSpAction = salesRepo.Specification.GetObjectActions().Single(a => a.Id == "RandomSalesPerson");
+            INakedObjectAction rndSpAction = salesRepo.Specification.GetAllActions().Single(a => a.Id == "RandomSalesPerson");
             string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
@@ -740,7 +740,7 @@ namespace MvcTestApp.Tests.Controllers {
             INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
             INakedObject salesRepo = NakedObjectsFramework.GetAdaptedService("SalesRepository");
-            INakedObjectAction spAction = salesRepo.Specification.GetObjectActions().Single(a => a.Id == "FindSalesPersonByName");
+            INakedObjectAction spAction = salesRepo.Specification.GetAllActions().Single(a => a.Id == "FindSalesPersonByName");
             string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
@@ -760,7 +760,7 @@ namespace MvcTestApp.Tests.Controllers {
             INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
             INakedObject salesRepo = NakedObjectsFramework.GetAdaptedService("SalesRepository");
-            INakedObjectAction spAction = salesRepo.Specification.GetObjectActions().Single(a => a.Id == "FindSalesPersonByName");
+            INakedObjectAction spAction = salesRepo.Specification.GetAllActions().Single(a => a.Id == "FindSalesPersonByName");
             string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
@@ -777,7 +777,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         public void InvokeEditActionAsFindParmsForObjectWithParms(Store store) {
             INakedObject salesRepo = NakedObjectsFramework.GetAdaptedService("SalesRepository");
-            INakedObjectAction spAction = salesRepo.Specification.GetObjectActions().Single(a => a.Id == "FindSalesPersonByName");
+            INakedObjectAction spAction = salesRepo.Specification.GetAllActions().Single(a => a.Id == "FindSalesPersonByName");
             string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
@@ -880,7 +880,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void ActionAsFindNoParmsForActionReturnMulti() {
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
-            INakedObjectAction randomContact = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "RandomContacts");
+            INakedObjectAction randomContact = contactRepo.Specification.GetAllActions().Single(a => a.Id == "RandomContacts");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
                           "&propertyName=contactDetails" +
@@ -899,7 +899,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void ActionAsFindNoParmsForActionReturnOne() {
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
-            INakedObjectAction randomContact = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "RandomContact");
+            INakedObjectAction randomContact = contactRepo.Specification.GetAllActions().Single(a => a.Id == "RandomContact");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
                           "&propertyName=contactDetails" +
@@ -918,7 +918,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void ActionAsFindParmsForAction() {
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
-            INakedObjectAction findByName = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "FindContactByName");
+            INakedObjectAction findByName = contactRepo.Specification.GetAllActions().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
                           "&propertyName=ContactDetails" +
@@ -943,7 +943,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void ActionAsFindParmsForActionWithDefaults() {
             INakedObjectAction action = GetAction(OrderContributedActions, "FindRate");
             INakedObject orderContribAction = NakedObjectsFramework.GetAdaptedService("OrderContributedActions");
-            INakedObjectAction findByName = orderContribAction.Specification.GetObjectActions().Single(a => a.Id == "FindRate");
+            INakedObjectAction findByName = orderContribAction.Specification.GetAllActions().Single(a => a.Id == "FindRate");
             string data = "contextObjectId=" + OrderContributedActionsId +
                           "&spec=AdventureWorksModel.CurrencyRate" +
                           "&propertyName=CurrencyRate" +
@@ -1434,7 +1434,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void InvokeActionAsFindParmsForAction() {
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
-            INakedObjectAction findByName = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "FindContactByName");
+            INakedObjectAction findByName = contactRepo.Specification.GetAllActions().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
                           "&propertyName=ContactDetails" +
@@ -1453,7 +1453,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void InvokeActionAsFindParmsForActionWithParms() {
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
-            INakedObjectAction findByName = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "FindContactByName");
+            INakedObjectAction findByName = contactRepo.Specification.GetAllActions().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
                           "&propertyName=ContactDetails" +
@@ -1476,7 +1476,7 @@ namespace MvcTestApp.Tests.Controllers {
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
             IDictionary<string, string> idToRawvalue;
-            INakedObjectAction findByName = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "FindContactByName");
+            INakedObjectAction findByName = contactRepo.Specification.GetAllActions().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
                           "&propertyName=ContactDetails" +
@@ -1501,7 +1501,7 @@ namespace MvcTestApp.Tests.Controllers {
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
             INakedObject contactRepo = NakedObjectsFramework.GetAdaptedService("ContactRepository");
             IDictionary<string, string> idToRawvalue;
-            INakedObjectAction findByName = contactRepo.Specification.GetObjectActions().Single(a => a.Id == "FindContactByName");
+            INakedObjectAction findByName = contactRepo.Specification.GetAllActions().Single(a => a.Id == "FindContactByName");
             string data = "contextObjectId=" + EmployeeRepoId +
                           "&spec=AdventureWorksModel.Contact" +
                           "&propertyName=ContactDetails" +
@@ -1732,7 +1732,7 @@ namespace MvcTestApp.Tests.Controllers {
             INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
             INakedObject salesRepo = NakedObjectsFramework.GetAdaptedService("SalesRepository");
-            INakedObjectAction spAction = salesRepo.Specification.GetObjectActions().Single(a => a.Id == "FindSalesPersonByName");
+            INakedObjectAction spAction = salesRepo.Specification.GetAllActions().Single(a => a.Id == "FindSalesPersonByName");
             string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +
@@ -1756,7 +1756,7 @@ namespace MvcTestApp.Tests.Controllers {
             INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
             INakedObject salesRepo = NakedObjectsFramework.GetAdaptedService("SalesRepository");
-            INakedObjectAction spAction = salesRepo.Specification.GetObjectActions().Single(a => a.Id == "FindSalesPersonByName");
+            INakedObjectAction spAction = salesRepo.Specification.GetAllActions().Single(a => a.Id == "FindSalesPersonByName");
             string data = "contextObjectId=" + NakedObjectsFramework.GetObjectId(store) +
                           "&spec=AdventureWorksModel.SalesPerson" +
                           "&propertyName=SalesPerson" +

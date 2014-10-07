@@ -87,7 +87,7 @@ type MockNakedObjectSpecification() =
        
     interface IActionContainer with 
        
-        member x.GetObjectActions() : INakedObjectAction[] = null
+        member x.GetAllActions() : INakedObjectAction[] = null
         member x.GetRelatedServiceActions() : INakedObjectAction[] = null
        
     interface IPropertyContainer with 

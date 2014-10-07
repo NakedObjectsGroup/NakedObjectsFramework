@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void ValidateMethodThatDontMatchAreIgnored() {
-            INakedObjectAction[] actions = Metadata.GetSpecification(specification).GetObjectActions();
+            INakedObjectAction[] actions = Metadata.GetSpecification(specification).GetAllActions();
             Assert.AreEqual(4, actions.Length);
         }
 

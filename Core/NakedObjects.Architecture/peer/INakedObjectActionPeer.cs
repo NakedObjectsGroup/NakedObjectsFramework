@@ -9,6 +9,7 @@ namespace NakedObjects.Reflector.Peer {
         INakedObjectActionParamPeer[] Parameters { get; }
         bool IsFinderMethod { get;  }
         IIntrospectableSpecification ReturnType { get; }
+        bool IsContributedMethod { get; }
         bool IsContributedTo(IIntrospectableSpecification introspectableSpecification);
     }
 

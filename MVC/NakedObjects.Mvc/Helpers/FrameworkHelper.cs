@@ -29,14 +29,14 @@ namespace NakedObjects.Web.Mvc.Html {
     internal static class FrameworkHelper {
      
         public static IEnumerable<INakedObjectAction> GetActions(this INakedObjectsFramework framework, INakedObject nakedObject) {
-            return nakedObject.Specification.GetObjectActions().OfType<NakedObjectActionImpl>().Cast<INakedObjectAction>().Union(
-                        nakedObject.Specification.GetObjectActions().OfType<NakedObjectActionSet>().SelectMany(set => set.Actions)).
+            return nakedObject.Specification.GetAllActions().OfType<NakedObjectActionImpl>().Cast<INakedObjectAction>().Union(
+                        nakedObject.Specification.GetAllActions().OfType<NakedObjectActionSet>().SelectMany(set => set.Actions)).
                                Where(a => a.IsUsable(framework.Session, nakedObject, framework.LifecycleManager).IsAllowed).
                                Where(a => a.IsVisible(framework.Session, nakedObject, framework.LifecycleManager));
         }
 
         public static IEnumerable<INakedObjectAction> GetTopLevelActions(this INakedObjectsFramework framework,INakedObject nakedObject) {
-            return nakedObject.Specification.GetObjectActions().
+            return nakedObject.Specification.GetAllActions().
                                Where(a => a.IsVisible(framework.Session, nakedObject, framework.LifecycleManager)).
                                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible(framework.Session, nakedObject, framework.LifecycleManager)));
         }
@@ -228,7 +228,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectSpecification spec = framework.Metadata.GetSpecification(asArray.First());
             string id = asArray.Skip(1).First();
 
-            return spec.GetObjectActions().Single(a => a.Id == id);
+            return spec.GetAllActions().Single(a => a.Id == id);
         }
 
         public static bool IsNotPersistent(this INakedObject nakedObject) {

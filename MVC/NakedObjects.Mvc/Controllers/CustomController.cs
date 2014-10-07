@@ -267,7 +267,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         /// </example>
         protected void SetUpDefaultParameters(object domainObject, string actionName) {
             INakedObject nakedObject = NakedObjectsContext.GetNakedObject(domainObject);
-            INakedObjectAction findOrder = nakedObject.Specification.GetObjectActions().Single(x => x.Id == actionName);
+            INakedObjectAction findOrder = nakedObject.Specification.GetAllActions().Single(x => x.Id == actionName);
             SetDefaults(nakedObject, findOrder);
         }
 
@@ -367,7 +367,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private T InvokeAction<T>(INakedObject nakedObject, LambdaExpression expression, FormCollection parameters, out bool valid) {
             MethodInfo methodInfo = GetAction(expression);
-            INakedObjectAction nakedObjectAction = nakedObject.Specification.GetObjectActions().Single(a => a.Id == methodInfo.Name);
+            INakedObjectAction nakedObjectAction = nakedObject.Specification.GetAllActions().Single(a => a.Id == methodInfo.Name);
             return InvokeAction<T>(nakedObject, nakedObjectAction, parameters, out valid);
         }
 

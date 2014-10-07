@@ -185,7 +185,7 @@ namespace NakedObjects.Reflector.Spec {
             return innerSpec.ValidationMethods;
         }
 
-        public virtual INakedObjectAction[] GetObjectActions() {
+        public virtual INakedObjectAction[] GetAllActions() {
             if (combinedActions == null) {
                 var ca = new List<INakedObjectAction>();
                 ca.AddRange(ObjectActions);

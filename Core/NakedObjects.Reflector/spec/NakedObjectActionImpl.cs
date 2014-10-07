@@ -76,13 +76,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public virtual bool IsContributedMethod {
-            get {
-                if (OnType.IsService && ParameterCount > 0 &&
-                    (!ContainsFacet(typeof (INotContributedActionFacet)) || !GetFacet<INotContributedActionFacet>().NeverContributed())) {
-                    return Parameters.Any(p => p.IsObject || p.IsCollection);
-                }
-                return false;
-            }
+            get { return nakedObjectActionPeer.IsContributedMethod; }
         }
 
         public bool IsContributedTo(INakedObjectSpecification spec) {

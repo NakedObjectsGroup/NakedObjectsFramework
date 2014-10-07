@@ -75,7 +75,7 @@ namespace NakedObjects.Architecture.Adapter {
                 throw new NotImplementedException();
             }
 
-            public INakedObjectAction[] GetObjectActions() {
+            public INakedObjectAction[] GetAllActions() {
                 throw new NotImplementedException();
             }
 

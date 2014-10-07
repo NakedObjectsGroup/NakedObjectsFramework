@@ -526,7 +526,7 @@ namespace NakedObjects.Persistor.Objectstore {
             Log.DebugFormat("GetServicesWithVisibleActions of: {0}", serviceType);
             return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
                 Select(sw => manager.GetServiceAdapter(sw.Service)).
-                Where(no => no.Specification.GetObjectActions().Any(a => a.IsVisible(session, no, persistor))).ToArray();
+                Where(no => no.Specification.GetAllActions().Any(a => a.IsVisible(session, no, persistor))).ToArray();
         }
 
         public virtual INakedObject[] GetServices(ServiceTypes serviceType) {

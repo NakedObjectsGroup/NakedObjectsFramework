@@ -30,11 +30,11 @@ namespace NakedObjects.Xat {
 
         public ITestAction[] Actions {
             get {
-                List<ITestAction> actions = NakedObject.Specification.GetObjectActions().
+                List<ITestAction> actions = NakedObject.Specification.GetAllActions().
                     OfType<NakedObjectActionImpl>().
                     Select(x => factory.CreateTestAction(x, this)).ToList();
 
-                foreach (NakedObjectActionSet set in NakedObject.Specification.GetObjectActions().OfType<NakedObjectActionSet>()) {
+                foreach (NakedObjectActionSet set in NakedObject.Specification.GetAllActions().OfType<NakedObjectActionSet>()) {
                     actions.AddRange(set.Actions.Select(x => factory.CreateTestAction(set.GetName(persistor), x, this)));
                 }
 
@@ -69,7 +69,7 @@ namespace NakedObjects.Xat {
 
         public virtual string GetObjectActionOrder() {
             INakedObjectSpecification specification = NakedObject.Specification;
-            INakedObjectAction[] actions = specification.GetObjectActions();
+            INakedObjectAction[] actions = specification.GetAllActions();
             var order = new StringBuilder();
             order.Append(AppendActions(actions));
             return order.ToString();

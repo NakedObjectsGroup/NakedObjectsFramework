@@ -2649,13 +2649,13 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static INakedObjectAction GetActionByMethodInfo(this HtmlHelper html, INakedObject nakedObject, MethodInfo methodInfo) {
-            return nakedObject.Specification.GetObjectActions().
+            return nakedObject.Specification.GetAllActions().
                                Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(html.Framework().Session, nakedObject, html.Framework().LifecycleManager));
         }
 
         internal static MvcHtmlString ObjectActionOnTransient(this HtmlHelper html, object target, MethodInfo methodInfo) {
             INakedObject nakedObject = html.Framework().GetNakedObject(target);
-            INakedObjectAction action = nakedObject.Specification.GetObjectActions().
+            INakedObjectAction action = nakedObject.Specification.GetAllActions().
                                                     Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(html.Framework().Session, nakedObject, html.Framework().LifecycleManager));
 
             return action == null ? MvcHtmlString.Create("") : html.ObjectActionOnTransient(new ActionContext(nakedObject, action));
@@ -2698,7 +2698,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         internal static MvcHtmlString ObjectActionAsDialog(this HtmlHelper html, object target, MethodInfo methodInfo) {
             INakedObject nakedObject = html.Framework().GetNakedObject(target);
-            INakedObjectAction action = nakedObject.Specification.GetObjectActions().
+            INakedObjectAction action = nakedObject.Specification.GetAllActions().
                                                     Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(html.Framework().Session, nakedObject, html.Framework().LifecycleManager));
 
             return action == null ? MvcHtmlString.Create("") : html.ObjectActionAsDialog(new ActionContext(nakedObject, action));
