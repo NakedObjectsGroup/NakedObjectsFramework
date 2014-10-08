@@ -141,7 +141,9 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public virtual INakedObjectSpecification Superclass {
-            get { return  innerSpec.Superclass == null ? null : new NakedObjectSpecification(metadata, innerSpec.Superclass); }
+            get {
+                return  innerSpec.Superclass == null ? null : metadata.GetSpecification(innerSpec.Superclass);
+            }
         }
 
         public virtual INakedObjectAssociation[] Properties {
@@ -214,11 +216,11 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public INakedObjectSpecification[] Interfaces {
-            get { return innerSpec.Interfaces.Select(i => new NakedObjectSpecification(metadata, i)).Cast<INakedObjectSpecification>().ToArray(); }
+            get { return innerSpec.Interfaces.Select(i => metadata.GetSpecification(i)).ToArray(); }
         }
 
         public INakedObjectSpecification[] Subclasses {
-            get { return innerSpec.Subclasses.Select(i => new NakedObjectSpecification(metadata, i)).Cast<INakedObjectSpecification>().ToArray(); }
+            get { return innerSpec.Subclasses.Select(i => metadata.GetSpecification(i)).ToArray(); }
         }
 
         public bool IsAbstract {

@@ -186,7 +186,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             string actionOrder = actionOrderFacet == null ? InvokeSortOrderMethod("Action") : actionOrderFacet.Value;
             orderedObjectActions = CreateOrderSet(actionOrder, findObjectActionMethods);
 
-            //orderedObjectActions = findObjectActionMethods;
+         
 
             // find the class actions ...
             INakedObjectActionPeer[] findClassActionMethods = FindActionMethods(MethodType.Class);
@@ -197,7 +197,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
             orderedClassActions = CreateOrderSet(actionOrder, findClassActionMethods);
 
-            //orderedClassActions = findClassActionMethods;
+           
         }
 
         private INakedObjectAssociationPeer[] FindAndCreateFieldPeers() {

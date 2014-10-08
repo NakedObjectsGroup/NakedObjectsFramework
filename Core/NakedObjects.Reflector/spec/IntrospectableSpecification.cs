@@ -253,7 +253,7 @@ namespace NakedObjects.Reflector.Spec {
                         if (matchingServiceActions.Any()) {
                             var os = SimpleOrderSet<INakedObjectActionPeer>.CreateOrderSet("", matchingServiceActions);
 
-                            ContributedActions.Add(serviceSpecification.Identifier.ClassName, os);
+                            ContributedActions.Add(serviceSpecification.ShortName, os);
                         }
                     }
                 }
