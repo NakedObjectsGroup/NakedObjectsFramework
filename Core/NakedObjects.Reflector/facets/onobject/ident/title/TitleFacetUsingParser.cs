@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
 
         #region ITitleFacet Members
 
-        public string GetTitle(INakedObject nakedObject, INakedObjectManager manager) {
+        public string GetTitle(INakedObject nakedObject) {
             if (nakedObject == null || nakedObject.Object == null) {
                 return null;
             }

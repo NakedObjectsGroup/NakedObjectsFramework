@@ -21,10 +21,10 @@ namespace NakedObjects.Architecture.Facets.Objects.Ident.Title {
         #region ITitleFacet Members
 
         public virtual string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager manager) {
-            return GetTitle(nakedObject, manager);
+            return GetTitle(nakedObject);
         }
 
-        public abstract string GetTitle(INakedObject nakedObject, INakedObjectManager manager);
+        public abstract string GetTitle(INakedObject nakedObject);
 
         #endregion
     }

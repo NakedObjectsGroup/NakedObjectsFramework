@@ -26,9 +26,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
 
         #endregion
 
-        public override string GetTitle(INakedObject nakedObject, INakedObjectManager manager) {
+        public override string GetTitle(INakedObject nakedObject) {
             object obj = InvokeUtils.Invoke(method, nakedObject);
-            return obj == null ? null : manager.CreateAdapter(obj, null, null).TitleString();
+            return obj == null ? null : obj.ToString();
         }
     }
 

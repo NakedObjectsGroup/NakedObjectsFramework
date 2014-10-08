@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Facets.Naming.Named;
 using NakedObjects.Architecture.Facets.Objects.Ident.Icon;
 using NakedObjects.Architecture.Facets.Objects.Ident.Plural;
+using NakedObjects.Architecture.Facets.Objects.Ident.Title;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Facets.Types;
 using NakedObjects.Architecture.Reflect;
@@ -44,8 +45,8 @@ namespace NakedObjects.Reflector.Spec {
             Subclasses = new IIntrospectableSpecification[] {};
             ValidationMethods = new INakedObjectValidation[] {};
             //ObjectActions = new INakedObjectActionPeer[]{};
-            ContributedActions = new Dictionary<string, IOrderSet<INakedObjectActionPeer>>();
-            RelatedActions = new Dictionary<string, IOrderSet<INakedObjectActionPeer>>();
+            ContributedActions = new List<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>>();
+            RelatedActions = new List<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>>();
         }
 
       
@@ -66,9 +67,9 @@ namespace NakedObjects.Reflector.Spec {
 
         public IOrderSet<INakedObjectActionPeer> ObjectActions { get; private set; }
 
-        public IDictionary<string, IOrderSet<INakedObjectActionPeer>> ContributedActions { get; private set; }
+        public IList<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>> ContributedActions { get; private set; }
 
-        public IDictionary<string, IOrderSet<INakedObjectActionPeer>> RelatedActions { get; private set; }
+        public IList<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>> RelatedActions { get; private set; }
 
         public IOrderSet<INakedObjectAssociationPeer> Fields { get; set; }
 
@@ -251,13 +252,35 @@ namespace NakedObjects.Reflector.Spec {
                         INakedObjectActionPeer[] matchingServiceActions = serviceSpecification.ObjectActions.Flattened.Where(serviceAction => serviceAction.IsContributedTo(this)).ToArray();
 
                         if (matchingServiceActions.Any()) {
-                            var os = SimpleOrderSet<INakedObjectActionPeer>.CreateOrderSet("", matchingServiceActions);
+                            IOrderSet<INakedObjectActionPeer> os = SimpleOrderSet<INakedObjectActionPeer>.CreateOrderSet("", matchingServiceActions);
+                            var name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
+                            var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
+                            var t = new Tuple<string, string, IOrderSet<INakedObjectActionPeer>>(id, name, os);
 
-                            ContributedActions.Add(serviceSpecification.ShortName, os);
+                            ContributedActions.Add(t);
                         }
                     }
                 }
             }
+        }
+
+        private string SingularName {
+            get { return GetFacet<INamedFacet>().Value; }
+        }
+
+        private string UntitledName {
+            get { return Resources.NakedObjects.Untitled + SingularName; }
+        }
+
+
+        private string DefaultTitle() {
+            return Service ? SingularName : UntitledName;
+        }
+
+        public string GetTitle(INakedObject nakedObject) {
+            var titleFacet = GetFacet<ITitleFacet>();
+            string title = titleFacet == null ? null : titleFacet.GetTitle(nakedObject);
+            return title ?? DefaultTitle();
         }
 
         private void PopulateRelatedActions(Type[] services) {
@@ -279,9 +302,12 @@ namespace NakedObjects.Reflector.Spec {
                 }
 
                 if (matchingActions.Any()) {
-                    var os = SimpleOrderSet<INakedObjectActionPeer>.CreateOrderSet("", matchingActions.ToArray());
+                    IOrderSet<INakedObjectActionPeer> os = SimpleOrderSet<INakedObjectActionPeer>.CreateOrderSet("", matchingActions.ToArray());
+                    var name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
+                    var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
+                    var t = new Tuple<string, string, IOrderSet<INakedObjectActionPeer>>(id, name, os);
 
-                    RelatedActions.Add(serviceSpecification.Identifier.ClassName, os);
+                    RelatedActions.Add(t);
                 }
             }
         }

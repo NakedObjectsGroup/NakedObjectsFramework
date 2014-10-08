@@ -18,7 +18,6 @@ using NakedObjects.Architecture.Facets.Naming.DescribedAs;
 using NakedObjects.Architecture.Facets.Naming.Named;
 using NakedObjects.Architecture.Facets.Objects.Encodeable;
 using NakedObjects.Architecture.Facets.Objects.Ident.Plural;
-using NakedObjects.Architecture.Facets.Objects.Ident.Title;
 using NakedObjects.Architecture.Facets.Objects.NotPersistable;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Facets.Objects.Value;
@@ -334,23 +333,13 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public string GetTitle(INakedObject nakedObject, INakedObjectManager manager) {
-
-           
-                var titleFacet = GetFacet<ITitleFacet>();
-         
-            if (titleFacet != null) {
-                return titleFacet.GetTitle(nakedObject, manager) ?? DefaultTitle();
-            }
-            return DefaultTitle();
+        public string GetTitle(INakedObject nakedObject) {
+            return innerSpec.GetTitle(nakedObject);
         }
 
         public string GetInvariantString(INakedObject nakedObject) {
             var parser = GetFacet<IParseableFacet>();
-            if (parser != null) {
-                return parser.InvariantString(nakedObject);
-            }
-            return null;
+            return parser == null ? null : parser.InvariantString(nakedObject);
         }
 
         public string GetIconName(INakedObject forObject) {
@@ -393,10 +382,6 @@ namespace NakedObjects.Reflector.Spec {
             return ShortName + postfix;
         }
 
-        private string DefaultTitle() {
-            return IsService ? SingularName : UntitledName;
-        }
-
         private string TypeNameFor() {
             return IsCollection ? "Collection" : "Object";
         }
@@ -435,16 +420,16 @@ namespace NakedObjects.Reflector.Spec {
             return actions.ToArray();
         }
 
-        private INakedObjectAction[] OrderActions(IDictionary<string, IOrderSet<INakedObjectActionPeer>> order) {
-            return order.Select(element => CreateNakedObjectActionSet(element.Key, element.Value)).Cast<INakedObjectAction>().ToArray();
+        private INakedObjectAction[] OrderActions(IList<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>> order) {
+            return order.Select(element => CreateNakedObjectActionSet(element.Item1, element.Item2, element.Item3)).Cast<INakedObjectAction>().ToArray();
         }
 
         private NakedObjectActionSet CreateNakedObjectActionSet(IOrderSet<INakedObjectActionPeer> orderSet) {
             return new NakedObjectActionSet(orderSet.GroupFullName.Replace(" ", ""), orderSet.GroupFullName, OrderActions(orderSet));
         }
 
-        private NakedObjectActionSet CreateNakedObjectActionSet(string name, IOrderSet<INakedObjectActionPeer> orderSet) {
-            return new NakedObjectActionSet(name.Replace(" ", ""), name, OrderActions(orderSet));
+        private NakedObjectActionSet CreateNakedObjectActionSet(string id, string name, IOrderSet<INakedObjectActionPeer> orderSet) {
+            return new NakedObjectActionSet(id, name, OrderActions(orderSet));
         }
 
         private NakedObjectActionImpl CreateNakedObjectAction(INakedObjectActionPeer peer) {

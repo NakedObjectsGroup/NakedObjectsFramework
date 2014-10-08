@@ -30,15 +30,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
 
         #endregion
 
-        public override string GetTitle(INakedObject nakedObject, INakedObjectManager manager) {
+        public override string GetTitle(INakedObject nakedObject) {
             return nakedObject.Object.ToString();
         }
 
         public override string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager manager) {
             if (maskMethod == null) {
-                return GetTitle(nakedObject, manager);
+                return GetTitle(nakedObject);
             }
-            return (string) maskMethod.Invoke(nakedObject.Object, new[] {mask});
+            return (string) maskMethod.Invoke(nakedObject.Object, new object[] {mask});
         }
     }
 

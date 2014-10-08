@@ -21,7 +21,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Ident.Title {
     /// <seealso cref="IIconFacet" />
     /// <seealso cref="IPluralFacet" />
     public interface ITitleFacet : IFacet {
-        string GetTitle(INakedObject nakedObject, INakedObjectManager manager);
+        string GetTitle(INakedObject nakedObject);
 
         string GetTitleWithMask(string mask, INakedObject nakedObject, INakedObjectManager manager);
     }

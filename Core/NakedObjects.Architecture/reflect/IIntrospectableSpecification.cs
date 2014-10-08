@@ -37,8 +37,8 @@ namespace NakedObjects.Reflector.Spec {
         string FullName { get;  }
         string ShortName { get;  }
         IOrderSet<INakedObjectActionPeer> ObjectActions { get; }
-        IDictionary<string, IOrderSet<INakedObjectActionPeer>> ContributedActions { get; }
-        IDictionary<string, IOrderSet<INakedObjectActionPeer>> RelatedActions { get; }
+        IList<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>> ContributedActions { get; }
+        IList<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>> RelatedActions { get; }
         IOrderSet<INakedObjectAssociationPeer> Fields { get; set; }
         IIntrospectableSpecification[] Interfaces { get; set; }
         IIntrospectableSpecification[] Subclasses { get; set; }
@@ -50,6 +50,7 @@ namespace NakedObjects.Reflector.Spec {
         bool IsParseable { get;  }
         bool IsOfType(IIntrospectableSpecification specification);
         string GetIconName(INakedObject forObject);
+        string GetTitle(INakedObject nakedObject);
     }
 
 

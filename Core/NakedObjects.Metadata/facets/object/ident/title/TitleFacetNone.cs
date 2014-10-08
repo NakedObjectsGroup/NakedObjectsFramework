@@ -17,7 +17,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Ident.Title {
             get { return true; }
         }
 
-        public override string GetTitle(INakedObject nakedObject, INakedObjectManager manager) {
+        public override string GetTitle(INakedObject nakedObject) {
             return null;
         }
     }

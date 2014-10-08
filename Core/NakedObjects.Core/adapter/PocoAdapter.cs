@@ -120,7 +120,7 @@ namespace NakedObjects.Core.Adapter {
                 if (Specification.IsCollection && !Specification.IsParseable) {
                     return CollectionTitleString(Specification.GetFacet<ICollectionFacet>());
                 }
-                return Specification.GetTitle(this, manager) ?? DefaultTitle;
+                return Specification.GetTitle(this) ?? DefaultTitle;
             }
             catch (Exception e) {
                 Log.Error("Exception on ToString", e);
