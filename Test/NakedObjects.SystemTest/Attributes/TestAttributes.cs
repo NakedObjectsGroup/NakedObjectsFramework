@@ -1061,7 +1061,7 @@ namespace NakedObjects.SystemTest.Attributes
             var service = (TestServiceNotContributedAction) GetTestService(typeof(TestServiceNotContributedAction)).NakedObject.Object;
             var obj = NewTestObject<Notcontributedaction1>().GetDomainObject();
             var adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(obj, null, null);
-            var actions = adapter.Specification.GetObjectActions();
+            var actions = adapter.Specification.GetAllActions();
 
             Assert.AreEqual(1, actions.Count());
             Assert.IsTrue(actions[0] is NakedObjectActionSet);

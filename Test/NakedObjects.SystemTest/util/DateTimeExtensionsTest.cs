@@ -76,14 +76,16 @@ namespace NakedObjects.SystemTest.Util {
                 Select(x => DateTime.Now.AddDays(x)).ToList().
                 ForEach(x => Assert.IsFalse(x.IsAfterToday()));
         }
-
+#pragma warning disable 618
         [TestMethod]
         public void TestIsAtLeastADayAfter() {
             var wellKnownDay = new DateTime(2002, 4, 4);
 
             Enumerable.Range(1, 9).
                 Select(x => wellKnownDay.AddDays(x)).ToList().
+
                 ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
+
 
             Enumerable.Range(-10, 9).
                 Select(x => wellKnownDay.AddDays(x)).ToList().
@@ -145,6 +147,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(((DateTime?) null).IsAtLeastADayBefore(null));
             Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(null));
         }
+#pragma warning restore 618
 
         [TestMethod]
         public void TestIsBeforeNullableToday() {

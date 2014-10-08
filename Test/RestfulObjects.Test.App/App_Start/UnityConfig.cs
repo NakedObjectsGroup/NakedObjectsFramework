@@ -51,15 +51,6 @@ namespace RestfulObjects.Test.App
         #endregion
 
 
-        public static Type[] Services() {
-            return new[] {
-                typeof (RestDataRepository),
-                typeof (WithActionService),
-                typeof (ContributorService),
-                typeof (TestTypeCodeMapper)
-            };
-        }
-
         private static object[] MenuServices {
             get {
                 return new object[] {
@@ -87,17 +78,23 @@ namespace RestfulObjects.Test.App
             }
         }
 
+        public static Type[] Services() {
+            return new[] {
+                typeof (RestDataRepository),
+                typeof (WithActionService),
+                typeof (ContributorService),
+                typeof (TestTypeCodeMapper)
+            };
+        }
+
 
         /// <summary>Registers the type mappings with the Unity container.</summary>
         /// <param name="container">The unity container to configure.</param>
         /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
-        public static void RegisterTypes(IUnityContainer container)
-        {
+        public static void RegisterTypes(IUnityContainer container) {
             // NOTE: To load from web.config uncomment the line below. Make sure to add a Microsoft.Practices.Unity.Configuration to the using statements.
             // container.LoadConfiguration();
-
-            Database.SetInitializer(new CodeFirstInitializer());
 
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
@@ -113,7 +110,7 @@ namespace RestfulObjects.Test.App
 
             config.UsingCodeFirstContext(() => new CodeFirstContext("RestTest"));
 
-            container.RegisterInstance<IEntityObjectStoreConfiguration>( config, new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, new ContainerControlledLifetimeManager());
 
             var serviceConfig = new ServicesConfiguration();
 
@@ -123,6 +120,7 @@ namespace RestfulObjects.Test.App
 
             container.RegisterInstance<IServicesConfiguration>(serviceConfig, new ContainerControlledLifetimeManager());
 
+            container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new ContainerControlledLifetimeManager());
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
 
@@ -133,6 +131,11 @@ namespace RestfulObjects.Test.App
             container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectStore, EntityObjectStore>(new PerResolveLifetimeManager());
             container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerResolveLifetimeManager());
+
+            container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerResolveLifetimeManager());
+            container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerResolveLifetimeManager());
+            container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerResolveLifetimeManager());
+            container.RegisterType<IServicesManager, ServicesManager>(new PerResolveLifetimeManager());
 
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerResolveLifetimeManager());
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerResolveLifetimeManager());
