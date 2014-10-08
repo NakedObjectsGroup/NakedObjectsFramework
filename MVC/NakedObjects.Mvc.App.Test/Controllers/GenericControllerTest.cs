@@ -825,7 +825,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertStateInModelStateDictionary(result, "OrderContributedActions-CreateNewOrder-CopyHeaderFromLastOrder-Input", testValue.ToString());
         }
 
-        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
+       
         public void ActionAsFindParmsForActionUpdatesViewState(bool testValue) {
             INakedObjectAction action = GetAction(OrderContrib, "CreateNewOrder");
 
@@ -935,7 +935,7 @@ namespace MvcTestApp.Tests.Controllers {
             AssertNameAndParms(result, "FormWithFinderDialog", null, EmployeeRepo.Object, action, contactRepo.Object, findByName, "ContactDetails");
         }
 
-        [Test]
+        [Test, Ignore] // Fix by local cache of spec/action etc in MetaModelManager
         public void ActionAsFindParmsForActionUpdatesViewState() {
             ActionAsFindParmsForActionUpdatesViewState(true);
             ActionAsFindParmsForActionUpdatesViewState(false);
