@@ -20,7 +20,7 @@ let persistor =
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
-    let m = (new Mock<IMetamodel>()).Object
+    let m = mockMetamodelManager.Object
 
     c.UsingEdmxContext "Model1Container" |> ignore
     //c.ContextConfiguration <- [|(box ModelConfig :?> EntityContextConfiguration)|]

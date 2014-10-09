@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Properties.Access;
 using NakedObjects.Architecture.Facets.Properties.Set;
@@ -23,7 +24,7 @@ namespace NakedObjects.Reflector.Spec {
     public class OneToManyAssociationImpl : NakedObjectAssociationAbstract, IOneToManyAssociation {
         private readonly bool isASet;
 
-        public OneToManyAssociationImpl(IMetamodel metamodel, INakedObjectAssociationPeer association)
+        public OneToManyAssociationImpl(IMetamodelManager metamodel, INakedObjectAssociationPeer association)
             : base(metamodel, association) {
             isASet = association.ContainsFacet<IIsASetFacet>();
         }

@@ -4,9 +4,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Actions.Choices;
@@ -26,12 +26,12 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public abstract class NakedObjectActionParameterAbstract : INakedObjectActionParameter {
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private readonly int number;
         private readonly INakedObjectAction parentAction;
         private readonly INakedObjectActionParamPeer peer;
 
-        protected internal NakedObjectActionParameterAbstract(IMetamodel metamodel, int number, INakedObjectAction nakedObjectAction, INakedObjectActionParamPeer peer) {
+        protected internal NakedObjectActionParameterAbstract(IMetamodelManager metamodel, int number, INakedObjectAction nakedObjectAction, INakedObjectActionParamPeer peer) {
             this.metamodel = metamodel;
             this.number = number;
             parentAction = nakedObjectAction;

@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Persist;
 namespace NakedObjects.Architecture.Facets.Collections.Modify {
     public interface ICollectionFacet : IFacet {
         bool IsASet { get; }
+        bool IsQueryable { get; }
         bool Contains(INakedObject collection, INakedObject element);
         void Init(INakedObject collection, INakedObject[] initData);
         INakedObject Page(int page, int size, INakedObject collection, ILifecycleManager persistor, bool forceEnumerable);

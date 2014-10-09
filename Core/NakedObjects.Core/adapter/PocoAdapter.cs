@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Persist;
@@ -24,7 +25,7 @@ namespace NakedObjects.Core.Adapter {
         private static readonly ILog Log;
         private string defaultTitle;
         private IOid oid;
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private readonly ISession session;
         private readonly IObjectPersistor persistor;
         private readonly INakedObjectManager manager;
@@ -38,7 +39,7 @@ namespace NakedObjects.Core.Adapter {
             Log = LogManager.GetLogger(typeof (PocoAdapter));
         }
 
-        public PocoAdapter(IMetamodel metamodel, ISession session, IObjectPersistor persistor,  ILifecycleManager lifecycleManager, object poco, IOid oid) {
+        public PocoAdapter(IMetamodelManager metamodel, ISession session, IObjectPersistor persistor, ILifecycleManager lifecycleManager, object poco, IOid oid) {
             Assert.AssertNotNull(metamodel);
             //Assert.AssertNotNull(session);
 

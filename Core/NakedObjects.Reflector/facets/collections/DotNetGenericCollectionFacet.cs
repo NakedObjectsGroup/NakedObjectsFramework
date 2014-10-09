@@ -29,6 +29,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             return AsGenericCollection(collection).AsQueryable();
         }
 
+        public override bool IsQueryable {
+            get { return false; }
+        }
+
         public override bool Contains(INakedObject collection, INakedObject element) {
             return AsGenericCollection(collection).Contains((T) element.Object);
         }

@@ -7,6 +7,7 @@
 
 using System;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets {
     public enum IdentifierDepth {
@@ -32,7 +33,7 @@ namespace NakedObjects.Architecture.Facets {
 
         string[] MemberParameterNames { get; }
 
-        INakedObjectSpecification[] MemberParameterSpecifications { get; }
+        IIntrospectableSpecification[] MemberParameterSpecifications { get; }
 
         /// <summary>
         ///     Returns <c>true</c> if the member is for a property or collection; <c>false</c> if for an action

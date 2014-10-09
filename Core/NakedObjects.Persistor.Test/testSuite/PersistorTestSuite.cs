@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
@@ -42,7 +43,7 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
 
-        private IMetamodel Metamodel {
+        private IMetamodelManager Metamodel {
             get {
                 return framework.Metamodel;
             }

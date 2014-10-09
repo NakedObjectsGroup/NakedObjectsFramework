@@ -4,6 +4,7 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Adapter;
@@ -21,7 +22,7 @@ namespace NakedObjects.EntityObjectStore {
             this.version = version;
         }
 
-        public ConcurrencyCheckVersion(IMetamodel metamodel, string[] strings) {
+        public ConcurrencyCheckVersion(IMetamodelManager metamodel, string[] strings) {
             Assert.AssertNotNull(metamodel);
             var helper = new StringDecoderHelper(metamodel, strings);
 

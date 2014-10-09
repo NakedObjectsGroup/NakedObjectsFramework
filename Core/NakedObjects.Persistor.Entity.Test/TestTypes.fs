@@ -5,7 +5,7 @@ module NakedObjects.TestTypes
 
 open NUnit.Framework
 open NakedObjects.EntityObjectStore
-open NakedObjects.Architecture.Util
+open NakedObjects.Architecture.Component
 open NakedObjects.Architecture.Reflect
 open NakedObjects.Architecture.Spec
 open NakedObjects.Architecture.Resolve
@@ -21,6 +21,7 @@ open NakedObjects.Architecture.Security
 open NakedObjects.Core.Context
 open NakedObjects.Core.Reflect
 open NakedObjects.Reflector.Spec
+open Moq;
 
 let injectedObjects = new List<Object>()
 
@@ -39,9 +40,9 @@ type MockReflector() =
         member x.AllIntrospectableSpecifications with get() = [||]
     interface IMetamodel with 
         member x.AllSpecifications with get() = [||]
-        member x.GetSpecification(typ : Type) : INakedObjectSpecification = null
-        member x.GetSpecification(str : string) : INakedObjectSpecification = null
-        member x.GetSpecification(spec : IIntrospectableSpecification) : INakedObjectSpecification = null
+        member x.GetSpecification(typ : Type) : IIntrospectableSpecification = null
+        member x.GetSpecification(str : string) : IIntrospectableSpecification = null
+     
       
 
 
@@ -116,6 +117,8 @@ type MockNakedObjectSpecification() =
         member x.RemoveFacet (facet : IFacet) = ()
         member x.RemoveFacet (facetType : Type) = ()
 
+let mockMetamodelManager = new Mock<IMetamodelManager>()
+
 type MockNakedObject(obj, oid) =
     let domainObject = obj 
     let mutable rsm : ResolveStateMachine = null
@@ -126,7 +129,7 @@ type MockNakedObject(obj, oid) =
         member x.Oid 
             with get() : IOid =
                 match eoid with 
-                | null -> eoid <- ((box (new EntityOid(new MockReflector(), obj.GetType(), [|box 0|], true))) :?> IOid)
+                | null -> eoid <- ((box (new EntityOid(mockMetamodelManager.Object, obj.GetType(), [|box 0|], true))) :?> IOid)
                 | _ -> ()
                 eoid         
         member x.ResolveState 

@@ -6,6 +6,7 @@ using System;
 using System.Data.Entity.Core;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
@@ -14,22 +15,22 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityOid : IOid, IEncodedToStrings {
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private int cachedHashCode;
         private string cachedToString;
         private EntityOid previous;
 
         #region Constructors
 
-        public EntityOid(IMetamodel metamodel, Type type, object[] key, bool isTransient)
+        public EntityOid(IMetamodelManager metamodel, Type type, object[] key, bool isTransient)
             : this(metamodel, type.FullName, key) {     
             IsTransient = isTransient;
             CacheState();
         }
 
-        public EntityOid(IMetamodel metamodel, Type type, object[] key) : this(metamodel, type.FullName, key) { }
+        public EntityOid(IMetamodelManager metamodel, Type type, object[] key) : this(metamodel, type.FullName, key) { }
 
-        public EntityOid(IMetamodel metamodel, string typeName, object[] key) {
+        public EntityOid(IMetamodelManager metamodel, string typeName, object[] key) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
             TypeName = TypeNameUtils.EncodeTypeName(typeName);
@@ -38,9 +39,9 @@ namespace NakedObjects.EntityObjectStore {
             CacheState();
         }
 
-        public EntityOid(IMetamodel metamodel, object pojo, object[] key) : this(metamodel, pojo.GetType(), key) { }
+        public EntityOid(IMetamodelManager metamodel, object pojo, object[] key) : this(metamodel, pojo.GetType(), key) { }
 
-        public EntityOid(IMetamodel metamodel, string[] strings) {
+        public EntityOid(IMetamodelManager metamodel, string[] strings) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
             var helper = new StringDecoderHelper(metamodel, strings);

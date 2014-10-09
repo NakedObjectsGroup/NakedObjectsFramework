@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Util;
+using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.Peer {
     public class IdentifierImpl : IIdentifier {
@@ -67,9 +68,9 @@ namespace NakedObjects.Reflector.Peer {
             get { return isField; }
         }
 
-        public virtual INakedObjectSpecification[] MemberParameterSpecifications {
+        public virtual IIntrospectableSpecification[] MemberParameterSpecifications {
             get {
-                var specifications = new List<INakedObjectSpecification>();
+                var specifications = new List<IIntrospectableSpecification>();
 
                 parameterTypes.ForEach(x => specifications.Add(metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(x))));
                 return specifications.ToArray();

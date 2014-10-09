@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets.Objects.TypicalLength;
 using NakedObjects.Architecture.Facets.Propparam.MultiLine;
 using NakedObjects.Architecture.Facets.Propparam.Validate.MaxLength;
@@ -13,7 +14,7 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class NakedObjectActionParameterParseable : NakedObjectActionParameterAbstract, IParseableEntryActionParameter {
-        public NakedObjectActionParameterParseable(IMetamodel metamodel, int index, INakedObjectAction action, INakedObjectActionParamPeer peer)
+        public NakedObjectActionParameterParseable(IMetamodelManager metamodel, int index, INakedObjectAction action, INakedObjectActionParamPeer peer)
             : base(metamodel, index, action, peer) {}
 
         public virtual int NoLines {

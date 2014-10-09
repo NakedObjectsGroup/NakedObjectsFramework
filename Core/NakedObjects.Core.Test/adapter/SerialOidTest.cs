@@ -7,7 +7,7 @@
 
 using System;
 using Moq;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Persist;
 using NUnit.Framework;
 
@@ -16,7 +16,7 @@ namespace NakedObjects.Core {
     public class SerialOidTest {
         [Test]
         public void TestEquals() {
-            var r = new Mock<IMetamodel>().Object;
+            var r = new Mock<IMetamodelManager>().Object;
             SerialOid oid1 = SerialOid.CreateTransient(r, 123, typeof (object).FullName);
             SerialOid oid2 = SerialOid.CreateTransient(r, 123, typeof (object).FullName);
             SerialOid oid3 = SerialOid.CreateTransient(r, 321, typeof (object).FullName);

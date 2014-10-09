@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Contributed;
 using NakedObjects.Architecture.Facets.Actions.Executed;
@@ -24,7 +25,7 @@ using NakedObjects.Reflector.Peer;
 namespace NakedObjects.Reflector.Spec {
     public class NakedObjectActionImpl : NakedObjectMemberSessionAware, INakedObjectAction {
         private static readonly ILog Log;
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private readonly INakedObjectActionPeer nakedObjectActionPeer;
         private INakedObjectActionParameter[] parameters;
 
@@ -32,7 +33,7 @@ namespace NakedObjects.Reflector.Spec {
             Log = LogManager.GetLogger(typeof (NakedObjectActionImpl));
         }
 
-        public NakedObjectActionImpl(IMetamodel metamodel, INakedObjectActionPeer nakedObjectActionPeer)
+        public NakedObjectActionImpl(IMetamodelManager metamodel, INakedObjectActionPeer nakedObjectActionPeer)
             : base(nakedObjectActionPeer.Identifier.MemberName, nakedObjectActionPeer) {
             this.metamodel = metamodel;
             this.nakedObjectActionPeer = nakedObjectActionPeer;

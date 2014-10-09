@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
@@ -30,7 +31,7 @@ namespace NakedObjects.Core.Persist {
             ObjectCollection
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor,  IMetamodel metamodel, ISession session,  CollectionMemento otherMemento, object[] selectedObjects) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor,  IMetamodelManager metamodel, ISession session,  CollectionMemento otherMemento, object[] selectedObjects) {
             Assert.AssertNotNull(lifecycleManager);
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(otherMemento);
@@ -46,7 +47,7 @@ namespace NakedObjects.Core.Persist {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, IMetamodel metamodel, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, IMetamodelManager metamodel, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
             Assert.AssertNotNull(lifecycleManager);
             Assert.AssertNotNull(metamodel);
             this.lifecycleManager = lifecycleManager;
@@ -61,7 +62,7 @@ namespace NakedObjects.Core.Persist {
             }
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, IMetamodel metamodel, ISession session, string[] strings) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, IMetamodelManager metamodel, ISession session, string[] strings) {
             Assert.AssertNotNull(lifecycleManager);
             Assert.AssertNotNull(metamodel);
             this.lifecycleManager = lifecycleManager;

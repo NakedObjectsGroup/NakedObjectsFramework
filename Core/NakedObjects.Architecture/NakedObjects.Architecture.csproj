@@ -342,6 +342,7 @@
     <Compile Include="reflect\INakedObjectReflector.cs" />
     <Compile Include="reflect\INakedObjectReflectorAware.cs" />
     <Compile Include="reflect\IOneToManyFeature.cs" />
+    <Compile Include="reflect\ReflectionException.cs" />
     <Compile Include="resolveStateMachine\Events.cs" />
     <Compile Include="resolveStateMachine\IResolveEvent.cs" />
     <Compile Include="resolveStateMachine\IResolveState.cs" />

@@ -4,7 +4,7 @@
 
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Adapter;
@@ -12,12 +12,12 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Persist {
     public class ViewModelOid : IOid, IEncodedToStrings {
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private int cachedHashCode;
         private string cachedToString;
         private ViewModelOid previous;
-       
-        public ViewModelOid(IMetamodel metamodel, INakedObjectSpecification specification) {
+
+        public ViewModelOid(IMetamodelManager metamodel, INakedObjectSpecification specification) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
             IsTransient = false;
@@ -26,7 +26,7 @@ namespace NakedObjects.Core.Persist {
             CacheState();
         }
 
-        public ViewModelOid(IMetamodel metamodel, string[] strings) {
+        public ViewModelOid(IMetamodelManager metamodel, string[] strings) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
             var helper = new StringDecoderHelper(metamodel, strings);

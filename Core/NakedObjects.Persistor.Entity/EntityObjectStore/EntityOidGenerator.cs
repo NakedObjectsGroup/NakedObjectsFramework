@@ -5,17 +5,18 @@
 using System.Threading;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityOidGenerator : IOidGenerator {
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityOidGenerator));
         private static long transientId;
 
-        public EntityOidGenerator(IMetamodel metamodel) {
+        public EntityOidGenerator(IMetamodelManager metamodel) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
         }

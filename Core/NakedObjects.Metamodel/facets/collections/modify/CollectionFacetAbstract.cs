@@ -25,6 +25,7 @@ namespace NakedObjects.Architecture.Facets.Collections.Modify {
 
         #region ICollectionFacet Members
 
+        public abstract bool IsQueryable { get; }
         public abstract bool Contains(INakedObject collection, INakedObject element);
         public abstract void Init(INakedObject nakedObject, INakedObject[] initData);
         public abstract INakedObject Page(int page, int size, INakedObject collection, ILifecycleManager persistor, bool forceEnumerable);

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Facets.Naming.DescribedAs;
@@ -30,7 +31,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.DotNet.Facets.Collections;
 using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
@@ -40,7 +40,7 @@ namespace NakedObjects.Reflector.Spec {
     public class NakedObjectSpecification :  INakedObjectSpecification {
        
 
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodelManager;
         private readonly IIntrospectableSpecification innerSpec;
         private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectSpecification));
         private INakedObjectAction[] objectActions;
@@ -49,11 +49,11 @@ namespace NakedObjects.Reflector.Spec {
         private INakedObjectAction[] relatedActions;
         private INakedObjectAction[] combinedActions;
 
-        public NakedObjectSpecification(IMetamodel metamodel, IIntrospectableSpecification innerSpec) {
-            this.metamodel = metamodel;
+        public NakedObjectSpecification(IMetamodelManager metamodelManager, IIntrospectableSpecification innerSpec) {
+            this.metamodelManager = metamodelManager;
             this.innerSpec = innerSpec;
 
-            Assert.AssertNotNull(metamodel);
+            Assert.AssertNotNull(metamodelManager);
             Assert.AssertNotNull(innerSpec);
         }
 
@@ -141,7 +141,7 @@ namespace NakedObjects.Reflector.Spec {
 
         public virtual INakedObjectSpecification Superclass {
             get {
-                return  innerSpec.Superclass == null ? null : metamodel.GetSpecification(innerSpec.Superclass);
+                return  innerSpec.Superclass == null ? null : metamodelManager.GetSpecification(innerSpec.Superclass);
             }
         }
 
@@ -215,11 +215,11 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public INakedObjectSpecification[] Interfaces {
-            get { return innerSpec.Interfaces.Select(i => metamodel.GetSpecification(i)).ToArray(); }
+            get { return innerSpec.Interfaces.Select(i => metamodelManager.GetSpecification(i)).ToArray(); }
         }
 
         public INakedObjectSpecification[] Subclasses {
-            get { return innerSpec.Subclasses.Select(i => metamodel.GetSpecification(i)).ToArray(); }
+            get { return innerSpec.Subclasses.Select(i => metamodelManager.GetSpecification(i)).ToArray(); }
         }
 
         public bool IsAbstract {
@@ -264,10 +264,7 @@ namespace NakedObjects.Reflector.Spec {
         public bool IsQueryable {
             get {
                 var collectionFacet = innerSpec.GetFacet<ICollectionFacet>();
-                if (collectionFacet != null && collectionFacet.GetType().IsGenericType) {
-                    return collectionFacet.GetType().GetGenericTypeDefinition() == typeof (DotNetGenericIQueryableFacet<>);
-                }
-                return false;
+                return collectionFacet != null && collectionFacet.IsQueryable;
             }
         }
 
@@ -376,7 +373,7 @@ namespace NakedObjects.Reflector.Spec {
             Type type = TypeUtils.GetType(FullName);
 
             if (type.IsGenericType) {
-                postfix = type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + sep + metamodel.GetSpecification(y).UniqueShortName(sep));
+                postfix = type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + sep + metamodelManager.GetSpecification(y).UniqueShortName(sep));
             }
 
             return ShortName + postfix;
@@ -433,11 +430,11 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         private NakedObjectActionImpl CreateNakedObjectAction(INakedObjectActionPeer peer) {
-            return new NakedObjectActionImpl(metamodel, peer);
+            return new NakedObjectActionImpl(metamodelManager, peer);
         }
 
         private INakedObjectAssociation CreateNakedObjectField(INakedObjectAssociationPeer peer) {
-            return NakedObjectAssociationAbstract.CreateAssociation(metamodel, peer);
+            return NakedObjectAssociationAbstract.CreateAssociation(metamodelManager, peer);
         }
 
         private INakedObjectAssociation[] OrderFields(IOrderSet<INakedObjectAssociationPeer> order) {

@@ -175,6 +175,17 @@
     <Compile Include="security\IAuthenticatorInstaller.cs" />
     <Compile Include="security\SimpleSession.cs" />
     <Compile Include="service\ServiceUtils.cs" />
+    <Compile Include="spec\NakedObjectActionImpl.cs" />
+    <Compile Include="spec\NakedObjectActionParameterAbstract.cs" />
+    <Compile Include="spec\NakedObjectActionParameterParseable.cs" />
+    <Compile Include="spec\NakedObjectActionSet.cs" />
+    <Compile Include="spec\NakedObjectAssociationAbstract.cs" />
+    <Compile Include="spec\NakedObjectMemberSessionAware.cs" />
+    <Compile Include="spec\NakedObjectSpecification.cs" />
+    <Compile Include="spec\OneToManyActionParameterImpl.cs" />
+    <Compile Include="spec\OneToManyAssociationImpl.cs" />
+    <Compile Include="spec\OneToOneActionParameterImpl.cs" />
+    <Compile Include="spec\OneToOneAssociationImpl.cs" />
     <Compile Include="system\IFixturesInstaller.cs" />
     <Compile Include="system\InitialisationException.cs" />
     <Compile Include="system\IInstaller.cs" />

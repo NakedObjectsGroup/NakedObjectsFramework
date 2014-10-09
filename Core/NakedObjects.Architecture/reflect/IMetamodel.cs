@@ -6,18 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
     public interface IMetamodel {
-        INakedObjectSpecification[] AllSpecifications { get; }
+        IIntrospectableSpecification[] AllSpecifications { get; }
 
-        INakedObjectSpecification GetSpecification(Type type);
+        IIntrospectableSpecification GetSpecification(Type type);
 
-        INakedObjectSpecification GetSpecification(string name);
+        IIntrospectableSpecification GetSpecification(string name);
 
-        INakedObjectSpecification GetSpecification(IIntrospectableSpecification spec);
+       
     }
 
     // Copyright (c) Naked Objects Group Ltd.

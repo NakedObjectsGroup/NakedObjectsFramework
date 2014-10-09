@@ -66,7 +66,7 @@ namespace NakedObjects.Xat {
         protected virtual ITestObjectFactory TestObjectFactoryClass {
             get {
                 if (testObjectFactory == null) {
-                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.Reflector, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager);
+                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager);
                 }
                 return testObjectFactory;
             }

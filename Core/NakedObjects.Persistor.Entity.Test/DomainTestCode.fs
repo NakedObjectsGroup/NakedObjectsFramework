@@ -535,7 +535,7 @@ let CanGetManyToOneReference (persistor : EntityObjectStore) =
     
 let CanRemoteResolve (persistor : EntityObjectStore) =
    let keys =  [|box 54002; box 51409|]  
-   let key = new EntityOid(new MockReflector(), typeof<SalesOrderDetail>, keys, false) 
+   let key = new EntityOid(mockMetamodelManager.Object, typeof<SalesOrderDetail>, keys, false) 
    let obj = persistor.GetObjectByKey(key, typeof<SalesOrderDetail>) 
    let nakedObj = GetOrAddAdapterForTest obj key
    if nakedObj.ResolveState.IsResolvable() then        
@@ -560,7 +560,7 @@ let CanDetectConcurrency (persistor : EntityObjectStore) =
         let u = new SimpleUpdateNotifier()
         let i = new DotNetDomainObjectContainerInjector()
         let r = (new Mock<INakedObjectReflector>()).Object
-        let m = (new Mock<IMetamodel>()).Object
+        let m = mockMetamodelManager.Object
         c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
         let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
         setupPersistorForTesting p
@@ -623,7 +623,7 @@ let ConcurrencyNoCustomOnUpdatingError (persistor : EntityObjectStore) =
         let u = new SimpleUpdateNotifier()
         let i = new DotNetDomainObjectContainerInjector()
         let r = (new Mock<INakedObjectReflector>()).Object
-        let m = (new Mock<IMetamodel>()).Object
+        let m = mockMetamodelManager.Object
         c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
         let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
         setupPersistorForTesting p

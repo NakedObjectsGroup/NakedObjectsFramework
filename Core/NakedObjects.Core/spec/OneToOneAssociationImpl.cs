@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets.AutoComplete;
 using NakedObjects.Architecture.Facets.Objects.Aggregated;
 using NakedObjects.Architecture.Facets.Properties.Access;
@@ -28,7 +29,7 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class OneToOneAssociationImpl : NakedObjectAssociationAbstract, IOneToOneAssociation {
-        public OneToOneAssociationImpl(IMetamodel metamodel, INakedObjectAssociationPeer association)
+        public OneToOneAssociationImpl(IMetamodelManager metamodel, INakedObjectAssociationPeer association)
             : base(metamodel, association) {}
 
         #region IOneToOneAssociation Members

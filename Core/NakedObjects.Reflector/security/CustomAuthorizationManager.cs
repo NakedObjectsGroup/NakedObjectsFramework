@@ -87,8 +87,9 @@ namespace NakedObjects.Security {
         }
 
         private object CreateAuthorizer(object authorizer, ILifecycleManager persistor) {
-            return persistor.CreateObject(Metamodel.GetSpecification(authorizer.GetType())); 
+           // return persistor.CreateObject(Metamodel.GetSpecification(authorizer.GetType())); 
             //return Reflector.LoadSpecification(authorizer.GetType()).CreateObject(persistor);
+            throw new NotImplementedException();
         }
 
         //TODO:  Change return type to INamespaceAuthorizer when TypeAuthorization has been obsoleted.

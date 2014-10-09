@@ -5,6 +5,7 @@
 using System;
 using Moq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets.Objects.Encodeable;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Persist;
@@ -22,7 +23,7 @@ namespace NakedObjects.Reflector.DotNet {
         private ParseableFacetUsingParser<T> parseableFacet;
         protected ILifecycleManager persistor = new Mock<ILifecycleManager>().Object;
         protected INakedObjectReflector reflector = new Mock<INakedObjectReflector>().Object;
-        protected IMetamodel metamodel = new Mock<IMetamodel>().Object;
+        protected IMetamodelManager metamodel = new Mock<IMetamodelManager>().Object;
         private ValueSemanticsProviderAbstract<T> value;
 
         protected void SetValue(ValueSemanticsProviderAbstract<T> newValue) {

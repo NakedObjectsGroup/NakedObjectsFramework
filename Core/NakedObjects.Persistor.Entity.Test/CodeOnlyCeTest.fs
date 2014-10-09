@@ -17,7 +17,7 @@ open Moq
 open NakedObjects.Architecture.Reflect
 
 let codeOnlyCePersistor =
-    let r = new MockReflector()  
+    let r = mockMetamodelManager.Object
     let c = new EntityObjectStoreConfiguration()
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()

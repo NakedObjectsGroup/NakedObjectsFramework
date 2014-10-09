@@ -4,6 +4,7 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
@@ -12,7 +13,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Persist {
     public sealed class SerialOid : IOid, IEncodedToStrings {
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private const bool Persistent = false;
         private const bool Transient = true;
         private readonly string typeName;
@@ -24,7 +25,7 @@ namespace NakedObjects.Core.Persist {
         private SerialOid previous;
         private long serialNo;
 
-        private SerialOid(IMetamodel metamodel, long serialNo, string typeName, bool isTransient) {
+        private SerialOid(IMetamodelManager metamodel, long serialNo, string typeName, bool isTransient) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
             this.serialNo = serialNo;
@@ -34,7 +35,7 @@ namespace NakedObjects.Core.Persist {
         }
 
 
-        public SerialOid(IMetamodel metamodel,  string[] strings) {
+        public SerialOid(IMetamodelManager metamodel, string[] strings) {
             Assert.AssertNotNull(metamodel);
 
             this.metamodel = metamodel;
@@ -114,11 +115,11 @@ namespace NakedObjects.Core.Persist {
 
         #endregion
 
-        public static SerialOid CreatePersistent(IMetamodel reflector,  long serialNo, string typeName) {
+        public static SerialOid CreatePersistent(IMetamodelManager reflector, long serialNo, string typeName) {
             return new SerialOid(reflector, serialNo, typeName, Persistent);
         }
 
-        public static SerialOid CreateTransient(IMetamodel reflector, long serialNo, string typeName) {
+        public static SerialOid CreateTransient(IMetamodelManager reflector, long serialNo, string typeName) {
             return new SerialOid(reflector, serialNo, typeName, Transient);
         }
 

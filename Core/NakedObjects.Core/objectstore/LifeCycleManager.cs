@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Web;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Aggregated;
 using NakedObjects.Architecture.Facets.Objects.ViewModel;
@@ -32,15 +33,16 @@ using NakedObjects.Core.Service;
 using NakedObjects.Core.Util;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Persistor.Transaction;
+using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Persistor.Objectstore {
     public class NakedObjectFactory {
         private ILifecycleManager persistor;
-        private IMetamodel metamodel;
+        private IMetamodelManager metamodel;
         private ISession session;
 
-        public void Initialize(IMetamodel metamodel, ISession session, ILifecycleManager persistor) {
+        public void Initialize(IMetamodelManager metamodel, ISession session, ILifecycleManager persistor) {
             this.metamodel = metamodel;
             this.session = session;
             this.persistor = persistor;
@@ -54,6 +56,32 @@ namespace NakedObjects.Persistor.Objectstore {
             return new PocoAdapter(metamodel, session, persistor, persistor, obj, oid);
         }
     }
+
+    public class MetamodelManager : IMetamodelManager {
+        private readonly IMetamodel metamodel;
+
+        public MetamodelManager(IMetamodel metamodel) {
+            this.metamodel = metamodel;
+        }
+
+        public virtual INakedObjectSpecification[] AllSpecifications {
+            get { return metamodel.AllSpecifications.Select(s => new NakedObjectSpecification(this, s)).Cast<INakedObjectSpecification>().ToArray(); }
+        }
+
+        public INakedObjectSpecification GetSpecification(Type type) {
+            return new NakedObjectSpecification(this, metamodel.GetSpecification(type));
+        }
+
+        public INakedObjectSpecification GetSpecification(string name) {
+            return new NakedObjectSpecification(this, metamodel.GetSpecification(name));
+        }
+
+        public INakedObjectSpecification GetSpecification(IIntrospectableSpecification spec) {
+            return new NakedObjectSpecification(this, metamodel.GetSpecification(spec.Type));
+        }
+    }
+
+
 
     public class ObjectPersistor : IObjectPersistor {
         private static readonly ILog Log;
@@ -255,14 +283,14 @@ namespace NakedObjects.Persistor.Objectstore {
         private readonly IIdentityMap identityMap;
         private readonly NakedObjectFactory nakedObjectFactory;
         private readonly IOidGenerator oidGenerator;
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private readonly ISession session;
 
         static NakedObjectManager() {
             Log = LogManager.GetLogger(typeof (NakedObjectManager));
         }
 
-        public NakedObjectManager(IMetamodel metamodel, ISession session, IIdentityMap identityMap, IOidGenerator oidGenerator, NakedObjectFactory nakedObjectFactory) {
+        public NakedObjectManager(IMetamodelManager metamodel, ISession session, IIdentityMap identityMap, IOidGenerator oidGenerator, NakedObjectFactory nakedObjectFactory) {
             this.metamodel = metamodel;
             this.session = session;
             this.identityMap = identityMap;
@@ -553,7 +581,7 @@ namespace NakedObjects.Persistor.Objectstore {
         private readonly INakedObjectManager manager;
         private readonly IObjectPersistor objectPersistor;
         private readonly IPersistAlgorithm persistAlgorithm;
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private readonly IServicesManager servicesManager;
         private readonly ISession session;
         private readonly INakedObjectTransactionManager transactionManager;
@@ -563,7 +591,7 @@ namespace NakedObjects.Persistor.Objectstore {
         }
 
         public LifeCycleManager(ISession session,
-                                IMetamodel metamodel,
+                                IMetamodelManager metamodel,
                                 INakedObjectStore objectStore,
                                 IPersistAlgorithm persistAlgorithm, 
                                 IOidGenerator oidGenerator,
@@ -591,10 +619,7 @@ namespace NakedObjects.Persistor.Objectstore {
             this.persistAlgorithm = persistAlgorithm;
             this.injector = injector;
 
-            this.session = session;
-            this.metamodel = metamodel;
-            this.persistAlgorithm = persistAlgorithm;
-            this.injector = injector;
+         
 
             nakedObjectFactory.Initialize(metamodel, session, this);
 

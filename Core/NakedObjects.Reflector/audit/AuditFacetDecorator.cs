@@ -66,11 +66,14 @@ namespace NakedObjects.Reflector.Audit {
                 identifier = underlyingFacet.FacetHolder.Identifier;
             }
 
+
+
             private bool IsQueryOnly {
                 get {
                     if (!isQueryOnly.HasValue) {
-                        INakedObjectAction action = metamodel.GetSpecification(identifier.ClassName).GetActionLeafNodes().FirstOrDefault(a => a.Id == identifier.MemberName);
-                        isQueryOnly = action.ReturnType.IsQueryable || action.ContainsFacet<IQueryOnlyFacet>();
+                        //INakedObjectAction action = metamodel.GetSpecification(identifier.ClassName).GetActionLeafNodes().FirstOrDefault(a => a.Id == identifier.MemberName);
+                        //isQueryOnly = action.ReturnType.IsQueryable || action.ContainsFacet<IQueryOnlyFacet>();
+                        throw new NotImplementedException();
                     }
                     return isQueryOnly.Value;
                 }

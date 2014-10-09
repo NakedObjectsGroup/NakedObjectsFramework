@@ -5,15 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
-    public class OneToOneActionParameterImpl : NakedObjectActionParameterAbstract, IOneToOneFeature {
-        public OneToOneActionParameterImpl(IMetamodel metamodel, int index, INakedObjectAction actionImpl, INakedObjectActionParamPeer peer)
+    public class OneToManyActionParameterImpl : NakedObjectActionParameterAbstract, IOneToManyFeature {
+        public OneToManyActionParameterImpl(IMetamodelManager metamodel, int index, INakedObjectAction actionImpl, INakedObjectActionParamPeer peer)
             : base(metamodel, index, actionImpl, peer) {}
 
-        public override bool IsObject {
+        public override bool IsCollection {
             get { return true; }
         }
     }

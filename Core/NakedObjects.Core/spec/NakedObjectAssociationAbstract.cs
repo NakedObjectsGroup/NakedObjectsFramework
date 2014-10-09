@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets.AutoComplete;
 using NakedObjects.Architecture.Facets.Disable;
 using NakedObjects.Architecture.Facets.Objects.Immutable;
@@ -23,10 +24,10 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
     public abstract class NakedObjectAssociationAbstract : NakedObjectMemberAbstract, INakedObjectAssociation {
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private readonly INakedObjectSpecification specification;
 
-        protected NakedObjectAssociationAbstract(IMetamodel metamodel, INakedObjectAssociationPeer association)
+        protected NakedObjectAssociationAbstract(IMetamodelManager metamodel, INakedObjectAssociationPeer association)
             : base(association.Identifier.MemberName, association) {
             this.metamodel = metamodel;
             specification = Metamodel.GetSpecification(association.Specification);
@@ -40,7 +41,7 @@ namespace NakedObjects.Architecture.Reflect {
             get { return ContainsFacet(typeof (IAutoCompleteFacet)); }
         }
 
-        public IMetamodel Metamodel {
+        public IMetamodelManager Metamodel {
             get { return metamodel; }
         }
 
@@ -152,7 +153,7 @@ namespace NakedObjects.Architecture.Reflect {
             return null;
         }
 
-        public static INakedObjectAssociation CreateAssociation(IMetamodel metamodel, INakedObjectAssociationPeer peer) {
+        public static INakedObjectAssociation CreateAssociation(IMetamodelManager metamodel, INakedObjectAssociationPeer peer) {
             if (peer.IsOneToOne) {
                 return new OneToOneAssociationImpl(metamodel, peer);
             }

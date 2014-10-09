@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets.Actions.Invoke;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Persist;
@@ -18,17 +19,17 @@ namespace NakedObjects.Xat {
     internal class TestAction : ITestAction {
         private readonly INakedObjectAction action;
         private readonly ITestObjectFactory factory;
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetamodelManager metamodelManager;
         private readonly ISession session;
         private readonly ILifecycleManager persistor;
         private readonly ITestHasActions owningObject;
 
-        public TestAction(INakedObjectReflector reflector, ISession session, ILifecycleManager persistor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory)
-            : this(reflector, session, persistor, string.Empty, action, owningObject, factory) {}
+        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager persistor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory)
+            : this(metamodelManager, session, persistor, string.Empty, action, owningObject, factory) {}
 
-        public TestAction(INakedObjectReflector reflector, ISession session, ILifecycleManager persistor, string contributor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory) {
+        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager persistor, string contributor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory) {
             SubMenu = contributor;
-            this.reflector = reflector;
+            this.metamodelManager = metamodelManager;
             this.session = session;
             this.persistor = persistor;
             this.owningObject = owningObject;
@@ -53,7 +54,7 @@ namespace NakedObjects.Xat {
         public bool MatchParameters(Type[] typestoMatch) {
             if (action.Parameters.Count() == typestoMatch.Length) {
                 int i = 0;
-                return action.Parameters.All(x => x.Specification.IsOfType(((IMetamodel) reflector).GetSpecification(typestoMatch[i++])));
+                return action.Parameters.All(x => x.Specification.IsOfType(metamodelManager.GetSpecification(typestoMatch[i++])));
             }
             return false;
         }

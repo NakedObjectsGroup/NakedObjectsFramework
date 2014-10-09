@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
@@ -15,6 +16,7 @@ using NakedObjects.Objects;
 namespace NakedObjects.Service {
     public class NakedObjectsFramework : INakedObjectsFramework {
         private readonly IAuthorizationManager authorizationManager;
+        private readonly IMetamodelManager metamodelManager;
         private readonly IContainerInjector injector;
         private readonly IMessageBroker messageBroker;
         private readonly ILifecycleManager lifecycleManager;
@@ -34,6 +36,7 @@ namespace NakedObjects.Service {
                                      IObjectPersistor persistor,
                                      INakedObjectReflector reflector,
                                      IAuthorizationManager authorizationManager,
+                                     IMetamodelManager metamodelManager,
                                      IContainerInjector injector) {
             this.messageBroker = messageBroker;
             this.updateNotifier = updateNotifier;
@@ -44,6 +47,7 @@ namespace NakedObjects.Service {
             this.persistor = persistor;
             this.reflector = reflector;
             this.authorizationManager = authorizationManager;
+            this.metamodelManager = metamodelManager;
             this.injector = injector;
             injector.Framework = this;
         }
@@ -86,8 +90,8 @@ namespace NakedObjects.Service {
             get { return reflector; }
         }
 
-        public IMetamodel Metamodel {
-            get { return (IMetamodel)reflector; }
+        public IMetamodelManager Metamodel {
+            get { return metamodelManager; }
         }
 
         public IAuthorizationManager AuthorizationManager {

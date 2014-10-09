@@ -4,6 +4,7 @@
 
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Util;
@@ -13,15 +14,15 @@ namespace NakedObjects.Core.Persist {
     ///     Generates OIDs based on the system clock
     /// </summary>
     public class SimpleOidGenerator : IOidGenerator {
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private readonly long start;
         private long persistentSerialNumber;
         private long transientSerialNumber;
 
-        public SimpleOidGenerator(IMetamodel metamodel)
+        public SimpleOidGenerator(IMetamodelManager metamodel)
             : this(metamodel, 0L) {}
 
-        public SimpleOidGenerator(IMetamodel metamodel, long start) {
+        public SimpleOidGenerator(IMetamodelManager metamodel, long start) {
             Assert.AssertNotNull(metamodel);
          
             this.metamodel = metamodel;

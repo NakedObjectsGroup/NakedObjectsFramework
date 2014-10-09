@@ -18,7 +18,7 @@ open System.Security.Principal
 open NakedObjects.Reflector.DotNet
 
 let multiDatabasePersistor =   
-    let r = new MockReflector()
+    let r = mockMetamodelManager.Object
     let c = new EntityObjectStoreConfiguration()
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()

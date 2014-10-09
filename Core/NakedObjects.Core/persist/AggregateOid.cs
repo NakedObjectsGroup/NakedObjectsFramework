@@ -4,6 +4,7 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
@@ -12,11 +13,11 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Persist {
     public class AggregateOid : IOid, IEncodedToStrings {
         private readonly string fieldName;
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private readonly IOid parentOid;
         private readonly string typeName;
 
-        public AggregateOid(IMetamodel metamodel, IOid oid, string id, string typeName) {
+        public AggregateOid(IMetamodelManager metamodel, IOid oid, string id, string typeName) {
             Assert.AssertNotNull(metamodel);
 
             this.metamodel = metamodel;
@@ -25,7 +26,7 @@ namespace NakedObjects.Core.Persist {
             this.typeName = typeName;
         }
 
-        public AggregateOid(IMetamodel metamodel, string[] strings) {
+        public AggregateOid(IMetamodelManager metamodel, string[] strings) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
             var helper = new StringDecoderHelper(metamodel, strings);

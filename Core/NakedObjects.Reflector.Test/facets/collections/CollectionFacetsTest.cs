@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Persist;
@@ -24,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
 
         private readonly Mock<ILifecycleManager> mockPersistor = new Mock<ILifecycleManager>();
         private readonly ILifecycleManager persistor;
-        private readonly IMetamodel metamodel = new Mock<IMetamodel>().Object;
+        private readonly IMetamodelManager metamodel = new Mock<IMetamodelManager>().Object;
         private readonly ISession session = new Mock<ISession>().Object;
         private readonly IOid oid = new Mock<IOid>().Object;
 

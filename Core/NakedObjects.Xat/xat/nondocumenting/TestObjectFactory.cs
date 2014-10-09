@@ -4,18 +4,19 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Xat {
     public class TestObjectFactory : ITestObjectFactory {
-        private readonly INakedObjectReflector reflector;
+        private readonly IMetamodelManager metamodelManager;
       
         private readonly ILifecycleManager persistor;
 
-        public TestObjectFactory(INakedObjectReflector reflector, ISession session, ILifecycleManager persistor) {
-            this.reflector = reflector;
+        public TestObjectFactory(IMetamodelManager metamodelManager, ISession session, ILifecycleManager persistor) {
+            this.metamodelManager = metamodelManager;
             this.Session = session;
             this.persistor = persistor;
         }
@@ -55,11 +56,11 @@ namespace NakedObjects.Xat {
         }
 
         public ITestAction CreateTestAction(INakedObjectAction action, ITestHasActions owningObject) {
-            return new TestAction(reflector, Session, persistor, action, owningObject, this);
+            return new TestAction(metamodelManager, Session, persistor, action, owningObject, this);
         }
 
         public ITestAction CreateTestAction(string contributor, INakedObjectAction action, ITestHasActions owningObject) {
-            return new TestAction(reflector, Session, persistor, contributor, action, owningObject, this);
+            return new TestAction(metamodelManager, Session, persistor, contributor, action, owningObject, this);
         }
 
         public ITestProperty CreateTestProperty(INakedObjectAssociation field, ITestHasActions owningObject) {

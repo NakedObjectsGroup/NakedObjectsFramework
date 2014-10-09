@@ -18,6 +18,7 @@ using System.Transactions;
 using Common.Logging;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Objects.Aggregated;
 using NakedObjects.Architecture.Facets.Objects.Callbacks;
@@ -45,7 +46,7 @@ using IsolationLevel = System.Transactions.IsolationLevel;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityObjectStore : INakedObjectStore {
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private readonly ISession session;
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStore));
         private static CreateAdapterDelegate createAdapter;
@@ -92,7 +93,7 @@ namespace NakedObjects.EntityObjectStore {
             IsInitializedCheck = () => true;
         }
 
-        internal EntityObjectStore(IMetamodel metamodel, ISession session, IUpdateNotifier updateNotifier, IContainerInjector injector) {
+        internal EntityObjectStore(IMetamodelManager metamodel, ISession session, IUpdateNotifier updateNotifier, IContainerInjector injector) {
             this.metamodel = metamodel;
             this.session = session;
             this.updateNotifier = updateNotifier;
@@ -114,7 +115,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
 
-        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodel metamodel, IContainerInjector injector)
+        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodelManager metamodel, IContainerInjector injector)
             : this(metamodel, session, updateNotifier, injector) {
             this.oidGenerator = oidGenerator;
             contexts = config.ContextConfiguration.ToDictionary<EntityContextConfiguration, EntityContextConfiguration, LocalContext>(c => c, c => null);

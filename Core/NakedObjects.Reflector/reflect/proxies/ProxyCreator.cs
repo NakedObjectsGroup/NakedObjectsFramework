@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Common.Logging;
 using NakedObjects.Architecture;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets.Objects.Key;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
@@ -41,7 +42,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
             return ns + typeToProxy.FullName;
         }
 
-        public static Type CreateProxyType(IMetamodel metamodel, ILifecycleManager persistor, Type typeToProxy) {
+        public static Type CreateProxyType(IMetamodelManager metamodel, ILifecycleManager persistor, Type typeToProxy) {
             // do not proxy EF domain objects 
 
             if (TypeUtils.IsEntityDomainObject(typeToProxy) ||
@@ -73,7 +74,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
             }
         }
 
-        private static void CreateProperties(IMetamodel metamodel, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
+        private static void CreateProperties(IMetamodelManager metamodel, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
             // do not proxy key properties as we don't want ObjectChanged called when key is set
             foreach (INakedObjectAssociation assoc in metamodel.GetSpecification(typeToProxy).Properties) {
                 PropertyInfo property = typeToProxy.GetProperty(assoc.Id);
@@ -149,7 +150,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
                           ForEach(name => SubclassCollectionAccessorIfFound(typeToProxy, name, typeBuilder, containerField));
         }
 
-        private static void SubclassAllCollectionAccessors(IMetamodel metamodel, ILifecycleManager persistor, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
+        private static void SubclassAllCollectionAccessors(IMetamodelManager metamodel, ILifecycleManager persistor, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
             INakedObjectAssociation[] associations = metamodel.GetSpecification(typeToProxy).Properties.Where(a => a.IsCollection).ToArray();
 
             associations.ForEach(assoc => SubclassCollectionAccessors(typeBuilder, typeToProxy, containerField, assoc.GetName(persistor)));

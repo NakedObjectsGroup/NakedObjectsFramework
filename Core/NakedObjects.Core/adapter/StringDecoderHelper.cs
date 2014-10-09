@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Web;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
@@ -20,11 +20,11 @@ namespace NakedObjects.Core.Adapter {
     /// </summary>
     /// <seealso cref="StringEncoderHelper" />
     public class StringDecoderHelper {
-        private readonly IMetamodel metamodel;
+        private readonly IMetamodelManager metamodel;
         private readonly string[] strings;
         private int index;
 
-        public StringDecoderHelper(IMetamodel metamodel,  string[] strings, bool decode = false) {
+        public StringDecoderHelper(IMetamodelManager metamodel, string[] strings, bool decode = false) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
             this.strings = decode ? strings.Select(HttpUtility.UrlDecode).ToArray() : strings;

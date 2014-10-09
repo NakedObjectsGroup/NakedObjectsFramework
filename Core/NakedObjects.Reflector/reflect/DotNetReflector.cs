@@ -49,25 +49,22 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         #region IMetamodel Members
 
-        public virtual INakedObjectSpecification[] AllSpecifications {
-            get { return cache.AllSpecifications().Select(s => new NakedObjectSpecification(this, s)).Cast<INakedObjectSpecification>().ToArray(); }
+        public virtual IIntrospectableSpecification[] AllSpecifications {
+            get { return cache.AllSpecifications(); }
         }
 
         public virtual IIntrospectableSpecification[] AllIntrospectableSpecifications {
             get { return cache.AllSpecifications().ToArray(); }
         }
 
-        public INakedObjectSpecification GetSpecification(Type type) {
-            return new NakedObjectSpecification(this, LoadSpecification(type));
+        public IIntrospectableSpecification GetSpecification(Type type) {
+            return  LoadSpecification(type);
         }
 
-        public INakedObjectSpecification GetSpecification(string name) {
-            return new NakedObjectSpecification(this, LoadSpecification(name));
+        public IIntrospectableSpecification GetSpecification(string name) {
+            return LoadSpecification(name);
         }
 
-        public INakedObjectSpecification GetSpecification(IIntrospectableSpecification spec) {
-            return new NakedObjectSpecification(this, LoadSpecification(spec.Type));
-        }
 
         #endregion
 

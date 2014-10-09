@@ -13,8 +13,6 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class DotNetGenericIQueryableFacet<T> : CollectionFacetAbstract {
@@ -54,6 +52,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
 
         public override IQueryable AsQueryable(INakedObject collection) {
             return AsGenericIQueryable(collection);
+        }
+
+        public override bool IsQueryable {
+            get { return true; }
         }
 
         public override bool Contains(INakedObject collection, INakedObject element) {

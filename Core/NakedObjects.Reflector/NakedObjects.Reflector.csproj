@@ -361,7 +361,6 @@
     <Compile Include="peer\IdentifierImpl.cs" />
     <Compile Include="peer\IReflectionDecoratorInstaller.cs" />
     <Compile Include="peer\ModelException.cs" />
-    <Compile Include="peer\ReflectionException.cs" />
     <Compile Include="reflect\actions\DotNetNakedObjectActionParamPeer.cs" />
     <Compile Include="reflect\actions\DotNetNakedObjectActionPeer.cs" />
     <Compile Include="reflect\collections\DotNetOneToManyAssociationPeer.cs" />
@@ -371,7 +370,6 @@
     <Compile Include="reflect\DotNetReflectorInstaller.cs" />
     <Compile Include="reflect\IntrospectionControlParameters.cs" />
     <Compile Include="reflect\MethodFinderUtils.cs" />
-    <Compile Include="reflect\NakedObjectAssociationAbstract.cs" />
     <Compile Include="reflect\propcoll\DotNetNakedObjectAssociationPeer.cs" />
     <Compile Include="reflect\properties\DotNetOneToOneAssociationPeer.cs" />
     <Compile Include="reflect\proxies\ProxyCreator.cs" />
@@ -384,16 +382,6 @@
     <Compile Include="security\SecurityFacetDecorator.cs" />
     <Compile Include="spec\FacetDecoratorSet.cs" />
     <Compile Include="spec\IntrospectableSpecification.cs" />
-    <Compile Include="spec\NakedObjectActionImpl.cs" />
-    <Compile Include="spec\NakedObjectActionParameterAbstract.cs" />
-    <Compile Include="spec\NakedObjectActionParameterParseable.cs" />
-    <Compile Include="spec\NakedObjectActionSet.cs" />
-    <Compile Include="spec\NakedObjectMemberSessionAware.cs" />
-    <Compile Include="spec\NakedObjectSpecification.cs" />
-    <Compile Include="spec\OneToManyActionParameterImpl.cs" />
-    <Compile Include="spec\OneToManyAssociationImpl.cs" />
-    <Compile Include="spec\OneToOneActionParameterImpl.cs" />
-    <Compile Include="spec\OneToOneAssociationImpl.cs" />
     <Compile Include="spec\SimpleSpecificationCache.cs" />
     <Compile Include="spec\ISpecificationCache.cs" />
     <Compile Include="transaction\facets\actions\invoke\ActionInvocationFacetWrapTransaction.cs" />

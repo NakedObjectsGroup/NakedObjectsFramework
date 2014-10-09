@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Moq;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 
@@ -15,10 +16,10 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         protected FacetHolderImpl FacetHolder;
         protected IMethodRemover MethodRemover;
         protected INakedObjectReflector Reflector;
-        protected IMetamodel Metamodel;
+        protected IMetamodelManager Metamodel;
         private Mock<IMethodRemover> mockMethodRemover;
         private Mock<INakedObjectReflector> mockReflector;
-        private Mock<IMetamodel> mockMetadata;
+        private Mock<IMetamodelManager> mockMetadata;
         protected abstract Type[] SupportedTypes { get; }
         protected abstract IFacetFactory FacetFactory { get; }
 
@@ -27,7 +28,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
 
             mockMethodRemover = new Mock<IMethodRemover>();
             mockReflector = new Mock<INakedObjectReflector>();
-            mockMetadata = new Mock<IMetamodel>();
+            mockMetadata = new Mock<IMetamodelManager>();
 
             MethodRemover = mockMethodRemover.Object;
             Reflector = mockReflector.Object;
