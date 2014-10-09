@@ -10,6 +10,7 @@ using System.Security.Principal;
 using System.Web;
 using Microsoft.Practices.Unity;
 using NakedObjects;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
@@ -142,6 +143,7 @@ namespace MvcTestApp {
 
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerResolveLifetimeManager());
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerResolveLifetimeManager());
+            container.RegisterType<IMetamodelManager, MetamodelManager>(new PerResolveLifetimeManager());
             container.RegisterType<ISession, WindowsSession>(new PerResolveLifetimeManager());
             container.RegisterType<IUpdateNotifier, SimpleUpdateNotifier>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, SimpleMessageBroker>(new PerResolveLifetimeManager());

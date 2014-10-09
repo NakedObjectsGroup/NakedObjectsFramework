@@ -4,6 +4,7 @@ using System.Security.Principal;
 using System.Web;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
@@ -138,6 +139,7 @@ namespace NakedObjects.Mvc.App.App_Start
             container.RegisterType<IServicesManager, ServicesManager>(new PerRequestLifetimeManager());
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerRequestLifetimeManager());
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerRequestLifetimeManager());
+            container.RegisterType<IMetamodelManager, MetamodelManager>(new PerRequestLifetimeManager());
             container.RegisterType<ISession, WindowsSession>(new PerRequestLifetimeManager());
             container.RegisterType<IMessageBroker, SimpleMessageBroker>(new PerRequestLifetimeManager());
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerRequestLifetimeManager());

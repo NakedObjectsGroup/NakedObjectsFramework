@@ -14,6 +14,7 @@ using Common.Logging;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Bounded;
 using NakedObjects.Architecture.Persist;
@@ -260,6 +261,8 @@ namespace NakedObjects.Xat {
             container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerResolveLifetimeManager());
             container.RegisterType<IServicesManager, ServicesManager>(new PerResolveLifetimeManager());
             container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerResolveLifetimeManager());
+
+            container.RegisterType<IMetamodelManager, MetamodelManager>(new PerResolveLifetimeManager());
 
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerResolveLifetimeManager());
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerResolveLifetimeManager());
