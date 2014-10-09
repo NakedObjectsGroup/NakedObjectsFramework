@@ -155,7 +155,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="context\SimpleMessageBroker.cs" />
     <Compile Include="context\SimpleUpdateNotifier.cs" />
-    <Compile Include="objectstore\LifeCycleManager.cs" />
+    <Compile Include="Managers\LifeCycleManager.cs" />
     <Compile Include="objectstore\ObjectStoreTransaction.cs" />
     <Compile Include="objectstore\ObjectStoreTransactionManager.cs" />
     <Compile Include="objectstore\ServicesConfiguration.cs" />

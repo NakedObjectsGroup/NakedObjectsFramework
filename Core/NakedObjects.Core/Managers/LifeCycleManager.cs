@@ -32,11 +32,13 @@ using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Service;
 using NakedObjects.Core.Util;
 using NakedObjects.EntityObjectStore;
+using NakedObjects.Persistor;
+using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Persistor.Transaction;
 using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 
-namespace NakedObjects.Persistor.Objectstore {
+namespace NakedObjects.Managers {
     public class NakedObjectFactory {
         private ILifecycleManager persistor;
         private IMetamodelManager metamodel;

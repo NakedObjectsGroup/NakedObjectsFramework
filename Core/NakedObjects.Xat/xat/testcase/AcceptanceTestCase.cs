@@ -27,6 +27,7 @@ using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Reflect;
 using NakedObjects.EntityObjectStore;
+using NakedObjects.Managers;
 using NakedObjects.Objects;
 using NakedObjects.Persistor;
 using NakedObjects.Persistor.Objectstore;
