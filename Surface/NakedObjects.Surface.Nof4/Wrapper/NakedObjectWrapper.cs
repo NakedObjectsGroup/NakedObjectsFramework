@@ -71,7 +71,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get {
                 ITypeOfFacet typeOfFacet = nakedObject.GetTypeOfFacetFromSpec();
                 var introspectableSpecification = typeOfFacet.ValueSpec;
-                var spec = framework.Metadata.GetSpecification(introspectableSpecification);
+                var spec = framework.Metamodel.GetSpecification(introspectableSpecification);
                 return new NakedObjectSpecificationWrapper(spec, Surface, framework);
             }
         }

@@ -26,7 +26,7 @@ let persistor  =
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
-    let m = (new Mock<IMetadata>()).Object
+    let m = (new Mock<IMetamodel>()).Object
 
     c.UsingEdmxContext "AdventureWorksEntities" |> ignore
 
@@ -47,7 +47,7 @@ let overwritePersistor =
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
-    let m = (new Mock<IMetadata>()).Object
+    let m = (new Mock<IMetamodel>()).Object
 
     let cc = c.UsingEdmxContext "AdventureWorksEntities"
     c.DefaultMergeOption <- MergeOption.OverwriteChanges

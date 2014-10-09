@@ -12,7 +12,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Persist {
     public sealed class SerialOid : IOid, IEncodedToStrings {
-        private readonly IMetadata metadata;
+        private readonly IMetamodel metamodel;
         private const bool Persistent = false;
         private const bool Transient = true;
         private readonly string typeName;
@@ -24,9 +24,9 @@ namespace NakedObjects.Core.Persist {
         private SerialOid previous;
         private long serialNo;
 
-        private SerialOid(IMetadata metadata, long serialNo, string typeName, bool isTransient) {
-            Assert.AssertNotNull(metadata);
-            this.metadata = metadata;
+        private SerialOid(IMetamodel metamodel, long serialNo, string typeName, bool isTransient) {
+            Assert.AssertNotNull(metamodel);
+            this.metamodel = metamodel;
             this.serialNo = serialNo;
             this.typeName = TypeNameUtils.EncodeTypeName(typeName);
             this.isTransient = isTransient;
@@ -34,11 +34,11 @@ namespace NakedObjects.Core.Persist {
         }
 
 
-        public SerialOid(IMetadata metadata,  string[] strings) {
-            Assert.AssertNotNull(metadata);
+        public SerialOid(IMetamodel metamodel,  string[] strings) {
+            Assert.AssertNotNull(metamodel);
 
-            this.metadata = metadata;
-            var helper = new StringDecoderHelper(metadata, strings);
+            this.metamodel = metamodel;
+            var helper = new StringDecoderHelper(metamodel, strings);
 
             typeName = helper.GetNextString();
             serialNo = helper.GetNextLong();
@@ -105,7 +105,7 @@ namespace NakedObjects.Core.Persist {
         }
 
         public INakedObjectSpecification Specification {
-            get { return metadata.GetSpecification(TypeNameUtils.DecodeTypeName(typeName)); }
+            get { return metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(typeName)); }
         }
 
         public bool HasPrevious {
@@ -114,11 +114,11 @@ namespace NakedObjects.Core.Persist {
 
         #endregion
 
-        public static SerialOid CreatePersistent(IMetadata reflector,  long serialNo, string typeName) {
+        public static SerialOid CreatePersistent(IMetamodel reflector,  long serialNo, string typeName) {
             return new SerialOid(reflector, serialNo, typeName, Persistent);
         }
 
-        public static SerialOid CreateTransient(IMetadata reflector, long serialNo, string typeName) {
+        public static SerialOid CreateTransient(IMetamodel reflector, long serialNo, string typeName) {
             return new SerialOid(reflector, serialNo, typeName, Transient);
         }
 
@@ -138,7 +138,7 @@ namespace NakedObjects.Core.Persist {
 
         internal void MakePersistent(long newSerialNo) {
             Assert.AssertTrue("Attempting to make persistent a non transient oid", isTransient);
-            previous = new SerialOid(metadata, serialNo, typeName, isTransient);
+            previous = new SerialOid(metamodel, serialNo, typeName, isTransient);
             serialNo = newSerialNo;
             isTransient = false;
             CacheState();

@@ -28,8 +28,8 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class OneToOneAssociationImpl : NakedObjectAssociationAbstract, IOneToOneAssociation {
-        public OneToOneAssociationImpl(IMetadata metadata, INakedObjectAssociationPeer association)
-            : base(metadata, association) {}
+        public OneToOneAssociationImpl(IMetamodel metamodel, INakedObjectAssociationPeer association)
+            : base(metamodel, association) {}
 
         #region IOneToOneAssociation Members
 
@@ -55,7 +55,7 @@ namespace NakedObjects.Reflector.Spec {
         public override Tuple<string, INakedObjectSpecification>[] GetChoicesParameters() {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
             return propertyChoicesFacet == null ? new Tuple<string, INakedObjectSpecification>[] {} :
-                propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, INakedObjectSpecification>(t.Item1, Metadata.GetSpecification(t.Item2))).ToArray();
+                propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, INakedObjectSpecification>(t.Item1, Metamodel.GetSpecification(t.Item2))).ToArray();
         }
 
         public override INakedObject[] GetChoices(INakedObject target, IDictionary<string, INakedObject> parameterNameValues, ILifecycleManager persistor) {
@@ -156,7 +156,7 @@ namespace NakedObjects.Reflector.Spec {
             if (obj == null) {
                 return null;
             }
-            INakedObjectSpecification specification = Metadata.GetSpecification(obj.GetType());
+            INakedObjectSpecification specification = Metamodel.GetSpecification(obj.GetType());
             if (specification.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return manager.CreateAggregatedAdapter(fromObject, ((INakedObjectAssociation) this).Id, obj);
             }

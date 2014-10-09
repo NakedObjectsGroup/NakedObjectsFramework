@@ -133,6 +133,7 @@
     <Compile Include="adapter\INakedObject.cs" />
     <Compile Include="adapter\IOid.cs" />
     <Compile Include="adapter\PersistableType.cs" />
+    <Compile Include="Component\IMetamodelManager.cs" />
     <Compile Include="exceptions\ResolveException.cs" />
     <Compile Include="adapter\value\IArrayValueFacet.cs" />
     <Compile Include="adapter\value\IEnumValueFacet.cs" />
@@ -322,7 +323,7 @@
     <Compile Include="reflect\IFacetDecorator.cs" />
     <Compile Include="reflect\IFacetDecoratorSet.cs" />
     <Compile Include="reflect\IIntrospectableSpecification.cs" />
-    <Compile Include="reflect\IMetadata.cs" />
+    <Compile Include="reflect\IMetamodel.cs" />
     <Compile Include="reflect\INakedObjectValidation.cs" />
     <Compile Include="reflect\InitiatedBy.cs" />
     <Compile Include="reflect\INakedObjectAction.cs" />

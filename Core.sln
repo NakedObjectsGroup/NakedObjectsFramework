@@ -59,7 +59,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Reflector", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Reflector.Test", "Core\NakedObjects.Reflector.Test\NakedObjects.Reflector.Test.csproj", "{DD0F2C26-D425-48FF-A22B-3B4E8EFA63C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Metadata", "Core\NakedObjects.Metadata\NakedObjects.Metadata.csproj", "{51310042-B65B-4480-A8C0-11E6B39C7587}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Metamodel", "Core\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj", "{51310042-B65B-4480-A8C0-11E6B39C7587}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

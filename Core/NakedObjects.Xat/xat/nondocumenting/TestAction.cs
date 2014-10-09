@@ -53,7 +53,7 @@ namespace NakedObjects.Xat {
         public bool MatchParameters(Type[] typestoMatch) {
             if (action.Parameters.Count() == typestoMatch.Length) {
                 int i = 0;
-                return action.Parameters.All(x => x.Specification.IsOfType(((IMetadata) reflector).GetSpecification(typestoMatch[i++])));
+                return action.Parameters.All(x => x.Specification.IsOfType(((IMetamodel) reflector).GetSpecification(typestoMatch[i++])));
             }
             return false;
         }

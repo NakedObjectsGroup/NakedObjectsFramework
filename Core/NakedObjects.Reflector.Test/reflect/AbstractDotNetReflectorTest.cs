@@ -15,7 +15,7 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Reflect {
     public abstract class AbstractDotNetReflectorTest {
         protected IIntrospectableSpecification specification;
-        protected IMetadata Metadata;
+        protected IMetamodel Metamodel;
 
         [SetUp]
         public virtual void SetUp() {
@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
             specification = LoadSpecification(reflector);
             specification.PopulateAssociatedActions(new Type[] {});
-            Metadata = (IMetadata) reflector;
+            Metamodel = (IMetamodel) reflector;
         }
 
         protected abstract IIntrospectableSpecification LoadSpecification(DotNetReflector reflector);

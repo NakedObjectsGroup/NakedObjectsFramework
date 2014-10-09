@@ -46,7 +46,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
         private INakedObject AdapterFor(object obj) {
             ILifecycleManager persistor = new Mock<ILifecycleManager>().Object;
             ISession session = new Mock<ISession>().Object;
-            return new PocoAdapter(Metadata, session, persistor, persistor, obj, null);
+            return new PocoAdapter(Metamodel, session, persistor, persistor, obj, null);
         }
 
         private class Customer {

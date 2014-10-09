@@ -17,24 +17,24 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         [Test]
         public void TestSetup() {
            Assert.AreEqual("Product", specification.ShortName);
-           Assert.AreEqual(3,  Metadata.GetSpecification(specification).Properties.Length);
+           Assert.AreEqual(3,  Metamodel.GetSpecification(specification).Properties.Length);
         }
 
         [Test]
         public void ValidateMethodThatDontMatchAreIgnored() {
-            INakedObjectAction[] actions = Metadata.GetSpecification(specification).GetAllActions();
+            INakedObjectAction[] actions = Metamodel.GetSpecification(specification).GetAllActions();
             Assert.AreEqual(4, actions.Length);
         }
 
         [Test]
         public void ValidateMethodsDetected() {
-            INakedObjectValidation[] validation = Metadata.GetSpecification(specification).ValidateMethods();
+            INakedObjectValidation[] validation = Metamodel.GetSpecification(specification).ValidateMethods();
             Assert.AreEqual(2, validation.Length);
         }
 
         [Test]
         public void ValidateMethodsRun() {
-            INakedObjectValidation[] validation = Metadata.GetSpecification(specification).ValidateMethods();
+            INakedObjectValidation[] validation = Metamodel.GetSpecification(specification).ValidateMethods();
         }
     }
 

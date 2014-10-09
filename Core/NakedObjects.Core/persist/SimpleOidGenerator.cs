@@ -13,18 +13,18 @@ namespace NakedObjects.Core.Persist {
     ///     Generates OIDs based on the system clock
     /// </summary>
     public class SimpleOidGenerator : IOidGenerator {
-        private readonly IMetadata metadata;
+        private readonly IMetamodel metamodel;
         private readonly long start;
         private long persistentSerialNumber;
         private long transientSerialNumber;
 
-        public SimpleOidGenerator(IMetadata metadata)
-            : this(metadata, 0L) {}
+        public SimpleOidGenerator(IMetamodel metamodel)
+            : this(metamodel, 0L) {}
 
-        public SimpleOidGenerator(IMetadata metadata, long start) {
-            Assert.AssertNotNull(metadata);
+        public SimpleOidGenerator(IMetamodel metamodel, long start) {
+            Assert.AssertNotNull(metamodel);
          
-            this.metadata = metadata;
+            this.metamodel = metamodel;
             this.start = start;
 
             // TODO: REVIEW This is simple, but not reliable, fix to try to ensure that ids on
@@ -59,17 +59,17 @@ namespace NakedObjects.Core.Persist {
 
         public virtual IOid CreateTransientOid(object obj) {
             lock (this) {
-                return SerialOid.CreateTransient(metadata, transientSerialNumber++, obj.GetType().FullName);
+                return SerialOid.CreateTransient(metamodel, transientSerialNumber++, obj.GetType().FullName);
             }
         }
 
         public IOid RestoreOid(ILifecycleManager persistor, string[] encodedData) {
-            return persistor.RestoreGenericOid(encodedData) ?? new SerialOid(metadata, encodedData);
+            return persistor.RestoreGenericOid(encodedData) ?? new SerialOid(metamodel, encodedData);
         }
 
         public IOid CreateOid(string typeName, object[] keys) {
             lock (this) {
-                return SerialOid.CreateTransient(metadata, transientSerialNumber++, typeName);
+                return SerialOid.CreateTransient(metamodel, transientSerialNumber++, typeName);
             }
         }
 

@@ -1168,7 +1168,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void ObjectEditFieldsWithInlineObject() {
             Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
-            var claim2 = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metadata.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
+            var claim2 = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metamodel.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
 
             claim2.DateCreated = new DateTime(2010, 5, 19);
 
@@ -1225,7 +1225,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithSummaryCollectionForTransient() {
-            var claim = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metadata.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
+            var claim = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metamodel.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
             claim.DateCreated = new DateTime(2010, 3, 25);
 
             string s = mocks.HtmlHelper.PropertyListEdit(claim).ToString();
@@ -1313,7 +1313,7 @@ namespace MvcTestApp.Tests.Helpers {
             };
             var claimAdapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims.First(), null, null);
             var adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims, null, null);
-            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Metadata, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             adapter.SetATransientOid(mockOid);
 
@@ -1336,7 +1336,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             var claimAdapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims.First(), null, null);
             var adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims, null, null);
-            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Metadata, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             adapter.SetATransientOid(mockOid);
 
@@ -1447,7 +1447,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             INakedObject target = NakedObjectsFramework.LifecycleManager.CreateAdapter(new[] {claim}.AsQueryable(), null, null);
 
-            target.SetATransientOid(new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Metadata, NakedObjectsFramework.Session, new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Metadata, NakedObjectsFramework.Session, claimRepo, action, new INakedObject[] { }), new object[] { selected }));
+            target.SetATransientOid(new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, claimRepo, action, new INakedObject[] { }), new object[] { selected }));
 
             INakedObjectAction targetAction = claimRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "ApproveClaims");
 
@@ -1490,7 +1490,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void ParameterEditWithInlineObject() {
             Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
-            var claim2 = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metadata.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
+            var claim2 = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metamodel.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
 
             claim2.DateCreated = new DateTime(2010, 5, 18);
 

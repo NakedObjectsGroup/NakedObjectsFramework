@@ -23,9 +23,9 @@ namespace NakedObjects.Reflector.Audit {
             auditManager = new AuditManager(defaultAuditor, namespaceAuditors);
         }
 
-        public IFacetDecorator[] CreateDecorators(IMetadata metadata) {
-            auditManager.Reflector = metadata;
-            return new IFacetDecorator[] {new AuditFacetDecorator(auditManager, metadata)};
+        public IFacetDecorator[] CreateDecorators(IMetamodel metamodel) {
+            auditManager.Reflector = metamodel;
+            return new IFacetDecorator[] {new AuditFacetDecorator(auditManager, metamodel)};
         }
 
         public string Name {

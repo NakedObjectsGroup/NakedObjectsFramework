@@ -204,7 +204,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private  INakedObject Execute(INakedObjectAction action, INakedObject target, INakedObject[] parameterSet) {
             var result = action.Execute(target, parameterSet, NakedObjectsContext.LifecycleManager, NakedObjectsContext.Session);
             if (result != null && result.Oid == null) {
-                result.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.LifecycleManager, NakedObjectsContext.Metadata, NakedObjectsContext.Session, target, action, parameterSet));
+                result.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.LifecycleManager, NakedObjectsContext.Metamodel, NakedObjectsContext.Session, target, action, parameterSet));
             }
             return result;
         }    
@@ -274,7 +274,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             string propertyName = controlData.DataDict["propertyName"];
             string contextActionId = controlData.DataDict["contextActionId"];
 
-            var objectSet = Session.CachedObjectsOfType(NakedObjectsContext, NakedObjectsContext.Metadata.GetSpecification(spec)).ToList();
+            var objectSet = Session.CachedObjectsOfType(NakedObjectsContext, NakedObjectsContext.Metamodel.GetSpecification(spec)).ToList();
 
             if (!objectSet.Any()) {
                 Log.InfoFormat("No Cached objects of type {0} found", spec);

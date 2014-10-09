@@ -10,8 +10,8 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class OneToOneActionParameterImpl : NakedObjectActionParameterAbstract, IOneToOneFeature {
-        public OneToOneActionParameterImpl(IMetadata metadata, int index, INakedObjectAction actionImpl, INakedObjectActionParamPeer peer)
-            : base(metadata, index, actionImpl, peer) {}
+        public OneToOneActionParameterImpl(IMetamodel metamodel, int index, INakedObjectAction actionImpl, INakedObjectActionParamPeer peer)
+            : base(metamodel, index, actionImpl, peer) {}
 
         public override bool IsObject {
             get { return true; }

@@ -164,9 +164,9 @@
       <Project>{027C99E2-2AD7-4700-A871-DE543C9D83C8}</Project>
       <Name>NakedObjects.Bootstrap</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Metadata\NakedObjects.Metadata.csproj">
-      <Project>{51310042-b65b-4480-a8c0-11e6b39c7587}</Project>
-      <Name>NakedObjects.Metadata</Name>
+    <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj">
+      <Project>{51310042-B65B-4480-A8C0-11E6B39C7587}</Project>
+      <Name>NakedObjects.Metamodel</Name>
     </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj">
       <Project>{91153C56-313C-426E-8B0D-43FA39BD567A}</Project>

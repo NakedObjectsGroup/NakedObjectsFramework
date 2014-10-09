@@ -560,7 +560,7 @@ let CanDetectConcurrency (persistor : EntityObjectStore) =
         let u = new SimpleUpdateNotifier()
         let i = new DotNetDomainObjectContainerInjector()
         let r = (new Mock<INakedObjectReflector>()).Object
-        let m = (new Mock<IMetadata>()).Object
+        let m = (new Mock<IMetamodel>()).Object
         c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
         let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
         setupPersistorForTesting p
@@ -623,7 +623,7 @@ let ConcurrencyNoCustomOnUpdatingError (persistor : EntityObjectStore) =
         let u = new SimpleUpdateNotifier()
         let i = new DotNetDomainObjectContainerInjector()
         let r = (new Mock<INakedObjectReflector>()).Object
-        let m = (new Mock<IMetadata>()).Object
+        let m = (new Mock<IMetamodel>()).Object
         c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
         let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
         setupPersistorForTesting p

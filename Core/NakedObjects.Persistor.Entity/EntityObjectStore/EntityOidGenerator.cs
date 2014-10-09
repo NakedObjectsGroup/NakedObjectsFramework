@@ -11,13 +11,13 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityOidGenerator : IOidGenerator {
-        private readonly IMetadata metadata;
+        private readonly IMetamodel metamodel;
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityOidGenerator));
         private static long transientId;
 
-        public EntityOidGenerator(IMetadata metadata) {
-            Assert.AssertNotNull(metadata);
-            this.metadata = metadata;
+        public EntityOidGenerator(IMetamodel metamodel) {
+            Assert.AssertNotNull(metamodel);
+            this.metamodel = metamodel;
         }
 
         public string Name {
@@ -37,7 +37,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         public IOid CreateTransientOid(object obj) {
-            var oid = new EntityOid(metadata, obj.GetType(), new object[] { Interlocked.Increment(ref transientId) }, true);
+            var oid = new EntityOid(metamodel, obj.GetType(), new object[] { Interlocked.Increment(ref transientId) }, true);
             Log.DebugFormat("Created OID {0} for instance of {1}", oid, obj.GetType().FullName);
             return oid;
         }
@@ -45,11 +45,11 @@ namespace NakedObjects.EntityObjectStore {
         
 
         public IOid RestoreOid(ILifecycleManager persistor, string[] encodedData) {
-            return persistor.RestoreGenericOid(encodedData) ?? new EntityOid(metadata, encodedData);
+            return persistor.RestoreGenericOid(encodedData) ?? new EntityOid(metamodel, encodedData);
         }
 
         public IOid CreateOid(string typeName, object[] keys) {
-            return new EntityOid(metadata, typeName, keys);
+            return new EntityOid(metamodel, typeName, keys);
         }
 
         #endregion

@@ -21,7 +21,7 @@ using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
-    public class DotNetReflector : INakedObjectReflector, IMetadata {
+    public class DotNetReflector : INakedObjectReflector, IMetamodel {
         private static readonly ILog Log;
         private readonly ISpecificationCache cache = new SimpleSpecificationCache();
         private readonly FacetDecoratorSet facetDecorator;
@@ -47,7 +47,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         private Type[] NonSystemServices { get; set; }
 
-        #region IMetadata Members
+        #region IMetamodel Members
 
         public virtual INakedObjectSpecification[] AllSpecifications {
             get { return cache.AllSpecifications().Select(s => new NakedObjectSpecification(this, s)).Cast<INakedObjectSpecification>().ToArray(); }

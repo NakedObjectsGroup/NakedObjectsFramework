@@ -40,7 +40,7 @@ namespace NakedObjects.Reflector.Spec {
             Subclasses = new IIntrospectableSpecification[] {};
             this.reflector = reflector;
             introspector = new DotNetIntrospector(type, this, reflector);
-            identifier = new IdentifierImpl((IMetadata) reflector, type.FullName);
+            identifier = new IdentifierImpl((IMetamodel) reflector, type.FullName);
             Interfaces = new IIntrospectableSpecification[] {};
             Subclasses = new IIntrospectableSpecification[] {};
             ValidationMethods = new INakedObjectValidation[] {};

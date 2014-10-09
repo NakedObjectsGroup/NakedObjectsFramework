@@ -23,13 +23,13 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
     public abstract class NakedObjectAssociationAbstract : NakedObjectMemberAbstract, INakedObjectAssociation {
-        private readonly IMetadata metadata;
+        private readonly IMetamodel metamodel;
         private readonly INakedObjectSpecification specification;
 
-        protected NakedObjectAssociationAbstract(IMetadata metadata, INakedObjectAssociationPeer association)
+        protected NakedObjectAssociationAbstract(IMetamodel metamodel, INakedObjectAssociationPeer association)
             : base(association.Identifier.MemberName, association) {
-            this.metadata = metadata;
-            specification = Metadata.GetSpecification(association.Specification);
+            this.metamodel = metamodel;
+            specification = Metamodel.GetSpecification(association.Specification);
         }
 
         public virtual bool IsChoicesEnabled {
@@ -40,8 +40,8 @@ namespace NakedObjects.Architecture.Reflect {
             get { return ContainsFacet(typeof (IAutoCompleteFacet)); }
         }
 
-        public IMetadata Metadata {
-            get { return metadata; }
+        public IMetamodel Metamodel {
+            get { return metamodel; }
         }
 
         #region INakedObjectAssociation Members
@@ -152,12 +152,12 @@ namespace NakedObjects.Architecture.Reflect {
             return null;
         }
 
-        public static INakedObjectAssociation CreateAssociation(IMetadata metadata, INakedObjectAssociationPeer peer) {
+        public static INakedObjectAssociation CreateAssociation(IMetamodel metamodel, INakedObjectAssociationPeer peer) {
             if (peer.IsOneToOne) {
-                return new OneToOneAssociationImpl(metadata, peer);
+                return new OneToOneAssociationImpl(metamodel, peer);
             }
             if (peer.IsOneToMany) {
-                return new OneToManyAssociationImpl(metadata, peer);
+                return new OneToManyAssociationImpl(metamodel, peer);
             }
             throw new ReflectionException("Unknown peer type: " + peer);
         }

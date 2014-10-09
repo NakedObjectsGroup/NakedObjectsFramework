@@ -20,13 +20,13 @@ namespace NakedObjects.Core.Adapter {
     /// </summary>
     /// <seealso cref="StringEncoderHelper" />
     public class StringDecoderHelper {
-        private readonly IMetadata metadata;
+        private readonly IMetamodel metamodel;
         private readonly string[] strings;
         private int index;
 
-        public StringDecoderHelper(IMetadata metadata,  string[] strings, bool decode = false) {
-            Assert.AssertNotNull(metadata);
-            this.metadata = metadata;
+        public StringDecoderHelper(IMetamodel metamodel,  string[] strings, bool decode = false) {
+            Assert.AssertNotNull(metamodel);
+            this.metamodel = metamodel;
             this.strings = decode ? strings.Select(HttpUtility.UrlDecode).ToArray() : strings;
         }
 
@@ -178,7 +178,7 @@ namespace NakedObjects.Core.Adapter {
             if (!typeof (IEncodedToStrings).IsAssignableFrom(objectType)) {
                 throw new Exception(string.Format("Type: {0} needs to be: {1} ", objectType, typeof (IEncodedToStrings)));
             }
-            return (IEncodedToStrings)Activator.CreateInstance(objectType, new object[] { metadata, encodedData });
+            return (IEncodedToStrings)Activator.CreateInstance(objectType, new object[] { metamodel, encodedData });
         }
 
         private void CheckCurrentIndex() {

@@ -76,14 +76,14 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         protected bool IsImage {
             get {
-                var imageSpec = framework.Metadata.GetSpecification(typeof(Image));
+                var imageSpec = framework.Metamodel.GetSpecification(typeof(Image));
                 return spec.IsOfType(imageSpec);
             }
         }
 
         protected bool IsFileAttachment {
             get {
-                var fileSpec = framework.Metadata.GetSpecification(typeof(FileAttachment));
+                var fileSpec = framework.Metamodel.GetSpecification(typeof(FileAttachment));
                 return spec.IsOfType(fileSpec);
             }
         }
@@ -139,7 +139,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             get {
                 if (IsCollection) {
                     var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().ValueSpec;
-                    var elementSpec = framework.Metadata.GetSpecification(introspectableSpecification);
+                    var elementSpec = framework.Metamodel.GetSpecification(introspectableSpecification);
                     return new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
                 }
                 return null;

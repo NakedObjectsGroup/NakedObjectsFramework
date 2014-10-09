@@ -24,7 +24,7 @@ using NakedObjects.Reflector.Peer;
 namespace NakedObjects.Reflector.Spec {
     public class NakedObjectActionImpl : NakedObjectMemberSessionAware, INakedObjectAction {
         private static readonly ILog Log;
-        private readonly IMetadata metadata;
+        private readonly IMetamodel metamodel;
         private readonly INakedObjectActionPeer nakedObjectActionPeer;
         private INakedObjectActionParameter[] parameters;
 
@@ -32,9 +32,9 @@ namespace NakedObjects.Reflector.Spec {
             Log = LogManager.GetLogger(typeof (NakedObjectActionImpl));
         }
 
-        public NakedObjectActionImpl(IMetadata metadata, INakedObjectActionPeer nakedObjectActionPeer)
+        public NakedObjectActionImpl(IMetamodel metamodel, INakedObjectActionPeer nakedObjectActionPeer)
             : base(nakedObjectActionPeer.Identifier.MemberName, nakedObjectActionPeer) {
-            this.metadata = metadata;
+            this.metamodel = metamodel;
             this.nakedObjectActionPeer = nakedObjectActionPeer;
             BuildParameters();
         }
@@ -46,11 +46,11 @@ namespace NakedObjects.Reflector.Spec {
         #region INakedObjectAction Members
 
         public virtual INakedObjectSpecification ReturnType {
-            get { return metadata.GetSpecification(ActionInvocationFacet.ReturnType); }
+            get { return metamodel.GetSpecification(ActionInvocationFacet.ReturnType); }
         }
 
         public virtual INakedObjectSpecification OnType {
-            get { return metadata.GetSpecification(ActionInvocationFacet.OnType); }
+            get { return metamodel.GetSpecification(ActionInvocationFacet.OnType); }
         }
 
         public virtual INakedObjectAction[] Actions {
@@ -160,13 +160,13 @@ namespace NakedObjects.Reflector.Spec {
                 var specification = paramPeers[i].Specification;
 
                 if (specification.IsParseable) {
-                    list.Add(new NakedObjectActionParameterParseable(metadata, i, this, paramPeers[i]));
+                    list.Add(new NakedObjectActionParameterParseable(metamodel, i, this, paramPeers[i]));
                 }
                 else if (specification.IsObject) {
-                    list.Add(new OneToOneActionParameterImpl(metadata, i, this, paramPeers[i]));
+                    list.Add(new OneToOneActionParameterImpl(metamodel, i, this, paramPeers[i]));
                 }
                 else if (specification.IsCollection) {
-                    list.Add(new OneToManyActionParameterImpl(metadata, i, this, paramPeers[i]));
+                    list.Add(new OneToManyActionParameterImpl(metamodel, i, this, paramPeers[i]));
                 }
                 else {
                     throw new UnknownTypeException(specification);

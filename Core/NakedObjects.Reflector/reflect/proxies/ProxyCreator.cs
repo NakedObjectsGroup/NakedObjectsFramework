@@ -41,7 +41,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
             return ns + typeToProxy.FullName;
         }
 
-        public static Type CreateProxyType(IMetadata metadata, ILifecycleManager persistor, Type typeToProxy) {
+        public static Type CreateProxyType(IMetamodel metamodel, ILifecycleManager persistor, Type typeToProxy) {
             // do not proxy EF domain objects 
 
             if (TypeUtils.IsEntityDomainObject(typeToProxy) ||
@@ -60,8 +60,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
                     if (proxyType == null) {
                         TypeBuilder typeBuilder = ModuleBuilder.DefineType(typeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Sealed, typeToProxy);
                         FieldBuilder containerField = CreateContainerProperty(typeBuilder);
-                        CreateProperties(metadata, typeBuilder, typeToProxy, containerField);
-                        SubclassAllCollectionAccessors(metadata, persistor, typeBuilder, typeToProxy, containerField);
+                        CreateProperties(metamodel, typeBuilder, typeToProxy, containerField);
+                        SubclassAllCollectionAccessors(metamodel, persistor, typeBuilder, typeToProxy, containerField);
                         proxyType = typeBuilder.CreateType();
                     }
                     return proxyType;
@@ -73,9 +73,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
             }
         }
 
-        private static void CreateProperties(IMetadata metadata, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
+        private static void CreateProperties(IMetamodel metamodel, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
             // do not proxy key properties as we don't want ObjectChanged called when key is set
-            foreach (INakedObjectAssociation assoc in metadata.GetSpecification(typeToProxy).Properties) {
+            foreach (INakedObjectAssociation assoc in metamodel.GetSpecification(typeToProxy).Properties) {
                 PropertyInfo property = typeToProxy.GetProperty(assoc.Id);
 
                 if (!assoc.ContainsFacet<IKeyFacet>()) {
@@ -149,8 +149,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
                           ForEach(name => SubclassCollectionAccessorIfFound(typeToProxy, name, typeBuilder, containerField));
         }
 
-        private static void SubclassAllCollectionAccessors(IMetadata metadata, ILifecycleManager persistor, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
-            INakedObjectAssociation[] associations = metadata.GetSpecification(typeToProxy).Properties.Where(a => a.IsCollection).ToArray();
+        private static void SubclassAllCollectionAccessors(IMetamodel metamodel, ILifecycleManager persistor, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
+            INakedObjectAssociation[] associations = metamodel.GetSpecification(typeToProxy).Properties.Where(a => a.IsCollection).ToArray();
 
             associations.ForEach(assoc => SubclassCollectionAccessors(typeBuilder, typeToProxy, containerField, assoc.GetName(persistor)));
         }

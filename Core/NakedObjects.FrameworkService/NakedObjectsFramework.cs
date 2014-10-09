@@ -86,8 +86,8 @@ namespace NakedObjects.Service {
             get { return reflector; }
         }
 
-        public IMetadata Metadata {
-            get { return (IMetadata)reflector; }
+        public IMetamodel Metamodel {
+            get { return (IMetamodel)reflector; }
         }
 
         public IAuthorizationManager AuthorizationManager {

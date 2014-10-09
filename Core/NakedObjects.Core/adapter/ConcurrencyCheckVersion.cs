@@ -21,9 +21,9 @@ namespace NakedObjects.EntityObjectStore {
             this.version = version;
         }
 
-        public ConcurrencyCheckVersion(IMetadata metadata, string[] strings) {
-            Assert.AssertNotNull(metadata);
-            var helper = new StringDecoderHelper(metadata, strings);
+        public ConcurrencyCheckVersion(IMetamodel metamodel, string[] strings) {
+            Assert.AssertNotNull(metamodel);
+            var helper = new StringDecoderHelper(metamodel, strings);
 
             user = helper.GetNextString();
             time = new DateTime(helper.GetNextLong());

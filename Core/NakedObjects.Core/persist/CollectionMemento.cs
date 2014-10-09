@@ -30,9 +30,9 @@ namespace NakedObjects.Core.Persist {
             ObjectCollection
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor,  IMetadata metadata, ISession session,  CollectionMemento otherMemento, object[] selectedObjects) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor,  IMetamodel metamodel, ISession session,  CollectionMemento otherMemento, object[] selectedObjects) {
             Assert.AssertNotNull(lifecycleManager);
-            Assert.AssertNotNull(metadata);
+            Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(otherMemento);
 
             this.lifecycleManager = lifecycleManager;
@@ -46,9 +46,9 @@ namespace NakedObjects.Core.Persist {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, IMetadata metadata, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, IMetamodel metamodel, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
             Assert.AssertNotNull(lifecycleManager);
-            Assert.AssertNotNull(metadata);
+            Assert.AssertNotNull(metamodel);
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.session = session;
@@ -61,13 +61,13 @@ namespace NakedObjects.Core.Persist {
             }
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, IMetadata metadata, ISession session, string[] strings) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, IMetamodel metamodel, ISession session, string[] strings) {
             Assert.AssertNotNull(lifecycleManager);
-            Assert.AssertNotNull(metadata);
+            Assert.AssertNotNull(metamodel);
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.session = session;
-            var helper = new StringDecoderHelper(metadata, strings, true);
+            var helper = new StringDecoderHelper(metamodel, strings, true);
             string specName = helper.GetNextString();
             string actionId = helper.GetNextString();
             var targetOid = (IOid) helper.GetNextEncodedToStrings();

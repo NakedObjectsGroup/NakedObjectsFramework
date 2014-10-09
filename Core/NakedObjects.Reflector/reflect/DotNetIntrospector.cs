@@ -241,7 +241,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             foreach (PropertyInfo property in collectionProperties) {
                 Log.DebugFormat("Identified one-many association method {0}", property);
 
-                IIdentifier identifier = new IdentifierImpl((IMetadata)reflector, FullName, property.Name);
+                IIdentifier identifier = new IdentifierImpl((IMetamodel)reflector, FullName, property.Name);
 
                 // create property and add facets
                 var returnType = property.PropertyType;
@@ -268,7 +268,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 Log.DebugFormat("Identified 1-1 association method {0}", property);
                 Log.DebugFormat("One-to-One association {0} -> {1}", property.Name, property);
 
-                IIdentifier identifier = new IdentifierImpl((IMetadata)reflector, FullName, property.Name);
+                IIdentifier identifier = new IdentifierImpl((IMetamodel)reflector, FullName, property.Name);
 
                 // create a reference property
                 var propertyType = property.PropertyType;
@@ -373,7 +373,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
                 Type[] parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
 
-                IIdentifier identifier = new IdentifierImpl((IMetadata)reflector, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
+                IIdentifier identifier = new IdentifierImpl((IMetamodel)reflector, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
 
                 // build action & its parameters          
 

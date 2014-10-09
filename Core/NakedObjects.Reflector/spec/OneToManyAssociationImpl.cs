@@ -23,8 +23,8 @@ namespace NakedObjects.Reflector.Spec {
     public class OneToManyAssociationImpl : NakedObjectAssociationAbstract, IOneToManyAssociation {
         private readonly bool isASet;
 
-        public OneToManyAssociationImpl(IMetadata metadata, INakedObjectAssociationPeer association)
-            : base(metadata, association) {
+        public OneToManyAssociationImpl(IMetamodel metamodel, INakedObjectAssociationPeer association)
+            : base(metamodel, association) {
             isASet = association.ContainsFacet<IIsASetFacet>();
         }
 

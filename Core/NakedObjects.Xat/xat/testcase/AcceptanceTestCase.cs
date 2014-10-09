@@ -161,12 +161,12 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestObject GetBoundedInstance(Type type, string title) {
-            INakedObjectSpecification spec = NakedObjectsFramework.Metadata.GetSpecification(type);
+            INakedObjectSpecification spec = NakedObjectsFramework.Metamodel.GetSpecification(type);
             return GetBoundedInstance(title, spec);
         }
 
         protected ITestObject GetBoundedInstance(string classname, string title) {
-            INakedObjectSpecification spec = NakedObjectsFramework.Metadata.GetSpecification(classname);
+            INakedObjectSpecification spec = NakedObjectsFramework.Metamodel.GetSpecification(classname);
             return GetBoundedInstance(title, spec);
         }
 
@@ -225,7 +225,7 @@ namespace NakedObjects.Xat {
             container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
 
             container.RegisterType<INakedObjectReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetadata, DotNetReflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodel, DotNetReflector>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPrincipal>(new InjectionFactory(c => TestPrincipal));
 

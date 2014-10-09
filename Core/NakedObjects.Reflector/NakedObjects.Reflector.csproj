@@ -493,9 +493,9 @@
       <Project>{7494A00E-6A3F-4BDE-84FF-20AA538ED575}</Project>
       <Name>NakedObjects.FWResources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Metadata\NakedObjects.Metadata.csproj">
+    <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj">
       <Project>{51310042-B65B-4480-A8C0-11E6B39C7587}</Project>
-      <Name>NakedObjects.Metadata</Name>
+      <Name>NakedObjects.Metamodel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

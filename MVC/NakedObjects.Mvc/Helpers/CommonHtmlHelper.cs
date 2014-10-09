@@ -906,7 +906,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             INakedObject[] collection = collectionNakedObject.GetAsEnumerable(html.Framework().LifecycleManager).ToArray();
             
-            var collectionSpec =  html.Framework().Metadata.GetSpecification( collectionNakedObject.GetTypeOfFacetFromSpec().ValueSpec);
+            var collectionSpec =  html.Framework().Metamodel.GetSpecification( collectionNakedObject.GetTypeOfFacetFromSpec().ValueSpec);
                    
             INakedObjectAssociation[] collectionAssocs = html.CollectionAssociations(collection, collectionSpec, filter, order);
 
@@ -1005,7 +1005,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 var tagTotalCount = new TagBuilder("div");
                 tagTotalCount.AddCssClass(IdHelper.TotalCountClass);
                 
-                INakedObjectSpecification typeSpec = html.Framework().Metadata.GetSpecification(pagedCollectionNakedObject.GetTypeOfFacetFromSpec().ValueSpec);
+                INakedObjectSpecification typeSpec = html.Framework().Metamodel.GetSpecification(pagedCollectionNakedObject.GetTypeOfFacetFromSpec().ValueSpec);
 
 
                 tagTotalCount.InnerHtml += string.Format(MvcUi.TotalOfXType, total, total == 1 ? typeSpec.SingularName : typeSpec.PluralName);
@@ -1487,7 +1487,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 }
                 if (context.Parameter.IsCollection) {
                     var facet = context.Parameter.Specification.GetFacet<ITypeOfFacet>();
-                    INakedObjectSpecification itemSpec = html.Framework().Metadata.GetSpecification(facet.ValueSpec);
+                    INakedObjectSpecification itemSpec = html.Framework().Metamodel.GetSpecification(facet.ValueSpec);
 
                     if (itemSpec.IsParseable) {
                         var collection = (INakedObject) rawvalue;

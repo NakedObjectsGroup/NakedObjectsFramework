@@ -27,8 +27,8 @@ namespace NakedObjects.Security {
 
         #region IAuthorizerInstaller Members
 
-        public IFacetDecorator[] CreateDecorators(IMetadata metadata) {
-            authManager.Metadata = metadata;
+        public IFacetDecorator[] CreateDecorators(IMetamodel metamodel) {
+            authManager.Metamodel = metamodel;
             return new IFacetDecorator[] {new SecurityFacetDecorator(authManager)};
         }
 

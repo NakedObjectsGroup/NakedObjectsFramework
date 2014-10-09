@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.Audit {
             this.namespaceAuditors = namespaceAuditors;  
         }
 
-        public IMetadata Reflector { protected get; set; }
+        public IMetamodel Reflector { protected get; set; }
 
         public void Invoke(INakedObject nakedObject, INakedObject[] parameters, bool queryOnly, IIdentifier identifier, ISession session) {
             throw new NotImplementedException("Fix audit manager");

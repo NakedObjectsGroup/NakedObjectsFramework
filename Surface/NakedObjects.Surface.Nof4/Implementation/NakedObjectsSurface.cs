@@ -67,7 +67,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         public INakedObjectSpecificationSurface[] GetDomainTypes() {
-            return MapErrors(() => framework.Metadata.AllSpecifications.
+            return MapErrors(() => framework.Metamodel.AllSpecifications.
                 Where(s => !IsGenericType(s)).
                 Select(GetSpecificationWrapper).ToArray());
         }
@@ -221,7 +221,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private ListContext GetServicesInternal() {
             INakedObject[] services = framework.LifecycleManager.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager);
-            INakedObjectSpecification elementType = framework.Metadata.GetSpecification(typeof (object));
+            INakedObjectSpecification elementType = framework.Metamodel.GetSpecification(typeof (object));
 
             return new ListContext {
                 ElementType = elementType,
@@ -521,7 +521,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             ITypeOfFacet facet = collectionNakedObject.GetTypeOfFacetFromSpec();
 
             var introspectableSpecification = facet.ValueSpec;
-            var spec = framework.Metadata.GetSpecification(introspectableSpecification);
+            var spec = framework.Metamodel.GetSpecification(introspectableSpecification);
             if (context.ProposedNakedObject.Specification.IsOfType(spec)) {
                 return new Allow();
             }
@@ -926,7 +926,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 var matchedParms = expectedParms.ToDictionary(ep => ep.Item1, ep => new {
                     expectedType = ep.Item2,
                     value = getValue(ep),
-                    actualType = getValue(ep) == null ? null : framework.Metadata.GetSpecification(getValue(ep).GetType())
+                    actualType = getValue(ep) == null ? null : framework.Metamodel.GetSpecification(getValue(ep).GetType())
                 });
 
                 var errors = new List<ContextSurface>();

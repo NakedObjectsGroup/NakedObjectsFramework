@@ -26,13 +26,13 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public abstract class NakedObjectActionParameterAbstract : INakedObjectActionParameter {
-        private readonly IMetadata metadata;
+        private readonly IMetamodel metamodel;
         private readonly int number;
         private readonly INakedObjectAction parentAction;
         private readonly INakedObjectActionParamPeer peer;
 
-        protected internal NakedObjectActionParameterAbstract(IMetadata metadata, int number, INakedObjectAction nakedObjectAction, INakedObjectActionParamPeer peer) {
-            this.metadata = metadata;
+        protected internal NakedObjectActionParameterAbstract(IMetamodel metamodel, int number, INakedObjectAction nakedObjectAction, INakedObjectActionParamPeer peer) {
+            this.metamodel = metamodel;
             this.number = number;
             parentAction = nakedObjectAction;
             this.peer = peer;
@@ -76,7 +76,7 @@ namespace NakedObjects.Reflector.Spec {
 
         public virtual INakedObjectSpecification Specification {
             get {
-                return  metadata.GetSpecification(peer.Specification);
+                return  metamodel.GetSpecification(peer.Specification);
             }
         }
 
@@ -171,7 +171,7 @@ namespace NakedObjects.Reflector.Spec {
         public Tuple<string, INakedObjectSpecification>[] GetChoicesParameters() {
             var choicesFacet = GetFacet<IActionChoicesFacet>();
             return choicesFacet == null ? new Tuple<string, INakedObjectSpecification>[] {} :
-                choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, INakedObjectSpecification>(t.Item1, metadata.GetSpecification(t.Item2))).ToArray();
+                choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, INakedObjectSpecification>(t.Item1, metamodel.GetSpecification(t.Item2))).ToArray();
         }
 
         public INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, ILifecycleManager persistor) {
@@ -197,7 +197,7 @@ namespace NakedObjects.Reflector.Spec {
             }
 
             if (Specification.IsCollectionOfBoundedSet() || Specification.IsCollectionOfEnum()) {
-                var instanceSpec =  metadata.GetSpecification(Specification.GetFacet<ITypeOfFacet>().ValueSpec);
+                var instanceSpec =  metamodel.GetSpecification(Specification.GetFacet<ITypeOfFacet>().ValueSpec);
 
                 var instanceEnumFacet = instanceSpec.GetFacet<IEnumFacet>();
 

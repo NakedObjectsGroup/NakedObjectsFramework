@@ -37,7 +37,7 @@ type MockReflector() =
         member x.FacetFactorySet with get() = (null)
         member x.LoadSpecificationForReturnTypes(properties, classToIgnore) = ()
         member x.AllIntrospectableSpecifications with get() = [||]
-    interface IMetadata with 
+    interface IMetamodel with 
         member x.AllSpecifications with get() = [||]
         member x.GetSpecification(typ : Type) : INakedObjectSpecification = null
         member x.GetSpecification(str : string) : INakedObjectSpecification = null

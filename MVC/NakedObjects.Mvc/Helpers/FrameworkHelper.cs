@@ -66,7 +66,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (returnType.IsOfType(spec)) {
                 return true;
             }
-            return returnType.IsCollection && framework.Metadata.GetSpecification( returnType.GetFacet<ITypeOfFacet>().ValueSpec).IsOfType(spec);
+            return returnType.IsCollection && framework.Metamodel.GetSpecification( returnType.GetFacet<ITypeOfFacet>().ValueSpec).IsOfType(spec);
         }
 
         public static string GetObjectType(Type type) {
@@ -154,7 +154,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static INakedObjectSpecification GetSpecificationFromObjectId(this INakedObjectsFramework framework, string[] asArray, out string[] restOfArray) {
             string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(asArray.First()));
-            INakedObjectSpecification spec = framework.Metadata.GetSpecification(typeName);
+            INakedObjectSpecification spec = framework.Metamodel.GetSpecification(typeName);
             restOfArray = asArray.ToArray();
             return spec;
         }
@@ -225,7 +225,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static INakedObjectAction GetActionFromId(this INakedObjectsFramework framework, string actionId) {
             string[] asArray = actionId.Split(';');
-            INakedObjectSpecification spec = framework.Metadata.GetSpecification(asArray.First());
+            INakedObjectSpecification spec = framework.Metamodel.GetSpecification(asArray.First());
             string id = asArray.Skip(1).First();
 
             return spec.GetAllActions().Single(a => a.Id == id);
@@ -237,12 +237,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static bool IsImage(this INakedObjectSpecification spec, INakedObjectsFramework framework) {
-            INakedObjectSpecification imageSpec = framework.Metadata.GetSpecification(typeof(Image));
+            INakedObjectSpecification imageSpec = framework.Metamodel.GetSpecification(typeof(Image));
             return spec != null && spec.IsOfType(imageSpec);
         }
 
         private static bool IsFileAttachment(this INakedObjectSpecification spec, INakedObjectsFramework framework) {
-            INakedObjectSpecification fileSpec = framework.Metadata.GetSpecification(typeof(FileAttachment));
+            INakedObjectSpecification fileSpec = framework.Metamodel.GetSpecification(typeof(FileAttachment));
             return spec != null && spec.IsOfType(fileSpec);
         }
 
@@ -280,7 +280,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static INakedObject GetTypedCollection(this INakedObjectsFramework framework, INakedObjectSpecification spec, IEnumerable collectionValue) {
-            INakedObjectSpecification collectionitemSpec = framework.Metadata.GetSpecification(spec.GetFacet<ITypeOfFacet>().ValueSpec);
+            INakedObjectSpecification collectionitemSpec = framework.Metamodel.GetSpecification(spec.GetFacet<ITypeOfFacet>().ValueSpec);
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
             object[] objCollection;
 

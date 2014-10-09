@@ -35,7 +35,7 @@ namespace NakedObjects {
 
         INakedObjectReflector Reflector { get; }
 
-        IMetadata Metadata { get; }
+        IMetamodel Metamodel { get; }
 
         IAuthorizationManager AuthorizationManager { get; }
 

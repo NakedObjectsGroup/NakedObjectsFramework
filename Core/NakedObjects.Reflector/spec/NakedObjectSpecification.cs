@@ -40,7 +40,7 @@ namespace NakedObjects.Reflector.Spec {
     public class NakedObjectSpecification :  INakedObjectSpecification {
        
 
-        private readonly IMetadata metadata;
+        private readonly IMetamodel metamodel;
         private readonly IIntrospectableSpecification innerSpec;
         private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectSpecification));
         private INakedObjectAction[] objectActions;
@@ -49,11 +49,11 @@ namespace NakedObjects.Reflector.Spec {
         private INakedObjectAction[] relatedActions;
         private INakedObjectAction[] combinedActions;
 
-        public NakedObjectSpecification(IMetadata metadata, IIntrospectableSpecification innerSpec) {
-            this.metadata = metadata;
+        public NakedObjectSpecification(IMetamodel metamodel, IIntrospectableSpecification innerSpec) {
+            this.metamodel = metamodel;
             this.innerSpec = innerSpec;
 
-            Assert.AssertNotNull(metadata);
+            Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(innerSpec);
         }
 
@@ -141,7 +141,7 @@ namespace NakedObjects.Reflector.Spec {
 
         public virtual INakedObjectSpecification Superclass {
             get {
-                return  innerSpec.Superclass == null ? null : metadata.GetSpecification(innerSpec.Superclass);
+                return  innerSpec.Superclass == null ? null : metamodel.GetSpecification(innerSpec.Superclass);
             }
         }
 
@@ -215,11 +215,11 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public INakedObjectSpecification[] Interfaces {
-            get { return innerSpec.Interfaces.Select(i => metadata.GetSpecification(i)).ToArray(); }
+            get { return innerSpec.Interfaces.Select(i => metamodel.GetSpecification(i)).ToArray(); }
         }
 
         public INakedObjectSpecification[] Subclasses {
-            get { return innerSpec.Subclasses.Select(i => metadata.GetSpecification(i)).ToArray(); }
+            get { return innerSpec.Subclasses.Select(i => metamodel.GetSpecification(i)).ToArray(); }
         }
 
         public bool IsAbstract {
@@ -376,7 +376,7 @@ namespace NakedObjects.Reflector.Spec {
             Type type = TypeUtils.GetType(FullName);
 
             if (type.IsGenericType) {
-                postfix = type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + sep + metadata.GetSpecification(y).UniqueShortName(sep));
+                postfix = type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + sep + metamodel.GetSpecification(y).UniqueShortName(sep));
             }
 
             return ShortName + postfix;
@@ -433,11 +433,11 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         private NakedObjectActionImpl CreateNakedObjectAction(INakedObjectActionPeer peer) {
-            return new NakedObjectActionImpl(metadata, peer);
+            return new NakedObjectActionImpl(metamodel, peer);
         }
 
         private INakedObjectAssociation CreateNakedObjectField(INakedObjectAssociationPeer peer) {
-            return NakedObjectAssociationAbstract.CreateAssociation(metadata, peer);
+            return NakedObjectAssociationAbstract.CreateAssociation(metamodel, peer);
         }
 
         private INakedObjectAssociation[] OrderFields(IOrderSet<INakedObjectAssociationPeer> order) {

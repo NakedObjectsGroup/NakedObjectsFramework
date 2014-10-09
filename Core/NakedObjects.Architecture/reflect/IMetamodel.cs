@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
-    public interface IMetadata {
+    public interface IMetamodel {
         INakedObjectSpecification[] AllSpecifications { get; }
 
         INakedObjectSpecification GetSpecification(Type type);

@@ -10,11 +10,11 @@ namespace NakedObjects.Core.Persist {
     ///     Generates OIDs based on the system clock
     /// </summary>
     public class TimeBasedOidGenerator : SimpleOidGenerator {
-        public TimeBasedOidGenerator(IMetadata metadata)
-            : base(metadata, DateTime.Now.Ticks) {}
+        public TimeBasedOidGenerator(IMetamodel metamodel)
+            : base(metamodel, DateTime.Now.Ticks) {}
 
-        public TimeBasedOidGenerator(IMetadata metadata, long start)
-            : base(metadata, start) {}
+        public TimeBasedOidGenerator(IMetamodel metamodel, long start)
+            : base(metamodel, start) {}
 
         public override string Name {
             get { return "Time Initialised OID Generator"; }

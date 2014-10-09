@@ -45,7 +45,7 @@ using IsolationLevel = System.Transactions.IsolationLevel;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityObjectStore : INakedObjectStore {
-        private readonly IMetadata metadata;
+        private readonly IMetamodel metamodel;
         private readonly ISession session;
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStore));
         private static CreateAdapterDelegate createAdapter;
@@ -92,8 +92,8 @@ namespace NakedObjects.EntityObjectStore {
             IsInitializedCheck = () => true;
         }
 
-        internal EntityObjectStore(IMetadata metadata, ISession session, IUpdateNotifier updateNotifier, IContainerInjector injector) {
-            this.metadata = metadata;
+        internal EntityObjectStore(IMetamodel metamodel, ISession session, IUpdateNotifier updateNotifier, IContainerInjector injector) {
+            this.metamodel = metamodel;
             this.session = session;
             this.updateNotifier = updateNotifier;
             this.injector = injector;
@@ -109,13 +109,13 @@ namespace NakedObjects.EntityObjectStore {
             persisted = (x, s) => x.Persisted(s);
             handleLoaded = HandleLoadedDefault;
             savingChangesHandlerDelegate = SavingChangesHandler;
-            loadSpecification = metadata.GetSpecification;
+            loadSpecification = metamodel.GetSpecification;
             notifyUi = updateNotifier.AddChangedObject;
         }
 
 
-        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetadata metadata, IContainerInjector injector)
-            : this(metadata, session, updateNotifier, injector) {
+        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodel metamodel, IContainerInjector injector)
+            : this(metamodel, session, updateNotifier, injector) {
             this.oidGenerator = oidGenerator;
             contexts = config.ContextConfiguration.ToDictionary<EntityContextConfiguration, EntityContextConfiguration, LocalContext>(c => c, c => null);
         
@@ -1158,7 +1158,7 @@ namespace NakedObjects.EntityObjectStore {
             if (aggregateOid != null) {
                 var parentOid = (EntityOid) aggregateOid.ParentOid;
                 string parentType = parentOid.TypeName;
-                INakedObjectSpecification parentSpec = metadata.GetSpecification(parentType);
+                INakedObjectSpecification parentSpec = metamodel.GetSpecification(parentType);
                 INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
 
                 return parent.Specification.GetProperty(aggregateOid.FieldName).GetNakedObject(parent, Manager);

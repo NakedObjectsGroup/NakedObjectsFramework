@@ -15,10 +15,10 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         protected FacetHolderImpl FacetHolder;
         protected IMethodRemover MethodRemover;
         protected INakedObjectReflector Reflector;
-        protected IMetadata Metadata;
+        protected IMetamodel Metamodel;
         private Mock<IMethodRemover> mockMethodRemover;
         private Mock<INakedObjectReflector> mockReflector;
-        private Mock<IMetadata> mockMetadata;
+        private Mock<IMetamodel> mockMetadata;
         protected abstract Type[] SupportedTypes { get; }
         protected abstract IFacetFactory FacetFactory { get; }
 
@@ -27,11 +27,11 @@ namespace NakedObjects.Reflector.DotNet.Facets {
 
             mockMethodRemover = new Mock<IMethodRemover>();
             mockReflector = new Mock<INakedObjectReflector>();
-            mockMetadata = new Mock<IMetadata>();
+            mockMetadata = new Mock<IMetamodel>();
 
             MethodRemover = mockMethodRemover.Object;
             Reflector = mockReflector.Object;
-            Metadata = mockMetadata.Object;
+            Metamodel = mockMetadata.Object;
 
             mockMethodRemover.Setup(remover => remover.RemoveMethod(It.IsAny<MethodInfo>()));
             mockMethodRemover.Setup(remover => remover.RemoveMethods(It.IsAny<IList<MethodInfo>>()));

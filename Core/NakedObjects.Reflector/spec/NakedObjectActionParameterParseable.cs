@@ -13,8 +13,8 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class NakedObjectActionParameterParseable : NakedObjectActionParameterAbstract, IParseableEntryActionParameter {
-        public NakedObjectActionParameterParseable(IMetadata metadata, int index, INakedObjectAction action, INakedObjectActionParamPeer peer)
-            : base(metadata, index, action, peer) {}
+        public NakedObjectActionParameterParseable(IMetamodel metamodel, int index, INakedObjectAction action, INakedObjectActionParamPeer peer)
+            : base(metamodel, index, action, peer) {}
 
         public virtual int NoLines {
             get { return GetFacet<IMultiLineFacet>().NumberOfLines; }

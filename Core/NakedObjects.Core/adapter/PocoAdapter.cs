@@ -24,7 +24,7 @@ namespace NakedObjects.Core.Adapter {
         private static readonly ILog Log;
         private string defaultTitle;
         private IOid oid;
-        private readonly IMetadata metadata;
+        private readonly IMetamodel metamodel;
         private readonly ISession session;
         private readonly IObjectPersistor persistor;
         private readonly INakedObjectManager manager;
@@ -38,14 +38,14 @@ namespace NakedObjects.Core.Adapter {
             Log = LogManager.GetLogger(typeof (PocoAdapter));
         }
 
-        public PocoAdapter(IMetadata metadata, ISession session, IObjectPersistor persistor,  ILifecycleManager lifecycleManager, object poco, IOid oid) {
-            Assert.AssertNotNull(metadata);
+        public PocoAdapter(IMetamodel metamodel, ISession session, IObjectPersistor persistor,  ILifecycleManager lifecycleManager, object poco, IOid oid) {
+            Assert.AssertNotNull(metamodel);
             //Assert.AssertNotNull(session);
 
             if (poco is INakedObject) {
                 throw new AdapterException("Adapter can't be used to adapt an adapter: " + poco);
             }
-            this.metadata = metadata;
+            this.metamodel = metamodel;
             this.session = session;
             this.persistor = persistor;
             this.manager = lifecycleManager;
@@ -90,7 +90,7 @@ namespace NakedObjects.Core.Adapter {
         public virtual INakedObjectSpecification Specification {
             get {
                 if (specification == null) {
-                    specification = metadata.GetSpecification(Object.GetType());
+                    specification = metamodel.GetSpecification(Object.GetType());
                     defaultTitle = "A" + (" " + specification.SingularName).ToLower();
                 }
                 return specification;
@@ -207,7 +207,7 @@ namespace NakedObjects.Core.Adapter {
 
         private string CollectionTitleString(ICollectionFacet facet) {
             int size = ElementsLoaded() ? facet.AsEnumerable(this, manager).Count() : CollectionUtils.IncompleteCollection;
-            var elementSpecification = TypeOfFacet == null ? null :  metadata.GetSpecification(TypeOfFacet.ValueSpec);
+            var elementSpecification = TypeOfFacet == null ? null :  metamodel.GetSpecification(TypeOfFacet.ValueSpec);
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
         }
 

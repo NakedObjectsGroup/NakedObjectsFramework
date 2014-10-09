@@ -27,7 +27,7 @@
   <ItemGroup>
     <FWFiles Include="$(CorePath)\NakedObjects.FWResources\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Architecture\*.csproj"/>
-    <FWFiles Include="$(CorePath)\NakedObjects.Metadata\*.csproj"/>
+    <FWFiles Include="$(CorePath)\NakedObjects.Metamodel\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Async\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Bootstrap\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Core\*.csproj"/>
@@ -107,7 +107,7 @@
     <ItemGroup>
       <FWPdb Include="$(CorePath)\NakedObjects.FWResources\bin\%(Configuration.Identity)\NakedObjects.FWResources.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Architecture\bin\%(Configuration.Identity)\NakedObjects.Architecture.pdb"/>
-      <FWPdb Include="$(CorePath)\NakedObjects.Metadata\bin\%(Configuration.Identity)\NakedObjects.Metadata.pdb"/>
+      <FWPdb Include="$(CorePath)\NakedObjects.Metamodel\bin\%(Configuration.Identity)\NakedObjects.Metamodel.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Async\bin\%(Configuration.Identity)\NakedObjects.Async.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Bootstrap\bin\%(Configuration.Identity)\NakedObjects.Bootstrap.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Core\bin\%(Configuration.Identity)\NakedObjects.Core.pdb"/>
@@ -121,7 +121,7 @@
     <ItemGroup>
       <FWSrc Include="$(CorePath)\*NakedObjects.FWResources\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Architecture\**\*.cs"/>
-      <FWSrc Include="$(CorePath)\*NakedObjects.Metadata\**\*.cs"/>
+      <FWSrc Include="$(CorePath)\*NakedObjects.Metamodel\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Async\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Bootstrap\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Core\**\*.cs"/>

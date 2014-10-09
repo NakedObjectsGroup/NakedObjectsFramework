@@ -145,7 +145,7 @@ namespace NakedObjects.Web.Mvc {
         }
 
         private static bool SameSpec(string name, INakedObjectSpecification otherSpec, INakedObjectsFramework framework) {
-            var thisSpec = framework.Metadata.GetSpecification(name);
+            var thisSpec = framework.Metamodel.GetSpecification(name);
             return thisSpec.IsOfType(otherSpec);
         }
 

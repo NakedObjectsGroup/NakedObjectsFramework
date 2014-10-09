@@ -115,7 +115,7 @@ namespace RestfulObjects.Mvc.App.App_Start
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
             container.RegisterType<INakedObjectReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetadata, DotNetReflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodel, DotNetReflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IContainerInjector, DotNetDomainObjectContainerInjector>(new PerResolveLifetimeManager());
