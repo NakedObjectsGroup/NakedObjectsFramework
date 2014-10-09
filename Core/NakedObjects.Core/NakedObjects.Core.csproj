@@ -156,6 +156,11 @@
     <Compile Include="context\SimpleMessageBroker.cs" />
     <Compile Include="context\SimpleUpdateNotifier.cs" />
     <Compile Include="Managers\LifeCycleManager.cs" />
+    <Compile Include="Managers\MetamodelManager.cs" />
+    <Compile Include="Managers\NakedObjectFactory.cs" />
+    <Compile Include="Managers\NakedObjectManager.cs" />
+    <Compile Include="Managers\ObjectPersistor.cs" />
+    <Compile Include="Managers\ServicesManager.cs" />
     <Compile Include="objectstore\ObjectStoreTransaction.cs" />
     <Compile Include="objectstore\ObjectStoreTransactionManager.cs" />
     <Compile Include="objectstore\ServicesConfiguration.cs" />
