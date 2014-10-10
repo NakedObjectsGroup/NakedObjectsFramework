@@ -15,6 +15,7 @@ open NakedObjects.Architecture.Reflect
 open System.Security.Principal
 open System.Security.Claims
 open Moq
+open NakedObjects.Architecture.Component
 
 type XElement(name : string, [<ParamArray>] values : obj []) = 
     inherit System.Xml.Linq.XElement(System.Xml.Linq.XName.op_Implicit (name), values)
@@ -41,7 +42,7 @@ type WifTests() =
     
     let testSession = new TestSession(claimsPrincipal)
     let reflector = (new Mock<INakedObjectReflector>()).Object
-    let metadata = (new Mock<IMetadata>()).Object
+    let metadata = (new Mock<IMetamodel>()).Object
     let testXml = 
         "<testxml><class name=\"class1\" fullname=\"ns.class1\">" + "<member name=\"member1\" type=\"ViewField\">" 
         + "<claim value=\"claim1value\" type=\"claim1type\"/>" + "</member>" + "<member name=\"member2\" type=\"EditField\">" 
