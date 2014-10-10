@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -19,22 +22,30 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class NakedObjectActionImpl : NakedObjectMemberSessionAware, INakedObjectAction {
         private static readonly ILog Log;
+
+        private readonly MemberFactory memberFactory;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectActionPeer nakedObjectActionPeer;
+
         private INakedObjectActionParameter[] parameters;
 
         static NakedObjectActionImpl() {
             Log = LogManager.GetLogger(typeof (NakedObjectActionImpl));
         }
 
-        public NakedObjectActionImpl(IMetamodelManager metamodel, INakedObjectActionPeer nakedObjectActionPeer)
-            : base(nakedObjectActionPeer.Identifier.MemberName, nakedObjectActionPeer) {
+        public NakedObjectActionImpl(MemberFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, INakedObjectActionPeer nakedObjectActionPeer)
+            : base(nakedObjectActionPeer.Identifier.MemberName, nakedObjectActionPeer, session, lifecycleManager) {
+            Assert.AssertNotNull(metamodel);
+            Assert.AssertNotNull(nakedObjectActionPeer);
+
+            this.memberFactory = memberFactory;
             this.metamodel = metamodel;
             this.nakedObjectActionPeer = nakedObjectActionPeer;
             BuildParameters();
@@ -71,9 +82,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public virtual Where Target {
-            get {
-                return GetFacet<IExecutedFacet>().ExecutedWhere();
-            }
+            get { return GetFacet<IExecutedFacet>().ExecutedWhere(); }
         }
 
         public virtual bool IsContributedMethod {
@@ -104,22 +113,22 @@ namespace NakedObjects.Reflector.Spec {
             get { return null; }
         }
 
-        public virtual INakedObject Execute(INakedObject nakedObject, INakedObject[] parameterSet, ILifecycleManager persistor, ISession session) {
+        public virtual INakedObject Execute(INakedObject nakedObject, INakedObject[] parameterSet) {
             Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);
             INakedObject[] parms = RealParameters(nakedObject, parameterSet);
-            INakedObject target = RealTarget(nakedObject, persistor);
-            return GetFacet<IActionInvocationFacet>().Invoke(target, parms, persistor, session);
+            INakedObject target = RealTarget(nakedObject);
+            return GetFacet<IActionInvocationFacet>().Invoke(target, parms, LifecycleManager, Session);
         }
 
-        public virtual INakedObject RealTarget(INakedObject target, ILifecycleManager persistor) {
+        public virtual INakedObject RealTarget(INakedObject target) {
             if (target == null) {
-                return FindService(persistor);
+                return FindService();
             }
             if (target.Specification.IsService) {
                 return target;
             }
             if (IsContributedMethod) {
-                return FindService(persistor);
+                return FindService();
             }
             return target;
         }
@@ -149,31 +158,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public virtual INakedObjectActionParameter[] Parameters {
-            get {              
-                return parameters;
-            }
-        }
-
-        private void BuildParameters() {
-            var list = new List<INakedObjectActionParameter>();
-            INakedObjectActionParamPeer[] paramPeers = nakedObjectActionPeer.Parameters;
-            for (int i = 0; i < paramPeers.Length; i++) {
-                var specification = paramPeers[i].Specification;
-
-                if (specification.IsParseable) {
-                    list.Add(new NakedObjectActionParameterParseable(metamodel, i, this, paramPeers[i]));
-                }
-                else if (specification.IsObject) {
-                    list.Add(new OneToOneActionParameterImpl(metamodel, i, this, paramPeers[i]));
-                }
-                else if (specification.IsCollection) {
-                    list.Add(new OneToManyActionParameterImpl(metamodel, i, this, paramPeers[i]));
-                }
-                else {
-                    throw new UnknownTypeException(specification);
-                }
-            }
-            parameters = list.ToArray();
+            get { return parameters; }
         }
 
         public virtual INakedObjectActionParameter[] GetParameters(INakedObjectActionParameterFilter filter) {
@@ -194,29 +179,40 @@ namespace NakedObjects.Reflector.Spec {
         /// <summary>
         ///     Checks declarative constraints, and then checks imperatively.
         /// </summary>
-        public virtual IConsent IsParameterSetValid(ISession session, INakedObject nakedObject, INakedObject[] parameterSet, ILifecycleManager persistor) {
+        public virtual IConsent IsParameterSetValid(INakedObject nakedObject, INakedObject[] parameterSet) {
             InteractionContext ic;
             var buf = new InteractionBuffer();
             if (parameterSet != null) {
                 INakedObject[] parms = RealParameters(nakedObject, parameterSet);
                 for (int i = 0; i < parms.Length; i++) {
-                    ic = InteractionContext.ModifyingPropParam(session, false, RealTarget(nakedObject, persistor), Identifier, parameterSet[i]);
+                    ic = InteractionContext.ModifyingPropParam(Session, false, RealTarget(nakedObject), Identifier, parameterSet[i]);
                     InteractionUtils.IsValid(GetParameter(i), ic, buf);
                 }
             }
-            INakedObject target = RealTarget(nakedObject, persistor);
-            ic = InteractionContext.InvokingAction(session, false, target, Identifier, parameterSet);
+            INakedObject target = RealTarget(nakedObject);
+            ic = InteractionContext.InvokingAction(Session, false, target, Identifier, parameterSet);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
 
-        public override IConsent IsUsable(ISession session, INakedObject target, ILifecycleManager persistor) {
-            InteractionContext ic = InteractionContext.InvokingAction(session, false, RealTarget(target, persistor), Identifier, new[] {target});
+        public override IConsent IsUsable(INakedObject target) {
+            InteractionContext ic = InteractionContext.InvokingAction(Session, false, RealTarget(target), Identifier, new[] {target});
             return InteractionUtils.IsUsable(this, ic);
         }
 
-        public override bool IsVisible(ISession session, INakedObject target, ILifecycleManager persistor) {
-            return base.IsVisible(session, RealTarget(target, persistor), persistor);
+        public override bool IsVisible(INakedObject target) {
+            return base.IsVisible(RealTarget(target));
+        }
+
+        public INakedObject[] RealParameters(INakedObject target, INakedObject[] parameterSet) {
+            return parameterSet ?? (IsContributedMethod ? new[] {target} : new INakedObject[0]);
+        }
+
+        #endregion
+
+        private void BuildParameters() {
+            int index = 0;
+            parameters = nakedObjectActionPeer.Parameters.Select(pp => memberFactory.CreateParameter(pp, this, index++)).ToArray();
         }
 
         private bool ContributeTo(INakedObjectSpecification parmSpec, INakedObjectSpecification contributeeSpec) {
@@ -234,29 +230,20 @@ namespace NakedObjects.Reflector.Spec {
             return spec.IsCollection && !spec.IsParseable;
         }
 
-        #endregion
-
-        public INakedObject[] RealParameters(INakedObject target, INakedObject[] parameterSet) {
-            return parameterSet ?? (IsContributedMethod ? new[] {target} : new INakedObject[0]);
-        }
-
         private bool FindServiceOnSpecOrSpecSuperclass(INakedObjectSpecification spec) {
             if (spec == null) {
                 return false;
             }
-            if (spec.Equals(OnType)) {
-                return true;
-            }
-            return FindServiceOnSpecOrSpecSuperclass(spec.Superclass);
+            return spec.Equals(OnType) || FindServiceOnSpecOrSpecSuperclass(spec.Superclass);
         }
 
-        private INakedObject FindService(ILifecycleManager persistor) {
-            foreach (INakedObject serviceAdapter in persistor.GetServices(ServiceTypes.Menu | ServiceTypes.Contributor)) {
+        private INakedObject FindService() {
+            foreach (INakedObject serviceAdapter in LifecycleManager.GetServices(ServiceTypes.Menu | ServiceTypes.Contributor)) {
                 if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Specification)) {
                     return serviceAdapter;
                 }
             }
-            throw new FindObjectException("failed to find service for action " + GetName(persistor));
+            throw new FindObjectException("failed to find service for action " + GetName());
         }
 
         private INakedObjectActionParameter GetParameter(int position) {

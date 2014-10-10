@@ -91,7 +91,7 @@ namespace NakedObjects.Architecture.Adapter {
             INakedObjectAssociation versionProperty = nakedObject.GetVersionProperty();
 
             if (versionProperty != null) {
-                object version = versionProperty.GetNakedObject(nakedObject, manager).GetDomainObject();
+                object version = versionProperty.GetNakedObject(nakedObject).GetDomainObject();
 
                 if (version is DateTime) {
                     return ((DateTime) version).StripMillis();

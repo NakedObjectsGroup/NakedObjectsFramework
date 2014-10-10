@@ -6,13 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class OneToManyActionParameterImpl : NakedObjectActionParameterAbstract, IOneToManyFeature {
-        public OneToManyActionParameterImpl(IMetamodelManager metamodel, int index, INakedObjectAction actionImpl, INakedObjectActionParamPeer peer)
-            : base(metamodel, index, actionImpl, peer) {}
+        public OneToManyActionParameterImpl(IMetamodelManager metamodel, int index, INakedObjectAction actionImpl, INakedObjectActionParamPeer peer, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
+            : base(metamodel, index, actionImpl, peer, manager, session, persistor) {}
 
         public override bool IsCollection {
             get { return true; }

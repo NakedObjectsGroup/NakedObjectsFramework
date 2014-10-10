@@ -16,17 +16,19 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Reflector.Spec {
     public class NakedObjectActionSet : INakedObjectAction {
         private readonly INakedObjectAction[] actions;
+        private readonly IServicesManager servicesManager;
         private readonly string id;
         private readonly string name;
         private readonly string shortId; 
 
-        public NakedObjectActionSet(string id, INakedObjectAction[] actions)
-            : this(id, null, actions) {}
+        public NakedObjectActionSet(string id, INakedObjectAction[] actions, IServicesManager servicesManager1)
+            : this(id, null, actions, servicesManager1) { }
 
-        public NakedObjectActionSet(string id, string name, INakedObjectAction[] actions) {
+        public NakedObjectActionSet(string id, string name, INakedObjectAction[] actions, IServicesManager servicesManager) {
             this.name = name;
             this.id = id;
             this.actions = actions;
+            this.servicesManager = servicesManager;
             this.shortId = TypeNameUtils.GetShortName(id);
         }
 
@@ -67,9 +69,9 @@ namespace NakedObjects.Reflector.Spec {
             get { return id; }
         }
 
-        public virtual string GetName(IServicesManager persistor) {
+        public virtual string GetName() {
             if (name == null) {
-                var service = persistor.GetService(shortId);
+                var service = servicesManager.GetService(shortId);
                 return service.TitleString();
             }
             return name;
@@ -118,7 +120,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return null; }
         }
 
-        public virtual INakedObject Execute(INakedObject target, INakedObject[] parameterSet, ILifecycleManager persistor, ISession session) {
+        public virtual INakedObject Execute(INakedObject target, INakedObject[] parameterSet) {
             throw new UnexpectedCallException();
         }
 
@@ -193,11 +195,11 @@ namespace NakedObjects.Reflector.Spec {
             return false;
         }
 
-        public virtual IConsent IsParameterSetValid(ISession session, INakedObject nakedObject, INakedObject[] parameterSet, ILifecycleManager persistor) {
+        public virtual IConsent IsParameterSetValid(INakedObject nakedObject, INakedObject[] parameterSet) {
             throw new UnexpectedCallException();
         }
 
-        public virtual IConsent IsUsable(ISession session, INakedObject target, ILifecycleManager persistor) {
+        public virtual IConsent IsUsable(INakedObject target) {
             return Allow.Default;
         }
 
@@ -205,11 +207,11 @@ namespace NakedObjects.Reflector.Spec {
             get { return false; }
         }
 
-        public virtual bool IsVisible(ISession session, INakedObject target, ILifecycleManager persistor) {
+        public virtual bool IsVisible(INakedObject target) {
             return true;
         }
 
-        public virtual INakedObject RealTarget(INakedObject target, ILifecycleManager persistor) {
+        public virtual INakedObject RealTarget(INakedObject target) {
             return null;
         }
 

@@ -180,6 +180,7 @@
     <Compile Include="security\IAuthenticatorInstaller.cs" />
     <Compile Include="security\SimpleSession.cs" />
     <Compile Include="service\ServiceUtils.cs" />
+    <Compile Include="spec\MemberFactory.cs" />
     <Compile Include="spec\NakedObjectActionImpl.cs" />
     <Compile Include="spec\NakedObjectActionParameterAbstract.cs" />
     <Compile Include="spec\NakedObjectActionParameterParseable.cs" />

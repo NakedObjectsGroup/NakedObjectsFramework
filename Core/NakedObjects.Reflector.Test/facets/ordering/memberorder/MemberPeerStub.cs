@@ -56,7 +56,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         }
 
         public override string ToString() {
-            return GetName(persistor);
+            return GetName();
         }
 
         #region Nested Type: IdentifierNull
@@ -72,7 +72,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             }
 
             public override string ToString() {
-                return owner.GetName(persistor);
+                return owner.GetName();
             }
         };
 

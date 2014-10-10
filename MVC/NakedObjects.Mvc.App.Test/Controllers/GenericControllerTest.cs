@@ -140,7 +140,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("ActionDialog", result.ViewName);
             ViewDataDictionary data = result.ViewData;
             Assert.IsInstanceOf(typeof (FindViewModel), data.Model);
-            Assert.AreEqual(actionName, ((FindViewModel) data.Model).ContextAction.GetName(NakedObjectsFramework.LifecycleManager));
+            Assert.AreEqual(actionName, ((FindViewModel) data.Model).ContextAction.GetName());
         }
 
 

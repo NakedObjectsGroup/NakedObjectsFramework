@@ -1,3 +1,10 @@
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,9 +29,9 @@ namespace NakedObjects.Managers {
         private static readonly ILog Log;
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
         private readonly IIdentityMap identityMap;
+        private readonly IMetamodelManager metamodel;
         private readonly NakedObjectFactory nakedObjectFactory;
         private readonly IOidGenerator oidGenerator;
-        private readonly IMetamodelManager metamodel;
         private readonly ISession session;
 
         static NakedObjectManager() {
@@ -129,18 +136,34 @@ namespace NakedObjects.Managers {
             return AdapterForService(oid, service);
         }
 
-        #endregion
-
-        public IOid GetOidForService(string name, string typeName) {
-            Log.DebugFormat("GetOidForService name: {0}", name);
-            return OidGenerator.CreateOid(typeName, new object[] {0});
-        }
-
         public INakedObject GetKnownAdapter(IOid oid) {
             if (identityMap.IsIdentityKnown(oid)) {
                 return GetAdapterFor(oid);
             }
             return null;
+        }
+
+        public INakedObject AdapterForExistingObject(object domainObject, IOid oid) {
+            return GetAdapterFor(domainObject) ?? NewAdapterBasedOnOid(domainObject, oid);
+        }
+
+        public INakedObject CreateInstanceAdapter(object obj) {
+            INakedObject adapter = CreateAdapterForNewObject(obj);
+            NewTransientsResolvedState(adapter);
+            return adapter;
+        }
+
+        public INakedObject CreateViewModelAdapter(INakedObjectSpecification specification, object viewModel) {
+            INakedObject adapter = CreateAdapterForViewModel(viewModel, specification);
+            adapter.ResolveState.Handle(Events.InitializePersistentEvent);
+            return adapter;
+        }
+
+        #endregion
+
+        public IOid GetOidForService(string name, string typeName) {
+            Log.DebugFormat("GetOidForService name: {0}", name);
+            return OidGenerator.CreateOid(typeName, new object[] {0});
         }
 
         private INakedObject AdapterForNoIdentityObject(object domainObject) {
@@ -157,10 +180,6 @@ namespace NakedObjects.Managers {
 
         private INakedObject AdapterForExistingObject(object domainObject, INakedObjectSpecification spec) {
             return identityMap.GetAdapterFor(domainObject) ?? NewAdapterForViewModel(domainObject, spec) ?? NewAdapterForTransient(domainObject);
-        }
-
-        public INakedObject AdapterForExistingObject(object domainObject, IOid oid) {
-            return GetAdapterFor(domainObject) ?? NewAdapterBasedOnOid(domainObject, oid);
         }
 
         private static void NewTransientsResolvedState(INakedObject pocoAdapter) {
@@ -216,18 +235,6 @@ namespace NakedObjects.Managers {
             INakedObject adapter = NewAdapterForKnownObject(domainObject, transientOid);
             Log.DebugFormat("Creating adapter (transient) {0}", adapter);
             identityMap.AddAdapter(adapter);
-            return adapter;
-        }
-
-        public INakedObject CreateInstanceAdapter(object obj) {
-            INakedObject adapter = CreateAdapterForNewObject(obj);
-            NewTransientsResolvedState(adapter);
-            return adapter;
-        }
-
-        public INakedObject CreateViewModelAdapter(INakedObjectSpecification specification, object viewModel) {
-            INakedObject adapter = CreateAdapterForViewModel(viewModel, specification);
-            adapter.ResolveState.Handle(Events.InitializePersistentEvent);
             return adapter;
         }
 

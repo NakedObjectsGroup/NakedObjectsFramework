@@ -7,8 +7,6 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
@@ -25,6 +23,6 @@ namespace NakedObjects.Architecture.Reflect {
         INakedObjectSpecification Specification { get; }
 
         bool IsNullable { get; }
-        IConsent IsUsable(ISession session, INakedObject target, ILifecycleManager persistor);
+        IConsent IsUsable(INakedObject target);
     }
 }

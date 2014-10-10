@@ -19,17 +19,24 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Architecture.Reflect {
     public abstract class NakedObjectMemberAbstract : INakedObjectMember {
+        private readonly string defaultName;
         private readonly IFacetHolder facetHolder;
         private readonly string id;
-        private readonly string defaultName;
+        private readonly ISession session;
+        private readonly ILifecycleManager lifecycleManager;
 
-        protected internal NakedObjectMemberAbstract(string id, IFacetHolder facetHolder) {
-            if (id == null) {
-                throw new ArgumentException(Resources.NakedObjects.NameNotSetMessage);
-            }
+
+        protected internal NakedObjectMemberAbstract(string id, IFacetHolder facetHolder, ISession session, ILifecycleManager lifecycleManager) {
+            AssertArgNotNull(id, Resources.NakedObjects.NameNotSetMessage);
+            AssertArgNotNull(facetHolder);
+            AssertArgNotNull(session);
+            AssertArgNotNull(lifecycleManager);
+
             this.id = id;
             defaultName = NameUtils.NaturalName(id);
             this.facetHolder = facetHolder;
+            this.session = session;
+            this.lifecycleManager = lifecycleManager;
         }
 
         #region INakedObjectMember Members
@@ -50,7 +57,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Return the default label for this member. This is based on the name of this member.
         /// </summary>
         /// <seealso cref="Id()" />
-        public virtual string GetName(IServicesManager persistor) {
+        public virtual string GetName() {
             return GetFacet<INamedFacet>().Value ?? defaultName;
         }
 
@@ -102,18 +109,17 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Loops over all <see cref="IHidingInteractionAdvisor" /> <see cref="IFacet" />s and
         ///     returns <c>true</c> only if none hide the member.
         /// </summary>
-        public virtual bool IsVisible(ISession session, INakedObject target, ILifecycleManager persistor) {
-            InteractionContext ic = InteractionContext.AccessMember(session, false, target, Identifier);
-            return InteractionUtils.IsVisible(this, ic, persistor);
+        public virtual bool IsVisible(INakedObject target) {
+            InteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
+            return InteractionUtils.IsVisible(this, ic, LifecycleManager);
         }
-
 
         /// <summary>
         ///     Loops over all <see cref="IDisablingInteractionAdvisor" /> <see cref="IFacet" />s and
         ///     returns <c>true</c> only if none disables the member.
         /// </summary>
-        public virtual IConsent IsUsable(ISession session, INakedObject target, ILifecycleManager persistor) {
-            InteractionContext ic = InteractionContext.AccessMember(session, false, target, Identifier);
+        public virtual IConsent IsUsable(INakedObject target) {
+            InteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
             return InteractionUtils.IsUsable(this, ic);
         }
 
@@ -121,17 +127,28 @@ namespace NakedObjects.Architecture.Reflect {
             get { return facetHolder.ContainsFacet(typeof (INullableFacet)); }
         }
 
+        public ISession Session {
+            get { return session; }
+        }
+
+        public ILifecycleManager LifecycleManager {
+            get { return lifecycleManager; }
+        }
+
         #endregion
+
+        private static void AssertArgNotNull(object arg, string msg = null) {
+            if (arg == null) {
+                throw new ArgumentException(msg ?? "");
+            }
+        }
 
         //public override string ToString() {
         //    return "id=" + Id + ",name='" + GetName() + "'";
         //}
 
         protected internal virtual IConsent GetConsent(string message) {
-            if (message == null) {
-                return Allow.Default;
-            }
-            return new Veto(message);
+            return message == null ? (IConsent) Allow.Default : new Veto(message);
         }
     }
 

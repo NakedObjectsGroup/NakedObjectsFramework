@@ -35,7 +35,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public string Name {
-            get { return action.GetName(framework.LifecycleManager); }
+            get { return action.GetName(); }
         }
 
         protected IDictionary<string, object> ExtensionData {
@@ -100,11 +100,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool IsVisible(INakedObjectSurface nakedObject) {
-            return action.IsVisible(framework.Session, ((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.LifecycleManager);
+            return action.IsVisible(((NakedObjectWrapper) nakedObject).WrappedNakedObject);
         }
 
         public IConsentSurface IsUsable(INakedObjectSurface nakedObject) {
-            return new ConsentWrapper(action.IsUsable(framework.Session, ((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.LifecycleManager));
+            return new ConsentWrapper(action.IsUsable( ((NakedObjectWrapper) nakedObject).WrappedNakedObject));
         }
 
         public INakedObjectSpecificationSurface OnType {

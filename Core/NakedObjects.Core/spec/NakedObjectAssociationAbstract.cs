@@ -19,17 +19,23 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
     public abstract class NakedObjectAssociationAbstract : NakedObjectMemberAbstract, INakedObjectAssociation {
+        private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectSpecification specification;
 
-        protected NakedObjectAssociationAbstract(IMetamodelManager metamodel, INakedObjectAssociationPeer association)
-            : base(association.Identifier.MemberName, association) {
+        protected NakedObjectAssociationAbstract(IMetamodelManager metamodel, INakedObjectAssociationPeer association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager)
+            : base(association.Identifier.MemberName, association, session, lifecycleManager) {
+            Assert.AssertNotNull(metamodel);
+            Assert.AssertNotNull(manager);
+
             this.metamodel = metamodel;
+            this.manager = manager;
             specification = Metamodel.GetSpecification(association.Specification);
         }
 
@@ -43,6 +49,10 @@ namespace NakedObjects.Architecture.Reflect {
 
         public IMetamodelManager Metamodel {
             get { return metamodel; }
+        }
+
+        public INakedObjectManager Manager {
+            get { return manager; }
         }
 
         #region INakedObjectAssociation Members
@@ -87,16 +97,16 @@ namespace NakedObjects.Architecture.Reflect {
 
         public abstract bool IsMandatory { get; }
 
-        public abstract INakedObject GetNakedObject(INakedObject fromObject, INakedObjectManager manager);
+        public abstract INakedObject GetNakedObject(INakedObject fromObject);
 
-        public abstract bool IsEmpty(INakedObject inObject, INakedObjectManager manager, IObjectPersistor persistor);
+        public abstract bool IsEmpty(INakedObject inObject);
         public abstract bool IsInline { get; }
 
-        public abstract INakedObject GetDefault(INakedObject nakedObject, INakedObjectManager manager);
-        public abstract TypeOfDefaultValue GetDefaultType(INakedObject nakedObject, INakedObjectManager manager);
-        public abstract void ToDefault(INakedObject nakedObject, INakedObjectManager manager);
+        public abstract INakedObject GetDefault(INakedObject nakedObject);
+        public abstract TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
+        public abstract void ToDefault(INakedObject nakedObject);
 
-        public override IConsent IsUsable(ISession session, INakedObject target, ILifecycleManager persistor) {
+        public override IConsent IsUsable(INakedObject target) {
             bool isPersistent = target.ResolveState.IsPersistent();
             IConsent disabledConsent = IsUsableDeclaratively(isPersistent);
             if (disabledConsent != null) {
@@ -121,7 +131,7 @@ namespace NakedObjects.Architecture.Reflect {
 
             if (reason == null) {
                 var fs = GetFacet<IDisableForSessionFacet>();
-                reason = fs == null ? null : fs.DisabledReason(session, target, persistor);
+                reason = fs == null ? null : fs.DisabledReason(Session, target, LifecycleManager);
             }
 
             return GetConsent(reason);
@@ -129,11 +139,11 @@ namespace NakedObjects.Architecture.Reflect {
 
         #endregion
 
-        public abstract INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, ILifecycleManager persistor);
+        public abstract INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
 
         public abstract Tuple<string, INakedObjectSpecification>[] GetChoicesParameters();
 
-        public abstract INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, ILifecycleManager persistor);
+        public abstract INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm);
 
         private IConsent IsUsableDeclaratively(bool isPersistent) {
             var facet = GetFacet<IDisabledFacet>();
@@ -153,17 +163,7 @@ namespace NakedObjects.Architecture.Reflect {
             return null;
         }
 
-        public static INakedObjectAssociation CreateAssociation(IMetamodelManager metamodel, INakedObjectAssociationPeer peer) {
-            if (peer.IsOneToOne) {
-                return new OneToOneAssociationImpl(metamodel, peer);
-            }
-            if (peer.IsOneToMany) {
-                return new OneToManyAssociationImpl(metamodel, peer);
-            }
-            throw new ReflectionException("Unknown peer type: " + peer);
-        }
-
-
+        
     }
 
     // Copyright (c) Naked Objects Group Ltd.

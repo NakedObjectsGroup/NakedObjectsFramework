@@ -6,8 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Reflect {
     /// <summary>
@@ -24,7 +22,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Determines if the specified reference is valid for setting this field in the specified object
         /// </summary>
-        IConsent IsAssociationValid(INakedObject inObject, INakedObject associate, ISession session);
+        IConsent IsAssociationValid(INakedObject inObject, INakedObject associate);
 
         /// <summary>
         ///     Set up the association represented by this field in the specified object with the specified reference -
@@ -32,7 +30,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     association (such as back-links or bidirectional association). To initialise a recreated object to this
         ///     logical state the <see cref="InitAssociation" /> method should be used on each of the objects.
         /// </summary>
-        void SetAssociation(INakedObject inObject, INakedObject associate, ILifecycleManager persistor);
+        void SetAssociation(INakedObject inObject, INakedObject associate);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

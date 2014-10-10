@@ -81,7 +81,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static bool ObjectHasVisibleFields(this HtmlHelper html, object domainObject) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
-            return nakedObject.Specification.Properties.Any(p => p.IsVisible(html.Framework().Session, nakedObject, html.Framework().LifecycleManager));
+            return nakedObject.Specification.Properties.Any(p => p.IsVisible( nakedObject));
         }
 
 
@@ -136,7 +136,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ActionResult(this HtmlHelper html, ActionResultModel model) {
             INakedObject nakedObject = html.Framework().LifecycleManager.CreateAdapter(model.Result, null, null);
             string title = GetCollectionTitle(nakedObject, html);
-            title = model.Action.GetName(html.Framework().LifecycleManager) + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title);
+            title = model.Action.GetName() + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title);
             return CommonHtmlHelper.WrapInDiv(title, IdHelper.ObjectName);
         }
 

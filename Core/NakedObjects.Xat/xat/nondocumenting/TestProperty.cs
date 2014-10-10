@@ -35,7 +35,7 @@ namespace NakedObjects.Xat {
         #region ITestProperty Members
 
         public string Name {
-            get { return field.GetName(persistor); }
+            get { return field.GetName(); }
         }
 
         public string Id {
@@ -43,12 +43,12 @@ namespace NakedObjects.Xat {
         }
 
         public string Title {
-            get { return field.PropertyTitle(field.GetNakedObject(owningObject.NakedObject, persistor), persistor); }
+            get { return field.PropertyTitle(field.GetNakedObject(owningObject.NakedObject), persistor); }
         }
 
         public ITestNaked Content {
             get {
-                INakedObject fieldValue = field.GetNakedObject(owningObject.NakedObject, persistor);
+                INakedObject fieldValue = field.GetNakedObject(owningObject.NakedObject);
                 if (fieldValue != null && fieldValue.ResolveState.IsResolvable()) {
                     persistor.ResolveImmediately(fieldValue);
                 }
@@ -66,17 +66,17 @@ namespace NakedObjects.Xat {
         }
 
         public ITestNaked GetDefault() {
-            INakedObject defaultValue = field.GetDefault(owningObject.NakedObject, persistor);
+            INakedObject defaultValue = field.GetDefault(owningObject.NakedObject);
             return factory.CreateTestNaked(defaultValue);
         }
 
         public ITestNaked[] GetChoices() {
-            INakedObject[] choices = ((NakedObjectAssociationAbstract) field).GetChoices(owningObject.NakedObject, null, persistor);
+            INakedObject[] choices = ((NakedObjectAssociationAbstract) field).GetChoices(owningObject.NakedObject, null);
             return choices.Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 
         public ITestNaked[] GetCompletions(string autoCompleteParm) {
-            INakedObject[] completions = ((NakedObjectAssociationAbstract) field).GetCompletions(owningObject.NakedObject, autoCompleteParm, persistor);
+            INakedObject[] completions = ((NakedObjectAssociationAbstract) field).GetCompletions(owningObject.NakedObject, autoCompleteParm);
             return completions.Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 
@@ -95,7 +95,7 @@ namespace NakedObjects.Xat {
 
             IConsent valid;
             if (field is IOneToOneAssociation) {
-                valid = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, testNakedObject, session);
+                valid = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, testNakedObject);
             }
             else if (field is IOneToManyAssociation) {
                 valid = new Veto("Always disabled");
@@ -108,7 +108,7 @@ namespace NakedObjects.Xat {
             Assert.IsFalse(valid.IsVetoed, string.Format("Cannot SetObject {0} in the field {1} within {2}: {3}", testNakedObject, field, nakedObject, valid.Reason));
 
             if (field is IOneToOneAssociation) {
-                ((IOneToOneAssociation) field).SetAssociation(nakedObject, testNakedObject, persistor);
+                ((IOneToOneAssociation) field).SetAssociation(nakedObject, testNakedObject);
             }
            
             return this;
@@ -151,10 +151,10 @@ namespace NakedObjects.Xat {
 
             Assert.IsFalse(field.Specification.IsParseable, "Clear(..) not allowed on value target field; use SetValue(..) instead");
 
-            INakedObject nakedObject = field.GetNakedObject(owningObject.NakedObject, persistor);
+            INakedObject nakedObject = field.GetNakedObject(owningObject.NakedObject);
             if (nakedObject != null) {
                 if (field is IOneToOneAssociation) {
-                    ((IOneToOneAssociation) field).SetAssociation(owningObject.NakedObject, null, persistor);
+                    ((IOneToOneAssociation) field).SetAssociation(owningObject.NakedObject, null);
                 }
                 else {
                     Assert.Fail("Clear(..) not allowed on collection target field");
@@ -170,22 +170,22 @@ namespace NakedObjects.Xat {
 
             INakedObject nakedObject = owningObject.NakedObject;
             try {
-                INakedObject existingValue = field.GetNakedObject(nakedObject, persistor);
+                INakedObject existingValue = field.GetNakedObject(nakedObject);
 
                 var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
 
                 INakedObject newValue = parseableFacet.ParseTextEntry(textEntry, persistor);
 
-                IConsent consent = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, newValue, session);
+                IConsent consent = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, newValue);
                 LastMessage = consent.Reason;
 
                 Assert.IsFalse(consent.IsVetoed, string.Format("Content: '{0}' is not valid. Reason: {1}", textEntry, consent.Reason));
 
                 if (textEntry.Trim().Equals("")) {
-                    ((IOneToOneAssociation) field).SetAssociation(nakedObject, null, persistor);
+                    ((IOneToOneAssociation) field).SetAssociation(nakedObject, null);
                 }
                 else {
-                    ((IOneToOneAssociation) field).SetAssociation(nakedObject, newValue, persistor);
+                    ((IOneToOneAssociation) field).SetAssociation(nakedObject, newValue);
                 }
             }
             catch (InvalidEntryException) {
@@ -201,10 +201,10 @@ namespace NakedObjects.Xat {
 
             INakedObject nakedObject = owningObject.NakedObject;
             try {
-                IConsent consent = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, null, session);
+                IConsent consent = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, null);
                 LastMessage = consent.Reason;
                 Assert.IsFalse(consent.IsVetoed, string.Format("Content: 'null' is not valid. Reason: {0}", consent.Reason));
-                ((IOneToOneAssociation) field).SetAssociation(nakedObject, null, persistor);
+                ((IOneToOneAssociation) field).SetAssociation(nakedObject, null);
             }
             catch (InvalidEntryException) {
                 Assert.Fail("Null Entry not recognised ");
@@ -240,7 +240,7 @@ namespace NakedObjects.Xat {
             AssertIsVisible();
             AssertIsModifiable();
 
-            INakedObject valueObject = field.GetNakedObject(owningObject.NakedObject, persistor);
+            INakedObject valueObject = field.GetNakedObject(owningObject.NakedObject);
 
             Assert.IsNotNull(valueObject, "Field '" + Name + "' contains null, but should contain an INakedObject object");
             try {
@@ -285,7 +285,7 @@ namespace NakedObjects.Xat {
             INakedObject nakedObject = owningObject.NakedObject;
             IConsent valid;
             if (field is IOneToOneAssociation) {
-                valid = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, testNakedObject, session);
+                valid = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, testNakedObject);
             }
             else if (field is IOneToManyAssociation) {
                 valid = new Veto("Always disabled");
@@ -300,13 +300,13 @@ namespace NakedObjects.Xat {
         }
 
         public ITestProperty AssertIsInvisible() {
-            bool canAccess = field.IsVisible(session, owningObject.NakedObject, persistor);
+            bool canAccess = field.IsVisible(owningObject.NakedObject);
             Assert.IsFalse(canAccess, "Field '" + Name + "' is visible");
             return this;
         }
 
         public ITestProperty AssertIsVisible() {
-            bool canAccess = field.IsVisible(session, owningObject.NakedObject, persistor);
+            bool canAccess = field.IsVisible(owningObject.NakedObject);
             Assert.IsTrue(canAccess, "Field '" + Name + "' is invisible");
             return this;
         }
@@ -331,7 +331,7 @@ namespace NakedObjects.Xat {
             AssertIsVisible();
             ResetLastMessage();
 
-            IConsent isUsable = field.IsUsable(session, owningObject.NakedObject, persistor);
+            IConsent isUsable = field.IsUsable(owningObject.NakedObject);
             LastMessage = isUsable.Reason;
 
             bool canUse = isUsable.IsAllowed;
@@ -341,7 +341,7 @@ namespace NakedObjects.Xat {
 
         public ITestProperty AssertIsUnmodifiable() {
             ResetLastMessage();
-            IConsent isUsable = field.IsUsable(session, owningObject.NakedObject, persistor);
+            IConsent isUsable = field.IsUsable(owningObject.NakedObject);
             LastMessage = isUsable.Reason;
 
             bool canUse = isUsable.IsAllowed;
@@ -351,13 +351,13 @@ namespace NakedObjects.Xat {
 
         public ITestProperty AssertIsNotEmpty() {
             AssertIsVisible();
-            Assert.IsFalse(field.IsEmpty(owningObject.NakedObject, persistor, persistor), "Expected" + " '" + Name + "' to contain something but it was empty");
+            Assert.IsFalse(field.IsEmpty(owningObject.NakedObject), "Expected" + " '" + Name + "' to contain something but it was empty");
             return this;
         }
 
         public ITestProperty AssertIsEmpty() {
             AssertIsVisible();
-            Assert.IsTrue(field.IsEmpty(owningObject.NakedObject, persistor, persistor), "Expected" + " '" + Name + "' to be empty");
+            Assert.IsTrue(field.IsEmpty(owningObject.NakedObject), "Expected" + " '" + Name + "' to be empty");
             return this;
         }
 
@@ -380,12 +380,12 @@ namespace NakedObjects.Xat {
         }
 
         public ITestProperty AssertIsValidToSave() {
-            if (field.IsMandatory && field.IsVisible(session, owningObject.NakedObject, persistor) && field.IsUsable(session, owningObject.NakedObject, persistor).IsAllowed) {
-                Assert.IsFalse(field.IsEmpty(owningObject.NakedObject, persistor, persistor), "Cannot save object as mandatory field " + " '" + Name + "' is empty");
-                Assert.IsTrue(field.GetNakedObject(owningObject.NakedObject, persistor).ValidToPersist() == null);
+            if (field.IsMandatory && field.IsVisible(owningObject.NakedObject) && field.IsUsable(owningObject.NakedObject).IsAllowed) {
+                Assert.IsFalse(field.IsEmpty(owningObject.NakedObject), "Cannot save object as mandatory field " + " '" + Name + "' is empty");
+                Assert.IsTrue(field.GetNakedObject(owningObject.NakedObject).ValidToPersist() == null);
             }
             if (field.IsCollection) {
-                field.GetNakedObject(owningObject.NakedObject, persistor).GetAsEnumerable(persistor).ForEach(no => Assert.AreEqual(no.ValidToPersist(), null));
+                field.GetNakedObject(owningObject.NakedObject).GetAsEnumerable(persistor).ForEach(no => Assert.AreEqual(no.ValidToPersist(), null));
             }
 
             return this;
@@ -407,11 +407,11 @@ namespace NakedObjects.Xat {
             ResetLastMessage();
 
             INakedObject nakedObject = owningObject.NakedObject;
-            INakedObject existingValue = field.GetNakedObject(nakedObject, persistor);
+            INakedObject existingValue = field.GetNakedObject(nakedObject);
             var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
             try {
                 INakedObject newValue = parseableFacet.ParseTextEntry(text, persistor);
-                IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue, session);
+                IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue);
                 LastMessage = isAssociationValid.Reason;
                 Assert.IsFalse(isAssociationValid.IsAllowed, "Content was unexpectedly validated");
             }
@@ -427,10 +427,10 @@ namespace NakedObjects.Xat {
             ResetLastMessage();
 
             INakedObject nakedObject = owningObject.NakedObject;
-            INakedObject existingValue = field.GetNakedObject(nakedObject, persistor);
+            INakedObject existingValue = field.GetNakedObject(nakedObject);
             var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
             INakedObject newValue = parseableFacet.ParseTextEntry(text, persistor);
-            IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue, session);
+            IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue);
             LastMessage = isAssociationValid.Reason;
             Assert.IsTrue(isAssociationValid.IsAllowed, "Content was unexpectedly invalidated");
             return this;

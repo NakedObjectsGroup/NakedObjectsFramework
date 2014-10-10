@@ -533,7 +533,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return nakedObject.Specification.GetAllActions().Union(
                 nakedObject.Specification.GetAllActions().
                             Where(a => a.ActionType == NakedObjectActionType.Set).SelectMany(a => a.Actions)).
-                               Where(a => a.IsVisible(html.Framework().Session, nakedObject, html.Framework().LifecycleManager));
+                               Where(a => a.IsVisible( nakedObject));
         }
 
         #endregion
@@ -1122,7 +1122,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Contents<TModel>(this HtmlHelper html, TModel model, string actionId, int index) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
 
-            return MvcHtmlString.Create(nakedObject.Specification.GetAllActions().Single(p => p.Id == actionId).Parameters[index].GetDefault(nakedObject, html.Framework().LifecycleManager).TitleString());
+            return MvcHtmlString.Create(nakedObject.Specification.GetAllActions().Single(p => p.Id == actionId).Parameters[index].GetDefault(nakedObject).TitleString());
         }
 
         #endregion
@@ -1394,7 +1394,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Name<TModel>(this HtmlHelper html, TModel model, string actionId, int index) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
 
-            return MvcHtmlString.Create(nakedObject.Specification.GetAllActions().Single(p => p.Id == actionId).Parameters[index].GetName(html.Framework().LifecycleManager));
+            return MvcHtmlString.Create(nakedObject.Specification.GetAllActions().Single(p => p.Id == actionId).Parameters[index].GetName());
         }
 
         #endregion

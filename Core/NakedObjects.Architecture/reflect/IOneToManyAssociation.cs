@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Reflect {
     public interface IOneToManyAssociation : INakedObjectAssociation, IOneToManyFeature {
         /// <summary>
         ///     Return the count of elements in this collection field on the specified object
         /// </summary>
-        int Count(INakedObject nakedObject, IObjectPersistor persistor);
+        int Count(INakedObject nakedObject);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

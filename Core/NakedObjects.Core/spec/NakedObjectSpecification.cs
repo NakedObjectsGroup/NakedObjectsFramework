@@ -30,6 +30,7 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.Peer;
@@ -38,8 +39,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflector.Spec {
 
     public class NakedObjectSpecification :  INakedObjectSpecification {
-       
-
+        private readonly MemberFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;
         private readonly IIntrospectableSpecification innerSpec;
         private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectSpecification));
@@ -49,7 +49,8 @@ namespace NakedObjects.Reflector.Spec {
         private INakedObjectAction[] relatedActions;
         private INakedObjectAction[] combinedActions;
 
-        public NakedObjectSpecification(IMetamodelManager metamodelManager, IIntrospectableSpecification innerSpec) {
+        public NakedObjectSpecification(MemberFactory memberFactory, IMetamodelManager metamodelManager, IIntrospectableSpecification innerSpec) {
+            this.memberFactory = memberFactory;
             this.metamodelManager = metamodelManager;
             this.innerSpec = innerSpec;
 
@@ -157,7 +158,7 @@ namespace NakedObjects.Reflector.Spec {
         private  INakedObjectAction[] ObjectActions {
             get {
                 if (objectActions == null) {
-                    objectActions = OrderActions(innerSpec.ObjectActions);
+                    objectActions = memberFactory.OrderActions(innerSpec.ObjectActions);
                 }
                 return objectActions;
             }
@@ -166,7 +167,7 @@ namespace NakedObjects.Reflector.Spec {
         private INakedObjectAction[] ContributedActions {
             get {
                 if (contributedActions == null) {
-                    contributedActions = OrderActions(innerSpec.ContributedActions);
+                    contributedActions = memberFactory.OrderActions(innerSpec.ContributedActions);
                 }
                 return contributedActions;
             }
@@ -175,7 +176,7 @@ namespace NakedObjects.Reflector.Spec {
         private INakedObjectAction[] RelatedActions {
             get {
                 if (relatedActions == null) {
-                    relatedActions = OrderActions(innerSpec.RelatedActions);
+                    relatedActions = memberFactory.OrderActions(innerSpec.RelatedActions);
                 }
                 return relatedActions;
             }
@@ -400,48 +401,11 @@ namespace NakedObjects.Reflector.Spec {
             return new[] {spec};
         }
 
-        private INakedObjectAction[] OrderActions(IOrderSet<INakedObjectActionPeer> order) {
-            var actions = new List<INakedObjectAction>();
-            foreach (var element in order) {
-                if (element.Peer != null) {
-                    actions.Add(CreateNakedObjectAction(element.Peer));
-                }
-                else if (element.Set != null) {
-                    actions.Add(CreateNakedObjectActionSet(element.Set));
-                }
-                else {
-                    throw new UnknownTypeException(element);
-                }
-            }
-
-            return actions.ToArray();
-        }
-
-        private INakedObjectAction[] OrderActions(IList<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>> order) {
-            return order.Select(element => CreateNakedObjectActionSet(element.Item1, element.Item2, element.Item3)).Cast<INakedObjectAction>().ToArray();
-        }
-
-        private NakedObjectActionSet CreateNakedObjectActionSet(IOrderSet<INakedObjectActionPeer> orderSet) {
-            return new NakedObjectActionSet(orderSet.GroupFullName.Replace(" ", ""), orderSet.GroupFullName, OrderActions(orderSet));
-        }
-
-        private NakedObjectActionSet CreateNakedObjectActionSet(string id, string name, IOrderSet<INakedObjectActionPeer> orderSet) {
-            return new NakedObjectActionSet(id, name, OrderActions(orderSet));
-        }
-
-        private NakedObjectActionImpl CreateNakedObjectAction(INakedObjectActionPeer peer) {
-            return new NakedObjectActionImpl(metamodelManager, peer);
-        }
-
-        private INakedObjectAssociation CreateNakedObjectField(INakedObjectAssociationPeer peer) {
-            return NakedObjectAssociationAbstract.CreateAssociation(metamodelManager, peer);
-        }
-
         private INakedObjectAssociation[] OrderFields(IOrderSet<INakedObjectAssociationPeer> order) {
             var orderedFields = new List<INakedObjectAssociation>();
             foreach (var element in order) {
                 if (element.Peer != null) {
-                    orderedFields.Add(CreateNakedObjectField(element.Peer));
+                    orderedFields.Add(memberFactory.CreateNakedObjectField(element.Peer));
                 }
                 else if (element.Set != null) {
                     // Not supported at present

@@ -170,7 +170,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             if (ModelState.IsValid) {
                 IEnumerable<INakedObject> parms = action.Parameters.Select(p => GetParameterValue(p, IdHelper.GetParameterInputId(action, p), controlData));
 
-                IConsent consent = action.IsParameterSetValid(NakedObjectsContext.Session,  targetNakedObject, parms.ToArray(), NakedObjectsContext.LifecycleManager);
+                IConsent consent = action.IsParameterSetValid(targetNakedObject, parms.ToArray());
                 if (!consent.IsAllowed) {
                     ModelState.AddModelError(string.Empty, consent.Reason);
                 }
@@ -180,7 +180,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         public void ValidateParameter(INakedObjectAction action, INakedObjectActionParameter parm, INakedObject targetNakedObject, INakedObject valueNakedObject) {
-            IConsent consent = parm.IsValid(targetNakedObject, valueNakedObject, NakedObjectsContext.LifecycleManager, NakedObjectsContext.Session);
+            IConsent consent = parm.IsValid(targetNakedObject, valueNakedObject);
             if (!consent.IsAllowed) {
                 ModelState.AddModelError(IdHelper.GetParameterInputId(action, parm), consent.Reason);
             }
@@ -368,8 +368,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         internal void SetDefaults(INakedObject nakedObject, INakedObjectAction action) {
             foreach (INakedObjectActionParameter parm in action.Parameters) {
-                INakedObject value = parm.GetDefault(nakedObject, NakedObjectsContext.LifecycleManager);
-                TypeOfDefaultValue typeOfValue = parm.GetDefaultType(nakedObject, NakedObjectsContext.LifecycleManager);
+                INakedObject value = parm.GetDefault(nakedObject);
+                TypeOfDefaultValue typeOfValue = parm.GetDefaultType(nakedObject);
 
                 bool ignore = value == null || (value.Object is DateTime && ((DateTime) value.Object).Ticks == 0) || typeOfValue == TypeOfDefaultValue.Implicit;
                 if (!ignore) {
@@ -437,7 +437,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 foreach (var pair in fieldsAndMatchingValues) {
                     if (pair.Item1.Specification.IsParseable) {
-                        INakedObject currentValue = pair.Item1.GetNakedObject(nakedObject, NakedObjectsContext.LifecycleManager);
+                        INakedObject currentValue = pair.Item1.GetNakedObject(nakedObject);
                         INakedObject concurrencyValue = pair.Item1.Specification.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.LifecycleManager);
 
                         if (concurrencyValue != null && currentValue != null) {
@@ -523,7 +523,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var form = controlData.Form;
             // inline or one or more keys in form starts with the property id which indicates we have nested values for the subobject 
             foreach (INakedObjectAssociation assoc in assocs.Where(a => a.IsInline || form.AllKeys.Any(k => k.KeyPrefixIs(a.Id)))) {
-                INakedObject inlineNakedObject = assoc.GetNakedObject(nakedObject, NakedObjectsContext.LifecycleManager);
+                INakedObject inlineNakedObject = assoc.GetNakedObject(nakedObject);
                 if (inlineNakedObject != null) {
                     validateOrApply(inlineNakedObject, controlData, assoc);
                 }
@@ -613,18 +613,18 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             foreach (INakedObjectAssociation assoc in nakedObject.Specification.Properties.Where(p => p.IsInline)) {
-                var inlineNakedObject = assoc.GetNakedObject(nakedObject, NakedObjectsContext.LifecycleManager);
+                var inlineNakedObject = assoc.GetNakedObject(nakedObject);
                 AddAttemptedValues(inlineNakedObject, controlData, assoc);
             }
 
         }
 
         internal  bool IsUsable(INakedObjectAssociation assoc, INakedObject nakedObject) {
-            return assoc.IsUsable(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.LifecycleManager).IsAllowed;
+            return assoc.IsUsable( nakedObject).IsAllowed;
         }
 
         internal  bool IsVisible(INakedObjectAssociation assoc, INakedObject nakedObject) {
-            return assoc.IsVisible(NakedObjectsContext.Session, nakedObject, NakedObjectsContext.LifecycleManager);
+            return assoc.IsVisible(nakedObject);
         }
 
         internal  bool IsConcurrency(INakedObjectAssociation assoc) {
@@ -645,7 +645,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                                  
                                     var oneToOneAssoc = ((IOneToOneAssociation) assoc);
                                     INakedObject value = assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry((string)newValue, NakedObjectsContext.LifecycleManager);
-                                    oneToOneAssoc.SetAssociation(nakedObject, value, NakedObjectsContext.LifecycleManager);
+                                    oneToOneAssoc.SetAssociation(nakedObject, value);
                                 }
                                 catch (InvalidEntryException) {
                                     ModelState.AddModelError(name, MvcUi.InvalidEntry);
@@ -654,7 +654,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                             else if (assoc.IsObject) {
                                 INakedObject value = NakedObjectsContext.GetNakedObjectFromId((string) newValue);
                                 var oneToOneAssoc = ((IOneToOneAssociation) assoc);
-                                oneToOneAssoc.SetAssociation(nakedObject, value, NakedObjectsContext.LifecycleManager);
+                                oneToOneAssoc.SetAssociation(nakedObject, value);
                             }
                         }
                     }
@@ -664,16 +664,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     string name = IdHelper.GetCollectionItemId(nakedObject, assoc);
                     ValueProviderResult items = form.GetValue(name);
 
-                    if (items != null && assoc.Count(nakedObject, NakedObjectsContext.LifecycleManager) == 0) {
+                    if (items != null && assoc.Count(nakedObject) == 0) {
                         var itemIds = (string[]) items.RawValue;
                         var values = itemIds.Select(NakedObjectsContext.GetNakedObjectFromId).ToArray();
-                        var collection = assoc.GetNakedObject(nakedObject, NakedObjectsContext.LifecycleManager);
+                        var collection = assoc.GetNakedObject(nakedObject);
                         collection.Specification.GetFacet<ICollectionFacet>().Init(collection, values);
                     }
                 }
 
                 foreach (INakedObjectAssociation assoc in nakedObject.Specification.Properties.Where(p => p.IsInline)) {
-                    var inlineNakedObject = assoc.GetNakedObject(nakedObject, NakedObjectsContext.LifecycleManager);
+                    var inlineNakedObject = assoc.GetNakedObject(nakedObject);
                     RefreshTransient(inlineNakedObject, form, assoc);
                 }
 
@@ -692,7 +692,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private bool CanPersist(INakedObject nakedObject, IEnumerable<INakedObjectAssociation> usableAndVisibleFields) {
             foreach (INakedObjectAssociation assoc in usableAndVisibleFields) {
-                INakedObject value = assoc.GetNakedObject(nakedObject, NakedObjectsContext.LifecycleManager);
+                INakedObject value = assoc.GetNakedObject(nakedObject);
 
                 if (value != null && value.Specification.IsObject) {
                     if (!IsObjectCompleteAndSaved(value)) {
@@ -736,10 +736,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
 
         internal void SetAssociation(INakedObject nakedObject, IOneToOneAssociation oneToOneAssoc, INakedObject valueNakedObject, object attemptedValue) {
-            IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject, NakedObjectsContext.Session);
+            IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject);
             string key = IdHelper.GetFieldInputId(nakedObject, oneToOneAssoc);
             if (consent.IsAllowed) {
-                oneToOneAssoc.SetAssociation(nakedObject, valueNakedObject, NakedObjectsContext.LifecycleManager);
+                oneToOneAssoc.SetAssociation(nakedObject, valueNakedObject);
             }
             else {
                 ModelState.AddModelError(key, consent.Reason);
@@ -752,7 +752,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             try {
                 INakedObject valueNakedObject = GetNakedObjectValue(oneToOneAssoc, nakedObject, attemptedValue);
 
-                IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject, NakedObjectsContext.Session);               
+                IConsent consent = oneToOneAssoc.IsAssociationValid(nakedObject, valueNakedObject);               
                 if (!consent.IsAllowed) {
                     ModelState.AddModelError(key, consent.Reason);
                 }

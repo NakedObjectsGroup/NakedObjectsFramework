@@ -153,7 +153,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
         private static void SubclassAllCollectionAccessors(IMetamodelManager metamodel, ILifecycleManager persistor, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
             INakedObjectAssociation[] associations = metamodel.GetSpecification(typeToProxy).Properties.Where(a => a.IsCollection).ToArray();
 
-            associations.ForEach(assoc => SubclassCollectionAccessors(typeBuilder, typeToProxy, containerField, assoc.GetName(persistor)));
+            associations.ForEach(assoc => SubclassCollectionAccessors(typeBuilder, typeToProxy, containerField, assoc.GetName()));
         }
 
         private static FieldBuilder CreateContainerProperty(TypeBuilder typeBuilder) {

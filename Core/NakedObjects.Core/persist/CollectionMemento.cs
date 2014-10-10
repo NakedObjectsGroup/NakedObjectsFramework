@@ -207,7 +207,7 @@ namespace NakedObjects.Core.Persist {
         }
 
         public INakedObject RecoverCollection() {
-            INakedObject nakedObject = Action.Execute(Target, Parameters, lifecycleManager, session);
+            INakedObject nakedObject = Action.Execute(Target, Parameters);
 
             if (selectedObjects != null) {
                 IEnumerable<object> selected = nakedObject.GetDomainObject<IEnumerable>().Cast<object>().Where(x => selectedObjects.Contains(x));

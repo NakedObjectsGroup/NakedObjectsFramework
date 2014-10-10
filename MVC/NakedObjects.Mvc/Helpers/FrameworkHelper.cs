@@ -31,27 +31,27 @@ namespace NakedObjects.Web.Mvc.Html {
         public static IEnumerable<INakedObjectAction> GetActions(this INakedObjectsFramework framework, INakedObject nakedObject) {
             return nakedObject.Specification.GetAllActions().OfType<NakedObjectActionImpl>().Cast<INakedObjectAction>().Union(
                         nakedObject.Specification.GetAllActions().OfType<NakedObjectActionSet>().SelectMany(set => set.Actions)).
-                               Where(a => a.IsUsable(framework.Session, nakedObject, framework.LifecycleManager).IsAllowed).
-                               Where(a => a.IsVisible(framework.Session, nakedObject, framework.LifecycleManager));
+                               Where(a => a.IsUsable( nakedObject).IsAllowed).
+                               Where(a => a.IsVisible( nakedObject ));
         }
 
         public static IEnumerable<INakedObjectAction> GetTopLevelActions(this INakedObjectsFramework framework,INakedObject nakedObject) {
             return nakedObject.Specification.GetAllActions().
-                               Where(a => a.IsVisible(framework.Session, nakedObject, framework.LifecycleManager)).
-                               Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible(framework.Session, nakedObject, framework.LifecycleManager)));
+                               Where(a => a.IsVisible( nakedObject)).
+                               Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible( nakedObject)));
         }
 
         public static IEnumerable<INakedObjectAction> GetTopLevelActionsByReturnType(this INakedObjectsFramework framework, INakedObject nakedObject, INakedObjectSpecification spec) {
             return framework.GetTopLevelActions(nakedObject).
                 Where(a => a is NakedObjectActionSet || (framework.IsOfTypeOrCollectionOfType(a.ReturnType, spec) && a.IsFinderMethod)).
-                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible(framework.Session, nakedObject, framework.LifecycleManager) && framework.IsOfTypeOrCollectionOfType(sa.ReturnType, spec) && sa.IsFinderMethod));
+                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible( nakedObject) && framework.IsOfTypeOrCollectionOfType(sa.ReturnType, spec) && sa.IsFinderMethod));
         }
 
         public static IEnumerable<INakedObjectAction> GetChildActions(this INakedObjectsFramework framework, ActionContext actionContext) {
             if (actionContext.Action is NakedObjectActionSet) {
                 return actionContext.Action.Actions.
                                      Where(a => a.ActionType == NakedObjectActionType.User).
-                                     Where(a => a.IsVisible(framework.Session, actionContext.Target, framework.LifecycleManager));
+                                     Where(a => a.IsVisible(actionContext.Target));
             }
 
             return new List<INakedObjectAction>();
@@ -168,7 +168,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObject parent = framework.RestoreObject(parentOid);
             INakedObjectAssociation assoc = parent.Specification.Properties.Where((p => p.Id == aggregateOid.FieldName)).Single();
 
-            return assoc.GetNakedObject(parent, framework.LifecycleManager);
+            return assoc.GetNakedObject(parent);
         }
 
         private static INakedObject RestoreViewModel(this INakedObjectsFramework framework, ViewModelOid viewModelOid) {

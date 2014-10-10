@@ -28,7 +28,7 @@ namespace NakedObjects.Xat {
         #region ITestParameter Members
 
         public string Name {
-            get { return parameter.GetName(persistor); }
+            get { return parameter.GetName(); }
         }
 
         public INakedObject NakedObject {
@@ -40,16 +40,16 @@ namespace NakedObjects.Xat {
         }
 
         public ITestNaked[] GetChoices() {
-            return parameter.GetChoices(NakedObject, null, persistor).Select(x => factory.CreateTestNaked(x)).ToArray();
+            return parameter.GetChoices(NakedObject, null).Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 
         public ITestNaked[] GetCompletions(string autoCompleteParm) {
-            return parameter.GetCompletions(NakedObject, autoCompleteParm, persistor).Select(x => factory.CreateTestNaked(x)).ToArray();
+            return parameter.GetCompletions(NakedObject, autoCompleteParm).Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 
         public ITestNaked GetDefault() {
-            INakedObject defaultValue = parameter.GetDefault(NakedObject, persistor);
-            TypeOfDefaultValue defaultType = parameter.GetDefaultType(NakedObject, persistor);
+            INakedObject defaultValue = parameter.GetDefault(NakedObject);
+            TypeOfDefaultValue defaultType = parameter.GetDefaultType(NakedObject);
 
             if (defaultType == TypeOfDefaultValue.Implicit && defaultValue.Object is Enum) {
                 defaultValue = null;

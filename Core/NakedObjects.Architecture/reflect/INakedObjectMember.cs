@@ -6,8 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Reflect {
     /// <summary>
@@ -23,11 +21,9 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Determines if this member is visible imperatively (ie <c>HideXxx(...)</c>).
         /// </summary>
-        /// <param name="session" />
         /// <param name="target">
         ///     may be <c>null</c> if just checking for authorization
         /// </param>
-        /// <param name="persistor"></param>
-        bool IsVisible(ISession session, INakedObject target, ILifecycleManager persistor);
+        bool IsVisible(INakedObject target);
     }
 }

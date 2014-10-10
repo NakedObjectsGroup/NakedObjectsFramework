@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Spec {
@@ -23,6 +22,6 @@ namespace NakedObjects.Architecture.Spec {
         ///     Return the name for this member - the field or action. This is based on the name of this member.
         /// </summary>
         /// <seealso cref="INakedObjectMember.Id" />
-        string GetName(IServicesManager services);
+        string GetName();
     }
 }

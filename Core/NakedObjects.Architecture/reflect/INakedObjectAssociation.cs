@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Reflect {
     /// <summary>
@@ -65,27 +64,27 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Returns the <see cref="INakedObject" /> adapting this field's object. This invokes the specified
         ///     instances accessor method and creates an adapter for the returned value
         /// </summary>
-        INakedObject GetNakedObject(INakedObject target, INakedObjectManager manager);
+        INakedObject GetNakedObject(INakedObject target);
 
         /// <summary>
         ///     Return the default for this property
         /// </summary>
-        INakedObject GetDefault(INakedObject nakedObject, INakedObjectManager manager);
+        INakedObject GetDefault(INakedObject nakedObject);
 
         /// <summary>
         ///     Return the default for this property
         /// </summary>
-        TypeOfDefaultValue GetDefaultType(INakedObject nakedObject, INakedObjectManager manager);
+        TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
 
         /// <summary>
         ///     Set the property to its default references or values
         /// </summary>
-        void ToDefault(INakedObject target, INakedObjectManager manager);
+        void ToDefault(INakedObject target);
 
         /// <summary>
         ///     Returns <c>true</c> if this field on the specified object is deemed to be empty, or has no content
         /// </summary>
-        bool IsEmpty(INakedObject inObject, INakedObjectManager manager, IObjectPersistor persistor);
+        bool IsEmpty(INakedObject inObject);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

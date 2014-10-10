@@ -36,9 +36,9 @@ namespace NakedObjects.Managers {
         private static readonly ILog Log;
         private readonly IContainerInjector injector;
         private readonly INakedObjectManager manager;
+        private readonly IMetamodelManager metamodel;
         private readonly IObjectPersistor objectPersistor;
         private readonly IPersistAlgorithm persistAlgorithm;
-        private readonly IMetamodelManager metamodel;
         private readonly IServicesManager servicesManager;
         private readonly ISession session;
         private readonly INakedObjectTransactionManager transactionManager;
@@ -50,17 +50,16 @@ namespace NakedObjects.Managers {
         public LifeCycleManager(ISession session,
                                 IMetamodelManager metamodel,
                                 INakedObjectStore objectStore,
-                                IPersistAlgorithm persistAlgorithm, 
+                                IPersistAlgorithm persistAlgorithm,
                                 IOidGenerator oidGenerator,
-                                IIdentityMap identityMap, 
+                                IIdentityMap identityMap,
                                 IContainerInjector injector,
                                 INakedObjectTransactionManager transactionManager,
-                                IObjectPersistor objectPersistor, 
-                                INakedObjectManager manager, 
-                                IServicesManager servicesManager, 
+                                IObjectPersistor objectPersistor,
+                                INakedObjectManager manager,
+                                IServicesManager servicesManager,
                                 NakedObjectFactory nakedObjectFactory
-                                ) {
-
+            ) {
             Assert.AssertNotNull(objectStore);
             Assert.AssertNotNull(persistAlgorithm);
             Assert.AssertNotNull(oidGenerator);
@@ -76,7 +75,6 @@ namespace NakedObjects.Managers {
             this.persistAlgorithm = persistAlgorithm;
             this.injector = injector;
 
-         
 
             nakedObjectFactory.Initialize(metamodel, session, this);
 
@@ -434,7 +432,7 @@ namespace NakedObjects.Managers {
         }
 
         private void InitializeNewObject(INakedObject nakedObject, object rootObject) {
-            nakedObject.Specification.Properties.ForEach(field => field.ToDefault(nakedObject, this));
+            nakedObject.Specification.Properties.ForEach(field => field.ToDefault(nakedObject));
             CreateInlineObjects(nakedObject, rootObject);
             nakedObject.Created(session);
         }

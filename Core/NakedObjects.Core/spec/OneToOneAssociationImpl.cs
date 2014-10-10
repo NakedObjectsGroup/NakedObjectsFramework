@@ -29,8 +29,10 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class OneToOneAssociationImpl : NakedObjectAssociationAbstract, IOneToOneAssociation {
-        public OneToOneAssociationImpl(IMetamodelManager metamodel, INakedObjectAssociationPeer association)
-            : base(metamodel, association) {}
+        public OneToOneAssociationImpl(IMetamodelManager metamodel, INakedObjectAssociationPeer association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager)
+            : base(metamodel, association, session, lifecycleManager, manager) {
+            
+        }
 
         #region IOneToOneAssociation Members
 
@@ -49,8 +51,8 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public override INakedObject GetNakedObject(INakedObject fromObject, INakedObjectManager manager) {
-            return GetAssociation(fromObject, manager);
+        public override INakedObject GetNakedObject(INakedObject fromObject) {
+            return GetAssociation(fromObject);
         }
 
         public override Tuple<string, INakedObjectSpecification>[] GetChoicesParameters() {
@@ -59,32 +61,32 @@ namespace NakedObjects.Reflector.Spec {
                 propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, INakedObjectSpecification>(t.Item1, Metamodel.GetSpecification(t.Item2))).ToArray();
         }
 
-        public override INakedObject[] GetChoices(INakedObject target, IDictionary<string, INakedObject> parameterNameValues, ILifecycleManager persistor) {
+        public override INakedObject[] GetChoices(INakedObject target, IDictionary<string, INakedObject> parameterNameValues) {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
             var enumFacet = GetFacet<IEnumFacet>();
 
             object[] objectOptions = propertyChoicesFacet == null ? null : propertyChoicesFacet.GetChoices(target, parameterNameValues);
             if (objectOptions != null) {
                 if (enumFacet == null) {
-                    return persistor.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
+                    return Manager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
                 }
-                return persistor.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(target, objectOptions)).ToArray();
+                return Manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(target, objectOptions)).ToArray();
             }
 
             objectOptions = enumFacet == null ? null : enumFacet.GetChoices(target);
             if (objectOptions != null) {
-                return persistor.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
+                return Manager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
             }
 
             if (Specification.IsBoundedSet()) {
-                return persistor.GetCollectionOfAdaptedObjects(Specification.GetBoundedSet(persistor)).ToArray();
+                return Manager.GetCollectionOfAdaptedObjects(Specification.GetBoundedSet(LifecycleManager)).ToArray();
             }
             return null;
         }
 
-        public override INakedObject[] GetCompletions(INakedObject target, string autoCompleteParm, ILifecycleManager persistor) {
+        public override INakedObject[] GetCompletions(INakedObject target, string autoCompleteParm) {
             var propertyAutoCompleteFacet = GetFacet<IAutoCompleteFacet>();
-            return propertyAutoCompleteFacet == null ? null : persistor.GetCollectionOfAdaptedObjects(propertyAutoCompleteFacet.GetCompletions(target, autoCompleteParm)).ToArray();
+            return propertyAutoCompleteFacet == null ? null : Manager.GetCollectionOfAdaptedObjects(propertyAutoCompleteFacet.GetCompletions(target, autoCompleteParm)).ToArray();
         }
 
         public virtual void InitAssociation(INakedObject inObject, INakedObject associate) {
@@ -94,7 +96,7 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public virtual IConsent IsAssociationValid(INakedObject inObject, INakedObject reference, ISession session) {
+        public virtual IConsent IsAssociationValid(INakedObject inObject, INakedObject reference) {
             if (reference != null && !reference.Specification.IsOfType(Specification)) {
                 return GetConsent(string.Format(Resources.NakedObjects.TypeMismatchError, Specification.SingularName));
             }
@@ -106,45 +108,45 @@ namespace NakedObjects.Reflector.Spec {
             }
 
             var buf = new InteractionBuffer();
-            InteractionContext ic = InteractionContext.ModifyingPropParam(session, false, inObject, Identifier, reference);
+            InteractionContext ic = InteractionContext.ModifyingPropParam(Session, false, inObject, Identifier, reference);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
 
-        public override bool IsEmpty(INakedObject inObject, INakedObjectManager manager, IObjectPersistor persistor) {
-            return GetAssociation(inObject, manager) == null;
+        public override bool IsEmpty(INakedObject inObject) {
+            return GetAssociation(inObject) == null;
         }
 
         public override bool IsInline {
             get { return Specification.ContainsFacet(typeof (IComplexTypeFacet)); }
         }
 
-        public override INakedObject GetDefault(INakedObject fromObject, INakedObjectManager manager) {
-            return GetDefaultObject(fromObject, manager).Item1;
+        public override INakedObject GetDefault(INakedObject fromObject) {
+            return GetDefaultObject(fromObject).Item1;
         }
 
-        public override TypeOfDefaultValue GetDefaultType(INakedObject fromObject, INakedObjectManager manager) {
-            return GetDefaultObject(fromObject, manager).Item2;
+        public override TypeOfDefaultValue GetDefaultType(INakedObject fromObject) {
+            return GetDefaultObject(fromObject).Item2;
         }
 
-        public override void ToDefault(INakedObject inObject, INakedObjectManager manager) {
-            INakedObject defaultValue = GetDefault(inObject, manager);
+        public override void ToDefault(INakedObject inObject) {
+            INakedObject defaultValue = GetDefault(inObject);
             if (defaultValue != null) {
                 InitAssociation(inObject, defaultValue);
             }
         }
 
-        public virtual void SetAssociation(INakedObject inObject, INakedObject associate, ILifecycleManager persistor) {
-            INakedObject currentValue = GetAssociation(inObject, persistor);
+        public virtual void SetAssociation(INakedObject inObject, INakedObject associate) {
+            INakedObject currentValue = GetAssociation(inObject);
             if (currentValue != associate) {
                 if (associate == null && ContainsFacet<IPropertyClearFacet>()) {
-                    GetFacet<IPropertyClearFacet>().ClearProperty(inObject, persistor);
+                    GetFacet<IPropertyClearFacet>().ClearProperty(inObject, LifecycleManager);
                 }
                 else {
                     var setterFacet = GetFacet<IPropertySetterFacet>();
                     if (setterFacet != null) {
                         inObject.ResolveState.CheckCanAssociate(associate);
-                        setterFacet.SetProperty(inObject, associate, persistor);
+                        setterFacet.SetProperty(inObject, associate, LifecycleManager);
                     }
                 }
             }
@@ -152,19 +154,19 @@ namespace NakedObjects.Reflector.Spec {
 
         #endregion
 
-        private INakedObject GetAssociation(INakedObject fromObject, INakedObjectManager manager) {
+        private INakedObject GetAssociation(INakedObject fromObject) {
             object obj = GetFacet<IPropertyAccessorFacet>().GetProperty(fromObject);
             if (obj == null) {
                 return null;
             }
             INakedObjectSpecification specification = Metamodel.GetSpecification(obj.GetType());
             if (specification.ContainsFacet(typeof (IComplexTypeFacet))) {
-                return manager.CreateAggregatedAdapter(fromObject, ((INakedObjectAssociation) this).Id, obj);
+                return Manager.CreateAggregatedAdapter(fromObject, ((INakedObjectAssociation) this).Id, obj);
             }
-            return manager.CreateAdapter(obj, null, null);
+            return Manager.CreateAdapter(obj, null, null);
         }
 
-        public virtual Tuple<INakedObject, TypeOfDefaultValue> GetDefaultObject(INakedObject fromObject, INakedObjectManager manager) {
+        public virtual Tuple<INakedObject, TypeOfDefaultValue> GetDefaultObject(INakedObject fromObject) {
             var typeofDefaultValue = TypeOfDefaultValue.Explicit;
 
             // look for a default on the association ...
@@ -178,7 +180,7 @@ namespace NakedObjects.Reflector.Spec {
                 return new Tuple<INakedObject, TypeOfDefaultValue>(null, TypeOfDefaultValue.Implicit);
             }
             object obj = propertyDefaultFacet.GetDefault(fromObject);
-            return new Tuple<INakedObject, TypeOfDefaultValue>(manager.CreateAdapter(obj, null, null), typeofDefaultValue);
+            return new Tuple<INakedObject, TypeOfDefaultValue>(Manager.CreateAdapter(obj, null, null), typeofDefaultValue);
         }
 
         public override string ToString() {

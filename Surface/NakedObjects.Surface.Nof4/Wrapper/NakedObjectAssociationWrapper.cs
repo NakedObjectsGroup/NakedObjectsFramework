@@ -48,7 +48,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
 
         public string Name {
-            get { return assoc.GetName(framework.LifecycleManager); }
+            get { return assoc.GetName(); }
         }
 
         public string Description {
@@ -136,17 +136,17 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
 
         public IConsentSurface IsUsable(INakedObjectSurface target) {
-            IConsent consent = assoc.IsUsable(framework.Session, ((NakedObjectWrapper) target).WrappedNakedObject, framework.LifecycleManager);
+            IConsent consent = assoc.IsUsable(((NakedObjectWrapper) target).WrappedNakedObject);
             return new ConsentWrapper(consent);
         }
 
         public INakedObjectSurface GetNakedObject(INakedObjectSurface target) {
-            INakedObject result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject, framework.LifecycleManager);
+            INakedObject result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject);
             return NakedObjectWrapper.Wrap(result, Surface, framework);
         }
 
         public bool IsVisible(INakedObjectSurface nakedObject) {
-            return assoc.IsVisible(framework.Session, ((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.LifecycleManager);
+            return assoc.IsVisible( ((NakedObjectWrapper) nakedObject).WrappedNakedObject);
         }
 
         public bool IsEager(INakedObjectSurface nakedObject) {
@@ -156,7 +156,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, INakedObjectSurface> parameterNameValues) {
             var oneToOneFeature = assoc as IOneToOneFeature;
-            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((NakedObjectWrapper) target).WrappedNakedObject, null, framework.LifecycleManager).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
+            return oneToOneFeature != null ? oneToOneFeature.GetChoices(((NakedObjectWrapper) target).WrappedNakedObject, null).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
         }
 
         public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
@@ -171,12 +171,12 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         public INakedObjectSurface[] GetCompletions(INakedObjectSurface target, string autoCompleteParm) {
             var oneToOneFeature = assoc as IOneToOneFeature;
-            return oneToOneFeature != null ? oneToOneFeature.GetCompletions(((NakedObjectWrapper) target).WrappedNakedObject, autoCompleteParm, framework.LifecycleManager).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
+            return oneToOneFeature != null ? oneToOneFeature.GetCompletions(((NakedObjectWrapper) target).WrappedNakedObject, autoCompleteParm).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
         }
 
         public int Count(INakedObjectSurface target) {
             if (IsCollection) {
-                INakedObject result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject, framework.LifecycleManager);
+                INakedObject result = assoc.GetNakedObject(((NakedObjectWrapper) target).WrappedNakedObject);
                 return result.GetCollectionFacetFromSpec().AsQueryable(result).Count();
             }
             return 0;

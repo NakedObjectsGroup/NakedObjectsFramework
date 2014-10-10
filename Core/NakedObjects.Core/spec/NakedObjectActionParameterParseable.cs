@@ -9,13 +9,15 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets.Objects.TypicalLength;
 using NakedObjects.Architecture.Facets.Propparam.MultiLine;
 using NakedObjects.Architecture.Facets.Propparam.Validate.MaxLength;
+using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Security;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class NakedObjectActionParameterParseable : NakedObjectActionParameterAbstract, IParseableEntryActionParameter {
-        public NakedObjectActionParameterParseable(IMetamodelManager metamodel, int index, INakedObjectAction action, INakedObjectActionParamPeer peer)
-            : base(metamodel, index, action, peer) {}
+        public NakedObjectActionParameterParseable(IMetamodelManager metamodel, int index, INakedObjectAction action, INakedObjectActionParamPeer peer, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
+            : base(metamodel, index, action, peer, manager, session, persistor) {}
 
         public virtual int NoLines {
             get { return GetFacet<IMultiLineFacet>().NumberOfLines; }

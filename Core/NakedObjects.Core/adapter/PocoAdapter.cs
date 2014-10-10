@@ -148,15 +148,15 @@ namespace NakedObjects.Core.Adapter {
         public string ValidToPersist() {
             INakedObjectAssociation[] properties = Specification.Properties;
             foreach (INakedObjectAssociation property in properties) {
-                INakedObject referencedObject = property.GetNakedObject(this, manager);
-                if (property.IsUsable(session, this, lifecycleManager).IsAllowed && property.IsVisible(session, this, lifecycleManager)) {
-                    if (property.IsMandatory && property.IsEmpty(this, lifecycleManager, persistor)) {
-                        return string.Format(Resources.NakedObjects.PropertyMandatory, specification.ShortName, property.GetName(lifecycleManager));
+                INakedObject referencedObject = property.GetNakedObject(this);
+                if (property.IsUsable(this).IsAllowed && property.IsVisible(this)) {
+                    if (property.IsMandatory && property.IsEmpty(this)) {
+                        return string.Format(Resources.NakedObjects.PropertyMandatory, specification.ShortName, property.GetName());
                     }
                     if (property.IsObject) {
-                        IConsent valid = ((IOneToOneAssociation) property).IsAssociationValid(this, referencedObject, session);
+                        IConsent valid = ((IOneToOneAssociation) property).IsAssociationValid(this, referencedObject);
                         if (valid.IsVetoed) {
-                            return string.Format(Resources.NakedObjects.PropertyInvalid, specification.ShortName, property.GetName(lifecycleManager), valid.Reason);
+                            return string.Format(Resources.NakedObjects.PropertyInvalid, specification.ShortName, property.GetName(), valid.Reason);
                         }
                     }
                 }
@@ -171,7 +171,7 @@ namespace NakedObjects.Core.Adapter {
             }
 
             foreach (INakedObjectValidation validator in specification.ValidateMethods()) {
-                IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => specification.Properties.Single(p => p.Id.ToLower() == name).GetNakedObject(this, lifecycleManager));
+                IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => specification.Properties.Single(p => p.Id.ToLower() == name).GetNakedObject(this));
                 string result = validator.Execute(this, parameters.ToArray());
                 if (result != null) {
                     return result;

@@ -69,12 +69,12 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Whether proposed value for this parameter is valid
         /// </summary>
-        IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue, ILifecycleManager persistor, ISession session);
+        IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue);
 
         /// <summary>
         ///     Get set of options for the parameter - either coded choices or bounded set
         /// </summary>
-        INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues, ILifecycleManager persistor);
+        INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
 
         /// <summary>
         ///     Get set of options for the parameter - either coded choices or bounded set
@@ -84,18 +84,18 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Get set of autocompletions for the parameter
         /// </summary>
-        INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm, ILifecycleManager persistor);
+        INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm);
 
 
         /// <summary>
         ///     GetDefault value for parameter
         /// </summary>
-        INakedObject GetDefault(INakedObject nakedObject, ILifecycleManager persistor);
+        INakedObject GetDefault(INakedObject nakedObject);
 
         /// <summary>
         ///     GetDefault type value for parameter
         /// </summary>
-        TypeOfDefaultValue GetDefaultType(INakedObject nakedObject, ILifecycleManager persistor);
+        TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
     }
 
     public enum TypeOfDefaultValue {

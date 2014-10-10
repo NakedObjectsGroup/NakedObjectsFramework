@@ -80,14 +80,14 @@ namespace NakedObjects.Persistor {
                             continue;
                         }
                         if (field is IOneToManyAssociation) {
-                            INakedObject collection = field.GetNakedObject(nakedObject, manager);
+                            INakedObject collection = field.GetNakedObject(nakedObject);
                             if (collection == null) {
-                                throw new NotPersistableException("Collection " + field.GetName(services) + " does not exist in " + nakedObject.Specification.FullName);
+                                throw new NotPersistableException("Collection " + field.GetName() + " does not exist in " + nakedObject.Specification.FullName);
                             }
                             MakePersistent(collection,  session);
                         }
                         else {
-                            INakedObject fieldValue = field.GetNakedObject(nakedObject, manager);
+                            INakedObject fieldValue = field.GetNakedObject(nakedObject);
                             if (fieldValue == null) {
                                 continue;
                             }

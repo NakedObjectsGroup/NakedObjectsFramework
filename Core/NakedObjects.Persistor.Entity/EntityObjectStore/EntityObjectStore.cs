@@ -251,7 +251,7 @@ namespace NakedObjects.EntityObjectStore {
             if (nakedObject.Specification != null) {
                 // testing check 
                 foreach (INakedObjectAssociation assoc in nakedObject.Specification.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
-                    INakedObject adapter = assoc.GetNakedObject(nakedObject, Manager);
+                    INakedObject adapter = assoc.GetNakedObject(nakedObject);
                     if (adapter.ResolveState.IsGhost()) {
                         StartResolving(adapter, GetContext(nakedObject));
                         EndResolving(adapter);
@@ -387,7 +387,7 @@ namespace NakedObjects.EntityObjectStore {
             if (nakedObject.Specification != null) {
                 // testing check 
                 foreach (INakedObjectAssociation assoc in nakedObject.Specification.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
-                    INakedObject adapter = assoc.GetNakedObject(nakedObject, Manager);
+                    INakedObject adapter = assoc.GetNakedObject(nakedObject);
                     if (adapter.ResolveState.IsGhost()) {
                         StartResolving(adapter, GetContext(adapter));
                         EndResolving(adapter);
@@ -1162,7 +1162,7 @@ namespace NakedObjects.EntityObjectStore {
                 INakedObjectSpecification parentSpec = metamodel.GetSpecification(parentType);
                 INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
 
-                return parent.Specification.GetProperty(aggregateOid.FieldName).GetNakedObject(parent, Manager);
+                return parent.Specification.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
             }
             throw new NakedObjectSystemException("Unexpected oid type: " + oid.GetType());
         }
@@ -1189,7 +1189,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public void ResolveField(INakedObject nakedObject, INakedObjectAssociation field) {
             Log.DebugFormat("ResolveField nakedobject: {0} field: {1}", nakedObject, field);
-            field.GetNakedObject(nakedObject, Manager);
+            field.GetNakedObject(nakedObject);
         }
 
         public int CountField(INakedObject nakedObject, INakedObjectAssociation field) {
@@ -1335,7 +1335,7 @@ namespace NakedObjects.EntityObjectStore {
                 }
             }
 
-            return field.GetNakedObject(nakedObject, Manager).GetAsEnumerable(manager).Count();
+            return field.GetNakedObject(nakedObject).GetAsEnumerable(manager).Count();
         }
 
         #endregion

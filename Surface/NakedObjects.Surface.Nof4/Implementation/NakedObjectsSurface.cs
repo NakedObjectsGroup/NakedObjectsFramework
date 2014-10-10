@@ -201,7 +201,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             IEnumerable<INakedObjectAssociation> propertyQuery = nakedObject.Specification.Properties;
 
             if (onlyVisible) {
-                propertyQuery = propertyQuery.Where(p => p.IsVisible(framework.Session, nakedObject, framework.LifecycleManager));
+                propertyQuery = propertyQuery.Where(p => p.IsVisible(nakedObject));
             }
 
             INakedObjectAssociation property = propertyQuery.SingleOrDefault(p => p.Id == propertyName);
@@ -272,9 +272,9 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             var property = (IOneToOneAssociation) context.Property;
 
             if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
-                if (ConsentHandler(property.IsUsable(framework.Session, context.Target, framework.LifecycleManager), context, Cause.Disabled)) {
+                if (ConsentHandler(property.IsUsable(context.Target), context, Cause.Disabled)) {
                     if (toPut != null && ConsentHandler(CanSetPropertyValue(context), context, Cause.WrongType)) {
-                        ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject, framework.Session), context, Cause.Other);
+                        ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject), context, Cause.Other);
                     }
                 }
             }
@@ -289,9 +289,9 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             //if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
             if (toPut != null && ConsentHandler(CanSetPropertyValue(context), context, Cause.WrongType)) {
-                ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject, framework.Session), context, Cause.Other);
+                ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject), context, Cause.Other);
             }
-            else if (toPut == null && (property.IsMandatory && property.IsUsable(framework.Session, context.Target, framework.LifecycleManager).IsAllowed)) {
+            else if (toPut == null && (property.IsMandatory && property.IsUsable(context.Target).IsAllowed)) {
                 // only check user editable fields
                 context.Reason = "Mandatory";
                 context.ErrorCause = Cause.Other;
@@ -334,7 +334,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             PropertyContext context = CanChangeProperty(nakedObject, propertyName, argument.Value);
             if (string.IsNullOrEmpty(context.Reason)) {
                 IEnumerable<PropertyContext> existingValues = context.Target.Specification.Properties.Where(p => p.Id != context.Id).
-                    Select(p => new {p, no = p.GetNakedObject(context.Target, framework.LifecycleManager)}).
+                    Select(p => new {p, no = p.GetNakedObject(context.Target)}).
                     Select(ao => new PropertyContext {
                         Property = ao.p,
                         ProposedNakedObject = ao.no,
@@ -360,7 +360,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private void SetProperty(PropertyContext context) {
-            ((IOneToOneAssociation) context.Property).SetAssociation(context.Target, context.ProposedValue == null ? null : context.ProposedNakedObject, framework.LifecycleManager);
+            ((IOneToOneAssociation) context.Property).SetAssociation(context.Target, context.ProposedValue == null ? null : context.ProposedNakedObject);
         }
 
         private static void ValidateConcurrency(INakedObject nakedObject, string digest) {
@@ -394,7 +394,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                     }
 
                     propertiesToDisplay = nakedObject.Specification.Properties.
-                        Where(p => p.IsVisible(framework.Session, nakedObject, framework.LifecycleManager)).
+                        Where(p => p.IsVisible(nakedObject)).
                         Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
                 }
             }
@@ -429,7 +429,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                             framework.LifecycleManager.ObjectChanged(nakedObject);
                         }
                         propertiesToDisplay = nakedObject.Specification.Properties.
-                            Where(p => p.IsVisible(framework.Session, nakedObject, framework.LifecycleManager)).
+                            Where(p => p.IsVisible(nakedObject)).
                             Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
                     }
                 }
@@ -486,7 +486,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
                         orderedParms[parm.Id].ProposedNakedObject = valueNakedObject;
 
-                        IConsent consent = parm.IsValid(actionContext.Target, valueNakedObject, framework.LifecycleManager, framework.Session);
+                        IConsent consent = parm.IsValid(actionContext.Target, valueNakedObject);
                         if (!consent.IsAllowed) {
                             orderedParms[parm.Id].Reason = consent.Reason;
                             isValid = false;
@@ -502,7 +502,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             // check for validity of whole set, including any 'co-validation' involving multiple parameters
             if (isValid) {
-                IConsent consent = actionContext.Action.IsParameterSetValid(framework.Session, actionContext.Target, orderedParms.Select(kvp => kvp.Value.ProposedNakedObject).ToArray(), framework.LifecycleManager);
+                IConsent consent = actionContext.Action.IsParameterSetValid(actionContext.Target, orderedParms.Select(kvp => kvp.Value.ProposedNakedObject).ToArray());
                 if (!consent.IsAllowed) {
                     actionContext.Reason = consent.Reason;
                     isValid = false;
@@ -517,7 +517,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private IConsent IsOfCorrectType(IOneToManyAssociation property, PropertyContext context) {
             // todo this should probably be in the framework somewhere
-            INakedObject collectionNakedObject = property.GetNakedObject(context.Target, framework.LifecycleManager);
+            INakedObject collectionNakedObject = property.GetNakedObject(context.Target);
             ITypeOfFacet facet = collectionNakedObject.GetTypeOfFacetFromSpec();
 
             var introspectableSpecification = facet.ValueSpec;
@@ -551,7 +551,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             if (ConsentHandler(IsOfCorrectType(property, context), context, Cause.Other)) {
                 if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
-                    if (ConsentHandler(property.IsUsable(framework.Session, context.Target, framework.LifecycleManager), context, Cause.Disabled)) {
+                    if (ConsentHandler(property.IsUsable( context.Target), context, Cause.Disabled)) {
                         if (ConsentHandler(validator(context.Target, context.ProposedNakedObject), context, Cause.Other)) {
                             if (!argument.ValidateOnly) {
                                 mutator(context.Target, context.ProposedNakedObject);
@@ -568,9 +568,9 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             ValidateConcurrency(actionContext.Target, arguments.Digest);
 
             var actionResultContext = new ActionResultContext {Target = actionContext.Target, ActionContext = actionContext};
-            if (ConsentHandler(actionContext.Action.IsUsable(framework.Session, actionContext.Target, framework.LifecycleManager), actionResultContext, Cause.Disabled)) {
+            if (ConsentHandler(actionContext.Action.IsUsable(actionContext.Target), actionResultContext, Cause.Disabled)) {
                 if (ValidateParameters(actionContext, arguments.Values) && !arguments.ValidateOnly) {
-                    INakedObject result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray(), framework.LifecycleManager, framework.Session);
+                    INakedObject result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray());
                     actionResultContext.Result = GetObjectContext(result);
                 }
             }
@@ -693,7 +693,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 throw new BadRequestNOSException();
             }
 
-            INakedObjectAction[] actions = nakedObject.Specification.GetActionLeafNodes().Where(p => p.IsVisible(framework.Session, nakedObject, framework.LifecycleManager)).ToArray();
+            INakedObjectAction[] actions = nakedObject.Specification.GetActionLeafNodes().Where(p => p.IsVisible( nakedObject)).ToArray();
             INakedObjectAction action = actions.SingleOrDefault(p => p.Id == actionName) ?? SurfaceUtils.GetOverloadedAction(actionName, nakedObject.Specification);
 
             if (action == null) {
@@ -782,8 +782,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 return null;
             }
 
-            INakedObjectAction[] actions = nakedObject.Specification.GetActionLeafNodes().Where(p => p.IsVisible(framework.Session, nakedObject, framework.LifecycleManager)).ToArray();
-            INakedObjectAssociation[] properties = nakedObject.Specification.Properties.Where(p => p.IsVisible(framework.Session, nakedObject, framework.LifecycleManager)).ToArray();
+            INakedObjectAction[] actions = nakedObject.Specification.GetActionLeafNodes().Where(p => p.IsVisible( nakedObject)).ToArray();
+            INakedObjectAssociation[] properties = nakedObject.Specification.Properties.Where(p => p.IsVisible( nakedObject)).ToArray();
 
             return new ObjectContext(nakedObject) {
                 VisibleActions = actions.Select(a => new {action = a, uid = SurfaceUtils.GetOverloadedUId(a, nakedObject.Specification)}).Select(a => new ActionContext {
@@ -870,12 +870,12 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 get { return prop == null ? (Func<Tuple<string, INakedObjectSpecification>[]>) parm.GetChoicesParameters : prop.GetChoicesParameters; }
             }
 
-            private Func<INakedObject, IDictionary<string, INakedObject>, ILifecycleManager, INakedObject[]> GetChoices {
-                get { return prop == null ? (Func<INakedObject, IDictionary<string, INakedObject>, ILifecycleManager, INakedObject[]>) parm.GetChoices : prop.GetChoices; }
+            private Func<INakedObject, IDictionary<string, INakedObject>, INakedObject[]> GetChoices {
+                get { return prop == null ? (Func<INakedObject, IDictionary<string, INakedObject>, INakedObject[]>) parm.GetChoices : prop.GetChoices; }
             }
 
-            private Func<INakedObject, string, ILifecycleManager, INakedObject[]> GetCompletions {
-                get { return prop == null ? (Func<INakedObject, string, ILifecycleManager, INakedObject[]>) parm.GetCompletions : prop.GetCompletions; }
+            private Func<INakedObject, string, INakedObject[]> GetCompletions {
+                get { return prop == null ? (Func<INakedObject, string, INakedObject[]>) parm.GetCompletions : prop.GetCompletions; }
             }
 
             private void CheckAutocompleOrConditional() {
@@ -976,14 +976,14 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                     throw new BadRequestNOSException("Wrong type of conditional argument(s)", errors);
                 }
 
-                return GetChoices(nakedObject, mappedArguments, framework.LifecycleManager);
+                return GetChoices(nakedObject, mappedArguments);
             }
 
             private INakedObject[] GetAutocompleteList(INakedObject nakedObject, ArgumentsContext arguments) {
                 if (arguments.SearchTerm == null) {
                     throw new BadRequestNOSException("Missing or malformed search term");
                 }
-                return GetCompletions(nakedObject, arguments.SearchTerm, framework.LifecycleManager);
+                return GetCompletions(nakedObject, arguments.SearchTerm);
             }
         }
 

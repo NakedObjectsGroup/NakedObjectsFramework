@@ -171,7 +171,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public virtual FileContentResult GetFile(string Id, string PropertyId) {
             INakedObject target = NakedObjectsContext.GetNakedObjectFromId(Id);
             INakedObjectAssociation assoc = target.Specification.Properties.Single(a => a.Id == PropertyId);
-            var domainObject = assoc.GetNakedObject(target, NakedObjectsContext.LifecycleManager).GetDomainObject();
+            var domainObject = assoc.GetNakedObject(target).GetDomainObject();
 
             return AsFile(domainObject);
         }
@@ -202,7 +202,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private  INakedObject Execute(INakedObjectAction action, INakedObject target, INakedObject[] parameterSet) {
-            var result = action.Execute(target, parameterSet, NakedObjectsContext.LifecycleManager, NakedObjectsContext.Session);
+            var result = action.Execute(target, parameterSet);
             if (result != null && result.Oid == null) {
                 result.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.LifecycleManager, NakedObjectsContext.Metamodel, NakedObjectsContext.Session, target, action, parameterSet));
             }
@@ -398,7 +398,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (ValidateParameters(targetNakedObject, targetAction, controlData)) {
                 IEnumerable<INakedObject> parms = GetParameterValues(targetAction, controlData);
-                INakedObject result = targetAction.Execute(targetNakedObject, parms.ToArray(), NakedObjectsContext.LifecycleManager, NakedObjectsContext.Session);
+                INakedObject result = targetAction.Execute(targetNakedObject, parms.ToArray());
 
                 if (result != null) {
                     IEnumerable resultAsEnumerable = !result.Specification.IsCollection ? new List<object> {result.Object} : (IEnumerable) result.Object;
