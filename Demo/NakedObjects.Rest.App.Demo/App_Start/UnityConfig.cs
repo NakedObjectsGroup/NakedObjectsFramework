@@ -14,6 +14,7 @@ using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Security;
+using NakedObjects.Core.spec;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Managers;
 using NakedObjects.Objects;
@@ -142,6 +143,7 @@ namespace RestfulObjects.Mvc.App.App_Start
 
             //Temporary scaffolding
             container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerResolveLifetimeManager());
+            container.RegisterType<MemberFactory, MemberFactory>(new PerResolveLifetimeManager());
             container.RegisterType<IUpdateNotifier, SimpleUpdateNotifier>(new PerResolveLifetimeManager());
 
             //Externals

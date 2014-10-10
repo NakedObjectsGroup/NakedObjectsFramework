@@ -19,6 +19,7 @@ using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Security;
+using NakedObjects.Core.spec;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Managers;
 using NakedObjects.Objects;
@@ -125,7 +126,8 @@ namespace MvcTestApp {
 
             container.RegisterInstance<IServicesConfiguration>(serviceConfig, new ContainerControlledLifetimeManager());
 
-            container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new ContainerControlledLifetimeManager());
+            container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerResolveLifetimeManager());
+            container.RegisterType<MemberFactory, MemberFactory>(new PerResolveLifetimeManager());
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
 

@@ -13,6 +13,7 @@ using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Security;
+using NakedObjects.Core.spec;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Managers;
 using NakedObjects.Objects;
@@ -151,6 +152,7 @@ namespace NakedObjects.Mvc.App.App_Start
 
             //Temporary scaffolding
             container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerRequestLifetimeManager());
+            container.RegisterType<MemberFactory, MemberFactory>(new PerRequestLifetimeManager());
             container.RegisterType<IUpdateNotifier, SimpleUpdateNotifier>(new PerRequestLifetimeManager());
 
             //Externals
