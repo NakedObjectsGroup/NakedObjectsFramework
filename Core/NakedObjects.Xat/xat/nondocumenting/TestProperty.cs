@@ -19,14 +19,16 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 namespace NakedObjects.Xat {
     public class TestProperty : ITestProperty {
         private readonly ITestObjectFactory factory;
-        private readonly ILifecycleManager persistor;
+        private readonly ILifecycleManager lifecycleManager;
         private readonly ISession session;
+        private readonly IObjectPersistor persistor;
         private readonly INakedObjectAssociation field;
         private readonly ITestHasActions owningObject;
 
-        public TestProperty(ILifecycleManager persistor, ISession session,  INakedObjectAssociation field, ITestHasActions owningObject, ITestObjectFactory factory) {
-            this.persistor = persistor;
+        public TestProperty(ILifecycleManager lifecycleManager, ISession session, IObjectPersistor persistor, INakedObjectAssociation field, ITestHasActions owningObject, ITestObjectFactory factory) {
+            this.lifecycleManager = lifecycleManager;
             this.session = session;
+            this.persistor = persistor;
             this.field = field;
             this.owningObject = owningObject;
             this.factory = factory;
@@ -43,7 +45,7 @@ namespace NakedObjects.Xat {
         }
 
         public string Title {
-            get { return field.PropertyTitle(field.GetNakedObject(owningObject.NakedObject), persistor); }
+            get { return field.PropertyTitle(field.GetNakedObject(owningObject.NakedObject), lifecycleManager); }
         }
 
         public ITestNaked Content {
@@ -174,7 +176,7 @@ namespace NakedObjects.Xat {
 
                 var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
 
-                INakedObject newValue = parseableFacet.ParseTextEntry(textEntry, persistor);
+                INakedObject newValue = parseableFacet.ParseTextEntry(textEntry, lifecycleManager);
 
                 IConsent consent = ((IOneToOneAssociation) field).IsAssociationValid(nakedObject, newValue);
                 LastMessage = consent.Reason;
@@ -245,7 +247,7 @@ namespace NakedObjects.Xat {
             Assert.IsNotNull(valueObject, "Field '" + Name + "' contains null, but should contain an INakedObject object");
             try {
                 var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
-                parseableFacet.ParseTextEntry(text, persistor);
+                parseableFacet.ParseTextEntry(text, lifecycleManager);
                 Assert.Fail("Content was unexpectedly parsed");
             }
             catch (InvalidEntryException /*expected*/) {
@@ -385,7 +387,7 @@ namespace NakedObjects.Xat {
                 Assert.IsTrue(field.GetNakedObject(owningObject.NakedObject).ValidToPersist() == null);
             }
             if (field.IsCollection) {
-                field.GetNakedObject(owningObject.NakedObject).GetAsEnumerable(persistor).ForEach(no => Assert.AreEqual(no.ValidToPersist(), null));
+                field.GetNakedObject(owningObject.NakedObject).GetAsEnumerable(lifecycleManager).ForEach(no => Assert.AreEqual(no.ValidToPersist(), null));
             }
 
             return this;
@@ -410,7 +412,7 @@ namespace NakedObjects.Xat {
             INakedObject existingValue = field.GetNakedObject(nakedObject);
             var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
             try {
-                INakedObject newValue = parseableFacet.ParseTextEntry(text, persistor);
+                INakedObject newValue = parseableFacet.ParseTextEntry(text, lifecycleManager);
                 IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue);
                 LastMessage = isAssociationValid.Reason;
                 Assert.IsFalse(isAssociationValid.IsAllowed, "Content was unexpectedly validated");
@@ -429,7 +431,7 @@ namespace NakedObjects.Xat {
             INakedObject nakedObject = owningObject.NakedObject;
             INakedObject existingValue = field.GetNakedObject(nakedObject);
             var parseableFacet = field.Specification.GetFacet<IParseableFacet>();
-            INakedObject newValue = parseableFacet.ParseTextEntry(text, persistor);
+            INakedObject newValue = parseableFacet.ParseTextEntry(text, lifecycleManager);
             IConsent isAssociationValid = ((IOneToOneAssociation) field).IsAssociationValid(owningObject.NakedObject, newValue);
             LastMessage = isAssociationValid.Reason;
             Assert.IsTrue(isAssociationValid.IsAllowed, "Content was unexpectedly invalidated");

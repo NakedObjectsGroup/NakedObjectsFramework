@@ -57,8 +57,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
 
         private INakedObject AdapterFor(object obj) {
             ISession session = new Mock<ISession>().Object;
-            ILifecycleManager persistor = new Mock<ILifecycleManager>().Object;
-            return new PocoAdapter(Metamodel, session, persistor, persistor, obj, null);
+            ILifecycleManager lifecycleManager = new Mock<ILifecycleManager>().Object;
+            IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
+            return new PocoAdapter(Metamodel, session, persistor, lifecycleManager, obj, null);
         }
 
         // ReSharper disable UnusedMember.Local

@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Adapter;
 using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
     [TestFixture]
@@ -44,9 +45,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
         }
 
         private INakedObject AdapterFor(object obj) {
-            ILifecycleManager persistor = new Mock<ILifecycleManager>().Object;
+            ILifecycleManager lifecycleManager = new Mock<ILifecycleManager>().Object;
+            IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
             ISession session = new Mock<ISession>().Object;
-            return new PocoAdapter(Metamodel, session, persistor, persistor, obj, null);
+            return new PocoAdapter(Metamodel, session, persistor, lifecycleManager, obj, null);
         }
 
         private class Customer {

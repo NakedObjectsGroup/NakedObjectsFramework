@@ -18,15 +18,17 @@ using System.Text;
 
 namespace NakedObjects.Xat {
     internal class TestObject : TestHasActions, ITestObject {
-        private readonly ILifecycleManager persistor;
+        private readonly ILifecycleManager lifecycleManager;
+        private readonly IObjectPersistor persistor;
         private static readonly ILog LOG;
 
         static TestObject() {
             LOG = LogManager.GetLogger(typeof (TestObject));
         }
 
-        public TestObject(ILifecycleManager persistor,   INakedObject nakedObject, ITestObjectFactory factory)
-            : base(factory, persistor) {
+        public TestObject(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObject nakedObject, ITestObjectFactory factory)
+            : base(factory, lifecycleManager) {
+            this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             LOG.DebugFormat("Created test object for {0}", nakedObject);
             NakedObject = nakedObject;
@@ -59,9 +61,9 @@ namespace NakedObjects.Xat {
         public ITestObject Save() {
             AssertCanBeSaved();
 
-            persistor.StartTransaction();
-            persistor.MakePersistent(NakedObject);
-            persistor.EndTransaction();
+            lifecycleManager.StartTransaction();
+            lifecycleManager.MakePersistent(NakedObject);
+            lifecycleManager.EndTransaction();
             return this;
         }
 

@@ -69,7 +69,7 @@ namespace NakedObjects.Xat {
         protected virtual ITestObjectFactory TestObjectFactoryClass {
             get {
                 if (testObjectFactory == null) {
-                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager);
+                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor);
                 }
                 return testObjectFactory;
             }
@@ -177,7 +177,7 @@ namespace NakedObjects.Xat {
             if (spec.GetFacet<IBoundedFacet>() == null) {
                 Assert.Fail(spec.SingularName + " is not a Bounded type");
             }
-            IEnumerable allInstances = NakedObjectsFramework.LifecycleManager.Instances(spec);
+            IEnumerable allInstances = NakedObjectsFramework.Persistor.Instances(spec);
             object inst = allInstances.Cast<object>().Single(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null).TitleString() == title);
             return TestObjectFactoryClass.CreateTestObject(NakedObjectsFramework.LifecycleManager.CreateAdapter(inst, null, null));
         }

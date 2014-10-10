@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.spec;
+using NakedObjects.Managers;
 using NakedObjects.Objects;
 
 namespace NakedObjects.Service {
@@ -39,6 +40,7 @@ namespace NakedObjects.Service {
                                      IAuthorizationManager authorizationManager,
                                      IMetamodelManager metamodelManager,
                                      IContainerInjector injector,
+                                     NakedObjectFactory  nakedObjectFactory,
                                      MemberFactory memberFactory) {
             this.messageBroker = messageBroker;
             this.updateNotifier = updateNotifier;
@@ -53,6 +55,7 @@ namespace NakedObjects.Service {
             this.injector = injector;
             injector.Framework = this;
             memberFactory.Initialize(this);
+            nakedObjectFactory.Initialize(metamodelManager, session, lifecycleManager, persistor);
         }
 
         #region INakedObjectsFramework Members

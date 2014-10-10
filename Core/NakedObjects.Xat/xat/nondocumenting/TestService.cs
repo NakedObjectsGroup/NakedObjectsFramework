@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Xat {
     internal class TestService : TestHasActions, ITestService {
-        public TestService(INakedObject service, ILifecycleManager persistor, ITestObjectFactory factory) : base(factory, persistor) {
+        public TestService(INakedObject service, ILifecycleManager lifecycleManager, ITestObjectFactory factory) : base(factory, lifecycleManager) {
             NakedObject = service;
         }
 

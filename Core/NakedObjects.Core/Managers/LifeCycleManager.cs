@@ -9,7 +9,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Web;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
@@ -74,9 +73,6 @@ namespace NakedObjects.Managers {
             this.metamodel = metamodel;
             this.persistAlgorithm = persistAlgorithm;
             this.injector = injector;
-
-
-            nakedObjectFactory.Initialize(metamodel, session, this);
 
             // TODO - fix !
             objectStore.Manager = this;
@@ -155,18 +151,6 @@ namespace NakedObjects.Managers {
             manager.RemoveAdapter(nakedObject);
         }
 
-        public virtual IQueryable<T> Instances<T>() where T : class {
-            return objectPersistor.Instances<T>();
-        }
-
-        public virtual IQueryable Instances(Type type) {
-            return objectPersistor.Instances(type);
-        }
-
-        public virtual IQueryable Instances(INakedObjectSpecification specification) {
-            return objectPersistor.Instances(specification);
-        }
-
         public virtual ServiceTypes GetServiceType(INakedObjectSpecification spec) {
             return servicesManager.GetServiceType(spec);
         }
@@ -190,37 +174,6 @@ namespace NakedObjects.Managers {
 
         public virtual INakedObject[] ServiceAdapters {
             get { return servicesManager.ServiceAdapters; }
-        }
-
-        public INakedObject LoadObject(IOid oid, INakedObjectSpecification specification) {
-            Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, specification);
-            Assert.AssertNotNull("needs an OID", oid);
-            Assert.AssertNotNull("needs a specification", specification);
-            return manager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, specification);
-        }
-
-        public void Reload(INakedObject nakedObject) {
-            objectPersistor.Reload(nakedObject);
-        }
-
-        public void ResolveField(INakedObject nakedObject, INakedObjectAssociation field) {
-            objectPersistor.ResolveField(nakedObject, field);
-        }
-
-        public void LoadField(INakedObject nakedObject, string field) {
-            objectPersistor.LoadField(nakedObject, field);
-        }
-
-        public int CountField(INakedObject nakedObject, string field) {
-            return objectPersistor.CountField(nakedObject, field);
-        }
-
-        public void ResolveImmediately(INakedObject nakedObject) {
-            objectPersistor.ResolveImmediately(nakedObject);
-        }
-
-        public void ObjectChanged(INakedObject nakedObject) {
-            objectPersistor.ObjectChanged(nakedObject);
         }
 
         /// <summary>
@@ -251,14 +204,7 @@ namespace NakedObjects.Managers {
 
             persistAlgorithm.MakePersistent(nakedObject, session);
         }
-
-        /// <summary>
-        ///     Removes the specified object from the system. The specified object's data should be removed from the
-        ///     persistence mechanism.
-        /// </summary>
-        public void DestroyObject(INakedObject nakedObject) {
-            objectPersistor.DestroyObject(nakedObject);
-        }
+        
 
         public object CreateObject(INakedObjectSpecification specification) {
             Log.DebugFormat("CreateObject: " + specification);
@@ -273,9 +219,6 @@ namespace NakedObjects.Managers {
             return objectPersistor.CreateObject(specification);
         }
 
-        public IEnumerable GetBoundedSet(INakedObjectSpecification spec) {
-            return objectPersistor.GetBoundedSet(spec);
-        }
 
         public void AbortTransaction() {
             Log.Debug("AbortTransaction");
@@ -307,20 +250,9 @@ namespace NakedObjects.Managers {
             transactionManager.AddCommand(command);
         }
 
-        public PropertyInfo[] GetKeys(Type type) {
-            Log.Debug("GetKeys of: " + type);
-            return objectPersistor.GetKeys(type);
-        }
+      
 
-        public INakedObject FindByKeys(Type type, object[] keys) {
-            Log.Debug("FindByKeys");
-            return objectPersistor.FindByKeys(type, keys);
-        }
-
-        public void Refresh(INakedObject nakedObject) {
-            Log.DebugFormat("Refresh nakedObject: {0}", nakedObject);
-            objectPersistor.Refresh(nakedObject);
-        }
+       
 
         public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid) {
             return manager.NewAdapterForKnownObject(domainObject, transientOid);
@@ -349,7 +281,7 @@ namespace NakedObjects.Managers {
             INakedObjectSpecification spec = metamodel.GetSpecification(typeName);
 
             if (spec.IsCollection) {
-                return new CollectionMemento(this, this, metamodel, session, encodedData);
+                return new CollectionMemento(this, objectPersistor, metamodel, session, encodedData);
             }
 
             if (spec.ContainsFacet<IViewModelFacet>()) {
@@ -371,9 +303,7 @@ namespace NakedObjects.Managers {
             }
         }
 
-        public virtual void AddPersistedObject(INakedObject nakedObject) {
-            objectPersistor.AddPersistedObject(nakedObject);
-        }
+      
 
         public virtual void MadePersistent(INakedObject nakedObject) {
             manager.MadePersistent(nakedObject);

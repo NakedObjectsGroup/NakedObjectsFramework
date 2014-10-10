@@ -58,11 +58,11 @@ type ModelSystemTests() =
         SystemTestCode.CreateAndSetup<Person> setter x.NakedObjectsFramework
       
     member x.GetPersonDomainObject() = 
-       let pp : Person[] = box( x.NakedObjectsFramework.LifecycleManager.Instances<Person>().ToArray()) :?> Person[]
+       let pp : Person[] = box( x.NakedObjectsFramework.Persistor.Instances<Person>().ToArray()) :?> Person[]
        pp |> Seq.filter (fun p -> p.Id = 1) |> Seq.head     
           
     member x.GetNextPersonID() = 
-       let pp = x.NakedObjectsFramework.LifecycleManager.Instances<Person>()
+       let pp = x.NakedObjectsFramework.Persistor.Instances<Person>()
        (pp |> Seq.map (fun i -> i.Id) |> Seq.max)   + 1 
             
     [<Test>]
@@ -72,7 +72,7 @@ type ModelSystemTests() =
         
     [<Test>]
     member x.GetCollectionDirectly() = 
-        let pp = x.NakedObjectsFramework.LifecycleManager.Instances<Person>()
+        let pp = x.NakedObjectsFramework.Persistor.Instances<Person>()
         Assert.Greater(pp |> Seq.length , 0)   
                          
     [<Test>]
@@ -241,7 +241,7 @@ type ModelSystemTests() =
     member x.SavePersonWithInheritedTypeProperty() =
        let ctx = x.NakedObjectsFramework
        let GetNextFruitID() = 
-            (ctx.LifecycleManager.Instances<Fruit>() |> Seq.map (fun i -> i.Id) |> Seq.max) + 1
+            (ctx.Persistor.Instances<Fruit>() |> Seq.map (fun i -> i.Id) |> Seq.max) + 1
 
        let fSet (f : Fruit) =
           f.Id <- GetNextFruitID()
@@ -264,7 +264,7 @@ type ModelSystemTests() =
     member x.AddToCollectionNotifiesUI() =
        let ctx = x.NakedObjectsFramework
        let GetNextFruitID() = 
-            (ctx.LifecycleManager.Instances<Fruit>() |> Seq.map (fun i -> i.Id) |> Seq.max) + 1
+            (ctx.Persistor.Instances<Fruit>() |> Seq.map (fun i -> i.Id) |> Seq.max) + 1
 
        let fSet (f : Fruit) =
           f.Id <- GetNextFruitID()

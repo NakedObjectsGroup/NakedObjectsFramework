@@ -139,7 +139,7 @@ namespace NakedObjects.Core.Persist {
 
         [Test]
         public void TestActionNoParms() {
-            TestDomainObject target = NakedObjectsFramework.LifecycleManager.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetAllActions().Single(a => a.Id == "Action1");
 
@@ -161,7 +161,7 @@ namespace NakedObjects.Core.Persist {
 
         [Test]
         public void TestActionNoParmsWithSelected() {
-            TestDomainObject target = NakedObjectsFramework.LifecycleManager.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetAllActions().Single(a => a.Id == "Action1");
 
@@ -181,10 +181,10 @@ namespace NakedObjects.Core.Persist {
 
         [Test, Ignore] // Fix !
         public void TestActionObjectCollectionParm() {
-            TestDomainObject target = NakedObjectsFramework.LifecycleManager.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateAdapter(target, null, null);
 
-            TestDomainObject obj2 = NakedObjectsFramework.LifecycleManager.Instances<TestDomainObject>().Single(i => i.Id == 2);
+            TestDomainObject obj2 = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 2);
 
             INakedObjectAction action = targetNo.Specification.GetAllActions().Single(a => a.Id == "Action5");
 
@@ -199,7 +199,7 @@ namespace NakedObjects.Core.Persist {
 
         [Test]
         public void TestActionObjectCollectionParmEmpty() {
-            TestDomainObject target = NakedObjectsFramework.LifecycleManager.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateAdapter(target, null, null);
 
             INakedObjectAction action = targetNo.Specification.GetAllActions().Single(a => a.Id == "Action5");
@@ -216,7 +216,7 @@ namespace NakedObjects.Core.Persist {
 
         [Test]
         public void TestActionObjectParm() {
-            TestDomainObject target = NakedObjectsFramework.LifecycleManager.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetAllActions().Single(a => a.Id == "Action3");
 
@@ -228,7 +228,7 @@ namespace NakedObjects.Core.Persist {
 
         [Test]
         public void TestActionObjectParmNull() {
-            TestDomainObject target = NakedObjectsFramework.LifecycleManager.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetAllActions().Single(a => a.Id == "Action3");
 
@@ -240,7 +240,7 @@ namespace NakedObjects.Core.Persist {
 
         [Test, Ignore] // Fix !
         public void TestActionValueCollectionParm() {
-            TestDomainObject target = NakedObjectsFramework.LifecycleManager.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetAllActions().Single(a => a.Id == "Action4");
 
@@ -253,7 +253,7 @@ namespace NakedObjects.Core.Persist {
 
         [Test]
         public void TestActionValueCollectionParmEmpty() {
-            TestDomainObject target = NakedObjectsFramework.LifecycleManager.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetAllActions().Single(a => a.Id == "Action4");
 
@@ -266,7 +266,7 @@ namespace NakedObjects.Core.Persist {
 
         [Test, Ignore] // Fix !
         public void TestActionValueCollectionParmString() {
-            TestDomainObject target = NakedObjectsFramework.LifecycleManager.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetAllActions().Single(a => a.Id == "Action7");
 
@@ -279,7 +279,7 @@ namespace NakedObjects.Core.Persist {
 
         [Test]
         public void TestActionValueParm() {
-            TestDomainObject target = NakedObjectsFramework.LifecycleManager.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetAllActions().Single(a => a.Id == "Action2");
 
@@ -291,7 +291,7 @@ namespace NakedObjects.Core.Persist {
 
         [Test]
         public void TestActionValueParmString() {
-            TestDomainObject target = NakedObjectsFramework.LifecycleManager.Instances<TestDomainObject>().Single(i => i.Id == 1);
+            TestDomainObject target = NakedObjectsFramework.Persistor.Instances<TestDomainObject>().Single(i => i.Id == 1);
             INakedObject targetNo = NakedObjectsFramework.LifecycleManager.CreateAdapter(target, null, null);
             INakedObjectAction action = targetNo.Specification.GetAllActions().Single(a => a.Id == "Action6");
 

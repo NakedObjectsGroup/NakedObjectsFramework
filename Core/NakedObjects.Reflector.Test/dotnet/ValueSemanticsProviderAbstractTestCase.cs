@@ -21,9 +21,10 @@ namespace NakedObjects.Reflector.DotNet {
     public abstract class ValueSemanticsProviderAbstractTestCase<T> {
         private EncodeableFacetUsingEncoderDecoder<T> encodeableFacet;
         private ParseableFacetUsingParser<T> parseableFacet;
-        protected ILifecycleManager persistor = new Mock<ILifecycleManager>().Object;
-        protected INakedObjectReflector reflector = new Mock<INakedObjectReflector>().Object;
-        protected IMetamodelManager metamodel = new Mock<IMetamodelManager>().Object;
+        protected ILifecycleManager LifecycleManager = new Mock<ILifecycleManager>().Object;
+        protected IObjectPersistor Persistor = new Mock<IObjectPersistor>().Object;
+        protected INakedObjectReflector Reflector = new Mock<INakedObjectReflector>().Object;
+        protected IMetamodelManager Metamodel = new Mock<IMetamodelManager>().Object;
         private ValueSemanticsProviderAbstract<T> value;
 
         protected void SetValue(ValueSemanticsProviderAbstract<T> newValue) {
@@ -61,7 +62,7 @@ namespace NakedObjects.Reflector.DotNet {
 
         protected INakedObject CreateAdapter(object obj) {
             ISession session = new Mock<ISession>().Object;
-            return new PocoAdapter(metamodel, session, persistor, persistor, obj, null);
+            return new PocoAdapter(Metamodel, session, Persistor, LifecycleManager, obj, null);
         }
 
 
@@ -82,7 +83,7 @@ namespace NakedObjects.Reflector.DotNet {
 
         [Test]
         public void TestDecodeNull() {
-            object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.ENCODED_NULL, persistor);
+            object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.ENCODED_NULL, LifecycleManager);
             Assert.IsNull(newValue);
         }
 

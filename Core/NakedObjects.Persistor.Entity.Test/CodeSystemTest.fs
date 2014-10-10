@@ -53,11 +53,11 @@ type CodeSystemTests() =
             box (new ServicesInstaller([|(box service)|])) :?> IServicesInstaller
                
     member x.GetPersonDomainObject() = 
-       let pp = x.NakedObjectsFramework.LifecycleManager.Instances<Person>() 
+       let pp = x.NakedObjectsFramework.Persistor.Instances<Person>() 
        pp |>  Seq.head
       
     member x.GetCategoryDomainObject() = 
-       let cc = x.NakedObjectsFramework.LifecycleManager.Instances<Category>()
+       let cc = x.NakedObjectsFramework.Persistor.Instances<Category>()
        cc |>  Seq.head
         
     member x.CreatePerson() = 
@@ -77,7 +77,7 @@ type CodeSystemTests() =
                
     [<Test>]
     member x.GetCollectionDirectly() = 
-        let pp = x.NakedObjectsFramework.LifecycleManager.Instances<Person>()
+        let pp = x.NakedObjectsFramework.Persistor.Instances<Person>()
         Assert.Greater(pp |> Seq.length, 0)
               
     [<Test>]
@@ -89,7 +89,7 @@ type CodeSystemTests() =
     [<Test>]
     member x.CheckIdentitiesAreConsistent() = 
        let ctx = x.NakedObjectsFramework
-       let getp sel  =  ctx.LifecycleManager.Instances<Person>() |> sel
+       let getp sel  =  ctx.Persistor.Instances<Person>() |> sel
        let (p1, p2, p3, p4) = (getp Seq.head, getp (Seq.skip 1 >> Seq.head), getp Seq.head, getp (Seq.skip 1 >> Seq.head))
        Assert.AreSame(p1, p3)
        Assert.AreSame(p2, p4)
@@ -121,7 +121,7 @@ type CodeSystemTests() =
            
     [<Test>]
     member x.GetInstanceIndirectly() = 
-       let pp = x.NakedObjectsFramework.LifecycleManager.Instances<Person>() |> System.Linq.Enumerable.ToArray
+       let pp = x.NakedObjectsFramework.Persistor.Instances<Person>() |> System.Linq.Enumerable.ToArray
        let p = System.Linq.Enumerable.Where (pp, (fun (p : Person) -> p.Favourite <> null)) |> Seq.head
        Assert.IsNotNull(p)
        IsNotNullAndPersistent p.Favourite x.NakedObjectsFramework
@@ -130,7 +130,7 @@ type CodeSystemTests() =
     member x.CheckIdentitiesAreConsistentWhenNavigating() = 
        let p = x.GetPersonDomainObject()
        let pr = p.Favourite
-       let pp = x.NakedObjectsFramework.LifecycleManager.Instances<Person>() |> Seq.filter (fun i -> i.Favourite = pr) |> Seq.head
+       let pp = x.NakedObjectsFramework.Persistor.Instances<Person>() |> Seq.filter (fun i -> i.Favourite = pr) |> Seq.head
        Assert.AreSame(p, pp)
            
     [<Test>]
@@ -157,7 +157,7 @@ type CodeSystemTests() =
     member x.CreateNewObjectWithPersistentReference() =         
        let pNo = x.CreatePerson()
        let p = box pNo.Object :?> Person
-       let pr = x.NakedObjectsFramework.LifecycleManager.Instances<Product>() |> Seq.head
+       let pr = x.NakedObjectsFramework.Persistor.Instances<Product>() |> Seq.head
        p.Favourite <- pr
        save pNo x.NakedObjectsFramework
        IsNotNullAndPersistent pNo x.NakedObjectsFramework
@@ -235,7 +235,7 @@ type CodeSystemTests() =
     [<Test>]
     member x.UpdateReferenceOnPersistentObject() =
         let p1 = x.GetPersonDomainObject()
-        let pp = x.NakedObjectsFramework.LifecycleManager.Instances<Product>()
+        let pp = x.NakedObjectsFramework.Persistor.Instances<Product>()
         let pr = pp |> Seq.filter (fun i -> p1.Favourite <> i) |> Seq.head     
         let changeFav() = 
             p1.Favourite <- pr
@@ -247,7 +247,7 @@ type CodeSystemTests() =
     member x.UpdateReferenceOnPersistentObjectNotifiesUI() =
         x.NakedObjectsFramework.UpdateNotifier.EnsureEmpty()
         let p1 = x.GetPersonDomainObject()
-        let pp = x.NakedObjectsFramework.LifecycleManager.Instances<Product>()
+        let pp = x.NakedObjectsFramework.Persistor.Instances<Product>()
         let pr = pp |> Seq.toList |> Seq.filter (fun i -> p1.Favourite <> i) |> Seq.head     
         let changeFav() = 
             p1.Favourite <- pr
@@ -258,7 +258,7 @@ type CodeSystemTests() =
     [<Test>]
     member x.UpdateReferenceOnPersistentObjectCallsUpdatingUpdated() =
         let p1 = x.GetPersonDomainObject()
-        let pp = x.NakedObjectsFramework.LifecycleManager.Instances<Product>() |> Seq.toList
+        let pp = x.NakedObjectsFramework.Persistor.Instances<Product>() |> Seq.toList
         let pr = pp |> Seq.filter (fun i -> p1.Favourite <> i) |> Seq.head     
         let changeFav() =  p1.Favourite <- pr
         makeAndSaveChanges changeFav x.NakedObjectsFramework
@@ -306,7 +306,7 @@ type CodeSystemTests() =
         let nocc = createCC() 
         let cc = nocc.GetDomainObject<CountryCode>()
         save nocc x.NakedObjectsFramework
-        let cc1 =  x.NakedObjectsFramework.LifecycleManager.Instances<CountryCode>() |> Seq.head
+        let cc1 =  x.NakedObjectsFramework.Persistor.Instances<CountryCode>() |> Seq.head
         Assert.AreEqual(cc.Code, cc1.Code)
         Assert.AreEqual(cc.Name, cc1.Name)
         () 

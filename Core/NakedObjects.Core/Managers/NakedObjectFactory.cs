@@ -15,21 +15,23 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Managers {
     public class NakedObjectFactory {
         private IMetamodelManager metamodel;
-        private ILifecycleManager persistor;
+        private ILifecycleManager lifecycleManager;
         private ISession session;
+        private IObjectPersistor persistor;
 
-        public void Initialize(IMetamodelManager metamodel, ISession session, ILifecycleManager persistor) {
+        public void Initialize(IMetamodelManager metamodel, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor) {
             this.metamodel = metamodel;
             this.session = session;
+            this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
         }
 
         public INakedObject CreateAdapter(object obj, IOid oid) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(session);
-            Assert.AssertNotNull(persistor);
+            Assert.AssertNotNull(lifecycleManager);
 
-            return new PocoAdapter(metamodel, session, persistor, persistor, obj, oid);
+            return new PocoAdapter(metamodel, session, persistor, lifecycleManager, obj, oid);
         }
     }
 }

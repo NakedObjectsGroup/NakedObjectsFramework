@@ -17,11 +17,11 @@ using NakedObjects.Reflector.Spec;
 namespace NakedObjects.Xat {
     internal abstract class TestHasActions : ITestHasActions {
         protected readonly ITestObjectFactory factory;
-        private readonly ILifecycleManager persistor;
+        private readonly ILifecycleManager lifecycleManager;
 
-        protected TestHasActions(ITestObjectFactory factory, ILifecycleManager persistor) {
+        protected TestHasActions(ITestObjectFactory factory, ILifecycleManager lifecycleManager) {
             this.factory = factory;
-            this.persistor = persistor;
+            this.lifecycleManager = lifecycleManager;
         }
 
         #region ITestHasActions Members

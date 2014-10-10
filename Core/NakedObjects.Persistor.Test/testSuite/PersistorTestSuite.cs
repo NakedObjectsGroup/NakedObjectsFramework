@@ -30,9 +30,15 @@ namespace NakedObjects.Persistor.TestSuite {
 
         #region helpers
 
-        private  ILifecycleManager Persistor {
+        private  ILifecycleManager LifecycleManager {
             get {
                 return framework.LifecycleManager;
+            }
+        }
+
+        private IObjectPersistor Persistor {
+            get {
+                return framework.Persistor;
             }
         }
 
@@ -61,7 +67,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
 
         private  Person GetPerson(int id) {
-            return framework.LifecycleManager.Instances<Person>().Single(p => p.PersonId == id);
+            return framework.Persistor.Instances<Person>().Single(p => p.PersonId == id);
         }
 
 
@@ -73,14 +79,14 @@ namespace NakedObjects.Persistor.TestSuite {
         private  Person ChangeScalarOnPerson(int id) {
             Person person = GetPerson(id);
             string originalName = person.Name;
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             person.Name = Guid.NewGuid().ToString();
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             Notifier.AllChangedObjects();
             person.ResetEvents();
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             person.Name = originalName;
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             return person;
         }
 
@@ -92,9 +98,9 @@ namespace NakedObjects.Persistor.TestSuite {
             Person person = GetPerson(id);
             Notifier.AllChangedObjects();
             person.ResetEvents();
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             person.FavouriteProduct = GetProduct(3);
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             return person;
         }
 
@@ -102,9 +108,9 @@ namespace NakedObjects.Persistor.TestSuite {
             Person person = GetPerson(1);
             Notifier.AllChangedObjects();
             person.ResetEvents();
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             person.AddToRelatives(personToAdd);
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             return person;
         }
 
@@ -112,9 +118,9 @@ namespace NakedObjects.Persistor.TestSuite {
             Person person = GetPerson(1);
             Notifier.AllChangedObjects();
             person.ResetEvents();
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             person.RemoveFromRelatives(personToRemove);
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             return person;
         }
 
@@ -122,32 +128,32 @@ namespace NakedObjects.Persistor.TestSuite {
             Person person = GetPerson(id);
             Notifier.AllChangedObjects();
             person.ResetEvents();
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             person.ClearRelatives();
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             return person;
         }
 
         private  Product GetProductFromPersonOne() {
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             Person person1 = GetPerson(1);
             Product product = person1.FavouriteProduct;
             var name = product.Name; // to ensure product is resolved
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             return product;
         }
 
         private  Person GetPersonFromPersonOneCollection() {
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             Person relative = GetPerson(1).Relatives.First();
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             return relative;
         }
 
         private  Person CreateNewTransientPerson() {
             int nextIndex = Persistor.Instances<Person>().Select(p => p.PersonId).Max() + 1;
             INakedObjectSpecification spec = Metamodel.GetSpecification(typeof (Person));
-            INakedObject newPersonAdapter = Persistor.CreateInstance(spec);
+            INakedObject newPersonAdapter = LifecycleManager.CreateInstance(spec);
             Person person = (Person)newPersonAdapter.Object;
             person.PersonId = nextIndex;
             return person;
@@ -155,7 +161,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private  Order CreateNewTransientOrder() {
             INakedObjectSpecification spec = Metamodel.GetSpecification(typeof(Order));
-            INakedObject newOrderAdapter = Persistor.CreateInstance(spec);
+            INakedObject newOrderAdapter = LifecycleManager.CreateInstance(spec);
             Order order = (Order)newOrderAdapter.Object;
             order.OrderId = 0;
             return order;
@@ -163,7 +169,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private  OrderFail CreateNewTransientOrderFail() {
             INakedObjectSpecification spec = Metamodel.GetSpecification(typeof(OrderFail));
-            INakedObject newOrderAdapter = Persistor.CreateInstance(spec);
+            INakedObject newOrderAdapter = LifecycleManager.CreateInstance(spec);
             OrderFail order = (OrderFail)newOrderAdapter.Object;
             order.OrderFailId = 0;
             return order;
@@ -173,7 +179,7 @@ namespace NakedObjects.Persistor.TestSuite {
         private  Product CreateNewTransientProduct() {
             int nextIndex = Persistor.Instances<Product>().Select(p => p.Id).Max() + 1;
             INakedObjectSpecification spec = Metamodel.GetSpecification(typeof(Product));
-            INakedObject newProductAdapter = Persistor.CreateInstance(spec);
+            INakedObject newProductAdapter = LifecycleManager.CreateInstance(spec);
             Product product = (Product)newProductAdapter.Object;
             product.Id = nextIndex;
             return product;
@@ -182,25 +188,25 @@ namespace NakedObjects.Persistor.TestSuite {
         private  Pet CreateNewTransientPet() {
             int nextIndex = Persistor.Instances<Pet>().Select(p => p.PetId).Max() + 1;
             INakedObjectSpecification spec = Metamodel.GetSpecification(typeof(Pet));
-            INakedObject newPetAdapter = Persistor.CreateInstance(spec);
+            INakedObject newPetAdapter = LifecycleManager.CreateInstance(spec);
             Pet pet = (Pet)newPetAdapter.Object;
             pet.PetId = nextIndex;
             return pet;
         }
 
         private  INakedObject Save(object toSave) {
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             INakedObject adapterForToSave = AdapterFor(toSave);
-            Persistor.MakePersistent(adapterForToSave);
-            Persistor.EndTransaction();
+            LifecycleManager.MakePersistent(adapterForToSave);
+            LifecycleManager.EndTransaction();
             return adapterForToSave;
         }
 
         private  void Delete(object toDelete) {
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             INakedObject adapterForToDelete = AdapterFor(toDelete);
             Persistor.DestroyObject(adapterForToDelete);
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
            
         }
 
@@ -209,14 +215,14 @@ namespace NakedObjects.Persistor.TestSuite {
             INakedObject adaptedAddress = GetAdaptedAddress(GetPerson(1));
             Address address = (Address)adaptedAddress.Object;
             string original1 = address.Line1;     
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             address.Line1 = Guid.NewGuid().ToString();      
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             Notifier.AllChangedObjects();
             address.ResetEvents();
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             address.Line1 = original1;       
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             return address;
         }
 
@@ -226,9 +232,9 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         private  INakedObject GetAdaptedRelatives(Person person) {
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             INakedObject personAdapter = AdapterFor(person);
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             return personAdapter.Specification.GetProperty("Relatives").GetNakedObject(personAdapter);
         }
 
@@ -371,9 +377,9 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         public  void PersistentObjectHasLoadingLoadedCalled() {
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             Person person1 = GetPerson(1);
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             Assert.AreEqual(1, person1.GetEvents()["Loading"], "loading");
             Assert.AreEqual(1, person1.GetEvents()["Loaded"], "loaded");
         }
@@ -528,9 +534,9 @@ namespace NakedObjects.Persistor.TestSuite {
             person = Save(person).GetDomainObject<Person>();
 
             try {
-                Persistor.StartTransaction();
+                LifecycleManager.StartTransaction();
                 person.Name = "fail";
-                Persistor.EndTransaction();
+                LifecycleManager.EndTransaction();
                 Assert.Fail();
             }
             catch (PersistFailedException /*expected*/) { }
@@ -638,12 +644,12 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         public  void SaveNewObjectWithPersistentReferenceInSeperateTransaction() {
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             Person person = CreateNewTransientPerson();
             Product product = GetProduct(2);
             person.Name = Guid.NewGuid().ToString();
             person.FavouriteProduct = product;
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             INakedObject personAdapter = Save(person);
             Assert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
@@ -691,12 +697,12 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         public  void SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction() {
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             Person person1 = CreateNewTransientPerson();
             Person person2 = GetPerson(2);
             person1.Name = Guid.NewGuid().ToString();
             person1.Relatives.Add(person2);
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             INakedObject personAdapter = Save(person1);
             Assert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
@@ -842,10 +848,10 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         public  void InlineObjectHasLoadingLoadedCalled() {
-            Persistor.StartTransaction();
+            LifecycleManager.StartTransaction();
             INakedObject addressAdapter = GetAdaptedAddress(GetPerson(1));
             Address address = addressAdapter.GetDomainObject<Address>();
-            Persistor.EndTransaction();
+            LifecycleManager.EndTransaction();
             Assert.AreEqual(1, address.GetEvents()["Loading"], "loading");
             Assert.AreEqual(1, address.GetEvents()["Loaded"], "loaded");
         }
@@ -926,7 +932,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         public  void FindByKey() {
             Person person1 = GetPerson(1);
-            var person = Persistor.FindByKeys(typeof(Person), new object[] {1}).Object;
+            var person = Persistor.FindByKeys(typeof(Person), new object[] { 1 }).Object;
 
             Assert.AreEqual(person1, person);      
         }

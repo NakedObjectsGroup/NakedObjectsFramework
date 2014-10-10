@@ -23,34 +23,38 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class CollectionFacetsTest {
         private readonly FacetHolderImpl facetHolder = new FacetHolderImpl();
 
-        private readonly Mock<ILifecycleManager> mockPersistor = new Mock<ILifecycleManager>();
-        private readonly ILifecycleManager persistor;
+        private readonly Mock<ILifecycleManager> mockLifecycleManager = new Mock<ILifecycleManager>();
+        private readonly Mock<IObjectPersistor> mockPersistor = new Mock<IObjectPersistor>();
         private readonly IMetamodelManager metamodel = new Mock<IMetamodelManager>().Object;
         private readonly ISession session = new Mock<ISession>().Object;
         private readonly IOid oid = new Mock<IOid>().Object;
+        private readonly IObjectPersistor persistor;
+        private readonly ILifecycleManager lifecycleManager;
+
 
         public CollectionFacetsTest() {
+            lifecycleManager = mockLifecycleManager.Object;
             persistor = mockPersistor.Object;
-            mockPersistor.Setup(mp => mp.CreateAdapter(It.IsAny<object>(), null, null)).Returns<object, IOid, IVersion>((obj, oid, ver) => AdapterFor(obj));
+            mockLifecycleManager.Setup(mp => mp.CreateAdapter(It.IsAny<object>(), null, null)).Returns<object, IOid, IVersion>((obj, oid, ver) => AdapterFor(obj));
         }
 
         private INakedObject AdapterFor(object obj) {
-            return new PocoAdapter(metamodel, session, persistor, persistor, obj, oid);
+            return new PocoAdapter(metamodel, session, persistor, lifecycleManager, obj, oid);
         }
 
         private void Size(ICollectionFacet collectionFacet, INakedObject collection) {
-            Assert.AreEqual(2, collectionFacet.AsEnumerable(collection, persistor).Count());
+            Assert.AreEqual(2, collectionFacet.AsEnumerable(collection, lifecycleManager).Count());
         }
 
         private void ValidateCollection(ICollectionFacet collectionFacet, INakedObject collection, IEnumerable<object> objects) {
-            IEnumerable<INakedObject> collectionAsEnumerable = collectionFacet.AsEnumerable(collection, persistor);
+            IEnumerable<INakedObject> collectionAsEnumerable = collectionFacet.AsEnumerable(collection, lifecycleManager);
             Assert.AreEqual(collectionAsEnumerable.Count(), objects.Count());
             IEnumerable<Tuple<object, object>> zippedCollections = collectionAsEnumerable.Zip(objects, (no, o1) => new Tuple<object, object>(no.Object, o1));
             zippedCollections.ForEach(t => Assert.AreSame(t.Item1, t.Item2));
         }
 
         private void FirstElement(ICollectionFacet collectionFacet, INakedObject collection, object first) {
-            Assert.AreSame(first, collectionFacet.AsEnumerable(collection, persistor).First().Object);
+            Assert.AreSame(first, collectionFacet.AsEnumerable(collection, lifecycleManager).First().Object);
         }
 
         private void Contains(ICollectionFacet collectionFacet, INakedObject collection, object first, object second) {
@@ -66,11 +70,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         }
 
         private void Page(ICollectionFacet testArrayFacet, INakedObject collection, object first) {
-            INakedObject pagedCollection = testArrayFacet.Page(1, 1, collection, persistor, false);
+            INakedObject pagedCollection = testArrayFacet.Page(1, 1, collection, lifecycleManager, false);
             var pagedCollectionFacet = new DotNetGenericIEnumerableFacet<object>(facetHolder, typeof (object), false);
 
-            Assert.IsTrue(pagedCollectionFacet.AsEnumerable(pagedCollection, persistor).Count() == 1);
-            Assert.AreSame(pagedCollectionFacet.AsEnumerable(pagedCollection, persistor).First().Object, first);
+            Assert.IsTrue(pagedCollectionFacet.AsEnumerable(pagedCollection, lifecycleManager).Count() == 1);
+            Assert.AreSame(pagedCollectionFacet.AsEnumerable(pagedCollection, lifecycleManager).First().Object, first);
         }
 
         [Test]

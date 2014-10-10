@@ -24,11 +24,11 @@ namespace NakedObjects.Reflector.DotNet {
         #region IDomainObjectContainer Members
 
         public IQueryable<T> Instances<T>() where T : class {
-            return framework.LifecycleManager.Instances<T>();
+            return framework.Persistor.Instances<T>();
         }
 
         public IQueryable Instances(Type type) {
-            return framework.LifecycleManager.Instances(type);
+            return framework.Persistor.Instances(type);
         }
 
         public void DisposeInstance(object persistentObject) {
@@ -40,7 +40,7 @@ namespace NakedObjects.Reflector.DotNet {
                 throw new DisposeFailedException(string.Format(Resources.NakedObjects.NotPersistentMessage, adapter));
             }
             framework.UpdateNotifier.AddDisposedObject(adapter);
-            framework.LifecycleManager.DestroyObject(adapter);
+            framework.Persistor.DestroyObject(adapter);
         }
 
         public IPrincipal Principal {
@@ -90,7 +90,7 @@ namespace NakedObjects.Reflector.DotNet {
             if (obj != null) {
                 INakedObject adapter = AdapterFor(obj);
                 Validate(adapter);
-                framework.LifecycleManager.ObjectChanged(adapter);
+                framework.Persistor.ObjectChanged(adapter);
             }
         }
 
@@ -100,14 +100,14 @@ namespace NakedObjects.Reflector.DotNet {
 
         public void Refresh(object obj) {
             INakedObject nakedObject = AdapterFor(obj);
-            framework.LifecycleManager.Refresh(nakedObject);
+            framework.Persistor.Refresh(nakedObject);
             ObjectChanged(obj);
         }
 
         public void Resolve(object parent) {
             INakedObject adapter = AdapterFor(parent);
             if (adapter.ResolveState.IsResolvable()) {
-                framework.LifecycleManager.ResolveImmediately(adapter);
+                framework.Persistor.ResolveImmediately(adapter);
             }
         }
 
@@ -130,11 +130,11 @@ namespace NakedObjects.Reflector.DotNet {
         #region IInternalAccess Members
 
         public PropertyInfo[] GetKeys(Type type) {
-            return framework.LifecycleManager.GetKeys(type);
+            return framework.Persistor.GetKeys(type);
         }
 
         public object FindByKeys(Type type, object[] keys) {
-            return framework.LifecycleManager.FindByKeys(type, keys).GetDomainObject();
+            return framework.Persistor.FindByKeys(type, keys).GetDomainObject();
         }
 
         #endregion
