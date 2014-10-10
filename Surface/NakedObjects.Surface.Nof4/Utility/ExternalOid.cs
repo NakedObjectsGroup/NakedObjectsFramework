@@ -58,7 +58,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             if (spec == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
-            INakedObject service = framework.LifecycleManager.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager).SingleOrDefault(no => no.Specification.IsOfType(spec));
+            INakedObject service = framework.Services.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager).SingleOrDefault(no => no.Specification.IsOfType(spec));
             if (service == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
@@ -165,12 +165,12 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         private ITypeCodeMapper GetTypeCodeMapper() {
-            return (ITypeCodeMapper) framework.LifecycleManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
+            return (ITypeCodeMapper) framework.Services.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultTypeCodeMapper();
         }
 
         private IKeyCodeMapper GetKeyCodeMapper() {
-            return (IKeyCodeMapper) framework.LifecycleManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
+            return (IKeyCodeMapper) framework.Services.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultKeyCodeMapper();
         }
 

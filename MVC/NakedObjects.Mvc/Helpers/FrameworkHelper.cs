@@ -187,36 +187,36 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static INakedObject GetAdaptedService(this INakedObjectsFramework framework, string name) {
-            return framework.LifecycleManager.GetService(name);
+            return framework.Services.GetService(name);
         }
 
         public static object GetService(this INakedObjectsFramework framework, string name) {
-            return framework.LifecycleManager.GetService(name).Object;
+            return framework.Services.GetService(name).Object;
         }
 
         public static T GetService<T>(this INakedObjectsFramework framework, string name) {
-            return framework.LifecycleManager.GetService(name).GetDomainObject<T>();
+            return framework.Services.GetService(name).GetDomainObject<T>();
         }
 
         public static INakedObject GetAdaptedService<T>(this INakedObjectsFramework framework) {
-            return framework.LifecycleManager.GetServices().FirstOrDefault(no => no.Object is T);
+            return framework.Services.GetServices().FirstOrDefault(no => no.Object is T);
         }
 
         public static T GetService<T>(this INakedObjectsFramework framework) {
-            return framework.LifecycleManager.GetServices().Select(no => no.Object).OfType<T>().FirstOrDefault();
+            return framework.Services.GetServices().Select(no => no.Object).OfType<T>().FirstOrDefault();
         }
 
         public static IEnumerable<object> GetAllServices(this INakedObjectsFramework framework) {
-            return framework.LifecycleManager.GetServices().Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
+            return framework.Services.GetServices().Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
         public static IEnumerable<object> GetContributingServices(this INakedObjectsFramework framework) {
-            return framework.LifecycleManager.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
+            return framework.Services.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
         public static IEnumerable<object> GetServices(this INakedObjectsFramework framework) {
             framework.GetAllServices();
-            return framework.LifecycleManager.GetServicesWithVisibleActions(ServiceTypes.Menu, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
+            return framework.Services.GetServicesWithVisibleActions(ServiceTypes.Menu, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
         public static string GetActionId(INakedObjectAction action) {

@@ -90,7 +90,7 @@ namespace MvcTestApp.Tests.Helpers {
             IList<Claim> claims = NakedObjectsFramework.GetService<ClaimRepository>().FindMyClaims(null, "");
             INakedObject no = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims, null, null);
 
-            INakedObject service = NakedObjectsFramework.LifecycleManager.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.Services.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetAllActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Where(a => a.Id == "FindMyClaims").Single();
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 

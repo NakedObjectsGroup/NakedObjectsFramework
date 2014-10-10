@@ -86,7 +86,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void CollectionMemento() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
-            INakedObject service = NakedObjectsFramework.LifecycleManager.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.Services.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetAllActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 
@@ -100,7 +100,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void CollectionMementoToStringWithEnum() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
-            INakedObject service = NakedObjectsFramework.LifecycleManager.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.Services.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetAllActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaimsByEnumStatus");
             INakedObject[] parms = new[] {(object) ClaimStatusEnum.New}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 
@@ -117,7 +117,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void CollectionMementoToStringWithNull() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
-            INakedObject service = NakedObjectsFramework.LifecycleManager.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.Services.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetAllActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 
@@ -134,7 +134,7 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
             var status = NakedObjectsFramework.Persistor.Instances<ClaimStatus>().First();
-            INakedObject service = NakedObjectsFramework.LifecycleManager.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.Services.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetAllActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new object[] {status, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 
@@ -151,7 +151,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void CollectionMementoWithFilterAll() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
-            INakedObject service = NakedObjectsFramework.LifecycleManager.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.Services.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetAllActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 
@@ -172,7 +172,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void CollectionMementoWithFilterNone() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
-            INakedObject service = NakedObjectsFramework.LifecycleManager.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.Services.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetAllActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 
@@ -191,7 +191,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void CollectionMementoWithFilterOne() {
             mocks.ViewDataContainer.Object.ViewData["Services"] = NakedObjectsFramework.GetServices();
 
-            INakedObject service = NakedObjectsFramework.LifecycleManager.GetService("ClaimRepository");
+            INakedObject service = NakedObjectsFramework.Services.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetAllActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Single(a => a.Id == "FindMyClaims");
             INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
 

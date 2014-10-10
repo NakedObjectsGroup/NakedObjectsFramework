@@ -14,7 +14,7 @@ namespace NakedObjects.Architecture.Persist {
     /// The primary purpose in having a separate interface ILifecycleManager is so that the caller need not
     /// be concerned with whether the object already exists in memory, persistently, or both. 
     /// </summary>
-    public interface ILifecycleManager : INakedObjectTransactionManager, INakedObjectManager, IServicesManager {
+    public interface ILifecycleManager : INakedObjectTransactionManager, INakedObjectManager {
         
         INakedObject CreateInstance(INakedObjectSpecification specification);
 

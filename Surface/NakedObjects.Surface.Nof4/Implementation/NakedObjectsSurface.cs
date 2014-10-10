@@ -220,7 +220,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private ListContext GetServicesInternal() {
-            INakedObject[] services = framework.LifecycleManager.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager);
+            INakedObject[] services = framework.Services.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager);
             INakedObjectSpecification elementType = framework.Metamodel.GetSpecification(typeof (object));
 
             return new ListContext {

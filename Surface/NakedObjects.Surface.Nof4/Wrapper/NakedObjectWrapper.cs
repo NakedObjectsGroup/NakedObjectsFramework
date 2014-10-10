@@ -45,7 +45,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 INakedObjectSpecification spec = WrappedNakedObject.Specification;
 
                 if (spec.IsService) {
-                    ServiceTypes st = framework.LifecycleManager.GetServiceType(spec);
+                    ServiceTypes st = framework.Services.GetServiceType(spec);
                     extData[ServiceType] = st.ToString();
                 }
 

@@ -32,6 +32,7 @@ namespace NakedObjects.Reflector.Spec {
 
         private readonly MemberFactory memberFactory;
         private readonly IMetamodelManager metamodel;
+        private readonly IServicesManager servicesManager;
         private readonly INakedObjectActionPeer nakedObjectActionPeer;
 
         private INakedObjectActionParameter[] parameters;
@@ -40,13 +41,14 @@ namespace NakedObjects.Reflector.Spec {
             Log = LogManager.GetLogger(typeof (NakedObjectActionImpl));
         }
 
-        public NakedObjectActionImpl(MemberFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, INakedObjectActionPeer nakedObjectActionPeer)
+        public NakedObjectActionImpl(MemberFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, INakedObjectActionPeer nakedObjectActionPeer)
             : base(nakedObjectActionPeer.Identifier.MemberName, nakedObjectActionPeer, session, lifecycleManager) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(nakedObjectActionPeer);
 
             this.memberFactory = memberFactory;
             this.metamodel = metamodel;
+            this.servicesManager = servicesManager;
             this.nakedObjectActionPeer = nakedObjectActionPeer;
             BuildParameters();
         }
@@ -238,7 +240,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         private INakedObject FindService() {
-            foreach (INakedObject serviceAdapter in LifecycleManager.GetServices(ServiceTypes.Menu | ServiceTypes.Contributor)) {
+            foreach (INakedObject serviceAdapter in servicesManager.GetServices(ServiceTypes.Menu | ServiceTypes.Contributor)) {
                 if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Specification)) {
                     return serviceAdapter;
                 }

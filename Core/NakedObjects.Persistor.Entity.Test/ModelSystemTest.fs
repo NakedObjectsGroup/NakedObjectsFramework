@@ -67,7 +67,7 @@ type ModelSystemTests() =
             
     [<Test>]
     member x.GetService() = 
-        let service = x.NakedObjectsFramework.LifecycleManager.GetService("repository#ModelFirst.Person")
+        let service = x.NakedObjectsFramework.Services.GetService("repository#ModelFirst.Person")
         Assert.IsNotNull(service.Object)     
         
     [<Test>]

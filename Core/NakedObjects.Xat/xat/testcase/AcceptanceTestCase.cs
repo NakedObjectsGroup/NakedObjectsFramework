@@ -136,7 +136,7 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestService GetTestService(Type type) {
-            return NakedObjectsFramework.LifecycleManager.GetServices().
+            return NakedObjectsFramework.Services.GetServices().
                 Where(no => type.IsAssignableFrom(no.Object.GetType())).
                 Select(no => TestObjectFactoryClass.CreateTestService(no.Object)).
                 FirstOrDefault();
@@ -144,7 +144,7 @@ namespace NakedObjects.Xat {
 
         protected ITestService GetTestService(string serviceName) {
             if (!servicesCache.ContainsKey(serviceName.ToLower())) {
-                foreach (INakedObject service in NakedObjectsFramework.LifecycleManager.GetServices()) {
+                foreach (INakedObject service in NakedObjectsFramework.Services.GetServices()) {
                     if (service.TitleString().Equals(serviceName, StringComparison.CurrentCultureIgnoreCase)) {
                         ITestService testService = TestObjectFactoryClass.CreateTestService(service.Object);
                         if (testService == null) {
