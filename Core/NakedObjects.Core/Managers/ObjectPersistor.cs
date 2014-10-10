@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -217,5 +219,29 @@ namespace NakedObjects.Managers {
             Log.Debug("GetInstances<T> of: " + specification);
             return objectStore.GetInstances(specification);
         }
+
+        private static IEnumerable<INakedObjectSpecification> GetLeafNodes(INakedObjectSpecification spec) {
+            if ((spec.IsInterface || spec.IsAbstract)) {
+                return spec.Subclasses.SelectMany(GetLeafNodes);
+            }
+            return new[] { spec };
+        }
+
+        public IEnumerable GetBoundedSet(INakedObjectSpecification spec) {
+            if (spec.IsBoundedSet()) {
+                if (spec.IsInterface) {
+                    IList<object> instances = new List<object>();
+                    foreach (INakedObjectSpecification subSpec in GetLeafNodes(spec)) {
+                        foreach (object instance in Instances(subSpec)) {
+                            instances.Add(instance);
+                        }
+                    }
+                    return instances;
+                }
+                return Instances(spec);
+            }
+            return new object[] { };
+        }
+
     }
 }

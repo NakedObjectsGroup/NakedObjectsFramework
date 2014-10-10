@@ -41,7 +41,7 @@ namespace NakedObjects.Core.spec {
         public INakedObjectAssociation CreateAssociation(INakedObjectAssociationPeer peer) {
             Assert.AssertNotNull(framework);
             if (peer.IsOneToOne) {
-                return new OneToOneAssociationImpl(framework.Metamodel, peer, framework.Session, framework.LifecycleManager, framework.Manager);
+                return new OneToOneAssociationImpl(framework.Metamodel, peer, framework.Session, framework.LifecycleManager, framework.Manager, framework.Persistor);
             }
             if (peer.IsOneToMany) {
                 return new OneToManyAssociationImpl(framework.Metamodel, peer, framework.Session, framework.LifecycleManager, framework.Manager, framework.Persistor);

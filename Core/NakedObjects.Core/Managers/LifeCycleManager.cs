@@ -273,6 +273,10 @@ namespace NakedObjects.Managers {
             return objectPersistor.CreateObject(specification);
         }
 
+        public IEnumerable GetBoundedSet(INakedObjectSpecification spec) {
+            return objectPersistor.GetBoundedSet(spec);
+        }
+
         public void AbortTransaction() {
             Log.Debug("AbortTransaction");
             transactionManager.AbortTransaction();

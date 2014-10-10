@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Objects.Callbacks;
@@ -253,10 +252,6 @@ namespace NakedObjects.Architecture.Adapter {
 
             public bool IsViewModel {
                 get { throw new NotImplementedException(); }
-            }
-
-            public IEnumerable GetBoundedSet(ILifecycleManager persistor) {
-                throw new NotImplementedException();
             }
 
             public void MarkAsService() {

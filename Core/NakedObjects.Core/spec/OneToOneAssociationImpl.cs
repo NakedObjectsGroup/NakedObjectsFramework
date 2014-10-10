@@ -29,9 +29,11 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class OneToOneAssociationImpl : NakedObjectAssociationAbstract, IOneToOneAssociation {
-        public OneToOneAssociationImpl(IMetamodelManager metamodel, INakedObjectAssociationPeer association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager)
+        private readonly IObjectPersistor persistor;
+
+        public OneToOneAssociationImpl(IMetamodelManager metamodel, INakedObjectAssociationPeer association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
             : base(metamodel, association, session, lifecycleManager, manager) {
-            
+            this.persistor = persistor;
         }
 
         #region IOneToOneAssociation Members
@@ -79,7 +81,7 @@ namespace NakedObjects.Reflector.Spec {
             }
 
             if (Specification.IsBoundedSet()) {
-                return Manager.GetCollectionOfAdaptedObjects(Specification.GetBoundedSet(LifecycleManager)).ToArray();
+                return Manager.GetCollectionOfAdaptedObjects(persistor.GetBoundedSet(Specification)).ToArray();
             }
             return null;
         }

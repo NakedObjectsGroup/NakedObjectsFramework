@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
@@ -28,5 +29,6 @@ namespace NakedObjects.Architecture.Persist {
         void ObjectChanged(INakedObject nakedObject);
         void DestroyObject(INakedObject nakedObject);
         object CreateObject(INakedObjectSpecification specification);
+        IEnumerable GetBoundedSet(INakedObjectSpecification spec);
     }
 }

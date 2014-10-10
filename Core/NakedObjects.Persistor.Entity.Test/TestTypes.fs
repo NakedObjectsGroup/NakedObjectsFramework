@@ -79,9 +79,7 @@ type MockNakedObjectSpecification() =
         member x.GetIconName(forObject : INakedObject) = ""
         member x.GetTitle(nakedObject : INakedObject) = ""
         member x.ValidToPersist(transientObject : INakedObject, sess : ISession) : IConsent = null
-        member x.Persistable = PersistableType.UserPersistable : PersistableType
-        member x.GetBoundedSet(persistor : ILifecycleManager) : System.Collections.IEnumerable = null
-        //member x.MarkAsService() = ()
+        member x.Persistable = PersistableType.UserPersistable : PersistableType       
         member x.GetInvariantString(nakedObject : INakedObject) = ""
         member x.UniqueShortName(sep) = ""
 

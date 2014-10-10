@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -26,7 +25,6 @@ using NakedObjects.Architecture.Facets.Objects.ViewModel;
 using NakedObjects.Architecture.Facets.Propcoll.NotPersisted;
 using NakedObjects.Architecture.Facets.Types;
 using NakedObjects.Architecture.Interactions;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
@@ -37,17 +35,16 @@ using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.Spec {
-
-    public class NakedObjectSpecification :  INakedObjectSpecification {
+    public class NakedObjectSpecification : INakedObjectSpecification {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectSpecification));
+        private readonly IIntrospectableSpecification innerSpec;
         private readonly MemberFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;
-        private readonly IIntrospectableSpecification innerSpec;
-        private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectSpecification));
+        private INakedObjectAction[] combinedActions;
+        private INakedObjectAction[] contributedActions;
         private INakedObjectAction[] objectActions;
         private INakedObjectAssociation[] objectFields;
-        private INakedObjectAction[] contributedActions;
         private INakedObjectAction[] relatedActions;
-        private INakedObjectAction[] combinedActions;
 
         public NakedObjectSpecification(MemberFactory memberFactory, IMetamodelManager metamodelManager, IIntrospectableSpecification innerSpec) {
             this.memberFactory = memberFactory;
@@ -65,7 +62,36 @@ namespace NakedObjects.Reflector.Spec {
         public Type Type {
             get { return innerSpec.Type; }
         }
-    
+
+        private INakedObjectAction[] ObjectActions {
+            get {
+                if (objectActions == null) {
+                    objectActions = memberFactory.OrderActions(innerSpec.ObjectActions);
+                }
+                return objectActions;
+            }
+        }
+
+        private INakedObjectAction[] ContributedActions {
+            get {
+                if (contributedActions == null) {
+                    contributedActions = memberFactory.OrderActions(innerSpec.ContributedActions);
+                }
+                return contributedActions;
+            }
+        }
+
+        private INakedObjectAction[] RelatedActions {
+            get {
+                if (relatedActions == null) {
+                    relatedActions = memberFactory.OrderActions(innerSpec.RelatedActions);
+                }
+                return relatedActions;
+            }
+        }
+
+        #region INakedObjectSpecification Members
+
         public virtual string FullName {
             get { return innerSpec.FullName; }
         }
@@ -141,9 +167,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public virtual INakedObjectSpecification Superclass {
-            get {
-                return  innerSpec.Superclass == null ? null : metamodelManager.GetSpecification(innerSpec.Superclass);
-            }
+            get { return innerSpec.Superclass == null ? null : metamodelManager.GetSpecification(innerSpec.Superclass); }
         }
 
         public virtual INakedObjectAssociation[] Properties {
@@ -152,33 +176,6 @@ namespace NakedObjects.Reflector.Spec {
                     objectFields = OrderFields(innerSpec.Fields);
                 }
                 return objectFields;
-            }
-        }
-
-        private  INakedObjectAction[] ObjectActions {
-            get {
-                if (objectActions == null) {
-                    objectActions = memberFactory.OrderActions(innerSpec.ObjectActions);
-                }
-                return objectActions;
-            }
-        }
-
-        private INakedObjectAction[] ContributedActions {
-            get {
-                if (contributedActions == null) {
-                    contributedActions = memberFactory.OrderActions(innerSpec.ContributedActions);
-                }
-                return contributedActions;
-            }
-        }
-
-        private INakedObjectAction[] RelatedActions {
-            get {
-                if (relatedActions == null) {
-                    relatedActions = memberFactory.OrderActions(innerSpec.RelatedActions);
-                }
-                return relatedActions;
             }
         }
 
@@ -224,11 +221,11 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public bool IsAbstract {
-            get { return innerSpec.ContainsFacet(typeof(IAbstractFacet)); }
+            get { return innerSpec.ContainsFacet(typeof (IAbstractFacet)); }
         }
 
         public bool IsInterface {
-            get { return innerSpec.ContainsFacet(typeof(IInterfaceFacet)); }
+            get { return innerSpec.ContainsFacet(typeof (IInterfaceFacet)); }
         }
 
         public bool IsService {
@@ -270,7 +267,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public bool IsVoid {
-            get { return innerSpec.ContainsFacet(typeof(IVoidFacet)); }
+            get { return innerSpec.ContainsFacet(typeof (IVoidFacet)); }
         }
 
         public PersistableType Persistable {
@@ -292,8 +289,6 @@ namespace NakedObjects.Reflector.Spec {
         ///     Determines if this class represents the same class, or a subclass, of the specified class.
         /// </summary>
         public bool IsOfType(INakedObjectSpecification specification) {
-
-
             if (specification.Equals(this)) {
                 return true;
             }
@@ -321,7 +316,7 @@ namespace NakedObjects.Reflector.Spec {
             return Superclass != null && Superclass.IsOfType(specification);
         }
 
-      
+
         public INakedObjectAssociation GetProperty(string id) {
             try {
                 return Properties.First(f => f.Id.Equals(id));
@@ -342,7 +337,6 @@ namespace NakedObjects.Reflector.Spec {
 
         public string GetIconName(INakedObject forObject) {
             return innerSpec.GetIconName(forObject);
-         
         }
 
         public IConsent ValidToPersist(INakedObject target, ISession session) {
@@ -351,23 +345,6 @@ namespace NakedObjects.Reflector.Spec {
             return cons;
         }
 
-     
-
-        public IEnumerable GetBoundedSet(ILifecycleManager persistor) {
-            if (this.IsBoundedSet()) {
-                if (Type.IsInterface) {
-                    IList<object> instances = new List<object>();
-                    foreach (INakedObjectSpecification spec in GetLeafNodes(this)) {
-                        foreach (object instance in persistor.Instances(spec)) {
-                            instances.Add(instance);
-                        }
-                    }
-                    return instances;
-                }
-                return persistor.Instances(this);
-            }
-            return new object[] {};
-        }
 
         public string UniqueShortName(string sep) {
             string postfix = string.Empty;
@@ -380,6 +357,8 @@ namespace NakedObjects.Reflector.Spec {
             return ShortName + postfix;
         }
 
+        #endregion
+
         private string TypeNameFor() {
             return IsCollection ? "Collection" : "Object";
         }
@@ -389,17 +368,10 @@ namespace NakedObjects.Reflector.Spec {
             str.Append("class", FullName);
             str.Append("type", TypeNameFor());
             str.Append("persistable", Persistable);
-            str.Append("superclass", innerSpec.Superclass  == null ? "object" : innerSpec.Superclass.FullName);
+            str.Append("superclass", innerSpec.Superclass == null ? "object" : innerSpec.Superclass.FullName);
             return str.ToString();
         }
 
-
-        private static IEnumerable<INakedObjectSpecification> GetLeafNodes(INakedObjectSpecification spec) {
-            if ((spec.IsInterface || spec.IsAbstract)) {
-                return spec.Subclasses.SelectMany(GetLeafNodes);
-            }
-            return new[] {spec};
-        }
 
         private INakedObjectAssociation[] OrderFields(IOrderSet<INakedObjectAssociationPeer> order) {
             var orderedFields = new List<INakedObjectAssociation>();
@@ -408,7 +380,7 @@ namespace NakedObjects.Reflector.Spec {
                     orderedFields.Add(memberFactory.CreateNakedObjectField(element.Peer));
                 }
                 else if (element.Set != null) {
-                    // Not supported at present
+                    throw new NotImplementedException();
                 }
                 else {
                     throw new UnknownTypeException(element);
@@ -425,14 +397,12 @@ namespace NakedObjects.Reflector.Spec {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((NakedObjectSpecification)obj);
+            return Equals((NakedObjectSpecification) obj);
         }
 
         public override int GetHashCode() {
             return (innerSpec != null ? innerSpec.GetHashCode() : 0);
         }
-
-       
     }
 }
 

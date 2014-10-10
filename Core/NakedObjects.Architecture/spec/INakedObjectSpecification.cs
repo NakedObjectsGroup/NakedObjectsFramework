@@ -5,13 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Facets.Objects.Encodeable;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 
@@ -134,12 +132,6 @@ namespace NakedObjects.Architecture.Spec {
         ///     Determines whether the specified object can be persisted, that is, it is in a valid state to be saved
         /// </summary>
         IConsent ValidToPersist(INakedObject transientObject, ISession session);
-
-        //object CreateObject(ILifecycleManager persistor);
-
-        IEnumerable GetBoundedSet(ILifecycleManager persistor);
-
-       // void MarkAsService();
 
         string GetInvariantString(INakedObject nakedObject);
         string UniqueShortName(string sep);
