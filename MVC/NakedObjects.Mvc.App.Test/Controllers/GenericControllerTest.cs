@@ -385,7 +385,7 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         private Employee Employee {
-            get { return NakedObjectsFramework.LifecycleManager.Instances<Employee>().First(); }
+            get { return NakedObjectsFramework.Persistor.Instances<Employee>().First(); }
         }
 
         private string EmployeeId {
@@ -416,7 +416,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private SalesOrderHeader Order {
-            get { return NakedObjectsFramework.LifecycleManager.Instances<SalesOrderHeader>().First(); }
+            get { return NakedObjectsFramework.Persistor.Instances<SalesOrderHeader>().First(); }
         }
 
         private string OrderId {
@@ -424,19 +424,19 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private Vendor Vendor {
-            get { return NakedObjectsFramework.LifecycleManager.Instances<Vendor>().First(); }
+            get { return NakedObjectsFramework.Persistor.Instances<Vendor>().First(); }
         }
 
         private Contact Contact {
-            get { return NakedObjectsFramework.LifecycleManager.Instances<Contact>().First(); }
+            get { return NakedObjectsFramework.Persistor.Instances<Contact>().First(); }
         }
 
         private Individual Individual {
-            get { return NakedObjectsFramework.LifecycleManager.Instances<Individual>().First(); }
+            get { return NakedObjectsFramework.Persistor.Instances<Individual>().First(); }
         }
 
         private Product Product {
-            get { return NakedObjectsFramework.LifecycleManager.Instances<Product>().First(); }
+            get { return NakedObjectsFramework.Persistor.Instances<Product>().First(); }
         }
 
         private string ProductId {
@@ -493,7 +493,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public Store Store {
-            get { return NakedObjectsFramework.LifecycleManager.Instances<Store>().First(); }
+            get { return NakedObjectsFramework.Persistor.Instances<Store>().First(); }
         }
 
         private string StoreId {
@@ -501,7 +501,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         private SalesPerson SalesPerson {
-            get { return NakedObjectsFramework.LifecycleManager.Instances<SalesPerson>().First(); }
+            get { return NakedObjectsFramework.Persistor.Instances<SalesPerson>().First(); }
         }
 
         private Store TransientStore {
@@ -649,9 +649,9 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         public void EditFindForObjectMultiCached(Store store) {
-            SalesPerson salesPerson = NakedObjectsFramework.LifecycleManager.Instances<SalesPerson>().OrderBy(sp => "").First();
+            SalesPerson salesPerson = NakedObjectsFramework.Persistor.Instances<SalesPerson>().OrderBy(sp => "").First();
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, salesPerson);
-            salesPerson = NakedObjectsFramework.LifecycleManager.Instances<SalesPerson>().OrderBy(sp => "").Skip(1).First();
+            salesPerson = NakedObjectsFramework.Persistor.Instances<SalesPerson>().OrderBy(sp => "").Skip(1).First();
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, salesPerson);
 
             INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
@@ -669,7 +669,7 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void EditFindForObjectOneCached(Store store) {
-            SalesPerson salesPerson = NakedObjectsFramework.LifecycleManager.Instances<SalesPerson>().First();
+            SalesPerson salesPerson = NakedObjectsFramework.Persistor.Instances<SalesPerson>().First();
             mocks.HttpContext.Object.Session.AddToCache(NakedObjectsFramework, salesPerson);
 
             INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
@@ -704,7 +704,7 @@ namespace MvcTestApp.Tests.Controllers {
         public void EditSelectForObject(Store store) {
             INakedObject adaptedStore = NakedObjectsFramework.GetNakedObject(store);
             IDictionary<string, string> idToRawvalue;
-            SalesPerson salesPerson = NakedObjectsFramework.LifecycleManager.Instances<SalesPerson>().First();
+            SalesPerson salesPerson = NakedObjectsFramework.Persistor.Instances<SalesPerson>().First();
             string data = "SalesPerson=" + NakedObjectsFramework.GetObjectId(salesPerson);
             FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), Store.ModifiedDate.ToString(), out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store), Selector = data};
@@ -813,7 +813,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         public void SelectForActionUpdatesViewState(bool testValue) {
             INakedObjectAction action = GetAction(OrderContrib, "CreateNewOrder");
-            Store customer = NakedObjectsFramework.LifecycleManager.Instances<Store>().First();
+            Store customer = NakedObjectsFramework.Persistor.Instances<Store>().First();
             IDictionary<string, string> idToRawvalue;
             string data = "cust=" + NakedObjectsFramework.GetObjectId(customer);
             FormCollection form = GetFormForCreateNewOrder(action, "", testValue, out idToRawvalue);
@@ -1235,8 +1235,8 @@ namespace MvcTestApp.Tests.Controllers {
         public void EditRefreshTransient() {
             const string redisplay = "DepartmentHistory=table&editMode=True";
             Employee employee = TransientEmployee;
-            Employee report1 = NakedObjectsFramework.LifecycleManager.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(1).First();
-            Employee report2 = NakedObjectsFramework.LifecycleManager.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(2).First();
+            Employee report1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(1).First();
+            Employee report2 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(e => e.EmployeeID).Skip(2).First();
             INakedObject employeeNakedObject = NakedObjectsFramework.GetNakedObject(employee);
             INakedObjectAssociation collectionAssoc = employeeNakedObject.Specification.Properties.Single(p => p.Id == "DirectReports");
 
@@ -1976,7 +1976,7 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void SelectForAction() {
             INakedObjectAction action = GetAction(EmployeeRepo, "CreateNewEmployeeFromContact");
-            Contact contactDetails = NakedObjectsFramework.LifecycleManager.Instances<Contact>().First();
+            Contact contactDetails = NakedObjectsFramework.Persistor.Instances<Contact>().First();
             IDictionary<string, string> idToRawvalue;
             string data = "ContactDetails=" + NakedObjectsFramework.GetObjectId(contactDetails);
             FormCollection form = GetFormForCreateNewEmployeeFromContact(action, "", out idToRawvalue);
@@ -2124,7 +2124,7 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         public Store Store {
-            get { return NakedObjectsFramework.LifecycleManager.Instances<Store>().First(); }
+            get { return NakedObjectsFramework.Persistor.Instances<Store>().First(); }
         }
 
         public FormCollection GetFormForStoreEdit(INakedObject store,
@@ -2174,7 +2174,7 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         private SalesOrderHeader Order {
-            get { return NakedObjectsFramework.LifecycleManager.Instances<SalesOrderHeader>().First(); }
+            get { return NakedObjectsFramework.Persistor.Instances<SalesOrderHeader>().First(); }
         }
 
         private static FormCollection GetForm(IDictionary<string, string> nameValues) {

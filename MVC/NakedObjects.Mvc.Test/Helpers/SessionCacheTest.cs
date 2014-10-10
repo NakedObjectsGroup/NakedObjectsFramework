@@ -87,7 +87,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void AddPersistentToSession() {
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             session.AddObjectToSession(NakedObjectsFramework, "key1", claim);
             Assert.AreSame(claim, session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
         }
@@ -119,8 +119,8 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CachedObjectsOfBaseType() {
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
-            GeneralExpense item1 = NakedObjectsFramework.LifecycleManager.Instances<GeneralExpense>().OrderBy(c => c.Id).First();
-            GeneralExpense item2 = NakedObjectsFramework.LifecycleManager.Instances<GeneralExpense>().OrderByDescending(c => c.Id).First();
+            GeneralExpense item1 = NakedObjectsFramework.Persistor.Instances<GeneralExpense>().OrderBy(c => c.Id).First();
+            GeneralExpense item2 = NakedObjectsFramework.Persistor.Instances<GeneralExpense>().OrderByDescending(c => c.Id).First();
             session.AddObjectToSession(NakedObjectsFramework, "key1", item1);
             session.AddObjectToSession(NakedObjectsFramework, "key2", item2);
             Assert.AreEqual(item1, session.GetObjectFromSession<GeneralExpense>(NakedObjectsFramework, "key1"));
@@ -130,8 +130,8 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void CachedObjectsOfDifferentType() {
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
-            GeneralExpense item1 = NakedObjectsFramework.LifecycleManager.Instances<GeneralExpense>().OrderBy(c => c.Id).First();
-            GeneralExpense item2 = NakedObjectsFramework.LifecycleManager.Instances<GeneralExpense>().OrderByDescending(c => c.Id).First();
+            GeneralExpense item1 = NakedObjectsFramework.Persistor.Instances<GeneralExpense>().OrderBy(c => c.Id).First();
+            GeneralExpense item2 = NakedObjectsFramework.Persistor.Instances<GeneralExpense>().OrderByDescending(c => c.Id).First();
             session.AddObjectToSession(NakedObjectsFramework, "key1", item1);
             session.AddObjectToSession(NakedObjectsFramework, "key2", item2);
             Assert.IsNull(session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
@@ -162,7 +162,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void RemoveObjectFromCache() {
             HttpSessionStateBase session = mocks.HtmlHelper.ViewContext.HttpContext.Session;
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             session.AddObjectToSession(NakedObjectsFramework, "key1", claim);
             Assert.AreSame(claim, session.GetObjectFromSession<Claim>(NakedObjectsFramework, "key1"));
             session.ClearFromSession("key1");

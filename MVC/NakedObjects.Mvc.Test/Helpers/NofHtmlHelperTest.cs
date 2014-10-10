@@ -148,7 +148,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ActionDialogId() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             INakedObjectAction action = NakedObjectsFramework.GetNakedObject(claim).Specification.GetAllActions().Single(a => a.Id == "CopyAllExpenseItemsFromAnotherClaim");
             Assert.AreEqual(@"Claim-CopyAllExpenseItemsFromAnotherClaim-Dialog", mocks.HtmlHelper.ObjectActionDialogId(claim, action).ToString());
         }
@@ -351,7 +351,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForEagerlyCollectionTableView() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             var collection = new[] {claim};
 
             INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
@@ -397,7 +397,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForOneElementCollection() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
             var collection = new[] {claim};
             INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
@@ -411,7 +411,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForOneElementCollectionTableView() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
             var collection = new[] {claim};
             INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
@@ -429,7 +429,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollection() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
@@ -453,7 +453,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionPage1() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
@@ -476,7 +476,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionPage1TableView() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
@@ -505,7 +505,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionPage2() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
@@ -528,7 +528,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionPage2TableView() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
@@ -556,7 +556,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionListViewForPagedCollectionTableView() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
@@ -595,7 +595,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForOneElementCollection() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
             var collection = new[] {claim};
             INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
@@ -609,7 +609,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForOneElementCollectionWithMultiline() {
-            ProjectCode pc = NakedObjectsFramework.LifecycleManager.Instances<ProjectCode>().Single(c => c.Code == "005");
+            ProjectCode pc = NakedObjectsFramework.Persistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
             var collection = new[] {pc};
@@ -625,7 +625,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForPagedCollection() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
@@ -648,7 +648,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForPagedCollectionPage1() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
@@ -672,7 +672,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionViewForPagedCollectionPage2() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1};
@@ -695,7 +695,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionlistViewForOneElementCollectionWithMultiline() {
-            ProjectCode pc = NakedObjectsFramework.LifecycleManager.Instances<ProjectCode>().Single(c => c.Code == "005");
+            ProjectCode pc = NakedObjectsFramework.Persistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
             var collection = new[] {pc};
@@ -710,7 +710,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void CollectionlistViewForOneElementCollectionWithMultilineTableView() {
-            ProjectCode pc = NakedObjectsFramework.LifecycleManager.Instances<ProjectCode>().Single(c => c.Code == "005");
+            ProjectCode pc = NakedObjectsFramework.Persistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
             var collection = new[] {pc};
@@ -729,7 +729,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void DialogWithAjaxDisabled() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
 
@@ -886,7 +886,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericAction() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.ControllerAction("Text", "Action", null, claim).ToString();
 
             CheckResults("GenericAction", s);
@@ -901,7 +901,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericActionWithRVDict() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.ControllerAction("Text", "Action", "Controller", new RouteValueDictionary(new {
                 id = NakedObjectsFramework.GetObjectId(claim)
             })).ToString();
@@ -911,7 +911,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericEditAction() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.ControllerActionOnTransient("Text", "Action", claim).ToString();
 
             CheckResults("GenericEditAction", s);
@@ -926,7 +926,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void GenericEditActionWithRVDict() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.ControllerActionOnTransient("Text", "Action", "Controller", new RouteValueDictionary(new {
                 id = NakedObjectsFramework.GetObjectId(claim)
             })).ToString();
@@ -1086,7 +1086,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void Object() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.Object(claim).ToString();
 
 
@@ -1096,7 +1096,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectActions() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData.Model = claim;
             string s = mocks.HtmlHelper.Menu(claim).ToString();
 
@@ -1124,7 +1124,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectActionsWithConcurrency() {
-            RecordedAction recordedAction = NakedObjectsFramework.LifecycleManager.Instances<RecordedAction>().First();
+            RecordedAction recordedAction = NakedObjectsFramework.Persistor.Instances<RecordedAction>().First();
             string s = mocks.HtmlHelper.Menu(recordedAction).ToString();
 
 
@@ -1142,7 +1142,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithActionAsFind() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             INakedObject employeeRepo = NakedObjectsFramework.GetAdaptedService("EmployeeRepository");
@@ -1156,8 +1156,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithFinder() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
-            Employee emp = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
+            Employee emp = NakedObjectsFramework.Persistor.Instances<Employee>().First();
 
             string s = mocks.HtmlHelper.PropertyListEdit(claim, null, null, "Approver", new[] {emp}).ToString();
 
@@ -1167,7 +1167,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithInlineObject() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             var claim2 = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metamodel.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
 
             claim2.DateCreated = new DateTime(2010, 5, 19);
@@ -1185,7 +1185,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithListCollection() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData["ExpenseItems"] = "list";
 
             string s = mocks.HtmlHelper.PropertyListEdit(claim).ToString();
@@ -1215,7 +1215,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithSummaryCollection() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
             string s = mocks.HtmlHelper.PropertyListEdit(claim).ToString();
 
@@ -1236,7 +1236,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectEditFieldsWithTableCollection() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData["ExpenseItems"] = "table";
 
             string s = mocks.HtmlHelper.PropertyListEdit(claim).ToString();
@@ -1275,7 +1275,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectFieldsWithListCollection() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData["ExpenseItems"] = "list";
             string s = mocks.HtmlHelper.PropertyList(claim).ToString();
 
@@ -1285,7 +1285,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectFieldsWithSummaryCollection() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.PropertyList(claim).ToString();
 
             CheckResults("ObjectFieldsWithSummaryCollection", s);
@@ -1293,7 +1293,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectFieldsWithTableCollection() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData["ExpenseItems"] = "table";
             string s = mocks.HtmlHelper.PropertyList(claim).ToString();
 
@@ -1304,7 +1304,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectForEnumerable() {
-            IList<Claim> claims = NakedObjectsFramework.LifecycleManager.Instances<Claim>().Take(2).ToList();
+            IList<Claim> claims = NakedObjectsFramework.Persistor.Instances<Claim>().Take(2).ToList();
 
             mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = new Dictionary<string, int> {
                 {IdHelper.PagingCurrentPage, 1},
@@ -1313,7 +1313,7 @@ namespace MvcTestApp.Tests.Helpers {
             };
             var claimAdapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims.First(), null, null);
             var adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims, null, null);
-            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             adapter.SetATransientOid(mockOid);
 
@@ -1326,7 +1326,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectForQueryable() {
-            IQueryable<Claim> claims = NakedObjectsFramework.LifecycleManager.Instances<Claim>().Take(2);
+            IQueryable<Claim> claims = NakedObjectsFramework.Persistor.Instances<Claim>().Take(2);
 
             mocks.ViewDataContainer.Object.ViewData[IdHelper.PagingData] = new Dictionary<string, int> {
                 {IdHelper.PagingCurrentPage, 1},
@@ -1336,7 +1336,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             var claimAdapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims.First(), null, null);
             var adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims, null, null);
-            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             adapter.SetATransientOid(mockOid);
 
@@ -1348,13 +1348,13 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectHasVisibleFields() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             Assert.IsTrue(mocks.HtmlHelper.ObjectHasVisibleFields(claim));
         }
 
         [Test]
         public void ObjectLinkAndIcon() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             string s = mocks.HtmlHelper.Object("Text", "Action", claim).ToString();
 
 
@@ -1371,14 +1371,14 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ObjectTitle() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             Assert.AreEqual(@"28th Mar - Sales call, London", mocks.HtmlHelper.ObjectTitle(claim).ToString());
         }
 
         [Test]
         public void ObjectTypeAsCssId() {
-            Employee emp = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
-            List<Employee> allEmployees = NakedObjectsFramework.LifecycleManager.Instances<Employee>().ToList();
+            Employee emp = NakedObjectsFramework.Persistor.Instances<Employee>().First();
+            List<Employee> allEmployees = NakedObjectsFramework.Persistor.Instances<Employee>().ToList();
 
             string empId = mocks.HtmlHelper.ObjectTypeAsCssId(emp).ToString();
             string allEmpId = mocks.HtmlHelper.ObjectTypeAsCssId(allEmployees).ToString();
@@ -1400,7 +1400,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEdit() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
 
@@ -1437,7 +1437,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditForCollection() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             INakedObject claimRepo = NakedObjectsFramework.GetAdaptedService("ClaimRepository");
@@ -1447,7 +1447,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             INakedObject target = NakedObjectsFramework.LifecycleManager.CreateAdapter(new[] {claim}.AsQueryable(), null, null);
 
-            target.SetATransientOid(new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, claimRepo, action, new INakedObject[] { }), new object[] { selected }));
+            target.SetATransientOid(new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, claimRepo, action, new INakedObject[] { }), new object[] { selected }));
 
             INakedObjectAction targetAction = claimRepo.Specification.GetActionLeafNodes().Single(a => a.Id == "ApproveClaims");
 
@@ -1459,7 +1459,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditWithActionAsFind() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
@@ -1476,7 +1476,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditWithFinders() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
@@ -1489,7 +1489,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditWithInlineObject() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             var claim2 = NakedObjectsFramework.LifecycleManager.CreateInstance(NakedObjectsFramework.Metamodel.GetSpecification(typeof (Claim))).GetDomainObject<Claim>();
 
             claim2.DateCreated = new DateTime(2010, 5, 18);
@@ -1509,7 +1509,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ParameterEditWithSelection() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
@@ -1577,7 +1577,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForOneElementCollection() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
             var collection = new[] {claim}.AsQueryable();
             INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
@@ -1590,7 +1590,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForOneElementCollectionTableView() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
             var collection = new[] {claim}.AsQueryable();
             INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
@@ -1609,7 +1609,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForOneElementCollectionWithMultiline() {
-            ProjectCode pc = NakedObjectsFramework.LifecycleManager.Instances<ProjectCode>().Single(c => c.Code == "005");
+            ProjectCode pc = NakedObjectsFramework.Persistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
             var collection = new[] {pc}.AsQueryable();
@@ -1625,7 +1625,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForOneElementCollectionWithMultilineTableView() {
-            ProjectCode pc = NakedObjectsFramework.LifecycleManager.Instances<ProjectCode>().Single(c => c.Code == "005");
+            ProjectCode pc = NakedObjectsFramework.Persistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
             var collection = new[] {pc}.AsQueryable();
@@ -1645,7 +1645,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollection() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
@@ -1669,7 +1669,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionPage1() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
@@ -1693,7 +1693,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionPage1TableView() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
@@ -1721,7 +1721,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionPage2() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
@@ -1746,7 +1746,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionPage2TableView() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
@@ -1773,7 +1773,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableListViewForPagedCollectionTableView() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
@@ -1829,7 +1829,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForOneElementCollection() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
             var collection = new[] {claim}.AsQueryable();
             INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(collection, null, null);
@@ -1844,7 +1844,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForOneElementCollectionWithMultiline() {
-            ProjectCode pc = NakedObjectsFramework.LifecycleManager.Instances<ProjectCode>().Single(c => c.Code == "005");
+            ProjectCode pc = NakedObjectsFramework.Persistor.Instances<ProjectCode>().Single(c => c.Code == "005");
 
 
             var collection = new[] {pc}.AsQueryable();
@@ -1861,7 +1861,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForPagedCollection() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
@@ -1885,7 +1885,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForPagedCollectionPage1() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
@@ -1910,7 +1910,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void QueryableViewForPagedCollectionPage2() {
-            Claim claim1 = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim1 = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
 
             var collection = new[] {claim1}.AsQueryable();
@@ -2011,7 +2011,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ViewModel() {
-            Employee employee = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
+            Employee employee = NakedObjectsFramework.Persistor.Instances<Employee>().First();
 
             var no = NakedObjectsFramework.GetNakedObjectFromId("MvcTestApp.Tests.Helpers.ViewModelTestClass;1;" + employee.Name);
 
@@ -2022,7 +2022,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ViewModelActions() {
-            Employee employee = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
+            Employee employee = NakedObjectsFramework.Persistor.Instances<Employee>().First();
 
             var no = NakedObjectsFramework.GetNakedObjectFromId("MvcTestApp.Tests.Helpers.ViewModelTestClass;1;" + employee.Name);
             string s = mocks.HtmlHelper.Menu(no.Object).ToString();
@@ -2032,7 +2032,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ViewModelProperties() {
-            Employee employee = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
+            Employee employee = NakedObjectsFramework.Persistor.Instances<Employee>().First();
 
             var no = NakedObjectsFramework.GetNakedObjectFromId("MvcTestApp.Tests.Helpers.ViewModelTestClass;1;" + employee.Name);
             string s = mocks.HtmlHelper.PropertyList(no.Object).ToString();
@@ -2042,7 +2042,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void ViewModelPropertiesEdit() {
-            Employee employee = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
+            Employee employee = NakedObjectsFramework.Persistor.Instances<Employee>().First();
 
             var no = NakedObjectsFramework.GetNakedObjectFromId("MvcTestApp.Tests.Helpers.ViewModelTestClass;1;" + employee.Name);
             string s = mocks.HtmlHelper.PropertyListEdit(no.Object).ToString();

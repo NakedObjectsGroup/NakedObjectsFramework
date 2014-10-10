@@ -179,7 +179,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (oid.IsTransient) {
                 return framework.LifecycleManager.RecreateInstance(oid, oid.Specification);
             }
-            return framework.LifecycleManager.LoadObject(oid, oid.Specification);
+            return framework.Persistor.LoadObject(oid, oid.Specification);
         }
 
         public static INakedObject GetNakedObject(this INakedObjectsFramework framework, object domainObject) {

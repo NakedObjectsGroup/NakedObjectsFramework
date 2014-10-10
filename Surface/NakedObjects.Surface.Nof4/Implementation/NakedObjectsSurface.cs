@@ -426,7 +426,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                             framework.LifecycleManager.MakePersistent(nakedObject);
                         }
                         else {
-                            framework.LifecycleManager.ObjectChanged(nakedObject);
+                            framework.Persistor.ObjectChanged(nakedObject);
                         }
                         propertiesToDisplay = nakedObject.Specification.Properties.
                             Where(p => p.IsVisible(nakedObject)).

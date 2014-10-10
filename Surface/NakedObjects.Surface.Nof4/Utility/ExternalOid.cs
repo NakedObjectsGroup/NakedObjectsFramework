@@ -124,7 +124,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         private IDictionary<string, object> CreateKeyDictionary(string[] keys, Type type) {
-            PropertyInfo[] keyProperties = framework.LifecycleManager.GetKeys(type);
+            PropertyInfo[] keyProperties = framework.Persistor.GetKeys(type);
             int index = 0;
             return keyProperties.ToDictionary(kp => kp.Name, kp => CoerceType(kp.PropertyType, keys[index++]));
         }
@@ -138,7 +138,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         protected object GetDomainObject(string[] keys, Type type) {
             try {
                 IDictionary<string, object> keyDict = CreateKeyDictionary(keys, type);
-                return framework.LifecycleManager.FindByKeys(type, keyDict.Values.ToArray()).GetDomainObject();
+                return framework.Persistor.FindByKeys(type, keyDict.Values.ToArray()).GetDomainObject();
             }
             catch (Exception e) {
                 log.Warn("Domain Object not found with exception", e);

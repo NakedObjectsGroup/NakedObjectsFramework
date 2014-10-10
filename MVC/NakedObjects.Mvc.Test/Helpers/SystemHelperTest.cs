@@ -110,8 +110,8 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         [Ignore] // doesn't work now uses urls which are empty in tests
         public void Cancel() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
-            Employee emp = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
+            Employee emp = NakedObjectsFramework.Persistor.Instances<Employee>().First();
 
 
             mocks.HtmlHelper.History(claim);
@@ -123,8 +123,8 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void History() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
-            Employee emp = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
+            Employee emp = NakedObjectsFramework.Persistor.Instances<Employee>().First();
 
             mocks.HtmlHelper.History(claim);
             mocks.HtmlHelper.History(emp);
@@ -134,10 +134,10 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void HistoryWithCount1() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
 
-            Employee emp1 = NakedObjectsFramework.LifecycleManager.Instances<Employee>().OrderBy(c => c.Id).First();
-            Employee emp2 = NakedObjectsFramework.LifecycleManager.Instances<Employee>().OrderByDescending(c => c.Id).First();
+            Employee emp1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(c => c.Id).First();
+            Employee emp2 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderByDescending(c => c.Id).First();
 
 
             mocks.HtmlHelper.History(emp2);
@@ -150,9 +150,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test]
         public void HistoryWithCount2() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
-            Employee emp1 = NakedObjectsFramework.LifecycleManager.Instances<Employee>().OrderBy(c => c.Id).First();
-            Employee emp2 = NakedObjectsFramework.LifecycleManager.Instances<Employee>().OrderByDescending(c => c.Id).First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
+            Employee emp1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(c => c.Id).First();
+            Employee emp2 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderByDescending(c => c.Id).First();
 
 
             mocks.HtmlHelper.History(emp2);
@@ -166,8 +166,8 @@ namespace MvcTestApp.Tests.Helpers {
         // too hard to mock appropriately - rely on selenium tests
         [Test, Ignore]
         public void TabbedHistory() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
-            Employee emp = NakedObjectsFramework.LifecycleManager.Instances<Employee>().First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
+            Employee emp = NakedObjectsFramework.Persistor.Instances<Employee>().First();
 
             mocks.HtmlHelper.TabbedHistory(claim);
             mocks.HtmlHelper.TabbedHistory(emp);
@@ -177,9 +177,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test, Ignore]
         public void TabbedHistoryWithCount1() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
-            Employee emp1 = NakedObjectsFramework.LifecycleManager.Instances<Employee>().OrderBy(c => c.Id).First();
-            Employee emp2 = NakedObjectsFramework.LifecycleManager.Instances<Employee>().OrderByDescending(c => c.Id).First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
+            Employee emp1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(c => c.Id).First();
+            Employee emp2 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderByDescending(c => c.Id).First();
 
 
             mocks.HtmlHelper.TabbedHistory(emp2);
@@ -192,9 +192,9 @@ namespace MvcTestApp.Tests.Helpers {
 
         [Test, Ignore]
         public void TabbedHistoryWithCount2() {
-            Claim claim = NakedObjectsFramework.LifecycleManager.Instances<Claim>().First();
-            Employee emp1 = NakedObjectsFramework.LifecycleManager.Instances<Employee>().OrderBy(c => c.Id).First();
-            Employee emp2 = NakedObjectsFramework.LifecycleManager.Instances<Employee>().OrderByDescending(c => c.Id).First();
+            Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
+            Employee emp1 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderBy(c => c.Id).First();
+            Employee emp2 = NakedObjectsFramework.Persistor.Instances<Employee>().OrderByDescending(c => c.Id).First();
 
 
             mocks.HtmlHelper.TabbedHistory(emp2);

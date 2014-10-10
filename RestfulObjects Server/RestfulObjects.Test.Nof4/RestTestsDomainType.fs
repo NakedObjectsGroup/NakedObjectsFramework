@@ -686,7 +686,7 @@ type Nof4TestsDomainType() =
         member x.PutDateTimeValuePropertySuccess() = 
             ObjectProperty16.PutDateTimeValuePropertySuccess x.api
             x.NakedObjectsFramework.LifecycleManager.StartTransaction()
-            let o = x.NakedObjectsFramework.LifecycleManager.Instances<WithValue>() |> Seq.head
+            let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
             o.ADateTimeValue <- new DateTime(2012, 2, 10, 0, 0, 0, 0, DateTimeKind.Utc)
             x.NakedObjectsFramework.LifecycleManager.EndTransaction()
         
@@ -704,7 +704,7 @@ type Nof4TestsDomainType() =
             x.SetUser("editUser")
             ObjectProperty16.PutUserDisabledValuePropertySuccess x.api
             x.NakedObjectsFramework.LifecycleManager.StartTransaction()
-            let o = x.NakedObjectsFramework.LifecycleManager.Instances<WithValue>() |> Seq.head
+            let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
             o.AUserDisabledValue <- 0
             x.NakedObjectsFramework.LifecycleManager.EndTransaction()
             x.SetUser("Test")
@@ -722,7 +722,7 @@ type Nof4TestsDomainType() =
         member x.DeleteValuePropertySuccess() = 
             ObjectProperty16.DeleteValuePropertySuccess x.api
             x.NakedObjectsFramework.LifecycleManager.StartTransaction()
-            let o = x.NakedObjectsFramework.LifecycleManager.Instances<WithValue>() |> Seq.head
+            let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
             o.AValue <- 100
             x.NakedObjectsFramework.LifecycleManager.EndTransaction()
         
@@ -730,7 +730,7 @@ type Nof4TestsDomainType() =
         member x.DeleteValuePropertySuccessValidateOnly() = 
             ObjectProperty16.DeleteValuePropertySuccessValidateOnly x.api
             x.NakedObjectsFramework.LifecycleManager.StartTransaction()
-            let o = x.NakedObjectsFramework.LifecycleManager.Instances<WithValue>() |> Seq.head
+            let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
             o.AValue <- 100
             x.NakedObjectsFramework.LifecycleManager.EndTransaction()
         

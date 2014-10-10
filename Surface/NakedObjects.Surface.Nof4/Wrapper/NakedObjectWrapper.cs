@@ -112,7 +112,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 // services don't have keys
                 return new PropertyInfo[] {};
             }
-            return framework.LifecycleManager.GetKeys(nakedObject.Object.GetType());
+            return framework.Persistor.GetKeys(nakedObject.Object.GetType());
         }
 
         public IVersionSurface Version {
