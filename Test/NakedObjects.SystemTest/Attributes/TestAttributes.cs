@@ -1067,7 +1067,7 @@ namespace NakedObjects.SystemTest.Attributes
             Assert.IsTrue(actions[0] is NakedObjectActionSet);
             Assert.AreEqual(1, actions[0].Actions.Count());
             Assert.IsTrue(actions[0].Actions[0] is NakedObjectActionImpl);
-            Assert.AreEqual("Contributed Action", actions[0].Actions[0].GetName(NakedObjectsFramework.LifecycleManager));
+            Assert.AreEqual("Contributed Action", actions[0].Actions[0].GetName());
         }
         #endregion
 
@@ -1085,8 +1085,8 @@ namespace NakedObjects.SystemTest.Attributes
             Assert.AreEqual(2, actions[0].Actions.Count());
             Assert.IsTrue(actions[0].Actions[0] is NakedObjectActionImpl);
             Assert.IsTrue(actions[0].Actions[1] is NakedObjectActionImpl);
-            Assert.AreEqual("Finder Action1", actions[0].Actions[0].GetName(NakedObjectsFramework.LifecycleManager));
-            Assert.AreEqual("Finder Action2", actions[0].Actions[1].GetName(NakedObjectsFramework.LifecycleManager));
+            Assert.AreEqual("Finder Action1", actions[0].Actions[0].GetName());
+            Assert.AreEqual("Finder Action2", actions[0].Actions[1].GetName());
         }
         #endregion
     }
