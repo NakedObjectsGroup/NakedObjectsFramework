@@ -90,6 +90,14 @@ namespace NakedObjects.Managers {
             get { return manager.OidGenerator; }
         }
 
+
+        public INakedObject LoadObject(IOid oid, INakedObjectSpecification specification) {
+            Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, specification);
+            Assert.AssertNotNull("needs an OID", oid);
+            Assert.AssertNotNull("needs a specification", specification);
+            return manager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, specification);
+        }
+
         /// <summary>
         ///     Factory (for transient instance)
         /// </summary>

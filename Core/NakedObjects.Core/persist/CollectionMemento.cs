@@ -203,7 +203,7 @@ namespace NakedObjects.Core.Persist {
                 return lifecycleManager.GetViewModel(oid as ViewModelOid);
             }
 
-            return persistor.LoadObject(oid, oid.Specification);
+            return lifecycleManager.LoadObject(oid, oid.Specification);
         }
 
         public INakedObject RecoverCollection() {
