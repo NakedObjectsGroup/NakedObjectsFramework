@@ -243,5 +243,8 @@ namespace NakedObjects.Managers {
             return new object[] { };
         }
 
+        public void LoadComplexTypes(INakedObject pocoAdapter, bool isGhost) {
+            objectStore.LoadComplexTypes(pocoAdapter, isGhost);
+        }
     }
 }

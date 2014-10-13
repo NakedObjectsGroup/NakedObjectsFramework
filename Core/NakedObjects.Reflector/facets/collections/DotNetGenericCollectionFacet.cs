@@ -37,8 +37,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             return AsGenericCollection(collection).Contains((T) element.Object);
         }
 
-        public override INakedObject Page(int page, int size, INakedObject collection, ILifecycleManager persistor, bool forceEnumerable) {
-            return persistor.CreateAdapter(AsGenericCollection(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
+        public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable) {
+            return manager.CreateAdapter(AsGenericCollection(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
         }
 
         public override void Init(INakedObject collection, INakedObject[] initData) {

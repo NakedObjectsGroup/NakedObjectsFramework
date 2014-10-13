@@ -10,7 +10,7 @@ open System
 open NakedObjects.EntityObjectStore
 open NakedObjects.Core.Context
 open NakedObjects.Architecture.Resolve
-open NakedObjects.Architecture.Adapter
+open NakedObjects.Architecture.Persist
 open System.Collections.Generic
 open NakedObjects.Architecture.Util
 open NakedObjects.Persistor.TestData
@@ -58,8 +58,9 @@ let db =
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
     let m = mockMetamodelManager.Object
+    let nom = (new Mock<INakedObjectManager>()).Object
     c.ContextConfiguration <- [|(box Config :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i, nom)
     p
 
 

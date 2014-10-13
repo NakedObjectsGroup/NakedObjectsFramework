@@ -9,7 +9,7 @@ open NakedObjects.EntityObjectStore
 open TestCode
 open System.Data.Entity.Core.Objects
 open NakedObjects.Architecture.Adapter
-open NakedObjects.Architecture.Resolve
+open NakedObjects.Architecture.Persist
 open NakedObjects.Architecture.Reflect
 open System
 open NakedObjects.Core.Context
@@ -27,11 +27,11 @@ let persistor  =
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
     let m = mockMetamodelManager.Object
-
+    let nom = (new Mock<INakedObjectManager>()).Object
     c.UsingEdmxContext "AdventureWorksEntities" |> ignore
 
     //c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i, nom)
     let p = setupPersistorForTesting p
     p
 
@@ -48,12 +48,13 @@ let overwritePersistor =
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
     let m = mockMetamodelManager.Object
+    let nom = (new Mock<INakedObjectManager>()).Object
 
     let cc = c.UsingEdmxContext "AdventureWorksEntities"
     c.DefaultMergeOption <- MergeOption.OverwriteChanges
   
     //c.ContextConfiguration <- [|(box config :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i, nom)
     let p = setupPersistorForTesting p
     p
 

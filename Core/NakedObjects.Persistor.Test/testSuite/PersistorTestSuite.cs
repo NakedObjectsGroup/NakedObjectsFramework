@@ -62,7 +62,7 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         private  INakedObject AdapterFor(object domainObject) {
-            return framework.LifecycleManager.CreateAdapter(domainObject, null, null);
+            return framework.Manager.CreateAdapter(domainObject, null, null);
         }
 
 

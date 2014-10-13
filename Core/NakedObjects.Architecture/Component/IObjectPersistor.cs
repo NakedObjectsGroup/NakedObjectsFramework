@@ -30,5 +30,6 @@ namespace NakedObjects.Architecture.Persist {
         void DestroyObject(INakedObject nakedObject);
         object CreateObject(INakedObjectSpecification specification);
         IEnumerable GetBoundedSet(INakedObjectSpecification spec);
+        void LoadComplexTypes(INakedObject pocoAdapter, bool isGhost);
     }
 }

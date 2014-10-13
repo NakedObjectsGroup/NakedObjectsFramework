@@ -69,7 +69,7 @@ namespace NakedObjects.EntityObjectStore {
         private IDictionary<EntityContextConfiguration, LocalContext> contexts = new Dictionary<EntityContextConfiguration, LocalContext>();
         private IContainerInjector injector;
         private IUpdateNotifier updateNotifier;
-        private INakedObjectManager manager;
+        private readonly INakedObjectManager manager;
 
         #region Delegates
 
@@ -93,16 +93,17 @@ namespace NakedObjects.EntityObjectStore {
             IsInitializedCheck = () => true;
         }
 
-        internal EntityObjectStore(IMetamodelManager metamodel, ISession session, IUpdateNotifier updateNotifier, IContainerInjector injector) {
+        internal EntityObjectStore(IMetamodelManager metamodel, ISession session, IUpdateNotifier updateNotifier, IContainerInjector injector, INakedObjectManager nakedObjectManager) {
             this.metamodel = metamodel;
             this.session = session;
             this.updateNotifier = updateNotifier;
             this.injector = injector;
+            this.manager = nakedObjectManager;
 
-            createAdapter = (oid, domainObject) => Manager.CreateAdapter(domainObject, oid, null);
-            replacePoco = (nakedObject, newDomainObject) => Manager.ReplacePoco(nakedObject, newDomainObject);
-            removeAdapter = o => Manager.RemoveAdapter(o);
-            createAggregatedAdapter = (parent, property, obj) => Manager.CreateAggregatedAdapter(parent, parent.Specification.GetProperty(property.Name).Id, obj);
+            createAdapter = (oid, domainObject) => manager.CreateAdapter(domainObject, oid, null);
+            replacePoco = (nakedObject, newDomainObject) => manager.ReplacePoco(nakedObject, newDomainObject);
+            removeAdapter = o => manager.RemoveAdapter(o);
+            createAggregatedAdapter = (parent, property, obj) => manager.CreateAggregatedAdapter(parent, parent.Specification.GetProperty(property.Name).Id, obj);
 
             updating = (x, s) => x.Updating(s);
             updated = (x, s) => x.Updated(s);
@@ -115,8 +116,8 @@ namespace NakedObjects.EntityObjectStore {
         }
 
 
-        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodelManager metamodel, IContainerInjector injector)
-            : this(metamodel, session, updateNotifier, injector) {
+        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodelManager metamodel, IContainerInjector injector, INakedObjectManager nakedObjectManager)
+            : this(metamodel, session, updateNotifier, injector, nakedObjectManager) {
             this.oidGenerator = oidGenerator;
             contexts = config.ContextConfiguration.ToDictionary<EntityContextConfiguration, EntityContextConfiguration, LocalContext>(c => c, c => null);
         
@@ -128,13 +129,13 @@ namespace NakedObjects.EntityObjectStore {
             Reset();
         }
 
-        public INakedObjectManager Manager {
-            get { return manager; }
-            set {
-                manager = value;
-                contexts.Values.ForEach(c => c.Manager = manager);
-            }
-        }
+        //public INakedObjectManager Manager {
+        //    get { return manager; }
+        //    set {
+        //        manager = value;
+        //        contexts.Values.ForEach(c => c.Manager = manager);
+        //    }
+        //}
 
         #region for testing only
 
@@ -243,7 +244,7 @@ namespace NakedObjects.EntityObjectStore {
                 }
             };
 
-            context.Manager = Manager;
+            context.Manager = manager;
             return context;
         }
 
@@ -517,7 +518,7 @@ namespace NakedObjects.EntityObjectStore {
             INakedObject nakedObject = createAdapter(oid, domainObject);
             injector.InitDomainObject(nakedObject.Object);
             LoadComplexTypes(nakedObject, nakedObject.ResolveState.IsGhost());
-            nakedObject.UpdateVersion(session, Manager);
+            nakedObject.UpdateVersion(session, manager);
 
             if (nakedObject.ResolveState.IsGhost()) {
                 StartResolving(nakedObject, context);
@@ -590,7 +591,7 @@ namespace NakedObjects.EntityObjectStore {
 
         private void SavingChangesHandler(object sender, EventArgs e) {
             IEnumerable<object> changedObjects = GetChangedObjectsInContext((ObjectContext) sender);
-            IEnumerable<INakedObject> adaptedObjects = changedObjects.Where(o => TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => Manager.CreateAdapter(domainObject, null, null)).ToArray();
+            IEnumerable<INakedObject> adaptedObjects = changedObjects.Where(o => TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => manager.CreateAdapter(domainObject, null, null)).ToArray();
             adaptedObjects.Where(x => x.ResolveState.IsGhost()).ForEach(ResolveImmediately);
             adaptedObjects.ForEach(ValidateIfRequired);
             adaptedObjects.ForEach(x => notifyUi(x));
@@ -1054,6 +1055,7 @@ namespace NakedObjects.EntityObjectStore {
         public void Reset() {
             Log.Debug("Reset");
             contexts = contexts.ToDictionary(kvp => kvp.Key, ResetContext);
+            contexts.Values.ForEach(c => c.Manager = manager);
             FirstInitialization = false; // so validation of types only happens once 
         }
 
@@ -1152,7 +1154,7 @@ namespace NakedObjects.EntityObjectStore {
             Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
             if (oid is EntityOid) {
                 INakedObject adapter = createAdapter(oid, GetObjectByKey((EntityOid) oid, hint));
-                adapter.UpdateVersion(session, Manager);
+                adapter.UpdateVersion(session, manager);
                 return adapter;
             }
             var aggregateOid = oid as AggregateOid;
@@ -1195,7 +1197,7 @@ namespace NakedObjects.EntityObjectStore {
         public int CountField(INakedObject nakedObject, INakedObjectAssociation field) {
             Type type = TypeUtils.GetType(field.GetFacet<ITypeOfFacet>().ValueSpec.FullName);
             MethodInfo countMethod = GetType().GetMethod("Count").GetGenericMethodDefinition().MakeGenericMethod(type);
-            return (int) countMethod.Invoke(this, new object[] {nakedObject, field, Manager});
+            return (int)countMethod.Invoke(this, new object[] { nakedObject, field, manager });
         }
 
         public INakedObject FindByKeys(Type type, object[] keys) {

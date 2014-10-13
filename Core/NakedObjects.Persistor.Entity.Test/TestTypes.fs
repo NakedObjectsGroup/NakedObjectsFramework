@@ -147,6 +147,7 @@ type MockNakedObject(obj, oid) =
         member x.ReplacePoco(obj : Object) = ()
         member x.ValidToPersist() : string = null
         member x.SetATransientOid (oid : IOid) = ()
+        member x.LoadAnyComplexTypes() = ()
 
 //type MockPersistedObjectAdder(p : EntityObjectStore) = 
 //    let persistor = p

@@ -18,12 +18,14 @@ namespace NakedObjects.Managers {
         private ILifecycleManager lifecycleManager;
         private ISession session;
         private IObjectPersistor persistor;
+        private INakedObjectManager nakedObjectManager;
 
-        public void Initialize(IMetamodelManager metamodel, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor) {
+        public void Initialize(IMetamodelManager metamodel, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager nakedObjectManager) {
             this.metamodel = metamodel;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
+            this.nakedObjectManager = nakedObjectManager;
         }
 
         public INakedObject CreateAdapter(object obj, IOid oid) {
@@ -31,7 +33,7 @@ namespace NakedObjects.Managers {
             Assert.AssertNotNull(session);
             Assert.AssertNotNull(lifecycleManager);
 
-            return new PocoAdapter(metamodel, session, persistor, lifecycleManager, obj, oid);
+            return new PocoAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, obj, oid);
         }
     }
 }

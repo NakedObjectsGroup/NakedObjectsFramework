@@ -44,12 +44,12 @@ namespace NakedObjects.Managers {
             this.identityMap = identityMap;
             this.oidGenerator = oidGenerator;
             this.nakedObjectFactory = nakedObjectFactory;
-            this.OidGenerator = oidGenerator;
+            this.oidGenerator = oidGenerator;
         }
 
         #region INakedObjectManager Members
 
-        public IOidGenerator OidGenerator { get; private set; }
+        
 
         public void RemoveAdapter(INakedObject objectToDispose) {
             Log.DebugFormat("RemoveAdapter nakedObject: {0}", objectToDispose);
@@ -161,9 +161,9 @@ namespace NakedObjects.Managers {
 
         #endregion
 
-        public IOid GetOidForService(string name, string typeName) {
+        private IOid GetOidForService(string name, string typeName) {
             Log.DebugFormat("GetOidForService name: {0}", name);
-            return OidGenerator.CreateOid(typeName, new object[] {0});
+            return oidGenerator.CreateOid(typeName, new object[] {0});
         }
 
         private INakedObject AdapterForNoIdentityObject(object domainObject) {

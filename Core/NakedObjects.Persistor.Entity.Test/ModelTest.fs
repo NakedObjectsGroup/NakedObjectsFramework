@@ -13,6 +13,7 @@ open System.Security.Principal
 open NakedObjects.Reflector.DotNet
 open Moq
 open NakedObjects.Architecture.Reflect
+open NakedObjects.Architecture.Persist
 
 let persistor =
     let c = new EntityObjectStoreConfiguration()
@@ -21,10 +22,11 @@ let persistor =
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
     let m = mockMetamodelManager.Object
+    let nom = (new Mock<INakedObjectManager>()).Object
 
     c.UsingEdmxContext "Model1Container" |> ignore
     //c.ContextConfiguration <- [|(box ModelConfig :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i, nom)
     setupPersistorForInjectorTesting p
 
 [<TestFixture>]

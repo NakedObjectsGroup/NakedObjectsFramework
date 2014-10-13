@@ -20,7 +20,8 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public class XmlSnapshot : IXmlSnapshot {
-        private readonly ILifecycleManager persistor;
+        private readonly ILifecycleManager lifecycleManager;
+        private readonly INakedObjectManager nakedObjectManager;
         private static readonly ILog Log = LogManager.GetLogger(typeof (XmlSnapshot));
 
         private readonly Place rootPlace;
@@ -29,12 +30,15 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
 
         //  Start a snapshot at the root object, using own namespace manager.
-        public XmlSnapshot(object obj, ILifecycleManager persistor) : this(obj, new XmlSchema(), persistor) { }
+        public XmlSnapshot(object obj, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager) : this(obj, new XmlSchema(), lifecycleManager, nakedObjectManager) { }
 
         // Start a snapshot at the root object, using supplied namespace manager.
-        public XmlSnapshot(object obj, XmlSchema schema, ILifecycleManager persistor) {
-            this.persistor = persistor;
-            INakedObject rootObject = persistor.CreateAdapter(obj, null, null);
+        public XmlSnapshot(object obj, XmlSchema schema, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager) {
+            this.lifecycleManager = lifecycleManager;
+            this.nakedObjectManager = nakedObjectManager;
+          
+           
+            INakedObject rootObject = nakedObjectManager.CreateAdapter(obj, null, null);
             Log.Debug(".ctor(" + DoLog("rootObj", rootObject) + AndLog("schema", schema) + AndLog("addOids", "" + true) + ")");
 
             Schema = schema;
@@ -318,7 +322,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 var oneToManyAssociation = (IOneToManyAssociation) field;
                 INakedObject collection = oneToManyAssociation.GetNakedObject(fieldPlace.NakedObject);
 
-                INakedObject[] collectionAsEnumerable = collection.GetAsEnumerable(persistor).ToArray();
+                INakedObject[] collectionAsEnumerable = collection.GetAsEnumerable(nakedObjectManager).ToArray();
 
                 Log.Debug("includeField(Pl, Vec, Str): 1->M: " + DoLog("collection.size", "" + collectionAsEnumerable.Count()));
                 bool allFieldsNavigated = true;
@@ -532,7 +536,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                         string fullyQualifiedClassName = referencedTypeNos.FullName;
 
                         // XML
-                        NofMetaModel.SetNofCollection(xmlCollectionElement, Schema.Prefix, fullyQualifiedClassName, collection, persistor);
+                        NofMetaModel.SetNofCollection(xmlCollectionElement, Schema.Prefix, fullyQualifiedClassName, collection, nakedObjectManager);
                     }
                     catch (Exception) {
                         Log.Warn("objectToElement(NO): " + DoLog("field", fieldName) + ": get(obj) threw exception - skipping XML generation");

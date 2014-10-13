@@ -23,8 +23,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             return (IEnumerable<T>) collection.Object;
         }
 
-        public override INakedObject Page(int page, int size, INakedObject collection, ILifecycleManager persistor, bool forceEnumerable) {
-            return persistor.CreateAdapter(AsGenericIEnumerable(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
+        public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable) {
+            return manager.CreateAdapter(AsGenericIEnumerable(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
         }
 
         public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager) {

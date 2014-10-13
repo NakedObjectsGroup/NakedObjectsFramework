@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Common.Logging;
@@ -33,6 +32,8 @@ namespace NakedObjects.Reflector.Spec {
         private readonly MemberFactory memberFactory;
         private readonly IMetamodelManager metamodel;
         private readonly IServicesManager servicesManager;
+        private readonly INakedObjectTransactionManager transactionManager;
+        private readonly INakedObjectManager nakedObjectManager;
         private readonly INakedObjectActionPeer nakedObjectActionPeer;
 
         private INakedObjectActionParameter[] parameters;
@@ -41,7 +42,7 @@ namespace NakedObjects.Reflector.Spec {
             Log = LogManager.GetLogger(typeof (NakedObjectActionImpl));
         }
 
-        public NakedObjectActionImpl(MemberFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, INakedObjectActionPeer nakedObjectActionPeer)
+        public NakedObjectActionImpl(MemberFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, INakedObjectTransactionManager transactionManager, INakedObjectManager nakedObjectManager, INakedObjectActionPeer nakedObjectActionPeer)
             : base(nakedObjectActionPeer.Identifier.MemberName, nakedObjectActionPeer, session, lifecycleManager) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(nakedObjectActionPeer);
@@ -49,6 +50,8 @@ namespace NakedObjects.Reflector.Spec {
             this.memberFactory = memberFactory;
             this.metamodel = metamodel;
             this.servicesManager = servicesManager;
+            this.transactionManager = transactionManager;
+            this.nakedObjectManager = nakedObjectManager;
             this.nakedObjectActionPeer = nakedObjectActionPeer;
             BuildParameters();
         }
@@ -119,7 +122,7 @@ namespace NakedObjects.Reflector.Spec {
             Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);
             INakedObject[] parms = RealParameters(nakedObject, parameterSet);
             INakedObject target = RealTarget(nakedObject);
-            return GetFacet<IActionInvocationFacet>().Invoke(target, parms, LifecycleManager, Session);
+            return GetFacet<IActionInvocationFacet>().Invoke(target, parms, nakedObjectManager, Session, transactionManager);
         }
 
         public virtual INakedObject RealTarget(INakedObject target) {

@@ -15,12 +15,16 @@ namespace NakedObjects.Xat {
       
         private readonly ILifecycleManager lifecycleManager;
         private readonly IObjectPersistor persistor;
+        private readonly INakedObjectManager manager;
+        private readonly INakedObjectTransactionManager transactionManager;
 
-        public TestObjectFactory(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor) {
+        public TestObjectFactory(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager manager, INakedObjectTransactionManager transactionManager) {
             this.metamodelManager = metamodelManager;
             this.Session = session;
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
+            this.manager = manager;
+            this.transactionManager = transactionManager;
         }
 
         public ISession Session { get; set; }
@@ -28,12 +32,12 @@ namespace NakedObjects.Xat {
         #region ITestObjectFactory Members
 
         public ITestService CreateTestService(Object service) {
-            var no = lifecycleManager.GetAdapterFor(service);
+            var no = manager.GetAdapterFor(service);
             return new TestService(no, lifecycleManager, this);
         }
 
         public ITestCollection CreateTestCollection(INakedObject instances) {
-            return new TestCollection(instances, this, lifecycleManager);
+            return new TestCollection(instances, this, manager);
         }
 
         public ITestObject CreateTestObject(INakedObject nakedObject) {
@@ -58,15 +62,15 @@ namespace NakedObjects.Xat {
         }
 
         public ITestAction CreateTestAction(INakedObjectAction action, ITestHasActions owningObject) {
-            return new TestAction(metamodelManager, Session, lifecycleManager, action, owningObject, this);
+            return new TestAction(metamodelManager, Session, lifecycleManager, action, owningObject, this, manager, transactionManager);
         }
 
         public ITestAction CreateTestAction(string contributor, INakedObjectAction action, ITestHasActions owningObject) {
-            return new TestAction(metamodelManager, Session, lifecycleManager, contributor, action, owningObject, this);
+            return new TestAction(metamodelManager, Session, lifecycleManager, contributor, action, owningObject, this, manager, transactionManager);
         }
 
         public ITestProperty CreateTestProperty(INakedObjectAssociation field, ITestHasActions owningObject) {
-            return new TestProperty(lifecycleManager, Session, persistor, field, owningObject, this);
+            return new TestProperty(lifecycleManager, Session, persistor, field, owningObject, this, manager);
         }
 
         public ITestParameter CreateTestParameter(INakedObjectAction action, INakedObjectActionParameter parameter, ITestHasActions owningObject) {

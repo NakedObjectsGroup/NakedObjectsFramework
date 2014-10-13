@@ -57,12 +57,12 @@ namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
             }
         }
 
-        public override INakedObject Invoke(INakedObject target, INakedObject[] parameters, ILifecycleManager persistor, ISession session) {
-            return InvokeInTransaction(() => underlyingFacet.Invoke(target, parameters, persistor, session), persistor);
+        public override INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager) {
+            return InvokeInTransaction(() => underlyingFacet.Invoke(target, parameters, manager, session, transactionManager), transactionManager);
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager persistor, ISession session) {
-            return InvokeInTransaction(() => underlyingFacet.Invoke(nakedObject, parameters, resultPage, persistor, session), persistor);
+        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager) {
+            return InvokeInTransaction(() => underlyingFacet.Invoke(nakedObject, parameters, resultPage, manager, session, transactionManager), transactionManager);
         }
 
         public override string ToString() {

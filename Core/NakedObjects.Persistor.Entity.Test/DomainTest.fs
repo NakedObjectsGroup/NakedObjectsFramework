@@ -14,6 +14,7 @@ open System.Security.Principal
 open NakedObjects.Reflector.DotNet
 open Moq
 open NakedObjects.Architecture.Reflect
+open NakedObjects.Architecture.Persist
 
 
 let persistor =
@@ -23,10 +24,11 @@ let persistor =
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
     let m = mockMetamodelManager.Object
+    let nom = (new Mock<INakedObjectManager>()).Object
     c.UsingEdmxContext "AdventureWorksEntities"  |> ignore
 
     //c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i, nom)
     setupPersistorForTesting p
 
 let overwritePersistor =
@@ -45,8 +47,9 @@ let overwritePersistor =
     let i = new DotNetDomainObjectContainerInjector()
     let r = (new Mock<INakedObjectReflector>()).Object
     let m = mockMetamodelManager.Object
+    let nom = (new Mock<INakedObjectManager>()).Object
     //c.ContextConfiguration <- [|(box config :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i, nom)
     setupPersistorForTesting p
 
 [<TestFixture>]

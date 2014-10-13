@@ -19,21 +19,25 @@ namespace NakedObjects.Xat {
     internal class TestAction : ITestAction {
         private readonly INakedObjectAction action;
         private readonly ITestObjectFactory factory;
+        private readonly INakedObjectManager manager;
+        private readonly INakedObjectTransactionManager transactionManager;
         private readonly IMetamodelManager metamodelManager;
         private readonly ISession session;
-        private readonly ILifecycleManager persistor;
+        private readonly ILifecycleManager lifecycleManager;
         private readonly ITestHasActions owningObject;
 
-        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager persistor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory)
-            : this(metamodelManager, session, persistor, string.Empty, action, owningObject, factory) {}
+        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, INakedObjectTransactionManager transactionManager)
+            : this(metamodelManager, session, lifecycleManager, string.Empty, action, owningObject, factory, manager, transactionManager) {}
 
-        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager persistor, string contributor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory) {
+        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, string contributor, INakedObjectAction action, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, INakedObjectTransactionManager transactionManager) {
             SubMenu = contributor;
             this.metamodelManager = metamodelManager;
             this.session = session;
-            this.persistor = persistor;
+            this.lifecycleManager = lifecycleManager;
             this.owningObject = owningObject;
             this.factory = factory;
+            this.manager = manager;
+            this.transactionManager = transactionManager;
             this.action = action;
         }
 
@@ -80,11 +84,11 @@ namespace NakedObjects.Xat {
         private ITestNaked DoInvoke(int page, params object[] parameters) {
             ResetLastMessage();
             AssertIsValidWithParms(parameters);
-            INakedObject[] parameterObjects = parameters.AsTestNakedArray(persistor).Select(x => x.NakedObject).ToArray();
+            INakedObject[] parameterObjects = parameters.AsTestNakedArray(manager).Select(x => x.NakedObject).ToArray();
 
             INakedObject[] parms = action.RealParameters(owningObject.NakedObject, parameterObjects);
             INakedObject target = action.RealTarget(owningObject.NakedObject);
-            INakedObject result = action.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, persistor, session);
+            INakedObject result = action.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, manager, session, transactionManager);
 
             if (result == null) {
                 return null;
@@ -99,7 +103,7 @@ namespace NakedObjects.Xat {
         private ITestNaked DoInvoke(params object[] parameters) {
             ResetLastMessage();
             AssertIsValidWithParms(parameters);
-            INakedObject[] parameterObjects = parameters.AsTestNakedArray(persistor).Select(x => x.NakedObject).ToArray();
+            INakedObject[] parameterObjects = parameters.AsTestNakedArray(manager).Select(x => x.NakedObject).ToArray();
             INakedObject result = null;
             try {
                 result = action.Execute(owningObject.NakedObject, parameterObjects);
@@ -153,7 +157,7 @@ namespace NakedObjects.Xat {
                 IConsent canUse = action.IsUsable(owningObject.NakedObject);
                 LastMessage = canUse.Reason;
                 if (canUse.IsAllowed) {
-                    INakedObject[] parameterObjects = parsedParameters.AsTestNakedArray(persistor).Select(x => x == null ? null : x.NakedObject).ToArray();
+                    INakedObject[] parameterObjects = parsedParameters.AsTestNakedArray(manager).Select(x => x == null ? null : x.NakedObject).ToArray();
                     IConsent canExecute = action.IsParameterSetValid(owningObject.NakedObject, parameterObjects);
                     LastMessage = canExecute.Reason;
                     Assert.IsFalse(canExecute.IsAllowed, "Action '" + Name + "' is usable and executable");
@@ -171,7 +175,7 @@ namespace NakedObjects.Xat {
 
            
 
-            INakedObject[] parameterObjects = parsedParameters.AsTestNakedArray(persistor).Select(x => x == null ? null : x.NakedObject).ToArray();
+            INakedObject[] parameterObjects = parsedParameters.AsTestNakedArray(manager).Select(x => x == null ? null : x.NakedObject).ToArray();
             IConsent canExecute = action.IsParameterSetValid(owningObject.NakedObject, parameterObjects);
             Assert.IsTrue(canExecute.IsAllowed, "Action '" + Name + "' is unusable: " + canExecute.Reason);
             return this;
@@ -214,7 +218,7 @@ namespace NakedObjects.Xat {
                 object value = parameters[i++];
 
                 if (value is string && parm.Specification.IsParseable) {
-                    parsedParameters.Add(parm.Specification.GetFacet<IParseableFacet>().ParseTextEntry((string) value, persistor).Object);
+                    parsedParameters.Add(parm.Specification.GetFacet<IParseableFacet>().ParseTextEntry((string) value, manager).Object);
                 }
                 else {
                     parsedParameters.Add(value);

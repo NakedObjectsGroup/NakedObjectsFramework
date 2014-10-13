@@ -66,6 +66,8 @@ namespace NakedObjects.Core.Adapter.Map {
 
             // log at end so that if ToString needs adapters they're in maps. 
             Log.DebugFormat("Adding identity for {0}", nakedObject);
+
+            nakedObject.LoadAnyComplexTypes();
         }
 
         public virtual void MadePersistent(INakedObject adapter) {

@@ -106,7 +106,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntityObjectStore\EntityContextConfiguration.cs" />
-    <Compile Include="EntityObjectStore\EntityIdentityMapImpl.cs" />
     <Compile Include="EntityObjectStore\EntityObjectStore.cs" />
     <Compile Include="EntityObjectStore\EntityObjectStoreConfiguration.cs" />
     <Compile Include="EntityObjectStore\EntityOidGenerator.cs" />

@@ -15,6 +15,7 @@ open System.Security.Principal
 open NakedObjects.Reflector.DotNet
 open Moq
 open NakedObjects.Architecture.Reflect
+open NakedObjects.Architecture.Persist
 
 let codeOnlyCePersistor =
     let r = mockMetamodelManager.Object
@@ -22,9 +23,10 @@ let codeOnlyCePersistor =
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
+    let nom = (new Mock<INakedObjectManager>()).Object
     c.UsingCodeFirstContext ((CodeFirstConfig "CodeOnlyCeTests").DbContext) |> ignore
     //c.ContextConfiguration <- [|(box (CodeFirstCeConfig "CodeOnlyCeTests") :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i, nom)
     setupPersistorForTesting p
 
 [<TestFixture>]

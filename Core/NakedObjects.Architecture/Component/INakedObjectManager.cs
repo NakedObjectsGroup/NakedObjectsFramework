@@ -15,8 +15,6 @@ namespace NakedObjects.Architecture.Persist {
     ///     Broadly speaking, keeps track of the oid/adapter/domain object tuple
     /// </summary>
     public interface INakedObjectManager {
-        IOidGenerator OidGenerator { get; }
-
         void RemoveAdapter(INakedObject objectToDispose);
 
         INakedObject GetAdapterFor(object obj);

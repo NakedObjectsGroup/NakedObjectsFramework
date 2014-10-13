@@ -561,8 +561,9 @@ let CanDetectConcurrency (persistor : EntityObjectStore) =
         let i = new DotNetDomainObjectContainerInjector()
         let r = (new Mock<INakedObjectReflector>()).Object
         let m = mockMetamodelManager.Object
+        let nom = (new Mock<INakedObjectManager>()).Object
         c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
+        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i, nom)
         setupPersistorForTesting p
     let sr2 = otherPersistor.GetInstances<ScrapReason>() |> Seq.head
     Assert.AreEqual(sr1.Name, sr2.Name)
@@ -624,8 +625,9 @@ let ConcurrencyNoCustomOnUpdatingError (persistor : EntityObjectStore) =
         let i = new DotNetDomainObjectContainerInjector()
         let r = (new Mock<INakedObjectReflector>()).Object
         let m = mockMetamodelManager.Object
+        let nom = (new Mock<INakedObjectManager>()).Object
         c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
-        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i)
+        let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i, nom)
         setupPersistorForTesting p
     let l2 = otherPersistor.GetInstances<Location>() |> Seq.head
     Assert.AreEqual(l1.Name, l2.Name)

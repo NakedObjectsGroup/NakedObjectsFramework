@@ -6,8 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Common.Logging;
@@ -20,7 +18,6 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Security;
-using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Persist;
@@ -38,7 +35,6 @@ namespace NakedObjects.Managers {
         private readonly IMetamodelManager metamodel;
         private readonly IObjectPersistor objectPersistor;
         private readonly IPersistAlgorithm persistAlgorithm;
-        private readonly IServicesManager servicesManager;
         private readonly ISession session;
         private readonly INakedObjectTransactionManager transactionManager;
 
@@ -55,9 +51,7 @@ namespace NakedObjects.Managers {
                                 IContainerInjector injector,
                                 INakedObjectTransactionManager transactionManager,
                                 IObjectPersistor objectPersistor,
-                                INakedObjectManager manager,
-                                IServicesManager servicesManager,
-                                NakedObjectFactory nakedObjectFactory
+                                INakedObjectManager manager
             ) {
             Assert.AssertNotNull(objectStore);
             Assert.AssertNotNull(persistAlgorithm);
@@ -68,28 +62,15 @@ namespace NakedObjects.Managers {
             this.transactionManager = transactionManager;
             this.objectPersistor = objectPersistor;
             this.manager = manager;
-            this.servicesManager = servicesManager;
             this.session = session;
             this.metamodel = metamodel;
             this.persistAlgorithm = persistAlgorithm;
             this.injector = injector;
 
-            // TODO - fix !
-            objectStore.Manager = this;
-
             Log.DebugFormat("Creating {0}", this);
         }
 
-        public string DebugTitle {
-            get { return "Object Store Persistor"; }
-        }
-
         #region ILifecycleManager Members
-
-        public IOidGenerator OidGenerator {
-            get { return manager.OidGenerator; }
-        }
-
 
         public INakedObject LoadObject(IOid oid, INakedObjectSpecification specification) {
             Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, specification);
@@ -139,50 +120,7 @@ namespace NakedObjects.Managers {
             return manager.GetKnownAdapter(oid) ?? RecreateViewModel((ViewModelOid) oid);
         }
 
-        public virtual INakedObject GetAdapterFor(object obj) {
-            return manager.GetAdapterFor(obj);
-        }
-
-        public virtual INakedObject GetAdapterFor(IOid oid) {
-            return manager.GetAdapterFor(oid);
-        }
-
-        public virtual INakedObject CreateAdapter(object domainObject, IOid oid, IVersion version) {
-            return manager.CreateAdapter(domainObject, oid, version);
-        }
-
-        public void ReplacePoco(INakedObject nakedObject, object newDomainObject) {
-            manager.ReplacePoco(nakedObject, newDomainObject);
-        }
-
-        public virtual void RemoveAdapter(INakedObject nakedObject) {
-            manager.RemoveAdapter(nakedObject);
-        }
-
-        public virtual ServiceTypes GetServiceType(INakedObjectSpecification spec) {
-            return servicesManager.GetServiceType(spec);
-        }
-
-        public virtual INakedObject GetService(string id) {
-            return servicesManager.GetService(id);
-        }
-
-        // TODO REVIEW why does this get called multiple times when starting up
-        public virtual INakedObject[] GetServices() {
-            return servicesManager.GetServices();
-        }
-
-        public virtual INakedObject[] GetServicesWithVisibleActions(ServiceTypes serviceType, ILifecycleManager persistor) {
-            return servicesManager.GetServicesWithVisibleActions(serviceType, this);
-        }
-
-        public virtual INakedObject[] GetServices(ServiceTypes serviceType) {
-            return servicesManager.GetServices(serviceType);
-        }
-
-        public virtual INakedObject[] ServiceAdapters {
-            get { return servicesManager.ServiceAdapters; }
-        }
+       
 
         /// <summary>
         ///     Makes a naked object persistent. The specified object should be stored away via this object store's
@@ -214,7 +152,7 @@ namespace NakedObjects.Managers {
         }
         
 
-        public object CreateObject(INakedObjectSpecification specification) {
+        private object CreateObject(INakedObjectSpecification specification) {
             Log.DebugFormat("CreateObject: " + specification);
             Type type = TypeUtils.GetType(specification.FullName);
 
@@ -258,21 +196,6 @@ namespace NakedObjects.Managers {
             transactionManager.AddCommand(command);
         }
 
-      
-
-       
-
-        public INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid) {
-            return manager.NewAdapterForKnownObject(domainObject, transientOid);
-        }
-
-        public INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj) {
-            return manager.CreateAggregatedAdapter(parent, fieldId, obj);
-        }
-
-        public List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects) {
-            return manager.GetCollectionOfAdaptedObjects(domainObjects);
-        }
 
         public void Abort(ILifecycleManager objectManager, IFacetHolder holder) {
             Log.Info("exception executing " + holder + ", aborting transaction");
@@ -289,7 +212,7 @@ namespace NakedObjects.Managers {
             INakedObjectSpecification spec = metamodel.GetSpecification(typeName);
 
             if (spec.IsCollection) {
-                return new CollectionMemento(this, objectPersistor, metamodel, session, encodedData);
+                return new CollectionMemento(this, manager, objectPersistor, metamodel, session, encodedData);
             }
 
             if (spec.ContainsFacet<IViewModelFacet>()) {
@@ -311,36 +234,6 @@ namespace NakedObjects.Managers {
             }
         }
 
-      
-
-        public virtual void MadePersistent(INakedObject nakedObject) {
-            manager.MadePersistent(nakedObject);
-        }
-
-        public virtual void UpdateViewModel(INakedObject adapter, string[] keys) {
-            manager.UpdateViewModel(adapter, keys);
-        }
-
-        public INakedObject GetServiceAdapter(object service) {
-            return manager.GetServiceAdapter(service);
-        }
-
-        public INakedObject GetKnownAdapter(IOid oid) {
-            return manager.GetKnownAdapter(oid);
-        }
-
-        public INakedObject CreateViewModelAdapter(INakedObjectSpecification specification, object viewModel) {
-            return manager.CreateViewModelAdapter(specification, viewModel);
-        }
-
-        public INakedObject CreateInstanceAdapter(object obj) {
-            return manager.CreateInstanceAdapter(obj);
-        }
-
-        public INakedObject AdapterForExistingObject(object domainObject, IOid oid) {
-            return manager.AdapterForExistingObject(domainObject, oid);
-        }
-
         #endregion
 
         private void InitDomainObject(object obj) {
@@ -358,7 +251,7 @@ namespace NakedObjects.Managers {
             INakedObjectSpecification spec = oid.Specification;
             INakedObject vm = CreateViewModel(spec);
             vm.Specification.GetFacet<IViewModelFacet>().Populate(keys, vm);
-            UpdateViewModel(vm, keys);
+            manager.UpdateViewModel(vm, keys);
             return vm;
         }
 

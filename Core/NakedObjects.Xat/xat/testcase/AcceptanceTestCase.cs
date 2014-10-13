@@ -69,7 +69,7 @@ namespace NakedObjects.Xat {
         protected virtual ITestObjectFactory TestObjectFactoryClass {
             get {
                 if (testObjectFactory == null) {
-                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor);
+                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Manager, NakedObjectsFramework.TransactionManager);
                 }
                 return testObjectFactory;
             }
@@ -178,8 +178,8 @@ namespace NakedObjects.Xat {
                 Assert.Fail(spec.SingularName + " is not a Bounded type");
             }
             IEnumerable allInstances = NakedObjectsFramework.Persistor.Instances(spec);
-            object inst = allInstances.Cast<object>().Single(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null).TitleString() == title);
-            return TestObjectFactoryClass.CreateTestObject(NakedObjectsFramework.LifecycleManager.CreateAdapter(inst, null, null));
+            object inst = allInstances.Cast<object>().Single(o => NakedObjectsFramework.Manager.CreateAdapter(o, null, null).TitleString() == title);
+            return TestObjectFactoryClass.CreateTestObject(NakedObjectsFramework.Manager.CreateAdapter(inst, null, null));
         }
 
         private static IPrincipal CreatePrincipal(string name, string[] roles) {
@@ -258,7 +258,7 @@ namespace NakedObjects.Xat {
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerResolveLifetimeManager());
             
             container.RegisterType<INakedObjectStore, EntityObjectStore.EntityObjectStore>(new PerResolveLifetimeManager());
-            container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerResolveLifetimeManager());
+            container.RegisterType<IIdentityMap, IdentityMapImpl>(new PerResolveLifetimeManager());
 
             container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerResolveLifetimeManager());

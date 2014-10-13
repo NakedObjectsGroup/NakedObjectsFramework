@@ -28,6 +28,7 @@ namespace NakedObjects.Service {
         private readonly INakedObjectReflector reflector;
         private readonly ISession session;
         private readonly IUpdateNotifier updateNotifier;
+        private readonly INakedObjectTransactionManager transactionManager;
 
         public NakedObjectsFramework(IMessageBroker messageBroker,
                                      IUpdateNotifier updateNotifier,
@@ -41,7 +42,8 @@ namespace NakedObjects.Service {
                                      IMetamodelManager metamodelManager,
                                      IContainerInjector injector,
                                      NakedObjectFactory  nakedObjectFactory,
-                                     MemberFactory memberFactory) {
+                                     MemberFactory memberFactory, 
+                                     INakedObjectTransactionManager transactionManager) {
             this.messageBroker = messageBroker;
             this.updateNotifier = updateNotifier;
             this.session = session;
@@ -53,15 +55,20 @@ namespace NakedObjects.Service {
             this.authorizationManager = authorizationManager;
             this.metamodelManager = metamodelManager;
             this.injector = injector;
+            this.transactionManager = transactionManager;
             injector.Framework = this;
             memberFactory.Initialize(this);
-            nakedObjectFactory.Initialize(metamodelManager, session, lifecycleManager, persistor);
+            nakedObjectFactory.Initialize(metamodelManager, session, lifecycleManager, persistor, manager);
         }
 
         #region INakedObjectsFramework Members
 
         public IContainerInjector Injector {
             get { return injector; }
+        }
+
+        public INakedObjectTransactionManager TransactionManager {
+            get { return transactionManager; }
         }
 
         public IMessageBroker MessageBroker {

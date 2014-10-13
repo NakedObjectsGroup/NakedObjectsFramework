@@ -26,6 +26,7 @@ namespace NakedObjects.Reflector.DotNet {
         protected INakedObjectReflector Reflector = new Mock<INakedObjectReflector>().Object;
         protected IMetamodelManager Metamodel = new Mock<IMetamodelManager>().Object;
         private ValueSemanticsProviderAbstract<T> value;
+        protected INakedObjectManager Manager = new Mock<INakedObjectManager>().Object;
 
         protected void SetValue(ValueSemanticsProviderAbstract<T> newValue) {
             value = newValue;
@@ -62,7 +63,8 @@ namespace NakedObjects.Reflector.DotNet {
 
         protected INakedObject CreateAdapter(object obj) {
             ISession session = new Mock<ISession>().Object;
-            return new PocoAdapter(Metamodel, session, Persistor, LifecycleManager, obj, null);
+           
+            return new PocoAdapter(Metamodel, session, Persistor, LifecycleManager, Manager, obj, null);
         }
 
 
@@ -83,7 +85,7 @@ namespace NakedObjects.Reflector.DotNet {
 
         [Test]
         public void TestDecodeNull() {
-            object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.ENCODED_NULL, LifecycleManager);
+            object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.ENCODED_NULL, Manager);
             Assert.IsNull(newValue);
         }
 

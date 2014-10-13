@@ -18,7 +18,7 @@ open NakedObjects.Architecture.Adapter
 let getNo (obj : obj) (ctx : INakedObjectsFramework) = 
     match obj with
     | :? INakedObject as no -> no
-    | _ -> ctx.LifecycleManager.CreateAdapter(obj, null, null)
+    | _ -> ctx.Manager.CreateAdapter(obj, null, null)
 
 let IsPersistentObject obj ctx = 
     let no = getNo obj ctx

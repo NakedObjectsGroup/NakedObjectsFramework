@@ -41,5 +41,7 @@ namespace NakedObjects {
         IAuthorizationManager AuthorizationManager { get; }
 
         IContainerInjector Injector { get; }
+
+        INakedObjectTransactionManager TransactionManager { get; }
     }
 }

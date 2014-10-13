@@ -80,6 +80,10 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             throw new NotImplementedException();
         }
 
+        public void LoadAnyComplexTypes() {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         public void FireChangedEvent() {

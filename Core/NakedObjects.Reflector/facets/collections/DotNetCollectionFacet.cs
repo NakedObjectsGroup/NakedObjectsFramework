@@ -39,18 +39,18 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             return AsCollection(collection).Contains(element.Object);
         }
 
-        private IEnumerable PageInternal(int page, int size, INakedObject collection, ILifecycleManager persistor) {
+        private IEnumerable PageInternal(int page, int size, INakedObject collection, INakedObjectManager manager) {
             int firstIndex = (page - 1)*size;
             for (int index = firstIndex; index < firstIndex + size; index++) {
-                if (index >= AsEnumerable(collection, persistor).Count()) {
+                if (index >= AsEnumerable(collection, manager).Count()) {
                     yield break;
                 }
                 yield return AsCollection(collection)[index];
             }
         }
 
-        public override INakedObject Page(int page, int size, INakedObject collection, ILifecycleManager persistor, bool forceEnumerable) {
-            return persistor.CreateAdapter(PageInternal(page, size, collection, persistor), null, null);
+        public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable) {
+            return manager.CreateAdapter(PageInternal(page, size, collection, manager), null, null);
         }
 
         public override void Init(INakedObject collection, INakedObject[] initData) {

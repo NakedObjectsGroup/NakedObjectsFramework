@@ -35,7 +35,7 @@ namespace NakedObjects.Reflector.DotNet {
             if (persistentObject == null) {
                 throw new ArgumentException(Resources.NakedObjects.DisposeReferenceError);
             }
-            INakedObject adapter = framework.LifecycleManager.GetAdapterFor(persistentObject);
+            INakedObject adapter = framework.Manager.GetAdapterFor(persistentObject);
             if (!IsPersistent(persistentObject)) {
                 throw new DisposeFailedException(string.Format(Resources.NakedObjects.NotPersistentMessage, adapter));
             }
@@ -56,7 +56,7 @@ namespace NakedObjects.Reflector.DotNet {
         }
 
         public void Persist<T>(ref T transientObject) {
-            INakedObject adapter = framework.LifecycleManager.GetAdapterFor(transientObject);
+            INakedObject adapter = framework.Manager.GetAdapterFor(transientObject);
             if (IsPersistent(transientObject)) {
                 throw new PersistFailedException(string.Format(Resources.NakedObjects.AlreadyPersistentMessage, adapter));
             }
@@ -149,7 +149,7 @@ namespace NakedObjects.Reflector.DotNet {
         }
 
         private INakedObject AdapterFor(object obj) {
-            return framework.LifecycleManager.CreateAdapter(obj, null, null);
+            return framework.Manager.CreateAdapter(obj, null, null);
         }
     }
 

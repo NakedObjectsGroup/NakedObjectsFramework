@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections;
@@ -20,9 +23,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Core.Persist {
     public class CollectionMemento : IEncodedToStrings, IOid {
-        private readonly ILifecycleManager lifecycleManager;
-        private readonly IObjectPersistor persistor;
-        private readonly ISession session;
+        #region ParameterType enum
 
         public enum ParameterType {
             Value,
@@ -31,14 +32,32 @@ namespace NakedObjects.Core.Persist {
             ObjectCollection
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor,  IMetamodelManager metamodel, ISession session,  CollectionMemento otherMemento, object[] selectedObjects) {
+        #endregion
+
+        private readonly ILifecycleManager lifecycleManager;
+        private readonly INakedObjectManager nakedObjectManager;
+        private readonly IObjectPersistor persistor;
+        private readonly ISession session;
+        private object[] selectedObjects;
+
+        private CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IObjectPersistor persistor, ISession session) {
             Assert.AssertNotNull(lifecycleManager);
+            Assert.AssertNotNull(nakedObjectManager);
+            Assert.AssertNotNull(persistor);
+            Assert.AssertNotNull(session);
+
+            this.lifecycleManager = lifecycleManager;
+            this.nakedObjectManager = nakedObjectManager;
+            this.persistor = persistor;
+            this.session = session;
+        }
+
+
+        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IObjectPersistor persistor, IMetamodelManager metamodel, ISession session, CollectionMemento otherMemento, object[] selectedObjects)
+            : this(lifecycleManager, nakedObjectManager, persistor, session) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(otherMemento);
 
-            this.lifecycleManager = lifecycleManager;
-            this.persistor = persistor;
-            this.session = session;
             IsPaged = otherMemento.IsPaged;
             IsNotQueryable = otherMemento.IsNotQueryable;
             Target = otherMemento.Target;
@@ -47,12 +66,10 @@ namespace NakedObjects.Core.Persist {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, IMetamodelManager metamodel, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters) {
-            Assert.AssertNotNull(lifecycleManager);
+        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IObjectPersistor persistor, IMetamodelManager metamodel, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters)
+            : this(lifecycleManager, nakedObjectManager, persistor, session) {
             Assert.AssertNotNull(metamodel);
-            this.lifecycleManager = lifecycleManager;
-            this.persistor = persistor;
-            this.session = session;
+
             Target = target;
             Action = action;
             Parameters = parameters;
@@ -62,12 +79,11 @@ namespace NakedObjects.Core.Persist {
             }
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, IObjectPersistor persistor, IMetamodelManager metamodel, ISession session, string[] strings) {
-            Assert.AssertNotNull(lifecycleManager);
+        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IObjectPersistor persistor, IMetamodelManager metamodel, ISession session, string[] strings)
+            : this(lifecycleManager, nakedObjectManager, persistor, session) {
             Assert.AssertNotNull(metamodel);
-            this.lifecycleManager = lifecycleManager;
-            this.persistor = persistor;
-            this.session = session;
+
+
             var helper = new StringDecoderHelper(metamodel, strings, true);
             string specName = helper.GetNextString();
             string actionId = helper.GetNextString();
@@ -84,7 +100,7 @@ namespace NakedObjects.Core.Persist {
                 switch (parmType) {
                     case ParameterType.Value:
                         object obj = helper.GetNextObject();
-                        parameters.Add(lifecycleManager.CreateAdapter(obj, null, null));
+                        parameters.Add(nakedObjectManager.CreateAdapter(obj, null, null));
                         break;
                     case ParameterType.Object:
                         var oid = (IOid) helper.GetNextEncodedToStrings();
@@ -95,13 +111,13 @@ namespace NakedObjects.Core.Persist {
                         Type vInstanceType;
                         IList<object> vColl = helper.GetNextValueCollection(out vInstanceType);
                         IList typedVColl = CollectionUtils.ToTypedIList(vColl, vInstanceType);
-                        parameters.Add(lifecycleManager.CreateAdapter(typedVColl, null, null));
+                        parameters.Add(nakedObjectManager.CreateAdapter(typedVColl, null, null));
                         break;
                     case ParameterType.ObjectCollection:
                         Type oInstanceType;
                         List<object> oColl = helper.GetNextObjectCollection(out oInstanceType).Cast<IOid>().Select(o => RestoreObject(o).Object).ToList();
                         IList typedOColl = CollectionUtils.ToTypedIList(oColl, oInstanceType);
-                        parameters.Add(lifecycleManager.CreateAdapter(typedOColl, null, null));
+                        parameters.Add(nakedObjectManager.CreateAdapter(typedOColl, null, null));
                         break;
                     default:
                         throw new ArgumentException(string.Format("Unexpected parameter type value: {0}", parmType));
@@ -117,6 +133,11 @@ namespace NakedObjects.Core.Persist {
 
         public bool IsPaged { get; set; }
         public bool IsNotQueryable { get; set; }
+
+        public object[] SelectedObjects {
+            get { return selectedObjects ?? new object[] {}; }
+            private set { selectedObjects = value; }
+        }
 
         #region IEncodedToStrings Members
 
@@ -145,7 +166,7 @@ namespace NakedObjects.Core.Persist {
                     }
                     else {
                         helper.Add(ParameterType.ObjectCollection);
-                        helper.Add(parameter.GetCollectionFacetFromSpec().AsEnumerable(parameter, lifecycleManager).Select(p => p.Oid).Cast<IEncodedToStrings>(), instanceType);
+                        helper.Add(parameter.GetCollectionFacetFromSpec().AsEnumerable(parameter, nakedObjectManager).Select(p => p.Oid).Cast<IEncodedToStrings>(), instanceType);
                     }
                 }
                 else {
@@ -164,13 +185,6 @@ namespace NakedObjects.Core.Persist {
         #endregion
 
         #region IOid Members
-
-        private object[] selectedObjects;
-
-        public object[] SelectedObjects {
-            get { return selectedObjects ?? new object[] {}; }
-            private set { selectedObjects = value; }
-        }
 
         public IOid Previous {
             get { return null; }
@@ -212,7 +226,7 @@ namespace NakedObjects.Core.Persist {
             if (selectedObjects != null) {
                 IEnumerable<object> selected = nakedObject.GetDomainObject<IEnumerable>().Cast<object>().Where(x => selectedObjects.Contains(x));
                 IList newResult = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
-                nakedObject = lifecycleManager.CreateAdapter(newResult, null, null);
+                nakedObject = nakedObjectManager.CreateAdapter(newResult, null, null);
             }
 
             nakedObject.SetATransientOid(this);

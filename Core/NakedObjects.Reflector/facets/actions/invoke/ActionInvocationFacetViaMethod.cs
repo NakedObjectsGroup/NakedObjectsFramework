@@ -49,20 +49,20 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Invoke {
 
         #endregion
 
-        public override INakedObject Invoke(INakedObject inObject, INakedObject[] parameters, ILifecycleManager persistor, ISession session) {
+        public override INakedObject Invoke(INakedObject inObject, INakedObject[] parameters, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager) {
             if (parameters.Length != paramCount) {
                 Log.Error(actionMethod + " requires " + paramCount + " parameters, not " + parameters.Length);
             }
 
             object result = InvokeUtils.Invoke(actionMethod, inObject, parameters);
-            INakedObject adaptedResult = persistor.CreateAdapter(result, null, null);
+            INakedObject adaptedResult = manager.CreateAdapter(result, null, null);
 
             Log.DebugFormat("Action result {0}", adaptedResult);
             return adaptedResult;
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager persistor, ISession session) {
-            return Invoke(nakedObject, parameters, persistor, session);
+        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager) {
+            return Invoke(nakedObject, parameters, manager, session, transactionManager);
         }
 
         protected override string ToStringValues() {

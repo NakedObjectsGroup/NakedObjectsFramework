@@ -36,14 +36,14 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             return IsOrdered(queryable) ? queryable : queryable.OrderBy(x => "");
         }
 
-        public override INakedObject Page(int page, int size, INakedObject collection, ILifecycleManager persistor, bool forceEnumerable) {
+        public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable) {
             // page = 0 causes empty collection to be returned
             IEnumerable<T> newCollection = page == 0 ? AsGenericIQueryable(collection).Take(0) : AsGenericIQueryable(collection).Skip((page - 1)*size).Take(size);
             if (forceEnumerable) {
                 newCollection = newCollection.ToList();
             }
 
-            return persistor.CreateAdapter(newCollection, null, null);
+            return manager.CreateAdapter(newCollection, null, null);
         }
 
         public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager) {

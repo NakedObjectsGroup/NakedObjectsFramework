@@ -16,6 +16,8 @@ open NakedObjects.Core.Context
 open NakedObjects.Core.Security
 open System.Security.Principal
 open NakedObjects.Reflector.DotNet
+open NakedObjects.Architecture.Persist
+open Moq
 
 let multiDatabasePersistor =   
     let r = mockMetamodelManager.Object
@@ -23,11 +25,12 @@ let multiDatabasePersistor =
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
     let i = new DotNetDomainObjectContainerInjector()
+    let nom = (new Mock<INakedObjectManager>()).Object
   
     c.UsingCodeFirstContext ((CodeFirstConfig "AMultiDatabaseTests").DbContext) |> ignore
     c.UsingEdmxContext "AdventureWorksEntities" |> ignore
     //c.ContextConfiguration <- [|(box (CodeFirstConfig  "AMultiDatabaseTests" ):?> EntityContextConfiguration);(box PocoConfig :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i)
+    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(r), r, i, nom)
     setupPersistorForTesting p
 
 

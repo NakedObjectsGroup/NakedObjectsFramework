@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Collections.Modify;
+using NakedObjects.Architecture.Facets.Objects.Aggregated;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
@@ -39,7 +40,7 @@ namespace NakedObjects.Core.Adapter {
             Log = LogManager.GetLogger(typeof (PocoAdapter));
         }
 
-        public PocoAdapter(IMetamodelManager metamodel, ISession session, IObjectPersistor persistor, ILifecycleManager lifecycleManager, object poco, IOid oid) {
+        public PocoAdapter(IMetamodelManager metamodel, ISession session, IObjectPersistor persistor, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, object poco, IOid oid) {
             Assert.AssertNotNull(metamodel);
             //Assert.AssertNotNull(session);
 
@@ -49,7 +50,7 @@ namespace NakedObjects.Core.Adapter {
             this.metamodel = metamodel;
             this.session = session;
             this.persistor = persistor;
-            this.manager = lifecycleManager;
+            this.manager = nakedObjectManager;
             this.lifecycleManager = lifecycleManager;
 
             this.poco = poco;
@@ -259,6 +260,15 @@ namespace NakedObjects.Core.Adapter {
             }
 
             str.Append("version", version == null ? null : version.AsSequence());
+        }
+
+        public  void LoadAnyComplexTypes() {          
+            if (Specification.IsService ||
+                Specification.IsViewModel ||
+                Specification.ContainsFacet(typeof(IComplexTypeFacet))) {
+                return;
+            }
+            persistor.LoadComplexTypes(this, ResolveState.IsGhost());
         }
     }
 

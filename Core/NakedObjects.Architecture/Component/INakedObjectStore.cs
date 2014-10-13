@@ -27,7 +27,7 @@ namespace NakedObjects.Persistor.Objectstore {
         /// </summary>
         string Name { get; }
 
-        INakedObjectManager Manager { get; set; }
+        //INakedObjectManager Manager { get; set; }
 
         void AbortTransaction();
 
@@ -125,6 +125,7 @@ namespace NakedObjects.Persistor.Objectstore {
         void Refresh(INakedObject nakedObject);
         int CountField(INakedObject nakedObject, INakedObjectAssociation association);
         INakedObject FindByKeys(Type type, object[] keys);
+        void LoadComplexTypes(INakedObject pocoAdapter, bool isGhost);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

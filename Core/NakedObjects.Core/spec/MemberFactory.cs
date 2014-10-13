@@ -82,7 +82,7 @@ namespace NakedObjects.Core.spec {
 
         private NakedObjectActionImpl CreateNakedObjectAction(INakedObjectActionPeer peer) {
             
-            return new NakedObjectActionImpl(this, framework.Metamodel, framework.LifecycleManager, framework.Session, framework.Services, peer);
+            return new NakedObjectActionImpl(this, framework.Metamodel, framework.LifecycleManager, framework.Session, framework.Services, framework.TransactionManager, framework.Manager, peer);
         }
 
         public INakedObjectAssociation CreateNakedObjectField(INakedObjectAssociationPeer peer) {

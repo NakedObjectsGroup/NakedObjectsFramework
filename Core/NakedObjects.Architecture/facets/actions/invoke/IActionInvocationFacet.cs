@@ -26,9 +26,9 @@ namespace NakedObjects.Architecture.Facets.Actions.Invoke {
 
         IIntrospectableSpecification OnType { get; }
 
-        INakedObject Invoke(INakedObject target, INakedObject[] parameters, ILifecycleManager persistor, ISession session);
+        INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager);
 
-        INakedObject Invoke(INakedObject target, INakedObject[] parameters, int resultPage, ILifecycleManager persistor, ISession session);
+        INakedObject Invoke(INakedObject target, INakedObject[] parameters, int resultPage, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager);
 
         bool GetIsRemoting(INakedObject target);
     }
