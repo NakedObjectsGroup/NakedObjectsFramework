@@ -6,8 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
@@ -42,7 +40,6 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Returns the type of action: user, exploration or debug, or that it is a set of actions.
         /// </summary>
         /// <seealso cref="NakedObjectActionType.User" />
-    
         NakedObjectActionType ActionType { get; }
 
         /// <summary>

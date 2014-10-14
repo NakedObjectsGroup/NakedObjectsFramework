@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Persist {
     // TODO this should be done by OS - move OIDGen to OS
-    public interface IOidGenerator  {
+    public interface IOidGenerator {
         /// <summary>
         ///     Removes the specified object from the system.
         /// </summary>

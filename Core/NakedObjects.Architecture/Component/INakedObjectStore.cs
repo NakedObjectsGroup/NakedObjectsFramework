@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Linq;
@@ -14,7 +17,7 @@ using NakedObjects.Core.Context;
 using NakedObjects.Persistor.Transaction;
 
 namespace NakedObjects.Persistor.Objectstore {
-    public interface INakedObjectStore  {
+    public interface INakedObjectStore {
         /// <summary>
         ///     Determine if the object store has been initialized with its set of start up objects. This method is
         ///     called only once after <see cref="IRequiresSetup.Init" /> has been called. If this flag returns
@@ -47,7 +50,7 @@ namespace NakedObjects.Persistor.Objectstore {
         /// </para>
         ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session);
 
-       // void RegisterService(string name, IOid oid);
+        // void RegisterService(string name, IOid oid);
 
         /// <summary>
         ///     Removes the specified object from the object store. The specified object's data should be removed from
@@ -108,7 +111,6 @@ namespace NakedObjects.Persistor.Objectstore {
         ///     Returns the OID for the adapted service
         /// </summary>
         //IOid GetOidForService(string name, string typeName);
-
         void ResolveField(INakedObject nakedObject, INakedObjectAssociation field);
 
         void ResolveImmediately(INakedObject nakedObject);

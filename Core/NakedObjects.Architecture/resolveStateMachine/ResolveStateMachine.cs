@@ -576,7 +576,6 @@ namespace NakedObjects.Architecture.Resolve {
             CurrentState = States.NewState;
             Owner = owner;
             Session = session;
-           
         }
 
         private ISession Session { get; set; }

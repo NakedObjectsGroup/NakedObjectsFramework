@@ -69,19 +69,7 @@ namespace NakedObjects.Architecture.Facets {
             return new List<Type>(facetsByClass.Keys).ToArray();
         }
 
-        /// <summary>
-        ///     Bit nasty, for use only by <see cref="IFacetHolder" />s that index their <see cref="IFacet" />s
-        ///     in a <see cref="Dictionary{TKey,TValue}" />.
-        /// </summary>
-        public static IFacet[] GetFacets(IDictionary<Type, IFacet> facetsByClass, IFacetFilter filter) {
-            var filteredFacets = new List<IFacet>();
-            foreach (IFacet facet in facetsByClass.Values) {
-                if (filter.Accept(facet)) {
-                    filteredFacets.Add(facet);
-                }
-            }
-            return filteredFacets.ToArray();
-        }
+     
 
         public static IFacet[] GetFacets(IFacet facet, IFacetFilter filter) {
             if (filter.Accept(facet)) {

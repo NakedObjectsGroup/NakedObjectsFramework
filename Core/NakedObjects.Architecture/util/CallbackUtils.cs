@@ -7,7 +7,6 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets.Objects.Callbacks;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Util {

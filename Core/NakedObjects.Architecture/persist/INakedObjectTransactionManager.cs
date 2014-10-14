@@ -5,10 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Facets;
-
 namespace NakedObjects.Architecture.Persist {
-    public interface INakedObjectTransactionManager  {
+    public interface INakedObjectTransactionManager {
         void StartTransaction();
 
         bool FlushTransaction();

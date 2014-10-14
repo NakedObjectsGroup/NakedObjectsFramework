@@ -23,14 +23,12 @@ namespace NakedObjects.Architecture.Persist {
     ///     persistent storage.
     /// </para>
     public interface IIdentityMap : IEnumerable<INakedObject> {
-       
-
         /// <summary>
         ///     Resets the loader to a known state
         /// </summary>
         void Reset();
 
-      
+
         void AddAdapter(INakedObject nakedObject);
 
         /// <summary>

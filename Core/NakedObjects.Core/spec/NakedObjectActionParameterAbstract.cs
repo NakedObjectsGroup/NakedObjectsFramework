@@ -140,8 +140,8 @@ namespace NakedObjects.Reflector.Spec {
             return peer != null ? peer.GetFacet<T>() : default(T);
         }
 
-        public virtual IFacet[] GetFacets(IFacetFilter filter) {
-            return peer != null ? peer.GetFacets(filter) : new IFacet[] {};
+        public virtual IEnumerable<IFacet> GetFacets() {
+            return peer != null ? peer.GetFacets() : new IFacet[] {};
         }
 
         public virtual void AddFacet(IFacet facet) {

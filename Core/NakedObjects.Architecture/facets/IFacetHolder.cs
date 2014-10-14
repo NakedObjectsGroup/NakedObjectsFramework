@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 
 namespace NakedObjects.Architecture.Facets {
     /// <summary>
@@ -51,7 +52,7 @@ namespace NakedObjects.Architecture.Facets {
         /// <summary>
         ///     Returns all <see cref="IFacet" />s matching the specified <see cref="IFacetFilter" />
         /// </summary>
-        IFacet[] GetFacets(IFacetFilter filter);
+        IEnumerable<IFacet> GetFacets();
 
         /// <summary>
         ///     Adds the facet, extracting its <see cref="IFacet.FacetType" /> as the key.

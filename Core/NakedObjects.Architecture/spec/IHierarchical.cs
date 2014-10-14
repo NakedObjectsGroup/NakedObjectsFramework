@@ -33,7 +33,6 @@ namespace NakedObjects.Architecture.Spec {
         ///     Add the class for the specified specification as a subclass of this specification's class
         /// </summary>
         //void AddSubclass(INakedObjectSpecification specification);
-
         /// <summary>
         ///     Determines if this specification represents the same specification, or a subclass, of the specified
         ///     specification.

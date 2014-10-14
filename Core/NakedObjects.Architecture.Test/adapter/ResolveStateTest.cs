@@ -6,13 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Actcoll.Typeof;
+using Moq;
 using NakedObjects.Architecture.Facets.Objects.Callbacks;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NUnit.Framework;
 
@@ -38,373 +34,86 @@ namespace NakedObjects.Architecture.Adapter {
             }
         }
 
-        public class TestCallbackFacet : ILoadingCallbackFacet, ILoadedCallbackFacet {
-            #region ILoadingCallbackFacet Members
+        public interface ITestCallbackFacet : ILoadingCallbackFacet, ILoadedCallbackFacet {}
 
-            public IFacetHolder FacetHolder {
-                get { throw new NotImplementedException(); }
-                set { throw new NotImplementedException(); }
-            }
 
-            public bool IsNoOp {
-                get { throw new NotImplementedException(); }
-            }
+        private static IResolveStateMachine NewSm() {
+            var mockAdapter = new Mock<INakedObject>();
+            var testAdapter = mockAdapter.Object;
 
-            public Type FacetType {
-                get { throw new NotImplementedException(); }
-            }
+            var mockSpecification = new Mock<INakedObjectSpecification>();
+            var testSpecification = mockSpecification.Object;
 
-            public bool CanAlwaysReplace {
-                get { throw new NotImplementedException(); }
-            }
+            var mockFacet = new Mock<ITestCallbackFacet>();
+            var testFacet = mockFacet.Object;
 
-            public void Invoke(INakedObject nakedObject, ISession session) {}
+            mockFacet.Setup(f => f.Invoke(null, null));
 
-            #endregion
-        }
+            mockAdapter.Setup(a => a.Specification).Returns(testSpecification);
 
-        private class TestSpecification : INakedObjectSpecification {
-            public string Help {
-                get { throw new NotImplementedException(); }
-            }
+            mockSpecification.Setup(s => s.GetFacet(null)).Returns(testFacet);
+            mockSpecification.Setup(s => s.GetFacet<ILoadingCallbackFacet>()).Returns(testFacet);
+            mockSpecification.Setup(s => s.GetFacet<ILoadedCallbackFacet>()).Returns(testFacet);
 
-            #region INakedObjectSpecification Members
-
-            public INakedObjectAction[] GetRelatedServiceActions() {
-                throw new NotImplementedException();
-            }
-
-            public INakedObjectAction[] GetAllActions() {
-                throw new NotImplementedException();
-            }
-
-            public INakedObjectAssociation[] Properties {
-                get { throw new NotImplementedException(); }
-            }
-
-            public INakedObjectAssociation GetProperty(string id) {
-                throw new NotImplementedException();
-            }
-
-            public INakedObjectValidation[] ValidateMethods() {
-                throw new NotImplementedException();
-            }
-
-            public Type[] FacetTypes {
-                get { throw new NotImplementedException(); }
-            }
-
-            public IIdentifier Identifier {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool ContainsFacet(Type facetType) {
-                throw new NotImplementedException();
-            }
-
-            public bool ContainsFacet<T>() where T : IFacet {
-                throw new NotImplementedException();
-            }
-
-            public IFacet GetFacet(Type type) {
-                return new TestCallbackFacet();
-            }
-
-            public T GetFacet<T>() where T : IFacet {
-                return (T) GetFacet(typeof (T));
-            }
-
-            public IFacet[] GetFacets(IFacetFilter filter) {
-                throw new NotImplementedException();
-            }
-
-            public void AddFacet(IFacet facet) {
-                throw new NotImplementedException();
-            }
-
-            public void AddFacet(IMultiTypedFacet facet) {
-                throw new NotImplementedException();
-            }
-
-            public void RemoveFacet(IFacet facet) {
-                throw new NotImplementedException();
-            }
-
-            public void RemoveFacet(Type facetType) {
-                throw new NotImplementedException();
-            }
-
-            public bool HasSubclasses {
-                get { throw new NotImplementedException(); }
-            }
-
-            public INakedObjectSpecification[] Interfaces {
-                get { throw new NotImplementedException(); }
-            }
-
-            public INakedObjectSpecification[] Subclasses {
-                get { throw new NotImplementedException(); }
-            }
-
-            public INakedObjectSpecification Superclass {
-                get { throw new NotImplementedException(); }
-            }
-
-            public void AddSubclass(INakedObjectSpecification specification) {
-                throw new NotImplementedException();
-            }
-
-            public bool IsOfType(INakedObjectSpecification specification) {
-                throw new NotImplementedException();
-            }
-
-            public object DefaultValue {
-                get { throw new NotImplementedException(); }
-            }
-
-            public string FullName {
-                get { throw new NotImplementedException(); }
-            }
-
-            public string PluralName {
-                get { throw new NotImplementedException(); }
-            }
-
-            public string ShortName {
-                get { throw new NotImplementedException(); }
-            }
-
-            public string Description {
-                get { throw new NotImplementedException(); }
-            }
-
-            public string SingularName {
-                get { throw new NotImplementedException(); }
-            }
-
-            public string UntitledName {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool IsParseable {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool IsEncodeable {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool IsAggregated {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool IsCollection {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool IsObject {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool IsAbstract {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool IsInterface {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool IsService {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool HasNoIdentity {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool IsQueryable {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool IsVoid {
-                get { throw new NotImplementedException(); }
-            }
-
-            public string GetIconName(INakedObject forObject) {
-                throw new NotImplementedException();
-            }
-
-            public string GetTitle(INakedObject nakedObject) {
-                throw new NotImplementedException();
-            }
-
-            public IConsent ValidToPersist(INakedObject transientObject, ISession session) {
-                throw new NotImplementedException();
-            }
-
-            public PersistableType Persistable {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool IsASet {
-                get { throw new NotImplementedException(); }
-            }
-
-            public bool IsViewModel {
-                get { throw new NotImplementedException(); }
-            }
-
-            public void MarkAsService() {
-                throw new NotImplementedException();
-            }
-
-            public string GetInvariantString(INakedObject nakedObject) {
-                throw new NotImplementedException();
-            }
-
-            public string UniqueShortName(string sep) {
-                throw new NotImplementedException();
-            }
-
-            #endregion
-
-            public object CreateObject(ILifecycleManager persistor) {
-                throw new NotImplementedException();
-            }
-        }
-
-        private class TestAdapter : INakedObject {
-            #region INakedObject Members
-
-            public object Object {
-                get { throw new NotImplementedException(); }
-            }
-
-            public INakedObjectSpecification Specification {
-                get { return new TestSpecification(); }
-            }
-
-            public IOid Oid {
-                get { throw new NotImplementedException(); }
-            }
-
-            public ResolveStateMachine ResolveState {
-                get { throw new NotImplementedException(); }
-            }
-
-            public IVersion Version {
-                get { throw new NotImplementedException(); }
-            }
-
-            public IVersion OptimisticLock {
-                set { throw new NotImplementedException(); }
-            }
-
-            public ITypeOfFacet TypeOfFacet {
-                get { throw new NotImplementedException(); }
-                set { throw new NotImplementedException(); }
-            }
-
-            public string IconName() {
-                throw new NotImplementedException();
-            }
-
-            public string TitleString() {
-                throw new NotImplementedException();
-            }
-
-            public string InvariantString() {
-                throw new NotImplementedException();
-            }
-
-            public void CheckLock(IVersion otherVersion) {
-                throw new NotImplementedException();
-            }
-
-            public void ReplacePoco(object poco) {
-                throw new NotImplementedException();
-            }
-
-            public string ValidToPersist() {
-                throw new NotImplementedException();
-            }
-
-
-            public void SetATransientOid(IOid oid) {
-                throw new NotImplementedException();
-            }
-
-            public void LoadAnyComplexTypes() {
-                throw new NotImplementedException();
-            }
-
-            #endregion
-
-            public void FireChangedEvent() {
-                throw new NotImplementedException();
-            }
-        }
-
-        private static IResolveStateMachine NewSM() {
-            return new ResolveStateMachine(new TestAdapter(), null);
+            return new ResolveStateMachine(testAdapter, null);
         }
 
         private static IResolveStateMachine GhostSM() {
-            IResolveStateMachine sm = NewSM();
+            IResolveStateMachine sm = NewSm();
             sm.Handle(Events.InitializePersistentEvent);
             return sm;
         }
 
-        private static IResolveStateMachine TransientSM() {
-            IResolveStateMachine sm = NewSM();
+        private static IResolveStateMachine TransientSm() {
+            IResolveStateMachine sm = NewSm();
             sm.Handle(Events.InitializeTransientEvent);
             return sm;
         }
 
-        private static IResolveStateMachine ResolvingPartSM() {
+        private static IResolveStateMachine ResolvingPartSm() {
             IResolveStateMachine sm = GhostSM();
             sm.Handle(Events.StartPartResolvingEvent);
             return sm;
         }
 
-        private static IResolveStateMachine ResolvedPartSM() {
-            IResolveStateMachine sm = ResolvingPartSM();
+        private static IResolveStateMachine ResolvedPartSm() {
+            IResolveStateMachine sm = ResolvingPartSm();
             sm.Handle(Events.EndPartResolvingEvent);
             return sm;
         }
 
-        private static IResolveStateMachine ResolvingSM() {
+        private static IResolveStateMachine ResolvingSm() {
             IResolveStateMachine sm = GhostSM();
             sm.Handle(Events.StartResolvingEvent);
             return sm;
         }
 
-        private static IResolveStateMachine ResolvedSM() {
-            IResolveStateMachine sm = ResolvingSM();
+        private static IResolveStateMachine ResolvedSm() {
+            IResolveStateMachine sm = ResolvingSm();
             sm.Handle(Events.EndResolvingEvent);
             return sm;
         }
 
-        private static IResolveStateMachine UpdatingSM() {
-            IResolveStateMachine sm = ResolvedSM();
+        private static IResolveStateMachine UpdatingSm() {
+            IResolveStateMachine sm = ResolvedSm();
             sm.Handle(Events.StartUpdatingEvent);
             return sm;
         }
 
-        private static IResolveStateMachine SerializingPartResolvedSM() {
-            IResolveStateMachine sm = ResolvedPartSM();
+        private static IResolveStateMachine SerializingPartResolvedSm() {
+            IResolveStateMachine sm = ResolvedPartSm();
             sm.Handle(Events.StartSerializingEvent);
             return sm;
         }
 
-        private static IResolveStateMachine SerializingTransientSM() {
-            IResolveStateMachine sm = TransientSM();
+        private static IResolveStateMachine SerializingTransientSm() {
+            IResolveStateMachine sm = TransientSm();
             sm.Handle(Events.StartSerializingEvent);
             return sm;
         }
 
-        private static IResolveStateMachine SerializingResolvedSM() {
-            IResolveStateMachine sm = ResolvedSM();
+        private static IResolveStateMachine SerializingResolvedSm() {
+            IResolveStateMachine sm = ResolvedSm();
             sm.Handle(Events.StartSerializingEvent);
             return sm;
         }
@@ -421,146 +130,146 @@ namespace NakedObjects.Architecture.Adapter {
 
         [Test]
         public void InvalidChangesFromNew() {
-            ExpectException(() => NewSM().Handle(Events.EndPartResolvingEvent));
-            ExpectException(() => NewSM().Handle(Events.EndResolvingEvent));
-            ExpectException(() => NewSM().Handle(Events.StartResolvingEvent));
-            ExpectException(() => NewSM().Handle(Events.StartPartResolvingEvent));
-            ExpectException(() => NewSM().Handle(Events.DestroyEvent));
-            ExpectException(() => NewSM().Handle(Events.StartUpdatingEvent));
-            ExpectException(() => NewSM().Handle(Events.StartSerializingEvent));
+            ExpectException(() => NewSm().Handle(Events.EndPartResolvingEvent));
+            ExpectException(() => NewSm().Handle(Events.EndResolvingEvent));
+            ExpectException(() => NewSm().Handle(Events.StartResolvingEvent));
+            ExpectException(() => NewSm().Handle(Events.StartPartResolvingEvent));
+            ExpectException(() => NewSm().Handle(Events.DestroyEvent));
+            ExpectException(() => NewSm().Handle(Events.StartUpdatingEvent));
+            ExpectException(() => NewSm().Handle(Events.StartSerializingEvent));
         }
 
         [Test]
         public void InvalidChangesFromPartResolved() {
-            ExpectException(() => ResolvedPartSM().Handle(Events.InitializePersistentEvent));
-            ExpectException(() => ResolvedPartSM().Handle(Events.EndPartResolvingEvent));
-            ExpectException(() => ResolvedPartSM().Handle(Events.EndResolvingEvent));
-            ExpectException(() => ResolvedPartSM().Handle(Events.InitializeTransientEvent));
-            ExpectException(() => ResolvedPartSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvedPartSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvedPartSM().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvedPartSm().Handle(Events.InitializePersistentEvent));
+            ExpectException(() => ResolvedPartSm().Handle(Events.EndPartResolvingEvent));
+            ExpectException(() => ResolvedPartSm().Handle(Events.EndResolvingEvent));
+            ExpectException(() => ResolvedPartSm().Handle(Events.InitializeTransientEvent));
+            ExpectException(() => ResolvedPartSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvedPartSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvedPartSm().Handle(Events.StartSerializingEvent));
         }
 
         [Test]
         public void InvalidChangesFromResolved() {
-            ExpectException(() => ResolvedSM().Handle(Events.EndPartResolvingEvent));
-            ExpectException(() => ResolvedSM().Handle(Events.EndResolvingEvent));
-            ExpectException(() => ResolvedSM().Handle(Events.StartResolvingEvent));
-            ExpectException(() => ResolvedSM().Handle(Events.StartPartResolvingEvent));
-            ExpectException(() => ResolvedSM().Handle(Events.InitializeTransientEvent));
-            ExpectException(() => ResolvedSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvedSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvedSM().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvedSm().Handle(Events.EndPartResolvingEvent));
+            ExpectException(() => ResolvedSm().Handle(Events.EndResolvingEvent));
+            ExpectException(() => ResolvedSm().Handle(Events.StartResolvingEvent));
+            ExpectException(() => ResolvedSm().Handle(Events.StartPartResolvingEvent));
+            ExpectException(() => ResolvedSm().Handle(Events.InitializeTransientEvent));
+            ExpectException(() => ResolvedSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvedSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvedSm().Handle(Events.StartSerializingEvent));
         }
 
         [Test]
         public void InvalidChangesFromResolving() {
-            ExpectException(() => ResolvingSM().Handle(Events.InitializePersistentEvent));
-            ExpectException(() => ResolvingSM().Handle(Events.EndPartResolvingEvent));
-            ExpectException(() => ResolvingSM().Handle(Events.StartResolvingEvent));
-            ExpectException(() => ResolvingSM().Handle(Events.StartPartResolvingEvent));
-            ExpectException(() => ResolvingSM().Handle(Events.InitializeTransientEvent));
-            ExpectException(() => ResolvingSM().Handle(Events.DestroyEvent));
-            ExpectException(() => ResolvingSM().Handle(Events.StartUpdatingEvent));
-            ExpectException(() => ResolvingSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvingSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvingSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvingSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvingSM().Handle(Events.InitializeAggregateEvent));
+            ExpectException(() => ResolvingSm().Handle(Events.InitializePersistentEvent));
+            ExpectException(() => ResolvingSm().Handle(Events.EndPartResolvingEvent));
+            ExpectException(() => ResolvingSm().Handle(Events.StartResolvingEvent));
+            ExpectException(() => ResolvingSm().Handle(Events.StartPartResolvingEvent));
+            ExpectException(() => ResolvingSm().Handle(Events.InitializeTransientEvent));
+            ExpectException(() => ResolvingSm().Handle(Events.DestroyEvent));
+            ExpectException(() => ResolvingSm().Handle(Events.StartUpdatingEvent));
+            ExpectException(() => ResolvingSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvingSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvingSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvingSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvingSm().Handle(Events.InitializeAggregateEvent));
         }
 
         [Test]
         public void InvalidChangesFromResolvingPart() {
-            ExpectException(() => ResolvingPartSM().Handle(Events.InitializePersistentEvent));
-            ExpectException(() => ResolvingPartSM().Handle(Events.StartResolvingEvent));
-            ExpectException(() => ResolvingPartSM().Handle(Events.StartPartResolvingEvent));
-            ExpectException(() => ResolvingPartSM().Handle(Events.InitializeTransientEvent));
-            ExpectException(() => ResolvingPartSM().Handle(Events.DestroyEvent));
-            ExpectException(() => ResolvingPartSM().Handle(Events.StartUpdatingEvent));
-            ExpectException(() => ResolvingPartSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvingPartSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvingPartSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvingPartSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => ResolvingPartSM().Handle(Events.InitializeAggregateEvent));
+            ExpectException(() => ResolvingPartSm().Handle(Events.InitializePersistentEvent));
+            ExpectException(() => ResolvingPartSm().Handle(Events.StartResolvingEvent));
+            ExpectException(() => ResolvingPartSm().Handle(Events.StartPartResolvingEvent));
+            ExpectException(() => ResolvingPartSm().Handle(Events.InitializeTransientEvent));
+            ExpectException(() => ResolvingPartSm().Handle(Events.DestroyEvent));
+            ExpectException(() => ResolvingPartSm().Handle(Events.StartUpdatingEvent));
+            ExpectException(() => ResolvingPartSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvingPartSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvingPartSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvingPartSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => ResolvingPartSm().Handle(Events.InitializeAggregateEvent));
         }
 
         [Test]
         public void InvalidChangesFromSerializingPartResolved() {
-            ExpectException(() => SerializingPartResolvedSM().Handle(Events.InitializePersistentEvent));
-            ExpectException(() => SerializingPartResolvedSM().Handle(Events.EndResolvingEvent));
-            ExpectException(() => SerializingPartResolvedSM().Handle(Events.StartResolvingEvent));
-            ExpectException(() => SerializingPartResolvedSM().Handle(Events.StartPartResolvingEvent));
-            ExpectException(() => SerializingPartResolvedSM().Handle(Events.InitializeTransientEvent));
-            ExpectException(() => SerializingPartResolvedSM().Handle(Events.DestroyEvent));
-            ExpectException(() => SerializingPartResolvedSM().Handle(Events.StartUpdatingEvent));
-            ExpectException(() => SerializingPartResolvedSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => SerializingPartResolvedSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => SerializingPartResolvedSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => SerializingPartResolvedSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => SerializingPartResolvedSM().Handle(Events.InitializeAggregateEvent));
+            ExpectException(() => SerializingPartResolvedSm().Handle(Events.InitializePersistentEvent));
+            ExpectException(() => SerializingPartResolvedSm().Handle(Events.EndResolvingEvent));
+            ExpectException(() => SerializingPartResolvedSm().Handle(Events.StartResolvingEvent));
+            ExpectException(() => SerializingPartResolvedSm().Handle(Events.StartPartResolvingEvent));
+            ExpectException(() => SerializingPartResolvedSm().Handle(Events.InitializeTransientEvent));
+            ExpectException(() => SerializingPartResolvedSm().Handle(Events.DestroyEvent));
+            ExpectException(() => SerializingPartResolvedSm().Handle(Events.StartUpdatingEvent));
+            ExpectException(() => SerializingPartResolvedSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => SerializingPartResolvedSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => SerializingPartResolvedSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => SerializingPartResolvedSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => SerializingPartResolvedSm().Handle(Events.InitializeAggregateEvent));
         }
 
         [Test]
         public void InvalidChangesFromSerializingResolved() {
-            ExpectException(() => SerializingResolvedSM().Handle(Events.InitializePersistentEvent));
-            ExpectException(() => SerializingResolvedSM().Handle(Events.EndPartResolvingEvent));
-            ExpectException(() => SerializingResolvedSM().Handle(Events.StartResolvingEvent));
-            ExpectException(() => SerializingResolvedSM().Handle(Events.StartPartResolvingEvent));
-            ExpectException(() => SerializingResolvedSM().Handle(Events.InitializeTransientEvent));
-            ExpectException(() => SerializingResolvedSM().Handle(Events.DestroyEvent));
-            ExpectException(() => SerializingResolvedSM().Handle(Events.StartUpdatingEvent));
-            ExpectException(() => SerializingResolvedSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => SerializingResolvedSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => SerializingResolvedSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => SerializingResolvedSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => SerializingResolvedSM().Handle(Events.InitializeAggregateEvent));
+            ExpectException(() => SerializingResolvedSm().Handle(Events.InitializePersistentEvent));
+            ExpectException(() => SerializingResolvedSm().Handle(Events.EndPartResolvingEvent));
+            ExpectException(() => SerializingResolvedSm().Handle(Events.StartResolvingEvent));
+            ExpectException(() => SerializingResolvedSm().Handle(Events.StartPartResolvingEvent));
+            ExpectException(() => SerializingResolvedSm().Handle(Events.InitializeTransientEvent));
+            ExpectException(() => SerializingResolvedSm().Handle(Events.DestroyEvent));
+            ExpectException(() => SerializingResolvedSm().Handle(Events.StartUpdatingEvent));
+            ExpectException(() => SerializingResolvedSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => SerializingResolvedSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => SerializingResolvedSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => SerializingResolvedSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => SerializingResolvedSm().Handle(Events.InitializeAggregateEvent));
         }
 
         [Test]
         public void InvalidChangesFromSerializingTransient() {
-            ExpectException(() => SerializingTransientSM().Handle(Events.InitializePersistentEvent));
-            ExpectException(() => SerializingTransientSM().Handle(Events.EndPartResolvingEvent));
-            ExpectException(() => SerializingTransientSM().Handle(Events.EndResolvingEvent));
-            ExpectException(() => SerializingTransientSM().Handle(Events.StartResolvingEvent));
-            ExpectException(() => SerializingTransientSM().Handle(Events.StartPartResolvingEvent));
-            ExpectException(() => SerializingTransientSM().Handle(Events.DestroyEvent));
-            ExpectException(() => SerializingTransientSM().Handle(Events.StartUpdatingEvent));
-            ExpectException(() => SerializingTransientSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => SerializingTransientSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => SerializingTransientSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => SerializingTransientSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => SerializingTransientSM().Handle(Events.InitializeAggregateEvent));
+            ExpectException(() => SerializingTransientSm().Handle(Events.InitializePersistentEvent));
+            ExpectException(() => SerializingTransientSm().Handle(Events.EndPartResolvingEvent));
+            ExpectException(() => SerializingTransientSm().Handle(Events.EndResolvingEvent));
+            ExpectException(() => SerializingTransientSm().Handle(Events.StartResolvingEvent));
+            ExpectException(() => SerializingTransientSm().Handle(Events.StartPartResolvingEvent));
+            ExpectException(() => SerializingTransientSm().Handle(Events.DestroyEvent));
+            ExpectException(() => SerializingTransientSm().Handle(Events.StartUpdatingEvent));
+            ExpectException(() => SerializingTransientSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => SerializingTransientSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => SerializingTransientSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => SerializingTransientSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => SerializingTransientSm().Handle(Events.InitializeAggregateEvent));
         }
 
         [Test]
         public void InvalidChangesFromTransient() {
-            ExpectException(() => TransientSM().Handle(Events.InitializePersistentEvent));
-            ExpectException(() => TransientSM().Handle(Events.EndPartResolvingEvent));
-            ExpectException(() => TransientSM().Handle(Events.StartResolvingEvent));
-            ExpectException(() => TransientSM().Handle(Events.StartPartResolvingEvent));
-            ExpectException(() => TransientSM().Handle(Events.InitializeTransientEvent));
-            ExpectException(() => TransientSM().Handle(Events.DestroyEvent));
-            ExpectException(() => TransientSM().Handle(Events.StartUpdatingEvent));
-            ExpectException(() => TransientSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => TransientSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => TransientSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => TransientSM().Handle(Events.InitializeAggregateEvent));
+            ExpectException(() => TransientSm().Handle(Events.InitializePersistentEvent));
+            ExpectException(() => TransientSm().Handle(Events.EndPartResolvingEvent));
+            ExpectException(() => TransientSm().Handle(Events.StartResolvingEvent));
+            ExpectException(() => TransientSm().Handle(Events.StartPartResolvingEvent));
+            ExpectException(() => TransientSm().Handle(Events.InitializeTransientEvent));
+            ExpectException(() => TransientSm().Handle(Events.DestroyEvent));
+            ExpectException(() => TransientSm().Handle(Events.StartUpdatingEvent));
+            ExpectException(() => TransientSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => TransientSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => TransientSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => TransientSm().Handle(Events.InitializeAggregateEvent));
         }
 
         [Test]
         public void InvalidChangesFromUpdating() {
-            ExpectException(() => UpdatingSM().Handle(Events.InitializePersistentEvent));
-            ExpectException(() => UpdatingSM().Handle(Events.EndPartResolvingEvent));
-            ExpectException(() => UpdatingSM().Handle(Events.StartResolvingEvent));
-            ExpectException(() => UpdatingSM().Handle(Events.StartPartResolvingEvent));
-            ExpectException(() => UpdatingSM().Handle(Events.InitializeTransientEvent));
-            ExpectException(() => UpdatingSM().Handle(Events.DestroyEvent));
-            ExpectException(() => UpdatingSM().Handle(Events.StartUpdatingEvent));
-            ExpectException(() => UpdatingSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => UpdatingSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => UpdatingSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => UpdatingSM().Handle(Events.StartSerializingEvent));
-            ExpectException(() => UpdatingSM().Handle(Events.InitializeAggregateEvent));
+            ExpectException(() => UpdatingSm().Handle(Events.InitializePersistentEvent));
+            ExpectException(() => UpdatingSm().Handle(Events.EndPartResolvingEvent));
+            ExpectException(() => UpdatingSm().Handle(Events.StartResolvingEvent));
+            ExpectException(() => UpdatingSm().Handle(Events.StartPartResolvingEvent));
+            ExpectException(() => UpdatingSm().Handle(Events.InitializeTransientEvent));
+            ExpectException(() => UpdatingSm().Handle(Events.DestroyEvent));
+            ExpectException(() => UpdatingSm().Handle(Events.StartUpdatingEvent));
+            ExpectException(() => UpdatingSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => UpdatingSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => UpdatingSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => UpdatingSm().Handle(Events.StartSerializingEvent));
+            ExpectException(() => UpdatingSm().Handle(Events.InitializeAggregateEvent));
         }
 
         [Test]
@@ -574,63 +283,63 @@ namespace NakedObjects.Architecture.Adapter {
 
         [Test]
         public void ValidChangesFromNew() {
-            ExpectNoException(() => NewSM().Handle(Events.InitializePersistentEvent));
-            ExpectNoException(() => NewSM().Handle(Events.InitializeTransientEvent));
-            ExpectNoException(() => NewSM().Handle(Events.InitializeAggregateEvent));
+            ExpectNoException(() => NewSm().Handle(Events.InitializePersistentEvent));
+            ExpectNoException(() => NewSm().Handle(Events.InitializeTransientEvent));
+            ExpectNoException(() => NewSm().Handle(Events.InitializeAggregateEvent));
         }
 
         [Test]
         public void ValidChangesFromPartResolved() {
-            ExpectNoException(() => ResolvedPartSM().Handle(Events.StartResolvingEvent));
-            ExpectNoException(() => ResolvedPartSM().Handle(Events.StartPartResolvingEvent));
-            ExpectNoException(() => ResolvedPartSM().Handle(Events.DestroyEvent));
-            ExpectNoException(() => ResolvedPartSM().Handle(Events.StartUpdatingEvent));
-            ExpectNoException(() => ResolvedPartSM().Handle(Events.StartSerializingEvent));
+            ExpectNoException(() => ResolvedPartSm().Handle(Events.StartResolvingEvent));
+            ExpectNoException(() => ResolvedPartSm().Handle(Events.StartPartResolvingEvent));
+            ExpectNoException(() => ResolvedPartSm().Handle(Events.DestroyEvent));
+            ExpectNoException(() => ResolvedPartSm().Handle(Events.StartUpdatingEvent));
+            ExpectNoException(() => ResolvedPartSm().Handle(Events.StartSerializingEvent));
         }
 
         [Test]
         public void ValidChangesFromResolved() {
-            ExpectNoException(() => ResolvedSM().Handle(Events.ResetEvent));
-            ExpectNoException(() => ResolvedSM().Handle(Events.DestroyEvent));
-            ExpectNoException(() => ResolvedSM().Handle(Events.StartUpdatingEvent));
-            ExpectNoException(() => ResolvedSM().Handle(Events.StartSerializingEvent));
+            ExpectNoException(() => ResolvedSm().Handle(Events.ResetEvent));
+            ExpectNoException(() => ResolvedSm().Handle(Events.DestroyEvent));
+            ExpectNoException(() => ResolvedSm().Handle(Events.StartUpdatingEvent));
+            ExpectNoException(() => ResolvedSm().Handle(Events.StartSerializingEvent));
         }
 
         [Test]
         public void ValidChangesFromResolving() {
-            ExpectNoException(() => ResolvingSM().Handle(Events.EndResolvingEvent));
+            ExpectNoException(() => ResolvingSm().Handle(Events.EndResolvingEvent));
         }
 
         [Test]
         public void ValidChangesFromResolvingPart() {
-            ExpectNoException(() => ResolvingPartSM().Handle(Events.EndPartResolvingEvent));
-            ExpectNoException(() => ResolvingPartSM().Handle(Events.EndResolvingEvent));
+            ExpectNoException(() => ResolvingPartSm().Handle(Events.EndPartResolvingEvent));
+            ExpectNoException(() => ResolvingPartSm().Handle(Events.EndResolvingEvent));
         }
 
         [Test]
         public void ValidChangesFromSerializingPartResolved() {
-            ExpectNoException(() => SerializingPartResolvedSM().Handle(Events.EndSerializingEvent));
+            ExpectNoException(() => SerializingPartResolvedSm().Handle(Events.EndSerializingEvent));
         }
 
         [Test]
         public void ValidChangesFromSerializingResolved() {
-            ExpectNoException(() => SerializingResolvedSM().Handle(Events.EndSerializingEvent));
+            ExpectNoException(() => SerializingResolvedSm().Handle(Events.EndSerializingEvent));
         }
 
         [Test]
         public void ValidChangesFromSerializingTransient() {
-            ExpectNoException(() => SerializingTransientSM().Handle(Events.EndSerializingEvent));
+            ExpectNoException(() => SerializingTransientSm().Handle(Events.EndSerializingEvent));
         }
 
         [Test]
         public void ValidChangesFromTransient() {
-            ExpectNoException(() => TransientSM().Handle(Events.StartResolvingEvent));
-            ExpectNoException(() => TransientSM().Handle(Events.StartSerializingEvent));
+            ExpectNoException(() => TransientSm().Handle(Events.StartResolvingEvent));
+            ExpectNoException(() => TransientSm().Handle(Events.StartSerializingEvent));
         }
 
         [Test]
         public void ValidChangesFromUpdating() {
-            ExpectNoException(() => UpdatingSM().Handle(Events.EndUpdatingEvent));
+            ExpectNoException(() => UpdatingSm().Handle(Events.EndUpdatingEvent));
         }
     }
 }

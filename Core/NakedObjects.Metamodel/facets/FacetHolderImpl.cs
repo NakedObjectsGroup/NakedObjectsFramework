@@ -59,8 +59,8 @@ namespace NakedObjects.Architecture.Facets {
             return (T) GetFacet(typeof (T));
         }
 
-        public IFacet[] GetFacets(IFacetFilter filter) {
-            return FacetUtils.GetFacets(facetsByClass, filter);
+        public IEnumerable<IFacet> GetFacets() {
+            return facetsByClass.Values;
         }
 
         #endregion

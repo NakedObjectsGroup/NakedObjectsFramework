@@ -15,7 +15,6 @@ namespace NakedObjects.Architecture.Persist {
     /// be concerned with whether the object already exists in memory, persistently, or both. 
     /// </summary>
     public interface ILifecycleManager {
-        
         INakedObject CreateInstance(INakedObjectSpecification specification);
 
         INakedObject CreateViewModel(INakedObjectSpecification specification);

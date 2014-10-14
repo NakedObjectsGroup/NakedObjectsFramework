@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Spec {
-
     /// <summary>
     /// Gives access to the full Metamodel (as created during initial reflection)
     /// for any given domain object type (defined by the FullName property).

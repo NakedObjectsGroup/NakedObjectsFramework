@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Naming.DescribedAs;
@@ -22,8 +24,8 @@ namespace NakedObjects.Architecture.Reflect {
         private readonly string defaultName;
         private readonly IFacetHolder facetHolder;
         private readonly string id;
-        private readonly ISession session;
         private readonly ILifecycleManager lifecycleManager;
+        private readonly ISession session;
 
 
         protected internal NakedObjectMemberAbstract(string id, IFacetHolder facetHolder, ISession session, ILifecycleManager lifecycleManager) {
@@ -37,6 +39,14 @@ namespace NakedObjects.Architecture.Reflect {
             this.facetHolder = facetHolder;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
+        }
+
+        public ISession Session {
+            get { return session; }
+        }
+
+        public ILifecycleManager LifecycleManager {
+            get { return lifecycleManager; }
         }
 
         #region INakedObjectMember Members
@@ -84,8 +94,8 @@ namespace NakedObjects.Architecture.Reflect {
             return facetHolder.GetFacet<T>();
         }
 
-        public virtual IFacet[] GetFacets(IFacetFilter filter) {
-            return facetHolder.GetFacets(filter);
+        public virtual IEnumerable<IFacet> GetFacets() {
+            return facetHolder.GetFacets();
         }
 
         public virtual void AddFacet(IFacet facet) {
@@ -125,14 +135,6 @@ namespace NakedObjects.Architecture.Reflect {
 
         public bool IsNullable {
             get { return facetHolder.ContainsFacet(typeof (INullableFacet)); }
-        }
-
-        public ISession Session {
-            get { return session; }
-        }
-
-        public ILifecycleManager LifecycleManager {
-            get { return lifecycleManager; }
         }
 
         #endregion

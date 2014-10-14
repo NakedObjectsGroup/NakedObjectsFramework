@@ -122,8 +122,8 @@ namespace NakedObjects.Reflector.Spec {
             return innerSpec.GetFacet<T>();
         }
 
-        public IFacet[] GetFacets(IFacetFilter filter) {
-            return innerSpec.GetFacets(filter);
+        public IEnumerable<IFacet> GetFacets() {
+            return innerSpec.GetFacets();
         }
 
         public void AddFacet(IFacet facet) {

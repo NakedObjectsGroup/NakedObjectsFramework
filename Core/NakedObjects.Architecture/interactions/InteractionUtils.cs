@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Linq;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Hide;
 using NakedObjects.Architecture.Persist;
@@ -14,7 +15,7 @@ namespace NakedObjects.Architecture.Interactions {
     public static class InteractionUtils {
         public static bool IsVisible(IFacetHolder facetHolder, InteractionContext ic, ILifecycleManager persistor) {
             var buf = new InteractionBuffer();
-            IFacet[] facets = facetHolder.GetFacets(FacetFilters.IsA(typeof (IHidingInteractionAdvisor)));
+            var facets = facetHolder.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
             foreach (IHidingInteractionAdvisor advisor in facets) {
                 buf.Append(advisor.Hides(ic, persistor));
             }
@@ -23,7 +24,7 @@ namespace NakedObjects.Architecture.Interactions {
 
         public static bool IsVisibleWhenPersistent(IFacetHolder facetHolder, InteractionContext ic, ILifecycleManager persistor) {
             var buf = new InteractionBuffer();
-            IFacet[] facets = facetHolder.GetFacets(FacetFilters.IsA(typeof (IHidingInteractionAdvisor)));
+            var facets = facetHolder.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
             foreach (IHidingInteractionAdvisor advisor in facets) {
                 if (advisor is IHiddenFacet) {
                     if (((IHiddenFacet) advisor).Value == WhenTo.OncePersisted) {
@@ -45,7 +46,7 @@ namespace NakedObjects.Architecture.Interactions {
         }
 
         private static InteractionBuffer IsUsable(IFacetHolder facetHolder, InteractionContext ic, InteractionBuffer buf) {
-            IFacet[] facets = facetHolder.GetFacets(FacetFilters.IsA(typeof (IDisablingInteractionAdvisor)));
+            var facets = facetHolder.GetFacets().Where(f => f is IDisablingInteractionAdvisor).Cast<IDisablingInteractionAdvisor>();
             foreach (IDisablingInteractionAdvisor advisor in facets) {
                 buf.Append(advisor.Disables(ic));
             }
@@ -67,7 +68,7 @@ namespace NakedObjects.Architecture.Interactions {
         }
 
         public static InteractionBuffer IsValid(IFacetHolder facetHolder, InteractionContext ic, InteractionBuffer buf) {
-            IFacet[] facets = facetHolder.GetFacets(FacetFilters.IsA(typeof (IValidatingInteractionAdvisor)));
+            var facets = facetHolder.GetFacets().Where(f => f is IValidatingInteractionAdvisor).Cast<IValidatingInteractionAdvisor>();
             foreach (IValidatingInteractionAdvisor advisor in facets) {
                 buf.Append(advisor.Invalidates(ic));
             }

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Common.Logging;
@@ -146,8 +147,8 @@ namespace NakedObjects.Reflector.Spec {
             return nakedObjectActionPeer.GetFacet(type);
         }
 
-        public override IFacet[] GetFacets(IFacetFilter filter) {
-            return nakedObjectActionPeer.GetFacets(filter);
+        public override IEnumerable<IFacet> GetFacets() {
+            return nakedObjectActionPeer.GetFacets();
         }
 
         public override void AddFacet(IFacet facet) {

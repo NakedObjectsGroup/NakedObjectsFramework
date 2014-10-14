@@ -25,7 +25,7 @@ namespace NakedObjects.Architecture.Persist {
 
         void ReplacePoco(INakedObject nakedObject, object newDomainObject);
 
-     
+
         INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj);
 
         INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid);
@@ -33,7 +33,7 @@ namespace NakedObjects.Architecture.Persist {
         void MadePersistent(INakedObject nakedObject);
         void UpdateViewModel(INakedObject adapter, string[] keys);
         List<INakedObject> GetCollectionOfAdaptedObjects(IEnumerable domainObjects);
-        
+
         INakedObject GetServiceAdapter(object service);
         INakedObject GetKnownAdapter(IOid oid);
         INakedObject CreateViewModelAdapter(INakedObjectSpecification specification, object viewModel);

@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Interactions;
@@ -138,7 +139,7 @@ namespace NakedObjects.Reflector.Spec {
         /// <summary>
         ///     Does nothing
         /// </summary>
-        public virtual IFacet[] GetFacets(IFacetFilter filter) {
+        public virtual IEnumerable<IFacet> GetFacets() {
             return null;
         }
 

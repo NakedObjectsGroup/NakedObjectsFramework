@@ -15,8 +15,6 @@ namespace NakedObjects.Architecture.Reflect {
         IIntrospectableSpecification GetSpecification(Type type);
 
         IIntrospectableSpecification GetSpecification(string name);
-
-       
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -9,10 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Architecture.Facets.Naming.Named;
-using NakedObjects.Architecture.Facets.Objects.Ident.Plural;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Util {
     public static class CollectionUtils {
