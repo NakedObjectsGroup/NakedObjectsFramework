@@ -42,7 +42,8 @@ namespace NakedObjects.Architecture.Persist {
 
         INakedObject GetViewModel(IOid oid);
 
-        IOid RestoreGenericOid(string[] encodedData);
+        IOid RestoreOid(string[] encodedData);
+
         INakedObject LoadObject(IOid oid, INakedObjectSpecification specification);
     }
 

@@ -540,7 +540,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         private PropertyContext SetupPropertyContext(INakedObject nakedObject, string propertyName, object toAdd) {
             PropertyContext context = GetProperty(nakedObject, propertyName);
             context.ProposedValue = toAdd;
-            context.ProposedNakedObject = framework.LifecycleManager.CreateAdapter(toAdd, null, null);
+            context.ProposedNakedObject = framework.Manager.CreateAdapter(toAdd, null, null);
             return context;
         }
 
@@ -605,17 +605,17 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
             if (specification.IsParseable) {
-                return specification.GetFacet<IParseableFacet>().ParseTextEntry(rawValue.ToString(), framework.LifecycleManager);
+                return specification.GetFacet<IParseableFacet>().ParseTextEntry(rawValue.ToString(), framework.Manager);
             }
 
             if (specification.IsCollection) {
                 var elementSpec = specification.GetFacet<ITypeOfFacet>().ValueSpec;
 
                 if (elementSpec.IsParseable) {
-                    var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.LifecycleManager)).ToArray();
+                    var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.Manager)).ToArray();
                     var elementType = TypeUtils.GetType(elementSpec.FullName);
                     Type collType = typeof (List<>).MakeGenericType(elementType);
-                    var collection = framework.LifecycleManager.CreateAdapter(Activator.CreateInstance(collType), null, null);
+                    var collection = framework.Manager.CreateAdapter(Activator.CreateInstance(collType), null, null);
 
                     collection.Specification.GetFacet<ICollectionFacet>().Init(collection, elements);
                     return collection;
@@ -623,7 +623,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             }
 
 
-            return framework.LifecycleManager.CreateAdapter(rawValue, null, null);
+            return framework.Manager.CreateAdapter(rawValue, null, null);
         }
 
         private IConsent CanSetPropertyValue(PropertyContext context) {
@@ -650,13 +650,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private INakedObject GetObjectAsNakedObject(LinkObjectId objectId) {
             object obj = oidStrategy.GetDomainObjectByOid(objectId);
-            return framework.LifecycleManager.CreateAdapter(obj, null, null);
+            return framework.Manager.CreateAdapter(obj, null, null);
         }
 
 
         private INakedObject GetServiceAsNakedObject(LinkObjectId serviceName) {
             object obj = oidStrategy.GetServiceByServiceName(serviceName);
-            return framework.LifecycleManager.CreateAdapter(obj, null, null);
+            return framework.Manager.CreateAdapter(obj, null, null);
         }
 
         private ParameterContext[] FilterParmsForContributedActions(INakedObjectAction action, INakedObjectSpecification targetSpec, string uid) {
@@ -944,7 +944,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                         string rawValue = value.ToString();
 
                         try {
-                            mappedArguments[key] = expectedType.GetFacet<IParseableFacet>().ParseTextEntry(rawValue, framework.LifecycleManager);
+                            mappedArguments[key] = expectedType.GetFacet<IParseableFacet>().ParseTextEntry(rawValue, framework.Manager);
 
                             errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
                                 ProposedValue = rawValue
@@ -964,7 +964,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                         });
                     }
                     else {
-                        mappedArguments[key] = framework.LifecycleManager.CreateAdapter(value, null, null);
+                        mappedArguments[key] = framework.Manager.CreateAdapter(value, null, null);
 
                         errors.Add(new ChoiceContextSurface(key, GetSpecificationWrapper(expectedType)) {
                             ProposedValue = getValue(ep)

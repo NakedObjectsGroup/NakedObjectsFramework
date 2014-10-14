@@ -115,12 +115,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         internal static string ObjectIconAndLink(this HtmlHelper html, string linkText, string actionName, object model, bool withTitleAttr = false) {
-            INakedObject nakedObject = html.Framework().LifecycleManager.CreateAdapter(model, null, null);
+            INakedObject nakedObject = html.Framework().Manager.CreateAdapter(model, null, null);
             return html.ObjectIcon(nakedObject) + html.ObjectLink(linkText, actionName, model, withTitleAttr);
         }
 
         internal static string ObjectIconAndDetailsLink(this HtmlHelper html, string linkText, string actionName, object model) {
-            INakedObject nakedObject = html.Framework().LifecycleManager.CreateAdapter(model, null, null);
+            INakedObject nakedObject = html.Framework().Manager.CreateAdapter(model, null, null);
             return html.ObjectIcon(nakedObject) + html.ObjectTitle(model) + html.ObjectLink(MvcUi.Details, actionName, model);
         }
 
@@ -378,7 +378,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static IEnumerable<Tuple<INakedObjectAssociation, INakedObject>> Items(this INakedObjectAssociation assoc, HtmlHelper html, INakedObject target) {
-            return assoc.GetNakedObject(target).GetAsEnumerable(html.Framework().LifecycleManager).Select(no => new Tuple<INakedObjectAssociation, INakedObject>(assoc, no));
+            return assoc.GetNakedObject(target).GetAsEnumerable(html.Framework().Manager).Select(no => new Tuple<INakedObjectAssociation, INakedObject>(assoc, no));
         }
 
         internal static IEnumerable<ElementDescriptor> EditObjectFields(this HtmlHelper html,
@@ -904,7 +904,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             string innerHtml = "";
 
-            INakedObject[] collection = collectionNakedObject.GetAsEnumerable(html.Framework().LifecycleManager).ToArray();
+            INakedObject[] collection = collectionNakedObject.GetAsEnumerable(html.Framework().Manager).ToArray();
             
             var collectionSpec =  html.Framework().Metamodel.GetSpecification( collectionNakedObject.GetTypeOfFacetFromSpec().ValueSpec);
                    
@@ -1453,7 +1453,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
 
             if (value is string) {
-                return spec.GetFacet<IParseableFacet>().ParseTextEntry((string) value, html.Framework().LifecycleManager);
+                return spec.GetFacet<IParseableFacet>().ParseTextEntry((string)value, html.Framework().Manager);
             }
 
             return html.Framework().GetNakedObject(value);
@@ -1491,8 +1491,8 @@ namespace NakedObjects.Web.Mvc.Html {
 
                     if (itemSpec.IsParseable) {
                         var collection = (INakedObject) rawvalue;
-                        List<object> parsedCollection = collection.GetCollectionFacetFromSpec().AsEnumerable(collection, html.Framework().LifecycleManager).Select(no => html.GetAndParseValueAsNakedObject(itemSpec, no.Object).GetDomainObject()).ToList();
-                        return html.Framework().LifecycleManager.CreateAdapter(parsedCollection, null, null);
+                        List<object> parsedCollection = collection.GetCollectionFacetFromSpec().AsEnumerable(collection, html.Framework().Manager).Select(no => html.GetAndParseValueAsNakedObject(itemSpec, no.Object).GetDomainObject()).ToList();
+                        return html.Framework().Manager.CreateAdapter(parsedCollection, null, null);
                     }
 
                     return (INakedObject) rawvalue;
@@ -1556,7 +1556,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 existingNakedObjects = new[] {existingNakedObject};
             }
             else {
-                existingNakedObjects = existingNakedObject.GetCollectionFacetFromSpec().AsEnumerable(existingNakedObject, html.Framework().LifecycleManager);
+                existingNakedObjects = existingNakedObject.GetCollectionFacetFromSpec().AsEnumerable(existingNakedObject, html.Framework().Manager);
             }
 
             var enumFacet = choice.Specification.GetFacet<IEnumValueFacet>();
@@ -1867,7 +1867,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetCollectionAsTable(this HtmlHelper html, PropertyContext propertyContext) {
             INakedObject collectionNakedObject = propertyContext.GetValue(html.Framework());
-            bool any = collectionNakedObject.GetAsEnumerable(html.Framework().LifecycleManager).Any();
+            bool any = collectionNakedObject.GetAsEnumerable(html.Framework().Manager).Any();
             Func<INakedObject, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
 
             Func<INakedObjectAssociation, bool> filterFunc;
@@ -1915,7 +1915,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetCollectionAsList(this HtmlHelper html, PropertyContext propertyContext) {
             INakedObject collectionNakedObject = propertyContext.GetValue(html.Framework());
-            bool any = collectionNakedObject.GetAsEnumerable(html.Framework().LifecycleManager).Any();
+            bool any = collectionNakedObject.GetAsEnumerable(html.Framework().Manager).Any();
             Func<INakedObject, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
             return (any ? html.GetCollectionDisplayLinks(propertyContext) : GetCollectionTitle(propertyContext, 0)) +
                    html.CollectionTable(collectionNakedObject, linkFunc, x => false, null, false, false, true);
@@ -2070,7 +2070,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetMaskedValue(this HtmlHelper html, INakedObject valueNakedObject, IMaskFacet mask) {
             if (valueNakedObject != null) {
-                return mask != null ? valueNakedObject.Specification.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, valueNakedObject, html.Framework().LifecycleManager) : valueNakedObject.TitleString();
+                return mask != null ? valueNakedObject.Specification.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, valueNakedObject, html.Framework().Manager) : valueNakedObject.TitleString();
             }
             return null;
         }
@@ -2585,7 +2585,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetDisplayTitle(this HtmlHelper html, IFacetHolder holder, INakedObject nakedObject) {
             var mask = holder.GetFacet<IMaskFacet>();
-            string title = mask != null ? nakedObject.Specification.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, nakedObject, html.Framework().LifecycleManager) : nakedObject.TitleString();
+            string title = mask != null ? nakedObject.Specification.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, nakedObject, html.Framework().Manager) : nakedObject.TitleString();
             return string.IsNullOrWhiteSpace(title) && !nakedObject.Specification.IsParseable ? nakedObject.Specification.UntitledName : title;
         }
 

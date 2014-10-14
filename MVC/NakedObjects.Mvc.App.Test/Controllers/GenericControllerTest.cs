@@ -551,7 +551,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         public void EditSaveValidationOk(Vendor vendor) {
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            INakedObject adaptedVendor = NakedObjectsFramework.LifecycleManager.CreateAdapter(vendor, null, null);
+            INakedObject adaptedVendor = NakedObjectsFramework.Manager.CreateAdapter(vendor, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(vendor)};
@@ -572,8 +572,8 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         public void EditInlineSaveValidationOk(Shift shift) {
-            INakedObject adaptedShift = NakedObjectsFramework.LifecycleManager.CreateAdapter(shift, null, null);
-            INakedObject adaptedTimePeriod = NakedObjectsFramework.LifecycleManager.CreateAdapter(shift.Times, null, null);
+            INakedObject adaptedShift = NakedObjectsFramework.Manager.CreateAdapter(shift, null, null);
+            INakedObject adaptedTimePeriod = NakedObjectsFramework.Manager.CreateAdapter(shift.Times, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForShiftEdit(adaptedShift, adaptedTimePeriod, DateTime.Now.ToString(), DateTime.Now.ToString(), out idToRawvalue);
 
@@ -596,7 +596,7 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         public void EditSaveValidationFail(Vendor vendor) {
-            INakedObject adaptedVendor = NakedObjectsFramework.LifecycleManager.CreateAdapter(vendor, null, null);
+            INakedObject adaptedVendor = NakedObjectsFramework.Manager.CreateAdapter(vendor, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForVendorEdit(adaptedVendor, "", "", "", "", "", "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(vendor)};
@@ -613,8 +613,8 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         public void EditInlineSaveValidationFail(Shift shift) {
-            INakedObject adaptedShift = NakedObjectsFramework.LifecycleManager.CreateAdapter(shift, null, null);
-            INakedObject adaptedTimePeriod = NakedObjectsFramework.LifecycleManager.CreateAdapter(shift.Times, null, null);
+            INakedObject adaptedShift = NakedObjectsFramework.Manager.CreateAdapter(shift, null, null);
+            INakedObject adaptedTimePeriod = NakedObjectsFramework.Manager.CreateAdapter(shift.Times, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForShiftEdit(adaptedShift, adaptedTimePeriod, DateTime.Now.ToString(), "invalid", out idToRawvalue);
 
@@ -632,7 +632,7 @@ namespace MvcTestApp.Tests.Controllers {
 
 
         public void EditSaveValidationFailEmptyForm(Individual individual) {
-            INakedObject nakedObject = NakedObjectsFramework.LifecycleManager.CreateAdapter(individual, null, null);
+            INakedObject nakedObject = NakedObjectsFramework.Manager.CreateAdapter(individual, null, null);
 
             FormCollection form = GetForm(new Dictionary<string, string>());
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(individual)};
@@ -1260,7 +1260,7 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void EditSaveConcurrencyFail() {
             Store store = Store;
-            INakedObject adaptedStore = NakedObjectsFramework.LifecycleManager.CreateAdapter(store, null, null);
+            INakedObject adaptedStore = NakedObjectsFramework.Manager.CreateAdapter(store, null, null);
             IDictionary<string, string> idToRawvalue;
             string differentDateTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), differentDateTime, out idToRawvalue);
@@ -1284,7 +1284,7 @@ namespace MvcTestApp.Tests.Controllers {
         [Test]
         public void EditSaveConcurrencyOk() {
             Store store = Store;
-            INakedObject adaptedStore = NakedObjectsFramework.LifecycleManager.CreateAdapter(store, null, null);
+            INakedObject adaptedStore = NakedObjectsFramework.Manager.CreateAdapter(store, null, null);
             IDictionary<string, string> idToRawvalue;
             FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);
 
@@ -1512,7 +1512,7 @@ namespace MvcTestApp.Tests.Controllers {
                           "&subEditObjectId=" + NakedObjectsFramework.GetObjectId(transientVendor) +
                           "&targetObjectId=" + NakedObjectsFramework.GetObjectId(contactRepo);
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            INakedObject adaptedVendor = NakedObjectsFramework.LifecycleManager.CreateAdapter(transientVendor, null, null);
+            INakedObject adaptedVendor = NakedObjectsFramework.Manager.CreateAdapter(transientVendor, null, null);
 
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = EmployeeRepoId, ActionId = action.Id, InvokeActionAsSave = data};
@@ -1538,7 +1538,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;1;False;;0");
             form.Add("SalesOrderHeader-AddNewSalesReasons-Reasons-Select", @"AdventureWorksModel.SalesReason;1;System.Int32;2;False;;0");
 
-            INakedObject order = NakedObjectsFramework.LifecycleManager.CreateAdapter(Order, null, null);
+            INakedObject order = NakedObjectsFramework.Manager.CreateAdapter(Order, null, null);
             INakedObjectAssociation assocMD = order.Specification.GetProperty("ModifiedDate");
             INakedObjectAction action = order.GetActionLeafNode("AddNewSalesReasons");
 
@@ -1567,7 +1567,7 @@ namespace MvcTestApp.Tests.Controllers {
             form.Add("SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories-Select", @"1");
             form.Add("SalesOrderHeader-AddNewSalesReasonsByCategories-ReasonCategories-Select", @"2");
 
-            INakedObject order = NakedObjectsFramework.LifecycleManager.CreateAdapter(Order, null, null);
+            INakedObject order = NakedObjectsFramework.Manager.CreateAdapter(Order, null, null);
             INakedObjectAssociation assocMD = order.Specification.GetProperty("ModifiedDate");
             INakedObjectAction action = order.GetActionLeafNode("AddNewSalesReasonsByCategories");
 
@@ -1768,7 +1768,7 @@ namespace MvcTestApp.Tests.Controllers {
                           "&contextActionId=";
 
             string uniqueActNum = Guid.NewGuid().ToString().Remove(14);
-            INakedObject adaptedVendor = NakedObjectsFramework.LifecycleManager.CreateAdapter(transientVendor, null, null);
+            INakedObject adaptedVendor = NakedObjectsFramework.Manager.CreateAdapter(transientVendor, null, null);
 
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
 
@@ -1834,7 +1834,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeObjectActionParmsNotSet() {
-            INakedObject adaptedProduct = NakedObjectsFramework.LifecycleManager.CreateAdapter(Product, null, null);
+            INakedObject adaptedProduct = NakedObjectsFramework.Manager.CreateAdapter(Product, null, null);
             FormCollection form = GetFormForBestSpecialOffer(adaptedProduct, "");
             var objectModel = new ObjectAndControlData {ActionId = "BestSpecialOffer", Id = ProductId};
 
@@ -1848,7 +1848,7 @@ namespace MvcTestApp.Tests.Controllers {
 
         [Test]
         public void InvokeObjectActionParmsSet() {
-            INakedObject adaptedProduct = NakedObjectsFramework.LifecycleManager.CreateAdapter(Product, null, null);
+            INakedObject adaptedProduct = NakedObjectsFramework.Manager.CreateAdapter(Product, null, null);
             FormCollection form = GetFormForBestSpecialOffer(adaptedProduct, "1");
             var objectModel = new ObjectAndControlData {ActionId = "BestSpecialOffer", Id = ProductId};
 
@@ -2190,7 +2190,7 @@ namespace MvcTestApp.Tests.Controllers {
         //  ----> System.Data.SqlClient.SqlException : A transport-level error has occurred when sending the request to the server. (provider: Shared Memory Provider, error: 0 - No process is on the other end of the pipe.)
         public void EditSaveEFConcurrencyFail() {
             Store store = Store;
-            INakedObject adaptedStore = NakedObjectsFramework.LifecycleManager.CreateAdapter(store, null, null);
+            INakedObject adaptedStore = NakedObjectsFramework.Manager.CreateAdapter(store, null, null);
             IDictionary<string, string> idToRawvalue;
 
             FormCollection form = GetFormForStoreEdit(adaptedStore, store.Name, NakedObjectsFramework.GetObjectId(store.SalesPerson), store.ModifiedDate.ToString(CultureInfo.InvariantCulture), out idToRawvalue);

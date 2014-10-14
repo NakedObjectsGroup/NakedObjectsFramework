@@ -125,12 +125,13 @@ namespace NakedObjects.Web.Mvc.Html {
             return framework.GetNakedObjectFromId(encodedId).Object;
         }
 
+        // TODO move this onto lifecycle manager
         public static INakedObject GetNakedObjectFromId(this INakedObjectsFramework framework, string encodedId) {
             if (string.IsNullOrEmpty(encodedId)) {
                 return null;
             }
 
-            IOid oid = framework.LifecycleManager.OidGenerator.RestoreOid(framework.LifecycleManager, encodedId.Split(';'));
+            IOid oid = framework.LifecycleManager.RestoreOid(encodedId.Split(';'));
 
             if (oid is CollectionMemento) {
                 return RestoreCollection(oid as CollectionMemento);
@@ -172,7 +173,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static INakedObject RestoreViewModel(this INakedObjectsFramework framework, ViewModelOid viewModelOid) {
-            return framework.LifecycleManager.GetAdapterFor(viewModelOid) ?? framework.LifecycleManager.GetViewModel(viewModelOid);
+            return framework.Manager.GetAdapterFor(viewModelOid) ?? framework.LifecycleManager.GetViewModel(viewModelOid);
         }
 
         public static INakedObject RestoreObject(this INakedObjectsFramework framework, IOid oid) {
@@ -183,7 +184,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static INakedObject GetNakedObject(this INakedObjectsFramework framework, object domainObject) {
-            return framework.LifecycleManager.CreateAdapter(domainObject, null, null);
+            return framework.Manager.CreateAdapter(domainObject, null, null);
         }
 
         public static INakedObject GetAdaptedService(this INakedObjectsFramework framework, string name) {
@@ -260,7 +261,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static INakedObject Parse(this INakedObjectSpecification spec, string s, INakedObjectsFramework framework) {
-            return s == null ? framework.LifecycleManager.CreateAdapter("", null, null) : spec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.LifecycleManager);
+            return s == null ? framework.Manager.CreateAdapter("", null, null) : spec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.Manager);
         }
 
         public static bool IsQueryOnly(this INakedObjectAction action) {
@@ -288,7 +289,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
 
             if (collectionitemSpec.IsParseable) {
-                objCollection = rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : collectionitemSpec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.LifecycleManager).Object).ToArray();
+                objCollection = rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : collectionitemSpec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.Manager).Object).ToArray();
             }
             else {
                 // need to check if collection is actually a collection memento 
@@ -305,7 +306,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             objCollection.Where(o => o != null).ForEach(o => typedCollection.Add(o));
 
-            return framework.LifecycleManager.CreateAdapter(typedCollection.AsQueryable(), null, null);
+            return framework.Manager.CreateAdapter(typedCollection.AsQueryable(), null, null);
         }
 
         public static bool IsViewModelEditView(this INakedObject target) {

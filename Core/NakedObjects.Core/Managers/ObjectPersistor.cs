@@ -22,6 +22,7 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
+using NakedObjects.EntityObjectStore;
 using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Persistor.Transaction;
 using NakedObjects.Util;
@@ -246,5 +247,6 @@ namespace NakedObjects.Managers {
         public void LoadComplexTypes(INakedObject pocoAdapter, bool isGhost) {
             objectStore.LoadComplexTypes(pocoAdapter, isGhost);
         }
+
     }
 }

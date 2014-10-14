@@ -23,6 +23,7 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
+using NakedObjects.EntityObjectStore;
 using NakedObjects.Persistor;
 using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Util;
@@ -35,6 +36,7 @@ namespace NakedObjects.Managers {
         private readonly IMetamodelManager metamodel;
         private readonly IObjectPersistor objectPersistor;
         private readonly IPersistAlgorithm persistAlgorithm;
+        private readonly IOidGenerator oidGenerator;
         private readonly ISession session;
         private readonly INakedObjectTransactionManager transactionManager;
 
@@ -65,6 +67,7 @@ namespace NakedObjects.Managers {
             this.session = session;
             this.metamodel = metamodel;
             this.persistAlgorithm = persistAlgorithm;
+            this.oidGenerator = oidGenerator;
             this.injector = injector;
 
             Log.DebugFormat("Creating {0}", this);
@@ -232,6 +235,10 @@ namespace NakedObjects.Managers {
             if (!vmoid.IsFinal) {
                 vmoid.UpdateKeys(nakedObject.Specification.GetFacet<IViewModelFacet>().Derive(nakedObject), true);
             }
+        }
+
+        public IOid RestoreOid(string[] encodedData) {
+            return RestoreGenericOid(encodedData) ?? oidGenerator.RestoreOid(encodedData);
         }
 
         #endregion

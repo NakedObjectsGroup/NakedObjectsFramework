@@ -22,7 +22,7 @@ namespace NakedObjects.Architecture.Persist {
 
         IOid CreateTransientOid(object obj);
 
-        IOid RestoreOid(ILifecycleManager persistor, string[] encodedData);
+        IOid RestoreOid(string[] encodedData);
 
         IOid CreateOid(string typeName, object[] keys);
     }

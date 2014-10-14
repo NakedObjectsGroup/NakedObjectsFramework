@@ -215,7 +215,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         var itemvalues = values.Select(v => itemSpec.IsParseable ? (object) v : NakedObjectsContext.GetNakedObjectFromId(v).GetDomainObject()).ToList();
 
                         if (itemvalues.Any()) {
-                            AddAttemptedValue(name, NakedObjectsContext.LifecycleManager.CreateAdapter(itemvalues, null, null));
+                            AddAttemptedValue(name, NakedObjectsContext.Manager.CreateAdapter(itemvalues, null, null));
                         }
                     }
                 }
@@ -254,11 +254,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var fromStreamFacet = parm.Specification.GetFacet<IFromStreamFacet>();
             if (fromStreamFacet != null) {
                 var httpPostedFileBase = (HttpPostedFileBase) value;
-                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.LifecycleManager);
+                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.Manager);
             }
             var stringValue = value as string;
             if (parm.Specification.IsParseable) {
-                return parm.Specification.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.LifecycleManager);
+                return parm.Specification.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.Manager);
             }
 
             var collectionValue = value as IEnumerable;
@@ -414,12 +414,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var fromStreamFacet = assoc.Specification.GetFacet<IFromStreamFacet>();
             if (fromStreamFacet != null) {
                 var httpPostedFileBase = (HttpPostedFileBase)value;
-                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.LifecycleManager);
+                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, NakedObjectsContext.Manager);
             }
             var stringValue = value as string;
             if (assoc.Specification.IsParseable) {
 
-                return assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.LifecycleManager);
+                return assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry(stringValue, NakedObjectsContext.Manager);
             }
        
             if (assoc.IsObject) {
@@ -438,7 +438,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 foreach (var pair in fieldsAndMatchingValues) {
                     if (pair.Item1.Specification.IsParseable) {
                         INakedObject currentValue = pair.Item1.GetNakedObject(nakedObject);
-                        INakedObject concurrencyValue = pair.Item1.Specification.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.LifecycleManager);
+                        INakedObject concurrencyValue = pair.Item1.Specification.GetFacet<IParseableFacet>().ParseInvariant(pair.Item2 as string, NakedObjectsContext.Manager);
 
                         if (concurrencyValue != null && currentValue != null) {
                             if (concurrencyValue.TitleString() != currentValue.TitleString()) {
@@ -644,7 +644,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                                 try {
                                  
                                     var oneToOneAssoc = ((IOneToOneAssociation) assoc);
-                                    INakedObject value = assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry((string)newValue, NakedObjectsContext.LifecycleManager);
+                                    INakedObject value = assoc.Specification.GetFacet<IParseableFacet>().ParseTextEntry((string)newValue, NakedObjectsContext.Manager);
                                     oneToOneAssoc.SetAssociation(nakedObject, value);
                                 }
                                 catch (InvalidEntryException) {
@@ -706,8 +706,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
 
         private bool IsObjectCompleteAndSaved(INakedObject fieldTarget) {
-            if (fieldTarget.Specification.IsCollection) {         
-                if (fieldTarget.GetAsEnumerable(NakedObjectsContext.LifecycleManager).Any(no => !IsReferenceValidToPersist(no))) {
+            if (fieldTarget.Specification.IsCollection) {
+                if (fieldTarget.GetAsEnumerable(NakedObjectsContext.Manager).Any(no => !IsReferenceValidToPersist(no))) {
                     ModelState.AddModelError("", MvcUi.CollectionIncomplete);
                     return false;
                 }
@@ -804,7 +804,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         internal void SetPagingValues(ObjectAndControlData controlData, INakedObject nakedObject) {
             if (nakedObject.Specification.IsCollection) {
                 int sink1, sink2;
-                CurrentlyPaging(controlData, nakedObject.GetAsEnumerable(NakedObjectsContext.LifecycleManager).Count(), out sink1, out sink2);
+                CurrentlyPaging(controlData, nakedObject.GetAsEnumerable(NakedObjectsContext.Manager).Count(), out sink1, out sink2);
             }
         }
 
@@ -860,9 +860,9 @@ namespace NakedObjects.Web.Mvc.Controllers {
         }
 
         private  INakedObject DoPaging(INakedObject nakedObject, ICollectionFacet collectionfacet, int page, int pageSize, bool forceEnumerable) {
-            INakedObject newNakedObject = collectionfacet.Page(page, pageSize, nakedObject, NakedObjectsContext.LifecycleManager, forceEnumerable);
-            object[] objects = newNakedObject.GetAsEnumerable(NakedObjectsContext.LifecycleManager).Select(no => no.Object).ToArray();
-            newNakedObject.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Persistor, NakedObjectsContext.Metamodel, NakedObjectsContext.Session, nakedObject.Oid as CollectionMemento, objects) { IsPaged = true });
+            INakedObject newNakedObject = collectionfacet.Page(page, pageSize, nakedObject, NakedObjectsContext.Manager, forceEnumerable);
+            object[] objects = newNakedObject.GetAsEnumerable(NakedObjectsContext.Manager).Select(no => no.Object).ToArray();
+            newNakedObject.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Manager, NakedObjectsContext.Persistor, NakedObjectsContext.Metamodel, NakedObjectsContext.Session, nakedObject.Oid as CollectionMemento, objects) { IsPaged = true });
             return newNakedObject;
         }
 
@@ -870,7 +870,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             var form = controlData.Form;
             if (form != null && nakedObject != null && nakedObject.Specification.IsCollection && nakedObject.Oid is CollectionMemento) {
                 nakedObject = Page(nakedObject, nakedObject.GetAsQueryable().Count(), controlData, false);
-                var map = nakedObject.GetAsEnumerable(NakedObjectsContext.LifecycleManager).ToDictionary(NakedObjectsContext.GetObjectId, y => y.Object);
+                var map = nakedObject.GetAsEnumerable(NakedObjectsContext.Manager).ToDictionary(NakedObjectsContext.GetObjectId, y => y.Object);
                 var selected = map.Where(kvp => form.Keys.Cast<string>().Contains(kvp.Key) && form[kvp.Key].Contains("true")).Select(kvp => kvp.Value).ToArray();
                 return CloneAndPopulateCollection(nakedObject, selected, false);
             }
@@ -880,8 +880,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private  INakedObject CloneAndPopulateCollection(INakedObject nakedObject, object[] selected, bool forceEnumerable) {
             IList result = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
-            INakedObject adapter = NakedObjectsContext.LifecycleManager.CreateAdapter(nakedObject.Specification.IsQueryable && !forceEnumerable ? (IEnumerable)result.AsQueryable() : result, null, null);
-            adapter.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Persistor, NakedObjectsContext.Metamodel, NakedObjectsContext.Session, nakedObject.Oid as CollectionMemento, selected));
+            INakedObject adapter = NakedObjectsContext.Manager.CreateAdapter(nakedObject.Specification.IsQueryable && !forceEnumerable ? (IEnumerable)result.AsQueryable() : result, null, null);
+            adapter.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Manager, NakedObjectsContext.Persistor, NakedObjectsContext.Metamodel, NakedObjectsContext.Session, nakedObject.Oid as CollectionMemento, selected));
             return adapter;
         }
 

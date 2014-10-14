@@ -88,13 +88,13 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void GetCollectionNakedObjectFromId() {
             IList<Claim> claims = NakedObjectsFramework.GetService<ClaimRepository>().FindMyClaims(null, "");
-            INakedObject no = NakedObjectsFramework.LifecycleManager.CreateAdapter(claims, null, null);
+            INakedObject no = NakedObjectsFramework.Manager.CreateAdapter(claims, null, null);
 
             INakedObject service = NakedObjectsFramework.Services.GetService("ClaimRepository");
             INakedObjectAction action = service.Specification.GetAllActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Where(a => a.Id == "FindMyClaims").Single();
-            INakedObject[] parms = new[] {null, ""}.Select(o => NakedObjectsFramework.LifecycleManager.CreateAdapter(o, null, null)).ToArray();
+            INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsFramework.Manager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, service, action, parms);
             no.SetATransientOid(cm);
 
             string id = NakedObjectsFramework.GetObjectId(no);

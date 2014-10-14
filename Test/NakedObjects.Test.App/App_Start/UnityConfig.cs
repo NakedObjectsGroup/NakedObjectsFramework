@@ -134,7 +134,7 @@ namespace NakedObjects.Mvc.App.App_Start
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerRequestLifetimeManager());
             container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerRequestLifetimeManager());
             container.RegisterType<INakedObjectStore, EntityObjectStore.EntityObjectStore>(new PerRequestLifetimeManager());
-            container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerRequestLifetimeManager());
+            container.RegisterType<IIdentityMap, IdentityMapImpl>(new PerRequestLifetimeManager());
             container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerRequestLifetimeManager());
             container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerRequestLifetimeManager());
             container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerRequestLifetimeManager());

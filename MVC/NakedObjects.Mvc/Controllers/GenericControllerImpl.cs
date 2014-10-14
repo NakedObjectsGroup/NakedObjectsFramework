@@ -190,7 +190,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (filteredNakedObject.Specification.IsCollection) {
                
-                if (!filteredNakedObject.GetAsEnumerable(NakedObjectsContext.LifecycleManager).Any()) {
+                if (!filteredNakedObject.GetAsEnumerable(NakedObjectsContext.Manager).Any()) {
                     NakedObjectsContext.MessageBroker.AddWarning("No objects selected");
                     return AppropriateView(controlData, targetNakedObject, targetAction);
                 }
@@ -204,7 +204,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private  INakedObject Execute(INakedObjectAction action, INakedObject target, INakedObject[] parameterSet) {
             var result = action.Execute(target, parameterSet);
             if (result != null && result.Oid == null) {
-                result.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Persistor, NakedObjectsContext.Metamodel, NakedObjectsContext.Session, target, action, parameterSet));
+                result.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Manager, NakedObjectsContext.Persistor, NakedObjectsContext.Metamodel, NakedObjectsContext.Session, target, action, parameterSet));
             }
             return result;
         }    

@@ -81,7 +81,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public IEnumerable<INakedObjectSurface> ToEnumerable() {
-            return WrappedNakedObject.GetAsEnumerable(framework.LifecycleManager).Select(no => new NakedObjectWrapper(no, Surface, framework));
+            return WrappedNakedObject.GetAsEnumerable(framework.Manager).Select(no => new NakedObjectWrapper(no, Surface, framework));
         }
 
         // todo move into adapterutils
@@ -132,7 +132,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         private INakedObject Page(INakedObject objectRepresentingCollection, int page, int size) {
-            return objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.LifecycleManager, true);
+            return objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.Manager, true);
         }
 
         public override object GetScalarProperty(ScalarProperty name) {

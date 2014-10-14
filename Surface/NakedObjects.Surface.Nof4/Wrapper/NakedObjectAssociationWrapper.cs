@@ -188,7 +188,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 return nakedObject.TitleString();
             }
             var titleFacet = ((NakedObjectSpecificationWrapper) nakedObject.Specification).WrappedValue.GetFacet<ITitleFacet>();
-            return titleFacet.GetTitleWithMask(mask.Value, ((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.LifecycleManager);
+            return titleFacet.GetTitleWithMask(mask.Value, ((NakedObjectWrapper) nakedObject).WrappedNakedObject, framework.Manager);
         }
 
         public INakedObjectsSurface Surface { get; set; }

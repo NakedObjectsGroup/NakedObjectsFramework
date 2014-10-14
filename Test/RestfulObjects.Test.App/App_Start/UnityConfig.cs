@@ -134,7 +134,7 @@ namespace RestfulObjects.Test.App
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerResolveLifetimeManager());
             container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectStore, EntityObjectStore>(new PerResolveLifetimeManager());
-            container.RegisterType<IIdentityMap, EntityIdentityMapImpl>(new PerResolveLifetimeManager());
+            container.RegisterType<IIdentityMap, IdentityMapImpl>(new PerResolveLifetimeManager());
 
             container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerResolveLifetimeManager());

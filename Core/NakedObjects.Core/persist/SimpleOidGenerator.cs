@@ -64,8 +64,8 @@ namespace NakedObjects.Core.Persist {
             }
         }
 
-        public IOid RestoreOid(ILifecycleManager persistor, string[] encodedData) {
-            return persistor.RestoreGenericOid(encodedData) ?? new SerialOid(metamodel, encodedData);
+        public IOid RestoreOid(string[] encodedData) {
+            return new SerialOid(metamodel, encodedData);
         }
 
         public IOid CreateOid(string typeName, object[] keys) {

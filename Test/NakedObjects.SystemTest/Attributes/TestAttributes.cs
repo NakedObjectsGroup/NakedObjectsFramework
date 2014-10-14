@@ -1060,7 +1060,7 @@ namespace NakedObjects.SystemTest.Attributes
         {
             var service = (TestServiceNotContributedAction) GetTestService(typeof(TestServiceNotContributedAction)).NakedObject.Object;
             var obj = NewTestObject<Notcontributedaction1>().GetDomainObject();
-            var adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(obj, null, null);
+            var adapter = NakedObjectsFramework.Manager.CreateAdapter(obj, null, null);
             var actions = adapter.Specification.GetAllActions();
 
             Assert.AreEqual(1, actions.Count());
@@ -1077,7 +1077,7 @@ namespace NakedObjects.SystemTest.Attributes
         {
             var service = (TestServiceExcludeFromFindMenu)GetTestService(typeof(TestServiceExcludeFromFindMenu)).NakedObject.Object;
             Exclude1 obj = service.NewObject1();
-            INakedObject adapter = NakedObjectsFramework.LifecycleManager.CreateAdapter(obj, null, null);
+            INakedObject adapter = NakedObjectsFramework.Manager.CreateAdapter(obj, null, null);
             INakedObjectAction[] actions = adapter.Specification.GetRelatedServiceActions();
 
             Assert.AreEqual(1, actions.Count());
