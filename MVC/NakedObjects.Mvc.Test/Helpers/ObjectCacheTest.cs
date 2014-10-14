@@ -216,9 +216,9 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.HtmlHelper.ViewContext.HttpContext.Session.AddToCache(NakedObjectsFramework, claim);
             Assert.IsTrue(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
 
-            NakedObjectsFramework.LifecycleManager.StartTransaction();
+            NakedObjectsFramework.TransactionManager.StartTransaction();
             NakedObjectsFramework.Persistor.DestroyObject(claim);
-            NakedObjectsFramework.LifecycleManager.EndTransaction();
+            NakedObjectsFramework.TransactionManager.EndTransaction();
 
             Assert.IsFalse(mocks.HtmlHelper.ViewContext.HttpContext.Session.AllCachedObjects(NakedObjectsFramework).Contains(claim.Object));
         }

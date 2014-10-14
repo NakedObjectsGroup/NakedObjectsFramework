@@ -20,16 +20,18 @@ namespace NakedObjects.Xat {
     internal class TestObject : TestHasActions, ITestObject {
         private readonly ILifecycleManager lifecycleManager;
         private readonly IObjectPersistor persistor;
+        private readonly INakedObjectTransactionManager transactionManager;
         private static readonly ILog LOG;
 
         static TestObject() {
             LOG = LogManager.GetLogger(typeof (TestObject));
         }
 
-        public TestObject(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObject nakedObject, ITestObjectFactory factory)
+        public TestObject(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObject nakedObject, ITestObjectFactory factory, INakedObjectTransactionManager transactionManager)
             : base(factory, lifecycleManager) {
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
+            this.transactionManager = transactionManager;
             LOG.DebugFormat("Created test object for {0}", nakedObject);
             NakedObject = nakedObject;
         }
@@ -61,9 +63,9 @@ namespace NakedObjects.Xat {
         public ITestObject Save() {
             AssertCanBeSaved();
 
-            lifecycleManager.StartTransaction();
+            transactionManager.StartTransaction();
             lifecycleManager.MakePersistent(NakedObject);
-            lifecycleManager.EndTransaction();
+            transactionManager.EndTransaction();
             return this;
         }
 

@@ -556,7 +556,7 @@ namespace MvcTestApp.Tests.Controllers {
             FormCollection form = GetFormForVendorEdit(adaptedVendor, uniqueActNum, "AName", "1", "True", "True", "", out idToRawvalue);
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(vendor)};
 
-            NakedObjectsFramework.LifecycleManager.StartTransaction();
+            NakedObjectsFramework.TransactionManager.StartTransaction();
             try {
                 var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -567,7 +567,7 @@ namespace MvcTestApp.Tests.Controllers {
                 AssertIsDetailsViewOf<Vendor>(result);
             }
             finally {
-                NakedObjectsFramework.LifecycleManager.EndTransaction();
+                NakedObjectsFramework.TransactionManager.EndTransaction();
             }
         }
 
@@ -579,7 +579,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(shift)};
 
-            NakedObjectsFramework.LifecycleManager.StartTransaction();
+            NakedObjectsFramework.TransactionManager.StartTransaction();
             try {
                 var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -590,7 +590,7 @@ namespace MvcTestApp.Tests.Controllers {
                 AssertIsDetailsViewOf<Shift>(result);
             }
             finally {
-                NakedObjectsFramework.LifecycleManager.EndTransaction();
+                NakedObjectsFramework.TransactionManager.EndTransaction();
             }
         }
 
@@ -1267,7 +1267,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store)};
 
-            NakedObjectsFramework.LifecycleManager.StartTransaction();
+            NakedObjectsFramework.TransactionManager.StartTransaction();
             try {
                 controller.Edit(objectModel, form);
 
@@ -1277,7 +1277,7 @@ namespace MvcTestApp.Tests.Controllers {
                 Assert.AreSame(adaptedStore, expected.SourceNakedObject);
             }
             finally {
-                NakedObjectsFramework.LifecycleManager.EndTransaction();
+                NakedObjectsFramework.TransactionManager.EndTransaction();
             }
         }
 
@@ -1290,7 +1290,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store)};
 
-            NakedObjectsFramework.LifecycleManager.StartTransaction();
+            NakedObjectsFramework.TransactionManager.StartTransaction();
             try {
                 var result = (ViewResult) controller.Edit(objectModel, form);
 
@@ -1301,7 +1301,7 @@ namespace MvcTestApp.Tests.Controllers {
                 AssertIsDetailsViewOf<Store>(result);
             }
             finally {
-                NakedObjectsFramework.LifecycleManager.EndTransaction();
+                NakedObjectsFramework.TransactionManager.EndTransaction();
             }
         }
 
@@ -2197,7 +2197,7 @@ namespace MvcTestApp.Tests.Controllers {
 
             var objectModel = new ObjectAndControlData {Id = NakedObjectsFramework.GetObjectId(store)};
 
-            NakedObjectsFramework.LifecycleManager.StartTransaction();
+            NakedObjectsFramework.TransactionManager.StartTransaction();
             var conn = new SqlConnection(@"Data Source=" + Constants.Server + @";Initial Catalog=AdventureWorks;Integrated Security=True");
 
             conn.Open();
@@ -2219,7 +2219,7 @@ namespace MvcTestApp.Tests.Controllers {
                     cmd.ExecuteNonQuery();
                 }
 
-                NakedObjectsFramework.LifecycleManager.EndTransaction();
+                NakedObjectsFramework.TransactionManager.EndTransaction();
 
                 Assert.Fail("Expect concurrency exception");
             }

@@ -200,10 +200,10 @@ namespace NakedObjects.Managers {
         }
 
 
-        public void Abort(ILifecycleManager objectManager, IFacetHolder holder) {
+        public void Abort(INakedObjectTransactionManager transactionManager, IFacetHolder holder) {
             Log.Info("exception executing " + holder + ", aborting transaction");
             try {
-                objectManager.AbortTransaction();
+                transactionManager.AbortTransaction();
             }
             catch (Exception e2) {
                 Log.Error("failure during abort", e2);

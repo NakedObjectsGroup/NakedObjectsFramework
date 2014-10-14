@@ -20,8 +20,6 @@ namespace NakedObjects.Architecture.Persist {
         void EndTransaction();
 
         void AddCommand(IPersistenceCommand command);
-
-        void Abort(ILifecycleManager objectManager, IFacetHolder holder);
     }
 
 

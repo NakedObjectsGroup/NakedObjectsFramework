@@ -85,9 +85,9 @@ let CreateAndSetup<'t when 't : not struct> setter ctx =
     no
 
 let makeAndSaveChanges change (ctx : INakedObjectsFramework) = 
-    ctx.LifecycleManager.StartTransaction()
+    ctx.TransactionManager.StartTransaction()
     change()
-    ctx.LifecycleManager.EndTransaction()
+    ctx.TransactionManager.EndTransaction()
 
 let save no (ctx : INakedObjectsFramework) = 
     let saveNo() = no |> ctx.LifecycleManager.MakePersistent

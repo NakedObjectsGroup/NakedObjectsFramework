@@ -157,10 +157,10 @@ type DomainSystemTests() =
         //let replPc =   NakedObjectsFramework.LifecycleManager.Instances<ProductCategory>() |> Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head  
         let ctx = x.NakedObjectsFramework
         let swapSubcatsForCollection (oldPc : ProductCategory) (newPc : ProductCategory) =
-            ctx.LifecycleManager.StartTransaction()  
+            ctx.TransactionManager.StartTransaction()  
             let b = oldPc.ProductSubcategories.Remove(psc)
             newPc.ProductSubcategories.Add(psc)
-            ctx.LifecycleManager.EndTransaction()       
+            ctx.TransactionManager.EndTransaction()       
             Assert.AreEqual(newPc, psc.ProductCategory)      
         swapSubcatsForCollection origPc replPc 
         swapSubcatsForCollection replPc origPc   
@@ -174,10 +174,10 @@ type DomainSystemTests() =
         //let replPc =   NakedObjectsFramework.LifecycleManager.Instances<ProductCategory>() |> Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head 
         let ctx = x.NakedObjectsFramework
         let swapSubcatsForCollection (oldPc : ProductCategory) (newPc : ProductCategory) =
-            ctx.LifecycleManager.StartTransaction()  
+            ctx.TransactionManager.StartTransaction()  
             let b = oldPc.ProductSubcategories.Remove(psc)
             newPc.ProductSubcategories.Add(psc)
-            ctx.LifecycleManager.EndTransaction()       
+            ctx.TransactionManager.EndTransaction()       
             Assert.AreEqual(newPc, psc.ProductCategory)      
         x.NakedObjectsFramework.UpdateNotifier.EnsureEmpty()
         swapSubcatsForCollection origPc replPc 

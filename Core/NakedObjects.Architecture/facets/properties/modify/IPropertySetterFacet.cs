@@ -23,6 +23,6 @@ namespace NakedObjects.Architecture.Facets.Properties.Modify {
         /// <summary>
         ///     Sets the value of this property
         /// </summary>
-        void SetProperty(INakedObject nakedObject, INakedObject nakedValue, ILifecycleManager persistor);
+        void SetProperty(INakedObject nakedObject, INakedObject nakedValue, INakedObjectTransactionManager transactionManager);
     }
 }

@@ -207,21 +207,21 @@ type ModelSystemTests() =
      
     [<Test>]
     member x.UpdateComplexTypeUpdatesUI() = 
-         x.NakedObjectsFramework.LifecycleManager.StartTransaction()
+         x.NakedObjectsFramework.TransactionManager.StartTransaction()
          let p = x.GetPersonDomainObject()
          let co = p.ComplexProperty
          co.Firstname <- uniqueName()
          x.NakedObjectsFramework.UpdateNotifier.EnsureEmpty()
-         x.NakedObjectsFramework.LifecycleManager.EndTransaction()
+         x.NakedObjectsFramework.TransactionManager.EndTransaction()
          let updates =  CollectionUtils.ToEnumerable<INakedObject>(x.NakedObjectsFramework.UpdateNotifier.AllChangedObjects())
          Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box co), "complex object")
      
     [<Test>]
     member x.ComplexTypeObjectCallsLoadingLoaded() = 
-        x.NakedObjectsFramework.LifecycleManager.StartTransaction();
+        x.NakedObjectsFramework.TransactionManager.StartTransaction();
         let p = x.GetPersonDomainObject()
         let co = p.ComplexProperty
-        x.NakedObjectsFramework.LifecycleManager.EndTransaction();
+        x.NakedObjectsFramework.TransactionManager.EndTransaction();
         let m = co.GetCallbackStatus()
         let findValue key = 
             let entry = m |> Seq.find (fun kvp -> kvp.Key = key)
@@ -283,9 +283,9 @@ type ModelSystemTests() =
        save noP ctx
        let p =  noP.Object :?> Person
        ctx.UpdateNotifier.EnsureEmpty()
-       ctx.LifecycleManager.StartTransaction()
+       ctx.TransactionManager.StartTransaction()
        p.Food.Add(fruit)
-       ctx.LifecycleManager.EndTransaction()
+       ctx.TransactionManager.EndTransaction()
 
        let updates =  CollectionUtils.ToEnumerable<INakedObject>(ctx.UpdateNotifier.AllChangedObjects())
 

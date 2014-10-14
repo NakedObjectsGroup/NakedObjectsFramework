@@ -8,8 +8,8 @@ using NakedObjects.Core.Reflect;
 namespace NakedObjects.Core.NakedObjectsSystem {
     public interface IFixturesInstaller : IInstaller {
         string[] FixtureNames { get; }
-        void InstallFixtures(ILifecycleManager persistor, IContainerInjector injector);
-        void InstallFixture(ILifecycleManager persistor, IContainerInjector injector, string fixtureName);
+        void InstallFixtures(INakedObjectTransactionManager transactionManager, IContainerInjector injector);
+        void InstallFixture(INakedObjectTransactionManager transactionManager, IContainerInjector injector, string fixtureName);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

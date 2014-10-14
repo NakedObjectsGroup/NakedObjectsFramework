@@ -19,6 +19,6 @@ namespace NakedObjects.Architecture.Facets.Properties.Modify {
     ///     method with <c>null</c>.
     /// </para>
     public interface IPropertyClearFacet : IFacet {
-        void ClearProperty(INakedObject nakedObject, ILifecycleManager persistor);
+        void ClearProperty(INakedObject nakedObject, INakedObjectTransactionManager transactionManager);
     }
 }

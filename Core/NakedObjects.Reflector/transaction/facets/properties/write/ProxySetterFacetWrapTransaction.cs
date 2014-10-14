@@ -19,21 +19,21 @@ namespace NakedObjects.Reflector.Transaction.Facets.Properties.Write {
             this.underlyingFacet = underlyingFacet;
         }
 
-        public override void SetProperty(INakedObject inObject, INakedObject parameter, ILifecycleManager persistor) {
+        public override void SetProperty(INakedObject inObject, INakedObject parameter, INakedObjectTransactionManager transactionManager) {
            
             if (inObject.ResolveState.IsPersistent()) {
                 try {
-                    persistor.StartTransaction();
-                    underlyingFacet.SetProperty(inObject, parameter, persistor);
-                    persistor.EndTransaction();
+                    transactionManager.StartTransaction();
+                    underlyingFacet.SetProperty(inObject, parameter, transactionManager);
+                    transactionManager.EndTransaction();
                 }
                 catch (Exception) {
-                    persistor.Abort(persistor, FacetHolder);
+                    transactionManager.AbortTransaction();
                     throw;
                 }
             }
             else {
-                underlyingFacet.SetProperty(inObject, parameter, persistor);
+                underlyingFacet.SetProperty(inObject, parameter, transactionManager);
             }
         }
 

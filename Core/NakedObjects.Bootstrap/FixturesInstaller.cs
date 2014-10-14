@@ -21,7 +21,7 @@ namespace NakedObjects.Boot {
 
         #region IFixturesInstaller Members
 
-        public void InstallFixtures(ILifecycleManager persistor, IContainerInjector injector) {
+        public void InstallFixtures(INakedObjectTransactionManager transactionManager, IContainerInjector injector) {
             //NakedObjectsContext.LifecycleManager.Reset();
 
             //if (NakedObjectsContext.LifecycleManager.IsInitialized) {
@@ -31,16 +31,16 @@ namespace NakedObjects.Boot {
 
             var builder = new DotNetFixtureBuilder();
             fixtures.ForEach(builder.AddFixture);
-            builder.InstallFixtures(persistor, injector);
+            builder.InstallFixtures(transactionManager, injector);
         }
 
-        public void InstallFixture(ILifecycleManager persistor, IContainerInjector injector, string fixtureName) {
+        public void InstallFixture(INakedObjectTransactionManager transactionManager, IContainerInjector injector, string fixtureName) {
             object fixture = fixtures.FirstOrDefault(f => f.GetType().Name == fixtureName);
 
             if (fixture != null) {
                 var builder = new DotNetFixtureBuilder();
                 builder.AddFixture(fixture);
-                builder.InstallFixture(persistor, injector, fixtureName);
+                builder.InstallFixture(transactionManager, injector, fixtureName);
             }
         }
 

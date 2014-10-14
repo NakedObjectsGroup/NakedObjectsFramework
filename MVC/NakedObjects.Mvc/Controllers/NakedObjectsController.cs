@@ -69,16 +69,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
             //SetSession();
             SetServices();
             SetFramework();
-            NakedObjectsContext.LifecycleManager.StartTransaction();
+            NakedObjectsContext.TransactionManager.StartTransaction();
         }
 
         protected override void OnActionExecuted(ActionExecutedContext filterContext) {
             if (filterContext.Exception == null) {
-                NakedObjectsContext.LifecycleManager.EndTransaction();
+                NakedObjectsContext.TransactionManager.EndTransaction();
             }
             else {
                 try {
-                    NakedObjectsContext.LifecycleManager.AbortTransaction();
+                    NakedObjectsContext.TransactionManager.AbortTransaction();
                 }
                 catch {
                     // fail abort silently 

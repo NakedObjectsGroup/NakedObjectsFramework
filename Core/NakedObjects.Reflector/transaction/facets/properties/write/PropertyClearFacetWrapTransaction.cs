@@ -17,21 +17,20 @@ namespace NakedObjects.Reflector.Transaction.Facets.Properties.Write {
             this.underlyingFacet = underlyingFacet;
         }
 
-        public override void ClearProperty(INakedObject inObject, ILifecycleManager persistor) {
+        public override void ClearProperty(INakedObject inObject, INakedObjectTransactionManager transactionManager) {
           
             if (inObject.ResolveState.IsPersistent()) {
                 try {
-                    persistor.StartTransaction();
-                    underlyingFacet.ClearProperty(inObject, persistor);
-                    persistor.EndTransaction();
+                    transactionManager.StartTransaction();
+                    underlyingFacet.ClearProperty(inObject, transactionManager);
+                    transactionManager.EndTransaction();
                 }
                 catch (Exception) {
-                    persistor.Abort(persistor, FacetHolder);
                     throw;
                 }
             }
             else {
-                underlyingFacet.ClearProperty(inObject, persistor);
+                underlyingFacet.ClearProperty(inObject, transactionManager);
             }
         }
 

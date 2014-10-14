@@ -132,7 +132,7 @@ namespace NakedObjects.Xat {
             if (nakedObjectsFramework == null) {
                  nakedObjectsFramework = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
             }
-            Fixtures.InstallFixtures(nakedObjectsFramework.LifecycleManager, nakedObjectsFramework.Injector); 
+            Fixtures.InstallFixtures(nakedObjectsFramework.TransactionManager, nakedObjectsFramework.Injector); 
         }
 
         protected ITestService GetTestService(Type type) {

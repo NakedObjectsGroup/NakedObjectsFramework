@@ -30,10 +30,12 @@ using NakedObjects.Reflector.Peer;
 namespace NakedObjects.Reflector.Spec {
     public class OneToOneAssociationImpl : NakedObjectAssociationAbstract, IOneToOneAssociation {
         private readonly IObjectPersistor persistor;
+        private readonly INakedObjectTransactionManager transactionManager;
 
-        public OneToOneAssociationImpl(IMetamodelManager metamodel, INakedObjectAssociationPeer association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
+        public OneToOneAssociationImpl(IMetamodelManager metamodel, INakedObjectAssociationPeer association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor, INakedObjectTransactionManager transactionManager)
             : base(metamodel, association, session, lifecycleManager, manager) {
             this.persistor = persistor;
+            this.transactionManager = transactionManager;
         }
 
         #region IOneToOneAssociation Members
@@ -142,13 +144,13 @@ namespace NakedObjects.Reflector.Spec {
             INakedObject currentValue = GetAssociation(inObject);
             if (currentValue != associate) {
                 if (associate == null && ContainsFacet<IPropertyClearFacet>()) {
-                    GetFacet<IPropertyClearFacet>().ClearProperty(inObject, LifecycleManager);
+                    GetFacet<IPropertyClearFacet>().ClearProperty(inObject, transactionManager);
                 }
                 else {
                     var setterFacet = GetFacet<IPropertySetterFacet>();
                     if (setterFacet != null) {
                         inObject.ResolveState.CheckCanAssociate(associate);
-                        setterFacet.SetProperty(inObject, associate, LifecycleManager);
+                        setterFacet.SetProperty(inObject, associate, transactionManager);
                     }
                 }
             }

@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Modify {
 
         #endregion
 
-        public override void SetProperty(INakedObject inObject, INakedObject value, ILifecycleManager persistor) {
+        public override void SetProperty(INakedObject inObject, INakedObject value, INakedObjectTransactionManager transactionManager) {
             InvokeUtils.Invoke(method, inObject, new[] {value});
         }
 

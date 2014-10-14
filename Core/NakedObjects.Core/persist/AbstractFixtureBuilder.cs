@@ -37,15 +37,15 @@ namespace NakedObjects.Core.Persist {
         /// <para>
         ///     Once done the set of fixtures is cleared and <see cref="Fixtures" /> returns an empty array.
         /// </para>
-        public void InstallFixtures(ILifecycleManager persistor, IContainerInjector injector) {
-            PreInstallFixtures(persistor);
-            InstallFixtures(persistor, injector, Fixtures);
-            PostInstallFixtures(persistor);
+        public void InstallFixtures(INakedObjectTransactionManager transactionManager, IContainerInjector injector) {
+            PreInstallFixtures(transactionManager);
+            InstallFixtures(transactionManager, injector, Fixtures);
+            PostInstallFixtures(transactionManager);
             fixtures.Clear();
         }
 
-        public void InstallFixture(ILifecycleManager persistor, IContainerInjector injector, string fixtureName) {
-            InstallFixtures(persistor, injector, Fixtures);
+        public void InstallFixture(INakedObjectTransactionManager transactionManager, IContainerInjector injector, string fixtureName) {
+            InstallFixtures(transactionManager, injector, Fixtures);
         }
 
         public string[] FixtureNames {
@@ -58,31 +58,31 @@ namespace NakedObjects.Core.Persist {
             fixtures.Add(fixture);
         }
 
-        private void InstallFixtures(ILifecycleManager persistor, IContainerInjector injector, object[] newFixtures) {
+        private void InstallFixtures(INakedObjectTransactionManager transactionManager, IContainerInjector injector, object[] newFixtures) {
             foreach (object fixture in newFixtures) {
-                InstallFixture(persistor, injector, fixture);
+                InstallFixture(transactionManager, injector, fixture);
             }
         }
 
-        private void InstallFixture(ILifecycleManager persistor, IContainerInjector injector, object fixture) {
+        private void InstallFixture(INakedObjectTransactionManager transactionManager, IContainerInjector injector, object fixture) {
             injector.InitDomainObject(fixture);
 
             // first, install any child fixtures (if this is a composite.
             object[] childFixtures = GetFixtures(fixture);
-            InstallFixtures(persistor, injector, childFixtures);
+            InstallFixtures(transactionManager, injector, childFixtures);
 
             // now, install the fixture itself
             try {
                 Log.Info("installing fixture: " + fixture);
-                persistor.StartTransaction();
+                transactionManager.StartTransaction();
                 InstallFixture(fixture);
-                persistor.EndTransaction();
+                transactionManager.EndTransaction();
                 Log.Info("fixture installed");
             }
             catch (Exception e) {
                 Log.Error("installing fixture " + fixture.GetType().FullName + " failed (" + e.Message + "); aborting fixture ", e);
                 try {
-                    persistor.AbortTransaction();
+                    transactionManager.AbortTransaction();
                 }
                 catch (Exception e2) {
                     Log.Error("failure during abort", e2);
@@ -101,8 +101,8 @@ namespace NakedObjects.Core.Persist {
         /// </summary>
         protected abstract object[] GetFixtures(object fixture);
 
-        protected virtual void PostInstallFixtures(ILifecycleManager objectManager) {}
+        protected virtual void PostInstallFixtures(INakedObjectTransactionManager transactionManager) { }
 
-        protected virtual void PreInstallFixtures(ILifecycleManager objectManager) {}
+        protected virtual void PreInstallFixtures(INakedObjectTransactionManager transactionManager) {}
     }
 }

@@ -122,7 +122,7 @@ namespace NakedObjects.Reflector.DotNet {
         }
 
         public void AbortCurrentTransaction() {
-            framework.LifecycleManager.UserAbortTransaction();
+            framework.TransactionManager.UserAbortTransaction();
         }
 
         #endregion

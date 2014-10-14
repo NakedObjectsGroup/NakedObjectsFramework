@@ -2,7 +2,6 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
-using System;
 using Common.Logging;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Persist;
@@ -84,10 +83,6 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public virtual void AddCommand(IPersistenceCommand command) {
             Transaction.AddCommand(command);
-        }
-
-        public  void Abort(ILifecycleManager objectManager, IFacetHolder holder) {
-            throw new NotImplementedException();
         }
 
         #endregion

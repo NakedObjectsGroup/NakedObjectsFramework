@@ -50,15 +50,15 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         public void Start() {
             //framework.EnsureReady();
             //SetSession();
-            framework.LifecycleManager.StartTransaction();
+            framework.TransactionManager.StartTransaction();
         }
 
         public void End(bool success) {
             if (success) {
-                framework.LifecycleManager.EndTransaction();
+                framework.TransactionManager.EndTransaction();
             }
             else {
-                framework.LifecycleManager.AbortTransaction();
+                framework.TransactionManager.AbortTransaction();
             }
         }
 

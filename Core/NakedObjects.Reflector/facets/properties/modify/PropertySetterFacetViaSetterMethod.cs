@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Modify {
 
         #endregion
 
-        public override void SetProperty(INakedObject nakedObject, INakedObject value, ILifecycleManager persistor) {
+        public override void SetProperty(INakedObject nakedObject, INakedObject value, INakedObjectTransactionManager transactionManager) {
             try {
                 property.SetValue(nakedObject.GetDomainObject(), value.GetDomainObject(), null);
             }

@@ -41,7 +41,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestObject CreateTestObject(INakedObject nakedObject) {
-            return new TestObject(lifecycleManager, persistor, nakedObject, this);
+            return new TestObject(lifecycleManager, persistor, nakedObject, this, transactionManager);
         }
 
         public ITestNaked CreateTestNaked(INakedObject nakedObject) {
