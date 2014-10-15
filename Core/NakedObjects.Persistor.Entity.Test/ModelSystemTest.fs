@@ -4,7 +4,6 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-
 module NakedObjects.ModelSystemTest
 
 open NUnit.Framework
@@ -13,7 +12,7 @@ open NakedObjects.Boot
 open ModelFirst
 open NakedObjects.Services
 open NakedObjects.EntityObjectStore
-open NakedObjects.Architecture.Adapter 
+open NakedObjects.Architecture.Adapter
 open SystemTestCode
 open NakedObjects
 open TestCode
@@ -21,17 +20,16 @@ open System.Collections.Generic
 open NakedObjects.Architecture.Util
 open Microsoft.Practices.Unity
 
-
 [<TestFixture>]
-type ModelSystemTests() =
-    inherit  NakedObjects.Xat.AcceptanceTestCase()    
-
+type ModelSystemTests() = 
+    inherit NakedObjects.Xat.AcceptanceTestCase()
+    
     override x.RegisterTypes(container) = 
         base.RegisterTypes(container)
         let config = new EntityObjectStoreConfiguration()
         config.EnforceProxies <- false
-        let ignore = config.UsingEdmxContext "Model1Container"
-        let ignore = container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
+        config.UsingEdmxContext "Model1Container" |> ignore
+        container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
         ()
     
     [<TestFixtureSetUpAttribute>]
@@ -45,11 +43,11 @@ type ModelSystemTests() =
     
     [<TestFixtureTearDown>]
     member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
-
+    
     override x.MenuServices = 
         let service = new SimpleRepository<Person>()
-        box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller 
-        
+        box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller
+    
     member x.CreatePerson() = 
         let setter (p : Person) = 
             p.Id <- x.GetNextPersonID()
@@ -58,106 +56,108 @@ type ModelSystemTests() =
             p.ComplexProperty_1.s1 <- uniqueName()
             p.ComplexProperty_1.s2 <- uniqueName()
         SystemTestCode.CreateAndSetup<Person> setter x.NakedObjectsFramework
-      
+    
     member x.GetPersonDomainObject() = 
-       let pp : Person[] = box( x.NakedObjectsFramework.Persistor.Instances<Person>().ToArray()) :?> Person[]
-       pp |> Seq.filter (fun p -> p.Id = 1) |> Seq.head     
-          
+        let pp : Person [] = box (x.NakedObjectsFramework.Persistor.Instances<Person>().ToArray()) :?> Person []
+        pp
+        |> Seq.filter (fun p -> p.Id = 1)
+        |> Seq.head
+    
     member x.GetNextPersonID() = 
-       let pp = x.NakedObjectsFramework.Persistor.Instances<Person>()
-       (pp |> Seq.map (fun i -> i.Id) |> Seq.max)   + 1 
-            
+        let pp = x.NakedObjectsFramework.Persistor.Instances<Person>()
+        (pp
+         |> Seq.map (fun i -> i.Id)
+         |> Seq.max)
+        + 1
+    
     [<Test>]
     member x.GetService() = 
         let service = x.NakedObjectsFramework.Services.GetService("repository#ModelFirst.Person")
-        Assert.IsNotNull(service.Object)     
-        
+        Assert.IsNotNull(service.Object)
+    
     [<Test>]
     member x.GetCollectionDirectly() = 
         let pp = x.NakedObjectsFramework.Persistor.Instances<Person>()
-        Assert.Greater(pp |> Seq.length , 0)   
-                         
+        Assert.Greater(pp |> Seq.length, 0)
+    
     [<Test>]
     member x.GetInstanceDirectly() = 
-       let sr = x.GetPersonDomainObject()
-       IsNotNullAndPersistent sr x.NakedObjectsFramework
-                  
+        let sr = x.GetPersonDomainObject()
+        IsNotNullAndPersistent sr x.NakedObjectsFramework
+    
     [<Test>]
     member x.GetAggregateInstance() = 
-       let n = x.GetPersonDomainObject().ComplexProperty
-       IsNotNullAndPersistentAggregate n x.NakedObjectsFramework
+        let n = x.GetPersonDomainObject().ComplexProperty
+        IsNotNullAndPersistentAggregate n x.NakedObjectsFramework
     
     [<Test>]
     member x.GetTransientAggregateInstance() = 
-       let pNo = x.CreatePerson()
-       let p = pNo.Object :?> Person
-       let co = p.ComplexProperty
-       IsNotNullAndTransientAggregate co x.NakedObjectsFramework
-           
+        let pNo = x.CreatePerson()
+        let p = pNo.Object :?> Person
+        let co = p.ComplexProperty
+        IsNotNullAndTransientAggregate co x.NakedObjectsFramework
+    
     [<Test>]
     member x.DirectlyLoadedObjectHasContainer() = 
         let p = x.GetPersonDomainObject()
         Assert.IsNotNull(p.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
-   
+    
     [<Test>]
     member x.ComplexObjectHasContainer() = 
         let p = x.GetPersonDomainObject()
         let pr = p.ComplexProperty
         Assert.IsNotNull(pr.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, pr.ExposeContainerForTest())
-      
+    
     [<Test>]
     member x.ComplexObjectHasParent() = 
         let p = x.GetPersonDomainObject()
         let pr = p.ComplexProperty
         Assert.IsNotNull(pr.Parent)
-        Assert.IsInstanceOf(typeof<Person>, pr.Parent)  
-       
-                                     
+        Assert.IsInstanceOf(typeof<Person>, pr.Parent)
+    
     [<Test>]
-    member x.CreateNewObjectWithComplexType() =    
-       let pNo = x.CreatePerson()
-       save pNo x.NakedObjectsFramework
-       IsNotNullAndPersistent pNo x.NakedObjectsFramework
-       let p = pNo.Object :?> Person
-       IsNotNullAndPersistentAggregate p.ComplexProperty x.NakedObjectsFramework
-       IsNotNullAndPersistentAggregate p.ComplexProperty_1 x.NakedObjectsFramework   
-        
+    member x.CreateNewObjectWithComplexType() = 
+        let pNo = x.CreatePerson()
+        save pNo x.NakedObjectsFramework
+        IsNotNullAndPersistent pNo x.NakedObjectsFramework
+        let p = pNo.Object :?> Person
+        IsNotNullAndPersistentAggregate p.ComplexProperty x.NakedObjectsFramework
+        IsNotNullAndPersistentAggregate p.ComplexProperty_1 x.NakedObjectsFramework
+    
     [<Test>]
     member x.CreatedObjectCallsCreatedPersistingPersisted() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
         save pNo x.NakedObjectsFramework
         let m1 = p.GetCallbackStatus()
+        
         let fv (map : IDictionary<string, int>) key = 
             let entry = map |> Seq.find (fun kvp -> kvp.Key = key)
             entry.Value
         
-        let findValue = fv m1 
-      
+        let findValue = fv m1
         Assert.AreEqual(1, findValue "Persisting", "persisting")
-        Assert.AreEqual(0, findValue "Persisted" , "persisted")
-        
+        Assert.AreEqual(0, findValue "Persisted", "persisted")
         let p = pNo.Object :?> Person
         let m2 = p.GetCallbackStatus()
         let findValue = fv m2
-       
         Assert.AreEqual(0, findValue "Persisting", "persisting")
-        Assert.AreEqual(1, findValue "Persisted" , "persisted")
-             
+        Assert.AreEqual(1, findValue "Persisted", "persisted")
+    
     [<Test>]
     member x.ComplexTypeObjectCallsCreated() = 
         let pNo = x.CreatePerson()
         save pNo x.NakedObjectsFramework
         let p = pNo.Object :?> Person
         let m = p.ComplexProperty.GetCallbackStatus()
+        
         let findValue key = 
             let entry = m |> Seq.find (fun kvp -> kvp.Key = key)
-            entry.Value  
-        Assert.AreEqual(1, findValue "Created", "created")    
-       
-             
+            entry.Value
+        Assert.AreEqual(1, findValue "Created", "created")
+    
     [<Test>]
     member x.CreatedObjectHasContainer() = 
         let pNo = x.CreatePerson()
@@ -168,7 +168,7 @@ type ModelSystemTests() =
         let p = pNo.Object :?> Person
         Assert.IsNotNull(p.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
-        
+    
     [<Test>]
     member x.CreatedComplexObjectHasContainer() = 
         let pNo = x.CreatePerson()
@@ -180,7 +180,7 @@ type ModelSystemTests() =
         let co = p.ComplexProperty
         Assert.IsNotNull(co.ExposeContainerForTest())
         Assert.IsInstanceOf(typeof<IDomainObjectContainer>, co.ExposeContainerForTest())
-        
+    
     [<Test>]
     member x.CreatedComplexObjectHasParent() = 
         let pNo = x.CreatePerson()
@@ -192,102 +192,109 @@ type ModelSystemTests() =
         let co = p.ComplexProperty
         Assert.IsNotNull(co.Parent)
         Assert.IsInstanceOf(typeof<Person>, co.Parent)
-          
+    
     [<Test>]
     member x.ComplexTypeObjectCallsPersistingPersisted() = 
         let pNo = x.CreatePerson()
         save pNo x.NakedObjectsFramework
         let p = pNo.Object :?> Person
         let m = p.ComplexProperty.GetCallbackStatus()
+        
         let findValue key = 
             let entry = m |> Seq.find (fun kvp -> kvp.Key = key)
             entry.Value
-        
-     
         Assert.AreEqual(1, findValue "Persisting", "persisting")
-        Assert.AreEqual(1, findValue "Persisted" , "persisted")
-     
+        Assert.AreEqual(1, findValue "Persisted", "persisted")
+    
     [<Test>]
     member x.UpdateComplexTypeUpdatesUI() = 
-         x.NakedObjectsFramework.TransactionManager.StartTransaction()
-         let p = x.GetPersonDomainObject()
-         let co = p.ComplexProperty
-         co.Firstname <- uniqueName()
-         x.NakedObjectsFramework.UpdateNotifier.EnsureEmpty()
-         x.NakedObjectsFramework.TransactionManager.EndTransaction()
-         let updates =  CollectionUtils.ToEnumerable<INakedObject>(x.NakedObjectsFramework.UpdateNotifier.AllChangedObjects())
-         Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box co), "complex object")
-     
-    [<Test>]
-    member x.ComplexTypeObjectCallsLoadingLoaded() = 
-        x.NakedObjectsFramework.TransactionManager.StartTransaction();
+        x.NakedObjectsFramework.TransactionManager.StartTransaction()
         let p = x.GetPersonDomainObject()
         let co = p.ComplexProperty
-        x.NakedObjectsFramework.TransactionManager.EndTransaction();
+        co.Firstname <- uniqueName()
+        x.NakedObjectsFramework.UpdateNotifier.EnsureEmpty()
+        x.NakedObjectsFramework.TransactionManager.EndTransaction()
+        let updates = CollectionUtils.ToEnumerable<INakedObject>(x.NakedObjectsFramework.UpdateNotifier.AllChangedObjects())
+        Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box co), "complex object")
+    
+    [<Test>]
+    member x.ComplexTypeObjectCallsLoadingLoaded() = 
+        x.NakedObjectsFramework.TransactionManager.StartTransaction()
+        let p = x.GetPersonDomainObject()
+        let co = p.ComplexProperty
+        x.NakedObjectsFramework.TransactionManager.EndTransaction()
         let m = co.GetCallbackStatus()
+        
         let findValue key = 
             let entry = m |> Seq.find (fun kvp -> kvp.Key = key)
             entry.Value
-     
         Assert.AreEqual(1, findValue "Loading", "loading")
-        Assert.AreEqual(1, findValue "Loaded" , "loaded")
-     
+        Assert.AreEqual(1, findValue "Loaded", "loaded")
+    
     [<Test>]
-    member x.LazyIntrospectionOfInheritedType() =
+    member x.LazyIntrospectionOfInheritedType() = 
         // this test is to cover bug #937
         let p = x.GetPersonDomainObject()
         let f = p.Food |> Seq.head
         Assert.IsInstanceOf(typeof<Fruit>, f)
-        
-    [<Test>]
-    member x.SavePersonWithInheritedTypeProperty() =
-       let ctx = x.NakedObjectsFramework
-       let GetNextFruitID() = 
-            (ctx.Persistor.Instances<Fruit>() |> Seq.map (fun i -> i.Id) |> Seq.max) + 1
-
-       let fSet (f : Fruit) =
-          f.Id <- GetNextFruitID()
-          f.Name <- uniqueName()
-          f.Organic <- true
-         
-       let fruit = (SystemTestCode.CreateAndSetup<Fruit> fSet ctx).Object :?> Food
     
-       let setter (p : Person) =
-           p.Id <- x.GetNextPersonID() 
-           p.ComplexProperty.Firstname <- uniqueName()
-           p.ComplexProperty.Surname <- uniqueName()
-           p.ComplexProperty_1.s1 <- uniqueName()
-           p.ComplexProperty_1.s2 <- uniqueName()
-           p.Food.Add fruit
-       save (SystemTestCode.CreateAndSetup<Person> setter ctx) ctx
-
     [<Test>]
-    member x.AddToCollectionNotifiesUI() =
-       let ctx = x.NakedObjectsFramework
-       let GetNextFruitID() = 
-            (ctx.Persistor.Instances<Fruit>() |> Seq.map (fun i -> i.Id) |> Seq.max) + 1
+    member x.SavePersonWithInheritedTypeProperty() = 
+        let ctx = x.NakedObjectsFramework
+        
+        let GetNextFruitID() = 
+            (ctx.Persistor.Instances<Fruit>()
+             |> Seq.map (fun i -> i.Id)
+             |> Seq.max)
+            + 1
+        
+        let fSet (f : Fruit) = 
+            f.Id <- GetNextFruitID()
+            f.Name <- uniqueName()
+            f.Organic <- true
+        
+        let fruit = (SystemTestCode.CreateAndSetup<Fruit> fSet ctx).Object :?> Food
+        
+        let setter (p : Person) = 
+            p.Id <- x.GetNextPersonID()
+            p.ComplexProperty.Firstname <- uniqueName()
+            p.ComplexProperty.Surname <- uniqueName()
+            p.ComplexProperty_1.s1 <- uniqueName()
+            p.ComplexProperty_1.s2 <- uniqueName()
+            p.Food.Add fruit
+        save (SystemTestCode.CreateAndSetup<Person> setter ctx) ctx
+    
+    [<Test>]
+    member x.AddToCollectionNotifiesUI() = 
+        let ctx = x.NakedObjectsFramework
+        
+        let GetNextFruitID() = 
+            (ctx.Persistor.Instances<Fruit>()
+             |> Seq.map (fun i -> i.Id)
+             |> Seq.max)
+            + 1
+        
+        let fSet (f : Fruit) = 
+            f.Id <- GetNextFruitID()
+            f.Name <- uniqueName()
+            f.Organic <- true
+        
+        let fruit = (SystemTestCode.CreateAndSetup<Fruit> fSet ctx).Object :?> Food
+        
+        let setter (p : Person) = 
+            p.Id <- x.GetNextPersonID()
+            p.ComplexProperty.Firstname <- uniqueName()
+            p.ComplexProperty.Surname <- uniqueName()
+            p.ComplexProperty_1.s1 <- uniqueName()
+            p.ComplexProperty_1.s2 <- uniqueName()
+        
+        let noP = SystemTestCode.CreateAndSetup<Person> setter ctx
+        save noP ctx
+        let p = noP.Object :?> Person
+        ctx.UpdateNotifier.EnsureEmpty()
+        ctx.TransactionManager.StartTransaction()
+        p.Food.Add(fruit)
+        ctx.TransactionManager.EndTransaction()
+        let updates = CollectionUtils.ToEnumerable<INakedObject>(ctx.UpdateNotifier.AllChangedObjects())
+        Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box p), "Person")
 
-       let fSet (f : Fruit) =
-          f.Id <- GetNextFruitID()
-          f.Name <- uniqueName()
-          f.Organic <- true
-         
-       let fruit = (SystemTestCode.CreateAndSetup<Fruit> fSet ctx).Object :?> Food
-       
-       let setter (p : Person) =
-           p.Id <- x.GetNextPersonID() 
-           p.ComplexProperty.Firstname <- uniqueName()
-           p.ComplexProperty.Surname <- uniqueName()
-           p.ComplexProperty_1.s1 <- uniqueName()
-           p.ComplexProperty_1.s2 <- uniqueName()    
-       let noP = SystemTestCode.CreateAndSetup<Person> setter ctx
-       save noP ctx
-       let p =  noP.Object :?> Person
-       ctx.UpdateNotifier.EnsureEmpty()
-       ctx.TransactionManager.StartTransaction()
-       p.Food.Add(fruit)
-       ctx.TransactionManager.EndTransaction()
-
-       let updates =  CollectionUtils.ToEnumerable<INakedObject>(ctx.UpdateNotifier.AllChangedObjects())
-
-       Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box p), "Person")

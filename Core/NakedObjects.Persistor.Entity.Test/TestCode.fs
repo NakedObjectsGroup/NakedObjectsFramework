@@ -4,7 +4,6 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-
 module NakedObjects.TestCode
 
 open NUnit.Framework
@@ -13,13 +12,26 @@ open System
 open System.Collections.Generic
 open TestTypes
 open System.Collections
+open NakedObjects.Core.Context
+open NakedObjects.Core.Security
+open System.Security.Principal
+open NakedObjects.Reflector.DotNet
+open Moq
+open NakedObjects.Architecture.Persist
 
-
-let resetPersistor (p : EntityObjectStore) =
+let resetPersistor (p : EntityObjectStore) = 
     p.Reset()
     setupPersistorForTesting p
 
-let CreateAndSetup<'t when 't : not struct> (p : EntityObjectStore) setter =  
+let getEntityObjectStore (config) = 
+    let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
+    let u = new SimpleUpdateNotifier()
+    let i = new DotNetDomainObjectContainerInjector()
+    let m = mockMetamodelManager.Object
+    let nom = (new Mock<INakedObjectManager>()).Object
+    new EntityObjectStore(s, u, config, new EntityOidGenerator(m), m, i, nom)
+
+let CreateAndSetup<'t when 't : not struct> (p : EntityObjectStore) setter = 
     let inst = p.CreateInstance<'t>(null)
     setter inst
     let n1 = GetOrAddAdapterForTest inst null
@@ -27,78 +39,77 @@ let CreateAndSetup<'t when 't : not struct> (p : EntityObjectStore) setter =
 
 let uniqueName() = Guid.NewGuid().ToString()
 
-let CreateAndEndTransaction  (p : EntityObjectStore) o =
+let CreateAndEndTransaction (p : EntityObjectStore) o = 
     let cmd = p.CreateCreateObjectCommand((GetOrAddAdapterForTest o null), null)
     p.EndTransaction()
 
-let SaveAndEndTransaction  (p : EntityObjectStore) o =
+let SaveAndEndTransaction (p : EntityObjectStore) o = 
     let cmd = p.CreateSaveObjectCommand((GetOrAddAdapterForTest o null), null)
     p.EndTransaction()
 
-let SaveWithNoEndTransaction  (p : EntityObjectStore) o =
+let SaveWithNoEndTransaction (p : EntityObjectStore) o = 
     let cmd = p.CreateSaveObjectCommand((GetOrAddAdapterForTest o null), null)
     ()
 
-let GetInstancesGenericNotEmpty<'t when 't : not struct> (p: EntityObjectStore)  =
-    let count =   p.GetInstances<'t>()  |> Seq.length
-    Assert.Greater(count, 0) 
- 
-let GetInstancesByTypeNotEmpty<'t when 't : not struct> (p: EntityObjectStore)  =
-    let count = Seq.cast<'t>(p.GetInstances(typeof<'t>)) |> Seq.length
+let GetInstancesGenericNotEmpty<'t when 't : not struct>(p : EntityObjectStore) = 
+    let count = p.GetInstances<'t>() |> Seq.length
     Assert.Greater(count, 0)
- 
-let GetInstancesReturnsProxies<'t when 't : not struct> (p: EntityObjectStore)  =
-    let instances = p.GetInstances<'t>()
-    Assert.IsTrue(instances |> Seq.forall (fun i ->  EntityUtils.IsEntityProxy(i.GetType())))
 
-let GetInstancesDoesntReturnProxies<'t when 't : not struct> (p: EntityObjectStore)  =
+let GetInstancesByTypeNotEmpty<'t when 't : not struct>(p : EntityObjectStore) = 
+    let count = Seq.cast<'t> (p.GetInstances(typeof<'t>)) |> Seq.length
+    Assert.Greater(count, 0)
+
+let GetInstancesReturnsProxies<'t when 't : not struct>(p : EntityObjectStore) = 
     let instances = p.GetInstances<'t>()
-    Assert.IsFalse(instances |> Seq.forall (fun i ->  EntityUtils.IsEntityProxy(i.GetType())))
-    
-let CanCreateTransientObject<'t when 't : not struct> (p: EntityObjectStore)  =
-     let transientInstance = p.CreateInstance<'t>(null)
-     Assert.IsNotNull(transientInstance)
-     Assert.IsFalse(EntityUtils.IsEntityProxy(transientInstance.GetType()))
-    
-let CanSaveTransientObject<'t when 't : not struct> p setter =  
-     let sr = CreateAndSetup<'t> p setter
-     CreateAndEndTransaction p sr
-   
-let checkCountAndType classes  (typ : Type)  =
+    Assert.IsTrue(instances |> Seq.forall (fun i -> EntityUtils.IsEntityProxy(i.GetType())))
+
+let GetInstancesDoesntReturnProxies<'t when 't : not struct>(p : EntityObjectStore) = 
+    let instances = p.GetInstances<'t>()
+    Assert.IsFalse(instances |> Seq.forall (fun i -> EntityUtils.IsEntityProxy(i.GetType())))
+
+let CanCreateTransientObject<'t when 't : not struct>(p : EntityObjectStore) = 
+    let transientInstance = p.CreateInstance<'t>(null)
+    Assert.IsNotNull(transientInstance)
+    Assert.IsFalse(EntityUtils.IsEntityProxy(transientInstance.GetType()))
+
+let CanSaveTransientObject<'t when 't : not struct> p setter = 
+    let sr = CreateAndSetup<'t> p setter
+    CreateAndEndTransaction p sr
+
+let checkCountAndType classes (typ : Type) = 
     Assert.Greater(classes |> Seq.length, 0)
     Assert.IsTrue(classes |> Seq.forall (fun i -> typ.IsAssignableFrom(i.GetType())))
 
-let First<'t when 't : not struct> (p : EntityObjectStore) = 
-   p.GetInstances<'t>() |> Seq.head 
+let First<'t when 't : not struct>(p : EntityObjectStore) = p.GetInstances<'t>() |> Seq.head
+let Second<'t when 't : not struct>(p : EntityObjectStore) = p.GetInstances<'t>() |> Seq.nth 1
 
-let Second<'t when 't : not struct> (p : EntityObjectStore) = 
-    p.GetInstances<'t>() |> Seq.nth 1
-    
-let GetMaxID<'t when 't : not struct> (p : EntityObjectStore) fGetID  = 
-   (p.GetInstances<'t>() |> Seq.map fGetID |> Seq.max) + 0
-      
-let GetNextID<'t when 't : not struct> (p : EntityObjectStore) fGetID  = 
-    (GetMaxID<'t> p fGetID)  + 1
+let GetMaxID<'t when 't : not struct> (p : EntityObjectStore) fGetID = 
+    (p.GetInstances<'t>()
+     |> Seq.map fGetID
+     |> Seq.max)
+    + 0
 
-let CanGetObjectByKey<'t when 't : not struct>  (p : EntityObjectStore) keys = 
-    let key = new EntityOid(mockMetamodelManager.Object, typeof<'t>, keys, false) 
-    let obj = p.GetObjectByKey(key, typeof<'t>) 
+let GetNextID<'t when 't : not struct> (p : EntityObjectStore) fGetID = (GetMaxID<'t> p fGetID) + 1
+
+let CanGetObjectByKey<'t when 't : not struct> (p : EntityObjectStore) keys = 
+    let key = new EntityOid(mockMetamodelManager.Object, typeof<'t>, keys, false)
+    let obj = p.GetObjectByKey(key, typeof<'t>)
     Assert.IsNotNull(obj)
-    
-let CanGetContextForCollection<'t when 't : not struct> (persistor : EntityObjectStore) =
+
+let CanGetContextForCollection<'t when 't : not struct>(persistor : EntityObjectStore) = 
     let testCollection = new List<'t>()
-    persistor.LoadComplexTypes (GetOrAddAdapterForTest testCollection null, false)
+    persistor.LoadComplexTypes(GetOrAddAdapterForTest testCollection null, false)
 
-let CanGetContextForNonGenericCollection<'t when 't : not struct> (persistor : EntityObjectStore) =
+let CanGetContextForNonGenericCollection<'t when 't : not struct>(persistor : EntityObjectStore) = 
     let testCollection = new ArrayList()
-    let header = persistor.GetInstances<'t>() |> Seq.head 
+    let header = persistor.GetInstances<'t>() |> Seq.head
     let i = testCollection.Add(header)
-    persistor.LoadComplexTypes (GetOrAddAdapterForTest testCollection null, false)
+    persistor.LoadComplexTypes(GetOrAddAdapterForTest testCollection null, false)
 
-let CanGetContextForArray<'t when 't : not struct> (persistor : EntityObjectStore) =
-    let header = persistor.GetInstances<'t>() |> Seq.head 
-    persistor.LoadComplexTypes (GetOrAddAdapterForTest [|header|] null, false)
+let CanGetContextForArray<'t when 't : not struct>(persistor : EntityObjectStore) = 
+    let header = persistor.GetInstances<'t>() |> Seq.head
+    persistor.LoadComplexTypes(GetOrAddAdapterForTest [| header |] null, false)
 
-let CanGetContextForType<'t when 't : not struct> (persistor : EntityObjectStore) =
+let CanGetContextForType<'t when 't : not struct>(persistor : EntityObjectStore) = 
     let test = persistor.CreateInstance<'t>(null)
-    persistor.LoadComplexTypes (GetOrAddAdapterForTest test null, false)
+    persistor.LoadComplexTypes(GetOrAddAdapterForTest test null, false)

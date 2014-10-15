@@ -4,7 +4,6 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-
 module NakedObjects.EntityTestSuite
 
 open NUnit.Framework
@@ -13,32 +12,27 @@ open NakedObjects.Boot
 open NakedObjects.Services
 open System
 open NakedObjects.EntityObjectStore
-open NakedObjects.Core.Context
-open NakedObjects.Architecture.Persist
 open NakedObjects.Persistor.TestData
 open NakedObjects.Persistor.TestSuite
-open TestTypes
 open TestData
+open TestCode
 open NakedObjects.Core.Security
 open System.Security.Principal
-open NakedObjects.Reflector.DotNet
-open Moq
-open NakedObjects.Architecture.Reflect
 open Microsoft.Practices.Unity
-        
-let assemblyName = "NakedObjects.Persistor.Test.Data"
 
+let assemblyName = "NakedObjects.Persistor.Test.Data"
 #if AV
 let datasourceName = "(local)\SQL2012SP1"
 #else
 let datasourceName = ".\SQLEXPRESS"
 #endif
 
+
 let LoadTestAssembly() = 
     let obj = new Person()
     ()
 
-let Config =    
+let Config = 
     let c = new CodeFirstEntityContextConfiguration()
     c.DbContext <- fun () -> upcast new TestDataContext()
     c
@@ -46,21 +40,14 @@ let Config =
 let db = 
     let c = new EntityObjectStoreConfiguration()
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
-    let u = new SimpleUpdateNotifier()
-    let i = new DotNetDomainObjectContainerInjector()
-    let r = (new Mock<INakedObjectReflector>()).Object
-    let m = mockMetamodelManager.Object
-    let nom = (new Mock<INakedObjectManager>()).Object
-    c.ContextConfiguration <- [|(box Config :?> EntityContextConfiguration)|]
-    let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i, nom)
+    c.ContextConfiguration <- [| (box Config :?> EntityContextConfiguration) |]
+    let p = getEntityObjectStore c
     p
 
-
 type TestDataInitializer() = 
-    inherit System.Data.Entity.DropCreateDatabaseAlways<TestDataContext>() 
-    override x.Seed ( context : TestDataContext) =
-
-        let newPerson id name product : Person  = 
+    inherit System.Data.Entity.DropCreateDatabaseAlways<TestDataContext>()
+    override x.Seed(context : TestDataContext) = 
+        let newPerson id name product : Person = 
             let person = new Person()
             person.PersonId <- id
             person.Name <- name
@@ -73,29 +60,27 @@ type TestDataInitializer() =
             product.Id <- id
             product.Name <- name
             product.ModifiedDate <- DateTime.Now
-            let product = context.Products.Add (product)
+            let product = context.Products.Add(product)
             product
-      
-        let newPet id name person : Pet =
+        
+        let newPet id name person : Pet = 
             let pet = new Pet()
             pet.PetId <- id
             pet.Name <- name
             pet.Owner <- person
-            let pet = context.Pets.Add (pet)
+            let pet = context.Pets.Add(pet)
             pet
-
+        
         let newOrder id name : Order = 
             let order = new Order()
             order.OrderId <- id
             order.Name <- name
             order
-      
-
+        
         let product1 = newProduct 1 "ProductOne"
         let product2 = newProduct 2 "ProductTwo"
-        let product3 = newProduct 3  "ProductThree"
-        let product4 = newProduct 4  "ProductFour"
-
+        let product3 = newProduct 3 "ProductThree"
+        let product4 = newProduct 4 "ProductFour"
         let person1 = newPerson 1 "PersonOne" product1
         let person2 = newPerson 2 "PersonTwo" product1
         let person3 = newPerson 3 "PersonThree" product2
@@ -118,48 +103,42 @@ type TestDataInitializer() =
         let person20 = newPerson 20 "PersonTwenty" product4
         let person21 = newPerson 21 "PersonTwentyOne" product4
         let person22 = newPerson 22 "PersonTwentyTwo" product4
-
         let pet1 = newPet 1 "PetOne" person1
-
-        let products = [|product1; product2|]
-        let persons = [|person1; person2; person3; person4; person5; person6; person7; person8; person9; person10; person11|]
-
-        person1.Relatives.Add(person2);
-        person1.Relatives.Add(person3);
-        person1.Relatives.Add(person7);
-        person1.Relatives.Add(person8);
-
-        person6.Relatives.Add(person9);
-        person7.Relatives.Add(person10);
-        person8.Relatives.Add(person11);
-
-        person1.Address.Line1 <- "L1";
-        person1.Address.Line2 <- "L2";
-        person2.Address.Line1 <- "L1";
-        person2.Address.Line2 <- "L2";
-        person3.Address.Line1 <- "L1";
-        person3.Address.Line2 <- "L2";
-        person4.Address.Line1 <- "L1";
-        person4.Address.Line2 <- "L2";
-      
+        let products = [| product1; product2 |]
+        let persons = [| person1; person2; person3; person4; person5; person6; person7; person8; person9; person10; person11 |]
+        person1.Relatives.Add(person2)
+        person1.Relatives.Add(person3)
+        person1.Relatives.Add(person7)
+        person1.Relatives.Add(person8)
+        person6.Relatives.Add(person9)
+        person7.Relatives.Add(person10)
+        person8.Relatives.Add(person11)
+        person1.Address.Line1 <- "L1"
+        person1.Address.Line2 <- "L2"
+        person2.Address.Line1 <- "L1"
+        person2.Address.Line2 <- "L2"
+        person3.Address.Line1 <- "L1"
+        person3.Address.Line2 <- "L2"
+        person4.Address.Line1 <- "L1"
+        person4.Address.Line2 <- "L2"
         products |> Seq.iter (fun x -> x.ResetEvents())
         persons |> Seq.iter (fun x -> x.ResetEvents())
         persons |> Seq.iter (fun x -> x.Address.ResetEvents())
-    
-[<TestFixture>]
-type EntityTestSuite() =
-    inherit  NakedObjects.Xat.AcceptanceTestCase()    
 
+[<TestFixture>]
+type EntityTestSuite() = 
+    inherit NakedObjects.Xat.AcceptanceTestCase()
+    
     override x.RegisterTypes(container) = 
         base.RegisterTypes(container)
         let config = new EntityObjectStoreConfiguration()
         let f = (fun () -> new TestDataContext() :> Data.Entity.DbContext)
-        let ignore = config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) 
-        let ignore = container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
+        config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
+        container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
         ()
-
-    member x.ClearOldTestData() =    ()
-              
+    
+    member x.ClearOldTestData() = ()
+    
     [<TestFixtureSetUpAttribute>]
     member x.SetupFixture() = 
         System.Data.Entity.Database.SetInitializer(new TestDataInitializer())
@@ -173,129 +152,288 @@ type EntityTestSuite() =
     
     [<TestFixtureTearDown>]
     member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
-
-
-    override x.Fixtures 
-        with get() : IFixturesInstaller =
-            box (new FixturesInstaller([|box (new TestDataFixture())|])) :?> IFixturesInstaller
-            
-    override x.MenuServices 
-        with get() : IServicesInstaller  =
-            let service = new SimpleRepository<Person>() 
-            box (new ServicesInstaller([|(box service)|])) :?> IServicesInstaller
-               
-    override x.ContributedActions 
-        with get() : IServicesInstaller  =
-            let service = new SimpleRepository<Product>() 
-            box (new ServicesInstaller([|(box service)|])) :?> IServicesInstaller
-
-    override x.SystemServices 
-        with get() : IServicesInstaller  =
-            let service = new SimpleRepository<Address>() 
-            box (new ServicesInstaller([|(box service)|])) :?> IServicesInstaller
-
-    override x.Persistor
-        with get() : IObjectPersistorInstaller = 
-            let inst = new EntityPersistorInstaller()
-            ignore  (inst.UsingCodeFirstContext(Func<Data.Entity.DbContext>(fun () -> upcast new TestDataContext()) ))
-            box (inst) :?> IObjectPersistorInstaller
-
-    member x.Tests = 
-        new PersistorTestSuite(x.NakedObjectsFramework)
-                               
-    [<Test>] member x.CanAccessCollectionProperty() =  x.Tests.CanAccessCollectionProperty()
-    [<Test>] member x.GetInstanceFromInstancesOfT() =  x.Tests.GetInstanceFromInstancesOfT()
-    [<Test>] member x.GetInstanceFromInstancesOfType() =  x.Tests.GetInstanceFromInstancesOfType()
-    [<Test>] member x.GetInstanceFromInstancesOfSpecification() =  x.Tests.GetInstanceFromInstancesOfSpecification()
-    [<Test>] member x.GetInstanceIsAlwaysSameObject() =  x.Tests.GetInstanceIsAlwaysSameObject()
-    [<Test>] member x.GetInstanceResolveStateIsPersistent() =  x.Tests.GetInstanceResolveStateIsPersistent()
-    [<Test>] member x.GetInstanceHasVersion() =  x.Tests.GetInstanceHasVersion()
-    [<Test>] member x.ChangeScalarOnPersistentNotifiesUi() =  x.Tests.ChangeScalarOnPersistentNotifiesUi()
-    [<Test>] member x.ChangeScalarOnPersistentCallsUpdatingUpdated() =  x.Tests.ChangeScalarOnPersistentCallsUpdatingUpdated()
-    [<Test>] member x.ChangeReferenceOnPersistentNotifiesUi() =  x.Tests.ChangeReferenceOnPersistentNotifiesUi()
-    [<Test>] member x.ChangeReferenceOnPersistentCallsUpdatingUpdated() =  x.Tests.ChangeReferenceOnPersistentCallsUpdatingUpdated()
-    [<Test>] member x.LoadObjectReturnSameObject() =  x.Tests.LoadObjectReturnSameObject()   
-    [<Test>] member x.PersistentObjectHasContainerInjected() =  x.Tests.PersistentObjectHasContainerInjected()
-    [<Test>] member x.PersistentObjectHasServiceInjected() =  x.Tests.PersistentObjectHasServiceInjected()
-    [<Test>] member x.PersistentObjectHasLoadingLoadedCalled() =  x.Tests.PersistentObjectHasLoadingLoadedCalled()
-    [<Test>] member x.CanAccessReferenceProperty() =  x.Tests.CanAccessReferenceProperty()
-    [<Test>] member x.ReferencePropertyHasLoadingLoadedCalled() =  x.Tests.ReferencePropertyHasLoadingLoadedCalled()
-    [<Test>] member x.ReferencePropertyObjectHasContainerInjected() =  x.Tests.ReferencePropertyObjectHasContainerInjected()
-    [<Test>] member x.ReferencePropertyObjectHasServiceInjected() =  x.Tests.ReferencePropertyObjectHasServiceInjected()
-    [<Test>] member x.ReferencePropertyObjectResolveStateIsPersistent() =  x.Tests.ReferencePropertyObjectResolveStateIsPersistent()
-    [<Test>] member x.ReferencePropertyObjectHasVersion() =  x.Tests.ReferencePropertyObjectHasVersion()   
-    [<Test>] member x.CollectionPropertyHasLoadingLoadedCalled() =  x.Tests.CollectionPropertyHasLoadingLoadedCalled()
-    [<Test>] member x.CollectionPropertyObjectHasContainerInjected() =  x.Tests.CollectionPropertyObjectHasContainerInjected()
-    [<Test>] member x.CollectionPropertyObjectHasMenuServiceInjected() =  x.Tests.CollectionPropertyObjectHasMenuServiceInjected()
-    [<Test>] member x.CollectionPropertyObjectHasContributedServiceInjected() =  x.Tests.CollectionPropertyObjectHasContributedServiceInjected()
-    [<Test>] member x.CollectionPropertyObjectHasSystemServiceInjected() =  x.Tests.CollectionPropertyObjectHasSystemServiceInjected()
-    [<Test>] member x.CollectionPropertyObjectResolveStateIsPersistent() =  x.Tests.CollectionPropertyObjectResolveStateIsPersistent()
-    [<Test>] member x.CollectionPropertyObjectHasVersion() =  x.Tests.CollectionPropertyObjectHasVersion()
-    [<Test>] member x.CollectionPropertyCollectionResolveStateIsPersistent() =  x.Tests.CollectionPropertyCollectionResolveStateIsPersistent()   
-    [<Test>] member x.AddToCollectionOnPersistent() =  x.Tests.AddToCollectionOnPersistent()
-    [<Test>] member x.AddToCollectionOnPersistentCallsUpdatingUpdated() =  x.Tests.AddToCollectionOnPersistentCallsUpdatingUpdated()
-    [<Test>] member x.AddToCollectionOnPersistentNotifiesUi() =  x.Tests.AddToCollectionOnPersistentNotifiesUi()  
-    [<Test>] member x.RemoveFromCollectionOnPersistent() =  x.Tests.RemoveFromCollectionOnPersistent()
-    [<Test>] member x.RemoveFromCollectionOnPersistentCallsUpdatingUpdated() =  x.Tests.RemoveFromCollectionOnPersistentCallsUpdatingUpdated()
-    [<Test>] member x.RemoveFromCollectionOnPersistentNotifiesUi() =  x.Tests.RemoveFromCollectionOnPersistentNotifiesUi()
-    [<Test>] member x.ClearCollectionOnPersistent() =  x.Tests.ClearCollectionOnPersistent()
-    [<Test>] member x.ClearCollectionOnPersistentCallsUpdatingUpdated() =  x.Tests.ClearCollectionOnPersistentCallsUpdatingUpdated()
-    [<Test>] member x.ClearFromCollectionOnPersistentNotifiesUi() =  x.Tests.ClearCollectionOnPersistentNotifiesUi()
-    [<Test>] member x.NewObjectHasContainerInjected() =  x.Tests.NewObjectHasContainerInjected()
-    [<Test>] member x.NewObjectHasCreatedCalled() =  x.Tests.NewObjectHasCreatedCalled()
-    [<Test>] member x.NewObjectHasServiceInjected() =  x.Tests.NewObjectHasServiceInjected()
-    [<Test>] member x.NewObjectHasVersion() =  x.Tests.NewObjectHasVersion()
-    [<Test>] member x.NewObjectIsCreated() =  x.Tests.NewObjectIsCreated()
-    [<Test>] member x.NewObjectIsTransient() =  x.Tests.NewObjectIsTransient() 
-    [<Test>] member x.SaveNewObjectCallsPersistingPersisted() =  x.Tests.SaveNewObjectCallsPersistingPersisted()
-    [<Test>] member x.SaveNewObjectCallsPersistingPersistedRecursively() =  x.Tests.SaveNewObjectCallsPersistingPersistedRecursively()
-    [<Test>] member x.SaveNewObjectCallsPersistingPersistedRecursivelyFails() =  x.Tests.SaveNewObjectCallsPersistingPersistedRecursivelyFails()
-
-    [<Test>] 
-    member x.SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax() =  
-        EntityObjectStore.MaximumCommitCycles <- 1     
+    
+    override x.Fixtures = box (new FixturesInstaller([| box (new TestDataFixture()) |])) :?> IFixturesInstaller : IFixturesInstaller
+    
+    override x.MenuServices = 
+        let service = new SimpleRepository<Person>()
+        box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller : IServicesInstaller
+    
+    override x.ContributedActions = 
+        let service = new SimpleRepository<Product>()
+        box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller : IServicesInstaller
+    
+    override x.SystemServices = 
+        let service = new SimpleRepository<Address>()
+        box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller : IServicesInstaller
+    
+    override x.Persistor = 
+        let inst = new EntityPersistorInstaller()
+        ignore (inst.UsingCodeFirstContext(Func<Data.Entity.DbContext>(fun () -> upcast new TestDataContext())))
+        box (inst) :?> IObjectPersistorInstaller : IObjectPersistorInstaller
+    
+    member x.Tests = new PersistorTestSuite(x.NakedObjectsFramework)
+    
+    [<Test>]
+    member x.CanAccessCollectionProperty() = x.Tests.CanAccessCollectionProperty()
+    
+    [<Test>]
+    member x.GetInstanceFromInstancesOfT() = x.Tests.GetInstanceFromInstancesOfT()
+    
+    [<Test>]
+    member x.GetInstanceFromInstancesOfType() = x.Tests.GetInstanceFromInstancesOfType()
+    
+    [<Test>]
+    member x.GetInstanceFromInstancesOfSpecification() = x.Tests.GetInstanceFromInstancesOfSpecification()
+    
+    [<Test>]
+    member x.GetInstanceIsAlwaysSameObject() = x.Tests.GetInstanceIsAlwaysSameObject()
+    
+    [<Test>]
+    member x.GetInstanceResolveStateIsPersistent() = x.Tests.GetInstanceResolveStateIsPersistent()
+    
+    [<Test>]
+    member x.GetInstanceHasVersion() = x.Tests.GetInstanceHasVersion()
+    
+    [<Test>]
+    member x.ChangeScalarOnPersistentNotifiesUi() = x.Tests.ChangeScalarOnPersistentNotifiesUi()
+    
+    [<Test>]
+    member x.ChangeScalarOnPersistentCallsUpdatingUpdated() = x.Tests.ChangeScalarOnPersistentCallsUpdatingUpdated()
+    
+    [<Test>]
+    member x.ChangeReferenceOnPersistentNotifiesUi() = x.Tests.ChangeReferenceOnPersistentNotifiesUi()
+    
+    [<Test>]
+    member x.ChangeReferenceOnPersistentCallsUpdatingUpdated() = x.Tests.ChangeReferenceOnPersistentCallsUpdatingUpdated()
+    
+    [<Test>]
+    member x.LoadObjectReturnSameObject() = x.Tests.LoadObjectReturnSameObject()
+    
+    [<Test>]
+    member x.PersistentObjectHasContainerInjected() = x.Tests.PersistentObjectHasContainerInjected()
+    
+    [<Test>]
+    member x.PersistentObjectHasServiceInjected() = x.Tests.PersistentObjectHasServiceInjected()
+    
+    [<Test>]
+    member x.PersistentObjectHasLoadingLoadedCalled() = x.Tests.PersistentObjectHasLoadingLoadedCalled()
+    
+    [<Test>]
+    member x.CanAccessReferenceProperty() = x.Tests.CanAccessReferenceProperty()
+    
+    [<Test>]
+    member x.ReferencePropertyHasLoadingLoadedCalled() = x.Tests.ReferencePropertyHasLoadingLoadedCalled()
+    
+    [<Test>]
+    member x.ReferencePropertyObjectHasContainerInjected() = x.Tests.ReferencePropertyObjectHasContainerInjected()
+    
+    [<Test>]
+    member x.ReferencePropertyObjectHasServiceInjected() = x.Tests.ReferencePropertyObjectHasServiceInjected()
+    
+    [<Test>]
+    member x.ReferencePropertyObjectResolveStateIsPersistent() = x.Tests.ReferencePropertyObjectResolveStateIsPersistent()
+    
+    [<Test>]
+    member x.ReferencePropertyObjectHasVersion() = x.Tests.ReferencePropertyObjectHasVersion()
+    
+    [<Test>]
+    member x.CollectionPropertyHasLoadingLoadedCalled() = x.Tests.CollectionPropertyHasLoadingLoadedCalled()
+    
+    [<Test>]
+    member x.CollectionPropertyObjectHasContainerInjected() = x.Tests.CollectionPropertyObjectHasContainerInjected()
+    
+    [<Test>]
+    member x.CollectionPropertyObjectHasMenuServiceInjected() = x.Tests.CollectionPropertyObjectHasMenuServiceInjected()
+    
+    [<Test>]
+    member x.CollectionPropertyObjectHasContributedServiceInjected() = x.Tests.CollectionPropertyObjectHasContributedServiceInjected()
+    
+    [<Test>]
+    member x.CollectionPropertyObjectHasSystemServiceInjected() = x.Tests.CollectionPropertyObjectHasSystemServiceInjected()
+    
+    [<Test>]
+    member x.CollectionPropertyObjectResolveStateIsPersistent() = x.Tests.CollectionPropertyObjectResolveStateIsPersistent()
+    
+    [<Test>]
+    member x.CollectionPropertyObjectHasVersion() = x.Tests.CollectionPropertyObjectHasVersion()
+    
+    [<Test>]
+    member x.CollectionPropertyCollectionResolveStateIsPersistent() = x.Tests.CollectionPropertyCollectionResolveStateIsPersistent()
+    
+    [<Test>]
+    member x.AddToCollectionOnPersistent() = x.Tests.AddToCollectionOnPersistent()
+    
+    [<Test>]
+    member x.AddToCollectionOnPersistentCallsUpdatingUpdated() = x.Tests.AddToCollectionOnPersistentCallsUpdatingUpdated()
+    
+    [<Test>]
+    member x.AddToCollectionOnPersistentNotifiesUi() = x.Tests.AddToCollectionOnPersistentNotifiesUi()
+    
+    [<Test>]
+    member x.RemoveFromCollectionOnPersistent() = x.Tests.RemoveFromCollectionOnPersistent()
+    
+    [<Test>]
+    member x.RemoveFromCollectionOnPersistentCallsUpdatingUpdated() = x.Tests.RemoveFromCollectionOnPersistentCallsUpdatingUpdated()
+    
+    [<Test>]
+    member x.RemoveFromCollectionOnPersistentNotifiesUi() = x.Tests.RemoveFromCollectionOnPersistentNotifiesUi()
+    
+    [<Test>]
+    member x.ClearCollectionOnPersistent() = x.Tests.ClearCollectionOnPersistent()
+    
+    [<Test>]
+    member x.ClearCollectionOnPersistentCallsUpdatingUpdated() = x.Tests.ClearCollectionOnPersistentCallsUpdatingUpdated()
+    
+    [<Test>]
+    member x.ClearFromCollectionOnPersistentNotifiesUi() = x.Tests.ClearCollectionOnPersistentNotifiesUi()
+    
+    [<Test>]
+    member x.NewObjectHasContainerInjected() = x.Tests.NewObjectHasContainerInjected()
+    
+    [<Test>]
+    member x.NewObjectHasCreatedCalled() = x.Tests.NewObjectHasCreatedCalled()
+    
+    [<Test>]
+    member x.NewObjectHasServiceInjected() = x.Tests.NewObjectHasServiceInjected()
+    
+    [<Test>]
+    member x.NewObjectHasVersion() = x.Tests.NewObjectHasVersion()
+    
+    [<Test>]
+    member x.NewObjectIsCreated() = x.Tests.NewObjectIsCreated()
+    
+    [<Test>]
+    member x.NewObjectIsTransient() = x.Tests.NewObjectIsTransient()
+    
+    [<Test>]
+    member x.SaveNewObjectCallsPersistingPersisted() = x.Tests.SaveNewObjectCallsPersistingPersisted()
+    
+    [<Test>]
+    member x.SaveNewObjectCallsPersistingPersistedRecursively() = x.Tests.SaveNewObjectCallsPersistingPersistedRecursively()
+    
+    [<Test>]
+    member x.SaveNewObjectCallsPersistingPersistedRecursivelyFails() = x.Tests.SaveNewObjectCallsPersistingPersistedRecursivelyFails()
+    
+    [<Test>]
+    member x.SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax() = 
+        EntityObjectStore.MaximumCommitCycles <- 1
         x.Tests.SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax()
         EntityObjectStore.MaximumCommitCycles <- 10
-
-    [<Test>] member x.SaveNewObjectTransientCollectionItemCallsPersistingPersisted() =  x.Tests.SaveNewObjectTransientCollectionItemCallsPersistingPersisted()
-    [<Test>] member x.SaveNewObjectTransientReferenceCallsPersistingPersisted() =  x.Tests.SaveNewObjectTransientReferenceCallsPersistingPersisted()
-    [<Test>] member x.SaveNewObjectWithPersistentItemCollectionItem() =  x.Tests.SaveNewObjectWithPersistentItemCollectionItem()
-    [<Test>] member x.SaveNewObjectWithPersistentReference() =  x.Tests.SaveNewObjectWithPersistentReference()
-    [<Test>] member x.SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction() =  x.Tests.SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction()
-    [<Test>] member x.SaveNewObjectWithPersistentReferenceInSeperateTransaction() =  x.Tests.SaveNewObjectWithPersistentReferenceInSeperateTransaction()    
-    [<Test>] member x.SaveNewObjectWithScalars() =  x.Tests.SaveNewObjectWithScalars()
-    [<Test>] member x.SaveNewObjectWithValidate() =  x.Tests.SaveNewObjectWithValidate()
-    [<Test>] member x.ChangeObjectWithValidate() =  x.Tests.ChangeObjectWithValidate()
-    [<Test>] member x.SaveNewObjectWithTransientCollectionItem() =  x.Tests.SaveNewObjectWithTransientCollectionItem()
-    [<Test>] member x.SaveNewObjectWithTransientReference() =  x.Tests.SaveNewObjectWithTransientReference()  
-    [<Test>] member x.EmptyCollectionPropertyCollectionResolveStateIsPersistent() =  x.Tests.EmptyCollectionPropertyCollectionResolveStateIsPersistent()
-    [<Test>] member x.GetInlineInstance() =     x.Tests.GetInlineInstance() 
-    [<Test>] member x.InlineObjectHasContainerInjected() =     x.Tests.InlineObjectHasContainerInjected()        
-    [<Test>] member x.InlineObjectHasServiceInjected() =      x.Tests.InlineObjectHasServiceInjected()        
-    [<Test>] member x.InlineObjectHasParentInjected() =     x.Tests.InlineObjectHasParentInjected()         
-    [<Test>] member x.InlineObjectHasVersion() =      x.Tests.InlineObjectHasVersion()           
-    [<Test>] member x.InlineObjectHasLoadingLoadedCalled() =     x.Tests.InlineObjectHasLoadingLoadedCalled()       
-    [<Test>] member x.CreateTransientInlineInstance() =    x.Tests.CreateTransientInlineInstance()       
-    [<Test>] member x.TransientInlineObjectHasContainerInjected() =      x.Tests.TransientInlineObjectHasContainerInjected()           
-    [<Test>] member x.TransientInlineObjectHasServiceInjected() =     x.Tests.TransientInlineObjectHasServiceInjected()       
-    [<Test>] member x.TransientInlineObjectHasParentInjected() =    x.Tests.TransientInlineObjectHasParentInjected()         
-    [<Test>] member x.TransientInlineObjectHasVersion() =    x.Tests.TrainsientInlineObjectHasVersion()                 
-    [<Test>] member x.InlineObjectCallsCreated() =     x.Tests.InlineObjectCallsCreated()          
-    [<Test>] member x.SaveInlineObjectCallsPersistingPersisted() =     x.Tests.SaveInlineObjectCallsPersistingPersisted() 
-    [<Test>] member x.ChangeScalarOnInlineObjectCallsUpdatingUpdated() =    x.Tests.ChangeScalarOnInlineObjectCallsUpdatingUpdated() 
-    [<Test>] member x.UpdateInlineObjectUpdatesUi() =    x.Tests.UpdateInlineObjectUpdatesUi() 
-    [<Test>] member x.RefreshResetsObject() = x.Tests.RefreshResetsObject()     
-    [<Test>] member x.GetKeysReturnsKeys() = x.Tests.GetKeysReturnsKeys()   
-    [<Test>] member x.FindByKey() = x.Tests.FindByKey()       
-    [<Test>] member x.CreateAndDeleteNewObjectWithScalars() =  x.Tests.CreateAndDeleteNewObjectWithScalars()
-    [<Test>] member x.DeleteObjectCallsDeletingDeleted() = x.Tests.DeleteObjectCallsDeletingDeleted()
-    [<Test>] member x.CountCollectionOnPersistent() = x.Tests.CountCollectionOnPersistent()
-    [<Test>] member x.CountUnResolvedCollectionOnPersistent() = x.Tests.CountUnResolvedCollectionOnPersistent()
-    [<Test>] member x.CountCollectionOnTransient() = x.Tests.CountCollectionOnTransient()
-    [<Test>] member x.CountEmptyCollectionOnTransient() = x.Tests.CountEmptyCollectionOnTransient()
-    [<Test>] member x.SaveNewObjectWithTransientReferenceInvalid() = x.Tests.SaveNewObjectWithTransientReferenceInvalid()
-    [<Test>] member x.SaveNewObjectWithTransientReferenceObjectInvalid() = x.Tests.SaveNewObjectWithTransientReferenceObjectInvalid()
-    [<Test>] member x.SaveNewObjectWithTransientReferenceValidateAssocInvalid() = x.Tests.SaveNewObjectWithTransientReferenceValidateAssocInvalid()
-
-
-   
+    
+    [<Test>]
+    member x.SaveNewObjectTransientCollectionItemCallsPersistingPersisted() = x.Tests.SaveNewObjectTransientCollectionItemCallsPersistingPersisted()
+    
+    [<Test>]
+    member x.SaveNewObjectTransientReferenceCallsPersistingPersisted() = x.Tests.SaveNewObjectTransientReferenceCallsPersistingPersisted()
+    
+    [<Test>]
+    member x.SaveNewObjectWithPersistentItemCollectionItem() = x.Tests.SaveNewObjectWithPersistentItemCollectionItem()
+    
+    [<Test>]
+    member x.SaveNewObjectWithPersistentReference() = x.Tests.SaveNewObjectWithPersistentReference()
+    
+    [<Test>]
+    member x.SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction() = x.Tests.SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction()
+    
+    [<Test>]
+    member x.SaveNewObjectWithPersistentReferenceInSeperateTransaction() = x.Tests.SaveNewObjectWithPersistentReferenceInSeperateTransaction()
+    
+    [<Test>]
+    member x.SaveNewObjectWithScalars() = x.Tests.SaveNewObjectWithScalars()
+    
+    [<Test>]
+    member x.SaveNewObjectWithValidate() = x.Tests.SaveNewObjectWithValidate()
+    
+    [<Test>]
+    member x.ChangeObjectWithValidate() = x.Tests.ChangeObjectWithValidate()
+    
+    [<Test>]
+    member x.SaveNewObjectWithTransientCollectionItem() = x.Tests.SaveNewObjectWithTransientCollectionItem()
+    
+    [<Test>]
+    member x.SaveNewObjectWithTransientReference() = x.Tests.SaveNewObjectWithTransientReference()
+    
+    [<Test>]
+    member x.EmptyCollectionPropertyCollectionResolveStateIsPersistent() = x.Tests.EmptyCollectionPropertyCollectionResolveStateIsPersistent()
+    
+    [<Test>]
+    member x.GetInlineInstance() = x.Tests.GetInlineInstance()
+    
+    [<Test>]
+    member x.InlineObjectHasContainerInjected() = x.Tests.InlineObjectHasContainerInjected()
+    
+    [<Test>]
+    member x.InlineObjectHasServiceInjected() = x.Tests.InlineObjectHasServiceInjected()
+    
+    [<Test>]
+    member x.InlineObjectHasParentInjected() = x.Tests.InlineObjectHasParentInjected()
+    
+    [<Test>]
+    member x.InlineObjectHasVersion() = x.Tests.InlineObjectHasVersion()
+    
+    [<Test>]
+    member x.InlineObjectHasLoadingLoadedCalled() = x.Tests.InlineObjectHasLoadingLoadedCalled()
+    
+    [<Test>]
+    member x.CreateTransientInlineInstance() = x.Tests.CreateTransientInlineInstance()
+    
+    [<Test>]
+    member x.TransientInlineObjectHasContainerInjected() = x.Tests.TransientInlineObjectHasContainerInjected()
+    
+    [<Test>]
+    member x.TransientInlineObjectHasServiceInjected() = x.Tests.TransientInlineObjectHasServiceInjected()
+    
+    [<Test>]
+    member x.TransientInlineObjectHasParentInjected() = x.Tests.TransientInlineObjectHasParentInjected()
+    
+    [<Test>]
+    member x.TransientInlineObjectHasVersion() = x.Tests.TrainsientInlineObjectHasVersion()
+    
+    [<Test>]
+    member x.InlineObjectCallsCreated() = x.Tests.InlineObjectCallsCreated()
+    
+    [<Test>]
+    member x.SaveInlineObjectCallsPersistingPersisted() = x.Tests.SaveInlineObjectCallsPersistingPersisted()
+    
+    [<Test>]
+    member x.ChangeScalarOnInlineObjectCallsUpdatingUpdated() = x.Tests.ChangeScalarOnInlineObjectCallsUpdatingUpdated()
+    
+    [<Test>]
+    member x.UpdateInlineObjectUpdatesUi() = x.Tests.UpdateInlineObjectUpdatesUi()
+    
+    [<Test>]
+    member x.RefreshResetsObject() = x.Tests.RefreshResetsObject()
+    
+    [<Test>]
+    member x.GetKeysReturnsKeys() = x.Tests.GetKeysReturnsKeys()
+    
+    [<Test>]
+    member x.FindByKey() = x.Tests.FindByKey()
+    
+    [<Test>]
+    member x.CreateAndDeleteNewObjectWithScalars() = x.Tests.CreateAndDeleteNewObjectWithScalars()
+    
+    [<Test>]
+    member x.DeleteObjectCallsDeletingDeleted() = x.Tests.DeleteObjectCallsDeletingDeleted()
+    
+    [<Test>]
+    member x.CountCollectionOnPersistent() = x.Tests.CountCollectionOnPersistent()
+    
+    [<Test>]
+    member x.CountUnResolvedCollectionOnPersistent() = x.Tests.CountUnResolvedCollectionOnPersistent()
+    
+    [<Test>]
+    member x.CountCollectionOnTransient() = x.Tests.CountCollectionOnTransient()
+    
+    [<Test>]
+    member x.CountEmptyCollectionOnTransient() = x.Tests.CountEmptyCollectionOnTransient()
+    
+    [<Test>]
+    member x.SaveNewObjectWithTransientReferenceInvalid() = x.Tests.SaveNewObjectWithTransientReferenceInvalid()
+    
+    [<Test>]
+    member x.SaveNewObjectWithTransientReferenceObjectInvalid() = x.Tests.SaveNewObjectWithTransientReferenceObjectInvalid()
+    
+    [<Test>]
+    member x.SaveNewObjectWithTransientReferenceValidateAssocInvalid() = x.Tests.SaveNewObjectWithTransientReferenceValidateAssocInvalid()
