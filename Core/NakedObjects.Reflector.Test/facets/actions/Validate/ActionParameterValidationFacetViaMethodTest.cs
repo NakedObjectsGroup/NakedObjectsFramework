@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System.Reflection;
+using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NUnit.Framework;
@@ -16,7 +17,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Validate {
         public void SetUp() {
             IFacetHolder holder = null;
             var customer = new Customer17();
-            target = new ProgrammableNakedObject(customer, null);
+
+            var mock = new Mock<INakedObject>();
+            target = mock.Object;
+
+            mock.Setup(no => no.Object).Returns(customer);
 
             MethodInfo method = typeof (Customer17).GetMethod("Validate0SomeAction");
             facet = new ActionParameterValidationFacetViaMethod(method, 0, holder);
@@ -32,14 +37,18 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Validate {
 
         [Test]
         public void Test1() {
-            INakedObject value = new ProgrammableNakedObject(10, null);
+            var mock = new Mock<INakedObject>();
+            INakedObject value = mock.Object;
+            mock.Setup(no => no.Object).Returns(10);
             Assert.That(facet.InvalidReason(target, value), Is.Null);
         }
 
 
         [Test]
         public void Test2() {
-            INakedObject value = new ProgrammableNakedObject(-7, null);
+            var mock = new Mock<INakedObject>();
+            INakedObject value = mock.Object;
+            mock.Setup(no => no.Object).Returns(-7);
             Assert.That(facet.InvalidReason(target, value), Is.EqualTo("must be positive"));
         }
     }

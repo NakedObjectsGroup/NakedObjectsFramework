@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Properties.Enums;
@@ -50,7 +51,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Enums {
             Assert.AreEqual(1, facetAsEnumFacet.GetChoices(null, new object[] {Cities.NewYork}).Length);
             Assert.AreEqual(Cities.NewYork, facetAsEnumFacet.GetChoices(null, new object[] {Cities.NewYork})[0]);
 
-            INakedObject nakedObject = new ProgrammableNakedObject(Cities.NewYork, null);
+            var mock = new Mock<INakedObject>();
+            INakedObject nakedObject = mock.Object;
+            mock.Setup(no => no.Object).Returns(Cities.NewYork);
 
             Assert.AreEqual("New York", facetAsEnumFacet.GetTitle(nakedObject));
         }

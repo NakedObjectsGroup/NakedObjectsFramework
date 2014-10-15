@@ -160,8 +160,6 @@
     <Compile Include="facets\ordering\memberorder\MemberPeerStub.cs" />
     <Compile Include="facets\password\PasswordAnnotationFacetFactoryTest.cs" />
     <Compile Include="facets\presentation\PresentationHintAnnotationFacetFactoryTest.cs" />
-    <Compile Include="facets\ProgrammableMethodRemover.cs" />
-    <Compile Include="facets\ProgrammableNakedObject.cs" />
     <Compile Include="facets\propcoll\notpersisted\NotPersistedAnnotationFacetFactoryTest.cs" />
     <Compile Include="facets\properties\EagerlyAnnotationFacetFactoryTest.cs" />
     <Compile Include="facets\properties\PropertyFieldMethodsFacetFactoryTest.cs" />

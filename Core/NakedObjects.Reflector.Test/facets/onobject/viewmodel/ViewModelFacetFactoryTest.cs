@@ -4,6 +4,8 @@
 
 using System;
 using System.Reflection;
+using Moq;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.ViewModel;
 using NakedObjects.Architecture.Reflect;
@@ -84,7 +86,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
             Assert.IsNotNull(facet);
 
             var testClass = new Class1 {Value1 = "testValue1", Value2 = "testValue2"};
-            string[] key = facet.Derive(new ProgrammableNakedObject(testClass, null));
+            var mock = new Mock<INakedObject>();
+            INakedObject value = mock.Object;
+            mock.Setup(no => no.Object).Returns(testClass);
+
+
+            string[] key = facet.Derive(value);
 
             Assert.AreEqual(2, key.Length);
             Assert.AreEqual(testClass.Value1, key[0]);
@@ -119,7 +126,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
 
             var testClass = new Class1();
             var keys = new[] {"testValue1", "testValue2"};
-            facet.Populate(keys, new ProgrammableNakedObject(testClass, null));
+            var mock = new Mock<INakedObject>();
+            INakedObject value = mock.Object;
+            mock.Setup(no => no.Object).Returns(testClass);
+
+            facet.Populate(keys, value);
 
 
             Assert.AreEqual(keys[0], testClass.Value1);
