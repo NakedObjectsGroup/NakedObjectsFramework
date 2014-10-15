@@ -14,9 +14,10 @@ open TestTypes
 open System
 open NakedObjects
 open NakedObjects.Architecture.Adapter
-open NakedObjects.Core.Reflect
 open NakedObjects.Architecture.Security
 open System.Data.Entity.Core.Objects
+open NakedObjects.Reflector.DotNet
+open Moq
 
 let ModelConfig = 
     let pc = new PocoEntityContextConfiguration()
@@ -24,26 +25,14 @@ let ModelConfig =
     pc.DefaultMergeOption <- MergeOption.AppendOnly
     pc
 
-type TestInjector() = 
-    interface IContainerInjector with
-        
-        member x.InitDomainObject obj = 
-            let container = new NakedObjects.Reflector.DotNet.DotNetDomainObjectContainer(null)
-            let prop = obj.GetType().GetProperty("Container")
-            if prop <> null then prop.SetValue(obj, container, null)
-            let service = new NakedObjects.Services.SimpleRepository<Person>()
-            let prop = obj.GetType().GetProperty("Service")
-            if prop <> null then prop.SetValue(obj, service, null)
-        
-        member x.InitInlineObject(root : Object, inlineObject : Object) = ()
-        member x.Framework 
-            with set (f) = ()
-        member x.ServiceTypes 
-            with set (f) = ()
+let injector = new DotNetDomainObjectContainerInjector()
+
+injector.set_Framework (new Mock<INakedObjectsFramework>()).Object
+injector.set_ServiceTypes [| typeof<NakedObjects.Services.SimpleRepository<Person>> |]
 
 let setupPersistorForInjectorTesting (p : EntityObjectStore) = 
     p.SetupForTesting
-        (new TestInjector(), EntityObjectStore.CreateAdapterDelegate(AdapterForTest), EntityObjectStore.ReplacePocoDelegate(ReplacePocoForTest), 
+        (injector, EntityObjectStore.CreateAdapterDelegate(AdapterForTest), EntityObjectStore.ReplacePocoDelegate(ReplacePocoForTest), 
          EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
          EntityObjectStore.NotifyUiDelegate(NotifyUIForTest), Action<INakedObject, ISession>(updated), Action<INakedObject, ISession>(updating), 
          Action<INakedObject, ISession>(persisted), Action<INakedObject, ISession>(persisting), Action<INakedObject>(handleLoadingTest), 

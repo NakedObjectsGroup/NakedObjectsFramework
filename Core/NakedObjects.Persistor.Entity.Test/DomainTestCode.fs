@@ -215,7 +215,7 @@ let CanUpdatePersistentObjectWithReferencePropertiesAbortWithResolve persistor =
 
 let CanUpdatePersistentObjectWithReferencePropertiesAbortWithFixup persistor = 
     let (psc, origPc, replPc) = GetOrigAndReplProductCategoriesWithResolve persistor
-    let b = origPc.ProductSubcategories.Remove(psc)
+    origPc.ProductSubcategories.Remove(psc)  |> ignore
     psc.ProductCategory <- replPc
     replPc.ProductSubcategories.Add(psc)
     SaveWithNoEndTransaction persistor psc
@@ -241,7 +241,7 @@ let CanUpdatePersistentObjectWithReferencePropertiesDoFixupWithResolve persistor
     let (psc, origPc, replPc) = GetOrigAndReplProductCategoriesWithResolve persistor
     
     let swapSubcatsWithFixup (oldPc : ProductCategory) (newPc : ProductCategory) = 
-        let b = oldPc.ProductSubcategories.Remove(psc)
+        oldPc.ProductSubcategories.Remove(psc)  |> ignore
         psc.ProductCategory <- newPc
         newPc.ProductSubcategories.Add(psc)
         SaveAndEndTransaction persistor psc
@@ -253,7 +253,7 @@ let CanUpdatePersistentObjectWithCollectionProperties persistor =
     let (psc, origPc, replPc) = GetOrigAndReplProductCategories persistor
     
     let swapSubcatsForCollection (oldPc : ProductCategory) (newPc : ProductCategory) = 
-        let b = oldPc.ProductSubcategories.Remove(psc)
+        oldPc.ProductSubcategories.Remove(psc)  |> ignore
         newPc.ProductSubcategories.Add(psc)
         SaveAndEndTransaction persistor origPc
         SaveAndEndTransaction persistor newPc
@@ -263,7 +263,7 @@ let CanUpdatePersistentObjectWithCollectionProperties persistor =
 
 let CanUpdatePersistentObjectWithCollectionPropertiesAbort persistor = 
     let (psc, origPc, replPc) = GetOrigAndReplProductCategories persistor
-    let b = origPc.ProductSubcategories.Remove(psc)
+    origPc.ProductSubcategories.Remove(psc)  |> ignore
     replPc.ProductSubcategories.Add(psc)
     SaveWithNoEndTransaction persistor origPc
     SaveWithNoEndTransaction persistor replPc
@@ -275,7 +275,7 @@ let CanUpdatePersistentObjectWithCollectionPropertiesAbort persistor =
 
 let CanUpdatePersistentObjectWithCollectionPropertiesAbortWithResolve persistor = 
     let (psc, origPc, replPc) = GetOrigAndReplProductCategoriesWithResolve persistor
-    let b = origPc.ProductSubcategories.Remove(psc)
+    origPc.ProductSubcategories.Remove(psc)  |> ignore
     replPc.ProductSubcategories.Add(psc)
     SaveWithNoEndTransaction persistor origPc
     SaveWithNoEndTransaction persistor replPc
@@ -287,7 +287,7 @@ let CanUpdatePersistentObjectWithCollectionPropertiesAbortWithResolve persistor 
 
 let CanUpdatePersistentObjectWithCollectionPropertiesAbortWithFixup persistor = 
     let (psc, origPc, replPc) = GetOrigAndReplProductCategoriesWithResolve persistor
-    let b = origPc.ProductSubcategories.Remove(psc)
+    origPc.ProductSubcategories.Remove(psc)  |> ignore
     replPc.ProductSubcategories.Add(psc)
     psc.ProductCategory <- replPc
     SaveWithNoEndTransaction persistor origPc
@@ -302,7 +302,7 @@ let CanUpdatePersistentObjectWithCollectionPropertiesDoFixup persistor =
     let (psc, origPc, replPc) = GetOrigAndReplProductCategories persistor
     
     let swapSubcatsForCollectionFixup (oldPc : ProductCategory) (newPc : ProductCategory) = 
-        let b = oldPc.ProductSubcategories.Remove(psc)
+        oldPc.ProductSubcategories.Remove(psc)  |> ignore
         newPc.ProductSubcategories.Add(psc)
         psc.ProductCategory <- newPc
         SaveAndEndTransaction persistor origPc
@@ -315,7 +315,7 @@ let CanUpdatePersistentObjectWithCollectionPropertiesWithResolve persistor =
     let (psc, origPc, replPc) = GetOrigAndReplProductCategoriesWithResolve persistor
     
     let swapSubcatsForCollection (oldPc : ProductCategory) (newPc : ProductCategory) = 
-        let b = oldPc.ProductSubcategories.Remove(psc)
+        oldPc.ProductSubcategories.Remove(psc)  |> ignore
         newPc.ProductSubcategories.Add(psc)
         SaveAndEndTransaction persistor origPc
         SaveAndEndTransaction persistor newPc
@@ -368,7 +368,6 @@ let CanUpdatePersistentObjectWithScalarPropertiesAbort persistor =
         persistor.GetInstances<ScrapReason>()
         |> Seq.filter (fun i -> i.ScrapReasonID = sr0.ScrapReasonID)
         |> Seq.head
-    //let sr1 =  persistor.GetInstances<ScrapReason>() |> Seq.filter (fun i -> i.ScrapReasonID = sr0.ScrapReasonID) |> Seq.head    
     Assert.AreEqual(origName, sr1.Name)
 
 let CanUpdatePersistentObjectWithScalarPropertiesIgnore persistor = 

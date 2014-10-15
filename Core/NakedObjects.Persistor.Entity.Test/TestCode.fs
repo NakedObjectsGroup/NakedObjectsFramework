@@ -34,21 +34,21 @@ let getEntityObjectStore (config) =
 let CreateAndSetup<'t when 't : not struct> (p : EntityObjectStore) setter = 
     let inst = p.CreateInstance<'t>(null)
     setter inst
-    let n1 = GetOrAddAdapterForTest inst null
+    GetOrAddAdapterForTest inst null |> ignore
     inst
 
 let uniqueName() = Guid.NewGuid().ToString()
 
 let CreateAndEndTransaction (p : EntityObjectStore) o = 
-    let cmd = p.CreateCreateObjectCommand((GetOrAddAdapterForTest o null), null)
+    p.CreateCreateObjectCommand((GetOrAddAdapterForTest o null), null) |> ignore
     p.EndTransaction()
 
 let SaveAndEndTransaction (p : EntityObjectStore) o = 
-    let cmd = p.CreateSaveObjectCommand((GetOrAddAdapterForTest o null), null)
+    p.CreateSaveObjectCommand((GetOrAddAdapterForTest o null), null) |> ignore
     p.EndTransaction()
 
 let SaveWithNoEndTransaction (p : EntityObjectStore) o = 
-    let cmd = p.CreateSaveObjectCommand((GetOrAddAdapterForTest o null), null)
+    p.CreateSaveObjectCommand((GetOrAddAdapterForTest o null), null) |> ignore
     ()
 
 let GetInstancesGenericNotEmpty<'t when 't : not struct>(p : EntityObjectStore) = 
@@ -103,7 +103,7 @@ let CanGetContextForCollection<'t when 't : not struct>(persistor : EntityObject
 let CanGetContextForNonGenericCollection<'t when 't : not struct>(persistor : EntityObjectStore) = 
     let testCollection = new ArrayList()
     let header = persistor.GetInstances<'t>() |> Seq.head
-    let i = testCollection.Add(header)
+    testCollection.Add(header) |> ignore
     persistor.LoadComplexTypes(GetOrAddAdapterForTest testCollection null, false)
 
 let CanGetContextForArray<'t when 't : not struct>(persistor : EntityObjectStore) = 

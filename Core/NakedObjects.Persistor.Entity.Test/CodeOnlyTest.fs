@@ -11,12 +11,6 @@ open CodeOnlyTestCode
 open NakedObjects.EntityObjectStore
 open TestTypes
 open TestCode
-open NakedObjects.Core.Context
-open NakedObjects.Core.Security
-open System.Security.Principal
-open NakedObjects.Reflector.DotNet
-open Moq
-open NakedObjects.Architecture.Persist
 
 let codeOnlyPersistor = 
     let c = new EntityObjectStoreConfiguration()
