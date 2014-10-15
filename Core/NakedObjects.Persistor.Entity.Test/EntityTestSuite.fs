@@ -1,7 +1,12 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 module NakedObjects.EntityTestSuite
+
 open NUnit.Framework
 open NakedObjects.Core.NakedObjectsSystem
 open NakedObjects.Boot
@@ -9,12 +14,8 @@ open NakedObjects.Services
 open System
 open NakedObjects.EntityObjectStore
 open NakedObjects.Core.Context
-open NakedObjects.Architecture.Resolve
 open NakedObjects.Architecture.Persist
-open System.Collections.Generic
-open NakedObjects.Architecture.Util
 open NakedObjects.Persistor.TestData
-open TestData
 open NakedObjects.Persistor.TestSuite
 open TestTypes
 open TestData
@@ -41,15 +42,6 @@ let Config =
     let c = new CodeFirstEntityContextConfiguration()
     c.DbContext <- fun () -> upcast new TestDataContext()
     c
-
-//let Config =    
-//    LoadTestAssembly()
-//    let a = AppDomain.CurrentDomain.GetAssemblies() |> Seq.filter (fun i -> i.GetName().Name = assemblyName) |> Seq.nth 0
-//    let c = new CodeOnlyEntityContextConfiguration()
-//    c.DefaultMergeOption <- MergeOption.AppendOnly
-//    c.DataSource <- datasourceName
-//    c.DomainAssemblies <- [|a|]  
-//    c
 
 let db = 
     let c = new EntityObjectStoreConfiguration()

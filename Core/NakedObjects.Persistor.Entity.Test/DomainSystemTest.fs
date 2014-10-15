@@ -1,16 +1,18 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 module NakedObjects.DomainSystemTest
+
 open NUnit.Framework
 open NakedObjects.Core.NakedObjectsSystem
 open NakedObjects.Boot
 open AdventureWorksModel
 open NakedObjects.Services
 open System
-open NakedObjects.EntityObjectStore
-open NakedObjects.Core.Context
-open NakedObjects.Architecture.Resolve
 open NakedObjects.Architecture.Adapter
 open SystemTestCode
 open TestCode
@@ -67,8 +69,6 @@ type DomainSystemTests() =
     member x.GetCollectionDirectly() = 
         let srs = x.NakedObjectsFramework.Persistor.Instances<ScrapReason>()
         Assert.Greater( srs |> Seq.length, 0)
-        //Assert.Greater(srs |> Seq.length, 0)
-
 
     [<Test>]
     member x.CheckInstanceProperty() = 
@@ -111,7 +111,6 @@ type DomainSystemTests() =
     [<Test>]
     member x.CheckReferenceIdentities() = 
        let wo = x.NakedObjectsFramework.Persistor.Instances<WorkOrder>() |> Seq.filter (fun w -> w.ScrapReason <> null) |> Seq.head 
-       //let wo = NakedObjectsFramework.LifecycleManager.Instances<WorkOrder>() |> Seq.filter (fun w -> w.ScrapReason <> null) |> Seq.head 
        Assert.IsNotNull(wo)
        IsNotNullAndPersistent wo.ScrapReason x.NakedObjectsFramework
        
@@ -132,7 +131,6 @@ type DomainSystemTests() =
        let pscNo = x.CreatePSC()
        let psc = box pscNo.Object :?> ProductSubcategory
        let pc =  x.NakedObjectsFramework.Persistor.Instances<ProductCategory>() |> Seq.head 
-       //let pc =  NakedObjectsFramework.LifecycleManager.Instances<ProductCategory>() |> Seq.head 
        psc.ProductCategory <- pc
        save pscNo x.NakedObjectsFramework
        IsNotNullAndPersistent pscNo x.NakedObjectsFramework
@@ -151,10 +149,8 @@ type DomainSystemTests() =
     [<Test>]
     member x.AddObjectToPersistentCollection() =
         let psc =   x.NakedObjectsFramework.Persistor.Instances<ProductSubcategory>() |> Seq.head 
-        //let psc = NakedObjectsFramework.LifecycleManager.Instances<ProductSubcategory>() |> Seq.head 
         let origPc = psc.ProductCategory
         let replPc =  x.NakedObjectsFramework.Persistor.Instances<ProductCategory>() |> Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head   
-        //let replPc =   NakedObjectsFramework.LifecycleManager.Instances<ProductCategory>() |> Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head  
         let ctx = x.NakedObjectsFramework
         let swapSubcatsForCollection (oldPc : ProductCategory) (newPc : ProductCategory) =
             ctx.TransactionManager.StartTransaction()  
@@ -168,10 +164,8 @@ type DomainSystemTests() =
     [<Test>]
     member x.AddObjectToPersistentCollectionNotifiesUI() =
         let psc = x.NakedObjectsFramework.Persistor.Instances<ProductSubcategory>() |> Seq.head 
-        //let psc =  NakedObjectsFramework.LifecycleManager.Instances<ProductSubcategory>() |> Seq.head 
         let origPc = psc.ProductCategory
         let replPc =  x.NakedObjectsFramework.Persistor.Instances<ProductCategory>() |> Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head  
-        //let replPc =   NakedObjectsFramework.LifecycleManager.Instances<ProductCategory>() |> Seq.filter (fun i -> i.ProductCategoryID <> origPc.ProductCategoryID) |> Seq.head 
         let ctx = x.NakedObjectsFramework
         let swapSubcatsForCollection (oldPc : ProductCategory) (newPc : ProductCategory) =
             ctx.TransactionManager.StartTransaction()  

@@ -1,6 +1,10 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 module NakedObjects.DomainNoProxiesTest
 open NUnit.Framework
 open DomainTestCode
@@ -8,10 +12,8 @@ open TestTypes
 open NakedObjects.EntityObjectStore
 open TestCode
 open System.Data.Entity.Core.Objects
-open NakedObjects.Architecture.Adapter
 open NakedObjects.Architecture.Persist
 open NakedObjects.Architecture.Reflect
-open System
 open NakedObjects.Core.Context
 open NakedObjects.Core.Security
 open System.Security.Principal
@@ -30,18 +32,12 @@ let persistor  =
     let nom = (new Mock<INakedObjectManager>()).Object
     c.UsingEdmxContext "AdventureWorksEntities" |> ignore
 
-    //c.ContextConfiguration <- [|(box PocoConfig :?> EntityContextConfiguration)|]
     let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i, nom)
     let p = setupPersistorForTesting p
     p
 
 let overwritePersistor =
     setProxyingAndDeferredLoading <- false
-//    let config = 
-//        let pc = new NakedObjects.EntityObjectStore.PocoEntityContextConfiguration()
-//        pc.ContextName <- "AdventureWorksEntities"  
-//        pc.DefaultMergeOption <- MergeOption.OverwriteChanges
-//        pc
     let c = new EntityObjectStoreConfiguration()
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     let u = new SimpleUpdateNotifier()
@@ -53,7 +49,6 @@ let overwritePersistor =
     let cc = c.UsingEdmxContext "AdventureWorksEntities"
     c.DefaultMergeOption <- MergeOption.OverwriteChanges
   
-    //c.ContextConfiguration <- [|(box config :?> EntityContextConfiguration)|]
     let p = new EntityObjectStore(s, u, c, new EntityOidGenerator(m), m, i, nom)
     let p = setupPersistorForTesting p
     p
@@ -64,7 +59,6 @@ type DomainNoProxiesTests() = class
     member x.Setup() = 
         DomainSetup()
         setProxyingAndDeferredLoading <- false
-        //let sink = setupPersistorForTesting persistor
         ()
     [<TestFixtureTearDown>] 
     member x.TearDown() =      

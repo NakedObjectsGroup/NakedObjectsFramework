@@ -1,30 +1,21 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 module NakedObjects.CodeOnlyTestCode
+
 open NUnit.Framework
 open NakedObjects.EntityObjectStore
 open NakedObjects.Architecture
-open NakedObjects.Architecture.Util
-open NakedObjects.Architecture.Reflect
-open NakedObjects.Architecture.Spec
-open NakedObjects.Architecture.Resolve
-open NakedObjects.Architecture.Facets.Actcoll.Typeof
 open System
-open NakedObjects.Architecture.Adapter
-open System.Collections.Generic
 open NakedObjects.Architecture.Persist
 open TestCodeOnly
-open System.Reflection
 open TestTypes
 open TestCode
-open NakedObjects.Reflector.Peer
-open NakedObjects.Architecture.Facets.Objects.Callbacks
-open System.Data.Entity.Core.Objects
 open System.Data.Entity.ModelConfiguration
-open Microsoft.FSharp.Quotations
-
-
 
 let categorySetter codeOnlyPersistor (c : Category)  = 
     c.ID <- GetNextID<Category> codeOnlyPersistor (fun i -> i.ID)
@@ -51,12 +42,6 @@ let datasourceName = "(local)\SQL2012SP1"
 #else
 let datasourceName = ".\SQLEXPRESS"
 #endif
-
-//let ToLinq (exp : Expr<'a -> 'b>) =
-//    let linq = exp.ToLinqExpression()
-//    let call = linq :?> MethodCallExpression
-//    let lambda = call.Arguments.[0] :?> LambdaExpression
-//    Expression.Lambda<Func<'a, 'b>>(lambda.Body, lambda.Parameters) 
 
 type TestConfigClass() as x = 
     inherit EntityTypeConfiguration<CountryCode>()
@@ -152,13 +137,11 @@ let CodeFirstCeConfig (name) =
     
 let CodeFirstSetup() =     
     System.Data.Entity.Database.SetInitializer(new CodeFirstInitializer())
-    //System.Data.Entity.Database.DefaultConnectionFactory <- new  System.Data.Entity.Infrastructure.SqlConnectionFactory()
     ()
                
 
 let CodeFirstCeSetup() =
     System.Data.Entity.Database.SetInitializer(new CodeFirstInitializer())
-    //System.Data.Entity.Database.DefaultConnectionFactory <- new  System.Data.Entity.Infrastructure.SqlCeConnectionFactory("System.Data.SqlServerCe.4.0")
     ()
                
         
@@ -261,7 +244,6 @@ let CanUpdatePersistentObjectWithReferenceProperties (codeOnlyPersistor:EntityOb
     let person = First<Person> codeOnlyPersistor
     let origFav = person.Favourite
     let replFav = codeOnlyPersistor.GetInstances<Product>() |>  Seq.filter (fun i -> i.ID <> origFav.ID) |> Seq.head  
-    //let replFav = codeOnlyPersistor.GetInstances<Product>() |>  Seq.filter (fun i -> i.ID <> origFav.ID) |> Seq.head   
 
     let setFavouriteAndSave f =
         person.Favourite <- f
@@ -274,7 +256,6 @@ let CanUpdatePersistentObjectWithReferencePropertiesAbort (codeOnlyPersistor:Ent
     let person = First<Person> codeOnlyPersistor
     let origFav = person.Favourite
     let replFav =  codeOnlyPersistor.GetInstances<Product>() |>  Seq.filter (fun i -> i.ID <> origFav.ID) |> Seq.head  
-    //let replFav = codeOnlyPersistor.GetInstances<Product>() |>  Seq.filter (fun i -> i.ID <> origFav.ID) |> Seq.head      
 
     person.Favourite <- replFav
     SaveWithNoEndTransaction codeOnlyPersistor person
@@ -379,7 +360,6 @@ let CanGetInternationalSubclassClassByType (codeOnlyPersistor:EntityObjectStore)
 let CanNavigateToSubclass (codeOnlyPersistor:EntityObjectStore) = 
     let getPersonWithName name =
         codeOnlyPersistor.GetInstances<Person>() |> Seq.filter (fun i -> i.Name = name) |> Seq.head 
-        //codeOnlyPersistor.GetInstances<Person>() |> Seq.filter (fun i -> i.Name = name) |> Seq.head 
 
     let p1 = getPersonWithName "Ted"
     let a1 = p1.Address
@@ -447,7 +427,6 @@ let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies codeOn
     pr.Owningcategory <- c   
     CreateAndEndTransaction codeOnlyPersistor c
     let proxiedc =  codeOnlyPersistor.GetInstances<Category>() |> Seq.filter (fun i -> i.Name = c.Name) |> Seq.head
-    //let proxiedc = codeOnlyPersistor.GetInstances<Category>() |> Seq.filter (fun i -> i.Name = c.Name) |> Seq.head 
     Assert.IsTrue(EntityUtils.IsEntityProxy(proxiedc.GetType()))
     let proxiedpr = proxiedc.Products |> Seq.head
     Assert.IsTrue(EntityUtils.IsEntityProxy(proxiedpr.GetType()))

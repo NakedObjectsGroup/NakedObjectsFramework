@@ -1,26 +1,18 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 module NakedObjects.TestCode
+
 open NUnit.Framework
 open NakedObjects.EntityObjectStore
-open NakedObjects.Architecture.Util
-open NakedObjects.Architecture.Reflect
-open NakedObjects.Architecture.Spec
-open NakedObjects.Architecture.Resolve
-open NakedObjects.Architecture.Facets.Actcoll.Typeof
 open System
-open NakedObjects.Architecture.Adapter
 open System.Collections.Generic
-open NakedObjects.Architecture.Persist
-open System.Reflection
 open TestTypes
-open System.Linq
 open System.Collections
-open NakedObjects.Architecture.Util
-open Microsoft.FSharp.Linq
-open NakedObjects.Core.Context
-
 
 
 let resetPersistor (p : EntityObjectStore) =
@@ -49,7 +41,6 @@ let SaveWithNoEndTransaction  (p : EntityObjectStore) o =
 
 let GetInstancesGenericNotEmpty<'t when 't : not struct> (p: EntityObjectStore)  =
     let count =   p.GetInstances<'t>()  |> Seq.length
-    //let count =   p.GetInstances<'t>() |> Seq.length 
     Assert.Greater(count, 0) 
  
 let GetInstancesByTypeNotEmpty<'t when 't : not struct> (p: EntityObjectStore)  =
@@ -79,7 +70,6 @@ let checkCountAndType classes  (typ : Type)  =
 
 let First<'t when 't : not struct> (p : EntityObjectStore) = 
    p.GetInstances<'t>() |> Seq.head 
-   //p.GetInstances<'t>() |> Seq.head
 
 let Second<'t when 't : not struct> (p : EntityObjectStore) = 
     p.GetInstances<'t>() |> Seq.nth 1
