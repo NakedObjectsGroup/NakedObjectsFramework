@@ -167,10 +167,6 @@ namespace NakedObjects.Reflector.Spec {
             get { return parameters; }
         }
 
-        public virtual INakedObjectActionParameter[] GetParameters(INakedObjectActionParameterFilter filter) {
-            return Parameters.Where(filter.Accept).ToArray();
-        }
-
         public virtual NakedObjectActionType ActionType {
             get { return NakedObjectActionType.User; }
         }

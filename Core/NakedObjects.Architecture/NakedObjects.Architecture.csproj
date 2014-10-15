@@ -169,7 +169,6 @@
     <Compile Include="Component\IPocoAdapterMap.cs" />
     <Compile Include="Component\IUpdateNotifier.cs" />
     <Compile Include="Configuration\IServicesConfiguration.cs" />
-    <Compile Include="facets\FacetFilters.cs" />
     <Compile Include="facets\types\IAbstractFacet.cs" />
     <Compile Include="facets\types\IInterfaceFacet.cs" />
     <Compile Include="facets\types\ISealedFacet.cs" />
@@ -201,7 +200,6 @@
     <Compile Include="facets\IFacet.cs" />
     <Compile Include="facets\IFacetFactory.cs" />
     <Compile Include="facets\IFacetFactorySet.cs" />
-    <Compile Include="facets\IFacetFilter.cs" />
     <Compile Include="facets\IFacetHolder.cs" />
     <Compile Include="facets\hide\IHiddenFacet.cs" />
     <Compile Include="facets\hide\IHideForContextFacet.cs" />
@@ -331,7 +329,6 @@
     <Compile Include="reflect\IOrderSet.cs" />
     <Compile Include="reflect\NakedObjectActionContext.cs" />
     <Compile Include="reflect\INakedObjectActionParameter.cs" />
-    <Compile Include="reflect\INakedObjectActionParameterFilter.cs" />
     <Compile Include="reflect\NakedObjectActionType.cs" />
     <Compile Include="reflect\INakedObjectAssociation.cs" />
     <Compile Include="reflect\INakedObjectFeature.cs" />

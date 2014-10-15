@@ -69,14 +69,6 @@ namespace NakedObjects.Architecture.Facets {
             return new List<Type>(facetsByClass.Keys).ToArray();
         }
 
-     
-
-        public static IFacet[] GetFacets(IFacet facet, IFacetFilter filter) {
-            if (filter.Accept(facet)) {
-                return new[] {facet};
-            }
-            return new IFacet[] {};
-        }
 
         public static void RemoveFacet(IDictionary<Type, IFacet> facetsByClass, IFacet facet) {
             RemoveFacet(facetsByClass, facet.FacetType);

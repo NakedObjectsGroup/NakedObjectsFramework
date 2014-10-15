@@ -97,12 +97,6 @@ namespace NakedObjects.Architecture.Reflect {
         /// </summary>
         IConsent IsParameterSetValid(INakedObject nakedObject, INakedObject[] parameterSet);
 
-
-        /// <summary>
-        ///     Returns set of parameter information matching the supplied filter.
-        /// </summary>
-        INakedObjectActionParameter[] GetParameters(INakedObjectActionParameterFilter filter);
-
         INakedObject[] RealParameters(INakedObject target, INakedObject[] parameterSet);
     }
 

@@ -184,10 +184,6 @@ namespace NakedObjects.Reflector.Spec {
             get { return new INakedObjectActionParameter[0]; }
         }
 
-        public virtual INakedObjectActionParameter[] GetParameters(INakedObjectActionParameterFilter filter) {
-            return new INakedObjectActionParameter[0];
-        }
-
         public INakedObject[] RealParameters(INakedObject target, INakedObject[] parameterSet) {
             return new INakedObject[] {};
         }
