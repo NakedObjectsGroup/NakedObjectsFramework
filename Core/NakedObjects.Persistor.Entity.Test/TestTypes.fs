@@ -1,175 +1,58 @@
 ﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+
 module NakedObjects.TestTypes
 
 open NUnit.Framework
 open NakedObjects.EntityObjectStore
 open NakedObjects.Architecture.Component
-open NakedObjects.Architecture.Reflect
 open NakedObjects.Architecture.Spec
 open NakedObjects.Architecture.Resolve
-open NakedObjects.Architecture.Facets.Actcoll.Typeof
 open System
 open NakedObjects.Architecture.Adapter
 open System.Collections.Generic
-open NakedObjects.Architecture.Persist
 open System.Reflection
-open NakedObjects.Persistor
 open NakedObjects.Architecture.Facets
 open NakedObjects.Architecture.Security
-open NakedObjects.Core.Context
 open NakedObjects.Core.Reflect
-open NakedObjects.Reflector.Spec
 open Moq;
 
 let injectedObjects = new List<Object>()
 
-type MockReflector() = 
-    interface INakedObjectReflector with 
-        
-        //member x.IgnoreCase with get() = false
-        //member x.Shutdown() = ()
-        member x.LoadSpecification(typ : Type) : IIntrospectableSpecification = null
-        member x.LoadSpecification(str : string) : IIntrospectableSpecification  = null
-        member x.InstallServiceSpecifications(types : Type[]) = ()
-        member x.PopulateContributedActions(services : Type[]) = ()
-        member x.ClassStrategy with get() = (null)
-        member x.FacetFactorySet with get() = (null)
-        member x.LoadSpecificationForReturnTypes(properties, classToIgnore) = ()
-        member x.AllIntrospectableSpecifications with get() = [||]
-    interface IMetamodel with 
-        member x.AllSpecifications with get() = [||]
-        member x.GetSpecification(typ : Type) : IIntrospectableSpecification = null
-        member x.GetSpecification(str : string) : IIntrospectableSpecification = null
-     
-      
+let mockInjector = new Mock<IContainerInjector>()
+let testInjector = mockInjector.Object
+mockInjector.Setup(fun x -> x.InitDomainObject(It.IsAny<obj>())).Callback<obj>(fun o -> injectedObjects.Add o) |> ignore
 
+let mockNakedObjectSpecification = new Mock<INakedObjectSpecification>()
+let testNakedObjectSpecification = mockNakedObjectSpecification.Object
 
-type MockInjector() = 
-    interface IContainerInjector with
-        member x.InitDomainObject obj = injectedObjects.Add obj
-        member x.InitInlineObject(root : Object, inlineObject : Object) = ()
-        member x.Framework 
-            with set (f) = ()
-        member x.ServiceTypes
-            with set (f) = ()
+mockNakedObjectSpecification.Setup(fun x -> x.ContainsFacet()).Returns(false) |> ignore
+mockNakedObjectSpecification.Setup(fun x -> x.ContainsFacet(null)).Returns(false) |> ignore
 
-type MockNakedObjectSpecification() = 
-    interface INakedObjectSpecification with
-        member x.FullName = ""
-        member x.PluralName = ""
-        member x.ShortName = ""
-        member x.Description = ""
-        member x.SingularName = ""
-        member x.UntitledName = ""
-        member x.IsParseable = false
-        member x.IsEncodeable = false
-        member x.IsAggregated = false
-        member x.IsCollection = false
-        member x.IsObject = false
-        member x.IsAbstract = false
-        member x.IsInterface = false
-        member x.IsService = false
-        member x.HasNoIdentity = false
-        member x.IsQueryable = false
-        member x.IsVoid = false
-        member x.IsASet = false
-        member x.IsViewModel = false
-        member x.GetIconName(forObject : INakedObject) = ""
-        member x.GetTitle(nakedObject : INakedObject) = ""
-        member x.ValidToPersist(transientObject : INakedObject, sess : ISession) : IConsent = null
-        member x.Persistable = PersistableType.UserPersistable : PersistableType       
-        member x.GetInvariantString(nakedObject : INakedObject) = ""
-        member x.UniqueShortName(sep) = ""
-
-       
-    interface IActionContainer with 
-       
-        member x.GetAllActions() : INakedObjectAction[] = null
-        member x.GetRelatedServiceActions() : INakedObjectAction[] = null
-       
-    interface IPropertyContainer with 
-        member x.GetProperty (id : string) : INakedObjectAssociation = null        
-        member x.Properties with get() : INakedObjectAssociation[] = null 
-        member x.ValidateMethods() : INakedObjectValidation[] = null
-    interface IHierarchical with 
-        //member x.AddSubclass (specification : INakedObjectSpecification) = ()
-        member x.HasSubclasses with get() : bool = false
-        member x.Interfaces with get() : INakedObjectSpecification[] = null 
-        member x.IsOfType (specification : INakedObjectSpecification) = false
-        member x.Subclasses with get() : INakedObjectSpecification[] = null 
-        member x.Superclass with get() : INakedObjectSpecification = null 
-    interface IDefaultProvider with 
-        member x.DefaultValue with get() : obj = null
-    interface IFacetHolder with
-        member x.AddFacet (facet : IFacet) = ( Assert.IsInstanceOf<Objects.Aggregated.IComplexTypeFacet>(facet)   )  // tests adition of complextype facet 
-        member x.AddFacet (facet : IMultiTypedFacet) = ()
-        member x.ContainsFacet() : bool = false
-        member x.ContainsFacet(typ : Type) : bool = false  // leave false so complextype facet will be added 
-        member x.FacetTypes with get() : Type[] = null
-        member x.GetFacet (typ : Type) : IFacet = null
-        member x.GetFacet<'T when 'T :> IFacet>() : 'T when 'T :> IFacet  = ( box(null) :?> 'T  )
-        member x.GetFacets () : IEnumerable<IFacet> = null
-        member x.Identifier with get() : IIdentifier = null
-        member x.RemoveFacet (facet : IFacet) = ()
-        member x.RemoveFacet (facetType : Type) = ()
+mockNakedObjectSpecification.Setup(fun x -> x.AddFacet(It.IsAny<IFacet>())).Callback<IFacet>(fun f -> Assert.IsInstanceOf<Objects.Aggregated.IComplexTypeFacet>(f)) |> ignore
 
 let mockMetamodelManager = new Mock<IMetamodelManager>()
 
-type MockNakedObject(obj, oid) =
-    let domainObject = obj 
-    let mutable rsm : ResolveStateMachine = null
-    let mutable eoid : IOid = oid
-    interface INakedObject with
-        member x.Object with get() = domainObject
-        member x.Specification with get() : INakedObjectSpecification = null  
-        member x.Oid 
-            with get() : IOid =
-                match eoid with 
-                | null -> eoid <- ((box (new EntityOid(mockMetamodelManager.Object, obj.GetType(), [|box 0|], true))) :?> IOid)
-                | _ -> ()
-                eoid         
-        member x.ResolveState 
-            with get() : ResolveStateMachine = 
-                match rsm with 
-                | null -> rsm <- new ResolveStateMachine(x, null)
-                | _ -> ()          
-                rsm 
-        member x.CheckLock (v : IVersion) = ()
-        member x.Version with get() : IVersion = null
-        member x.OptimisticLock with set(v : IVersion) = ()
-        member x.TypeOfFacet with get() : ITypeOfFacet  = null
-                             and set(tof : ITypeOfFacet) = ()
-        member x.IconName() : string = ""
-        member x.TitleString() : string = ""
-        member x.InvariantString() : string = ""
-        member x.ReplacePoco(obj : Object) = ()
-        member x.ValidToPersist() : string = null
-        member x.SetATransientOid (oid : IOid) = ()
-        member x.LoadAnyComplexTypes() = ()
-
-//type MockPersistedObjectAdder(p : EntityObjectStore) = 
-//    let persistor = p
-//    interface IPersistedObjectAdder with 
-//        member x.AddPersistedObject(nakedObject : INakedObject) =
-//            let cmd = persistor.CreateCreateObjectCommand(nakedObject, null, null)
-//            ()
-//        member x.MadePersistent(nakedObject : INakedObject) =            
-//            nakedObject.ResolveState.Handle Events.StartResolvingEvent
-//            nakedObject.ResolveState.Handle Events.EndResolvingEvent
-//            
-
-
 let objects = new Dictionary<Object, INakedObject>()
     
-let AddAdapter obj  oid =
-    let adapter = (box (new MockNakedObject(obj, oid))) :?> INakedObject
+let AddAdapter (ob : obj)  oid =
+
+    let mockNakedObject = new Mock<INakedObject>()
+    let testNakedObject = mockNakedObject.Object
+    let  dobj = ob
+    let  eoid : IOid  = if oid = null then ((box (new EntityOid(mockMetamodelManager.Object, ob.GetType(), [|box 0|], true))) :?> IOid) else oid
+    let  rsm = new ResolveStateMachine(testNakedObject, null)
+
+    mockNakedObject.Setup(fun no -> no.Object).Returns(dobj) |> ignore
+    mockNakedObject.Setup(fun no -> no.Oid).Returns(eoid) |> ignore
+    mockNakedObject.Setup(fun no -> no.ResolveState).Returns(rsm) |> ignore
+
     match oid with 
-    | null ->  adapter.ResolveState.Handle Events.InitializeTransientEvent
-    | _ -> adapter.ResolveState.Handle Events.InitializePersistentEvent      
-    objects.Add(obj, adapter)
-    adapter
+    | null ->  testNakedObject.ResolveState.Handle Events.InitializeTransientEvent
+    | _ -> testNakedObject.ResolveState.Handle Events.InitializePersistentEvent      
+    objects.Add(ob, testNakedObject)
+    testNakedObject
  
 let GetOrAddAdapterForTest obj  oid =
     if objects.ContainsKey(obj) then
@@ -192,7 +75,7 @@ let AggregateAdapterForTest (nakedObject : INakedObject) (prop : PropertyInfo) (
  
 let NotifyUIForTest (nakedObject : INakedObject) = ()
 
-let loadSpecificationHandler (t : Type) : INakedObjectSpecification  = upcast new MockNakedObjectSpecification()
+let loadSpecificationHandler (t : Type) : INakedObjectSpecification  = testNakedObjectSpecification
 
 let mutable updatedCount = 0
 let mutable updatingCount = 0
@@ -227,7 +110,7 @@ let savingChangesHandler (sender: Object) (e : EventArgs) = ()
 let mutable setProxyingAndDeferredLoading = true
 
 let setupPersistorForTesting (p : EntityObjectStore) = 
-    p.SetupForTesting(new MockInjector(),
+    p.SetupForTesting(testInjector,
                       EntityObjectStore.CreateAdapterDelegate(AdapterForTest),
                       EntityObjectStore.ReplacePocoDelegate(ReplacePocoForTest), 
                       EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), 
