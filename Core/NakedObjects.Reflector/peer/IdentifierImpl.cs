@@ -68,9 +68,9 @@ namespace NakedObjects.Reflector.Peer {
             get { return isField; }
         }
 
-        public virtual IIntrospectableSpecification[] MemberParameterSpecifications {
+        public virtual IObjectSpecImmutable[] MemberParameterSpecifications {
             get {
-                var specifications = new List<IIntrospectableSpecification>();
+                var specifications = new List<IObjectSpecImmutable>();
 
                 parameterTypes.ForEach(x => specifications.Add(metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(x))));
                 return specifications.ToArray();

@@ -17,6 +17,6 @@ namespace NakedObjects.Architecture.Component {
 
         INakedObjectSpecification GetSpecification(string name);
 
-        INakedObjectSpecification GetSpecification(IIntrospectableSpecification spec);
+        INakedObjectSpecification GetSpecification(IObjectSpecImmutable spec);
     }
 }

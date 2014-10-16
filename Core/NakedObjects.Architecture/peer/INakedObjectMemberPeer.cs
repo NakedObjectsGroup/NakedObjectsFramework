@@ -13,7 +13,7 @@ namespace NakedObjects.Reflector.Peer {
     ///     Details about action and field members gained via reflection.
     /// </summary>
     public interface INakedObjectMemberPeer : ISpecification {
-        IIntrospectableSpecification Specification { get; }
+        IObjectSpecImmutable Specification { get; }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

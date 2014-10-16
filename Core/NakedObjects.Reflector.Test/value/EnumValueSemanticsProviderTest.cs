@@ -27,8 +27,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            holder = new SpecificationImpl();
-            var spec = new Mock<IIntrospectableSpecification>().Object;
+            holder = new Specification();
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new EnumValueSemanticsProvider<TestEnum>(spec, holder));
         }
 

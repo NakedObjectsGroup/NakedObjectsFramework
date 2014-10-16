@@ -22,10 +22,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public DateTimeValueSemanticsProvider(IIntrospectableSpecification spec)
+        public DateTimeValueSemanticsProvider(IObjectSpecImmutable spec)
             : this(spec, null) { }
 
-        public DateTimeValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
+        public DateTimeValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLength, Immutable, EqualByContent, defaultValue, spec) { }
 
         // inject for testing 

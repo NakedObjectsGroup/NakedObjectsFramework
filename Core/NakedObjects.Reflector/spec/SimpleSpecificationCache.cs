@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 namespace NakedObjects.Reflector.Spec {
     public class SimpleSpecificationCache : ISpecificationCache {
-        private readonly Dictionary<string, IIntrospectableSpecification> specs = new Dictionary<string, IIntrospectableSpecification>();
+        private readonly Dictionary<string, IObjectSpecImmutable> specs = new Dictionary<string, IObjectSpecImmutable>();
 
         #region ISpecificationCache Members
 
-        public virtual IIntrospectableSpecification GetSpecification(string className) {
+        public virtual IObjectSpecImmutable GetSpecification(string className) {
             lock (specs) {
                 if (specs.ContainsKey(className)) {
                     return specs[className];
@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public virtual void Cache(string className, IIntrospectableSpecification spec) {
+        public virtual void Cache(string className, IObjectSpecImmutable spec) {
             lock (specs) {
                 specs[className] = spec;
             }
@@ -31,11 +31,11 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public virtual IIntrospectableSpecification[] AllSpecifications() {
-            var returnSpecs = new List<IIntrospectableSpecification>();
+        public virtual IObjectSpecImmutable[] AllSpecifications() {
+            var returnSpecs = new List<IObjectSpecImmutable>();
 
             lock (specs) {
-                foreach (IIntrospectableSpecification spec in specs.Values) {
+                foreach (IObjectSpecImmutable spec in specs.Values) {
                     returnSpecs.Add(spec);
                 }
             }

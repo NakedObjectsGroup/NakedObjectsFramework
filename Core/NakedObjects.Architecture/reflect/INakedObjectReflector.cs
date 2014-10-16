@@ -17,11 +17,11 @@ namespace NakedObjects.Architecture.Reflect {
 
         IFacetFactorySet FacetFactorySet { get; }
 
-        IIntrospectableSpecification[] AllIntrospectableSpecifications { get; }
+        IObjectSpecImmutable[] AllObjectSpecImmutables { get; }
 
-        IIntrospectableSpecification LoadSpecification(Type type);
+        IObjectSpecImmutable LoadSpecification(Type type);
 
-        IIntrospectableSpecification LoadSpecification(string name);
+        IObjectSpecImmutable LoadSpecification(string name);
 
         void InstallServiceSpecifications(Type[] types);
 

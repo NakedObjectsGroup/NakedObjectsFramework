@@ -9,7 +9,7 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Contributed {
     public interface INotContributedActionFacet : IFacet {
-        bool NotContributedTo(IIntrospectableSpecification spec);
+        bool NotContributedTo(IObjectSpecImmutable spec);
 
         bool NeverContributed();
     }

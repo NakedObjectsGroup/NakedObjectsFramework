@@ -381,7 +381,7 @@
     <Compile Include="security\IAuthorizer.cs" />
     <Compile Include="security\SecurityFacetDecorator.cs" />
     <Compile Include="spec\FacetDecoratorSet.cs" />
-    <Compile Include="spec\IntrospectableSpecification.cs" />
+    <Compile Include="spec\ObjectSpecImmutable.cs" />
     <Compile Include="spec\SimpleSpecificationCache.cs" />
     <Compile Include="spec\ISpecificationCache.cs" />
     <Compile Include="transaction\facets\actions\invoke\ActionInvocationFacetWrapTransaction.cs" />

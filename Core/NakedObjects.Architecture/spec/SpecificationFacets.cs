@@ -42,15 +42,15 @@ namespace NakedObjects.Architecture.Spec {
             return specification.IsCollection && specification.GetFacet<ITypeOfFacet>().ValueSpec.ContainsFacet<IEnumFacet>();
         }
 
-        public static bool IsBoundedSet(this IIntrospectableSpecification specification) {
+        public static bool IsBoundedSet(this IObjectSpecImmutable specification) {
             return specification.ContainsFacet<IBoundedFacet>() || specification.ContainsFacet<IEnumValueFacet>();
         }
 
-        public static bool IsCollectionOfBoundedSet(this IIntrospectableSpecification specification) {
+        public static bool IsCollectionOfBoundedSet(this IObjectSpecImmutable specification) {
             return specification.IsCollection && specification.GetFacet<ITypeOfFacet>().ValueSpec.IsBoundedSet();
         }
 
-        public static bool IsCollectionOfEnum(this IIntrospectableSpecification specification) {
+        public static bool IsCollectionOfEnum(this IObjectSpecImmutable specification) {
             return specification.IsCollection && specification.GetFacet<ITypeOfFacet>().ValueSpec.ContainsFacet<IEnumFacet>();
         }
     }

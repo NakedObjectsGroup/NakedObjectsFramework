@@ -14,9 +14,9 @@ using NakedObjects.Reflector.Spec;
 namespace NakedObjects.Reflector.DotNet.Reflect.Collections {
     public class DotNetOneToManyAssociationPeer : DotNetNakedObjectAssociationPeer {
         private Type elementType;
-        private IIntrospectableSpecification specification;
+        private IObjectSpecImmutable specification;
 
-        public DotNetOneToManyAssociationPeer(IIdentifier name, Type returnType, IIntrospectableSpecification returnSpec)
+        public DotNetOneToManyAssociationPeer(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec)
             : base(name, returnType, returnSpec) {}
 
         public Type ElementType {
@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Collections {
         /// <summary>
         ///     Return the <see cref="INakedObjectSpecification" /> for the  Type that the collection holds.
         /// </summary>
-        public override IIntrospectableSpecification Specification {
+        public override IObjectSpecImmutable Specification {
             get { return specification; }
         }
 
@@ -38,7 +38,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Collections {
             get { return false; }
         }
 
-        public void SetupElementType(Type type, IIntrospectableSpecification spec) {
+        public void SetupElementType(Type type, IObjectSpecImmutable spec) {
             elementType = type;
             specification = spec;
         }

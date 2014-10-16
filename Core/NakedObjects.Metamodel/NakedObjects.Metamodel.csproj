@@ -99,7 +99,7 @@
     <Compile Include="facets\disable\DisableForSessionFacetNone.cs" />
     <Compile Include="facets\FacetAbstract.cs" />
     <Compile Include="facets\FacetFactoryAbstract.cs" />
-    <Compile Include="facets\SpecificationImpl.cs" />
+    <Compile Include="facets\Specification.cs" />
     <Compile Include="facets\FacetUtils.cs" />
     <Compile Include="facets\hide\HiddenFacetAbstract.cs" />
     <Compile Include="facets\hide\HiddenFacetImpl.cs" />
@@ -109,7 +109,7 @@
     <Compile Include="facets\MarkerFacetAbstract.cs" />
     <Compile Include="facets\MethodRemoverConstants.cs" />
     <Compile Include="facets\MultipleValueFacetAbstract.cs" />
-    <Compile Include="facets\NamedAndDescribedFacetHolderImpl.cs" />
+    <Compile Include="facets\NamedAndDescribedSpecification.cs" />
     <Compile Include="facets\naming\describedas\DescribedAsFacetAbstract.cs" />
     <Compile Include="facets\naming\describedas\DescribedAsFacetNone.cs" />
     <Compile Include="facets\naming\named\NamedFacetAbstract.cs" />

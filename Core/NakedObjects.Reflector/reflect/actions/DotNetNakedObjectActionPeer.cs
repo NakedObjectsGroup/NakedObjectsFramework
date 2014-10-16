@@ -20,16 +20,16 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
 
 
     public class DotNetNakedObjectActionPeer : DotNetNakedObjectMemberPeer, INakedObjectActionPeer {
-        private readonly IIntrospectableSpecification specification;
+        private readonly IObjectSpecImmutable specification;
         private readonly INakedObjectActionParamPeer[] parameters;
 
-        public DotNetNakedObjectActionPeer(IIdentifier identifier,  IIntrospectableSpecification specification, INakedObjectActionParamPeer[] parameters)
+        public DotNetNakedObjectActionPeer(IIdentifier identifier,  IObjectSpecImmutable specification, INakedObjectActionParamPeer[] parameters)
             : base(identifier) {
             this.specification = specification;
             this.parameters = parameters;
         }
 
-        public override IIntrospectableSpecification Specification {
+        public override IObjectSpecImmutable Specification {
             get { return specification; }
         }
 
@@ -55,7 +55,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
         }
 
       
-        public virtual IIntrospectableSpecification ReturnType {
+        public virtual IObjectSpecImmutable ReturnType {
             get { return GetFacet<IActionInvocationFacet>().ReturnType; }
         }
 
@@ -67,17 +67,17 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
             get { return HasReturn() && !ContainsFacet(typeof(IExcludeFromFindMenuFacet)); }
         }
 
-        public bool IsContributedTo(IIntrospectableSpecification spec) {
+        public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) {
             return IsContributedMethod
-                   && Parameters.Any(parm => ContributeTo(parm.Specification, spec))
-                   && !(IsCollection(spec) && IsCollection(GetFacet<IActionInvocationFacet>().ReturnType));
+                   && Parameters.Any(parm => ContributeTo(parm.Specification, objectSpecImmutable))
+                   && !(IsCollection(objectSpecImmutable) && IsCollection(GetFacet<IActionInvocationFacet>().ReturnType));
         }
 
-        private bool IsCollection(IIntrospectableSpecification spec) {
+        private bool IsCollection(IObjectSpecImmutable spec) {
             return spec.IsCollection && !spec.IsParseable;
         }
 
-        private bool ContributeTo(IIntrospectableSpecification parmSpec, IIntrospectableSpecification contributeeSpec) {
+        private bool ContributeTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
             var ncf = GetFacet<INotContributedActionFacet>();
 
             if (ncf == null) {

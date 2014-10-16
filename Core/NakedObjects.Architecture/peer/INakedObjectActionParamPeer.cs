@@ -10,6 +10,6 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.Peer {
     public interface INakedObjectActionParamPeer : ISpecification {
-        IIntrospectableSpecification Specification { get; }
+        IObjectSpecImmutable Specification { get; }
     }
 }

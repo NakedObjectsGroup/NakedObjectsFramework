@@ -79,9 +79,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         }
 
         private static DotNetNakedObjectActionPeer CreateHolderWithParms() {
-            var tps1 = new Mock<IIntrospectableSpecification>(); //"System.Int32"
-            var tps2 = new Mock<IIntrospectableSpecification>(); //System.Int64"
-            var tps3 = new Mock<IIntrospectableSpecification>(); //"System.Int64"
+            var tps1 = new Mock<IObjectSpecImmutable>(); //"System.Int32"
+            var tps2 = new Mock<IObjectSpecImmutable>(); //System.Int64"
+            var tps3 = new Mock<IObjectSpecImmutable>(); //"System.Int64"
 
             var param1 = new DotNetNakedObjectActionParamPeer(tps1.Object);
             var param2 = new DotNetNakedObjectActionParamPeer(tps2.Object);

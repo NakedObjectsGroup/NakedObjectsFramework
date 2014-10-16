@@ -12,9 +12,9 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Contributed {
     public abstract class NotContributedActionFacetAbstract : FacetAbstract, INotContributedActionFacet {
-        private readonly List<IIntrospectableSpecification> notContributedToTypes = new List<IIntrospectableSpecification>();
+        private readonly List<IObjectSpecImmutable> notContributedToTypes = new List<IObjectSpecImmutable>();
 
-        protected NotContributedActionFacetAbstract(ISpecification holder, IIntrospectableSpecification[] notContributedToTypes)
+        protected NotContributedActionFacetAbstract(ISpecification holder, IObjectSpecImmutable[] notContributedToTypes)
             : base(Type, holder) {
             this.notContributedToTypes.AddRange(notContributedToTypes);
         }
@@ -25,7 +25,7 @@ namespace NakedObjects.Architecture.Facets.Actions.Contributed {
 
         #region INotContributedActionFacet Members
 
-        public bool NotContributedTo(IIntrospectableSpecification spec) {
+        public bool NotContributedTo(IObjectSpecImmutable spec) {
             return NeverContributed() || notContributedToTypes.Any(spec.IsOfType);
         }
 

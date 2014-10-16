@@ -320,7 +320,7 @@
     <Compile Include="reflect\ConsentAbstract.cs" />
     <Compile Include="reflect\IFacetDecorator.cs" />
     <Compile Include="reflect\IFacetDecoratorSet.cs" />
-    <Compile Include="reflect\IIntrospectableSpecification.cs" />
+    <Compile Include="reflect\IObjectSpecImmutable.cs" />
     <Compile Include="reflect\IMetamodel.cs" />
     <Compile Include="reflect\INakedObjectValidation.cs" />
     <Compile Include="reflect\InitiatedBy.cs" />
@@ -380,7 +380,6 @@
     <Compile Include="spec\IHierarchical.cs" />
     <Compile Include="spec\INakedObjectSpecification.cs" />
     <Compile Include="spec\INamedAndDescribed.cs" />
-    <Compile Include="spec\INamedAndDescribedFacetHolder.cs" />
     <Compile Include="spec\SpecificationFacets.cs" />
     <Compile Include="util\AdapterUtils.cs" />
     <Compile Include="util\CollectionUtils.cs" />

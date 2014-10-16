@@ -37,7 +37,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflector.Spec {
     public class NakedObjectSpecification : INakedObjectSpecification {
         private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectSpecification));
-        private readonly IIntrospectableSpecification innerSpec;
+        private readonly IObjectSpecImmutable innerSpec;
         private readonly MemberFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;
         private INakedObjectAction[] combinedActions;
@@ -46,7 +46,7 @@ namespace NakedObjects.Reflector.Spec {
         private INakedObjectAssociation[] objectFields;
         private INakedObjectAction[] relatedActions;
 
-        public NakedObjectSpecification(MemberFactory memberFactory, IMetamodelManager metamodelManager, IIntrospectableSpecification innerSpec) {
+        public NakedObjectSpecification(MemberFactory memberFactory, IMetamodelManager metamodelManager, IObjectSpecImmutable innerSpec) {
             this.memberFactory = memberFactory;
             this.metamodelManager = metamodelManager;
             this.innerSpec = innerSpec;

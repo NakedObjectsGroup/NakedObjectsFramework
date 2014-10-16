@@ -79,11 +79,11 @@ namespace NakedObjects.Reflector.Audit {
                 }
             }
 
-            public override IIntrospectableSpecification ReturnType {
+            public override IObjectSpecImmutable ReturnType {
                 get { return underlyingFacet.ReturnType; }
             }
 
-            public override IIntrospectableSpecification OnType {
+            public override IObjectSpecImmutable OnType {
                 get { return underlyingFacet.OnType; }
             }
 

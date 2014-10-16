@@ -16,8 +16,8 @@ namespace INakedObjects.Architecture.Adapter {
 
         [SetUp]
         public void SetUp() {
-            specification = new SpecificationImpl();
-            facetHolder2 = new SpecificationImpl();
+            specification = new Specification();
+            facetHolder2 = new Specification();
             fooFacet = new ConcreteFacet(typeof (IFooFacet), specification);
             FacetUtils.AddFacet(fooFacet);
         }

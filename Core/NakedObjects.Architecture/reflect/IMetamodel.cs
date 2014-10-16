@@ -10,11 +10,11 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
     public interface IMetamodel {
-        IIntrospectableSpecification[] AllSpecifications { get; }
+        IObjectSpecImmutable[] AllSpecifications { get; }
 
-        IIntrospectableSpecification GetSpecification(Type type);
+        IObjectSpecImmutable GetSpecification(Type type);
 
-        IIntrospectableSpecification GetSpecification(string name);
+        IObjectSpecImmutable GetSpecification(string name);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

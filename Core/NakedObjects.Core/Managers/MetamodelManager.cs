@@ -37,7 +37,7 @@ namespace NakedObjects.Managers {
             return new NakedObjectSpecification(memberFactory, this, metamodel.GetSpecification(name));
         }
 
-        public INakedObjectSpecification GetSpecification(IIntrospectableSpecification spec) {
+        public INakedObjectSpecification GetSpecification(IObjectSpecImmutable spec) {
             return new NakedObjectSpecification(memberFactory,this, metamodel.GetSpecification(spec.Type));
         }
 

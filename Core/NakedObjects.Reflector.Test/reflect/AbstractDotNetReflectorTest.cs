@@ -15,7 +15,7 @@ using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     public abstract class AbstractDotNetReflectorTest {
-        protected IIntrospectableSpecification specification;
+        protected IObjectSpecImmutable specification;
         protected IMetamodel Metamodel;
 
         [SetUp]
@@ -27,7 +27,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             Metamodel = (IMetamodel) reflector;
         }
 
-        protected abstract IIntrospectableSpecification LoadSpecification(DotNetReflector reflector);
+        protected abstract IObjectSpecImmutable LoadSpecification(DotNetReflector reflector);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

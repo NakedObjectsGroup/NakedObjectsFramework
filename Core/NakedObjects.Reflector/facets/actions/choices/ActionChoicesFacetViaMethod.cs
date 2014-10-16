@@ -20,11 +20,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Choices {
         private readonly MethodInfo choicesMethod;
         private readonly Type choicesType;
         private readonly bool isMultiple;
-        private readonly Tuple<string, IIntrospectableSpecification>[] parameterNamesAndTypes;
+        private readonly Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes;
         private readonly string[] parameterNames;
 
 
-        public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, Tuple<string, IIntrospectableSpecification>[] parameterNamesAndTypes, Type choicesType, ISpecification holder, bool isMultiple = false)
+        public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, Type choicesType, ISpecification holder, bool isMultiple = false)
             : base(holder) {
             this.choicesMethod = choicesMethod;
             this.choicesType = choicesType;
@@ -41,7 +41,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Choices {
 
         #endregion
 
-        public override Tuple<string, IIntrospectableSpecification>[] ParameterNamesAndTypes {
+        public override Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes {
             get { return parameterNamesAndTypes; }
         }
 

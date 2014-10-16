@@ -102,7 +102,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotContributedActionFacetImpl);
 
-            var sp = new Mock<IIntrospectableSpecification>();
+            var sp = new Mock<IObjectSpecImmutable>();
             sp.Setup(s => s.IsOfType(null)).Returns(true);
 
             Assert.IsTrue(facet.NotContributedTo(sp.Object));
@@ -119,9 +119,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotContributedActionFacetImpl);
 
-            var sp = new Mock<IIntrospectableSpecification>();
+            var sp = new Mock<IObjectSpecImmutable>();
             sp.Setup(s => s.IsOfType(null)).Returns(true);
-            var sp1 = new Mock<IIntrospectableSpecification>();
+            var sp1 = new Mock<IObjectSpecImmutable>();
             sp1.Setup(s => s.IsOfType(null)).Returns(true);
 
             Assert.IsTrue(facet.NotContributedTo(sp.Object));

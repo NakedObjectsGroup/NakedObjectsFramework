@@ -22,7 +22,7 @@ namespace NakedObjects.Architecture.Facets.Actions.Choices {
         #region IActionChoicesFacet Members
 
         public abstract object[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
-        public abstract Tuple<string, IIntrospectableSpecification>[] ParameterNamesAndTypes { get; }
+        public abstract Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes { get; }
         public abstract bool IsMultiple { get; }
 
         #endregion

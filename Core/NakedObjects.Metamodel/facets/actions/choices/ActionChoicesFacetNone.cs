@@ -20,8 +20,8 @@ namespace NakedObjects.Architecture.Facets.Actions.Choices {
             get { return true; }
         }
 
-        public override Tuple<string, IIntrospectableSpecification>[] ParameterNamesAndTypes {
-            get { return new Tuple<string, IIntrospectableSpecification>[] { }; }
+        public override Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes {
+            get { return new Tuple<string, IObjectSpecImmutable>[] { }; }
         }
 
         public override bool IsMultiple {

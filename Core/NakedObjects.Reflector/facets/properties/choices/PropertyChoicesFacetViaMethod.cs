@@ -22,9 +22,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Choices {
         private readonly MethodInfo method;
 
         private readonly string[] parameterNames;
-        private readonly Tuple<string, IIntrospectableSpecification>[] parameterNamesAndTypes;
+        private readonly Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes;
 
-        public PropertyChoicesFacetViaMethod(MethodInfo optionsMethod, Tuple<string, IIntrospectableSpecification>[] parameterNamesAndTypes, ISpecification holder)
+        public PropertyChoicesFacetViaMethod(MethodInfo optionsMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, ISpecification holder)
             : base(holder) {
             method = optionsMethod;
 
@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Choices {
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
         }
 
-        public override Tuple<string, IIntrospectableSpecification>[] ParameterNamesAndTypes {
+        public override Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes {
             get { return parameterNamesAndTypes; }
         }
 

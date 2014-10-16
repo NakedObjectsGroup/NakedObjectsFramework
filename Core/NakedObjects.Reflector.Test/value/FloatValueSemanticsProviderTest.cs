@@ -19,8 +19,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public override void SetUp() {
             base.SetUp();
 
-            holder = new SpecificationImpl();
-            var spec = new Mock<IIntrospectableSpecification>().Object;
+            holder = new Specification();
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(new FloatValueSemanticsProvider(spec, holder));
 
             floatObj = 32.5F;

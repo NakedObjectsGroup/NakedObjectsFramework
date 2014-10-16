@@ -11,7 +11,7 @@ using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
-    internal class MemberPeerStub : NamedAndDescribedFacetHolderImpl, INakedObjectMemberPeer, IOrderableElement<MemberPeerStub> {
+    internal class MemberPeerStub : NamedAndDescribedSpecification, INakedObjectMemberPeer, IOrderableElement<MemberPeerStub> {
         private readonly ILifecycleManager persistor;
 
         public MemberPeerStub(string name, ILifecycleManager persistor)
@@ -86,6 +86,6 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             get { return null; }
         }
 
-        public IIntrospectableSpecification Specification { get; private set; }
+        public IObjectSpecImmutable Specification { get; private set; }
     }
 }

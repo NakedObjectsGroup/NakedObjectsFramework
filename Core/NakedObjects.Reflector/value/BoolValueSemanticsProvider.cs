@@ -20,13 +20,13 @@ namespace NakedObjects.Reflector.DotNet.Value {
         private const bool immutable = true;
         private const int typicalLength = 5;
 
-        public BooleanValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
+        public BooleanValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) { }
 
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public BooleanValueSemanticsProvider(IIntrospectableSpecification spec)
+        public BooleanValueSemanticsProvider(IObjectSpecImmutable spec)
             : this(spec, null) { }
 
         private static Type Type {

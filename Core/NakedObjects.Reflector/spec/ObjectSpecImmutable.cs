@@ -29,20 +29,20 @@ using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.Spec {
-    public class IntrospectableSpecification : SpecificationImpl, IIntrospectableSpecification {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (IntrospectableSpecification));
+    public class ObjectSpecImmutable : Specification, IObjectSpecImmutable {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpecImmutable));
 
         private readonly IIdentifier identifier;
         private readonly INakedObjectReflector reflector;
         private DotNetIntrospector introspector;
 
-        public IntrospectableSpecification(Type type, INakedObjectReflector reflector) {
-            Subclasses = new IIntrospectableSpecification[] {};
+        public ObjectSpecImmutable(Type type, INakedObjectReflector reflector) {
+            Subclasses = new IObjectSpecImmutable[] {};
             this.reflector = reflector;
             introspector = new DotNetIntrospector(type, this, reflector);
             identifier = new IdentifierImpl((IMetamodel) reflector, type.FullName);
-            Interfaces = new IIntrospectableSpecification[] {};
-            Subclasses = new IIntrospectableSpecification[] {};
+            Interfaces = new IObjectSpecImmutable[] {};
+            Subclasses = new IObjectSpecImmutable[] {};
             ValidationMethods = new INakedObjectValidation[] {};
             //ObjectActions = new INakedObjectActionPeer[]{};
             ContributedActions = new List<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>>();
@@ -52,7 +52,7 @@ namespace NakedObjects.Reflector.Spec {
       
         #region IIntrospectableSpecification Members
 
-        public IIntrospectableSpecification Superclass { get; private set; }
+        public IObjectSpecImmutable Superclass { get; private set; }
         
 
         public override IIdentifier Identifier {
@@ -73,9 +73,9 @@ namespace NakedObjects.Reflector.Spec {
 
         public IOrderSet<INakedObjectAssociationPeer> Fields { get; set; }
 
-        public IIntrospectableSpecification[] Interfaces { get; set; }
+        public IObjectSpecImmutable[] Interfaces { get; set; }
 
-        public IIntrospectableSpecification[] Subclasses { get; set; }
+        public IObjectSpecImmutable[] Subclasses { get; set; }
 
         public bool Service { get; set; }
 
@@ -171,7 +171,7 @@ namespace NakedObjects.Reflector.Spec {
                 }
             }
 
-            var interfaceList = new List<IIntrospectableSpecification>();
+            var interfaceList = new List<IObjectSpecImmutable>();
             foreach (string interfaceName in interfaceNames) {
                 var interfaceSpec = reflector.LoadSpecification(interfaceName);
                 interfaceSpec.AddSubclass(this);
@@ -218,8 +218,8 @@ namespace NakedObjects.Reflector.Spec {
             Service = true;
         }
 
-        public void AddSubclass(IIntrospectableSpecification subclass) {
-            var subclassList = new List<IIntrospectableSpecification>(Subclasses) {subclass};
+        public void AddSubclass(IObjectSpecImmutable subclass) {
+            var subclassList = new List<IObjectSpecImmutable>(Subclasses) {subclass};
             Subclasses = subclassList.ToArray();
         }
 
@@ -324,7 +324,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return !IsCollection; }
         }
 
-        public bool IsOfType(IIntrospectableSpecification specification) {
+        public bool IsOfType(IObjectSpecImmutable specification) {
 
             if (specification == this) {
                 return true;

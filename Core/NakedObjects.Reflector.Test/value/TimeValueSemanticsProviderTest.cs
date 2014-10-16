@@ -19,8 +19,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
             SetupSpecification(typeof (TimeSpan));
             time = new TimeSpan(8, 13, 0);
-            holder = new SpecificationImpl();
-            var spec = new Mock<IIntrospectableSpecification>().Object;
+            holder = new Specification();
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(adapter = new TimeValueSemanticsProvider(spec, holder));
         }
 

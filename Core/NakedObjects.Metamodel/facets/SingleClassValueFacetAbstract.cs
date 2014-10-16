@@ -11,10 +11,10 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets {
     public abstract class SingleClassValueFacetAbstract : FacetAbstract, ISingleClassValueFacet {
-        private readonly IIntrospectableSpecification valueSpec;
+        private readonly IObjectSpecImmutable valueSpec;
         private readonly Type valueType;
 
-        protected SingleClassValueFacetAbstract(Type facetType, ISpecification holder, Type valueType, IIntrospectableSpecification valueSpec)
+        protected SingleClassValueFacetAbstract(Type facetType, ISpecification holder, Type valueType, IObjectSpecImmutable valueSpec)
             : base(facetType, holder) {
             this.valueType = valueType;
             this.valueSpec = valueSpec;
@@ -29,7 +29,7 @@ namespace NakedObjects.Architecture.Facets {
         /// <summary>
         ///     The <see cref="INakedObjectSpecification" /> of the <see cref="Value" />
         /// </summary>
-        public virtual IIntrospectableSpecification ValueSpec {
+        public virtual IObjectSpecImmutable ValueSpec {
             get { return valueSpec; }
         }
 

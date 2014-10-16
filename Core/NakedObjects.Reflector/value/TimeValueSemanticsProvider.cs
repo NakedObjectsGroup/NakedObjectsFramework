@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         private const int typicalLength = 6;
         private static readonly TimeSpan defaultValue = new TimeSpan();
 
-        public TimeValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
+        public TimeValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLength, Immutable, EqualByContent, defaultValue, spec) { }
 
         public static Type Type {

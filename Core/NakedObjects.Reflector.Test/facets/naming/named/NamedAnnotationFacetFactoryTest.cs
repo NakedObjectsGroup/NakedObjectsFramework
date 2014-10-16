@@ -134,7 +134,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
             // these need to run before logs are added by other tests 
             MethodInfo actionMethod = FindMethod(typeof (Customer18), "SomeAction");
             MethodInfo actionMethod1 = FindMethod(typeof (Customer18), "SomeAction1");
-            var facetHolder1 = new SpecificationImpl();
+            var facetHolder1 = new Specification();
 
 
             facetFactory.Process(actionMethod, MethodRemover, Specification);
@@ -159,7 +159,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
             // these need to run before logs are added by other tests 
             MethodInfo actionMethod = FindMethod(typeof (Customer13), "SomeAction");
             MethodInfo actionMethod1 = FindMethod(typeof (Customer13), "SomeAction1");
-            var facetHolder1 = new SpecificationImpl();
+            var facetHolder1 = new Specification();
 
 
             facetFactory.Process(actionMethod, MethodRemover, Specification);
@@ -183,7 +183,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         public void TestDisplayNameAnnotationOnPropertyMarksDuplicate() {
             PropertyInfo property = FindProperty(typeof (Customer16), "NumberOfOrders");
             PropertyInfo property1 = FindProperty(typeof (Customer16), "NumberOfOrders1");
-            var facetHolder1 = new SpecificationImpl();
+            var facetHolder1 = new Specification();
 
             facetFactory.Process(property, MethodRemover, Specification);
             facetFactory.Process(property1, MethodRemover, facetHolder1);
@@ -266,7 +266,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         public void TestNamedAnnotationOnPropertyMarksDuplicate() {
             PropertyInfo property = FindProperty(typeof (Customer11), "NumberOfOrders");
             PropertyInfo property1 = FindProperty(typeof (Customer11), "NumberOfOrders1");
-            var facetHolder1 = new SpecificationImpl();
+            var facetHolder1 = new Specification();
 
             facetFactory.Process(property, MethodRemover, Specification);
             facetFactory.Process(property1, MethodRemover, facetHolder1);

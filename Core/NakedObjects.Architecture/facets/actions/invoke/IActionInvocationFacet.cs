@@ -21,9 +21,9 @@ namespace NakedObjects.Architecture.Facets.Actions.Invoke {
     ///     methods).
     /// </para>
     public interface IActionInvocationFacet : IFacet {
-        IIntrospectableSpecification ReturnType { get; }
+        IObjectSpecImmutable ReturnType { get; }
 
-        IIntrospectableSpecification OnType { get; }
+        IObjectSpecImmutable OnType { get; }
 
         INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager);
 

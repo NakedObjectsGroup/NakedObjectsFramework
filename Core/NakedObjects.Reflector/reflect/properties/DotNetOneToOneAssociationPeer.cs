@@ -12,7 +12,7 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Properties {
     public class DotNetOneToOneAssociationPeer : DotNetNakedObjectAssociationPeer {
-        public DotNetOneToOneAssociationPeer(IIdentifier identifier, Type returnType, IIntrospectableSpecification returnSpec)
+        public DotNetOneToOneAssociationPeer(IIdentifier identifier, Type returnType, IObjectSpecImmutable returnSpec)
             : base(identifier, returnType, returnSpec) {}
 
         public override bool IsOneToMany {

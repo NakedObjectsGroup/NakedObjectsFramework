@@ -22,11 +22,11 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public ImageValueSemanticsProvider(IIntrospectableSpecification spec)
+        public ImageValueSemanticsProvider(IObjectSpecImmutable spec)
             : this(spec, null) { }
 
 
-        public ImageValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
+        public ImageValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, null, spec) { }
 
         public static Type Type {

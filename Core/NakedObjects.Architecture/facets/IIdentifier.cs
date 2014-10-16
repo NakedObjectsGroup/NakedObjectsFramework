@@ -32,7 +32,7 @@ namespace NakedObjects.Architecture.Facets {
 
         string[] MemberParameterNames { get; }
 
-        IIntrospectableSpecification[] MemberParameterSpecifications { get; }
+        IObjectSpecImmutable[] MemberParameterSpecifications { get; }
 
         /// <summary>
         ///     Returns <c>true</c> if the member is for a property or collection; <c>false</c> if for an action

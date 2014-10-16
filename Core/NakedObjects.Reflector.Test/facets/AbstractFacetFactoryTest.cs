@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class AbstractFacetFactoryTest {
-        protected SpecificationImpl Specification;
+        protected Specification Specification;
         protected IMethodRemover MethodRemover;
         protected INakedObjectReflector Reflector;
         protected IMetamodelManager Metamodel;
@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         protected abstract IFacetFactory FacetFactory { get; }
 
         public virtual void SetUp() {
-            Specification = new SpecificationImpl();
+            Specification = new Specification();
 
             mockMethodRemover = new Mock<IMethodRemover>();
             mockReflector = new Mock<INakedObjectReflector>();

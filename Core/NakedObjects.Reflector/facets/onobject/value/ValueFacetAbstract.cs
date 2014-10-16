@@ -16,7 +16,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
     public abstract class ValueFacetAbstract<T> : MultipleValueFacetAbstract, IValueFacet {
-        private readonly SpecificationImpl specification = new SpecificationImpl();
+        private readonly Specification specification = new Specification();
 
         private readonly IValueSemanticsProvider<T> semanticsProvider;
 

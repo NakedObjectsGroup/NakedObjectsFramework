@@ -24,7 +24,7 @@ namespace NakedObjects.Architecture.Facets {
         ///     <see cref="IValidatingInteractionAdvisor" />, <see cref="IHidingInteractionAdvisor" /> or
         ///     <see cref="IDisablingInteractionAdvisor" />
         /// </summary>
-        protected internal virtual string FacetHolderId {
+        protected internal virtual string SpecificationId {
             get { return Specification.Identifier.ToIdentityString(IdentifierDepth.Class); }
         }
 

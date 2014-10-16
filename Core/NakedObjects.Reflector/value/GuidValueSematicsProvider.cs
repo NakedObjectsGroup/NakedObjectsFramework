@@ -25,10 +25,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public GuidValueSemanticsProvider(IIntrospectableSpecification spec)
+        public GuidValueSemanticsProvider(IObjectSpecImmutable spec)
             : this(spec, null) { }
 
-        public GuidValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
+        public GuidValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) { }
 
         public static Type Type {

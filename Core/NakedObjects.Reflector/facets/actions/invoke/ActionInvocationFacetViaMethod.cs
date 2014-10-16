@@ -18,11 +18,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Invoke {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionInvocationFacetViaMethod));
 
         private readonly MethodInfo actionMethod;
-        private readonly IIntrospectableSpecification onType;
+        private readonly IObjectSpecImmutable onType;
         private readonly int paramCount;
-        private readonly IIntrospectableSpecification returnType;
+        private readonly IObjectSpecImmutable returnType;
 
-        public ActionInvocationFacetViaMethod(MethodInfo method, IIntrospectableSpecification onType, IIntrospectableSpecification returnType, ISpecification holder)
+        public ActionInvocationFacetViaMethod(MethodInfo method, IObjectSpecImmutable onType, IObjectSpecImmutable returnType, ISpecification holder)
             : base(holder) {
             actionMethod = method;
             paramCount = method.GetParameters().Length;
@@ -30,11 +30,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Invoke {
             this.returnType = returnType;
         }
 
-        public override IIntrospectableSpecification ReturnType {
+        public override IObjectSpecImmutable ReturnType {
             get { return returnType; }
         }
 
-        public override IIntrospectableSpecification OnType {
+        public override IObjectSpecImmutable OnType {
             get { return onType; }
         }
 

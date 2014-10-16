@@ -5,26 +5,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets {
     /// <summary>
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>
-    public class NamedAndDescribedFacetHolderImpl : SpecificationImpl, INamedAndDescribedFacetHolder {
+    public class NamedAndDescribedSpecification : Specification, INamedAndDescribed {
         private readonly string description;
         private readonly string name;
 
-        public NamedAndDescribedFacetHolderImpl(string name)
+        public NamedAndDescribedSpecification(string name)
             : this(name, null) {}
 
-        public NamedAndDescribedFacetHolderImpl(string name, string description) {
+        public NamedAndDescribedSpecification(string name, string description) {
             this.name = name;
             this.description = description;
         }
 
-        #region INamedAndDescribedFacetHolder Members
+        #region INamedAndDescribed Members
 
         public string GetName() {
             return name;

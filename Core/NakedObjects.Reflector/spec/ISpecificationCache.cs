@@ -6,13 +6,13 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.Spec {
     public interface ISpecificationCache {
-        IIntrospectableSpecification GetSpecification(string className);
+        IObjectSpecImmutable GetSpecification(string className);
 
         void Clear();
 
-        IIntrospectableSpecification[] AllSpecifications();
+        IObjectSpecImmutable[] AllSpecifications();
 
-        void Cache(string className, IIntrospectableSpecification spec);
+        void Cache(string className, IObjectSpecImmutable spec);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

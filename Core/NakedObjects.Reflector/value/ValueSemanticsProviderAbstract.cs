@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         private readonly bool equalByContent;
         private readonly bool immutable;
         private readonly int typicalLength;
-        private readonly IIntrospectableSpecification specification;
+        private readonly IObjectSpecImmutable specification;
 
         /// <summary>
         ///     Lazily looked up per <see cref="Specification" />
@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
                                                 bool immutable,
                                                 bool equalByContent,
                                                 T defaultValue, 
-                                                IIntrospectableSpecification specification)
+                                                IObjectSpecImmutable specification)
             : base(adapterFacetType, holder) {
             this.adaptedType = adaptedType;
             this.typicalLength = typicalLength;
@@ -38,7 +38,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             this.specification = specification;
         }
 
-        public IIntrospectableSpecification Specification {
+        public IObjectSpecImmutable Specification {
             get {
                 return specification;
             }

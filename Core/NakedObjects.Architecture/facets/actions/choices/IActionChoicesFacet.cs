@@ -20,7 +20,7 @@ namespace NakedObjects.Architecture.Facets.Actions.Choices {
     ///     action
     /// </para>
     public interface IActionChoicesFacet : IFacet {
-        Tuple<string, IIntrospectableSpecification>[] ParameterNamesAndTypes { get; }
+        Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes { get; }
         bool IsMultiple { get; }
         object[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
     }

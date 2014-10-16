@@ -22,10 +22,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public FileAttachmentValueSemanticsProvider(IIntrospectableSpecification spec)
+        public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec)
             : this(spec, null) { }
 
-        public FileAttachmentValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
+        public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthDefault, Immutable, EqualByContent, null, spec) { }
 
         public static Type Type {

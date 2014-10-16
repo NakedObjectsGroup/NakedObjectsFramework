@@ -26,7 +26,7 @@ namespace NakedObjects.Architecture.Facets.Properties.Choices {
     ///     against the referenced class.
     /// </para>
     public interface IPropertyChoicesFacet : IFacet {
-        Tuple<string, IIntrospectableSpecification>[] ParameterNamesAndTypes { get; }
+        Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes { get; }
 
         /// <summary>
         ///     Gets the available choices for this property

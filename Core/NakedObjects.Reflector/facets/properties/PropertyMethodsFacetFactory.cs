@@ -164,7 +164,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             MethodInfo method = methods.FirstOrDefault();
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                var parameterNamesAndTypes = method.GetParameters().Select(p => new Tuple<string, IIntrospectableSpecification>(p.Name.ToLower(), Reflector.LoadSpecification(p.ParameterType))).ToArray();
+                var parameterNamesAndTypes = method.GetParameters().Select(p => new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), Reflector.LoadSpecification(p.ParameterType))).ToArray();
                 propertyFacets.Add(new PropertyChoicesFacetViaMethod(method, parameterNamesAndTypes, property));
                 AddOrAddToExecutedWhereFacet(method, property);
             }

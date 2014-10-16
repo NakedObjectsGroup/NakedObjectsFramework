@@ -24,11 +24,11 @@ namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
             this.underlyingFacet = underlyingFacet;
         }
 
-        public override IIntrospectableSpecification ReturnType {
+        public override IObjectSpecImmutable ReturnType {
             get { return underlyingFacet.ReturnType; }
         }
 
-        public override IIntrospectableSpecification OnType {
+        public override IObjectSpecImmutable OnType {
             get { return underlyingFacet.OnType; }
         }
 

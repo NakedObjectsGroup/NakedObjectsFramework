@@ -17,9 +17,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Propcoll {
     public abstract class DotNetNakedObjectAssociationPeer : DotNetNakedObjectMemberPeer, INakedObjectAssociationPeer {
 
         protected readonly Type ReturnType;
-        private readonly IIntrospectableSpecification returnSpec;
+        private readonly IObjectSpecImmutable returnSpec;
 
-        protected DotNetNakedObjectAssociationPeer(IIdentifier identifier, Type returnType, IIntrospectableSpecification returnSpec)
+        protected DotNetNakedObjectAssociationPeer(IIdentifier identifier, Type returnType, IObjectSpecImmutable returnSpec)
             : base(identifier) {
        
             ReturnType = returnType;
@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Propcoll {
 
         #region INakedObjectAssociationPeer Members
 
-        public override  IIntrospectableSpecification Specification {
+        public override  IObjectSpecImmutable Specification {
             get {
                 return returnSpec;
             }

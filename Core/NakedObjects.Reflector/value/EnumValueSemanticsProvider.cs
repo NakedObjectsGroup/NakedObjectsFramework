@@ -22,10 +22,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public EnumValueSemanticsProvider(IIntrospectableSpecification spec)
+        public EnumValueSemanticsProvider(IObjectSpecImmutable spec)
             : this(spec, null) { }
 
-        public EnumValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
+        public EnumValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, default(T), spec) { }
 
         public static Type Type {

@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.Spec {
     ///     Introduced to remove special-case processing for <see cref="INakedObjectSpecification" />s that
     ///     are not introspectable.
     /// </summary>
-    public interface IIntrospectableSpecification : ISpecification {
+    public interface IObjectSpecImmutable : ISpecification {
         // TODO expose lots of stuff while refactoring 
 
 
@@ -30,11 +30,11 @@ namespace NakedObjects.Reflector.Spec {
         IList<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>> ContributedActions { get; }
         IList<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>> RelatedActions { get; }
         IOrderSet<INakedObjectAssociationPeer> Fields { get; set; }
-        IIntrospectableSpecification[] Interfaces { get; set; }
-        IIntrospectableSpecification[] Subclasses { get; set; }
+        IObjectSpecImmutable[] Interfaces { get; set; }
+        IObjectSpecImmutable[] Subclasses { get; set; }
         bool Service { get; set; }
         INakedObjectValidation[] ValidationMethods { get; set; }
-        IIntrospectableSpecification Superclass { get; }
+        IObjectSpecImmutable Superclass { get; }
         bool IsObject { get; }
         bool IsCollection { get; }
         bool IsParseable { get; }
@@ -50,8 +50,8 @@ namespace NakedObjects.Reflector.Spec {
 
         void PopulateAssociatedActions(Type[] services);
         void MarkAsService();
-        void AddSubclass(IIntrospectableSpecification subclass);
-        bool IsOfType(IIntrospectableSpecification specification);
+        void AddSubclass(IObjectSpecImmutable subclass);
+        bool IsOfType(IObjectSpecImmutable specification);
         string GetIconName(INakedObject forObject);
         string GetTitle(INakedObject nakedObject);
     }

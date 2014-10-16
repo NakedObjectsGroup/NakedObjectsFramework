@@ -8,16 +8,16 @@ using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
-    public class DotNetNakedObjectActionParamPeer : SpecificationImpl, INakedObjectActionParamPeer {
-        private readonly IIntrospectableSpecification specification;
+    public class DotNetNakedObjectActionParamPeer : Specification, INakedObjectActionParamPeer {
+        private readonly IObjectSpecImmutable specification;
 
-        public DotNetNakedObjectActionParamPeer(IIntrospectableSpecification specification) {
+        public DotNetNakedObjectActionParamPeer(IObjectSpecImmutable specification) {
             this.specification = specification;
         }
 
         #region INakedObjectActionParamPeer Members
 
-        public IIntrospectableSpecification Specification {
+        public IObjectSpecImmutable Specification {
             get { return specification; }
         }
 

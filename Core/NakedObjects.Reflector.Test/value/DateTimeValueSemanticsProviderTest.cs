@@ -18,8 +18,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public override void SetUp() {
             base.SetUp();
             SetupSpecification(typeof (DateTime));
-            holder = new SpecificationImpl();
-            var spec = new Mock<IIntrospectableSpecification>().Object;
+            holder = new Specification();
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(adapter = new DateTimeValueSemanticsProvider(spec, holder));
         }
 

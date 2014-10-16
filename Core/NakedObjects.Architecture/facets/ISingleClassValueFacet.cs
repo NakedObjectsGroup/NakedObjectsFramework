@@ -17,6 +17,6 @@ namespace NakedObjects.Architecture.Facets {
         ///     Convenience to return the <see cref="INakedObjectSpecification" /> corresponding to this facet's
         ///     <see cref="Value" />
         /// </summary>
-        IIntrospectableSpecification ValueSpec { get; }
+        IObjectSpecImmutable ValueSpec { get; }
     }
 }

@@ -23,8 +23,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
             booleanObj = true;
             booleanNO = CreateAdapter(booleanObj);
-            specification = new SpecificationImpl();
-            var spec = new Mock<IIntrospectableSpecification>().Object;
+            specification = new Specification();
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new BooleanValueSemanticsProvider(spec, specification));
         }
 

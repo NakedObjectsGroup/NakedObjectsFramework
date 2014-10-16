@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DotNetIntrospector));
 
         private static readonly object[] NoParameters = new object[0];
-        private readonly IIntrospectableSpecification specification;
+        private readonly IObjectSpecImmutable specification;
         private readonly Type introspectedType;
 
         private readonly MethodInfo[] methods;
@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private IOrderSet<INakedObjectActionPeer> orderedObjectActions;
 
         public DotNetIntrospector(Type typeToIntrospect,
-                                  IIntrospectableSpecification specification,
+                                  IObjectSpecImmutable specification,
                                   INakedObjectReflector reflector) {
             Log.DebugFormat("Creating DotNetIntrospector for {0}", typeToIntrospect);
 
@@ -133,7 +133,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return allMethods.ToArray();
         }
 
-        private IIntrospectableSpecification GetSpecification(Type returnType) {
+        private IObjectSpecImmutable GetSpecification(Type returnType) {
             return reflector.LoadSpecification(returnType);
         }
 

@@ -12,7 +12,7 @@ namespace NakedObjects.Architecture.Facets {
     /// <summary>
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>
-    public class SpecificationImpl : ISpecification {
+    public class Specification : ISpecification {
         private readonly Dictionary<Type, IFacet> facetsByClass = new Dictionary<Type, IFacet>();
 
         #region ISpecification Members

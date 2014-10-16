@@ -20,7 +20,7 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     [TestFixture]
     public class CollectionFacetsTest {
-        private readonly SpecificationImpl specification = new SpecificationImpl();
+        private readonly Specification specification = new Specification();
 
         private readonly Mock<ILifecycleManager> mockLifecycleManager = new Mock<ILifecycleManager>();
         private readonly Mock<INakedObjectManager> mockManager = new Mock<INakedObjectManager>();

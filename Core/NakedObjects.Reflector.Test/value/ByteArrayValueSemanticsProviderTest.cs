@@ -22,8 +22,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
             byteArray = new byte[0];
             byteArrayNakedObject = CreateAdapter(byteArray);
-            specification = new SpecificationImpl();
-            var spec = new Mock<IIntrospectableSpecification>().Object;
+            specification = new Specification();
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new ArrayValueSemanticsProvider<byte>(spec, specification));
         }
 

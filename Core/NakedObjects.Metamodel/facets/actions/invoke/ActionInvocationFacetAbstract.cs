@@ -23,8 +23,8 @@ namespace NakedObjects.Architecture.Facets.Actions.Invoke {
 
         #region IActionInvocationFacet Members
 
-        public abstract IIntrospectableSpecification OnType { get; }
-        public abstract IIntrospectableSpecification ReturnType { get; }
+        public abstract IObjectSpecImmutable OnType { get; }
+        public abstract IObjectSpecImmutable ReturnType { get; }
 
         public abstract INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager);
 

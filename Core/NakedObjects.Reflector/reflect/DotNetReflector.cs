@@ -49,19 +49,19 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         #region IMetamodel Members
 
-        public virtual IIntrospectableSpecification[] AllSpecifications {
+        public virtual IObjectSpecImmutable[] AllSpecifications {
             get { return cache.AllSpecifications(); }
         }
 
-        public virtual IIntrospectableSpecification[] AllIntrospectableSpecifications {
+        public virtual IObjectSpecImmutable[] AllObjectSpecImmutables {
             get { return cache.AllSpecifications().ToArray(); }
         }
 
-        public IIntrospectableSpecification GetSpecification(Type type) {
+        public IObjectSpecImmutable GetSpecification(Type type) {
             return  LoadSpecification(type);
         }
 
-        public IIntrospectableSpecification GetSpecification(string name) {
+        public IObjectSpecImmutable GetSpecification(string name) {
             return LoadSpecification(name);
         }
 
@@ -78,12 +78,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             get { return introspectionControlParameters.FacetFactorySet; }
         }
 
-        public virtual IIntrospectableSpecification LoadSpecification(Type type) {
+        public virtual IObjectSpecImmutable LoadSpecification(Type type) {
             Assert.AssertNotNull(type);
             return LoadSpecificationAndCache(ClassStrategy.GetType(type));
         }
 
-        public IIntrospectableSpecification LoadSpecification(string className) {
+        public IObjectSpecImmutable LoadSpecification(string className) {
             Assert.AssertNotNull("specification class must be specified", className);
 
             try {
@@ -110,7 +110,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public virtual void PopulateContributedActions(Type[] services) {
             try {
                 if (!linked) {
-                    AllIntrospectableSpecifications.ForEach(s => s.PopulateAssociatedActions(services));
+                    AllObjectSpecImmutables.ForEach(s => s.PopulateAssociatedActions(services));
                 }
             }
             finally {
@@ -143,7 +143,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             specification.MarkAsService();
         }
 
-        private IIntrospectableSpecification LoadSpecificationAndCache(Type type) {
+        private IObjectSpecImmutable LoadSpecificationAndCache(Type type) {
             string proxiedTypeName = type.GetProxiedTypeFullName();
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
             lock (cache) {
@@ -177,12 +177,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
         }
 
-        private IIntrospectableSpecification CreateSpecification(Type type) {
-            return new IntrospectableSpecification(type, this);
+        private IObjectSpecImmutable CreateSpecification(Type type) {
+            return new ObjectSpecImmutable(type, this);
         }
 
-        private IIntrospectableSpecification Install(Type type) {
-            return new IntrospectableSpecification(type, this);
+        private IObjectSpecImmutable Install(Type type) {
+            return new ObjectSpecImmutable(type, this);
         }
     }
 

@@ -26,10 +26,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public ArrayValueSemanticsProvider(IIntrospectableSpecification spec)
+        public ArrayValueSemanticsProvider(IObjectSpecImmutable spec)
             : this(spec, null) { }
 
-        public ArrayValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
+        public ArrayValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
         public static Type Type {

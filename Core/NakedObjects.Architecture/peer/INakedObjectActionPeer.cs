@@ -11,9 +11,9 @@ namespace NakedObjects.Reflector.Peer {
     public interface INakedObjectActionPeer : INakedObjectMemberPeer, IOrderableElement<INakedObjectActionPeer> {
         INakedObjectActionParamPeer[] Parameters { get; }
         bool IsFinderMethod { get; }
-        IIntrospectableSpecification ReturnType { get; }
+        IObjectSpecImmutable ReturnType { get; }
         bool IsContributedMethod { get; }
-        bool IsContributedTo(IIntrospectableSpecification introspectableSpecification);
+        bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

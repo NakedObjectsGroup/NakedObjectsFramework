@@ -209,7 +209,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
                     RemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions 
-                    var parameterNamesAndTypes = methodToUse.GetParameters().Select(p => new Tuple<string, IIntrospectableSpecification>(p.Name.ToLower(), Reflector.LoadSpecification(p.ParameterType))).ToArray();
+                    var parameterNamesAndTypes = methodToUse.GetParameters().Select(p => new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), Reflector.LoadSpecification(p.ParameterType))).ToArray();
                     FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes, returnType, parameters[i], isMultiple));
                     AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                 }

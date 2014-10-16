@@ -19,8 +19,8 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public override void SetUp() {
             base.SetUp();
             s = 32;
-            holder = new SpecificationImpl();
-            var spec = new Mock<IIntrospectableSpecification>().Object;
+            holder = new Specification();
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new ShortValueSemanticsProvider(spec, holder));
         }
 
