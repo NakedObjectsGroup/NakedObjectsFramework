@@ -61,7 +61,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
                 }
 
                 MethodInfo toStringMethod = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.ToStringMethod, typeof (string), Type.EmptyTypes);
-                if (toStringMethod != null && !toStringMethod.DeclaringType.Equals(typeof (object))) {
+                if (toStringMethod != null && !(toStringMethod.DeclaringType == typeof (object))) {
                     methodRemover.RemoveMethod(toStringMethod);
                 }
                 else {

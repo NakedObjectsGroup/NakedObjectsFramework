@@ -41,13 +41,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
             facetHolder.AddFacet(new AggregatedFacetAlways(holder));
 
             // ImmutableFacet, if appropriate
-            bool immutable = semanticsProvider != null ? semanticsProvider.IsImmutable : true;
+            bool immutable = semanticsProvider == null || semanticsProvider.IsImmutable;
             if (immutable) {
                 facetHolder.AddFacet(new ImmutableFacetViaValueSemantics(holder));
             }
 
             // EqualByContentFacet, if appropriate
-            bool equalByContent = semanticsProvider != null ? semanticsProvider.IsEqualByContent : true;
+            bool equalByContent = semanticsProvider == null || semanticsProvider.IsEqualByContent;
             if (equalByContent) {
                 FacetUtils.AddFacet(new EqualByContentFacetViaValueSemantics(holder));
             }

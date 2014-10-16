@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facets;
 
 namespace NakedObjects.Architecture.Adapter.Value {
-    public interface IArrayValueFacet<T> : IFacet {
+    public interface IArrayValueFacet<out T> : IFacet {
         T[] ArrayValue(INakedObject nakedObject);
     }
 

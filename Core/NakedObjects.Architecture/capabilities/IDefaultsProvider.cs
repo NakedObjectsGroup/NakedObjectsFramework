@@ -9,7 +9,7 @@ namespace NakedObjects.Capabilities {
     /// <summary>
     ///     Not yet fully supported
     /// </summary>
-    public interface IDefaultsProvider<T> {
+    public interface IDefaultsProvider<out T> {
         T DefaultValue { get; }
     }
 }

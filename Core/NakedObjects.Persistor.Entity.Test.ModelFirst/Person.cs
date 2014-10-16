@@ -128,7 +128,7 @@ namespace ModelFirst
             }
         }
 
-        private List<Food> _food = new List<Food>();
+        private readonly List<Food> _food = new List<Food>();
 
         #endregion
 

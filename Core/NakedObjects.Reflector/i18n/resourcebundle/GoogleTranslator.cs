@@ -66,7 +66,7 @@ namespace NakedObjects.Reflector.I18n.Resourcebundle {
 
         private string GetIP() {
             IPAddress[] a = Dns.GetHostAddresses(Dns.GetHostName());
-            return a.Count() > 0 ? a.First().ToString() : null;
+            return a.Any() ? a.First().ToString() : null;
         }
     }
 }
