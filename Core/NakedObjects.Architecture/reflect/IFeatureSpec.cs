@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
     /// <summary>
-    ///     Base interface for fields, collections, actions and action parameters.
+    ///     Base interface for specifications covering properties, collections, actions and action parameters.
     /// </summary>
     public interface IFeatureSpec : ISpecification, INamedAndDescribed {
         /// <summary>

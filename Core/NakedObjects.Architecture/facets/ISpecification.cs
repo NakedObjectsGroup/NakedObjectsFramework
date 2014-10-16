@@ -10,11 +10,12 @@ using System.Collections.Generic;
 
 namespace NakedObjects.Architecture.Facets {
     /// <summary>
-    ///     Anything in the metamodel (which also includes peers in the reflector) that can be extended
+    ///  The 'metamodel' is made up of various implementations of ISpecification, which, in turn, are largely
+    ///  made up of Facets.
     /// </summary>
     public interface ISpecification {
         /// <summary>
-        ///     Get the list of all facet <see cref="Type" />s that are supported by objects of this specification
+        ///     Get the list of all facet <see cref="Type" />s that are supported by objects with this specification
         /// </summary>
         Type[] FacetTypes { get; }
 

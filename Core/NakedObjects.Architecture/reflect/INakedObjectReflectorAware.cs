@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Architecture.Reflect {
+
+    //TODO:  Is this just a leftover from before the DI refactoring?
     public interface INakedObjectReflectorAware {
         INakedObjectReflector Reflector { set; }
     }

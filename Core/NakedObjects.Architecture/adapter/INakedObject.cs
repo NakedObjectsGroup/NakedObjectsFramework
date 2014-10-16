@@ -13,26 +13,26 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Architecture.Adapter {
 
     /// <summary>
-    ///     An INakedObject is an adapter to domain objects. The NOF alsways deals with domain objects via these
-    ///     adapters. The adapter gives access to the Metamodel (INakedObjectSpecification) for the domain object type,
+    ///     An INakedObject is an adapter to a (POCO) domain object. The NOF alsways deals with domain objects via these
+    ///     adapters. The adapter gives access to the Metamodel (IObjectSpec) for the domain object type,
     ///     provides a unique identifier for the object (Oid), and its current 'lifecycle' state.
     /// </summary>
     public interface INakedObject {
         /// <summary>
-        ///     Returns the adapted domain object, the POCO, that this adapter represents with the NOF
+        ///     Returns the (POCO)  domain object that this adapter represents with the NOF
         /// </summary>
         /// <seealso cref="AdapterUtils.GetDomainObject{T}" />
         object Object { get; }
 
         /// <summary>
-        ///     Returns the specification that details the structure of this object's adapted domain object.
-        ///     Specifically, this specification provides the mechanism to access and manipulate the domain object.
+        ///     Returns the specification that details the structure of the domain object and that
+        ///     provides the mechanism to access and manipulate the domain object.
         /// </summary>
         IObjectSpec Spec { get; }
 
         /// <summary>
-        ///     The object's unique id. This id allows the object to added to, stored by, and retrieved from the object
-        ///     store
+        ///     A unique id for the adaptor, and therefore, effectively, for the domain object. 
+        ///     This id allows the object to added to, stored by, and retrieved from the object store
         /// </summary>
         IOid Oid { get; }
 
@@ -42,7 +42,7 @@ namespace NakedObjects.Architecture.Adapter {
         IResolveStateMachine ResolveState { get; }
 
         /// <summary>
-        ///     Returns the current version of the domain object
+        ///     Returns the current version of the domain object, used for concurrency checking.
         /// </summary>
         IVersion Version { get; }
 
@@ -74,7 +74,7 @@ namespace NakedObjects.Architecture.Adapter {
         string IconName();
 
         /// <summary>
-        ///     Returns the title to display this object with, which is usually got from the
+        ///     Returns the title to display for this object; the title is usually obtained from the
         ///     wrapped <see cref="Object" /> domain object
         /// </summary>
         string TitleString();

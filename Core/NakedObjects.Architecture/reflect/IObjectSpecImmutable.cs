@@ -17,8 +17,9 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     /// <summary>
-    ///     Introduced to remove special-case processing for <see cref="IObjectSpec" />s that
-    ///     are not introspectable.
+    ///   This is the immutable or 'static' core of the IObjectSpec.  It is created by the reflector during start-up, but can also be
+    ///   serialised/deserialised and hence persisted.  However, it needs to be wrapped as an IObjectSpec at run-time in order to 
+    ///   provide various run-time behaviours required of the Spec, which depend upon the run-time framework services.
     /// </summary>
     public interface IObjectSpecImmutable : ISpecification {
         // TODO expose lots of stuff while refactoring 

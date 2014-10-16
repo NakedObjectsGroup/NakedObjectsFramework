@@ -10,6 +10,10 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Component {
+    /// <summary>
+    /// Provides access to the run-time object specifications (implementations of IObjectSpec). The Manager takes responsibility
+    /// to inject these specifications with the necessary framework services.
+    /// </summary>
     public interface IMetamodelManager {
 
         // remove this 

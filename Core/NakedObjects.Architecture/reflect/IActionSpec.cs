@@ -9,6 +9,10 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
+
+    /// <summary>
+    /// The specification for an action method on a domain object (or service).
+    /// </summary>
     public interface IActionSpec : IMemberSpec {
         /// <summary>
         ///     Returns where the action should be executed: explicitly locally on the client; explicitly remotely on

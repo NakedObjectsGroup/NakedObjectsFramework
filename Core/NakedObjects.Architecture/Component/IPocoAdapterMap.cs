@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Core.Adapter.Map {
+    /// <summary>
+    /// Service for mapping between POCO domain objects and their (INakedObject) adaptors
+    /// </summary>
     public interface IPocoAdapterMap : IEnumerable<INakedObject> {
         void Add(object obj, INakedObject adapter);
 
