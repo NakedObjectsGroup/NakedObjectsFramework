@@ -12,6 +12,7 @@ using System.Text;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Contributed;
 using NakedObjects.Architecture.Facets.Actions.Executed;
@@ -20,12 +21,10 @@ using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
-using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class ActionSpec : MemberSpecAbstract, IActionSpec {
@@ -241,7 +240,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         private INakedObject FindService() {
-            foreach (INakedObject serviceAdapter in servicesManager.GetServices(ServiceTypes.Menu | ServiceTypes.Contributor)) {
+            foreach (INakedObject serviceAdapter in servicesManager.GetServices(ServiceType.Menu | ServiceType.Contributor)) {
                 if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Spec)) {
                     return serviceAdapter;
                 }

@@ -9,13 +9,13 @@ using System.Linq;
 using System.Web;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Adapter.Value;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Actions.Potency;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Facets.Objects.ViewModel;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Persist;
@@ -212,12 +212,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static IEnumerable<object> GetContributingServices(this INakedObjectsFramework framework) {
-            return framework.Services.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
+            return framework.Services.GetServicesWithVisibleActions(ServiceType.Menu | ServiceType.Contributor, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
         public static IEnumerable<object> GetServices(this INakedObjectsFramework framework) {
             framework.GetAllServices();
-            return framework.Services.GetServicesWithVisibleActions(ServiceTypes.Menu, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
+            return framework.Services.GetServicesWithVisibleActions(ServiceType.Menu, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
         public static string GetActionId(IActionSpec action) {

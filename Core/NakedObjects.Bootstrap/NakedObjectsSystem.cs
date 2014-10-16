@@ -6,17 +6,13 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
 using System.ServiceModel;
 using System.Threading;
 using Common.Logging;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
-using NakedObjects.Architecture.Services;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
-using NakedObjects.Core.Service;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Transaction;
 

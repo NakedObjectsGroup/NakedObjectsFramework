@@ -1313,7 +1313,7 @@ namespace MvcTestApp.Tests.Helpers {
             };
             var claimAdapter = NakedObjectsFramework.Manager.CreateAdapter(claims.First(), null, null);
             var adapter = NakedObjectsFramework.Manager.CreateAdapter(claims, null, null);
-            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager,  NakedObjectsFramework.Metamodel,  claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             adapter.SetATransientOid(mockOid);
 
@@ -1336,7 +1336,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             var claimAdapter = NakedObjectsFramework.Manager.CreateAdapter(claims.First(), null, null);
             var adapter = NakedObjectsFramework.Manager.CreateAdapter(claims, null, null);
-            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
+            var mockOid = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager,  NakedObjectsFramework.Metamodel,  claimAdapter, claimAdapter.GetActionLeafNode("ApproveItems"), new INakedObject[] { });
 
             adapter.SetATransientOid(mockOid);
 
@@ -1447,7 +1447,7 @@ namespace MvcTestApp.Tests.Helpers {
 
             INakedObject target = NakedObjectsFramework.Manager.CreateAdapter(new[] {claim}.AsQueryable(), null, null);
 
-            target.SetATransientOid(new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, claimRepo, action, new INakedObject[] { }), new object[] { selected }));
+            target.SetATransientOid(new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager,  NakedObjectsFramework.Metamodel,  new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager,  NakedObjectsFramework.Metamodel,  claimRepo, action, new INakedObject[] { }), new object[] { selected }));
 
             IActionSpec targetAction = claimRepo.Spec.GetActionLeafNodes().Single(a => a.Id == "ApproveClaims");
 

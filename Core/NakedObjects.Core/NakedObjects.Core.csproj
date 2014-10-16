@@ -185,6 +185,7 @@
     <Compile Include="security\IAuthenticatorInstaller.cs" />
     <Compile Include="security\SimpleSession.cs" />
     <Compile Include="service\ServiceUtils.cs" />
+    <Compile Include="service\ServiceWrapper.cs" />
     <Compile Include="spec\MemberFactory.cs" />
     <Compile Include="spec\ActionSpec.cs" />
     <Compile Include="spec\ActionParameterSpec.cs" />

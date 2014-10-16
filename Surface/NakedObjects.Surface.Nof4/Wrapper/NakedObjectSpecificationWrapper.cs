@@ -6,12 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Presentation;
-using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
@@ -38,7 +37,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 var extData = new Dictionary<string, object>();
 
                 if (spec.IsService) {
-                    ServiceTypes st = framework.Services.GetServiceType(spec);
+                    ServiceType st = framework.Services.GetServiceType(spec);
                     extData[ServiceType] = st.ToString();
                 }
 

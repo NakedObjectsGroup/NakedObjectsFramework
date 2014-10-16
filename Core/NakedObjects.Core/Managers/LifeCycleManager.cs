@@ -215,7 +215,7 @@ namespace NakedObjects.Managers {
             IObjectSpec spec = metamodel.GetSpecification(typeName);
 
             if (spec.IsCollection) {
-                return new CollectionMemento(this, manager, objectPersistor, metamodel, session, encodedData);
+                return new CollectionMemento(this, manager, metamodel, encodedData);
             }
 
             if (spec.ContainsFacet<IViewModelFacet>()) {

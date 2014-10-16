@@ -9,37 +9,33 @@ using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Security;
-using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Service;
-using NakedObjects.Persistor.Objectstore;
 
 namespace NakedObjects.Managers {
     public class ServicesManager : IServicesManager {
         private static readonly ILog Log;
         private readonly IContainerInjector injector;
         private readonly INakedObjectManager manager;
-        private readonly List<ServiceWrapper> services = new List<ServiceWrapper>();
+        private readonly List<IServiceWrapper> services = new List<IServiceWrapper>();
         private readonly IServicesConfiguration servicesConfig;
-        private readonly ISession session;
         private bool servicesInit;
 
         static ServicesManager() {
             Log = LogManager.GetLogger(typeof (ServicesManager));
         }
 
-        public ServicesManager(IContainerInjector injector, INakedObjectManager manager, IServicesConfiguration servicesConfig, ISession session) {
+        public ServicesManager(IContainerInjector injector, INakedObjectManager manager, IServicesConfiguration servicesConfig) {
             this.injector = injector;
             this.manager = manager;
             this.servicesConfig = servicesConfig;
-            this.session = session;
             injector.ServiceTypes = servicesConfig.Services.Select(sw => sw.Service.GetType()).ToArray();
         }
 
-        protected virtual List<ServiceWrapper> Services {
+        protected virtual List<IServiceWrapper> Services {
             get {
                 if (!servicesInit) {
                     AddServices(servicesConfig.Services);
@@ -53,7 +49,7 @@ namespace NakedObjects.Managers {
 
         #region IServicesManager Members
 
-        public virtual ServiceTypes GetServiceType(IObjectSpec spec) {
+        public virtual ServiceType GetServiceType(IObjectSpec spec) {
             return Services.Where(sw => manager.GetServiceAdapter(sw.Service).Spec == spec).Select(sw => sw.ServiceType).FirstOrDefault();
         }
 
@@ -67,14 +63,14 @@ namespace NakedObjects.Managers {
             return Services.Select(sw => manager.GetServiceAdapter(sw.Service)).ToArray();
         }
 
-        public virtual INakedObject[] GetServicesWithVisibleActions(ServiceTypes serviceType, ILifecycleManager persistor) {
+        public virtual INakedObject[] GetServicesWithVisibleActions(ServiceType serviceType, ILifecycleManager persistor) {
             Log.DebugFormat("GetServicesWithVisibleActions of: {0}", serviceType);
             return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
                 Select(sw => manager.GetServiceAdapter(sw.Service)).
                 Where(no => no.Spec.GetAllActions().Any(a => a.IsVisible(no))).ToArray();
         }
 
-        public virtual INakedObject[] GetServices(ServiceTypes serviceType) {
+        public virtual INakedObject[] GetServices(ServiceType serviceType) {
             Log.DebugFormat("GetServices of: {0}", serviceType);
             return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
                 Select(sw => manager.GetServiceAdapter(sw.Service)).ToArray();
@@ -86,7 +82,7 @@ namespace NakedObjects.Managers {
 
         #endregion
 
-        private void AddServices(IEnumerable<ServiceWrapper> ss) {
+        private void AddServices(IEnumerable<IServiceWrapper> ss) {
             Log.DebugFormat("AddServices count: {0}", ss.Count());
             services.AddRange(ss);
         }

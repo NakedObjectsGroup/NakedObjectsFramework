@@ -94,7 +94,7 @@ namespace MvcTestApp.Tests.Helpers {
             IActionSpec action = service.Spec.GetAllActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Where(a => a.Id == "FindMyClaims").Single();
             INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsFramework.Manager.CreateAdapter(o, null, null)).ToArray();
 
-            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, service, action, parms);
+            var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Metamodel, service, action, parms);
             no.SetATransientOid(cm);
 
             string id = NakedObjectsFramework.GetObjectId(no);

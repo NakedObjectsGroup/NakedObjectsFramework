@@ -296,6 +296,8 @@
     <Compile Include="interactions\IValidatingInteractionAdvisor.cs" />
     <Compile Include="Exceptions\NakedObjectSystemException.cs" />
     <Compile Include="Exceptions\NakedObjectDomainException.cs" />
+    <Compile Include="Configuration\ServiceType.cs" />
+    <Compile Include="Configuration\IServiceWrapper.cs" />
     <Compile Include="SpecImmutable\IActionParameterSpecImmutable.cs" />
     <Compile Include="SpecImmutable\IActionSpecImmutable.cs" />
     <Compile Include="SpecImmutable\IAssociationSpecImmutable.cs" />
@@ -349,7 +351,6 @@
     <Compile Include="attributes\ValueAttribute.cs" />
     <Compile Include="Component\IAuthorisationManager.cs" />
     <Compile Include="security\NullAuthorisationManager.cs" />
-    <Compile Include="services\ServiceWrapper.cs" />
     <Compile Include="Transaction\ICreateObjectCommand.cs" />
     <Compile Include="Transaction\IDestroyObjectCommand.cs" />
     <Compile Include="Transaction\ISaveObjectCommand.cs" />

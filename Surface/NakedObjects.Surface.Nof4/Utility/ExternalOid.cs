@@ -11,8 +11,8 @@ using System.Linq;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facets.Objects.ViewModel;
-using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Services;
 using NakedObjects.Surface.Nof4.Wrapper;
@@ -58,7 +58,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             if (spec == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
-            INakedObject service = framework.Services.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
+            INakedObject service = framework.Services.GetServicesWithVisibleActions(ServiceType.Menu | ServiceType.Contributor, framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
             if (service == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }

@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Services;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Persist {
@@ -20,12 +20,12 @@ namespace NakedObjects.Architecture.Persist {
 
         INakedObject GetService(string id);
 
-        ServiceTypes GetServiceType(IObjectSpec spec);
+        ServiceType GetServiceType(IObjectSpec spec);
 
         INakedObject[] GetServices();
 
-        INakedObject[] GetServices(ServiceTypes serviceType);
+        INakedObject[] GetServices(ServiceType serviceType);
 
-        INakedObject[] GetServicesWithVisibleActions(ServiceTypes serviceType, ILifecycleManager persistor);
+        INakedObject[] GetServicesWithVisibleActions(ServiceType serviceType, ILifecycleManager persistor);
     }
 }

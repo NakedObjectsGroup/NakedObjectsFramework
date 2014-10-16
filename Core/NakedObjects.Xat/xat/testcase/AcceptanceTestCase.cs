@@ -15,6 +15,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Objects.Bounded;
 using NakedObjects.Architecture.Persist;

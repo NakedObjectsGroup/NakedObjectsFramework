@@ -204,7 +204,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private  INakedObject Execute(IActionSpec action, INakedObject target, INakedObject[] parameterSet) {
             var result = action.Execute(target, parameterSet);
             if (result != null && result.Oid == null) {
-                result.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Manager, NakedObjectsContext.Persistor, NakedObjectsContext.Metamodel, NakedObjectsContext.Session, target, action, parameterSet));
+                result.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Manager, NakedObjectsContext.Metamodel,  target, action, parameterSet));
             }
             return result;
         }    

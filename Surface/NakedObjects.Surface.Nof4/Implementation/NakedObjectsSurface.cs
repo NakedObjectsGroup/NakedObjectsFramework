@@ -12,15 +12,14 @@ using System.Linq;
 using System.Security.Principal;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Collections.Modify;
 using NakedObjects.Architecture.Facets.Objects.Immutable;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Facets.Objects.Validation;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof4.Context;
@@ -220,7 +219,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private ListContext GetServicesInternal() {
-            INakedObject[] services = framework.Services.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager);
+            INakedObject[] services = framework.Services.GetServicesWithVisibleActions(ServiceType.Menu | ServiceType.Contributor, framework.LifecycleManager);
             IObjectSpec elementType = framework.Metamodel.GetSpecification(typeof (object));
 
             return new ListContext {

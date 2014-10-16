@@ -11,6 +11,7 @@ using System.Web;
 using Microsoft.Practices.Unity;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;

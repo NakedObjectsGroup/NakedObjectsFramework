@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Adapter;
@@ -36,25 +35,20 @@ namespace NakedObjects.Core.Persist {
 
         private readonly ILifecycleManager lifecycleManager;
         private readonly INakedObjectManager nakedObjectManager;
-        private readonly IObjectPersistor persistor;
-        private readonly ISession session;
         private object[] selectedObjects;
 
-        private CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IObjectPersistor persistor, ISession session) {
+        private CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager) {
             Assert.AssertNotNull(lifecycleManager);
             Assert.AssertNotNull(nakedObjectManager);
-            Assert.AssertNotNull(persistor);
-            Assert.AssertNotNull(session);
+
 
             this.lifecycleManager = lifecycleManager;
             this.nakedObjectManager = nakedObjectManager;
-            this.persistor = persistor;
-            this.session = session;
         }
 
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IObjectPersistor persistor, IMetamodelManager metamodel, ISession session, CollectionMemento otherMemento, object[] selectedObjects)
-            : this(lifecycleManager, nakedObjectManager, persistor, session) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, CollectionMemento otherMemento, object[] selectedObjects)
+            : this(lifecycleManager, nakedObjectManager) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(otherMemento);
 
@@ -66,8 +60,8 @@ namespace NakedObjects.Core.Persist {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IObjectPersistor persistor, IMetamodelManager metamodel, ISession session, INakedObject target, IActionSpec actionSpec, INakedObject[] parameters)
-            : this(lifecycleManager, nakedObjectManager, persistor, session) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, INakedObject target, IActionSpec actionSpec, INakedObject[] parameters)
+            : this(lifecycleManager, nakedObjectManager) {
             Assert.AssertNotNull(metamodel);
 
             Target = target;
@@ -79,8 +73,8 @@ namespace NakedObjects.Core.Persist {
             }
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IObjectPersistor persistor, IMetamodelManager metamodel, ISession session, string[] strings)
-            : this(lifecycleManager, nakedObjectManager, persistor, session) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, string[] strings)
+            : this(lifecycleManager, nakedObjectManager) {
             Assert.AssertNotNull(metamodel);
 
 

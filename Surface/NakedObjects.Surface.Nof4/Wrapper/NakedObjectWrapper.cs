@@ -10,11 +10,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Objects.ViewModel;
 using NakedObjects.Architecture.Facets.Presentation;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Surface.Interface;
@@ -45,7 +45,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
                 IObjectSpec spec = WrappedNakedObject.Spec;
 
                 if (spec.IsService) {
-                    ServiceTypes st = framework.Services.GetServiceType(spec);
+                    ServiceType st = framework.Services.GetServiceType(spec);
                     extData[ServiceType] = st.ToString();
                 }
 

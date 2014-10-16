@@ -862,7 +862,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private  INakedObject DoPaging(INakedObject nakedObject, ICollectionFacet collectionfacet, int page, int pageSize, bool forceEnumerable) {
             INakedObject newNakedObject = collectionfacet.Page(page, pageSize, nakedObject, NakedObjectsContext.Manager, forceEnumerable);
             object[] objects = newNakedObject.GetAsEnumerable(NakedObjectsContext.Manager).Select(no => no.Object).ToArray();
-            newNakedObject.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Manager, NakedObjectsContext.Persistor, NakedObjectsContext.Metamodel, NakedObjectsContext.Session, nakedObject.Oid as CollectionMemento, objects) { IsPaged = true });
+            newNakedObject.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Manager, NakedObjectsContext.Metamodel,  nakedObject.Oid as CollectionMemento, objects) { IsPaged = true });
             return newNakedObject;
         }
 
@@ -881,7 +881,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private  INakedObject CloneAndPopulateCollection(INakedObject nakedObject, object[] selected, bool forceEnumerable) {
             IList result = CollectionUtils.CloneCollectionAndPopulate(nakedObject.Object, selected);
             INakedObject adapter = NakedObjectsContext.Manager.CreateAdapter(nakedObject.Spec.IsQueryable && !forceEnumerable ? (IEnumerable)result.AsQueryable() : result, null, null);
-            adapter.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Manager, NakedObjectsContext.Persistor, NakedObjectsContext.Metamodel, NakedObjectsContext.Session, nakedObject.Oid as CollectionMemento, selected));
+            adapter.SetATransientOid(new CollectionMemento(NakedObjectsContext.LifecycleManager, NakedObjectsContext.Manager,  NakedObjectsContext.Metamodel, nakedObject.Oid as CollectionMemento, selected));
             return adapter;
         }
 
