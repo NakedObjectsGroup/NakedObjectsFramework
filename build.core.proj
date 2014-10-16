@@ -12,6 +12,7 @@
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
     <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
     <NUnitVer>2.6.3</NUnitVer>
+    <FSharpTargetsPath>$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.1\Framework\v4.0\Microsoft.FSharp.Targets</FSharpTargetsPath>
   </PropertyGroup>
 
   <Import Project="$(CommunityTargets)"/>
