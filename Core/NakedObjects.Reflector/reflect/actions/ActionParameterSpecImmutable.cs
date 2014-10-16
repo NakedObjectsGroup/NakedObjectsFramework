@@ -4,6 +4,7 @@
 
 using System;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 

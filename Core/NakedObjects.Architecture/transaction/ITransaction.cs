@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Persist;
 
-namespace NakedObjects.Persistor.Transaction {
+namespace NakedObjects.Architecture.Transaction {
     public interface ITransaction {
         void Abort();
 

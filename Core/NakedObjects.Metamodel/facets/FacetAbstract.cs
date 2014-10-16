@@ -9,6 +9,7 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Interactions;
 
+
 namespace NakedObjects.Architecture.Facets {
     public abstract class FacetAbstract : IFacet {
         private readonly Type facetType;

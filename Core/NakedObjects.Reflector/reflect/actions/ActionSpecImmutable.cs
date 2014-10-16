@@ -7,6 +7,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Contributed;
 using NakedObjects.Architecture.Facets.Actions.Invoke;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;

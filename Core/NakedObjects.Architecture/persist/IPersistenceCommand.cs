@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Persist {
     public interface IPersistenceCommand {
-        void Execute(IExecutionContext context);
+        void Execute();
         INakedObject OnObject();
     }
 

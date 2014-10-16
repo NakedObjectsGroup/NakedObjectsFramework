@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Propparam.Modify;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Reflector.DotNet.Facets.Actions.Choices;
 using NakedObjects.Reflector.DotNet.Facets.Actions.Defaults;

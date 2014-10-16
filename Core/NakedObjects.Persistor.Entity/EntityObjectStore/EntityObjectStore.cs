@@ -28,6 +28,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.Transaction;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
@@ -35,7 +36,6 @@ using NakedObjects.Core.Persist;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Objectstore;
-using NakedObjects.Persistor.Transaction;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
@@ -598,12 +598,12 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         private static T ExecuteCommand<T>(T command) where T : IPersistenceCommand {
-            command.Execute(null);
+            command.Execute();
             return default(T);
         }
 
         protected static void ExecuteCommands(IPersistenceCommand[] commands) {
-            commands.ForEach(command => command.Execute(null));
+            commands.ForEach(command => command.Execute());
         }
 
         #region Nested type: EntityCreateObjectCommand
@@ -624,7 +624,7 @@ namespace NakedObjects.EntityObjectStore {
 
             #region ICreateObjectCommand Members
 
-            public void Execute(IExecutionContext executionContext) {
+            public void Execute() {
                 try {
                     Log.DebugFormat("Creating: {0}", nakedObject);
                     context.CurrentSaveRootObject = nakedObject;
@@ -784,7 +784,7 @@ namespace NakedObjects.EntityObjectStore {
 
             #region IDestroyObjectCommand Members
 
-            public void Execute(IExecutionContext executionContext) {
+            public void Execute() {
                 Log.DebugFormat("Destroying: {0}", nakedObject);
                 context.WrappedObjectContext.DeleteObject(nakedObject.Object);
                 context.DeletedNakedObjects.Add(nakedObject);
@@ -816,7 +816,7 @@ namespace NakedObjects.EntityObjectStore {
 
             #region ISaveObjectCommand Members
 
-            public void Execute(IExecutionContext executionContext) {
+            public void Execute() {
                // Log.DebugFormat("EntitySaveObjectCommand: pre refresh version in object {0}", nakedObject.GetVersion());
                 Log.DebugFormat("Saving: {0}", nakedObject);
                 context.CurrentUpdateRootObject = nakedObject;

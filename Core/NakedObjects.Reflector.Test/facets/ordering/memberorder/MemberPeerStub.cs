@@ -7,6 +7,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 

@@ -12,8 +12,10 @@ namespace NakedObjects.Architecture.Reflect {
     public interface IMetamodel {
         IObjectSpecImmutable[] AllSpecifications { get; }
 
+        // remove this
         IObjectSpecImmutable GetSpecification(Type type);
 
+        // remove this
         IObjectSpecImmutable GetSpecification(string name);
     }
 

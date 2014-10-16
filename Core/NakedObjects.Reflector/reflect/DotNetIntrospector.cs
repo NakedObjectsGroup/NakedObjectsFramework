@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facets.Objects.Facets;
 using NakedObjects.Architecture.Facets.Ordering.MemberOrder;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder;

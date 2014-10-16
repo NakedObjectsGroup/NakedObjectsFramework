@@ -207,6 +207,10 @@
       <Project>{bf6d9655-b873-4980-ace7-a122ea45f045}</Project>
       <Name>NakedObjects.Architecture</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj">
+      <Project>{3F1E438C-020C-4751-A65A-63C2990D8278}</Project>
+      <Name>NakedObjects.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.FWResources\NakedObjects.FWResources.csproj">
       <Project>{7494a00e-6a3f-4bde-84ff-20aa538ed575}</Project>
       <Name>NakedObjects.FWResources</Name>

@@ -18,12 +18,11 @@ namespace NakedObjects.Architecture.Spec {
     /// Gives access to the full Metamodel (as created during initial reflection)
     /// for any given domain object type (defined by the FullName property).
     /// </summary>
-    public interface IObjectSpec :
-        IActionContainer,
-        IPropertyContainer,
-        ISpecification,
-        IHierarchical,
-        IDefaultProvider {
+    public interface IObjectSpec :  IActionSpecContainer,
+                                    IPropertySpecContainer,
+                                    ISpecification,
+                                    IHierarchical,
+                                    IDefaultProvider {
         /// <summary>
         ///     Returns the name of this specification. This will be the fully qualified name of the Class object that
         ///     this object represents (i.e. it includes the full namespace).
@@ -109,7 +108,7 @@ namespace NakedObjects.Architecture.Spec {
 
         /// <summary>
         ///     Determines if objects of this specification can be persisted or not. If it can be persisted (i.e. it
-        ///     returns something other than <see cref="NakedObjects.Architecture.Adapter.Persistable.TRANSIENT" /> then
+        ///     returns something other than <see cref="PersistableType.Transient" /> then
         ///     <see cref="IDomainObjectContainer.IsPersistent" /> will indicate whether the object is persistent or not.
         /// </summary>
         PersistableType Persistable { get; }

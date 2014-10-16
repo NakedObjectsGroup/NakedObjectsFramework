@@ -87,7 +87,7 @@ namespace NakedObjects.Core.Adapter {
             return Spec.GetIconName(this);
         }
 
-        public ResolveStateMachine ResolveState { get; private set; }
+        public IResolveStateMachine ResolveState { get; private set; }
 
         public virtual IObjectSpec Spec {
             get {

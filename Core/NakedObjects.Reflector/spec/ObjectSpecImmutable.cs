@@ -21,6 +21,7 @@ using NakedObjects.Architecture.Facets.Objects.Ident.Title;
 using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Facets.Types;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Reflector.DotNet.Facets.Naming.Named;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural;
 using NakedObjects.Reflector.DotNet.Facets.Ordering;

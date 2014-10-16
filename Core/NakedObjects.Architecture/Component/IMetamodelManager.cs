@@ -11,6 +11,8 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Component {
     public interface IMetamodelManager {
+
+        // remove this 
         IObjectSpec[] AllSpecs { get; }
 
         IObjectSpec GetSpecification(Type type);

@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facets.Propparam.Validate.MaxLength;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {

@@ -24,6 +24,7 @@ using NakedObjects.Architecture.Facets.Propparam.Modify;
 using NakedObjects.Architecture.Facets.Propparam.Validate.Mandatory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Reflector.DotNet.Facets.Actions.Choices;
 using NakedObjects.Reflector.DotNet.Facets.Actions.Defaults;
 using NakedObjects.Reflector.DotNet.Facets.Actions.Executed;

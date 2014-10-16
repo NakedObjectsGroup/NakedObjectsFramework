@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Persist;
 
-namespace NakedObjects.Persistor.Transaction {
+namespace NakedObjects.Architecture.Transaction {
     public interface ICreateObjectCommand : IPersistenceCommand {}
 
     // Copyright (c) Naked Objects Group Ltd.

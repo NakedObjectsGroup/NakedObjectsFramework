@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Transaction;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
-using NakedObjects.Persistor.Transaction;
 
 namespace NakedObjects.Persistor.Objectstore {
     public class ObjectStoreTransaction : ITransaction {

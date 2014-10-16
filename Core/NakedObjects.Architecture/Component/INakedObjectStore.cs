@@ -13,8 +13,8 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.Transaction;
 using NakedObjects.Core.Context;
-using NakedObjects.Persistor.Transaction;
 
 namespace NakedObjects.Persistor.Objectstore {
     public interface INakedObjectStore {

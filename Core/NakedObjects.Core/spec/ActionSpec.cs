@@ -22,6 +22,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Services;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;

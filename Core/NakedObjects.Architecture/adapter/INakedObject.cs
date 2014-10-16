@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Adapter {
+
     /// <summary>
     ///     An INakedObject is an adapter to domain objects. The NOF alsways deals with domain objects via these
     ///     adapters. The adapter gives access to the Metamodel (INakedObjectSpecification) for the domain object type,
@@ -38,7 +39,7 @@ namespace NakedObjects.Architecture.Adapter {
         /// <summary>
         ///     Determines what 'lazy loaded' state the domain object is in
         /// </summary>
-        ResolveStateMachine ResolveState { get; }
+        IResolveStateMachine ResolveState { get; }
 
         /// <summary>
         ///     Returns the current version of the domain object
