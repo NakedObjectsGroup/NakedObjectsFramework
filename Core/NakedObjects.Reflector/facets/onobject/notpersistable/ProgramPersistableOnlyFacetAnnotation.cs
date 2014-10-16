@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Objects.NotPersistable;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.NotPersistable {
     public class ProgramPersistableOnlyFacetAnnotation : ProgramPersistableOnlyFacetAbstract {
-        public ProgramPersistableOnlyFacetAnnotation(IFacetHolder holder)
+        public ProgramPersistableOnlyFacetAnnotation(ISpecification holder)
             : base(holder) {}
     }
 

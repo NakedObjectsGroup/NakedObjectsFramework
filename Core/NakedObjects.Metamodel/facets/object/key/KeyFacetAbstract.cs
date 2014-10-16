@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Objects.Key {
     public abstract class KeyFacetAbstract : MarkerFacetAbstract, IKeyFacet {
-        protected KeyFacetAbstract(IFacetHolder holder)
+        protected KeyFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

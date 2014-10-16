@@ -6,7 +6,7 @@ using NakedObjects.Architecture.Facets.Objects.TypicalLength;
 
 namespace NakedObjects.Architecture.Facets.Propparam.TypicalLength {
     public class TypicalLengthFacetDerivedFromType : TypicalLengthFacetAbstract {
-        public TypicalLengthFacetDerivedFromType(ITypicalLengthFacet typicalLengthFacet, IFacetHolder holder)
+        public TypicalLengthFacetDerivedFromType(ITypicalLengthFacet typicalLengthFacet, ISpecification holder)
             : base(typicalLengthFacet.Value, holder) {}
     }
 }

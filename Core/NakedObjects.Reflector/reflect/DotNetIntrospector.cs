@@ -406,7 +406,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return MethodFinderUtils.RemoveMethod(methods, methodType, name, returnType, paramTypes);
         }
 
-        private static OrderSet<T> CreateOrderSet<T>(string order, T[] members) where T : IOrderableElement<T>, IFacetHolder {
+        private static OrderSet<T> CreateOrderSet<T>(string order, T[] members) where T : IOrderableElement<T>, ISpecification {
             if (order != null) {
                 return SimpleOrderSet<T>.CreateOrderSet(order, members);
             }

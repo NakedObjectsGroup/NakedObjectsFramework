@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Properties.Modify {
     public abstract class PropertySetterFacetAbstract : FacetAbstract, IPropertySetterFacet {
-        protected PropertySetterFacetAbstract(IFacetHolder holder)
+        protected PropertySetterFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

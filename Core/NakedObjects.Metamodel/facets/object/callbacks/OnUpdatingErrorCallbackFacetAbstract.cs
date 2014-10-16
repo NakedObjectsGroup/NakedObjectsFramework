@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Objects.Callbacks {
     public abstract class OnUpdatingErrorCallbackFacetAbstract : CallbackWithExceptionFacetAbstract, IOnUpdatingErrorCallbackFacet {
-        protected OnUpdatingErrorCallbackFacetAbstract(IFacetHolder holder)
+        protected OnUpdatingErrorCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

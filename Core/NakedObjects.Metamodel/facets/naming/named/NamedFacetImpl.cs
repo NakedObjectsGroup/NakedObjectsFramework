@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Architecture.Facets.Naming.Named {
     public class NamedFacetImpl : NamedFacetAbstract {
-        public NamedFacetImpl(string valueString, IFacetHolder holder)
+        public NamedFacetImpl(string valueString, ISpecification holder)
             : base(valueString, holder) {}
     }
 

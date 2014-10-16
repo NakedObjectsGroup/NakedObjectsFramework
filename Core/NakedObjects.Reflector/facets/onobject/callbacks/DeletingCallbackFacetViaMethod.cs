@@ -14,7 +14,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
     public class DeletingCallbackFacetViaMethod : DeletingCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public DeletingCallbackFacetViaMethod(MethodInfo method, IFacetHolder holder)
+        public DeletingCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
         }

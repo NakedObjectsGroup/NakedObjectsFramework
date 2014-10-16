@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Propparam.Validate.Range;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Range {
     public class RangeFacetAnnotation : RangeFacetAbstract {
-        public RangeFacetAnnotation(object min, object max, bool isDateRange, IFacetHolder holder)
+        public RangeFacetAnnotation(object min, object max, bool isDateRange, ISpecification holder)
             : base(min, max, holder) {
             IsDateRange = isDateRange;
         }

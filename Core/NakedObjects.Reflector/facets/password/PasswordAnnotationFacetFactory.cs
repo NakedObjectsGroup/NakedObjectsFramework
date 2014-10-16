@@ -18,23 +18,23 @@ namespace NakedObjects.Reflector.DotNet.Facets.Password {
             :base(reflector, NakedObjectFeatureType.PropertiesAndParameters) { }
 
 
-        private static bool Process(MemberInfo member, IFacetHolder holder) {
+        private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<DataTypeAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(property, holder);
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(property, specification);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttributeByReflection<DataTypeAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private static IPasswordFacet Create(DataTypeAttribute attribute, IFacetHolder holder) {
+        private static IPasswordFacet Create(DataTypeAttribute attribute, ISpecification holder) {
             return attribute != null && attribute.DataType == DataType.Password ? new PasswordFacetAnnotation(holder) : null;
         }
     }

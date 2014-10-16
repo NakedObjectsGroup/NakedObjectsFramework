@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         ///     Lazily looked up per <see cref="Specification" />
         /// </summary>
         protected ValueSemanticsProviderAbstract(Type adapterFacetType,
-                                                IFacetHolder holder,
+                                                ISpecification holder,
                                                 Type adaptedType,
                                                 int typicalLength,
                                                 bool immutable,

@@ -18,33 +18,33 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.MaxLength {
         public MaxLengthAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             Attribute attribute = type.GetCustomAttributeByReflection<StringLengthAttribute>() ?? (Attribute) type.GetCustomAttributeByReflection<MaxLengthAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static bool Process(MemberInfo member, IFacetHolder holder) {
+        private static bool Process(MemberInfo member, ISpecification holder) {
             Attribute attribute = member.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) member.GetCustomAttribute<MaxLengthAttribute>();
 
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(method, holder);
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(method, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(property, holder);
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(property, specification);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             Attribute attribute = parameter.GetCustomAttributeByReflection<StringLengthAttribute>() ?? (Attribute) parameter.GetCustomAttributeByReflection<MaxLengthAttribute>();
 
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private static IMaxLengthFacet Create(Attribute attribute, IFacetHolder holder) {
+        private static IMaxLengthFacet Create(Attribute attribute, ISpecification holder) {
             if (attribute == null) {
                 return null;
             }
@@ -58,12 +58,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.MaxLength {
             throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
         }
 
-        private static IMaxLengthFacet Create(MaxLengthAttribute attribute, IFacetHolder holder) {
+        private static IMaxLengthFacet Create(MaxLengthAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new MaxLengthFacetAnnotation(attribute.Length, holder);
         }
 
 
-        private static IMaxLengthFacet Create(StringLengthAttribute attribute, IFacetHolder holder) {
+        private static IMaxLengthFacet Create(StringLengthAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new MaxLengthFacetAnnotation(attribute.MaximumLength, holder);
         }
     }

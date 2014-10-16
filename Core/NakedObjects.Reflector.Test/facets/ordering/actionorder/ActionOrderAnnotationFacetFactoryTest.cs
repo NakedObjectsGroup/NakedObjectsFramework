@@ -42,8 +42,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.ActionOrder {
 
         [Test]
         public void TestActionOrderAnnotationPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IActionOrderFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IActionOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionOrderFacetAnnotation);
             var actionOrderFacetAnnotation = (ActionOrderFacetAnnotation) facet;

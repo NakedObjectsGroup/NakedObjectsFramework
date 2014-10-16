@@ -14,7 +14,7 @@ namespace NakedObjects.Reflector.Transaction {
     public class TransactionDecorator : IFacetDecorator {
         #region IFacetDecorator Members
 
-        public virtual IFacet Decorate(IFacet facet, IFacetHolder holder) {
+        public virtual IFacet Decorate(IFacet facet, ISpecification holder) {
             if (facet.FacetType == typeof (IActionInvocationFacet)) {
                 return new ActionInvocationFacetWrapTransaction(((IActionInvocationFacet) facet));
             }

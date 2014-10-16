@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facets.Properties.Defaults {
     public abstract class PropertyDefaultFacetAbstract : FacetAbstract, IPropertyDefaultFacet {
-        protected PropertyDefaultFacetAbstract(IFacetHolder holder)
+        protected PropertyDefaultFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

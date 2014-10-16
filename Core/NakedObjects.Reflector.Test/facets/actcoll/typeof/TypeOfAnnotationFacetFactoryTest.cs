@@ -42,8 +42,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
         //[Test]
         //public void TestTypeOfAnnotationIgnoredForActionIfReturnTypeIsntACollectionType() {
         //    MethodInfo actionMethod = FindMethod(typeof (Customer11), "SomeAction");
-        //    facetFactory.Process(actionMethod, methodRemover, facetHolder);
-        //    IFacet facet = facetHolder.GetFacet(typeof (ITypeOfFacet));
+        //    facetFactory.Process(actionMethod, methodRemover, specification);
+        //    IFacet facet = specification.GetFacet(typeof (ITypeOfFacet));
         //    Assert.IsNull(facet);
         //    AssertNoMethodsRemoved();
         //}
@@ -87,8 +87,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
         [Test]
         public void TestTypeOfFacetInferredForActionWithArrayReturnType() {
             MethodInfo actionMethod = FindMethod(typeof (Customer9), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (ITypeOfFacet));
+            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TypeOfFacetInferredFromArray);
             var typeOfFacetInferredFromArray = (TypeOfFacetInferredFromArray) facet;
@@ -99,8 +99,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
         [Test]
         public void TestTypeOfFacetInferredForActionWithGenericCollectionReturnType() {
             MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (ITypeOfFacet));
+            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TypeOfFacetInferredFromGenerics);
             var typeOfFacetInferredFromGenerics = (TypeOfFacetInferredFromGenerics) facet;
@@ -111,8 +111,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
         [Test]
         public void TestTypeOfFacetInferredForCollectionWithGenericCollectionReturnType() {
             PropertyInfo property = FindProperty(typeof (Customer4), "Orders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (ITypeOfFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TypeOfFacetInferredFromGenerics);
             var typeOfFacetInferredFromGenerics = (TypeOfFacetInferredFromGenerics) facet;
@@ -123,8 +123,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
         [Test]
         public void TestTypeOfFacetIsInferredForCollectionFromOrderArray() {
             PropertyInfo property = FindProperty(typeof (Customer10), "Orders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (ITypeOfFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TypeOfFacetInferredFromArray);
             var typeOfFacetInferredFromArray = (TypeOfFacetInferredFromArray) facet;

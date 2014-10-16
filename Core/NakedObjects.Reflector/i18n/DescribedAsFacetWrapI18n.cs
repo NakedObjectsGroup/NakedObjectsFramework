@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Naming.DescribedAs;
 
 namespace NakedObjects.Reflector.I18n {
     public class DescribedAsFacetWrapI18n : DescribedAsFacetAbstract {
-        public DescribedAsFacetWrapI18n(string valueString, IFacetHolder holder)
+        public DescribedAsFacetWrapI18n(string valueString, ISpecification holder)
             : base(valueString, holder) {}
     }
 

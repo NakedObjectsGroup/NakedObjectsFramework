@@ -11,7 +11,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotCounted {
     ///     This is only used at by the custom 'SdmNotCountedAttribute' 
     /// </summary>
     public class NotCountedFacetAnnotation : NotCountedFacetAbstract {
-        public NotCountedFacetAnnotation(IFacetHolder holder)
+        public NotCountedFacetAnnotation(ISpecification holder)
             : base(holder) {}
     }
 

@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public DateTimeValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof (IDateValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (DateTimeValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(DateTimeValueSemanticsProvider.AdaptedType);
-                AddFacets(new DateTimeValueSemanticsProvider(spec, holder));
+                AddFacets(new DateTimeValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

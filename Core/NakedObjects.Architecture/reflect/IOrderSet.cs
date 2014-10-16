@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
-    public interface IOrderSet<T> : IOrderableElement<T> where T : IOrderableElement<T>, IFacetHolder {
+    public interface IOrderSet<T> : IOrderableElement<T> where T : IOrderableElement<T>, ISpecification {
         IOrderSet<T> Parent { set; get; }
         IList<IOrderableElement<T>> Children { get; }
 

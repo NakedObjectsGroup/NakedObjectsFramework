@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public DoubleValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof (IDoubleFloatingPointValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (DoubleValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(DoubleValueSemanticsProvider.AdaptedType);
-                AddFacets(new DoubleValueSemanticsProvider(spec, holder));
+                AddFacets(new DoubleValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

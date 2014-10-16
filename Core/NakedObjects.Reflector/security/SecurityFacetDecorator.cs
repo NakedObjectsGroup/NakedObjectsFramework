@@ -21,17 +21,17 @@ namespace NakedObjects.Reflector.Security {
 
         #region IFacetDecorator Members
 
-        public virtual IFacet Decorate(IFacet facet, IFacetHolder holder) {
+        public virtual IFacet Decorate(IFacet facet, ISpecification holder) {
             Type facetType = facet.FacetType;
-            IFacetHolder facetHolder = facet.FacetHolder;
+            ISpecification specification = facet.Specification;
             IIdentifier identifier = holder.Identifier;
 
             if (facetType == typeof (IHideForSessionFacet)) {
-                return new SecurityHideForSessionFacet(identifier, this, facetHolder);
+                return new SecurityHideForSessionFacet(identifier, this, specification);
             }
 
             if (facetType == typeof (IDisableForSessionFacet)) {
-                return new SecurityDisableForSessionFacet(identifier, this, facetHolder);
+                return new SecurityDisableForSessionFacet(identifier, this, specification);
             }
             return facet;
         }
@@ -50,7 +50,7 @@ namespace NakedObjects.Reflector.Security {
 
             public SecurityDisableForSessionFacet(IIdentifier identifier,
                                                   SecurityFacetDecorator decorator,
-                                                  IFacetHolder holder)
+                                                  ISpecification holder)
                 : base(holder) {
                 this.identifier = identifier;
                 this.decorator = decorator;
@@ -71,7 +71,7 @@ namespace NakedObjects.Reflector.Security {
 
             public SecurityHideForSessionFacet(IIdentifier identifier,
                                                SecurityFacetDecorator decorator,
-                                               IFacetHolder holder)
+                                               ISpecification holder)
                 : base(holder) {
                 this.identifier = identifier;
                 this.decorator = decorator;

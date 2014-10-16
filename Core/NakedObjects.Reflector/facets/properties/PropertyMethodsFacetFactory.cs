@@ -52,44 +52,44 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             get { return prefixes; }
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             string capitalizedName = property.Name;
             var paramTypes = new[] {property.PropertyType};
 
-            var facets = new List<IFacet> {new PropertyAccessorFacetViaAccessor(property, holder)};
+            var facets = new List<IFacet> {new PropertyAccessorFacetViaAccessor(property, specification)};
 
             if (property.PropertyType.IsGenericType && (property.PropertyType.GetGenericTypeDefinition() == typeof (Nullable<>))) {
-                facets.Add(new NullableFacetAlways(holder));
+                facets.Add(new NullableFacetAlways(specification));
             }
 
             if (property.GetSetMethod() != null) {
                 if (property.PropertyType == typeof (byte[])) {
-                    facets.Add(new DisabledFacetAlways(holder));
+                    facets.Add(new DisabledFacetAlways(specification));
                 }
                 else {
-                    facets.Add(new PropertySetterFacetViaSetterMethod(property, holder));
+                    facets.Add(new PropertySetterFacetViaSetterMethod(property, specification));
                 }
-                facets.Add(new PropertyInitializationFacetViaSetterMethod(property, holder));
+                facets.Add(new PropertyInitializationFacetViaSetterMethod(property, specification));
             }
             else {
-                //facets.Add(new DerivedFacetInferred(holder));
-                facets.Add(new NotPersistedFacetAnnotation(holder));
-                facets.Add(new DisabledFacetAlways(holder));
+                //facets.Add(new DerivedFacetInferred(specification));
+                facets.Add(new NotPersistedFacetAnnotation(specification));
+                facets.Add(new DisabledFacetAlways(specification));
             }
-            FindAndRemoveModifyMethod(facets, methodRemover, property.DeclaringType, capitalizedName, paramTypes, holder);
-            FindAndRemoveClearMethod(facets, methodRemover, property.DeclaringType, capitalizedName, holder);
+            FindAndRemoveModifyMethod(facets, methodRemover, property.DeclaringType, capitalizedName, paramTypes, specification);
+            FindAndRemoveClearMethod(facets, methodRemover, property.DeclaringType, capitalizedName, specification);
 
-            FindAndRemoveAutoCompleteMethod(facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, holder);
-            FindAndRemoveChoicesMethod(facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, holder);
-            FindAndRemoveDefaultMethod(facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, holder);
-            FindAndRemoveValidateMethod(facets, methodRemover, property.DeclaringType, paramTypes, capitalizedName, holder);
+            FindAndRemoveAutoCompleteMethod(facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
+            FindAndRemoveChoicesMethod(facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
+            FindAndRemoveDefaultMethod(facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
+            FindAndRemoveValidateMethod(facets, methodRemover, property.DeclaringType, paramTypes, capitalizedName, specification);
 
-            AddHideForSessionFacetNone(facets, holder);
-            AddDisableForSessionFacetNone(facets, holder);
-            FindDefaultHideMethod(facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", new Type[0], holder);
-            FindAndRemoveHideMethod(facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, property.PropertyType, holder);
-            FindDefaultDisableMethod(facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", new Type[0], holder);
-            FindAndRemoveDisableMethod(facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, property.PropertyType, holder);
+            AddHideForSessionFacetNone(facets, specification);
+            AddDisableForSessionFacetNone(facets, specification);
+            FindDefaultHideMethod(facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", new Type[0], specification);
+            FindAndRemoveHideMethod(facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, property.PropertyType, specification);
+            FindDefaultDisableMethod(facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", new Type[0], specification);
+            FindAndRemoveDisableMethod(facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, property.PropertyType, specification);
 
             return FacetUtils.AddFacets(facets);
         }
@@ -99,7 +99,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
                                                Type type,
                                                string capitalizedName,
                                                Type[] parms,
-                                               IFacetHolder property) {
+                                               ISpecification property) {
             MethodInfo method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.ModifyPrefix + capitalizedName, typeof (void), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
@@ -107,7 +107,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             }
         }
 
-        private void FindAndRemoveClearMethod(ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, string capitalizedName, IFacetHolder property) {
+        private void FindAndRemoveClearMethod(ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, string capitalizedName, ISpecification property) {
             MethodInfo method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.ClearPrefix + capitalizedName, typeof (void), Type.EmptyTypes);
             RemoveMethod(methodRemover, method);
             if (method != null) {
@@ -117,7 +117,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         }
 
 
-        private void FindAndRemoveValidateMethod(ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, Type[] parms, string capitalizedName, IFacetHolder property) {
+        private void FindAndRemoveValidateMethod(ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, Type[] parms, string capitalizedName, ISpecification property) {
             MethodInfo method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.ValidatePrefix + capitalizedName, typeof (string), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
@@ -134,7 +134,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
                                                 Type type,
                                                 string capitalizedName,
                                                 Type returnType,
-                                                IFacetHolder property) {
+                                                ISpecification property) {
             MethodInfo method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
             RemoveMethod(methodRemover, method);
             if (method != null) {
@@ -148,7 +148,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
                                                 Type type,
                                                 string capitalizedName,
                                                 Type returnType,
-                                                IFacetHolder property) {
+                                                ISpecification property) {
             MethodInfo[] methods = FindMethods(type,
                                                MethodType.Object,
                                                PrefixesAndRecognisedMethods.ChoicesPrefix + capitalizedName,
@@ -175,7 +175,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
                                                      Type type,
                                                      string capitalizedName,
                                                      Type returnType,
-                                                     IFacetHolder property) {
+                                                     ISpecification property) {
             // only support if property is string or domain type
             if (returnType.IsClass || returnType.IsInterface) {
                 MethodInfo method = FindMethod(type,

@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Architecture.Facets.Objects.Value {
     public class AggregatedFacetAlways : MarkerFacetAbstract {
-        public AggregatedFacetAlways(IFacetHolder holder)
+        public AggregatedFacetAlways(ISpecification holder)
             : base(typeof (IAggregatedFacet), holder) {}
     }
 }

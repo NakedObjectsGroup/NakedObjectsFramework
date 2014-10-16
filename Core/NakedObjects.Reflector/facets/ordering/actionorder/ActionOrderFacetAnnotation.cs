@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Ordering.MemberOrder;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.ActionOrder {
     public class ActionOrderFacetAnnotation : ActionOrderFacetAbstract {
-        public ActionOrderFacetAnnotation(string value, IFacetHolder holder)
+        public ActionOrderFacetAnnotation(string value, ISpecification holder)
             : base(value, holder) {}
     }
 

@@ -8,5 +8,5 @@
 using NakedObjects.Architecture.Facets;
 
 namespace NakedObjects.Architecture.Spec {
-    public interface INamedAndDescribedFacetHolder : INamedAndDescribed, IFacetHolder {}
+    public interface INamedAndDescribedFacetHolder : INamedAndDescribed, ISpecification {}
 }

@@ -29,7 +29,7 @@ using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.Spec {
-    public class IntrospectableSpecification : FacetHolderImpl, IIntrospectableSpecification {
+    public class IntrospectableSpecification : SpecificationImpl, IIntrospectableSpecification {
         private static readonly ILog Log = LogManager.GetLogger(typeof (IntrospectableSpecification));
 
         private readonly IIdentifier identifier;

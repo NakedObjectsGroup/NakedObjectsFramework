@@ -134,11 +134,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
             // these need to run before logs are added by other tests 
             MethodInfo actionMethod = FindMethod(typeof (Customer18), "SomeAction");
             MethodInfo actionMethod1 = FindMethod(typeof (Customer18), "SomeAction1");
-            var facetHolder1 = new FacetHolderImpl();
+            var facetHolder1 = new SpecificationImpl();
 
 
-            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             var namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -146,7 +146,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
             AssertNoMethodsRemoved();
 
             facetFactory.Process(actionMethod1, MethodRemover, facetHolder1);
-            facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -159,11 +159,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
             // these need to run before logs are added by other tests 
             MethodInfo actionMethod = FindMethod(typeof (Customer13), "SomeAction");
             MethodInfo actionMethod1 = FindMethod(typeof (Customer13), "SomeAction1");
-            var facetHolder1 = new FacetHolderImpl();
+            var facetHolder1 = new SpecificationImpl();
 
 
-            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             var namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -171,7 +171,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
             AssertNoMethodsRemoved();
 
             facetFactory.Process(actionMethod1, MethodRemover, facetHolder1);
-            facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -183,11 +183,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         public void TestDisplayNameAnnotationOnPropertyMarksDuplicate() {
             PropertyInfo property = FindProperty(typeof (Customer16), "NumberOfOrders");
             PropertyInfo property1 = FindProperty(typeof (Customer16), "NumberOfOrders1");
-            var facetHolder1 = new FacetHolderImpl();
+            var facetHolder1 = new SpecificationImpl();
 
-            facetFactory.Process(property, MethodRemover, FacetHolder);
+            facetFactory.Process(property, MethodRemover, Specification);
             facetFactory.Process(property1, MethodRemover, facetHolder1);
-            IFacet facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             var namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -207,8 +207,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         [Test]
         public void TestDisplayNameAnnotationPickedUpOnAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer8), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             var namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -219,8 +219,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         [Test]
         public void TestDisplayNameAnnotationPickedUpOnClass() {
             MethodInfo actionMethod = FindMethod(typeof (Customer5), "someAction");
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             var namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -231,8 +231,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         [Test]
         public void TestDisplayNameAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer7), "Orders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             var namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -243,8 +243,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         [Test]
         public void TestDisplayNameAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer6), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             var namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -266,11 +266,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         public void TestNamedAnnotationOnPropertyMarksDuplicate() {
             PropertyInfo property = FindProperty(typeof (Customer11), "NumberOfOrders");
             PropertyInfo property1 = FindProperty(typeof (Customer11), "NumberOfOrders1");
-            var facetHolder1 = new FacetHolderImpl();
+            var facetHolder1 = new SpecificationImpl();
 
-            facetFactory.Process(property, MethodRemover, FacetHolder);
+            facetFactory.Process(property, MethodRemover, Specification);
             facetFactory.Process(property1, MethodRemover, facetHolder1);
-            IFacet facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             var namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -290,8 +290,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         [Test]
         public void TestNamedAnnotationPickedUpOnAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             var namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -302,8 +302,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         [Test]
         public void TestNamedAnnotationPickedUpOnActionParameter() {
             MethodInfo actionMethod = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(actionMethod, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            facetFactory.ProcessParams(actionMethod, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             var namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -313,8 +313,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         [Test]
         public void TestNamedAnnotationPickedUpOnClass() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "someAction");
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             var namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -325,8 +325,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         [Test]
         public void TestNamedAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Orders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             var namedFacetAbstract = (NamedFacetAbstract) facet;
@@ -337,8 +337,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         [Test]
         public void TestNamedAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (INamedFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
             var namedFacetAbstract = (NamedFacetAbstract) facet;

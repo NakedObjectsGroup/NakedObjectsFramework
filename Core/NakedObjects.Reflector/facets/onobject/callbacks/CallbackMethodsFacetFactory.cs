@@ -41,17 +41,17 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             get { return prefixes; }
         }
 
-        public override bool Process(Type type, IMethodRemover remover, IFacetHolder facetHolder) {
+        public override bool Process(Type type, IMethodRemover remover, ISpecification specification) {
             var facets = new List<IFacet>();
             var methods = new List<MethodInfo>();
 
             MethodInfo method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.CreatedMethod, typeof (void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
-                facets.Add(new CreatedCallbackFacetViaMethod(method, facetHolder));
+                facets.Add(new CreatedCallbackFacetViaMethod(method, specification));
             }
             else {
-                facets.Add(new CreatedCallbackFacetNull(facetHolder));
+                facets.Add(new CreatedCallbackFacetNull(specification));
             }
 
             method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.PersistingMethod, typeof (void), Type.EmptyTypes);
@@ -69,10 +69,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
 
             if (method != null) {
                 methods.Add(method);
-                facets.Add(new PersistingCallbackFacetViaMethod(method, facetHolder));
+                facets.Add(new PersistingCallbackFacetViaMethod(method, specification));
             }
             else {
-                facets.Add(new PersistingCallbackFacetNull(facetHolder));
+                facets.Add(new PersistingCallbackFacetNull(specification));
             }
 
             method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.PersistedMethod, typeof (void), Type.EmptyTypes);
@@ -90,82 +90,82 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
 
             if (method != null) {
                 methods.Add(method);
-                facets.Add(new PersistedCallbackFacetViaMethod(method, facetHolder));
+                facets.Add(new PersistedCallbackFacetViaMethod(method, specification));
             }
             else {
-                facets.Add(new PersistedCallbackFacetNull(facetHolder));
+                facets.Add(new PersistedCallbackFacetNull(specification));
             }
 
             method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.UpdatingMethod, typeof (void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
-                facets.Add(new UpdatingCallbackFacetViaMethod(method, facetHolder));
+                facets.Add(new UpdatingCallbackFacetViaMethod(method, specification));
             }
             else {
-                facets.Add(new UpdatingCallbackFacetNull(facetHolder));
+                facets.Add(new UpdatingCallbackFacetNull(specification));
             }
 
             method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.UpdatedMethod, typeof (void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
-                facets.Add(new UpdatedCallbackFacetViaMethod(method, facetHolder));
+                facets.Add(new UpdatedCallbackFacetViaMethod(method, specification));
             }
             else {
-                facets.Add(new UpdatedCallbackFacetNull(facetHolder));
+                facets.Add(new UpdatedCallbackFacetNull(specification));
             }
 
             method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.LoadingMethod, typeof (void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
-                facets.Add(new LoadingCallbackFacetViaMethod(method, facetHolder));
+                facets.Add(new LoadingCallbackFacetViaMethod(method, specification));
             }
             else {
-                facets.Add(new LoadingCallbackFacetNull(facetHolder));
+                facets.Add(new LoadingCallbackFacetNull(specification));
             }
 
             method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.LoadedMethod, typeof (void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
-                facets.Add(new LoadedCallbackFacetViaMethod(method, facetHolder));
+                facets.Add(new LoadedCallbackFacetViaMethod(method, specification));
             }
             else {
-                facets.Add(new LoadedCallbackFacetNull(facetHolder));
+                facets.Add(new LoadedCallbackFacetNull(specification));
             }
 
             method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.DeletingMethod, typeof (void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
-                facets.Add(new DeletingCallbackFacetViaMethod(method, facetHolder));
+                facets.Add(new DeletingCallbackFacetViaMethod(method, specification));
             }
             else {
-                facets.Add(new DeletingCallbackFacetNull(facetHolder));
+                facets.Add(new DeletingCallbackFacetNull(specification));
             }
 
             method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.DeletedMethod, typeof (void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
-                facets.Add(new DeletedCallbackFacetViaMethod(method, facetHolder));
+                facets.Add(new DeletedCallbackFacetViaMethod(method, specification));
             }
             else {
-                facets.Add(new DeletedCallbackFacetNull(facetHolder));
+                facets.Add(new DeletedCallbackFacetNull(specification));
             }
 
             method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.OnUpdatingErrorMethod, typeof (string), new[] {typeof (Exception)});
             if (method != null) {
                 methods.Add(method);
-                facets.Add(new OnUpdatingErrorCallbackFacetViaMethod(method, facetHolder));
+                facets.Add(new OnUpdatingErrorCallbackFacetViaMethod(method, specification));
             }
             else {
-                facets.Add(new OnUpdatingErrorCallbackFacetNull(facetHolder));
+                facets.Add(new OnUpdatingErrorCallbackFacetNull(specification));
             }
 
             method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.OnPersistingErrorMethod, typeof (string), new[] {typeof (Exception)});
             if (method != null) {
                 methods.Add(method);
-                facets.Add(new OnPersistingErrorCallbackFacetViaMethod(method, facetHolder));
+                facets.Add(new OnPersistingErrorCallbackFacetViaMethod(method, specification));
             }
             else {
-                facets.Add(new OnPersistingErrorCallbackFacetNull(facetHolder));
+                facets.Add(new OnPersistingErrorCallbackFacetNull(specification));
             }
 
 

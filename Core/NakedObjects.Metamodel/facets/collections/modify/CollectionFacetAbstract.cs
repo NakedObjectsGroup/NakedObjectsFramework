@@ -13,12 +13,12 @@ using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Collections.Modify {
     public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet {
-        protected CollectionFacetAbstract(IFacetHolder holder)
+        protected CollectionFacetAbstract(ISpecification holder)
             : base(typeof (ICollectionFacet), holder) {
             IsASet = false;
         }
 
-        protected CollectionFacetAbstract(IFacetHolder holder, Type elementClass, bool isASet)
+        protected CollectionFacetAbstract(ISpecification holder, Type elementClass, bool isASet)
             : this(holder) {
             IsASet = isASet;
         }

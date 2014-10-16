@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
         private readonly ParseableFacetUsingParser<T> parseableFacetUsingParser;
         private readonly Type parserClass;
 
-        protected ParseableFacetAbstract(string candidateParserName, Type candidateParserClass, IFacetHolder holder)
+        protected ParseableFacetAbstract(string candidateParserName, Type candidateParserClass, ISpecification holder)
             : base(typeof (IParseableFacet), holder) {
             parserClass = ParserUtils.ParserOrNull<T>(candidateParserClass, candidateParserName);
             parseableFacetUsingParser = IsValid ? new ParseableFacetUsingParser<T>((IParser<T>) TypeUtils.NewInstance(parserClass), holder) : null;

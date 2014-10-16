@@ -18,21 +18,21 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
         public NotPersistedAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndCollections) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = type.GetCustomAttributeByReflection<NotPersistedAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static bool Process(MemberInfo member, IFacetHolder holder) {
+        private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<NotPersistedAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(property, holder);
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(property, specification);
         }
 
-        private static INotPersistedFacet Create(NotPersistedAttribute attribute, IFacetHolder holder) {
+        private static INotPersistedFacet Create(NotPersistedAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new NotPersistedFacetAnnotation(holder);
         }
     }

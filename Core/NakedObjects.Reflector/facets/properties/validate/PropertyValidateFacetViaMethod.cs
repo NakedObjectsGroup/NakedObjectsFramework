@@ -12,7 +12,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Validate {
     public class PropertyValidateFacetViaMethod : PropertyValidateFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public PropertyValidateFacetViaMethod(MethodInfo method, IFacetHolder holder)
+        public PropertyValidateFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
         }

@@ -10,10 +10,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
     ///     Derived by presence of an <see cref="OptionallyAttribute" /> annotation.
     /// </summary>
     /// <para>
-    ///     This implementation indicates that the <see cref="IFacetHolder" /> is <i>not</i> mandatory.
+    ///     This implementation indicates that the <see cref="ISpecification" /> is <i>not</i> mandatory.
     /// </para>
     public class OptionalFacet : MandatoryFacetAbstract {
-        public OptionalFacet(IFacetHolder holder)
+        public OptionalFacet(ISpecification holder)
             : base(holder) {}
 
         /// <summary>

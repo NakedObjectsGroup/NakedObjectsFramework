@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Properties.Version {
     public abstract class ConcurrencyCheckFacetAbstract : MarkerFacetAbstract, IConcurrencyCheckFacet {
-        protected ConcurrencyCheckFacetAbstract(IFacetHolder holder)
+        protected ConcurrencyCheckFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

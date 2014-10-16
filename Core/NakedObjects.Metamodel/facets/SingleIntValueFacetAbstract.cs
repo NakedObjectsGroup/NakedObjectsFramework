@@ -11,7 +11,7 @@ namespace NakedObjects.Architecture.Facets {
     public abstract class SingleIntValueFacetAbstract : FacetAbstract, ISingleIntValueFacet {
         private readonly int valueInt;
 
-        protected SingleIntValueFacetAbstract(Type facetType, IFacetHolder holder, int valueInt)
+        protected SingleIntValueFacetAbstract(Type facetType, ISpecification holder, int valueInt)
             : base(facetType, holder) {
             this.valueInt = valueInt;
         }

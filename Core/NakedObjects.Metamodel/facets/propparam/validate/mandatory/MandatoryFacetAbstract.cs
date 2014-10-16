@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facets.Propparam.Validate.Mandatory {
     public abstract class MandatoryFacetAbstract : MarkerFacetAbstract, IMandatoryFacet {
-        protected MandatoryFacetAbstract(IFacetHolder holder)
+        protected MandatoryFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Objects.NotPersistable {
     public abstract class ProgramPersistableOnlyFacetAbstract : MarkerFacetAbstract, IProgramPersistableOnlyFacet {
-        protected ProgramPersistableOnlyFacetAbstract(IFacetHolder holder)
+        protected ProgramPersistableOnlyFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

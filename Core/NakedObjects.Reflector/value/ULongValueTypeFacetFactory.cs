@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public ULongValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof (IUnsignedLongValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (ULongValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(ULongValueSemanticsProvider.AdaptedType);
-                AddFacets(new ULongValueSemanticsProvider(spec, holder));
+                AddFacets(new ULongValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

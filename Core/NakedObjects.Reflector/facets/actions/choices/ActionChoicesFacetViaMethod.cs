@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Choices {
         private readonly string[] parameterNames;
 
 
-        public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, Tuple<string, IIntrospectableSpecification>[] parameterNamesAndTypes, Type choicesType, IFacetHolder holder, bool isMultiple = false)
+        public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, Tuple<string, IIntrospectableSpecification>[] parameterNamesAndTypes, Type choicesType, ISpecification holder, bool isMultiple = false)
             : base(holder) {
             this.choicesMethod = choicesMethod;
             this.choicesType = choicesType;

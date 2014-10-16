@@ -12,7 +12,7 @@ namespace NakedObjects.Architecture.Facets {
     /// <summary>
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>
-    public class NamedAndDescribedFacetHolderImpl : FacetHolderImpl, INamedAndDescribedFacetHolder {
+    public class NamedAndDescribedFacetHolderImpl : SpecificationImpl, INamedAndDescribedFacetHolder {
         private readonly string description;
         private readonly string name;
 

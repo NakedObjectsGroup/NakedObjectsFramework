@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Naming.Named {
     public abstract class NamedFacetAbstract : SingleStringValueFacetAbstract, INamedFacet {
-        protected NamedFacetAbstract(string valueString, IFacetHolder holder)
+        protected NamedFacetAbstract(string valueString, ISpecification holder)
             : base(Type, holder, valueString) {}
 
         public static Type Type {

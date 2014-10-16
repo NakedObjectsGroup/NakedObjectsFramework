@@ -7,6 +7,6 @@
 
 namespace NakedObjects.Architecture.Facets.Actions.Contributed {
     public class ExcludeFromFindMenuFacetImpl : ExcludeFromFindMenuFacetAbstract {
-        public ExcludeFromFindMenuFacetImpl(IFacetHolder holder) : base(holder) {}
+        public ExcludeFromFindMenuFacetImpl(ISpecification holder) : base(holder) {}
     }
 }

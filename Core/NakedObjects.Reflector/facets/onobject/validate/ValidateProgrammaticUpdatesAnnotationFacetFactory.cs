@@ -14,12 +14,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
         public ValidateProgrammaticUpdatesAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = type.GetCustomAttributeByReflection<ValidateProgrammaticUpdatesAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static IValidateProgrammaticUpdatesFacet Create(ValidateProgrammaticUpdatesAttribute attribute, IFacetHolder holder) {
+        private static IValidateProgrammaticUpdatesFacet Create(ValidateProgrammaticUpdatesAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new ValidateProgrammaticUpdatesFacetAnnotation(holder);
         }
     }

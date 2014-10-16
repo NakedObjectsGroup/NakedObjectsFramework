@@ -12,19 +12,19 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Validate {
         public PropertyValidateDefaultFacetFactory(INakedObjectReflector reflector)
             : base(reflector, NakedObjectFeatureType.PropertiesOnly) {}
 
-        public override bool Process(PropertyInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return FacetUtils.AddFacet(Create(specification));
+        }
+
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return FacetUtils.AddFacet(Create(specification));
+        }
+
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             return FacetUtils.AddFacet(Create(holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
-            return FacetUtils.AddFacet(Create(holder));
-        }
-
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
-            return FacetUtils.AddFacet(Create(holder));
-        }
-
-        private static IPropertyValidateFacet Create(IFacetHolder holder) {
+        private static IPropertyValidateFacet Create(ISpecification holder) {
             return new PropertyValidateFacetDefault(holder);
         }
     }

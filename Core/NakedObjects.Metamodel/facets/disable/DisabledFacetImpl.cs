@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Resolve;
 
 namespace NakedObjects.Architecture.Facets.Disable {
     public class DisabledFacetImpl : DisabledFacetAbstract {
-        public DisabledFacetImpl(WhenTo when, IFacetHolder holder)
+        public DisabledFacetImpl(WhenTo when, ISpecification holder)
             : base(when, holder) {}
 
         public override string DisabledReason(INakedObject target) {

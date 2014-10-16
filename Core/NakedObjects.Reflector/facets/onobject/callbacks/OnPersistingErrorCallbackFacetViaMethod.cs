@@ -13,7 +13,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
     public class OnPersistingErrorCallbackFacetViaMethod : OnPersistingErrorCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public OnPersistingErrorCallbackFacetViaMethod(MethodInfo method, IFacetHolder holder)
+        public OnPersistingErrorCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
         }

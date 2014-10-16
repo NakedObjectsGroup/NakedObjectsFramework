@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class AbstractFacetFactoryTest {
-        protected FacetHolderImpl FacetHolder;
+        protected SpecificationImpl Specification;
         protected IMethodRemover MethodRemover;
         protected INakedObjectReflector Reflector;
         protected IMetamodelManager Metamodel;
@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         protected abstract IFacetFactory FacetFactory { get; }
 
         public virtual void SetUp() {
-            FacetHolder = new FacetHolderImpl();
+            Specification = new SpecificationImpl();
 
             mockMethodRemover = new Mock<IMethodRemover>();
             mockReflector = new Mock<INakedObjectReflector>();
@@ -39,7 +39,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         }
 
         public virtual void TearDown() {
-            FacetHolder = null;
+            Specification = null;
             MethodRemover = null;
             Reflector = null;
         }

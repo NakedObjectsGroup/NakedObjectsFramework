@@ -10,7 +10,7 @@ namespace NakedObjects.Architecture.Facets.Naming.DescribedAs {
     ///     Has a description of the empty string
     /// </summary>
     public class DescribedAsFacetNone : DescribedAsFacetAbstract {
-        public DescribedAsFacetNone(IFacetHolder holder)
+        public DescribedAsFacetNone(ISpecification holder)
             : base("", holder) {}
 
         public override bool IsNoOp {

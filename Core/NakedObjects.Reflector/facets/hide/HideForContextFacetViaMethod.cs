@@ -12,7 +12,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
     public class HideForContextFacetViaMethod : HideForContextFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public HideForContextFacetViaMethod(MethodInfo method, IFacetHolder holder)
+        public HideForContextFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
         }

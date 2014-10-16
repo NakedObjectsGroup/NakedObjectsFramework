@@ -15,22 +15,22 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
         public EagerlyAnnotationFacetFactory(INakedObjectReflector reflector)
             : base(reflector, NakedObjectFeatureType.EverythingButParameters) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = type.GetCustomAttributeByReflection<EagerlyAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = property.GetCustomAttribute<EagerlyAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = method.GetCustomAttribute<EagerlyAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static IEagerlyFacet Create(EagerlyAttribute attribute, IFacetHolder holder) {
+        private static IEagerlyFacet Create(EagerlyAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new EagerlyFacetAnnotation(EagerlyAttribute.Do.Rendering, holder);
         }
     }

@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Objects.Aggregated;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated {
     public class ComplexTypeFacetConvention : ComplexTypeFacetAbstract {
-        public ComplexTypeFacetConvention(IFacetHolder holder)
+        public ComplexTypeFacetConvention(ISpecification holder)
             : base(holder) {}
     }
 }

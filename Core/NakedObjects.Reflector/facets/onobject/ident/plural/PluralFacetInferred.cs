@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Objects.Ident.Plural;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural {
     public class PluralFacetInferred : PluralFacetAbstract {
-        public PluralFacetInferred(string value, IFacetHolder holder)
+        public PluralFacetInferred(string value, ISpecification holder)
             : base(value, holder) {}
     }
 

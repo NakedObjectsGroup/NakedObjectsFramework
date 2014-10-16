@@ -16,7 +16,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Facets {
 
         private readonly Type[] facetFactories;
 
-        protected FacetsFacetAbstract(IEnumerable<string> names, IEnumerable<Type> types, IFacetHolder holder)
+        protected FacetsFacetAbstract(IEnumerable<string> names, IEnumerable<Type> types, ISpecification holder)
             : base(Type, holder) {
             var factories = new List<Type>();
             foreach (string name in names) {

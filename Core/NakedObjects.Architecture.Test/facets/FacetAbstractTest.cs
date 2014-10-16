@@ -16,20 +16,20 @@ namespace INakedObjects.Architecture.Adapter {
 
         [SetUp]
         public void SetUp() {
-            facetHolder = new FacetHolderImpl();
-            facetHolder2 = new FacetHolderImpl();
-            fooFacet = new ConcreteFacet(typeof (IFooFacet), facetHolder);
+            specification = new SpecificationImpl();
+            facetHolder2 = new SpecificationImpl();
+            fooFacet = new ConcreteFacet(typeof (IFooFacet), specification);
             FacetUtils.AddFacet(fooFacet);
         }
 
         #endregion
 
-        private IFacetHolder facetHolder;
-        private IFacetHolder facetHolder2;
+        private ISpecification specification;
+        private ISpecification facetHolder2;
         private FacetAbstract fooFacet;
 
         public class ConcreteFacet : FacetAbstract, IFooFacet {
-            public ConcreteFacet(Type facetType, IFacetHolder holder) : base(facetType, holder) {}
+            public ConcreteFacet(Type facetType, ISpecification holder) : base(facetType, holder) {}
         }
 
         public interface IFooFacet : IFacet {}
@@ -41,24 +41,24 @@ namespace INakedObjects.Architecture.Adapter {
 
         [Test]
         public void GetFacetHolder() {
-            Assert.AreEqual(facetHolder, fooFacet.FacetHolder);
+            Assert.AreEqual(specification, fooFacet.Specification);
         }
 
         [Test]
         public void Reparent() {
-            Assert.AreEqual(facetHolder, fooFacet.FacetHolder);
-            Assert.IsNotNull(facetHolder.GetFacet<IFooFacet>());
+            Assert.AreEqual(specification, fooFacet.Specification);
+            Assert.IsNotNull(specification.GetFacet<IFooFacet>());
             Assert.IsNull(facetHolder2.GetFacet<IFooFacet>());
             fooFacet.Reparent(facetHolder2);
-            Assert.AreEqual(facetHolder2, fooFacet.FacetHolder);
-            Assert.IsNull(facetHolder.GetFacet<IFooFacet>());
+            Assert.AreEqual(facetHolder2, fooFacet.Specification);
+            Assert.IsNull(specification.GetFacet<IFooFacet>());
             Assert.IsNotNull(facetHolder2.GetFacet<IFooFacet>());
         }
 
         [Test]
         public void SetFacetHolder() {
-            fooFacet.FacetHolder = facetHolder2;
-            Assert.AreEqual(facetHolder2, fooFacet.FacetHolder);
+            fooFacet.Specification = facetHolder2;
+            Assert.AreEqual(facetHolder2, fooFacet.Specification);
         }
 
         [Test]

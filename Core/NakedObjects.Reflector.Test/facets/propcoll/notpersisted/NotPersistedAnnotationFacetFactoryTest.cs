@@ -66,8 +66,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
         [Test]
         public void TestNotPersistedAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (INotPersistedFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (INotPersistedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotPersistedFacetAnnotation);
             AssertNoMethodsRemoved();
@@ -76,8 +76,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
         [Test]
         public void TestNotPersistedAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer), "FirstName");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (INotPersistedFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (INotPersistedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotPersistedFacetAnnotation);
             AssertNoMethodsRemoved();

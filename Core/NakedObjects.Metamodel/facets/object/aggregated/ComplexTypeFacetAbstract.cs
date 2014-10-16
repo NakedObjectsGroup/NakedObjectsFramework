@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Objects.Aggregated {
     public abstract class ComplexTypeFacetAbstract : MarkerFacetAbstract, IComplexTypeFacet {
-        protected ComplexTypeFacetAbstract(IFacetHolder holder)
+        protected ComplexTypeFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

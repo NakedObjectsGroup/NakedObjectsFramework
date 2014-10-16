@@ -14,14 +14,14 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
         public EncodeableFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
-            return FacetUtils.AddFacet(Create(type, holder));
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+            return FacetUtils.AddFacet(Create(type, specification));
         }
 
         /// <summary>
         ///     Returns a <see cref="IEncodeableFacet" /> implementation.
         /// </summary>
-        private static IEncodeableFacet Create(Type type, IFacetHolder holder) {
+        private static IEncodeableFacet Create(Type type, ISpecification holder) {
             // create from annotation, if present
             var annotation = type.GetCustomAttributeByReflection<EncodeableAttribute>();
             if (annotation != null) {

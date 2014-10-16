@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets {
     public abstract class SingleValueFacetAbstract : FacetAbstract, ISingleValueFacet {
-        protected SingleValueFacetAbstract(Type facetType, IFacetHolder holder)
+        protected SingleValueFacetAbstract(Type facetType, ISpecification holder)
             : base(facetType, holder) {}
     }
 }

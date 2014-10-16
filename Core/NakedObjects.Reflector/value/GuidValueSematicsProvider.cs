@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public GuidValueSemanticsProvider(IIntrospectableSpecification spec)
             : this(spec, null) { }
 
-        public GuidValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+        public GuidValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) { }
 
         public static Type Type {

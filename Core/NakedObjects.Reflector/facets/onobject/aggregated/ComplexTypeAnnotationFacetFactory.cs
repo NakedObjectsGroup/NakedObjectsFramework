@@ -14,12 +14,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated {
         public ComplexTypeAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             Attribute ctAttribute = type.GetCustomAttributeByReflection<ComplexTypeAttribute>();
-            return FacetUtils.AddFacet(Create(ctAttribute, holder));
+            return FacetUtils.AddFacet(Create(ctAttribute, specification));
         }
 
-        private static IComplexTypeFacet Create(Attribute attribute, IFacetHolder holder) {
+        private static IComplexTypeFacet Create(Attribute attribute, ISpecification holder) {
             return attribute == null ? null : new ComplexTypeFacetAnnotation(holder);
         }
     }

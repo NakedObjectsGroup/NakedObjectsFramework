@@ -57,8 +57,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Defaults {
         [Test]
         public void TestPropertyDefaultAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Prop");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IPropertyDefaultFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IPropertyDefaultFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyDefaultFacetAnnotation);
             var propertyDefaultFacetAnnotation = (PropertyDefaultFacetAnnotation) facet;

@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Facets.Actions.Defaults {
     public abstract class ActionDefaultsFacetAbstract : FacetAbstract, IActionDefaultsFacet {
-        protected ActionDefaultsFacetAbstract(IFacetHolder holder)
+        protected ActionDefaultsFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

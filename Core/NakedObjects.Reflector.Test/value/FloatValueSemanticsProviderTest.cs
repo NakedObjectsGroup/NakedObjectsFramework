@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public override void SetUp() {
             base.SetUp();
 
-            holder = new FacetHolderImpl();
+            holder = new SpecificationImpl();
             var spec = new Mock<IIntrospectableSpecification>().Object;
             SetValue(new FloatValueSemanticsProvider(spec, holder));
 
@@ -30,7 +30,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
 
         private Single floatObj;
 
-        private IFacetHolder holder;
+        private ISpecification holder;
 
         [Test]
         public void TestDecode() {

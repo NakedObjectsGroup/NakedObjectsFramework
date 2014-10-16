@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public ColorValueSemanticsProvider(IIntrospectableSpecification spec)
             : this(spec, null) { }
 
-        public ColorValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+        public ColorValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) { }
 
         public static Type Type {

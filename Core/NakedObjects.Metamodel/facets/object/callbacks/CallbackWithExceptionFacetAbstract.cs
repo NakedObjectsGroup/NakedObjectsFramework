@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facets.Objects.Callbacks {
     public abstract class CallbackWithExceptionFacetAbstract : FacetAbstract, ICallbackWithExceptionFacet {
-        protected CallbackWithExceptionFacetAbstract(Type facetType, IFacetHolder holder)
+        protected CallbackWithExceptionFacetAbstract(Type facetType, ISpecification holder)
             : base(facetType, holder) {}
 
         #region ICallbackWithExceptionFacet Members

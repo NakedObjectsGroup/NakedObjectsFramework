@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Architecture.Facets.Objects.TypicalLength {
     public class TypicalLengthFacetZero : TypicalLengthFacetAbstract {
-        public TypicalLengthFacetZero(IFacetHolder holder)
+        public TypicalLengthFacetZero(ISpecification holder)
             : base(0, holder) {}
 
         public override bool IsNoOp {

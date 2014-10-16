@@ -16,16 +16,16 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Defaults {
             :base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
 
 
-        private static bool Process(MemberInfo member, IFacetHolder holder) {
+        private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<DefaultValueAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(property, holder);
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(property, specification);
         }
 
-        private static IPropertyDefaultFacet Create(DefaultValueAttribute attribute, IFacetHolder holder) {
+        private static IPropertyDefaultFacet Create(DefaultValueAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new PropertyDefaultFacetAnnotation(attribute.Value, holder);
         }
     }

@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facets.Disable {
     public abstract class DisableForContextFacetAbstract : FacetAbstract, IDisableForContextFacet {
-        protected DisableForContextFacetAbstract(IFacetHolder holder)
+        protected DisableForContextFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

@@ -14,11 +14,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
         public ParseableFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
-            return FacetUtils.AddFacet(Create(type, holder));
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+            return FacetUtils.AddFacet(Create(type, specification));
         }
 
-        private static IFacet Create(Type type, IFacetHolder holder) {
+        private static IFacet Create(Type type, ISpecification holder) {
             var annotation = type.GetCustomAttributeByReflection<ParseableAttribute>();
 
             // create from annotation, if present

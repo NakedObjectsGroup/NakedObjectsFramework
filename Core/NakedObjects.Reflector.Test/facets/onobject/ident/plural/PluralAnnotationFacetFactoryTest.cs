@@ -52,8 +52,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural {
 
         [Test]
         public void TestPluralAnnotationMethodPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IPluralFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IPluralFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PluralFacetAnnotation);
             var pluralFacet = (PluralFacetAnnotation) facet;

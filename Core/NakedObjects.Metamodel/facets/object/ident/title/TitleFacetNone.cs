@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Objects.Ident.Title {
     public class TitleFacetNone : TitleFacetAbstract {
-        public TitleFacetNone(IFacetHolder holder)
+        public TitleFacetNone(ISpecification holder)
             : base(holder) {}
 
         public override bool IsNoOp {

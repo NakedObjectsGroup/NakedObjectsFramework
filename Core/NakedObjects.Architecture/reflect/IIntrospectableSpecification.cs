@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.Spec {
     ///     Introduced to remove special-case processing for <see cref="INakedObjectSpecification" />s that
     ///     are not introspectable.
     /// </summary>
-    public interface IIntrospectableSpecification : IFacetHolder {
+    public interface IIntrospectableSpecification : ISpecification {
         // TODO expose lots of stuff while refactoring 
 
 

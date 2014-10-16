@@ -13,10 +13,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public ColorValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof (IColorValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (ColorValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(ColorValueSemanticsProvider.AdaptedType);
-                AddFacets(new ColorValueSemanticsProvider(spec, holder));
+                AddFacets(new ColorValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

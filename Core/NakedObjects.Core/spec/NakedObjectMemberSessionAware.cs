@@ -12,8 +12,8 @@ using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Reflector.Spec {
     public abstract class NakedObjectMemberSessionAware : NakedObjectMemberAbstract {
-        protected internal NakedObjectMemberSessionAware(string id, IFacetHolder facetHolder, ISession session, ILifecycleManager lifecycleManager)
-            : base(id, facetHolder, session, lifecycleManager) {}
+        protected internal NakedObjectMemberSessionAware(string id, ISpecification specification, ISession session, ILifecycleManager lifecycleManager)
+            : base(id, specification, session, lifecycleManager) {}
     }
 
 

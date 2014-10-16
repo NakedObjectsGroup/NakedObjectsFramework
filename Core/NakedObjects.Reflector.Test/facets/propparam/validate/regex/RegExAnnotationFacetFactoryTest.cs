@@ -113,22 +113,22 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
         [Test]
         public void TestRegExAnnotationIgnoredForNonStringsProperty() {
             PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            Assert.IsNull(FacetHolder.GetFacet(typeof (IRegExFacet)));
+            facetFactory.Process(property, MethodRemover, Specification);
+            Assert.IsNull(Specification.GetFacet(typeof (IRegExFacet)));
         }
 
         [Test]
         public void TestRegExAnnotationIgnoredForPrimitiveOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            Assert.IsNull(FacetHolder.GetFacet(typeof (IRegExFacet)));
+            facetFactory.ProcessParams(method, 0, Specification);
+            Assert.IsNull(Specification.GetFacet(typeof (IRegExFacet)));
         }
 
         [Test]
         public void TestRegExAnnotationMessageNullWhenNotSpecified() {
             PropertyInfo property = FindProperty(typeof (Customer5), "FirstName");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IRegExFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
             var regExFacet = (RegExFacetAnnotation) facet;
             Assert.AreEqual(null, regExFacet.FailureMessage);
         }
@@ -136,8 +136,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
         [Test]
         public void TestRegExAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IRegExFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RegExFacetAnnotation);
             var regExFacet = (RegExFacetAnnotation) facet;
@@ -148,8 +148,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
 
         [Test]
         public void TestRegExAnnotationPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IRegExFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RegExFacetAnnotation);
             var regExFacet = (RegExFacetAnnotation) facet;
@@ -161,8 +161,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
         [Test]
         public void TestRegExAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IRegExFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RegExFacetAnnotation);
             var regExFacet = (RegExFacetAnnotation) facet;
@@ -174,22 +174,22 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
         [Test]
         public void TestRegularExpressionAnnotationIgnoredForNonStringsProperty() {
             PropertyInfo property = FindProperty(typeof (Customer9), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            Assert.IsNull(FacetHolder.GetFacet(typeof (IRegExFacet)));
+            facetFactory.Process(property, MethodRemover, Specification);
+            Assert.IsNull(Specification.GetFacet(typeof (IRegExFacet)));
         }
 
         [Test]
         public void TestRegularExpressionAnnotationIgnoredForPrimitiveOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer10), "SomeAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            Assert.IsNull(FacetHolder.GetFacet(typeof (IRegExFacet)));
+            facetFactory.ProcessParams(method, 0, Specification);
+            Assert.IsNull(Specification.GetFacet(typeof (IRegExFacet)));
         }
 
         [Test]
         public void TestRegularExpressionAnnotationMessageNullWhenNotSpecified() {
             PropertyInfo property = FindProperty(typeof (Customer11), "FirstName");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IRegExFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
             var regExFacet = (RegExFacetAnnotation) facet;
             Assert.AreEqual(null, regExFacet.FailureMessage);
         }
@@ -197,8 +197,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
         [Test]
         public void TestRegularExpressionAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer8), "SomeAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IRegExFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RegExFacetAnnotation);
             var regExFacet = (RegExFacetAnnotation) facet;
@@ -210,8 +210,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
         [Test]
         public void TestRegularExpressionAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer7), "FirstName");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IRegExFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RegExFacetAnnotation);
             var regExFacet = (RegExFacetAnnotation) facet;

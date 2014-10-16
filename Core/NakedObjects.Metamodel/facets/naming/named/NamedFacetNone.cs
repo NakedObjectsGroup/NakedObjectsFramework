@@ -11,7 +11,7 @@ namespace NakedObjects.Architecture.Facets.Naming.Named {
     /// </summary>
     // TODO: should this instead be the empty string?  
     public class NamedFacetNone : NamedFacetAbstract {
-        public NamedFacetNone(IFacetHolder holder)
+        public NamedFacetNone(ISpecification holder)
             : base(null, holder) {}
 
         public override bool IsNoOp {

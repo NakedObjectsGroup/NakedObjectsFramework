@@ -20,13 +20,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Enums {
             : base(reflector, NakedObjectFeatureType.PropertiesAndParameters) {}
 
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = property.GetCustomAttribute<EnumDataTypeAttribute>();
 
-            return AddEnumFacet(attribute, holder, property.PropertyType);
+            return AddEnumFacet(attribute, specification, property.PropertyType);
         }
 
-        private static bool AddEnumFacet(EnumDataTypeAttribute attribute, IFacetHolder holder, Type typeOfEnum) {
+        private static bool AddEnumFacet(EnumDataTypeAttribute attribute, ISpecification holder, Type typeOfEnum) {
             if (attribute != null) {
                 return FacetUtils.AddFacet(Create(attribute, holder));
             }
@@ -43,14 +43,14 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Enums {
             return false;
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttributeByReflection<EnumDataTypeAttribute>();
 
             return AddEnumFacet(attribute, holder, parameter.ParameterType);
         }
 
-        private static IEnumFacet Create(EnumDataTypeAttribute attribute, IFacetHolder holder) {
+        private static IEnumFacet Create(EnumDataTypeAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new EnumFacet(holder, attribute.EnumType);
         }
     }

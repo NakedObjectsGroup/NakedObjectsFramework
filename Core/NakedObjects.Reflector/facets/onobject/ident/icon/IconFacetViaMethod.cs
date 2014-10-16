@@ -13,7 +13,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
         private readonly string iconName; // iconName from attribute
         private readonly MethodInfo method;
 
-        public IconFacetViaMethod(MethodInfo method, IFacetHolder holder, string iconName)
+        public IconFacetViaMethod(MethodInfo method, ISpecification holder, string iconName)
             : base(holder) {
             this.method = method;
             this.iconName = iconName;

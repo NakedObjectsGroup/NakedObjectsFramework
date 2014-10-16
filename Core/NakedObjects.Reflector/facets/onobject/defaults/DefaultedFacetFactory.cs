@@ -19,11 +19,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
         public DefaultedFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
-            return FacetUtils.AddFacet(Create(type, holder));
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+            return FacetUtils.AddFacet(Create(type, specification));
         }
 
-        private static IDefaultedFacet Create(Type type, IFacetHolder holder) {
+        private static IDefaultedFacet Create(Type type, ISpecification holder) {
             var annotation = type.GetCustomAttributeByReflection<DefaultedAttribute>();
 
             // create from annotation, if present
@@ -46,9 +46,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
         ///     If there is a <see cref="IDefaultedFacet" />on the properties return Type, then installs a
         ///     <see cref="IPropertyDefaultFacet" /> for the property with the same default.
         /// </summary>
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
             // don't overwrite any defaults already picked up
-            if (holder.ContainsFacet(typeof (IPropertyDefaultFacet))) {
+            if (specification.ContainsFacet(typeof (IPropertyDefaultFacet))) {
                 return false;
             }
 
@@ -56,7 +56,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
             Type returnType = method.ReturnType;
             IDefaultedFacet returnTypeDefaultedFacet = GetDefaultedFacet(returnType);
             if (returnTypeDefaultedFacet != null) {
-                var propertyFacet = new PropertyDefaultFacetDerivedFromDefaultedFacet(returnTypeDefaultedFacet, holder);
+                var propertyFacet = new PropertyDefaultFacetDerivedFromDefaultedFacet(returnTypeDefaultedFacet, specification);
                 return FacetUtils.AddFacet(propertyFacet);
             }
             return false;
@@ -66,7 +66,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
         ///     If there is a <see cref="IDefaultedFacet" /> on any of the action's parameter types, then installs a
         ///     <see cref="IActionDefaultsFacet" /> for the action.
         /// </summary>
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             // don't overwrite any defaults already picked up
             if (holder.ContainsFacet(typeof (IActionDefaultsFacet))) {
                 return false;

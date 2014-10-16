@@ -27,7 +27,7 @@ namespace NakedObjects.Reflector.Audit {
 
         #region IFacetDecorator Members
 
-        public virtual IFacet Decorate(IFacet facet, IFacetHolder holder) {
+        public virtual IFacet Decorate(IFacet facet, ISpecification holder) {
             if (facet.FacetType == typeof (IActionInvocationFacet)) {
                 return new AuditActionInvocationFacet((IActionInvocationFacet) facet, manager, metamodel);
             }
@@ -59,11 +59,11 @@ namespace NakedObjects.Reflector.Audit {
             private bool? isQueryOnly;
 
             public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, AuditManager auditManager, IMetamodel metamodel)
-                : base(underlyingFacet.FacetHolder) {
+                : base(underlyingFacet.Specification) {
                 this.underlyingFacet = underlyingFacet;
                 this.auditManager = auditManager;
                 this.metamodel = metamodel;
-                identifier = underlyingFacet.FacetHolder.Identifier;
+                identifier = underlyingFacet.Specification.Identifier;
             }
 
 
@@ -111,7 +111,7 @@ namespace NakedObjects.Reflector.Audit {
             private readonly IUpdatedCallbackFacet underlyingFacet;
 
             public AuditUpdatedFacet(IUpdatedCallbackFacet underlyingFacet, AuditManager auditManager)
-                : base(underlyingFacet.FacetHolder) {
+                : base(underlyingFacet.Specification) {
                 this.underlyingFacet = underlyingFacet;
                 manager = auditManager;
             }
@@ -131,7 +131,7 @@ namespace NakedObjects.Reflector.Audit {
             private readonly IPersistedCallbackFacet underlyingFacet;
 
             public AuditPersistedFacet(IPersistedCallbackFacet underlyingFacet, AuditManager auditManager)
-                : base(underlyingFacet.FacetHolder) {
+                : base(underlyingFacet.Specification) {
                 this.underlyingFacet = underlyingFacet;
                 manager = auditManager;
             }

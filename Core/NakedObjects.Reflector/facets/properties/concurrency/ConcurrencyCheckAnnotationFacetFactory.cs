@@ -15,12 +15,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Version {
         public ConcurrencyCheckAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             Attribute attribute = property.GetCustomAttribute<ConcurrencyCheckAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static IConcurrencyCheckFacet Create(Attribute attribute, IFacetHolder holder) {
+        private static IConcurrencyCheckFacet Create(Attribute attribute, ISpecification holder) {
             return attribute == null ? null : new ConcurrencyCheckFacetAnnotation(holder);
         }
     }

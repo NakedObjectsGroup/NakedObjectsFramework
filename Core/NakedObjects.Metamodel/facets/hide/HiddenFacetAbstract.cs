@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Hide {
     public abstract class HiddenFacetAbstract : SingleWhenValueFacetAbstract, IHiddenFacet {
-        protected HiddenFacetAbstract(WhenTo when, IFacetHolder holder)
+        protected HiddenFacetAbstract(WhenTo when, ISpecification holder)
             : base(Type, holder, when) {}
 
         public static Type Type {

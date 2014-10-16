@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public CharValueSemanticsProvider(IIntrospectableSpecification spec)
             : this(spec, null) { }
 
-        public CharValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+        public CharValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) { }
 
         public static Type Type {

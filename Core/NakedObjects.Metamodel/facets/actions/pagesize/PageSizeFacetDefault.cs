@@ -9,7 +9,7 @@ namespace NakedObjects.Architecture.Facets.Actions.PageSize {
     public class PageSizeFacetDefault : PageSizeFacetAbstract {
         private const int defaultPageSize = 20;
 
-        public PageSizeFacetDefault(IFacetHolder holder)
+        public PageSizeFacetDefault(ISpecification holder)
             : base(defaultPageSize, holder) {}
     }
 

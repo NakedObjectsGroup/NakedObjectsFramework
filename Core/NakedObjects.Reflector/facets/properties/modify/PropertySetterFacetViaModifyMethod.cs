@@ -13,7 +13,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Modify {
     public class PropertySetterFacetViaModifyMethod : PropertySetterFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public PropertySetterFacetViaModifyMethod(MethodInfo method, IFacetHolder holder)
+        public PropertySetterFacetViaModifyMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
         }

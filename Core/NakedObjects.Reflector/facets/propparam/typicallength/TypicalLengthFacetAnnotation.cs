@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Objects.TypicalLength;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.TypicalLength {
     public class TypicalLengthFacetAnnotation : TypicalLengthFacetAbstract {
-        public TypicalLengthFacetAnnotation(int value, IFacetHolder holder)
+        public TypicalLengthFacetAnnotation(int value, ISpecification holder)
             : base(value, holder) {}
     }
 

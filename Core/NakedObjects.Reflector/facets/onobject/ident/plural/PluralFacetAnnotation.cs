@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Objects.Ident.Plural;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural {
     public class PluralFacetAnnotation : PluralFacetAbstract {
-        public PluralFacetAnnotation(string value, IFacetHolder holder)
+        public PluralFacetAnnotation(string value, ISpecification holder)
             : base(value, holder) {}
     }
 

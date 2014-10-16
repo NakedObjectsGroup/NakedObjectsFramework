@@ -12,7 +12,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.Access {
     public class PropertyAccessorFacetViaAccessor : PropertyAccessorFacetAbstract, IImperativeFacet {
         private readonly PropertyInfo propertyMethod;
 
-        public PropertyAccessorFacetViaAccessor(PropertyInfo property, IFacetHolder holder)
+        public PropertyAccessorFacetViaAccessor(PropertyInfo property, ISpecification holder)
             : base(holder) {
             propertyMethod = property;
         }

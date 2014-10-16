@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facets.Objects.Ident.Icon {
     public abstract class IconFacetAbstract : FacetAbstract, IIconFacet {
-        protected IconFacetAbstract(IFacetHolder holder)
+        protected IconFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

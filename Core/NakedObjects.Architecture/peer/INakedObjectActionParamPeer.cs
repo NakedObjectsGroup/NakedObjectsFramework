@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.Peer {
-    public interface INakedObjectActionParamPeer : IFacetHolder {
+    public interface INakedObjectActionParamPeer : ISpecification {
         IIntrospectableSpecification Specification { get; }
     }
 }

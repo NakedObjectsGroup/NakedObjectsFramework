@@ -12,7 +12,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Modify {
     public class PropertyInitializationFacetViaSetterMethod : PropertyInitializationFacetAbstract, IImperativeFacet {
         private readonly PropertyInfo property;
 
-        public PropertyInitializationFacetViaSetterMethod(PropertyInfo property, IFacetHolder holder)
+        public PropertyInitializationFacetViaSetterMethod(PropertyInfo property, ISpecification holder)
             : base(holder) {
             this.property = property;
         }

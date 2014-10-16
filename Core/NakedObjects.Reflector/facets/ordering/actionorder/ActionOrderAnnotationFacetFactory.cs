@@ -13,13 +13,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.ActionOrder {
         public ActionOrderAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsOnly) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder facetHolder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = type.GetCustomAttributeByReflection<ActionOrderAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, facetHolder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static IActionOrderFacet Create(ActionOrderAttribute attribute, IFacetHolder facetHolder) {
-            return attribute == null ? null : new ActionOrderFacetAnnotation(attribute.Value, facetHolder);
+        private static IActionOrderFacet Create(ActionOrderAttribute attribute, ISpecification specification) {
+            return attribute == null ? null : new ActionOrderFacetAnnotation(attribute.Value, specification);
         }
     }
 }

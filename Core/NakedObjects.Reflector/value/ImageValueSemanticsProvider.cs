@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             : this(spec, null) { }
 
 
-        public ImageValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+        public ImageValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, null, spec) { }
 
         public static Type Type {

@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Presentation;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
     public class PresentationHintFacetAnnotation : PresentationHintFacetAbstract {
-        public PresentationHintFacetAnnotation(string value, IFacetHolder holder)
+        public PresentationHintFacetAnnotation(string value, ISpecification holder)
             : base(value, holder) {}
     }
 

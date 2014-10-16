@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
     public class DeletingCallbackFacetNull : DeletingCallbackFacetAbstract {
-        public DeletingCallbackFacetNull(IFacetHolder holder)
+        public DeletingCallbackFacetNull(ISpecification holder)
             : base(holder) {}
 
         public override void Invoke(INakedObject nakedObject, ISession session) {}

@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             get { return FixedPrefixes; }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder facetHolder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             try {
                 foreach (string methodName in FixedPrefixes) {
                     MethodInfo methodInfo = FindMethod(type, MethodType.Object, methodName, typeof (string), Type.EmptyTypes);

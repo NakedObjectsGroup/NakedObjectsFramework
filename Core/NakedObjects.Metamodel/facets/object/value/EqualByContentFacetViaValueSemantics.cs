@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Facets.Objects.EqualByContent;
 
 namespace NakedObjects.Architecture.Facets.Objects.Value {
     public class EqualByContentFacetViaValueSemantics : EqualByContentFacetAbstract {
-        public EqualByContentFacetViaValueSemantics(IFacetHolder holder)
+        public EqualByContentFacetViaValueSemantics(ISpecification holder)
             : base(holder) {}
     }
 

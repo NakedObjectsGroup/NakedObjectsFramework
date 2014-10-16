@@ -78,8 +78,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine {
 
         [Test]
         public void TestMultiLineAnnotationDefaults() {
-            facetFactory.Process(typeof (Customer3), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMultiLineFacet));
+            facetFactory.Process(typeof (Customer3), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
             Assert.AreEqual(6, multiLineFacetAnnotation.NumberOfLines);
             Assert.AreEqual(0, multiLineFacetAnnotation.Width);
@@ -88,23 +88,23 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine {
         [Test]
         public void TestMultiLineAnnotationIgnoredForNonStringActionParameters() {
             MethodInfo method = FindMethod(typeof (Customer6), "SomeAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            Assert.IsNull(FacetHolder.GetFacet(typeof (IMultiLineFacet)));
+            facetFactory.ProcessParams(method, 0, Specification);
+            Assert.IsNull(Specification.GetFacet(typeof (IMultiLineFacet)));
         }
 
         [Test]
         public void TestMultiLineAnnotationIgnoredForNonStringProperties() {
             PropertyInfo property = FindProperty(typeof (Customer5), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMultiLineFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestMultiLineAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMultiLineFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
@@ -114,8 +114,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine {
 
         [Test]
         public void TestMultiLineAnnotationPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMultiLineFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
@@ -126,8 +126,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine {
         [Test]
         public void TestMultiLineAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMultiLineFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;

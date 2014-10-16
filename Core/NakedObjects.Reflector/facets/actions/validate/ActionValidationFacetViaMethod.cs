@@ -12,7 +12,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Validate {
     public class ActionValidationFacetViaMethod : ActionValidationFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public ActionValidationFacetViaMethod(MethodInfo method, IFacetHolder holder)
+        public ActionValidationFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
         }

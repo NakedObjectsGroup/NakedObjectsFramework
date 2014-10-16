@@ -21,16 +21,16 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         public ContributedActionAnnotationFacetFactory(INakedObjectReflector reflector)
             : base(reflector, NakedObjectFeatureType.ActionsOnly) {}
 
-        private bool Process(MemberInfo member, IFacetHolder holder) {
+        private bool Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<NotContributedActionAttribute>(member);
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(method, holder);
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(method, specification);
         }
 
-        private INotContributedActionFacet Create(NotContributedActionAttribute attribute, IFacetHolder holder) {
+        private INotContributedActionFacet Create(NotContributedActionAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new NotContributedActionFacetImpl(holder, attribute.NotContributedToTypes.Select(t => Reflector.LoadSpecification(t)).ToArray());
         }
     }

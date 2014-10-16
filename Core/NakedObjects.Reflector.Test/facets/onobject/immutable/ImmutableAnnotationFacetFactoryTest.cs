@@ -39,8 +39,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
         }
 
         public void TestImmutableAnnotationPickedUpOnClassAndDefaultsToAlways() {
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IImmutableFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -49,8 +49,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
         }
 
         public void TestImmutableAnnotationAlwaysPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer1), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IImmutableFacet));
+            facetFactory.Process(typeof (Customer1), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -59,8 +59,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
         }
 
         public void TestImmutableAnnotationNeverPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer2), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IImmutableFacet));
+            facetFactory.Process(typeof (Customer2), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -95,8 +95,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
 
         [Test]
         public void TestImmutableAnnotationOncePersistedPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer3), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IImmutableFacet));
+            facetFactory.Process(typeof (Customer3), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -106,8 +106,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
 
         [Test]
         public void TestImmutableAnnotationUntilPersistedPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer4), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IImmutableFacet));
+            facetFactory.Process(typeof (Customer4), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;

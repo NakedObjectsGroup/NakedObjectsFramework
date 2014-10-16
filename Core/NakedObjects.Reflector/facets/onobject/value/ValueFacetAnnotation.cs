@@ -8,12 +8,12 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
     public class ValueFacetAnnotation<T> : ValueFacetAbstract<T> {
-        public ValueFacetAnnotation(Type annotatedClass, IFacetHolder holder)
+        public ValueFacetAnnotation(Type annotatedClass, ISpecification holder)
             : this(SemanticsProviderName(annotatedClass), SemanticsProviderClass(annotatedClass), holder) {}
 
         private ValueFacetAnnotation(string candidateSemanticsProviderName,
                                      Type candidateSemanticsProviderClass,
-                                     IFacetHolder holder)
+                                     ISpecification holder)
             : base(ValueSemanticsProviderUtils.ValueSemanticsProviderOrNull<T>(candidateSemanticsProviderClass,
                                                                                candidateSemanticsProviderName),
                    true,

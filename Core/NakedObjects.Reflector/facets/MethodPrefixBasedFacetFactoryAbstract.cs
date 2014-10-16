@@ -131,67 +131,67 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             return type == null ? Type.EmptyTypes : new[] {type};
         }
 
-        protected void FindAndRemoveDisableMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, IFacetHolder facetHolder) {
-            FindAndRemoveDisableMethod(facets, methodRemover, type, methodType, capitalizedName, (Type) null, facetHolder);
+        protected void FindAndRemoveDisableMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
+            FindAndRemoveDisableMethod(facets, methodRemover, type, methodType, capitalizedName, (Type) null, specification);
         }
 
-        protected void FindAndRemoveDisableMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type paramType, IFacetHolder facetHolder) {
-            FindAndRemoveDisableMethod(facets, methodRemover, type, methodType, capitalizedName, ParamTypesOrNull(paramType), facetHolder);
+        protected void FindAndRemoveDisableMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type paramType, ISpecification specification) {
+            FindAndRemoveDisableMethod(facets, methodRemover, type, methodType, capitalizedName, ParamTypesOrNull(paramType), specification);
         }
 
-        protected void FindDefaultDisableMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] paramTypes, IFacetHolder facetHolder) {
+        protected void FindDefaultDisableMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] paramTypes, ISpecification specification) {
             MethodInfo method = FindMethodWithOrWithoutParameters(type, methodType, PrefixesAndRecognisedMethods.DisablePrefix + capitalizedName, typeof (string), paramTypes);
             if (method != null) {
-                facets.Add(new DisableForContextFacetViaMethod(method, facetHolder));
+                facets.Add(new DisableForContextFacetViaMethod(method, specification));
             }
         }
 
-        protected void FindAndRemoveDisableMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] paramTypes, IFacetHolder facetHolder) {
+        protected void FindAndRemoveDisableMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] paramTypes, ISpecification specification) {
             MethodInfo method = FindMethodWithOrWithoutParameters(type, methodType, PrefixesAndRecognisedMethods.DisablePrefix + capitalizedName, typeof (string), paramTypes);
             if (method != null) {
                 methodRemover.RemoveMethod(method);
-                facets.Add(new DisableForContextFacetViaMethod(method, facetHolder));
+                facets.Add(new DisableForContextFacetViaMethod(method, specification));
             }
         }
 
-        protected void FindAndRemoveHideMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, IFacetHolder facetHolder) {
-            FindAndRemoveHideMethod(facets, methodRemover, type, methodType, capitalizedName, (Type) null, facetHolder);
+        protected void FindAndRemoveHideMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
+            FindAndRemoveHideMethod(facets, methodRemover, type, methodType, capitalizedName, (Type) null, specification);
         }
 
-        protected void FindAndRemoveHideMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type collectionType, IFacetHolder facetHolder) {
-            FindAndRemoveHideMethod(facets, methodRemover, type, methodType, capitalizedName, ParamTypesOrNull(collectionType), facetHolder);
+        protected void FindAndRemoveHideMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type collectionType, ISpecification specification) {
+            FindAndRemoveHideMethod(facets, methodRemover, type, methodType, capitalizedName, ParamTypesOrNull(collectionType), specification);
         }
 
-        protected void FindDefaultHideMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] paramTypes, IFacetHolder facetHolder) {
+        protected void FindDefaultHideMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] paramTypes, ISpecification specification) {
             MethodInfo method = FindMethodWithOrWithoutParameters(type, methodType, PrefixesAndRecognisedMethods.HidePrefix + capitalizedName, typeof (bool), paramTypes);
             if (method != null) {
-                facets.Add(new HideForContextFacetViaMethod(method, facetHolder));
-                AddOrAddToExecutedWhereFacet(method, facetHolder);
+                facets.Add(new HideForContextFacetViaMethod(method, specification));
+                AddOrAddToExecutedWhereFacet(method, specification);
             }
         }
 
-        protected void FindAndRemoveHideMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] paramTypes, IFacetHolder facetHolder) {
+        protected void FindAndRemoveHideMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] paramTypes, ISpecification specification) {
             MethodInfo method = FindMethodWithOrWithoutParameters(type, methodType, PrefixesAndRecognisedMethods.HidePrefix + capitalizedName, typeof (bool), paramTypes);
             if (method != null) {
                 methodRemover.RemoveMethod(method);
-                facets.Add(new HideForContextFacetViaMethod(method, facetHolder));
-                AddOrAddToExecutedWhereFacet(method, facetHolder);
+                facets.Add(new HideForContextFacetViaMethod(method, specification));
+                AddOrAddToExecutedWhereFacet(method, specification);
             }
         }
 
-        protected static void AddHideForSessionFacetNone(IList<IFacet> facets, IFacetHolder facetHolder) {
-            facets.Add(new HideForSessionFacetNone(facetHolder));
+        protected static void AddHideForSessionFacetNone(IList<IFacet> facets, ISpecification specification) {
+            facets.Add(new HideForSessionFacetNone(specification));
         }
 
-        protected static void AddDisableForSessionFacetNone(IList<IFacet> facets, IFacetHolder facetHolder) {
-            facets.Add(new DisableForSessionFacetNone(facetHolder));
+        protected static void AddDisableForSessionFacetNone(IList<IFacet> facets, ISpecification specification) {
+            facets.Add(new DisableForSessionFacetNone(specification));
         }
 
-        protected static void AddDisableFacetAlways(IList<IFacet> facets, IFacetHolder facetHolder) {
-            facets.Add(new DisabledFacetAlways(facetHolder));
+        protected static void AddDisableFacetAlways(IList<IFacet> facets, ISpecification specification) {
+            facets.Add(new DisabledFacetAlways(specification));
         }
 
-        protected static void AddOrAddToExecutedWhereFacet(MethodInfo method, IFacetHolder holder) {
+        protected static void AddOrAddToExecutedWhereFacet(MethodInfo method, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<ExecutedAttribute>(method);
             if (attribute != null && !attribute.IsAjax) {
                 var executedFacet = holder.GetFacet<IExecutedControlMethodFacet>();
@@ -204,7 +204,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             }
         }
 
-        protected static void AddAjaxFacet(MethodInfo method, IFacetHolder holder) {
+        protected static void AddAjaxFacet(MethodInfo method, ISpecification holder) {
             if (method == null) {
                 FacetUtils.AddFacet(new AjaxFacetAnnotation(holder));
             }

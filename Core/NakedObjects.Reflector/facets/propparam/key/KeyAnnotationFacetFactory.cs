@@ -15,13 +15,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Key {
         public KeyAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             Attribute attribute = property.GetCustomAttribute<KeyAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
 
-        private static IKeyFacet Create(Attribute attribute, IFacetHolder holder) {
+        private static IKeyFacet Create(Attribute attribute, ISpecification holder) {
             return attribute == null ? null : new KeyFacetAnnotation(holder);
         }
     }

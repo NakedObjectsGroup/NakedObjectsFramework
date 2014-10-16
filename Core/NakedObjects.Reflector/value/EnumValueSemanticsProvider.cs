@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public EnumValueSemanticsProvider(IIntrospectableSpecification spec)
             : this(spec, null) { }
 
-        public EnumValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+        public EnumValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, default(T), spec) { }
 
         public static Type Type {

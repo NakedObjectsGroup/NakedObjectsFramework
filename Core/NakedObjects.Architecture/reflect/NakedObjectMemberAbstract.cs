@@ -22,21 +22,21 @@ using NakedObjects.Util;
 namespace NakedObjects.Architecture.Reflect {
     public abstract class NakedObjectMemberAbstract : INakedObjectMember {
         private readonly string defaultName;
-        private readonly IFacetHolder facetHolder;
+        private readonly ISpecification specification;
         private readonly string id;
         private readonly ILifecycleManager lifecycleManager;
         private readonly ISession session;
 
 
-        protected internal NakedObjectMemberAbstract(string id, IFacetHolder facetHolder, ISession session, ILifecycleManager lifecycleManager) {
+        protected internal NakedObjectMemberAbstract(string id, ISpecification specification, ISession session, ILifecycleManager lifecycleManager) {
             AssertArgNotNull(id, Resources.NakedObjects.NameNotSetMessage);
-            AssertArgNotNull(facetHolder);
+            AssertArgNotNull(specification);
             AssertArgNotNull(session);
             AssertArgNotNull(lifecycleManager);
 
             this.id = id;
             defaultName = NameUtils.NaturalName(id);
-            this.facetHolder = facetHolder;
+            this.specification = specification;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
         }
@@ -56,11 +56,11 @@ namespace NakedObjects.Architecture.Reflect {
         }
 
         public virtual IIdentifier Identifier {
-            get { return facetHolder.Identifier; }
+            get { return specification.Identifier; }
         }
 
         public virtual Type[] FacetTypes {
-            get { return facetHolder.FacetTypes; }
+            get { return specification.FacetTypes; }
         }
 
         /// <summary>
@@ -79,39 +79,39 @@ namespace NakedObjects.Architecture.Reflect {
 
 
         public virtual bool ContainsFacet(Type facetType) {
-            return facetHolder.ContainsFacet(facetType);
+            return specification.ContainsFacet(facetType);
         }
 
         public virtual bool ContainsFacet<T>() where T : IFacet {
-            return facetHolder.ContainsFacet<T>();
+            return specification.ContainsFacet<T>();
         }
 
         public virtual IFacet GetFacet(Type type) {
-            return facetHolder.GetFacet(type);
+            return specification.GetFacet(type);
         }
 
         public virtual T GetFacet<T>() where T : IFacet {
-            return facetHolder.GetFacet<T>();
+            return specification.GetFacet<T>();
         }
 
         public virtual IEnumerable<IFacet> GetFacets() {
-            return facetHolder.GetFacets();
+            return specification.GetFacets();
         }
 
         public virtual void AddFacet(IFacet facet) {
-            facetHolder.AddFacet(facet);
+            specification.AddFacet(facet);
         }
 
         public virtual void AddFacet(IMultiTypedFacet facet) {
-            facetHolder.AddFacet(facet);
+            specification.AddFacet(facet);
         }
 
         public virtual void RemoveFacet(IFacet facet) {
-            facetHolder.RemoveFacet(facet);
+            specification.RemoveFacet(facet);
         }
 
         public virtual void RemoveFacet(Type facetType) {
-            facetHolder.RemoveFacet(facetType);
+            specification.RemoveFacet(facetType);
         }
 
 
@@ -134,7 +134,7 @@ namespace NakedObjects.Architecture.Reflect {
         }
 
         public bool IsNullable {
-            get { return facetHolder.ContainsFacet(typeof (INullableFacet)); }
+            get { return specification.ContainsFacet(typeof (INullableFacet)); }
         }
 
         #endregion

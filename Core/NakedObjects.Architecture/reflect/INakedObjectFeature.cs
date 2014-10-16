@@ -13,7 +13,7 @@ namespace NakedObjects.Architecture.Reflect {
     /// <summary>
     ///     Base interface for fields, collections, actions and action parameters.
     /// </summary>
-    public interface INakedObjectFeature : IFacetHolder, INamedAndDescribed {
+    public interface INakedObjectFeature : ISpecification, INamedAndDescribed {
         /// <summary>
         ///     Returns the specifications for the feature.
         /// </summary>

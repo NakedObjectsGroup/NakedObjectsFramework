@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facets.Disable {
     public class DisabledFacetAlways : DisabledFacetAbstract {
-        public DisabledFacetAlways(IFacetHolder holder)
+        public DisabledFacetAlways(ISpecification holder)
             : base(WhenTo.Always, holder) {}
 
         /// <summary>

@@ -12,7 +12,7 @@ namespace NakedObjects.Architecture.Facets.AutoComplete {
     public abstract class AutoCompleteFacetAbstract : FacetAbstract, IAutoCompleteFacet {
         protected const int DefaultPageSize = 50;
 
-        protected AutoCompleteFacetAbstract(IFacetHolder holder)
+        protected AutoCompleteFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

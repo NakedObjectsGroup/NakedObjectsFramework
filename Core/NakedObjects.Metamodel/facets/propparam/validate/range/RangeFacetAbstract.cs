@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facets.Propparam.Validate.Range {
     public abstract class RangeFacetAbstract : FacetAbstract, IRangeFacet {
-        protected RangeFacetAbstract(object min, object max, IFacetHolder holder)
+        protected RangeFacetAbstract(object min, object max, ISpecification holder)
             : base(Type, holder) {
             Min = (IConvertible) min;
             Max = (IConvertible) max;

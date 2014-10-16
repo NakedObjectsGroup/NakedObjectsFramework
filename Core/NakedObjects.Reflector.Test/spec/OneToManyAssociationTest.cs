@@ -30,7 +30,7 @@ namespace NakedObjects.Reflector.spec {
 
         //private INakedObject nakedObject;
 
-        //public class DummyOneToManyPeer : FacetHolderImpl, INakedObjectAssociationPeer {
+        //public class DummyOneToManyPeer : SpecificationImpl, INakedObjectAssociationPeer {
         //    private readonly TestProxySpecification specification = new TestProxySpecification(typeof (string));
 
         //    #region INakedObjectAssociationPeer Members

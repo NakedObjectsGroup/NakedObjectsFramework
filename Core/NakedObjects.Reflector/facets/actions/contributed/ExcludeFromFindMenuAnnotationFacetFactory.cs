@@ -18,16 +18,16 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         public ExcludeFromFindMenuAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ActionsOnly) { }
 
-        private static bool Process(MemberInfo member, IFacetHolder holder) {
+        private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<ExcludeFromFindMenuAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(method, holder);
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(method, specification);
         }
 
-        private static IExcludeFromFindMenuFacet Create(ExcludeFromFindMenuAttribute attribute, IFacetHolder holder) {
+        private static IExcludeFromFindMenuFacet Create(ExcludeFromFindMenuAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new ExcludeFromFindMenuFacetImpl(holder);
         }
     }

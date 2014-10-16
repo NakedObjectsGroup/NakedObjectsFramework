@@ -12,7 +12,7 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
     public class TypeOfFacetDefaultToObject : TypeOfFacetAbstract {
-        public TypeOfFacetDefaultToObject(IFacetHolder holder, Type valueType, IIntrospectableSpecification valueSpec)
+        public TypeOfFacetDefaultToObject(ISpecification holder, Type valueType, IIntrospectableSpecification valueSpec)
             : base(valueType, true, holder, valueSpec) {}
     }
 }

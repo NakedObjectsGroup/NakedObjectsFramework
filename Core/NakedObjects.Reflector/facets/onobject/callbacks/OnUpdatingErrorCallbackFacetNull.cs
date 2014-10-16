@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Facets.Objects.Callbacks;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
     public class OnUpdatingErrorCallbackFacetNull : OnUpdatingErrorCallbackFacetAbstract {
-        public OnUpdatingErrorCallbackFacetNull(IFacetHolder holder)
+        public OnUpdatingErrorCallbackFacetNull(ISpecification holder)
             : base(holder) {}
 
         public override string Invoke(INakedObject nakedObject, Exception exception) {

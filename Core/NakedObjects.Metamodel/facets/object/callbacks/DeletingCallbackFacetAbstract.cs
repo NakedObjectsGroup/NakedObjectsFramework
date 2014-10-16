@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Objects.Callbacks {
     public abstract class DeletingCallbackFacetAbstract : CallbackFacetAbstract, IDeletingCallbackFacet {
-        protected DeletingCallbackFacetAbstract(IFacetHolder holder)
+        protected DeletingCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

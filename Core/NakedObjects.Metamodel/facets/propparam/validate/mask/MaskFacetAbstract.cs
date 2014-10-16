@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facets.Propparam.Validate.Mask {
     public abstract class MaskFacetAbstract : SingleStringValueFacetAbstract, IMaskFacet {
-        protected MaskFacetAbstract(string stringValue, IFacetHolder holder)
+        protected MaskFacetAbstract(string stringValue, ISpecification holder)
             : base(Type, holder, stringValue) {}
 
         public static Type Type {

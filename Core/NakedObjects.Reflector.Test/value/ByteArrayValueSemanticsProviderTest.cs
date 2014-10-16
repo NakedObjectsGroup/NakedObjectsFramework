@@ -22,16 +22,16 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
             byteArray = new byte[0];
             byteArrayNakedObject = CreateAdapter(byteArray);
-            facetHolder = new FacetHolderImpl();
+            specification = new SpecificationImpl();
             var spec = new Mock<IIntrospectableSpecification>().Object;
-            SetValue(value = new ArrayValueSemanticsProvider<byte>(spec, facetHolder));
+            SetValue(value = new ArrayValueSemanticsProvider<byte>(spec, specification));
         }
 
         #endregion
 
         private INakedObject byteArrayNakedObject;
         private object byteArray;
-        private IFacetHolder facetHolder;
+        private ISpecification specification;
         private ArrayValueSemanticsProvider<byte> value;
 
 

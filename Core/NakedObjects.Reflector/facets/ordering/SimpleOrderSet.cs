@@ -7,7 +7,7 @@ using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
-    public class SimpleOrderSet<T> : OrderSet<T> where T : IOrderableElement<T>, IFacetHolder {
+    public class SimpleOrderSet<T> : OrderSet<T> where T : IOrderableElement<T>, ISpecification {
         private readonly T[] members;
         private readonly SimpleOrderSet<T> parent;
 

@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Actions.Potency;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Potency {
     public class QueryOnlyFacetAnnotation : QueryOnlyFacetImpl {
-        public QueryOnlyFacetAnnotation(IFacetHolder holder)
+        public QueryOnlyFacetAnnotation(ISpecification holder)
             : base(holder) {}
     }
 }

@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.FromStream {
         private readonly IFromStream fromStream;
 
 
-        public FromStreamFacetUsingFromStream(IFromStream fromStream, IFacetHolder holder)
+        public FromStreamFacetUsingFromStream(IFromStream fromStream, ISpecification holder)
             : base(typeof (IFromStreamFacet), holder) {
             this.fromStream = fromStream;
         }

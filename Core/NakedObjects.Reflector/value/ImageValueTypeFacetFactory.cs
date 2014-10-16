@@ -13,10 +13,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public ImageValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof(IImageValueFacet)) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (ImageValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(ImageValueSemanticsProvider.AdaptedType);
-                AddFacets(new ImageValueSemanticsProvider(spec, holder));
+                AddFacets(new ImageValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

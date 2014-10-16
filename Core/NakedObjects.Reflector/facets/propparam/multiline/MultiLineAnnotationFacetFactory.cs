@@ -17,31 +17,31 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine {
         public MultiLineAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = type.GetCustomAttributeByReflection<MultiLineAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static bool Process(MemberInfo member, IFacetHolder holder) {
+        private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<MultiLineAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
             if (TypeUtils.IsString(method.ReturnType)) {
-                return Process(method, holder);
+                return Process(method, specification);
             }
             return false;
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             if (property.GetGetMethod() != null && TypeUtils.IsString(property.PropertyType)) {
-                return Process(property, holder);
+                return Process(property, specification);
             }
             return false;
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             if (TypeUtils.IsString(parameter.ParameterType)) {
                 var attribute = parameter.GetCustomAttributeByReflection<MultiLineAttribute>();
@@ -50,7 +50,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine {
             return false;
         }
 
-        private static IMultiLineFacet Create(MultiLineAttribute attribute, IFacetHolder holder) {
+        private static IMultiLineFacet Create(MultiLineAttribute attribute, ISpecification holder) {
             return (attribute != null) ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width, holder) : null;
         }
     }

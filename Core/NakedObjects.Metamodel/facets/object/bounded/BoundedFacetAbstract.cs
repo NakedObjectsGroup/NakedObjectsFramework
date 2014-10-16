@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facets.Objects.Bounded {
     public abstract class BoundedFacetAbstract : MarkerFacetAbstract, IBoundedFacet {
-        protected BoundedFacetAbstract(IFacetHolder holder)
+        protected BoundedFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

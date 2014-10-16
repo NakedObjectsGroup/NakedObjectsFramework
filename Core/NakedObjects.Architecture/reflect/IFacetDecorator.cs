@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Facets;
 namespace NakedObjects.Reflector.Spec {
     public interface IFacetDecorator {
         Type[] ForFacetTypes { get; }
-        IFacet Decorate(IFacet facet, IFacetHolder holder);
+        IFacet Decorate(IFacet facet, ISpecification holder);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

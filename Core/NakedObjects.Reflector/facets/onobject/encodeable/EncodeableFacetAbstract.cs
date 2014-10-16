@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
 
         protected EncodeableFacetAbstract(string candidateEncoderDecoderName,
                                           Type candidateEncoderDecoderClass,
-                                          IFacetHolder holder)
+                                          ISpecification holder)
             : base(typeof (IEncodeableFacet), holder) {
             encoderDecoderClass = EncoderDecoderUtils.EncoderDecoderOrNull<T>(candidateEncoderDecoderClass, candidateEncoderDecoderName);
             encodeableFacetUsingEncoderDecoder = IsValid ? new EncodeableFacetUsingEncoderDecoder<T>((IEncoderDecoder<T>) TypeUtils.NewInstance(encoderDecoderClass), holder)

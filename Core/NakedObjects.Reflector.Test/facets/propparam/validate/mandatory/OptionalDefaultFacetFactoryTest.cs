@@ -71,8 +71,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
         [Test]
         public void TestOptionalDefaultIgnoredForPrimitiveOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMandatoryFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacetDefault);
         }
@@ -80,8 +80,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
         [Test]
         public void TestOptionalDefaultIgnoredForPrimitiveOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMandatoryFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacetDefault);
         }
@@ -89,8 +89,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
         [Test]
         public void TestOptionalDefaultPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMandatoryFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OptionalFacetDefault);
         }
@@ -98,8 +98,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
         [Test]
         public void TestOptionalDefaultPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMandatoryFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OptionalFacetDefault);
         }

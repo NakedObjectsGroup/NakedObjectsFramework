@@ -81,8 +81,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
 
         [Test]
         public void TestViewModelDerive() {
-            facetFactory.Process(typeof (Class1), MethodRemover, FacetHolder);
-            var facet = FacetHolder.GetFacet<IViewModelFacet>();
+            facetFactory.Process(typeof (Class1), MethodRemover, Specification);
+            var facet = Specification.GetFacet<IViewModelFacet>();
             Assert.IsNotNull(facet);
 
             var testClass = new Class1 {Value1 = "testValue1", Value2 = "testValue2"};
@@ -100,15 +100,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
 
         [Test]
         public void TestViewModelNotPickedUp() {
-            facetFactory.Process(typeof (Class2), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IViewModelFacet));
+            facetFactory.Process(typeof (Class2), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IViewModelFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestViewModelPickedUp() {
-            facetFactory.Process(typeof (Class1), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IViewModelFacet));
+            facetFactory.Process(typeof (Class1), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelFacetConvention);
 
@@ -120,8 +120,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
 
         [Test]
         public void TestViewModelPopulate() {
-            facetFactory.Process(typeof (Class1), MethodRemover, FacetHolder);
-            var facet = FacetHolder.GetFacet<IViewModelFacet>();
+            facetFactory.Process(typeof (Class1), MethodRemover, Specification);
+            var facet = Specification.GetFacet<IViewModelFacet>();
             Assert.IsNotNull(facet);
 
             var testClass = new Class1();

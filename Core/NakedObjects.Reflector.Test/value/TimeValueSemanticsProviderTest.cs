@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
             SetupSpecification(typeof (TimeSpan));
             time = new TimeSpan(8, 13, 0);
-            holder = new FacetHolderImpl();
+            holder = new SpecificationImpl();
             var spec = new Mock<IIntrospectableSpecification>().Object;
             SetValue(adapter = new TimeValueSemanticsProvider(spec, holder));
         }
@@ -27,7 +27,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         #endregion
 
         private TimeValueSemanticsProvider adapter;
-        private IFacetHolder holder;
+        private ISpecification holder;
         private TimeSpan time;
 
         [Test]

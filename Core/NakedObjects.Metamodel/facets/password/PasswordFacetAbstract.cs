@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Password {
     public abstract class PasswordFacetAbstract : MarkerFacetAbstract, IPasswordFacet {
-        protected PasswordFacetAbstract(IFacetHolder holder)
+        protected PasswordFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

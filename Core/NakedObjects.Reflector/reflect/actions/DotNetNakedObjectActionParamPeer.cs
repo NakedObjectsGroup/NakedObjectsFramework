@@ -8,7 +8,7 @@ using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
-    public class DotNetNakedObjectActionParamPeer : FacetHolderImpl, INakedObjectActionParamPeer {
+    public class DotNetNakedObjectActionParamPeer : SpecificationImpl, INakedObjectActionParamPeer {
         private readonly IIntrospectableSpecification specification;
 
         public DotNetNakedObjectActionParamPeer(IIntrospectableSpecification specification) {

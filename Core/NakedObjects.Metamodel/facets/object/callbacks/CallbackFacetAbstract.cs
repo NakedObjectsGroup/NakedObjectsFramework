@@ -14,7 +14,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Callbacks {
     ///     Adapter superclass for <see cref="IFacet" />s for <see cref="ICallbackFacet" />
     /// </summary>
     public abstract class CallbackFacetAbstract : FacetAbstract, ICallbackFacet {
-        protected CallbackFacetAbstract(Type facetType, IFacetHolder holder)
+        protected CallbackFacetAbstract(Type facetType, ISpecification holder)
             : base(facetType, holder) {}
 
         #region ICallbackFacet Members

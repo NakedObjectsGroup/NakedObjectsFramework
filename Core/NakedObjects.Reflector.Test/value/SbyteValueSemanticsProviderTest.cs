@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public override void SetUp() {
             base.SetUp();
             byteObj = 102;
-            holder = new FacetHolderImpl();
+            holder = new SpecificationImpl();
             var spec = new Mock<IIntrospectableSpecification>().Object;
             SetValue(value = new SbyteValueSemanticsProvider(spec, holder));
         }
@@ -27,7 +27,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         #endregion
 
         private sbyte byteObj;
-        private IFacetHolder holder;
+        private ISpecification holder;
         private SbyteValueSemanticsProvider value;
 
         public void TestParseValidString() {

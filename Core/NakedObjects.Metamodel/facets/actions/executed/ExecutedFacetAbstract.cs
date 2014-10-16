@@ -11,7 +11,7 @@ namespace NakedObjects.Architecture.Facets.Actions.Executed {
     public abstract class ExecutedFacetAbstract : SingleValueFacetAbstract, IExecutedFacet {
         private readonly Where executedWhere;
 
-        protected ExecutedFacetAbstract(Where where, IFacetHolder holder)
+        protected ExecutedFacetAbstract(Where where, ISpecification holder)
             : base(Type, holder) {
             executedWhere = where;
         }

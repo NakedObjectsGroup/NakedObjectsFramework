@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         private const bool immutable = true;
         private const int typicalLength = 5;
 
-        public BooleanValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+        public BooleanValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) { }
 
         /// <summary>

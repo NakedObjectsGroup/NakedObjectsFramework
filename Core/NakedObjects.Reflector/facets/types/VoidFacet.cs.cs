@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Types {
     public  class VoidFacet : MarkerFacetAbstract, IVoidFacet {
-        public VoidFacet(IFacetHolder holder)
+        public VoidFacet(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

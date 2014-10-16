@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public GuidValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof(IGuidValueFacet)) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (GuidValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(GuidValueSemanticsProvider.AdaptedType);
-                AddFacets(new GuidValueSemanticsProvider(spec, holder));
+                AddFacets(new GuidValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

@@ -15,7 +15,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Validate {
 
         [SetUp]
         public void SetUp() {
-            IFacetHolder holder = null;
+            ISpecification holder = null;
             var customer = new Customer17();
 
             var mock = new Mock<INakedObject>();

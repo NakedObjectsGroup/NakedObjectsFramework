@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Naming.Named;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
     public class NamedFacetInferred : NamedFacetImpl {
-        public NamedFacetInferred(string value, IFacetHolder holder)
+        public NamedFacetInferred(string value, ISpecification holder)
             : base(value, holder) {}
 
 

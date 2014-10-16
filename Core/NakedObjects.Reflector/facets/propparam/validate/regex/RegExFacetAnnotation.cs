@@ -8,7 +8,7 @@ using NakedObjects.Architecture.Facets.Propparam.Validate.RegEx;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
     public class RegExFacetAnnotation : RegExFacetAbstract, IRegExFacet {
-        public RegExFacetAnnotation(string validation, string format, bool caseSensitive, string message, IFacetHolder holder)
+        public RegExFacetAnnotation(string validation, string format, bool caseSensitive, string message, ISpecification holder)
             : base(validation, format, caseSensitive, message, holder) {
             Pattern = new Regex(ValidationPattern, PatternFlags);
         }

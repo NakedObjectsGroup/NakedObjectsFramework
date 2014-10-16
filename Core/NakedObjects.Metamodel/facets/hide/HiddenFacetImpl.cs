@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Resolve;
 
 namespace NakedObjects.Architecture.Facets.Hide {
     public class HiddenFacetImpl : HiddenFacetAbstract {
-        public HiddenFacetImpl(WhenTo when, IFacetHolder holder)
+        public HiddenFacetImpl(WhenTo when, ISpecification holder)
             : base(when, holder) {}
 
         public override string HiddenReason(INakedObject target) {

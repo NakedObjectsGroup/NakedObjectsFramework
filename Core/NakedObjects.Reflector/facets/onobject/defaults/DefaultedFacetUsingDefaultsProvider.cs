@@ -10,7 +10,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
     public class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDefaultedFacet {
         private readonly IDefaultsProvider<T> defaultsProvider;
 
-        public DefaultedFacetUsingDefaultsProvider(IDefaultsProvider<T> parser, IFacetHolder holder)
+        public DefaultedFacetUsingDefaultsProvider(IDefaultsProvider<T> parser, ISpecification holder)
             : base(typeof (IDefaultedFacet), holder) {
             defaultsProvider = parser;
         }

@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public override void SetUp() {
             base.SetUp();
             SetupSpecification(typeof (DateTime));
-            holder = new FacetHolderImpl();
+            holder = new SpecificationImpl();
             var spec = new Mock<IIntrospectableSpecification>().Object;
             SetValue(adapter = new DateTimeValueSemanticsProvider(spec, holder));
         }
@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         #endregion
 
         private DateTimeValueSemanticsProvider adapter;
-        private IFacetHolder holder;
+        private ISpecification holder;
 
         private void AssertEntry(string entry, int year, int month, int day, int hour, int minute, int second) {
             object obj = adapter.ParseTextEntry(entry);

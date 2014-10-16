@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Actions.Executed;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     public class AjaxFacetAnnotation : AjaxFacetImpl {
-        public AjaxFacetAnnotation(IFacetHolder holder)
+        public AjaxFacetAnnotation(ISpecification holder)
             : base(holder) {}
     }
 }

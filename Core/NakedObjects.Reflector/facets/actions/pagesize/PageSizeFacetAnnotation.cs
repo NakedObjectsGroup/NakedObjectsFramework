@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Actions.PageSize;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.PageSize {
     public class PageSizeFacetAnnotation : PageSizeFacetAbstract {
-        public PageSizeFacetAnnotation(int pageSize, IFacetHolder holder)
+        public PageSizeFacetAnnotation(int pageSize, ISpecification holder)
             : base(pageSize, holder) {}
     }
 

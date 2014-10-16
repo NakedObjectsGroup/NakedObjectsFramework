@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public DecimalValueSemanticsProvider(IIntrospectableSpecification spec)
             : this(spec, null) { }
 
-        public DecimalValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+        public DecimalValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) { }
 
         public static Type Type {

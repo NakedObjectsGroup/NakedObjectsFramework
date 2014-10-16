@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facets.Actions.Validate {
     public abstract class ActionValidationFacetAbstract : FacetAbstract, IActionValidationFacet {
-        protected ActionValidationFacetAbstract(IFacetHolder holder)
+        protected ActionValidationFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

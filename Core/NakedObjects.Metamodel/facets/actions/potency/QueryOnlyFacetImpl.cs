@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Architecture.Facets.Actions.Potency {
     public class QueryOnlyFacetImpl : QueryOnlyFacetAbstract {
-        public QueryOnlyFacetImpl(IFacetHolder holder)
+        public QueryOnlyFacetImpl(ISpecification holder)
             : base(holder) {}
     }
 }

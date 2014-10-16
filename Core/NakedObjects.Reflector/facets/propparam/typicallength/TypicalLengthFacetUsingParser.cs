@@ -10,7 +10,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.TypicalLength {
     public class TypicalLengthFacetUsingParser<T> : FacetAbstract, ITypicalLengthFacet {
         private readonly IParser<T> parser;
 
-        public TypicalLengthFacetUsingParser(IParser<T> parser, IFacetHolder holder)
+        public TypicalLengthFacetUsingParser(IParser<T> parser, ISpecification holder)
             : base(typeof (ITypicalLengthFacet), holder) {
             this.parser = parser;
         }

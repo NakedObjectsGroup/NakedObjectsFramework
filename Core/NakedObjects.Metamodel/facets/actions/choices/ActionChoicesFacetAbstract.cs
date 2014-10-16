@@ -12,7 +12,7 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Choices {
     public abstract class ActionChoicesFacetAbstract : FacetAbstract, IActionChoicesFacet {
-        protected ActionChoicesFacetAbstract(IFacetHolder holder)
+        protected ActionChoicesFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

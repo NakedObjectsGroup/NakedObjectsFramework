@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Architecture.Facets.Actions.Executed {
     public class ExecutedFacetAtDefault : ExecutedFacetAbstract {
-        public ExecutedFacetAtDefault(IFacetHolder holder)
+        public ExecutedFacetAtDefault(ISpecification holder)
             : base(Where.Default, holder) {}
     }
 

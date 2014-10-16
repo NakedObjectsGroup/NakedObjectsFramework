@@ -12,7 +12,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
     public class ViewModelFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ViewModelFacetFactory(INakedObjectReflector reflector) :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             IFacet facet = null;
 
             if (!type.IsInterface && typeof (IViewModel).IsAssignableFrom(type)) {
@@ -22,15 +22,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
                 var toRemove = new List<MethodInfo> {deriveMethod, populateMethod};
 
                 if (typeof (IViewModelEdit).IsAssignableFrom(type)) {
-                    facet = new ViewModelEditFacetConvention(holder);
+                    facet = new ViewModelEditFacetConvention(specification);
                 }
                 else if (typeof (IViewModelSwitchable).IsAssignableFrom(type)) {
                     MethodInfo isEditViewMethod = type.GetMethod("IsEditView");
                     toRemove.Add(isEditViewMethod);
-                    facet = new ViewModelSwitchableFacetConvention(holder);
+                    facet = new ViewModelSwitchableFacetConvention(specification);
                 }
                 else {
-                    facet = new ViewModelFacetConvention(holder);
+                    facet = new ViewModelFacetConvention(specification);
                 }
                 methodRemover.RemoveMethods(toRemove.ToArray());
             }

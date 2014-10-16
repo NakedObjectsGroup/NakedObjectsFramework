@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Facets.Objects.ViewModel;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
     public class ViewModelEditFacetConvention : ViewModelFacetConvention {
-        public ViewModelEditFacetConvention(IFacetHolder holder) : base(Type, holder) {}
+        public ViewModelEditFacetConvention(ISpecification holder) : base(Type, holder) {}
 
         private static Type Type {
             get { return typeof (IViewModelFacet); }

@@ -20,24 +20,24 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
         public OptionalDefaultFacetFactory(INakedObjectReflector reflector)
             : base(reflector, NakedObjectFeatureType.PropertiesAndParameters) {}
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
-            return FacetUtils.AddFacet(method.ReturnType.IsPrimitive ? CreateMandatory(holder) : CreateOptional(holder));
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return FacetUtils.AddFacet(method.ReturnType.IsPrimitive ? CreateMandatory(specification) : CreateOptional(specification));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
-            return FacetUtils.AddFacet(property.PropertyType.IsPrimitive || property.GetGetMethod() == null ? CreateMandatory(holder) : CreateOptional(holder));
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+            return FacetUtils.AddFacet(property.PropertyType.IsPrimitive || property.GetGetMethod() == null ? CreateMandatory(specification) : CreateOptional(specification));
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             return FacetUtils.AddFacet(parameter.ParameterType.IsPrimitive ? CreateMandatory(holder) : CreateOptional(holder));
         }
 
-        private static IMandatoryFacet CreateOptional(IFacetHolder holder) {
+        private static IMandatoryFacet CreateOptional(ISpecification holder) {
             return new OptionalFacetDefault(holder);
         }
 
-        private static IMandatoryFacet CreateMandatory(IFacetHolder holder) {
+        private static IMandatoryFacet CreateMandatory(ISpecification holder) {
             return new MandatoryFacetDefault(holder);
         }
     }

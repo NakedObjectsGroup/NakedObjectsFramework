@@ -65,8 +65,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
 
         [Test]
         public void TestEagerlyAnnotationPickedUpOnClass() {
-            annotationFacetFactory.Process(typeof (Customer2), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEagerlyFacet));
+            annotationFacetFactory.Process(typeof (Customer2), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacetAnnotation);
             var propertyDefaultFacetAnnotation = (EagerlyFacetAnnotation) facet;
@@ -76,8 +76,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
         [Test]
         public void TestEagerlyAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Coll");
-            annotationFacetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEagerlyFacet));
+            annotationFacetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacetAnnotation);
             var propertyDefaultFacetAnnotation = (EagerlyFacetAnnotation) facet;
@@ -87,8 +87,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
         [Test]
         public void TestEagerlyAnnotationPickedUpOnMethod() {
             MethodInfo method = FindMethod(typeof (Customer1), "Act");
-            annotationFacetFactory.Process(method, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEagerlyFacet));
+            annotationFacetFactory.Process(method, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacetAnnotation);
             var propertyDefaultFacetAnnotation = (EagerlyFacetAnnotation) facet;
@@ -98,8 +98,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
         [Test]
         public void TestEagerlyAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Prop");
-            annotationFacetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEagerlyFacet));
+            annotationFacetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacetAnnotation);
             var propertyDefaultFacetAnnotation = (EagerlyFacetAnnotation) facet;
@@ -108,32 +108,32 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
 
         [Test]
         public void TestEagerlyNotPickedUpOnClass() {
-            annotationFacetFactory.Process(typeof (Customer1), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEagerlyFacet));
+            annotationFacetFactory.Process(typeof (Customer1), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestEagerlyNotPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Coll");
-            annotationFacetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEagerlyFacet));
+            annotationFacetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestEagerlyNotPickedUpOnMethod() {
             MethodInfo method = FindMethod(typeof (Customer2), "Act");
-            annotationFacetFactory.Process(method, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEagerlyFacet));
+            annotationFacetFactory.Process(method, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestEagerlyNotPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Prop");
-            annotationFacetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEagerlyFacet));
+            annotationFacetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNull(facet);
         }
 

@@ -13,12 +13,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.NotPersistable {
         public ProgramPersistableOnlyAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsOnly) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = type.GetCustomAttributeByReflection<ProgramPersistableOnlyAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static IProgramPersistableOnlyFacet Create(ProgramPersistableOnlyAttribute attribute, IFacetHolder holder) {
+        private static IProgramPersistableOnlyFacet Create(ProgramPersistableOnlyAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new ProgramPersistableOnlyFacetAnnotation(holder);
         }
     }

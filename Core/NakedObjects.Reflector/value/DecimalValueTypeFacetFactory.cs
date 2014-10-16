@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public DecimalValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof(IDecimalValueFacet)) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (DecimalValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(DecimalValueSemanticsProvider.AdaptedType);
-                AddFacets(new DecimalValueSemanticsProvider(spec, holder));
+                AddFacets(new DecimalValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

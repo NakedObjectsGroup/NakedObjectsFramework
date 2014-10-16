@@ -15,7 +15,7 @@ namespace NakedObjects.Reflector.I18n {
         private readonly INamedFacet namedFacet;
 
 
-        public NamedFacetDynamicWrapI18n(II18nManager manager, IFacetHolder holder, IIdentifier identifier, INamedFacet namedFacet, int index = -1)
+        public NamedFacetDynamicWrapI18n(II18nManager manager, ISpecification holder, IIdentifier identifier, INamedFacet namedFacet, int index = -1)
             : base(Type, holder) {
             this.manager = manager;
             this.identifier = identifier;

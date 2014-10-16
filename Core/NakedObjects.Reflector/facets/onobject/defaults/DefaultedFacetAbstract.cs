@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
 
         protected DefaultedFacetAbstract(string candidateProviderName,
                                          Type candidateProviderClass,
-                                         IFacetHolder holder)
+                                         ISpecification holder)
             : base(typeof (IDefaultedFacet), holder) {
             defaultsProviderClass = DefaultsProviderUtils.DefaultsProviderOrNull<T>(candidateProviderClass, candidateProviderName);
             defaultedFacetUsingDefaultsProvider = IsValid ? new DefaultedFacetUsingDefaultsProvider<T>((IDefaultsProvider<T>) TypeUtils.NewInstance(defaultsProviderClass), holder) : null;

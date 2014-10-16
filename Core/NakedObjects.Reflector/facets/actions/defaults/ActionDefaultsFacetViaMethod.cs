@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Defaults {
         private readonly MethodInfo actionMethod;
         private readonly MethodInfo method;
 
-        public ActionDefaultsFacetViaMethod(MethodInfo method, IFacetHolder holder)
+        public ActionDefaultsFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
             var actionInvocationFacet = holder.GetFacet<IActionInvocationFacet>();

@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Actions.Executed {
     public abstract class AjaxFacetAbstract : MarkerFacetAbstract, IAjaxFacet {
-        protected AjaxFacetAbstract(IFacetHolder holder)
+        protected AjaxFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

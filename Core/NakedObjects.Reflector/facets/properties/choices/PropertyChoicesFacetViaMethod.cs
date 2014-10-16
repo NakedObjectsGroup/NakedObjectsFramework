@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Choices {
         private readonly string[] parameterNames;
         private readonly Tuple<string, IIntrospectableSpecification>[] parameterNamesAndTypes;
 
-        public PropertyChoicesFacetViaMethod(MethodInfo optionsMethod, Tuple<string, IIntrospectableSpecification>[] parameterNamesAndTypes, IFacetHolder holder)
+        public PropertyChoicesFacetViaMethod(MethodInfo optionsMethod, Tuple<string, IIntrospectableSpecification>[] parameterNamesAndTypes, ISpecification holder)
             : base(holder) {
             method = optionsMethod;
 

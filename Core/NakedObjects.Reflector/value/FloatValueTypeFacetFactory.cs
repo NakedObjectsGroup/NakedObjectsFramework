@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public FloatValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof (IFloatingPointValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (FloatValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(FloatValueSemanticsProvider.AdaptedType);
-                AddFacets(new FloatValueSemanticsProvider(spec, holder));
+                AddFacets(new FloatValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

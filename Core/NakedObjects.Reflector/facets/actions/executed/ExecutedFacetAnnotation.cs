@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Actions.Executed;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     public class ExecutedFacetAnnotation : ExecutedFacetAbstract {
-        public ExecutedFacetAnnotation(Where value, IFacetHolder holder)
+        public ExecutedFacetAnnotation(Where value, ISpecification holder)
             : base(value, holder) {}
     }
 

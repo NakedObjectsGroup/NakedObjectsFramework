@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public StringValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof (IStringValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (StringValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(StringValueSemanticsProvider.AdaptedType);
-                AddFacets(new StringValueSemanticsProvider(spec, holder));
+                AddFacets(new StringValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

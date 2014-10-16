@@ -22,24 +22,24 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Range {
             :base(reflector, NakedObjectFeatureType.PropertiesAndParameters) { }
 
 
-        private static bool Process(MemberInfo member, bool isDate, IFacetHolder holder) {
+        private static bool Process(MemberInfo member, bool isDate, ISpecification specification) {
             var attribute = member.GetCustomAttribute<RangeAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, isDate, holder));
+            return FacetUtils.AddFacet(Create(attribute, isDate, specification));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             bool isDate = property.PropertyType.IsAssignableFrom(typeof (DateTime));
-            return Process(property, isDate, holder);
+            return Process(property, isDate, specification);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             bool isDate = parameter.ParameterType.IsAssignableFrom(typeof (DateTime));
             var range = parameter.GetCustomAttributeByReflection<RangeAttribute>();
             return FacetUtils.AddFacet(Create(range, isDate, holder));
         }
 
-        private static IRangeFacet Create(RangeAttribute attribute, bool isDate, IFacetHolder holder) {
+        private static IRangeFacet Create(RangeAttribute attribute, bool isDate, ISpecification holder) {
             if (attribute != null && attribute.OperandType != typeof (int) && attribute.OperandType != typeof (double)) {
                 Log.WarnFormat("Unsupported use of range attribute with explicit type on {0}", holder);
                 return null;

@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Objects.Ident.Plural {
     public abstract class PluralFacetAbstract : SingleStringValueFacetAbstract, IPluralFacet {
-        protected PluralFacetAbstract(string stringValue, IFacetHolder holder)
+        protected PluralFacetAbstract(string stringValue, ISpecification holder)
             : base(Type, holder, stringValue) {}
 
         public static Type Type {

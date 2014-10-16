@@ -13,10 +13,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
         private readonly MethodInfo maskMethod;
         private readonly MethodInfo method;
 
-        public TitleFacetViaToStringMethod(MethodInfo method, IFacetHolder holder)
+        public TitleFacetViaToStringMethod(MethodInfo method, ISpecification holder)
             : this(method, null, holder) {}
 
-        public TitleFacetViaToStringMethod(MethodInfo method, MethodInfo maskMethod, IFacetHolder holder)
+        public TitleFacetViaToStringMethod(MethodInfo method, MethodInfo maskMethod, ISpecification holder)
             : base(holder) {
             this.method = method;
             this.maskMethod = maskMethod;

@@ -36,7 +36,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
         ///     If no title or ToString can be used then will use Facets provided by
         ///     <see cref="FallbackFacetFactory" /> instead.
         /// </summary>
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder facetHolder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             IList<MethodInfo> attributedMethods = new List<MethodInfo>();
             foreach (PropertyInfo propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
                 if (propertyInfo.GetCustomAttribute<TitleAttribute>() != null) {
@@ -48,7 +48,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
             }
 
             if (attributedMethods.Count > 0) {
-                return FacetUtils.AddFacet(new TitleFacetViaProperty(attributedMethods.First(), facetHolder));
+                return FacetUtils.AddFacet(new TitleFacetViaProperty(attributedMethods.First(), specification));
             }
 
             try {
@@ -57,7 +57,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
 
                 if (titleMethod != null) {
                     methodRemover.RemoveMethod(titleMethod);
-                    titleFacet = new TitleFacetViaTitleMethod(titleMethod, facetHolder);
+                    titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification);
                 }
 
                 MethodInfo toStringMethod = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.ToStringMethod, typeof (string), Type.EmptyTypes);
@@ -81,7 +81,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
                 }
 
                 if (titleFacet == null) {
-                    titleFacet = new TitleFacetViaToStringMethod(toStringMethod, maskMethod, facetHolder);
+                    titleFacet = new TitleFacetViaToStringMethod(toStringMethod, maskMethod, specification);
                 }
 
                 return FacetUtils.AddFacet(titleFacet);

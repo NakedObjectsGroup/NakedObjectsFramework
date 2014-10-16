@@ -14,7 +14,7 @@ using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class DotNetGenericCollectionFacet<T> : CollectionFacetAbstract {
-        public DotNetGenericCollectionFacet(IFacetHolder holder, Type elementClass, bool isASet)
+        public DotNetGenericCollectionFacet(ISpecification holder, Type elementClass, bool isASet)
             : base(holder, elementClass, isASet) {}
 
         protected static ICollection<T> AsGenericCollection(INakedObject collection) {

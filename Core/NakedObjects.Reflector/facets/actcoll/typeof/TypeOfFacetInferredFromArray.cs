@@ -12,7 +12,7 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
     public class TypeOfFacetInferredFromArray : TypeOfFacetAbstract {
-        public TypeOfFacetInferredFromArray(Type type, IFacetHolder holder, IIntrospectableSpecification spec)
+        public TypeOfFacetInferredFromArray(Type type, ISpecification holder, IIntrospectableSpecification spec)
             : base(type, true, holder, spec) {}
     }
 

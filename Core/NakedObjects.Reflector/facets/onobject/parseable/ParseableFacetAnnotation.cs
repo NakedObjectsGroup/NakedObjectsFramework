@@ -8,10 +8,10 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
     public class ParseableFacetAnnotation<T> : ParseableFacetAbstract<T> {
-        public ParseableFacetAnnotation(Type annotatedClass, IFacetHolder holder)
+        public ParseableFacetAnnotation(Type annotatedClass, ISpecification holder)
             : this(ParserName(annotatedClass), ParserClass(annotatedClass), holder) {}
 
-        private ParseableFacetAnnotation(string candidateParserName, Type candidateParserClass, IFacetHolder holder)
+        private ParseableFacetAnnotation(string candidateParserName, Type candidateParserClass, ISpecification holder)
             : base(candidateParserName, candidateParserClass, holder) {}
 
         private static string ParserName(Type annotatedClass) {

@@ -12,7 +12,7 @@ namespace NakedObjects.Reflector.Peer {
     /// <summary>
     ///     Details about action and field members gained via reflection.
     /// </summary>
-    public interface INakedObjectMemberPeer : IFacetHolder {
+    public interface INakedObjectMemberPeer : ISpecification {
         IIntrospectableSpecification Specification { get; }
     }
 

@@ -11,12 +11,12 @@ using NakedObjects.Architecture.Facets.Actions.Invoke;
 namespace NakedObjects.Architecture.Facets {
     public interface IFacet {
         /// <summary>
-        ///     The <see cref="IFacetHolder" /> of this facet. Set allows reparenting of Facet.
+        ///     The <see cref="ISpecification" /> of this facet. Set allows reparenting of Facet.
         /// </summary>
         /// <para>
         ///     Used by Facet decorators.
         /// </para>
-        IFacetHolder FacetHolder { get; set; }
+        ISpecification Specification { get; set; }
 
         /// <summary>
         ///     Whether this facet implementation is a no-op

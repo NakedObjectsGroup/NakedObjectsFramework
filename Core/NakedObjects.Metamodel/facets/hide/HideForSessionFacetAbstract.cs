@@ -20,7 +20,7 @@ namespace NakedObjects.Architecture.Facets.Hide {
     ///     invoking the <c>HideXxx</c> support method for the member.
     /// </para>
     public abstract class HideForSessionFacetAbstract : FacetAbstract, IHideForSessionFacet {
-        protected HideForSessionFacetAbstract(IFacetHolder holder)
+        protected HideForSessionFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

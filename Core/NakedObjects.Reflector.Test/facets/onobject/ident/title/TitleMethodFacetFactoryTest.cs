@@ -64,16 +64,16 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
 
         [Test]
         public void TestNoExplicitTitleOrToStringMethod() {
-            facetFactory.Process(typeof (Customer2), MethodRemover, FacetHolder);
-            Assert.IsNull(FacetHolder.GetFacet(typeof (ITitleFacet)));
+            facetFactory.Process(typeof (Customer2), MethodRemover, Specification);
+            Assert.IsNull(Specification.GetFacet(typeof (ITitleFacet)));
             AssertNoMethodsRemoved();
         }
 
         [Test]
         public void TestTitleMethodPickedUpOnClassAndMethodRemoved() {
             MethodInfo titleMethod = FindMethod(typeof (Customer), "Title");
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (ITitleFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (ITitleFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TitleFacetViaTitleMethod);
             var titleFacetViaTitleMethod = (TitleFacetViaTitleMethod) facet;
@@ -84,8 +84,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
         [Test]
         public void TestToStringMethodPickedUpOnClassAndMethodRemoved() {
             MethodInfo toStringMethod = FindMethod(typeof (Customer1), "ToString");
-            facetFactory.Process(typeof (Customer1), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (ITitleFacet));
+            facetFactory.Process(typeof (Customer1), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (ITitleFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TitleFacetViaToStringMethod);
             var titleFacetViaTitleMethod = (TitleFacetViaToStringMethod) facet;

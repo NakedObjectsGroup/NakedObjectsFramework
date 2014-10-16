@@ -20,15 +20,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
             :base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
 
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             Attribute attribute = type.GetCustomAttributeByReflection<RegularExpressionAttribute>();
             if (attribute == null) {
                 attribute = type.GetCustomAttributeByReflection<RegExAttribute>();
             }
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static bool Process(MemberInfo member, IFacetHolder holder) {
+        private static bool Process(MemberInfo member, ISpecification holder) {
             Attribute attribute = member.GetCustomAttribute<RegularExpressionAttribute>();
             if (attribute == null) {
                 attribute = member.GetCustomAttribute<RegExAttribute>();
@@ -36,22 +36,22 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
             if (TypeUtils.IsString(method.ReturnType)) {
-                return Process(method, holder);
+                return Process(method, specification);
             }
             return false;
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             if (property.GetGetMethod() != null && TypeUtils.IsString(property.PropertyType)) {
-                return Process(property, holder);
+                return Process(property, specification);
             }
             return false;
         }
 
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             if (TypeUtils.IsString(parameter.ParameterType)) {
                 Attribute attribute = parameter.GetCustomAttributeByReflection<RegularExpressionAttribute>();
@@ -64,7 +64,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
             return false;
         }
 
-        private static IRegExFacet Create(Attribute attribute, IFacetHolder holder) {
+        private static IRegExFacet Create(Attribute attribute, ISpecification holder) {
             if (attribute == null) {
                 return null;
             }
@@ -78,11 +78,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
         }
 
 
-        private static IRegExFacet Create(RegExAttribute attribute, IFacetHolder holder) {
+        private static IRegExFacet Create(RegExAttribute attribute, ISpecification holder) {
             return new RegExFacetAnnotation(attribute.Validation, attribute.Format, attribute.CaseSensitive, attribute.Message, holder);
         }
 
-        private static IRegExFacet Create(RegularExpressionAttribute attribute, IFacetHolder holder) {
+        private static IRegExFacet Create(RegularExpressionAttribute attribute, ISpecification holder) {
             return new RegExFacetAnnotation(attribute.Pattern, string.Empty, true, attribute.ErrorMessage, holder);
         }
     }

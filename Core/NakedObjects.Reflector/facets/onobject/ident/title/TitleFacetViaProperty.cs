@@ -13,7 +13,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
     public class TitleFacetViaProperty : TitleFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public TitleFacetViaProperty(MethodInfo method, IFacetHolder holder)
+        public TitleFacetViaProperty(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
         }

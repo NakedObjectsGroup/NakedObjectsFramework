@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Potency {
         public PotencyAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ActionsOnly) { }
 
-        private static bool Process(MemberInfo member, IFacetHolder holder) {
+        private static bool Process(MemberInfo member, ISpecification holder) {
             // give priority to Idempotent as more restrictive 
             if (member.GetCustomAttribute<IdempotentAttribute>() != null) {
                 return FacetUtils.AddFacet(new IdempotentFacetAnnotation(holder));
@@ -32,8 +32,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Potency {
             return false;
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(method, holder);
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(method, specification);
         }
     }
 }

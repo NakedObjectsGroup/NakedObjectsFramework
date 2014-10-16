@@ -111,8 +111,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestDisabledWhenUntilPersistedAnnotationPickedUpOn() {
             MethodInfo actionMethod = FindMethod(typeof (Customer6), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
+            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
             Assert.AreEqual(WhenTo.UntilPersisted, hiddenFacetAbstract.Value);
         }
@@ -130,8 +130,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestHiddenAnnotationPickedUpOnAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer2), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
+            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacetAbstract);
             AssertNoMethodsRemoved();
@@ -140,8 +140,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestHiddenAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacetAbstract);
             AssertNoMethodsRemoved();
@@ -150,8 +150,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestHiddenAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacetAbstract);
             AssertNoMethodsRemoved();
@@ -160,8 +160,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestHiddenWhenAlwaysAnnotationPickedUpOn() {
             MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
+            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
             Assert.AreEqual(WhenTo.Always, hiddenFacetAbstract.Value);
         }
@@ -169,8 +169,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestHiddenWhenNeverAnnotationPickedUpOn() {
             MethodInfo actionMethod = FindMethod(typeof (Customer4), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
+            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
             Assert.AreEqual(WhenTo.Never, hiddenFacetAbstract.Value);
         }
@@ -178,8 +178,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestHiddenWhenOncePersistedAnnotationPickedUpOn() {
             MethodInfo actionMethod = FindMethod(typeof (Customer5), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
+            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
             Assert.AreEqual(WhenTo.OncePersisted, hiddenFacetAbstract.Value);
         }
@@ -187,8 +187,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestHiidenPriorityOverScaffoldAnnotation() {
             PropertyInfo property = FindProperty(typeof (Customer10), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
             Assert.AreEqual(WhenTo.Always, hiddenFacetAbstract.Value);
         }
@@ -196,8 +196,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestScaffoldAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer8), "Orders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacetAbstract);
             AssertNoMethodsRemoved();
@@ -206,8 +206,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestScaffoldAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer7), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HiddenFacetAbstract);
             AssertNoMethodsRemoved();
@@ -216,8 +216,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         [Test]
         public void TestScaffoldTrueAnnotationPickedUpOn() {
             PropertyInfo property = FindProperty(typeof (Customer9), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IHiddenFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
             Assert.AreEqual(WhenTo.Never, hiddenFacetAbstract.Value);
         }

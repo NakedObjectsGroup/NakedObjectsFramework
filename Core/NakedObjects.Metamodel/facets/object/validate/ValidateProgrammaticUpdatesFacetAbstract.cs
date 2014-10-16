@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Objects.Validation {
     public abstract class ValidateProgrammaticUpdatesFacetAbstract : FacetAbstract, IValidateProgrammaticUpdatesFacet {
-        protected ValidateProgrammaticUpdatesFacetAbstract(IFacetHolder holder)
+        protected ValidateProgrammaticUpdatesFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

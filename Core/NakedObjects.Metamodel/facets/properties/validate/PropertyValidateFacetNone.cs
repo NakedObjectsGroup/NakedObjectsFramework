@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facets.Properties.Validate {
     public class PropertyValidateFacetNone : PropertyValidateFacetAbstract {
-        public PropertyValidateFacetNone(IFacetHolder holder)
+        public PropertyValidateFacetNone(ISpecification holder)
             : base(holder) {}
 
         public override bool IsNoOp {

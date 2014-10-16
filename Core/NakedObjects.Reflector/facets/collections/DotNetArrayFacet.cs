@@ -8,10 +8,10 @@ using NakedObjects.Architecture.Facets;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class DotNetArrayFacet : DotNetCollectionFacet {
-        public DotNetArrayFacet(IFacetHolder holder)
+        public DotNetArrayFacet(ISpecification holder)
             : base(holder) {}
 
-        public DotNetArrayFacet(IFacetHolder holder, Type elementType)
+        public DotNetArrayFacet(ISpecification holder, Type elementType)
             : base(holder, elementType) {}
 
 

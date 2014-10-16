@@ -16,7 +16,7 @@ using NakedObjects.Architecture.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class DotNetGenericIQueryableFacet<T> : CollectionFacetAbstract {
-        public DotNetGenericIQueryableFacet(IFacetHolder holder, Type elementClass, bool isASet)
+        public DotNetGenericIQueryableFacet(ISpecification holder, Type elementClass, bool isASet)
             : base(holder, elementClass, isASet) {}
 
 

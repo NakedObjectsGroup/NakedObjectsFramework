@@ -61,16 +61,16 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Key {
         [Test]
         public void TestKeyAnnotationNotPickedUpOnPropertyIfAbsent() {
             PropertyInfo property = FindProperty(typeof (Customer1), "CustomerKey");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IKeyFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IKeyFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestKeyAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer), "CustomerKey");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IKeyFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IKeyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is KeyFacetAnnotation);
         }

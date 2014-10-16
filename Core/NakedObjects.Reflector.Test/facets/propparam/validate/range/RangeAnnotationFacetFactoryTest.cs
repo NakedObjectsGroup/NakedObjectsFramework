@@ -61,8 +61,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Range {
         [Test]
         public void TestRangeAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IRangeFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IRangeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RangeFacetAnnotation);
             var RangeFacetAnnotation = (RangeFacetAnnotation) facet;
@@ -73,8 +73,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Range {
         [Test]
         public void TestRangeAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Prop");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IRangeFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IRangeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RangeFacetAnnotation);
             var RangeFacetAnnotation = (RangeFacetAnnotation) facet;

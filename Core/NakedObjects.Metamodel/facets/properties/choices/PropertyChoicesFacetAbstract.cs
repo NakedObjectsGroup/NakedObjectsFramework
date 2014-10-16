@@ -12,7 +12,7 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Properties.Choices {
     public abstract class PropertyChoicesFacetAbstract : FacetAbstract, IPropertyChoicesFacet {
-        protected PropertyChoicesFacetAbstract(IFacetHolder holder)
+        protected PropertyChoicesFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

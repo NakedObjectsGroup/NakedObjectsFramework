@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     /// <para>
     ///     Can specify if requires that members are in the same (group) name.
     /// </para>
-    public class MemberOrderComparator<T> : IComparer<T> where T : IOrderableElement<T>, IFacetHolder {
+    public class MemberOrderComparator<T> : IComparer<T> where T : IOrderableElement<T>, ISpecification {
         private readonly bool ensureInSameGroup;
         private readonly MemberIdentifierComparator<T> fallbackComparator = new MemberIdentifierComparator<T>();
 
@@ -97,8 +97,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
 
         #endregion
 
-        private static IMemberOrderFacet GetMemberOrder(IFacetHolder facetHolder) {
-            return facetHolder.GetFacet<IMemberOrderFacet>();
+        private static IMemberOrderFacet GetMemberOrder(ISpecification specification) {
+            return specification.GetFacet<IMemberOrderFacet>();
         }
     }
 }

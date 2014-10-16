@@ -25,12 +25,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
             :base(reflector, NakedObjectFeatureType.PropertiesCollectionsAndActions) { }
 
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             return false;
         }
 
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
             var classAttribute = method.DeclaringType.GetCustomAttributeByReflection<AuthorizeActionAttribute>();
             var methodAttribute = method.GetCustomAttribute<AuthorizeActionAttribute>();
 
@@ -38,10 +38,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
                 Log.WarnFormat("Class and method level AuthorizeAttributes applied to class {0} - ignoring attribute on method {1}", method.DeclaringType.FullName, method.Name);
             }
 
-            return Create(classAttribute ?? methodAttribute, holder);
+            return Create(classAttribute ?? methodAttribute, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             var classAttribute = property.DeclaringType.GetCustomAttributeByReflection<AuthorizePropertyAttribute>();
             var propertyAttribute = property.GetCustomAttribute<AuthorizePropertyAttribute>();
 
@@ -49,10 +49,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
                 Log.WarnFormat("Class and property level AuthorizeAttributes applied to class {0} - ignoring attribute on property {1}", property.DeclaringType.FullName, property.Name);
             }
 
-            return Create(classAttribute ?? propertyAttribute, holder);
+            return Create(classAttribute ?? propertyAttribute, specification);
         }
 
-        private static bool Create(AuthorizePropertyAttribute attribute, IFacetHolder holder) {
+        private static bool Create(AuthorizePropertyAttribute attribute, ISpecification holder) {
             bool added = false;
 
             if (attribute != null) {
@@ -70,7 +70,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
             return added;
         }
 
-        private static bool Create(AuthorizeActionAttribute attribute, IFacetHolder holder) {
+        private static bool Create(AuthorizeActionAttribute attribute, ISpecification holder) {
             bool added = false;
 
             if (attribute != null) {
@@ -112,7 +112,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
 
             public SecurityDisableForSessionFacet(string roles,
                                                   string users,
-                                                  IFacetHolder holder)
+                                                  ISpecification holder)
                 : base(holder) {
                 this.roles = SplitOnComma(roles);
                 this.users = SplitOnComma(users);
@@ -133,7 +133,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
 
             public SecurityHideForSessionFacet(string roles,
                                                string users,
-                                               IFacetHolder holder)
+                                               ISpecification holder)
                 : base(holder) {
                 this.roles = SplitOnComma(roles);
                 this.users = SplitOnComma(users);

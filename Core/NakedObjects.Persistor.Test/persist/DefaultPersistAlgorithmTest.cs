@@ -210,7 +210,7 @@ namespace NakedObjects.Persistor.Persist {
         //        throw new NotImplementedException();
         //    }
 
-        //    public void Abort(ILifecycleManager objectManager, IFacetHolder holder) {
+        //    public void Abort(ILifecycleManager objectManager, ISpecification holder) {
         //        throw new NotImplementedException();
         //    }
 

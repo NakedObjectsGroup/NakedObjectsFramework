@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facets.Properties.Defaults {
     public class PropertyDefaultFacetNone : PropertyDefaultFacetAbstract {
-        public PropertyDefaultFacetNone(IFacetHolder holder)
+        public PropertyDefaultFacetNone(ISpecification holder)
             : base(holder) {}
 
         public override bool IsNoOp {

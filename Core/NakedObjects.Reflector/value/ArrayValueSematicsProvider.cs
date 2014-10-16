@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public ArrayValueSemanticsProvider(IIntrospectableSpecification spec)
             : this(spec, null) { }
 
-        public ArrayValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+        public ArrayValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) { }
 
         public static Type Type {

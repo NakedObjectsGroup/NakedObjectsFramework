@@ -12,7 +12,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
     public class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
         private readonly IParser<T> parser;
 
-        public TitleFacetUsingParser(IParser<T> parser, IFacetHolder holder)
+        public TitleFacetUsingParser(IParser<T> parser, ISpecification holder)
             : base(typeof (ITitleFacet), holder) {
             this.parser = parser;
         }

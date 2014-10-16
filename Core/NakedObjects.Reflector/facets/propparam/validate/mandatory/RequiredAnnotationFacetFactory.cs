@@ -20,29 +20,29 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
         public RequiredAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.PropertiesAndParameters) { }
 
-        private static bool Process(MemberInfo member, IFacetHolder holder) {
+        private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<RequiredAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(method, holder);
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(method, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             if (property.GetGetMethod() != null) {
-                return Process(property, holder);
+                return Process(property, specification);
             }
             return false;
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttributeByReflection<RequiredAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private static IMandatoryFacet Create(RequiredAttribute attribute, IFacetHolder holder) {
+        private static IMandatoryFacet Create(RequiredAttribute attribute, ISpecification holder) {
             return attribute != null ? new MandatoryFacet(holder) : null;
         }
     }

@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Architecture.Facets.Actions.Potency {
     public class IdempotentFacetImpl : IdempotentFacetAbstract {
-        public IdempotentFacetImpl(IFacetHolder holder)
+        public IdempotentFacetImpl(ISpecification holder)
             : base(holder) {}
     }
 }

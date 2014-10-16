@@ -15,7 +15,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Enums {
         private readonly EnumNameComparer comparer;
         private readonly Type typeOfEnum;
 
-        public EnumFacet(IFacetHolder holder, Type typeOfEnum)
+        public EnumFacet(ISpecification holder, Type typeOfEnum)
             : base(holder) {
             this.typeOfEnum = typeOfEnum;
             comparer = new EnumNameComparer(this);

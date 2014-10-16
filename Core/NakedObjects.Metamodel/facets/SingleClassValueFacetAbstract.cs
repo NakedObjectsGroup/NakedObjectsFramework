@@ -14,7 +14,7 @@ namespace NakedObjects.Architecture.Facets {
         private readonly IIntrospectableSpecification valueSpec;
         private readonly Type valueType;
 
-        protected SingleClassValueFacetAbstract(Type facetType, IFacetHolder holder, Type valueType, IIntrospectableSpecification valueSpec)
+        protected SingleClassValueFacetAbstract(Type facetType, ISpecification holder, Type valueType, IIntrospectableSpecification valueSpec)
             : base(facetType, holder) {
             this.valueType = valueType;
             this.valueSpec = valueSpec;

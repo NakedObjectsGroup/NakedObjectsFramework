@@ -81,22 +81,22 @@ namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
         [Test]
         public void TestPresentationHintAnnotationNotIgnoredForNonStringsProperty() {
             PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            Assert.IsNotNull(FacetHolder.GetFacet(typeof (IPresentationHintFacet)));
+            facetFactory.Process(property, MethodRemover, Specification);
+            Assert.IsNotNull(Specification.GetFacet(typeof (IPresentationHintFacet)));
         }
 
         [Test]
         public void TestPresentationHintAnnotationNotIgnoredForPrimitiveOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            Assert.IsNotNull(FacetHolder.GetFacet(typeof (IPresentationHintFacet)));
+            facetFactory.ProcessParams(method, 0, Specification);
+            Assert.IsNotNull(Specification.GetFacet(typeof (IPresentationHintFacet)));
         }
 
         [Test]
         public void TestPresentationHintAnnotationPickedUpOnAction() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
-            facetFactory.Process(method, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IPresentationHintFacet));
+            facetFactory.Process(method, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacetAnnotation);
             var maskFacet = (PresentationHintFacetAnnotation) facet;
@@ -106,8 +106,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
         [Test]
         public void TestPresentationHintAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IPresentationHintFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacetAnnotation);
             var maskFacet = (PresentationHintFacetAnnotation) facet;
@@ -116,8 +116,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
 
         [Test]
         public void TestPresentationHintAnnotationPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IPresentationHintFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacetAnnotation);
             var maskFacet = (PresentationHintFacetAnnotation) facet;
@@ -127,8 +127,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
         [Test]
         public void TestPresentationHintAnnotationPickedUpOnCollectionProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Customers");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IPresentationHintFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacetAnnotation);
             var maskFacet = (PresentationHintFacetAnnotation) facet;
@@ -138,8 +138,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
         [Test]
         public void TestPresentationHintAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IPresentationHintFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacetAnnotation);
             var maskFacet = (PresentationHintFacetAnnotation) facet;

@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Objects.Ident.Title {
     public abstract class TitleFacetAbstract : FacetAbstract, ITitleFacet {
-        protected TitleFacetAbstract(IFacetHolder holder)
+        protected TitleFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

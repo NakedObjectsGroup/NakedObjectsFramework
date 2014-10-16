@@ -8,10 +8,10 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
     public class EncodeableFacetAnnotation<T> : EncodeableFacetAbstract<T> {
-        public EncodeableFacetAnnotation(Type annotatedClass, IFacetHolder holder)
+        public EncodeableFacetAnnotation(Type annotatedClass, ISpecification holder)
             : this(EncoderDecoderName(annotatedClass), EncoderDecoderClass(annotatedClass), holder) {}
 
-        private EncodeableFacetAnnotation(string candidateEncoderDecoderName, Type candidateEncoderDecoderClass, IFacetHolder holder)
+        private EncodeableFacetAnnotation(string candidateEncoderDecoderName, Type candidateEncoderDecoderClass, ISpecification holder)
             : base(candidateEncoderDecoderName, candidateEncoderDecoderClass, holder) {}
 
         private static string EncoderDecoderName(Type annotatedClass) {

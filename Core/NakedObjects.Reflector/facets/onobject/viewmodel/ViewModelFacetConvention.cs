@@ -9,10 +9,10 @@ using NakedObjects.Architecture.Facets.Objects.ViewModel;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
     public class ViewModelFacetConvention : ViewModelFacetAbstract {
-        public ViewModelFacetConvention(IFacetHolder holder)
+        public ViewModelFacetConvention(ISpecification holder)
             : base(Type, holder) {}
 
-        protected ViewModelFacetConvention(Type type, IFacetHolder holder)
+        protected ViewModelFacetConvention(Type type, ISpecification holder)
             : base(type, holder) {}
 
         private static Type Type {

@@ -12,10 +12,10 @@ namespace NakedObjects.Architecture.Facets {
     /// <summary>
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>
-    public class FacetHolderImpl : IFacetHolder {
+    public class SpecificationImpl : ISpecification {
         private readonly Dictionary<Type, IFacet> facetsByClass = new Dictionary<Type, IFacet>();
 
-        #region IFacetHolder Members
+        #region ISpecification Members
 
         public virtual Type[] FacetTypes {
             get { return FacetUtils.GetFacetTypes(facetsByClass); }

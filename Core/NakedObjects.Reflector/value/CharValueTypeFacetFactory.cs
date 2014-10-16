@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public CharValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof(ICharValueFacet)) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (CharValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(CharValueSemanticsProvider.AdaptedType);
-                AddFacets(new CharValueSemanticsProvider(spec, holder));
+                AddFacets(new CharValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

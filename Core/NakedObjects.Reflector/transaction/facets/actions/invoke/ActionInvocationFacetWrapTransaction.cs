@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
         }
 
         public ActionInvocationFacetWrapTransaction(IActionInvocationFacet underlyingFacet)
-            : base(underlyingFacet.FacetHolder) {
+            : base(underlyingFacet.Specification) {
             this.underlyingFacet = underlyingFacet;
         }
 

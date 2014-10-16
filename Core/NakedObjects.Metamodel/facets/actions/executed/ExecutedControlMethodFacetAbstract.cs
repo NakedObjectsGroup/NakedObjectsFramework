@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace NakedObjects.Architecture.Facets.Actions.Executed {
     public abstract class ExecutedControlMethodFacetAbstract : FacetAbstract, IExecutedControlMethodFacet {
-        protected ExecutedControlMethodFacetAbstract(IFacetHolder holder)
+        protected ExecutedControlMethodFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

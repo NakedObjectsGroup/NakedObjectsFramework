@@ -110,17 +110,17 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
 
         [Test]
         public void TestFacetFacetHolderStored() {
-            facetFactory.Process(typeof (MyParseableUsingParserName), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyParseableUsingParserName), MethodRemover, Specification);
 
-            var parseableFacet = (IParseableFacet) FacetHolder.GetFacet(typeof (IParseableFacet));
-            Assert.AreEqual(FacetHolder, parseableFacet.FacetHolder);
+            var parseableFacet = (IParseableFacet) Specification.GetFacet(typeof (IParseableFacet));
+            Assert.AreEqual(Specification, parseableFacet.Specification);
         }
 
         [Test]
         public void TestFacetPickedUp() {
-            facetFactory.Process(typeof (MyParseableUsingParserName), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyParseableUsingParserName), MethodRemover, Specification);
 
-            var facet = (IParseableFacet) FacetHolder.GetFacet(typeof (IParseableFacet));
+            var facet = (IParseableFacet) Specification.GetFacet(typeof (IParseableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ParseableFacetAbstract<MyParseableUsingParserName>);
         }
@@ -137,25 +137,25 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
 
         [Test]
         public void TestNoMethodsRemoved() {
-            facetFactory.Process(typeof (MyParseableUsingParserName), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyParseableUsingParserName), MethodRemover, Specification);
 
             AssertNoMethodsRemoved();
         }
 
         [Test]
         public void TestParseableHaveANoArgConstructor() {
-            facetFactory.Process(typeof (MyParseableWithoutNoArgConstructor), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyParseableWithoutNoArgConstructor), MethodRemover, Specification);
 
-            var parseableFacet = (ParseableFacetAnnotation<MyParseableUsingParserName>) FacetHolder.GetFacet(typeof (IParseableFacet));
+            var parseableFacet = (ParseableFacetAnnotation<MyParseableUsingParserName>) Specification.GetFacet(typeof (IParseableFacet));
             Assert.IsNull(parseableFacet);
         }
 
 
         [Test]
         public void TestParseableHaveAPublicNoArgConstructor() {
-            facetFactory.Process(typeof (MyParseableWithoutPublicNoArgConstructor), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyParseableWithoutPublicNoArgConstructor), MethodRemover, Specification);
 
-            var parseableFacet = (IParseableFacet) FacetHolder.GetFacet(typeof (IParseableFacet));
+            var parseableFacet = (IParseableFacet) Specification.GetFacet(typeof (IParseableFacet));
             Assert.IsNull(parseableFacet);
         }
 
@@ -167,17 +167,17 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
 
         [Test]
         public void TestParseableUsingParserClass() {
-            facetFactory.Process(typeof (MyParseableUsingParserClass), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyParseableUsingParserClass), MethodRemover, Specification);
 
-            var parseableFacet = (ParseableFacetAnnotation<MyParseableUsingParserClass>) FacetHolder.GetFacet(typeof (IParseableFacet));
+            var parseableFacet = (ParseableFacetAnnotation<MyParseableUsingParserClass>) Specification.GetFacet(typeof (IParseableFacet));
             Assert.AreEqual(typeof (MyParseableUsingParserClass), parseableFacet.GetParserClass());
         }
 
         [Test]
         public void TestParseableUsingParserName() {
-            facetFactory.Process(typeof (MyParseableUsingParserName), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyParseableUsingParserName), MethodRemover, Specification);
 
-            var parseableFacet = (ParseableFacetAnnotation<MyParseableUsingParserName>) FacetHolder.GetFacet(typeof (IParseableFacet));
+            var parseableFacet = (ParseableFacetAnnotation<MyParseableUsingParserName>) Specification.GetFacet(typeof (IParseableFacet));
             Assert.AreEqual(typeof (MyParseableUsingParserName), parseableFacet.GetParserClass());
         }
     }

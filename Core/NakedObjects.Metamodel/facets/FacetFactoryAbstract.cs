@@ -33,19 +33,19 @@ namespace NakedObjects.Architecture.Facets {
             get { return reflector; }
         }
 
-        public virtual bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public virtual bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             return false;
         }
 
-        public virtual bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
+        public virtual bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
             return false;
         }
 
-        public virtual bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public virtual bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             return false;
         }
 
-        public virtual bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public virtual bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             return false;
         }
 

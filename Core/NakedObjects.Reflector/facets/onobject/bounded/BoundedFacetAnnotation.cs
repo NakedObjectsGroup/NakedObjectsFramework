@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Objects.Bounded;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Bounded {
     public class BoundedFacetAnnotation : BoundedFacetImpl {
-        public BoundedFacetAnnotation(IFacetHolder holder)
+        public BoundedFacetAnnotation(ISpecification holder)
             : base(holder) {}
     }
 

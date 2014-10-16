@@ -19,14 +19,14 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public override void SetUp() {
             base.SetUp();
             integer = 32;
-            holder = new FacetHolderImpl();
+            holder = new SpecificationImpl();
             var spec = new Mock<IIntrospectableSpecification>().Object;
             SetValue(value = new IntValueSemanticsProvider(spec, holder));
         }
 
         #endregion
 
-        private IFacetHolder holder;
+        private ISpecification holder;
         private int integer;
         private IntValueSemanticsProvider value;
 

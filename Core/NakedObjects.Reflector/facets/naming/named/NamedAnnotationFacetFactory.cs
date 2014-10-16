@@ -32,29 +32,29 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
             }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             Attribute attribute = type.GetCustomAttributeByReflection<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttributeByReflection<NamedAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
             Attribute attribute = method.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) method.GetCustomAttribute<NamedAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             UpdateScratchPad(property.ReflectedType);
             Attribute attribute = property.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) property.GetCustomAttribute<NamedAttribute>();
-            return FacetUtils.AddFacet(CreateProperty(attribute, holder));
+            return FacetUtils.AddFacet(CreateProperty(attribute, specification));
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             Attribute attribute = parameter.GetCustomAttributeByReflection<DisplayNameAttribute>() ?? (Attribute) parameter.GetCustomAttributeByReflection<NamedAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private INamedFacet Create(Attribute attribute, IFacetHolder holder) {
+        private INamedFacet Create(Attribute attribute, ISpecification holder) {
             if (attribute == null) {
                 return null;
             }
@@ -67,7 +67,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
             throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
         }
 
-        private INamedFacet CreateProperty(Attribute attribute, IFacetHolder holder) {
+        private INamedFacet CreateProperty(Attribute attribute, ISpecification holder) {
             if (attribute == null) {
                 return SaveDefaultName(holder);
             }
@@ -80,15 +80,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
             throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
         }
 
-        private INamedFacet Create(NamedAttribute attribute, IFacetHolder holder) {
+        private INamedFacet Create(NamedAttribute attribute, ISpecification holder) {
             return CreateAnnotation(attribute.Value, holder);
         }
 
-        private INamedFacet Create(DisplayNameAttribute attribute, IFacetHolder holder) {
+        private INamedFacet Create(DisplayNameAttribute attribute, ISpecification holder) {
             return CreateAnnotation(attribute.DisplayName, holder);
         }
 
-        private INamedFacet CreateAnnotation(string name, IFacetHolder holder) {
+        private INamedFacet CreateAnnotation(string name, ISpecification holder) {
             if (namesScratchPad.Contains(name)) {
                 Log.WarnFormat("Duplicate name: {0} found on type: {1}", name, currentType.FullName);
             }
@@ -96,19 +96,19 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
             return new NamedFacetAnnotation(name, holder);
         }
 
-        private string SafeGetName(IFacetHolder holder) {
+        private string SafeGetName(ISpecification holder) {
             if (holder.Identifier != null && holder.Identifier.MemberName != null) {
                 return holder.Identifier.MemberName;
             }
             return "";
         }
 
-        private static bool IsAlwaysHidden(IFacetHolder holder) {
+        private static bool IsAlwaysHidden(ISpecification holder) {
             var hiddenfacet = holder.GetFacet<IHiddenFacet>();
             return hiddenfacet != null && hiddenfacet.Value == WhenTo.Always;
         }
 
-        private INamedFacet SaveDefaultName(IFacetHolder holder) {
+        private INamedFacet SaveDefaultName(ISpecification holder) {
             string name = NameUtils.NaturalName(SafeGetName(holder));
             if (!namesScratchPad.Contains(name)) {
                 if (!TypeUtils.IsNakedObjects(currentType) && !IsAlwaysHidden(holder) && !string.IsNullOrWhiteSpace(name)) {

@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Actions.Contributed {
     public class ExcludeFromFindMenuFacetAbstract : MarkerFacetAbstract, IExcludeFromFindMenuFacet {
-        public ExcludeFromFindMenuFacetAbstract(IFacetHolder holder) : base(Type, holder) {}
+        public ExcludeFromFindMenuFacetAbstract(ISpecification holder) : base(Type, holder) {}
 
         public static Type Type {
             get { return typeof (IExcludeFromFindMenuFacet); }

@@ -23,16 +23,16 @@ namespace NakedObjects.Reflector.DotNet.Value {
             base.SetUp();
             booleanObj = true;
             booleanNO = CreateAdapter(booleanObj);
-            facetHolder = new FacetHolderImpl();
+            specification = new SpecificationImpl();
             var spec = new Mock<IIntrospectableSpecification>().Object;
-            SetValue(value = new BooleanValueSemanticsProvider(spec, facetHolder));
+            SetValue(value = new BooleanValueSemanticsProvider(spec, specification));
         }
 
         #endregion
 
         private INakedObject booleanNO;
         private object booleanObj;
-        private IFacetHolder facetHolder;
+        private ISpecification specification;
         private BooleanValueSemanticsProvider value;
 
         [Test]

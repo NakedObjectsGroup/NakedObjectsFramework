@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Properties.Version;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Version {
     public class ConcurrencyCheckFacetAnnotation : ConcurrencyCheckFacetAbstract {
-        public ConcurrencyCheckFacetAnnotation(IFacetHolder holder)
+        public ConcurrencyCheckFacetAnnotation(ISpecification holder)
             : base(holder) {}
     }
 }

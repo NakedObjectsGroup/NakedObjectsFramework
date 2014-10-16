@@ -16,7 +16,7 @@ using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class DotNetGenericIEnumerableFacet<T> : CollectionFacetAbstract {
-        public DotNetGenericIEnumerableFacet(IFacetHolder holder, Type elementClass, bool isASet)
+        public DotNetGenericIEnumerableFacet(ISpecification holder, Type elementClass, bool isASet)
             : base(holder, elementClass, isASet) {}
 
         protected static IEnumerable<T> AsGenericIEnumerable(INakedObject collection) {

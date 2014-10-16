@@ -20,7 +20,7 @@ namespace NakedObjects.Architecture.Facets.Propparam.Validate.Mandatory {
     ///     as manadatory.
     /// </para>
     public class OptionalFacetDefault : MandatoryFacetAbstract {
-        public OptionalFacetDefault(IFacetHolder holder)
+        public OptionalFacetDefault(ISpecification holder)
             : base(holder) {}
 
         public override bool IsMandatory {

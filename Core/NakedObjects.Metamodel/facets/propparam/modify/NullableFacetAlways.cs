@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Propparam.Modify {
     public class NullableFacetAlways : FacetAbstract, INullableFacet {
-        public NullableFacetAlways(IFacetHolder holder) : base(Type, holder) {}
+        public NullableFacetAlways(ISpecification holder) : base(Type, holder) {}
 
         public static Type Type {
             get { return typeof (INullableFacet); }

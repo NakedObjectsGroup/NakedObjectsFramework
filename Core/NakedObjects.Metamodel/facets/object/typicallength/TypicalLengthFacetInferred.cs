@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Architecture.Facets.Objects.TypicalLength {
     public class TypicalLengthFacetInferred : TypicalLengthFacetAbstract, ITypicalLengthFacet {
-        public TypicalLengthFacetInferred(int intValue, IFacetHolder holder)
+        public TypicalLengthFacetInferred(int intValue, ISpecification holder)
             : base(intValue, holder) {}
     }
 

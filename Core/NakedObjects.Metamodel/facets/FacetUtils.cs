@@ -12,14 +12,14 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Architecture.Facets {
     public static class FacetUtils {
         /// <summary>
-        ///     Attaches the <see cref="IFacet" /> to its <see cref="IFacet.FacetHolder" />
+        ///     Attaches the <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
         /// </summary>
         /// <returns>
         ///     <c>true</c> if a non-<c>null</c> facet was added, <c>false</c> otherwise.
         /// </returns>
         public static bool AddFacet(IFacet facet) {
             if (facet != null) {
-                facet.FacetHolder.AddFacet(facet);
+                facet.Specification.AddFacet(facet);
                 return true;
             }
             return false;
@@ -27,14 +27,14 @@ namespace NakedObjects.Architecture.Facets {
 
         public static bool AddFacet(IMultiTypedFacet facet) {
             if (facet != null) {
-                facet.FacetHolder.AddFacet(facet);
+                facet.Specification.AddFacet(facet);
                 return true;
             }
             return false;
         }
 
         /// <summary>
-        ///     Attaches each <see cref="IFacet" /> to its <see cref="IFacet.FacetHolder" />
+        ///     Attaches each <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
         /// </summary>
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
@@ -48,7 +48,7 @@ namespace NakedObjects.Architecture.Facets {
         }
 
         /// <summary>
-        ///     Attaches each <see cref="IFacet" /> to its <see cref="IFacet.FacetHolder" />
+        ///     Attaches each <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
         /// </summary>
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
@@ -62,7 +62,7 @@ namespace NakedObjects.Architecture.Facets {
         }
 
         /// <summary>
-        ///     Bit nasty, for use only by <see cref="IFacetHolder" />s that index their <see cref="IFacet" />s
+        ///     Bit nasty, for use only by <see cref="ISpecification" />s that index their <see cref="IFacet" />s
         ///     in a <see cref="Dictionary{TKey,TValue}" />.
         /// </summary>
         public static Type[] GetFacetTypes(Dictionary<Type, IFacet> facetsByClass) {
@@ -85,7 +85,7 @@ namespace NakedObjects.Architecture.Facets {
             if (facetsByClass.ContainsKey(facetType)) {
                 IFacet facet = facetsByClass[facetType];
                 facetsByClass.Remove(facetType);
-                facet.FacetHolder = null;
+                facet.Specification = null;
             }
         }
 

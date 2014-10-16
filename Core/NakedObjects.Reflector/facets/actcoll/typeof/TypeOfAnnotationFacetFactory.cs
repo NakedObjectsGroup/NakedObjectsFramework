@@ -14,7 +14,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
         public TypeOfAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.CollectionsAndActions) { }
 
-        private bool Process(Type methodReturnType, IFacetHolder holder) {
+        private bool Process(Type methodReturnType, ISpecification holder) {
             if (!CollectionUtils.IsCollection(methodReturnType)) {
                 return false;
             }
@@ -37,13 +37,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
         }
 
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(method.ReturnType, holder);
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(method.ReturnType, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             if (property.GetGetMethod() != null) {
-                return Process(property.PropertyType, holder);
+                return Process(property.PropertyType, specification);
             }
             return false;
         }

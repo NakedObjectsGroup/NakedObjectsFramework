@@ -73,22 +73,22 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
         [Test]
         public void TestOptionalAnnotationIgnoredForPrimitiveOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            Assert.IsNull(FacetHolder.GetFacet(typeof (IMandatoryFacet)));
+            facetFactory.ProcessParams(method, 0, Specification);
+            Assert.IsNull(Specification.GetFacet(typeof (IMandatoryFacet)));
         }
 
         [Test]
         public void TestOptionalAnnotationIgnoredForPrimitiveOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            Assert.IsNull(FacetHolder.GetFacet(typeof (IMandatoryFacet)));
+            facetFactory.Process(property, MethodRemover, Specification);
+            Assert.IsNull(Specification.GetFacet(typeof (IMandatoryFacet)));
         }
 
         [Test]
         public void TestOptionalAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMandatoryFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OptionalFacet);
         }
@@ -96,8 +96,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
         [Test]
         public void TestOptionalAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMandatoryFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OptionalFacet);
         }

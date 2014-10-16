@@ -52,8 +52,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.FieldOrder {
 
         [Test]
         public void TestFieldOrderAnnotationPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IFieldOrderFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IFieldOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is FieldOrderFacetAnnotation);
             var fieldOrderFacetAnnotation = (FieldOrderFacetAnnotation) facet;

@@ -15,7 +15,7 @@ namespace NakedObjects.Reflector.Transaction.Facets.Properties.Write {
         private readonly IPropertySetterFacet underlyingFacet;
 
         public ProxySetterFacetWrapTransaction(IPropertySetterFacet underlyingFacet)
-            : base(underlyingFacet.FacetHolder) {
+            : base(underlyingFacet.Specification) {
             this.underlyingFacet = underlyingFacet;
         }
 

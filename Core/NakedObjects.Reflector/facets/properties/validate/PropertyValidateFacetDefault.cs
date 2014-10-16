@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Validate {
     public class PropertyValidateFacetDefault : FacetAbstract, IPropertyValidateFacet {
-        public PropertyValidateFacetDefault(IFacetHolder holder)
+        public PropertyValidateFacetDefault(ISpecification holder)
             : base(typeof (IPropertyValidateFacet), holder) {}
 
         #region IPropertyValidateFacet Members

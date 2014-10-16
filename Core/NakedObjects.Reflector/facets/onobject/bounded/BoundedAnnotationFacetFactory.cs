@@ -13,12 +13,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Bounded {
         public BoundedAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = type.GetCustomAttributeByReflection<BoundedAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static IBoundedFacet Create(BoundedAttribute attribute, IFacetHolder holder) {
+        private static IBoundedFacet Create(BoundedAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new BoundedFacetAnnotation(holder);
         }
     }

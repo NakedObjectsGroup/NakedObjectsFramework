@@ -13,7 +13,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
         public static string ENCODED_NULL = "NULL";
         private readonly IEncoderDecoder<T> encoderDecoder;
 
-        public EncodeableFacetUsingEncoderDecoder(IEncoderDecoder<T> encoderDecoder, IFacetHolder holder)
+        public EncodeableFacetUsingEncoderDecoder(IEncoderDecoder<T> encoderDecoder, ISpecification holder)
             : base(typeof (IEncodeableFacet), holder) {
             this.encoderDecoder = encoderDecoder;
         }

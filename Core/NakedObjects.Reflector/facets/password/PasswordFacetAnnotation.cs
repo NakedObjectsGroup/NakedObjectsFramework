@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Password;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Password {
     public class PasswordFacetAnnotation : PasswordFacetAbstract {
-        public PasswordFacetAnnotation(IFacetHolder holder)
+        public PasswordFacetAnnotation(ISpecification holder)
             : base(holder) {}
     }
 }

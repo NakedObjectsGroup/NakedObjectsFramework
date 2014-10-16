@@ -13,7 +13,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
     public class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
         private readonly IParser<T> parser;
 
-        public ParseableFacetUsingParser(IParser<T> parser, IFacetHolder holder)
+        public ParseableFacetUsingParser(IParser<T> parser, ISpecification holder)
             : base(typeof (IParseableFacet), holder) {
             this.parser = parser;
         }

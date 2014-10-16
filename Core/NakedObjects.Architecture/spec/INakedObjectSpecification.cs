@@ -21,7 +21,7 @@ namespace NakedObjects.Architecture.Spec {
     public interface INakedObjectSpecification :
         IActionContainer,
         IPropertyContainer,
-        IFacetHolder,
+        ISpecification,
         IHierarchical,
         IDefaultProvider {
         /// <summary>

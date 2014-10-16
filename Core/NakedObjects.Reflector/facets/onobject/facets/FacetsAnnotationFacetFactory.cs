@@ -13,16 +13,16 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
         public FacetsAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = type.GetCustomAttributeByReflection<FacetsAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         /// <summary>
         ///     Returns a <see cref="IFacetsFacet" /> impl provided that at least one valid
         ///     factory <see cref="IFacetsFacet.FacetFactories" /> was specified.
         /// </summary>
-        private static IFacetsFacet Create(FacetsAttribute attribute, IFacetHolder holder) {
+        private static IFacetsFacet Create(FacetsAttribute attribute, ISpecification holder) {
             if (attribute == null) {
                 return null;
             }

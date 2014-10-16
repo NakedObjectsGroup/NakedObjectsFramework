@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public SbyteValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof (ISbyteValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (SbyteValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(SbyteValueSemanticsProvider.AdaptedType);
-                AddFacets(new SbyteValueSemanticsProvider(spec, holder));
+                AddFacets(new SbyteValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

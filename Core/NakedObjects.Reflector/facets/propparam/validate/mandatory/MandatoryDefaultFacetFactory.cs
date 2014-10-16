@@ -21,19 +21,19 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
         public MandatoryDefaultFacetFactory(INakedObjectReflector reflector)
             : base(reflector, NakedObjectFeatureType.PropertiesAndParameters) { }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return FacetUtils.AddFacet(Create(specification));
+        }
+
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+            return FacetUtils.AddFacet(Create(specification));
+        }
+
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             return FacetUtils.AddFacet(Create(holder));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
-            return FacetUtils.AddFacet(Create(holder));
-        }
-
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
-            return FacetUtils.AddFacet(Create(holder));
-        }
-
-        private static IMandatoryFacet Create(IFacetHolder holder) {
+        private static IMandatoryFacet Create(ISpecification holder) {
             return new MandatoryFacetDefault(holder);
         }
     }

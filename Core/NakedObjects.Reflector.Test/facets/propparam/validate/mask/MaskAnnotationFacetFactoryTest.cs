@@ -76,22 +76,22 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask {
         [Test]
         public void TestMaskAnnotationNotIgnoredForNonStringsProperty() {
             PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            Assert.IsNotNull(FacetHolder.GetFacet(typeof (IMaskFacet)));
+            facetFactory.Process(property, MethodRemover, Specification);
+            Assert.IsNotNull(Specification.GetFacet(typeof (IMaskFacet)));
         }
 
         [Test]
         public void TestMaskAnnotationNotIgnoredForPrimitiveOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            Assert.IsNotNull(FacetHolder.GetFacet(typeof (IMaskFacet)));
+            facetFactory.ProcessParams(method, 0, Specification);
+            Assert.IsNotNull(Specification.GetFacet(typeof (IMaskFacet)));
         }
 
         [Test]
         public void TestMaskAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMaskFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacetAnnotation);
             var maskFacet = (MaskFacetAnnotation) facet;
@@ -100,8 +100,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask {
 
         [Test]
         public void TestMaskAnnotationPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMaskFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacetAnnotation);
             var maskFacet = (MaskFacetAnnotation) facet;
@@ -111,8 +111,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask {
         [Test]
         public void TestMaskAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMaskFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacetAnnotation);
             var maskFacet = (MaskFacetAnnotation) facet;

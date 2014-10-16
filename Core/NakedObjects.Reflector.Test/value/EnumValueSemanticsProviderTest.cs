@@ -27,14 +27,14 @@ namespace NakedObjects.Reflector.DotNet.Value {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            holder = new FacetHolderImpl();
+            holder = new SpecificationImpl();
             var spec = new Mock<IIntrospectableSpecification>().Object;
             SetValue(value = new EnumValueSemanticsProvider<TestEnum>(spec, holder));
         }
 
         #endregion
 
-        private IFacetHolder holder;
+        private ISpecification holder;
         private EnumValueSemanticsProvider<TestEnum> value;
 
 

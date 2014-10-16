@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Objects.Validation;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Validation {
     public class ValidateProgrammaticUpdatesFacetAnnotation : ValidateProgrammaticUpdatesFacetImpl {
-        public ValidateProgrammaticUpdatesFacetAnnotation(IFacetHolder holder)
+        public ValidateProgrammaticUpdatesFacetAnnotation(ISpecification holder)
             : base(holder) {}
     }
 

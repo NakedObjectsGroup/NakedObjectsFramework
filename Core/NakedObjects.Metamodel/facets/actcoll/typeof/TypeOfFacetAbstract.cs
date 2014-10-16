@@ -12,7 +12,7 @@ namespace NakedObjects.Architecture.Facets.Actcoll.Typeof {
     public abstract class TypeOfFacetAbstract : SingleClassValueFacetAbstract, ITypeOfFacet {
         private readonly bool inferred;
 
-        protected TypeOfFacetAbstract(Type valueType, bool inferred, IFacetHolder holder, IIntrospectableSpecification spec)
+        protected TypeOfFacetAbstract(Type valueType, bool inferred, ISpecification holder, IIntrospectableSpecification spec)
             : base(Type, holder, valueType, spec) {
             this.inferred = inferred;
         }

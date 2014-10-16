@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Actions.Potency {
     public abstract class IdempotentFacetAbstract : MarkerFacetAbstract, IIdempotentFacet {
-        protected IdempotentFacetAbstract(IFacetHolder holder)
+        protected IdempotentFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

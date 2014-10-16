@@ -10,7 +10,7 @@ using NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
-    public class OrderSet<T> : IComparable<IOrderSet<T>>, IOrderSet<T> where T : IOrderableElement<T>, IFacetHolder {
+    public class OrderSet<T> : IComparable<IOrderSet<T>>, IOrderSet<T> where T : IOrderableElement<T>, ISpecification {
         private readonly List<IOrderableElement<T>> childOrderSets = new List<IOrderableElement<T>>();
         private readonly List<IOrderableElement<T>> elements = new List<IOrderableElement<T>>();
         private readonly string groupFullName;

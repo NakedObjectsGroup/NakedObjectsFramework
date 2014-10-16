@@ -11,7 +11,7 @@ namespace NakedObjects.Architecture.Facets {
     public abstract class SingleWhenValueFacetAbstract : FacetAbstract, ISingleWhenValueFacet {
         private readonly WhenTo when;
 
-        protected SingleWhenValueFacetAbstract(Type facetType, IFacetHolder holder, WhenTo when)
+        protected SingleWhenValueFacetAbstract(Type facetType, ISpecification holder, WhenTo when)
             : base(facetType, holder) {
             this.when = when;
         }

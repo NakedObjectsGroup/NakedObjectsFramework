@@ -16,7 +16,7 @@ namespace NakedObjects.Architecture.Facets.Propparam.Validate.RegEx {
         private readonly bool isCaseSensitive;
         private readonly string validationPattern;
 
-        protected RegExFacetAbstract(string validation, string format, bool caseSensitive, string failureMessage, IFacetHolder holder)
+        protected RegExFacetAbstract(string validation, string format, bool caseSensitive, string failureMessage, ISpecification holder)
             : base(Type, holder) {
             validationPattern = validation;
             formatPattern = format;

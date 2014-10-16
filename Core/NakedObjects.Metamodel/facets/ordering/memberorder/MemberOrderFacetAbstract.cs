@@ -12,7 +12,7 @@ namespace NakedObjects.Architecture.Facets.Ordering.MemberOrder {
         private readonly string name;
         private readonly string sequence;
 
-        protected MemberOrderFacetAbstract(string name, string sequence, IFacetHolder holder)
+        protected MemberOrderFacetAbstract(string name, string sequence, ISpecification holder)
             : base(Type, holder) {
             this.name = name;
             this.sequence = sequence;

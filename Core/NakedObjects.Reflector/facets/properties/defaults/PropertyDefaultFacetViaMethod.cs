@@ -12,7 +12,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Defaults {
     public class PropertyDefaultFacetViaMethod : PropertyDefaultFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public PropertyDefaultFacetViaMethod(MethodInfo method, IFacetHolder holder)
+        public PropertyDefaultFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
         }

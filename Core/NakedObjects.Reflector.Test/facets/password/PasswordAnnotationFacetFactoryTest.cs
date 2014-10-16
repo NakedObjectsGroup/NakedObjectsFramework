@@ -75,24 +75,24 @@ namespace NakedObjects.Reflector.DotNet.Facets.Password {
         [Test]
         public void TestPasswordAnnotationNotPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer4), "someAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IPasswordFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestPasswordAnnotationNotPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer3), "FirstName");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IPasswordFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestPasswordAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IPasswordFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PasswordFacetAnnotation);
         }
@@ -100,8 +100,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Password {
         [Test]
         public void TestPasswordAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IPasswordFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PasswordFacetAnnotation);
         }

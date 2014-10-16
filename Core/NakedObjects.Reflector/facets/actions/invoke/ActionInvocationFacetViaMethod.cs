@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Invoke {
         private readonly int paramCount;
         private readonly IIntrospectableSpecification returnType;
 
-        public ActionInvocationFacetViaMethod(MethodInfo method, IIntrospectableSpecification onType, IIntrospectableSpecification returnType, IFacetHolder holder)
+        public ActionInvocationFacetViaMethod(MethodInfo method, IIntrospectableSpecification onType, IIntrospectableSpecification returnType, ISpecification holder)
             : base(holder) {
             actionMethod = method;
             paramCount = method.GetParameters().Length;

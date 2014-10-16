@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public FloatValueSemanticsProvider(IIntrospectableSpecification spec)
             : this(spec, null) { }
 
-        public FloatValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+        public FloatValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLenth, immutable, equalByContent, defaultValue, spec) { }
 
         public static Type Type {

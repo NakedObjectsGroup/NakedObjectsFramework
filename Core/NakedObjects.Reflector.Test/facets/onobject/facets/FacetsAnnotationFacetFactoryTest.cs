@@ -64,15 +64,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
                 get { return null; }
             }
 
-            public override bool Process(Type clazz, IMethodRemover methodRemover, IFacetHolder holder) {
+            public override bool Process(Type clazz, IMethodRemover methodRemover, ISpecification specification) {
                 return false;
             }
 
-            public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
+            public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
                 return false;
             }
 
-            public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+            public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
                 return false;
             }
         }
@@ -85,15 +85,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
                 get { return null; }
             }
 
-            public override bool Process(Type clazz, IMethodRemover methodRemover, IFacetHolder holder) {
+            public override bool Process(Type clazz, IMethodRemover methodRemover, ISpecification specification) {
                 return false;
             }
 
-            public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
+            public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
                 return false;
             }
 
-            public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+            public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
                 return false;
             }
         }
@@ -102,8 +102,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
 
         [Test]
         public void TestFacetsFactoryClass() {
-            facetFactory.Process(typeof (Customer2), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IFacetsFacet));
+            facetFactory.Process(typeof (Customer2), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IFacetsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is FacetsFacetAnnotation);
             var facetsFacet = (FacetsFacetAnnotation) facet;
@@ -114,8 +114,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
 
         [Test]
         public void TestFacetsFactoryNameAndClass() {
-            facetFactory.Process(typeof (Customer3), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IFacetsFacet));
+            facetFactory.Process(typeof (Customer3), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IFacetsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is FacetsFacetAnnotation);
             var facetsFacet = (FacetsFacetAnnotation) facet;
@@ -127,8 +127,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
 
         [Test]
         public void TestFacetsFactoryNames() {
-            facetFactory.Process(typeof (Customer1), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IFacetsFacet));
+            facetFactory.Process(typeof (Customer1), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IFacetsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is FacetsFacetAnnotation);
             var facetsFacet = (FacetsFacetAnnotation) facet;
@@ -140,8 +140,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
 
         [Test]
         public void TestFacetsFactoryNoop() {
-            facetFactory.Process(typeof (Customer4), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IFacetsFacet));
+            facetFactory.Process(typeof (Customer4), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IFacetsFacet));
             Assert.IsNull(facet);
         }
 

@@ -20,7 +20,7 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     [TestFixture]
     public class CollectionFacetsTest {
-        private readonly FacetHolderImpl facetHolder = new FacetHolderImpl();
+        private readonly SpecificationImpl specification = new SpecificationImpl();
 
         private readonly Mock<ILifecycleManager> mockLifecycleManager = new Mock<ILifecycleManager>();
         private readonly Mock<INakedObjectManager> mockManager = new Mock<INakedObjectManager>();
@@ -73,7 +73,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
 
         private void Page(ICollectionFacet testArrayFacet, INakedObject collection, object first) {
             INakedObject pagedCollection = testArrayFacet.Page(1, 1, collection, manager, false);
-            var pagedCollectionFacet = new DotNetGenericIEnumerableFacet<object>(facetHolder, typeof (object), false);
+            var pagedCollectionFacet = new DotNetGenericIEnumerableFacet<object>(specification, typeof (object), false);
 
             Assert.IsTrue(pagedCollectionFacet.AsEnumerable(pagedCollection, manager).Count() == 1);
             Assert.AreSame(pagedCollectionFacet.AsEnumerable(pagedCollection, manager).First().Object, first);
@@ -82,7 +82,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void ArrayContains() {
             var testArray = new[] {"element1", "element2"};
-            var testArrayFacet = new DotNetArrayFacet(facetHolder);
+            var testArrayFacet = new DotNetArrayFacet(specification);
             INakedObject testAdaptedArray = AdapterFor(testArray);
             Contains(testArrayFacet, testAdaptedArray, "element1", "element3");
         }
@@ -91,7 +91,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void ArrayFirstElement() {
             var testArray = new[] {"element1", "element2"};
-            var testArrayFacet = new DotNetArrayFacet(facetHolder);
+            var testArrayFacet = new DotNetArrayFacet(specification);
             INakedObject testAdaptedArray = AdapterFor(testArray);
             FirstElement(testArrayFacet, testAdaptedArray, "element1");
         }
@@ -99,7 +99,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void ArrayGetEnumeratorFor() {
             var testArray = new[] {"element1", "element2"};
-            var testArrayFacet = new DotNetArrayFacet(facetHolder);
+            var testArrayFacet = new DotNetArrayFacet(specification);
             INakedObject testAdaptedArray = AdapterFor(testArray);
             ValidateCollection(testArrayFacet, testAdaptedArray, testArray);
         }
@@ -108,7 +108,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void ArrayInit() {
             var testArray = new[] {"element1", "element2"};
             var testArray1 = new[] {"element2", "element3"};
-            var testArrayFacet = new DotNetArrayFacet(facetHolder);
+            var testArrayFacet = new DotNetArrayFacet(specification);
             INakedObject testAdaptedArray = AdapterFor(testArray);
             Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
         }
@@ -117,7 +117,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void ArrayInitAllEmpty() {
             var testArray = new string[] {};
             var testArray1 = new string[] {};
-            var testArrayFacet = new DotNetArrayFacet(facetHolder);
+            var testArrayFacet = new DotNetArrayFacet(specification);
             INakedObject testAdaptedArray = AdapterFor(testArray);
             Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
         }
@@ -126,7 +126,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void ArrayInitEmpty() {
             var testArray = new string[] {};
             var testArray1 = new[] {"element2", "element3"};
-            var testArrayFacet = new DotNetArrayFacet(facetHolder);
+            var testArrayFacet = new DotNetArrayFacet(specification);
             INakedObject testAdaptedArray = AdapterFor(testArray);
             Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
         }
@@ -135,7 +135,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void ArrayInitToEmpty() {
             var testArray = new[] {"element1", "element2"};
             var testArray1 = new string[] {};
-            var testArrayFacet = new DotNetArrayFacet(facetHolder);
+            var testArrayFacet = new DotNetArrayFacet(specification);
             INakedObject testAdaptedArray = AdapterFor(testArray);
             Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
         }
@@ -143,7 +143,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void ArrayPage() {
             var testArray = new[] {"element1", "element2"};
-            var testArrayFacet = new DotNetArrayFacet(facetHolder);
+            var testArrayFacet = new DotNetArrayFacet(specification);
             INakedObject testAdaptedArray = AdapterFor(testArray);
             Page(testArrayFacet, testAdaptedArray, "element1");
         }
@@ -151,7 +151,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void ArraySize() {
             var testArray = new[] {"element1", "element2"};
-            var testArrayFacet = new DotNetArrayFacet(facetHolder);
+            var testArrayFacet = new DotNetArrayFacet(specification);
             INakedObject testAdaptedArray = AdapterFor(testArray);
             Size(testArrayFacet, testAdaptedArray);
         }
@@ -159,7 +159,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void CollectionContains() {
             var testCollection = new ArrayList {"element1", "element2"};
-            var testCollectionFacet = new DotNetCollectionFacet(facetHolder);
+            var testCollectionFacet = new DotNetCollectionFacet(specification);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
         }
@@ -167,7 +167,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void CollectionFirstElement() {
             var testCollection = new ArrayList {"element1", "element2"};
-            var testCollectionFacet = new DotNetCollectionFacet(facetHolder);
+            var testCollectionFacet = new DotNetCollectionFacet(specification);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
         }
@@ -175,7 +175,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void CollectionGetEnumeratorFor() {
             var testCollection = new ArrayList {"element1", "element2"};
-            var testCollectionFacet = new DotNetCollectionFacet(facetHolder);
+            var testCollectionFacet = new DotNetCollectionFacet(specification);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>());
         }
@@ -184,7 +184,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void CollectionInit() {
             var testCollection = new ArrayList {"element1", "element2"};
             var testCollection1 = new[] {"element2", "element3"};
-            var testCollectionFacet = new DotNetCollectionFacet(facetHolder);
+            var testCollectionFacet = new DotNetCollectionFacet(specification);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
         }
@@ -193,7 +193,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void CollectionInitAllEmpty() {
             var testCollection = new ArrayList();
             var testCollection1 = new string[] {};
-            var testCollectionFacet = new DotNetCollectionFacet(facetHolder);
+            var testCollectionFacet = new DotNetCollectionFacet(specification);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
         }
@@ -202,7 +202,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void CollectionInitEmpty() {
             var testCollection = new ArrayList();
             var testCollection1 = new[] {"element2", "element3"};
-            var testCollectionFacet = new DotNetCollectionFacet(facetHolder);
+            var testCollectionFacet = new DotNetCollectionFacet(specification);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
         }
@@ -211,25 +211,25 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void CollectionInitToEmpty() {
             var testCollection = new ArrayList {"element1", "element2"};
             var testCollection1 = new string[] {};
-            var testCollectionFacet = new DotNetCollectionFacet(facetHolder);
+            var testCollectionFacet = new DotNetCollectionFacet(specification);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
         }
 
         [Test]
         public void CollectionNotIsSet() {
-            ICollectionFacet testCollectionFacet = new DotNetCollectionFacet(facetHolder);
+            ICollectionFacet testCollectionFacet = new DotNetCollectionFacet(specification);
             Assert.IsFalse(testCollectionFacet.IsASet);
-            testCollectionFacet = new DotNetArrayFacet(facetHolder);
+            testCollectionFacet = new DotNetArrayFacet(specification);
             Assert.IsFalse(testCollectionFacet.IsASet);
-            testCollectionFacet = new DotNetCollectionFacet(facetHolder);
+            testCollectionFacet = new DotNetCollectionFacet(specification);
             Assert.IsFalse(testCollectionFacet.IsASet);
         }
 
         [Test]
         public void CollectionPage() {
             var testCollection = new ArrayList {"element1", "element2"};
-            var testCollectionFacet = new DotNetCollectionFacet(facetHolder);
+            var testCollectionFacet = new DotNetCollectionFacet(specification);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Page(testCollectionFacet, testAdaptedCollection, "element1");
         }
@@ -237,7 +237,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void CollectionSize() {
             var testCollection = new ArrayList {"element1", "element2"};
-            var testCollectionFacet = new DotNetCollectionFacet(facetHolder);
+            var testCollectionFacet = new DotNetCollectionFacet(specification);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Size(testCollectionFacet, testAdaptedCollection);
         }
@@ -245,7 +245,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericCollectionContains() {
             var testCollection = new List<string> {"element1", "element2"};
-            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
         }
@@ -253,7 +253,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericCollectionFirstElement() {
             var testCollection = new List<string> {"element1", "element2"};
-            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
         }
@@ -261,7 +261,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericCollectionGetEnumeratorFor() {
             var testCollection = new List<string> {"element1", "element2"};
-            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection);
         }
@@ -270,7 +270,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void GenericCollectionInit() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollection1 = new[] {"element2", "element3"};
-            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
@@ -279,7 +279,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void GenericCollectionInitAllEmpty() {
             var testCollection = new List<string>();
             var testCollection1 = new string[] {};
-            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
@@ -288,7 +288,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void GenericCollectionInitEmpty() {
             var testCollection = new List<string>();
             var testCollection1 = new[] {"element2", "element3"};
-            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
@@ -297,35 +297,35 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void GenericCollectionInitToEmpty() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollection1 = new string[] {};
-            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
 
         [Test]
         public void GenericCollectionIsSet() {
-            ICollectionFacet testCollectionFacet = new DotNetGenericCollectionFacet<string>(facetHolder, typeof (string), true);
+            ICollectionFacet testCollectionFacet = new DotNetGenericCollectionFacet<string>(specification, typeof (string), true);
             Assert.IsTrue(testCollectionFacet.IsASet);
-            testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(facetHolder, typeof (string), true);
+            testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(specification, typeof (string), true);
             Assert.IsTrue(testCollectionFacet.IsASet);
-            testCollectionFacet = new DotNetGenericIQueryableFacet<string>(facetHolder, typeof (string), true);
+            testCollectionFacet = new DotNetGenericIQueryableFacet<string>(specification, typeof (string), true);
             Assert.IsTrue(testCollectionFacet.IsASet);
         }
 
         [Test]
         public void GenericCollectionNotIsSet() {
-            ICollectionFacet testCollectionFacet = new DotNetGenericCollectionFacet<string>(facetHolder, typeof (string), false);
+            ICollectionFacet testCollectionFacet = new DotNetGenericCollectionFacet<string>(specification, typeof (string), false);
             Assert.IsFalse(testCollectionFacet.IsASet);
-            testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(facetHolder, typeof (string), false);
+            testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(specification, typeof (string), false);
             Assert.IsFalse(testCollectionFacet.IsASet);
-            testCollectionFacet = new DotNetGenericIQueryableFacet<string>(facetHolder, typeof (string), false);
+            testCollectionFacet = new DotNetGenericIQueryableFacet<string>(specification, typeof (string), false);
             Assert.IsFalse(testCollectionFacet.IsASet);
         }
 
         [Test]
         public void GenericCollectionPage() {
             var testCollection = new List<string> {"element1", "element2"};
-            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Page(testCollectionFacet, testAdaptedCollection, "element1");
         }
@@ -333,7 +333,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericCollectionSize() {
             var testCollection = new List<string> {"element1", "element2"};
-            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericCollectionFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Size(testCollectionFacet, testAdaptedCollection);
         }
@@ -341,7 +341,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericEnumerableContains() {
             var testCollection = new List<string> {"element1", "element2"};
-            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
         }
@@ -349,7 +349,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericEnumerableFirstElement() {
             var testCollection = new List<string> {"element1", "element2"};
-            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
         }
@@ -357,7 +357,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericEnumerableGetEnumeratorFor() {
             var testCollection = new List<string> {"element1", "element2"};
-            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection);
         }
@@ -366,7 +366,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void GenericEnumerableInit() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollection1 = new[] {"element2", "element3"};
-            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
@@ -375,7 +375,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void GenericEnumerableInitAllEmpty() {
             var testCollection = new List<string>();
             var testCollection1 = new string[] {};
-            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
@@ -384,7 +384,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void GenericEnumerableInitEmpty() {
             var testCollection = new List<string>();
             var testCollection1 = new[] {"element2", "element3"};
-            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
@@ -393,7 +393,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void GenericEnumerableInitToEmpty() {
             var testCollection = new List<string> {"element1", "element2"};
             var testCollection1 = new string[] {};
-            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
@@ -401,7 +401,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericEnumerablePage() {
             var testCollection = new List<string> {"element1", "element2"};
-            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Page(testCollectionFacet, testAdaptedCollection, "element1");
         }
@@ -409,7 +409,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericEnumerableSize() {
             var testCollection = new List<string> {"element1", "element2"};
-            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIEnumerableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Size(testCollectionFacet, testAdaptedCollection);
         }
@@ -417,7 +417,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericQueryableContains() {
             IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
-            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Contains(testCollectionFacet, testAdaptedCollection, "element1", "element3");
         }
@@ -425,7 +425,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericQueryableFirstElement() {
             IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
-            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             FirstElement(testCollectionFacet, testAdaptedCollection, "element1");
         }
@@ -433,7 +433,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericQueryableGetEnumeratorFor() {
             IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
-            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             ValidateCollection(testCollectionFacet, testAdaptedCollection, testCollection);
         }
@@ -442,7 +442,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void GenericQueryableInit() {
             IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
             IQueryable<string> testCollection1 = new[] {"element2", "element3"}.AsQueryable();
-            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
@@ -451,7 +451,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void GenericQueryableInitAllEmpty() {
             IQueryable<string> testCollection = new List<string>().AsQueryable();
             IQueryable<string> testCollection1 = new string[] {}.AsQueryable();
-            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
@@ -460,7 +460,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void GenericQueryableInitEmpty() {
             IQueryable<string> testCollection = new List<string>().AsQueryable();
             var testCollection1 = new[] {"element2", "element3"};
-            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
@@ -469,7 +469,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public void GenericQueryableInitToEmpty() {
             IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
             IQueryable<string> testCollection1 = new string[] {}.AsQueryable();
-            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
         }
@@ -477,7 +477,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericQueryablePage() {
             IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
-            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Page(testCollectionFacet, testAdaptedCollection, "element1");
         }
@@ -485,7 +485,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         [Test]
         public void GenericQueryableSize() {
             IQueryable<string> testCollection = new List<string> {"element1", "element2"}.AsQueryable();
-            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(facetHolder, typeof (string), false);
+            var testCollectionFacet = new DotNetGenericIQueryableFacet<string>(specification, typeof (string), false);
             INakedObject testAdaptedCollection = AdapterFor(testCollection);
             Size(testCollectionFacet, testAdaptedCollection);
         }

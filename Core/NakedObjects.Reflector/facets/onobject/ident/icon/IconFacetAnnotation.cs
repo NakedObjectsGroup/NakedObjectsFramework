@@ -10,7 +10,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
     public class IconFacetAnnotation : IconFacetAbstract {
         private readonly string iconName;
 
-        public IconFacetAnnotation(string iconName, IFacetHolder holder)
+        public IconFacetAnnotation(string iconName, ISpecification holder)
             : base(holder) {
             this.iconName = iconName;
         }

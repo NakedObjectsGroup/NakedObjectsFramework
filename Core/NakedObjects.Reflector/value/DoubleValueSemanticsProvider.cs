@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public DoubleValueSemanticsProvider(IIntrospectableSpecification spec)
             : this(spec, null) { }
 
-        public DoubleValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+        public DoubleValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLenth, immutable, equalByContent, defaultValue, spec) { }
 
         private static Type Type {

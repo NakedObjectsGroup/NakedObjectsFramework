@@ -55,16 +55,16 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
 
         [Test]
         public void TestProgramPersistableOnlyNotPickup() {
-            facetFactory.Process(typeof (Customer1), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IProgramPersistableOnlyFacet));
+            facetFactory.Process(typeof (Customer1), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IProgramPersistableOnlyFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
 
         [Test]
         public void TestProgramPersistableOnlyPickup() {
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IProgramPersistableOnlyFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IProgramPersistableOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ProgramPersistableOnlyFacetAnnotation);
             AssertNoMethodsRemoved();

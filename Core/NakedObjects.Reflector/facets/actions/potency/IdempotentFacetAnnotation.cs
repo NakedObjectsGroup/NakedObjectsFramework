@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Actions.Potency;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Potency {
     public class IdempotentFacetAnnotation : IdempotentFacetImpl {
-        public IdempotentFacetAnnotation(IFacetHolder holder)
+        public IdempotentFacetAnnotation(ISpecification holder)
             : base(holder) {}
     }
 }

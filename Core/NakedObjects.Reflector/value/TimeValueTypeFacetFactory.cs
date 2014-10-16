@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public TimeValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof (IDateValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (TimeValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(TimeValueSemanticsProvider.AdaptedType);
-                AddFacets(new TimeValueSemanticsProvider(spec, holder));
+                AddFacets(new TimeValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

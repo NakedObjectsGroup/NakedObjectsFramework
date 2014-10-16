@@ -11,7 +11,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
     public class PropertyDefaultFacetDerivedFromDefaultedFacet : FacetAbstract, IPropertyDefaultFacet {
         private readonly IDefaultedFacet typeFacet;
 
-        public PropertyDefaultFacetDerivedFromDefaultedFacet(IDefaultedFacet typeFacet, IFacetHolder holder)
+        public PropertyDefaultFacetDerivedFromDefaultedFacet(IDefaultedFacet typeFacet, ISpecification holder)
             : base(typeof (IPropertyDefaultFacet), holder) {
             this.typeFacet = typeFacet;
         }

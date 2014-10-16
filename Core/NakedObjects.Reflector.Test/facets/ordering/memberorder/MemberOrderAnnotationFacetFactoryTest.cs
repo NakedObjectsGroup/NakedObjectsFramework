@@ -75,8 +75,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         [Test]
         public void TestMemberOrderAnnotationPickedUpOnAction() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction");
-            facetFactory.Process(method, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMemberOrderFacet));
+            facetFactory.Process(method, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacetAnnotation);
             var memberOrderFacetAnnotation = (MemberOrderFacetAnnotation) facet;
@@ -87,8 +87,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         [Test]
         public void TestMemberOrderAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMemberOrderFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacetAnnotation);
             var memberOrderFacetAnnotation = (MemberOrderFacetAnnotation) facet;
@@ -99,8 +99,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         [Test]
         public void TestMemberOrderAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer), "FirstName");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IMemberOrderFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacetAnnotation);
             var memberOrderFacetAnnotation = (MemberOrderFacetAnnotation) facet;

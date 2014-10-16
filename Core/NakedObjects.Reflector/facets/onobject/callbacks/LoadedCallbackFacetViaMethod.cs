@@ -14,7 +14,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
     public class LoadedCallbackFacetViaMethod : LoadedCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public LoadedCallbackFacetViaMethod(MethodInfo method, IFacetHolder holder)
+        public LoadedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
         }

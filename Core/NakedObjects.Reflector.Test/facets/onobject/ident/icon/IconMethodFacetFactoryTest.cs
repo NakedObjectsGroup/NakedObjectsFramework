@@ -80,8 +80,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
 
         [Test]
         public void TestIconNameFromAttribute() {
-            facetFactory.Process(typeof (Customer1), MethodRemover, FacetHolder);
-            var facet = FacetHolder.GetFacet<IIconFacet>();
+            facetFactory.Process(typeof (Customer1), MethodRemover, Specification);
+            var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetAnnotation);
             Assert.AreEqual("AttributeName", facet.GetIconName());
@@ -91,8 +91,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
 
         [Test]
         public void TestIconNameFromMethod() {
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            var facet = FacetHolder.GetFacet<IIconFacet>();
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             Assert.IsNull(facet.GetIconName());
@@ -103,8 +103,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
         [Test]
         public void TestIconNameMethodPickedUpOnClassAndMethodRemoved() {
             MethodInfo iconNameMethod = FindMethod(typeof (Customer), "IconName");
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            var facet = FacetHolder.GetFacet<IIconFacet>();
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             AssertMethodRemoved(iconNameMethod);
@@ -112,8 +112,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
 
         [Test]
         public void TestIconNameWithFallbackAttribute() {
-            facetFactory.Process(typeof (Customer2), MethodRemover, FacetHolder);
-            var facet = FacetHolder.GetFacet<IIconFacet>();
+            facetFactory.Process(typeof (Customer2), MethodRemover, Specification);
+            var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             Assert.AreEqual("AttributeName", facet.GetIconName());

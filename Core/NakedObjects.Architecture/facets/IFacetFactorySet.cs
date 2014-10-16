@@ -30,50 +30,50 @@ namespace NakedObjects.Architecture.Facets {
         bool Filters(MethodInfo method);
 
         /// <summary>
-        ///     Delegates to <see cref="IFacetFactory.Process(Type,IMethodRemover,IFacetHolder)" /> for each appropriate factory.
+        ///     Delegates to <see cref="IFacetFactory.Process(Type,IMethodRemover,ISpecification)" /> for each appropriate factory.
         /// </summary>
         /// <param name="type">type to process</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
-        /// <param name="facetHolder">holder to attach facets to</param>
+        /// <param name="specificationholder to attach facets to</param>
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        bool Process(Type type, IMethodRemover methodRemover, IFacetHolder facetHolder);
+        bool Process(Type type, IMethodRemover methodRemover, ISpecification specification);
 
         /// <summary>
-        ///     Delegates to <see cref="IFacetFactory.Process(MethodInfo,IMethodRemover,IFacetHolder)" />for each appropriate factory.
+        ///     Delegates to <see cref="IFacetFactory.Process(MethodInfo,IMethodRemover,ISpecification)" />for each appropriate factory.
         /// </summary>
         /// <param name="method">method to process</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
-        /// <param name="facetHolder">holder to attach facets to</param>
+        /// <param name="specificationholder to attach facets to</param>
         /// <param name="featureType">what type of feature the method represents (property, action, collection etc)</param>
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder facetHolder, NakedObjectFeatureType featureType);
+        bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification, NakedObjectFeatureType featureType);
 
         /// <summary>
-        ///     Delegates to <see cref="IFacetFactory.Process(PropertyInfo,IMethodRemover,IFacetHolder)" />for each appropriate factory.
+        ///     Delegates to <see cref="IFacetFactory.Process(PropertyInfo,IMethodRemover,ISpecification)" />for each appropriate factory.
         /// </summary>
         /// <param name="property">property to process</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
-        /// <param name="facetHolder">holder to attach facets to</param>
+        /// <param name="specificationholder to attach facets to</param>
         /// <param name="featureType">what type of feature the method represents (property, action, collection etc)</param>
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder facetHolder, NakedObjectFeatureType featureType);
+        bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification, NakedObjectFeatureType featureType);
 
         /// <summary>
         ///     Delegates to <see cref="IFacetFactory.ProcessParams" /> for each appropriate factory.
         /// </summary>
         /// <param name="method">action method to process</param>
         /// <param name="paramNum">zero-based</param>
-        /// <param name="facetHolder">holder to attach facets to</param>
+        /// <param name="specificationholder to attach facets to</param>
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder facetHolder);
+        bool ProcessParams(MethodInfo method, int paramNum, ISpecification specification);
 
         void Init(INakedObjectReflector reflector);
     }

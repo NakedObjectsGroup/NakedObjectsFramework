@@ -47,6 +47,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Spec;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Models;
+using WebGrease.Configuration;
 
 namespace NakedObjects.Web.Mvc.Html {
     public class CustomMenuItem {
@@ -1119,7 +1120,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.TextBox(context.GetAutoCompleteFieldId(), title, htmlAttributes).ToHtmlString();
         }
 
-        private static RouteValueDictionary CreateAutoCompleteAttributes(IFacetHolder holder, string completionAjaxUrl) {
+        private static RouteValueDictionary CreateAutoCompleteAttributes(ISpecification holder, string completionAjaxUrl) {
             int minLength = holder.GetFacet<IAutoCompleteFacet>().MinLength;
             var attrs = new RouteValueDictionary {{"data-completions", completionAjaxUrl}, {"data-completions-minlength", minLength}};
             return attrs;
@@ -1880,7 +1881,7 @@ namespace NakedObjects.Web.Mvc.Html {
                    html.CollectionTable(collectionNakedObject, linkFunc, filterFunc, orderFunc, false, false, withTitle);
         }
 
-        internal static void GetTableColumnInfo(IFacetHolder holder, out Func<INakedObjectAssociation, bool> filterFunc, out Func<INakedObjectAssociation, int> orderFunc, out bool withTitle) {
+        internal static void GetTableColumnInfo(ISpecification holder, out Func<INakedObjectAssociation, bool> filterFunc, out Func<INakedObjectAssociation, int> orderFunc, out bool withTitle) {
             ITableViewFacet tableViewFacet = holder == null ? null : holder.GetFacet<ITableViewFacet>();
 
             if (tableViewFacet == null) {
@@ -1896,12 +1897,12 @@ namespace NakedObjects.Web.Mvc.Html {
             }
         }
 
-        internal static bool RenderEagerly(IFacetHolder holder) {
+        internal static bool RenderEagerly(ISpecification holder) {
             IEagerlyFacet eagerlyFacet = holder == null ? null : holder.GetFacet<IEagerlyFacet>();
             return eagerlyFacet != null && eagerlyFacet.What == EagerlyAttribute.Do.Rendering;
         }
 
-        internal static bool DoNotCount(IFacetHolder holder) {
+        internal static bool DoNotCount(ISpecification holder) {
             return holder.ContainsFacet<INotCountedFacet>();
         }
 
@@ -2583,7 +2584,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         #region private
 
-        private static string GetDisplayTitle(this HtmlHelper html, IFacetHolder holder, INakedObject nakedObject) {
+        private static string GetDisplayTitle(this HtmlHelper html, ISpecification holder, INakedObject nakedObject) {
             var mask = holder.GetFacet<IMaskFacet>();
             string title = mask != null ? nakedObject.Specification.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, nakedObject, html.Framework().Manager) : nakedObject.TitleString();
             return string.IsNullOrWhiteSpace(title) && !nakedObject.Specification.IsParseable ? nakedObject.Specification.UntitledName : title;

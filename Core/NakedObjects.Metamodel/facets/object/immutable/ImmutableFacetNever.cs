@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facets.Objects.Immutable {
     public class ImmutableFacetNever : ImmutableFacetAbstract {
-        public ImmutableFacetNever(IFacetHolder holder)
+        public ImmutableFacetNever(ISpecification holder)
             : base(WhenTo.Never, holder) {}
 
         /// <summary>

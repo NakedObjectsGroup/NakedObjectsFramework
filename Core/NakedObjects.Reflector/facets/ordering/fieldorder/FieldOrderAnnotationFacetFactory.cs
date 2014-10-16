@@ -13,12 +13,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.FieldOrder {
         public FieldOrderAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsOnly) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = type.GetCustomAttributeByReflection<FieldOrderAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static IFieldOrderFacet Create(FieldOrderAttribute attribute, IFacetHolder holder) {
+        private static IFieldOrderFacet Create(FieldOrderAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new FieldOrderFacetAnnotation(attribute.Value, holder);
         }
     }

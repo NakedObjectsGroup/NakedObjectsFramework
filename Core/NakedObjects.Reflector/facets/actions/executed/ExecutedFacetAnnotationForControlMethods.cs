@@ -13,7 +13,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     public class ExecutedFacetAnnotationForControlMethods : ExecutedControlMethodFacetAbstract {
         private readonly IDictionary<MethodInfo, Where> methodToWhere = new Dictionary<MethodInfo, Where>();
 
-        public ExecutedFacetAnnotationForControlMethods(MethodInfo method, Where where, IFacetHolder holder)
+        public ExecutedFacetAnnotationForControlMethods(MethodInfo method, Where where, ISpecification holder)
             : base(holder) {
             methodToWhere[method] = where;
         }

@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             }
         }
 
-        public void ProcessSystemType(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public void ProcessSystemType(Type type, IMethodRemover methodRemover, ISpecification holder) {
             InitForType(type);
             foreach (MethodInfo method in typeToMethods[type]) {
                 if (methodRemover != null && method != null) {
@@ -41,11 +41,11 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             Type currentType = type;
             while (currentType != null) {
                 if (TypeUtils.IsSystem(currentType)) {
-                    ProcessSystemType(currentType, methodRemover, holder);
+                    ProcessSystemType(currentType, methodRemover, specification);
                 }
                 currentType = currentType.BaseType;
             }

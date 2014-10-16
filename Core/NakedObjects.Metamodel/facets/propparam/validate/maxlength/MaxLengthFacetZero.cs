@@ -11,7 +11,7 @@ namespace NakedObjects.Architecture.Facets.Propparam.Validate.MaxLength {
     public class MaxLengthFacetZero : MaxLengthFacetAbstract {
         private const int NoLimit = 0;
 
-        public MaxLengthFacetZero(IFacetHolder holder)
+        public MaxLengthFacetZero(ISpecification holder)
             : base(NoLimit, holder) {}
 
         public override bool IsNoOp {

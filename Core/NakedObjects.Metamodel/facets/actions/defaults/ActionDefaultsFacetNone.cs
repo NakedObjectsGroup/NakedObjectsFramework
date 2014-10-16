@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Facets.Actions.Defaults {
     public class ActionDefaultsFacetNone : ActionDefaultsFacetAbstract {
-        public ActionDefaultsFacetNone(IFacetHolder holder)
+        public ActionDefaultsFacetNone(ISpecification holder)
             : base(holder) {}
 
         public override bool IsNoOp {

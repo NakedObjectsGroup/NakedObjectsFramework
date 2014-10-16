@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facets.Disable {
     public abstract class DisabledFacetAbstract : SingleWhenValueFacetAbstract, IDisabledFacet {
-        protected DisabledFacetAbstract(WhenTo when, IFacetHolder holder)
+        protected DisabledFacetAbstract(WhenTo when, ISpecification holder)
             : base(Type, holder, when) {}
 
         public static Type Type {

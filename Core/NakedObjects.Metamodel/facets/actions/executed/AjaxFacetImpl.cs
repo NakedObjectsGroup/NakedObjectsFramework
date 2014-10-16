@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Architecture.Facets.Actions.Executed {
     public class AjaxFacetImpl : AjaxFacetAbstract {
-        public AjaxFacetImpl(IFacetHolder holder)
+        public AjaxFacetImpl(ISpecification holder)
             : base(holder) {}
     }
 

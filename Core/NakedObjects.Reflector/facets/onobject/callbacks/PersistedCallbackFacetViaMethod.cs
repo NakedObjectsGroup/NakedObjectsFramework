@@ -14,7 +14,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
     public class PersistedCallbackFacetViaMethod : PersistedCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public PersistedCallbackFacetViaMethod(MethodInfo method, IFacetHolder holder)
+        public PersistedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
         }

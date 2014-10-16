@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.I18n {
 
         #region IFacetDecorator Members
 
-        public virtual IFacet Decorate(IFacet facet, IFacetHolder holder) {
+        public virtual IFacet Decorate(IFacet facet, ISpecification holder) {
             IIdentifier identifier = holder.Identifier;
             Type facetType = facet.FacetType;
 
@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.I18n {
        
 
     
-        private IFacet GetDescriptionFacet(IFacetHolder holder, IDescribedAsFacet facet, IIdentifier identifier) {
+        private IFacet GetDescriptionFacet(ISpecification holder, IDescribedAsFacet facet, IIdentifier identifier) {
             string i18nDescription;
             string original = (facet).Value;
             if (holder is NakedObjectActionParameterAbstract) {
@@ -62,10 +62,10 @@ namespace NakedObjects.Reflector.I18n {
                     return new DescribedAsFacetDynamicWrapI18n(i18nManager, holder, identifier, facet);
                 }
             }
-            return i18nDescription == null ? null : new DescribedAsFacetWrapI18n(i18nDescription, facet.FacetHolder);
+            return i18nDescription == null ? null : new DescribedAsFacetWrapI18n(i18nDescription, facet.Specification);
         }
 
-        private IFacet GetNamedFacet(IFacetHolder holder, INamedFacet facet, IIdentifier identifier) {
+        private IFacet GetNamedFacet(ISpecification holder, INamedFacet facet, IIdentifier identifier) {
             string original = (facet).Value ?? NameUtils.NaturalName(identifier.MemberName);
             string i18nName;
             if (holder is NakedObjectActionParameterAbstract) {
@@ -83,7 +83,7 @@ namespace NakedObjects.Reflector.I18n {
                     return new NamedFacetDynamicWrapI18n(i18nManager, holder, identifier, facet);
                 }
             }
-            return i18nName == null ? null : new NamedFacetWrapI18n(i18nName, facet.FacetHolder);
+            return i18nName == null ? null : new NamedFacetWrapI18n(i18nName, facet.Specification);
         }
     }
 

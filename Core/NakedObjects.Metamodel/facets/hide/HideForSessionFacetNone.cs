@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Facets.Hide {
     public class HideForSessionFacetNone : HideForSessionFacetAbstract {
-        public HideForSessionFacetNone(IFacetHolder holder)
+        public HideForSessionFacetNone(ISpecification holder)
             : base(holder) {}
 
         public override bool IsNoOp {

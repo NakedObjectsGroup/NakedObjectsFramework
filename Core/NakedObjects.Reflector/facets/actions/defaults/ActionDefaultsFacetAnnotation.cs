@@ -12,7 +12,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Defaults {
     public class ActionDefaultsFacetAnnotation : ActionDefaultsFacetAbstract {
         private readonly object value;
 
-        public ActionDefaultsFacetAnnotation(object value, IFacetHolder holder)
+        public ActionDefaultsFacetAnnotation(object value, ISpecification holder)
             : base(holder) {
             this.value = value;
         }

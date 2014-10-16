@@ -12,7 +12,7 @@ namespace NakedObjects.Architecture.Facets.Propparam.MultiLine {
         private readonly int numberOfLines;
         private readonly int width;
 
-        protected MultiLineFacetAbstract(int numberOfLines, int width, IFacetHolder holder)
+        protected MultiLineFacetAbstract(int numberOfLines, int width, ISpecification holder)
             : base(Type, holder) {
             this.numberOfLines = numberOfLines;
             this.width = width;

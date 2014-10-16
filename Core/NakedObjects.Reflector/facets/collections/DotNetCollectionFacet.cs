@@ -13,10 +13,10 @@ using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class DotNetCollectionFacet : CollectionFacetAbstract {
-        public DotNetCollectionFacet(IFacetHolder holder)
+        public DotNetCollectionFacet(ISpecification holder)
             : base(holder) {}
 
-        public DotNetCollectionFacet(IFacetHolder holder, Type elementType)
+        public DotNetCollectionFacet(ISpecification holder, Type elementType)
             : base(holder, elementType, false) {}
 
         protected static IList AsCollection(INakedObject collection) {

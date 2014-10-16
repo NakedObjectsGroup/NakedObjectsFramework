@@ -14,21 +14,21 @@ namespace NakedObjects.Architecture.Facets.Propparam.TypicalLength {
         public TypicalLengthDerivedFromTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.PropertiesAndParameters) { }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
-            return AddFacetDerivedFromTypeIfPresent(holder, property.PropertyType);
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+            return AddFacetDerivedFromTypeIfPresent(specification, property.PropertyType);
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
             Type type = method.ReturnType;
-            return AddFacetDerivedFromTypeIfPresent(holder, type);
+            return AddFacetDerivedFromTypeIfPresent(specification, type);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             return AddFacetDerivedFromTypeIfPresent(holder, parameter.ParameterType);
         }
 
-        private bool AddFacetDerivedFromTypeIfPresent(IFacetHolder holder, Type type) {
+        private bool AddFacetDerivedFromTypeIfPresent(ISpecification holder, Type type) {
             ITypicalLengthFacet facet = GetTypicalLengthFacet(type);
             if (facet != null) {
                 return FacetUtils.AddFacet(new TypicalLengthFacetDerivedFromType(facet, holder));

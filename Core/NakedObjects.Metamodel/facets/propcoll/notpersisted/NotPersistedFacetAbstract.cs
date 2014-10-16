@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Propcoll.NotPersisted {
     public abstract class NotPersistedFacetAbstract : MarkerFacetAbstract, INotPersistedFacet {
-        protected NotPersistedFacetAbstract(IFacetHolder holder)
+        protected NotPersistedFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

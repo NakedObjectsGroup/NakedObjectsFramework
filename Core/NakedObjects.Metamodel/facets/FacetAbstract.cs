@@ -12,9 +12,9 @@ using NakedObjects.Architecture.Interactions;
 namespace NakedObjects.Architecture.Facets {
     public abstract class FacetAbstract : IFacet {
         private readonly Type facetType;
-        private IFacetHolder holder;
+        private ISpecification holder;
 
-        protected FacetAbstract(Type facetType, IFacetHolder holder) {
+        protected FacetAbstract(Type facetType, ISpecification holder) {
             this.facetType = facetType;
             this.holder = holder;
         }
@@ -25,12 +25,12 @@ namespace NakedObjects.Architecture.Facets {
         ///     <see cref="IDisablingInteractionAdvisor" />
         /// </summary>
         protected internal virtual string FacetHolderId {
-            get { return FacetHolder.Identifier.ToIdentityString(IdentifierDepth.Class); }
+            get { return Specification.Identifier.ToIdentityString(IdentifierDepth.Class); }
         }
 
         #region IFacet Members
 
-        public virtual IFacetHolder FacetHolder {
+        public virtual ISpecification Specification {
             get { return holder; }
             set { holder = value; }
         }
@@ -64,14 +64,14 @@ namespace NakedObjects.Architecture.Facets {
 
         #endregion
 
-        public virtual void Reparent(IFacetHolder newFacetHolder) {
-            IFacetHolder oldFacetHolder = FacetHolder;
+        public virtual void Reparent(ISpecification newSpecification) {
+            ISpecification oldSpecification = Specification;
 
-            oldFacetHolder.RemoveFacet(this);
+            oldSpecification.RemoveFacet(this);
 
-            newFacetHolder.AddFacet(this);
-            if (FacetHolder != newFacetHolder) {
-                FacetHolder = newFacetHolder;
+            newSpecification.AddFacet(this);
+            if (Specification != newSpecification) {
+                Specification = newSpecification;
             }
         }
 

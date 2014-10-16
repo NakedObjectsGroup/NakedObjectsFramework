@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Objects.Facets;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
     public class FacetsFacetAnnotation : FacetsFacetAbstract {
-        public FacetsFacetAnnotation(FacetsAttribute attribute, IFacetHolder holder)
+        public FacetsFacetAnnotation(FacetsAttribute attribute, ISpecification holder)
             : base(attribute.FacetFactoryNames, attribute.FacetFactoryClasses, holder) {}
     }
 }

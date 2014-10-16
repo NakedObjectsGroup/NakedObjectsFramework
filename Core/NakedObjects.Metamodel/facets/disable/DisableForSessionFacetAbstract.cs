@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Facets.Disable {
     public abstract class DisableForSessionFacetAbstract : FacetAbstract, IDisableForSessionFacet {
-        protected DisableForSessionFacetAbstract(IFacetHolder holder)
+        protected DisableForSessionFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

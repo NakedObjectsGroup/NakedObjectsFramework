@@ -10,7 +10,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Defaults {
     public class PropertyDefaultFacetAnnotation : PropertyDefaultFacetAbstract {
         private readonly object value;
 
-        public PropertyDefaultFacetAnnotation(object value, IFacetHolder holder)
+        public PropertyDefaultFacetAnnotation(object value, ISpecification holder)
             : base(holder) {
             this.value = value;
         }

@@ -13,12 +13,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural {
         public PluralAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = type.GetCustomAttributeByReflection<PluralAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static IPluralFacet Create(PluralAttribute attribute, IFacetHolder holder) {
+        private static IPluralFacet Create(PluralAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new PluralFacetAnnotation(attribute.Value, holder);
         }
     }

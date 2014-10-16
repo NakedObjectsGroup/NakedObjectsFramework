@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Actcoll.Table {
     public abstract class TableViewFacetAbstract : MultipleValueFacetAbstract, ITableViewFacet {
-        protected TableViewFacetAbstract(bool title, string[] columns, IFacetHolder holder)
+        protected TableViewFacetAbstract(bool title, string[] columns, ISpecification holder)
             : base(Type, holder) {
             Title = title;
             Columns = columns;

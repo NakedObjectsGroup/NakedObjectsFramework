@@ -95,8 +95,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Enums {
         [Test]
         public void TestEnumAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEnumFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
@@ -105,8 +105,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Enums {
         [Test]
         public void TestEnumAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "City");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEnumFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
@@ -115,8 +115,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Enums {
         [Test]
         public void TestEnumTypePickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (Cities)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEnumFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
@@ -125,8 +125,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Enums {
         [Test]
         public void TestEnumTypePickedUpOnNullableActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer6), "SomeAction", new[] {typeof (Cities?)});
-            facetFactory.ProcessParams(method, 0, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEnumFacet));
+            facetFactory.ProcessParams(method, 0, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
@@ -135,8 +135,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Enums {
         [Test]
         public void TestEnumTypePickedUpOnNullableProperty() {
             PropertyInfo property = FindProperty(typeof (Customer5), "City");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEnumFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
@@ -145,8 +145,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Enums {
         [Test]
         public void TestEnumTypePickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer3), "City");
-            facetFactory.Process(property, MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IEnumFacet));
+            facetFactory.Process(property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);

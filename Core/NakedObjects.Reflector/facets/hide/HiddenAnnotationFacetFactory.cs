@@ -17,38 +17,38 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
         public HiddenAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.PropertiesCollectionsAndActions) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             return Process(type.GetCustomAttributeByReflection<HiddenAttribute>,
-                           type.GetCustomAttributeByReflection<ScaffoldColumnAttribute>, holder);
+                           type.GetCustomAttributeByReflection<ScaffoldColumnAttribute>, specification);
         }
 
-        private static bool Process(MemberInfo member, IFacetHolder holder) {
+        private static bool Process(MemberInfo member, ISpecification holder) {
             return Process(member.GetCustomAttribute<HiddenAttribute>,
                            member.GetCustomAttribute<ScaffoldColumnAttribute>, holder);
         }
 
-        private static bool Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, IFacetHolder holder) {
+        private static bool Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, ISpecification specification) {
             Attribute attribute = getHidden();
             if (attribute != null) {
-                return FacetUtils.AddFacet(Create((HiddenAttribute) attribute, holder));
+                return FacetUtils.AddFacet(Create((HiddenAttribute) attribute, specification));
             }
             attribute = getScaffold();
-            return FacetUtils.AddFacet(Create((ScaffoldColumnAttribute) attribute, holder));
+            return FacetUtils.AddFacet(Create((ScaffoldColumnAttribute) attribute, specification));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(method, holder);
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(method, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(property, holder);
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(property, specification);
         }
 
-        private static IHiddenFacet Create(HiddenAttribute attribute, IFacetHolder holder) {
+        private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new HiddenFacetAnnotation(attribute.Value, holder);
         }
 
-        private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, IFacetHolder holder) {
+        private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new HiddenFacetAnnotation(attribute.Scaffold ? WhenTo.Never : WhenTo.Always, holder);
         }
     }

@@ -13,7 +13,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
     public class ActionDefaultsFacetDerivedFromDefaultedFacets : ActionDefaultsFacetAbstract {
         private readonly IDefaultedFacet defaultedFacet;
 
-        public ActionDefaultsFacetDerivedFromDefaultedFacets(IDefaultedFacet defaultedFacet, IFacetHolder holder)
+        public ActionDefaultsFacetDerivedFromDefaultedFacets(IDefaultedFacet defaultedFacet, ISpecification holder)
             : base(holder) {
             this.defaultedFacet = defaultedFacet;
         }

@@ -8,7 +8,7 @@ using NakedObjects.Architecture.Facets.Propparam.Validate.Mask;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask {
     public class MaskFacetAnnotation : MaskFacetAbstract {
-        public MaskFacetAnnotation(string value, IFacetHolder holder)
+        public MaskFacetAnnotation(string value, ISpecification holder)
             : base(value, holder) {}
 
         /// <summary>

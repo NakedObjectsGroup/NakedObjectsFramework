@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Objects.Key;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Key {
     public class KeyFacetAnnotation : KeyFacetAbstract {
-        public KeyFacetAnnotation(IFacetHolder holder)
+        public KeyFacetAnnotation(ISpecification holder)
             : base(holder) {}
     }
 }

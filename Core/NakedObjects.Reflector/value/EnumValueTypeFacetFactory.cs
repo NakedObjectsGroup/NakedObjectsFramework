@@ -15,12 +15,12 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public EnumValueTypeFacetFactory(INakedObjectReflector reflector)
             : base(reflector, NakedObjectFeatureType.ObjectsOnly) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (typeof (Enum).IsAssignableFrom(type)) {
                 Type semanticsProviderType = typeof (EnumValueSemanticsProvider<>).MakeGenericType(type);
                 var spec = Reflector.LoadSpecification(type);
 
-                object semanticsProvider = Activator.CreateInstance(semanticsProviderType, spec, holder);
+                object semanticsProvider = Activator.CreateInstance(semanticsProviderType, spec, specification);
                 Type facetType = typeof (ValueFacetUsingSemanticsProvider<>).MakeGenericType(type);
                 var facet = (IFacet) Activator.CreateInstance(facetType, semanticsProvider, semanticsProvider);
                 FacetUtils.AddFacet(facet);

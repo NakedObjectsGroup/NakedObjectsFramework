@@ -200,7 +200,7 @@ namespace NakedObjects.Managers {
         }
 
 
-        public void Abort(INakedObjectTransactionManager transactionManager, IFacetHolder holder) {
+        public void Abort(INakedObjectTransactionManager transactionManager, ISpecification holder) {
             Log.Info("exception executing " + holder + ", aborting transaction");
             try {
                 transactionManager.AbortTransaction();

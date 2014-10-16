@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public FileAttachmentValueSemanticsProvider(IIntrospectableSpecification spec)
             : this(spec, null) { }
 
-        public FileAttachmentValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+        public FileAttachmentValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthDefault, Immutable, EqualByContent, null, spec) { }
 
         public static Type Type {

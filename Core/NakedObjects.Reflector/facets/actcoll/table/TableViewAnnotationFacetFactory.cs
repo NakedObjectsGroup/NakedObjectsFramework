@@ -18,26 +18,26 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
         public TableViewAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.CollectionsAndActions) { }
 
-        private bool Process(MemberInfo member, Type methodReturnType, IFacetHolder holder) {
+        private bool Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
             if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {
                 var attribute = member.GetCustomAttribute<TableViewAttribute>();
-                return FacetUtils.AddFacet(Create(attribute, holder));
+                return FacetUtils.AddFacet(Create(attribute, specification));
             }
 
             return false;
         }
 
-        private static ITableViewFacet Create(TableViewAttribute attribute, IFacetHolder holder) {
+        private static ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new TableViewFacetFromAnnotation(attribute.Title, attribute.Columns, holder);
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(method, method.ReturnType, holder);
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(method, method.ReturnType, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             if (property.GetGetMethod() != null) {
-                return Process(property, property.PropertyType, holder);
+                return Process(property, property.PropertyType, specification);
             }
             return false;
         }

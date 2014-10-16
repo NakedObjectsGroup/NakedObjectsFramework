@@ -12,7 +12,7 @@ namespace NakedObjects.Architecture.Facets.Propcoll.NotCounted {
     ///     This is only used by the custom 'SdmNotCountedAttribute'
     /// </summary>
     public abstract class NotCountedFacetAbstract : MarkerFacetAbstract, INotCountedFacet {
-        protected NotCountedFacetAbstract(IFacetHolder holder)
+        protected NotCountedFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

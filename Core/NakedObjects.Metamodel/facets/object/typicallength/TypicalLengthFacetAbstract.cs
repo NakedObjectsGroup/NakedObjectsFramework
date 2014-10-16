@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Objects.TypicalLength {
     public abstract class TypicalLengthFacetAbstract : SingleIntValueFacetAbstract, ITypicalLengthFacet {
-        protected TypicalLengthFacetAbstract(int intValue, IFacetHolder holder)
+        protected TypicalLengthFacetAbstract(int intValue, ISpecification holder)
             : base(Type, holder, intValue) {}
 
         public static Type Type {

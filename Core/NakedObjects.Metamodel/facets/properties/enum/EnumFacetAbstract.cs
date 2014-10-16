@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facets.Properties.Enums {
     public abstract class EnumFacetAbstract : MarkerFacetAbstract, IEnumFacet {
-        protected EnumFacetAbstract(IFacetHolder holder)
+        protected EnumFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

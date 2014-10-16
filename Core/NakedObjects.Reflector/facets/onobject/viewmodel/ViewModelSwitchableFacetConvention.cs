@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Facets.Objects.ViewModel;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
     public class ViewModelSwitchableFacetConvention : ViewModelFacetConvention {
-        public ViewModelSwitchableFacetConvention(IFacetHolder holder) : base(Type, holder) {}
+        public ViewModelSwitchableFacetConvention(ISpecification holder) : base(Type, holder) {}
 
         private static Type Type {
             get { return typeof (IViewModelFacet); }

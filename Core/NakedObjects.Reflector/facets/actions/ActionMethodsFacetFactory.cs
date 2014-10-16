@@ -60,7 +60,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             get { return FixedPrefixes; }
         }
 
-        public override bool Process(MethodInfo actionMethod, IMethodRemover methodRemover, IFacetHolder action) {
+        public override bool Process(MethodInfo actionMethod, IMethodRemover methodRemover, ISpecification action) {
             string capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
             Type type = actionMethod.DeclaringType;
@@ -101,7 +101,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             return FacetUtils.AddFacets(facets);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             IFacet facet = null;
 
@@ -116,11 +116,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         /// <summary>
         ///     Must be called after the <c>CheckForXxxPrefix</c> methods.
         /// </summary>
-        private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string capitalizedName, IFacetHolder action) {
+        private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string capitalizedName, ISpecification action) {
             actionFacets.Add(new NamedFacetInferred(NameUtils.NaturalName(capitalizedName), action));
         }
 
-        private void FindAndRemoveValidMethod(ICollection<IFacet> actionFacets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] parms, IFacetHolder action) {
+        private void FindAndRemoveValidMethod(ICollection<IFacet> actionFacets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] parms, ISpecification action) {
             MethodInfo method = FindMethod(type, methodType, PrefixesAndRecognisedMethods.ValidatePrefix + capitalizedName, typeof (string), parms);
             if (method != null) {
                 RemoveMethod(methodRemover, method);
@@ -128,7 +128,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             }
         }
 
-        private void FindAndRemoveParametersDefaultsMethod(IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IFacetHolder[] parameters) {
+        private void FindAndRemoveParametersDefaultsMethod(IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, ISpecification[] parameters) {
             for (int i = 0; i < paramTypes.Length; i++) {
                 Type paramType = paramTypes[i];
                 string paramName = paramNames[i];
@@ -164,7 +164,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             }
         }
 
-        private void FindAndRemoveParametersChoicesMethod(IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IFacetHolder[] parameters) {
+        private void FindAndRemoveParametersChoicesMethod(IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, ISpecification[] parameters) {
             for (int i = 0; i < paramTypes.Length; i++) {
                 Type paramType = paramTypes[i];
                 string paramName = paramNames[i];
@@ -248,7 +248,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         }
 
 
-        private void FindAndRemoveParametersValidateMethod(IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IFacetHolder[] parameters) {
+        private void FindAndRemoveParametersValidateMethod(IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, ISpecification[] parameters) {
             for (int i = 0; i < paramTypes.Length; i++) {
                 MethodInfo methodUsingIndex = FindMethod(type,
                                                          MethodType.Object,

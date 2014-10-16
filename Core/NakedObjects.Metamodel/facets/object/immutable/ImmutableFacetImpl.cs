@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Resolve;
 
 namespace NakedObjects.Architecture.Facets.Objects.Immutable {
     public class ImmutableFacetImpl : ImmutableFacetAbstract {
-        public ImmutableFacetImpl(WhenTo when, IFacetHolder holder)
+        public ImmutableFacetImpl(WhenTo when, ISpecification holder)
             : base(when, holder) {}
 
         public override string DisabledReason(INakedObject target) {

@@ -19,7 +19,7 @@ namespace NakedObjects.Architecture.Facets.Propparam.Validate.Mandatory {
     ///     <i>omitting</i> the <see cref="OptionallyAttribute" /> annotation.
     /// </para>
     public class MandatoryFacetDefault : MandatoryFacetAbstract {
-        public MandatoryFacetDefault(IFacetHolder holder)
+        public MandatoryFacetDefault(ISpecification holder)
             : base(holder) {}
 
         public override bool IsMandatory {

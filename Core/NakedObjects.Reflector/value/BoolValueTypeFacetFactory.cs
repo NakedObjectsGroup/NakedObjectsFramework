@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public BooleanValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof(IBooleanValueFacet)) { }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (BooleanValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(BooleanValueSemanticsProvider.AdaptedType);
-                AddFacets(new BooleanValueSemanticsProvider(spec, holder));
+                AddFacets(new BooleanValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

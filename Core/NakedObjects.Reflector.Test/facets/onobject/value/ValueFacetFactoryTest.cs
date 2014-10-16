@@ -265,42 +265,42 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
 
         [Test]
         public void TestEqualByContentFacetsIsInstalledIfNoSemanticsProviderSpecified() {
-            facetFactory.Process(typeof (MyNumberEqualByContentDefault), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyNumberEqualByContentDefault), MethodRemover, Specification);
 
-            var facet = (IEqualByContentFacet) FacetHolder.GetFacet(typeof (IEqualByContentFacet));
+            var facet = (IEqualByContentFacet) Specification.GetFacet(typeof (IEqualByContentFacet));
             Assert.IsNotNull(facet);
         }
 
 
         [Test]
         public void TestEqualByContentFacetsIsInstalledIfSpecifiesEqualByContent() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderThatSpecifiesEqualByContentSemantic), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyValueSemanticsProviderThatSpecifiesEqualByContentSemantic), MethodRemover, Specification);
 
-            var facet = (IEqualByContentFacet) FacetHolder.GetFacet(typeof (IEqualByContentFacet));
+            var facet = (IEqualByContentFacet) Specification.GetFacet(typeof (IEqualByContentFacet));
             Assert.IsNotNull(facet);
         }
 
 
         [Test]
         public void TestEqualByContentFacetsIsNotInstalledIfSpecifiesNotEqualByContent() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderThatSpecifiesNotEqualByContentSemantic), MethodRemover, FacetHolder);
-            var facet = (IEqualByContentFacet) FacetHolder.GetFacet(typeof (IEqualByContentFacet));
+            facetFactory.Process(typeof (MyValueSemanticsProviderThatSpecifiesNotEqualByContentSemantic), MethodRemover, Specification);
+            var facet = (IEqualByContentFacet) Specification.GetFacet(typeof (IEqualByContentFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestFacetFacetHolderStored() {
-            facetFactory.Process(typeof (MyParseableUsingParserName2), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyParseableUsingParserName2), MethodRemover, Specification);
 
-            var valueFacet = (ValueFacetAnnotation<MyParseableUsingParserName2>) FacetHolder.GetFacet(typeof (IValueFacet));
-            Assert.AreEqual(FacetHolder, valueFacet.FacetHolder);
+            var valueFacet = (ValueFacetAnnotation<MyParseableUsingParserName2>) Specification.GetFacet(typeof (IValueFacet));
+            Assert.AreEqual(Specification, valueFacet.Specification);
         }
 
         [Test]
         public void TestFacetPickedUp() {
-            facetFactory.Process(typeof (MyParseableUsingParserName2), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyParseableUsingParserName2), MethodRemover, Specification);
 
-            var facet = (IValueFacet) FacetHolder.GetFacet(typeof (IValueFacet));
+            var facet = (IValueFacet) Specification.GetFacet(typeof (IValueFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ValueFacetAnnotation<MyParseableUsingParserName2>);
         }
@@ -317,49 +317,49 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
 
         [Test]
         public void TestImmutableFacetsIsInstalledIfNoSemanticsProviderSpecified() {
-            facetFactory.Process(typeof (MyNumberImmutableDefault), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyNumberImmutableDefault), MethodRemover, Specification);
 
-            var facet = (IImmutableFacet) FacetHolder.GetFacet(typeof (IImmutableFacet));
+            var facet = (IImmutableFacet) Specification.GetFacet(typeof (IImmutableFacet));
             Assert.IsNotNull(facet);
         }
 
 
         [Test]
         public void TestImmutableFacetsIsInstalledIfSpecifiesImmutable() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderThatSpecifiesImmutableSemantic), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyValueSemanticsProviderThatSpecifiesImmutableSemantic), MethodRemover, Specification);
 
-            var facet = (IImmutableFacet) FacetHolder.GetFacet(typeof (IImmutableFacet));
+            var facet = (IImmutableFacet) Specification.GetFacet(typeof (IImmutableFacet));
             Assert.IsNotNull(facet);
         }
 
 
         [Test]
         public void TestImmutableFacetsIsNotInstalledIfSpecifiesNotImmutable() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderThatSpecifiesNotImmutableSemantic), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyValueSemanticsProviderThatSpecifiesNotImmutableSemantic), MethodRemover, Specification);
 
-            var facet = (IImmutableFacet) FacetHolder.GetFacet(typeof (IImmutableFacet));
+            var facet = (IImmutableFacet) Specification.GetFacet(typeof (IImmutableFacet));
             Assert.IsNull(facet);
         }
 
         [Test]
         public void TestNoMethodsRemoved() {
-            facetFactory.Process(typeof (MyParseableUsingParserName2), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyParseableUsingParserName2), MethodRemover, Specification);
 
             AssertNoMethodsRemoved();
         }
 
         [Test]
         public void TestPickUpSemanticsProviderViaClassAndInstallsValueFacet() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderUsingSemanticsProviderClass), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyValueSemanticsProviderUsingSemanticsProviderClass), MethodRemover, Specification);
 
-            Assert.IsNotNull(FacetHolder.GetFacet(typeof (IValueFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof (IValueFacet)));
         }
 
         [Test]
         public void TestPickUpSemanticsProviderViaNameAndInstallsValueFacet() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderUsingSemanticsProviderName), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyValueSemanticsProviderUsingSemanticsProviderName), MethodRemover, Specification);
 
-            Assert.IsNotNull(FacetHolder.GetFacet(typeof (IValueFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof (IValueFacet)));
         }
 
         [Test]
@@ -371,69 +371,69 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
 
         [Test]
         public void TestValueSemanticsProviderMustHaveANoArgConstructor() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderWithoutNoArgConstructor), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyValueSemanticsProviderWithoutNoArgConstructor), MethodRemover, Specification);
 
             // the fact that we have an immutable means that the provider wasn't picked up
-            Assert.IsNotNull(FacetHolder.GetFacet(typeof (IImmutableFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof (IImmutableFacet)));
         }
 
 
         [Test]
         public void TestValueSemanticsProviderMustHaveAPublicNoArgConstructor() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderWithoutPublicNoArgConstructor), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyValueSemanticsProviderWithoutPublicNoArgConstructor), MethodRemover, Specification);
 
             // the fact that we have an immutable means that the provider wasn't picked up
-            Assert.IsNotNull(FacetHolder.GetFacet(typeof (IImmutableFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof (IImmutableFacet)));
         }
 
         [Test]
         public void TestValueSemanticsProviderThatIsADefaultsProviderInstallsDefaultedFacet() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderThatIsADefaultsProvider), MethodRemover, FacetHolder);
-            Assert.IsNotNull(FacetHolder.GetFacet(typeof (IDefaultedFacet)));
+            facetFactory.Process(typeof (MyValueSemanticsProviderThatIsADefaultsProvider), MethodRemover, Specification);
+            Assert.IsNotNull(Specification.GetFacet(typeof (IDefaultedFacet)));
         }
 
         [Test]
         public void TestValueSemanticsProviderThatIsAParserInstallsParseableFacet() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderThatIsAParser), MethodRemover, FacetHolder);
-            Assert.IsNotNull(FacetHolder.GetFacet(typeof (IParseableFacet)));
+            facetFactory.Process(typeof (MyValueSemanticsProviderThatIsAParser), MethodRemover, Specification);
+            Assert.IsNotNull(Specification.GetFacet(typeof (IParseableFacet)));
         }
 
         [Test]
         public void TestValueSemanticsProviderThatIsAParserInstallsTitleFacet() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderThatIsAParser), MethodRemover, FacetHolder);
-            Assert.IsNotNull(FacetHolder.GetFacet(typeof (ITitleFacet)));
+            facetFactory.Process(typeof (MyValueSemanticsProviderThatIsAParser), MethodRemover, Specification);
+            Assert.IsNotNull(Specification.GetFacet(typeof (ITitleFacet)));
         }
 
         [Test]
         public void TestValueSemanticsProviderThatIsAParserInstallsTypicalLengthFacet() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderThatIsAParser), MethodRemover, FacetHolder);
-            Assert.IsNotNull(FacetHolder.GetFacet(typeof (ITypicalLengthFacet)));
+            facetFactory.Process(typeof (MyValueSemanticsProviderThatIsAParser), MethodRemover, Specification);
+            Assert.IsNotNull(Specification.GetFacet(typeof (ITypicalLengthFacet)));
         }
 
         [Test]
         public void TestValueSemanticsProviderThatIsAnEncoderInstallsEncodeableFacet() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderThatIsAnEncoderDecoder), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyValueSemanticsProviderThatIsAnEncoderDecoder), MethodRemover, Specification);
 
-            Assert.IsNotNull(FacetHolder.GetFacet(typeof (IEncodeableFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof (IEncodeableFacet)));
         }
 
         [Test]
         public void TestValueSemanticsProviderThatIsNotADefaultsProviderDoesNotInstallDefaultedFacet() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderUsingSemanticsProviderClass), MethodRemover, FacetHolder);
-            Assert.IsNull(FacetHolder.GetFacet(typeof (IDefaultedFacet)));
+            facetFactory.Process(typeof (MyValueSemanticsProviderUsingSemanticsProviderClass), MethodRemover, Specification);
+            Assert.IsNull(Specification.GetFacet(typeof (IDefaultedFacet)));
         }
 
         [Test]
         public void TestValueSemanticsProviderThatIsNotAParserDoesNotInstallParseableFacet() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderUsingSemanticsProviderClass), MethodRemover, FacetHolder);
-            Assert.IsNull(FacetHolder.GetFacet(typeof (IParseableFacet)));
+            facetFactory.Process(typeof (MyValueSemanticsProviderUsingSemanticsProviderClass), MethodRemover, Specification);
+            Assert.IsNull(Specification.GetFacet(typeof (IParseableFacet)));
         }
 
         [Test]
         public void TestValueSemanticsProviderThatIsNotAnEncoderDecoderDoesNotInstallEncodeableFacet() {
-            facetFactory.Process(typeof (MyValueSemanticsProviderUsingSemanticsProviderClass), MethodRemover, FacetHolder);
+            facetFactory.Process(typeof (MyValueSemanticsProviderUsingSemanticsProviderClass), MethodRemover, Specification);
 
-            Assert.IsNull(FacetHolder.GetFacet(typeof (IEncodeableFacet)));
+            Assert.IsNull(Specification.GetFacet(typeof (IEncodeableFacet)));
         }
     }
 }

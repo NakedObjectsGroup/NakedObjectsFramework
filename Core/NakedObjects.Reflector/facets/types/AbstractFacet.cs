@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Types {
     public  class AbstractFacet : MarkerFacetAbstract, IAbstractFacet {
-        public AbstractFacet(IFacetHolder holder)
+        public AbstractFacet(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

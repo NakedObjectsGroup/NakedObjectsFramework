@@ -13,7 +13,7 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Choices {
     public class ActionChoicesFacetNone : ActionChoicesFacetAbstract {
-        public ActionChoicesFacetNone(IFacetHolder holder)
+        public ActionChoicesFacetNone(ISpecification holder)
             : base(holder) {}
 
         public override bool IsNoOp {

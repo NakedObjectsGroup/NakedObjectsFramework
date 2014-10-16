@@ -41,16 +41,16 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             return false;
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             return FacetUtils.AddFacets(
                 new IFacet[] {
-                    new DescribedAsFacetNone(holder),  
-                    new ImmutableFacetNever(holder),
-                    new TitleFacetNone(holder),
+                    new DescribedAsFacetNone(specification),  
+                    new ImmutableFacetNever(specification),
+                    new TitleFacetNone(specification),
                 });
         }
 
-        private static bool Process(IFacetHolder holder) {
+        private static bool Process(ISpecification holder) {
             var facets = new List<IFacet>();
 
             if (holder is DotNetNakedObjectMemberPeer) {
@@ -83,15 +83,15 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         }
 
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(holder);
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(holder);
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(specification);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             var facets = new List<IFacet>();
 
             if (holder is DotNetNakedObjectActionParamPeer) {
@@ -118,7 +118,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             return FacetUtils.AddFacets(facets);
         }
 
-        private static void DefaultTypicalLength(ICollection<IFacet> facets, IFacetHolder specification, IFacetHolder holder) {
+        private static void DefaultTypicalLength(ICollection<IFacet> facets, ISpecification specification, ISpecification holder) {
             var typicalLengthFacet = specification.GetFacet<ITypicalLengthFacet>();
             if (typicalLengthFacet == null) {
                 typicalLengthFacet = new TypicalLengthFacetZero(holder);

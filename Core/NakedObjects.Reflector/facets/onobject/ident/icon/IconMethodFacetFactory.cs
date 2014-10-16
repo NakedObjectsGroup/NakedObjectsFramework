@@ -27,19 +27,19 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
             get { return prefixes; }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder facetHolder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             MethodInfo method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.IconNameMethod, typeof (string), Type.EmptyTypes);
             var attribute = type.GetCustomAttributeByReflection<IconNameAttribute>();
             if (method != null) {
                 RemoveMethod(methodRemover, method);
-                return FacetUtils.AddFacet(new IconFacetViaMethod(method, facetHolder, attribute == null ? null : attribute.Value));
+                return FacetUtils.AddFacet(new IconFacetViaMethod(method, specification, attribute == null ? null : attribute.Value));
             }
 
-            return FacetUtils.AddFacet(Create(attribute, facetHolder));
+            return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
 
-        private static IIconFacet Create(IconNameAttribute attribute, IFacetHolder holder) {
+        private static IIconFacet Create(IconNameAttribute attribute, ISpecification holder) {
             return attribute != null ? new IconFacetAnnotation(attribute.Value, holder) : null;
         }
     }

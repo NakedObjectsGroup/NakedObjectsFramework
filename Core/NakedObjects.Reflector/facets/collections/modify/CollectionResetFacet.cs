@@ -14,7 +14,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections.Modify {
     public class CollectionResetFacet : FacetAbstract, IImperativeFacet, ICollectionResetFacet {
         private readonly PropertyInfo property;
 
-        public CollectionResetFacet(PropertyInfo property, IFacetHolder holder)
+        public CollectionResetFacet(PropertyInfo property, ISpecification holder)
             : base(Type, holder) {
             this.property = property;
         }

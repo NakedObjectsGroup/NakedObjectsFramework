@@ -99,7 +99,7 @@
     <Compile Include="facets\disable\DisableForSessionFacetNone.cs" />
     <Compile Include="facets\FacetAbstract.cs" />
     <Compile Include="facets\FacetFactoryAbstract.cs" />
-    <Compile Include="facets\FacetHolderImpl.cs" />
+    <Compile Include="facets\SpecificationImpl.cs" />
     <Compile Include="facets\FacetUtils.cs" />
     <Compile Include="facets\hide\HiddenFacetAbstract.cs" />
     <Compile Include="facets\hide\HiddenFacetImpl.cs" />

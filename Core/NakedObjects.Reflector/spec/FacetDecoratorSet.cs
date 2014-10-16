@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        public virtual void DecorateAllHoldersFacets(IFacetHolder holder) {
+        public virtual void DecorateAllHoldersFacets(ISpecification holder) {
             if (!IsEmpty) {
                 foreach (Type facetType in holder.FacetTypes) {
                     DecoratedFacet(facetType, holder);
@@ -31,7 +31,7 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        private void DecoratedFacet(Type facetType, IFacetHolder holder) {
+        private void DecoratedFacet(Type facetType, ISpecification holder) {
             if (facetDecorators.ContainsKey(facetType)) {
                 foreach (IFacetDecorator decorator in facetDecorators[facetType]) {
                     IFacet previousFacet = holder.GetFacet(facetType);

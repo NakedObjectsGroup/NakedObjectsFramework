@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public UIntValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof (IUnsignedIntegerValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (UIntValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(UIntValueSemanticsProvider.AdaptedType);
-                AddFacets(new UIntValueSemanticsProvider(spec, holder));
+                AddFacets(new UIntValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

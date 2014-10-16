@@ -14,7 +14,7 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Invoke {
     public abstract class ActionInvocationFacetAbstract : FacetAbstract, IActionInvocationFacet {
-        protected ActionInvocationFacetAbstract(IFacetHolder holder)
+        protected ActionInvocationFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

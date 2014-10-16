@@ -200,7 +200,7 @@
     <Compile Include="facets\IFacet.cs" />
     <Compile Include="facets\IFacetFactory.cs" />
     <Compile Include="facets\IFacetFactorySet.cs" />
-    <Compile Include="facets\IFacetHolder.cs" />
+    <Compile Include="facets\ISpecification.cs" />
     <Compile Include="facets\hide\IHiddenFacet.cs" />
     <Compile Include="facets\hide\IHideForContextFacet.cs" />
     <Compile Include="facets\hide\IHideForSessionFacet.cs" />

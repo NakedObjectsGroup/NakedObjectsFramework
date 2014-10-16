@@ -16,14 +16,14 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
     public abstract class ValueFacetAbstract<T> : MultipleValueFacetAbstract, IValueFacet {
-        private readonly FacetHolderImpl facetHolder = new FacetHolderImpl();
+        private readonly SpecificationImpl specification = new SpecificationImpl();
 
         private readonly IValueSemanticsProvider<T> semanticsProvider;
 
-        protected ValueFacetAbstract(Type semanticsProviderClass, bool addFacetsIfInvalid, IFacetHolder holder)
+        protected ValueFacetAbstract(Type semanticsProviderClass, bool addFacetsIfInvalid, ISpecification holder)
             : this(NewValueSemanticsProviderOrNull(semanticsProviderClass), addFacetsIfInvalid, holder) {}
 
-        protected ValueFacetAbstract(IValueSemanticsProvider<T> semanticsProvider, bool addFacetsIfInvalid, IFacetHolder holder)
+        protected ValueFacetAbstract(IValueSemanticsProvider<T> semanticsProvider, bool addFacetsIfInvalid, ISpecification holder)
             : base(Type, holder) {
             this.semanticsProvider = semanticsProvider;
 
@@ -35,15 +35,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
             // because we need to add them explicitly to our delegate facetholder but have the
             // facets themselves reference this value's holder.
 
-            facetHolder.AddFacet((IFacet) this); // add just ValueFacet.class initially.
+            specification.AddFacet((IFacet) this); // add just ValueFacet.class initially.
 
             // value implies aggregated 
-            facetHolder.AddFacet(new AggregatedFacetAlways(holder));
+            specification.AddFacet(new AggregatedFacetAlways(holder));
 
             // ImmutableFacet, if appropriate
             bool immutable = semanticsProvider == null || semanticsProvider.IsImmutable;
             if (immutable) {
-                facetHolder.AddFacet(new ImmutableFacetViaValueSemantics(holder));
+                specification.AddFacet(new ImmutableFacetViaValueSemantics(holder));
             }
 
             // EqualByContentFacet, if appropriate
@@ -56,26 +56,26 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
                 // install the EncodeableFacet if we've been given an EncoderDecoder
                 IEncoderDecoder<T> encoderDecoder = semanticsProvider.EncoderDecoder;
                 if (encoderDecoder != null) {
-                    facetHolder.AddFacet(new EncodeableFacetUsingEncoderDecoder<T>(encoderDecoder, holder));
+                    specification.AddFacet(new EncodeableFacetUsingEncoderDecoder<T>(encoderDecoder, holder));
                 }
 
                 // install the ParseableFacet and other facets if we've been given a Parser
                 IParser<T> parser = semanticsProvider.Parser;
                 if (parser != null) {
-                    facetHolder.AddFacet(new ParseableFacetUsingParser<T>(parser, holder));
-                    facetHolder.AddFacet(new TitleFacetUsingParser<T>(parser, holder));
-                    facetHolder.AddFacet(new TypicalLengthFacetUsingParser<T>(parser, holder));
+                    specification.AddFacet(new ParseableFacetUsingParser<T>(parser, holder));
+                    specification.AddFacet(new TitleFacetUsingParser<T>(parser, holder));
+                    specification.AddFacet(new TypicalLengthFacetUsingParser<T>(parser, holder));
                 }
 
                 IFromStream fromStream = semanticsProvider.FromStream;
                 if (fromStream != null) {
-                    facetHolder.AddFacet(new FromStreamFacetUsingFromStream(fromStream, holder));
+                    specification.AddFacet(new FromStreamFacetUsingFromStream(fromStream, holder));
                 }
 
                 // install the DefaultedFacet if we've been given a DefaultsProvider
                 IDefaultsProvider<T> defaultsProvider = semanticsProvider.DefaultsProvider;
                 if (defaultsProvider != null && defaultsProvider.DefaultValue != null) {
-                    facetHolder.AddFacet(new DefaultedFacetUsingDefaultsProvider<T>(defaultsProvider, holder));
+                    specification.AddFacet(new DefaultedFacetUsingDefaultsProvider<T>(defaultsProvider, holder));
                 }
             }
 
@@ -94,15 +94,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
         }
 
         public Type[] FacetTypes {
-            get { return facetHolder.FacetTypes; }
+            get { return specification.FacetTypes; }
         }
 
         public IFacet GetFacet(Type facetType) {
-            return facetHolder.GetFacet(facetType);
+            return specification.GetFacet(facetType);
         }
 
         public TF GetFacet<TF>() where TF : IFacet {
-            return facetHolder.GetFacet<TF>();
+            return specification.GetFacet<TF>();
         }
 
         #endregion

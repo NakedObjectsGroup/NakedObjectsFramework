@@ -8,7 +8,7 @@ using NakedObjects.Capabilities;
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
     public class ValueFacetUsingSemanticsProvider<T> : ValueFacetAbstract<T> {
         public ValueFacetUsingSemanticsProvider(IValueSemanticsProvider<T> adapter, IFacet underlyingValueTypeFacet)
-            : base(adapter, true, underlyingValueTypeFacet.FacetHolder) {
+            : base(adapter, true, underlyingValueTypeFacet.Specification) {
             // add the adapter in as its own facet (eg StringFacet).
             // This facet is almost certainly superfluous; there is nothing in the
             // viewers that needs to get hold of such a facet, for example.

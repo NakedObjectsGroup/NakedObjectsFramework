@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public ShortValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof (IShortValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (ShortValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(ShortValueSemanticsProvider.AdaptedType);
-                AddFacets(new ShortValueSemanticsProvider(spec, holder));
+                AddFacets(new ShortValueSemanticsProvider(spec, specification));
                 return true;
             }
             return false;

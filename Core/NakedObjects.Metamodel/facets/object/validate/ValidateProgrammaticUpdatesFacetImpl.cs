@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Architecture.Facets.Objects.Validation {
     public class ValidateProgrammaticUpdatesFacetImpl : ValidateProgrammaticUpdatesFacetAbstract {
-        public ValidateProgrammaticUpdatesFacetImpl(IFacetHolder holder)
+        public ValidateProgrammaticUpdatesFacetImpl(ISpecification holder)
             : base(holder) {}
     }
 }

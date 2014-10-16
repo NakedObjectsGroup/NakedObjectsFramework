@@ -15,13 +15,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Defaults {
             :base(reflector, NakedObjectFeatureType.ParametersOnly) { }
 
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttributeByReflection<DefaultValueAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, IFacetHolder holder) {
+        private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, holder);
         }
     }

@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.AutoComplete {
     public class AutoCompleteFacetViaMethod : AutoCompleteFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public AutoCompleteFacetViaMethod(MethodInfo autoCompleteMethod, int pageSize, int minLength, IFacetHolder holder)
+        public AutoCompleteFacetViaMethod(MethodInfo autoCompleteMethod, int pageSize, int minLength, ISpecification holder)
             : base(holder) {
             method = autoCompleteMethod;
             PageSize = pageSize == 0 ? DefaultPageSize : pageSize;

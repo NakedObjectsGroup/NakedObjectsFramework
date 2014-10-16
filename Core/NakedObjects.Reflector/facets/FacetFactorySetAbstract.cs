@@ -102,34 +102,34 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             return Prefixes.Any(prefix => method.Name.StartsWith(prefix));
         }
 
-        public bool Process(Type type, IMethodRemover methodRemover, IFacetHolder facetHolder) {
+        public bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             bool facetsAdded = false;
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(NakedObjectFeatureType.Objects)) {
-                facetsAdded = facetFactory.Process(type, RemoverElseNullRemover(methodRemover), facetHolder) | facetsAdded;
+                facetsAdded = facetFactory.Process(type, RemoverElseNullRemover(methodRemover), specification) | facetsAdded;
             }
             return facetsAdded;
         }
 
-        public bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder facetHolder, NakedObjectFeatureType featureType) {
+        public bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification, NakedObjectFeatureType featureType) {
             bool facetsAdded = false;
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
-                facetsAdded = facetFactory.Process(method, RemoverElseNullRemover(methodRemover), facetHolder) | facetsAdded;
+                facetsAdded = facetFactory.Process(method, RemoverElseNullRemover(methodRemover), specification) | facetsAdded;
             }
             return facetsAdded;
         }
 
-        public bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder facetHolder, NakedObjectFeatureType featureType) {
+        public bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification, NakedObjectFeatureType featureType) {
             bool facetsAdded = false;
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
-                facetsAdded = facetFactory.Process(property, RemoverElseNullRemover(methodRemover), facetHolder) | facetsAdded;
+                facetsAdded = facetFactory.Process(property, RemoverElseNullRemover(methodRemover), specification) | facetsAdded;
             }
             return facetsAdded;
         }
 
-        public bool ProcessParams(MethodInfo method, int paramNum, IFacetHolder facetHolder) {
+        public bool ProcessParams(MethodInfo method, int paramNum, ISpecification specification) {
             bool facetsAdded = false;
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(NakedObjectFeatureType.ActionParameter)) {
-                facetsAdded = facetFactory.ProcessParams(method, paramNum, facetHolder) | facetsAdded;
+                facetsAdded = facetFactory.ProcessParams(method, paramNum, specification) | facetsAdded;
             }
             return facetsAdded;
         }

@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Actions.PageSize {
     public abstract class PageSizeFacetAbstract : SingleIntValueFacetAbstract, IPageSizeFacet {
-        protected PageSizeFacetAbstract(int pageSize, IFacetHolder holder)
+        protected PageSizeFacetAbstract(int pageSize, ISpecification holder)
             : base(Type, holder, pageSize) {}
 
         public static Type Type {

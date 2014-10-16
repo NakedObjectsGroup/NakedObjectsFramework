@@ -7,7 +7,7 @@
 
 namespace NakedObjects.Architecture.Facets.Propparam.MultiLine {
     public class MultiLineFacetNone : MultiLineFacetAbstract {
-        public MultiLineFacetNone(IFacetHolder holder)
+        public MultiLineFacetNone(ISpecification holder)
             : base(1, 0, holder) {}
 
         public override bool IsNoOp {

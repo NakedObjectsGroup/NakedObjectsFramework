@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Objects.EqualByContent {
     public abstract class EqualByContentFacetAbstract : MarkerFacetAbstract, IEqualByContentFacet {
-        protected EqualByContentFacetAbstract(IFacetHolder holder)
+        protected EqualByContentFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Propcoll.NotPersisted;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
     public class NotPersistedFacetAnnotation : NotPersistedFacetAbstract {
-        public NotPersistedFacetAnnotation(IFacetHolder holder)
+        public NotPersistedFacetAnnotation(ISpecification holder)
             : base(holder) {}
     }
 

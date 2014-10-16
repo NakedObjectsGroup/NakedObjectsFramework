@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Actcoll.Table;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
     public class TableViewFacetFromAnnotation : TableViewFacetAbstract {
-        public TableViewFacetFromAnnotation(bool title, string[] columns, IFacetHolder holder)
+        public TableViewFacetFromAnnotation(bool title, string[] columns, ISpecification holder)
             : base(title, columns, holder) {}
     }
 }

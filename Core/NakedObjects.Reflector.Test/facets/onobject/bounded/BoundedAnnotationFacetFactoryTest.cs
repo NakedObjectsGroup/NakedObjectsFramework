@@ -42,8 +42,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Bounded {
 
         [Test]
         public void TestBoundedAnnotationPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), MethodRemover, FacetHolder);
-            IFacet facet = FacetHolder.GetFacet(typeof (IBoundedFacet));
+            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof (IBoundedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is BoundedFacetAbstract);
             AssertNoMethodsRemoved();

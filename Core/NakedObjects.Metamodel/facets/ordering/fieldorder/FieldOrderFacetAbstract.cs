@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Ordering.MemberOrder {
     public abstract class FieldOrderFacetAbstract : SingleStringValueFacetAbstract, IFieldOrderFacet {
-        protected FieldOrderFacetAbstract(string stringValue, IFacetHolder holder)
+        protected FieldOrderFacetAbstract(string stringValue, ISpecification holder)
             : base(Type, holder, stringValue) {}
 
         public static Type Type {

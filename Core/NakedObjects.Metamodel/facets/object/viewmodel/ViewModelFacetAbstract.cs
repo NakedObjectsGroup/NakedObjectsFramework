@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facets.Objects.ViewModel {
     public abstract class ViewModelFacetAbstract : FacetAbstract, IViewModelFacet {
-        protected ViewModelFacetAbstract(Type type, IFacetHolder holder)
+        protected ViewModelFacetAbstract(Type type, ISpecification holder)
             : base(type, holder) {}
 
         #region IViewModelFacet Members

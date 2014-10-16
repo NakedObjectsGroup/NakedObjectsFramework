@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Facets.Naming.Named;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
     public class NamedFacetAnnotation : NamedFacetImpl {
-        public NamedFacetAnnotation(string value, IFacetHolder holder)
+        public NamedFacetAnnotation(string value, ISpecification holder)
             : base(value, holder) {}
     }
 

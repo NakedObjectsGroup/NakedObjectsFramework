@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Reflector.DotNet.Facets.Ordering;
 
 namespace NakedObjects.Reflector.Peer {
-    public interface IOrderableElement<T> where T : IOrderableElement<T>, IFacetHolder {
+    public interface IOrderableElement<T> where T : IOrderableElement<T>, ISpecification {
         T Peer { get; }
         IOrderSet<T> Set { get; }
     }

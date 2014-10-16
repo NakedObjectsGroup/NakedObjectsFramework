@@ -12,10 +12,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public ArrayValueTypeFacetFactory(INakedObjectReflector reflector)
             :base(reflector, typeof (IArrayValueFacet<T>)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (ArrayValueSemanticsProvider<T>.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(ArrayValueSemanticsProvider<T>.AdaptedType);
-                AddFacets(new ArrayValueSemanticsProvider<T>(spec, holder));
+                AddFacets(new ArrayValueSemanticsProvider<T>(spec, specification));
                 return true;
             }
             return false;

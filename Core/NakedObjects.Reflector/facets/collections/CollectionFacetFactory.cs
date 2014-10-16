@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         public CollectionFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndCollections) { }
 
-        private bool ProcessArray(Type type, IFacetHolder holder) {
+        private bool ProcessArray(Type type, ISpecification holder) {
             holder.AddFacet(new DotNetArrayFacet(holder, type.GetElementType()));
 
             var elementType = type.GetElementType();
@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             return true;
         }
 
-        private bool ProcessGenericEnumerable(Type type, IFacetHolder holder) {
+        private bool ProcessGenericEnumerable(Type type, ISpecification holder) {
             var typeOfFacet = holder.GetFacet<ITypeOfFacet>();
             bool isCollection = CollectionUtils.IsGenericCollection(type); // as opposed to IEnumerable 
             bool isQueryable = CollectionUtils.IsGenericQueryable(type);
@@ -51,7 +51,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         }
 
 
-        private bool ProcessCollection(IFacetHolder holder) {
+        private bool ProcessCollection(ISpecification holder) {
             var typeOfFacet = holder.GetFacet<ITypeOfFacet>();
             Type collectionElementType;
             if (typeOfFacet != null) {
@@ -67,26 +67,26 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         }
 
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (CollectionUtils.IsGenericEnumerable(type)) {
-                return ProcessGenericEnumerable(type, holder);
+                return ProcessGenericEnumerable(type, specification);
             }
             if (type.IsArray) {
-                return ProcessArray(type, holder);
+                return ProcessArray(type, specification);
             }
             if (CollectionUtils.IsCollectionButNotArray(type)) {
-                return ProcessCollection(holder);
+                return ProcessCollection(specification);
             }
 
             return false;
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             if (CollectionUtils.IsCollectionButNotArray(property.PropertyType)) {
-                holder.AddFacet(new CollectionResetFacet(property, holder));
+                specification.AddFacet(new CollectionResetFacet(property, specification));
                 return true;
             }
-            return base.Process(property, methodRemover, holder);
+            return base.Process(property, methodRemover, specification);
         }
     }
 }

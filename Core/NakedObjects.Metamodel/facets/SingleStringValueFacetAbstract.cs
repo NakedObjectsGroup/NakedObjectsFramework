@@ -11,7 +11,7 @@ namespace NakedObjects.Architecture.Facets {
     public abstract class SingleStringValueFacetAbstract : FacetAbstract, ISingleStringValueFacet {
         private readonly string valueString;
 
-        protected SingleStringValueFacetAbstract(Type facetType, IFacetHolder holder, string valueString)
+        protected SingleStringValueFacetAbstract(Type facetType, ISpecification holder, string valueString)
             : base(facetType, holder) {
             this.valueString = valueString;
         }

@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Presentation {
     public abstract class PresentationHintFacetAbstract : SingleStringValueFacetAbstract, IPresentationHintFacet {
-        protected PresentationHintFacetAbstract(string stringValue, IFacetHolder holder)
+        protected PresentationHintFacetAbstract(string stringValue, ISpecification holder)
             : base(Type, holder, stringValue) {}
 
         public static Type Type {

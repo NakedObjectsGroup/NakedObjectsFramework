@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public DateTimeValueSemanticsProvider(IIntrospectableSpecification spec)
             : this(spec, null) { }
 
-        public DateTimeValueSemanticsProvider(IIntrospectableSpecification spec, IFacetHolder holder)
+        public DateTimeValueSemanticsProvider(IIntrospectableSpecification spec, ISpecification holder)
             : base(Type, holder, AdaptedType, typicalLength, Immutable, EqualByContent, defaultValue, spec) { }
 
         // inject for testing 

@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Facets.Hide {
     public abstract class HideForContextFacetAbstract : FacetAbstract, IHideForContextFacet {
-        protected HideForContextFacetAbstract(IFacetHolder holder)
+        protected HideForContextFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

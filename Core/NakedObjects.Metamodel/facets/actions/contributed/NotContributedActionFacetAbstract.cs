@@ -14,7 +14,7 @@ namespace NakedObjects.Architecture.Facets.Actions.Contributed {
     public abstract class NotContributedActionFacetAbstract : FacetAbstract, INotContributedActionFacet {
         private readonly List<IIntrospectableSpecification> notContributedToTypes = new List<IIntrospectableSpecification>();
 
-        protected NotContributedActionFacetAbstract(IFacetHolder holder, IIntrospectableSpecification[] notContributedToTypes)
+        protected NotContributedActionFacetAbstract(ISpecification holder, IIntrospectableSpecification[] notContributedToTypes)
             : base(Type, holder) {
             this.notContributedToTypes.AddRange(notContributedToTypes);
         }

@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facets.Propparam.Validate.MaxLength {
     public abstract class MaxLengthFacetAbstract : SingleIntValueFacetAbstract, IMaxLengthFacet {
-        protected MaxLengthFacetAbstract(int intValue, IFacetHolder holder)
+        protected MaxLengthFacetAbstract(int intValue, ISpecification holder)
             : base(Type, holder, intValue) {}
 
         public static Type Type {

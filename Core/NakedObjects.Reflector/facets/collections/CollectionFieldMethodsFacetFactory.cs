@@ -33,7 +33,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             get { return FixedPrefixes; }
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder collection) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification collection) {
             string capitalizedName = property.Name;
             Type type = property.DeclaringType;
 
@@ -51,7 +51,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
         }
 
        
-        private static void AddSetFacet(ICollection<IFacet> collectionFacets, PropertyInfo property, IFacetHolder collection) {
+        private static void AddSetFacet(ICollection<IFacet> collectionFacets, PropertyInfo property, ISpecification collection) {
             if (CollectionUtils.IsSet(property.PropertyType)) {
                 collectionFacets.Add(new IsASetFacet(collection));
             }

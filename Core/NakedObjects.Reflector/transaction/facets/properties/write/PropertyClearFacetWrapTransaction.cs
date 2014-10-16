@@ -13,7 +13,7 @@ namespace NakedObjects.Reflector.Transaction.Facets.Properties.Write {
         private readonly IPropertyClearFacet underlyingFacet;
 
         public PropertyClearFacetWrapTransaction(IPropertyClearFacet underlyingFacet)
-            : base(underlyingFacet.FacetHolder) {
+            : base(underlyingFacet.Specification) {
             this.underlyingFacet = underlyingFacet;
         }
 

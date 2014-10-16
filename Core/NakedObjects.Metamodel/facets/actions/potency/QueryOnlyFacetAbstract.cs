@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Architecture.Facets.Actions.Potency {
     public abstract class QueryOnlyFacetAbstract : MarkerFacetAbstract, IQueryOnlyFacet {
-        protected QueryOnlyFacetAbstract(IFacetHolder holder)
+        protected QueryOnlyFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {

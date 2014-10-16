@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             get { return new string[] {}; }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             FindAndRemoveInitMethod(type, methodRemover);
             return false;
         }

@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public override void SetUp() {
             base.SetUp();
             character = 'r';
-            holder = new FacetHolderImpl();
+            holder = new SpecificationImpl();
             var spec = new Mock<IIntrospectableSpecification>().Object;
             SetValue(value = new CharValueSemanticsProvider(spec, holder));
         }
@@ -27,7 +27,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         #endregion
 
         private Char character;
-        private IFacetHolder holder;
+        private ISpecification holder;
         private CharValueSemanticsProvider value;
 
         [Test]

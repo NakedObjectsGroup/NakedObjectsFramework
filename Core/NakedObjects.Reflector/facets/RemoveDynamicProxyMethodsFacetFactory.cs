@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             return type.FullName.StartsWith("System.Data.Entity.DynamicProxies");
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (IsDynamicProxyType(type)) {
                 foreach (MethodInfo method in type.GetMethods().Join(methodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
                     if (methodRemover != null && method != null) {
@@ -37,9 +37,9 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             return false;
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             if (IsDynamicProxyType(property.DeclaringType) && property.Name == "RelationshipManager") {
-                return FacetUtils.AddFacet(new HiddenFacetAnnotation(WhenTo.Always, holder));
+                return FacetUtils.AddFacet(new HiddenFacetAnnotation(WhenTo.Always, specification));
             }
             return false;
         }

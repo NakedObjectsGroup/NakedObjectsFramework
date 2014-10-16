@@ -12,7 +12,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Disable {
     public class DisableForContextFacetViaMethod : DisableForContextFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public DisableForContextFacetViaMethod(MethodInfo method, IFacetHolder holder)
+        public DisableForContextFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
         }

@@ -16,20 +16,20 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         public MemberOrderAnnotationFacetFactory(INakedObjectReflector reflector)
             :base(reflector, NakedObjectFeatureType.PropertiesCollectionsAndActions) { }
 
-        private static bool Process(MemberInfo member, IFacetHolder holder) {
+        private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute =  member.GetCustomAttribute<MemberOrderAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(method, holder);
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(method, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, IFacetHolder holder) {
-            return Process(property, holder);
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+            return Process(property, specification);
         }
 
-        private static IMemberOrderFacet Create(MemberOrderAttribute attribute, IFacetHolder holder) {
+        private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) {
             return attribute == null ? null : new MemberOrderFacetAnnotation(attribute.Name, attribute.Sequence, holder);
         }
     }

@@ -8,10 +8,10 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
     public class DefaultedFacetAnnotation<T> : DefaultedFacetAbstract<T> {
-        public DefaultedFacetAnnotation(Type annotatedClass, IFacetHolder holder)
+        public DefaultedFacetAnnotation(Type annotatedClass, ISpecification holder)
             : this(ProviderName(annotatedClass), ProviderClass(annotatedClass), holder) {}
 
-        private DefaultedFacetAnnotation(string candidateProviderName, Type candidateProviderClass, IFacetHolder holder)
+        private DefaultedFacetAnnotation(string candidateProviderName, Type candidateProviderClass, ISpecification holder)
             : base(candidateProviderName, candidateProviderClass, holder) {}
 
         private static string ProviderName(Type annotatedClass) {
