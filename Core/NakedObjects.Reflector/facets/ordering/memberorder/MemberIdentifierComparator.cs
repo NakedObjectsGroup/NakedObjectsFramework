@@ -8,7 +8,7 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     /// <summary>
-    ///     Compares <see cref="INakedObjectMemberPeer" /> by <see cref="ISpecification.Identifier" />
+    ///     Compares <see cref="IMemberSpecImmutable" /> by <see cref="ISpecification.Identifier" />
     /// </summary>
     public class MemberIdentifierComparator<T> : IComparer<T> where T : IOrderableElement<T>, ISpecification  {
         #region IComparer<INakedObjectMemberPeer> Members

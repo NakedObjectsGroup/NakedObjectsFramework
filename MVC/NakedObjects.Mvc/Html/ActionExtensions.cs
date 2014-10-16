@@ -25,7 +25,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Get the id for an action dialog
         /// </summary>
-        public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, INakedObjectAction action) {
+        public static MvcHtmlString ObjectActionDialogId(this HtmlHelper html, object domainObject, IActionSpec action) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
             return MvcHtmlString.Create(IdHelper.GetActionDialogId(nakedObject, action));
         }
@@ -37,7 +37,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return CommonHtmlHelper.WrapInDiv(name, IdHelper.ActionNameLabel);
         }
 
-        private static string GetPresentationHint(INakedObjectAction action) {
+        private static string GetPresentationHint(IActionSpec action) {
             var facet = action.GetFacet<IPresentationHintFacet>();
             return facet == null ? "" : " " + facet.Value;
         }
@@ -45,7 +45,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Get the classes for an action on an object
         /// </summary>
-        public static MvcHtmlString ObjectActionClass(this HtmlHelper html, INakedObjectAction action) {
+        public static MvcHtmlString ObjectActionClass(this HtmlHelper html, IActionSpec action) {
             return MvcHtmlString.Create(IdHelper.ActionAction + GetPresentationHint(action));
         }
 
@@ -59,8 +59,8 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ParameterList(this HtmlHelper html,
                                                   object contextObject,
                                                   object targetObject,
-                                                  INakedObjectAction contextAction,
-                                                  INakedObjectAction targetAction,
+                                                  IActionSpec contextAction,
+                                                  IActionSpec targetAction,
                                                   string propertyName,
                                                   IEnumerable collection) {
             var actionContext = new ActionContext(false, html.Framework().GetNakedObject(contextObject), contextAction);
@@ -74,8 +74,8 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString ParameterListWith(this HtmlHelper html,
                                                       object contextObject,
                                                       object targetObject,
-                                                      INakedObjectAction contextAction,
-                                                      INakedObjectAction targetAction,
+                                                      IActionSpec contextAction,
+                                                      IActionSpec targetAction,
                                                       string propertyName,
                                                       IEnumerable collection) {
             var actionContext = new ActionContext(false, html.Framework().GetNakedObject(contextObject), contextAction) { Filter = x => x.Id == propertyName };
@@ -85,7 +85,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
 
-        private static MvcHtmlString ParameterList(INakedObjectAction contextAction, object targetObject, INakedObjectAction targetAction, string propertyName, IEnumerable collection, HtmlHelper html, ActionContext actionContext) {
+        private static MvcHtmlString ParameterList(IActionSpec contextAction, object targetObject, IActionSpec targetAction, string propertyName, IEnumerable collection, HtmlHelper html, ActionContext actionContext) {
             if ((targetObject == null || targetAction == null || string.IsNullOrEmpty(propertyName)) && collection == null) {
                 return html.ParameterList(actionContext);
             }
@@ -101,12 +101,12 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <summary>
         ///     Get the parameters of an action for display within a form
         /// </summary>
-        public static MvcHtmlString ParameterList(this HtmlHelper html, object context, INakedObjectAction action) {
+        public static MvcHtmlString ParameterList(this HtmlHelper html, object context, IActionSpec action) {
             var actionContext = new ActionContext(false, html.Framework().GetNakedObject(context), action);
             return html.ParameterList(actionContext);
         }
 
-        public static MvcHtmlString ParameterListWith(this HtmlHelper html, object context, INakedObjectAction action, string parameterName) {
+        public static MvcHtmlString ParameterListWith(this HtmlHelper html, object context, IActionSpec action, string parameterName) {
             var actionContext = new ActionContext(false, html.Framework().GetNakedObject(context), action) { Filter = x => x.Id == parameterName };
             return html.ParameterList(actionContext);
         }
@@ -518,21 +518,21 @@ namespace NakedObjects.Web.Mvc.Html {
         // non lambda 
         public static MvcHtmlString ObjectAction(this HtmlHelper html, object model, string id, object paramValues = null) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            INakedObjectAction action = html.GetObjectAndContributedActions(nakedObject).SingleOrDefault(a => a.Id == id);
+            IActionSpec action = html.GetObjectAndContributedActions(nakedObject).SingleOrDefault(a => a.Id == id);
             ValidateParamValues(action, paramValues);
             return action == null ? MvcHtmlString.Create("") : html.ObjectAction(new ActionContext(nakedObject, action) {ParameterValues = new RouteValueDictionary(paramValues)});
         }
 
-        private static void ValidateParamValues(INakedObjectAction action, object paramValues) {
+        private static void ValidateParamValues(IActionSpec action, object paramValues) {
             if (paramValues != null && action.Parameters.Select(p => p.Spec).Any(s => s.IsCollection)) {
                 throw new NotSupportedException("Cannot pass collection as parameter value to custom ObjectAction");
             }
         }
 
-        private static IEnumerable<INakedObjectAction> GetObjectAndContributedActions(this HtmlHelper html, INakedObject nakedObject) {
+        private static IEnumerable<IActionSpec> GetObjectAndContributedActions(this HtmlHelper html, INakedObject nakedObject) {
             return nakedObject.Spec.GetAllActions().Union(
                 nakedObject.Spec.GetAllActions().
-                            Where(a => a.ActionType == NakedObjectActionType.Set).SelectMany(a => a.Actions)).
+                            Where(a => a.ActionType == ActionType.Set).SelectMany(a => a.Actions)).
                                Where(a => a.IsVisible( nakedObject));
         }
 
@@ -794,7 +794,7 @@ namespace NakedObjects.Web.Mvc.Html {
         // non lambda 
         public static MvcHtmlString ObjectActionOnTransient(this HtmlHelper html, object model, string id) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            INakedObjectAction action = nakedObject.Spec.GetAllActions().Single(a => a.Id == id);
+            IActionSpec action = nakedObject.Spec.GetAllActions().Single(a => a.Id == id);
             return html.ObjectActionOnTransient(new ActionContext(nakedObject, action));
         }
 
@@ -985,7 +985,7 @@ namespace NakedObjects.Web.Mvc.Html {
         // non lambda 
         public static MvcHtmlString ObjectActionAsDialog(this HtmlHelper html, object model, string id) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            INakedObjectAction action = html.GetObjectAndContributedActions(nakedObject).SingleOrDefault(a => a.Id == id);
+            IActionSpec action = html.GetObjectAndContributedActions(nakedObject).SingleOrDefault(a => a.Id == id);
             return action == null ? MvcHtmlString.Create("") : html.ObjectActionAsDialog(new ActionContext(nakedObject, action));
         }
 

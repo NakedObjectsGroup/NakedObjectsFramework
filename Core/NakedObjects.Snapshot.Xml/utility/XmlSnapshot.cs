@@ -271,7 +271,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
             // locate the field in the object's class
             IObjectSpec nos = nakedObject.Spec;
-            INakedObjectAssociation field = nos.Properties.SingleOrDefault(p => p.Id.ToLower() == fieldName);
+            IAssociationSpec field = nos.Properties.SingleOrDefault(p => p.Id.ToLower() == fieldName);
 
             if (field == null) {
                 Log.Info("includeField(Pl, Vec, Str): could not locate field, skipping");
@@ -300,10 +300,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 Log.Debug("includeField(Pl, Vec, Str): field is value; done");
                 return false;
             }
-            if (field is IOneToOneAssociation) {
+            if (field is IOneToOneAssociationSpec) {
                 Log.Debug("includeField(Pl, Vec, Str): field is 1->1");
 
-                var oneToOneAssociation = ((IOneToOneAssociation) field);
+                var oneToOneAssociation = ((IOneToOneAssociationSpec) field);
                 INakedObject referencedObject = oneToOneAssociation.GetNakedObject(fieldPlace.NakedObject);
 
                 if (referencedObject == null) {
@@ -316,10 +316,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
                 return appendedXml;
             }
-            if (field is IOneToManyAssociation) {
+            if (field is IOneToManyAssociationSpec) {
                 Log.Debug("includeField(Pl, Vec, Str): field is 1->M");
 
-                var oneToManyAssociation = (IOneToManyAssociation) field;
+                var oneToManyAssociation = (IOneToManyAssociationSpec) field;
                 INakedObject collection = oneToManyAssociation.GetNakedObject(fieldPlace.NakedObject);
 
                 INakedObject[] collectionAsEnumerable = collection.GetAsEnumerable(nakedObjectManager).ToArray();
@@ -418,12 +418,12 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
             NofMetaModel.SetAttributesForClass(element, OidOrHashCode(nakedObject));
 
-            INakedObjectAssociation[] fields = nos.Properties;
+            IAssociationSpec[] fields = nos.Properties;
             Log.Debug("objectToElement(NO): processing fields");
 
             var seenFields = new List<string>();
 
-            foreach (INakedObjectAssociation field in fields) {
+            foreach (IAssociationSpec field in fields) {
                 string fieldName = field.Id;
 
                 Log.Debug("objectToElement(NO): " + DoLog("field", fieldName));
@@ -461,7 +461,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                         continue;
                     }
 
-                    var oneToOneAssociation = ((IOneToOneAssociation) field);
+                    var oneToOneAssociation = ((IOneToOneAssociationSpec) field);
                     XElement xmlValueElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {
@@ -494,10 +494,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     // XSD
                     xsdFieldElement = Schema.CreateXsElementForNofValue(xsElement, xmlValueElement);
                 }
-                else if (field is IOneToOneAssociation) {
+                else if (field is IOneToOneAssociationSpec) {
                     Log.Debug("objectToElement(NO): " + DoLog("field", fieldName) + " is IOneToOneAssociation");
 
-                    var oneToOneAssociation = ((IOneToOneAssociation) field);
+                    var oneToOneAssociation = ((IOneToOneAssociationSpec) field);
 
                     XElement xmlReferenceElement = xmlFieldElement; // more meaningful locally scoped name
 
@@ -522,10 +522,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     // XSD
                     xsdFieldElement = Schema.CreateXsElementForNofReference(xsElement, xmlReferenceElement, oneToOneAssociation.Spec.FullName);
                 }
-                else if (field is IOneToManyAssociation) {
+                else if (field is IOneToManyAssociationSpec) {
                     Log.Debug("objectToElement(NO): " + DoLog("field", fieldName) + " is IOneToManyAssociation");
 
-                    var oneToManyAssociation = (IOneToManyAssociation) field;
+                    var oneToManyAssociation = (IOneToManyAssociationSpec) field;
                     XElement xmlCollectionElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {

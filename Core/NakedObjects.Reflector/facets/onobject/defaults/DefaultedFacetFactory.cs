@@ -17,7 +17,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
     public class DefaultedFacetFactory : AnnotationBasedFacetFactoryAbstract, INakedObjectConfigurationAware {
         public DefaultedFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
+            :base(reflector, FeatureType.ObjectsPropertiesAndParameters) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             return FacetUtils.AddFacet(Create(type, specification));

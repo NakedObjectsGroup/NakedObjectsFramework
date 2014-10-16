@@ -11,11 +11,11 @@ using NakedObjects.Reflector.DotNet.Reflect;
 namespace NakedObjects.Reflector.DotNet.Facets {
     /// <summary>
     ///     A <see cref="IFacet" /> implementation that ultimately wraps a
-    ///     <see cref="MethodInfo" />, for a implementation of a <see cref="INakedObjectMember" />
+    ///     <see cref="MethodInfo" />, for a implementation of a <see cref="IMemberSpec" />
     /// </summary>
     /// <para>
     ///     Used by <see cref="NakedObjectSpecification.GetMember" /> in order to
-    ///     reverse lookup <see cref="INakedObjectMember" />s from underlying <see cref="MethodInfo" />s.
+    ///     reverse lookup <see cref="IMemberSpec" />s from underlying <see cref="MethodInfo" />s.
     ///     So, for example, the facets that represent an action Xxx, or a ValidateXxx method, or
     ///     an AddToXxx collection, can all be used to lookup the member.
     /// </para>

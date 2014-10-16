@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
     /// </summary>
     public class FallbackFacetFactory : FacetFactoryAbstract {
         public FallbackFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.Everything) { }
+            : base(reflector, FeatureType.Everything) { }
 
 
         public bool Recognizes(MethodInfo method) {
@@ -53,26 +53,26 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         private static bool Process(ISpecification holder) {
             var facets = new List<IFacet>();
 
-            if (holder is DotNetNakedObjectMemberPeer) {
+            if (holder is MemberSpecImmutable) {
                 facets.Add(new NamedFacetNone(holder));
                 facets.Add(new DescribedAsFacetNone(holder));                
             }
 
-            if (holder is DotNetNakedObjectAssociationPeer) {
+            if (holder is AssociationSpecImmutable) {
                 facets.Add(new ImmutableFacetNever(holder));
                 facets.Add(new PropertyDefaultFacetNone(holder));
                 facets.Add(new PropertyValidateFacetNone(holder));
             }
 
             // TODO this should really only be applied to objects marked as ParseableEntryFacet or ones that are externally processed as such
-            if (holder is IParseableFacet || holder is DotNetOneToOneAssociationPeer) {
-                var association = (DotNetOneToOneAssociationPeer) holder;
+            if (holder is IParseableFacet || holder is OneToOneAssociationSpecImmutable) {
+                var association = (OneToOneAssociationSpecImmutable) holder;
                 facets.Add(new MaxLengthFacetZero(holder));
                 DefaultTypicalLength(facets, association.Specification, holder);
                 facets.Add(new MultiLineFacetNone(holder));
             }
 
-            if (holder is DotNetNakedObjectActionPeer) {
+            if (holder is ActionSpecImmutable) {
                 facets.Add(new ExecutedFacetAtDefault(holder));
                 facets.Add(new ActionDefaultsFacetNone(holder));
                 facets.Add(new ActionChoicesFacetNone(holder));
@@ -94,8 +94,8 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             var facets = new List<IFacet>();
 
-            if (holder is DotNetNakedObjectActionParamPeer) {
-                var param = (DotNetNakedObjectActionParamPeer) holder;
+            if (holder is ActionParameterSpecImmutable) {
+                var param = (ActionParameterSpecImmutable) holder;
 
                 INamedFacet namedFacet;
                 string name = method.GetParameters()[paramNum].Name;

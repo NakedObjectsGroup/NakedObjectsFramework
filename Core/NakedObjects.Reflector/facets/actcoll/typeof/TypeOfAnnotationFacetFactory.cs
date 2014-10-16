@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Util;
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
     public class TypeOfAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TypeOfAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.CollectionsAndActions) { }
+            :base(reflector, FeatureType.CollectionsAndActions) { }
 
         private bool Process(Type methodReturnType, ISpecification holder) {
             if (!CollectionUtils.IsCollection(methodReturnType)) {

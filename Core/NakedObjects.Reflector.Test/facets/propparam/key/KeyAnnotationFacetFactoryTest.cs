@@ -50,12 +50,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Key {
 
         [Test]
         public override void TestFeatureTypes() {
-            NakedObjectFeatureType[] featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Objects));
-            Assert.IsTrue(Contains(featureTypes, NakedObjectFeatureType.Property));
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Collection));
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Action));
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.ActionParameter));
+            FeatureType[] featureTypes = facetFactory.FeatureTypes;
+            Assert.IsFalse(Contains(featureTypes, FeatureType.Objects));
+            Assert.IsTrue(Contains(featureTypes, FeatureType.Property));
+            Assert.IsFalse(Contains(featureTypes, FeatureType.Collection));
+            Assert.IsFalse(Contains(featureTypes, FeatureType.Action));
+            Assert.IsFalse(Contains(featureTypes, FeatureType.ActionParameter));
         }
 
         [Test]

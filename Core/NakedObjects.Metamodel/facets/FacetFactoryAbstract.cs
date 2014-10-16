@@ -13,9 +13,9 @@ using NakedObjects.Architecture.Reflect;
 namespace NakedObjects.Architecture.Facets {
     public abstract class FacetFactoryAbstract : IFacetFactory {
         private readonly INakedObjectReflector reflector;
-        private readonly NakedObjectFeatureType[] featureTypes;
+        private readonly FeatureType[] featureTypes;
 
-        protected FacetFactoryAbstract(INakedObjectReflector reflector, NakedObjectFeatureType[] featureTypes) {
+        protected FacetFactoryAbstract(INakedObjectReflector reflector, FeatureType[] featureTypes) {
             
             this.reflector = reflector;
             this.featureTypes = featureTypes;
@@ -25,7 +25,7 @@ namespace NakedObjects.Architecture.Facets {
 
         #region IFacetFactory Members
 
-        public virtual NakedObjectFeatureType[] FeatureTypes {
+        public virtual FeatureType[] FeatureTypes {
             get { return featureTypes; }
         }
 

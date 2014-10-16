@@ -19,11 +19,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
     // be better passed back to the client).
 
 
-    public class DotNetNakedObjectActionPeer : DotNetNakedObjectMemberPeer, INakedObjectActionPeer {
+    public class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
         private readonly IObjectSpecImmutable specification;
-        private readonly INakedObjectActionParamPeer[] parameters;
+        private readonly IActionParameterSpecImmutable[] parameters;
 
-        public DotNetNakedObjectActionPeer(IIdentifier identifier,  IObjectSpecImmutable specification, INakedObjectActionParamPeer[] parameters)
+        public ActionSpecImmutable(IIdentifier identifier,  IObjectSpecImmutable specification, IActionParameterSpecImmutable[] parameters)
             : base(identifier) {
             this.specification = specification;
             this.parameters = parameters;
@@ -35,14 +35,14 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
 
         #region INakedObjectActionPeer Members
 
-        public INakedObjectActionParamPeer[] Parameters {
+        public IActionParameterSpecImmutable[] Parameters {
             get { return parameters; }
         }  
 
         #endregion
 
-        public INakedObjectActionPeer Peer { get { return this; }}
-        public IOrderSet<INakedObjectActionPeer> Set { get { return null; } }
+        public IActionSpecImmutable Peer { get { return this; }}
+        public IOrderSet<IActionSpecImmutable> Set { get { return null; } }
 
         public  bool IsContributedMethod {
             get {

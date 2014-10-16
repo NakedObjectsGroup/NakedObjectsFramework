@@ -38,7 +38,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// </para>
         /// <para>
         ///     This design allows us to add new checks, (eg for new annotation semantics) without the
-        ///     intermediary <see cref="INakedObjectAction" />s and ActionPeer (etc) needing to be aware of
+        ///     intermediary <see cref="IActionSpec" />s and ActionPeer (etc) needing to be aware of
         ///     these new subtypes
         /// </para>
         Exception Exception { get; }

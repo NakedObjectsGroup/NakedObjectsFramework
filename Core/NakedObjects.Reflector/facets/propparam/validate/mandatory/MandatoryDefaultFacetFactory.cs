@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
     /// </para>
     public class MandatoryDefaultFacetFactory : FacetFactoryAbstract {
         public MandatoryDefaultFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.PropertiesAndParameters) { }
+            : base(reflector, FeatureType.PropertiesAndParameters) { }
 
         public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
             return FacetUtils.AddFacet(Create(specification));

@@ -39,9 +39,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private readonly PropertyInfo[] properties;
         private readonly INakedObjectReflector reflector;
 
-        private IOrderSet<INakedObjectActionPeer> orderedClassActions;
-        private IOrderSet<INakedObjectAssociationPeer> orderedFields;
-        private IOrderSet<INakedObjectActionPeer> orderedObjectActions;
+        private IOrderSet<IActionSpecImmutable> orderedClassActions;
+        private IOrderSet<IAssociationSpecImmutable> orderedFields;
+        private IOrderSet<IActionSpecImmutable> orderedObjectActions;
 
         public DotNetIntrospector(Type typeToIntrospect,
                                   IObjectSpecImmutable specification,
@@ -96,15 +96,15 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
         }
 
-        public IOrderSet<INakedObjectAssociationPeer> Fields {
+        public IOrderSet<IAssociationSpecImmutable> Fields {
             get { return orderedFields; }
         }
 
-        public IOrderSet<INakedObjectActionPeer> ClassActions {
+        public IOrderSet<IActionSpecImmutable> ClassActions {
             get { return orderedClassActions; }
         }
 
-        public IOrderSet<INakedObjectActionPeer> ObjectActions {
+        public IOrderSet<IActionSpecImmutable> ObjectActions {
             get { return orderedObjectActions; }
         }
 
@@ -157,7 +157,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             Log.InfoFormat("introspecting {0}: properties and collections", ClassName);
 
             // find the properties and collections (fields) ...
-            INakedObjectAssociationPeer[] findFieldMethods = FindAndCreateFieldPeers();
+            IAssociationSpecImmutable[] findFieldMethods = FindAndCreateFieldPeers();
 
             // ... and the ordering of the properties and collections  
             var fieldOrderFacet = specification.GetFacet<IFieldOrderFacet>();
@@ -177,7 +177,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             Log.InfoFormat("introspecting {0}: actions", ClassName);
 
             // find the actions ...
-            INakedObjectActionPeer[] findObjectActionMethods = FindActionMethods(MethodType.Object);
+            IActionSpecImmutable[] findObjectActionMethods = FindActionMethods(MethodType.Object);
 
             // ... and the ordering of actions ...
             var actionOrderFacet = specification.GetFacet<IActionOrderFacet>();
@@ -189,7 +189,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
          
 
             // find the class actions ...
-            INakedObjectActionPeer[] findClassActionMethods = FindActionMethods(MethodType.Class);
+            IActionSpecImmutable[] findClassActionMethods = FindActionMethods(MethodType.Class);
 
             // ... and the ordering of class actions
             // TODO: the calling of classActionOrder() should be a facet
@@ -200,10 +200,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
            
         }
 
-        private INakedObjectAssociationPeer[] FindAndCreateFieldPeers() {
+        private IAssociationSpecImmutable[] FindAndCreateFieldPeers() {
             if (ClassStrategy.IsSystemClass(introspectedType)) {
                 Log.DebugFormat("Skipping fields in {0} (system class according to ClassStrategy)", introspectedType.Name);
-                return new INakedObjectAssociationPeer[0];
+                return new IAssociationSpecImmutable[0];
             }
 
             Log.DebugFormat("Looking for fields for {0}", introspectedType);
@@ -212,7 +212,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             reflector.LoadSpecificationForReturnTypes(candidates, introspectedType);
 
             // now create FieldPeers for value properties, for collections and for reference properties
-            var fieldPeers = new List<INakedObjectAssociationPeer>();
+            var fieldPeers = new List<IAssociationSpecImmutable>();
 
             FindCollectionPropertiesAndCreateCorrespondingFieldPeers(candidates, fieldPeers);
             // every other accessor is assumed to be a reference property.
@@ -221,7 +221,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return fieldPeers.ToArray();
         }
 
-        private void FindCollectionPropertiesAndCreateCorrespondingFieldPeers(IList<PropertyInfo> candidates, ICollection<INakedObjectAssociationPeer> fieldPeers) {
+        private void FindCollectionPropertiesAndCreateCorrespondingFieldPeers(IList<PropertyInfo> candidates, ICollection<IAssociationSpecImmutable> fieldPeers) {
             var collectionProperties = new List<PropertyInfo>();
             FacetFactorySet.FindCollectionProperties(candidates, collectionProperties);
             CreateCollectionPeersFromAccessors(collectionProperties, fieldPeers);
@@ -231,13 +231,13 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         ///     Since the value properties and collections have already been processed, this will
         ///     pick up the remaining reference properties
         /// </summary>
-        private void FindPropertiesAndCreateCorrespondingFieldPeers(IList<PropertyInfo> candidates, ICollection<INakedObjectAssociationPeer> fieldPeers) {
+        private void FindPropertiesAndCreateCorrespondingFieldPeers(IList<PropertyInfo> candidates, ICollection<IAssociationSpecImmutable> fieldPeers) {
             var foundProperties = new List<PropertyInfo>();
             FacetFactorySet.FindProperties(candidates, foundProperties);
             CreatePropertyPeersFromAccessors(foundProperties, fieldPeers);
         }
 
-        private void CreateCollectionPeersFromAccessors(IEnumerable<PropertyInfo> collectionProperties, ICollection<INakedObjectAssociationPeer> fieldsListToAppendto) {
+        private void CreateCollectionPeersFromAccessors(IEnumerable<PropertyInfo> collectionProperties, ICollection<IAssociationSpecImmutable> fieldsListToAppendto) {
             foreach (PropertyInfo property in collectionProperties) {
                 Log.DebugFormat("Identified one-many association method {0}", property);
 
@@ -247,8 +247,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 var returnType = property.PropertyType;
                 var returnSpec = reflector.LoadSpecification(returnType);
 
-                var collection = new DotNetOneToManyAssociationPeer(identifier, returnType, returnSpec);
-                FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), collection, NakedObjectFeatureType.Collection);
+                var collection = new OneToManyAssociationSpecImmutable(identifier, returnType, returnSpec);
+                FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), collection, FeatureType.Collection);
 
                 // figure out what the Type is
                 var typeOfFacet = collection.GetFacet<ITypeOfFacet>();
@@ -263,7 +263,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         /// <summary>
         ///     Creates a list of Association fields for all the properties that use NakedObjects.
         /// </summary>
-        private void CreatePropertyPeersFromAccessors(IEnumerable<PropertyInfo> foundProperties, ICollection<INakedObjectAssociationPeer> fieldListToAppendto) {
+        private void CreatePropertyPeersFromAccessors(IEnumerable<PropertyInfo> foundProperties, ICollection<IAssociationSpecImmutable> fieldListToAppendto) {
             foreach (PropertyInfo property in foundProperties) {
                 Log.DebugFormat("Identified 1-1 association method {0}", property);
                 Log.DebugFormat("One-to-One association {0} -> {1}", property.Name, property);
@@ -273,10 +273,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 // create a reference property
                 var propertyType = property.PropertyType;
                 var propertySpec = reflector.LoadSpecification(propertyType);
-                var referenceProperty = new DotNetOneToOneAssociationPeer(identifier, propertyType, propertySpec);
+                var referenceProperty = new OneToOneAssociationSpecImmutable(identifier, propertyType, propertySpec);
 
                 // Process facets for the property
-                FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), referenceProperty, NakedObjectFeatureType.Property);
+                FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), referenceProperty, FeatureType.Property);
 
                 fieldListToAppendto.Add(referenceProperty);
             }
@@ -331,23 +331,23 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         private bool ContainsField(string name) {
             foreach (var field in Fields) {
-                var field1 = (INakedObjectAssociationPeer) field;
-                if (field1.IsOneToOne && ((DotNetOneToOneAssociationPeer) field1).Identifier.MemberName.Equals(name)) {
+                var field1 = (IAssociationSpecImmutable) field;
+                if (field1.IsOneToOne && ((OneToOneAssociationSpecImmutable) field1).Identifier.MemberName.Equals(name)) {
                     return true;
                 }
             }
             return false;
         }
 
-        private INakedObjectActionPeer[] FindActionMethods(MethodType methodType) {
+        private IActionSpecImmutable[] FindActionMethods(MethodType methodType) {
             if (ClassStrategy.IsSystemClass(introspectedType)) {
                 Log.DebugFormat("Skipping fields in {0}(system class according to ClassStrategy)", introspectedType.Name);
-                return new INakedObjectActionPeer[0];
+                return new IActionSpecImmutable[0];
             }
 
             Log.Debug("Looking for action methods");
 
-            var actionPeers = new List<INakedObjectActionPeer>();
+            var actionPeers = new List<IActionSpecImmutable>();
 
             Array.Sort(methods, new SortActionsFirst(FacetFactorySet));
             for (int i = 0; i < methods.Length; i++) {
@@ -377,12 +377,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
                 // build action & its parameters          
 
-                INakedObjectActionParamPeer[] actionParams = parameterTypes.Select(pt => new DotNetNakedObjectActionParamPeer(GetSpecification(pt))).Cast<INakedObjectActionParamPeer>().ToArray();
+                IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => new ActionParameterSpecImmutable(GetSpecification(pt))).Cast<IActionParameterSpecImmutable>().ToArray();
 
-                var action = new DotNetNakedObjectActionPeer(identifier, specification, actionParams);
+                var action = new ActionSpecImmutable(identifier, specification, actionParams);
 
                 // Process facets on the action & parameters
-                FacetFactorySet.Process(actionMethod, new DotnetIntrospectorMethodRemover(methods), action, NakedObjectFeatureType.Action);
+                FacetFactorySet.Process(actionMethod, new DotnetIntrospectorMethodRemover(methods), action, FeatureType.Action);
                 for (int l = 0; l < actionParams.Length; l++) {
                     FacetFactorySet.ProcessParams(actionMethod, l, actionParams[l]);
                 }

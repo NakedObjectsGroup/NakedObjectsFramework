@@ -5,11 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.Reflector.Peer {
-    public interface INakedObjectActionParamPeer : ISpecification {
-        IObjectSpecImmutable Specification { get; }
+namespace NakedObjects.Architecture.Reflect {
+    public interface IOneToManyAssociationSpec : IAssociationSpec, IOneToManyFeatureSpec {
+        /// <summary>
+        ///     Return the count of elements in this collection field on the specified object
+        /// </summary>
+        int Count(INakedObject nakedObject);
     }
+
+    // Copyright (c) Naked Objects Group Ltd.
 }

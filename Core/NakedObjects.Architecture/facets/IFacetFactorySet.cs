@@ -50,7 +50,7 @@ namespace NakedObjects.Architecture.Facets {
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification, NakedObjectFeatureType featureType);
+        bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification, FeatureType featureType);
 
         /// <summary>
         ///     Delegates to <see cref="IFacetFactory.Process(PropertyInfo,IMethodRemover,ISpecification)" />for each appropriate factory.
@@ -62,7 +62,7 @@ namespace NakedObjects.Architecture.Facets {
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification, NakedObjectFeatureType featureType);
+        bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification, FeatureType featureType);
 
         /// <summary>
         ///     Delegates to <see cref="IFacetFactory.ProcessParams" /> for each appropriate factory.

@@ -13,7 +13,7 @@ using PropertyInfo = System.Reflection.PropertyInfo;
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Defaults {
     public class PropertyDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PropertyDefaultAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
+            :base(reflector, FeatureType.PropertiesOnly) { }
 
 
         private static bool Process(MemberInfo member, ISpecification holder) {

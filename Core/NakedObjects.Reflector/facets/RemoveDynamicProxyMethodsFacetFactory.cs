@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         }
 
         public RemoveDynamicProxyMethodsFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsAndProperties) {}
+            : base(reflector, FeatureType.ObjectsAndProperties) {}
 
         private static bool IsDynamicProxyType(Type type) {
             return type.FullName.StartsWith("System.Data.Entity.DynamicProxies");

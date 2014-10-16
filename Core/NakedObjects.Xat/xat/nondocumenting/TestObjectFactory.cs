@@ -61,20 +61,20 @@ namespace NakedObjects.Xat {
             return null;
         }
 
-        public ITestAction CreateTestAction(INakedObjectAction action, ITestHasActions owningObject) {
-            return new TestAction(metamodelManager, Session, lifecycleManager, action, owningObject, this, manager, transactionManager);
+        public ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject) {
+            return new TestAction(metamodelManager, Session, lifecycleManager, actionSpec, owningObject, this, manager, transactionManager);
         }
 
-        public ITestAction CreateTestAction(string contributor, INakedObjectAction action, ITestHasActions owningObject) {
-            return new TestAction(metamodelManager, Session, lifecycleManager, contributor, action, owningObject, this, manager, transactionManager);
+        public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) {
+            return new TestAction(metamodelManager, Session, lifecycleManager, contributor, actionSpec, owningObject, this, manager, transactionManager);
         }
 
-        public ITestProperty CreateTestProperty(INakedObjectAssociation field, ITestHasActions owningObject) {
+        public ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject) {
             return new TestProperty(lifecycleManager, Session, persistor, field, owningObject, this, manager);
         }
 
-        public ITestParameter CreateTestParameter(INakedObjectAction action, INakedObjectActionParameter parameter, ITestHasActions owningObject) {
-            return new TestParameter(lifecycleManager, action, parameter, owningObject, this);
+        public ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject) {
+            return new TestParameter(lifecycleManager, actionSpec, parameterSpec, owningObject, this);
         }
 
         #endregion

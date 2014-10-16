@@ -177,7 +177,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return MakeId(id, DisplayFormatFieldId);
         }
 
-        public static string GetCollectionItemId(INakedObject owner, INakedObjectAssociation assoc) {
+        public static string GetCollectionItemId(INakedObject owner, IAssociationSpec assoc) {
             return GetObjectId(owner) + sep + assoc.Id + sep + "Item";
         }
 
@@ -185,39 +185,39 @@ namespace NakedObjects.Web.Mvc.Html {
             return owner.Spec.UniqueShortName();
         }
 
-        public static string GetFieldId(INakedObject owner, INakedObjectAssociation assoc) {
+        public static string GetFieldId(INakedObject owner, IAssociationSpec assoc) {
             return GetObjectId(owner) + sep + assoc.Id;
         }
 
-        public static string GetInlineFieldId( INakedObjectAssociation parent, INakedObject owner, INakedObjectAssociation assoc) {
+        public static string GetInlineFieldId( IAssociationSpec parent, INakedObject owner, IAssociationSpec assoc) {
             return  parent.Id + sep + GetObjectId(owner) + sep + assoc.Id;
         }
 
-        public static string GetFieldInputId(INakedObject owner, INakedObjectAssociation assoc) {
+        public static string GetFieldInputId(INakedObject owner, IAssociationSpec assoc) {
             return GetFieldId(owner, assoc) + sep + InputOrSelect(assoc.Spec);
         }
 
-        public static string GetFieldAutoCompleteId(string id, INakedObject owner, INakedObjectAssociation assoc) {
+        public static string GetFieldAutoCompleteId(string id, INakedObject owner, IAssociationSpec assoc) {
             return assoc.Spec.IsParseable ? id : id + sep + autoCompleteName;
         }
 
-        public static string GetInlineFieldInputId(INakedObjectAssociation parent, INakedObject owner, INakedObjectAssociation assoc) {
+        public static string GetInlineFieldInputId(IAssociationSpec parent, INakedObject owner, IAssociationSpec assoc) {
             return GetInlineFieldId(parent, owner, assoc) + sep + InputOrSelect(assoc.Spec);
         }
 
-        public static string GetConcurrencyFieldInputId(INakedObject owner, INakedObjectAssociation assoc) {
+        public static string GetConcurrencyFieldInputId(INakedObject owner, IAssociationSpec assoc) {
             return GetFieldId(owner, assoc) + sep + concurrencyName;
         }
 
-        public static string GetInlineConcurrencyFieldInputId(INakedObjectAssociation parent, INakedObject owner, INakedObjectAssociation assoc) {
+        public static string GetInlineConcurrencyFieldInputId(IAssociationSpec parent, INakedObject owner, IAssociationSpec assoc) {
             return GetInlineFieldId(parent, owner, assoc) + sep + concurrencyName;
         }
 
-        public static string GetConcurrencyActionInputId(INakedObject owner, INakedObjectAction action, INakedObjectAssociation assoc) {
+        public static string GetConcurrencyActionInputId(INakedObject owner, IActionSpec action, IAssociationSpec assoc) {
             return GetActionId(owner, action) + sep + assoc.Id + sep + concurrencyName;
         }
 
-        public static string GetActionId(INakedObject owner, INakedObjectAction action) {
+        public static string GetActionId(INakedObject owner, IActionSpec action) {
             return GetObjectId(owner) + sep + action.Id;
         }
 
@@ -229,7 +229,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return contextNakedObjectId + contextActionName + propertyId + GetObjectId(targetActionContext.Target) + sep + targetActionContext.Action.Id;
         }
 
-        public static string GetActionDialogId(INakedObject owner, INakedObjectAction action) {
+        public static string GetActionDialogId(INakedObject owner, IActionSpec action) {
             return GetObjectId(owner) + sep + action.Id + sep + DialogName;
         }
 
@@ -237,7 +237,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return id.EndsWith(":") ? id : id + ":";
         }
 
-        public static string GetSubMenuId(INakedObject owner, INakedObjectAction action) {
+        public static string GetSubMenuId(INakedObject owner, IActionSpec action) {
             return EnsureEndsWithColon(GetObjectId(owner) + sep + action.Id.Split('.').Last());
         }
 
@@ -245,20 +245,20 @@ namespace NakedObjects.Web.Mvc.Html {
             return EnsureEndsWithColon(GetObjectId(owner) + sep + service.Spec.UniqueShortName());
         }
 
-        public static string GetFindMenuId(INakedObject nakedObject, INakedObjectAction action, string propertyName) {
+        public static string GetFindMenuId(INakedObject nakedObject, IActionSpec action, string propertyName) {
             string contextActionName = action == null ? "" : sep + action.Id;
             return GetObjectId(nakedObject) + contextActionName + sep + NameUtils.CapitalizeName(propertyName) + sep + FindMenuName;
         }
 
-        public static string GetParameterId(INakedObjectAction action, INakedObjectActionParameter parameter) {
+        public static string GetParameterId(IActionSpec action, IActionParameterSpec parameter) {
             return action.OnType.UniqueShortName() + sep + action.Id + sep + NameUtils.CapitalizeName(parameter.Id);
         }
 
-        public static string GetParameterInputId(INakedObjectAction action, INakedObjectActionParameter parameter) {
+        public static string GetParameterInputId(IActionSpec action, IActionParameterSpec parameter) {
             return GetParameterId(action, parameter) + sep + InputOrSelect(parameter.Spec);
         }
 
-        public static string GetParameterAutoCompleteId(INakedObjectAction action, INakedObjectActionParameter parameter) {
+        public static string GetParameterAutoCompleteId(IActionSpec action, IActionParameterSpec parameter) {
             var id = GetParameterInputId(action, parameter);
             return parameter.Spec.IsParseable ? id : id + sep + autoCompleteName;
         }
@@ -280,7 +280,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return GetObjectId(nakedObject) + sep + PropertyListName;
         }
 
-        public static string GetParameterContainerId(INakedObjectAction action) {
+        public static string GetParameterContainerId(IActionSpec action) {
             return  action.Id + sep + ParamListName;
         }
 

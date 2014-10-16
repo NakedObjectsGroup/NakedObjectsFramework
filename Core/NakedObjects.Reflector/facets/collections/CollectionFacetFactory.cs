@@ -14,7 +14,7 @@ using NakedObjects.Reflector.DotNet.Facets.Collections.Modify;
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     public class CollectionFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public CollectionFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndCollections) { }
+            :base(reflector, FeatureType.ObjectsPropertiesAndCollections) { }
 
         private bool ProcessArray(Type type, ISpecification holder) {
             holder.AddFacet(new DotNetArrayFacet(holder, type.GetElementType()));

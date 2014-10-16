@@ -139,12 +139,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
 
         [Test]
         public override void TestFeatureTypes() {
-            NakedObjectFeatureType[] featureTypes = annotationFacetFactory.FeatureTypes;
-            Assert.IsTrue(Contains(featureTypes, NakedObjectFeatureType.Objects));
-            Assert.IsTrue(Contains(featureTypes, NakedObjectFeatureType.Property));
-            Assert.IsTrue(Contains(featureTypes, NakedObjectFeatureType.Collection));
-            Assert.IsTrue(Contains(featureTypes, NakedObjectFeatureType.Action));
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.ActionParameter));
+            FeatureType[] featureTypes = annotationFacetFactory.FeatureTypes;
+            Assert.IsTrue(Contains(featureTypes, FeatureType.Objects));
+            Assert.IsTrue(Contains(featureTypes, FeatureType.Property));
+            Assert.IsTrue(Contains(featureTypes, FeatureType.Collection));
+            Assert.IsTrue(Contains(featureTypes, FeatureType.Action));
+            Assert.IsFalse(Contains(featureTypes, FeatureType.ActionParameter));
         }
     }
 

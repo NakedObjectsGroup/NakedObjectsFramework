@@ -81,7 +81,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void ActionsForHelper() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             INakedObject adapter = NakedObjectsFramework.GetNakedObject(claim);
-            IEnumerable<INakedObjectAction> actions = NakedObjectsFramework.GetActions(adapter);
+            IEnumerable<IActionSpec> actions = NakedObjectsFramework.GetActions(adapter);
             Assert.AreEqual(8, actions.Count());
         }
 
@@ -91,7 +91,7 @@ namespace MvcTestApp.Tests.Helpers {
             INakedObject no = NakedObjectsFramework.Manager.CreateAdapter(claims, null, null);
 
             INakedObject service = NakedObjectsFramework.Services.GetService("ClaimRepository");
-            INakedObjectAction action = service.Spec.GetAllActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Where(a => a.Id == "FindMyClaims").Single();
+            IActionSpec action = service.Spec.GetAllActions().Where(a => a.Id == "Find").SelectMany(a => a.Actions).Where(a => a.Id == "FindMyClaims").Single();
             INakedObject[] parms = new[] { null, "" }.Select(o => NakedObjectsFramework.Manager.CreateAdapter(o, null, null)).ToArray();
 
             var cm = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Manager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, service, action, parms);

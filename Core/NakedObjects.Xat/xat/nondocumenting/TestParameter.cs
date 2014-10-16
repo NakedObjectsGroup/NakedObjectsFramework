@@ -13,14 +13,14 @@ namespace NakedObjects.Xat {
     internal class TestParameter : ITestParameter {
         private readonly ITestObjectFactory factory;
         private readonly ITestHasActions owningObject;
-        private readonly INakedObjectActionParameter parameter;
+        private readonly IActionParameterSpec parameterSpec;
         private readonly ILifecycleManager persistor;
-        private INakedObjectAction action;
+        private IActionSpec actionSpec;
 
-        public TestParameter(ILifecycleManager persistor, INakedObjectAction action, INakedObjectActionParameter parameter, ITestHasActions owningObject, ITestObjectFactory factory) {
+        public TestParameter(ILifecycleManager persistor, IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject, ITestObjectFactory factory) {
             this.persistor = persistor;
-            this.action = action;
-            this.parameter = parameter;
+            this.actionSpec = actionSpec;
+            this.parameterSpec = parameterSpec;
             this.owningObject = owningObject;
             this.factory = factory;
         }
@@ -28,7 +28,7 @@ namespace NakedObjects.Xat {
         #region ITestParameter Members
 
         public string Name {
-            get { return parameter.GetName(); }
+            get { return parameterSpec.GetName(); }
         }
 
         public INakedObject NakedObject {
@@ -40,16 +40,16 @@ namespace NakedObjects.Xat {
         }
 
         public ITestNaked[] GetChoices() {
-            return parameter.GetChoices(NakedObject, null).Select(x => factory.CreateTestNaked(x)).ToArray();
+            return parameterSpec.GetChoices(NakedObject, null).Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 
         public ITestNaked[] GetCompletions(string autoCompleteParm) {
-            return parameter.GetCompletions(NakedObject, autoCompleteParm).Select(x => factory.CreateTestNaked(x)).ToArray();
+            return parameterSpec.GetCompletions(NakedObject, autoCompleteParm).Select(x => factory.CreateTestNaked(x)).ToArray();
         }
 
         public ITestNaked GetDefault() {
-            INakedObject defaultValue = parameter.GetDefault(NakedObject);
-            TypeOfDefaultValue defaultType = parameter.GetDefaultType(NakedObject);
+            INakedObject defaultValue = parameterSpec.GetDefault(NakedObject);
+            TypeOfDefaultValue defaultType = parameterSpec.GetDefaultType(NakedObject);
 
             if (defaultType == TypeOfDefaultValue.Implicit && defaultValue.Object is Enum) {
                 defaultValue = null;
@@ -59,17 +59,17 @@ namespace NakedObjects.Xat {
         }
 
         public ITestParameter AssertIsOptional() {
-            Assert.IsTrue(!parameter.IsMandatory, string.Format("Parameter: {0} is mandatory", Name));
+            Assert.IsTrue(!parameterSpec.IsMandatory, string.Format("Parameter: {0} is mandatory", Name));
             return this;
         }
 
         public ITestParameter AssertIsMandatory() {
-            Assert.IsTrue(parameter.IsMandatory, string.Format("Parameter: {0} is optional", Name));
+            Assert.IsTrue(parameterSpec.IsMandatory, string.Format("Parameter: {0} is optional", Name));
             return this;
         }
 
         public ITestParameter AssertIsDescribedAs(string description) {
-            Assert.IsTrue(parameter.Description == description, string.Format("Parameter: {0} description: {1} expected: {2}", Name, parameter.Description, description));
+            Assert.IsTrue(parameterSpec.Description == description, string.Format("Parameter: {0} description: {1} expected: {2}", Name, parameterSpec.Description, description));
             return this;
         }
 

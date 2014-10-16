@@ -78,24 +78,24 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             get { return facetFactory; }
         }
 
-        private static DotNetNakedObjectActionPeer CreateHolderWithParms() {
+        private static ActionSpecImmutable CreateHolderWithParms() {
             var tps1 = new Mock<IObjectSpecImmutable>(); //"System.Int32"
             var tps2 = new Mock<IObjectSpecImmutable>(); //System.Int64"
             var tps3 = new Mock<IObjectSpecImmutable>(); //"System.Int64"
 
-            var param1 = new DotNetNakedObjectActionParamPeer(tps1.Object);
-            var param2 = new DotNetNakedObjectActionParamPeer(tps2.Object);
-            var param3 = new DotNetNakedObjectActionParamPeer(tps3.Object);
+            var param1 = new ActionParameterSpecImmutable(tps1.Object);
+            var param2 = new ActionParameterSpecImmutable(tps2.Object);
+            var param3 = new ActionParameterSpecImmutable(tps3.Object);
 
-            var parms = new INakedObjectActionParamPeer[] {param1, param2, param3};
+            var parms = new IActionParameterSpecImmutable[] {param1, param2, param3};
 
             var tpi = new Mock<IIdentifier>(); // ""action"
 
             IIdentifier id = tpi.Object;
-            return new DotNetNakedObjectActionPeer(id, null, parms);
+            return new ActionSpecImmutable(id, null, parms);
         }
 
-        private void CheckDefaultFacet(MethodInfo defaultMethod, INakedObjectActionParamPeer parameter) {
+        private void CheckDefaultFacet(MethodInfo defaultMethod, IActionParameterSpecImmutable parameter) {
             IFacet facet = parameter.GetFacet(typeof (IActionDefaultsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionDefaultsFacetViaMethod);
@@ -104,7 +104,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             AssertMethodRemoved(defaultMethod);
         }
 
-        private void CheckValidatePrameterFacet(MethodInfo method, INakedObjectActionParamPeer parameter) {
+        private void CheckValidatePrameterFacet(MethodInfo method, IActionParameterSpecImmutable parameter) {
             IFacet facet = parameter.GetFacet(typeof (IActionParameterValidationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionParameterValidationFacetViaMethod);
@@ -113,7 +113,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             AssertMethodRemoved(method);
         }
 
-        private void CheckChoicesFacet(MethodInfo choicesMethod, INakedObjectActionParamPeer parameter) {
+        private void CheckChoicesFacet(MethodInfo choicesMethod, IActionParameterSpecImmutable parameter) {
             IFacet facet = parameter.GetFacet(typeof (IActionChoicesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionChoicesFacetViaMethod);
@@ -122,7 +122,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             AssertMethodRemoved(choicesMethod);
         }
 
-        private void CheckAutoCompleteFacet(MethodInfo autoCompleteMethod, INakedObjectActionParamPeer parameter, int pageSize, int minLength) {
+        private void CheckAutoCompleteFacet(MethodInfo autoCompleteMethod, IActionParameterSpecImmutable parameter, int pageSize, int minLength) {
             IFacet facet = parameter.GetFacet(typeof (IAutoCompleteFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
@@ -135,7 +135,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             Assert.AreEqual(minLength, acf.MinLength);
         }
 
-        private void CheckAutoCompleteFacetIsNull(MethodInfo autoCompleteMethod, INakedObjectActionParamPeer parameter) {
+        private void CheckAutoCompleteFacetIsNull(MethodInfo autoCompleteMethod, IActionParameterSpecImmutable parameter) {
             IFacet facet = parameter.GetFacet(typeof (IAutoCompleteFacet));
             Assert.IsNull(facet);
 
@@ -587,7 +587,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         [Test]
         public void TestAjaxFacetAddedIfNoValidate() {
             MethodInfo method = FindMethodIgnoreParms(typeof (Customer25), "SomeAction");
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
             facetFactory.Process(method, MethodRemover, facetHolderWithParms);
             IFacet facet = facetHolderWithParms.Parameters[0].GetFacet(typeof (IAjaxFacet));
             Assert.IsNotNull(facet);
@@ -598,7 +598,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         public void TestAjaxFacetFoundAndMethodRemovedDisabled() {
             MethodInfo method = FindMethodIgnoreParms(typeof (Customer24), "SomeAction");
             MethodInfo propertyValidateMethod = FindMethod(typeof (Customer24), "ValidateSomeAction", new[] {typeof (int)});
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
             facetFactory.Process(method, MethodRemover, facetHolderWithParms);
             IFacet facet = facetHolderWithParms.Parameters[0].GetFacet(typeof (IAjaxFacet));
             Assert.IsNotNull(facet);
@@ -612,7 +612,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         public void TestAjaxFacetFoundAndMethodRemovedEnabled() {
             MethodInfo method = FindMethodIgnoreParms(typeof (Customer23), "SomeAction");
             MethodInfo propertyValidateMethod = FindMethod(typeof (Customer23), "ValidateSomeAction", new[] {typeof (int)});
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
             facetFactory.Process(method, MethodRemover, facetHolderWithParms);
             IFacet facet = facetHolderWithParms.Parameters[0].GetFacet(typeof (IAjaxFacet));
             Assert.IsNull(facet);
@@ -624,7 +624,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         public void TestAjaxFacetNotAddedByDefault() {
             MethodInfo method = FindMethodIgnoreParms(typeof (Customer20), "SomeAction");
             MethodInfo propertyValidateMethod = FindMethod(typeof (Customer20), "ValidateSomeAction", new[] {typeof (int)});
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
             facetFactory.Process(method, MethodRemover, facetHolderWithParms);
             IFacet facet = facetHolderWithParms.Parameters[0].GetFacet(typeof (IAjaxFacet));
             Assert.IsNull(facet);
@@ -643,12 +643,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
         [Test]
         public override void TestFeatureTypes() {
-            NakedObjectFeatureType[] featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Objects));
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Property));
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Collection));
-            Assert.IsTrue(Contains(featureTypes, NakedObjectFeatureType.Action));
-            Assert.IsTrue(Contains(featureTypes, NakedObjectFeatureType.ActionParameter));
+            FeatureType[] featureTypes = facetFactory.FeatureTypes;
+            Assert.IsFalse(Contains(featureTypes, FeatureType.Objects));
+            Assert.IsFalse(Contains(featureTypes, FeatureType.Property));
+            Assert.IsFalse(Contains(featureTypes, FeatureType.Collection));
+            Assert.IsTrue(Contains(featureTypes, FeatureType.Action));
+            Assert.IsTrue(Contains(featureTypes, FeatureType.ActionParameter));
         }
 
         [Test]
@@ -658,7 +658,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             MethodInfo autoComplete1Method = FindMethodIgnoreParms(typeof (Customer27), "AutoComplete1SomeAction");
             MethodInfo autoComplete2Method = FindMethodIgnoreParms(typeof (Customer27), "AutoComplete2SomeAction");
 
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
             facetFactory.Process(actionMethod, MethodRemover, facetHolderWithParms);
 
             CheckAutoCompleteFacetIsNull(autoComplete0Method, facetHolderWithParms.Parameters[0]);
@@ -692,7 +692,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             MethodInfo autoComplete0Method = FindMethodIgnoreParms(typeof (Customer28), "AutoComplete0SomeAction");
             MethodInfo autoComplete1Method = FindMethodIgnoreParms(typeof (Customer28), "AutoComplete1SomeAction");
 
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
             facetFactory.Process(actionMethod, MethodRemover, facetHolderWithParms);
 
             CheckAutoCompleteFacet(autoComplete0Method, facetHolderWithParms.Parameters[0], 33, 2);
@@ -707,7 +707,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             MethodInfo autoComplete1Method = FindMethodIgnoreParms(typeof (Customer26), "AutoComplete1SomeAction");
             MethodInfo autoComplete2Method = FindMethodIgnoreParms(typeof (Customer26), "AutoComplete2SomeAction");
 
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
             facetFactory.Process(actionMethod, MethodRemover, facetHolderWithParms);
 
             CheckAutoCompleteFacet(autoComplete0Method, facetHolderWithParms.Parameters[0], 50, 0);
@@ -722,7 +722,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             MethodInfo autoComplete1Method = FindMethodIgnoreParms(typeof (Customer32), "AutoComplete1SomeAction");
             MethodInfo autoComplete2Method = FindMethodIgnoreParms(typeof (Customer32), "AutoComplete2SomeAction");
 
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
             facetFactory.Process(actionMethod, MethodRemover, facetHolderWithParms);
 
             CheckAutoCompleteFacet(autoComplete0Method, facetHolderWithParms.Parameters[0], 50, 0);
@@ -737,7 +737,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             MethodInfo choices1Method = FindMethod(typeof (Customer13), "Choices1SomeAction", new Type[] {});
             MethodInfo choices2Method = FindMethod(typeof (Customer13), "Choices2SomeAction", new Type[] {});
 
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
             facetFactory.Process(actionMethod, MethodRemover, facetHolderWithParms);
 
             CheckChoicesFacet(choices0Method, facetHolderWithParms.Parameters[0]);
@@ -769,7 +769,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             MethodInfo choices0Method2 = FindMethod(typeof (Customer30), "Choices0SomeAction", new[] {typeof (long)});
             MethodInfo choices0Method3 = FindMethod(typeof (Customer30), "Choices0SomeAction", new Type[] {});
 
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
             facetFactory.Process(actionMethod, MethodRemover, facetHolderWithParms);
 
             CheckChoicesFacet(choices0Method1, facetHolderWithParms.Parameters[0]);
@@ -788,7 +788,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             MethodInfo choices1Method = FindMethod(typeof (Customer30), "Choices1SomeAction", new[] {typeof (long)});
             MethodInfo choices2Method = FindMethod(typeof (Customer30), "Choices2SomeAction", new Type[] {});
 
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
             facetFactory.Process(actionMethod, MethodRemover, facetHolderWithParms);
 
             CheckChoicesFacet(choices0Method, facetHolderWithParms.Parameters[0]);
@@ -820,7 +820,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             MethodInfo choices1Method = FindMethod(typeof (Customer21), "ChoicesSomeAction", new[] {typeof (long)});
             MethodInfo choices2Method = FindMethod(typeof (Customer21), "Choices2SomeAction", new Type[] {});
 
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
             facetFactory.Process(actionMethod, MethodRemover, facetHolderWithParms);
 
             CheckChoicesFacet(choices0Method, facetHolderWithParms.Parameters[0]);
@@ -852,7 +852,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             MethodInfo default1Method = FindMethod(typeof (Customer11), "Default1SomeAction", new Type[] {});
             MethodInfo default2Method = FindMethod(typeof (Customer11), "Default2SomeAction", new Type[] {});
 
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
 
             facetFactory.Process(actionMethod, MethodRemover, facetHolderWithParms);
 
@@ -886,7 +886,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             MethodInfo default1Method = FindMethod(typeof (Customer22), "DefaultSomeAction", new[] {typeof (long)});
             MethodInfo default2Method = FindMethod(typeof (Customer22), "Default2SomeAction", new Type[] {});
 
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
 
             facetFactory.Process(actionMethod, MethodRemover, facetHolderWithParms);
 
@@ -919,7 +919,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             MethodInfo validateParameter0Method = FindMethod(typeof (Customer17), "Validate0SomeAction", new[] {typeof (int)});
             MethodInfo validateParameter1Method = FindMethod(typeof (Customer17), "Validate1SomeAction", new[] {typeof (long)});
 
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
 
             facetFactory.Process(actionMethod, MethodRemover, facetHolderWithParms);
 
@@ -940,7 +940,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             MethodInfo validateParameter0Method = FindMethod(typeof (Customer20), "ValidateSomeAction", new[] {typeof (int)});
             MethodInfo validateParameter1Method = FindMethod(typeof (Customer20), "ValidateSomeAction", new[] {typeof (long)});
 
-            DotNetNakedObjectActionPeer facetHolderWithParms = CreateHolderWithParms();
+            ActionSpecImmutable facetHolderWithParms = CreateHolderWithParms();
 
             facetFactory.Process(actionMethod, MethodRemover, facetHolderWithParms);
 

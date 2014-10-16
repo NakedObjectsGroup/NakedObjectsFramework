@@ -8,7 +8,7 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class AnnotationBasedFacetFactoryAbstract : FacetFactoryAbstract, IAnnotationBasedFacetFactory {
-        protected AnnotationBasedFacetFactoryAbstract(INakedObjectReflector reflector, NakedObjectFeatureType[] featureTypes)
+        protected AnnotationBasedFacetFactoryAbstract(INakedObjectReflector reflector, FeatureType[] featureTypes)
             : base(reflector, featureTypes) {}
 
         /// <summary>

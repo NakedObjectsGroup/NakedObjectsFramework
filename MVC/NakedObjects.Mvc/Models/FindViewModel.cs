@@ -18,10 +18,10 @@ namespace NakedObjects.Web.Mvc.Models {
 
         public IEnumerable ActionResult { get; set; }
         public object TargetObject { get; set; }
-        public INakedObjectAction TargetAction { get; set; }
+        public IActionSpec TargetAction { get; set; }
 
         public object ContextObject { get; set; }
-        public INakedObjectAction ContextAction { get; set; }
+        public IActionSpec ContextAction { get; set; }
 
         public string PropertyName { get; set; }
 

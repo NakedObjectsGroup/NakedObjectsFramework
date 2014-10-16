@@ -15,11 +15,11 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectActionWrapper : ScalarPropertyHolder, INakedObjectActionSurface {
-        private readonly INakedObjectAction action;
+        private readonly IActionSpec action;
         private readonly INakedObjectsFramework framework;
         private readonly string overloadedUniqueId;
 
-        public NakedObjectActionWrapper(INakedObjectAction action, INakedObjectsSurface surface, INakedObjectsFramework framework, string overloadedUniqueId) {
+        public NakedObjectActionWrapper(IActionSpec action, INakedObjectsSurface surface, INakedObjectsFramework framework, string overloadedUniqueId) {
             this.action = action;
             this.framework = framework;
             this.overloadedUniqueId = overloadedUniqueId;

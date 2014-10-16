@@ -66,12 +66,12 @@ namespace NakedObjects.Core.Persist {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IObjectPersistor persistor, IMetamodelManager metamodel, ISession session, INakedObject target, INakedObjectAction action, INakedObject[] parameters)
+        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IObjectPersistor persistor, IMetamodelManager metamodel, ISession session, INakedObject target, IActionSpec actionSpec, INakedObject[] parameters)
             : this(lifecycleManager, nakedObjectManager, persistor, session) {
             Assert.AssertNotNull(metamodel);
 
             Target = target;
-            Action = action;
+            Action = actionSpec;
             Parameters = parameters;
 
             if (Target.Spec.IsViewModel) {
@@ -128,7 +128,7 @@ namespace NakedObjects.Core.Persist {
         }
 
         public INakedObject Target { get; private set; }
-        public INakedObjectAction Action { get; private set; }
+        public IActionSpec Action { get; private set; }
         public INakedObject[] Parameters { get; private set; }
 
         public bool IsPaged { get; set; }

@@ -13,7 +13,7 @@ using NakedObjects.Reflector.DotNet.Facets.Objects.Value;
 namespace NakedObjects.Reflector.DotNet.Value {
     public class EnumValueTypeFacetFactory : FacetFactoryAbstract {
         public EnumValueTypeFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsOnly) {}
+            : base(reflector, FeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             if (typeof (Enum).IsAssignableFrom(type)) {

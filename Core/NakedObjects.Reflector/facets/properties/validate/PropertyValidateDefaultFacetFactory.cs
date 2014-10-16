@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Reflect;
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Validate {
     public class PropertyValidateDefaultFacetFactory : FacetFactoryAbstract {
         public PropertyValidateDefaultFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.PropertiesOnly) {}
+            : base(reflector, FeatureType.PropertiesOnly) {}
 
         public override bool Process(PropertyInfo method, IMethodRemover methodRemover, ISpecification specification) {
             return FacetUtils.AddFacet(Create(specification));

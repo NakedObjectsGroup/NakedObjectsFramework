@@ -11,7 +11,7 @@ using NakedObjects.Surface.Nof4.Wrapper;
 
 namespace NakedObjects.Surface.Nof4.Context {
     public class PropertyContext : Context {
-        public INakedObjectAssociation Property { get; set; }
+        public IAssociationSpec Property { get; set; }
 
         public bool Mutated { get; set; }
 

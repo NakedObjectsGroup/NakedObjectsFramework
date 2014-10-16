@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         private IList<string> namesScratchPad = new List<string>();
 
         public NamedAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.Everything) { }
+            :base(reflector, FeatureType.Everything) { }
 
         public void UpdateScratchPad(Type type) {
             if (currentType != type) {

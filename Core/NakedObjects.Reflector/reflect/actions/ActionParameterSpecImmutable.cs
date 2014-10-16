@@ -8,10 +8,10 @@ using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
-    public class DotNetNakedObjectActionParamPeer : Specification, INakedObjectActionParamPeer {
+    public class ActionParameterSpecImmutable : Specification, IActionParameterSpecImmutable {
         private readonly IObjectSpecImmutable specification;
 
-        public DotNetNakedObjectActionParamPeer(IObjectSpecImmutable specification) {
+        public ActionParameterSpecImmutable(IObjectSpecImmutable specification) {
             this.specification = specification;
         }
 

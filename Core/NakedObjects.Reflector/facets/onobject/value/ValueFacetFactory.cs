@@ -14,7 +14,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
     public class ValueFacetFactory : AnnotationBasedFacetFactoryAbstract, INakedObjectConfigurationAware {
         public ValueFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
+            :base(reflector, FeatureType.ObjectsOnly) { }
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             return FacetUtils.AddFacet(Create(type, specification));

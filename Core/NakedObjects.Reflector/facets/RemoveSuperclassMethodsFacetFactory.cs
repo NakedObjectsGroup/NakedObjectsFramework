@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         }
 
         public RemoveSuperclassMethodsFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
+            : base(reflector, FeatureType.ObjectsOnly) { }
 
         private static void InitForType(Type type) {
             if (!typeToMethods.ContainsKey(type)) {

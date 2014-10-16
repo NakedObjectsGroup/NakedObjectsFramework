@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
 
         // Lazily initialized, then cached. The lists remain in the same order that the factories were registered.
         private readonly IDictionary<Type, IFacetFactory> factoryByFactoryType = new Dictionary<Type, IFacetFactory>();
-        private IDictionary<NakedObjectFeatureType, IList<IFacetFactory>> factoriesByFeatureType;
+        private IDictionary<FeatureType, IList<IFacetFactory>> factoriesByFeatureType;
 
         /// <summary>
         ///     All registered <see cref="IFacetFactory" />s that implement
@@ -104,13 +104,13 @@ namespace NakedObjects.Reflector.DotNet.Facets {
 
         public bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             bool facetsAdded = false;
-            foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(NakedObjectFeatureType.Objects)) {
+            foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.Objects)) {
                 facetsAdded = facetFactory.Process(type, RemoverElseNullRemover(methodRemover), specification) | facetsAdded;
             }
             return facetsAdded;
         }
 
-        public bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification, NakedObjectFeatureType featureType) {
+        public bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification, FeatureType featureType) {
             bool facetsAdded = false;
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
                 facetsAdded = facetFactory.Process(method, RemoverElseNullRemover(methodRemover), specification) | facetsAdded;
@@ -118,7 +118,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             return facetsAdded;
         }
 
-        public bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification, NakedObjectFeatureType featureType) {
+        public bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification, FeatureType featureType) {
             bool facetsAdded = false;
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
                 facetsAdded = facetFactory.Process(property, RemoverElseNullRemover(methodRemover), specification) | facetsAdded;
@@ -128,7 +128,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
 
         public bool ProcessParams(MethodInfo method, int paramNum, ISpecification specification) {
             bool facetsAdded = false;
-            foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(NakedObjectFeatureType.ActionParameter)) {
+            foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameter)) {
                 facetsAdded = facetFactory.ProcessParams(method, paramNum, specification) | facetsAdded;
             }
             return facetsAdded;
@@ -162,7 +162,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             }
         }
 
-        private IList<IFacetFactory> GetFactoryByFeatureType(NakedObjectFeatureType featureType) {
+        private IList<IFacetFactory> GetFactoryByFeatureType(FeatureType featureType) {
             CacheByFeatureTypeIfRequired();
             return factoriesByFeatureType[featureType];
         }
@@ -176,9 +176,9 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         private void CacheByFeatureTypeIfRequired() {
             lock (cacheLock) {
                 if (factoriesByFeatureType == null) {
-                    factoriesByFeatureType = new Dictionary<NakedObjectFeatureType, IList<IFacetFactory>>();
+                    factoriesByFeatureType = new Dictionary<FeatureType, IList<IFacetFactory>>();
                     foreach (IFacetFactory factory in factories) {
-                        foreach (NakedObjectFeatureType featureType in factory.FeatureTypes) {
+                        foreach (FeatureType featureType in factory.FeatureTypes) {
                             IList<IFacetFactory> factoryList = GetList(factoriesByFeatureType, featureType);
                             factoryList.Add(factory);
                         }

@@ -24,11 +24,11 @@ using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectAssociationWrapper : ScalarPropertyHolder, INakedObjectAssociationSurface {
-        private readonly INakedObjectAssociation assoc;
+        private readonly IAssociationSpec assoc;
         private readonly INakedObjectsFramework framework;
 
 
-        public NakedObjectAssociationWrapper(INakedObjectAssociation assoc, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        public NakedObjectAssociationWrapper(IAssociationSpec assoc, INakedObjectsSurface surface, INakedObjectsFramework framework) {
             this.assoc = assoc;
             this.framework = framework;
             Surface = surface;
@@ -127,11 +127,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public bool IsChoicesEnabled {
-            get { return ((IOneToOneFeature) assoc).IsChoicesEnabled; }
+            get { return ((IOneToOneFeatureSpec) assoc).IsChoicesEnabled; }
         }
 
         public bool IsAutoCompleteEnabled {
-            get { return ((IOneToOneFeature) assoc).IsAutoCompleteEnabled; }
+            get { return ((IOneToOneFeatureSpec) assoc).IsAutoCompleteEnabled; }
         }
 
 
@@ -155,12 +155,12 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSurface[] GetChoices(INakedObjectSurface target, IDictionary<string, INakedObjectSurface> parameterNameValues) {
-            var oneToOneFeature = assoc as IOneToOneFeature;
+            var oneToOneFeature = assoc as IOneToOneFeatureSpec;
             return oneToOneFeature != null ? oneToOneFeature.GetChoices(((NakedObjectWrapper) target).WrappedNakedObject, null).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
         }
 
         public Tuple<string, INakedObjectSpecificationSurface>[] GetChoicesParameters() {
-            var oneToOneFeature = assoc as IOneToOneFeature;
+            var oneToOneFeature = assoc as IOneToOneFeatureSpec;
             return oneToOneFeature != null ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray() : new Tuple<string, INakedObjectSpecificationSurface>[0];
         }
 
@@ -170,7 +170,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSurface[] GetCompletions(INakedObjectSurface target, string autoCompleteParm) {
-            var oneToOneFeature = assoc as IOneToOneFeature;
+            var oneToOneFeature = assoc as IOneToOneFeatureSpec;
             return oneToOneFeature != null ? oneToOneFeature.GetCompletions(((NakedObjectWrapper) target).WrappedNakedObject, autoCompleteParm).Select(no => NakedObjectWrapper.Wrap(no, Surface, framework)).Cast<INakedObjectSurface>().ToArray() : null;
         }
 

@@ -7,19 +7,17 @@
 
 using System;
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Propcoll {
-    public abstract class DotNetNakedObjectAssociationPeer : DotNetNakedObjectMemberPeer, INakedObjectAssociationPeer {
+    public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
 
         protected readonly Type ReturnType;
         private readonly IObjectSpecImmutable returnSpec;
 
-        protected DotNetNakedObjectAssociationPeer(IIdentifier identifier, Type returnType, IObjectSpecImmutable returnSpec)
+        protected AssociationSpecImmutable(IIdentifier identifier, Type returnType, IObjectSpecImmutable returnSpec)
             : base(identifier) {
        
             ReturnType = returnType;
@@ -39,8 +37,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Propcoll {
 
         #endregion
 
-        public INakedObjectAssociationPeer Peer { get { return this; } }
-        public IOrderSet<INakedObjectAssociationPeer> Set { get { return null; } }
+        public IAssociationSpecImmutable Peer { get { return this; } }
+        public IOrderSet<IAssociationSpecImmutable> Set { get { return null; } }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

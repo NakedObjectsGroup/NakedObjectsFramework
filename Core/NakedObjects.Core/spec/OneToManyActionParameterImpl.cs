@@ -12,8 +12,8 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
-    public class OneToManyActionParameterImpl : NakedObjectActionParameterAbstract, IOneToManyFeature {
-        public OneToManyActionParameterImpl(IMetamodelManager metamodel, int index, INakedObjectAction actionImpl, INakedObjectActionParamPeer peer, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
+    public class OneToManyActionParameterImpl : ActionParameterSpec, IOneToManyFeatureSpec {
+        public OneToManyActionParameterImpl(IMetamodelManager metamodel, int index, IActionSpec actionImpl, IActionParameterSpecImmutable peer, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
             : base(metamodel, index, actionImpl, peer, manager, session, persistor) {}
 
         public override bool IsCollection {

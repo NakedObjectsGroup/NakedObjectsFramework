@@ -90,7 +90,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         public PropertyTypeContextSurface GetPropertyType(string typeName, string propertyName) {
             return MapErrors(() => {
-                Tuple<INakedObjectAssociation, IObjectSpec> pc = GetPropertyTypeInternal(typeName, propertyName);
+                Tuple<IAssociationSpec, IObjectSpec> pc = GetPropertyTypeInternal(typeName, propertyName);
 
                 return new PropertyTypeContextSurface {
                     Property = new NakedObjectAssociationWrapper(pc.Item1, this, framework),
@@ -193,18 +193,18 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
 
-        private INakedObjectAssociation GetPropertyInternal(INakedObject nakedObject, string propertyName, bool onlyVisible = true) {
+        private IAssociationSpec GetPropertyInternal(INakedObject nakedObject, string propertyName, bool onlyVisible = true) {
             if (string.IsNullOrWhiteSpace(propertyName)) {
                 throw new BadRequestNOSException();
             }
 
-            IEnumerable<INakedObjectAssociation> propertyQuery = nakedObject.Spec.Properties;
+            IEnumerable<IAssociationSpec> propertyQuery = nakedObject.Spec.Properties;
 
             if (onlyVisible) {
                 propertyQuery = propertyQuery.Where(p => p.IsVisible(nakedObject));
             }
 
-            INakedObjectAssociation property = propertyQuery.SingleOrDefault(p => p.Id == propertyName);
+            IAssociationSpec property = propertyQuery.SingleOrDefault(p => p.Id == propertyName);
 
             if (property == null) {
                 throw new PropertyResourceNotFoundNOSException(propertyName);
@@ -215,7 +215,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
 
         private PropertyContext GetProperty(INakedObject nakedObject, string propertyName, bool onlyVisible = true) {
-            INakedObjectAssociation property = GetPropertyInternal(nakedObject, propertyName, onlyVisible);
+            IAssociationSpec property = GetPropertyInternal(nakedObject, propertyName, onlyVisible);
             return new PropertyContext {Target = nakedObject, Property = property};
         }
 
@@ -241,35 +241,35 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private ListContext GetPropertyCompletions(INakedObject nakedObject, string propertyName, ArgumentsContext arguments) {
-            var property = GetPropertyInternal(nakedObject, propertyName) as IOneToOneFeature;
+            var property = GetPropertyInternal(nakedObject, propertyName) as IOneToOneFeatureSpec;
             return GetCompletions(new PropParmAdapter(property, this, framework), nakedObject, arguments);
         }
 
         private ListContext GetParameterCompletions(INakedObject nakedObject, string actionName, string parmName, ArgumentsContext arguments) {
-            INakedObjectActionParameter parm = GetParameterInternal(actionName, parmName, nakedObject);
+            IActionParameterSpec parm = GetParameterInternal(actionName, parmName, nakedObject);
             return GetCompletions(new PropParmAdapter(parm, this, framework), nakedObject, arguments);
         }
 
-        private Tuple<INakedObjectAssociation, IObjectSpec> GetPropertyTypeInternal(string typeName, string propertyName) {
+        private Tuple<IAssociationSpec, IObjectSpec> GetPropertyTypeInternal(string typeName, string propertyName) {
             if (string.IsNullOrWhiteSpace(typeName) || string.IsNullOrWhiteSpace(propertyName)) {
                 throw new BadRequestNOSException();
             }
 
             IObjectSpec spec = GetDomainTypeInternal(typeName);
 
-            INakedObjectAssociation property = spec.Properties.SingleOrDefault(p => p.Id == propertyName);
+            IAssociationSpec property = spec.Properties.SingleOrDefault(p => p.Id == propertyName);
 
             if (property == null) {
                 throw new TypePropertyResourceNotFoundNOSException(propertyName, typeName);
             }
 
-            return new Tuple<INakedObjectAssociation, IObjectSpec>(property, spec);
+            return new Tuple<IAssociationSpec, IObjectSpec>(property, spec);
         }
 
         private PropertyContext CanChangeProperty(INakedObject nakedObject, string propertyName, object toPut = null) {
             PropertyContext context = GetProperty(nakedObject, propertyName);
             context.ProposedValue = toPut;
-            var property = (IOneToOneAssociation) context.Property;
+            var property = (IOneToOneAssociationSpec) context.Property;
 
             if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
                 if (ConsentHandler(property.IsUsable(context.Target), context, Cause.Disabled)) {
@@ -285,7 +285,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         private PropertyContext CanSetProperty(INakedObject nakedObject, string propertyName, object toPut = null) {
             PropertyContext context = GetProperty(nakedObject, propertyName, false);
             context.ProposedValue = toPut;
-            var property = (IOneToOneAssociation) context.Property;
+            var property = (IOneToOneAssociationSpec) context.Property;
 
             //if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
             if (toPut != null && ConsentHandler(CanSetPropertyValue(context), context, Cause.WrongType)) {
@@ -360,7 +360,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
         private void SetProperty(PropertyContext context) {
-            ((IOneToOneAssociation) context.Property).SetAssociation(context.Target, context.ProposedValue == null ? null : context.ProposedNakedObject);
+            ((IOneToOneAssociationSpec) context.Property).SetAssociation(context.Target, context.ProposedValue == null ? null : context.ProposedNakedObject);
         }
 
         private static void ValidateConcurrency(INakedObject nakedObject, string digest) {
@@ -452,7 +452,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             // handle contributed actions 
 
             if (actionContext.Action.IsContributedMethod && !actionContext.Action.OnType.Equals(actionContext.Target.Spec)) {
-                INakedObjectActionParameter parm = actionContext.Action.Parameters.FirstOrDefault(p => actionContext.Target.Spec.IsOfType(p.Spec));
+                IActionParameterSpec parm = actionContext.Action.Parameters.FirstOrDefault(p => actionContext.Target.Spec.IsOfType(p.Spec));
 
                 if (parm != null) {
                     rawParms.Add(parm.Id, actionContext.Target.Object);
@@ -461,7 +461,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             // check mandatory fields first as standard NO behaviour is that no validation takes place until 
             // all mandatory fields are set. 
-            foreach (INakedObjectActionParameter parm in actionContext.Action.Parameters) {
+            foreach (IActionParameterSpec parm in actionContext.Action.Parameters) {
                 orderedParms[parm.Id] = new ParameterContext();
 
                 object value = rawParms.ContainsKey(parm.Id) ? rawParms[parm.Id] : null;
@@ -480,7 +480,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
             //check for individual parameter validity, including parsing of text input
             if (isValid) {
-                foreach (INakedObjectActionParameter parm in actionContext.Action.Parameters) {
+                foreach (IActionParameterSpec parm in actionContext.Action.Parameters) {
                     try {
                         INakedObject valueNakedObject = GetValue(parm.Spec, rawParms.ContainsKey(parm.Id) ? rawParms[parm.Id] : null);
 
@@ -515,7 +515,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
 
-        private IConsent IsOfCorrectType(IOneToManyAssociation property, PropertyContext context) {
+        private IConsent IsOfCorrectType(IOneToManyAssociationSpec property, PropertyContext context) {
             // todo this should probably be in the framework somewhere
             INakedObject collectionNakedObject = property.GetNakedObject(context.Target);
             ITypeOfFacet facet = collectionNakedObject.GetTypeOfFacetFromSpec();
@@ -547,7 +547,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         private PropertyContextSurface ChangeCollection(PropertyContext context, Func<INakedObject, INakedObject, IConsent> validator, Action<INakedObject, INakedObject> mutator, ArgumentContext argument) {
             ValidateConcurrency(context.Target, argument.Digest);
 
-            var property = (IOneToManyAssociation) context.Property;
+            var property = (IOneToManyAssociationSpec) context.Property;
 
             if (ConsentHandler(IsOfCorrectType(property, context), context, Cause.Other)) {
                 if (ConsentHandler(IsCurrentlyMutable(context.Target), context, Cause.Immutable)) {
@@ -659,13 +659,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return framework.Manager.CreateAdapter(obj, null, null);
         }
 
-        private ParameterContext[] FilterParmsForContributedActions(INakedObjectAction action, IObjectSpec targetSpec, string uid) {
-            INakedObjectActionParameter[] parms;
+        private ParameterContext[] FilterParmsForContributedActions(IActionSpec action, IObjectSpec targetSpec, string uid) {
+            IActionParameterSpec[] parms;
             if (action.IsContributedMethod && !action.OnType.Equals(targetSpec)) {
-                var tempParms = new List<INakedObjectActionParameter>();
+                var tempParms = new List<IActionParameterSpec>();
 
                 bool skipped = false;
-                foreach (INakedObjectActionParameter parameter in action.Parameters) {
+                foreach (IActionParameterSpec parameter in action.Parameters) {
                     // skip the first parm that matches the target. 
                     if (targetSpec.IsOfType(parameter.Spec) && !skipped) {
                         skipped = true;
@@ -688,29 +688,29 @@ namespace NakedObjects.Surface.Nof4.Implementation {
         }
 
 
-        private Tuple<INakedObjectAction, string> GetActionInternal(string actionName, INakedObject nakedObject) {
+        private Tuple<IActionSpec, string> GetActionInternal(string actionName, INakedObject nakedObject) {
             if (string.IsNullOrWhiteSpace(actionName)) {
                 throw new BadRequestNOSException();
             }
 
-            INakedObjectAction[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible( nakedObject)).ToArray();
-            INakedObjectAction action = actions.SingleOrDefault(p => p.Id == actionName) ?? SurfaceUtils.GetOverloadedAction(actionName, nakedObject.Spec);
+            IActionSpec[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible( nakedObject)).ToArray();
+            IActionSpec action = actions.SingleOrDefault(p => p.Id == actionName) ?? SurfaceUtils.GetOverloadedAction(actionName, nakedObject.Spec);
 
             if (action == null) {
                 throw new ActionResourceNotFoundNOSException(actionName);
             }
 
-            return new Tuple<INakedObjectAction, string>(action, SurfaceUtils.GetOverloadedUId(action, nakedObject.Spec));
+            return new Tuple<IActionSpec, string>(action, SurfaceUtils.GetOverloadedUId(action, nakedObject.Spec));
         }
 
 
-        private INakedObjectActionParameter GetParameterInternal(string actionName, string parmName, INakedObject nakedObject) {
+        private IActionParameterSpec GetParameterInternal(string actionName, string parmName, INakedObject nakedObject) {
             var actionAndUid = GetActionInternal(actionName, nakedObject);
 
             if (string.IsNullOrWhiteSpace(parmName) || string.IsNullOrWhiteSpace(parmName)) {
                 throw new BadRequestNOSException();
             }
-            INakedObjectActionParameter parm = actionAndUid.Item1.Parameters.SingleOrDefault(p => p.Id == parmName);
+            IActionParameterSpec parm = actionAndUid.Item1.Parameters.SingleOrDefault(p => p.Id == parmName);
 
             if (parm == null) {
                 // throw something;
@@ -748,21 +748,21 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             return new Tuple<ActionContext, IObjectSpec>(actionContext, spec);
         }
 
-        private Tuple<INakedObjectAction, IObjectSpec, INakedObjectActionParameter, string> GetActionParameterTypeInternal(string typeName, string actionName, string parmName) {
+        private Tuple<IActionSpec, IObjectSpec, IActionParameterSpec, string> GetActionParameterTypeInternal(string typeName, string actionName, string parmName) {
             if (string.IsNullOrWhiteSpace(typeName) || string.IsNullOrWhiteSpace(actionName) || string.IsNullOrWhiteSpace(parmName)) {
                 throw new BadRequestNOSException();
             }
 
             IObjectSpec spec = GetDomainTypeInternal(typeName);
-            Tuple<INakedObjectAction, string> actionAndUid = SurfaceUtils.GetActionandUidFromSpec(spec, actionName, typeName);
+            Tuple<IActionSpec, string> actionAndUid = SurfaceUtils.GetActionandUidFromSpec(spec, actionName, typeName);
 
-            INakedObjectActionParameter parm = actionAndUid.Item1.Parameters.SingleOrDefault(p => p.Id == parmName);
+            IActionParameterSpec parm = actionAndUid.Item1.Parameters.SingleOrDefault(p => p.Id == parmName);
 
             if (parm == null) {
                 throw new TypeActionParameterResourceNotFoundNOSException(parmName, actionName, typeName);
             }
 
-            return new Tuple<INakedObjectAction, IObjectSpec, INakedObjectActionParameter, string>(actionAndUid.Item1, spec, parm, actionAndUid.Item2);
+            return new Tuple<IActionSpec, IObjectSpec, IActionParameterSpec, string>(actionAndUid.Item1, spec, parm, actionAndUid.Item2);
         }
 
 
@@ -782,8 +782,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 return null;
             }
 
-            INakedObjectAction[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible( nakedObject)).ToArray();
-            INakedObjectAssociation[] properties = nakedObject.Spec.Properties.Where(p => p.IsVisible( nakedObject)).ToArray();
+            IActionSpec[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible( nakedObject)).ToArray();
+            IAssociationSpec[] properties = nakedObject.Spec.Properties.Where(p => p.IsVisible( nakedObject)).ToArray();
 
             return new ObjectContext(nakedObject) {
                 VisibleActions = actions.Select(a => new {action = a, uid = SurfaceUtils.GetOverloadedUId(a, nakedObject.Spec)}).Select(a => new ActionContext {
@@ -834,8 +834,8 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
         private class PropParmAdapter {
             private readonly INakedObjectsFramework framework;
-            private readonly INakedObjectActionParameter parm;
-            private readonly IOneToOneFeature prop;
+            private readonly IActionParameterSpec parm;
+            private readonly IOneToOneFeatureSpec prop;
             private readonly INakedObjectsSurface surface;
 
             private PropParmAdapter(object p, INakedObjectsSurface surface, INakedObjectsFramework framework) {
@@ -846,13 +846,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 }
             }
 
-            public PropParmAdapter(IOneToOneFeature prop, INakedObjectsSurface surface, INakedObjectsFramework framework)
+            public PropParmAdapter(IOneToOneFeatureSpec prop, INakedObjectsSurface surface, INakedObjectsFramework framework)
                 : this((object) prop, surface, framework) {
                 this.prop = prop;
                 CheckAutocompleOrConditional();
             }
 
-            public PropParmAdapter(INakedObjectActionParameter parm, INakedObjectsSurface surface, INakedObjectsFramework framework)
+            public PropParmAdapter(IActionParameterSpec parm, INakedObjectsSurface surface, INakedObjectsFramework framework)
                 : this((object) parm, surface, framework) {
                 this.parm = parm;
                 CheckAutocompleOrConditional();

@@ -26,10 +26,10 @@ namespace NakedObjects.Reflector.Spec {
         Type Type { get; }
         string FullName { get; }
         string ShortName { get; }
-        IOrderSet<INakedObjectActionPeer> ObjectActions { get; }
-        IList<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>> ContributedActions { get; }
-        IList<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>> RelatedActions { get; }
-        IOrderSet<INakedObjectAssociationPeer> Fields { get; set; }
+        IOrderSet<IActionSpecImmutable> ObjectActions { get; }
+        IList<Tuple<string, string, IOrderSet<IActionSpecImmutable>>> ContributedActions { get; }
+        IList<Tuple<string, string, IOrderSet<IActionSpecImmutable>>> RelatedActions { get; }
+        IOrderSet<IAssociationSpecImmutable> Fields { get; set; }
         IObjectSpecImmutable[] Interfaces { get; set; }
         IObjectSpecImmutable[] Subclasses { get; set; }
         bool Service { get; set; }

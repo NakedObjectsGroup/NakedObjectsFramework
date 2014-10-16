@@ -14,7 +14,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
     /// </summary>
     public class RemoveEventHandlerMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         public RemoveEventHandlerMethodsFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.ObjectsOnly) {}
+            :base(reflector, FeatureType.ObjectsOnly) {}
 
         public override string[] Prefixes {
             get { return new string[] {}; }

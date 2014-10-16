@@ -20,10 +20,10 @@ using NakedObjects.Surface.Utility;
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectActionParameterWrapper : ScalarPropertyHolder, INakedObjectActionParameterSurface {
         private readonly INakedObjectsFramework framework;
-        private readonly INakedObjectActionParameter nakedObjectActionParameter;
+        private readonly IActionParameterSpec nakedObjectActionParameter;
         private readonly string overloadedUniqueId;
 
-        public NakedObjectActionParameterWrapper(INakedObjectActionParameter nakedObjectActionParameter, INakedObjectsSurface surface, INakedObjectsFramework framework, string overloadedUniqueId) {
+        public NakedObjectActionParameterWrapper(IActionParameterSpec nakedObjectActionParameter, INakedObjectsSurface surface, INakedObjectsFramework framework, string overloadedUniqueId) {
             this.nakedObjectActionParameter = nakedObjectActionParameter;
             this.framework = framework;
             this.overloadedUniqueId = overloadedUniqueId;

@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     /// </summary>
     public class ExcludeFromFindMenuAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ExcludeFromFindMenuAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.ActionsOnly) { }
+            :base(reflector, FeatureType.ActionsOnly) { }
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<ExcludeFromFindMenuAttribute>();

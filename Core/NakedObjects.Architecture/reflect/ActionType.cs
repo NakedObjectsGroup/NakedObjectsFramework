@@ -5,17 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
-
-namespace NakedObjects.Reflector.Spec {
-    public abstract class NakedObjectMemberSessionAware : NakedObjectMemberAbstract {
-        protected internal NakedObjectMemberSessionAware(string id, ISpecification specification, ISession session, ILifecycleManager lifecycleManager)
-            : base(id, specification, session, lifecycleManager) {}
+namespace NakedObjects.Architecture.Reflect {
+    public enum ActionType {
+        Set,
+        User
     }
-
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

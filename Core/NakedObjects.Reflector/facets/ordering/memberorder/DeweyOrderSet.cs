@@ -12,8 +12,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     ///     Represents a nested hierarchy of ordered members.
     /// </summary>
     /// <para>
-    ///     At each level the elements are either <see cref="INakedObjectMemberPeer" />s or they are
-    ///     instances of <see cref="OrderSet" /> represent a group of <see cref="INakedObjectMemberPeer" />s that
+    ///     At each level the elements are either <see cref="IMemberSpecImmutable" />s or they are
+    ///     instances of <see cref="OrderSet" /> represent a group of <see cref="IMemberSpecImmutable" />s that
     ///     have a <see cref="IMemberOrderFacet" /> of the same name.
     /// </para>
     /// <para>

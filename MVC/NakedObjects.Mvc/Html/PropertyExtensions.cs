@@ -49,7 +49,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString ObjectPropertyView(this HtmlHelper html, object model, string propertyId) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            INakedObjectAssociation property = nakedObject.Spec.Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible( nakedObject));
+            IAssociationSpec property = nakedObject.Spec.Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible( nakedObject));
             return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyView(new PropertyContext(nakedObject, property, false));
         }
 
@@ -84,7 +84,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString ObjectPropertyEdit(this HtmlHelper html, object model, string propertyId) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            INakedObjectAssociation property = nakedObject.Spec.Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible( nakedObject));
+            IAssociationSpec property = nakedObject.Spec.Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible( nakedObject));
             return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyEdit(new PropertyContext(nakedObject, property, true));
         }
 
@@ -373,7 +373,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <param name="propertyName">property to be decorated with action dialog or selection view</param>
         /// <param name="actionResult">collection of objects to display in selection view - may be null</param>
         /// <returns></returns>
-        public static MvcHtmlString PropertyListEdit(this HtmlHelper html, object contextObject, object targetObject, INakedObjectAction targetAction, string propertyName, IEnumerable actionResult) {
+        public static MvcHtmlString PropertyListEdit(this HtmlHelper html, object contextObject, object targetObject, IActionSpec targetAction, string propertyName, IEnumerable actionResult) {
             INakedObject nakedObject = html.Framework().GetNakedObject(contextObject);
             INakedObject target = html.Framework().GetNakedObject(targetObject);
             return html.BuildEditContainer(nakedObject,
@@ -392,7 +392,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <param name="propertyName">property to be decorated with action dialog or selection view</param>
         /// <param name="actionResult">collection of objects to display in selection view - may be null</param>
         /// <returns></returns>
-        public static MvcHtmlString PropertyListEditWith(this HtmlHelper html, object contextObject, object targetObject, INakedObjectAction targetAction, string propertyName, IEnumerable actionResult) {
+        public static MvcHtmlString PropertyListEditWith(this HtmlHelper html, object contextObject, object targetObject, IActionSpec targetAction, string propertyName, IEnumerable actionResult) {
             INakedObject nakedObject = html.Framework().GetNakedObject(contextObject);
             INakedObject target = html.Framework().GetNakedObject(targetObject);
             return html.BuildEditContainer(nakedObject,

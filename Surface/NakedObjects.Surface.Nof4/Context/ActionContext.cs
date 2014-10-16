@@ -14,7 +14,7 @@ namespace NakedObjects.Surface.Nof4.Context {
     public class ActionContext : Context {
         private ParameterContext[] parameters;
 
-        public INakedObjectAction Action { get; set; }
+        public IActionSpec Action { get; set; }
 
         public override string Id {
             get { return Action.Id; }

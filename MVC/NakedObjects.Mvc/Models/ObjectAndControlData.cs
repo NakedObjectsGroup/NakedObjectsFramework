@@ -15,7 +15,7 @@ namespace NakedObjects.Web.Mvc.Models {
     public class ObjectAndControlData {
 
         private INakedObject nakedObject;
-        private INakedObjectAction nakedObjectAction;
+        private IActionSpec nakedObjectAction;
 
         public enum SubActionType {
             Find,
@@ -125,7 +125,7 @@ namespace NakedObjects.Web.Mvc.Models {
             return nakedObject;
         }
 
-        public INakedObjectAction GetAction( INakedObjectsFramework framework) {
+        public IActionSpec GetAction( INakedObjectsFramework framework) {
             if (nakedObjectAction == null) {
                 nakedObjectAction = framework.GetActions(GetNakedObject(framework)).SingleOrDefault(a => a.Id == ActionId);
             }

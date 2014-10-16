@@ -18,7 +18,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         #region all
 
-        public static MvcHtmlString Collection(this HtmlHelper html, IEnumerable collection, INakedObjectAction action, string defaultTo = IdHelper.ListDisplayFormat) {
+        public static MvcHtmlString Collection(this HtmlHelper html, IEnumerable collection, IActionSpec action, string defaultTo = IdHelper.ListDisplayFormat) {
             bool renderEagerly = CommonHtmlHelper.RenderEagerly(action);
             string displayType = DefaultFormat(html, renderEagerly ? IdHelper.TableDisplayFormat : defaultTo);
             return displayType == IdHelper.TableDisplayFormat ? CollectionTableInternal(html, collection, action) : CollectionListInternal(html, collection, action);
@@ -30,11 +30,11 @@ namespace NakedObjects.Web.Mvc.Html {
             return collections.Select(c => html.Collection(c.GetAsEnumerable(html.Framework().Manager), null, defaultTo)).ToArray();
         }
 
-        public static MvcHtmlString CollectionTable(this HtmlHelper html, IEnumerable collection, INakedObjectAction action) {
+        public static MvcHtmlString CollectionTable(this HtmlHelper html, IEnumerable collection, IActionSpec action) {
             return html.Collection(collection, action, IdHelper.TableDisplayFormat);
         }
 
-        public static MvcHtmlString CollectionList(this HtmlHelper html, IEnumerable collection, INakedObjectAction action) {
+        public static MvcHtmlString CollectionList(this HtmlHelper html, IEnumerable collection, IActionSpec action) {
             return html.Collection(collection, action);
         }
 
@@ -47,11 +47,11 @@ namespace NakedObjects.Web.Mvc.Html {
 
         #endregion
 
-        internal static MvcHtmlString CollectionTableInternal(this HtmlHelper html, IEnumerable collection, INakedObjectAction action = null) {
+        internal static MvcHtmlString CollectionTableInternal(this HtmlHelper html, IEnumerable collection, IActionSpec action = null) {
             INakedObject nakedObject = html.Framework().GetNakedObject(collection);
 
-            Func<INakedObjectAssociation, bool> filterFunc;
-            Func<INakedObjectAssociation, int> orderFunc;
+            Func<IAssociationSpec, bool> filterFunc;
+            Func<IAssociationSpec, int> orderFunc;
             bool withTitle;
 
             if (action == null || action.ReturnType.IsVoid) {
@@ -66,7 +66,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.GetStandaloneCollection(nakedObject, filterFunc, orderFunc, withTitle);
         }
 
-        internal static MvcHtmlString CollectionListInternal(this HtmlHelper html, IEnumerable collection, INakedObjectAction action = null) {
+        internal static MvcHtmlString CollectionListInternal(this HtmlHelper html, IEnumerable collection, IActionSpec action = null) {
             INakedObject nakedObject = html.Framework().GetNakedObject(collection);
             return html.GetStandaloneList(nakedObject, null);
         }

@@ -27,7 +27,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
-    public class NakedObjectActionImpl : NakedObjectMemberSessionAware, INakedObjectAction {
+    public class ActionSpec : MemberSpecAbstract, IActionSpec {
         private static readonly ILog Log;
 
         private readonly MemberFactory memberFactory;
@@ -35,30 +35,30 @@ namespace NakedObjects.Reflector.Spec {
         private readonly IServicesManager servicesManager;
         private readonly INakedObjectTransactionManager transactionManager;
         private readonly INakedObjectManager nakedObjectManager;
-        private readonly INakedObjectActionPeer nakedObjectActionPeer;
+        private readonly IActionSpecImmutable actionSpecImmutable;
 
-        private INakedObjectActionParameter[] parameters;
+        private IActionParameterSpec[] parametersSpec;
 
-        static NakedObjectActionImpl() {
-            Log = LogManager.GetLogger(typeof (NakedObjectActionImpl));
+        static ActionSpec() {
+            Log = LogManager.GetLogger(typeof (ActionSpec));
         }
 
-        public NakedObjectActionImpl(MemberFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, INakedObjectTransactionManager transactionManager, INakedObjectManager nakedObjectManager, INakedObjectActionPeer nakedObjectActionPeer)
-            : base(nakedObjectActionPeer.Identifier.MemberName, nakedObjectActionPeer, session, lifecycleManager) {
+        public ActionSpec(MemberFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, INakedObjectTransactionManager transactionManager, INakedObjectManager nakedObjectManager, IActionSpecImmutable actionSpecImmutable)
+            : base(actionSpecImmutable.Identifier.MemberName, actionSpecImmutable, session, lifecycleManager) {
             Assert.AssertNotNull(metamodel);
-            Assert.AssertNotNull(nakedObjectActionPeer);
+            Assert.AssertNotNull(actionSpecImmutable);
 
             this.memberFactory = memberFactory;
             this.metamodel = metamodel;
             this.servicesManager = servicesManager;
             this.transactionManager = transactionManager;
             this.nakedObjectManager = nakedObjectManager;
-            this.nakedObjectActionPeer = nakedObjectActionPeer;
+            this.actionSpecImmutable = actionSpecImmutable;
             BuildParameters();
         }
 
         private IActionInvocationFacet ActionInvocationFacet {
-            get { return nakedObjectActionPeer.GetFacet<IActionInvocationFacet>(); }
+            get { return actionSpecImmutable.GetFacet<IActionInvocationFacet>(); }
         }
 
         #region INakedObjectAction Members
@@ -71,20 +71,20 @@ namespace NakedObjects.Reflector.Spec {
             get { return metamodel.GetSpecification(ActionInvocationFacet.OnType); }
         }
 
-        public virtual INakedObjectAction[] Actions {
-            get { return new INakedObjectAction[0]; }
+        public virtual IActionSpec[] Actions {
+            get { return new IActionSpec[0]; }
         }
 
         public override Type[] FacetTypes {
-            get { return nakedObjectActionPeer.FacetTypes; }
+            get { return actionSpecImmutable.FacetTypes; }
         }
 
         public override IIdentifier Identifier {
-            get { return nakedObjectActionPeer.Identifier; }
+            get { return actionSpecImmutable.Identifier; }
         }
 
         public virtual int ParameterCount {
-            get { return nakedObjectActionPeer.Parameters.Length; }
+            get { return actionSpecImmutable.Parameters.Length; }
         }
 
         public virtual Where Target {
@@ -92,7 +92,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public virtual bool IsContributedMethod {
-            get { return nakedObjectActionPeer.IsContributedMethod; }
+            get { return actionSpecImmutable.IsContributedMethod; }
         }
 
         public bool IsContributedTo(IObjectSpec spec) {
@@ -107,7 +107,7 @@ namespace NakedObjects.Reflector.Spec {
 
         public virtual bool PromptForParameters(INakedObject nakedObject) {
             if (IsContributedMethod && !nakedObject.Spec.IsService) {
-                return ParameterCount > 1 || !IsContributedTo(parameters[0].Spec);
+                return ParameterCount > 1 || !IsContributedTo(parametersSpec[0].Spec);
             }
             return ParameterCount > 0;
         }
@@ -140,35 +140,35 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public override bool ContainsFacet(Type facetType) {
-            return nakedObjectActionPeer.ContainsFacet(facetType);
+            return actionSpecImmutable.ContainsFacet(facetType);
         }
 
         public override IFacet GetFacet(Type type) {
-            return nakedObjectActionPeer.GetFacet(type);
+            return actionSpecImmutable.GetFacet(type);
         }
 
         public override IEnumerable<IFacet> GetFacets() {
-            return nakedObjectActionPeer.GetFacets();
+            return actionSpecImmutable.GetFacets();
         }
 
         public override void AddFacet(IFacet facet) {
-            nakedObjectActionPeer.AddFacet(facet);
+            actionSpecImmutable.AddFacet(facet);
         }
 
         public override void RemoveFacet(IFacet facet) {
-            nakedObjectActionPeer.RemoveFacet(facet);
+            actionSpecImmutable.RemoveFacet(facet);
         }
 
         public override void RemoveFacet(Type facetType) {
-            nakedObjectActionPeer.RemoveFacet(facetType);
+            actionSpecImmutable.RemoveFacet(facetType);
         }
 
-        public virtual INakedObjectActionParameter[] Parameters {
-            get { return parameters; }
+        public virtual IActionParameterSpec[] Parameters {
+            get { return parametersSpec; }
         }
 
-        public virtual NakedObjectActionType ActionType {
-            get { return NakedObjectActionType.User; }
+        public virtual ActionType ActionType {
+            get { return ActionType.User; }
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace NakedObjects.Reflector.Spec {
 
         private void BuildParameters() {
             int index = 0;
-            parameters = nakedObjectActionPeer.Parameters.Select(pp => memberFactory.CreateParameter(pp, this, index++)).ToArray();
+            parametersSpec = actionSpecImmutable.Parameters.Select(pp => memberFactory.CreateParameter(pp, this, index++)).ToArray();
         }
 
         private bool ContributeTo(IObjectSpec parmSpec, IObjectSpec contributeeSpec) {
@@ -248,7 +248,7 @@ namespace NakedObjects.Reflector.Spec {
             throw new FindObjectException("failed to find service for action " + GetName());
         }
 
-        private INakedObjectActionParameter GetParameter(int position) {
+        private IActionParameterSpec GetParameter(int position) {
             if (position >= Parameters.Length) {
                 throw new ArgumentException("GetParameter(int): only " + Parameters.Length + " parameters, position=" + position);
             }

@@ -22,11 +22,11 @@ using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
-    public class OneToManyAssociationImpl : NakedObjectAssociationAbstract, IOneToManyAssociation {
+    public class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
         private readonly IObjectPersistor persistor;
         private readonly bool isASet;
 
-        public OneToManyAssociationImpl(IMetamodelManager metamodel, INakedObjectAssociationPeer association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
+        public OneToManyAssociationSpec(IMetamodelManager metamodel, IAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
             : base(metamodel, association, session, lifecycleManager, manager) {
             this.persistor = persistor;
             isASet = association.ContainsFacet<IIsASetFacet>();
@@ -100,7 +100,7 @@ namespace NakedObjects.Reflector.Spec {
             if (collection == null) {
                 return null;
             }
-            INakedObject adapterFor = Manager.CreateAggregatedAdapter(inObject, ((INakedObjectAssociation) this).Id, collection);
+            INakedObject adapterFor = Manager.CreateAggregatedAdapter(inObject, ((IAssociationSpec) this).Id, collection);
             adapterFor.TypeOfFacet = GetFacet<ITypeOfFacet>();
             SetResolveStateForDerivedCollections(adapterFor);
             return adapterFor;

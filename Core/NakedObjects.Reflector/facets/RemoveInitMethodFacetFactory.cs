@@ -13,7 +13,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
     /// </summary>
     public class RemoveInitMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         public RemoveInitMethodFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
+            :base(reflector, FeatureType.ObjectsOnly) { }
 
         public override string[] Prefixes {
             get { return new string[] {}; }

@@ -15,9 +15,9 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
-    public class NakedObjectActionParameterParseable : NakedObjectActionParameterAbstract, IParseableEntryActionParameter {
-        public NakedObjectActionParameterParseable(IMetamodelManager metamodel, int index, INakedObjectAction action, INakedObjectActionParamPeer peer, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
-            : base(metamodel, index, action, peer, manager, session, persistor) {}
+    public class ActionParseableParameterSpec : ActionParameterSpec, IActionParseableParameterSpec {
+        public ActionParseableParameterSpec(IMetamodelManager metamodel, int index, IActionSpec actionSpec, IActionParameterSpecImmutable peer, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
+            : base(metamodel, index, actionSpec, peer, manager, session, persistor) {}
 
         public virtual int NoLines {
             get { return GetFacet<IMultiLineFacet>().NumberOfLines; }

@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Range {
         private static readonly ILog Log = LogManager.GetLogger(typeof (RangeAnnotationFacetFactory));
 
         public RangeAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.PropertiesAndParameters) { }
+            :base(reflector, FeatureType.PropertiesAndParameters) { }
 
 
         private static bool Process(MemberInfo member, bool isDate, ISpecification specification) {

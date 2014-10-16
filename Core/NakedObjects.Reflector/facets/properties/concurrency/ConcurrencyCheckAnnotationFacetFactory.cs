@@ -13,7 +13,7 @@ using PropertyInfo = System.Reflection.PropertyInfo;
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Version {
     public class ConcurrencyCheckAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ConcurrencyCheckAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
+            :base(reflector, FeatureType.PropertiesOnly) { }
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             Attribute attribute = property.GetCustomAttribute<ConcurrencyCheckAttribute>();

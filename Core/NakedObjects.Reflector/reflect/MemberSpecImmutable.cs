@@ -7,10 +7,10 @@ using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
-    public abstract class DotNetNakedObjectMemberPeer : Specification, INakedObjectMemberPeer {
+    public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable {
         private readonly IIdentifier identifier;
 
-        protected DotNetNakedObjectMemberPeer(IIdentifier identifier) {
+        protected MemberSpecImmutable(IIdentifier identifier) {
             this.identifier = identifier;
         }
 

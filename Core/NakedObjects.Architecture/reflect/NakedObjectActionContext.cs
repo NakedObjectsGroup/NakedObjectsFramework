@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Architecture.Reflect {
     public class NakedObjectActionContext {
         public INakedObject Target { get; set; }
-        public INakedObjectAction Action { get; set; }
+        public IActionSpec Action { get; set; }
         public INakedObject[] Parameters { get; set; }
     }
 }

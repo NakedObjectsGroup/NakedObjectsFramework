@@ -67,7 +67,7 @@ namespace NakedObjects.Persistor {
             if (nakedObject.ResolveState.IsAggregated() ||
                 (nakedObject.ResolveState.IsTransient() &&
                  nakedObject.Spec.Persistable != PersistableType.Transient)) {
-                INakedObjectAssociation[] fields = nakedObject.Spec.Properties;
+                IAssociationSpec[] fields = nakedObject.Spec.Properties;
                 if (!nakedObject.Spec.IsEncodeable && fields.Length > 0) {
                     Log.Info("make persistent " + nakedObject);
                     nakedObject.Persisting(session);
@@ -75,11 +75,11 @@ namespace NakedObjects.Persistor {
                         manager.MadePersistent(nakedObject);
                     }
 
-                    foreach (INakedObjectAssociation field in fields) {
+                    foreach (IAssociationSpec field in fields) {
                         if (!field.IsPersisted) {
                             continue;
                         }
-                        if (field is IOneToManyAssociation) {
+                        if (field is IOneToManyAssociationSpec) {
                             INakedObject collection = field.GetNakedObject(nakedObject);
                             if (collection == null) {
                                 throw new NotPersistableException("Collection " + field.GetName() + " does not exist in " + nakedObject.Spec.FullName);

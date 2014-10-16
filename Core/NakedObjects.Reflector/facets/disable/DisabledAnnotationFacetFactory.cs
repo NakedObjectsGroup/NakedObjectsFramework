@@ -14,7 +14,7 @@ using PropertyInfo = System.Reflection.PropertyInfo;
 namespace NakedObjects.Reflector.DotNet.Facets.Disable {
     public class DisabledAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public DisabledAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.PropertiesCollectionsAndActions) { }
+            :base(reflector, FeatureType.PropertiesCollectionsAndActions) { }
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<DisabledAttribute>();

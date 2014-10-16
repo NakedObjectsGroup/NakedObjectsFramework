@@ -17,7 +17,7 @@ using ParameterInfo = System.Reflection.ParameterInfo;
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
     public class RegExAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public RegExAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.ObjectsPropertiesAndParameters) { }
+            :base(reflector, FeatureType.ObjectsPropertiesAndParameters) { }
 
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

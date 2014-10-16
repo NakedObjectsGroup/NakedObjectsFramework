@@ -15,13 +15,13 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Returns a description of how the member is used - this complements the help text.
         /// </summary>
-        /// <seealso cref="INakedObjectMember.Help" />
+        /// <seealso cref="IMemberSpec.Help" />
         string Description { get; }
 
         /// <summary>
         ///     Return the name for this member - the field or action. This is based on the name of this member.
         /// </summary>
-        /// <seealso cref="INakedObjectMember.Id" />
+        /// <seealso cref="IMemberSpec.Id" />
         string GetName();
     }
 }

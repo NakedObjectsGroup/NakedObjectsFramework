@@ -9,26 +9,25 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Reflector.Spec {
-    public class NakedObjectActionSet : INakedObjectAction {
-        private readonly INakedObjectAction[] actions;
+    public class ActionSpecSet : IActionSpec {
+        private readonly IActionSpec[] actionsSpec;
         private readonly IServicesManager servicesManager;
         private readonly string id;
         private readonly string name;
         private readonly string shortId; 
 
-        public NakedObjectActionSet(string id, INakedObjectAction[] actions, IServicesManager servicesManager1)
-            : this(id, null, actions, servicesManager1) { }
+        public ActionSpecSet(string id, IActionSpec[] actionsSpec, IServicesManager servicesManager1)
+            : this(id, null, actionsSpec, servicesManager1) { }
 
-        public NakedObjectActionSet(string id, string name, INakedObjectAction[] actions, IServicesManager servicesManager) {
+        public ActionSpecSet(string id, string name, IActionSpec[] actionsSpec, IServicesManager servicesManager) {
             this.name = name;
             this.id = id;
-            this.actions = actions;
+            this.actionsSpec = actionsSpec;
             this.servicesManager = servicesManager;
             this.shortId = TypeNameUtils.GetShortName(id);
         }
@@ -43,8 +42,8 @@ namespace NakedObjects.Reflector.Spec {
             get { return ""; }
         }
 
-        public virtual INakedObjectAction[] Actions {
-            get { return actions; }
+        public virtual IActionSpec[] Actions {
+            get { return actionsSpec; }
         }
 
         public virtual string Description {
@@ -102,8 +101,8 @@ namespace NakedObjects.Reflector.Spec {
             get { return false; }
         }
 
-        public virtual NakedObjectActionType ActionType {
-            get { return NakedObjectActionType.Set; }
+        public virtual ActionType ActionType {
+            get { return ActionType.Set; }
         }
 
         public virtual bool IsContributedMethod {
@@ -180,8 +179,8 @@ namespace NakedObjects.Reflector.Spec {
         /// </summary>
         public virtual void RemoveFacet(Type facetType) {}
 
-        public virtual INakedObjectActionParameter[] Parameters {
-            get { return new INakedObjectActionParameter[0]; }
+        public virtual IActionParameterSpec[] Parameters {
+            get { return new IActionParameterSpec[0]; }
         }
 
         public INakedObject[] RealParameters(INakedObject target, INakedObject[] parameterSet) {

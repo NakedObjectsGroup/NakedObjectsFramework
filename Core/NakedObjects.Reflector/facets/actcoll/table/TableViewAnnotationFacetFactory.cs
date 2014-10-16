@@ -16,7 +16,7 @@ using ParameterInfo = System.Reflection.ParameterInfo;
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
     public class TableViewAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TableViewAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.CollectionsAndActions) { }
+            :base(reflector, FeatureType.CollectionsAndActions) { }
 
         private bool Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
             if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {

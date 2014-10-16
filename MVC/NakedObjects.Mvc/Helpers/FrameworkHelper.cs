@@ -28,36 +28,36 @@ using NakedObjects.Value;
 namespace NakedObjects.Web.Mvc.Html {
     internal static class FrameworkHelper {
      
-        public static IEnumerable<INakedObjectAction> GetActions(this INakedObjectsFramework framework, INakedObject nakedObject) {
-            return nakedObject.Spec.GetAllActions().OfType<NakedObjectActionImpl>().Cast<INakedObjectAction>().Union(
-                        nakedObject.Spec.GetAllActions().OfType<NakedObjectActionSet>().SelectMany(set => set.Actions)).
+        public static IEnumerable<IActionSpec> GetActions(this INakedObjectsFramework framework, INakedObject nakedObject) {
+            return nakedObject.Spec.GetAllActions().OfType<ActionSpec>().Cast<IActionSpec>().Union(
+                        nakedObject.Spec.GetAllActions().OfType<ActionSpecSet>().SelectMany(set => set.Actions)).
                                Where(a => a.IsUsable( nakedObject).IsAllowed).
                                Where(a => a.IsVisible( nakedObject ));
         }
 
-        public static IEnumerable<INakedObjectAction> GetTopLevelActions(this INakedObjectsFramework framework,INakedObject nakedObject) {
+        public static IEnumerable<IActionSpec> GetTopLevelActions(this INakedObjectsFramework framework,INakedObject nakedObject) {
             return nakedObject.Spec.GetAllActions().
                                Where(a => a.IsVisible( nakedObject)).
                                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible( nakedObject)));
         }
 
-        public static IEnumerable<INakedObjectAction> GetTopLevelActionsByReturnType(this INakedObjectsFramework framework, INakedObject nakedObject, IObjectSpec spec) {
+        public static IEnumerable<IActionSpec> GetTopLevelActionsByReturnType(this INakedObjectsFramework framework, INakedObject nakedObject, IObjectSpec spec) {
             return framework.GetTopLevelActions(nakedObject).
-                Where(a => a is NakedObjectActionSet || (framework.IsOfTypeOrCollectionOfType(a.ReturnType, spec) && a.IsFinderMethod)).
+                Where(a => a is ActionSpecSet || (framework.IsOfTypeOrCollectionOfType(a.ReturnType, spec) && a.IsFinderMethod)).
                 Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible( nakedObject) && framework.IsOfTypeOrCollectionOfType(sa.ReturnType, spec) && sa.IsFinderMethod));
         }
 
-        public static IEnumerable<INakedObjectAction> GetChildActions(this INakedObjectsFramework framework, ActionContext actionContext) {
-            if (actionContext.Action is NakedObjectActionSet) {
+        public static IEnumerable<IActionSpec> GetChildActions(this INakedObjectsFramework framework, ActionContext actionContext) {
+            if (actionContext.Action is ActionSpecSet) {
                 return actionContext.Action.Actions.
-                                     Where(a => a.ActionType == NakedObjectActionType.User).
+                                     Where(a => a.ActionType == ActionType.User).
                                      Where(a => a.IsVisible(actionContext.Target));
             }
 
-            return new List<INakedObjectAction>();
+            return new List<IActionSpec>();
         }
 
-        public static IEnumerable<INakedObjectAction> GetChildActionsByReturnType(this INakedObjectsFramework framework, ActionContext actionContext, IObjectSpec spec) {
+        public static IEnumerable<IActionSpec> GetChildActionsByReturnType(this INakedObjectsFramework framework, ActionContext actionContext, IObjectSpec spec) {
             return framework.GetChildActions(actionContext).Where(a => framework.IsOfTypeOrCollectionOfType(a.ReturnType, spec)).
                                                   Where(action => action.Parameters.All(parm => parm.Spec.IsParseable || parm.IsChoicesEnabled || parm.Spec.IsOfType(actionContext.Target.Spec)));
         }
@@ -167,7 +167,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static INakedObject RestoreInline(this INakedObjectsFramework framework, AggregateOid aggregateOid) {
             IOid parentOid = aggregateOid.ParentOid;
             INakedObject parent = framework.RestoreObject(parentOid);
-            INakedObjectAssociation assoc = parent.Spec.Properties.Where((p => p.Id == aggregateOid.FieldName)).Single();
+            IAssociationSpec assoc = parent.Spec.Properties.Where((p => p.Id == aggregateOid.FieldName)).Single();
 
             return assoc.GetNakedObject(parent);
         }
@@ -220,11 +220,11 @@ namespace NakedObjects.Web.Mvc.Html {
             return framework.Services.GetServicesWithVisibleActions(ServiceTypes.Menu, framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
-        public static string GetActionId(INakedObjectAction action) {
+        public static string GetActionId(IActionSpec action) {
             return action == null ? string.Empty : string.Format("{0};{1}", action.OnType.FullName, action.Id);
         }
 
-        public static INakedObjectAction GetActionFromId(this INakedObjectsFramework framework, string actionId) {
+        public static IActionSpec GetActionFromId(this INakedObjectsFramework framework, string actionId) {
             string[] asArray = actionId.Split(';');
             IObjectSpec spec = framework.Metamodel.GetSpecification(asArray.First());
             string id = asArray.Skip(1).First();
@@ -247,7 +247,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return spec != null && spec.IsOfType(fileSpec);
         }
 
-        public static bool IsFile(this INakedObjectAssociation assoc, INakedObjectsFramework framework) {
+        public static bool IsFile(this IAssociationSpec assoc, INakedObjectsFramework framework) {
             return assoc.Spec.IsFile(framework);
         }
 
@@ -264,7 +264,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return s == null ? framework.Manager.CreateAdapter("", null, null) : spec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.Manager);
         }
 
-        public static bool IsQueryOnly(this INakedObjectAction action) {
+        public static bool IsQueryOnly(this IActionSpec action) {
             if (action.ReturnType.IsQueryable) {
                 return true;
             }
@@ -272,7 +272,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return action.ContainsFacet<IQueryOnlyFacet>();
         }
 
-        public static bool IsIdempotent(this INakedObjectAction action) {
+        public static bool IsIdempotent(this IActionSpec action) {
             return action.ContainsFacet<IIdempotentFacet>();
         }
 

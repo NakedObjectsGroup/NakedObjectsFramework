@@ -251,7 +251,7 @@ namespace NakedObjects.EntityObjectStore {
         private void ResolveChildCollections(INakedObject nakedObject) {
             if (nakedObject.Spec != null) {
                 // testing check 
-                foreach (INakedObjectAssociation assoc in nakedObject.Spec.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
+                foreach (IAssociationSpec assoc in nakedObject.Spec.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
                     INakedObject adapter = assoc.GetNakedObject(nakedObject);
                     if (adapter.ResolveState.IsGhost()) {
                         StartResolving(adapter, GetContext(nakedObject));
@@ -387,7 +387,7 @@ namespace NakedObjects.EntityObjectStore {
             }
             if (nakedObject.Spec != null) {
                 // testing check 
-                foreach (INakedObjectAssociation assoc in nakedObject.Spec.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
+                foreach (IAssociationSpec assoc in nakedObject.Spec.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
                     INakedObject adapter = assoc.GetNakedObject(nakedObject);
                     if (adapter.ResolveState.IsGhost()) {
                         StartResolving(adapter, GetContext(adapter));
@@ -1189,15 +1189,15 @@ namespace NakedObjects.EntityObjectStore {
         //    // do nothing 
         //}
 
-        public void ResolveField(INakedObject nakedObject, INakedObjectAssociation field) {
+        public void ResolveField(INakedObject nakedObject, IAssociationSpec field) {
             Log.DebugFormat("ResolveField nakedobject: {0} field: {1}", nakedObject, field);
             field.GetNakedObject(nakedObject);
         }
 
-        public int CountField(INakedObject nakedObject, INakedObjectAssociation field) {
-            Type type = TypeUtils.GetType(field.GetFacet<ITypeOfFacet>().ValueSpec.FullName);
+        public int CountField(INakedObject nakedObject, IAssociationSpec associationSpec) {
+            Type type = TypeUtils.GetType(associationSpec.GetFacet<ITypeOfFacet>().ValueSpec.FullName);
             MethodInfo countMethod = GetType().GetMethod("Count").GetGenericMethodDefinition().MakeGenericMethod(type);
-            return (int)countMethod.Invoke(this, new object[] { nakedObject, field, manager });
+            return (int)countMethod.Invoke(this, new object[] { nakedObject, associationSpec, manager });
         }
 
         public INakedObject FindByKeys(Type type, object[] keys) {
@@ -1324,7 +1324,7 @@ namespace NakedObjects.EntityObjectStore {
             }
         }
 
-        public int Count<T>(INakedObject nakedObject, INakedObjectAssociation field, INakedObjectManager manager) where T : class {
+        public int Count<T>(INakedObject nakedObject, IAssociationSpec field, INakedObjectManager manager) where T : class {
             if (!nakedObject.ResolveState.IsTransient()) {
                 using (var dbContext = new DbContext(GetContext(nakedObject).WrappedObjectContext, false)) {
                     // check this is an EF collection 

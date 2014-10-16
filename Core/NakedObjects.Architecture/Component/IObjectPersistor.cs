@@ -26,7 +26,7 @@ namespace NakedObjects.Architecture.Persist {
         void AddPersistedObject(INakedObject nakedObject);
 
         void Reload(INakedObject nakedObject);
-        void ResolveField(INakedObject nakedObject, INakedObjectAssociation field);
+        void ResolveField(INakedObject nakedObject, IAssociationSpec field);
         void LoadField(INakedObject nakedObject, string field);
         int CountField(INakedObject nakedObject, string field);
         PropertyInfo[] GetKeys(Type type);

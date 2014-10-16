@@ -57,7 +57,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
         [Test]
         public void TestDefaultPageSizePickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
-            var actionPeer = new DotNetNakedObjectActionPeer(null, null, null);
+            var actionPeer = new ActionSpecImmutable(null, null, null);
             new FallbackFacetFactory(Reflector).Process(actionMethod, MethodRemover, actionPeer);
             IFacet facet = actionPeer.GetFacet(typeof (IPageSizeFacet));
             Assert.IsNotNull(facet);
@@ -69,12 +69,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
 
         [Test]
         public override void TestFeatureTypes() {
-            NakedObjectFeatureType[] featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Objects));
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Property));
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Collection));
-            Assert.IsTrue(Contains(featureTypes, NakedObjectFeatureType.Action));
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.ActionParameter));
+            FeatureType[] featureTypes = facetFactory.FeatureTypes;
+            Assert.IsFalse(Contains(featureTypes, FeatureType.Objects));
+            Assert.IsFalse(Contains(featureTypes, FeatureType.Property));
+            Assert.IsFalse(Contains(featureTypes, FeatureType.Collection));
+            Assert.IsTrue(Contains(featureTypes, FeatureType.Action));
+            Assert.IsFalse(Contains(featureTypes, FeatureType.ActionParameter));
         }
 
         [Test]

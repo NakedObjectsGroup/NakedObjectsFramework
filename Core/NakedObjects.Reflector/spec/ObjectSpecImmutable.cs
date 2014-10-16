@@ -45,8 +45,8 @@ namespace NakedObjects.Reflector.Spec {
             Subclasses = new IObjectSpecImmutable[] {};
             ValidationMethods = new INakedObjectValidation[] {};
             //ObjectActions = new INakedObjectActionPeer[]{};
-            ContributedActions = new List<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>>();
-            RelatedActions = new List<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>>();
+            ContributedActions = new List<Tuple<string, string, IOrderSet<IActionSpecImmutable>>>();
+            RelatedActions = new List<Tuple<string, string, IOrderSet<IActionSpecImmutable>>>();
         }
 
       
@@ -65,13 +65,13 @@ namespace NakedObjects.Reflector.Spec {
 
         public string ShortName { get; set; }
 
-        public IOrderSet<INakedObjectActionPeer> ObjectActions { get; private set; }
+        public IOrderSet<IActionSpecImmutable> ObjectActions { get; private set; }
 
-        public IList<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>> ContributedActions { get; private set; }
+        public IList<Tuple<string, string, IOrderSet<IActionSpecImmutable>>> ContributedActions { get; private set; }
 
-        public IList<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>> RelatedActions { get; private set; }
+        public IList<Tuple<string, string, IOrderSet<IActionSpecImmutable>>> RelatedActions { get; private set; }
 
-        public IOrderSet<INakedObjectAssociationPeer> Fields { get; set; }
+        public IOrderSet<IAssociationSpecImmutable> Fields { get; set; }
 
         public IObjectSpecImmutable[] Interfaces { get; set; }
 
@@ -228,17 +228,17 @@ namespace NakedObjects.Reflector.Spec {
 
         private void DecorateAllFacets(IFacetDecoratorSet decorator) {
             decorator.DecorateAllHoldersFacets(this);
-            foreach (INakedObjectAssociationPeer field in Fields) {
+            foreach (IAssociationSpecImmutable field in Fields) {
                 decorator.DecorateAllHoldersFacets(field);
             }
-            foreach (INakedObjectActionPeer action in ObjectActions.Flattened) {
+            foreach (IActionSpecImmutable action in ObjectActions.Flattened) {
                 DecorateAction(decorator, action);
             }
         }
 
-        private static void DecorateAction(IFacetDecoratorSet decorator, INakedObjectActionPeer action) {
+        private static void DecorateAction(IFacetDecoratorSet decorator, IActionSpecImmutable action) {
             decorator.DecorateAllHoldersFacets(action);
-            foreach (INakedObjectActionParamPeer parm in action.Parameters) {
+            foreach (IActionParameterSpecImmutable parm in action.Parameters) {
                 decorator.DecorateAllHoldersFacets(parm);
             }
         }
@@ -249,13 +249,13 @@ namespace NakedObjects.Reflector.Spec {
                     if (serviceType != Type) {
                         var serviceSpecification = reflector.LoadSpecification(serviceType);
 
-                        INakedObjectActionPeer[] matchingServiceActions = serviceSpecification.ObjectActions.Flattened.Where(serviceAction => serviceAction.IsContributedTo(this)).ToArray();
+                        IActionSpecImmutable[] matchingServiceActions = serviceSpecification.ObjectActions.Flattened.Where(serviceAction => serviceAction.IsContributedTo(this)).ToArray();
 
                         if (matchingServiceActions.Any()) {
-                            IOrderSet<INakedObjectActionPeer> os = SimpleOrderSet<INakedObjectActionPeer>.CreateOrderSet("", matchingServiceActions);
+                            IOrderSet<IActionSpecImmutable> os = SimpleOrderSet<IActionSpecImmutable>.CreateOrderSet("", matchingServiceActions);
                             var name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
                             var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
-                            var t = new Tuple<string, string, IOrderSet<INakedObjectActionPeer>>(id, name, os);
+                            var t = new Tuple<string, string, IOrderSet<IActionSpecImmutable>>(id, name, os);
 
                             ContributedActions.Add(t);
                         }
@@ -286,7 +286,7 @@ namespace NakedObjects.Reflector.Spec {
         private void PopulateRelatedActions(Type[] services) {
             foreach (Type serviceType in services) {
                 var serviceSpecification = reflector.LoadSpecification(serviceType);
-                var matchingActions = new List<INakedObjectActionPeer>();
+                var matchingActions = new List<IActionSpecImmutable>();
 
                 foreach (var serviceAction in serviceSpecification.ObjectActions.Flattened.Where(a => a.IsFinderMethod)) {
                     var returnType = serviceAction.ReturnType;
@@ -302,10 +302,10 @@ namespace NakedObjects.Reflector.Spec {
                 }
 
                 if (matchingActions.Any()) {
-                    IOrderSet<INakedObjectActionPeer> os = SimpleOrderSet<INakedObjectActionPeer>.CreateOrderSet("", matchingActions.ToArray());
+                    IOrderSet<IActionSpecImmutable> os = SimpleOrderSet<IActionSpecImmutable>.CreateOrderSet("", matchingActions.ToArray());
                     var name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
                     var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
-                    var t = new Tuple<string, string, IOrderSet<INakedObjectActionPeer>>(id, name, os);
+                    var t = new Tuple<string, string, IOrderSet<IActionSpecImmutable>>(id, name, os);
 
                     RelatedActions.Add(t);
                 }

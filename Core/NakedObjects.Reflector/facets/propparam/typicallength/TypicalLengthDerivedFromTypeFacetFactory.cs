@@ -12,7 +12,7 @@ using NakedObjects.Reflector.DotNet.Facets;
 namespace NakedObjects.Architecture.Facets.Propparam.TypicalLength {
     public class TypicalLengthDerivedFromTypeFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TypicalLengthDerivedFromTypeFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.PropertiesAndParameters) { }
+            :base(reflector, FeatureType.PropertiesAndParameters) { }
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             return AddFacetDerivedFromTypeIfPresent(specification, property.PropertyType);

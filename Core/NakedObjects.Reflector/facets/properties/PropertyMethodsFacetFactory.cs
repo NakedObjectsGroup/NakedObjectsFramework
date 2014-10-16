@@ -43,10 +43,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
         }
 
         public PropertyMethodsFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
+            :base(reflector, FeatureType.PropertiesOnly) { }
 
         public PropertyMethodsFacetFactory(INakedObjectReflector reflector, string[] subPefixes)
-            :base(reflector, NakedObjectFeatureType.PropertiesOnly) { }
+            :base(reflector, FeatureType.PropertiesOnly) { }
 
         public override string[] Prefixes {
             get { return prefixes; }

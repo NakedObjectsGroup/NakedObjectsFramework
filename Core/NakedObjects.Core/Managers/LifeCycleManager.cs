@@ -263,7 +263,7 @@ namespace NakedObjects.Managers {
         }
 
         private void CreateInlineObjects(INakedObject parentObject, object rootObject) {
-            foreach (IOneToOneAssociation assoc in parentObject.Spec.Properties.Where(p => p.IsInline)) {
+            foreach (IOneToOneAssociationSpec assoc in parentObject.Spec.Properties.Where(p => p.IsInline)) {
                 object inlineObject = CreateObject(assoc.Spec);
 
                 InitInlineObject(rootObject, inlineObject);

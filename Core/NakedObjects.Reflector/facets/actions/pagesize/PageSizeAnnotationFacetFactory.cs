@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.PageSize {
     /// </summary>
     public class PageSizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PageSizeAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.ActionsOnly) { }
+            :base(reflector, FeatureType.ActionsOnly) { }
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<PageSizeAttribute>();

@@ -52,7 +52,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)
         /// </summary>
         public ActionMethodsFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.ActionsAndParameters) {
+            :base(reflector, FeatureType.ActionsAndParameters) {
            
         }
 
@@ -84,13 +84,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             FindDefaultDisableMethod(facets, methodRemover, type, methodType, "ActionDefault", paramTypes, action);
             FindAndRemoveDisableMethod(facets, methodRemover, type, methodType, capitalizedName, paramTypes, action);
 
-            if (action is DotNetNakedObjectActionPeer) {
-                var nakedObjectActionPeer = (DotNetNakedObjectActionPeer) action;
+            if (action is ActionSpecImmutable) {
+                var nakedObjectActionPeer = (ActionSpecImmutable) action;
                 // Process the action's parameters names, descriptions and optional
                 // an alternative design would be to have another facet factory processing just ActionParameter, and have it remove these
                 // supporting methods.  However, the FacetFactory API doesn't allow for methods of the class to be removed while processing
                 // action parameters, only while processing Methods (ie actions)
-                INakedObjectActionParamPeer[] actionParameters = nakedObjectActionPeer.Parameters;
+                IActionParameterSpecImmutable[] actionParameters = nakedObjectActionPeer.Parameters;
                 string[] paramNames = actionMethod.GetParameters().Select(p => p.Name).ToArray();
 
                 FindAndRemoveParametersAutoCompleteMethod(methodRemover, type, capitalizedName, paramTypes, actionParameters);
@@ -216,7 +216,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             }
         }
 
-        private void FindAndRemoveParametersAutoCompleteMethod(IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, INakedObjectActionParamPeer[] parameters) {
+        private void FindAndRemoveParametersAutoCompleteMethod(IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters) {
             for (int i = 0; i < paramTypes.Length; i++) {
                 // only support on strings and reference types 
 

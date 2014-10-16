@@ -27,7 +27,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         }
 
         public IteratorFilteringFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ObjectsOnly) {}
+            : base(reflector, FeatureType.ObjectsOnly) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

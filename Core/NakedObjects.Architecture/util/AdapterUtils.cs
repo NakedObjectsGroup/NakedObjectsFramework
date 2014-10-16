@@ -54,24 +54,24 @@ namespace NakedObjects.Architecture.Adapter {
             return collectionSpec.GetFacet<ITypeOfFacet>();
         }
 
-        public static INakedObjectAction[] GetActionLeafNodes(this INakedObjectAction action) {
-            return action.ActionType == NakedObjectActionType.Set ? action.Actions.SelectMany(GetActionLeafNodes).ToArray() : new[] {action};
+        public static IActionSpec[] GetActionLeafNodes(this IActionSpec actionSpec) {
+            return actionSpec.ActionType == ActionType.Set ? actionSpec.Actions.SelectMany(GetActionLeafNodes).ToArray() : new[] {actionSpec};
         }
 
-        public static INakedObjectAction[] GetActionLeafNodes(this INakedObject nakedObject) {
+        public static IActionSpec[] GetActionLeafNodes(this INakedObject nakedObject) {
             return nakedObject.Spec.GetActionLeafNodes();
         }
 
-        public static INakedObjectAction[] GetActionLeafNodes(this IObjectSpec spec) {
+        public static IActionSpec[] GetActionLeafNodes(this IObjectSpec spec) {
             return spec.GetAllActions().SelectMany(GetActionLeafNodes).ToArray();
         }
 
-        public static INakedObjectAction GetActionLeafNode(this INakedObject nakedObject, string actionName) {
+        public static IActionSpec GetActionLeafNode(this INakedObject nakedObject, string actionName) {
             return nakedObject.GetActionLeafNodes().Single(x => x.Id == actionName);
         }
 
 
-        public static INakedObjectAssociation GetVersionProperty(this INakedObject nakedObject) {
+        public static IAssociationSpec GetVersionProperty(this INakedObject nakedObject) {
             if (nakedObject.Spec == null) {
                 return null; // only expect in testing 
             }
@@ -88,7 +88,7 @@ namespace NakedObjects.Architecture.Adapter {
         }
 
         public static object GetVersion(this INakedObject nakedObject, INakedObjectManager manager) {
-            INakedObjectAssociation versionProperty = nakedObject.GetVersionProperty();
+            IAssociationSpec versionProperty = nakedObject.GetVersionProperty();
 
             if (versionProperty != null) {
                 object version = versionProperty.GetNakedObject(nakedObject).GetDomainObject();

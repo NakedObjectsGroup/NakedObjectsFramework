@@ -20,13 +20,13 @@ namespace NakedObjects.Xat {
 
         ITestNaked CreateTestNaked(INakedObject nakedObject);
 
-        ITestAction CreateTestAction(INakedObjectAction action, ITestHasActions owningObject);
+        ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject);
 
-        ITestParameter CreateTestParameter(INakedObjectAction action, INakedObjectActionParameter parameter, ITestHasActions owningObject);
+        ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject);
 
-        ITestAction CreateTestAction(string contributor, INakedObjectAction action, ITestHasActions owningObject);
+        ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject);
 
-        ITestProperty CreateTestProperty(INakedObjectAssociation field, ITestHasActions owningObject);
+        ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject);
         ISession Session { get; set; }
     }
 

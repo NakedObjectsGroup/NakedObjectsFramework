@@ -47,8 +47,8 @@ namespace NakedObjects.Reflector.I18n {
         private IFacet GetDescriptionFacet(ISpecification holder, IDescribedAsFacet facet, IIdentifier identifier) {
             string i18nDescription;
             string original = (facet).Value;
-            if (holder is NakedObjectActionParameterAbstract) {
-                int index = ((NakedObjectActionParameterAbstract) holder).Number;
+            if (holder is ActionParameterSpec) {
+                int index = ((ActionParameterSpec) holder).Number;
                 i18nDescription = i18nManager.GetParameterDescription(identifier, index, original);
 
                 if (!staticFacets) {
@@ -68,8 +68,8 @@ namespace NakedObjects.Reflector.I18n {
         private IFacet GetNamedFacet(ISpecification holder, INamedFacet facet, IIdentifier identifier) {
             string original = (facet).Value ?? NameUtils.NaturalName(identifier.MemberName);
             string i18nName;
-            if (holder is NakedObjectActionParameterAbstract) {
-                int index = ((NakedObjectActionParameterAbstract) holder).Number;
+            if (holder is ActionParameterSpec) {
+                int index = ((ActionParameterSpec) holder).Number;
                 i18nName = i18nManager.GetParameterName(identifier, index, original);
 
                 if (!staticFacets) {

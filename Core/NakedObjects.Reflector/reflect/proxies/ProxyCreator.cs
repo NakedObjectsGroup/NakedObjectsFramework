@@ -76,7 +76,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
 
         private static void CreateProperties(IMetamodelManager metamodel, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
             // do not proxy key properties as we don't want ObjectChanged called when key is set
-            foreach (INakedObjectAssociation assoc in metamodel.GetSpecification(typeToProxy).Properties) {
+            foreach (IAssociationSpec assoc in metamodel.GetSpecification(typeToProxy).Properties) {
                 PropertyInfo property = typeToProxy.GetProperty(assoc.Id);
 
                 if (!assoc.ContainsFacet<IKeyFacet>()) {
@@ -151,7 +151,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
         }
 
         private static void SubclassAllCollectionAccessors(IMetamodelManager metamodel, ILifecycleManager persistor, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
-            INakedObjectAssociation[] associations = metamodel.GetSpecification(typeToProxy).Properties.Where(a => a.IsCollection).ToArray();
+            IAssociationSpec[] associations = metamodel.GetSpecification(typeToProxy).Properties.Where(a => a.IsCollection).ToArray();
 
             associations.ForEach(assoc => SubclassCollectionAccessors(typeBuilder, typeToProxy, containerField, assoc.GetName()));
         }

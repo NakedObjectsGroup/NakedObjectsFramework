@@ -13,12 +13,12 @@ namespace NakedObjects.Architecture.Spec {
         ///     Return all the properties that exist in an object of this specification,
         ///     although they need not all be accessible or visible.
         /// </summary>
-        INakedObjectAssociation[] Properties { get; }
+        IAssociationSpec[] Properties { get; }
 
         /// <summary>
-        ///     Get the <see cref="INakedObjectAssociation" /> representing the field with the specified field identifier.
+        ///     Get the <see cref="IAssociationSpec" /> representing the field with the specified field identifier.
         /// </summary>
-        INakedObjectAssociation GetProperty(string id);
+        IAssociationSpec GetProperty(string id);
 
         INakedObjectValidation[] ValidateMethods();
     }

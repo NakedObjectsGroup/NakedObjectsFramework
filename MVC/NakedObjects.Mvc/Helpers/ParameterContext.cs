@@ -25,7 +25,7 @@ namespace NakedObjects.Web.Mvc.Html {
     internal abstract class FeatureContext : ObjectContext {
         protected FeatureContext(ObjectContext otherContext) : base(otherContext) {}
         protected FeatureContext(INakedObject target) : base(target) {}
-        public abstract INakedObjectFeature Feature { get; }
+        public abstract IFeatureSpec Feature { get; }
     }
 
     internal class PropertyContext : FeatureContext {
@@ -33,7 +33,7 @@ namespace NakedObjects.Web.Mvc.Html {
             ParentContext = otherContext.ParentContext;
         }
 
-        public PropertyContext(INakedObject target, INakedObjectAssociation property, bool isEdit, PropertyContext parentContext = null)
+        public PropertyContext(INakedObject target, IAssociationSpec property, bool isEdit, PropertyContext parentContext = null)
             : base(target) {
             Property = property;
             IsPropertyEdit = isEdit;
@@ -45,9 +45,9 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public PropertyContext ParentContext { get; set; }
 
-        public INakedObjectAssociation Property { get; set; }
+        public IAssociationSpec Property { get; set; }
 
-        public override INakedObjectFeature Feature {
+        public override IFeatureSpec Feature {
             get { return Property; }
         }
 
@@ -97,23 +97,23 @@ namespace NakedObjects.Web.Mvc.Html {
             Action = otherContext.Action;
         }
 
-        public ActionContext(INakedObject target, INakedObjectAction action)
+        public ActionContext(INakedObject target, IActionSpec action)
             : base(target) {
             EmbeddedInObject = false;
             Action = action;
         }
 
-        public ActionContext(bool embeddedInObject, INakedObject target, INakedObjectAction action)
+        public ActionContext(bool embeddedInObject, INakedObject target, IActionSpec action)
             : base(target) {
             EmbeddedInObject = embeddedInObject;
             Action = action;
         }
 
-        private Func<INakedObjectActionParameter, bool> filter;
+        private Func<IActionParameterSpec, bool> filter;
 
         private ParameterContext[] parameterContexts; 
 
-        public Func<INakedObjectActionParameter, bool> Filter {
+        public Func<IActionParameterSpec, bool> Filter {
             get {
                 if (filter == null) {
                     return x => true;
@@ -126,7 +126,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public bool EmbeddedInObject { get; set; }
 
-        public INakedObjectAction Action { get; set; }
+        public IActionSpec Action { get; set; }
 
         public RouteValueDictionary ParameterValues { get; set; }
 
@@ -148,11 +148,11 @@ namespace NakedObjects.Web.Mvc.Html {
             return parameterContexts;
         }
 
-        public override INakedObjectFeature Feature {
+        public override IFeatureSpec Feature {
             get { return Action; }
         }
 
-        public string GetConcurrencyActionInputId(INakedObjectAssociation nakedObjectAssociation) {
+        public string GetConcurrencyActionInputId(IAssociationSpec nakedObjectAssociation) {
             return IdHelper.GetConcurrencyActionInputId(Target, Action, nakedObjectAssociation);
         }
 
@@ -192,7 +192,7 @@ namespace NakedObjects.Web.Mvc.Html {
             Parameter = otherContext.Parameter;
         }
 
-        public ParameterContext(bool embeddedInObject, INakedObject target, INakedObjectAction action, INakedObjectActionParameter parameter, bool isEdit)
+        public ParameterContext(bool embeddedInObject, INakedObject target, IActionSpec action, IActionParameterSpec parameter, bool isEdit)
             : base(embeddedInObject, target, action) {
             Parameter = parameter;
             IsParameterEdit = isEdit;
@@ -200,11 +200,11 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public bool IsHidden { get; set; }
 
-        public INakedObjectActionParameter Parameter { get; set; }
+        public IActionParameterSpec Parameter { get; set; }
 
         public INakedObject CustomValue { get; set; }
 
-        public override INakedObjectFeature Feature {
+        public override IFeatureSpec Feature {
             get { return Parameter; }
         }
 

@@ -13,7 +13,7 @@ using PropertyInfo = System.Reflection.PropertyInfo;
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
     public class EagerlyAnnotationFacetFactory : FacetFactoryAbstract {
         public EagerlyAnnotationFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.EverythingButParameters) {}
+            : base(reflector, FeatureType.EverythingButParameters) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             var attribute = type.GetCustomAttributeByReflection<EagerlyAttribute>();

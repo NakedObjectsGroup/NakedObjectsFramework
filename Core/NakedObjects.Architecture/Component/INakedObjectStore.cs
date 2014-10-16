@@ -111,7 +111,7 @@ namespace NakedObjects.Persistor.Objectstore {
         ///     Returns the OID for the adapted service
         /// </summary>
         //IOid GetOidForService(string name, string typeName);
-        void ResolveField(INakedObject nakedObject, INakedObjectAssociation field);
+        void ResolveField(INakedObject nakedObject, IAssociationSpec field);
 
         void ResolveImmediately(INakedObject nakedObject);
 
@@ -125,7 +125,7 @@ namespace NakedObjects.Persistor.Objectstore {
         PropertyInfo[] GetKeys(Type type);
 
         void Refresh(INakedObject nakedObject);
-        int CountField(INakedObject nakedObject, INakedObjectAssociation association);
+        int CountField(INakedObject nakedObject, IAssociationSpec associationSpec);
         INakedObject FindByKeys(Type type, object[] keys);
         void LoadComplexTypes(INakedObject pocoAdapter, bool isGhost);
     }

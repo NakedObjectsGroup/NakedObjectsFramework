@@ -35,7 +35,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
         }
 
         public CallbackMethodsFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.ObjectsOnly) { }
+            :base(reflector, FeatureType.ObjectsOnly) { }
 
         public override string[] Prefixes {
             get { return prefixes; }

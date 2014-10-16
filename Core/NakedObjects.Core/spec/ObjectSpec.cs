@@ -40,11 +40,11 @@ namespace NakedObjects.Reflector.Spec {
         private readonly IObjectSpecImmutable innerSpec;
         private readonly MemberFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;
-        private INakedObjectAction[] combinedActions;
-        private INakedObjectAction[] contributedActions;
-        private INakedObjectAction[] objectActions;
-        private INakedObjectAssociation[] objectFields;
-        private INakedObjectAction[] relatedActions;
+        private IActionSpec[] combinedActions;
+        private IActionSpec[] contributedActions;
+        private IActionSpec[] objectActions;
+        private IAssociationSpec[] objectFields;
+        private IActionSpec[] relatedActions;
 
         public ObjectSpec(MemberFactory memberFactory, IMetamodelManager metamodelManager, IObjectSpecImmutable innerSpec) {
             this.memberFactory = memberFactory;
@@ -63,7 +63,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return innerSpec.Type; }
         }
 
-        private INakedObjectAction[] ObjectActions {
+        private IActionSpec[] ObjectActions {
             get {
                 if (objectActions == null) {
                     objectActions = memberFactory.OrderActions(innerSpec.ObjectActions);
@@ -72,7 +72,7 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        private INakedObjectAction[] ContributedActions {
+        private IActionSpec[] ContributedActions {
             get {
                 if (contributedActions == null) {
                     contributedActions = memberFactory.OrderActions(innerSpec.ContributedActions);
@@ -81,7 +81,7 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        private INakedObjectAction[] RelatedActions {
+        private IActionSpec[] RelatedActions {
             get {
                 if (relatedActions == null) {
                     relatedActions = memberFactory.OrderActions(innerSpec.RelatedActions);
@@ -170,7 +170,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return innerSpec.Superclass == null ? null : metamodelManager.GetSpecification(innerSpec.Superclass); }
         }
 
-        public virtual INakedObjectAssociation[] Properties {
+        public virtual IAssociationSpec[] Properties {
             get {
                 if (objectFields == null) {
                     objectFields = OrderFields(innerSpec.Fields);
@@ -184,9 +184,9 @@ namespace NakedObjects.Reflector.Spec {
             return innerSpec.ValidationMethods;
         }
 
-        public virtual INakedObjectAction[] GetAllActions() {
+        public virtual IActionSpec[] GetAllActions() {
             if (combinedActions == null) {
-                var ca = new List<INakedObjectAction>();
+                var ca = new List<IActionSpec>();
                 ca.AddRange(ObjectActions);
                 ca.AddRange(ContributedActions);
                 combinedActions = ca.ToArray();
@@ -194,7 +194,7 @@ namespace NakedObjects.Reflector.Spec {
             return combinedActions;
         }
 
-        public virtual INakedObjectAction[] GetRelatedServiceActions() {
+        public virtual IActionSpec[] GetRelatedServiceActions() {
             return RelatedActions;
         }
 
@@ -317,7 +317,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
 
-        public INakedObjectAssociation GetProperty(string id) {
+        public IAssociationSpec GetProperty(string id) {
             try {
                 return Properties.First(f => f.Id.Equals(id));
             }
@@ -373,8 +373,8 @@ namespace NakedObjects.Reflector.Spec {
         }
 
 
-        private INakedObjectAssociation[] OrderFields(IOrderSet<INakedObjectAssociationPeer> order) {
-            var orderedFields = new List<INakedObjectAssociation>();
+        private IAssociationSpec[] OrderFields(IOrderSet<IAssociationSpecImmutable> order) {
+            var orderedFields = new List<IAssociationSpec>();
             foreach (var element in order) {
                 if (element.Peer != null) {
                     orderedFields.Add(memberFactory.CreateNakedObjectField(element.Peer));

@@ -66,7 +66,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         #region internal api
 
-        internal static MvcHtmlString PropertyListWithFilter(this HtmlHelper html, object domainObject, Func<INakedObjectAssociation, bool> filter, Func<INakedObjectAssociation, int> order) {
+        internal static MvcHtmlString PropertyListWithFilter(this HtmlHelper html, object domainObject, Func<IAssociationSpec, bool> filter, Func<IAssociationSpec, int> order) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
             bool anyEditableFields;
             IEnumerable<ElementDescriptor> viewObjectFields = html.ViewObjectFields(nakedObject, null, filter, order, out anyEditableFields);
@@ -77,7 +77,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                            anyEditableFields);
         }
 
-        internal static MvcHtmlString PropertyListEditWithFilter(this HtmlHelper html, object domainObject, Func<INakedObjectAssociation, bool> filter, Func<INakedObjectAssociation, int> order) {
+        internal static MvcHtmlString PropertyListEditWithFilter(this HtmlHelper html, object domainObject, Func<IAssociationSpec, bool> filter, Func<IAssociationSpec, int> order) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
             return html.BuildEditContainer(nakedObject,
                                            html.EditObjectFields(nakedObject, null, filter, order),
@@ -201,7 +201,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             // check the names match 
 
-            INakedObjectAssociation[] properties = nakedObject.Spec.Properties;
+            IAssociationSpec[] properties = nakedObject.Spec.Properties;
             IEnumerable<string> matches = from p in parameters
                                           from pp in properties
                                           where p.ToLower() == pp.Id.ToLower()
@@ -219,7 +219,7 @@ namespace NakedObjects.Web.Mvc.Html {
             fieldSet.MergeAttribute("data-choices-parameters", parameterNames);
         }
 
-        private static void AddAjaxDataUrlsToElementSet(this HtmlHelper html, INakedObject nakedObject, INakedObjectAction action, TagBuilder fieldSet) {
+        private static void AddAjaxDataUrlsToElementSet(this HtmlHelper html, INakedObject nakedObject, IActionSpec action, TagBuilder fieldSet) {
             var parameters = new HashSet<string>(action.Parameters.Select(p => p.GetFacet<IActionChoicesFacet>()).Where(f => f != null).SelectMany(f => f.ParameterNamesAndTypes).Select(pnt => pnt.Item1));
             // check the names match 
 
@@ -307,15 +307,15 @@ namespace NakedObjects.Web.Mvc.Html {
 
         internal static MvcHtmlString GetStandaloneCollection(this HtmlHelper html,
                                                               INakedObject collectionNakedObject,
-                                                              Func<INakedObjectAssociation, bool> filter,
-                                                              Func<INakedObjectAssociation, int> order,
+                                                              Func<IAssociationSpec, bool> filter,
+                                                              Func<IAssociationSpec, int> order,
                                                               bool withTitle) {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdHelper.CollectionTableName);
             return GetStandalone(html, collectionNakedObject, filter, order, tag, withTitle);
         }
 
-        private static MvcHtmlString GetStandalone(HtmlHelper html, INakedObject collectionNakedObject, Func<INakedObjectAssociation, bool> filter, Func<INakedObjectAssociation, int> order, TagBuilder tag, bool withTitle) {
+        private static MvcHtmlString GetStandalone(HtmlHelper html, INakedObject collectionNakedObject, Func<IAssociationSpec, bool> filter, Func<IAssociationSpec, int> order, TagBuilder tag, bool withTitle) {
             Func<INakedObject, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
 
             string menu = collectionNakedObject.Spec.IsQueryable ? html.MenuOnTransient(collectionNakedObject.Object).ToString() : "";
@@ -333,7 +333,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         internal static MvcHtmlString GetStandaloneList(this HtmlHelper html,
                                                         INakedObject collectionNakedObject,
-                                                        Func<INakedObjectAssociation, int> order) {
+                                                        Func<IAssociationSpec, int> order) {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdHelper.CollectionListName);
             return GetStandalone(html, collectionNakedObject, x => false, order, tag, true);
@@ -378,19 +378,19 @@ namespace NakedObjects.Web.Mvc.Html {
             };
         }
 
-        private static IEnumerable<Tuple<INakedObjectAssociation, INakedObject>> Items(this INakedObjectAssociation assoc, HtmlHelper html, INakedObject target) {
-            return assoc.GetNakedObject(target).GetAsEnumerable(html.Framework().Manager).Select(no => new Tuple<INakedObjectAssociation, INakedObject>(assoc, no));
+        private static IEnumerable<Tuple<IAssociationSpec, INakedObject>> Items(this IAssociationSpec assoc, HtmlHelper html, INakedObject target) {
+            return assoc.GetNakedObject(target).GetAsEnumerable(html.Framework().Manager).Select(no => new Tuple<IAssociationSpec, INakedObject>(assoc, no));
         }
 
         internal static IEnumerable<ElementDescriptor> EditObjectFields(this HtmlHelper html,
                                                                         INakedObject nakedObject,
                                                                         PropertyContext parentContext,
-                                                                        Func<INakedObjectAssociation, bool> filter,
-                                                                        Func<INakedObjectAssociation, int> order,
+                                                                        Func<IAssociationSpec, bool> filter,
+                                                                        Func<IAssociationSpec, int> order,
                                                                         bool noFinder = false,
                                                                         IList<ElementDescriptor> childElements = null,
                                                                         string idToAddTo = null) {
-                                                                            IEnumerable<INakedObjectAssociation> query = nakedObject.Spec.Properties.Where(p => p.IsVisible(nakedObject)).Where(filter);
+                                                                            IEnumerable<IAssociationSpec> query = nakedObject.Spec.Properties.Where(p => p.IsVisible(nakedObject)).Where(filter);
 
             if (order != null) {
                 query = query.OrderBy(order);
@@ -421,7 +421,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             // add filtered fields as hidden to preserve their values 
 
-            IEnumerable<INakedObjectAssociation> filteredFields = nakedObject.Spec.Properties.Where(p => !p.IsCollection && p.IsVisible( nakedObject)).Except(visibleFields);
+            IEnumerable<IAssociationSpec> filteredFields = nakedObject.Spec.Properties.Where(p => !p.IsCollection && p.IsVisible( nakedObject)).Except(visibleFields);
             IEnumerable<ElementDescriptor> filteredElements = filteredFields.Select(property => new PropertyContext(nakedObject, property, false, parentContext)).Select(pc => new ElementDescriptor {
                 TagType = "div",
                 Value = html.GetHiddenValue(pc, pc.GetFieldInputId(), false)
@@ -438,8 +438,8 @@ namespace NakedObjects.Web.Mvc.Html {
             return elements;
         }
 
-        private static IEnumerable<ElementDescriptor> GetConcurrencyElements(this HtmlHelper html, INakedObject nakedObject, Func<INakedObjectAssociation, string> idFunc) {
-            IEnumerable<INakedObjectAssociation> concurrencyFields = nakedObject.Spec.Properties.Where(p => p.ContainsFacet<IConcurrencyCheckFacet>());
+        private static IEnumerable<ElementDescriptor> GetConcurrencyElements(this HtmlHelper html, INakedObject nakedObject, Func<IAssociationSpec, string> idFunc) {
+            IEnumerable<IAssociationSpec> concurrencyFields = nakedObject.Spec.Properties.Where(p => p.ContainsFacet<IConcurrencyCheckFacet>());
             return concurrencyFields.Select(property => new ElementDescriptor {
                 TagType = "div",
                 Value = html.GetHiddenValue(new PropertyContext(nakedObject, property, false), idFunc(property), true)
@@ -640,7 +640,7 @@ namespace NakedObjects.Web.Mvc.Html {
             else if (disabled != null && disabled.Item1) {
                 tagType = html.GetDuplicateAction(actionContext, disabled.Item2, out value, out attributes);
             }
-            else if (actionContext.Action is NakedObjectActionSet) {
+            else if (actionContext.Action is ActionSpecSet) {
                 tagType = html.GetActionSet(actionContext, out value, out attributes);
             }
             else if (isEdit) {
@@ -650,7 +650,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 tagType = html.GetActionAsForm(actionContext, html.Framework().GetObjectTypeName(actionContext.Target.Object), routeValues, out value, out attributes);
             }
 
-            IEnumerable<INakedObjectAction> childActions = html.Framework().GetChildActions(actionContext).ToList();
+            IEnumerable<IActionSpec> childActions = html.Framework().GetChildActions(actionContext).ToList();
 
             return new ElementDescriptor {
                 TagType = tagType,
@@ -728,8 +728,8 @@ namespace NakedObjects.Web.Mvc.Html {
             };
         }
 
-        internal static IEnumerable<ElementDescriptor> ViewObjectFields(this HtmlHelper html, INakedObject nakedObject, PropertyContext parentContext, Func<INakedObjectAssociation, bool> filter, Func<INakedObjectAssociation, int> order, out bool anyEditableFields) {
-            IEnumerable<INakedObjectAssociation> query = nakedObject.Spec.Properties.Where(p => p.IsVisible( nakedObject)).Where(filter);
+        internal static IEnumerable<ElementDescriptor> ViewObjectFields(this HtmlHelper html, INakedObject nakedObject, PropertyContext parentContext, Func<IAssociationSpec, bool> filter, Func<IAssociationSpec, int> order, out bool anyEditableFields) {
+            IEnumerable<IAssociationSpec> query = nakedObject.Spec.Properties.Where(p => p.IsVisible( nakedObject)).Where(filter);
 
             if (order != null) {
                 query = query.OrderBy(order);
@@ -740,13 +740,13 @@ namespace NakedObjects.Web.Mvc.Html {
             return visibleFields.Select(property => html.ViewObjectField(new PropertyContext(nakedObject, property, false, parentContext)));
         }
 
-        private static Tuple<bool, string> IsDuplicate(this HtmlHelper html, IEnumerable<INakedObjectAction> allActions, INakedObjectAction action) {
+        private static Tuple<bool, string> IsDuplicate(this HtmlHelper html, IEnumerable<IActionSpec> allActions, IActionSpec action) {
             return new Tuple<bool, string>(allActions.Count(a => a.GetName() == action.GetName()) > 1, MvcUi.DuplicateAction);
         }
 
 
         internal static IList<ElementDescriptor> ObjectActions(this HtmlHelper html, INakedObject nakedObject, bool isEdit) {
-            IEnumerable<INakedObjectAction> allActions = html.Framework().GetTopLevelActions(nakedObject).ToList();
+            IEnumerable<IActionSpec> allActions = html.Framework().GetTopLevelActions(nakedObject).ToList();
 
             return allActions.Select(action => html.ObjectActionAsElementDescriptor(new ActionContext(false, nakedObject, action),
                                                                                     new {id = html.Framework().GetObjectId(nakedObject)},
@@ -819,7 +819,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                                           string propertyName) {
             INakedObject nakedObject = html.Framework().GetNakedObject(subEditObject);
 
-            Func<INakedObjectAssociation, bool> filterCollections = x => !x.IsCollection;
+            Func<IAssociationSpec, bool> filterCollections = x => !x.IsCollection;
 
             TagBuilder elementSet = AddClassAndIdToElementSet(html.EditObjectFields(nakedObject, null, filterCollections, null, true),
                                                               IdHelper.FieldContainerName,
@@ -893,8 +893,8 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string CollectionTable(this HtmlHelper html,
                                               INakedObject collectionNakedObject,
                                               Func<INakedObject, string> linkFunc,
-                                              Func<INakedObjectAssociation, bool> filter,
-                                              Func<INakedObjectAssociation, int> order,
+                                              Func<IAssociationSpec, bool> filter,
+                                              Func<IAssociationSpec, int> order,
                                               bool isStandalone,
                                               bool withSelection,
                                               bool withTitle,
@@ -909,7 +909,7 @@ namespace NakedObjects.Web.Mvc.Html {
             
             var collectionSpec =  html.Framework().Metamodel.GetSpecification( collectionNakedObject.GetTypeOfFacetFromSpec().ValueSpec);
                    
-            INakedObjectAssociation[] collectionAssocs = html.CollectionAssociations(collection, collectionSpec, filter, order);
+            IAssociationSpec[] collectionAssocs = html.CollectionAssociations(collection, collectionSpec, filter, order);
 
             int index = 0;
             foreach (INakedObject item in collection) {
@@ -1086,7 +1086,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static string GetFieldValue(this HtmlHelper html, PropertyContext context, INakedObject valueNakedObject) {
             string value = "";
 
-            if (((IOneToOneAssociation) context.Property).IsAutoCompleteEnabled) {
+            if (((IOneToOneAssociationSpec) context.Property).IsAutoCompleteEnabled) {
                 var htmlAttributes = new RouteValueDictionary(new {title = context.Property.Description});
 
                 html.AddClientValidationAttributes(context, htmlAttributes);
@@ -1148,7 +1148,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.GetTextOrRefFieldValue(propertyContext, valueNakedObject, inTable);
         }
 
-        private static string GetEnumFieldValue(INakedObjectAssociation property, INakedObject valueNakedObject) {
+        private static string GetEnumFieldValue(IAssociationSpec property, INakedObject valueNakedObject) {
             return property.GetFacet<IEnumFacet>().GetTitle(valueNakedObject);
         }
 
@@ -1596,7 +1596,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                                                 PropertyContext propertyContext,
                                                                 INakedObject existingNakedObject,
                                                                 IDictionary<string, INakedObject> values) {
-            List<INakedObject> nakedObjects = ((IOneToOneAssociation) propertyContext.Property).GetChoices(propertyContext.Target, values).ToList();
+            List<INakedObject> nakedObjects = ((IOneToOneAssociationSpec) propertyContext.Property).GetChoices(propertyContext.Target, values).ToList();
             return html.GetChoicesSet(nakedObjects, existingNakedObject);
         }
 
@@ -1631,7 +1631,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static string GetLabel(this HtmlHelper html, PropertyContext propertyContext) {
-            bool isAutoComplete = propertyContext.IsEdit && propertyContext.Property is IOneToOneAssociation && ((IOneToOneAssociation) propertyContext.Property).IsAutoCompleteEnabled;
+            bool isAutoComplete = propertyContext.IsEdit && propertyContext.Property is IOneToOneAssociationSpec && ((IOneToOneAssociationSpec) propertyContext.Property).IsAutoCompleteEnabled;
             Func<string> propId = isAutoComplete ? (Func<string>) propertyContext.GetAutoCompleteFieldId : propertyContext.GetFieldInputId;
             return GetLabelTag(propertyContext.IsPropertyEdit || isAutoComplete, propertyContext.Property.GetName(), propId);
         }
@@ -1722,12 +1722,12 @@ namespace NakedObjects.Web.Mvc.Html {
             return html.GetReferenceParameter(context, id, tooltip, childElements, context.Parameter.Id == propertyName);
         }
 
-        private static INakedObjectAssociation[] CollectionAssociations(this HtmlHelper html,
+        private static IAssociationSpec[] CollectionAssociations(this HtmlHelper html,
                                                                         INakedObject[] collection,
                                                                         IObjectSpec collectionSpec,
-                                                                        Func<INakedObjectAssociation, bool> filter,
-                                                                        Func<INakedObjectAssociation, int> order) {
-            IEnumerable<INakedObjectAssociation> assocs = collectionSpec.Properties.Where(filter).Where(a => collection.Any(a.IsVisible));
+                                                                        Func<IAssociationSpec, bool> filter,
+                                                                        Func<IAssociationSpec, int> order) {
+            IEnumerable<IAssociationSpec> assocs = collectionSpec.Properties.Where(filter).Where(a => collection.Any(a.IsVisible));
 
             if (order != null) {
                 assocs = assocs.OrderBy(order);
@@ -1811,7 +1811,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                      html.CustomEncrypted(id, valueId);
                     propertyContext.IsPropertyEdit = false;
                 }
-                else if (((IOneToOneAssociation) propertyContext.Property).IsChoicesEnabled) {
+                else if (((IOneToOneAssociationSpec) propertyContext.Property).IsChoicesEnabled) {
                     IEnumerable<SelectListItem> items = html.GetItems(id, propertyContext);
 
                     tag.InnerHtml += html.ObjectIcon(propertyContext.Property.GetNakedObject(propertyContext.Target)) +
@@ -1839,7 +1839,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                      html.GetFieldValue(propertyContext, suggestedItem) +
                                      (noFinder ? string.Empty : html.FinderActions(propertyContext.Property.Spec, new ActionContext(propertyContext.Target, null), propertyContext.Property.Id)) +
                                      html.GetMandatoryIndicator(propertyContext) +
-                                     html.ValidationMessage(((IOneToOneAssociation) propertyContext.Property).IsAutoCompleteEnabled ? propertyContext.GetAutoCompleteFieldId() : id) +
+                                     html.ValidationMessage(((IOneToOneAssociationSpec) propertyContext.Property).IsAutoCompleteEnabled ? propertyContext.GetAutoCompleteFieldId() : id) +
                                      html.CustomEncrypted(id, valueId);
                     propertyContext.IsPropertyEdit = false;
                 }
@@ -1871,8 +1871,8 @@ namespace NakedObjects.Web.Mvc.Html {
             bool any = collectionNakedObject.GetAsEnumerable(html.Framework().Manager).Any();
             Func<INakedObject, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
 
-            Func<INakedObjectAssociation, bool> filterFunc;
-            Func<INakedObjectAssociation, int> orderFunc;
+            Func<IAssociationSpec, bool> filterFunc;
+            Func<IAssociationSpec, int> orderFunc;
             bool withTitle;
 
             GetTableColumnInfo(propertyContext.Feature, out filterFunc, out orderFunc, out withTitle);
@@ -1881,7 +1881,7 @@ namespace NakedObjects.Web.Mvc.Html {
                    html.CollectionTable(collectionNakedObject, linkFunc, filterFunc, orderFunc, false, false, withTitle);
         }
 
-        internal static void GetTableColumnInfo(ISpecification holder, out Func<INakedObjectAssociation, bool> filterFunc, out Func<INakedObjectAssociation, int> orderFunc, out bool withTitle) {
+        internal static void GetTableColumnInfo(ISpecification holder, out Func<IAssociationSpec, bool> filterFunc, out Func<IAssociationSpec, int> orderFunc, out bool withTitle) {
             ITableViewFacet tableViewFacet = holder == null ? null : holder.GetFacet<ITableViewFacet>();
 
             if (tableViewFacet == null) {
@@ -1910,7 +1910,7 @@ namespace NakedObjects.Web.Mvc.Html {
             if (DoNotCount(propertyContext.Property)) {
                 return html.GetCollectionDisplayLinks(propertyContext);
             }
-            int count = ((IOneToManyAssociation)propertyContext.Property).Count(propertyContext.Target);
+            int count = ((IOneToManyAssociationSpec)propertyContext.Property).Count(propertyContext.Target);
             return (count > 0 ? html.GetCollectionDisplayLinks(propertyContext) : string.Empty) + GetCollectionTitle(propertyContext, count);
         }
 
@@ -2108,7 +2108,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static bool IsAutoComplete(FeatureContext context) {
             if (context is PropertyContext) {
-                var assoc = ((context as PropertyContext).Property) as IOneToOneAssociation;
+                var assoc = ((context as PropertyContext).Property) as IOneToOneAssociationSpec;
                 return assoc != null && assoc.IsAutoCompleteEnabled;
             }
             if (context is ParameterContext) {
@@ -2201,10 +2201,10 @@ namespace NakedObjects.Web.Mvc.Html {
             else if (propertyContext.Property.ContainsFacet<IPasswordFacet>() && !readOnly) {
                 html.AddPasswordControl(tag, htmlAttributes, propertyContext, id, html.GetPropertyValue(propertyContext));
             }
-            else if (((IOneToOneAssociation) propertyContext.Property).IsChoicesEnabled && !readOnly) {
+            else if (((IOneToOneAssociationSpec) propertyContext.Property).IsChoicesEnabled && !readOnly) {
                 html.AddDropDownControl(tag, htmlAttributes, propertyContext, id);
             }
-            else if (((IOneToOneAssociation) propertyContext.Property).IsAutoCompleteEnabled && !readOnly) {
+            else if (((IOneToOneAssociationSpec) propertyContext.Property).IsAutoCompleteEnabled && !readOnly) {
                 html.AddAutoCompleteControl(tag, htmlAttributes, propertyContext, propertyContext.Property.GetNakedObject(propertyContext.Target));
             }
             else {
@@ -2504,7 +2504,7 @@ namespace NakedObjects.Web.Mvc.Html {
                                                                 ActionContext actionContext,
                                                                 string propertyName) {
             return new RouteValueDictionary(new {
-                @class = (targetActionContext.Action is NakedObjectActionSet) ? IdHelper.SubMenuName : targetActionContext.GetActionClass(html.Framework()),
+                @class = (targetActionContext.Action is ActionSpecSet) ? IdHelper.SubMenuName : targetActionContext.GetActionClass(html.Framework()),
                 id = IdHelper.GetActionId(targetActionContext, actionContext, propertyName),
                 name,
                 type = "submit",
@@ -2563,9 +2563,9 @@ namespace NakedObjects.Web.Mvc.Html {
                                                                     IObjectSpec spec,
                                                                     string propertyName,
                                                                     Tuple<bool, string> disabled = null) {
-            return (targetActionContext.Action is NakedObjectActionSet) ?
-                       html.GetActionMenuElementDescriptor(targetActionContext, actionContext, spec, propertyName) :
-                       html.GetActionInstanceElementDescriptor(targetActionContext, actionContext, propertyName, disabled);
+            return (targetActionContext.Action is ActionSpecSet) ?
+                html.GetActionMenuElementDescriptor(targetActionContext, actionContext, spec, propertyName) :
+                html.GetActionInstanceElementDescriptor(targetActionContext, actionContext, propertyName, disabled);
         }
 
         private static IList<ElementDescriptor> ObjectActionsThatReturn(this HtmlHelper html,
@@ -2645,18 +2645,18 @@ namespace NakedObjects.Web.Mvc.Html {
         internal static MvcHtmlString ObjectAction(this HtmlHelper html, object target, MethodInfo methodInfo, object paramValues = null) {
             ValidateParamValues(methodInfo, paramValues);
             INakedObject nakedObject = html.Framework().GetNakedObject(target);
-            INakedObjectAction action = html.GetActionByMethodInfo(nakedObject, methodInfo);
+            IActionSpec action = html.GetActionByMethodInfo(nakedObject, methodInfo);
             return action == null ? MvcHtmlString.Create("") : html.ObjectAction(new ActionContext(nakedObject, action) {ParameterValues = new RouteValueDictionary(paramValues)});
         }
 
-        private static INakedObjectAction GetActionByMethodInfo(this HtmlHelper html, INakedObject nakedObject, MethodInfo methodInfo) {
+        private static IActionSpec GetActionByMethodInfo(this HtmlHelper html, INakedObject nakedObject, MethodInfo methodInfo) {
             return nakedObject.Spec.GetAllActions().
                                Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(nakedObject));
         }
 
         internal static MvcHtmlString ObjectActionOnTransient(this HtmlHelper html, object target, MethodInfo methodInfo) {
             INakedObject nakedObject = html.Framework().GetNakedObject(target);
-            INakedObjectAction action = nakedObject.Spec.GetAllActions().
+            IActionSpec action = nakedObject.Spec.GetAllActions().
                                                     Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible(nakedObject));
 
             return action == null ? MvcHtmlString.Create("") : html.ObjectActionOnTransient(new ActionContext(nakedObject, action));
@@ -2665,14 +2665,14 @@ namespace NakedObjects.Web.Mvc.Html {
 
         internal static MvcHtmlString ObjectPropertyView(this HtmlHelper html, object target, MemberInfo propertyInfo) {
             INakedObject nakedObject = html.Framework().GetNakedObject(target);
-            INakedObjectAssociation property = nakedObject.Spec.Properties.Where(a => a.Id == propertyInfo.Name).SingleOrDefault(a => a.IsVisible(nakedObject));
+            IAssociationSpec property = nakedObject.Spec.Properties.Where(a => a.Id == propertyInfo.Name).SingleOrDefault(a => a.IsVisible(nakedObject));
 
             return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyView(new PropertyContext(nakedObject, property, false));
         }
 
         internal static MvcHtmlString ObjectPropertyEdit(this HtmlHelper html, object target, MemberInfo propertyInfo) {
             INakedObject nakedObject = html.Framework().GetNakedObject(target);
-            INakedObjectAssociation property = nakedObject.Spec.Properties.Where(a => a.Id == propertyInfo.Name).SingleOrDefault(a => a.IsVisible(nakedObject));
+            IAssociationSpec property = nakedObject.Spec.Properties.Where(a => a.Id == propertyInfo.Name).SingleOrDefault(a => a.IsVisible(nakedObject));
 
             return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyEdit(new PropertyContext(nakedObject, property, true));
         }
@@ -2699,7 +2699,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         internal static MvcHtmlString ObjectActionAsDialog(this HtmlHelper html, object target, MethodInfo methodInfo) {
             INakedObject nakedObject = html.Framework().GetNakedObject(target);
-            INakedObjectAction action = nakedObject.Spec.GetAllActions().
+            IActionSpec action = nakedObject.Spec.GetAllActions().
                                                     Where(a => a.Id == methodInfo.Name).SingleOrDefault(a => a.IsVisible( nakedObject));
 
             return action == null ? MvcHtmlString.Create("") : html.ObjectActionAsDialog(new ActionContext(nakedObject, action));

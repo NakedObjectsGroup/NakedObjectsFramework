@@ -11,8 +11,8 @@ using NakedObjects.Reflector.DotNet.Reflect.Propcoll;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Properties {
-    public class DotNetOneToOneAssociationPeer : DotNetNakedObjectAssociationPeer {
-        public DotNetOneToOneAssociationPeer(IIdentifier identifier, Type returnType, IObjectSpecImmutable returnSpec)
+    public class OneToOneAssociationSpecImmutable : AssociationSpecImmutable {
+        public OneToOneAssociationSpecImmutable(IIdentifier identifier, Type returnType, IObjectSpecImmutable returnSpec)
             : base(identifier, returnType, returnSpec) {}
 
         public override bool IsOneToMany {

@@ -21,15 +21,14 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
-    public abstract class NakedObjectAssociationAbstract : NakedObjectMemberAbstract, INakedObjectAssociation {
+    public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodel;
         private readonly IObjectSpec spec;
 
-        protected NakedObjectAssociationAbstract(IMetamodelManager metamodel, INakedObjectAssociationPeer association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager)
+        protected AssociationSpecAbstract(IMetamodelManager metamodel, IAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager)
             : base(association.Identifier.MemberName, association, session, lifecycleManager) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(manager);

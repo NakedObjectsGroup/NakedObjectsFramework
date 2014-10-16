@@ -12,7 +12,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Defaults {
     public class ActionDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ActionDefaultAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.ParametersOnly) { }
+            :base(reflector, FeatureType.ParametersOnly) { }
 
 
         public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {

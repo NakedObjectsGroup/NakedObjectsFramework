@@ -12,11 +12,11 @@ using NakedObjects.Reflector.DotNet.Reflect.Propcoll;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Collections {
-    public class DotNetOneToManyAssociationPeer : DotNetNakedObjectAssociationPeer {
+    public class OneToManyAssociationSpecImmutable : AssociationSpecImmutable {
         private Type elementType;
         private IObjectSpecImmutable specification;
 
-        public DotNetOneToManyAssociationPeer(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec)
+        public OneToManyAssociationSpecImmutable(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec)
             : base(name, returnType, returnSpec) {}
 
         public Type ElementType {

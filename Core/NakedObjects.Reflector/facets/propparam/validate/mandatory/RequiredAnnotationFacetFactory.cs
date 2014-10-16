@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (RequiredAnnotationFacetFactory));
 
         public RequiredAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.PropertiesAndParameters) { }
+            :base(reflector, FeatureType.PropertiesAndParameters) { }
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<RequiredAttribute>();

@@ -22,36 +22,36 @@ namespace NakedObjects.Core.spec {
             this.framework = framework;
         }
 
-        public INakedObjectActionParameter CreateParameter(INakedObjectActionParamPeer paramPeer, INakedObjectAction action, int index) {
+        public IActionParameterSpec CreateParameter(IActionParameterSpecImmutable parameterSpecImmutable, IActionSpec actionSpec, int index) {
             Assert.AssertNotNull(framework);
-            var specification = paramPeer.Specification;
+            var specification = parameterSpecImmutable.Specification;
 
             if (specification.IsParseable) {
-                return new NakedObjectActionParameterParseable(framework.Metamodel, index, action, paramPeer, framework.Manager, framework.Session, framework.Persistor);
+                return new ActionParseableParameterSpec(framework.Metamodel, index, actionSpec, parameterSpecImmutable, framework.Manager, framework.Session, framework.Persistor);
             }
             if (specification.IsObject) {
-                return new OneToOneActionParameterImpl(framework.Metamodel, index, action, paramPeer, framework.Manager, framework.Session, framework.Persistor);
+                return new OneToOneActionParameterImpl(framework.Metamodel, index, actionSpec, parameterSpecImmutable, framework.Manager, framework.Session, framework.Persistor);
             }
             if (specification.IsCollection) {
-                return new OneToManyActionParameterImpl(framework.Metamodel, index, action, paramPeer, framework.Manager, framework.Session, framework.Persistor);
+                return new OneToManyActionParameterImpl(framework.Metamodel, index, actionSpec, parameterSpecImmutable, framework.Manager, framework.Session, framework.Persistor);
             }
             throw new UnknownTypeException(specification);
         }
 
-        public INakedObjectAssociation CreateAssociation(INakedObjectAssociationPeer peer) {
+        public IAssociationSpec CreateAssociation(IAssociationSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
-            if (peer.IsOneToOne) {
-                return new OneToOneAssociationImpl(framework.Metamodel, peer, framework.Session, framework.LifecycleManager, framework.Manager, framework.Persistor, framework.TransactionManager);
+            if (specImmutable.IsOneToOne) {
+                return new OneToOneAssociationSpec(framework.Metamodel, specImmutable, framework.Session, framework.LifecycleManager, framework.Manager, framework.Persistor, framework.TransactionManager);
             }
-            if (peer.IsOneToMany) {
-                return new OneToManyAssociationImpl(framework.Metamodel, peer, framework.Session, framework.LifecycleManager, framework.Manager, framework.Persistor);
+            if (specImmutable.IsOneToMany) {
+                return new OneToManyAssociationSpec(framework.Metamodel, specImmutable, framework.Session, framework.LifecycleManager, framework.Manager, framework.Persistor);
             }
-            throw new ReflectionException("Unknown peer type: " + peer);
+            throw new ReflectionException("Unknown peer type: " + specImmutable);
         }
 
-        public INakedObjectAction[] OrderActions(IOrderSet<INakedObjectActionPeer> order) {
+        public IActionSpec[] OrderActions(IOrderSet<IActionSpecImmutable> order) {
             Assert.AssertNotNull(framework);
-            var actions = new List<INakedObjectAction>();
+            var actions = new List<IActionSpec>();
             foreach (var element in order) {
                 if (element.Peer != null) {
                     actions.Add(CreateNakedObjectAction(element.Peer));
@@ -67,27 +67,27 @@ namespace NakedObjects.Core.spec {
             return actions.ToArray();
         }
 
-        public INakedObjectAction[] OrderActions(IList<Tuple<string, string, IOrderSet<INakedObjectActionPeer>>> order) {
+        public IActionSpec[] OrderActions(IList<Tuple<string, string, IOrderSet<IActionSpecImmutable>>> order) {
             Assert.AssertNotNull(framework);
-            return order.Select(element => CreateNakedObjectActionSet(element.Item1, element.Item2, element.Item3)).Cast<INakedObjectAction>().ToArray();
+            return order.Select(element => CreateNakedObjectActionSet(element.Item1, element.Item2, element.Item3)).Cast<IActionSpec>().ToArray();
         }
 
-        private NakedObjectActionSet CreateNakedObjectActionSet(IOrderSet<INakedObjectActionPeer> orderSet) {
-            return new NakedObjectActionSet(orderSet.GroupFullName.Replace(" ", ""), orderSet.GroupFullName, OrderActions(orderSet), framework.Services);
+        private ActionSpecSet CreateNakedObjectActionSet(IOrderSet<IActionSpecImmutable> orderSet) {
+            return new ActionSpecSet(orderSet.GroupFullName.Replace(" ", ""), orderSet.GroupFullName, OrderActions(orderSet), framework.Services);
         }
 
-        private NakedObjectActionSet CreateNakedObjectActionSet(string id, string name, IOrderSet<INakedObjectActionPeer> orderSet) {
-            return new NakedObjectActionSet(id, name, OrderActions(orderSet), framework.Services);
+        private ActionSpecSet CreateNakedObjectActionSet(string id, string name, IOrderSet<IActionSpecImmutable> orderSet) {
+            return new ActionSpecSet(id, name, OrderActions(orderSet), framework.Services);
         }
 
-        private NakedObjectActionImpl CreateNakedObjectAction(INakedObjectActionPeer peer) {
+        private ActionSpec CreateNakedObjectAction(IActionSpecImmutable specImmutable) {
             
-            return new NakedObjectActionImpl(this, framework.Metamodel, framework.LifecycleManager, framework.Session, framework.Services, framework.TransactionManager, framework.Manager, peer);
+            return new ActionSpec(this, framework.Metamodel, framework.LifecycleManager, framework.Session, framework.Services, framework.TransactionManager, framework.Manager, specImmutable);
         }
 
-        public INakedObjectAssociation CreateNakedObjectField(INakedObjectAssociationPeer peer) {
+        public IAssociationSpec CreateNakedObjectField(IAssociationSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
-            return CreateAssociation(peer);
+            return CreateAssociation(specImmutable);
         }
     }
 }

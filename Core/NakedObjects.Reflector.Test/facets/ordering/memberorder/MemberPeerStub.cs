@@ -11,7 +11,7 @@ using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
-    internal class MemberPeerStub : NamedAndDescribedSpecification, INakedObjectMemberPeer, IOrderableElement<MemberPeerStub> {
+    internal class MemberPeerStub : NamedAndDescribedSpecification, IMemberSpecImmutable, IOrderableElement<MemberPeerStub> {
         private readonly ILifecycleManager persistor;
 
         public MemberPeerStub(string name, ILifecycleManager persistor)

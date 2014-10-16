@@ -9,11 +9,11 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Spec {
     public interface IActionContainer {
-        INakedObjectAction[] GetRelatedServiceActions();
+        IActionSpec[] GetRelatedServiceActions();
 
         /// <summary>
         ///     Returns an array of actions of the specified type
         /// </summary>
-        INakedObjectAction[] GetAllActions();
+        IActionSpec[] GetAllActions();
     }
 }

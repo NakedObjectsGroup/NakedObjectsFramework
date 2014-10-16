@@ -5,16 +5,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Reflector.Spec;
-
-namespace NakedObjects.Reflector.Peer {
-    public interface INakedObjectActionPeer : INakedObjectMemberPeer, IOrderableElement<INakedObjectActionPeer> {
-        INakedObjectActionParamPeer[] Parameters { get; }
-        bool IsFinderMethod { get; }
-        IObjectSpecImmutable ReturnType { get; }
-        bool IsContributedMethod { get; }
-        bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable);
-    }
-
-    // Copyright (c) Naked Objects Group Ltd.
+namespace NakedObjects.Architecture.Reflect {
+    /// <summary>
+    ///     Base interface for <see cref="IOneToManyAssociationSpec" /> only.
+    /// </summary>
+    /// <para>
+    ///     Introduced for symmetry with <see cref="IOneToOneFeatureSpec" />; if we ever
+    ///     support collections as parameters then would also be the base
+    ///     interface for a <c>IOneToManyActionParameter</c>.
+    /// </para>
+    /// <para>
+    ///     Is also the route upto the <see cref="IFeatureSpec" /> superinterface.
+    /// </para>
+    public interface IOneToManyFeatureSpec : IFeatureSpec {}
 }

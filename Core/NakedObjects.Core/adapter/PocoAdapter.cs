@@ -147,15 +147,15 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public string ValidToPersist() {
-            INakedObjectAssociation[] properties = Spec.Properties;
-            foreach (INakedObjectAssociation property in properties) {
+            IAssociationSpec[] properties = Spec.Properties;
+            foreach (IAssociationSpec property in properties) {
                 INakedObject referencedObject = property.GetNakedObject(this);
                 if (property.IsUsable(this).IsAllowed && property.IsVisible(this)) {
                     if (property.IsMandatory && property.IsEmpty(this)) {
                         return string.Format(Resources.NakedObjects.PropertyMandatory, spec.ShortName, property.GetName());
                     }
                     if (property.IsObject) {
-                        IConsent valid = ((IOneToOneAssociation) property).IsAssociationValid(this, referencedObject);
+                        IConsent valid = ((IOneToOneAssociationSpec) property).IsAssociationValid(this, referencedObject);
                         if (valid.IsVetoed) {
                             return string.Format(Resources.NakedObjects.PropertyInvalid, spec.ShortName, property.GetName(), valid.Reason);
                         }

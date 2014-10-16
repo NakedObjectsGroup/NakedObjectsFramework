@@ -252,12 +252,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
 
         [Test]
         public override void TestFeatureTypes() {
-            NakedObjectFeatureType[] featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Objects));
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Property));
-            Assert.IsTrue(Contains(featureTypes, NakedObjectFeatureType.Collection));
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.Action));
-            Assert.IsFalse(Contains(featureTypes, NakedObjectFeatureType.ActionParameter));
+            FeatureType[] featureTypes = facetFactory.FeatureTypes;
+            Assert.IsFalse(Contains(featureTypes, FeatureType.Objects));
+            Assert.IsFalse(Contains(featureTypes, FeatureType.Property));
+            Assert.IsTrue(Contains(featureTypes, FeatureType.Collection));
+            Assert.IsFalse(Contains(featureTypes, FeatureType.Action));
+            Assert.IsFalse(Contains(featureTypes, FeatureType.ActionParameter));
         }
 
         [Test]

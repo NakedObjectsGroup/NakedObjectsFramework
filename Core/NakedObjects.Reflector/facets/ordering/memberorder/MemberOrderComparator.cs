@@ -10,10 +10,10 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     /// <summary>
-    ///     Compares by <see cref="IMemberOrderFacet" /> obtained from each <see cref="INakedObjectMemberPeer" />
+    ///     Compares by <see cref="IMemberOrderFacet" /> obtained from each <see cref="IMemberSpecImmutable" />
     /// </summary>
     /// <para>
-    ///     Will also compare <see cref="OrderSet" />s; these are put after any <see cref="INakedObjectMemberPeer" />s.
+    ///     Will also compare <see cref="OrderSet" />s; these are put after any <see cref="IMemberSpecImmutable" />s.
     /// </para>
     /// <para>
     ///     If there is no attribute on either member, then will compare the members by name instead.

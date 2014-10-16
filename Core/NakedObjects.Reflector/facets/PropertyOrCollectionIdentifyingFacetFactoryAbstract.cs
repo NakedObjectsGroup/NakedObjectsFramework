@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class PropertyOrCollectionIdentifyingFacetFactoryAbstract : MethodPrefixBasedFacetFactoryAbstract, IPropertyOrCollectionIdentifyingFacetFactory {
-        protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(INakedObjectReflector reflector, NakedObjectFeatureType[] featureTypes)
+        protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(INakedObjectReflector reflector, FeatureType[] featureTypes)
             : base(reflector, featureTypes) {}
 
         protected static bool IsCollectionOrArray(Type type) {

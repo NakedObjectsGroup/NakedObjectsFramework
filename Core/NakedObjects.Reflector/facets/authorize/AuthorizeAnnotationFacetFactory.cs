@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
         private static readonly ILog Log = LogManager.GetLogger(typeof (AuthorizeAnnotationFacetFactory));
 
         public AuthorizeAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.PropertiesCollectionsAndActions) { }
+            :base(reflector, FeatureType.PropertiesCollectionsAndActions) { }
 
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

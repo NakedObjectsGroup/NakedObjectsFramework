@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Potency {
     /// </summary>
     public class PotencyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PotencyAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, NakedObjectFeatureType.ActionsOnly) { }
+            :base(reflector, FeatureType.ActionsOnly) { }
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             // give priority to Idempotent as more restrictive 

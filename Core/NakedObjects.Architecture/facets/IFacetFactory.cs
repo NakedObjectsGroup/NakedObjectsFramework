@@ -13,13 +13,13 @@ using NakedObjects.Architecture.Reflect;
 namespace NakedObjects.Architecture.Facets {
     public interface IFacetFactory {
         /// <summary>
-        ///     The <see cref="NakedObjectFeatureType" />s that this facet factory can create <see cref="IFacet" />s for.
+        ///     The <see cref="FeatureType" />s that this facet factory can create <see cref="IFacet" />s for.
         /// </summary>
         /// <para>
         ///     Used by the <see cref="IFacetFactorySet" /> to reduce the number of <see cref="IFacetFactory" />s that are
         ///     queried when building up the meta-model.
         /// </para>
-        NakedObjectFeatureType[] FeatureTypes { get; }
+        FeatureType[] FeatureTypes { get; }
 
         /// <summary>
         ///     Process the class, and return the correctly setup annotation if present.

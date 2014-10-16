@@ -29,18 +29,18 @@ using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
-    public abstract class NakedObjectActionParameterAbstract : INakedObjectActionParameter {
+    public abstract class ActionParameterSpec : IActionParameterSpec {
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodel;
         private readonly int number;
-        private readonly INakedObjectAction parentAction;
-        private readonly INakedObjectActionParamPeer peer;
+        private readonly IActionSpec parentAction;
+        private readonly IActionParameterSpecImmutable peer;
         private readonly IObjectPersistor persistor;
         private readonly ISession session;
 
-        protected internal NakedObjectActionParameterAbstract(IMetamodelManager metamodel, int number, INakedObjectAction nakedObjectAction, INakedObjectActionParamPeer peer, INakedObjectManager manager, ISession session, IObjectPersistor persistor) {
+        protected internal ActionParameterSpec(IMetamodelManager metamodel, int number, IActionSpec actionSpec, IActionParameterSpecImmutable peer, INakedObjectManager manager, ISession session, IObjectPersistor persistor) {
             Assert.AssertNotNull(metamodel);
-            Assert.AssertNotNull(nakedObjectAction);
+            Assert.AssertNotNull(actionSpec);
             Assert.AssertNotNull(peer);
             Assert.AssertNotNull(manager);
             Assert.AssertNotNull(session);
@@ -48,7 +48,7 @@ namespace NakedObjects.Reflector.Spec {
 
             this.metamodel = metamodel;
             this.number = number;
-            parentAction = nakedObjectAction;
+            parentAction = actionSpec;
             this.peer = peer;
             this.manager = manager;
             this.session = session;
@@ -91,7 +91,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return number; }
         }
 
-        public virtual INakedObjectAction Action {
+        public virtual IActionSpec Action {
             get { return parentAction; }
         }
 
@@ -253,7 +253,7 @@ namespace NakedObjects.Reflector.Spec {
 
         private Tuple<INakedObject, TypeOfDefaultValue> GetDefaultValueAndType(INakedObject nakedObject) {
             if (parentAction.IsContributedMethod && nakedObject != null) {
-                IEnumerable<INakedObjectActionParameter> matchingParms = parentAction.Parameters.Where(p => nakedObject.Spec.IsOfType(p.Spec));
+                IEnumerable<IActionParameterSpec> matchingParms = parentAction.Parameters.Where(p => nakedObject.Spec.IsOfType(p.Spec));
 
                 if (matchingParms.Any() && matchingParms.First() == this) {
                     return new Tuple<INakedObject, TypeOfDefaultValue>(nakedObject, TypeOfDefaultValue.Explicit);

@@ -5,28 +5,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Reflector.Peer {
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Spec;
+
+namespace NakedObjects.Architecture.Reflect {
     /// <summary>
-    ///     Additional reflective details about field members
+    ///     Base interface for fields, collections, actions and action parameters.
     /// </summary>
-    public interface INakedObjectAssociationPeer : INakedObjectMemberPeer, IOrderableElement<INakedObjectAssociationPeer> {
+    public interface IFeatureSpec : ISpecification, INamedAndDescribed {
         /// <summary>
-        ///     If this is a scalar association, representing (in old terminology)
-        ///     a reference to another entity or a value.
+        ///     Returns the specifications for the feature.
         /// </summary>
         /// <para>
-        ///     Opposite of <see cref="IsOneToMany" />
+        ///     Will be non-<c>null</c> value for everything <i>except</i> an  action.
         /// </para>
-        bool IsOneToOne { get; }
+        IObjectSpec Spec { get; }
 
-        /// <summary>
-        ///     If this is a collection
-        /// </summary>
-        /// <para>
-        ///     Opposite of <see cref="IsOneToOne" />
-        /// </para>
-        bool IsOneToMany { get; }
+        bool IsNullable { get; }
+        IConsent IsUsable(INakedObject target);
     }
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

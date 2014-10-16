@@ -31,10 +31,10 @@ namespace NakedObjects.Xat {
         public ITestAction[] Actions {
             get {
                 List<ITestAction> actions = NakedObject.Spec.GetAllActions().
-                    OfType<NakedObjectActionImpl>().
+                    OfType<ActionSpec>().
                     Select(x => factory.CreateTestAction(x, this)).ToList();
 
-                foreach (NakedObjectActionSet set in NakedObject.Spec.GetAllActions().OfType<NakedObjectActionSet>()) {
+                foreach (ActionSpecSet set in NakedObject.Spec.GetAllActions().OfType<ActionSpecSet>()) {
                     actions.AddRange(set.Actions.Select(x => factory.CreateTestAction(set.GetName(), x, this)));
                 }
 
@@ -69,9 +69,9 @@ namespace NakedObjects.Xat {
 
         public virtual string GetObjectActionOrder() {
             IObjectSpec spec = NakedObject.Spec;
-            INakedObjectAction[] actions = spec.GetAllActions();
+            IActionSpec[] actionsSpec = spec.GetAllActions();
             var order = new StringBuilder();
-            order.Append(AppendActions(actions));
+            order.Append(AppendActions(actionsSpec));
             return order.ToString();
         }
 
@@ -116,21 +116,21 @@ namespace NakedObjects.Xat {
             return base.ToString() + " " + NakedObject.Spec.ShortName + "/" + NakedObject;
         }
 
-        private  string AppendActions(INakedObjectAction[] actions) {
+        private  string AppendActions(IActionSpec[] actionsSpec) {
             var order = new StringBuilder();
-            for (int i = 0; i < actions.Length; i++) {
-                INakedObjectAction action = actions[i];
-                string name = action.GetName();
-                if (action is NakedObjectActionSet) {
+            for (int i = 0; i < actionsSpec.Length; i++) {
+                IActionSpec actionSpec = actionsSpec[i];
+                string name = actionSpec.GetName();
+                if (actionSpec is ActionSpecSet) {
                     order.Append("(").Append(name).Append(":");
-                    order.Append(AppendActions(action.Actions));
+                    order.Append(AppendActions(actionSpec.Actions));
                     order.Append(")");
                 }
                 else {
                     order.Append(name);
                 }
 
-                order.Append(i < actions.Length - 1 ? ", " : "");
+                order.Append(i < actionsSpec.Length - 1 ? ", " : "");
             }
             return order.ToString();
         }

@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)
         /// </summary>
         public ComplementaryMethodsFilteringFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, NakedObjectFeatureType.ActionsOnly) {}
+            : base(reflector, FeatureType.ActionsOnly) {}
 
         #region IMethodFilteringFacetFactory Members
 

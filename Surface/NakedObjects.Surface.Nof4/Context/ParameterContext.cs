@@ -11,9 +11,9 @@ using NakedObjects.Surface.Nof4.Wrapper;
 
 namespace NakedObjects.Surface.Nof4.Context {
     public class ParameterContext : Context {
-        public INakedObjectActionParameter Parameter { get; set; }
+        public IActionParameterSpec Parameter { get; set; }
 
-        public INakedObjectAction Action { get; set; }
+        public IActionSpec Action { get; set; }
 
         public override string Id {
             get { return Parameter.Id; }

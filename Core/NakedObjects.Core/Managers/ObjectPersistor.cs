@@ -91,7 +91,7 @@ namespace NakedObjects.Managers {
             objectStore.Reload(nakedObject);
         }
 
-        public void ResolveField(INakedObject nakedObject, INakedObjectAssociation field) {
+        public void ResolveField(INakedObject nakedObject, IAssociationSpec field) {
             Log.DebugFormat("ResolveField nakedObject: {0} field: {1}", nakedObject, field);
             if (field.Spec.HasNoIdentity) {
                 return;
@@ -112,21 +112,21 @@ namespace NakedObjects.Managers {
 
         public void LoadField(INakedObject nakedObject, string field) {
             Log.DebugFormat("LoadField nakedObject: {0} field: {1}", nakedObject, field);
-            INakedObjectAssociation association = nakedObject.Spec.Properties.Single(x => x.Id == field);
-            ResolveField(nakedObject, association);
+            IAssociationSpec associationSpec = nakedObject.Spec.Properties.Single(x => x.Id == field);
+            ResolveField(nakedObject, associationSpec);
         }
 
         public int CountField(INakedObject nakedObject, string field) {
             Log.DebugFormat("CountField nakedObject: {0} field: {1}", nakedObject, field);
 
-            INakedObjectAssociation association = nakedObject.Spec.Properties.Single(x => x.Id == field);
+            IAssociationSpec associationSpec = nakedObject.Spec.Properties.Single(x => x.Id == field);
 
             if (nakedObject.Spec.IsViewModel) {
-                INakedObject collection = association.GetNakedObject(nakedObject);
+                INakedObject collection = associationSpec.GetNakedObject(nakedObject);
                 return collection.GetCollectionFacetFromSpec().AsEnumerable(collection, manager).Count();
             }
 
-            return objectStore.CountField(nakedObject, association);
+            return objectStore.CountField(nakedObject, associationSpec);
         }
 
         public PropertyInfo[] GetKeys(Type type) {
