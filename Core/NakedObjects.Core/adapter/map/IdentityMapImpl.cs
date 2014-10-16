@@ -58,7 +58,7 @@ namespace NakedObjects.Core.Adapter.Map {
             }
 
             // TODO we should be ignoring immutable values object as well
-            if (nakedObject.Specification.IsObject) {
+            if (nakedObject.Spec.IsObject) {
                 pocoAdapterMap.Add(obj, nakedObject);
             }
             // order is important - add to identity map after poco map 

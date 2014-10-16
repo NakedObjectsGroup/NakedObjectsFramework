@@ -32,7 +32,7 @@ namespace NakedObjects.Core.Adapter {
         private readonly INakedObjectManager manager;
         private readonly ILifecycleManager lifecycleManager;
         private object poco;
-        private INakedObjectSpecification specification;
+        private IObjectSpec spec;
         private ITypeOfFacet typeOfFacet;
         private IVersion version;
 
@@ -68,7 +68,7 @@ namespace NakedObjects.Core.Adapter {
         public virtual ITypeOfFacet TypeOfFacet {
             get {
                 if (typeOfFacet == null) {
-                    return Specification.GetFacet<ITypeOfFacet>();
+                    return Spec.GetFacet<ITypeOfFacet>();
                 }
                 return typeOfFacet;
             }
@@ -84,18 +84,18 @@ namespace NakedObjects.Core.Adapter {
         ///     Returns the name of the icon to use to represent this object
         /// </summary>
         public virtual string IconName() {
-            return Specification.GetIconName(this);
+            return Spec.GetIconName(this);
         }
 
         public ResolveStateMachine ResolveState { get; private set; }
 
-        public virtual INakedObjectSpecification Specification {
+        public virtual IObjectSpec Spec {
             get {
-                if (specification == null) {
-                    specification = metamodel.GetSpecification(Object.GetType());
-                    defaultTitle = "A" + (" " + specification.SingularName).ToLower();
+                if (spec == null) {
+                    spec = metamodel.GetSpecification(Object.GetType());
+                    defaultTitle = "A" + (" " + spec.SingularName).ToLower();
                 }
-                return specification;
+                return spec;
             }
         }
 
@@ -119,10 +119,10 @@ namespace NakedObjects.Core.Adapter {
         /// </summary>
         public virtual string TitleString() {
             try {
-                if (Specification.IsCollection && !Specification.IsParseable) {
-                    return CollectionTitleString(Specification.GetFacet<ICollectionFacet>());
+                if (Spec.IsCollection && !Spec.IsParseable) {
+                    return CollectionTitleString(Spec.GetFacet<ICollectionFacet>());
                 }
-                return Specification.GetTitle(this) ?? DefaultTitle;
+                return Spec.GetTitle(this) ?? DefaultTitle;
             }
             catch (Exception e) {
                 Log.Error("Exception on ToString", e);
@@ -133,7 +133,7 @@ namespace NakedObjects.Core.Adapter {
 
         public virtual string InvariantString() {
 
-            return Specification.GetInvariantString(this);
+            return Spec.GetInvariantString(this);
         }
 
 
@@ -147,17 +147,17 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public string ValidToPersist() {
-            INakedObjectAssociation[] properties = Specification.Properties;
+            INakedObjectAssociation[] properties = Spec.Properties;
             foreach (INakedObjectAssociation property in properties) {
                 INakedObject referencedObject = property.GetNakedObject(this);
                 if (property.IsUsable(this).IsAllowed && property.IsVisible(this)) {
                     if (property.IsMandatory && property.IsEmpty(this)) {
-                        return string.Format(Resources.NakedObjects.PropertyMandatory, specification.ShortName, property.GetName());
+                        return string.Format(Resources.NakedObjects.PropertyMandatory, spec.ShortName, property.GetName());
                     }
                     if (property.IsObject) {
                         IConsent valid = ((IOneToOneAssociation) property).IsAssociationValid(this, referencedObject);
                         if (valid.IsVetoed) {
-                            return string.Format(Resources.NakedObjects.PropertyInvalid, specification.ShortName, property.GetName(), valid.Reason);
+                            return string.Format(Resources.NakedObjects.PropertyInvalid, spec.ShortName, property.GetName(), valid.Reason);
                         }
                     }
                 }
@@ -171,8 +171,8 @@ namespace NakedObjects.Core.Adapter {
                 }
             }
 
-            foreach (INakedObjectValidation validator in specification.ValidateMethods()) {
-                IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => specification.Properties.Single(p => p.Id.ToLower() == name).GetNakedObject(this));
+            foreach (INakedObjectValidation validator in spec.ValidateMethods()) {
+                IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => spec.Properties.Single(p => p.Id.ToLower() == name).GetNakedObject(this));
                 string result = validator.Execute(this, parameters.ToArray());
                 if (result != null) {
                     return result;
@@ -244,12 +244,12 @@ namespace NakedObjects.Core.Adapter {
                 str.Append(":-");
             }
             str.AddComma();
-            if (specification == null) {
+            if (spec == null) {
                 str.Append("class", Object.GetType().FullName);
             }
             else {
-                str.Append("specification", specification.ShortName);
-                str.Append("Type", specification.FullName);
+                str.Append("specification", spec.ShortName);
+                str.Append("Type", spec.FullName);
             }
 
             if (Object != null && TypeUtils.IsProxy(Object.GetType())) {
@@ -263,9 +263,9 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public  void LoadAnyComplexTypes() {          
-            if (Specification.IsService ||
-                Specification.IsViewModel ||
-                Specification.ContainsFacet(typeof(IComplexTypeFacet))) {
+            if (Spec.IsService ||
+                Spec.IsViewModel ||
+                Spec.ContainsFacet(typeof(IComplexTypeFacet))) {
                 return;
             }
             persistor.LoadComplexTypes(this, ResolveState.IsGhost());

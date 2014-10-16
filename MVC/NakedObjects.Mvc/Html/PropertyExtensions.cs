@@ -49,7 +49,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString ObjectPropertyView(this HtmlHelper html, object model, string propertyId) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            INakedObjectAssociation property = nakedObject.Specification.Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible( nakedObject));
+            INakedObjectAssociation property = nakedObject.Spec.Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible( nakedObject));
             return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyView(new PropertyContext(nakedObject, property, false));
         }
 
@@ -84,7 +84,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString ObjectPropertyEdit(this HtmlHelper html, object model, string propertyId) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            INakedObjectAssociation property = nakedObject.Specification.Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible( nakedObject));
+            INakedObjectAssociation property = nakedObject.Spec.Properties.Where(a => a.Id == propertyId).SingleOrDefault(a => a.IsVisible( nakedObject));
             return property == null ? MvcHtmlString.Create("") : html.ObjectPropertyEdit(new PropertyContext(nakedObject, property, true));
         }
 
@@ -231,7 +231,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         public static MvcHtmlString PropertyListOnlyCollections(this HtmlHelper html, object domainObject, CollectionFormat format) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
-            IEnumerable<string> collections = nakedObject.Specification.Properties.Where(p => p.IsCollection).Select(p => p.Id);
+            IEnumerable<string> collections = nakedObject.Spec.Properties.Where(p => p.IsCollection).Select(p => p.Id);
             collections.ForEach(t => html.ViewData[t] = format);
             return html.PropertyListWithFilter(domainObject, x => x.IsCollection, null);
         }
@@ -245,7 +245,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </example>
         public static MvcHtmlString[] PropertiesListOnlyCollections(this HtmlHelper html, object domainObject) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
-            IEnumerable<string> collections = nakedObject.Specification.Properties.Where(p => p.IsCollection && p.IsVisible( nakedObject)).Select(p => p.Id);
+            IEnumerable<string> collections = nakedObject.Spec.Properties.Where(p => p.IsCollection && p.IsVisible( nakedObject)).Select(p => p.Id);
          
             return  collections.Select(c => html.PropertyListWith(domainObject, new[] {c})).ToArray();
         }
@@ -621,7 +621,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString Contents<TModel>(this HtmlHelper html, TModel model, string propertyId) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            return MvcHtmlString.Create(nakedObject.Specification.Properties.Single(p => p.Id == propertyId).GetNakedObject(nakedObject).TitleString());
+            return MvcHtmlString.Create(nakedObject.Spec.Properties.Single(p => p.Id == propertyId).GetNakedObject(nakedObject).TitleString());
         }
 
         #endregion
@@ -661,7 +661,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Description<TModel>(this HtmlHelper html, TModel model, string propertyId) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
 
-            return MvcHtmlString.Create(nakedObject.Specification.Properties.Where(p => p.Id == propertyId).Single().Description);
+            return MvcHtmlString.Create(nakedObject.Spec.Properties.Where(p => p.Id == propertyId).Single().Description);
         }
 
         #endregion
@@ -701,7 +701,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString Name<TModel>(this HtmlHelper html, TModel model, string propertyId) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
 
-            return MvcHtmlString.Create(nakedObject.Specification.Properties.Single(p => p.Id == propertyId).GetName());
+            return MvcHtmlString.Create(nakedObject.Spec.Properties.Single(p => p.Id == propertyId).GetName());
         }
 
         #endregion
@@ -741,7 +741,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static MvcHtmlString TypeName<TModel>(this HtmlHelper html, TModel model, string propertyId) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
 
-            return MvcHtmlString.Create(nakedObject.Specification.Properties.Where(p => p.Id == propertyId).Single().Specification.ShortName);
+            return MvcHtmlString.Create(nakedObject.Spec.Properties.Where(p => p.Id == propertyId).Single().Spec.ShortName);
         }
 
         #endregion

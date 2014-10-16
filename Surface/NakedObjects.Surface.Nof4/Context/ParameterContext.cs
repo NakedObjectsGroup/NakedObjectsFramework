@@ -19,8 +19,8 @@ namespace NakedObjects.Surface.Nof4.Context {
             get { return Parameter.Id; }
         }
 
-        public override INakedObjectSpecification Specification {
-            get { return Parameter.Specification; }
+        public override IObjectSpec Specification {
+            get { return Parameter.Spec; }
         }
 
         public string OverloadedUniqueId { get; set; }

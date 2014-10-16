@@ -64,22 +64,22 @@ namespace NakedObjects.Managers {
             return GetInstances(type);
         }
 
-        public virtual IQueryable Instances(INakedObjectSpecification specification) {
-            Log.DebugFormat("Instances of: {0}", specification);
-            return GetInstances(specification);
+        public virtual IQueryable Instances(IObjectSpec spec) {
+            Log.DebugFormat("Instances of: {0}", spec);
+            return GetInstances(spec);
         }
 
-        public INakedObject LoadObject(IOid oid, INakedObjectSpecification specification) {
-            Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, specification);
+        public INakedObject LoadObject(IOid oid, IObjectSpec spec) {
+            Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, spec);
 
             Assert.AssertNotNull("needs an OID", oid);
-            Assert.AssertNotNull("needs a specification", specification);
+            Assert.AssertNotNull("needs a specification", spec);
 
-            return objectStore.GetObject(oid, specification);
+            return objectStore.GetObject(oid, spec);
         }
 
         public void AddPersistedObject(INakedObject nakedObject) {
-            if (nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
+            if (nakedObject.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return;
             }
             ICreateObjectCommand createObjectCommand = objectStore.CreateCreateObjectCommand(nakedObject, session);
@@ -93,7 +93,7 @@ namespace NakedObjects.Managers {
 
         public void ResolveField(INakedObject nakedObject, INakedObjectAssociation field) {
             Log.DebugFormat("ResolveField nakedObject: {0} field: {1}", nakedObject, field);
-            if (field.Specification.HasNoIdentity) {
+            if (field.Spec.HasNoIdentity) {
                 return;
             }
             INakedObject reference = field.GetNakedObject(nakedObject);
@@ -105,23 +105,23 @@ namespace NakedObjects.Managers {
             }
             if (Log.IsInfoEnabled) {
                 // don't log object - its ToString() may use the unresolved field or unresolved collection
-                Log.Info("resolve field " + nakedObject.Specification.ShortName + "." + field.Id + ": " + reference.Specification.ShortName + " " + reference.ResolveState.CurrentState.Code + " " + reference.Oid);
+                Log.Info("resolve field " + nakedObject.Spec.ShortName + "." + field.Id + ": " + reference.Spec.ShortName + " " + reference.ResolveState.CurrentState.Code + " " + reference.Oid);
             }
             objectStore.ResolveField(nakedObject, field);
         }
 
         public void LoadField(INakedObject nakedObject, string field) {
             Log.DebugFormat("LoadField nakedObject: {0} field: {1}", nakedObject, field);
-            INakedObjectAssociation association = nakedObject.Specification.Properties.Single(x => x.Id == field);
+            INakedObjectAssociation association = nakedObject.Spec.Properties.Single(x => x.Id == field);
             ResolveField(nakedObject, association);
         }
 
         public int CountField(INakedObject nakedObject, string field) {
             Log.DebugFormat("CountField nakedObject: {0} field: {1}", nakedObject, field);
 
-            INakedObjectAssociation association = nakedObject.Specification.Properties.Single(x => x.Id == field);
+            INakedObjectAssociation association = nakedObject.Spec.Properties.Single(x => x.Id == field);
 
-            if (nakedObject.Specification.IsViewModel) {
+            if (nakedObject.Spec.IsViewModel) {
                 INakedObject collection = association.GetNakedObject(nakedObject);
                 return collection.GetCollectionFacetFromSpec().AsEnumerable(collection, manager).Count();
             }
@@ -154,7 +154,7 @@ namespace NakedObjects.Managers {
                 }
                 if (Log.IsInfoEnabled) {
                     // don't log object - it's ToString() may use the unresolved field, or unresolved collection
-                    Log.Info("resolve immediately: " + nakedObject.Specification.ShortName + " " + nakedObject.ResolveState.CurrentState.Code + " " + nakedObject.Oid);
+                    Log.Info("resolve immediately: " + nakedObject.Spec.ShortName + " " + nakedObject.ResolveState.CurrentState.Code + " " + nakedObject.Oid);
                 }
                 objectStore.ResolveImmediately(nakedObject);
             }
@@ -163,14 +163,14 @@ namespace NakedObjects.Managers {
         public void ObjectChanged(INakedObject nakedObject) {
             Log.DebugFormat("ObjectChanged nakedObject: {0}", nakedObject);
             if (nakedObject.ResolveState.RespondToChangesInPersistentObjects()) {
-                if (nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
+                if (nakedObject.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                     nakedObject.Updating(session);
                     nakedObject.Updated(session);
                     updateNotifier.AddChangedObject(nakedObject);
                 }
                 else {
-                    INakedObjectSpecification specification = nakedObject.Specification;
-                    if (specification.IsAlwaysImmutable() || (specification.IsImmutableOncePersisted() && nakedObject.ResolveState.IsPersistent())) {
+                    IObjectSpec spec = nakedObject.Spec;
+                    if (spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && nakedObject.ResolveState.IsPersistent())) {
                         throw new NotPersistableException("cannot change immutable object");
                     }
                     nakedObject.Updating(session);
@@ -197,10 +197,10 @@ namespace NakedObjects.Managers {
             nakedObject.Deleted(session);
         }
 
-        public object CreateObject(INakedObjectSpecification specification) {
-            Log.DebugFormat("CreateObject: " + specification);
+        public object CreateObject(IObjectSpec spec) {
+            Log.DebugFormat("CreateObject: " + spec);
 
-            Type type = TypeUtils.GetType(specification.FullName);
+            Type type = TypeUtils.GetType(spec.FullName);
             return objectStore.CreateInstance(type);
         }
 
@@ -216,23 +216,23 @@ namespace NakedObjects.Managers {
             return objectStore.GetInstances(type);
         }
 
-        protected IQueryable GetInstances(INakedObjectSpecification specification) {
-            Log.Debug("GetInstances<T> of: " + specification);
-            return objectStore.GetInstances(specification);
+        protected IQueryable GetInstances(IObjectSpec spec) {
+            Log.Debug("GetInstances<T> of: " + spec);
+            return objectStore.GetInstances(spec);
         }
 
-        private static IEnumerable<INakedObjectSpecification> GetLeafNodes(INakedObjectSpecification spec) {
+        private static IEnumerable<IObjectSpec> GetLeafNodes(IObjectSpec spec) {
             if ((spec.IsInterface || spec.IsAbstract)) {
                 return spec.Subclasses.SelectMany(GetLeafNodes);
             }
             return new[] { spec };
         }
 
-        public IEnumerable GetBoundedSet(INakedObjectSpecification spec) {
+        public IEnumerable GetBoundedSet(IObjectSpec spec) {
             if (spec.IsBoundedSet()) {
                 if (spec.IsInterface) {
                     IList<object> instances = new List<object>();
-                    foreach (INakedObjectSpecification subSpec in GetLeafNodes(spec)) {
+                    foreach (IObjectSpec subSpec in GetLeafNodes(spec)) {
                         foreach (object instance in Instances(subSpec)) {
                             instances.Add(instance);
                         }

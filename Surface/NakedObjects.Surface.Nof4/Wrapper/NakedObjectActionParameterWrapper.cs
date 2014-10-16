@@ -90,7 +90,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         #region INakedObjectActionParameterSurface Members
 
         public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(nakedObjectActionParameter.Specification, Surface, framework); }
+            get { return new NakedObjectSpecificationWrapper(nakedObjectActionParameter.Spec, Surface, framework); }
         }
 
         public INakedObjectActionSurface Action {
@@ -138,7 +138,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         #endregion
 
-        private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, INakedObjectSpecification> parm) {
+        private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, IObjectSpec> parm) {
             return new Tuple<string, INakedObjectSpecificationSurface>(parm.Item1, new NakedObjectSpecificationWrapper(parm.Item2, Surface, framework));
         }
 

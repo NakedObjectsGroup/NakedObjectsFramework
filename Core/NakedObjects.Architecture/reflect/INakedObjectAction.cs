@@ -23,7 +23,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Returns the specification for the type of object that this action can be invoked upon
         /// </summary>
-        INakedObjectSpecification OnType { get; }
+        IObjectSpec OnType { get; }
 
         /// <summary>
         ///     Return true if the action is run on a service object using the target object as a parameter
@@ -45,7 +45,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Returns the specifications for the return type
         /// </summary>
-        INakedObjectSpecification ReturnType { get; }
+        IObjectSpec ReturnType { get; }
 
         /// <summary>
         ///     Lists the sub-actions that are available under this name. If any actions are returned then this action
@@ -69,7 +69,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Return true if the action is run on a service object using the target object as a parameter
         /// </summary>
-        bool IsContributedTo(INakedObjectSpecification spec);
+        bool IsContributedTo(IObjectSpec spec);
 
         bool PromptForParameters(INakedObject nakedObject);
 

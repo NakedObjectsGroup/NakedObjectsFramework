@@ -105,7 +105,7 @@ namespace NakedObjects.Core.Persist {
             CacheState();
         }
 
-        public INakedObjectSpecification Specification {
+        public IObjectSpec Spec {
             get { return metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(typeName)); }
         }
 

@@ -58,7 +58,7 @@ namespace NakedObjects.Xat {
         public bool MatchParameters(Type[] typestoMatch) {
             if (action.Parameters.Count() == typestoMatch.Length) {
                 int i = 0;
-                return action.Parameters.All(x => x.Specification.IsOfType(metamodelManager.GetSpecification(typestoMatch[i++])));
+                return action.Parameters.All(x => x.Spec.IsOfType(metamodelManager.GetSpecification(typestoMatch[i++])));
             }
             return false;
         }
@@ -93,7 +93,7 @@ namespace NakedObjects.Xat {
             if (result == null) {
                 return null;
             }
-            if (result.Specification.IsCollection) {
+            if (result.Spec.IsCollection) {
                 return factory.CreateTestCollection(result);
             }
             return factory.CreateTestObject(result);
@@ -116,7 +116,7 @@ namespace NakedObjects.Xat {
             if (result == null) {
                 return null;
             }
-            if (result.Specification.IsCollection && !result.Specification.IsParseable) {
+            if (result.Spec.IsCollection && !result.Spec.IsParseable) {
                 return factory.CreateTestCollection(result);
             }
             return factory.CreateTestObject(result);
@@ -217,8 +217,8 @@ namespace NakedObjects.Xat {
             foreach (INakedObjectActionParameter parm in action.Parameters) {
                 object value = parameters[i++];
 
-                if (value is string && parm.Specification.IsParseable) {
-                    parsedParameters.Add(parm.Specification.GetFacet<IParseableFacet>().ParseTextEntry((string) value, manager).Object);
+                if (value is string && parm.Spec.IsParseable) {
+                    parsedParameters.Add(parm.Spec.GetFacet<IParseableFacet>().ParseTextEntry((string) value, manager).Object);
                 }
                 else {
                     parsedParameters.Add(value);

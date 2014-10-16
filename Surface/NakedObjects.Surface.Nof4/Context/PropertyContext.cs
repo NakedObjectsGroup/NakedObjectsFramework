@@ -19,8 +19,8 @@ namespace NakedObjects.Surface.Nof4.Context {
             get { return Property.Id; }
         }
 
-        public override INakedObjectSpecification Specification {
-            get { return Property.Specification; }
+        public override IObjectSpec Specification {
+            get { return Property.Spec; }
         }
 
         public PropertyContextSurface ToPropertyContextSurface(INakedObjectsSurface surface, INakedObjectsFramework framework) {

@@ -19,9 +19,9 @@ namespace NakedObjects.Architecture.Persist {
 
         IQueryable Instances(Type type);
 
-        IQueryable Instances(INakedObjectSpecification specification);
+        IQueryable Instances(IObjectSpec spec);
 
-        INakedObject LoadObject(IOid oid, INakedObjectSpecification spec);
+        INakedObject LoadObject(IOid oid, IObjectSpec spec);
 
         void AddPersistedObject(INakedObject nakedObject);
 
@@ -35,8 +35,8 @@ namespace NakedObjects.Architecture.Persist {
         void ResolveImmediately(INakedObject nakedObject);
         void ObjectChanged(INakedObject nakedObject);
         void DestroyObject(INakedObject nakedObject);
-        object CreateObject(INakedObjectSpecification specification);
-        IEnumerable GetBoundedSet(INakedObjectSpecification spec);
+        object CreateObject(IObjectSpec spec);
+        IEnumerable GetBoundedSet(IObjectSpec spec);
         void LoadComplexTypes(INakedObject pocoAdapter, bool isGhost);
     }
 }

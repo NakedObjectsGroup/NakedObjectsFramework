@@ -53,8 +53,8 @@ namespace NakedObjects.Managers {
 
         #region IServicesManager Members
 
-        public virtual ServiceTypes GetServiceType(INakedObjectSpecification spec) {
-            return Services.Where(sw => manager.GetServiceAdapter(sw.Service).Specification == spec).Select(sw => sw.ServiceType).FirstOrDefault();
+        public virtual ServiceTypes GetServiceType(IObjectSpec spec) {
+            return Services.Where(sw => manager.GetServiceAdapter(sw.Service).Spec == spec).Select(sw => sw.ServiceType).FirstOrDefault();
         }
 
         public virtual INakedObject GetService(string id) {
@@ -71,7 +71,7 @@ namespace NakedObjects.Managers {
             Log.DebugFormat("GetServicesWithVisibleActions of: {0}", serviceType);
             return Services.Where(sw => (sw.ServiceType & serviceType) != 0).
                 Select(sw => manager.GetServiceAdapter(sw.Service)).
-                Where(no => no.Specification.GetAllActions().Any(a => a.IsVisible(no))).ToArray();
+                Where(no => no.Spec.GetAllActions().Any(a => a.IsVisible(no))).ToArray();
         }
 
         public virtual INakedObject[] GetServices(ServiceTypes serviceType) {

@@ -76,7 +76,7 @@ namespace NakedObjects.Security {
 
         private object GetTypeAuthorizerFor(INakedObject target, ILifecycleManager persistor) {
             Assert.AssertNotNull(target);
-            Type domainType = TypeUtils.GetType(target.Specification.FullName).GetProxiedType();
+            Type domainType = TypeUtils.GetType(target.Spec.FullName).GetProxiedType();
             object authorizer;
             typeAuthorizerMap.TryGetValue(domainType, out authorizer);
             return authorizer == null ? null : CreateAuthorizer(authorizer, persistor);
@@ -95,7 +95,7 @@ namespace NakedObjects.Security {
         //TODO:  Change return type to INamespaceAuthorizer when TypeAuthorization has been obsoleted.
         private object GetNamespaceAuthorizerFor(INakedObject target, ILifecycleManager persistor) {
             Assert.AssertNotNull(target);
-            string fullyQualifiedOfTarget = target.Specification.FullName;
+            string fullyQualifiedOfTarget = target.Spec.FullName;
             INamespaceAuthorizer authorizer = namespaceAuthorizers.
                 Where(x => fullyQualifiedOfTarget.StartsWith(x.NamespaceToAuthorize)).
                 OrderByDescending(x => x.NamespaceToAuthorize.Length).

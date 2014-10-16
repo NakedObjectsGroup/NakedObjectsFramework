@@ -74,7 +74,7 @@ namespace NakedObjects.Reflector.DotNet {
         }
 
         public IViewModel NewViewModel(Type type) {
-            INakedObjectSpecification spec = framework.Metamodel.GetSpecification(type);
+            IObjectSpec spec = framework.Metamodel.GetSpecification(type);
             if (spec.IsViewModel) {
                 return framework.LifecycleManager.CreateViewModel(spec).GetDomainObject<IViewModel>();
             }
@@ -82,7 +82,7 @@ namespace NakedObjects.Reflector.DotNet {
         }
 
         public object NewTransientInstance(Type type) {
-            INakedObjectSpecification spec = framework.Metamodel.GetSpecification(type);
+            IObjectSpec spec = framework.Metamodel.GetSpecification(type);
             return framework.LifecycleManager.CreateInstance(spec).Object;
         }
 
@@ -140,10 +140,10 @@ namespace NakedObjects.Reflector.DotNet {
         #endregion
 
         private void Validate(INakedObject adapter) {
-            if (adapter.Specification.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
+            if (adapter.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
                 string state = adapter.ValidToPersist();
                 if (state != null) {
-                    throw new PersistFailedException(string.Format(Resources.NakedObjects.PersistStateError, adapter.Specification.ShortName, adapter.TitleString(), state));
+                    throw new PersistFailedException(string.Format(Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state));
                 }
             }
         }

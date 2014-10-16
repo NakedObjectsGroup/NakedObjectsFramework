@@ -57,7 +57,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             if (controlData.SubAction == ObjectAndControlData.SubActionType.Cancel &&
                 nakedObject.ResolveState.IsTransient() &&
-                nakedObject.Specification.Persistable == PersistableType.UserPersistable) {
+                nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
                 // remove from cache and return to last object 
                 Session.RemoveFromCache(NakedObjectsContext, nakedObject, ObjectCache.ObjectFlag.BreadCrumb);
                 return AppropriateView(controlData, null);
@@ -170,7 +170,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         public virtual FileContentResult GetFile(string Id, string PropertyId) {
             INakedObject target = NakedObjectsContext.GetNakedObjectFromId(Id);
-            INakedObjectAssociation assoc = target.Specification.Properties.Single(a => a.Id == PropertyId);
+            INakedObjectAssociation assoc = target.Spec.Properties.Single(a => a.Id == PropertyId);
             var domainObject = assoc.GetNakedObject(target).GetDomainObject();
 
             return AsFile(domainObject);
@@ -188,7 +188,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             INakedObject filteredNakedObject = FilterCollection(targetNakedObject, controlData);
             INakedObjectAction targetAction = NakedObjectsContext.GetActions(filteredNakedObject).Single(a => a.Id == targetActionId);
 
-            if (filteredNakedObject.Specification.IsCollection) {
+            if (filteredNakedObject.Spec.IsCollection) {
                
                 if (!filteredNakedObject.GetAsEnumerable(NakedObjectsContext.Manager).Any()) {
                     NakedObjectsContext.MessageBroker.AddWarning("No objects selected");
@@ -401,7 +401,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 INakedObject result = targetAction.Execute(targetNakedObject, parms.ToArray());
 
                 if (result != null) {
-                    IEnumerable resultAsEnumerable = !result.Specification.IsCollection ? new List<object> {result.Object} : (IEnumerable) result.Object;
+                    IEnumerable resultAsEnumerable = !result.Spec.IsCollection ? new List<object> {result.Object} : (IEnumerable) result.Object;
 
                     if (resultAsEnumerable.Cast<object>().Count() == 1) {
                         var selectedItem = new Dictionary<string, string> {{propertyName, NakedObjectsContext.GetObjectId(resultAsEnumerable.Cast<object>().Single())}};
@@ -430,7 +430,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         private static bool ContextParameterIsCollection(INakedObjectAction contextAction, string propertyName) {
             if (contextAction != null) {
                 INakedObjectActionParameter parameter = contextAction.Parameters.Single(p => p.Id == propertyName);
-                return parameter.Specification.IsCollection;
+                return parameter.Spec.IsCollection;
             }
             return false; 
         }
@@ -480,7 +480,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private static IEnumerable GetResultAsEnumerable(INakedObject result, INakedObjectAction contextAction, string propertyName) {
             if (result != null) {
-                if (result.Specification.IsCollection && !ContextParameterIsCollection(contextAction, propertyName) ) {
+                if (result.Spec.IsCollection && !ContextParameterIsCollection(contextAction, propertyName) ) {
                     return (IEnumerable) result.Object;
                 }
                 return new List<object> {result.Object};

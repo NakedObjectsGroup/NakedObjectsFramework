@@ -132,7 +132,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         private Place AppendXml(INakedObject nakedObject) {
             Log.Debug("appendXml(" + DoLog("obj", nakedObject) + "')");
 
-            string fullyQualifiedClassName = nakedObject.Specification.FullName;
+            string fullyQualifiedClassName = nakedObject.Spec.FullName;
 
             Schema.SetUri(fullyQualifiedClassName); // derive URI from fully qualified name
 
@@ -270,7 +270,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             Log.Debug("includeField(Pl, Vec, Str):" + DoLog("processing field", fieldName) + AndLog("left", "" + fieldNames.Count()));
 
             // locate the field in the object's class
-            INakedObjectSpecification nos = nakedObject.Specification;
+            IObjectSpec nos = nakedObject.Spec;
             INakedObjectAssociation field = nos.Properties.SingleOrDefault(p => p.Id.ToLower() == fieldName);
 
             if (field == null) {
@@ -296,7 +296,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
             var fieldPlace = new Place(nakedObject, xmlFieldElement);
 
-            if (field.Specification.IsParseable) {
+            if (field.Spec.IsParseable) {
                 Log.Debug("includeField(Pl, Vec, Str): field is value; done");
                 return false;
             }
@@ -402,7 +402,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         public Place ObjectToElement(INakedObject nakedObject) {
             Log.Debug("objectToElement(" + DoLog("object", nakedObject) + ")");
 
-            INakedObjectSpecification nos = nakedObject.Specification;
+            IObjectSpec nos = nakedObject.Spec;
 
             Log.Debug("objectToElement(NO): create element and nof:title");
             XElement element = Schema.CreateElement(XmlDocument, nos.ShortName, nos.FullName, nos.SingularName, nos.PluralName);
@@ -450,10 +450,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
                 XElement xsdFieldElement;
 
-                if (field.Specification.IsParseable) {
+                if (field.Spec.IsParseable) {
                     Log.Debug("objectToElement(NO): " + DoLog("field", fieldName) + " is value");
 
-                    INakedObjectSpecification fieldNos = field.Specification;
+                    IObjectSpec fieldNos = field.Spec;
                     // skip fields of type XmlValue
                     if (fieldNos != null &&
                         fieldNos.FullName != null &&
@@ -473,7 +473,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                             continue;
                         }
 
-                        INakedObjectSpecification valueNos = value.Specification;
+                        IObjectSpec valueNos = value.Spec;
 
                         // XML
                         NofMetaModel.SetAttributesForValue(xmlValueElement, valueNos.ShortName);
@@ -503,7 +503,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
                     try {
                         INakedObject referencedNakedObject = oneToOneAssociation.GetNakedObject(nakedObject);
-                        string fullyQualifiedClassName = field.Specification.FullName;
+                        string fullyQualifiedClassName = field.Spec.FullName;
 
                         // XML
                         NofMetaModel.SetAttributesForReference(xmlReferenceElement, Schema.Prefix, fullyQualifiedClassName);
@@ -520,7 +520,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     }
 
                     // XSD
-                    xsdFieldElement = Schema.CreateXsElementForNofReference(xsElement, xmlReferenceElement, oneToOneAssociation.Specification.FullName);
+                    xsdFieldElement = Schema.CreateXsElementForNofReference(xsElement, xmlReferenceElement, oneToOneAssociation.Spec.FullName);
                 }
                 else if (field is IOneToManyAssociation) {
                     Log.Debug("objectToElement(NO): " + DoLog("field", fieldName) + " is IOneToManyAssociation");
@@ -543,7 +543,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     }
 
                     // XSD
-                    xsdFieldElement = Schema.CreateXsElementForNofCollection(xsElement, xmlCollectionElement, oneToManyAssociation.Specification.FullName);
+                    xsdFieldElement = Schema.CreateXsElementForNofCollection(xsElement, xmlCollectionElement, oneToManyAssociation.Spec.FullName);
                 }
                 else {
                     Log.Info("objectToElement(NO): " + DoLog("field", fieldName) + " is unknown type; ignored");

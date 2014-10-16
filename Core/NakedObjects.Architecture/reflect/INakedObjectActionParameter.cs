@@ -77,7 +77,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Get set of options for the parameter - either coded choices or bounded set
         /// </summary>
-        Tuple<string, INakedObjectSpecification>[] GetChoicesParameters();
+        Tuple<string, IObjectSpec>[] GetChoicesParameters();
 
         /// <summary>
         ///     Get set of autocompletions for the parameter

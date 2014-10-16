@@ -20,7 +20,7 @@ namespace NakedObjects.Architecture.Persist {
 
         INakedObject GetService(string id);
 
-        ServiceTypes GetServiceType(INakedObjectSpecification spec);
+        ServiceTypes GetServiceType(IObjectSpec spec);
 
         INakedObject[] GetServices();
 

@@ -35,8 +35,8 @@ using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.Spec {
-    public class NakedObjectSpecification : INakedObjectSpecification {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectSpecification));
+    public class ObjectSpec : IObjectSpec {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpec));
         private readonly IObjectSpecImmutable innerSpec;
         private readonly MemberFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;
@@ -46,7 +46,7 @@ namespace NakedObjects.Reflector.Spec {
         private INakedObjectAssociation[] objectFields;
         private INakedObjectAction[] relatedActions;
 
-        public NakedObjectSpecification(MemberFactory memberFactory, IMetamodelManager metamodelManager, IObjectSpecImmutable innerSpec) {
+        public ObjectSpec(MemberFactory memberFactory, IMetamodelManager metamodelManager, IObjectSpecImmutable innerSpec) {
             this.memberFactory = memberFactory;
             this.metamodelManager = metamodelManager;
             this.innerSpec = innerSpec;
@@ -166,7 +166,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return !IsCollection; }
         }
 
-        public virtual INakedObjectSpecification Superclass {
+        public virtual IObjectSpec Superclass {
             get { return innerSpec.Superclass == null ? null : metamodelManager.GetSpecification(innerSpec.Superclass); }
         }
 
@@ -212,11 +212,11 @@ namespace NakedObjects.Reflector.Spec {
             get { return innerSpec.Subclasses.Length > 0; }
         }
 
-        public INakedObjectSpecification[] Interfaces {
+        public IObjectSpec[] Interfaces {
             get { return innerSpec.Interfaces.Select(i => metamodelManager.GetSpecification(i)).ToArray(); }
         }
 
-        public INakedObjectSpecification[] Subclasses {
+        public IObjectSpec[] Subclasses {
             get { return innerSpec.Subclasses.Select(i => metamodelManager.GetSpecification(i)).ToArray(); }
         }
 
@@ -288,17 +288,17 @@ namespace NakedObjects.Reflector.Spec {
         /// <summary>
         ///     Determines if this class represents the same class, or a subclass, of the specified class.
         /// </summary>
-        public bool IsOfType(INakedObjectSpecification specification) {
-            if (specification.Equals(this)) {
+        public bool IsOfType(IObjectSpec spec) {
+            if (spec.Equals(this)) {
                 return true;
             }
-            if (Interfaces.Any(interfaceSpec => interfaceSpec.IsOfType(specification))) {
+            if (Interfaces.Any(interfaceSpec => interfaceSpec.IsOfType(spec))) {
                 return true;
             }
 
             // match covariant generic types 
             if (Type.IsGenericType && IsCollection) {
-                Type otherType = ((NakedObjectSpecification) specification).Type;
+                Type otherType = ((ObjectSpec) spec).Type;
                 if (otherType.IsGenericType && Type.GetGenericArguments().Count() == 1 && otherType.GetGenericArguments().Count() == 1) {
                     if (Type.GetGenericTypeDefinition() == (typeof (IQueryable<>)) && Type.GetGenericTypeDefinition() == otherType.GetGenericTypeDefinition()) {
                         Type genericArgument = Type.GetGenericArguments().Single();
@@ -313,7 +313,7 @@ namespace NakedObjects.Reflector.Spec {
                 }
             }
 
-            return Superclass != null && Superclass.IsOfType(specification);
+            return Superclass != null && Superclass.IsOfType(spec);
         }
 
 
@@ -341,7 +341,7 @@ namespace NakedObjects.Reflector.Spec {
 
         public IConsent ValidToPersist(INakedObject target, ISession session) {
             InteractionContext ic = InteractionContext.PersistingObject(session, false, target);
-            IConsent cons = InteractionUtils.IsValid(target.Specification, ic);
+            IConsent cons = InteractionUtils.IsValid(target.Spec, ic);
             return cons;
         }
 
@@ -389,7 +389,7 @@ namespace NakedObjects.Reflector.Spec {
             return orderedFields.ToArray();
         }
 
-        protected bool Equals(NakedObjectSpecification other) {
+        protected bool Equals(ObjectSpec other) {
             return Equals(innerSpec, other.innerSpec);
         }
 
@@ -397,7 +397,7 @@ namespace NakedObjects.Reflector.Spec {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((NakedObjectSpecification) obj);
+            return Equals((ObjectSpec) obj);
         }
 
         public override int GetHashCode() {

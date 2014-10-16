@@ -44,7 +44,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             INakedObjectAction[] overloadedActions = actions.Where(a => a.Id == action.Id && actions.Count(ac => ac.Id == a.Id) > 1).ToArray();
 
             if (overloadedActions.Any()) {
-                var actionAndParms = overloadedActions.Select(a => new Tuple<INakedObjectAction, string>(a, ((Func<INakedObjectAction, string>) (act => act.Parameters.Aggregate("", (acc, p) => a + p.Id + p.Specification.FullName)))(a)));
+                var actionAndParms = overloadedActions.Select(a => new Tuple<INakedObjectAction, string>(a, ((Func<INakedObjectAction, string>) (act => act.Parameters.Aggregate("", (acc, p) => a + p.Id + p.Spec.FullName)))(a)));
 
                 int index = 0;
                 var orderedActions = actionAndParms.OrderBy(ap => ap.Item2).Select(ap => ap.Item1).ToDictionary(a => a, a => index++);
@@ -70,7 +70,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return new Tuple<INakedObjectAction, string>[] {};
         }
 
-        public static INakedObjectAction GetOverloadedAction(string actionName, INakedObjectSpecification spec) {
+        public static INakedObjectAction GetOverloadedAction(string actionName, IObjectSpec spec) {
             INakedObjectAction action = null;
             INakedObjectAction[] actions = spec.GetActionLeafNodes();
             Tuple<INakedObjectAction, string>[] overloadedActions = GetOverloadedActionsAndUIds(actions);
@@ -84,13 +84,13 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return action;
         }
 
-        public static string GetOverloadedUId(INakedObjectAction action, INakedObjectSpecification spec) {
+        public static string GetOverloadedUId(INakedObjectAction action, IObjectSpec spec) {
             INakedObjectAction[] actions = spec.GetActionLeafNodes();
             Tuple<INakedObjectAction, string>[] overloadedActions = GetOverloadedActionsAndUIds(actions);
             return overloadedActions.Where(oa => oa.Item1 == action).Select(oa => oa.Item2).SingleOrDefault();
         }
 
-        public static Tuple<INakedObjectAction, string> GetActionandUidFromSpec(INakedObjectSpecification spec, string actionName, string typeName) {
+        public static Tuple<INakedObjectAction, string> GetActionandUidFromSpec(IObjectSpec spec, string actionName, string typeName) {
             INakedObjectAction[] actions = spec.GetActionLeafNodes();
             INakedObjectAction action = actions.SingleOrDefault(p => p.Id == actionName) ?? GetOverloadedAction(actionName, spec);
 
@@ -102,7 +102,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             return new Tuple<INakedObjectAction, string>(action, uid);
         }
 
-        public static Tuple<INakedObjectAction, string>[] GetActionsandUidFromSpec(INakedObjectSpecification spec) {
+        public static Tuple<INakedObjectAction, string>[] GetActionsandUidFromSpec(IObjectSpec spec) {
             INakedObjectAction[] actions = spec.GetActionLeafNodes();
             return actions.Select(action => new Tuple<INakedObjectAction, string>(action, GetOverloadedUId(action, spec))).ToArray();
         }

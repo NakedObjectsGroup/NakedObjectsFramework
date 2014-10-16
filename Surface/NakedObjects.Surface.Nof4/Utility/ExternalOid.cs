@@ -48,7 +48,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         public object GetServiceByServiceName(LinkObjectId oid) {
             Type type = ValidateServiceId(oid);
-            INakedObjectSpecification spec;
+            IObjectSpec spec;
             try {
                 spec = framework.Metamodel.GetSpecification(type);
             }
@@ -58,7 +58,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             if (spec == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
-            INakedObject service = framework.Services.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager).SingleOrDefault(no => no.Specification.IsOfType(spec));
+            INakedObject service = framework.Services.GetServicesWithVisibleActions(ServiceTypes.Menu | ServiceTypes.Contributor, framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
             if (service == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
@@ -73,7 +73,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
 
         public INakedObjectSpecificationSurface GetSpecificationByLinkDomainType(string linkDomainType) {
             Type type = GetType(linkDomainType);
-            INakedObjectSpecification spec = framework.Metamodel.GetSpecification(type);
+            IObjectSpec spec = framework.Metamodel.GetSpecification(type);
             return new NakedObjectSpecificationWrapper(spec, Surface, framework);
         }
 
@@ -103,8 +103,8 @@ namespace NakedObjects.Surface.Nof4.Utility {
             string[] keys;
             INakedObject wrappedNakedObject = ((NakedObjectWrapper) nakedObjectForKey).WrappedNakedObject;
 
-            if (wrappedNakedObject.Specification.IsViewModel) {
-                keys = wrappedNakedObject.Specification.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject);
+            if (wrappedNakedObject.Spec.IsViewModel) {
+                keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject);
             }
             else {
                 PropertyInfo[] keyPropertyInfo = nakedObjectForKey.GetKeys();
@@ -130,7 +130,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
         }
 
         protected object GetObject(string[] keys, Type type) {
-            INakedObjectSpecification spec = framework.Metamodel.GetSpecification(type);
+            IObjectSpec spec = framework.Metamodel.GetSpecification(type);
             return spec.IsViewModel ? GetViewModel(keys, spec) : GetDomainObject(keys, type);
         }
 
@@ -147,7 +147,7 @@ namespace NakedObjects.Surface.Nof4.Utility {
             }
         }
 
-        protected object GetViewModel(string[] keys, INakedObjectSpecification spec) {
+        protected object GetViewModel(string[] keys, IObjectSpec spec) {
             try {
                 INakedObject viewModel = framework.LifecycleManager.CreateViewModel(spec);
                 spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel);

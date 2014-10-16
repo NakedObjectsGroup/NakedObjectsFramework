@@ -66,11 +66,11 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public bool IsChoicesEnabled {
-            get { return !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>()); }
+            get { return !IsMultipleChoicesEnabled && (Spec.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>()); }
         }
 
         public bool IsMultipleChoicesEnabled {
-            get { return Specification.IsCollectionOfBoundedSet() || Specification.IsCollectionOfEnum() || (ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple); }
+            get { return Spec.IsCollectionOfBoundedSet() || Spec.IsCollectionOfEnum() || (ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple); }
         }
 
         /// <summary>
@@ -95,14 +95,14 @@ namespace NakedObjects.Reflector.Spec {
             get { return parentAction; }
         }
 
-        public virtual INakedObjectSpecification Specification {
+        public virtual IObjectSpec Spec {
             get { return metamodel.GetSpecification(peer.Specification); }
         }
 
         public string GetName() {
             var facet = GetFacet<INamedFacet>();
             string name = facet == null ? null : facet.Value;
-            return name ?? Specification.SingularName;
+            return name ?? Spec.SingularName;
         }
 
         public virtual string Description {
@@ -169,8 +169,8 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue) {
-            if (proposedValue != null && !proposedValue.Specification.IsOfType(Specification)) {
-                return GetConsent("Not a suitable type; must be a " + Specification.SingularName);
+            if (proposedValue != null && !proposedValue.Spec.IsOfType(Spec)) {
+                return GetConsent("Not a suitable type; must be a " + Spec.SingularName);
             }
 
             var buf = new InteractionBuffer();
@@ -187,10 +187,10 @@ namespace NakedObjects.Reflector.Spec {
             get { return ContainsFacet(typeof (INullableFacet)); }
         }
 
-        public Tuple<string, INakedObjectSpecification>[] GetChoicesParameters() {
+        public Tuple<string, IObjectSpec>[] GetChoicesParameters() {
             var choicesFacet = GetFacet<IActionChoicesFacet>();
-            return choicesFacet == null ? new Tuple<string, INakedObjectSpecification>[] {} :
-                choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, INakedObjectSpecification>(t.Item1, metamodel.GetSpecification(t.Item2))).ToArray();
+            return choicesFacet == null ? new Tuple<string, IObjectSpec>[] {} :
+                choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, metamodel.GetSpecification(t.Item2))).ToArray();
         }
 
         public INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues) {
@@ -211,12 +211,12 @@ namespace NakedObjects.Reflector.Spec {
                 return Manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(parentAction.RealTarget(nakedObject))).ToArray();
             }
 
-            if (Specification.IsBoundedSet()) {
-                return Manager.GetCollectionOfAdaptedObjects(persistor.Instances(Specification)).ToArray();
+            if (Spec.IsBoundedSet()) {
+                return Manager.GetCollectionOfAdaptedObjects(persistor.Instances(Spec)).ToArray();
             }
 
-            if (Specification.IsCollectionOfBoundedSet() || Specification.IsCollectionOfEnum()) {
-                var instanceSpec = metamodel.GetSpecification(Specification.GetFacet<ITypeOfFacet>().ValueSpec);
+            if (Spec.IsCollectionOfBoundedSet() || Spec.IsCollectionOfEnum()) {
+                var instanceSpec = metamodel.GetSpecification(Spec.GetFacet<ITypeOfFacet>().ValueSpec);
 
                 var instanceEnumFacet = instanceSpec.GetFacet<IEnumFacet>();
 
@@ -253,7 +253,7 @@ namespace NakedObjects.Reflector.Spec {
 
         private Tuple<INakedObject, TypeOfDefaultValue> GetDefaultValueAndType(INakedObject nakedObject) {
             if (parentAction.IsContributedMethod && nakedObject != null) {
-                IEnumerable<INakedObjectActionParameter> matchingParms = parentAction.Parameters.Where(p => nakedObject.Specification.IsOfType(p.Specification));
+                IEnumerable<INakedObjectActionParameter> matchingParms = parentAction.Parameters.Where(p => nakedObject.Spec.IsOfType(p.Spec));
 
                 if (matchingParms.Any() && matchingParms.First() == this) {
                     return new Tuple<INakedObject, TypeOfDefaultValue>(nakedObject, TypeOfDefaultValue.Explicit);

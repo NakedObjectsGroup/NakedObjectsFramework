@@ -30,11 +30,11 @@ namespace NakedObjects.Xat {
 
         public ITestAction[] Actions {
             get {
-                List<ITestAction> actions = NakedObject.Specification.GetAllActions().
+                List<ITestAction> actions = NakedObject.Spec.GetAllActions().
                     OfType<NakedObjectActionImpl>().
                     Select(x => factory.CreateTestAction(x, this)).ToList();
 
-                foreach (NakedObjectActionSet set in NakedObject.Specification.GetAllActions().OfType<NakedObjectActionSet>()) {
+                foreach (NakedObjectActionSet set in NakedObject.Spec.GetAllActions().OfType<NakedObjectActionSet>()) {
                     actions.AddRange(set.Actions.Select(x => factory.CreateTestAction(set.GetName(), x, this)));
                 }
 
@@ -68,8 +68,8 @@ namespace NakedObjects.Xat {
         }
 
         public virtual string GetObjectActionOrder() {
-            INakedObjectSpecification specification = NakedObject.Specification;
-            INakedObjectAction[] actions = specification.GetAllActions();
+            IObjectSpec spec = NakedObject.Spec;
+            INakedObjectAction[] actions = spec.GetAllActions();
             var order = new StringBuilder();
             order.Append(AppendActions(actions));
             return order.ToString();
@@ -94,14 +94,14 @@ namespace NakedObjects.Xat {
         }
 
         public ITestObject AssertIsDescribedAs(string expected) {
-            string description = NakedObject.Specification.Description;
+            string description = NakedObject.Spec.Description;
             Assert.IsTrue(expected.Equals(description), "Description expected: '" + expected + "' actual: '" + description + "'");
             return (ITestObject) this;
         }
 
         public ITestObject AssertIsImmutable() {
-            INakedObjectSpecification specification = NakedObject.Specification;
-            var facet = specification.GetFacet<IImmutableFacet>();
+            IObjectSpec spec = NakedObject.Spec;
+            var facet = spec.GetFacet<IImmutableFacet>();
 
             bool immutable = facet.Value == WhenTo.Always || facet.Value == WhenTo.OncePersisted && NakedObject.ResolveState.IsPersistent();
 
@@ -113,7 +113,7 @@ namespace NakedObjects.Xat {
             if (NakedObject == null) {
                 return base.ToString() + " " + "null";
             }
-            return base.ToString() + " " + NakedObject.Specification.ShortName + "/" + NakedObject;
+            return base.ToString() + " " + NakedObject.Spec.ShortName + "/" + NakedObject;
         }
 
         private  string AppendActions(INakedObjectAction[] actions) {

@@ -11,12 +11,12 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Component {
     public interface IMetamodelManager {
-        INakedObjectSpecification[] AllSpecifications { get; }
+        IObjectSpec[] AllSpecs { get; }
 
-        INakedObjectSpecification GetSpecification(Type type);
+        IObjectSpec GetSpecification(Type type);
 
-        INakedObjectSpecification GetSpecification(string name);
+        IObjectSpec GetSpecification(string name);
 
-        INakedObjectSpecification GetSpecification(IObjectSpecImmutable spec);
+        IObjectSpec GetSpecification(IObjectSpecImmutable spec);
     }
 }

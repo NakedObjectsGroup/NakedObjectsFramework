@@ -51,7 +51,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string GetPresentationHint(this HtmlHelper html, object model) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            var facet = nakedObject.Specification.GetFacet<IPresentationHintFacet>();
+            var facet = nakedObject.Spec.GetFacet<IPresentationHintFacet>();
             return facet == null ? "" : " " + facet.Value;
         }
 
@@ -81,7 +81,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static bool ObjectHasVisibleFields(this HtmlHelper html, object domainObject) {
             INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
-            return nakedObject.Specification.Properties.Any(p => p.IsVisible( nakedObject));
+            return nakedObject.Spec.Properties.Any(p => p.IsVisible( nakedObject));
         }
 
 
@@ -119,7 +119,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static MvcHtmlString ObjectTitle(this HtmlHelper html, INakedObject nakedObject) {
             string title = nakedObject.TitleString();
-            return MvcHtmlString.Create(string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title);
+            return MvcHtmlString.Create(string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title);
         }
 
 
@@ -128,15 +128,15 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString Object(this HtmlHelper html, object model) {
             INakedObject nakedObject = html.Framework().Manager.CreateAdapter(model, null, null);
-            string title = nakedObject.Specification.IsCollection ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString();
-            title = string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title;
+            string title = nakedObject.Spec.IsCollection ? GetCollectionTitle(nakedObject, html) : nakedObject.TitleString();
+            title = string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title;
             return CommonHtmlHelper.WrapInDiv(html.ObjectIcon(nakedObject) + title, IdHelper.ObjectName);
         }
 
         public static MvcHtmlString ActionResult(this HtmlHelper html, ActionResultModel model) {
             INakedObject nakedObject = html.Framework().Manager.CreateAdapter(model.Result, null, null);
             string title = GetCollectionTitle(nakedObject, html);
-            title = model.Action.GetName() + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Specification.UntitledName : title);
+            title = model.Action.GetName() + ": " + (string.IsNullOrWhiteSpace(title) ? nakedObject.Spec.UntitledName : title);
             return CommonHtmlHelper.WrapInDiv(title, IdHelper.ObjectName);
         }
 
@@ -147,10 +147,10 @@ namespace NakedObjects.Web.Mvc.Html {
                 total = count;
             }
 
-            string queryInd = nakedObject.Specification.IsQueryable ? MvcUi.QueryResult + ": " : "";
+            string queryInd = nakedObject.Spec.IsQueryable ? MvcUi.QueryResult + ": " : "";
             int viewSize = count;
 
-            INakedObjectSpecification typeSpec =  html.Framework().Metamodel.GetSpecification(nakedObject.GetTypeOfFacetFromSpec().ValueSpec);
+            IObjectSpec typeSpec =  html.Framework().Metamodel.GetSpecification(nakedObject.GetTypeOfFacetFromSpec().ValueSpec);
             string type = total == 1 ? typeSpec.SingularName : typeSpec.PluralName;
 
             return queryInd + string.Format(MvcUi.ViewingNofXType, viewSize, total, type);
@@ -206,7 +206,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString Description<TModel>(this HtmlHelper html, TModel model) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            return MvcHtmlString.Create(nakedObject.Specification.Description);
+            return MvcHtmlString.Create(nakedObject.Spec.Description);
         }
 
         #endregion
@@ -228,7 +228,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString IconName<TModel>(this HtmlHelper html, TModel model) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            return MvcHtmlString.Create(nakedObject.Specification.GetIconName(nakedObject));
+            return MvcHtmlString.Create(nakedObject.Spec.GetIconName(nakedObject));
         }
 
         #endregion
@@ -250,7 +250,7 @@ namespace NakedObjects.Web.Mvc.Html {
         /// </summary>
         public static MvcHtmlString TypeName<TModel>(this HtmlHelper html, TModel model) {
             INakedObject nakedObject = html.Framework().GetNakedObject(model);
-            return MvcHtmlString.Create(nakedObject.Specification.ShortName);
+            return MvcHtmlString.Create(nakedObject.Spec.ShortName);
         }
 
         #endregion

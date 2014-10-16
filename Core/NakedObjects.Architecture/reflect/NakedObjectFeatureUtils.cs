@@ -24,7 +24,7 @@ namespace NakedObjects.Architecture.Reflect {
             }
             var mask = feature.GetFacet<IMaskFacet>();
             if (mask != null) {
-                var title = feature.Specification.GetFacet<ITitleFacet>();
+                var title = feature.Spec.GetFacet<ITitleFacet>();
                 text = title.GetTitleWithMask(mask.Value, nakedObject, manager);
             }
             if (text == null) {

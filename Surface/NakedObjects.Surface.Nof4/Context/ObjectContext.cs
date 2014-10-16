@@ -34,8 +34,8 @@ namespace NakedObjects.Surface.Nof4.Context {
             get { throw new NotImplementedException(); }
         }
 
-        public override INakedObjectSpecification Specification {
-            get { return Target.Specification; }
+        public override IObjectSpec Specification {
+            get { return Target.Spec; }
         }
 
         public PropertyContext[] VisibleProperties { get; set; }

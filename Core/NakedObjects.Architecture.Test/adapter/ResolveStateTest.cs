@@ -41,7 +41,7 @@ namespace NakedObjects.Architecture.Adapter {
             var mockAdapter = new Mock<INakedObject>();
             var testAdapter = mockAdapter.Object;
 
-            var mockSpecification = new Mock<INakedObjectSpecification>();
+            var mockSpecification = new Mock<IObjectSpec>();
             var testSpecification = mockSpecification.Object;
 
             var mockFacet = new Mock<ITestCallbackFacet>();
@@ -49,7 +49,7 @@ namespace NakedObjects.Architecture.Adapter {
 
             mockFacet.Setup(f => f.Invoke(null, null));
 
-            mockAdapter.Setup(a => a.Specification).Returns(testSpecification);
+            mockAdapter.Setup(a => a.Spec).Returns(testSpecification);
 
             mockSpecification.Setup(s => s.GetFacet(null)).Returns(testFacet);
             mockSpecification.Setup(s => s.GetFacet<ILoadingCallbackFacet>()).Returns(testFacet);

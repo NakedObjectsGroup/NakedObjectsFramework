@@ -12,7 +12,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
     ///     that influence what is built
     /// </summary>
     /// <para>
-    ///     Assembled by <see cref="DotNetReflector" />, passed onto <see cref="NakedObjectSpecification" /> and
+    ///     Assembled by <see cref="DotNetReflector" />, passed onto <see cref="ObjectSpec" /> and
     ///     (in turn) <see cref="DotNetIntrospector" />.
     /// </para>
     public class IntrospectionControlParameters {

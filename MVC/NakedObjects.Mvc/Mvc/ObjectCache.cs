@@ -67,7 +67,7 @@ namespace NakedObjects.Web.Mvc {
         public static void AddToCache(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObject nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
             // only add transients if we are storing transients in the session 
 
-            if ((!nakedObject.ResolveState.IsTransient() || MvcIdentityAdapterHashMap.StoringTransientsInSession) || nakedObject.Specification.IsCollection) {
+            if ((!nakedObject.ResolveState.IsTransient() || MvcIdentityAdapterHashMap.StoringTransientsInSession) || nakedObject.Spec.IsCollection) {
                 session.ClearPreviousTransients(nakedObject, flag);
                 session.GetCache(flag).AddToCache(framework, nakedObject, url, flag);
             }
@@ -76,7 +76,7 @@ namespace NakedObjects.Web.Mvc {
         public static void AddOrUpdateInCache(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObject nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
             // only add transients if we are storing transients in the session 
 
-            if ((!nakedObject.ResolveState.IsTransient() || MvcIdentityAdapterHashMap.StoringTransientsInSession) || nakedObject.Specification.IsCollection) {
+            if ((!nakedObject.ResolveState.IsTransient() || MvcIdentityAdapterHashMap.StoringTransientsInSession) || nakedObject.Spec.IsCollection) {
                 session.ClearPreviousTransients(nakedObject, flag);
                 session.GetCache(flag).AddOrUpdateInCache(framework, nakedObject, url, flag);
             }
@@ -144,17 +144,17 @@ namespace NakedObjects.Web.Mvc {
             return session.GetCache(flag).OrderBy(kvp => kvp.Value.Added).Select(kvp => framework.GetNakedObjectFromId(kvp.Key));
         }
 
-        private static bool SameSpec(string name, INakedObjectSpecification otherSpec, INakedObjectsFramework framework) {
+        private static bool SameSpec(string name, IObjectSpec otherSpec, INakedObjectsFramework framework) {
             var thisSpec = framework.Metamodel.GetSpecification(name);
             return thisSpec.IsOfType(otherSpec);
         }
 
-        private static IEnumerable<INakedObject> GetAndTidyCachedNakedObjectsOfType(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObjectSpecification spec, ObjectFlag flag) {
+        private static IEnumerable<INakedObject> GetAndTidyCachedNakedObjectsOfType(this HttpSessionStateBase session, INakedObjectsFramework framework, IObjectSpec spec, ObjectFlag flag) {
             session.ClearDestroyedObjectsOfType(framework, spec, flag);
             return session.GetCache(flag).Where(cm => SameSpec(cm.Value.Spec, spec, framework)).OrderBy(kvp => kvp.Value.Added).Select(kvp => framework.GetNakedObjectFromId(kvp.Key));
         }
 
-        public static IEnumerable<object> CachedObjectsOfType(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObjectSpecification spec, ObjectFlag flag = ObjectFlag.None) {
+        public static IEnumerable<object> CachedObjectsOfType(this HttpSessionStateBase session, INakedObjectsFramework framework, IObjectSpec spec, ObjectFlag flag = ObjectFlag.None) {
             return session.GetAndTidyCachedNakedObjectsOfType(framework, spec, flag).Select(no => no.Object);
         }
 
@@ -165,7 +165,7 @@ namespace NakedObjects.Web.Mvc {
             toRemove.ForEach(k => cache.Remove(k));
         }
 
-        public static void ClearDestroyedObjectsOfType(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObjectSpecification spec, ObjectFlag flag = ObjectFlag.None) {
+        public static void ClearDestroyedObjectsOfType(this HttpSessionStateBase session, INakedObjectsFramework framework, IObjectSpec spec, ObjectFlag flag = ObjectFlag.None) {
             Dictionary<string, CacheMemento> cache = session.GetCache(flag);
             List<string> toRemove = cache.Where(cm => SameSpec(cm.Value.Spec, spec, framework)).Select(kvp => new { kvp.Key, no = SafeGetNakedObjectFromId(kvp.Key, framework) }).Where(ao => ao.no.ResolveState.IsDestroyed()).Select(ao => ao.Key).ToList();
             toRemove.ForEach(k => cache.Remove(k));
@@ -203,11 +203,11 @@ namespace NakedObjects.Web.Mvc {
             string objectId = framework.GetObjectId(nakedObject);
 
             if (cache.ContainsKey(objectId)) {
-                cache[objectId].Spec = nakedObject.Specification.FullName;
+                cache[objectId].Spec = nakedObject.Spec.FullName;
                 cache[objectId].Url = url;
             }
             else {
-                cache[objectId] = new CacheMemento { Added = DateTime.Now, Spec = nakedObject.Specification.FullName, Url = url };
+                cache[objectId] = new CacheMemento { Added = DateTime.Now, Spec = nakedObject.Spec.FullName, Url = url };
                 while (cache.Count > CacheSize) {
                     RemoveOldest(cache, flag);
                 }
@@ -216,7 +216,7 @@ namespace NakedObjects.Web.Mvc {
 
         private static void AddToCache(this Dictionary<string, CacheMemento> cache, INakedObjectsFramework framework, INakedObject nakedObject, string url, ObjectFlag flag) {
             string objectId = framework.GetObjectId(nakedObject);
-            cache[objectId] = new CacheMemento { Added = DateTime.Now, Spec = nakedObject.Specification.FullName, Url = url };
+            cache[objectId] = new CacheMemento { Added = DateTime.Now, Spec = nakedObject.Spec.FullName, Url = url };
             while (cache.Count > CacheSize) {
                 RemoveOldest(cache, flag);
             }

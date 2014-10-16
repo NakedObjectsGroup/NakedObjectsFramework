@@ -71,7 +71,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
         IQueryable GetInstances(Type type);
 
-        IQueryable GetInstances(INakedObjectSpecification specification);
+        IQueryable GetInstances(IObjectSpec spec);
 
         T CreateInstance<T>(ILifecycleManager persistor) where T : class;
 
@@ -103,7 +103,7 @@ namespace NakedObjects.Persistor.Objectstore {
         /// <param name="hint"></param>
         /// <returns> the requested naked object</returns>
         /// <exception cref="FindObjectException">when no object corresponding to the oid can be found</exception>
-        INakedObject GetObject(IOid oid, INakedObjectSpecification hint);
+        INakedObject GetObject(IOid oid, IObjectSpec hint);
 
         void Reload(INakedObject nakedObject);
 

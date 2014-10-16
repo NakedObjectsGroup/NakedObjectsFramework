@@ -36,7 +36,7 @@ namespace NakedObjects.Surface.Nof4.Context {
             get { return ActionContext.Action.Id; }
         }
 
-        public override INakedObjectSpecification Specification {
+        public override IObjectSpec Specification {
             get { return ActionContext.Action.ReturnType; }
         }
 

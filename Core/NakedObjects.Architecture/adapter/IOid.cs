@@ -26,7 +26,7 @@ namespace NakedObjects.Architecture.Adapter {
         /// </summary>
         bool HasPrevious { get; }
 
-        INakedObjectSpecification Specification { get; }
+        IObjectSpec Spec { get; }
 
         /// <summary>
         ///     Copies the content of the specified oid into this oid. After this call the hash code return by

@@ -118,11 +118,11 @@ namespace NakedObjects.Architecture.Util {
             return typedList;
         }
 
-        public static string CollectionTitleString(INakedObjectSpecification elementSpecification, int size) {
-            if (elementSpecification == null || elementSpecification.FullName.Equals(typeof (object).FullName)) {
+        public static string CollectionTitleString(IObjectSpec elementSpec, int size) {
+            if (elementSpec == null || elementSpec.FullName.Equals(typeof (object).FullName)) {
                 return CollectionTitleStringUnknownType(size);
             }
-            return CollectionTitleStringKnownType(elementSpecification, size);
+            return CollectionTitleStringKnownType(elementSpec, size);
         }
 
         #endregion
@@ -167,19 +167,19 @@ namespace NakedObjects.Architecture.Util {
             return type.IsGenericType ? (type.GetGenericTypeDefinition() == typeof (IEnumerable<>) ? type : type.GetInterfaces().FirstOrDefault(IsGenericEnumerable)) : null;
         }
 
-        private static string CollectionTitleStringKnownType(INakedObjectSpecification elementSpecification, int size) {
+        private static string CollectionTitleStringKnownType(IObjectSpec elementSpec, int size) {
             switch (size) {
                 case IncompleteCollection:
-                    return string.Format(Resources.NakedObjects.CollectionTitleUnloaded, elementSpecification.PluralName);
+                    return string.Format(Resources.NakedObjects.CollectionTitleUnloaded, elementSpec.PluralName);
 
                 case 0:
-                    return string.Format(Resources.NakedObjects.CollectionTitleEmpty, elementSpecification.PluralName);
+                    return string.Format(Resources.NakedObjects.CollectionTitleEmpty, elementSpec.PluralName);
 
                 case 1:
-                    return string.Format(Resources.NakedObjects.CollectionTitleOne, elementSpecification.SingularName);
+                    return string.Format(Resources.NakedObjects.CollectionTitleOne, elementSpec.SingularName);
 
                 default:
-                    return string.Format(Resources.NakedObjects.CollectionTitleMany, size, elementSpecification.PluralName);
+                    return string.Format(Resources.NakedObjects.CollectionTitleMany, size, elementSpec.PluralName);
             }
         }
 

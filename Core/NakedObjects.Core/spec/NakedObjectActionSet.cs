@@ -78,7 +78,7 @@ namespace NakedObjects.Reflector.Spec {
             return name;
         }
 
-        public virtual INakedObjectSpecification OnType {
+        public virtual IObjectSpec OnType {
             get { return null; }
         }
 
@@ -86,7 +86,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return 0; }
         }
 
-        public virtual INakedObjectSpecification ReturnType {
+        public virtual IObjectSpec ReturnType {
             get { return null; }
         }
 
@@ -94,7 +94,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return Where.Default; }
         }
 
-        public bool IsContributedTo(INakedObjectSpecification spec) {
+        public bool IsContributedTo(IObjectSpec spec) {
             return false;
         }
 
@@ -117,7 +117,7 @@ namespace NakedObjects.Reflector.Spec {
         /// <summary>
         ///     Always returns <c>null</c>
         /// </summary>
-        public virtual INakedObjectSpecification Specification {
+        public virtual IObjectSpec Spec {
             get { return null; }
         }
 

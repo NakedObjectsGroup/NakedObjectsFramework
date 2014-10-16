@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Collections {
         }
 
         /// <summary>
-        ///     Return the <see cref="INakedObjectSpecification" /> for the  Type that the collection holds.
+        ///     Return the <see cref="IObjectSpec" /> for the  Type that the collection holds.
         /// </summary>
         public override IObjectSpecImmutable Specification {
             get { return specification; }

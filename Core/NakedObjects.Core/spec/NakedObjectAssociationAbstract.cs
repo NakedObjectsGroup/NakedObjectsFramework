@@ -27,7 +27,7 @@ namespace NakedObjects.Architecture.Reflect {
     public abstract class NakedObjectAssociationAbstract : NakedObjectMemberAbstract, INakedObjectAssociation {
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodel;
-        private readonly INakedObjectSpecification specification;
+        private readonly IObjectSpec spec;
 
         protected NakedObjectAssociationAbstract(IMetamodelManager metamodel, INakedObjectAssociationPeer association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager)
             : base(association.Identifier.MemberName, association, session, lifecycleManager) {
@@ -36,7 +36,7 @@ namespace NakedObjects.Architecture.Reflect {
 
             this.metamodel = metamodel;
             this.manager = manager;
-            specification = Metamodel.GetSpecification(association.Specification);
+            spec = Metamodel.GetSpecification(association.Specification);
         }
 
         public virtual bool IsChoicesEnabled {
@@ -62,8 +62,8 @@ namespace NakedObjects.Architecture.Reflect {
         ///     reference this will be type that the accessor returns. For a collection it will be the type of element,
         ///     not the type of collection.
         /// </summary>
-        public override INakedObjectSpecification Specification {
-            get { return specification; }
+        public override IObjectSpec Spec {
+            get { return spec; }
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace NakedObjects.Architecture.Reflect {
                 if (when == WhenTo.OncePersisted && isPersistent) {
                     return new Veto(Resources.NakedObjects.FieldDisabledOnce);
                 }
-                INakedObjectSpecification tgtSpec = target.Specification;
+                IObjectSpec tgtSpec = target.Spec;
                 if (tgtSpec.IsAlwaysImmutable() || (tgtSpec.IsImmutableOncePersisted() && isPersistent)) {
                     return new Veto(Resources.NakedObjects.FieldDisabled);
                 }
@@ -141,7 +141,7 @@ namespace NakedObjects.Architecture.Reflect {
 
         public abstract INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
 
-        public abstract Tuple<string, INakedObjectSpecification>[] GetChoicesParameters();
+        public abstract Tuple<string, IObjectSpec>[] GetChoicesParameters();
 
         public abstract INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm);
 

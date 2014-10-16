@@ -17,17 +17,17 @@ namespace NakedObjects.Architecture.Spec {
         ///     Get the list of specifications for all the interfaces that the class represented by this specification
         ///     implements.
         /// </summary>
-        INakedObjectSpecification[] Interfaces { get; }
+        IObjectSpec[] Interfaces { get; }
 
         /// <summary>
         ///     Get the list of specifications for the subclasses of the class represented by this specification
         /// </summary>
-        INakedObjectSpecification[] Subclasses { get; }
+        IObjectSpec[] Subclasses { get; }
 
         /// <summary>
         ///     Get the specification for this specification's class's superclass
         /// </summary>
-        INakedObjectSpecification Superclass { get; }
+        IObjectSpec Superclass { get; }
 
         /// <summary>
         ///     Add the class for the specified specification as a subclass of this specification's class
@@ -37,6 +37,6 @@ namespace NakedObjects.Architecture.Spec {
         ///     Determines if this specification represents the same specification, or a subclass, of the specified
         ///     specification.
         /// </summary>
-        bool IsOfType(INakedObjectSpecification specification);
+        bool IsOfType(IObjectSpec spec);
     }
 }

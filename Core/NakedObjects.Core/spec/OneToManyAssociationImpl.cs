@@ -87,8 +87,8 @@ namespace NakedObjects.Reflector.Spec {
             return new INakedObject[0];
         }
 
-        public override Tuple<string, INakedObjectSpecification>[] GetChoicesParameters() {
-            return new Tuple<string, INakedObjectSpecification>[0];
+        public override Tuple<string, IObjectSpec>[] GetChoicesParameters() {
+            return new Tuple<string, IObjectSpec>[0];
         }
 
         public override INakedObject[] GetCompletions(INakedObject nakedObject, string autoCompleteParm) {
@@ -121,7 +121,7 @@ namespace NakedObjects.Reflector.Spec {
             str.Append(base.ToString());
             str.Append(",");
             str.Append("persisted", IsPersisted);
-            str.Append("type", Specification == null ? "unknown" : Specification.ShortName);
+            str.Append("type", Spec == null ? "unknown" : Spec.ShortName);
             return str.ToString();
         }
     }

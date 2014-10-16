@@ -36,7 +36,7 @@ namespace NakedObjects.Architecture.Persist {
 
         INakedObject GetServiceAdapter(object service);
         INakedObject GetKnownAdapter(IOid oid);
-        INakedObject CreateViewModelAdapter(INakedObjectSpecification specification, object viewModel);
+        INakedObject CreateViewModelAdapter(IObjectSpec spec, object viewModel);
         INakedObject CreateInstanceAdapter(object obj);
         INakedObject AdapterForExistingObject(object domainObject, IOid oid);
     }

@@ -74,7 +74,7 @@ namespace NakedObjects.Core.Persist {
             Action = action;
             Parameters = parameters;
 
-            if (Target.Specification.IsViewModel) {
+            if (Target.Spec.IsViewModel) {
                 lifecycleManager.PopulateViewModelKeys(Target);
             }
         }
@@ -152,12 +152,12 @@ namespace NakedObjects.Core.Persist {
                     helper.Add(ParameterType.Value);
                     helper.Add((object) null);
                 }
-                else if (parameter.Specification.IsParseable) {
+                else if (parameter.Spec.IsParseable) {
                     helper.Add(ParameterType.Value);
                     helper.Add(parameter.Object);
                 }
-                else if (parameter.Specification.IsCollection) {
-                    var instanceSpec = parameter.Specification.GetFacet<ITypeOfFacet>().ValueSpec;
+                else if (parameter.Spec.IsCollection) {
+                    var instanceSpec = parameter.Spec.GetFacet<ITypeOfFacet>().ValueSpec;
                     Type instanceType = TypeUtils.GetType(instanceSpec.FullName);
 
                     if (instanceSpec.IsParseable) {
@@ -202,22 +202,22 @@ namespace NakedObjects.Core.Persist {
             // do nothing
         }
 
-        public INakedObjectSpecification Specification {
-            get { return Target.Specification; }
+        public IObjectSpec Spec {
+            get { return Target.Spec; }
         }
 
         #endregion
 
         private INakedObject RestoreObject(IOid oid) {
             if (oid.IsTransient) {
-                return lifecycleManager.RecreateInstance(oid, oid.Specification);
+                return lifecycleManager.RecreateInstance(oid, oid.Spec);
             }
 
             if (oid is ViewModelOid) {
                 return lifecycleManager.GetViewModel(oid as ViewModelOid);
             }
 
-            return lifecycleManager.LoadObject(oid, oid.Specification);
+            return lifecycleManager.LoadObject(oid, oid.Spec);
         }
 
         public INakedObject RecoverCollection() {

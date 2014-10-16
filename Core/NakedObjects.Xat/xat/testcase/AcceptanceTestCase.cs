@@ -164,16 +164,16 @@ namespace NakedObjects.Xat {
         }
 
         protected ITestObject GetBoundedInstance(Type type, string title) {
-            INakedObjectSpecification spec = NakedObjectsFramework.Metamodel.GetSpecification(type);
+            IObjectSpec spec = NakedObjectsFramework.Metamodel.GetSpecification(type);
             return GetBoundedInstance(title, spec);
         }
 
         protected ITestObject GetBoundedInstance(string classname, string title) {
-            INakedObjectSpecification spec = NakedObjectsFramework.Metamodel.GetSpecification(classname);
+            IObjectSpec spec = NakedObjectsFramework.Metamodel.GetSpecification(classname);
             return GetBoundedInstance(title, spec);
         }
 
-        private ITestObject GetBoundedInstance(string title, INakedObjectSpecification spec) {
+        private ITestObject GetBoundedInstance(string title, IObjectSpec spec) {
             if (spec.GetFacet<IBoundedFacet>() == null) {
                 Assert.Fail(spec.SingularName + " is not a Bounded type");
             }

@@ -48,13 +48,13 @@ namespace NakedObjects.Xat {
             if (nakedObject == null) {
                 return null;
             }
-            if (nakedObject.Specification.IsParseable) {
+            if (nakedObject.Spec.IsParseable) {
                 return CreateTestValue(nakedObject);
             }
-            if (nakedObject.Specification.IsObject) {
+            if (nakedObject.Spec.IsObject) {
                 return CreateTestObject(nakedObject);
             }
-            if (nakedObject.Specification.IsCollection) {
+            if (nakedObject.Spec.IsCollection) {
                 return CreateTestCollection(nakedObject);
             }
 

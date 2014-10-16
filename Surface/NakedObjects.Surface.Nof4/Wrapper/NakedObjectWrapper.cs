@@ -42,7 +42,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         protected IDictionary<string, object> ExtensionData {
             get {
                 var extData = new Dictionary<string, object>();
-                INakedObjectSpecification spec = WrappedNakedObject.Specification;
+                IObjectSpec spec = WrappedNakedObject.Spec;
 
                 if (spec.IsService) {
                     ServiceTypes st = framework.Services.GetServiceType(spec);
@@ -64,7 +64,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         #region INakedObjectSurface Members
 
         public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(WrappedNakedObject.Specification, Surface, framework); }
+            get { return new NakedObjectSpecificationWrapper(WrappedNakedObject.Spec, Surface, framework); }
         }
 
         public INakedObjectSpecificationSurface ElementSpecification {
@@ -108,7 +108,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public PropertyInfo[] GetKeys() {
-            if (nakedObject.Specification.IsService) {
+            if (nakedObject.Spec.IsService) {
                 // services don't have keys
                 return new PropertyInfo[] {};
             }

@@ -34,7 +34,7 @@ namespace NakedObjects.Persistor {
 
        
         public virtual void MakePersistent(INakedObject nakedObject,  ISession session) {
-            if (nakedObject.Specification.IsCollection) {
+            if (nakedObject.Spec.IsCollection) {
                 Log.Info("Persist " + nakedObject);
 
                 nakedObject.GetAsEnumerable(manager).ForEach(no => Persist(no, session));
@@ -48,7 +48,7 @@ namespace NakedObjects.Persistor {
                 if (nakedObject.ResolveState.IsPersistent()) {
                     throw new NotPersistableException("can't make object persistent as it is already persistent: " + nakedObject);
                 }
-                if (nakedObject.Specification.Persistable == PersistableType.Transient) {
+                if (nakedObject.Spec.Persistable == PersistableType.Transient) {
                     throw new NotPersistableException("can't make object persistent as it is not persistable: " + nakedObject);
                 }
                 Persist(nakedObject, session);
@@ -66,12 +66,12 @@ namespace NakedObjects.Persistor {
         protected void Persist(INakedObject nakedObject, ISession session) {
             if (nakedObject.ResolveState.IsAggregated() ||
                 (nakedObject.ResolveState.IsTransient() &&
-                 nakedObject.Specification.Persistable != PersistableType.Transient)) {
-                INakedObjectAssociation[] fields = nakedObject.Specification.Properties;
-                if (!nakedObject.Specification.IsEncodeable && fields.Length > 0) {
+                 nakedObject.Spec.Persistable != PersistableType.Transient)) {
+                INakedObjectAssociation[] fields = nakedObject.Spec.Properties;
+                if (!nakedObject.Spec.IsEncodeable && fields.Length > 0) {
                     Log.Info("make persistent " + nakedObject);
                     nakedObject.Persisting(session);
-                    if (!nakedObject.Specification.ContainsFacet(typeof (IComplexTypeFacet))) {
+                    if (!nakedObject.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                         manager.MadePersistent(nakedObject);
                     }
 
@@ -82,7 +82,7 @@ namespace NakedObjects.Persistor {
                         if (field is IOneToManyAssociation) {
                             INakedObject collection = field.GetNakedObject(nakedObject);
                             if (collection == null) {
-                                throw new NotPersistableException("Collection " + field.GetName() + " does not exist in " + nakedObject.Specification.FullName);
+                                throw new NotPersistableException("Collection " + field.GetName() + " does not exist in " + nakedObject.Spec.FullName);
                             }
                             MakePersistent(collection,  session);
                         }

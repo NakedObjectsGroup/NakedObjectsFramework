@@ -36,7 +36,7 @@ namespace NakedObjects.Architecture.Adapter {
         }
 
         public static ICollectionFacet GetCollectionFacetFromSpec(this INakedObject objectRepresentingCollection) {
-            INakedObjectSpecification collectionSpec = objectRepresentingCollection.Specification;
+            IObjectSpec collectionSpec = objectRepresentingCollection.Spec;
             return collectionSpec.GetFacet<ICollectionFacet>();
         }
 
@@ -50,7 +50,7 @@ namespace NakedObjects.Architecture.Adapter {
 
 
         public static ITypeOfFacet GetTypeOfFacetFromSpec(this INakedObject objectRepresentingCollection) {
-            INakedObjectSpecification collectionSpec = objectRepresentingCollection.Specification;
+            IObjectSpec collectionSpec = objectRepresentingCollection.Spec;
             return collectionSpec.GetFacet<ITypeOfFacet>();
         }
 
@@ -59,10 +59,10 @@ namespace NakedObjects.Architecture.Adapter {
         }
 
         public static INakedObjectAction[] GetActionLeafNodes(this INakedObject nakedObject) {
-            return nakedObject.Specification.GetActionLeafNodes();
+            return nakedObject.Spec.GetActionLeafNodes();
         }
 
-        public static INakedObjectAction[] GetActionLeafNodes(this INakedObjectSpecification spec) {
+        public static INakedObjectAction[] GetActionLeafNodes(this IObjectSpec spec) {
             return spec.GetAllActions().SelectMany(GetActionLeafNodes).ToArray();
         }
 
@@ -72,10 +72,10 @@ namespace NakedObjects.Architecture.Adapter {
 
 
         public static INakedObjectAssociation GetVersionProperty(this INakedObject nakedObject) {
-            if (nakedObject.Specification == null) {
+            if (nakedObject.Spec == null) {
                 return null; // only expect in testing 
             }
-            return nakedObject.Specification.Properties.SingleOrDefault(x => x.ContainsFacet<IConcurrencyCheckFacet>());
+            return nakedObject.Spec.Properties.SingleOrDefault(x => x.ContainsFacet<IConcurrencyCheckFacet>());
         }
 
         private static DateTime StripMillis(this DateTime fullDateTime) {

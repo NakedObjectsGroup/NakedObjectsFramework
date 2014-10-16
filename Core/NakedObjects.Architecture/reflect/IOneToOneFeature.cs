@@ -38,6 +38,6 @@ namespace NakedObjects.Architecture.Reflect {
         /// <summary>
         ///     Returns a parameter names and types if the field supports conditional choices
         /// </summary>
-        Tuple<string, INakedObjectSpecification>[] GetChoicesParameters();
+        Tuple<string, IObjectSpec>[] GetChoicesParameters();
     }
 }

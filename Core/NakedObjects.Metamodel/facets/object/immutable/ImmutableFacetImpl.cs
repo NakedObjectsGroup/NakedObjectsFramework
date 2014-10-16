@@ -15,7 +15,7 @@ namespace NakedObjects.Architecture.Facets.Objects.Immutable {
 
         public override string DisabledReason(INakedObject target) {
             if (Value == WhenTo.Always) {
-                return string.Format(Resources.NakedObjects.ImmutableMessage, target.Specification.SingularName);
+                return string.Format(Resources.NakedObjects.ImmutableMessage, target.Spec.SingularName);
             }
             if (Value == WhenTo.Never) {
                 return null;
@@ -26,10 +26,10 @@ namespace NakedObjects.Architecture.Facets.Objects.Immutable {
                 return null;
             }
             if (Value == WhenTo.UntilPersisted) {
-                return target.ResolveState.IsTransient() ? string.Format(Resources.NakedObjects.ImmutableUntilPersistedMessage, target.Specification.SingularName) : null;
+                return target.ResolveState.IsTransient() ? string.Format(Resources.NakedObjects.ImmutableUntilPersistedMessage, target.Spec.SingularName) : null;
             }
             if (Value == WhenTo.OncePersisted) {
-                return target.ResolveState.IsPersistent() ? string.Format(Resources.NakedObjects.ImmutableOncePersistedMessage, target.Specification.SingularName) : null;
+                return target.ResolveState.IsPersistent() ? string.Format(Resources.NakedObjects.ImmutableOncePersistedMessage, target.Spec.SingularName) : null;
             }
             return null;
         }

@@ -21,15 +21,15 @@ using NakedObjects.Value;
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectSpecificationWrapper : ScalarPropertyHolder, INakedObjectSpecificationSurface {
         private readonly INakedObjectsFramework framework;
-        private readonly INakedObjectSpecification spec;
+        private readonly IObjectSpec spec;
 
-        public NakedObjectSpecificationWrapper(INakedObjectSpecification spec, INakedObjectsSurface surface, INakedObjectsFramework framework) {
+        public NakedObjectSpecificationWrapper(IObjectSpec spec, INakedObjectsSurface surface, INakedObjectsFramework framework) {
             Surface = surface;
             this.spec = spec;
             this.framework = framework;
         }
 
-        public INakedObjectSpecification WrappedValue {
+        public IObjectSpec WrappedValue {
             get { return spec; }
         }
 

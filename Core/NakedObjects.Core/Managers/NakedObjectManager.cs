@@ -78,14 +78,14 @@ namespace NakedObjects.Managers {
                 return null;
             }
             if (oid == null) {
-                INakedObjectSpecification nakedObjectSpecification = metamodel.GetSpecification(domainObject.GetType());
-                if (nakedObjectSpecification.ContainsFacet(typeof (IComplexTypeFacet))) {
+                IObjectSpec objectSpec = metamodel.GetSpecification(domainObject.GetType());
+                if (objectSpec.ContainsFacet(typeof (IComplexTypeFacet))) {
                     return GetAdapterFor(domainObject);
                 }
-                if (nakedObjectSpecification.HasNoIdentity) {
+                if (objectSpec.HasNoIdentity) {
                     return AdapterForNoIdentityObject(domainObject);
                 }
-                return AdapterForExistingObject(domainObject, nakedObjectSpecification);
+                return AdapterForExistingObject(domainObject, objectSpec);
             }
             return AdapterForExistingObject(domainObject, oid);
         }
@@ -153,8 +153,8 @@ namespace NakedObjects.Managers {
             return adapter;
         }
 
-        public INakedObject CreateViewModelAdapter(INakedObjectSpecification specification, object viewModel) {
-            INakedObject adapter = CreateAdapterForViewModel(viewModel, specification);
+        public INakedObject CreateViewModelAdapter(IObjectSpec spec, object viewModel) {
+            INakedObject adapter = CreateAdapterForViewModel(viewModel, spec);
             adapter.ResolveState.Handle(Events.InitializePersistentEvent);
             return adapter;
         }
@@ -178,19 +178,19 @@ namespace NakedObjects.Managers {
             return pocoAdapter;
         }
 
-        private INakedObject AdapterForExistingObject(object domainObject, INakedObjectSpecification spec) {
+        private INakedObject AdapterForExistingObject(object domainObject, IObjectSpec spec) {
             return identityMap.GetAdapterFor(domainObject) ?? NewAdapterForViewModel(domainObject, spec) ?? NewAdapterForTransient(domainObject);
         }
 
         private static void NewTransientsResolvedState(INakedObject pocoAdapter) {
-            pocoAdapter.ResolveState.Handle(pocoAdapter.Specification.IsAggregated ? Events.InitializeAggregateEvent : Events.InitializeTransientEvent);
+            pocoAdapter.ResolveState.Handle(pocoAdapter.Spec.IsAggregated ? Events.InitializeAggregateEvent : Events.InitializeTransientEvent);
         }
 
         private INakedObject NewAdapterBasedOnOid(object domainObject, IOid oid) {
             INakedObject nakedObject = NewAdapterForKnownObject(domainObject, oid);
             identityMap.AddAdapter(nakedObject);
 
-            if (oid is AggregateOid && nakedObject.Specification.IsObject) {
+            if (oid is AggregateOid && nakedObject.Spec.IsObject) {
                 nakedObject.ResolveState.Handle(Events.InitializeAggregateEvent);
             }
             else {
@@ -200,7 +200,7 @@ namespace NakedObjects.Managers {
             return nakedObject;
         }
 
-        private INakedObject NewAdapterForViewModel(object domainObject, INakedObjectSpecification spec) {
+        private INakedObject NewAdapterForViewModel(object domainObject, IObjectSpec spec) {
             if (spec.IsViewModel) {
                 INakedObject adapter = CreateAdapterForViewModel(domainObject, spec);
                 adapter.ResolveState.Handle(Events.InitializePersistentEvent);
@@ -215,7 +215,7 @@ namespace NakedObjects.Managers {
             return adapter;
         }
 
-        private INakedObject CreateAdapterForViewModel(object viewModel, INakedObjectSpecification spec) {
+        private INakedObject CreateAdapterForViewModel(object viewModel, IObjectSpec spec) {
             var oid = new ViewModelOid(metamodel, spec);
             INakedObject adapter = NewAdapterForKnownObject(viewModel, oid);
 

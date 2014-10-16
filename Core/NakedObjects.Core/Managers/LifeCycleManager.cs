@@ -75,47 +75,47 @@ namespace NakedObjects.Managers {
 
         #region ILifecycleManager Members
 
-        public INakedObject LoadObject(IOid oid, INakedObjectSpecification specification) {
-            Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, specification);
+        public INakedObject LoadObject(IOid oid, IObjectSpec spec) {
+            Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, spec);
             Assert.AssertNotNull("needs an OID", oid);
-            Assert.AssertNotNull("needs a specification", specification);
-            return manager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, specification);
+            Assert.AssertNotNull("needs a specification", spec);
+            return manager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, spec);
         }
 
         /// <summary>
         ///     Factory (for transient instance)
         /// </summary>
-        public virtual INakedObject CreateInstance(INakedObjectSpecification specification) {
-            Log.DebugFormat("CreateInstance of: {0}", specification);
-            if (specification.ContainsFacet(typeof (IComplexTypeFacet))) {
+        public virtual INakedObject CreateInstance(IObjectSpec spec) {
+            Log.DebugFormat("CreateInstance of: {0}", spec);
+            if (spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                 throw new TransientReferenceException(Resources.NakedObjects.NoTransientInline);
             }
-            object obj = CreateObject(specification);
+            object obj = CreateObject(spec);
             var adapter = manager.CreateInstanceAdapter(obj);
             InitializeNewObject(adapter);
             return adapter;
         }
 
-        public INakedObject CreateViewModel(INakedObjectSpecification specification) {
-            Log.DebugFormat("CreateViewModel of: {0}", specification);
-            object viewModel = CreateObject(specification);
-            var adapter = manager.CreateViewModelAdapter(specification, viewModel);
+        public INakedObject CreateViewModel(IObjectSpec spec) {
+            Log.DebugFormat("CreateViewModel of: {0}", spec);
+            object viewModel = CreateObject(spec);
+            var adapter = manager.CreateViewModelAdapter(spec, viewModel);
             InitializeNewObject(adapter);
             return adapter;
         }
 
 
-        public virtual INakedObject RecreateInstance(IOid oid, INakedObjectSpecification specification) {
-            Log.DebugFormat("RecreateInstance oid: {0} hint: {1}", oid, specification);
+        public virtual INakedObject RecreateInstance(IOid oid, IObjectSpec spec) {
+            Log.DebugFormat("RecreateInstance oid: {0} hint: {1}", oid, spec);
             INakedObject adapter = manager.GetAdapterFor(oid);
             if (adapter != null) {
-                if (!adapter.Specification.Equals(specification)) {
-                    throw new AdapterException(string.Format("Mapped adapter is for a different type of object: {0}; {1}", specification.FullName, adapter));
+                if (!adapter.Spec.Equals(spec)) {
+                    throw new AdapterException(string.Format("Mapped adapter is for a different type of object: {0}; {1}", spec.FullName, adapter));
                 }
                 return adapter;
             }
-            Log.DebugFormat("Recreating instance for {0}", specification);
-            object obj = CreateObject(specification);
+            Log.DebugFormat("Recreating instance for {0}", spec);
+            object obj = CreateObject(spec);
             return manager.AdapterForExistingObject(obj, oid);
         }
 
@@ -143,11 +143,11 @@ namespace NakedObjects.Managers {
             if (IsPersistent(nakedObject)) {
                 throw new NotPersistableException("Object already persistent: " + nakedObject);
             }
-            if (nakedObject.Specification.Persistable == PersistableType.Transient) {
+            if (nakedObject.Spec.Persistable == PersistableType.Transient) {
                 throw new NotPersistableException("Object must be kept transient: " + nakedObject);
             }
-            INakedObjectSpecification specification = nakedObject.Specification;
-            if (specification.IsService) {
+            IObjectSpec spec = nakedObject.Spec;
+            if (spec.IsService) {
                 throw new NotPersistableException("Cannot persist services: " + nakedObject);
             }
 
@@ -155,17 +155,17 @@ namespace NakedObjects.Managers {
         }
         
 
-        private object CreateObject(INakedObjectSpecification specification) {
-            Log.DebugFormat("CreateObject: " + specification);
-            Type type = TypeUtils.GetType(specification.FullName);
+        private object CreateObject(IObjectSpec spec) {
+            Log.DebugFormat("CreateObject: " + spec);
+            Type type = TypeUtils.GetType(spec.FullName);
 
-            if (specification.IsViewModel) {
+            if (spec.IsViewModel) {
                 object viewModel = Activator.CreateInstance(type);
                 InitDomainObject(viewModel);
                 return viewModel;
             }
 
-            return objectPersistor.CreateObject(specification);
+            return objectPersistor.CreateObject(spec);
         }
 
 
@@ -212,7 +212,7 @@ namespace NakedObjects.Managers {
 
         public IOid RestoreGenericOid(string[] encodedData) {
             string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(encodedData.First()));
-            INakedObjectSpecification spec = metamodel.GetSpecification(typeName);
+            IObjectSpec spec = metamodel.GetSpecification(typeName);
 
             if (spec.IsCollection) {
                 return new CollectionMemento(this, manager, objectPersistor, metamodel, session, encodedData);
@@ -233,7 +233,7 @@ namespace NakedObjects.Managers {
             }
 
             if (!vmoid.IsFinal) {
-                vmoid.UpdateKeys(nakedObject.Specification.GetFacet<IViewModelFacet>().Derive(nakedObject), true);
+                vmoid.UpdateKeys(nakedObject.Spec.GetFacet<IViewModelFacet>().Derive(nakedObject), true);
             }
         }
 
@@ -255,16 +255,16 @@ namespace NakedObjects.Managers {
 
         private INakedObject RecreateViewModel(ViewModelOid oid) {
             string[] keys = oid.Keys;
-            INakedObjectSpecification spec = oid.Specification;
+            IObjectSpec spec = oid.Spec;
             INakedObject vm = CreateViewModel(spec);
-            vm.Specification.GetFacet<IViewModelFacet>().Populate(keys, vm);
+            vm.Spec.GetFacet<IViewModelFacet>().Populate(keys, vm);
             manager.UpdateViewModel(vm, keys);
             return vm;
         }
 
         private void CreateInlineObjects(INakedObject parentObject, object rootObject) {
-            foreach (IOneToOneAssociation assoc in parentObject.Specification.Properties.Where(p => p.IsInline)) {
-                object inlineObject = CreateObject(assoc.Specification);
+            foreach (IOneToOneAssociation assoc in parentObject.Spec.Properties.Where(p => p.IsInline)) {
+                object inlineObject = CreateObject(assoc.Spec);
 
                 InitInlineObject(rootObject, inlineObject);
                 INakedObject inlineNakedObject = manager.CreateAggregatedAdapter(parentObject, assoc.Id, inlineObject);
@@ -274,7 +274,7 @@ namespace NakedObjects.Managers {
         }
 
         private void InitializeNewObject(INakedObject nakedObject, object rootObject) {
-            nakedObject.Specification.Properties.ForEach(field => field.ToDefault(nakedObject));
+            nakedObject.Spec.Properties.ForEach(field => field.ToDefault(nakedObject));
             CreateInlineObjects(nakedObject, rootObject);
             nakedObject.Created(session);
         }

@@ -131,7 +131,7 @@ namespace NakedObjects.Architecture.Interactions {
         }
 
         private static IIdentifier GetIdentifier(INakedObject target) {
-            return target.Specification.Identifier;
+            return target.Spec.Identifier;
         }
 
 

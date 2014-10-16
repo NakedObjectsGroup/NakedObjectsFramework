@@ -15,11 +15,11 @@ namespace NakedObjects.Architecture.Persist {
     /// be concerned with whether the object already exists in memory, persistently, or both. 
     /// </summary>
     public interface ILifecycleManager {
-        INakedObject CreateInstance(INakedObjectSpecification specification);
+        INakedObject CreateInstance(IObjectSpec spec);
 
-        INakedObject CreateViewModel(INakedObjectSpecification specification);
+        INakedObject CreateViewModel(IObjectSpec spec);
 
-        INakedObject RecreateInstance(IOid oid, INakedObjectSpecification specification);
+        INakedObject RecreateInstance(IOid oid, IObjectSpec spec);
 
         /// <summary>
         ///     Makes a naked object persistent. The specified object should be stored away via this object store's
@@ -43,7 +43,7 @@ namespace NakedObjects.Architecture.Persist {
 
         IOid RestoreOid(string[] encodedData);
 
-        INakedObject LoadObject(IOid oid, INakedObjectSpecification specification);
+        INakedObject LoadObject(IOid oid, IObjectSpec spec);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

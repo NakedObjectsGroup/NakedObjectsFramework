@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
     ///     an AddToXxx collection, can all be used to lookup the member.
     /// </para>
     /// <para>
-    ///     <see cref="IFacet" />s relating to the class itself (ie for <see cref="INakedObjectSpecification" />
+    ///     <see cref="IFacet" />s relating to the class itself (ie for <see cref="IObjectSpec" />
     ///     should not implement this interface.
     /// </para>
     public interface IImperativeFacet {

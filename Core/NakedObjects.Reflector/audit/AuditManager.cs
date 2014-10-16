@@ -50,7 +50,7 @@ namespace NakedObjects.Reflector.Audit {
 
         private IAuditor GetNamespaceAuditorFor(INakedObject target) {
             Assert.AssertNotNull(target);
-            string fullyQualifiedOfTarget = target.Specification.FullName;
+            string fullyQualifiedOfTarget = target.Spec.FullName;
             var auditor = namespaceAuditors.
                 Where(x => fullyQualifiedOfTarget.StartsWith(x.NamespaceToAudit)).
                 OrderByDescending(x => x.NamespaceToAudit.Length).

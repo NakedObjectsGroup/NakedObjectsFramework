@@ -38,7 +38,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections.Modify {
                 property.SetValue(inObject.GetDomainObject(), collection, null);
             }
             catch (Exception e) {
-                throw new ReflectionException(string.Format("Failed to get/set property {0} in {1}", property.Name, inObject.Specification.FullName), e);
+                throw new ReflectionException(string.Format("Failed to get/set property {0} in {1}", property.Name, inObject.Spec.FullName), e);
             }
         }
 

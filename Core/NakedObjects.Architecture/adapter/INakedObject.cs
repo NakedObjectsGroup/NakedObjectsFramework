@@ -27,7 +27,7 @@ namespace NakedObjects.Architecture.Adapter {
         ///     Returns the specification that details the structure of this object's adapted domain object.
         ///     Specifically, this specification provides the mechanism to access and manipulate the domain object.
         /// </summary>
-        INakedObjectSpecification Specification { get; }
+        IObjectSpec Spec { get; }
 
         /// <summary>
         ///     The object's unique id. This id allows the object to added to, stored by, and retrieved from the object

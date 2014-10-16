@@ -39,7 +39,7 @@ namespace NakedObjects.Xat {
         #region ITestObject Members
 
         public ITestProperty[] Properties {
-            get { return NakedObject.Specification.Properties.Select(x => factory.CreateTestProperty(x, this)).ToArray(); }
+            get { return NakedObject.Spec.Properties.Select(x => factory.CreateTestProperty(x, this)).ToArray(); }
         }
 
         public object GetDomainObject() {
@@ -102,12 +102,12 @@ namespace NakedObjects.Xat {
 
         public ITestObject AssertCanBeSaved() {
             Assert.IsTrue(NakedObject.ResolveState.IsTransient(), "Can only persist a transient object: " + NakedObject);
-            Assert.IsTrue(NakedObject.Specification.Persistable == PersistableType.UserPersistable, "Object not persistable by user: " + NakedObject);
+            Assert.IsTrue(NakedObject.Spec.Persistable == PersistableType.UserPersistable, "Object not persistable by user: " + NakedObject);
 
             Properties.ForEach(p => p.AssertIsValidToSave());
 
 
-            INakedObjectValidation[] validators = NakedObject.Specification.ValidateMethods();
+            INakedObjectValidation[] validators = NakedObject.Spec.ValidateMethods();
 
             foreach (INakedObjectValidation validator in validators) {
                 string[] parmNames = validator.ParameterNames;

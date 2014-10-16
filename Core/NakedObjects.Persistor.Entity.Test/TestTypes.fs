@@ -26,7 +26,7 @@ let testInjector = mockInjector.Object
 
 mockInjector.Setup(fun x -> x.InitDomainObject(It.IsAny<obj>())).Callback<obj> (fun o -> injectedObjects.Add o) |> ignore
 
-let mockNakedObjectSpecification = new Mock<INakedObjectSpecification>()
+let mockNakedObjectSpecification = new Mock<IObjectSpec>()
 let testNakedObjectSpecification = mockNakedObjectSpecification.Object
 
 mockNakedObjectSpecification.Setup(fun x -> x.ContainsFacet()).Returns(false) |> ignore
@@ -70,7 +70,7 @@ let ReplacePocoForTest (nakedObject : INakedObject) (o : Object) = ()
 let RemoveAdapterForTest(nakedObject : INakedObject) = ()
 let AggregateAdapterForTest (nakedObject : INakedObject) (prop : PropertyInfo) (obj : Object) : INakedObject = GetOrAddAdapterForTest obj null
 let NotifyUIForTest(nakedObject : INakedObject) = ()
-let loadSpecificationHandler (t : Type) : INakedObjectSpecification = testNakedObjectSpecification
+let loadSpecificationHandler (t : Type) : IObjectSpec = testNakedObjectSpecification
 let mutable updatedCount = 0
 let mutable updatingCount = 0
 let mutable persistedCount = 0
@@ -105,7 +105,7 @@ let setupPersistorForTesting (p : EntityObjectStore) =
          EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
          EntityObjectStore.NotifyUiDelegate(NotifyUIForTest), Action<INakedObject, ISession>(updated), Action<INakedObject, ISession>(updating), 
          Action<INakedObject, ISession>(persisted), Action<INakedObject, ISession>(persisting), Action<INakedObject>(handleLoadingTest), 
-         EventHandler(savingChangesHandler), Func<Type, INakedObjectSpecification>(loadSpecificationHandler))
+         EventHandler(savingChangesHandler), Func<Type, IObjectSpec>(loadSpecificationHandler))
     p.Reset()
     p.SetProxyingAndDeferredLoading setProxyingAndDeferredLoading
     p

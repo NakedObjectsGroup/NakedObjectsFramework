@@ -145,7 +145,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private Person CreateNewTransientPerson() {
             int nextIndex = Persistor.Instances<Person>().Select(p => p.PersonId).Max() + 1;
-            INakedObjectSpecification spec = Metamodel.GetSpecification(typeof (Person));
+            IObjectSpec spec = Metamodel.GetSpecification(typeof (Person));
             INakedObject newPersonAdapter = LifecycleManager.CreateInstance(spec);
             var person = (Person) newPersonAdapter.Object;
             person.PersonId = nextIndex;
@@ -153,7 +153,7 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         private Order CreateNewTransientOrder() {
-            INakedObjectSpecification spec = Metamodel.GetSpecification(typeof (Order));
+            IObjectSpec spec = Metamodel.GetSpecification(typeof (Order));
             INakedObject newOrderAdapter = LifecycleManager.CreateInstance(spec);
             var order = (Order) newOrderAdapter.Object;
             order.OrderId = 0;
@@ -161,7 +161,7 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         private OrderFail CreateNewTransientOrderFail() {
-            INakedObjectSpecification spec = Metamodel.GetSpecification(typeof (OrderFail));
+            IObjectSpec spec = Metamodel.GetSpecification(typeof (OrderFail));
             INakedObject newOrderAdapter = LifecycleManager.CreateInstance(spec);
             var order = (OrderFail) newOrderAdapter.Object;
             order.OrderFailId = 0;
@@ -171,7 +171,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private Product CreateNewTransientProduct() {
             int nextIndex = Persistor.Instances<Product>().Select(p => p.Id).Max() + 1;
-            INakedObjectSpecification spec = Metamodel.GetSpecification(typeof (Product));
+            IObjectSpec spec = Metamodel.GetSpecification(typeof (Product));
             INakedObject newProductAdapter = LifecycleManager.CreateInstance(spec);
             var product = (Product) newProductAdapter.Object;
             product.Id = nextIndex;
@@ -180,7 +180,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private Pet CreateNewTransientPet() {
             int nextIndex = Persistor.Instances<Pet>().Select(p => p.PetId).Max() + 1;
-            INakedObjectSpecification spec = Metamodel.GetSpecification(typeof (Pet));
+            IObjectSpec spec = Metamodel.GetSpecification(typeof (Pet));
             INakedObject newPetAdapter = LifecycleManager.CreateInstance(spec);
             var pet = (Pet) newPetAdapter.Object;
             pet.PetId = nextIndex;
@@ -220,14 +220,14 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private INakedObject GetAdaptedAddress(Person person) {
             INakedObject personAdapter = AdapterFor(person);
-            return personAdapter.Specification.GetProperty("Address").GetNakedObject(personAdapter);
+            return personAdapter.Spec.GetProperty("Address").GetNakedObject(personAdapter);
         }
 
         private INakedObject GetAdaptedRelatives(Person person) {
             TransactionManager.StartTransaction();
             INakedObject personAdapter = AdapterFor(person);
             TransactionManager.EndTransaction();
-            return personAdapter.Specification.GetProperty("Relatives").GetNakedObject(personAdapter);
+            return personAdapter.Spec.GetProperty("Relatives").GetNakedObject(personAdapter);
         }
 
         #endregion
@@ -245,13 +245,13 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         public void GetInstanceFromInstancesOfSpecification() {
-            INakedObjectSpecification spec = Metamodel.GetSpecification(typeof (Person));
+            IObjectSpec spec = Metamodel.GetSpecification(typeof (Person));
             Person person = Persistor.Instances(spec).Cast<Person>().Single(p => p.PersonId == 1);
             AssertIsPerson(person, 1);
         }
 
         public void GetInstanceIsAlwaysSameObject() {
-            INakedObjectSpecification spec = Metamodel.GetSpecification(typeof (Person));
+            IObjectSpec spec = Metamodel.GetSpecification(typeof (Person));
             Person person1 = GetPerson(1);
             Person person2 = Persistor.Instances(typeof (Person)).Cast<Person>().Single(p => p.PersonId == 1);
             Person person3 = Persistor.Instances(spec).Cast<Person>().Single(p => p.PersonId == 1);
@@ -353,7 +353,7 @@ namespace NakedObjects.Persistor.TestSuite {
         public void LoadObjectReturnSameObject() {
             Person person1 = GetPerson(1);
             INakedObject adapter1 = AdapterFor(person1);
-            INakedObject adapter2 = Persistor.LoadObject(adapter1.Oid, adapter1.Specification);
+            INakedObject adapter2 = Persistor.LoadObject(adapter1.Oid, adapter1.Spec);
             Assert.AreSame(person1, adapter2.Object);
         }
 
@@ -662,7 +662,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsTrue(person2Adapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(person2Adapter.Oid.IsTransient, "is transient");
 
-            INakedObject collectionAdapter = person1Adapter.Specification.GetProperty("Relatives").GetNakedObject(person1Adapter);
+            INakedObject collectionAdapter = person1Adapter.Spec.GetProperty("Relatives").GetNakedObject(person1Adapter);
             Assert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
         }
@@ -679,7 +679,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
 
-            INakedObject collectionAdapter = personAdapter.Specification.GetProperty("Relatives").GetNakedObject(personAdapter);
+            INakedObject collectionAdapter = personAdapter.Spec.GetProperty("Relatives").GetNakedObject(personAdapter);
             Assert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
         }
@@ -698,7 +698,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
 
-            INakedObject collectionAdapter = personAdapter.Specification.GetProperty("Relatives").GetNakedObject(personAdapter);
+            INakedObject collectionAdapter = personAdapter.Spec.GetProperty("Relatives").GetNakedObject(personAdapter);
             Assert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
         }

@@ -108,7 +108,7 @@ namespace NakedObjects.EntityObjectStore {
             CacheState();
         }
 
-        public INakedObjectSpecification Specification {
+        public IObjectSpec Spec {
             get { return metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
         }
 

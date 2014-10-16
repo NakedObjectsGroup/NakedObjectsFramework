@@ -45,7 +45,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public override bool IsChoicesEnabled {
-            get { return Specification.IsBoundedSet() || ContainsFacet<IPropertyChoicesFacet>() || ContainsFacet<IEnumFacet>(); }
+            get { return Spec.IsBoundedSet() || ContainsFacet<IPropertyChoicesFacet>() || ContainsFacet<IEnumFacet>(); }
         }
 
         public override bool IsMandatory {
@@ -59,10 +59,10 @@ namespace NakedObjects.Reflector.Spec {
             return GetAssociation(fromObject);
         }
 
-        public override Tuple<string, INakedObjectSpecification>[] GetChoicesParameters() {
+        public override Tuple<string, IObjectSpec>[] GetChoicesParameters() {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
-            return propertyChoicesFacet == null ? new Tuple<string, INakedObjectSpecification>[] {} :
-                propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, INakedObjectSpecification>(t.Item1, Metamodel.GetSpecification(t.Item2))).ToArray();
+            return propertyChoicesFacet == null ? new Tuple<string, IObjectSpec>[] {} :
+                propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, Metamodel.GetSpecification(t.Item2))).ToArray();
         }
 
         public override INakedObject[] GetChoices(INakedObject target, IDictionary<string, INakedObject> parameterNameValues) {
@@ -82,8 +82,8 @@ namespace NakedObjects.Reflector.Spec {
                 return Manager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
             }
 
-            if (Specification.IsBoundedSet()) {
-                return Manager.GetCollectionOfAdaptedObjects(persistor.GetBoundedSet(Specification)).ToArray();
+            if (Spec.IsBoundedSet()) {
+                return Manager.GetCollectionOfAdaptedObjects(persistor.GetBoundedSet(Spec)).ToArray();
             }
             return null;
         }
@@ -101,12 +101,12 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public virtual IConsent IsAssociationValid(INakedObject inObject, INakedObject reference) {
-            if (reference != null && !reference.Specification.IsOfType(Specification)) {
-                return GetConsent(string.Format(Resources.NakedObjects.TypeMismatchError, Specification.SingularName));
+            if (reference != null && !reference.Spec.IsOfType(Spec)) {
+                return GetConsent(string.Format(Resources.NakedObjects.TypeMismatchError, Spec.SingularName));
             }
 
             if (!inObject.ResolveState.IsNotPersistent()) {
-                if (reference != null && !reference.Specification.IsParseable && reference.ResolveState.IsNotPersistent()) {
+                if (reference != null && !reference.Spec.IsParseable && reference.ResolveState.IsNotPersistent()) {
                     return GetConsent(Resources.NakedObjects.TransientFieldMessage);
                 }
             }
@@ -122,7 +122,7 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public override bool IsInline {
-            get { return Specification.ContainsFacet(typeof (IComplexTypeFacet)); }
+            get { return Spec.ContainsFacet(typeof (IComplexTypeFacet)); }
         }
 
         public override INakedObject GetDefault(INakedObject fromObject) {
@@ -163,8 +163,8 @@ namespace NakedObjects.Reflector.Spec {
             if (obj == null) {
                 return null;
             }
-            INakedObjectSpecification specification = Metamodel.GetSpecification(obj.GetType());
-            if (specification.ContainsFacet(typeof (IComplexTypeFacet))) {
+            IObjectSpec spec = Metamodel.GetSpecification(obj.GetType());
+            if (spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return Manager.CreateAggregatedAdapter(fromObject, ((INakedObjectAssociation) this).Id, obj);
             }
             return Manager.CreateAdapter(obj, null, null);
@@ -178,7 +178,7 @@ namespace NakedObjects.Reflector.Spec {
             // ... if none, attempt to find a default on the specification (eg an int should default to 0).
             if (propertyDefaultFacet == null || propertyDefaultFacet.IsNoOp) {
                 typeofDefaultValue = TypeOfDefaultValue.Implicit;
-                propertyDefaultFacet = Specification.GetFacet<IPropertyDefaultFacet>();
+                propertyDefaultFacet = Spec.GetFacet<IPropertyDefaultFacet>();
             }
             if (propertyDefaultFacet == null) {
                 return new Tuple<INakedObject, TypeOfDefaultValue>(null, TypeOfDefaultValue.Implicit);
@@ -192,7 +192,7 @@ namespace NakedObjects.Reflector.Spec {
             str.Append(base.ToString());
             str.AddComma();
             str.Append("persisted", IsPersisted);
-            str.Append("type", Specification.ShortName);
+            str.Append("type", Spec.ShortName);
             return str.ToString();
         }
     }

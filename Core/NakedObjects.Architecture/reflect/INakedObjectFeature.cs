@@ -20,7 +20,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// <para>
         ///     Will be non-<c>null</c> value for everything <i>except</i> an  action.
         /// </para>
-        INakedObjectSpecification Specification { get; }
+        IObjectSpec Spec { get; }
 
         bool IsNullable { get; }
         IConsent IsUsable(INakedObject target);

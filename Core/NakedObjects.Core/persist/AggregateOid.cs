@@ -73,7 +73,7 @@ namespace NakedObjects.Core.Persist {
             throw new NotImplementedException();
         }
 
-        public INakedObjectSpecification Specification {
+        public IObjectSpec Spec {
             get { return metamodel.GetSpecification(typeName); }
         }
 

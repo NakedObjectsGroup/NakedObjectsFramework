@@ -28,7 +28,7 @@ namespace NakedObjects.Architecture.Util {
             return typeName;
         }
 
-        public static string EncodeTypeName(this INakedObjectSpecification spec) {
+        public static string EncodeTypeName(this IObjectSpec spec) {
             return EncodeTypeName(spec.FullName);
         }
 

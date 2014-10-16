@@ -119,7 +119,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         #region INakedObjectAssociationSurface Members
 
         public INakedObjectSpecificationSurface Specification {
-            get { return new NakedObjectSpecificationWrapper(assoc.Specification, Surface, framework); }
+            get { return new NakedObjectSpecificationWrapper(assoc.Spec, Surface, framework); }
         }
 
         public string Id {
@@ -195,7 +195,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
 
         #endregion
 
-        private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, INakedObjectSpecification> parm) {
+        private Tuple<string, INakedObjectSpecificationSurface> WrapChoiceParm(Tuple<string, IObjectSpec> parm) {
             return new Tuple<string, INakedObjectSpecificationSurface>(parm.Item1, new NakedObjectSpecificationWrapper(parm.Item2, Surface, framework));
         }
 

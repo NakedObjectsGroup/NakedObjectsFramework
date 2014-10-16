@@ -267,7 +267,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
         /// </example>
         protected void SetUpDefaultParameters(object domainObject, string actionName) {
             INakedObject nakedObject = NakedObjectsContext.GetNakedObject(domainObject);
-            INakedObjectAction findOrder = nakedObject.Specification.GetAllActions().Single(x => x.Id == actionName);
+            INakedObjectAction findOrder = nakedObject.Spec.GetAllActions().Single(x => x.Id == actionName);
             SetDefaults(nakedObject, findOrder);
         }
 
@@ -367,7 +367,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         private T InvokeAction<T>(INakedObject nakedObject, LambdaExpression expression, FormCollection parameters, out bool valid) {
             MethodInfo methodInfo = GetAction(expression);
-            INakedObjectAction nakedObjectAction = nakedObject.Specification.GetAllActions().Single(a => a.Id == methodInfo.Name);
+            INakedObjectAction nakedObjectAction = nakedObject.Spec.GetAllActions().Single(a => a.Id == methodInfo.Name);
             return InvokeAction<T>(nakedObject, nakedObjectAction, parameters, out valid);
         }
 
@@ -382,7 +382,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
                 if (action.ParameterCount > 1) {
                     // contributed action being invoked with multiple parms - populate first that match the target 
-                    INakedObjectActionParameter parmToPopulate = action.Parameters.FirstOrDefault(p => nakedObject.Specification.IsOfType(p.Specification));
+                    INakedObjectActionParameter parmToPopulate = action.Parameters.FirstOrDefault(p => nakedObject.Spec.IsOfType(p.Spec));
                     if (parmToPopulate != null) {
                         ViewData[IdHelper.GetParameterInputId(action, parmToPopulate)] = NakedObjectsContext.GetObjectId(nakedObject.Object);
                     }

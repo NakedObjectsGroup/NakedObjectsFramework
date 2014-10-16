@@ -34,7 +34,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         public void MakePersistent(INakedObject nakedObject, ISession session) {
-            if (nakedObject.Specification.IsCollection) {
+            if (nakedObject.Spec.IsCollection) {
                 MakeCollectionPersistent(nakedObject, session);
             }
             else {
@@ -47,8 +47,8 @@ namespace NakedObjects.EntityObjectStore {
         public void MakeObjectPersistent(INakedObject nakedObject) {
             if (nakedObject.ResolveState.IsAggregated() ||
                 nakedObject.ResolveState.IsPersistent() ||
-                nakedObject.Specification.Persistable == PersistableType.Transient ||
-                nakedObject.Specification.IsService) {
+                nakedObject.Spec.Persistable == PersistableType.Transient ||
+                nakedObject.Spec.IsService) {
                 return;
             }
             Log.Info("persist " + nakedObject);
@@ -56,7 +56,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         private void MakeCollectionPersistent(INakedObject collection, ISession session) {
-            if (collection.ResolveState.IsPersistent() || collection.Specification.Persistable == PersistableType.Transient) {
+            if (collection.ResolveState.IsPersistent() || collection.Spec.Persistable == PersistableType.Transient) {
                 return;
             }
             Log.Info("persist " + collection);

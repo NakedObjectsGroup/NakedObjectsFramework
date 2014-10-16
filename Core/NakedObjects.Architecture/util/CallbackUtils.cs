@@ -12,10 +12,10 @@ using NakedObjects.Architecture.Security;
 namespace NakedObjects.Architecture.Util {
     public static class CallbackUtils {
         private static void CallCallback<T>(INakedObject nakedObject, ISession session) where T : ICallbackFacet {
-            if (nakedObject != null && nakedObject.Specification != null) {
+            if (nakedObject != null && nakedObject.Spec != null) {
                 // TODO this is for testing where the adapter or specification may be null 
                 // remove when this is no longer true. 
-                nakedObject.Specification.GetFacet<T>().Invoke(nakedObject, session);
+                nakedObject.Spec.GetFacet<T>().Invoke(nakedObject, session);
             }
         }
 

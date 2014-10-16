@@ -27,7 +27,7 @@ namespace NakedObjects.Architecture.Facets {
         }
 
         /// <summary>
-        ///     The <see cref="INakedObjectSpecification" /> of the <see cref="Value" />
+        ///     The <see cref="IObjectSpec" /> of the <see cref="Value" />
         /// </summary>
         public virtual IObjectSpecImmutable ValueSpec {
             get { return valueSpec; }

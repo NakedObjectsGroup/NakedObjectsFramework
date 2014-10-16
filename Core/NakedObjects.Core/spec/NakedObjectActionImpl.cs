@@ -63,11 +63,11 @@ namespace NakedObjects.Reflector.Spec {
 
         #region INakedObjectAction Members
 
-        public virtual INakedObjectSpecification ReturnType {
+        public virtual IObjectSpec ReturnType {
             get { return metamodel.GetSpecification(ActionInvocationFacet.ReturnType); }
         }
 
-        public virtual INakedObjectSpecification OnType {
+        public virtual IObjectSpec OnType {
             get { return metamodel.GetSpecification(ActionInvocationFacet.OnType); }
         }
 
@@ -95,9 +95,9 @@ namespace NakedObjects.Reflector.Spec {
             get { return nakedObjectActionPeer.IsContributedMethod; }
         }
 
-        public bool IsContributedTo(INakedObjectSpecification spec) {
+        public bool IsContributedTo(IObjectSpec spec) {
             return IsContributedMethod
-                   && Parameters.Any(parm => ContributeTo(parm.Specification, spec))
+                   && Parameters.Any(parm => ContributeTo(parm.Spec, spec))
                    && !(IsCollection(spec) && IsCollection(ReturnType));
         }
 
@@ -106,8 +106,8 @@ namespace NakedObjects.Reflector.Spec {
         }
 
         public virtual bool PromptForParameters(INakedObject nakedObject) {
-            if (IsContributedMethod && !nakedObject.Specification.IsService) {
-                return ParameterCount > 1 || !IsContributedTo(parameters[0].Specification);
+            if (IsContributedMethod && !nakedObject.Spec.IsService) {
+                return ParameterCount > 1 || !IsContributedTo(parameters[0].Spec);
             }
             return ParameterCount > 0;
         }
@@ -115,7 +115,7 @@ namespace NakedObjects.Reflector.Spec {
         /// <summary>
         ///     Always returns <c>null</c>
         /// </summary>
-        public override INakedObjectSpecification Specification {
+        public override IObjectSpec Spec {
             get { return null; }
         }
 
@@ -130,7 +130,7 @@ namespace NakedObjects.Reflector.Spec {
             if (target == null) {
                 return FindService();
             }
-            if (target.Specification.IsService) {
+            if (target.Spec.IsService) {
                 return target;
             }
             if (IsContributedMethod) {
@@ -217,7 +217,7 @@ namespace NakedObjects.Reflector.Spec {
             parameters = nakedObjectActionPeer.Parameters.Select(pp => memberFactory.CreateParameter(pp, this, index++)).ToArray();
         }
 
-        private bool ContributeTo(INakedObjectSpecification parmSpec, INakedObjectSpecification contributeeSpec) {
+        private bool ContributeTo(IObjectSpec parmSpec, IObjectSpec contributeeSpec) {
             //var ncf = GetFacet<INotContributedActionFacet>();
 
             //if (ncf == null) {
@@ -228,11 +228,11 @@ namespace NakedObjects.Reflector.Spec {
             throw new NotImplementedException();
         }
 
-        private bool IsCollection(INakedObjectSpecification spec) {
+        private bool IsCollection(IObjectSpec spec) {
             return spec.IsCollection && !spec.IsParseable;
         }
 
-        private bool FindServiceOnSpecOrSpecSuperclass(INakedObjectSpecification spec) {
+        private bool FindServiceOnSpecOrSpecSuperclass(IObjectSpec spec) {
             if (spec == null) {
                 return false;
             }
@@ -241,7 +241,7 @@ namespace NakedObjects.Reflector.Spec {
 
         private INakedObject FindService() {
             foreach (INakedObject serviceAdapter in servicesManager.GetServices(ServiceTypes.Menu | ServiceTypes.Contributor)) {
-                if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Specification)) {
+                if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Spec)) {
                     return serviceAdapter;
                 }
             }
@@ -268,7 +268,7 @@ namespace NakedObjects.Reflector.Spec {
                 if (i > 0) {
                     sb.Append(",");
                 }
-                sb.Append(Parameters[i].Specification.ShortName);
+                sb.Append(Parameters[i].Spec.ShortName);
             }
             sb.Append("}]");
             return sb.ToString();

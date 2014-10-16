@@ -62,7 +62,7 @@ namespace NakedObjects.EntityObjectStore {
         private static Action<INakedObject, ISession> updated;
         private static Action<INakedObject, ISession> updating;
         private static Action<INakedObject> handleLoaded;
-        private static Func<Type, INakedObjectSpecification> loadSpecification;
+        private static Func<Type, IObjectSpec> loadSpecification;
 
         private readonly EntityOidGenerator oidGenerator;
 
@@ -103,7 +103,7 @@ namespace NakedObjects.EntityObjectStore {
             createAdapter = (oid, domainObject) => manager.CreateAdapter(domainObject, oid, null);
             replacePoco = (nakedObject, newDomainObject) => manager.ReplacePoco(nakedObject, newDomainObject);
             removeAdapter = o => manager.RemoveAdapter(o);
-            createAggregatedAdapter = (parent, property, obj) => manager.CreateAggregatedAdapter(parent, parent.Specification.GetProperty(property.Name).Id, obj);
+            createAggregatedAdapter = (parent, property, obj) => manager.CreateAggregatedAdapter(parent, parent.Spec.GetProperty(property.Name).Id, obj);
 
             updating = (x, s) => x.Updating(s);
             updated = (x, s) => x.Updated(s);
@@ -151,7 +151,7 @@ namespace NakedObjects.EntityObjectStore {
                                     Action<INakedObject, ISession> persistingFunc,
                                     Action<INakedObject> handleLoadedTest,
                                     EventHandler savingChangeshandler,
-                                    Func<Type, INakedObjectSpecification> loadSpecificationHandler) {
+                                    Func<Type, IObjectSpec> loadSpecificationHandler) {
             injector = containerInjector;
             createAdapter = createAdapterDelegate;
             replacePoco = replacePocoDelegate;
@@ -249,9 +249,9 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         private void ResolveChildCollections(INakedObject nakedObject) {
-            if (nakedObject.Specification != null) {
+            if (nakedObject.Spec != null) {
                 // testing check 
-                foreach (INakedObjectAssociation assoc in nakedObject.Specification.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
+                foreach (INakedObjectAssociation assoc in nakedObject.Spec.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
                     INakedObject adapter = assoc.GetNakedObject(nakedObject);
                     if (adapter.ResolveState.IsGhost()) {
                         StartResolving(adapter, GetContext(nakedObject));
@@ -299,17 +299,17 @@ namespace NakedObjects.EntityObjectStore {
             foreach (LocalContext context in contexts.Values) {
                 if (context.CurrentSaveRootObject != null) {
                     INakedObject target = context.CurrentSaveRootObject;
-                    if (target.Specification != null) {
+                    if (target.Spec != null) {
                         // can be null in tests
-                        newMessage = target.Specification.GetFacet<IOnPersistingErrorCallbackFacet>().Invoke(target, exception);
+                        newMessage = target.Spec.GetFacet<IOnPersistingErrorCallbackFacet>().Invoke(target, exception);
                     }
                     break;
                 }
                 if (context.CurrentUpdateRootObject != null) {
                     INakedObject target = context.CurrentUpdateRootObject;
-                    if (target.Specification != null) {
+                    if (target.Spec != null) {
                         // can be null in tests 
-                        newMessage = target.Specification.GetFacet<IOnUpdatingErrorCallbackFacet>().Invoke(target, exception);
+                        newMessage = target.Spec.GetFacet<IOnUpdatingErrorCallbackFacet>().Invoke(target, exception);
                     }
                     break;
                 }
@@ -385,9 +385,9 @@ namespace NakedObjects.EntityObjectStore {
                 StartResolving(nakedObject, context);
                 EndResolving(nakedObject);
             }
-            if (nakedObject.Specification != null) {
+            if (nakedObject.Spec != null) {
                 // testing check 
-                foreach (INakedObjectAssociation assoc in nakedObject.Specification.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
+                foreach (INakedObjectAssociation assoc in nakedObject.Spec.Properties.Where(a => a.IsCollection && a.IsPersisted)) {
                     INakedObject adapter = assoc.GetNakedObject(nakedObject);
                     if (adapter.ResolveState.IsGhost()) {
                         StartResolving(adapter, GetContext(adapter));
@@ -431,7 +431,7 @@ namespace NakedObjects.EntityObjectStore {
             }).ToList();
         }
 
-        public object GetObjectByKey(EntityOid eoid, INakedObjectSpecification hint) {
+        public object GetObjectByKey(EntityOid eoid, IObjectSpec hint) {
             Type type = TypeUtils.GetType(hint.FullName);
             return GetObjectByKey(eoid, type);
         }
@@ -487,7 +487,7 @@ namespace NakedObjects.EntityObjectStore {
         public void LoadComplexTypes(INakedObject nakedObject, bool parentIsGhost) {
             if (EntityFrameworkKnowsType(nakedObject.Object.GetProxiedType())) {
                 foreach (PropertyInfo pi in GetContext(nakedObject).GetComplexMembers(nakedObject.Object.GetProxiedType())) {
-                    INakedObjectSpecification spec = loadSpecification(pi.PropertyType);
+                    IObjectSpec spec = loadSpecification(pi.PropertyType);
                     if (!spec.ContainsFacet<IComplexTypeFacet>()) {
                         Log.InfoFormat("Adding InlineFacet to {0} by convention", spec.FullName);
                         spec.AddFacet(new ComplexTypeFacetConvention(spec));
@@ -580,10 +580,10 @@ namespace NakedObjects.EntityObjectStore {
 
         private static void ValidateIfRequired(INakedObject adapter) {
             if (adapter.ResolveState.IsPersistent()) {
-                if (adapter.Specification.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
+                if (adapter.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
                     string state = adapter.ValidToPersist();
                     if (state != null) {
-                        throw new PersistFailedException(string.Format(Resources.NakedObjects.PersistStateError, adapter.Specification.ShortName, adapter.TitleString(), state));
+                        throw new PersistFailedException(string.Format(Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state));
                     }
                 }
             }
@@ -1144,13 +1144,13 @@ namespace NakedObjects.EntityObjectStore {
             return false;
         }
 
-        public IQueryable GetInstances(INakedObjectSpecification spec) {
+        public IQueryable GetInstances(IObjectSpec spec) {
             Log.DebugFormat("GetInstances for: {0}", spec);
             Type type = TypeUtils.GetType(spec.FullName);
             return GetContext(type).GetObjectSet(type);
         }
 
-        public INakedObject GetObject(IOid oid, INakedObjectSpecification hint) {
+        public INakedObject GetObject(IOid oid, IObjectSpec hint) {
             Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
             if (oid is EntityOid) {
                 INakedObject adapter = createAdapter(oid, GetObjectByKey((EntityOid) oid, hint));
@@ -1161,10 +1161,10 @@ namespace NakedObjects.EntityObjectStore {
             if (aggregateOid != null) {
                 var parentOid = (EntityOid) aggregateOid.ParentOid;
                 string parentType = parentOid.TypeName;
-                INakedObjectSpecification parentSpec = metamodel.GetSpecification(parentType);
+                IObjectSpec parentSpec = metamodel.GetSpecification(parentType);
                 INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
 
-                return parent.Specification.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
+                return parent.Spec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
             }
             throw new NakedObjectSystemException("Unexpected oid type: " + oid.GetType());
         }
@@ -1202,7 +1202,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public INakedObject FindByKeys(Type type, object[] keys) {
             var eoid = oidGenerator.CreateOid(type.FullName, keys);
-            INakedObjectSpecification hint = loadSpecification(type);
+            IObjectSpec hint = loadSpecification(type);
             return GetObject(eoid, hint);
         }
 
@@ -1298,7 +1298,7 @@ namespace NakedObjects.EntityObjectStore {
 
         public void Refresh(INakedObject nakedObject) {
             Log.Debug("Refresh nakedobject: " + nakedObject);
-            if (nakedObject.Specification.GetFacet<IComplexTypeFacet>() == null) {
+            if (nakedObject.Spec.GetFacet<IComplexTypeFacet>() == null) {
                 updating(nakedObject, session);
                 GetContext(nakedObject.Object.GetType()).WrappedObjectContext.Refresh(RefreshMode.StoreWins, nakedObject.Object);
                 updated(nakedObject, session);

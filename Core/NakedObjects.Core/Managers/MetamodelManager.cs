@@ -25,20 +25,20 @@ namespace NakedObjects.Managers {
 
         #region IMetamodelManager Members
 
-        public virtual INakedObjectSpecification[] AllSpecifications {
-            get { return metamodel.AllSpecifications.Select(s => new NakedObjectSpecification(memberFactory, this, s)).Cast<INakedObjectSpecification>().ToArray(); }
+        public virtual IObjectSpec[] AllSpecs {
+            get { return metamodel.AllSpecifications.Select(s => new ObjectSpec(memberFactory, this, s)).Cast<IObjectSpec>().ToArray(); }
         }
 
-        public INakedObjectSpecification GetSpecification(Type type) {
-            return new NakedObjectSpecification(memberFactory, this, metamodel.GetSpecification(type));
+        public IObjectSpec GetSpecification(Type type) {
+            return new ObjectSpec(memberFactory, this, metamodel.GetSpecification(type));
         }
 
-        public INakedObjectSpecification GetSpecification(string name) {
-            return new NakedObjectSpecification(memberFactory, this, metamodel.GetSpecification(name));
+        public IObjectSpec GetSpecification(string name) {
+            return new ObjectSpec(memberFactory, this, metamodel.GetSpecification(name));
         }
 
-        public INakedObjectSpecification GetSpecification(IObjectSpecImmutable spec) {
-            return new NakedObjectSpecification(memberFactory,this, metamodel.GetSpecification(spec.Type));
+        public IObjectSpec GetSpecification(IObjectSpecImmutable spec) {
+            return new ObjectSpec(memberFactory,this, metamodel.GetSpecification(spec.Type));
         }
 
         #endregion

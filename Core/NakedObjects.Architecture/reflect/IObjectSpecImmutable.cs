@@ -16,7 +16,7 @@ using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     /// <summary>
-    ///     Introduced to remove special-case processing for <see cref="INakedObjectSpecification" />s that
+    ///     Introduced to remove special-case processing for <see cref="IObjectSpec" />s that
     ///     are not introspectable.
     /// </summary>
     public interface IObjectSpecImmutable : ISpecification {

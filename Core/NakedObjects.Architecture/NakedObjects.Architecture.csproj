@@ -378,7 +378,7 @@
     <Compile Include="spec\IDefaultProvider.cs" />
     <Compile Include="spec\IPropertyContainer.cs" />
     <Compile Include="spec\IHierarchical.cs" />
-    <Compile Include="spec\INakedObjectSpecification.cs" />
+    <Compile Include="spec\IObjectSpec.cs" />
     <Compile Include="spec\INamedAndDescribed.cs" />
     <Compile Include="spec\SpecificationFacets.cs" />
     <Compile Include="util\AdapterUtils.cs" />

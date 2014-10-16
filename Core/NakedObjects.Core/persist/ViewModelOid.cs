@@ -17,11 +17,11 @@ namespace NakedObjects.Core.Persist {
         private string cachedToString;
         private ViewModelOid previous;
 
-        public ViewModelOid(IMetamodelManager metamodel, INakedObjectSpecification specification) {
+        public ViewModelOid(IMetamodelManager metamodel, IObjectSpec spec) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
             IsTransient = false;
-            TypeName = TypeNameUtils.EncodeTypeName(specification.FullName);
+            TypeName = TypeNameUtils.EncodeTypeName(spec.FullName);
             Keys = new[] {System.Guid.NewGuid().ToString()};
             CacheState();
         }
@@ -79,12 +79,12 @@ namespace NakedObjects.Core.Persist {
             get { return previous != null; }  
         }
 
-        public INakedObjectSpecification Specification {
+        public IObjectSpec Spec {
             get { return metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
         }
 
         public void UpdateKeys(string[] newKeys, bool final) { 
-            previous = new ViewModelOid(metamodel, Specification) { Keys = Keys };
+            previous = new ViewModelOid(metamodel, Spec) { Keys = Keys };
             Keys = newKeys; // after old key is saved ! 
             IsFinal = final; 
             CacheState();
