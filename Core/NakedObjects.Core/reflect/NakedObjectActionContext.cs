@@ -5,21 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Component {
-    public interface IMetamodelManager {
-
-        // remove this 
-        IObjectSpec[] AllSpecs { get; }
-
-        IObjectSpec GetSpecification(Type type);
-
-        IObjectSpec GetSpecification(string name);
-
-        IObjectSpec GetSpecification(IObjectSpecImmutable spec);
+namespace NakedObjects.Architecture.Reflect {
+    public class NakedObjectActionContext {
+        public INakedObject Target { get; set; }
+        public IActionSpec Action { get; set; }
+        public INakedObject[] Parameters { get; set; }
     }
 }

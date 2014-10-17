@@ -152,6 +152,7 @@
     <Compile Include="adapter\SerialNumberVersion.cs" />
     <Compile Include="adapter\StringDecoderHelper.cs" />
     <Compile Include="adapter\StringEncoderHelper.cs" />
+    <Compile Include="adapter\ValueSemanticsProviderImpl.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="context\SimpleMessageBroker.cs" />
     <Compile Include="context\SimpleUpdateNotifier.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Managers\MetamodelManager.cs" />
     <Compile Include="Managers\NakedObjectFactory.cs" />
     <Compile Include="Managers\NakedObjectManager.cs" />
+    <Compile Include="Managers\NullAuthorisationManager.cs" />
     <Compile Include="Managers\ObjectPersistor.cs" />
     <Compile Include="Managers\ServicesManager.cs" />
     <Compile Include="objectstore\ObjectStoreTransaction.cs" />
@@ -177,6 +179,11 @@
     <Compile Include="persist\TransactionException.cs" />
     <Compile Include="persist\AggregateOid.cs" />
     <Compile Include="persist\ViewModelOid.cs" />
+    <Compile Include="reflect\Allow.cs" />
+    <Compile Include="reflect\ConsentAbstract.cs" />
+    <Compile Include="reflect\MemberSpecAbstract.cs" />
+    <Compile Include="reflect\NakedObjectActionContext.cs" />
+    <Compile Include="reflect\Veto.cs" />
     <Compile Include="ResolveStateMachine\Events.cs" />
     <Compile Include="ResolveStateMachine\ResolveStateMachine.cs" />
     <Compile Include="ResolveStateMachine\StateHelperUtils.cs" />
@@ -210,8 +217,10 @@
     <Compile Include="util\AsString.cs" />
     <Compile Include="util\CallbackUtils.cs" />
     <Compile Include="util\CollectionUtils.cs" />
+    <Compile Include="util\FeatureSpecUtils.cs" />
     <Compile Include="util\HashCodeUtils.cs" />
     <Compile Include="util\IdentifierUtils.cs" />
+    <Compile Include="util\InteractionUtils.cs" />
     <Compile Include="util\MimeUtils.cs" />
     <Compile Include="util\NakedObjectAssertException.cs" />
     <Compile Include="util\INakedObjectConfigurationAware.cs" />
@@ -289,7 +298,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="object\" />
-    <Folder Include="reflect\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

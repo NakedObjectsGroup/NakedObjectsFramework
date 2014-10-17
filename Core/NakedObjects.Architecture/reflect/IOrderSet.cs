@@ -7,9 +7,8 @@
 
 using System.Collections.Generic;
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Reflector.Peer;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
+namespace NakedObjects.Architecture.Reflect {
     public interface IOrderSet<T> : IOrderableElement<T> where T : IOrderableElement<T>, ISpecification {
         IOrderSet<T> Parent { set; get; }
         IList<IOrderableElement<T>> Children { get; }

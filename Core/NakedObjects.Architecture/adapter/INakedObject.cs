@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.ResolveStateMachine;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Adapter {

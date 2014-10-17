@@ -5,6 +5,7 @@
 using System;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Properties.Defaults;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Capabilities;
 using NakedObjects.Reflector.Spec;
 

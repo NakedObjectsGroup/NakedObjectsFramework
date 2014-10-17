@@ -6,8 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Reflector.Spec;
 
-namespace NakedObjects.Reflector.Spec {
+namespace NakedObjects.Architecture.Reflect {
     public interface IFacetDecoratorSet {
         bool IsEmpty { get; }
         void Add(IFacetDecorator decorator);

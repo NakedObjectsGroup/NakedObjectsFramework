@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.SpecImmutable {
     /// <summary>

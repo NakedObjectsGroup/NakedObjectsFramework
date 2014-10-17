@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Facets.Objects.Bounded;
 using NakedObjects.Architecture.Facets.Objects.Immutable;
 using NakedObjects.Architecture.Facets.Properties.Enums;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Spec {

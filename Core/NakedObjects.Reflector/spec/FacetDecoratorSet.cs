@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.Spec {
     public class FacetDecoratorSet : IFacetDecoratorSet {

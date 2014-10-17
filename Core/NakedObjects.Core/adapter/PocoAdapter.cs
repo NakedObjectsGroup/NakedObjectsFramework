@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Facets.Objects.Aggregated;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.ResolveStateMachine;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;

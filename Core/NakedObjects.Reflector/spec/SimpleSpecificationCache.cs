@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System.Collections.Generic;
+using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflector.Spec {
     public class SimpleSpecificationCache : ISpecificationCache {

@@ -11,6 +11,7 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Choices;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
 using NakedObjects.Reflector.Spec;

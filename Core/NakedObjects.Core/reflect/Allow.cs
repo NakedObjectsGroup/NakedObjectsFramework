@@ -5,29 +5,34 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Reflect;
-
-namespace NakedObjects.Architecture.SpecImmutable {
+namespace NakedObjects.Architecture.Reflect {
     /// <summary>
-    ///     Additional reflective details about field members
+    ///     An instance of this type is used to allow something
     /// </summary>
-    public interface IAssociationSpecImmutable : IMemberSpecImmutable, IOrderableElement<IAssociationSpecImmutable> {
+    public class Allow : ConsentAbstract {
         /// <summary>
-        ///     If this is a scalar association, representing (in old terminology)
-        ///     a reference to another entity or a value.
+        ///     An Allow object with no reason
         /// </summary>
-        /// <para>
-        ///     Opposite of <see cref="IsOneToMany" />
-        /// </para>
-        bool IsOneToOne { get; }
+        public static readonly Allow Default = new Allow();
+
+        public Allow() {}
+
+        public Allow(string reason)
+            : base(reason) {}
 
         /// <summary>
-        ///     If this is a collection
+        ///     Returns <c>true</c>
         /// </summary>
-        /// <para>
-        ///     Opposite of <see cref="IsOneToOne" />
-        /// </para>
-        bool IsOneToMany { get; }
+        public override bool IsAllowed {
+            get { return true; }
+        }
+
+        /// <summary>
+        ///     Returns <c>false</c>
+        /// </summary>
+        public override bool IsVetoed {
+            get { return false; }
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

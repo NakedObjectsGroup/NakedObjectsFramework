@@ -5,29 +5,36 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Reflect;
+using System;
 
-namespace NakedObjects.Architecture.SpecImmutable {
-    /// <summary>
-    ///     Additional reflective details about field members
-    /// </summary>
-    public interface IAssociationSpecImmutable : IMemberSpecImmutable, IOrderableElement<IAssociationSpecImmutable> {
+namespace NakedObjects.Architecture.Reflect {
+    public class Veto : ConsentAbstract {
         /// <summary>
-        ///     If this is a scalar association, representing (in old terminology)
-        ///     a reference to another entity or a value.
+        ///     A Veto object with no reason
         /// </summary>
-        /// <para>
-        ///     Opposite of <see cref="IsOneToMany" />
-        /// </para>
-        bool IsOneToOne { get; }
+        public static readonly Veto Default = new Veto();
+
+        public Veto() {}
+
+        public Veto(string reason)
+            : base(reason) {}
+
+        public Veto(Exception exception)
+            : base(exception) {}
 
         /// <summary>
-        ///     If this is a collection
+        ///     Returns <c>false</c>
         /// </summary>
-        /// <para>
-        ///     Opposite of <see cref="IsOneToOne" />
-        /// </para>
-        bool IsOneToMany { get; }
+        public override bool IsAllowed {
+            get { return false; }
+        }
+
+        /// <summary>
+        ///     Returns <c>true</c>
+        /// </summary>
+        public override bool IsVetoed {
+            get { return true; }
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

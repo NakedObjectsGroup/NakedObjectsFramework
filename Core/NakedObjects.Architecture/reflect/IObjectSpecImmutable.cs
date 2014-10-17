@@ -9,13 +9,10 @@ using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Reflector.DotNet.Facets.Ordering;
-using NakedObjects.Reflector.Peer;
 
-namespace NakedObjects.Reflector.Spec {
+namespace NakedObjects.Architecture.Reflect {
     /// <summary>
     ///     Introduced to remove special-case processing for <see cref="IObjectSpec" />s that
     ///     are not introspectable.

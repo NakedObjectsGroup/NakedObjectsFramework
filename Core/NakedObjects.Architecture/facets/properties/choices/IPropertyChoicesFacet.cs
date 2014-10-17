@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Facets.Properties.Choices {

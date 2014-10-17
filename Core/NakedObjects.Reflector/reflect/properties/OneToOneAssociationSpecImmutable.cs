@@ -7,6 +7,7 @@
 
 using System;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.DotNet.Reflect.Propcoll;
 using NakedObjects.Reflector.Spec;
 

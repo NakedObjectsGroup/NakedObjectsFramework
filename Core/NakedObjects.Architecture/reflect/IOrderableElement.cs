@@ -6,9 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Reflector.DotNet.Facets.Ordering;
 
-namespace NakedObjects.Reflector.Peer {
+namespace NakedObjects.Architecture.Reflect {
     public interface IOrderableElement<T> where T : IOrderableElement<T>, ISpecification {
         T Peer { get; }
         IOrderSet<T> Set { get; }

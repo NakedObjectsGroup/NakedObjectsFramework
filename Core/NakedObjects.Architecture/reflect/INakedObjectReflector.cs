@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
     public interface INakedObjectReflector {

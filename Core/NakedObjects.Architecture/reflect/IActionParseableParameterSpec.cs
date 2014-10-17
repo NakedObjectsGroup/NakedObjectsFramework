@@ -9,5 +9,5 @@ namespace NakedObjects.Architecture.Reflect {
     /// <summary>
     ///     Equivalent to <see cref="IAssociationSpec" />, but for parameter rather than properties
     /// </summary>
-    public interface IActionParseableParameterSpec : IOneToOneFeatureSpec,  IActionParameterSpec {}
+    public interface IActionParseableParameterSpec : IOneToOneFeatureSpec, IActionParameterSpec {}
 }

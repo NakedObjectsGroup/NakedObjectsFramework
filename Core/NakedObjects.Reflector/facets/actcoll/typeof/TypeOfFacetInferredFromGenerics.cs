@@ -8,6 +8,7 @@
 using System;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {

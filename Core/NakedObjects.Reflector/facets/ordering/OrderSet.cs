@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder;
 using NakedObjects.Reflector.Peer;
 

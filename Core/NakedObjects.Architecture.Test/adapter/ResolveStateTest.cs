@@ -9,8 +9,10 @@ using System;
 using Moq;
 using NakedObjects.Architecture.Facets.Objects.Callbacks;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.ResolveStateMachine;
 using NakedObjects.Architecture.Spec;
 using NUnit.Framework;
+using RSM = NakedObjects.Architecture.Resolve.ResolveStateMachine;
 
 namespace NakedObjects.Architecture.Adapter {
     [TestFixture]
@@ -55,7 +57,7 @@ namespace NakedObjects.Architecture.Adapter {
             mockSpecification.Setup(s => s.GetFacet<ILoadingCallbackFacet>()).Returns(testFacet);
             mockSpecification.Setup(s => s.GetFacet<ILoadedCallbackFacet>()).Returns(testFacet);
 
-            return new ResolveStateMachine(testAdapter, null);
+            return new RSM(testAdapter, null);
         }
 
         private static IResolveStateMachine GhostSM() {

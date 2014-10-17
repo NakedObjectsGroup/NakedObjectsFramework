@@ -8,6 +8,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Invoke;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.DotNet.Reflect.Util;

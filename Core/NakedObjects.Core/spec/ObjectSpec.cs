@@ -31,7 +31,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.DotNet.Facets.Ordering;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
