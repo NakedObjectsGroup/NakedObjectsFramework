@@ -9,6 +9,10 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Persistor {
+    /// <summary>
+    /// Implementation of this interface will typically be specific to the implementation of INakedObjectStore, but could
+    /// in theory be re-used by more than one Object Store that had similar operating characteristics.
+    /// </summary>
     public interface IPersistAlgorithm {
         string Name { get; }
         void MakePersistent(INakedObject nakedObject, ISession session);

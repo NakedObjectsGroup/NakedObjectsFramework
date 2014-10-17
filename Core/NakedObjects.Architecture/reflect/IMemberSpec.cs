@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Reflect {
     /// <summary>
-    ///     Provides reflective access to an action or a field on a domain object
+    /// Base interface for specifications covering properties and actions.
     /// </summary>
     public interface IMemberSpec : IFeatureSpec {
         /// <summary>

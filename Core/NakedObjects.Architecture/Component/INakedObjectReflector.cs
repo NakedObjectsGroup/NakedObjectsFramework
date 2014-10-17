@@ -11,6 +11,8 @@ using System.Reflection;
 using NakedObjects.Architecture.Facets;
 
 namespace NakedObjects.Architecture.Reflect {
+
+    //TODO: Rename to IReflector and move into Component folder
     public interface INakedObjectReflector {
         IClassStrategy ClassStrategy { get; }
 

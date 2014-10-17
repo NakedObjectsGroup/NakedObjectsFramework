@@ -17,6 +17,10 @@ using NakedObjects.Architecture.Transaction;
 using NakedObjects.Core.Context;
 
 namespace NakedObjects.Persistor.Objectstore {
+    /// <summary>
+    /// TODO: Rename to IObjectStore
+    /// Provides a generic interface to a specific persistence mechanism
+    /// </summary>
     public interface INakedObjectStore {
         /// <summary>
         ///     Determine if the object store has been initialized with its set of start up objects. This method is
