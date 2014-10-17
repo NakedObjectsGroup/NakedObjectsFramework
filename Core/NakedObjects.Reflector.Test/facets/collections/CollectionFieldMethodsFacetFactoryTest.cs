@@ -12,10 +12,8 @@ using System.Reflection;
 using System.Security.Principal;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets.Disable;
-using NakedObjects.Architecture.Facets.Hide;
-using NakedObjects.Architecture.Facets.Properties.Set;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.DotNet.Facets.Propcoll.Access;
 using NUnit.Framework;
 

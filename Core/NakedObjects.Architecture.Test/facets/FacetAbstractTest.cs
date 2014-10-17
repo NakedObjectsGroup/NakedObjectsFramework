@@ -9,6 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 using NUnit.Framework;
 
 namespace INakedObjects.Architecture.Adapter {

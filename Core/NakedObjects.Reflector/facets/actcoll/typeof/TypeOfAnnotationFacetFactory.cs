@@ -10,10 +10,10 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
     public class TypeOfAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {

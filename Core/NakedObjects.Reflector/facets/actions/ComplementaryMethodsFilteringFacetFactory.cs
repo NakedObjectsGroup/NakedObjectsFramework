@@ -12,8 +12,8 @@ using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions {
     /// <summary>
@@ -28,9 +28,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         public ComplementaryMethodsFilteringFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ActionsOnly) {}
 
+        #region IMethodFilteringFacetFactory Members
+
         public bool Filters(MethodInfo method) {
             return IsComplementaryMethod(method);
         }
+
+        #endregion
 
         private static bool IsComplementaryMethod(MethodInfo actionMethod) {
             var propertyPrefixes = new[] {

@@ -9,10 +9,9 @@ using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Propparam.Validate.Mandatory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
     /// <summary>

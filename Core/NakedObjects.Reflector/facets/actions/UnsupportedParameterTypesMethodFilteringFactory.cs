@@ -9,8 +9,8 @@ using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions {
     public class UnsupportedParameterTypesMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
@@ -18,6 +18,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
         public UnsupportedParameterTypesMethodFilteringFactory(IReflector reflector)
             : base(reflector, FeatureType.ActionsOnly) {}
+
+        #region IMethodFilteringFacetFactory Members
 
         public bool Filters(MethodInfo method) {
             if (method.IsGenericMethod) {
@@ -33,6 +35,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             }
             return false;
         }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

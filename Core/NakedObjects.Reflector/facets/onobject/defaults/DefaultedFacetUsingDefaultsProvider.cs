@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
     public class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDefaultedFacet {
@@ -19,6 +19,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
             defaultsProvider = parser;
         }
 
+        #region IDefaultedFacet Members
+
         public object Default {
             get { return defaultsProvider.DefaultValue; }
         }
@@ -26,6 +28,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
         public bool IsValid {
             get { return defaultsProvider != null; }
         }
+
+        #endregion
 
         protected override string ToStringValues() {
             return defaultsProvider.ToString();

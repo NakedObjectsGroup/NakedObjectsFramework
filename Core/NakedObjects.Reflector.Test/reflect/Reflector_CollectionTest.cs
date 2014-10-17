@@ -4,8 +4,8 @@
 
 using System.Collections;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Metamodel.Facet;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {

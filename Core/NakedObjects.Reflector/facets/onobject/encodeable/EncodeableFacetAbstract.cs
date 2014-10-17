@@ -9,9 +9,9 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
@@ -29,6 +29,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
                 : null;
         }
 
+        #region IEncodeableFacet Members
+
         /// <summary>
         ///     Discover whether either of the candidate encoder/decoder name or class is valid.
         /// </summary>
@@ -43,6 +45,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
         public string ToEncodedString(INakedObject nakedObject) {
             return encodeableFacetUsingEncoderDecoder.ToEncodedString(nakedObject);
         }
+
+        #endregion
 
         /// <summary>
         ///     Guaranteed to implement the <see cref="IEncoderDecoder{T}" /> class, thanks to generics in the applib.

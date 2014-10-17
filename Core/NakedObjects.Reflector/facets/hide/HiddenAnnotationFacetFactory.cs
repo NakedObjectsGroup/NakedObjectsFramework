@@ -10,12 +10,13 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Util;
 using MethodInfo = System.Reflection.MethodInfo;
 using PropertyInfo = System.Reflection.PropertyInfo;
+using MemberInfo = System.Reflection.MemberInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Hide {
     public class HiddenAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -27,8 +28,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
                 type.GetCustomAttributeByReflection<ScaffoldColumnAttribute>, specification);
         }
 
-        private static bool Process(System.Reflection.MemberInfo member, ISpecification holder) {
-          
+        private static bool Process(MemberInfo member, ISpecification holder) {
             return Process(member.GetCustomAttribute<HiddenAttribute>, member.GetCustomAttribute<ScaffoldColumnAttribute>, holder);
         }
 

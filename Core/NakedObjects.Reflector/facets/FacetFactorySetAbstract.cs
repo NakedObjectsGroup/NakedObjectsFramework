@@ -11,9 +11,9 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class FacetFactorySetAbstract : IFacetFactorySet {
@@ -61,6 +61,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             }
         }
 
+        #region IFacetFactorySet Members
 
         public void FindCollectionProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo) {
             CachePropertyOrCollectionIdentifyingFacetFactoriesIfRequired();
@@ -138,6 +139,8 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         }
 
         public abstract void Init(IReflector reflector);
+
+        #endregion
 
         public void RegisterFactory(IFacetFactory factory) {
             lock (cacheLock) {

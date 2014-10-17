@@ -7,8 +7,8 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets.Actions.Defaults;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Defaults {
     public class ActionDefaultsFacetAnnotation : ActionDefaultsFacetAbstract {

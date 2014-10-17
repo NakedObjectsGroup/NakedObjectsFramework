@@ -8,9 +8,9 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
     public class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
@@ -20,6 +20,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
             : base(typeof (ITitleFacet), holder) {
             this.parser = parser;
         }
+
+        #region ITitleFacet Members
 
         public string GetTitle(INakedObject nakedObject) {
             if (nakedObject == null || nakedObject.Object == null) {
@@ -34,6 +36,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
             }
             return parser.TitleWithMaskOf(mask, (T) nakedObject.Object);
         }
+
+        #endregion
 
         protected override string ToStringValues() {
             return parser.ToString();

@@ -7,8 +7,8 @@
 
 using System;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
     public class EagerlyFacetAnnotation : FacetAbstract, IEagerlyFacet {
@@ -21,6 +21,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
             get { return typeof (IEagerlyFacet); }
         }
 
+        #region IEagerlyFacet Members
+
         public EagerlyAttribute.Do What { get; private set; }
+
+        #endregion
     }
 }

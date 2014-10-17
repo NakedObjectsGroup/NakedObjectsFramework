@@ -7,8 +7,8 @@
 
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets.Properties.Modify;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Modify {

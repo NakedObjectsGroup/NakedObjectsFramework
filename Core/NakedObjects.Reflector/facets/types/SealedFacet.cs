@@ -8,6 +8,7 @@
 using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Architecture.Facets.Types {
     public class SealedFacet : MarkerFacetAbstract, ISealedFacet {

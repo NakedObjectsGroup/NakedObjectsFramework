@@ -9,8 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using NakedObjects.Architecture.Facets.Actions.Executed;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     public class ExecutedFacetAnnotationForControlMethods : ExecutedControlMethodFacetAbstract {

@@ -10,8 +10,8 @@ using System.Reflection;
 using Moq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets.Actions.Contributed;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Metamodel.Facet;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {

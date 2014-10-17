@@ -8,8 +8,8 @@
 using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets.Objects.Bounded;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Metamodel.Facet;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Bounded {

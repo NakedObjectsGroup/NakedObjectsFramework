@@ -13,11 +13,9 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Disable;
-using NakedObjects.Architecture.Facets.Hide;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Security;
 using NakedObjects.Util;
 

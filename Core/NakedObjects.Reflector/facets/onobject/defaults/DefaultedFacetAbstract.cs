@@ -7,9 +7,9 @@
 
 using System;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
@@ -26,6 +26,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
             defaultedFacetUsingDefaultsProvider = IsValid ? new DefaultedFacetUsingDefaultsProvider<T>((IDefaultsProvider<T>) TypeUtils.NewInstance(defaultsProviderClass), holder) : null;
         }
 
+        #region IDefaultedFacet Members
+
         public object Default {
             get { return defaultedFacetUsingDefaultsProvider.Default; }
         }
@@ -36,6 +38,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
         public bool IsValid {
             get { return defaultsProviderClass != null; }
         }
+
+        #endregion
 
         /// <summary>
         ///     Guaranteed to implement the <see cref="IEncoderDecoder{T}" /> class, thanks to

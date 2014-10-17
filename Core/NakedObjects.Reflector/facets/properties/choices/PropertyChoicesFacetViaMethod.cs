@@ -12,10 +12,9 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Properties.Choices;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Choices {

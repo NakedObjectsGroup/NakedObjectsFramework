@@ -7,8 +7,8 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facets.Objects.Callbacks;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
     public class CreatedCallbackFacetNull : CreatedCallbackFacetAbstract {

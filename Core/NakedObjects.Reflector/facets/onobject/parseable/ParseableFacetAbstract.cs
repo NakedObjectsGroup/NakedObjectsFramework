@@ -9,9 +9,9 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
@@ -25,6 +25,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
             parserClass = ParserUtils.ParserOrNull<T>(candidateParserClass, candidateParserName);
             parseableFacetUsingParser = IsValid ? new ParseableFacetUsingParser<T>((IParser<T>) TypeUtils.NewInstance(parserClass), holder) : null;
         }
+
+        #region IParseableFacet Members
 
         /// <summary>
         ///     Discover whether either of the candidate parser name or class is valid.
@@ -48,6 +50,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
         public string InvariantString(INakedObject nakedObject) {
             return parseableFacetUsingParser.InvariantString(nakedObject);
         }
+
+        #endregion
 
         /// <summary>
         ///     Guaranteed to implement the <see cref="IParser{T}" /> class, thanks to generics in the applib.

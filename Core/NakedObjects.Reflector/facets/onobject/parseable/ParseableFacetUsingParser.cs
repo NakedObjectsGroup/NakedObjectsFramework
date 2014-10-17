@@ -9,9 +9,9 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
     public class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
@@ -21,6 +21,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
             : base(typeof (IParseableFacet), holder) {
             this.parser = parser;
         }
+
+        #region IParseableFacet Members
 
         public bool IsValid {
             get { return parser != null; }
@@ -48,6 +50,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
             var context = nakedObject.GetDomainObject<T>();
             return parser.InvariantString(context);
         }
+
+        #endregion
 
         protected override string ToStringValues() {
             return parser.ToString();

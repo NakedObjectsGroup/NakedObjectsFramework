@@ -10,8 +10,8 @@ using System.Collections;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections.Modify {
@@ -27,13 +27,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections.Modify {
             get { return typeof (ICollectionResetFacet); }
         }
 
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return property.GetGetMethod();
-        }
-
-        #endregion
+        #region ICollectionResetFacet Members
 
         public void Reset(INakedObject inObject) {
             try {
@@ -45,6 +39,16 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections.Modify {
                 throw new ReflectionException(string.Format("Failed to get/set property {0} in {1}", property.Name, inObject.Spec.FullName), e);
             }
         }
+
+        #endregion
+
+        #region IImperativeFacet Members
+
+        public MethodInfo GetMethod() {
+            return property.GetGetMethod();
+        }
+
+        #endregion
 
         protected override string ToStringValues() {
             return "property=" + property;

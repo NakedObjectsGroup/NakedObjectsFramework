@@ -48,6 +48,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
             public string Value1 { get; set; }
             public string Value2 { get; set; }
 
+            #region IViewModel Members
+
             public string[] DeriveKeys() {
                 return new[] {Value1, Value2};
             }
@@ -56,6 +58,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
                 Value1 = instanceId[0];
                 Value2 = instanceId[1];
             }
+
+            #endregion
         }
 
         private class Class2 {

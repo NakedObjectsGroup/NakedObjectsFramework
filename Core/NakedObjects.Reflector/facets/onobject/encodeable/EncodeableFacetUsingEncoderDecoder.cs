@@ -8,9 +8,9 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
     public class EncodeableFacetUsingEncoderDecoder<T> : FacetAbstract, IEncodeableFacet {
@@ -21,6 +21,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
             : base(typeof (IEncodeableFacet), holder) {
             this.encoderDecoder = encoderDecoder;
         }
+
+        #region IEncodeableFacet Members
 
         public bool IsValid {
             get { return encoderDecoder != null; }
@@ -37,6 +39,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
         public string ToEncodedString(INakedObject nakedObject) {
             return nakedObject == null ? ENCODED_NULL : encoderDecoder.ToEncodedString(nakedObject.GetDomainObject<T>());
         }
+
+        #endregion
 
         // TODO: is this safe? really?
 

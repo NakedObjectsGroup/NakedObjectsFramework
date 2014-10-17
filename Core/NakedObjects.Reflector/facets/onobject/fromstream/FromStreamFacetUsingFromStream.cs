@@ -9,9 +9,9 @@ using System.IO;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.FromStream {
     public class FromStreamFacetUsingFromStream : FacetAbstract, IFromStreamFacet {
@@ -23,10 +23,14 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.FromStream {
             this.fromStream = fromStream;
         }
 
+        #region IFromStreamFacet Members
+
         public INakedObject ParseFromStream(Stream stream, string mimeType, string name, INakedObjectManager manager) {
             object obj = fromStream.ParseFromStream(stream, mimeType, name);
             return manager.CreateAdapter(obj, null, null);
         }
+
+        #endregion
 
         protected override string ToStringValues() {
             return fromStream.ToString();

@@ -7,8 +7,8 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
     public class PropertyDefaultFacetDerivedFromDefaultedFacet : FacetAbstract, IPropertyDefaultFacet {
@@ -19,8 +19,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
             this.typeFacet = typeFacet;
         }
 
+        #region IPropertyDefaultFacet Members
+
         public object GetDefault(INakedObject inObject) {
             return typeFacet.Default;
         }
+
+        #endregion
     }
 }

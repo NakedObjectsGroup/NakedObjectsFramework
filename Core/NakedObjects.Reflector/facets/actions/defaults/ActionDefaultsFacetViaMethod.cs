@@ -9,8 +9,8 @@ using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets.Actions.Defaults;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.DotNet.Facets.Actions.Invoke;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
 

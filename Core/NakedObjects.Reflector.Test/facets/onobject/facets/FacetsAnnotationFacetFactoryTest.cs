@@ -9,9 +9,9 @@ using System;
 using System.Reflection;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Value;
 using NUnit.Framework;
 

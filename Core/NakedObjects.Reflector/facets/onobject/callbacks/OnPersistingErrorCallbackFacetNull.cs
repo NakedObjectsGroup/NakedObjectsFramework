@@ -7,8 +7,8 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets.Objects.Callbacks;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
     public class OnPersistingErrorCallbackFacetNull : OnPersistingErrorCallbackFacetAbstract {

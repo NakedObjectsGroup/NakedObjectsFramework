@@ -7,8 +7,8 @@
 
 using System.Text.RegularExpressions;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets.Propparam.Validate.RegEx;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
     public class RegExFacetAnnotation : RegExFacetAbstract, IRegExFacet {
@@ -20,6 +20,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
         private RegexOptions PatternFlags {
             get { return !IsCaseSensitive ? RegexOptions.IgnoreCase : RegexOptions.None; }
         }
+
+        #region IRegExFacet Members
 
         public Regex Pattern { get; private set; }
 
@@ -36,6 +38,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
             }
             return !Pattern.IsMatch(text);
         }
+
+        #endregion
 
         protected override string ToStringValues() {
             return Pattern.ToString();

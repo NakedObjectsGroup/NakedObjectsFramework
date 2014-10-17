@@ -8,9 +8,9 @@
 using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Objects.Value;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Defaults;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable;
 using NakedObjects.Reflector.DotNet.Facets.Objects.FromStream;
@@ -91,6 +91,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
             get { return typeof (IValueFacet); }
         }
 
+        #region IValueFacet Members
+
         public virtual bool IsValid {
             get { return semanticsProvider != null; }
         }
@@ -106,6 +108,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
         public TF GetFacet<TF>() where TF : IFacet {
             return specification.GetFacet<TF>();
         }
+
+        #endregion
 
         private static IValueSemanticsProvider<T> NewValueSemanticsProviderOrNull(Type semanticsProviderClass) {
             if (semanticsProviderClass == null) {

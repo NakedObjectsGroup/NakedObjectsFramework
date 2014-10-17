@@ -8,8 +8,8 @@
 using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets.Actions.Defaults;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
     public class ActionDefaultsFacetDerivedFromDefaultedFacets : ActionDefaultsFacetAbstract {

@@ -48,6 +48,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
                 this.testUser = testUser;
             }
 
+            #region ISession Members
+
             public string UserName {
                 get { return Principal.Identity.Name; }
             }
@@ -59,6 +61,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             public IPrincipal Principal {
                 get { return new TestPrincipal(testRole, testUser); }
             }
+
+            #endregion
         }
 
         private AuthorizeAnnotationFacetFactory facetFactory;

@@ -10,8 +10,8 @@ using System.Collections;
 using System.Reflection;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets.Disable;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Metamodel.Facet;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Disable {

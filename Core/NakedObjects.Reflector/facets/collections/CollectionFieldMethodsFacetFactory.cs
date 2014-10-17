@@ -12,11 +12,10 @@ using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Properties.Set;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.DotNet.Facets.Propcoll.Access;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {

@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.TypicalLength {
     public class TypicalLengthFacetUsingParser<T> : FacetAbstract, ITypicalLengthFacet {
@@ -19,9 +19,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.TypicalLength {
             this.parser = parser;
         }
 
+        #region ITypicalLengthFacet Members
+
         public int Value {
             get { return parser.TypicalLength; }
         }
+
+        #endregion
 
         protected override string ToStringValues() {
             return parser.ToString();

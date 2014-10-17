@@ -9,8 +9,8 @@ using System;
 using System.Reflection;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets.Actions.Executed;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Metamodel.Facet;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {

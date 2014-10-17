@@ -7,14 +7,16 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Validate {
     public class PropertyValidateFacetDefault : FacetAbstract, IPropertyValidateFacet {
         public PropertyValidateFacetDefault(ISpecification holder)
             : base(typeof (IPropertyValidateFacet), holder) {}
+
+        #region IPropertyValidateFacet Members
 
         public InvalidException CreateExceptionFor(InteractionContext ic) {
             return null;
@@ -27,5 +29,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Validate {
         public string InvalidReason(INakedObject target, INakedObject proposedValue) {
             return null;
         }
+
+        #endregion
     }
 }

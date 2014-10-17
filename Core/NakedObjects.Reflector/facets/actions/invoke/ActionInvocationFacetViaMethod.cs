@@ -9,9 +9,9 @@ using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facets.Actions.Invoke;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Invoke {

@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets.Objects.TypicalLength;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Architecture.Facets.Propparam.TypicalLength {
     public class TypicalLengthFacetDerivedFromType : TypicalLengthFacetAbstract {

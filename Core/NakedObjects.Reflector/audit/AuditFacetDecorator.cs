@@ -6,10 +6,9 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets.Actions.Invoke;
-using NakedObjects.Architecture.Facets.Objects.Callbacks;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.Audit {

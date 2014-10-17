@@ -10,9 +10,9 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets.AutoComplete;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.AutoComplete {
