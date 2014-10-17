@@ -18,7 +18,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
     public class TableViewAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TableViewAnnotationFacetFactory(INakedObjectReflector reflector)
+        public TableViewAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.CollectionsAndActions) {}
 
         private bool Process(MemberInfo member, Type methodReturnType, ISpecification specification) {

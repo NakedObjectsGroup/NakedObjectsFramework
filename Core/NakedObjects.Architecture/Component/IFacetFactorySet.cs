@@ -80,6 +80,6 @@ namespace NakedObjects.Architecture.Component {
         /// </returns>
         bool ProcessParams(MethodInfo method, int paramNum, ISpecification specification);
 
-        void Init(INakedObjectReflector reflector);
+        void Init(IReflector reflector);
     }
 }

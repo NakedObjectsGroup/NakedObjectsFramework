@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class CharValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<char> {
-        public CharValueTypeFacetFactory(INakedObjectReflector reflector)
+        public CharValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (ICharValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

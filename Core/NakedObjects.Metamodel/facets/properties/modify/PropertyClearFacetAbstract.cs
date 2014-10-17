@@ -23,7 +23,7 @@ namespace NakedObjects.Architecture.Facets.Properties.Modify {
 
         #region IPropertyClearFacet Members
 
-        public abstract void ClearProperty(INakedObject nakedObject, INakedObjectTransactionManager transactionManager);
+        public abstract void ClearProperty(INakedObject nakedObject, ITransactionManager transactionManager);
 
         #endregion
     }

@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         public bool OptionalByDefault { get; set; }
 
-        public INakedObjectReflector CreateReflector() {
+        public IReflector CreateReflector() {
             
             var facetDecoratorSet = new FacetDecoratorSet();
           
@@ -54,7 +54,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         #endregion
 
-        private void AddEnhancement(FacetDecoratorSet facetDecoratorSet, INakedObjectReflector reflector) {
+        private void AddEnhancement(FacetDecoratorSet facetDecoratorSet, IReflector reflector) {
             foreach (IReflectionDecoratorInstaller installer in enhancements.Where(x => x is IReflectionDecoratorInstaller)) {
                 installer.CreateDecorators(reflector).ForEach(facetDecoratorSet.Add);
             }

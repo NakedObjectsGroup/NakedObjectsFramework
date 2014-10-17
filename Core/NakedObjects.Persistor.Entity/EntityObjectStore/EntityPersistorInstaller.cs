@@ -200,7 +200,7 @@ namespace NakedObjects.EntityObjectStore {
             return connectionStrings.Select(cs => cs.Name).ToArray();
         }
 
-        public INakedObjectReflector SetupReflector(INakedObjectReflector reflector) {
+        public IReflector SetupReflector(IReflector reflector) {
             return reflector;
         }
 

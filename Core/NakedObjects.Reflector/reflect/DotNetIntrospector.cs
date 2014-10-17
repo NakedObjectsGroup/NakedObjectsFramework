@@ -42,7 +42,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         private readonly MethodInfo[] methods;
         private readonly PropertyInfo[] properties;
-        private readonly INakedObjectReflector reflector;
+        private readonly IReflector reflector;
 
         private IOrderSet<IActionSpecImmutable> orderedClassActions;
         private IOrderSet<IAssociationSpecImmutable> orderedFields;
@@ -50,7 +50,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         public DotNetIntrospector(Type typeToIntrospect,
                                   IObjectSpecImmutable specification,
-                                  INakedObjectReflector reflector) {
+                                  IReflector reflector) {
             Log.DebugFormat("Creating DotNetIntrospector for {0}", typeToIntrospect);
 
             if (!TypeUtils.IsPublic(typeToIntrospect)) {

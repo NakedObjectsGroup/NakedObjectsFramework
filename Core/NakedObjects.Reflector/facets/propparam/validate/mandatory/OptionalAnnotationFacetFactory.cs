@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
     public class OptionalAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (OptionalAnnotationFacetFactory));
 
-        public OptionalAnnotationFacetFactory(INakedObjectReflector reflector)
+        public OptionalAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesAndParameters) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {

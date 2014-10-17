@@ -13,7 +13,7 @@ using NakedObjects.Reflector.DotNet.Facets.Objects.Value;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public abstract class ValueUsingValueSemanticsProviderFacetFactory<T> : FacetFactoryAbstract {
-        protected ValueUsingValueSemanticsProviderFacetFactory(INakedObjectReflector reflector, Type adapterFacetType)
+        protected ValueUsingValueSemanticsProviderFacetFactory(IReflector reflector, Type adapterFacetType)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
         protected void AddFacets(ValueSemanticsProviderAbstract<T> adapter) {

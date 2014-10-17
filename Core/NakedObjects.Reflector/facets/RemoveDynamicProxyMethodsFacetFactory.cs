@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             methodsToRemove = new List<string> {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
         }
 
-        public RemoveDynamicProxyMethodsFacetFactory(INakedObjectReflector reflector)
+        public RemoveDynamicProxyMethodsFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsAndProperties) {}
 
         private static bool IsDynamicProxyType(Type type) {

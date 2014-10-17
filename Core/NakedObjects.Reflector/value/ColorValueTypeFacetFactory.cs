@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ColorValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<Color> {
-        public ColorValueTypeFacetFactory(INakedObjectReflector reflector)
+        public ColorValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IColorValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

@@ -6,10 +6,10 @@ using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.NakedObjectsSystem {
     /// <summary>
-    ///     Installs a <see cref="INakedObjectReflector" /> during system start up
+    ///     Installs a <see cref="IReflector" /> during system start up
     /// </summary>
     public interface IReflectorInstaller : IInstaller {
-        INakedObjectReflector CreateReflector();
+        IReflector CreateReflector();
         void AddEnhancement(IReflectorEnhancementInstaller enhancementInstaller);
     }
 

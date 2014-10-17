@@ -15,7 +15,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Validate {
     public class PropertyValidateDefaultFacetFactory : FacetFactoryAbstract {
-        public PropertyValidateDefaultFacetFactory(INakedObjectReflector reflector)
+        public PropertyValidateDefaultFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesOnly) {}
 
         public override bool Process(PropertyInfo method, IMethodRemover methodRemover, ISpecification specification) {

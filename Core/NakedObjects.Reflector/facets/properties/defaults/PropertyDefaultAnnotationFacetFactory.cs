@@ -17,7 +17,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Defaults {
     public class PropertyDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PropertyDefaultAnnotationFacetFactory(INakedObjectReflector reflector)
+        public PropertyDefaultAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesOnly) {}
 
 

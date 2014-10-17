@@ -23,7 +23,7 @@ namespace NakedObjects.Architecture.Facets.Properties.Modify {
 
         #region IPropertySetterFacet Members
 
-        public abstract void SetProperty(INakedObject nakedObject, INakedObject nakedValue, INakedObjectTransactionManager transactionManager);
+        public abstract void SetProperty(INakedObject nakedObject, INakedObject nakedValue, ITransactionManager transactionManager);
 
         #endregion
     }

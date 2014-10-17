@@ -16,7 +16,7 @@ using NakedObjects.Reflector.DotNet.Facets.Objects.Value;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class EnumValueTypeFacetFactory : FacetFactoryAbstract {
-        public EnumValueTypeFacetFactory(INakedObjectReflector reflector)
+        public EnumValueTypeFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

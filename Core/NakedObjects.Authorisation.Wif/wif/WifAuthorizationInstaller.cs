@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.Security.Wif {
             get { return "wif"; }
         }
 
-        public IFacetDecorator[] CreateDecorators(INakedObjectReflector reflector) {
+        public IFacetDecorator[] CreateDecorators(IReflector reflector) {
             throw new NotImplementedException();
         }
 

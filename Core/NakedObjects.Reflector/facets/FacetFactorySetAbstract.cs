@@ -137,7 +137,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             return facetsAdded;
         }
 
-        public abstract void Init(INakedObjectReflector reflector);
+        public abstract void Init(IReflector reflector);
 
         public void RegisterFactory(IFacetFactory factory) {
             lock (cacheLock) {

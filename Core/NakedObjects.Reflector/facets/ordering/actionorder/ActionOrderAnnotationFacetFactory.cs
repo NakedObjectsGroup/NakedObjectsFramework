@@ -16,7 +16,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.ActionOrder {
     public class ActionOrderAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ActionOrderAnnotationFacetFactory(INakedObjectReflector reflector)
+        public ActionOrderAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

@@ -17,7 +17,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine {
     public class MultiLineAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MultiLineAnnotationFacetFactory(INakedObjectReflector reflector)
+        public MultiLineAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsPropertiesAndParameters) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

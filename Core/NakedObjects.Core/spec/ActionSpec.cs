@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.Spec {
         private readonly MemberFactory memberFactory;
         private readonly IMetamodelManager metamodel;
         private readonly IServicesManager servicesManager;
-        private readonly INakedObjectTransactionManager transactionManager;
+        private readonly ITransactionManager transactionManager;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IActionSpecImmutable actionSpecImmutable;
 
@@ -39,7 +39,7 @@ namespace NakedObjects.Reflector.Spec {
             Log = LogManager.GetLogger(typeof (ActionSpec));
         }
 
-        public ActionSpec(MemberFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, INakedObjectTransactionManager transactionManager, INakedObjectManager nakedObjectManager, IActionSpecImmutable actionSpecImmutable)
+        public ActionSpec(MemberFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager, IActionSpecImmutable actionSpecImmutable)
             : base(actionSpecImmutable.Identifier.MemberName, actionSpecImmutable, session, lifecycleManager) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(actionSpecImmutable);

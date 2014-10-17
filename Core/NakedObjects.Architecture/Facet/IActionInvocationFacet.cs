@@ -24,9 +24,9 @@ namespace NakedObjects.Architecture.Facet {
 
         IObjectSpecImmutable OnType { get; }
 
-        INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager);
+        INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectManager manager, ISession session, ITransactionManager transactionManager);
 
-        INakedObject Invoke(INakedObject target, INakedObject[] parameters, int resultPage, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager);
+        INakedObject Invoke(INakedObject target, INakedObject[] parameters, int resultPage, INakedObjectManager manager, ISession session, ITransactionManager transactionManager);
 
         bool GetIsRemoting(INakedObject target);
     }

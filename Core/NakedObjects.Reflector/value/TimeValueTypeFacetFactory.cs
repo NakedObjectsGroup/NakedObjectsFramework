@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class TimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<TimeSpan> {
-        public TimeValueTypeFacetFactory(INakedObjectReflector reflector)
+        public TimeValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IDateValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

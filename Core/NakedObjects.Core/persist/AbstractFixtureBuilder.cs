@@ -36,14 +36,14 @@ namespace NakedObjects.Core.Persist {
         /// <para>
         ///     Once done the set of fixtures is cleared and <see cref="Fixtures" /> returns an empty array.
         /// </para>
-        public void InstallFixtures(INakedObjectTransactionManager transactionManager, IContainerInjector injector) {
+        public void InstallFixtures(ITransactionManager transactionManager, IContainerInjector injector) {
             PreInstallFixtures(transactionManager);
             InstallFixtures(transactionManager, injector, Fixtures);
             PostInstallFixtures(transactionManager);
             fixtures.Clear();
         }
 
-        public void InstallFixture(INakedObjectTransactionManager transactionManager, IContainerInjector injector, string fixtureName) {
+        public void InstallFixture(ITransactionManager transactionManager, IContainerInjector injector, string fixtureName) {
             InstallFixtures(transactionManager, injector, Fixtures);
         }
 
@@ -57,13 +57,13 @@ namespace NakedObjects.Core.Persist {
             fixtures.Add(fixture);
         }
 
-        private void InstallFixtures(INakedObjectTransactionManager transactionManager, IContainerInjector injector, object[] newFixtures) {
+        private void InstallFixtures(ITransactionManager transactionManager, IContainerInjector injector, object[] newFixtures) {
             foreach (object fixture in newFixtures) {
                 InstallFixture(transactionManager, injector, fixture);
             }
         }
 
-        private void InstallFixture(INakedObjectTransactionManager transactionManager, IContainerInjector injector, object fixture) {
+        private void InstallFixture(ITransactionManager transactionManager, IContainerInjector injector, object fixture) {
             injector.InitDomainObject(fixture);
 
             // first, install any child fixtures (if this is a composite.
@@ -100,8 +100,8 @@ namespace NakedObjects.Core.Persist {
         /// </summary>
         protected abstract object[] GetFixtures(object fixture);
 
-        protected virtual void PostInstallFixtures(INakedObjectTransactionManager transactionManager) { }
+        protected virtual void PostInstallFixtures(ITransactionManager transactionManager) { }
 
-        protected virtual void PreInstallFixtures(INakedObjectTransactionManager transactionManager) {}
+        protected virtual void PreInstallFixtures(ITransactionManager transactionManager) {}
     }
 }

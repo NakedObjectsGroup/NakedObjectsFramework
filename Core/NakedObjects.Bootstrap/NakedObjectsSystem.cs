@@ -29,7 +29,7 @@ namespace NakedObjects.Boot {
         private ServiceHost host;
         private IServicesInstaller menuServicesInstaller;
         private IObjectPersistorInstaller objectPersistorInstaller;
-        private INakedObjectReflector reflector;
+        private IReflector reflector;
         private IServicesInstaller systemServicesInstaller;
 
         static NakedObjectsSystem() {

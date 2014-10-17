@@ -19,7 +19,7 @@ using PropertyInfo = System.Reflection.PropertyInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Hide {
     public class HiddenAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public HiddenAnnotationFacetFactory(INakedObjectReflector reflector)
+        public HiddenAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

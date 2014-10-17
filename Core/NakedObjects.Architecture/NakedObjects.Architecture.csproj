@@ -139,7 +139,7 @@
     <Compile Include="Component\IFacetFactorySet.cs" />
     <Compile Include="Component\IMetamodel.cs" />
     <Compile Include="Component\IMetamodelManager.cs" />
-    <Compile Include="Component\INakedObjectReflector.cs" />
+    <Compile Include="Component\IReflector.cs" />
     <Compile Include="Exception\ResolveException.cs" />
     <Compile Include="FacetFactory\MethodType.cs" />
     <Compile Include="Facet\IArrayValueFacet.cs" />
@@ -171,7 +171,7 @@
     <Compile Include="attributes\FacetsAttribute.cs" />
     <Compile Include="Component\IContainerInjector.cs" />
     <Compile Include="Component\IMessageBroker.cs" />
-    <Compile Include="Component\INakedObjectStore.cs" />
+    <Compile Include="Component\IObjectStore.cs" />
     <Compile Include="Component\IPersistAlgorithm.cs" />
     <Compile Include="Component\IPocoAdapterMap.cs" />
     <Compile Include="Component\IUpdateNotifier.cs" />
@@ -311,7 +311,7 @@
     <Compile Include="Component\IIdentityMap.cs" />
     <Compile Include="Component\INakedObjectManager.cs" />
     <Compile Include="Component\ILifecycleManager.cs" />
-    <Compile Include="Component\INakedObjectTransactionManager.cs" />
+    <Compile Include="Component\ITransactionManager.cs" />
     <Compile Include="Component\IObjectPersistor.cs" />
     <Compile Include="Component\IServicesManager.cs" />
     <Compile Include="Exception\NotPersistableException.cs" />

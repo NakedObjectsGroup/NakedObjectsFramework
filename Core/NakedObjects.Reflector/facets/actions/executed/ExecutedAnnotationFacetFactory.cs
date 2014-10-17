@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     ///     <see cref="ExecutedAttribute" /> annotation
     /// </summary>
     public class ExecutedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ExecutedAnnotationFacetFactory(INakedObjectReflector reflector)
+        public ExecutedAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ActionsOnly) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {

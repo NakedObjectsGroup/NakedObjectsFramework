@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class DateTimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<DateTime> {
-        public DateTimeValueTypeFacetFactory(INakedObjectReflector reflector)
+        public DateTimeValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IDateValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

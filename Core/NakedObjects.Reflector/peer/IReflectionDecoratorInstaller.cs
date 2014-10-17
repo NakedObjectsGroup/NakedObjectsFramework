@@ -9,7 +9,7 @@ using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.Peer {
     public interface IReflectionDecoratorInstaller : IReflectorEnhancementInstaller {
-        IFacetDecorator[] CreateDecorators(INakedObjectReflector reflector);
+        IFacetDecorator[] CreateDecorators(IReflector reflector);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

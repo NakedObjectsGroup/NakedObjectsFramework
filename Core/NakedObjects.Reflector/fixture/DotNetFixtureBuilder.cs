@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet.Fixture {
             get { return "Dotnet fixtures builder"; }
         }
 
-        protected override void PreInstallFixtures(INakedObjectTransactionManager transactionManager) {
+        protected override void PreInstallFixtures(ITransactionManager transactionManager) {
             fixtureServices = new DotNetFixtureServices();
         }
 

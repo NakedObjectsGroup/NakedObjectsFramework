@@ -17,7 +17,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Password {
     public class PasswordAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PasswordAnnotationFacetFactory(INakedObjectReflector reflector)
+        public PasswordAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesAndParameters) {}
 
 

@@ -22,7 +22,7 @@ using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
-    public class DotNetReflector : INakedObjectReflector, IMetamodel {
+    public class DotNetReflector : IReflector, IMetamodel {
         private static readonly ILog Log;
         private readonly ISpecificationCache cache = new SimpleSpecificationCache();
         private readonly FacetDecoratorSet facetDecorator;

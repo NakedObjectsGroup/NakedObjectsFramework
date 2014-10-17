@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             typeToMethods = new Dictionary<Type, MethodInfo[]>();
         }
 
-        public RemoveSuperclassMethodsFacetFactory(INakedObjectReflector reflector)
+        public RemoveSuperclassMethodsFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
         private static void InitForType(Type type) {

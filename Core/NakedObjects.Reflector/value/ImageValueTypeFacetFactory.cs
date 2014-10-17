@@ -14,7 +14,7 @@ using NakedObjects.Value;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ImageValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<Image> {
-        public ImageValueTypeFacetFactory(INakedObjectReflector reflector)
+        public ImageValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IImageValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

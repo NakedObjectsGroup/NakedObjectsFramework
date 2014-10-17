@@ -10,7 +10,6 @@ using System.Collections;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Component {

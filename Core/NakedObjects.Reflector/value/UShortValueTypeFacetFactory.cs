@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class UShortValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<ushort> {
-        public UShortValueTypeFacetFactory(INakedObjectReflector reflector)
+        public UShortValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IUnsignedShortValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

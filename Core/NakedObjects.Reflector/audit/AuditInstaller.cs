@@ -31,7 +31,7 @@ namespace NakedObjects.Reflector.Audit {
             get { return "AuditInstaller"; }
         }
 
-        public IFacetDecorator[] CreateDecorators(INakedObjectReflector reflector) {
+        public IFacetDecorator[] CreateDecorators(IReflector reflector) {
             throw new System.NotImplementedException();
         }
     }

@@ -14,7 +14,7 @@ using NakedObjects.Value;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class FileAttachmentValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<FileAttachment> {
-        public FileAttachmentValueTypeFacetFactory(INakedObjectReflector reflector)
+        public FileAttachmentValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IFileAttachmentValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

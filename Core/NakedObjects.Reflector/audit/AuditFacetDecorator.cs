@@ -88,12 +88,12 @@ namespace NakedObjects.Reflector.Audit {
                 return underlyingFacet.GetIsRemoting(target);
             }
 
-            public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager) {
+            public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, INakedObjectManager manager, ISession session, ITransactionManager transactionManager) {
                 auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session);
                 return underlyingFacet.Invoke(nakedObject, parameters, manager, session, transactionManager);
             }
 
-            public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager) {
+            public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectManager manager, ISession session, ITransactionManager transactionManager) {
                 auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session);
                 return underlyingFacet.Invoke(nakedObject, parameters, resultPage, manager, session, transactionManager);
             }

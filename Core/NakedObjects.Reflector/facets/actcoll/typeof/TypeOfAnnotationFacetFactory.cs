@@ -17,7 +17,7 @@ using NakedObjects.Architecture.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
     public class TypeOfAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TypeOfAnnotationFacetFactory(INakedObjectReflector reflector)
+        public TypeOfAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.CollectionsAndActions) {}
 
         private bool Process(Type methodReturnType, ISpecification holder) {

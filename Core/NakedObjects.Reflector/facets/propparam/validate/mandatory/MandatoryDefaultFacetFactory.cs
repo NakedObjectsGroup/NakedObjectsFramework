@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
     ///     property or parameter is annotated or otherwise indicated as being optional.
     /// </para>
     public class MandatoryDefaultFacetFactory : FacetFactoryAbstract {
-        public MandatoryDefaultFacetFactory(INakedObjectReflector reflector)
+        public MandatoryDefaultFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesAndParameters) {}
 
         public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {

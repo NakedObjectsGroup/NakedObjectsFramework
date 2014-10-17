@@ -16,7 +16,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.FieldOrder {
     public class FieldOrderAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public FieldOrderAnnotationFacetFactory(INakedObjectReflector reflector)
+        public FieldOrderAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

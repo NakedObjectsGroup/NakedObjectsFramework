@@ -16,9 +16,9 @@ namespace NakedObjects.Xat {
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodelManager;
         private readonly IObjectPersistor persistor;
-        private readonly INakedObjectTransactionManager transactionManager;
+        private readonly ITransactionManager transactionManager;
 
-        public TestObjectFactory(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager manager, INakedObjectTransactionManager transactionManager) {
+        public TestObjectFactory(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager manager, ITransactionManager transactionManager) {
             this.metamodelManager = metamodelManager;
             this.Session = session;
             this.lifecycleManager = lifecycleManager;

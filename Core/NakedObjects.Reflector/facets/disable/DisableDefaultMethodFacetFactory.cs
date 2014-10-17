@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             };
         }
 
-        public DisableDefaultMethodFacetFactory(INakedObjectReflector reflector)
+        public DisableDefaultMethodFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
 

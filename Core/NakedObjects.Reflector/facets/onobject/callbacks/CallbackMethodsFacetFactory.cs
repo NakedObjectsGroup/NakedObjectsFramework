@@ -41,7 +41,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
             };
         }
 
-        public CallbackMethodsFacetFactory(INakedObjectReflector reflector)
+        public CallbackMethodsFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
         public override string[] Prefixes {

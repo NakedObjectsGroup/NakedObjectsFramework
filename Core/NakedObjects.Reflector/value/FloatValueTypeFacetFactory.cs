@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class FloatValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<float> {
-        public FloatValueTypeFacetFactory(INakedObjectReflector reflector)
+        public FloatValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IFloatingPointValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

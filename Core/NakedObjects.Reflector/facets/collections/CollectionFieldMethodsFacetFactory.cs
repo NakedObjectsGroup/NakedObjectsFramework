@@ -33,7 +33,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             };
         }
 
-        public CollectionFieldMethodsFacetFactory(INakedObjectReflector reflector)
+        public CollectionFieldMethodsFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.CollectionsOnly) {}
 
         public override string[] Prefixes {

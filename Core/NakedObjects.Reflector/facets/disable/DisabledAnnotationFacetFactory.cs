@@ -16,7 +16,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Disable {
     public class DisabledAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public DisabledAnnotationFacetFactory(INakedObjectReflector reflector)
+        public DisabledAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {

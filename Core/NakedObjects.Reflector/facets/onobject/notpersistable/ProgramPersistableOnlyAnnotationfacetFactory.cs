@@ -16,7 +16,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.NotPersistable {
     public class ProgramPersistableOnlyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ProgramPersistableOnlyAnnotationFacetFactory(INakedObjectReflector reflector)
+        public ProgramPersistableOnlyAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             FixedPrefixes = new[] {PrefixesAndRecognisedMethods.GetEnumeratorMethod};
         }
 
-        public IteratorFilteringFacetFactory(INakedObjectReflector reflector)
+        public IteratorFilteringFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
         public override string[] Prefixes {

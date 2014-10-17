@@ -20,7 +20,7 @@ namespace NakedObjects.Boot {
 
         #region IFixturesInstaller Members
 
-        public void InstallFixtures(INakedObjectTransactionManager transactionManager, IContainerInjector injector) {
+        public void InstallFixtures(ITransactionManager transactionManager, IContainerInjector injector) {
             //NakedObjectsContext.LifecycleManager.Reset();
 
             //if (NakedObjectsContext.LifecycleManager.IsInitialized) {
@@ -33,7 +33,7 @@ namespace NakedObjects.Boot {
             builder.InstallFixtures(transactionManager, injector);
         }
 
-        public void InstallFixture(INakedObjectTransactionManager transactionManager, IContainerInjector injector, string fixtureName) {
+        public void InstallFixture(ITransactionManager transactionManager, IContainerInjector injector, string fixtureName) {
             object fixture = fixtures.FirstOrDefault(f => f.GetType().Name == fixtureName);
 
             if (fixture != null) {

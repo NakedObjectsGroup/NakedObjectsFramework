@@ -32,7 +32,7 @@ namespace NakedObjects.Mvc.App.App_Start
             // TODO: Uncomment if you want to use PerRequestLifetimeManager
             Microsoft.Web.Infrastructure.DynamicModuleHelper.DynamicModuleUtility.RegisterModule(typeof(UnityPerRequestHttpModule));
 
-            var reflector = UnityConfig.GetConfiguredContainer().Resolve<INakedObjectReflector>();
+            var reflector = UnityConfig.GetConfiguredContainer().Resolve<IReflector>();
 
             var services = UnityConfig.Services();
 

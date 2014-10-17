@@ -18,7 +18,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
     public class RegExAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public RegExAnnotationFacetFactory(INakedObjectReflector reflector)
+        public RegExAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsPropertiesAndParameters) {}
 
 

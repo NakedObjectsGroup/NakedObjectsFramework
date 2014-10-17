@@ -17,7 +17,7 @@ namespace NakedObjects.Persistor.Objectstore {
     public class ObjectStoreTransaction : ITransaction {
         private static readonly ILog Log;
         private readonly List<IPersistenceCommand> commands = new List<IPersistenceCommand>(10);
-        private readonly INakedObjectStore objectStore;
+        private readonly IObjectStore objectStore;
         private readonly List<INakedObject> toNotify = new List<INakedObject>(10);
         private bool complete;
 
@@ -25,7 +25,7 @@ namespace NakedObjects.Persistor.Objectstore {
             Log = LogManager.GetLogger(typeof (ObjectStoreTransaction));
         }
 
-        public ObjectStoreTransaction(INakedObjectStore objectStore) {
+        public ObjectStoreTransaction(IObjectStore objectStore) {
             this.objectStore = objectStore;
             Log.DebugFormat("New transaction {0}", this);
         }

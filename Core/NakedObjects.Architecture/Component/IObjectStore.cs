@@ -10,16 +10,14 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Transaction;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    /// TODO: Rename to IObjectStore
     /// Provides a generic interface to a specific persistence mechanism
     /// </summary>
-    public interface INakedObjectStore {
+    public interface IObjectStore {
         /// <summary>
         ///     Determine if the object store has been initialized with its set of start up objects. This method is
         ///     called only once after <see cref="IRequiresSetup.Init" /> has been called. If this flag returns

@@ -17,7 +17,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
     public class NotPersistedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public NotPersistedAnnotationFacetFactory(INakedObjectReflector reflector)
+        public NotPersistedAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsPropertiesAndCollections) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

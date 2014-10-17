@@ -57,11 +57,11 @@ using NakedObjects.Reflector.DotNet.Value;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
     public class FacetFactorySetImpl : FacetFactorySetAbstract {
-        public override void Init(INakedObjectReflector reflector) {
+        public override void Init(IReflector reflector) {
             RegisterFactories(reflector);
         }
 
-        private void RegisterFactories(INakedObjectReflector reflector) {
+        private void RegisterFactories(IReflector reflector) {
             // must be first, so any Facets created can be replaced by other FacetFactorys later.
             RegisterFactory(new FallbackFacetFactory(reflector));
             RegisterFactory(new IteratorFilteringFacetFactory(reflector));

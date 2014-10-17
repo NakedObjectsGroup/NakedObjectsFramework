@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
         private Type currentType;
         private IList<string> namesScratchPad = new List<string>();
 
-        public NamedAnnotationFacetFactory(INakedObjectReflector reflector)
+        public NamedAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.Everything) {}
 
         public void UpdateScratchPad(Type type) {

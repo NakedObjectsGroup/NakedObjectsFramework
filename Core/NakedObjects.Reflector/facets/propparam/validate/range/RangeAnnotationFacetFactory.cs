@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Range {
     public class RangeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (RangeAnnotationFacetFactory));
 
-        public RangeAnnotationFacetFactory(INakedObjectReflector reflector)
+        public RangeAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesAndParameters) {}
 
 

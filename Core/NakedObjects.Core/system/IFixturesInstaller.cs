@@ -7,8 +7,8 @@ using NakedObjects.Architecture.Component;
 namespace NakedObjects.Core.NakedObjectsSystem {
     public interface IFixturesInstaller : IInstaller {
         string[] FixtureNames { get; }
-        void InstallFixtures(INakedObjectTransactionManager transactionManager, IContainerInjector injector);
-        void InstallFixture(INakedObjectTransactionManager transactionManager, IContainerInjector injector, string fixtureName);
+        void InstallFixtures(ITransactionManager transactionManager, IContainerInjector injector);
+        void InstallFixture(ITransactionManager transactionManager, IContainerInjector injector, string fixtureName);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

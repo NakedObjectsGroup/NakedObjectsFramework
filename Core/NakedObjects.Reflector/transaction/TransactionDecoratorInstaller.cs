@@ -15,7 +15,7 @@ namespace NakedObjects.Reflector.Transaction {
             get { return "transaction"; }
         }
 
-        public virtual IFacetDecorator[] CreateDecorators(INakedObjectReflector reflector) {
+        public virtual IFacetDecorator[] CreateDecorators(IReflector reflector) {
             return new IFacetDecorator[] {new TransactionDecorator()};
         }
 

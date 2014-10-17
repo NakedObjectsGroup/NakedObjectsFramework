@@ -16,7 +16,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Bounded {
     public class BoundedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public BoundedAnnotationFacetFactory(INakedObjectReflector reflector)
+        public BoundedAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

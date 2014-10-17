@@ -15,10 +15,10 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets {
     public abstract class FacetFactoryAbstract : IFacetFactory {
-        private readonly INakedObjectReflector reflector;
+        private readonly IReflector reflector;
         private readonly FeatureType[] featureTypes;
 
-        protected FacetFactoryAbstract(INakedObjectReflector reflector, FeatureType[] featureTypes) {
+        protected FacetFactoryAbstract(IReflector reflector, FeatureType[] featureTypes) {
             
             this.reflector = reflector;
             this.featureTypes = featureTypes;
@@ -32,7 +32,7 @@ namespace NakedObjects.Architecture.Facets {
             get { return featureTypes; }
         }
 
-        public INakedObjectReflector Reflector {
+        public IReflector Reflector {
             get { return reflector; }
         }
 

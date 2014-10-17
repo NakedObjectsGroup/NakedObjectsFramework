@@ -112,16 +112,16 @@ namespace RestfulObjects.Mvc.App.App_Start
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
-            container.RegisterType<INakedObjectReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, DotNetReflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IContainerInjector, DotNetDomainObjectContainerInjector>(new PerResolveLifetimeManager());
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerResolveLifetimeManager());
             container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerResolveLifetimeManager());
-            container.RegisterType<INakedObjectStore, NakedObjects.EntityObjectStore.EntityObjectStore>(new PerResolveLifetimeManager());
+            container.RegisterType<IObjectStore, NakedObjects.EntityObjectStore.EntityObjectStore>(new PerResolveLifetimeManager());
             container.RegisterType<IIdentityMap, IdentityMapImpl>(new PerResolveLifetimeManager());
-            container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerResolveLifetimeManager());
+            container.RegisterType<ITransactionManager, ObjectStoreTransactionManager>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerResolveLifetimeManager());
             container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerResolveLifetimeManager());
             container.RegisterType<IServicesManager, ServicesManager>(new PerResolveLifetimeManager());

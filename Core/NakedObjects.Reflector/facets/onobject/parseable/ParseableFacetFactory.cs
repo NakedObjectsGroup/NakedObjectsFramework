@@ -17,7 +17,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
     public class ParseableFacetFactory : AnnotationBasedFacetFactoryAbstract, INakedObjectConfigurationAware {
-        public ParseableFacetFactory(INakedObjectReflector reflector)
+        public ParseableFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

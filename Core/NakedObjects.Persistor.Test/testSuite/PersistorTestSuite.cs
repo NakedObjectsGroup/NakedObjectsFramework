@@ -41,7 +41,7 @@ namespace NakedObjects.Persistor.TestSuite {
             get { return framework.Persistor; }
         }
 
-        private INakedObjectTransactionManager TransactionManager {
+        private ITransactionManager TransactionManager {
             get { return framework.TransactionManager; }
         }
 

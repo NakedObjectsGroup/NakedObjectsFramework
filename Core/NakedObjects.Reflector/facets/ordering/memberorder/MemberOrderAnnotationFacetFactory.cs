@@ -16,7 +16,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     public class MemberOrderAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MemberOrderAnnotationFacetFactory(INakedObjectReflector reflector)
+        public MemberOrderAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {

@@ -197,7 +197,7 @@ namespace NakedObjects.Xat {
             Log.Info("test initialize " + tc.Name);
             tc.servicesCache = new Dictionary<string, ITestService>();
 
-            var reflector = tc.GetConfiguredContainer().Resolve<INakedObjectReflector>();
+            var reflector = tc.GetConfiguredContainer().Resolve<IReflector>();
 
             List<Type> s1 = tc.MenuServices.GetServices().Select(s => s.GetType()).ToList();
             List<Type> s2 = tc.ContributedActions.GetServices().Select(s => s.GetType()).ToList();
@@ -222,7 +222,7 @@ namespace NakedObjects.Xat {
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
 
-            container.RegisterType<INakedObjectReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, DotNetReflector>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPrincipal>(new InjectionFactory(c => TestPrincipal));
@@ -252,10 +252,10 @@ namespace NakedObjects.Xat {
 
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerResolveLifetimeManager());
 
-            container.RegisterType<INakedObjectStore, EntityObjectStore.EntityObjectStore>(new PerResolveLifetimeManager());
+            container.RegisterType<IObjectStore, EntityObjectStore.EntityObjectStore>(new PerResolveLifetimeManager());
             container.RegisterType<IIdentityMap, IdentityMapImpl>(new PerResolveLifetimeManager());
 
-            container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerResolveLifetimeManager());
+            container.RegisterType<ITransactionManager, ObjectStoreTransactionManager>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerResolveLifetimeManager());
             container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerResolveLifetimeManager());
             container.RegisterType<IServicesManager, ServicesManager>(new PerResolveLifetimeManager());

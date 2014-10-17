@@ -18,7 +18,7 @@ namespace NakedObjects.Reflector.Transaction.Facets.Properties.Write {
             this.underlyingFacet = underlyingFacet;
         }
 
-        public override void SetProperty(INakedObject inObject, INakedObject parameter, INakedObjectTransactionManager transactionManager) {
+        public override void SetProperty(INakedObject inObject, INakedObject parameter, ITransactionManager transactionManager) {
            
             if (inObject.ResolveState.IsPersistent()) {
                 try {

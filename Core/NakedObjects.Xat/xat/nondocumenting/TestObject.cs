@@ -23,13 +23,13 @@ namespace NakedObjects.Xat {
         private static readonly ILog LOG;
         private readonly ILifecycleManager lifecycleManager;
         private readonly IObjectPersistor persistor;
-        private readonly INakedObjectTransactionManager transactionManager;
+        private readonly ITransactionManager transactionManager;
 
         static TestObject() {
             LOG = LogManager.GetLogger(typeof (TestObject));
         }
 
-        public TestObject(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObject nakedObject, ITestObjectFactory factory, INakedObjectTransactionManager transactionManager)
+        public TestObject(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObject nakedObject, ITestObjectFactory factory, ITransactionManager transactionManager)
             : base(factory, lifecycleManager) {
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;

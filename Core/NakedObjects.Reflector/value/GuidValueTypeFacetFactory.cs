@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class GuidValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<Guid> {
-        public GuidValueTypeFacetFactory(INakedObjectReflector reflector)
+        public GuidValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IGuidValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

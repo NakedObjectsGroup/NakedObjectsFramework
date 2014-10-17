@@ -95,7 +95,7 @@ namespace RestfulObjects.Test.App
 
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
-            container.RegisterType<INakedObjectReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, DotNetReflector>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
@@ -127,10 +127,10 @@ namespace RestfulObjects.Test.App
 
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerResolveLifetimeManager());
             container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerResolveLifetimeManager());
-            container.RegisterType<INakedObjectStore, EntityObjectStore>(new PerResolveLifetimeManager());
+            container.RegisterType<IObjectStore, EntityObjectStore>(new PerResolveLifetimeManager());
             container.RegisterType<IIdentityMap, IdentityMapImpl>(new PerResolveLifetimeManager());
 
-            container.RegisterType<INakedObjectTransactionManager, ObjectStoreTransactionManager>(new PerResolveLifetimeManager());
+            container.RegisterType<ITransactionManager, ObjectStoreTransactionManager>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerResolveLifetimeManager());
             container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerResolveLifetimeManager());
             container.RegisterType<IServicesManager, ServicesManager>(new PerResolveLifetimeManager());

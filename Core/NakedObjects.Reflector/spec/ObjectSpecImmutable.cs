@@ -29,10 +29,10 @@ namespace NakedObjects.Reflector.Spec {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpecImmutable));
 
         private readonly IIdentifier identifier;
-        private readonly INakedObjectReflector reflector;
+        private readonly IReflector reflector;
         private DotNetIntrospector introspector;
 
-        public ObjectSpecImmutable(Type type, INakedObjectReflector reflector) {
+        public ObjectSpecImmutable(Type type, IReflector reflector) {
             Subclasses = new IObjectSpecImmutable[] {};
             this.reflector = reflector;
             introspector = new DotNetIntrospector(type, this, reflector);

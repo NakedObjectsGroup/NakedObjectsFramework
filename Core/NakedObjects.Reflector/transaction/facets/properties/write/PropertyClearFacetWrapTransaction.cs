@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.Transaction.Facets.Properties.Write {
             this.underlyingFacet = underlyingFacet;
         }
 
-        public override void ClearProperty(INakedObject inObject, INakedObjectTransactionManager transactionManager) {
+        public override void ClearProperty(INakedObject inObject, ITransactionManager transactionManager) {
           
             if (inObject.ResolveState.IsPersistent()) {
                 try {

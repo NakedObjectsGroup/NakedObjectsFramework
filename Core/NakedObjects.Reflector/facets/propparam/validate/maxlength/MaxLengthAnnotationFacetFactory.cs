@@ -18,7 +18,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.MaxLength {
     public class MaxLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MaxLengthAnnotationFacetFactory(INakedObjectReflector reflector)
+        public MaxLengthAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsPropertiesAndParameters) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

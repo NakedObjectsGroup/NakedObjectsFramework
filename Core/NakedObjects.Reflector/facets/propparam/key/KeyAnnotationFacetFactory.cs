@@ -18,7 +18,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Key {
     public class KeyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public KeyAnnotationFacetFactory(INakedObjectReflector reflector)
+        public KeyAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesOnly) {}
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {

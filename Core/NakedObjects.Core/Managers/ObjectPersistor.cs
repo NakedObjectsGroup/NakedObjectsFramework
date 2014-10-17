@@ -27,17 +27,17 @@ namespace NakedObjects.Managers {
     public class ObjectPersistor : IObjectPersistor {
         private static readonly ILog Log;
         private readonly INakedObjectManager manager;
-        private readonly INakedObjectStore objectStore;
+        private readonly IObjectStore objectStore;
         private readonly ISession session;
-        private readonly INakedObjectTransactionManager transactionManager;
+        private readonly ITransactionManager transactionManager;
         private readonly IUpdateNotifier updateNotifier;
 
         static ObjectPersistor() {
             Log = LogManager.GetLogger(typeof (ObjectPersistor));
         }
 
-        public ObjectPersistor(INakedObjectStore objectStore,
-                               INakedObjectTransactionManager transactionManager,
+        public ObjectPersistor(IObjectStore objectStore,
+                               ITransactionManager transactionManager,
                                ISession session,
                                INakedObjectManager manager,
                                IUpdateNotifier updateNotifier) {

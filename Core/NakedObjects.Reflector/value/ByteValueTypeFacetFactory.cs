@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ByteValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<byte> {
-        public ByteValueTypeFacetFactory(INakedObjectReflector reflector)
+        public ByteValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IByteValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

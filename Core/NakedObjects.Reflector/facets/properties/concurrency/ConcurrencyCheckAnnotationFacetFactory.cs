@@ -18,7 +18,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Version {
     public class ConcurrencyCheckAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ConcurrencyCheckAnnotationFacetFactory(INakedObjectReflector reflector)
+        public ConcurrencyCheckAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesOnly) {}
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {

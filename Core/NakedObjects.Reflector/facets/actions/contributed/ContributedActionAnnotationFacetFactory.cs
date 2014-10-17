@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
     ///     <see cref="NotContributedActionAttribute" /> annotation
     /// </summary>
     public class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ContributedActionAnnotationFacetFactory(INakedObjectReflector reflector)
+        public ContributedActionAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ActionsOnly) {}
 
         private bool Process(MemberInfo member, ISpecification holder) {

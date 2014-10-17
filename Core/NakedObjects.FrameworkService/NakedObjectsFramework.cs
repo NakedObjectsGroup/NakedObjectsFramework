@@ -19,10 +19,10 @@ namespace NakedObjects.Service {
         private readonly IServicesManager services;
         private readonly INakedObjectManager manager;
         private readonly IObjectPersistor persistor;
-        private readonly INakedObjectReflector reflector;
+        private readonly IReflector reflector;
         private readonly ISession session;
         private readonly IUpdateNotifier updateNotifier;
-        private readonly INakedObjectTransactionManager transactionManager;
+        private readonly ITransactionManager transactionManager;
 
         public NakedObjectsFramework(IMessageBroker messageBroker,
                                      IUpdateNotifier updateNotifier,
@@ -31,13 +31,13 @@ namespace NakedObjects.Service {
                                      IServicesManager services,
                                      INakedObjectManager manager,
                                      IObjectPersistor persistor,
-                                     INakedObjectReflector reflector,
+                                     IReflector reflector,
                                      IAuthorizationManager authorizationManager,
                                      IMetamodelManager metamodelManager,
                                      IContainerInjector injector,
                                      NakedObjectFactory  nakedObjectFactory,
                                      MemberFactory memberFactory, 
-                                     INakedObjectTransactionManager transactionManager) {
+                                     ITransactionManager transactionManager) {
             this.messageBroker = messageBroker;
             this.updateNotifier = updateNotifier;
             this.session = session;
@@ -61,7 +61,7 @@ namespace NakedObjects.Service {
             get { return injector; }
         }
 
-        public INakedObjectTransactionManager TransactionManager {
+        public ITransactionManager TransactionManager {
             get { return transactionManager; }
         }
 
@@ -93,7 +93,7 @@ namespace NakedObjects.Service {
             get { return persistor; }
         }
 
-        public INakedObjectReflector Reflector {
+        public IReflector Reflector {
             get { return reflector; }
         }
 

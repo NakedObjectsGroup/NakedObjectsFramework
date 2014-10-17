@@ -37,7 +37,7 @@ namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
         }
 
 
-        private INakedObject InvokeInTransaction(Func<INakedObject> action, INakedObjectTransactionManager persistor) {
+        private INakedObject InvokeInTransaction(Func<INakedObject> action, ITransactionManager persistor) {
            
             try {
                 persistor.StartTransaction();
@@ -57,11 +57,11 @@ namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
             }
         }
 
-        public override INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager) {
+        public override INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectManager manager, ISession session, ITransactionManager transactionManager) {
             return InvokeInTransaction(() => underlyingFacet.Invoke(target, parameters, manager, session, transactionManager), transactionManager);
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectManager manager, ISession session, INakedObjectTransactionManager transactionManager) {
+        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectManager manager, ISession session, ITransactionManager transactionManager) {
             return InvokeInTransaction(() => underlyingFacet.Invoke(nakedObject, parameters, resultPage, manager, session, transactionManager), transactionManager);
         }
 

@@ -17,7 +17,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
     public class PresentationHintAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PresentationHintAnnotationFacetFactory(INakedObjectReflector reflector)
+        public PresentationHintAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.Everything) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

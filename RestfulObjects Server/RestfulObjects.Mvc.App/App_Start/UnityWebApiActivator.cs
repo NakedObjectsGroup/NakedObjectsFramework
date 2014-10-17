@@ -24,7 +24,7 @@ namespace MvcTestApp {
             // var resolver = new UnityHierarchicalDependencyResolver(UnityConfig.GetConfiguredContainer());
             var resolver = new UnityDependencyResolver(UnityConfig.GetConfiguredContainer());
             GlobalConfiguration.Configuration.DependencyResolver = resolver;
-            var reflector = UnityConfig.GetConfiguredContainer().Resolve<INakedObjectReflector>();
+            var reflector = UnityConfig.GetConfiguredContainer().Resolve<IReflector>();
             var services = UnityConfig.Services();
             reflector.InstallServiceSpecifications(services);
             reflector.PopulateContributedActions(services);

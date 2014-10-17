@@ -38,7 +38,7 @@ using BindingFlags = System.Reflection.BindingFlags;
 using IsolationLevel = System.Transactions.IsolationLevel;
 
 namespace NakedObjects.EntityObjectStore {
-    public class EntityObjectStore : INakedObjectStore {
+    public class EntityObjectStore : IObjectStore {
         private readonly IMetamodelManager metamodel;
         private readonly ISession session;
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStore));

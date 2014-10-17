@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class UIntValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<uint> {
-        public UIntValueTypeFacetFactory(INakedObjectReflector reflector)
+        public UIntValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IUnsignedIntegerValueFacet)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

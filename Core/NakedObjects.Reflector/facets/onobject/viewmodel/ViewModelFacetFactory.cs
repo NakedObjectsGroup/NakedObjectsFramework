@@ -17,7 +17,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
     public class ViewModelFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ViewModelFacetFactory(INakedObjectReflector reflector) : base(reflector, FeatureType.ObjectsOnly) {}
+        public ViewModelFacetFactory(IReflector reflector) : base(reflector, FeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             IFacet facet = null;

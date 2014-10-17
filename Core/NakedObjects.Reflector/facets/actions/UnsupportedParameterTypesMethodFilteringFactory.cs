@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
     public class UnsupportedParameterTypesMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (UnsupportedParameterTypesMethodFilteringFactory));
 
-        public UnsupportedParameterTypesMethodFilteringFactory(INakedObjectReflector reflector)
+        public UnsupportedParameterTypesMethodFilteringFactory(IReflector reflector)
             : base(reflector, FeatureType.ActionsOnly) {}
 
         public bool Filters(MethodInfo method) {

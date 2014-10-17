@@ -17,7 +17,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
     public class EagerlyAnnotationFacetFactory : FacetFactoryAbstract {
-        public EagerlyAnnotationFacetFactory(INakedObjectReflector reflector)
+        public EagerlyAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.EverythingButParameters) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

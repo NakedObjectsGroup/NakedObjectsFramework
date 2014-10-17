@@ -9,9 +9,9 @@ using NakedObjects.Architecture.Transaction;
 using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Persistor.Objectstore {
-    public class ObjectStoreTransactionManager : INakedObjectTransactionManager {
+    public class ObjectStoreTransactionManager : ITransactionManager {
         private static readonly ILog Log;
-        private readonly INakedObjectStore objectStore;
+        private readonly IObjectStore objectStore;
         private ITransaction transaction;
         private int transactionLevel;
         private bool userAborted;
@@ -20,7 +20,7 @@ namespace NakedObjects.Persistor.Objectstore {
             Log = LogManager.GetLogger(typeof (ObjectStoreTransactionManager));
         }
 
-        public ObjectStoreTransactionManager(INakedObjectStore objectStore) {
+        public ObjectStoreTransactionManager(IObjectStore objectStore) {
             this.objectStore = objectStore;
         }
 

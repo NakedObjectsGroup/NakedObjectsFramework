@@ -22,6 +22,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     Sets the value of this property
         /// </summary>
-        void SetProperty(INakedObject nakedObject, INakedObject nakedValue, INakedObjectTransactionManager transactionManager);
+        void SetProperty(INakedObject nakedObject, INakedObject nakedValue, ITransactionManager transactionManager);
     }
 }

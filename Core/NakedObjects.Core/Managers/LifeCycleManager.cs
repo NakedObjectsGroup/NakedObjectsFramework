@@ -30,7 +30,7 @@ namespace NakedObjects.Managers {
         private readonly IPersistAlgorithm persistAlgorithm;
         private readonly IOidGenerator oidGenerator;
         private readonly ISession session;
-        private readonly INakedObjectTransactionManager transactionManager;
+        private readonly ITransactionManager transactionManager;
 
         static LifeCycleManager() {
             Log = LogManager.GetLogger(typeof (LifeCycleManager));
@@ -38,12 +38,12 @@ namespace NakedObjects.Managers {
 
         public LifeCycleManager(ISession session,
                                 IMetamodelManager metamodel,
-                                INakedObjectStore objectStore,
+                                IObjectStore objectStore,
                                 IPersistAlgorithm persistAlgorithm,
                                 IOidGenerator oidGenerator,
                                 IIdentityMap identityMap,
                                 IContainerInjector injector,
-                                INakedObjectTransactionManager transactionManager,
+                                ITransactionManager transactionManager,
                                 IObjectPersistor objectPersistor,
                                 INakedObjectManager manager
             ) {
@@ -192,7 +192,7 @@ namespace NakedObjects.Managers {
         }
 
 
-        public void Abort(INakedObjectTransactionManager transactionManager, ISpecification holder) {
+        public void Abort(ITransactionManager transactionManager, ISpecification holder) {
             Log.Info("exception executing " + holder + ", aborting transaction");
             try {
                 transactionManager.AbortTransaction();

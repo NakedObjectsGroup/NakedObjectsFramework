@@ -20,7 +20,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Enums {
     public class EnumFacetFactory : FacetFactoryAbstract {
-        public EnumFacetFactory(INakedObjectReflector reflector)
+        public EnumFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesAndParameters) {}
 
 

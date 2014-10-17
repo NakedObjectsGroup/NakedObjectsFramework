@@ -38,7 +38,7 @@ type WifTests() =
         cp
     
     let testSession = new TestSession(claimsPrincipal)
-    let reflector = (new Mock<INakedObjectReflector>()).Object
+    let reflector = (new Mock<IReflector>()).Object
     let metadata = (new Mock<IMetamodel>()).Object
     let testXml = 
         "<testxml><class name=\"class1\" fullname=\"ns.class1\">" + "<member name=\"member1\" type=\"ViewField\">" 

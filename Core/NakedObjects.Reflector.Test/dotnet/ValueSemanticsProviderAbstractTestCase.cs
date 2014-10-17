@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.DotNet {
         private ParseableFacetUsingParser<T> parseableFacet;
         protected ILifecycleManager LifecycleManager = new Mock<ILifecycleManager>().Object;
         protected IObjectPersistor Persistor = new Mock<IObjectPersistor>().Object;
-        protected INakedObjectReflector Reflector = new Mock<INakedObjectReflector>().Object;
+        protected IReflector Reflector = new Mock<IReflector>().Object;
         protected IMetamodelManager Metamodel = new Mock<IMetamodelManager>().Object;
         private ValueSemanticsProviderAbstract<T> value;
         protected INakedObjectManager Manager = new Mock<INakedObjectManager>().Object;

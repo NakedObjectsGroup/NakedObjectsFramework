@@ -16,7 +16,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural {
     public class PluralAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PluralAnnotationFacetFactory(INakedObjectReflector reflector)
+        public PluralAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

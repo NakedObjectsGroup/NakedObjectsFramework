@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class ArrayValueTypeFacetFactory<T> : ValueUsingValueSemanticsProviderFacetFactory<T[]> {
-        public ArrayValueTypeFacetFactory(INakedObjectReflector reflector)
+        public ArrayValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IArrayValueFacet<T>)) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

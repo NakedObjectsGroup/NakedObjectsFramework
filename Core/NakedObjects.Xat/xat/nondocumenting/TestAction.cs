@@ -24,12 +24,12 @@ namespace NakedObjects.Xat {
         private readonly IMetamodelManager metamodelManager;
         private readonly ITestHasActions owningObject;
         private readonly ISession session;
-        private readonly INakedObjectTransactionManager transactionManager;
+        private readonly ITransactionManager transactionManager;
 
-        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, INakedObjectTransactionManager transactionManager)
+        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, ITransactionManager transactionManager)
             : this(metamodelManager, session, lifecycleManager, string.Empty, actionSpec, owningObject, factory, manager, transactionManager) {}
 
-        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, INakedObjectTransactionManager transactionManager) {
+        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, ITransactionManager transactionManager) {
             SubMenu = contributor;
             this.metamodelManager = metamodelManager;
             this.session = session;

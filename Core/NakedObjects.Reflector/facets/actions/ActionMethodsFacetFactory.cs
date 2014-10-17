@@ -54,7 +54,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         /// <summary>
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)
         /// </summary>
-        public ActionMethodsFacetFactory(INakedObjectReflector reflector)
+        public ActionMethodsFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ActionsAndParameters) {}
 
         public override string[] Prefixes {

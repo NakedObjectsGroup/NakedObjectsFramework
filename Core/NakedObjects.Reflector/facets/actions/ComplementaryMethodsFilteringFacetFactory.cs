@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         /// <summary>
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)
         /// </summary>
-        public ComplementaryMethodsFilteringFacetFactory(INakedObjectReflector reflector)
+        public ComplementaryMethodsFilteringFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ActionsOnly) {}
 
         public bool Filters(MethodInfo method) {

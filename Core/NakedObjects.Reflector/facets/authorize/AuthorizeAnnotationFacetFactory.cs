@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
     public class AuthorizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (AuthorizeAnnotationFacetFactory));
 
-        public AuthorizeAnnotationFacetFactory(INakedObjectReflector reflector)
+        public AuthorizeAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}
 
 

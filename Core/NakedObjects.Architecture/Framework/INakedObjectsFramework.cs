@@ -28,7 +28,7 @@ namespace NakedObjects {
 
         IObjectPersistor Persistor { get; }
 
-        INakedObjectReflector Reflector { get; }
+        IReflector Reflector { get; }
 
         IMetamodelManager Metamodel { get; }
 
@@ -36,6 +36,6 @@ namespace NakedObjects {
 
         IContainerInjector Injector { get; }
 
-        INakedObjectTransactionManager TransactionManager { get; }
+        ITransactionManager TransactionManager { get; }
     }
 }

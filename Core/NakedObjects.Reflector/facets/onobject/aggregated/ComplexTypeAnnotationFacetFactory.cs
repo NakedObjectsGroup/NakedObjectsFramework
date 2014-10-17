@@ -17,7 +17,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated {
     public class ComplexTypeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ComplexTypeAnnotationFacetFactory(INakedObjectReflector reflector)
+        public ComplexTypeAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {

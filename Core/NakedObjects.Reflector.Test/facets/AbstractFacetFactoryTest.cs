@@ -18,11 +18,11 @@ namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class AbstractFacetFactoryTest {
         protected IMetamodelManager Metamodel;
         protected IMethodRemover MethodRemover;
-        protected INakedObjectReflector Reflector;
+        protected IReflector Reflector;
         protected Specification Specification;
         private Mock<IMetamodelManager> mockMetadata;
         private Mock<IMethodRemover> mockMethodRemover;
-        private Mock<INakedObjectReflector> mockReflector;
+        private Mock<IReflector> mockReflector;
         protected abstract Type[] SupportedTypes { get; }
         protected abstract IFacetFactory FacetFactory { get; }
 
@@ -30,7 +30,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
             Specification = new Specification();
 
             mockMethodRemover = new Mock<IMethodRemover>();
-            mockReflector = new Mock<INakedObjectReflector>();
+            mockReflector = new Mock<IReflector>();
             mockMetadata = new Mock<IMetamodelManager>();
 
             MethodRemover = mockMethodRemover.Object;

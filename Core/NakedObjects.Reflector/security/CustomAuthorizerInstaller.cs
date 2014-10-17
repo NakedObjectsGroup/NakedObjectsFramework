@@ -37,7 +37,7 @@ namespace NakedObjects.Security {
             get { return "TypeAuthorizerInstaller"; }
         }
 
-        public IFacetDecorator[] CreateDecorators(INakedObjectReflector reflector) {
+        public IFacetDecorator[] CreateDecorators(IReflector reflector) {
             throw new System.NotImplementedException();
         }
 

@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Potency {
     ///     <see cref="QueryOnlyAttribute" /> or <see cref="IdempotentAttribute" /> annotation
     /// </summary>
     public class PotencyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PotencyAnnotationFacetFactory(INakedObjectReflector reflector)
+        public PotencyAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ActionsOnly) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {

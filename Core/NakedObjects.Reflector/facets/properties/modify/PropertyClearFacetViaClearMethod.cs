@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Modify {
 
         #endregion
 
-        public override void ClearProperty(INakedObject nakedObject, INakedObjectTransactionManager transactionManager) {
+        public override void ClearProperty(INakedObject nakedObject, ITransactionManager transactionManager) {
             InvokeUtils.Invoke(method, nakedObject);
         }
 
