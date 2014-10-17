@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    ///     Authorizes the user in the current session view and use members of an object
+    ///     Authorizes the user in the current session to view, and to edit/invoke members of an object
     /// </summary>
     public interface IAuthorizationManager {
         /// <summary>

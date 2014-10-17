@@ -10,9 +10,8 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    ///     The NakedObjectLoader is responsible for managing the adapters and identities for each and every POCO that
-    ///     is being used by the NOF. It provides a consistent set of adapters in memory, providing adapter for the
-    ///     POCOs that are in use by the NOF and ensuring that the same object is not loaded twice into memory.
+    ///     Maintains a map between domain objects instances (POCOs) and their adaptors (INakedObject).
+    ///     It also ensures that the same object only ever has one adaptor.
     /// </summary>
     /// <para>
     ///     Each POCO is given an adapter so that the NOF can work with the POCOs even though it does not understand

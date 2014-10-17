@@ -9,7 +9,8 @@ using System;
 
 namespace NakedObjects.Architecture.Adapter {
     /// <summary>
-    ///     Version marks a INakedObject as being a particular variant of that object
+    ///     Version marks an INakedObject as being a particular version of that object.
+    ///     This is used in concurrency checking.
     /// </summary>
     /// <para>
     ///     This is normally done using some form of incrementing number or timestamp, which would be held within
@@ -18,7 +19,7 @@ namespace NakedObjects.Architecture.Adapter {
     /// </para>
     /// <para>
     ///     The user's name and a timestamp should also be kept so that when an message is passed to the user it can be
-    ///     of the form "user has change object at time"
+    ///     of the form "user X has changed object Y at time Z"
     /// </para>
     public interface IVersion : IEquatable<IVersion> {
         /// <summary>

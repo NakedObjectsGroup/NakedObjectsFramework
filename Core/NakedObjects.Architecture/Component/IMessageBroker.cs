@@ -6,6 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Architecture.Component {
+    /// <summary>
+    /// Service that provides mechanism for passing on various types of messages to the user,
+    /// in a UI-independent form. 
+    /// </summary>
     public interface IMessageBroker {
         string[] PeekMessages { get; }
 

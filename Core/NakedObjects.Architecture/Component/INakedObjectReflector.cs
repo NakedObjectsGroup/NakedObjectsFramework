@@ -12,6 +12,13 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Component {
     //TODO: Rename to IReflector and move into Component folder
+    /// <summary>
+    /// The Reflector is responsible for parsing the code of the domain model and creating the 
+    /// Metamodel (consisting of Specifications) from this. The Reflector is only run when the 
+    /// application is first started-up, and is not used once the application is running.  If the
+    /// application has been provided with a previously-generated-and-persisted Metamodel, then
+    /// the Reflector is not called at all.
+    /// </summary>
     public interface INakedObjectReflector {
         IClassStrategy ClassStrategy { get; }
 

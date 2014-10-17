@@ -14,6 +14,8 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Component {
+    //TODO: Review the value added by this component -  given the huge overlap with IObjectStore.
+    //Consider merging all the methods down.
     public interface IObjectPersistor {
         IQueryable<T> Instances<T>() where T : class;
 

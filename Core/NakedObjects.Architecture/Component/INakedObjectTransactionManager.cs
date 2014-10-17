@@ -8,6 +8,7 @@
 using NakedObjects.Architecture.Persist;
 
 namespace NakedObjects.Architecture.Component {
+    //TODO: Rename to ITransactionManager
     public interface INakedObjectTransactionManager {
         void StartTransaction();
 

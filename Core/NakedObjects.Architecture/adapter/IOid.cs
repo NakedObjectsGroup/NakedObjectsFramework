@@ -8,6 +8,10 @@
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Adapter {
+    /// <summary>
+    /// A unique Object Identifier associated with an INakedObject (adaptor), and hence, effectively
+    /// with a domain object instance.
+    /// </summary>
     public interface IOid {
         /// <summary>
         ///     Returns the previous OID if there is one (<see cref="HasPrevious" /> returns true). Returns
