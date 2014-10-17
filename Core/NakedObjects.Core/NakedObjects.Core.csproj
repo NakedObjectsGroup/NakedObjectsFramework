@@ -139,20 +139,20 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="adapter\AbstractVersion.cs" />
-    <Compile Include="adapter\ConcurrencyCheckVersion.cs" />
-    <Compile Include="adapter\map\IdentityAdapterHashMap.cs" />
-    <Compile Include="adapter\map\IIdentityAdapterMap.cs" />
-    <Compile Include="adapter\map\IdentityMapImpl.cs" />
-    <Compile Include="adapter\map\INoIdentityAdapterCache.cs" />
-    <Compile Include="adapter\map\NoIdentityAdapterCache.cs" />
-    <Compile Include="adapter\map\PocoAdapterHashMap.cs" />
-    <Compile Include="adapter\NullVersion.cs" />
-    <Compile Include="adapter\PocoAdapter.cs" />
-    <Compile Include="adapter\SerialNumberVersion.cs" />
-    <Compile Include="adapter\StringDecoderHelper.cs" />
-    <Compile Include="adapter\StringEncoderHelper.cs" />
-    <Compile Include="adapter\ValueSemanticsProviderImpl.cs" />
+    <Compile Include="Adapter\AbstractVersion.cs" />
+    <Compile Include="Adapter\ConcurrencyCheckVersion.cs" />
+    <Compile Include="Adapter\map\IdentityAdapterHashMap.cs" />
+    <Compile Include="Adapter\map\IIdentityAdapterMap.cs" />
+    <Compile Include="Adapter\map\IdentityMapImpl.cs" />
+    <Compile Include="Adapter\map\INoIdentityAdapterCache.cs" />
+    <Compile Include="Adapter\map\NoIdentityAdapterCache.cs" />
+    <Compile Include="Adapter\map\PocoAdapterHashMap.cs" />
+    <Compile Include="Adapter\NullVersion.cs" />
+    <Compile Include="Adapter\PocoAdapter.cs" />
+    <Compile Include="Adapter\SerialNumberVersion.cs" />
+    <Compile Include="Adapter\StringDecoderHelper.cs" />
+    <Compile Include="Adapter\StringEncoderHelper.cs" />
+    <Compile Include="Adapter\ValueSemanticsProviderImpl.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="context\SimpleMessageBroker.cs" />
     <Compile Include="context\SimpleUpdateNotifier.cs" />
@@ -193,7 +193,7 @@
     <Compile Include="security\SimpleSession.cs" />
     <Compile Include="service\ServiceUtils.cs" />
     <Compile Include="service\ServiceWrapper.cs" />
-    <Compile Include="spec\MemberFactory.cs" />
+    <Compile Include="spec\SpecFactory.cs" />
     <Compile Include="spec\ActionSpec.cs" />
     <Compile Include="spec\ActionParameterSpec.cs" />
     <Compile Include="spec\ActionParseableParameterSpec.cs" />
@@ -276,9 +276,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="adapter\FileVersion.cs" />
-    <Compile Include="adapter\IClock.cs" />
-    <Compile Include="adapter\TitleException.cs" />
+    <Compile Include="Adapter\FileVersion.cs" />
+    <Compile Include="Adapter\IClock.cs" />
+    <Compile Include="Adapter\TitleException.cs" />
     <Compile Include="security\WindowsAuthenticationManager.cs" />
     <Compile Include="security\WindowsAuthenticatorInstaller.cs" />
     <Compile Include="security\WindowsSession.cs" />
@@ -297,6 +297,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Component\" />
     <Folder Include="object\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

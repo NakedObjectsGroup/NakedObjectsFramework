@@ -36,7 +36,7 @@ namespace NakedObjects.Service {
                                      IMetamodelManager metamodelManager,
                                      IContainerInjector injector,
                                      NakedObjectFactory  nakedObjectFactory,
-                                     MemberFactory memberFactory, 
+                                     SpecFactory memberFactory, 
                                      ITransactionManager transactionManager) {
             this.messageBroker = messageBroker;
             this.updateNotifier = updateNotifier;

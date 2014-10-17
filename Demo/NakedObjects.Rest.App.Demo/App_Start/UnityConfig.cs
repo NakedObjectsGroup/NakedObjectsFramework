@@ -138,7 +138,7 @@ namespace RestfulObjects.Mvc.App.App_Start
 
             //Temporary scaffolding
             container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerResolveLifetimeManager());
-            container.RegisterType<MemberFactory, MemberFactory>(new PerResolveLifetimeManager());
+            container.RegisterType<SpecFactory, SpecFactory>(new PerResolveLifetimeManager());
             container.RegisterType<IUpdateNotifier, SimpleUpdateNotifier>(new PerResolveLifetimeManager());
 
             //Externals

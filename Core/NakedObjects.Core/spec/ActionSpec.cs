@@ -22,16 +22,16 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.spec;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Reflector.Spec {
+namespace NakedObjects.Core.Spec {
     public class ActionSpec : MemberSpecAbstract, IActionSpec {
         private static readonly ILog Log;
+        private readonly IActionSpecImmutable actionSpecImmutable;
 
-        private readonly MemberFactory memberFactory;
+        private readonly SpecFactory memberFactory;
         private readonly IMetamodelManager metamodel;
+        private readonly INakedObjectManager nakedObjectManager;
         private readonly IServicesManager servicesManager;
         private readonly ITransactionManager transactionManager;
-        private readonly INakedObjectManager nakedObjectManager;
-        private readonly IActionSpecImmutable actionSpecImmutable;
 
         private IActionParameterSpec[] parametersSpec;
 
@@ -39,7 +39,7 @@ namespace NakedObjects.Reflector.Spec {
             Log = LogManager.GetLogger(typeof (ActionSpec));
         }
 
-        public ActionSpec(MemberFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager, IActionSpecImmutable actionSpecImmutable)
+        public ActionSpec(SpecFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager, IActionSpecImmutable actionSpecImmutable)
             : base(actionSpecImmutable.Identifier.MemberName, actionSpecImmutable, session, lifecycleManager) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(actionSpecImmutable);
@@ -57,7 +57,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return actionSpecImmutable.GetFacet<IActionInvocationFacet>(); }
         }
 
-        #region INakedObjectAction Members
+        #region IActionSpec Members
 
         public virtual IObjectSpec ReturnType {
             get { return metamodel.GetSpecification(ActionInvocationFacet.ReturnType); }

@@ -6,6 +6,7 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Spec;
 using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 

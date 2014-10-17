@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Reflector.Spec {
+namespace NakedObjects.Core.Spec {
     public class OneToOneActionParameterImpl : ActionParameterSpec, IOneToOneFeatureSpec {
         public OneToOneActionParameterImpl(IMetamodelManager metamodel, int index, IActionSpec actionImpl, IActionParameterSpecImmutable peer, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
             : base(metamodel, index, actionImpl, peer, manager, session, persistor) {}

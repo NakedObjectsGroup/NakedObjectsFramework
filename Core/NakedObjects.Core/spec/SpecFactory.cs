@@ -11,13 +11,13 @@ using System.Linq;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Core.spec {
-    public class MemberFactory {
-        private  INakedObjectsFramework framework;
+    public class SpecFactory {
+        private INakedObjectsFramework framework;
 
         public void Initialize(INakedObjectsFramework framework) {
             this.framework = framework;
@@ -82,7 +82,6 @@ namespace NakedObjects.Core.spec {
         }
 
         private ActionSpec CreateNakedObjectAction(IActionSpecImmutable specImmutable) {
-            
             return new ActionSpec(this, framework.Metamodel, framework.LifecycleManager, framework.Session, framework.Services, framework.TransactionManager, framework.Manager, specImmutable);
         }
 

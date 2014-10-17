@@ -11,16 +11,15 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Reflector.Spec {
+namespace NakedObjects.Core.Spec {
     public class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
-        private readonly IObjectPersistor persistor;
         private readonly bool isASet;
+        private readonly IObjectPersistor persistor;
 
         public OneToManyAssociationSpec(IMetamodelManager metamodel, IAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
             : base(metamodel, association, session, lifecycleManager, manager) {
@@ -36,7 +35,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return false; }
         }
 
-        #region IOneToManyAssociation Members
+        #region IOneToManyAssociationSpec Members
 
         public override INakedObject GetNakedObject(INakedObject inObject) {
             return GetCollection(inObject);

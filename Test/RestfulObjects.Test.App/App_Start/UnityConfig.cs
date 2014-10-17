@@ -118,7 +118,7 @@ namespace RestfulObjects.Test.App
             container.RegisterInstance<IServicesConfiguration>(serviceConfig, new ContainerControlledLifetimeManager());
 
             container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerResolveLifetimeManager());
-            container.RegisterType<MemberFactory, MemberFactory>(new PerResolveLifetimeManager());
+            container.RegisterType<SpecFactory, SpecFactory>(new PerResolveLifetimeManager());
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
 

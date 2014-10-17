@@ -22,11 +22,11 @@ using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.Spec {
+namespace NakedObjects.Core.Spec {
     public class ObjectSpec : IObjectSpec {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpec));
         private readonly IObjectSpecImmutable innerSpec;
-        private readonly MemberFactory memberFactory;
+        private readonly SpecFactory memberFactory;
         private readonly IMetamodelManager metamodelManager;
         private IActionSpec[] combinedActions;
         private IActionSpec[] contributedActions;
@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.Spec {
         private IAssociationSpec[] objectFields;
         private IActionSpec[] relatedActions;
 
-        public ObjectSpec(MemberFactory memberFactory, IMetamodelManager metamodelManager, IObjectSpecImmutable innerSpec) {
+        public ObjectSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, IObjectSpecImmutable innerSpec) {
             this.memberFactory = memberFactory;
             this.metamodelManager = metamodelManager;
             this.innerSpec = innerSpec;
@@ -78,7 +78,7 @@ namespace NakedObjects.Reflector.Spec {
             }
         }
 
-        #region INakedObjectSpecification Members
+        #region IObjectSpec Members
 
         public virtual string FullName {
             get { return innerSpec.FullName; }

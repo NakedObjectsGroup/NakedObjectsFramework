@@ -18,7 +18,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Reflector.Spec {
+namespace NakedObjects.Core.Spec {
     public class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {
         private readonly IObjectPersistor persistor;
         private readonly ITransactionManager transactionManager;
@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.Spec {
             this.transactionManager = transactionManager;
         }
 
-        #region IOneToOneAssociation Members
+        #region IOneToOneAssociationSpec Members
 
         public override bool IsObject {
             get { return true; }

@@ -17,7 +17,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Reflector.Spec {
+namespace NakedObjects.Core.Spec {
     public abstract class ActionParameterSpec : IActionParameterSpec {
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodel;
@@ -48,7 +48,7 @@ namespace NakedObjects.Reflector.Spec {
             get { return manager; }
         }
 
-        #region INakedObjectActionParameter Members
+        #region IActionParameterSpec Members
 
         public bool IsAutoCompleteEnabled {
             get { return ContainsFacet<IAutoCompleteFacet>(); }

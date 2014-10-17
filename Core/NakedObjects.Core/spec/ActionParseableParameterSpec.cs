@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Reflector.Spec {
+namespace NakedObjects.Core.Spec {
     public class ActionParseableParameterSpec : ActionParameterSpec, IActionParseableParameterSpec {
         public ActionParseableParameterSpec(IMetamodelManager metamodel, int index, IActionSpec actionSpec, IActionParameterSpecImmutable peer, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
             : base(metamodel, index, actionSpec, peer, manager, session, persistor) {}

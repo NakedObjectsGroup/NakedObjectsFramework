@@ -10,12 +10,13 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Architecture.Reflect {
+namespace NakedObjects.Core.Spec {
     public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodel;
@@ -47,7 +48,7 @@ namespace NakedObjects.Architecture.Reflect {
             get { return manager; }
         }
 
-        #region INakedObjectAssociation Members
+        #region IAssociationSpec Members
 
         /// <summary>
         ///     Return the specification of the object (or objects) that this field holds. For a value are one-to-one
@@ -98,6 +99,8 @@ namespace NakedObjects.Architecture.Reflect {
         public abstract TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
         public abstract void ToDefault(INakedObject nakedObject);
 
+        #endregion
+
         public override IConsent IsUsable(INakedObject target) {
             bool isPersistent = target.ResolveState.IsPersistent();
             IConsent disabledConsent = IsUsableDeclaratively(isPersistent);
@@ -129,8 +132,6 @@ namespace NakedObjects.Architecture.Reflect {
             return GetConsent(reason);
         }
 
-        #endregion
-
         public abstract INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
 
         public abstract Tuple<string, IObjectSpec>[] GetChoicesParameters();
@@ -154,8 +155,6 @@ namespace NakedObjects.Architecture.Reflect {
 
             return null;
         }
-
-        
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -11,14 +11,14 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.spec;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Core.Spec;
 
 namespace NakedObjects.Managers {
     public class MetamodelManager : IMetamodelManager {
-        private readonly MemberFactory memberFactory;
+        private readonly SpecFactory memberFactory;
         private readonly IMetamodel metamodel;
 
-        public MetamodelManager(MemberFactory memberFactory,  IMetamodel metamodel) {
+        public MetamodelManager(SpecFactory memberFactory,  IMetamodel metamodel) {
             this.memberFactory = memberFactory;
             this.metamodel = metamodel;
         }
