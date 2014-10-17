@@ -133,7 +133,11 @@
     <Compile Include="adapter\INakedObject.cs" />
     <Compile Include="adapter\IOid.cs" />
     <Compile Include="adapter\PersistableType.cs" />
+    <Compile Include="Component\IClassStrategy.cs" />
+    <Compile Include="Component\IFacetFactorySet.cs" />
+    <Compile Include="Component\IMetamodel.cs" />
     <Compile Include="Component\IMetamodelManager.cs" />
+    <Compile Include="Component\INakedObjectReflector.cs" />
     <Compile Include="Exceptions\ResolveException.cs" />
     <Compile Include="adapter\value\IArrayValueFacet.cs" />
     <Compile Include="adapter\value\IEnumValueFacet.cs" />
@@ -199,7 +203,6 @@
     <Compile Include="facets\disable\IDisableForSessionFacet.cs" />
     <Compile Include="facets\IFacet.cs" />
     <Compile Include="facets\IFacetFactory.cs" />
-    <Compile Include="facets\IFacetFactorySet.cs" />
     <Compile Include="facets\ISpecification.cs" />
     <Compile Include="facets\hide\IHiddenFacet.cs" />
     <Compile Include="facets\hide\IHideForContextFacet.cs" />
@@ -313,12 +316,10 @@
     <Compile Include="Exceptions\ObjectPersistenceException.cs" />
     <Compile Include="Component\IOidGenerator.cs" />
     <Compile Include="persist\IPersistenceCommand.cs" />
-    <Compile Include="Reflect\IClassStrategy.cs" />
     <Compile Include="Reflect\IConsent.cs" />
     <Compile Include="Reflect\IFacetDecorator.cs" />
     <Compile Include="Reflect\IFacetDecoratorSet.cs" />
     <Compile Include="Reflect\IObjectSpecImmutable.cs" />
-    <Compile Include="Reflect\IMetamodel.cs" />
     <Compile Include="Reflect\INakedObjectValidation.cs" />
     <Compile Include="Reflect\InitiatedBy.cs" />
     <Compile Include="Reflect\IActionSpec.cs" />
@@ -330,7 +331,6 @@
     <Compile Include="Reflect\IFeatureSpec.cs" />
     <Compile Include="Reflect\FeatureType.cs" />
     <Compile Include="Reflect\IMemberSpec.cs" />
-    <Compile Include="Reflect\INakedObjectReflector.cs" />
     <Compile Include="Reflect\IOneToManyFeatureSpec.cs" />
     <Compile Include="Exceptions\ReflectionException.cs" />
     <Compile Include="ResolveStateMachine\IResolveEvent.cs" />
