@@ -12,10 +12,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Objects.Immutable;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
+namespace NakedObjects.Reflector.FacetFactory {
     public class ImmutableAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ImmutableAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}

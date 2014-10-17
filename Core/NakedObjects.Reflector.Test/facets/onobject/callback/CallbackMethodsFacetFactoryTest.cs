@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Adapter;
+using NakedObjects.Reflector.FacetFactory;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {

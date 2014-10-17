@@ -12,10 +12,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Actions.PageSize;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actions.PageSize {
+namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
     ///     Creates an <see cref="IPageSizeFacet" /> based on the presence of an
     ///     <see cref="PageSizeAttribute" /> annotation

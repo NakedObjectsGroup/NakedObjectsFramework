@@ -12,8 +12,9 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Reflector.DotNet.Facets.Properties.Validate;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Properties.Validate {
+namespace NakedObjects.Reflector.FacetFactory {
     public class PropertyValidateDefaultFacetFactory : FacetFactoryAbstract {
         public PropertyValidateDefaultFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesOnly) {}

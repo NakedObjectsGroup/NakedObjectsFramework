@@ -16,10 +16,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Naming.Named;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
+namespace NakedObjects.Reflector.FacetFactory {
     public class NamedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (NamedAnnotationFacetFactory));
         private Type currentType;

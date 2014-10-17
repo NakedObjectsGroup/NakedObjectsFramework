@@ -6,53 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facets.Propparam.TypicalLength;
-using NakedObjects.Reflector.DotNet.Facets.Actcoll.Table;
-using NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof;
-using NakedObjects.Reflector.DotNet.Facets.Actions;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Defaults;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Executed;
-using NakedObjects.Reflector.DotNet.Facets.Actions.PageSize;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Potency;
-using NakedObjects.Reflector.DotNet.Facets.Authorize;
-using NakedObjects.Reflector.DotNet.Facets.Collections;
-using NakedObjects.Reflector.DotNet.Facets.Disable;
-using NakedObjects.Reflector.DotNet.Facets.Hide;
-using NakedObjects.Reflector.DotNet.Facets.Naming.DescribedAs;
-using NakedObjects.Reflector.DotNet.Facets.Naming.Named;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Bounded;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Defaults;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Immutable;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Key;
-using NakedObjects.Reflector.DotNet.Facets.Objects.NotPersistable;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Parseable;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Value;
-using NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel;
-using NakedObjects.Reflector.DotNet.Facets.Ordering.ActionOrder;
-using NakedObjects.Reflector.DotNet.Facets.Ordering.FieldOrder;
 using NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder;
-using NakedObjects.Reflector.DotNet.Facets.Password;
-using NakedObjects.Reflector.DotNet.Facets.Presentation;
-using NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted;
-using NakedObjects.Reflector.DotNet.Facets.Properties;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Defaults;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Enums;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Validate;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Version;
 using NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine;
-using NakedObjects.Reflector.DotNet.Facets.Propparam.TypicalLength;
-using NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory;
 using NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask;
 using NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.MaxLength;
-using NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Range;
-using NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx;
 using NakedObjects.Reflector.DotNet.Value;
 
 namespace NakedObjects.Reflector.FacetFactory {

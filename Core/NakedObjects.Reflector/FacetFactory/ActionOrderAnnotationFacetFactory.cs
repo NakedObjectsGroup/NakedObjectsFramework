@@ -12,10 +12,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Ordering.ActionOrder;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Ordering.ActionOrder {
+namespace NakedObjects.Reflector.FacetFactory {
     public class ActionOrderAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ActionOrderAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}

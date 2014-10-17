@@ -26,10 +26,9 @@ using NakedObjects.Reflector.DotNet.Facets.Actions.Validate;
 using NakedObjects.Reflector.DotNet.Facets.AutoComplete;
 using NakedObjects.Reflector.DotNet.Facets.Naming.Named;
 using NakedObjects.Reflector.DotNet.Reflect.Actions;
-using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actions {
+namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>

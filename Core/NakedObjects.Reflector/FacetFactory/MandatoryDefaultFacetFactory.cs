@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
+namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
     ///     Simply installs a <see cref="MandatoryFacetDefault" /> onto all properties and parameters.
     /// </summary>

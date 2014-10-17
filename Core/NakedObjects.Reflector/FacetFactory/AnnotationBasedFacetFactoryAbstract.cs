@@ -10,7 +10,6 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public abstract class AnnotationBasedFacetFactoryAbstract : FacetFactoryAbstract, IAnnotationBasedFacetFactory {

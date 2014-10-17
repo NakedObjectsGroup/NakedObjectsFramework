@@ -16,11 +16,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Security;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
+namespace NakedObjects.Reflector.FacetFactory {
     public class AuthorizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (AuthorizeAnnotationFacetFactory));
 

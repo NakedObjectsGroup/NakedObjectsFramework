@@ -13,10 +13,9 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Validation;
-using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
+namespace NakedObjects.Reflector.FacetFactory {
     public class ValidateProgrammaticUpdatesAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ValidateProgrammaticUpdatesAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}

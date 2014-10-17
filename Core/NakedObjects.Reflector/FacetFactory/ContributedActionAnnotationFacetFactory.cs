@@ -13,10 +13,9 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
+namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
     ///     Creates an <see cref="INotContributedActionFacet" /> based on the presence of an
     ///     <see cref="NotContributedActionAttribute" /> annotation

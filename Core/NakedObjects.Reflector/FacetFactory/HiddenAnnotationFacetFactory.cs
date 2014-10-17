@@ -13,13 +13,13 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Hide;
 using NakedObjects.Util;
 using MethodInfo = System.Reflection.MethodInfo;
 using PropertyInfo = System.Reflection.PropertyInfo;
 using MemberInfo = System.Reflection.MemberInfo;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Hide {
+namespace NakedObjects.Reflector.FacetFactory {
     public class HiddenAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public HiddenAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}

@@ -15,10 +15,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks;
 using NakedObjects.Reflector.Peer;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
+namespace NakedObjects.Reflector.FacetFactory {
     public class CallbackMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (CallbackMethodsFacetFactory));
 

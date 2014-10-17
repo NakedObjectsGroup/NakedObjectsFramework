@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Reflector.FacetFactory;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions {

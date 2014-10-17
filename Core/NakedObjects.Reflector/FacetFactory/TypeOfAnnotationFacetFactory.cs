@@ -14,9 +14,9 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
+namespace NakedObjects.Reflector.FacetFactory {
     public class TypeOfAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TypeOfAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.CollectionsAndActions) {}

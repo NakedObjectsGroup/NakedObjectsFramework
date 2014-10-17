@@ -27,6 +27,7 @@ using NakedObjects.Reflector.DotNet.Facets.AutoComplete;
 using NakedObjects.Reflector.DotNet.Facets.Disable;
 using NakedObjects.Reflector.DotNet.Facets.Hide;
 using NakedObjects.Reflector.DotNet.Reflect.Actions;
+using NakedObjects.Reflector.FacetFactory;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions {

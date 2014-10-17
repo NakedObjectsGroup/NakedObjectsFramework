@@ -13,10 +13,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
+namespace NakedObjects.Reflector.FacetFactory {
     public class OptionalAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (OptionalAnnotationFacetFactory));
 

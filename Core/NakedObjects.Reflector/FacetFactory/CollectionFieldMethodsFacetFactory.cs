@@ -17,9 +17,8 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.DotNet.Facets.Propcoll.Access;
-using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Collections {
+namespace NakedObjects.Reflector.FacetFactory {
     public class CollectionFieldMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
         private static readonly ILog Log;
         private static readonly string[] FixedPrefixes;

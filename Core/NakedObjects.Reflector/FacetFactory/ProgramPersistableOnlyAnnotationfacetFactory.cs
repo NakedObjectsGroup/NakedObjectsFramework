@@ -12,10 +12,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Objects.NotPersistable;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.NotPersistable {
+namespace NakedObjects.Reflector.FacetFactory {
     public class ProgramPersistableOnlyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ProgramPersistableOnlyAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}

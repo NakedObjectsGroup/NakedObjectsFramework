@@ -12,10 +12,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Actions.Executed;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
+namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
     ///     Creates an <see cref="IExecutedFacet" /> based on the presence of an
     ///     <see cref="ExecutedAttribute" /> annotation

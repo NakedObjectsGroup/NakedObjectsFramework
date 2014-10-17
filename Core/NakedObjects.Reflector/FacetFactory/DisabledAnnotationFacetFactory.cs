@@ -12,10 +12,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Disable;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Disable {
+namespace NakedObjects.Reflector.FacetFactory {
     public class DisabledAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public DisabledAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}

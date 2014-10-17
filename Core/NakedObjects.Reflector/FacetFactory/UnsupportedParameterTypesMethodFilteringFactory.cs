@@ -12,7 +12,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actions {
+namespace NakedObjects.Reflector.FacetFactory {
     public class UnsupportedParameterTypesMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (UnsupportedParameterTypesMethodFilteringFactory));
 

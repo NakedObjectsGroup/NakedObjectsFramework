@@ -25,6 +25,7 @@ using NakedObjects.Reflector.DotNet.Facets.Properties.Choices;
 using NakedObjects.Reflector.DotNet.Facets.Properties.Defaults;
 using NakedObjects.Reflector.DotNet.Facets.Properties.Modify;
 using NakedObjects.Reflector.DotNet.Facets.Properties.Validate;
+using NakedObjects.Reflector.FacetFactory;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties {

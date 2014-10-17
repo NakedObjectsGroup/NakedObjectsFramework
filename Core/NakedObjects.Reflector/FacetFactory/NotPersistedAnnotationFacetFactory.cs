@@ -13,10 +13,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
+namespace NakedObjects.Reflector.FacetFactory {
     public class NotPersistedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public NotPersistedAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsPropertiesAndCollections) {}

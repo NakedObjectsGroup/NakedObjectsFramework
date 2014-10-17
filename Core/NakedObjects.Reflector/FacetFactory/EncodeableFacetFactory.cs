@@ -13,10 +13,10 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
+namespace NakedObjects.Reflector.FacetFactory {
     public class EncodeableFacetFactory : AnnotationBasedFacetFactoryAbstract, INakedObjectConfigurationAware {
         public EncodeableFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}

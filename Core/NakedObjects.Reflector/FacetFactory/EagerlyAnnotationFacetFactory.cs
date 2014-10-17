@@ -13,9 +13,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
+namespace NakedObjects.Reflector.FacetFactory {
     public class EagerlyAnnotationFacetFactory : FacetFactoryAbstract {
         public EagerlyAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.EverythingButParameters) {}

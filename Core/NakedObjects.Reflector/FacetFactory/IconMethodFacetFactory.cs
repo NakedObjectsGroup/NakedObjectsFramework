@@ -13,10 +13,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {
+namespace NakedObjects.Reflector.FacetFactory {
     public class IconMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] prefixes;
 

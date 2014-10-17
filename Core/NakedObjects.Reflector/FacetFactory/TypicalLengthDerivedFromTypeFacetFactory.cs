@@ -10,13 +10,12 @@ using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
+using NakedObjects.Architecture.Facets.Propparam.TypicalLength;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets;
-using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Architecture.Facets.Propparam.TypicalLength {
+namespace NakedObjects.Reflector.FacetFactory {
     public class TypicalLengthDerivedFromTypeFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TypicalLengthDerivedFromTypeFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesAndParameters) {}

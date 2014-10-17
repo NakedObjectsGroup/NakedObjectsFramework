@@ -10,15 +10,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Range;
 using NakedObjects.Util;
-using IRangeFacet = NakedObjects.Architecture.Facet.IRangeFacet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Range {
+namespace NakedObjects.Reflector.FacetFactory {
     public class RangeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (RangeAnnotationFacetFactory));
 

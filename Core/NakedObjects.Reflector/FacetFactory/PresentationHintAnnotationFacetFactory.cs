@@ -13,10 +13,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Presentation;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
+namespace NakedObjects.Reflector.FacetFactory {
     public class PresentationHintAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PresentationHintAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.Everything) {}

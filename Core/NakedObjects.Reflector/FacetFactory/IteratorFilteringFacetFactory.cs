@@ -13,10 +13,9 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actions {
+namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
     ///     Designed to simply filter out <see cref="IEnumerable.GetEnumerator" /> method if it exists.
     /// </summary>

@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Reflector.DotNet.Facets.Authorize;
+using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Security;
 using NUnit.Framework;
 

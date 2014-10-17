@@ -14,10 +14,10 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.DotNet.Facets.Actcoll.Table;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
+namespace NakedObjects.Reflector.FacetFactory {
     public class TableViewAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TableViewAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.CollectionsAndActions) {}

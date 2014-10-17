@@ -11,9 +11,8 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Hide {
+namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
     ///     Note - this factory simply removes the class level attribute from the list of methods.  The action and properties look up this attribute directly
     /// </summary>
