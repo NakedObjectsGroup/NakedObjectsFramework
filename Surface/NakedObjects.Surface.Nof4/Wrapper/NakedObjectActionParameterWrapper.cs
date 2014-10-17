@@ -8,12 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Architecture.Facets.AutoComplete;
-using NakedObjects.Architecture.Facets.Presentation;
-using NakedObjects.Architecture.Facets.Propparam.Validate.Mask;
-using NakedObjects.Architecture.Facets.Propparam.Validate.MaxLength;
-using NakedObjects.Architecture.Facets.Propparam.Validate.RegEx;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Surface.Utility;
 

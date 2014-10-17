@@ -8,10 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Architecture.Facets.Actions.Potency;
-using NakedObjects.Architecture.Facets.Ordering.MemberOrder;
-using NakedObjects.Architecture.Facets.Presentation;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class NakedObjectActionWrapper : ScalarPropertyHolder, INakedObjectActionSurface {

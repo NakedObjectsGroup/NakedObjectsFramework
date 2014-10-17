@@ -12,7 +12,7 @@ using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Architecture.Facets.Objects.ViewModel;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Services;
 using NakedObjects.Surface.Nof4.Wrapper;
