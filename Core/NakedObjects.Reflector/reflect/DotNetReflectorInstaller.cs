@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Reflector.DotNet.Facets;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
+using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 

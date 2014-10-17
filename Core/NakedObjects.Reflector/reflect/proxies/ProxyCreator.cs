@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {

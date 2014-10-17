@@ -24,6 +24,7 @@ using NakedObjects.Reflector.DotNet;
 using NakedObjects.Reflector.DotNet.Facets;
 using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
+using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Service;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;

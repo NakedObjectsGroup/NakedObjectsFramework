@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.DotNet.Facets;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
+using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Spec;
 using NUnit.Framework;
 

@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.DotNet.Facets.Actions.PageSize;
 using NakedObjects.Reflector.DotNet.Reflect.Actions;
+using NakedObjects.Reflector.FacetFactory;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
