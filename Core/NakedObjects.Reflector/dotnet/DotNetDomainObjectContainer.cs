@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets.Objects.Validation;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;

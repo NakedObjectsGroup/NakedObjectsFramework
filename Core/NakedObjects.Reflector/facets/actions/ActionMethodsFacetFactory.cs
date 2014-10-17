@@ -1,12 +1,19 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using Common.Logging;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Propparam.Modify;
 using NakedObjects.Architecture.Reflect;
@@ -20,18 +27,13 @@ using NakedObjects.Reflector.DotNet.Facets.Actions.Validate;
 using NakedObjects.Reflector.DotNet.Facets.AutoComplete;
 using NakedObjects.Reflector.DotNet.Facets.Naming.Named;
 using NakedObjects.Reflector.DotNet.Reflect.Actions;
-using NakedObjects.Reflector.Peer;
-using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
-using MethodInfo = System.Reflection.MethodInfo;
-using ParameterInfo = System.Reflection.ParameterInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
     public class ActionMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-   
         private static readonly string[] FixedPrefixes;
 
         private static readonly ILog Log;
@@ -53,9 +55,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)
         /// </summary>
         public ActionMethodsFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, FeatureType.ActionsAndParameters) {
-           
-        }
+            : base(reflector, FeatureType.ActionsAndParameters) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }
@@ -136,17 +136,17 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
 
                 MethodInfo methodUsingIndex = FindMethodWithOrWithoutParameters(type,
-                                                                                MethodType.Object,
-                                                                                PrefixesAndRecognisedMethods.ParameterDefaultPrefix + i + capitalizedName,
-                                                                                paramType,
-                                                                                paramTypes);
+                    MethodType.Object,
+                    PrefixesAndRecognisedMethods.ParameterDefaultPrefix + i + capitalizedName,
+                    paramType,
+                    paramTypes);
 
                 MethodInfo methodUsingName = FindMethod(type,
-                                                        MethodType.Object,
-                                                        PrefixesAndRecognisedMethods.ParameterDefaultPrefix + capitalizedName,
-                                                        paramType,
-                                                        new[] {paramType},
-                                                        new[] {paramName});
+                    MethodType.Object,
+                    PrefixesAndRecognisedMethods.ParameterDefaultPrefix + capitalizedName,
+                    paramType,
+                    new[] {paramType},
+                    new[] {paramName});
 
                 if (methodUsingIndex != null && methodUsingName != null) {
                     Log.WarnFormat("Duplicate defaults parameter methods {0} and {1} using {1}", methodUsingIndex.Name, methodUsingName.Name);
@@ -179,25 +179,25 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
                 Type returnType = typeof (IEnumerable<>).MakeGenericType(paramType);
 
                 MethodInfo[] methods = FindMethods(type,
-                                                   MethodType.Object,
-                                                   PrefixesAndRecognisedMethods.ParameterChoicesPrefix + i + capitalizedName,
-                                                   returnType);
+                    MethodType.Object,
+                    PrefixesAndRecognisedMethods.ParameterChoicesPrefix + i + capitalizedName,
+                    returnType);
 
                 if (methods.Length > 1) {
                     methods.Skip(1).ForEach(m => Log.WarnFormat("Found multiple action choices methods: {0} in type: {1} ignoring method(s) with params: {2}",
-                                                                PrefixesAndRecognisedMethods.ParameterChoicesPrefix + i + capitalizedName,
-                                                                type,
-                                                                m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)));
+                        PrefixesAndRecognisedMethods.ParameterChoicesPrefix + i + capitalizedName,
+                        type,
+                        m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)));
                 }
 
                 MethodInfo methodUsingIndex = methods.FirstOrDefault();
 
                 MethodInfo methodUsingName = FindMethod(type,
-                                                        MethodType.Object,
-                                                        PrefixesAndRecognisedMethods.ParameterChoicesPrefix + capitalizedName,
-                                                        returnType,
-                                                        new[] {paramType},
-                                                        new[] {paramName});
+                    MethodType.Object,
+                    PrefixesAndRecognisedMethods.ParameterChoicesPrefix + capitalizedName,
+                    returnType,
+                    new[] {paramType},
+                    new[] {paramName});
 
                 if (methodUsingIndex != null && methodUsingName != null) {
                     Log.WarnFormat("Duplicate choices parameter methods {0} and {1} using {1}", methodUsingIndex.Name, methodUsingName.Name);
@@ -225,13 +225,13 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
                     Type returnType = typeof (IQueryable<>).MakeGenericType(paramTypes[i]);
 
                     MethodInfo method = FindMethod(type,
-                                                   MethodType.Object,
-                                                   PrefixesAndRecognisedMethods.AutoCompletePrefix + i + capitalizedName,
-                                                   returnType,
-                                                   new[] {typeof (string)});
+                        MethodType.Object,
+                        PrefixesAndRecognisedMethods.AutoCompletePrefix + i + capitalizedName,
+                        returnType,
+                        new[] {typeof (string)});
 
                     if (method != null) {
-                        var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
+                        var pageSizeAttr = AttributeUtils.GetCustomAttribute<PageSizeAttribute>(method);
                         var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof (MinLengthAttribute));
 
                         int pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
@@ -252,17 +252,17 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         private void FindAndRemoveParametersValidateMethod(IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, ISpecification[] parameters) {
             for (int i = 0; i < paramTypes.Length; i++) {
                 MethodInfo methodUsingIndex = FindMethod(type,
-                                                         MethodType.Object,
-                                                         PrefixesAndRecognisedMethods.ValidatePrefix + i + capitalizedName,
-                                                         typeof (string),
-                                                         new[] {paramTypes[i]});
+                    MethodType.Object,
+                    PrefixesAndRecognisedMethods.ValidatePrefix + i + capitalizedName,
+                    typeof (string),
+                    new[] {paramTypes[i]});
 
                 MethodInfo methodUsingName = FindMethod(type,
-                                                        MethodType.Object,
-                                                        PrefixesAndRecognisedMethods.ValidatePrefix + capitalizedName,
-                                                        typeof (string),
-                                                        new[] {paramTypes[i]},
-                                                        new[] {paramNames[i]});
+                    MethodType.Object,
+                    PrefixesAndRecognisedMethods.ValidatePrefix + capitalizedName,
+                    typeof (string),
+                    new[] {paramTypes[i]},
+                    new[] {paramNames[i]});
 
                 if (methodUsingIndex != null && methodUsingName != null) {
                     Log.WarnFormat("Duplicate validate parameter methods {0} and {1} using {1}", methodUsingIndex.Name, methodUsingName.Name);

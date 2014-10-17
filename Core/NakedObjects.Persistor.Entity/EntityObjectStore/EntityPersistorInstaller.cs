@@ -9,6 +9,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using Common.Logging;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;

@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Persist {
+namespace NakedObjects.Architecture.Component {
     /// <summary>
     ///     The NakedObjectLoader is responsible for managing the adapters and identities for each and every POCO that
     ///     is being used by the NOF. It provides a consistent set of adapters in memory, providing adapter for the

@@ -1,10 +1,16 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Choices;
 using NakedObjects.Architecture.Facets.Actions.Defaults;
@@ -14,13 +20,13 @@ using NakedObjects.Architecture.Facets.Naming.DescribedAs;
 using NakedObjects.Architecture.Facets.Naming.Named;
 using NakedObjects.Architecture.Facets.Objects.Ident.Title;
 using NakedObjects.Architecture.Facets.Objects.Immutable;
-using NakedObjects.Architecture.Facets.Objects.Parseable;
 using NakedObjects.Architecture.Facets.Objects.TypicalLength;
 using NakedObjects.Architecture.Facets.Properties.Defaults;
 using NakedObjects.Architecture.Facets.Properties.Validate;
 using NakedObjects.Architecture.Facets.Propparam.MultiLine;
 using NakedObjects.Architecture.Facets.Propparam.Validate.MaxLength;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.DotNet.Facets.Naming.Named;
 using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.DotNet.Reflect.Actions;
@@ -34,7 +40,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
     /// </summary>
     public class FallbackFacetFactory : FacetFactoryAbstract {
         public FallbackFacetFactory(INakedObjectReflector reflector)
-            : base(reflector, FeatureType.Everything) { }
+            : base(reflector, FeatureType.Everything) {}
 
 
         public bool Recognizes(MethodInfo method) {
@@ -44,7 +50,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
             return FacetUtils.AddFacets(
                 new IFacet[] {
-                    new DescribedAsFacetNone(specification),  
+                    new DescribedAsFacetNone(specification),
                     new ImmutableFacetNever(specification),
                     new TitleFacetNone(specification),
                 });
@@ -55,7 +61,7 @@ namespace NakedObjects.Reflector.DotNet.Facets {
 
             if (holder is MemberSpecImmutable) {
                 facets.Add(new NamedFacetNone(holder));
-                facets.Add(new DescribedAsFacetNone(holder));                
+                facets.Add(new DescribedAsFacetNone(holder));
             }
 
             if (holder is AssociationSpecImmutable) {

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Propparam.Validate.MaxLength {
     public class MaxLengthFacetZero : MaxLengthFacetAbstract {

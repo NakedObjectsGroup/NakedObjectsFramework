@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Context;

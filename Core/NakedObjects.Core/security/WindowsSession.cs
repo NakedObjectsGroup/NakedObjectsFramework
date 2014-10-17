@@ -4,6 +4,7 @@
 
 using System.IO;
 using System.Security.Principal;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Core.Security {

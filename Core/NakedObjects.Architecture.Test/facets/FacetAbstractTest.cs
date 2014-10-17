@@ -6,7 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Spec;
 using NUnit.Framework;
 
 namespace INakedObjects.Architecture.Adapter {

@@ -7,6 +7,8 @@
 
 using System;
 using System.Reflection;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Executed {
     public abstract class ExecutedControlMethodFacetAbstract : FacetAbstract, IExecutedControlMethodFacet {

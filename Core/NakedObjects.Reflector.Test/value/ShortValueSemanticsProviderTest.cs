@@ -11,6 +11,7 @@ using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Value {

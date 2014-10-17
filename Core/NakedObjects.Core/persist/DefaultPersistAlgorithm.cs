@@ -4,11 +4,11 @@
 
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets.Objects.Aggregated;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Util;
 

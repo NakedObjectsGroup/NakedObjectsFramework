@@ -6,10 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actcoll.Typeof;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
     public class TypeOfFacetInferredFromArray : TypeOfFacetAbstract {

@@ -6,10 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.DotNet.Reflect.Propcoll;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Properties {
     public class OneToOneAssociationSpecImmutable : AssociationSpecImmutable {

@@ -6,10 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets.Objects.Ident.Title;
-using NakedObjects.Architecture.Facets.Propparam.Validate.Mask;
-using NakedObjects.Architecture.Facets.Propparam.Validate.RegEx;
-using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
     public static class FeatureSpecUtils {

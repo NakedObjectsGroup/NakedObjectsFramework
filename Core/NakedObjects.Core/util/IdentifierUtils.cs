@@ -9,6 +9,7 @@ using System;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
+using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facets {
     public static class IdentifierUtils {

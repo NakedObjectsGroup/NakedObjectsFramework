@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Persist {
+namespace NakedObjects.Architecture.Component {
     /// <summary>
     /// Most of this type's responsibilities will be delegated to an injected INakedObjectManager and/or IObjectPersistor.
     /// The primary purpose in having a separate interface ILifecycleManager is so that the caller need not

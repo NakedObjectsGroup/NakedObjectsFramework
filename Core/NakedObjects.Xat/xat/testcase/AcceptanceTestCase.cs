@@ -16,22 +16,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Objects.Bounded;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Boot;
 using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Core.Reflect;
 using NakedObjects.Core.spec;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Managers;
-using NakedObjects.Objects;
-using NakedObjects.Persistor;
 using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Reflector.DotNet;
 using NakedObjects.Reflector.DotNet.Facets;
@@ -131,9 +125,9 @@ namespace NakedObjects.Xat {
 
         protected void RunFixtures() {
             if (nakedObjectsFramework == null) {
-                 nakedObjectsFramework = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
+                nakedObjectsFramework = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
             }
-            Fixtures.InstallFixtures(nakedObjectsFramework.TransactionManager, nakedObjectsFramework.Injector); 
+            Fixtures.InstallFixtures(nakedObjectsFramework.TransactionManager, nakedObjectsFramework.Injector);
         }
 
         protected ITestService GetTestService(Type type) {
@@ -246,7 +240,7 @@ namespace NakedObjects.Xat {
             serviceConfig.AddContributedActions(ContributedActions.GetServices());
             serviceConfig.AddSystemServices(SystemServices.GetServices());
 
-            container.RegisterInstance <IServicesConfiguration> (serviceConfig, new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IServicesConfiguration>(serviceConfig, new ContainerControlledLifetimeManager());
 
             container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerResolveLifetimeManager());
             container.RegisterType<MemberFactory, MemberFactory>(new PerResolveLifetimeManager());
@@ -257,7 +251,7 @@ namespace NakedObjects.Xat {
             container.RegisterType<IContainerInjector, DotNetDomainObjectContainerInjector>(new PerResolveLifetimeManager());
 
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerResolveLifetimeManager());
-            
+
             container.RegisterType<INakedObjectStore, EntityObjectStore.EntityObjectStore>(new PerResolveLifetimeManager());
             container.RegisterType<IIdentityMap, IdentityMapImpl>(new PerResolveLifetimeManager());
 

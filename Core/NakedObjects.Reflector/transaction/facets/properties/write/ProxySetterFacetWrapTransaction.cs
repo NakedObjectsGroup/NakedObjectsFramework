@@ -4,11 +4,10 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets.Properties.Modify;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Core.Context;
-using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Reflector.Transaction.Facets.Properties.Write {
     public class ProxySetterFacetWrapTransaction : PropertySetterFacetAbstract {

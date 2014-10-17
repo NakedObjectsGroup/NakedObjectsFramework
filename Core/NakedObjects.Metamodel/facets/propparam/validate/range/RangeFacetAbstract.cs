@@ -7,7 +7,9 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Propparam.Validate.Range {
     public abstract class RangeFacetAbstract : FacetAbstract, IRangeFacet {

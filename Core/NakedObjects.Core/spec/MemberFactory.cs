@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;

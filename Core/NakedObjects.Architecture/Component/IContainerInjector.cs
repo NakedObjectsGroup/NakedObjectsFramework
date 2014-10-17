@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Core.Reflect {
+namespace NakedObjects.Architecture.Component {
     /// <summary>
     /// Services that will inject an implementation of IDomainObjectContainer and/or INakedObjectsFramework into
     /// domain objects and services when they are instantiated.

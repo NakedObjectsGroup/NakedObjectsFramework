@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Objects.Callbacks {
     public abstract class DeletingCallbackFacetAbstract : CallbackFacetAbstract, IDeletingCallbackFacet {

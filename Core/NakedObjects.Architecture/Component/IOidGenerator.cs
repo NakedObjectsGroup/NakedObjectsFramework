@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Persist {
+namespace NakedObjects.Architecture.Component {
     // TODO this should be done by OS - move OIDGen to OS
     public interface IOidGenerator {
         /// <summary>

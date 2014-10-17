@@ -6,14 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facets.Objects.TypicalLength;
-using NakedObjects.Architecture.Facets.Propparam.MultiLine;
-using NakedObjects.Architecture.Facets.Propparam.Validate.MaxLength;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class ActionParseableParameterSpec : ActionParameterSpec, IActionParseableParameterSpec {

@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Core.Reflect;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Reflector.DotNet {

@@ -1,32 +1,34 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
-
+using System.Reflection;
 using Common.Logging;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Propparam.Validate.Mandatory;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
-using MemberInfo = System.Reflection.MemberInfo;
-using MethodInfo = System.Reflection.MethodInfo;
-using PropertyInfo = System.Reflection.PropertyInfo;
-using ParameterInfo = System.Reflection.ParameterInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
     public class OptionalAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (OptionalAnnotationFacetFactory));
 
         public OptionalAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, FeatureType.PropertiesAndParameters) { }
+            : base(reflector, FeatureType.PropertiesAndParameters) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<OptionallyAttribute>();
+            var attribute = AttributeUtils.GetCustomAttribute<OptionallyAttribute>(member);
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
         public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
-            if ((method.ReturnType.IsPrimitive || TypeUtils.IsEnum(method.ReturnType)) && method.GetCustomAttribute<OptionallyAttribute>() != null) {
+            if ((method.ReturnType.IsPrimitive || TypeUtils.IsEnum(method.ReturnType)) && AttributeUtils.GetCustomAttribute<OptionallyAttribute>(method) != null) {
                 Log.Warn("Ignoring Optionally annotation on primitive parameter on " + method.ReflectedType + "." + method.Name);
                 return false;
             }
@@ -34,7 +36,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
         }
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
-            if ((property.PropertyType.IsPrimitive || TypeUtils.IsEnum(property.PropertyType)) && property.GetCustomAttribute<OptionallyAttribute>() != null) {
+            if ((property.PropertyType.IsPrimitive || TypeUtils.IsEnum(property.PropertyType)) && AttributeUtils.GetCustomAttribute<OptionallyAttribute>(property) != null) {
                 Log.Warn("Ignoring Optionally annotation on primitive or un-readable parameter on " + property.ReflectedType + "." + property.Name);
                 return false;
             }
@@ -47,7 +49,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
         public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             if ((parameter.ParameterType.IsPrimitive || TypeUtils.IsEnum(parameter.ParameterType))) {
-                if (method.GetCustomAttribute<OptionallyAttribute>() != null) {
+                if (AttributeUtils.GetCustomAttribute<OptionallyAttribute>(method) != null) {
                     Log.Warn("Ignoring Optionally annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." +
                              method.Name);
                 }

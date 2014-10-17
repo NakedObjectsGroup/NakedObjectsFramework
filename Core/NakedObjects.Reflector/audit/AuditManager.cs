@@ -5,10 +5,7 @@
 using System;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Audit;
 using NakedObjects.Core.Util;
 

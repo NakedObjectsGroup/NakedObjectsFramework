@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Persist {
+namespace NakedObjects.Architecture.Component {
     /// <summary>
     /// Provides access to the domain services that have been registered as part of the application. 
     /// </summary>

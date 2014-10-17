@@ -8,8 +8,11 @@
 using System;
 using System.Collections;
 using System.Reflection;
-using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions {

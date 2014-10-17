@@ -10,23 +10,13 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facets.AutoComplete;
-using NakedObjects.Architecture.Facets.Objects.Aggregated;
-using NakedObjects.Architecture.Facets.Properties.Access;
-using NakedObjects.Architecture.Facets.Properties.Choices;
-using NakedObjects.Architecture.Facets.Properties.Defaults;
-using NakedObjects.Architecture.Facets.Properties.Enums;
-using NakedObjects.Architecture.Facets.Properties.Modify;
-using NakedObjects.Architecture.Facets.Propparam.Validate.Mandatory;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {

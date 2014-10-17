@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 
 namespace NakedObjects.Reflector.I18n {

@@ -5,6 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
+
 namespace NakedObjects.Architecture.Facets.Objects.TypicalLength {
     public class TypicalLengthFacetInferred : TypicalLengthFacetAbstract, ITypicalLengthFacet {
         public TypicalLengthFacetInferred(int intValue, ISpecification holder)

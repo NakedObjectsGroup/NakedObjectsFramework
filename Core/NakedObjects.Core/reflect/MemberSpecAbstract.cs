@@ -8,13 +8,9 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Naming.DescribedAs;
-using NakedObjects.Architecture.Facets.Naming.Named;
-using NakedObjects.Architecture.Facets.Propparam.Modify;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 

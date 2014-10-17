@@ -7,6 +7,8 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Properties.Defaults {
     public abstract class PropertyDefaultFacetAbstract : FacetAbstract, IPropertyDefaultFacet {

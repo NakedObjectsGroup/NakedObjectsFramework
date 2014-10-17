@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Architecture.Facets {
     public static class FacetUtils {

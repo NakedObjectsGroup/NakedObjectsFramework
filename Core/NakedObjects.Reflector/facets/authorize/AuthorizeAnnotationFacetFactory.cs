@@ -1,28 +1,32 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Linq;
+using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Disable;
 using NakedObjects.Architecture.Facets.Hide;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Security;
 using NakedObjects.Util;
-using MethodInfo = System.Reflection.MethodInfo;
-using PropertyInfo = System.Reflection.PropertyInfo;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
     public class AuthorizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (AuthorizeAnnotationFacetFactory));
 
         public AuthorizeAnnotationFacetFactory(INakedObjectReflector reflector)
-            :base(reflector, FeatureType.PropertiesCollectionsAndActions) { }
+            : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}
 
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
@@ -32,7 +36,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
 
         public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
             var classAttribute = method.DeclaringType.GetCustomAttributeByReflection<AuthorizeActionAttribute>();
-            var methodAttribute = method.GetCustomAttribute<AuthorizeActionAttribute>();
+            var methodAttribute = AttributeUtils.GetCustomAttribute<AuthorizeActionAttribute>(method);
 
             if (classAttribute != null && methodAttribute != null) {
                 Log.WarnFormat("Class and method level AuthorizeAttributes applied to class {0} - ignoring attribute on method {1}", method.DeclaringType.FullName, method.Name);
@@ -43,7 +47,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Authorize {
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             var classAttribute = property.DeclaringType.GetCustomAttributeByReflection<AuthorizePropertyAttribute>();
-            var propertyAttribute = property.GetCustomAttribute<AuthorizePropertyAttribute>();
+            var propertyAttribute = AttributeUtils.GetCustomAttribute<AuthorizePropertyAttribute>(property);
 
             if (classAttribute != null && propertyAttribute != null) {
                 Log.WarnFormat("Class and property level AuthorizeAttributes applied to class {0} - ignoring attribute on property {1}", property.DeclaringType.FullName, property.Name);

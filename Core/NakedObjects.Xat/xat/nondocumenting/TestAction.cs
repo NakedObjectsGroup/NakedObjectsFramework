@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -8,23 +11,20 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facets.Actions.Invoke;
-using NakedObjects.Architecture.Facets.Objects.Parseable;
-using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
-using NakedObjects.Core.Context;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Xat {
     internal class TestAction : ITestAction {
         private readonly IActionSpec actionSpec;
         private readonly ITestObjectFactory factory;
-        private readonly INakedObjectManager manager;
-        private readonly INakedObjectTransactionManager transactionManager;
-        private readonly IMetamodelManager metamodelManager;
-        private readonly ISession session;
         private readonly ILifecycleManager lifecycleManager;
+        private readonly INakedObjectManager manager;
+        private readonly IMetamodelManager metamodelManager;
         private readonly ITestHasActions owningObject;
+        private readonly ISession session;
+        private readonly INakedObjectTransactionManager transactionManager;
 
         public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, INakedObjectTransactionManager transactionManager)
             : this(metamodelManager, session, lifecycleManager, string.Empty, actionSpec, owningObject, factory, manager, transactionManager) {}
@@ -173,7 +173,6 @@ namespace NakedObjects.Xat {
 
             object[] parsedParameters = ParsedParameters(parameters);
 
-           
 
             INakedObject[] parameterObjects = parsedParameters.AsTestNakedArray(manager).Select(x => x == null ? null : x.NakedObject).ToArray();
             IConsent canExecute = actionSpec.IsParameterSetValid(owningObject.NakedObject, parameterObjects);

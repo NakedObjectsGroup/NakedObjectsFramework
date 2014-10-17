@@ -9,19 +9,11 @@ using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facets.AutoComplete;
-using NakedObjects.Architecture.Facets.Disable;
-using NakedObjects.Architecture.Facets.Objects.Immutable;
-using NakedObjects.Architecture.Facets.Propcoll.NotPersisted;
-using NakedObjects.Architecture.Facets.Properties.Choices;
-using NakedObjects.Architecture.Facets.Properties.Modify;
-using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Architecture.Reflect {
     public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {

@@ -5,11 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Linq;
 using System.Reflection;
+using System.Linq;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Contributed;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {

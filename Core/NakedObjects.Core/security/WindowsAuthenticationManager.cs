@@ -4,7 +4,7 @@
 
 using System.Security.Principal;
 using System.Threading;
-using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Security {
     public class WindowsAuthenticationManager : IAuthenticationManager {

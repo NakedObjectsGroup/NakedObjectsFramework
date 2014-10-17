@@ -7,6 +7,8 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Properties.Enums {
     public abstract class EnumFacetAbstract : MarkerFacetAbstract, IEnumFacet {

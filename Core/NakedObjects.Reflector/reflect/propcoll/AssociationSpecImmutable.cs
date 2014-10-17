@@ -6,12 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Reflector.DotNet.Facets.Ordering;
-using NakedObjects.Reflector.Peer;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Propcoll {
     public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {

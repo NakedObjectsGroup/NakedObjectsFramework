@@ -7,11 +7,9 @@
 
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Persistor;
 
 namespace NakedObjects.EntityObjectStore {
 

@@ -5,6 +5,8 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Persist;

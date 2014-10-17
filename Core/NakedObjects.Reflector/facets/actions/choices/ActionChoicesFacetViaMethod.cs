@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections;
@@ -14,15 +17,14 @@ using NakedObjects.Architecture.Facets.Actions.Choices;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Choices {
     public class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, IImperativeFacet {
         private readonly MethodInfo choicesMethod;
         private readonly Type choicesType;
         private readonly bool isMultiple;
-        private readonly Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes;
         private readonly string[] parameterNames;
+        private readonly Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes;
 
 
         public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, Type choicesType, ISpecification holder, bool isMultiple = false)
@@ -34,14 +36,6 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Choices {
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
         }
 
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return choicesMethod;
-        }
-
-        #endregion
-
         public override Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes {
             get { return parameterNamesAndTypes; }
         }
@@ -49,6 +43,14 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Choices {
         public override bool IsMultiple {
             get { return isMultiple; }
         }
+
+        #region IImperativeFacet Members
+
+        public MethodInfo GetMethod() {
+            return choicesMethod;
+        }
+
+        #endregion
 
         public override object[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues) {
             INakedObject[] parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);

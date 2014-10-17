@@ -1,15 +1,17 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.IO;
 using Common.Logging;
-using NakedObjects.Architecture.Adapter.Value;
-using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
-using NakedObjects.Reflector.Spec;
 using NakedObjects.Value;
 
 namespace NakedObjects.Reflector.DotNet.Value {
@@ -23,10 +25,10 @@ namespace NakedObjects.Reflector.DotNet.Value {
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
         public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) { }
+            : this(spec, null) {}
 
         public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, TypicalLengthDefault, Immutable, EqualByContent, null, spec) { }
+            : base(Type, holder, AdaptedType, TypicalLengthDefault, Immutable, EqualByContent, null, spec) {}
 
         public static Type Type {
             get { return typeof (IFileAttachmentValueFacet); }
@@ -40,9 +42,13 @@ namespace NakedObjects.Reflector.DotNet.Value {
             get { return this; }
         }
 
+        #region IFromStream Members
+
         public object ParseFromStream(Stream stream, string mimeType = null, string name = null) {
             return new FileAttachment(stream, name, mimeType);
         }
+
+        #endregion
 
         public static bool IsAdaptedType(Type type) {
             return type == AdaptedType;

@@ -5,6 +5,7 @@
 using System;
 using System.Reflection;
 using Common.Logging;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Core.Persist;
 using NakedObjects.Reflector.DotNet.Reflect.Util;

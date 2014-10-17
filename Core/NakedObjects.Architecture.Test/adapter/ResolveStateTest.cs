@@ -7,6 +7,7 @@
 
 using System;
 using Moq;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets.Objects.Callbacks;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.ResolveStateMachine;

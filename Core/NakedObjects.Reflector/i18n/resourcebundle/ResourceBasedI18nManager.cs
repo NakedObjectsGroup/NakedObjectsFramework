@@ -12,9 +12,9 @@ using System.Linq;
 using System.Resources;
 using System.Threading;
 using Common.Logging;
-using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Objects;
 using NakedObjects.Resources;
 
 namespace NakedObjects.Reflector.I18n.Resourcebundle {

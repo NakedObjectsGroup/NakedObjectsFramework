@@ -4,10 +4,9 @@
 
 using System.Linq;
 using Common.Logging;
-using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Core.Reflect;
 using NakedObjects.Reflector.DotNet.Fixture;
 
 namespace NakedObjects.Boot {

@@ -7,8 +7,11 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Disable {
     public abstract class DisableForSessionFacetAbstract : FacetAbstract, IDisableForSessionFacet {

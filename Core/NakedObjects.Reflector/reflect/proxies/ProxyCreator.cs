@@ -9,9 +9,11 @@ using System.Reflection.Emit;
 using Common.Logging;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets.Objects.Key;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Util;
 

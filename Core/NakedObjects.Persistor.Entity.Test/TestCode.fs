@@ -19,6 +19,7 @@ open NakedObjects.Reflector.DotNet
 open Moq
 open NakedObjects.Architecture.Transaction
 open NakedObjects.Architecture.Persist
+open NakedObjects.Architecture.Component
 
 let resetPersistor (p : EntityObjectStore) = 
     p.Reset()

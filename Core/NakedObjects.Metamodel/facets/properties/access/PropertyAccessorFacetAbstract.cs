@@ -7,6 +7,8 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Properties.Access {
     public abstract class PropertyAccessorFacetAbstract : FacetAbstract, IPropertyAccessorFacet {

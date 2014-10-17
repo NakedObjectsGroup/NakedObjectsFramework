@@ -1,30 +1,32 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets.Objects.Parseable;
-using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Util;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Xat {
     public class TestProperty : ITestProperty {
         private readonly ITestObjectFactory factory;
-        private readonly INakedObjectManager manager;
-        private readonly ILifecycleManager lifecycleManager;
-        private readonly ISession session;
-        private readonly IObjectPersistor persistor;
         private readonly IAssociationSpec field;
+        private readonly ILifecycleManager lifecycleManager;
+        private readonly INakedObjectManager manager;
         private readonly ITestHasActions owningObject;
+        private readonly IObjectPersistor persistor;
+        private readonly ISession session;
 
         public TestProperty(ILifecycleManager lifecycleManager, ISession session, IObjectPersistor persistor, IAssociationSpec field, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager) {
             this.lifecycleManager = lifecycleManager;
@@ -114,7 +116,7 @@ namespace NakedObjects.Xat {
             if (field is IOneToOneAssociationSpec) {
                 ((IOneToOneAssociationSpec) field).SetAssociation(nakedObject, testNakedObject);
             }
-           
+
             return this;
         }
 
@@ -136,7 +138,7 @@ namespace NakedObjects.Xat {
                 throw new UnknownTypeException(field);
             }
             IConsent valid = new Veto("Always disabled");
-            
+
 
             Assert.IsFalse(valid.IsVetoed, string.Format("Can't remove {0} from the field {1} within {2}: {3}", testNakedObject, field, nakedObject, valid.Reason));
             return this;
@@ -228,11 +230,11 @@ namespace NakedObjects.Xat {
             return this;
         }
 
+        #endregion
+
         private void ResetLastMessage() {
             LastMessage = string.Empty;
         }
-
-        #endregion
 
         private bool IsNotParseable() {
             return field.Spec.GetFacet<IParseableFacet>() == null;

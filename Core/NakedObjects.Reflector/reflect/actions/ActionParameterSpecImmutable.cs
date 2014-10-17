@@ -3,11 +3,10 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Reflector.Peer;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
     public class ActionParameterSpecImmutable : Specification, IActionParameterSpecImmutable {

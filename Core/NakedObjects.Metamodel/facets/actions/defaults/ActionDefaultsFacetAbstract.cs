@@ -7,7 +7,9 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Actions.Defaults {
     public abstract class ActionDefaultsFacetAbstract : FacetAbstract, IActionDefaultsFacet {

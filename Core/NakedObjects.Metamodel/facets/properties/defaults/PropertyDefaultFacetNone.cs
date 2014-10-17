@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Properties.Defaults {
     public class PropertyDefaultFacetNone : PropertyDefaultFacetAbstract {

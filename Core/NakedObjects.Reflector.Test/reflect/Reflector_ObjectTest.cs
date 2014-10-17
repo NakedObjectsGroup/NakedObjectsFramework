@@ -4,14 +4,8 @@
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Actcoll.Typeof;
-using NakedObjects.Architecture.Facets.Collections.Modify;
-using NakedObjects.Architecture.Facets.Naming.DescribedAs;
-using NakedObjects.Architecture.Facets.Naming.Named;
-using NakedObjects.Architecture.Facets.Objects.Ident.Plural;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Reflector.Spec;
 using NakedObjects.Test;
 using NUnit.Framework;
 

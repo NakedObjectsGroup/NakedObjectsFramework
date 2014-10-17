@@ -1,4 +1,5 @@
-﻿using NakedObjects.Architecture.Reflect;
+﻿using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflector.Security;
 using NakedObjects.Reflector.Spec;
 

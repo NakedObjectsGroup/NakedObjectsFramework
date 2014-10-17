@@ -4,11 +4,14 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Disable;
 using NakedObjects.Architecture.Facets.Hide;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.Security {

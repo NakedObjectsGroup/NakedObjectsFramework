@@ -9,6 +9,7 @@ using System.IO;
 using System.ServiceModel;
 using System.Threading;
 using Common.Logging;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Core.NakedObjectsSystem;

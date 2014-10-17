@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Core.Persist;

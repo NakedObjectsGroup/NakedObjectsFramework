@@ -10,17 +10,12 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facets.Actcoll.Typeof;
-using NakedObjects.Architecture.Facets.Properties.Access;
-using NakedObjects.Architecture.Facets.Properties.Set;
-using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Spec {
     public class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {

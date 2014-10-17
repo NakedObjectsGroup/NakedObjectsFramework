@@ -7,7 +7,7 @@
 
 using System.Security.Principal;
 
-namespace NakedObjects.Architecture.Security {
+namespace NakedObjects.Architecture.Component {
     /// <summary>
     ///     The representation within the system of an authenticated user
     /// </summary>

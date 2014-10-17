@@ -5,11 +5,10 @@
 using System;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets.Actions.Invoke;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
     public class ActionInvocationFacetWrapTransaction : ActionInvocationFacetAbstract {

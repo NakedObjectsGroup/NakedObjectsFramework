@@ -8,10 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Reflect;
 
-namespace NakedObjects.Architecture.Reflect {
-
+namespace NakedObjects.Architecture.Component {
     //TODO: Rename to IReflector and move into Component folder
     public interface INakedObjectReflector {
         IClassStrategy ClassStrategy { get; }

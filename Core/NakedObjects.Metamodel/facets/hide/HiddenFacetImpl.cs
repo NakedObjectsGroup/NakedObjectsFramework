@@ -7,6 +7,7 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Hide {
     public class HiddenFacetImpl : HiddenFacetAbstract {

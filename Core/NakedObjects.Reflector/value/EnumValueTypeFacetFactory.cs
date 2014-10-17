@@ -6,8 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Value;
 
 namespace NakedObjects.Reflector.DotNet.Value {

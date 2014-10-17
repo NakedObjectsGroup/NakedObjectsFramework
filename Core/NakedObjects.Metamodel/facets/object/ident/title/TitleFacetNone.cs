@@ -7,6 +7,7 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Objects.Ident.Title {
     public class TitleFacetNone : TitleFacetAbstract {

@@ -1,14 +1,15 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder;
-using NakedObjects.Reflector.Peer;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
     public class OrderSet<T> : IComparable<IOrderSet<T>>, IOrderSet<T> where T : IOrderableElement<T>, ISpecification {
@@ -23,6 +24,19 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
             groupName = DeriveGroupName(groupFullName);
             groupPath = DeriveGroupPath(groupFullName);
         }
+
+        #region IComparable<IOrderSet<T>> Members
+
+        /// <summary>
+        ///     Natural ordering is to compare by <see cref="OrderSet.GroupFullName" />
+        /// </summary>
+        public int CompareTo(IOrderSet<T> o) {
+            return GroupFullName.CompareTo(o.GroupFullName);
+        }
+
+        #endregion
+
+        #region IOrderSet<T> Members
 
         public IOrderSet<T> Parent { set; get; }
 
@@ -41,10 +55,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
                         list.AddRange(e.Set.Flattened);
                     }
                 }
-                return list; 
+                return list;
             }
         }
-
 
 
         /// <summary>
@@ -82,13 +95,27 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
             get { return groupPath; }
         }
 
-        #region IComparable<OrderSet> Members
-
         /// <summary>
-        ///     Natural ordering is to compare by <see cref="OrderSet.GroupFullName" />
+        ///     Returns a copy of the elements, in sequence.
         /// </summary>
-        public int CompareTo(IOrderSet<T> o) {
-            return GroupFullName.CompareTo(o.GroupFullName);
+        public IList<IOrderableElement<T>> ElementList() {
+            return new ReadOnlyCollection<IOrderableElement<T>>(elements);
+        }
+
+        public int Size() {
+            return elements.Count;
+        }
+
+        public IEnumerator<IOrderableElement<T>> GetEnumerator() {
+            return elements.GetEnumerator();
+        }
+
+        public T Peer {
+            get { return default(T); }
+        }
+
+        public IOrderSet<T> Set {
+            get { return this; }
         }
 
         #endregion
@@ -131,36 +158,14 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
         }
 
 
-        /// <summary>
-        ///     Returns a copy of the elements, in sequence.
-        /// </summary>
-        public IList<IOrderableElement<T>> ElementList() {
-            return new ReadOnlyCollection<IOrderableElement<T>>(elements);
-        }
-
-        public int Size() {
-            return elements.Count;
-        }
-
         protected void AddElement(IOrderableElement<T> element) {
             elements.Add(element);
-        }
-
-        public IEnumerator<IOrderableElement<T>> GetEnumerator() {
-            return elements.GetEnumerator();
         }
 
         protected void AddAll(IEnumerable<IOrderableElement<T>> sortedMembers) {
             foreach (IOrderableElement<T> o in sortedMembers) {
                 AddElement(o);
             }
-        }
-
-        public T Peer {
-            get { return default(T); }
-        }
-        public IOrderSet<T> Set {
-            get { return this; }
         }
     }
 

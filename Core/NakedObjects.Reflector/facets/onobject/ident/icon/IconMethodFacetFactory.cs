@@ -7,9 +7,12 @@
 
 using System;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Objects.Ident.Icon;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Icon {

@@ -4,8 +4,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
-using NakedObjects.Objects;
 
 namespace NakedObjects.Core.Context {
     public class SimpleMessageBroker : IMessageBroker {

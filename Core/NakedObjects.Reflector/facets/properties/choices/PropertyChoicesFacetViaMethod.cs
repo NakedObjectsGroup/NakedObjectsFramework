@@ -15,8 +15,8 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Properties.Choices;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.DotNet.Reflect.Util;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Properties.Choices {
     public class PropertyChoicesFacetViaMethod : PropertyChoicesFacetAbstract, IImperativeFacet {

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Persist {
+namespace NakedObjects.Architecture.Component {
     /// <summary>
     ///     Broadly speaking, keeps track of the oid/adapter/domain object tuple
     /// </summary>

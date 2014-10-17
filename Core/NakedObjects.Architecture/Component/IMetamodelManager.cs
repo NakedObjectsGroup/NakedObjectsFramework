@@ -8,7 +8,6 @@
 using System;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
@@ -16,7 +15,6 @@ namespace NakedObjects.Architecture.Component {
     /// to inject these specifications with the necessary framework services.
     /// </summary>
     public interface IMetamodelManager {
-
         // remove this 
         IObjectSpec[] AllSpecs { get; }
 

@@ -8,9 +8,11 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Facets {
+namespace NakedObjects.Architecture.Component {
     public interface IFacetFactorySet {
         void FindCollectionProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo);
         void FindProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo);

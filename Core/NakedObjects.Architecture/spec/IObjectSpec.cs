@@ -6,12 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Collections.Modify;
-using NakedObjects.Architecture.Facets.Objects.Encodeable;
-using NakedObjects.Architecture.Facets.Objects.Parseable;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.Spec {
     /// <summary>
@@ -20,11 +16,11 @@ namespace NakedObjects.Architecture.Spec {
     /// services in relation to a specific object; where possible its responsibilities are delegated 
     /// to the static version of the specification: IObjectSpecImmutable.
     /// </summary>
-    public interface IObjectSpec :  IActionSpecContainer,
-                                    IPropertySpecContainer,
-                                    ISpecification,
-                                    IHierarchical,
-                                    IDefaultProvider {
+    public interface IObjectSpec : IActionSpecContainer,
+        IPropertySpecContainer,
+        ISpecification,
+        IHierarchical,
+        IDefaultProvider {
         /// <summary>
         ///     Returns the name of this specification. This will be the fully qualified name of the Class object that
         ///     this object represents (i.e. it includes the full namespace).

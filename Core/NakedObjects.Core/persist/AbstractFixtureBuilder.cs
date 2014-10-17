@@ -6,9 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
-using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Core.Reflect;
 
 namespace NakedObjects.Core.Persist {
     public abstract class AbstractFixtureBuilder : IFixturesInstaller {

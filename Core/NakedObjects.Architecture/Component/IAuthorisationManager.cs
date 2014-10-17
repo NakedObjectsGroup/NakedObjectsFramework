@@ -6,10 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Persist;
 
-namespace NakedObjects.Architecture.Security {
+namespace NakedObjects.Architecture.Component {
     /// <summary>
     ///     Authorizes the user in the current session view and use members of an object
     /// </summary>

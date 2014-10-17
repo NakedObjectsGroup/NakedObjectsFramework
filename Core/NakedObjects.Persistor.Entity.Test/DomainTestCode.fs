@@ -12,6 +12,9 @@ open AdventureWorksModel
 open NakedObjects.Architecture.Resolve
 open System
 open NakedObjects.Architecture.Persist
+open NakedObjects.Architecture.Facet
+open NakedObjects.Architecture.Adapter
+open NakedObjects.Architecture.Component
 open TestTypes
 open TestCode
 open System.Data.Entity.Core.Objects

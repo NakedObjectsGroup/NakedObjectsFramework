@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.Core.Context {
+namespace NakedObjects.Architecture.Component {
     public interface IUpdateNotifier {
         void AddChangedObject(INakedObject nakedObject);
 

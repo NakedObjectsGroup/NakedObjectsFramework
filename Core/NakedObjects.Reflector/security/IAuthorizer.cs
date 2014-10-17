@@ -3,6 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Security;
 

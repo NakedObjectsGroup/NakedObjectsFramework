@@ -3,8 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Reflector.Security {
     public abstract class AuthorizationManagerAbstract {

@@ -3,9 +3,11 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Actions.Invoke;
 using NakedObjects.Architecture.Facets.Properties.Modify;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflector.Spec;
 using NakedObjects.Reflector.Transaction.Facets.Actions.Invoke;
 using NakedObjects.Reflector.Transaction.Facets.Properties.Write;

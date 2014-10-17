@@ -6,12 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
-using NakedObjects.Core.Context;
-using NakedObjects.Core.Reflect;
-using NakedObjects.Objects;
 
 namespace NakedObjects {
     /// <summary>

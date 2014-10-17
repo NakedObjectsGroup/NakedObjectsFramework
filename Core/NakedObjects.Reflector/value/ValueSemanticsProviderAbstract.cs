@@ -1,48 +1,49 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Properties.Defaults;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T>, IEncoderDecoder<T>, IParser<T>, IDefaultsProvider<T> {
         private readonly Type adaptedType;
         private readonly T defaultValue;
-      
+
         private readonly bool equalByContent;
         private readonly bool immutable;
+        private readonly IObjectSpecImmutable specImmutable;
         private readonly int typicalLength;
-        private readonly IObjectSpecImmutable specification;
 
         /// <summary>
-        ///     Lazily looked up per <see cref="Specification" />
+        ///     Lazily looked up per <see cref="SpecImmutable" />
         /// </summary>
         protected ValueSemanticsProviderAbstract(Type adapterFacetType,
-                                                ISpecification holder,
-                                                Type adaptedType,
-                                                int typicalLength,
-                                                bool immutable,
-                                                bool equalByContent,
-                                                T defaultValue, 
-                                                IObjectSpecImmutable specification)
+                                                 ISpecification holder,
+                                                 Type adaptedType,
+                                                 int typicalLength,
+                                                 bool immutable,
+                                                 bool equalByContent,
+                                                 T defaultValue,
+                                                 IObjectSpecImmutable specImmutable)
             : base(adapterFacetType, holder) {
             this.adaptedType = adaptedType;
             this.typicalLength = typicalLength;
             this.immutable = immutable;
             this.equalByContent = equalByContent;
             this.defaultValue = defaultValue;
-            this.specification = specification;
+            this.specImmutable = specImmutable;
         }
 
-        public IObjectSpecImmutable Specification {
-            get {
-                return specification;
-            }
+        public IObjectSpecImmutable SpecImmutable {
+            get { return specImmutable; }
         }
 
         /// <summary>

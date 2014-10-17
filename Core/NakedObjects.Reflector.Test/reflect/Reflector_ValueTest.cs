@@ -5,14 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Actcoll.Typeof;
-using NakedObjects.Architecture.Facets.Collections.Modify;
-using NakedObjects.Architecture.Facets.Naming.DescribedAs;
-using NakedObjects.Architecture.Facets.Naming.Named;
-using NakedObjects.Architecture.Facets.Objects.Ident.Plural;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Reflector.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {

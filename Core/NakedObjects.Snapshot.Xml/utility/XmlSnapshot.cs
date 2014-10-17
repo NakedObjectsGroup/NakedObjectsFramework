@@ -13,9 +13,8 @@ using System.Xml.Xsl;
 using Common.Logging;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets.Actcoll.Typeof;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Snapshot.Xml.Utility {

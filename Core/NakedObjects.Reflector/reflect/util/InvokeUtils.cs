@@ -6,6 +6,7 @@ using System;
 using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Reflector.Peer;
 

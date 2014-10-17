@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Architecture.Reflect {
+namespace NakedObjects.Architecture.Component {
     /// <summary>
     ///     Strategy used to determine facts about classes, such as whether an an obj of a particular class can be
     ///     used as a field. Used for the <see cref="DotNetIntrospector" />

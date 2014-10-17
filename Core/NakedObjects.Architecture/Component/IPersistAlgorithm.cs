@@ -6,9 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Security;
 
-namespace NakedObjects.Persistor {
+namespace NakedObjects.Architecture.Component {
     /// <summary>
     /// Implementation of this interface will typically be specific to the implementation of INakedObjectStore, but could
     /// in theory be re-used by more than one Object Store that had similar operating characteristics.

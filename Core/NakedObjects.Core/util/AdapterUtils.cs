@@ -8,10 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Architecture.Facets.Actcoll.Typeof;
-using NakedObjects.Architecture.Facets.Collections.Modify;
-using NakedObjects.Architecture.Facets.Properties.Version;
-using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 

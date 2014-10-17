@@ -8,7 +8,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets {
     public abstract class FacetFactoryAbstract : IFacetFactory {

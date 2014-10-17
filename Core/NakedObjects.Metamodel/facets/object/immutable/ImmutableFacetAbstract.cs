@@ -7,7 +7,9 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Objects.Immutable {
     public abstract class ImmutableFacetAbstract : SingleWhenValueFacetAbstract, IImmutableFacet {

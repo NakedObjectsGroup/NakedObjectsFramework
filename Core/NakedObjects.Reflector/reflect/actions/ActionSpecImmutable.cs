@@ -3,15 +3,10 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System.Linq;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Actions.Contributed;
-using NakedObjects.Architecture.Facets.Actions.Invoke;
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Reflector.DotNet.Facets.Ordering;
-using NakedObjects.Reflector.Peer;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
     // TODO (in all DotNet...Peer classes) make all methodsArray throw ReflectiveActionException when 

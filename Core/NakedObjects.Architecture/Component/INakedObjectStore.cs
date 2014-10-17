@@ -11,12 +11,10 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Transaction;
-using NakedObjects.Core.Context;
 
-namespace NakedObjects.Persistor.Objectstore {
+namespace NakedObjects.Architecture.Component {
     /// <summary>
     /// TODO: Rename to IObjectStore
     /// Provides a generic interface to a specific persistence mechanism

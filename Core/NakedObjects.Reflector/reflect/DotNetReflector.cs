@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;

@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Reflection;
+using NakedObjects.Architecture.FacetFactory;
 
 namespace NakedObjects.Architecture.Facets {
     public class MethodRemoverConstants {

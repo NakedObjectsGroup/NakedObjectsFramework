@@ -4,6 +4,7 @@
 
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Naming.DescribedAs;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflector.I18n {
     public class DescribedAsFacetWrapI18n : DescribedAsFacetAbstract {

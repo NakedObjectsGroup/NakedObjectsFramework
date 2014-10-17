@@ -10,9 +10,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.ResolveStateMachine;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Util;
 
 namespace NakedObjects.Architecture.Resolve {

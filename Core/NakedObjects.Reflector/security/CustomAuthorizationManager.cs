@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;

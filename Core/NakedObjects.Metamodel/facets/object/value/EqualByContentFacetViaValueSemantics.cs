@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Facets.Objects.EqualByContent;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Objects.Value {
     public class EqualByContentFacetViaValueSemantics : EqualByContentFacetAbstract {

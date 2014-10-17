@@ -7,12 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using NakedObjects.Architecture.Facets;
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.Spec;
 
 namespace NakedObjects.Reflector.Peer {
     public class IdentifierImpl : IIdentifier {

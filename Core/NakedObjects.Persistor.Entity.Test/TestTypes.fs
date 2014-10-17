@@ -15,10 +15,8 @@ open System
 open NakedObjects.Architecture.Adapter
 open System.Collections.Generic
 open System.Reflection
-open NakedObjects.Architecture.Facets
-open NakedObjects.Architecture.Security
-open NakedObjects.Core.Reflect
 open Moq
+open NakedObjects.Architecture.Facet
 
 let injectedObjects = new List<Object>()
 let mockInjector = new Mock<IContainerInjector>()
@@ -32,7 +30,7 @@ let testNakedObjectSpecification = mockNakedObjectSpecification.Object
 mockNakedObjectSpecification.Setup(fun x -> x.ContainsFacet()).Returns(false) |> ignore
 mockNakedObjectSpecification.Setup(fun x -> x.ContainsFacet(null)).Returns(false) |> ignore
 mockNakedObjectSpecification.Setup(fun x -> x.AddFacet(It.IsAny<IFacet>())).Callback<IFacet> 
-    (fun f -> Assert.IsInstanceOf<Objects.Aggregated.IComplexTypeFacet>(f)) |> ignore
+    (fun f -> Assert.IsInstanceOf<IComplexTypeFacet>(f)) |> ignore
 
 let mockMetamodelManager = new Mock<IMetamodelManager>()
 let objects = new Dictionary<Object, INakedObject>()

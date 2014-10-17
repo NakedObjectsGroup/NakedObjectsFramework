@@ -6,9 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facets.Types {
-    public  class InterfaceFacet : MarkerFacetAbstract, IInterfaceFacet {
+    public class InterfaceFacet : MarkerFacetAbstract, IInterfaceFacet {
         public InterfaceFacet(ISpecification holder)
             : base(Type, holder) {}
 

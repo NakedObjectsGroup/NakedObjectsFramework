@@ -5,8 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Reflect;
-
 namespace NakedObjects.Architecture.Spec {
     /// <summary>
     ///     Anything in the metamodel (which also includes peers in the reflector) that has a name and description.

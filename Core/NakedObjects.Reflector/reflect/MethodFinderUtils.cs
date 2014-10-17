@@ -4,6 +4,7 @@
 
 using System;
 using System.Reflection;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Facets;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {

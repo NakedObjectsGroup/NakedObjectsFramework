@@ -3,8 +3,11 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Facets.Naming.Named;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.I18n {

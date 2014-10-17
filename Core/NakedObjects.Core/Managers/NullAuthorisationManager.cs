@@ -6,8 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Persist;
+using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Architecture.Security {
     public class NullAuthorizationManager : IAuthorizationManager {

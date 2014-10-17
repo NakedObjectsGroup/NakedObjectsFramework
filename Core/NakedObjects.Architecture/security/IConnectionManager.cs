@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Component;
+
 namespace NakedObjects.Architecture.Security {
     public interface IConnectionManager {
         void Connect(ISession session);

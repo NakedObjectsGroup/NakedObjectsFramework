@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets.Objects.Callbacks;
-using NakedObjects.Architecture.Security;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Architecture.Util {
     public static class CallbackUtils {
