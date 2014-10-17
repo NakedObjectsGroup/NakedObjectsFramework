@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             
             var facetDecoratorSet = new FacetDecoratorSet();
           
-            var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySetImpl(), facetDecoratorSet);
+            var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySet(), facetDecoratorSet);
 
             if (enhancements.Count == 0) {
                 Log.Debug("No enhancements set up");

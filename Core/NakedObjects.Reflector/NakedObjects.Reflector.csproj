@@ -183,8 +183,7 @@
     <Compile Include="FacetFactory\DisableDefaultMethodFacetFactory.cs" />
     <Compile Include="facets\DisabledFacetAnnotation.cs" />
     <Compile Include="facets\DisableForContextFacetViaMethod.cs" />
-    <Compile Include="FacetFactory\FacetFactorySetAbstract.cs" />
-    <Compile Include="FacetFactory\FacetFactorySetImpl.cs" />
+    <Compile Include="FacetFactory\FacetFactorySet.cs" />
     <Compile Include="FacetFactory\FallbackFacetFactory.cs" />
     <Compile Include="FacetFactory\HiddenAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\HiddenDefaultMethodFacetFactory.cs" />

@@ -99,7 +99,7 @@ namespace MvcTestApp {
             // container.LoadConfiguration();
 
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
-            container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
+            container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, DotNetReflector>(new ContainerControlledLifetimeManager());
 

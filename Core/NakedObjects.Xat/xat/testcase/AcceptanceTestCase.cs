@@ -221,7 +221,7 @@ namespace NakedObjects.Xat {
 
         protected virtual void RegisterTypes(IUnityContainer container) {
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
-            container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
+            container.RegisterType<IFacetFactorySet, FacetFactorySet>();
 
             container.RegisterType<IReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, DotNetReflector>(new ContainerControlledLifetimeManager());

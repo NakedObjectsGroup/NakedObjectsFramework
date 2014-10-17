@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [SetUp]
         public virtual void SetUp() {
-            var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySetImpl(), new FacetDecoratorSet());
+            var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySet(), new FacetDecoratorSet());
 
             specification = LoadSpecification(reflector);
             specification.PopulateAssociatedActions(new Type[] {});

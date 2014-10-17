@@ -14,7 +14,8 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    /// Defines and provides access to the full set of FacetFactories available to the Reflector.
+    /// Mechanism for applying actions to All/Any of the FacetFactories. The implementation
+    /// must be set up to know about all the FacetFactories.
     /// </summary>
     public interface IFacetFactorySet {
         void FindCollectionProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo);

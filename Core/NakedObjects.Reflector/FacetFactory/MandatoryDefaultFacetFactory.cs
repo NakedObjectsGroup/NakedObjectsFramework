@@ -19,7 +19,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     /// </summary>
     /// <para>
     ///     The idea is that this <see cref="IFacetFactory" /> is included early on in the
-    ///     <see cref="FacetFactorySetImpl" />, but other <see cref="IMandatoryFacet" /> implementations
+    ///     <see cref="FacetFactorySet" />, but other <see cref="IMandatoryFacet" /> implementations
     ///     which don't require mandatory semantics will potentially replace these where the
     ///     property or parameter is annotated or otherwise indicated as being optional.
     /// </para>
