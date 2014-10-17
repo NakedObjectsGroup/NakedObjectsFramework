@@ -5,8 +5,8 @@ using System;
 using System.Linq;
 using System.Web.Routing;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets.Presentation;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Web.Mvc.Html {
     internal abstract class ObjectContext {

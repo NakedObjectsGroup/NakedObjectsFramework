@@ -14,29 +14,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Adapter.Value;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Facets.Actcoll.Table;
-using NakedObjects.Architecture.Facets.Actcoll.Typeof;
-using NakedObjects.Architecture.Facets.Actions.Choices;
-using NakedObjects.Architecture.Facets.Actions.Executed;
-using NakedObjects.Architecture.Facets.AutoComplete;
-using NakedObjects.Architecture.Facets.Objects.Aggregated;
-using NakedObjects.Architecture.Facets.Objects.Ident.Title;
-using NakedObjects.Architecture.Facets.Objects.Parseable;
-using NakedObjects.Architecture.Facets.Objects.TypicalLength;
-using NakedObjects.Architecture.Facets.Password;
-using NakedObjects.Architecture.Facets.Propcoll.NotCounted;
-using NakedObjects.Architecture.Facets.Properties.Choices;
-using NakedObjects.Architecture.Facets.Properties.Eagerly;
-using NakedObjects.Architecture.Facets.Properties.Enums;
-using NakedObjects.Architecture.Facets.Properties.Version;
-using NakedObjects.Architecture.Facets.Propparam.Modify;
-using NakedObjects.Architecture.Facets.Propparam.MultiLine;
-using NakedObjects.Architecture.Facets.Propparam.Validate.Mask;
-using NakedObjects.Architecture.Facets.Propparam.Validate.MaxLength;
-using NakedObjects.Architecture.Facets.Propparam.Validate.Range;
-using NakedObjects.Architecture.Facets.Propparam.Validate.RegEx;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
@@ -47,7 +25,6 @@ using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Spec;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Models;
-using WebGrease.Configuration;
 
 namespace NakedObjects.Web.Mvc.Html {
     public class CustomMenuItem {

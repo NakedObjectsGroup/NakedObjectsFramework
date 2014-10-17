@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 
 namespace NakedObjects.Web.Mvc.Html {

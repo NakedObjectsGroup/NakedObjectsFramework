@@ -11,8 +11,9 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets.Presentation;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Helpers;
 

@@ -9,7 +9,7 @@ using System.Web.Http;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.WebApi;
 using MvcTestApp;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Component;
 using WebActivatorEx;
 
 [assembly: PreApplicationStartMethod(typeof (UnityWebApiActivator), "Start")]

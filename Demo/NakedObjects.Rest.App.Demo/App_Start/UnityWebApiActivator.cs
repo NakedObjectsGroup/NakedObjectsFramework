@@ -8,6 +8,7 @@
 using System.Web.Http;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.WebApi;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using RestfulObjects.Mvc.App.App_Start;
 using WebActivatorEx;

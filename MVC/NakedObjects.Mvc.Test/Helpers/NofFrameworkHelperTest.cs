@@ -16,6 +16,7 @@ using Expenses.Services;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;

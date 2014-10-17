@@ -3,6 +3,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Mvc;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using WebApiResolver = Microsoft.Practices.Unity.WebApi.UnityDependencyResolver;
 

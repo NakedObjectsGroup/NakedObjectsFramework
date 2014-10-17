@@ -4,7 +4,7 @@
 using System;
 using System.Web.Mvc;
 using System.Web.Routing;
-using NakedObjects.Core.Reflect;
+using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Web.Mvc {
     public class NakedObjectsControllerFactory : DefaultControllerFactory {

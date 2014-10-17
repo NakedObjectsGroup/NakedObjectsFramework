@@ -2,6 +2,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Mvc;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(NakedObjects.Mvc.App.App_Start.UnityWebActivator), "Start")]
