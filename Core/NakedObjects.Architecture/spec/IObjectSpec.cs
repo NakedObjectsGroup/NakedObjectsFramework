@@ -16,11 +16,9 @@ namespace NakedObjects.Architecture.Spec {
     /// services in relation to a specific object; where possible its responsibilities are delegated 
     /// to the static version of the specification: IObjectSpecImmutable.
     /// </summary>
-    public interface IObjectSpec : IActionSpecContainer,
-        IPropertySpecContainer,
-        ISpecification,
-        IHierarchical,
-        IDefaultProvider {
+    public interface IObjectSpec : ISpecification {
+
+        #region Name & Description
         /// <summary>
         ///     Returns the name of this specification. This will be the fully qualified name of the Class object that
         ///     this object represents (i.e. it includes the full namespace).
@@ -52,6 +50,9 @@ namespace NakedObjects.Architecture.Spec {
         ///     Returns the singular name for objects of this specification
         /// </summary>
         string UntitledName { get; }
+
+        string UniqueShortName(string sep);
+        #endregion
 
         /// <summary>
         ///     Determines if objects of this type can be set up from a text entry string.
@@ -130,7 +131,68 @@ namespace NakedObjects.Architecture.Spec {
         IConsent ValidToPersist(INakedObject transientObject, ISession session);
 
         string GetInvariantString(INakedObject nakedObject);
-        string UniqueShortName(string sep);
+
+        #region Inheritance Hierarchy
+        /// <summary>
+        ///     Returns true if the <see cref="Subclasses" /> method will return an array of one or more elements (ie,
+        ///     not an empty array).
+        /// </summary>
+        bool HasSubclasses { get; }
+
+        /// <summary>
+        ///     Get the list of specifications for all the interfaces that the class represented by this specification
+        ///     implements.
+        /// </summary>
+        IObjectSpec[] Interfaces { get; }
+
+        /// <summary>
+        ///     Get the list of specifications for the subclasses of the class represented by this specification
+        /// </summary>
+        IObjectSpec[] Subclasses { get; }
+
+        /// <summary>
+        ///     Get the specification for this specification's class's superclass
+        /// </summary>
+        IObjectSpec Superclass { get; }
+
+        /// <summary>
+        ///     Determines if this specification represents the same specification, or a subclass, of the specified
+        ///     specification.
+        /// </summary>
+        bool IsOfType(IObjectSpec spec);
+        #endregion
+
+        #region Properties
+        /// <summary>
+        ///     Return all the properties that exist in an object of this specification,
+        ///     although they need not all be accessible or visible.
+        /// </summary>
+        IAssociationSpec[] Properties { get; }
+
+        /// <summary>
+        ///     Get the <see cref="IAssociationSpec" /> representing the field with the specified field identifier.
+        /// </summary>
+        IAssociationSpec GetProperty(string id);
+
+        INakedObjectValidation[] ValidateMethods();
+        #endregion
+
+        #region Actions
+        IActionSpec[] GetRelatedServiceActions();
+
+        /// <summary>
+        ///     Returns an array of actions of the specified type
+        /// </summary>
+        IActionSpec[] GetAllActions();
+        #endregion
+
+        #region Default Provider
+        /// <summary>
+        ///     Default value to be provided for properties or parameters that are not declared as
+        ///     <see cref="OptionallyAttribute" /> but where the UI has not (yet) provided a value.
+        /// </summary>
+        object DefaultValue { get; }
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

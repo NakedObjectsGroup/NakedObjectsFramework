@@ -358,10 +358,6 @@
     <Compile Include="Security\IConnectionManager.cs" />
     <Compile Include="Component\ISession.cs" />
     <Compile Include="Component\IAuthenticationManager.cs" />
-    <Compile Include="Spec\IActionSpecContainer.cs" />
-    <Compile Include="Spec\IDefaultProvider.cs" />
-    <Compile Include="Spec\IPropertySpecContainer.cs" />
-    <Compile Include="Spec\IHierarchical.cs" />
     <Compile Include="Spec\IObjectSpec.cs" />
     <Compile Include="Spec\INamedAndDescribed.cs" />
   </ItemGroup>
