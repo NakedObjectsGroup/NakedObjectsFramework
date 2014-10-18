@@ -108,7 +108,6 @@
     <Compile Include="Facet\EnumFacet.cs" />
     <Compile Include="Facet\ExecutedFacetAnnotation.cs" />
     <Compile Include="Facet\ExecutedFacetAnnotationForControlMethods.cs" />
-    <Compile Include="Facet\Facet.cs" />
     <Compile Include="Facet\FacetsFacetAnnotation.cs" />
     <Compile Include="Facet\FieldOrderFacetAnnotation.cs" />
     <Compile Include="Facet\FromStreamFacetUsingFromStream.cs" />
