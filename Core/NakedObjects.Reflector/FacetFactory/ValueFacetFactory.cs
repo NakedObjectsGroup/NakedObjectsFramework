@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Value;
+
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 

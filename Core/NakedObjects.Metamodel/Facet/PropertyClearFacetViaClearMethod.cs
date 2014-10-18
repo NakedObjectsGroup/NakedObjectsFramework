@@ -10,9 +10,8 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Reflect.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Properties.Modify {
+namespace NakedObjects.Metamodel.Facet {
     public class PropertyClearFacetViaClearMethod : PropertyClearFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 

@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
+namespace NakedObjects.Metamodel.Facet {
     public class UpdatedCallbackFacetNull : UpdatedCallbackFacetAbstract {
         public UpdatedCallbackFacetNull(ISpecification holder)
             : base(holder) {}

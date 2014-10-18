@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Immutable {
+namespace NakedObjects.Metamodel.Facet {
     public class ImmutableFacetAnnotation : ImmutableFacetImpl {
         public ImmutableFacetAnnotation(WhenTo value, ISpecification holder)
             : base(value, holder) {}

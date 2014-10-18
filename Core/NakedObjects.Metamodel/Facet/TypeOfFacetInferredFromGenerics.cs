@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
+namespace NakedObjects.Metamodel.Facet {
     public class TypeOfFacetInferredFromGenerics : TypeOfFacetAbstract {
         public TypeOfFacetInferredFromGenerics(Type type, ISpecification holder, IObjectSpecImmutable spec)
             : base(type, true, holder, spec) {}

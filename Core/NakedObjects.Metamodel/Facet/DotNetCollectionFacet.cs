@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Collections {
+namespace NakedObjects.Metamodel.Facet {
     public class DotNetCollectionFacet : CollectionFacetAbstract {
         public DotNetCollectionFacet(ISpecification holder)
             : base(holder) {}

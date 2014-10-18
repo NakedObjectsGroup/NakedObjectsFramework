@@ -10,12 +10,12 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
+namespace NakedObjects.Metamodel.Facet {
     public class OnPersistingErrorCallbackFacetNull : OnPersistingErrorCallbackFacetAbstract {
         public OnPersistingErrorCallbackFacetNull(ISpecification holder)
             : base(holder) {}
 
-        public override string Invoke(INakedObject nakedObject, Exception exception) {
+        public override string Invoke(INakedObject nakedObject, System.Exception exception) {
             throw exception;
         }
     }

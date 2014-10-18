@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.Peer;
+using NakedObjects.Architecture.Exceptions;
 
 namespace NakedObjects.Core.spec {
     public class SpecFactory {

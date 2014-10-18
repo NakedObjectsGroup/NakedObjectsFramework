@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Naming.DescribedAs {
+namespace NakedObjects.Metamodel.Facet {
     public class DescribedAsFacetAnnotation : DescribedAsFacetAbstract {
         public DescribedAsFacetAnnotation(string value, ISpecification holder)
             : base(value, holder) {}

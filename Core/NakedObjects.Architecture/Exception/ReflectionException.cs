@@ -8,7 +8,7 @@
 using System;
 using NakedObjects.Architecture;
 
-namespace NakedObjects.Reflector.Peer {
+namespace NakedObjects.Architecture.Exceptions {
     public class ReflectionException : NakedObjectSystemException {
         public ReflectionException(string message)
             : base(message) {}

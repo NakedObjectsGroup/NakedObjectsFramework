@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Disable {
+namespace NakedObjects.Metamodel.Facet {
     public class DisabledFacetAnnotation : DisabledFacetImpl {
         public DisabledFacetAnnotation(WhenTo value, ISpecification holder)
             : base(value, holder) {}

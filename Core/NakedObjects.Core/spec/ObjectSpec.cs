@@ -19,8 +19,8 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
+using NakedObjects.Architecture.Exceptions;
 
 namespace NakedObjects.Core.Spec {
     public class ObjectSpec : IObjectSpec {

@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask {
+namespace NakedObjects.Metamodel.Facet {
     public class MaskFacetAnnotation : MaskFacetAbstract {
         public MaskFacetAnnotation(string value, ISpecification holder)
             : base(value, holder) {}

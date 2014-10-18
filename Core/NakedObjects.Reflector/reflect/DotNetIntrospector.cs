@@ -14,18 +14,15 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Reflector.DotNet.Facets.Ordering;
-using NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder;
-using NakedObjects.Reflector.DotNet.Reflect.Actions;
-using NakedObjects.Reflector.DotNet.Reflect.Collections;
-using NakedObjects.Reflector.DotNet.Reflect.Properties;
 using NakedObjects.Reflector.Peer;
-using NakedObjects.Reflector.spec;
 using NakedObjects.Util;
 using MemberInfo = System.Reflection.MemberInfo;
 using MethodInfo = System.Reflection.MethodInfo;
 using PropertyInfo = System.Reflection.PropertyInfo;
 using ParameterInfo = System.Reflection.ParameterInfo;
+using NakedObjects.Metamodel.Facet;
+using NakedObjects.Metamodel.SpecImmutable;
+using NakedObjects.Architecture.Exceptions;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     internal class DotNetIntrospector {

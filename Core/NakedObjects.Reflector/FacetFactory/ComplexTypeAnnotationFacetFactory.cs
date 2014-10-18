@@ -13,7 +13,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated;
+
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {

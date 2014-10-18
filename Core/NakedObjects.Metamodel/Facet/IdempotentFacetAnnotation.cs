@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actions.Potency {
+namespace NakedObjects.Metamodel.Facet {
     public class IdempotentFacetAnnotation : IdempotentFacetImpl {
         public IdempotentFacetAnnotation(ISpecification holder)
             : base(holder) {}

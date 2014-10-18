@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
+namespace NakedObjects.Metamodel.Facet {
     /// <summary>
     ///     Derived by presence of an <see cref="OptionallyAttribute" /> annotation.
     /// </summary>

@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
+namespace NakedObjects.Metamodel.Facet {
     public class TableViewFacetFromAnnotation : TableViewFacetAbstract {
         public TableViewFacetFromAnnotation(bool title, string[] columns, ISpecification holder)
             : base(title, columns, holder) {}

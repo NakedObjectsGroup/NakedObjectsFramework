@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Range {
+namespace NakedObjects.Metamodel.Facet {
     public class RangeFacetAnnotation : RangeFacetAbstract {
         public RangeFacetAnnotation(object min, object max, bool isDateRange, ISpecification holder)
             : base(min, max, holder) {

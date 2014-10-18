@@ -11,15 +11,9 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Defaults;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable;
-using NakedObjects.Reflector.DotNet.Facets.Objects.FromStream;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Parseable;
-using NakedObjects.Reflector.DotNet.Facets.Propparam.TypicalLength;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
+namespace NakedObjects.Metamodel.Facet {
     public abstract class ValueFacetAbstract<T> : MultipleValueFacetAbstract, IValueFacet {
         private readonly IValueSemanticsProvider<T> semanticsProvider;
         private readonly Specification specification = new Specification();

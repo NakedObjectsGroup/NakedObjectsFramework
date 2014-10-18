@@ -11,10 +11,8 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Invoke;
-using NakedObjects.Reflector.DotNet.Reflect.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actions.Defaults {
+namespace NakedObjects.Metamodel.Facet {
     public class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
         private readonly MethodInfo actionMethod;
         private readonly MethodInfo method;

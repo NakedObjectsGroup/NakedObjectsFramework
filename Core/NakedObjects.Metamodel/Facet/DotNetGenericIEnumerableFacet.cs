@@ -15,7 +15,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Collections {
+namespace NakedObjects.Metamodel.Facet {
     public class DotNetGenericIEnumerableFacet<T> : CollectionFacetAbstract {
         public DotNetGenericIEnumerableFacet(ISpecification holder, Type elementClass, bool isASet)
             : base(holder, elementClass, isASet) {}

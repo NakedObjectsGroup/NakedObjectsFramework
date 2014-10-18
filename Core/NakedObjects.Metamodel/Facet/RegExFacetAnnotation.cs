@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
+namespace NakedObjects.Metamodel.Facet {
     public class RegExFacetAnnotation : RegExFacetAbstract, IRegExFacet {
         public RegExFacetAnnotation(string validation, string format, bool caseSensitive, string message, ISpecification holder)
             : base(validation, format, caseSensitive, message, holder) {

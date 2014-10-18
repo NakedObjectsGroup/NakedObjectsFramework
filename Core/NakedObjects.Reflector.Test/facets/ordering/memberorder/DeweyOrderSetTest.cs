@@ -7,6 +7,7 @@
 
 using Moq;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Metamodel.Facet;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {

@@ -28,7 +28,7 @@ using NakedObjects.EntityObjectStore;
 using NakedObjects.Managers;
 using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Reflector.DotNet;
-using NakedObjects.Reflector.DotNet.Facets;
+
 using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.FacetFactory;

@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mandatory {
+namespace NakedObjects.Metamodel.Facet {
     /// <summary>
     ///     Derived by presence of a <see cref="RequiredAttribute" /> annotation.
     /// </summary>

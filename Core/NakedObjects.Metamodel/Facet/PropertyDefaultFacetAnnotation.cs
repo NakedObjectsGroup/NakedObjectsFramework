@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Properties.Defaults {
+namespace NakedObjects.Metamodel.Facet {
     public class PropertyDefaultFacetAnnotation : PropertyDefaultFacetAbstract {
         private readonly object value;
 

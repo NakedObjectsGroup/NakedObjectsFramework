@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Actcoll.Table;
+
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {

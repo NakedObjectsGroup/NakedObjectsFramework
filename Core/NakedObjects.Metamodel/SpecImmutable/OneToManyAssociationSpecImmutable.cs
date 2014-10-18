@@ -10,10 +10,8 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Reflector.DotNet.Reflect.Propcoll;
-using NakedObjects.Reflector.Spec;
 
-namespace NakedObjects.Reflector.DotNet.Reflect.Collections {
+namespace NakedObjects.Metamodel.SpecImmutable {
     public class OneToManyAssociationSpecImmutable : AssociationSpecImmutable {
         private Type elementType;
         private IObjectSpecImmutable specification;

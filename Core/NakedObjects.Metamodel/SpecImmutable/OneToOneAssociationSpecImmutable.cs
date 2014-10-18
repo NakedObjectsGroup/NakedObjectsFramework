@@ -8,9 +8,8 @@
 using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Reflector.DotNet.Reflect.Propcoll;
 
-namespace NakedObjects.Reflector.DotNet.Reflect.Properties {
+namespace NakedObjects.Metamodel.SpecImmutable {
     public class OneToOneAssociationSpecImmutable : AssociationSpecImmutable {
         public OneToOneAssociationSpecImmutable(IIdentifier identifier, Type returnType, IObjectSpecImmutable returnSpec)
             : base(identifier, returnType, returnSpec) {}

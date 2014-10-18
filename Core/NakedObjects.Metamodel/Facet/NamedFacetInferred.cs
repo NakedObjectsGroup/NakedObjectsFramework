@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
+namespace NakedObjects.Metamodel.Facet {
     public class NamedFacetInferred : NamedFacetImpl {
         public NamedFacetInferred(string value, ISpecification holder)
             : base(value, holder) {}

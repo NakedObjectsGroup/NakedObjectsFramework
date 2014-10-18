@@ -12,7 +12,7 @@ using NakedObjects.Capabilities;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
+namespace NakedObjects.Metamodel.Facet {
     public abstract class DefaultedFacetAbstract<T> : FacetAbstract, IDefaultedFacet {
         // to delegate to
         private readonly DefaultedFacetUsingDefaultsProvider<T> defaultedFacetUsingDefaultsProvider;

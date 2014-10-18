@@ -230,17 +230,11 @@
     <Compile Include="peer\IdentifierImpl.cs" />
     <Compile Include="peer\IReflectionDecoratorInstaller.cs" />
     <Compile Include="peer\ModelException.cs" />
-    <Compile Include="reflect\actions\ActionParameterSpecImmutable.cs" />
-    <Compile Include="reflect\actions\ActionSpecImmutable.cs" />
-    <Compile Include="reflect\collections\OneToManyAssociationSpecImmutable.cs" />
     <Compile Include="reflect\DotNetIntrospector.cs" />
-    <Compile Include="reflect\MemberSpecImmutable.cs" />
     <Compile Include="reflect\DotNetReflector.cs" />
     <Compile Include="reflect\DotNetReflectorInstaller.cs" />
     <Compile Include="reflect\IntrospectionControlParameters.cs" />
     <Compile Include="reflect\MethodFinderUtils.cs" />
-    <Compile Include="reflect\propcoll\AssociationSpecImmutable.cs" />
-    <Compile Include="reflect\properties\OneToOneAssociationSpecImmutable.cs" />
     <Compile Include="reflect\proxies\ProxyCreator.cs" />
     <Compile Include="reflect\strategy\DefaultClassStrategy.cs" />
     <Compile Include="security\AuthorizationManagerAbstract.cs" />
@@ -357,9 +351,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="reflect\util\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

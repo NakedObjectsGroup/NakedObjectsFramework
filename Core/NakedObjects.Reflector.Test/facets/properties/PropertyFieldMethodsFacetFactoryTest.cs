@@ -15,16 +15,16 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Executed;
-using NakedObjects.Reflector.DotNet.Facets.AutoComplete;
-using NakedObjects.Reflector.DotNet.Facets.Disable;
-using NakedObjects.Reflector.DotNet.Facets.Hide;
-using NakedObjects.Reflector.DotNet.Facets.Propcoll.Access;
-using NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Choices;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Defaults;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Modify;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Validate;
+
+
+
+
+
+
+
+
+
+
 using NakedObjects.Reflector.FacetFactory;
 using NUnit.Framework;
 

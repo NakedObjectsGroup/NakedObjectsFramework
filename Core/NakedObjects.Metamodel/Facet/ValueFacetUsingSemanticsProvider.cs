@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Capabilities;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
+namespace NakedObjects.Metamodel.Facet {
     public class ValueFacetUsingSemanticsProvider<T> : ValueFacetAbstract<T> {
         public ValueFacetUsingSemanticsProvider(IValueSemanticsProvider<T> adapter, IFacet underlyingValueTypeFacet)
             : base(adapter, true, underlyingValueTypeFacet.Specification) {

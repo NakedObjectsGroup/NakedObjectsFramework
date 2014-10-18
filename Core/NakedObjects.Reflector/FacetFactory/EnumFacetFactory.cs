@@ -16,7 +16,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Enums;
+
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {

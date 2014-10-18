@@ -200,7 +200,6 @@
     <Compile Include="Facet\IdempotentFacetImpl.cs" />
     <Compile Include="Facet\QueryOnlyFacet.cs" />
     <Compile Include="Exception\ActionArgumentsInvalidException.cs" />
-    <Compile Include="Facet\ActionParameterValidationFacetAbstract.cs" />
     <Compile Include="Facet\ActionValidationFacetAbstract.cs" />
     <Compile Include="Facet\AutoCompleteFacetAbstract.cs" />
     <Compile Include="Facet\CollectionFacetAbstract.cs" />
@@ -278,7 +277,6 @@
     <Compile Include="Facet\ValueSemanticsProviderUtils.cs" />
     <Compile Include="Facet\ViewModelEditFacetConvention.cs" />
     <Compile Include="Facet\ViewModelFacetAbstract.cs" />
-    <Compile Include="Facet\ActionOrderFacetAbstract.cs" />
     <Compile Include="Facet\FieldOrderFacetAbstract.cs" />
     <Compile Include="Facet\MemberOrderFacetAbstract.cs" />
     <Compile Include="Facet\PasswordFacetAbstract.cs" />
@@ -321,12 +319,16 @@
     <Compile Include="Facet\ViewModelFacetConvention.cs" />
     <Compile Include="Facet\ViewModelSwitchableFacetConvention.cs" />
     <Compile Include="Facet\VoidFacet.cs" />
-    <Compile Include="InvokeUtils.cs" />
+    <Compile Include="Facet\InvokeUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpecImmutable\ActionParameterSpecImmutable.cs" />
+    <Compile Include="SpecImmutable\ActionSpecImmutable.cs" />
+    <Compile Include="SpecImmutable\AssociationSpecImmutable.cs" />
+    <Compile Include="SpecImmutable\MemberSpecImmutable.cs" />
+    <Compile Include="SpecImmutable\OneToManyAssociationSpecImmutable.cs" />
+    <Compile Include="SpecImmutable\OneToOneAssociationSpecImmutable.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SpecImmutable\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj">
       <Project>{bf6d9655-b873-4980-ace7-a122ea45f045}</Project>

@@ -18,17 +18,9 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Choices;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Defaults;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Executed;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Invoke;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Validate;
-using NakedObjects.Reflector.DotNet.Facets.AutoComplete;
-using NakedObjects.Reflector.DotNet.Facets.Disable;
-using NakedObjects.Reflector.DotNet.Facets.Hide;
-using NakedObjects.Reflector.DotNet.Reflect.Actions;
 using NakedObjects.Reflector.FacetFactory;
 using NUnit.Framework;
+using NakedObjects.Metamodel.SpecImmutable;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions {
     [TestFixture]

@@ -6,10 +6,8 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Reflector.Peer;
-using NakedObjects.Reflector.Spec;
 
-namespace NakedObjects.Reflector.DotNet.Reflect {
+namespace NakedObjects.Metamodel.SpecImmutable {
     public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable {
         private readonly IIdentifier identifier;
 

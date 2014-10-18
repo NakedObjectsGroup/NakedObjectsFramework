@@ -8,9 +8,9 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Security;
-using NakedObjects.Reflector.Peer;
+using NakedObjects.Architecture.Exceptions;
 
-namespace NakedObjects.Reflector.DotNet.Reflect.Util {
+namespace NakedObjects.Metamodel.Facet {
     public class InvokeUtils {
         /// <summary>
         ///     Invoke the specified method with all its parameter, if any, as null.
@@ -61,8 +61,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Util {
             }
         }
 
-        public static void InvocationException(string error, Exception e) {
-            Exception innerException = e.InnerException;
+        public static void InvocationException(string error, System.Exception e) {
+            System.Exception innerException = e.InnerException;
             if (innerException is DomainException) {
                 // a domain  exception from the domain code is re-thrown as an NO exception with same
                 // semantics
@@ -76,6 +76,6 @@ namespace NakedObjects.Reflector.DotNet.Reflect.Util {
     }
 
     public class InvokeException : NakedObjectApplicationException {
-        public InvokeException(string message, Exception exception) : base(message, exception) {}
+        public InvokeException(string message, System.Exception exception) : base(message, exception) { }
     }
 }

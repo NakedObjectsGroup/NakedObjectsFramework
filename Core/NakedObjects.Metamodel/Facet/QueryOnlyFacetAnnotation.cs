@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actions.Potency {
+namespace NakedObjects.Metamodel.Facet {
     public class QueryOnlyFacetAnnotation : QueryOnlyFacet {
         public QueryOnlyFacetAnnotation(ISpecification holder)
             : base(holder) {}

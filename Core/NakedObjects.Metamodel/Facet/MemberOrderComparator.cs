@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
+namespace NakedObjects.Metamodel.Facet {
     /// <summary>
     ///     Compares by <see cref="IMemberOrderFacet" /> obtained from each <see cref="IMemberSpecImmutable" />
     /// </summary>

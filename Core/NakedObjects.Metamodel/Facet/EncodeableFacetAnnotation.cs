@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
+namespace NakedObjects.Metamodel.Facet {
     public class EncodeableFacetAnnotation<T> : EncodeableFacetAbstract<T> {
         public EncodeableFacetAnnotation(Type annotatedClass, ISpecification holder)
             : this(EncoderDecoderName(annotatedClass), EncoderDecoderClass(annotatedClass), holder) {}

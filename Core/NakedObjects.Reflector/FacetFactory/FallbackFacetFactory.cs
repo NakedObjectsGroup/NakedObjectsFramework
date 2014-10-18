@@ -14,12 +14,8 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Naming.Named;
-using NakedObjects.Reflector.DotNet.Reflect;
-using NakedObjects.Reflector.DotNet.Reflect.Actions;
-using NakedObjects.Reflector.DotNet.Reflect.Propcoll;
-using NakedObjects.Reflector.DotNet.Reflect.Properties;
 using NakedObjects.Util;
+using NakedObjects.Metamodel.SpecImmutable;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>

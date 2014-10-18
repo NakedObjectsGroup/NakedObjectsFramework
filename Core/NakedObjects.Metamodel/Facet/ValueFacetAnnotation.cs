@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Value {
+namespace NakedObjects.Metamodel.Facet {
     public class ValueFacetAnnotation<T> : ValueFacetAbstract<T> {
         public ValueFacetAnnotation(Type annotatedClass, ISpecification holder)
             : this(SemanticsProviderName(annotatedClass), SemanticsProviderClass(annotatedClass), holder) {}

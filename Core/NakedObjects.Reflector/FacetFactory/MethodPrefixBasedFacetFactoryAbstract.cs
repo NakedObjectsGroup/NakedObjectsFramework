@@ -15,9 +15,9 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Executed;
-using NakedObjects.Reflector.DotNet.Facets.Disable;
-using NakedObjects.Reflector.DotNet.Facets.Hide;
+
+
+
 using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;

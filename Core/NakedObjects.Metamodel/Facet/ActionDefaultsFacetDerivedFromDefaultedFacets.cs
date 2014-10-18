@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
+namespace NakedObjects.Metamodel.Facet {
     public class ActionDefaultsFacetDerivedFromDefaultedFacets : ActionDefaultsFacetAbstract {
         private readonly IDefaultedFacet defaultedFacet;
 

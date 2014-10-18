@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
+namespace NakedObjects.Metamodel.Facet {
     public class EncodeableFacetUsingEncoderDecoder<T> : FacetAbstract, IEncodeableFacet {
         public static string ENCODED_NULL = "NULL";
         private readonly IEncoderDecoder<T> encoderDecoder;

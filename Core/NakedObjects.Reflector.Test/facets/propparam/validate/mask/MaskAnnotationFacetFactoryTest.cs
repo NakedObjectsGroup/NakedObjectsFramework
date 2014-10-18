@@ -7,7 +7,8 @@
 
 using System;
 using System.Reflection;
-using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Facet; 
+using NakedObjects.Metamodel.Facet; 
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NUnit.Framework;

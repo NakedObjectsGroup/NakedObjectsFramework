@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propparam.TypicalLength {
+namespace NakedObjects.Metamodel.Facet {
     public class TypicalLengthFacetAnnotation : TypicalLengthFacetAbstract {
         public TypicalLengthFacetAnnotation(int value, ISpecification holder)
             : base(value, holder) {}

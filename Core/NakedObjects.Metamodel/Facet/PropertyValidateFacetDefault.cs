@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Properties.Validate {
+namespace NakedObjects.Metamodel.Facet {
     public class PropertyValidateFacetDefault : FacetAbstract, IPropertyValidateFacet {
         public PropertyValidateFacetDefault(ISpecification holder)
             : base(typeof (IPropertyValidateFacet), holder) {}

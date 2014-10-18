@@ -9,9 +9,8 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Reflect.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
+namespace NakedObjects.Metamodel.Facet {
     public class TitleFacetViaTitleMethod : TitleFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 

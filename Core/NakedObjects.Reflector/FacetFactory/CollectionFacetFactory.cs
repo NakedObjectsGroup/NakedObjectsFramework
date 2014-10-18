@@ -13,9 +13,10 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof;
-using NakedObjects.Reflector.DotNet.Facets.Collections;
-using NakedObjects.Reflector.DotNet.Facets.Collections.Modify;
+using NakedObjects.Metamodel.Facet;
+
+
+
 
 namespace NakedObjects.Reflector.FacetFactory {
     public class CollectionFacetFactory : AnnotationBasedFacetFactoryAbstract {

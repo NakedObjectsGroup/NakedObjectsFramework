@@ -14,7 +14,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel;
+
 
 namespace NakedObjects.Reflector.FacetFactory {
     public class ViewModelFacetFactory : AnnotationBasedFacetFactoryAbstract {

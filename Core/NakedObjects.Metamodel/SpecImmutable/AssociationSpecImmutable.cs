@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Reflector.DotNet.Reflect.Propcoll {
+namespace NakedObjects.Metamodel.SpecImmutable {
     public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
 
         protected readonly Type ReturnType;

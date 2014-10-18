@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Reflector.DotNet.Facets.Objects.NotPersistable;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 using NUnit.Framework;
 

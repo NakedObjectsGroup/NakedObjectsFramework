@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
+namespace NakedObjects.Metamodel.Facet {
     public class ExecutedFacetAnnotation : ExecutedFacetAbstract {
         public ExecutedFacetAnnotation(Where value, ISpecification holder)
             : base(value, holder) {}

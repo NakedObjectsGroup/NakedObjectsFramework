@@ -10,6 +10,7 @@ using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NUnit.Framework;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Validate {
     [TestFixture]

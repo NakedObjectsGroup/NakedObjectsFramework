@@ -20,6 +20,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
+using NakedObjects.Architecture.Exceptions;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     public class DotNetReflector : IReflector, IMetamodel {

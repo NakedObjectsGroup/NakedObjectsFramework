@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
+namespace NakedObjects.Metamodel.Facet {
     /// <summary>
     ///     Compares <see cref="IMemberSpecImmutable" /> by <see cref="ISpecification.Identifier" />
     /// </summary>

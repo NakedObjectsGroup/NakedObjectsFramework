@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.MaxLength {
+namespace NakedObjects.Metamodel.Facet {
     public class MaxLengthFacetAnnotation : MaxLengthFacetAbstract {
         public MaxLengthFacetAnnotation(int value, ISpecification holder)
             : base(value, holder) {}

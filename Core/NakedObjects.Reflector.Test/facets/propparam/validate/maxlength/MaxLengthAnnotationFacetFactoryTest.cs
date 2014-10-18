@@ -11,8 +11,10 @@ using System.Reflection;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.MaxLength;
+
 using NUnit.Framework;
+using NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.MaxLength;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MaxLength {
     [TestFixture]

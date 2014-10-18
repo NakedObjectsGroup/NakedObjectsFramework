@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Hide {
+namespace NakedObjects.Metamodel.Facet {
     public class HiddenFacetAnnotation : HiddenFacetImpl {
         public HiddenFacetAnnotation(WhenTo value, ISpecification holder)
             : base(value, holder) {}

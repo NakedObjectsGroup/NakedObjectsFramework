@@ -10,9 +10,8 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Reflect.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
+namespace NakedObjects.Metamodel.Facet {
     public class OnUpdatingErrorCallbackFacetViaMethod : OnUpdatingErrorCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
@@ -29,7 +28,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Callbacks {
 
         #endregion
 
-        public override string Invoke(INakedObject nakedObject, Exception exception) {
+        public override string Invoke(INakedObject nakedObject, System.Exception exception) {
             return (string) InvokeUtils.Invoke(method, nakedObject.Object, new object[] {exception});
         }
 

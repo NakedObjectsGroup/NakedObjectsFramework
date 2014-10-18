@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
+namespace NakedObjects.Metamodel.Facet {
     public class TypeOfFacetDefaultToObject : TypeOfFacetAbstract {
         public TypeOfFacetDefaultToObject(ISpecification holder, Type valueType, IObjectSpecImmutable valueSpec)
             : base(valueType, true, holder, valueSpec) {}

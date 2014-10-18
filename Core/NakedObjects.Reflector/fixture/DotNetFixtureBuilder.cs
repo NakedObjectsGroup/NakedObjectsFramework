@@ -8,7 +8,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Core.Persist;
-using NakedObjects.Reflector.DotNet.Reflect.Util;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Fixture {
     public class DotNetFixtureBuilder : AbstractFixtureBuilder {

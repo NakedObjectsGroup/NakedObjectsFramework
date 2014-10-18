@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural {
+namespace NakedObjects.Metamodel.Facet {
     public class PluralFacetAnnotation : PluralFacetAbstract {
         public PluralFacetAnnotation(string value, ISpecification holder)
             : base(value, holder) {}

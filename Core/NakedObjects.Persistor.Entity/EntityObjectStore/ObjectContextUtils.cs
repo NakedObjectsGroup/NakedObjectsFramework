@@ -13,8 +13,8 @@ using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Reflector.DotNet.Reflect.Util;
 using NakedObjects.Util;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.EntityObjectStore {
     public static class ObjectContextUtils {

@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Bounded {
+namespace NakedObjects.Metamodel.Facet {
     public class BoundedFacetAnnotation : BoundedFacetImpl {
         public BoundedFacetAnnotation(ISpecification holder)
             : base(holder) {}

@@ -9,9 +9,8 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Reflect.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Properties.Modify {
+namespace NakedObjects.Metamodel.Facet {
     public class PropertyInitializationFacetViaSetterMethod : PropertyInitializationFacetAbstract, IImperativeFacet {
         private readonly PropertyInfo property;
 

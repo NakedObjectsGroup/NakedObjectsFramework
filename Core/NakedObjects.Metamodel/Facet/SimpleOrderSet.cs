@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Ordering {
+namespace NakedObjects.Metamodel.Facet {
     public class SimpleOrderSet<T> : OrderSet<T> where T : IOrderableElement<T>, ISpecification {
         private readonly T[] members;
         private readonly SimpleOrderSet<T> parent;

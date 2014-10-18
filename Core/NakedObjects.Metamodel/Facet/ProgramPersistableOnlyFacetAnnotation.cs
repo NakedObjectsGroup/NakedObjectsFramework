@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.NotPersistable {
+namespace NakedObjects.Metamodel.Facet {
     public class ProgramPersistableOnlyFacetAnnotation : ProgramPersistableOnlyFacetAbstract {
         public ProgramPersistableOnlyFacetAnnotation(ISpecification holder)
             : base(holder) {}

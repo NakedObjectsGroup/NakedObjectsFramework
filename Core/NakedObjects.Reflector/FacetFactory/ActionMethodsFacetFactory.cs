@@ -19,14 +19,8 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Choices;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Defaults;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Invoke;
-using NakedObjects.Reflector.DotNet.Facets.Actions.Validate;
-using NakedObjects.Reflector.DotNet.Facets.AutoComplete;
-using NakedObjects.Reflector.DotNet.Facets.Naming.Named;
-using NakedObjects.Reflector.DotNet.Reflect.Actions;
 using NakedObjects.Util;
+using NakedObjects.Metamodel.SpecImmutable;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>

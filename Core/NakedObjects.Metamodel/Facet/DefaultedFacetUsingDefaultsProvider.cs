@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Defaults {
+namespace NakedObjects.Metamodel.Facet {
     public class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDefaultedFacet {
         private readonly IDefaultsProvider<T> defaultsProvider;
 

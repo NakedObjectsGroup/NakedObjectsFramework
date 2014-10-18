@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
+namespace NakedObjects.Metamodel.Facet {
     public class AjaxFacetAnnotation : AjaxFacetImpl {
         public AjaxFacetAnnotation(ISpecification holder)
             : base(holder) {}

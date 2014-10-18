@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Ordering.FieldOrder {
+namespace NakedObjects.Metamodel.Facet {
     public class FieldOrderFacetAnnotation : FieldOrderFacetAbstract {
         public FieldOrderFacetAnnotation(string value, ISpecification holder)
             : base(value, holder) {}

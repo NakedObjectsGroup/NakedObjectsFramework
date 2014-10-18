@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Adapter;
 using NUnit.Framework;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Collections {
     [TestFixture]

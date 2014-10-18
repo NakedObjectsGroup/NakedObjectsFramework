@@ -18,13 +18,13 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.AutoComplete;
-using NakedObjects.Reflector.DotNet.Facets.Propcoll.Access;
-using NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Choices;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Defaults;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Modify;
-using NakedObjects.Reflector.DotNet.Facets.Properties.Validate;
+
+
+
+
+
+
+
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {

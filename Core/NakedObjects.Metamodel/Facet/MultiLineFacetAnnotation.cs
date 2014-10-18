@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine {
+namespace NakedObjects.Metamodel.Facet {
     public class MultiLineFacetAnnotation : MultiLineFacetAbstract {
         public MultiLineFacetAnnotation(int numberOfLines, int width, ISpecification holder)
             : base(numberOfLines, width, holder) {}

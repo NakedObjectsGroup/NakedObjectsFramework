@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Password {
+namespace NakedObjects.Metamodel.Facet {
     public class PasswordFacetAnnotation : PasswordFacetAbstract {
         public PasswordFacetAnnotation(ISpecification holder)
             : base(holder) {}

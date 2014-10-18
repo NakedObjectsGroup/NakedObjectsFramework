@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
+namespace NakedObjects.Metamodel.Facet {
     public class EagerlyFacetAnnotation : FacetAbstract, IEagerlyFacet {
         public EagerlyFacetAnnotation(EagerlyAttribute.Do what, ISpecification holder)
             : base(Type, holder) {

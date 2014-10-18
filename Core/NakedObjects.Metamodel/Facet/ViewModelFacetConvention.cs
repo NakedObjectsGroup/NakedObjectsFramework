@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.ViewModel {
+namespace NakedObjects.Metamodel.Facet {
     public class ViewModelFacetConvention : ViewModelFacetAbstract {
         public ViewModelFacetConvention(ISpecification holder)
             : base(Type, holder) {}

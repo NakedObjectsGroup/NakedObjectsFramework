@@ -18,14 +18,16 @@ using NakedObjects.Architecture.Facets.Types;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Naming.Named;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Plural;
-using NakedObjects.Reflector.DotNet.Facets.Ordering;
+
+
+
 using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
+using NakedObjects.Architecture.Exceptions;
 
 namespace NakedObjects.Reflector.Spec {
+    //TODO:  Needs to be moved into Metamodel, once dependency on DotNetIntrospector goes
     public class ObjectSpecImmutable : Specification, IObjectSpecImmutable {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpecImmutable));
 

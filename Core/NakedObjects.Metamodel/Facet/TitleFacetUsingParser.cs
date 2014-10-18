@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
+namespace NakedObjects.Metamodel.Facet {
     public class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
         private readonly IParser<T> parser;
 

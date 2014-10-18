@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated {
+namespace NakedObjects.Metamodel.Facet {
     public class ComplexTypeFacetConvention : ComplexTypeFacetAbstract {
         public ComplexTypeFacetConvention(ISpecification holder)
             : base(holder) {}

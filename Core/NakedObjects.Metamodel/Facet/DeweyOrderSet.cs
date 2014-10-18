@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
+namespace NakedObjects.Metamodel.Facet {
     /// <summary>
     ///     Represents a nested hierarchy of ordered members.
     /// </summary>

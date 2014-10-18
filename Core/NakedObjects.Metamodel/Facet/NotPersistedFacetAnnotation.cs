@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
+namespace NakedObjects.Metamodel.Facet {
     public class NotPersistedFacetAnnotation : NotPersistedFacetAbstract {
         public NotPersistedFacetAnnotation(ISpecification holder)
             : base(holder) {}

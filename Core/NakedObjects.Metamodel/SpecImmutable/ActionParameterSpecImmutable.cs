@@ -8,7 +8,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Reflector.DotNet.Reflect.Actions {
+namespace NakedObjects.Metamodel.SpecImmutable {
     public class ActionParameterSpecImmutable : Specification, IActionParameterSpecImmutable {
         private readonly IObjectSpecImmutable specification;
 

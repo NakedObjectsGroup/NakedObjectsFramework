@@ -12,9 +12,9 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.Peer;
+using NakedObjects.Architecture.Exceptions;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Collections.Modify {
+namespace NakedObjects.Metamodel.Facet {
     public class CollectionResetFacet : FacetAbstract, IImperativeFacet, ICollectionResetFacet {
         private readonly PropertyInfo property;
 
@@ -35,7 +35,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections.Modify {
                 collection.Clear();
                 property.SetValue(inObject.GetDomainObject(), collection, null);
             }
-            catch (Exception e) {
+            catch (System.Exception e) {
                 throw new ReflectionException(string.Format("Failed to get/set property {0} in {1}", property.Name, inObject.Spec.FullName), e);
             }
         }

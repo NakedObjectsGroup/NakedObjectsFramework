@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
+namespace NakedObjects.Metamodel.Facet {
     public class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
         private readonly IParser<T> parser;
 

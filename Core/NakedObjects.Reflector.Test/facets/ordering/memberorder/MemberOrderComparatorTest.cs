@@ -9,6 +9,7 @@ using System;
 using Moq;
 using NakedObjects.Architecture.Component;
 using NUnit.Framework;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     [TestFixture]

@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
+namespace NakedObjects.Metamodel.Facet {
     public class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativeFacet {
         private readonly MethodInfo maskMethod;
         private readonly MethodInfo method;

@@ -14,7 +14,7 @@ using NakedObjects.Capabilities;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
+namespace NakedObjects.Metamodel.Facet {
     public abstract class EncodeableFacetAbstract<T> : FacetAbstract, IEncodeableFacet {
         // to delegate to
         private readonly EncodeableFacetUsingEncoderDecoder<T> encodeableFacetUsingEncoderDecoder;

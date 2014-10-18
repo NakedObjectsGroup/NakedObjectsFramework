@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Value;
+
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public abstract class ValueUsingValueSemanticsProviderFacetFactory<T> : FacetFactoryAbstract {

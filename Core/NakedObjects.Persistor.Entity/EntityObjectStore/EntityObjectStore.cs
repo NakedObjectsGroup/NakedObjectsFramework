@@ -29,13 +29,14 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Aggregated;
+
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 using MethodInfo = System.Reflection.MethodInfo;
 using PropertyInfo = System.Reflection.PropertyInfo;
 using BindingFlags = System.Reflection.BindingFlags;
 using IsolationLevel = System.Transactions.IsolationLevel;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityObjectStore : IObjectStore {

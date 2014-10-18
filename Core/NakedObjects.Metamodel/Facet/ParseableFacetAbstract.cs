@@ -14,7 +14,7 @@ using NakedObjects.Capabilities;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Parseable {
+namespace NakedObjects.Metamodel.Facet {
     public abstract class ParseableFacetAbstract<T> : FacetAbstract, IParseableFacet {
         // to delegate to
         private readonly ParseableFacetUsingParser<T> parseableFacetUsingParser;

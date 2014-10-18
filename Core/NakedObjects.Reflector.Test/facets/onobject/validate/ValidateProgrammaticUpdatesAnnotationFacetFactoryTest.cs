@@ -9,8 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Immutable;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Validation;
+using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 using NUnit.Framework;
 

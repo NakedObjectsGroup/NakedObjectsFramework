@@ -5,13 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Ordering.ActionOrder {
-    public class ActionOrderFacetAnnotation : ActionOrderFacetAbstract {
+namespace NakedObjects.Metamodel.Facet {
+    public class ActionOrderFacetAnnotation : SingleStringValueFacetAbstract, IActionOrderFacet {
         public ActionOrderFacetAnnotation(string value, ISpecification holder)
-            : base(value, holder) {}
+            : base(typeof (IActionOrderFacet), holder, value) {}
     }
 
     // Copyright (c) Naked Objects Group Ltd.

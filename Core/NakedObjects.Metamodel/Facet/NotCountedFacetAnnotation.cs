@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotCounted {
+namespace NakedObjects.Metamodel.Facet {
     /// <summary>
     ///     This is only used at by the custom 'SdmNotCountedAttribute' 
     /// </summary>

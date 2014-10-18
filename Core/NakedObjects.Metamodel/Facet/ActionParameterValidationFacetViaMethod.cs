@@ -5,20 +5,35 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.DotNet.Reflect.Util;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Interactions;
+using NakedObjects.Metamodel.Exception;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Actions.Validate {
-    public class ActionParameterValidationFacetViaMethod : ActionParameterValidationFacetAbstract, IImperativeFacet {
+namespace NakedObjects.Metamodel.Facet {
+    public class ActionParameterValidationFacetViaMethod : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
         public ActionParameterValidationFacetViaMethod(MethodInfo method, int param, ISpecification holder)
-            : base(holder) {
+            : base(typeof (IActionParameterValidationFacet),holder) {
             this.method = method;
         }
+
+        #region IActionParameterValidationFacet Members
+
+        public virtual string Invalidates(InteractionContext ic) {
+            return InvalidReason(ic.Target, ic.ProposedArgument);
+        }
+
+        public virtual InvalidException CreateExceptionFor(InteractionContext ic) {
+            return new ActionArgumentsInvalidException(ic, Invalidates(ic));
+        }
+
+        #endregion
 
         #region IImperativeFacet Members
 
@@ -28,7 +43,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Validate {
 
         #endregion
 
-        public override string InvalidReason(INakedObject target, INakedObject proposedArgument) {
+        public string InvalidReason(INakedObject target, INakedObject proposedArgument) {
             return (string) InvokeUtils.Invoke(method, target, new[] {proposedArgument});
         }
 

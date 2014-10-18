@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
+namespace NakedObjects.Metamodel.Facet {
     public class PresentationHintFacetAnnotation : PresentationHintFacetAbstract {
         public PresentationHintFacetAnnotation(string value, ISpecification holder)
             : base(value, holder) {}

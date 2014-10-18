@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Collections {
+namespace NakedObjects.Metamodel.Facet {
     public class DotNetArrayFacet : DotNetCollectionFacet {
         public DotNetArrayFacet(ISpecification holder)
             : base(holder) {}

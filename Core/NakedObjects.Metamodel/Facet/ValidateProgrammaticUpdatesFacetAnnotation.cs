@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Validation {
+namespace NakedObjects.Metamodel.Facet {
     public class ValidateProgrammaticUpdatesFacetAnnotation : ValidateProgrammaticUpdatesFacet {
         public ValidateProgrammaticUpdatesFacetAnnotation(ISpecification holder)
             : base(holder) {}
