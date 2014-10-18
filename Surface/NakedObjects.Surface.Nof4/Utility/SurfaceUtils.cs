@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Reflector.DotNet.Reflect.Util;
+using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Surface.Nof4.Utility {
     public static class SurfaceUtils {
