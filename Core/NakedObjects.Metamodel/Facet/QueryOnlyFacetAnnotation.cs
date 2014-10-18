@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actions.Potency {
-    public class QueryOnlyFacetAnnotation : QueryOnlyFacetImpl {
+    public class QueryOnlyFacetAnnotation : QueryOnlyFacet {
         public QueryOnlyFacetAnnotation(ISpecification holder)
             : base(holder) {}
     }

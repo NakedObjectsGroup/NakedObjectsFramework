@@ -10,12 +10,8 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public abstract class QueryOnlyFacetAbstract : MarkerFacetAbstract, IQueryOnlyFacet {
-        protected QueryOnlyFacetAbstract(ISpecification holder)
-            : base(Type, holder) {}
-
-        public static Type Type {
-            get { return typeof (IQueryOnlyFacet); }
-        }
+    public class QueryOnlyFacet : MarkerFacetAbstract, IQueryOnlyFacet  {
+        public QueryOnlyFacet(ISpecification holder)
+            : base(typeof (IQueryOnlyFacet), holder) {}
     }
 }
