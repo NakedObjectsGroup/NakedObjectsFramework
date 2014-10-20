@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Metamodel.Utils;
 
-
 namespace NakedObjects.Reflector.FacetFactory {
     public class PropertyValidateDefaultFacetFactory : FacetFactoryAbstract {
         public PropertyValidateDefaultFacetFactory(IReflector reflector)

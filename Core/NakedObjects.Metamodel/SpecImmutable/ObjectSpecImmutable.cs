@@ -21,6 +21,7 @@ using NakedObjects.Metamodel.Adapter;
 using NakedObjects.Metamodel.Exception;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Metamodel.Spec;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.SpecImmutable {
   

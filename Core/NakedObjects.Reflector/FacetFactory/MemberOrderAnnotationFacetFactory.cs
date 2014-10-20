@@ -12,9 +12,9 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Metamodel.Utils;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Util;
-using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     public class MemberOrderAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {

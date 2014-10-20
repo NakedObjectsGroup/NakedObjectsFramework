@@ -19,6 +19,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Metamodel.Utils;
 using NakedObjects.Util;
 using NakedObjects.Metamodel.SpecImmutable;
 

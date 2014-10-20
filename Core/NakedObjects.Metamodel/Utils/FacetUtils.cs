@@ -10,8 +10,7 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 
-//TODO: Change namespace to .Utils
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Metamodel.Utils {
     public static class FacetUtils {
         /// <summary>
         ///     Attaches the <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
