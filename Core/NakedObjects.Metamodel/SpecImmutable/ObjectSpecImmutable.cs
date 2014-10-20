@@ -22,16 +22,14 @@ using NakedObjects.Metamodel.Exception;
 using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Metamodel.SpecImmutable {
-    //TODO:  Needs to be moved into Metamodel, once dependency on DotNetIntrospector goes
+  
     public class ObjectSpecImmutable : Specification, IObjectSpecImmutable {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpecImmutable));
 
         private readonly IIdentifier identifier;
-        private IIntrospector introspector;
 
-        public ObjectSpecImmutable(Type type, IMetamodel metamodel, IIntrospector introspector) {
+        public ObjectSpecImmutable(Type type, IMetamodel metamodel) {
             Type = type;
-            this.introspector = introspector;
             identifier = new IdentifierImpl(metamodel, type.FullName);
             Interfaces = new IObjectSpecImmutable[] {};
             Subclasses = new IObjectSpecImmutable[] {};
@@ -110,11 +108,7 @@ namespace NakedObjects.Metamodel.SpecImmutable {
             return noopFacet;
         }
 
-        public void Introspect(IFacetDecoratorSet decorator) {
-            if (introspector == null) {
-                throw new ReflectionException("Introspection already taken place, cannot introspect again");
-            }
-
+        public void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector) {
             introspector.IntrospectType(Type, this);
             FullName = introspector.FullName;
             ShortName = introspector.ShortName;
@@ -123,7 +117,6 @@ namespace NakedObjects.Metamodel.SpecImmutable {
             Fields = introspector.Fields;
             ValidationMethods = introspector.ValidationMethods;
             ObjectActions = introspector.ObjectActions;
-            introspector = null;
             DecorateAllFacets(decorator);
         }
 

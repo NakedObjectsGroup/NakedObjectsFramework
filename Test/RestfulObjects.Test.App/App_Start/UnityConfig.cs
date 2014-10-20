@@ -14,7 +14,6 @@ using NakedObjects.EntityObjectStore;
 using NakedObjects.Managers;
 using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Reflector.DotNet;
-using NakedObjects.Reflector.DotNet.Facets;
 using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.FacetFactory;
@@ -95,7 +94,7 @@ namespace RestfulObjects.Test.App
             // container.LoadConfiguration();
 
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
-            container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
+            container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, DotNetReflector>(new ContainerControlledLifetimeManager());
 

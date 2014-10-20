@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Core.Util;
+using NakedObjects.Metamodel.Adapter;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.Security.Wif {

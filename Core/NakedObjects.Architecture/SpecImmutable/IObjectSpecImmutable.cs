@@ -44,7 +44,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     the be accommodated as there should always a specification available even though it might not be
         ///     complete.
         /// </summary>
-        void Introspect(IFacetDecoratorSet decorator);
+        void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector);
         void MarkAsService();
         void AddSubclass(IObjectSpecImmutable subclass);
         bool IsOfType(IObjectSpecImmutable specification);

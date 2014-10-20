@@ -6,13 +6,13 @@ module NakedObjects.WifAuthorisationTest
 open NUnit.Framework
 open System.Xml
 open System
-open NakedObjects.Reflector.Peer
 open System.Security.Principal
 open System.Security.Claims
 open Moq
 open NakedObjects.Architecture.Component
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Reflector.Security.Wif
+open NakedObjects.Metamodel.Adapter
 
 type XElement(name : string, [<ParamArray>] values : obj []) = 
     inherit System.Xml.Linq.XElement(System.Xml.Linq.XName.op_Implicit (name), values)

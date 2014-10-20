@@ -4,6 +4,7 @@
 using System.ComponentModel;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core.Spec;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

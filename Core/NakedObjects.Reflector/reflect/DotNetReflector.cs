@@ -214,7 +214,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
             var specification = Install(type);
             cache.Cache(type.GetProxiedTypeFullName(), specification);
-            specification.Introspect(facetDecorator);
+            specification.Introspect(facetDecorator, new DotNetIntrospector(this));
             specification.MarkAsService();
         }
 
@@ -239,7 +239,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 // need to be careful no other thread reads until introspected
                 cache.Cache(proxiedTypeName, specification);
 
-                specification.Introspect(facetDecorator);
+                specification.Introspect(facetDecorator, new DotNetIntrospector(this));
 
                 if (!installingServices) {
                     var services = NonSystemServices ?? new Type[] {};
@@ -252,11 +252,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         private IObjectSpecImmutable CreateSpecification(Type type) {
-            return new ObjectSpecImmutable(type, this, new DotNetIntrospector(this));
+            return new ObjectSpecImmutable(type, this);
         }
 
         private IObjectSpecImmutable Install(Type type) {
-            return new ObjectSpecImmutable(type, this, new DotNetIntrospector(this));
+            return new ObjectSpecImmutable(type, this);
         }
     }
 

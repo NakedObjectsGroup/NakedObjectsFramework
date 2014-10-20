@@ -121,7 +121,7 @@ namespace NakedObjects.Mvc.App.App_Start
 
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
-            container.RegisterType<IFacetFactorySet, FacetFactorySetImpl>();
+            container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, DotNetReflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
@@ -137,7 +137,7 @@ namespace NakedObjects.Mvc.App.App_Start
             container.RegisterType<IServicesManager, ServicesManager>(new PerRequestLifetimeManager());
             container.RegisterType<IAuthorizationManager, NullAuthorizationManager>(new PerRequestLifetimeManager());
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerRequestLifetimeManager());
-            container.RegisterType<IMetamodelManager, MetamodelManager>(new PerRequestLifetimeManager());
+            container.RegisterType<IMetamodelManager, MetamodelManager>(new PerResolveLifetimeManager());
             container.RegisterType<ISession, WindowsSession>(new PerRequestLifetimeManager());
             container.RegisterType<IMessageBroker, SimpleMessageBroker>(new PerRequestLifetimeManager());
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerRequestLifetimeManager());
