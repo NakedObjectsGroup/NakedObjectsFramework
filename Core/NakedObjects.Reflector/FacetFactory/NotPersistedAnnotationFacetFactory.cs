@@ -36,7 +36,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static INotPersistedFacet Create(NotPersistedAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new NotPersistedFacetAnnotation(holder);
+            return attribute == null ? null : new NotPersistedFacet(holder);
         }
     }
 }

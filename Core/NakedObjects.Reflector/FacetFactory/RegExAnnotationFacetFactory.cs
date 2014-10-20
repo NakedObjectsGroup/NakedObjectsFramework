@@ -82,11 +82,11 @@ namespace NakedObjects.Reflector.FacetFactory {
 
 
         private static IRegExFacet Create(RegExAttribute attribute, ISpecification holder) {
-            return new RegExFacetAnnotation(attribute.Validation, attribute.Format, attribute.CaseSensitive, attribute.Message, holder);
+            return new RegExFacet(attribute.Validation, attribute.Format, attribute.CaseSensitive, attribute.Message, holder);
         }
 
         private static IRegExFacet Create(RegularExpressionAttribute attribute, ISpecification holder) {
-            return new RegExFacetAnnotation(attribute.Pattern, string.Empty, true, attribute.ErrorMessage, holder);
+            return new RegExFacet(attribute.Pattern, string.Empty, true, attribute.ErrorMessage, holder);
         }
     }
 }

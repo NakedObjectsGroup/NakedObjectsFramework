@@ -112,7 +112,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IQueryOnlyFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is QueryOnlyFacetAnnotation);
+            Assert.IsTrue(facet is QueryOnlyFacet);
             AssertNoMethodsRemoved();
         }
     }

@@ -69,8 +69,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Range {
             facetFactory.ProcessParams(method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IRangeFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is RangeFacetAnnotation);
-            var RangeFacetAnnotation = (RangeFacetAnnotation) facet;
+            Assert.IsTrue(facet is RangeFacet);
+            var RangeFacetAnnotation = (RangeFacet) facet;
             Assert.AreEqual(1, RangeFacetAnnotation.Min);
             Assert.AreEqual(10, RangeFacetAnnotation.Max);
         }
@@ -81,8 +81,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Range {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IRangeFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is RangeFacetAnnotation);
-            var RangeFacetAnnotation = (RangeFacetAnnotation) facet;
+            Assert.IsTrue(facet is RangeFacet);
+            var RangeFacetAnnotation = (RangeFacet) facet;
             Assert.AreEqual(1, RangeFacetAnnotation.Min);
             Assert.AreEqual(10, RangeFacetAnnotation.Max);
         }

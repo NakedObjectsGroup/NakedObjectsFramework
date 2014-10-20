@@ -24,6 +24,7 @@ using ParameterInfo = System.Reflection.ParameterInfo;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Metamodel.SpecImmutable;
 using NakedObjects.Architecture.Exceptions;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     internal class DotNetIntrospector {

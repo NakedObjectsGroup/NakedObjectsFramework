@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Capabilities;
 using NakedObjects.Util;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Metamodel.Utils {
     public static class ValueSemanticsProviderUtils {
         public static Type ValueSemanticsProviderOrNull<T>(Type candidateClass, string classCandidateName) {
             Type type = candidateClass != null ? TypeUtils.ImplementingTypeOrNull(candidateClass.FullName, typeof (IValueSemanticsProvider<T>)) : null;

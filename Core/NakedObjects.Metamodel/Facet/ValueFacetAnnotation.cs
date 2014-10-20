@@ -8,6 +8,7 @@
 using System;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.Facet {
     public class ValueFacetAnnotation<T> : ValueFacetAbstract<T> {

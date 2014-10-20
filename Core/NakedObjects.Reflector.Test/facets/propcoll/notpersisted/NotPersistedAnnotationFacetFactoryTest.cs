@@ -74,7 +74,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (INotPersistedFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotPersistedFacetAnnotation);
+            Assert.IsTrue(facet is NotPersistedFacet);
             AssertNoMethodsRemoved();
         }
 
@@ -84,7 +84,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (INotPersistedFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotPersistedFacetAnnotation);
+            Assert.IsTrue(facet is NotPersistedFacet);
             AssertNoMethodsRemoved();
         }
     }

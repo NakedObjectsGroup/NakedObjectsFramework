@@ -70,7 +70,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propcoll.NotPersisted {
             facetFactory.Process(typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IProgramPersistableOnlyFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is ProgramPersistableOnlyFacetAnnotation);
+            Assert.IsTrue(facet is ProgramPersistableOnly);
             AssertNoMethodsRemoved();
         }
     }

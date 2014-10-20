@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new TableViewFacetFromAnnotation(attribute.Title, attribute.Columns, holder);
+            return attribute == null ? null : new TableViewFacet(attribute.Title, attribute.Columns, holder);
         }
 
         public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {

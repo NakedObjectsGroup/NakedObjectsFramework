@@ -89,7 +89,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             var facet = (INotContributedActionFacet) Specification.GetFacet(typeof (INotContributedActionFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotContributedActionFacetImpl);
+            Assert.IsTrue(facet is NotContributedActionFacet);
 
             Assert.IsTrue(facet.NeverContributed());
 
@@ -102,7 +102,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             var facet = (INotContributedActionFacet) Specification.GetFacet(typeof (INotContributedActionFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotContributedActionFacetImpl);
+            Assert.IsTrue(facet is NotContributedActionFacet);
 
             var sp = new Mock<IObjectSpecImmutable>();
             sp.Setup(s => s.IsOfType(null)).Returns(true);
@@ -119,7 +119,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             var facet = (INotContributedActionFacet) Specification.GetFacet(typeof (INotContributedActionFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotContributedActionFacetImpl);
+            Assert.IsTrue(facet is NotContributedActionFacet);
 
             var sp = new Mock<IObjectSpecImmutable>();
             sp.Setup(s => s.IsOfType(null)).Returns(true);

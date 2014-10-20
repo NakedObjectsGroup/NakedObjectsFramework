@@ -5,14 +5,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class NamedFacetImpl : NamedFacetAbstract {
-        public NamedFacetImpl(string valueString, ISpecification holder)
-            : base(valueString, holder) {}
+    public class TableViewFacet : MultipleValueFacetAbstract, ITableViewFacet {
+        public TableViewFacet(bool title, string[] columns, ISpecification holder)
+            : base(typeof (ITableViewFacet), holder) {
+            Title = title;
+            Columns = columns;
+        }
+
+            
+        #region ITableViewFacet Members
+
+        public bool Title { get; set; }
+        public string[] Columns { get; private set; }
+
+        #endregion
     }
-
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

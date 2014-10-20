@@ -5,17 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public abstract class PasswordFacetAbstract : MarkerFacetAbstract, IPasswordFacet {
-        protected PasswordFacetAbstract(ISpecification holder)
-            : base(Type, holder) {}
-
-        public static Type Type {
-            get { return typeof (IPasswordFacet); }
-        }
+    public class ProgramPersistableOnly : MarkerFacetAbstract, IProgramPersistableOnlyFacet {
+        public ProgramPersistableOnly(ISpecification holder)
+            : base(typeof (IProgramPersistableOnlyFacet), holder) {}
     }
+
+    // Copyright (c) Naked Objects Group Ltd.
 }

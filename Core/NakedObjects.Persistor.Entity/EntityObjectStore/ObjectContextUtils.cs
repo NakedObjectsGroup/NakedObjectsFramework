@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Util;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.EntityObjectStore {
     public static class ObjectContextUtils {

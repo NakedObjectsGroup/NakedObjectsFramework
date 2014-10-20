@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Surface.Nof4.Utility {
     public static class SurfaceUtils {

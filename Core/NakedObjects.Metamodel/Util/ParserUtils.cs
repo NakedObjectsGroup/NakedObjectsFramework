@@ -5,16 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Spec;
+using System;
+using NakedObjects.Capabilities;
+using NakedObjects.Util;
 
-namespace NakedObjects.Metamodel.Facet {
-    /// <summary>
-    ///     This is only used at by the custom 'SdmNotCountedAttribute' 
-    /// </summary>
-    public class NotCountedFacetAnnotation : NotCountedFacetAbstract {
-        public NotCountedFacetAnnotation(ISpecification holder)
-            : base(holder) {}
+namespace NakedObjects.Metamodel.Utils {
+    public static class ParserUtils {
+        public static Type ParserOrNull<T>(Type candidateType, string classCandidateName) {
+            Type type = candidateType != null ? TypeUtils.ImplementingTypeOrNull(candidateType.FullName, typeof (IParser<T>)) : null;
+            return type ?? TypeUtils.ImplementingTypeOrNull(classCandidateName, typeof (IParser<T>));
+        }
     }
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

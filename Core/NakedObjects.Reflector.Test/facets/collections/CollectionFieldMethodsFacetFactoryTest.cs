@@ -285,8 +285,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyAccessorFacetViaAccessor);
-            var propertyAccessorFacetViaAccessor = (PropertyAccessorFacetViaAccessor) facet;
+            Assert.IsTrue(facet is PropertyAccessorFacet);
+            var propertyAccessorFacetViaAccessor = (PropertyAccessorFacet) facet;
             Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 
@@ -296,8 +296,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyAccessorFacetViaAccessor);
-            var propertyAccessorFacetViaAccessor = (PropertyAccessorFacetViaAccessor) facet;
+            Assert.IsTrue(facet is PropertyAccessorFacet);
+            var propertyAccessorFacetViaAccessor = (PropertyAccessorFacet) facet;
             Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 
@@ -307,8 +307,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyAccessorFacetViaAccessor);
-            var propertyAccessorFacetViaAccessor = (PropertyAccessorFacetViaAccessor) facet;
+            Assert.IsTrue(facet is PropertyAccessorFacet);
+            var propertyAccessorFacetViaAccessor = (PropertyAccessorFacet) facet;
             Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 
@@ -318,8 +318,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyAccessorFacetViaAccessor);
-            var propertyAccessorFacetViaAccessor = (PropertyAccessorFacetViaAccessor) facet;
+            Assert.IsTrue(facet is PropertyAccessorFacet);
+            var propertyAccessorFacetViaAccessor = (PropertyAccessorFacet) facet;
             Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 
@@ -329,8 +329,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Collections {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyAccessorFacetViaAccessor);
-            var propertyAccessorFacetViaAccessor = (PropertyAccessorFacetViaAccessor) facet;
+            Assert.IsTrue(facet is PropertyAccessorFacet);
+            var propertyAccessorFacetViaAccessor = (PropertyAccessorFacet) facet;
             Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 

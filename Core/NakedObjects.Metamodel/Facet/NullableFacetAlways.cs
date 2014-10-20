@@ -11,10 +11,6 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
     public class NullableFacetAlways : FacetAbstract, INullableFacet {
-        public NullableFacetAlways(ISpecification holder) : base(Type, holder) {}
-
-        public static Type Type {
-            get { return typeof (INullableFacet); }
-        }
+        public NullableFacetAlways(ISpecification holder) : base(typeof(INullableFacet), holder) { }
     }
 }

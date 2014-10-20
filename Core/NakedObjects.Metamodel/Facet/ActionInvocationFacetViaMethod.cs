@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.Facet {
     public class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {

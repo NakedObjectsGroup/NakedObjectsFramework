@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
 using NakedObjects.Util;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.Facet {
     public abstract class DefaultedFacetAbstract<T> : FacetAbstract, IDefaultedFacet {

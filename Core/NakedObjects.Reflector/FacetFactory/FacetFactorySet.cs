@@ -10,6 +10,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Metamodel.Utils;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Defaults;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title;
 using NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder;

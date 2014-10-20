@@ -46,7 +46,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static IPresentationHintFacet Create(PresentationHintAttribute attribute, ISpecification holder) {
-            return attribute != null ? new PresentationHintFacetAnnotation(attribute.Value, holder) : null;
+            return attribute != null ? new PresentationHintFacet(attribute.Value, holder) : null;
         }
     }
 }

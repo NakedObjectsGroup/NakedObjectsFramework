@@ -9,10 +9,10 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class ValidateProgrammaticUpdatesFacet : FacetAbstract, IValidateProgrammaticUpdatesFacet {
-        public ValidateProgrammaticUpdatesFacet(ISpecification holder)
-            : base(typeof (IValidateProgrammaticUpdatesFacet), holder) {}
+    public class PresentationHintFacet : SingleStringValueFacetAbstract, IPresentationHintFacet {
+        public PresentationHintFacet(string value, ISpecification holder)
+            : base(typeof (IPresentationHintFacet),holder, value) {}
     }
-}
 
-// Copyright (c) Naked Objects Group Ltd.
+    // Copyright (c) Naked Objects Group Ltd.
+}

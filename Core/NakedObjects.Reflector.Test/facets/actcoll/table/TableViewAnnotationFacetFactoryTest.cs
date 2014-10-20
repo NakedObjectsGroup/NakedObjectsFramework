@@ -138,8 +138,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacetFromAnnotation);
-            var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation) facet;
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
             Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
             Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
             Assert.AreEqual("col1", tableViewFacetFromAnnotation.Columns[0]);
@@ -153,8 +153,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
             facetFactory.Process(method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacetFromAnnotation);
-            var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation) facet;
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
             Assert.AreEqual(false, tableViewFacetFromAnnotation.Title);
             Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
             Assert.AreEqual("col5", tableViewFacetFromAnnotation.Columns[0]);
@@ -168,8 +168,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacetFromAnnotation);
-            var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation) facet;
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
             Assert.AreEqual(false, tableViewFacetFromAnnotation.Title);
             Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
             Assert.AreEqual("col3", tableViewFacetFromAnnotation.Columns[0]);
@@ -183,8 +183,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
             facetFactory.Process(method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacetFromAnnotation);
-            var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation) facet;
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
             Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
             Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
             Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
@@ -198,8 +198,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
             facetFactory.Process(method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacetFromAnnotation);
-            var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation) facet;
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
             Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
             Assert.AreEqual(0, tableViewFacetFromAnnotation.Columns.Length);
             AssertNoMethodsRemoved();
@@ -211,8 +211,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Table {
             facetFactory.Process(method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TableViewFacetFromAnnotation);
-            var tableViewFacetFromAnnotation = (TableViewFacetFromAnnotation) facet;
+            Assert.IsTrue(facet is TableViewFacet);
+            var tableViewFacetFromAnnotation = (TableViewFacet) facet;
             Assert.AreEqual(true, tableViewFacetFromAnnotation.Title);
             Assert.AreEqual(2, tableViewFacetFromAnnotation.Columns.Length);
             Assert.AreEqual("col7", tableViewFacetFromAnnotation.Columns[0]);
