@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Validate {
             mock.Setup(no => no.Object).Returns(customer);
 
             MethodInfo method = typeof (Customer17).GetMethod("Validate0SomeAction");
-            facet = new ActionParameterValidationFacetViaMethod(method, 0, holder);
+            facet = new ActionParameterValidation(method, 0, holder);
         }
 
         [TearDown]
@@ -37,7 +37,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Validate {
         #endregion
 
         private INakedObject target;
-        private ActionParameterValidationFacetViaMethod facet;
+        private ActionParameterValidation facet;
 
         [Test]
         public void Test1() {

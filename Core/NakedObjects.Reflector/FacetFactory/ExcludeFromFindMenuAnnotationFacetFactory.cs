@@ -33,7 +33,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static IExcludeFromFindMenuFacet Create(ExcludeFromFindMenuAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new ExcludeFromFindMenuFacetImpl(holder);
+            return attribute == null ? null : new ExcludeFromFindMenuFacet(holder);
         }
     }
 }

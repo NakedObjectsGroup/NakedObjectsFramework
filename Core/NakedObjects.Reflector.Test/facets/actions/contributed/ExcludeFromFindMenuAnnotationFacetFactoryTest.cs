@@ -67,7 +67,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IExcludeFromFindMenuFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is ExcludeFromFindMenuFacetImpl);
+            Assert.IsTrue(facet is ExcludeFromFindMenuFacet);
             AssertNoMethodsRemoved();
         }
 

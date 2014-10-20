@@ -74,10 +74,10 @@
     <Compile Include="Facet\ActionDefaultsFacetViaMethod.cs" />
     <Compile Include="Facet\ActionInvocationFacetViaMethod.cs" />
     <Compile Include="Facet\ActionOrderFacetAnnotation.cs" />
-    <Compile Include="Facet\ActionParameterValidationFacetViaMethod.cs" />
-    <Compile Include="Facet\ActionValidationFacetViaMethod.cs" />
+    <Compile Include="Facet\ActionParameterValidation.cs" />
+    <Compile Include="Facet\ActionValidationFacet.cs" />
     <Compile Include="Facet\AutoCompleteFacet.cs" />
-    <Compile Include="Facet\BoundedFacetAnnotation.cs" />
+    <Compile Include="Facet\BoundedFacet.cs" />
     <Compile Include="Facet\CollectionResetFacet.cs" />
     <Compile Include="Facet\ComplexTypeFacetAnnotation.cs" />
     <Compile Include="Facet\ComplexTypeFacetConvention.cs" />
@@ -99,7 +99,7 @@
     <Compile Include="Facet\DeletingCallbackFacetViaMethod.cs" />
     <Compile Include="Facet\DescribedAsFacetAnnotation.cs" />
     <Compile Include="Facet\DisabledFacetAnnotation.cs" />
-    <Compile Include="Facet\DisableForContextFacetViaMethod.cs" />
+    <Compile Include="Facet\DisableForContextFacet.cs" />
     <Compile Include="Facet\ArrayFacet.cs" />
     <Compile Include="Facet\CollectionFacet.cs" />
     <Compile Include="Facet\GenericCollectionFacet.cs" />
@@ -108,7 +108,7 @@
     <Compile Include="Facet\EagerlyFacet.cs" />
     <Compile Include="Facet\EncodeableFacet.cs" />
     <Compile Include="Facet\EncodeableFacetUsingEncoderDecoder.cs" />
-    <Compile Include="Facet\EncoderDecoderUtils.cs" />
+    <Compile Include="Util\EncoderDecoderUtils.cs" />
     <Compile Include="Facet\EnumFacet.cs" />
     <Compile Include="Facet\ExecutedFacetAnnotation.cs" />
     <Compile Include="Facet\ExecutedControlMethodFacet.cs" />
@@ -178,8 +178,7 @@
     <Compile Include="Facet\TypeOfFacetAbstract.cs" />
     <Compile Include="Facet\ActionChoicesFacetAbstract.cs" />
     <Compile Include="Facet\ActionChoicesFacetNone.cs" />
-    <Compile Include="Facet\ExcludeFromFindMenuFacetAbstract.cs" />
-    <Compile Include="Facet\ExcludeFromFindMenuFacetImpl.cs" />
+    <Compile Include="Facet\ExcludeFromFindMenuFacet.cs" />
     <Compile Include="Facet\NotContributedActionFacet.cs" />
     <Compile Include="Facet\ActionDefaultsFacetAbstract.cs" />
     <Compile Include="Facet\ActionDefaultsFacetNone.cs" />
@@ -191,12 +190,9 @@
     <Compile Include="Facet\PageSizeFacetDefault.cs" />
     <Compile Include="Facet\IdempotentFacet.cs" />
     <Compile Include="Exception\ActionArgumentsInvalidException.cs" />
-    <Compile Include="Facet\ActionValidationFacetAbstract.cs" />
     <Compile Include="Facet\CollectionFacetAbstract.cs" />
     <Compile Include="Facet\DisabledFacetAbstract.cs" />
     <Compile Include="Facet\DisabledFacetAlways.cs" />
-    <Compile Include="Facet\DisabledFacetImpl.cs" />
-    <Compile Include="Facet\DisableForContextFacetAbstract.cs" />
     <Compile Include="Facet\DisableForSessionFacetAbstract.cs" />
     <Compile Include="Facet\DisableForSessionFacetNone.cs" />
     <Compile Include="Facet\FacetAbstract.cs" />
@@ -213,8 +209,6 @@
     <Compile Include="Facet\NamedFacetAbstract.cs" />
     <Compile Include="Facet\NamedFacetNone.cs" />
     <Compile Include="Facet\ComplexTypeFacetAbstract.cs" />
-    <Compile Include="Facet\BoundedFacetAbstract.cs" />
-    <Compile Include="Facet\BoundedFacetImpl.cs" />
     <Compile Include="Facet\CallbackFacetAbstract.cs" />
     <Compile Include="Facet\CallbackWithExceptionFacetAbstract.cs" />
     <Compile Include="Facet\CreatedCallbackFacetAbstract.cs" />
@@ -236,7 +230,6 @@
     <Compile Include="Facet\UpdatedCallbackFacetNull.cs" />
     <Compile Include="Facet\UpdatedCallbackFacetViaMethod.cs" />
     <Compile Include="Facet\UpdatingCallbackFacetAbstract.cs" />
-    <Compile Include="Facet\EqualByContentFacetAbstract.cs" />
     <Compile Include="Facet\FacetsFacetAbstract.cs" />
     <Compile Include="Facet\IconFacetAbstract.cs" />
     <Compile Include="Facet\PluralFacetAbstract.cs" />
@@ -251,7 +244,7 @@
     <Compile Include="Facet\UpdatingCallbackFacetNull.cs" />
     <Compile Include="Facet\UpdatingCallbackFacetViaMethod.cs" />
     <Compile Include="Facet\AggregatedFacetAlways.cs" />
-    <Compile Include="Facet\EqualByContentFacetViaValueSemantics.cs" />
+    <Compile Include="Facet\EqualByContentFacet.cs" />
     <Compile Include="Facet\ImmutableFacetViaValueSemantics.cs" />
     <Compile Include="Facet\ValidateProgrammaticUpdatesFacetAnnotation.cs" />
     <Compile Include="Facet\ValueFacetAbstract.cs" />
@@ -262,7 +255,6 @@
     <Compile Include="Facet\ViewModelFacetAbstract.cs" />
     <Compile Include="Facet\PropertyDefaultFacetAbstract.cs" />
     <Compile Include="Facet\PropertyDefaultFacetNone.cs" />
-    <Compile Include="Facet\EnumFacetAbstract.cs" />
     <Compile Include="Facet\PropertySetterFacetAbstract.cs" />
     <Compile Include="Facet\IsASetFacet.cs" />
     <Compile Include="Facet\PropertyValidateFacetAbstract.cs" />

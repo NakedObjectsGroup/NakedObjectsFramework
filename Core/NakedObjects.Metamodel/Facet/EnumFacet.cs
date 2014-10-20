@@ -11,33 +11,36 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
+using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class EnumFacet : EnumFacetAbstract {
+    public class EnumFacet : MarkerFacetAbstract, IEnumFacet {
         private readonly EnumNameComparer comparer;
         private readonly Type typeOfEnum;
 
         public EnumFacet(ISpecification holder, Type typeOfEnum)
-            : base(holder) {
+            : base(typeof (IEnumFacet), holder) {
             this.typeOfEnum = typeOfEnum;
             comparer = new EnumNameComparer(this);
         }
 
+        #region IEnumFacet Members
         private string ToDisplayName(string enumName) {
             return NameUtils.NaturalName(Enum.Parse(typeOfEnum, enumName).ToString());
         }
 
-        public override object[] GetChoices(INakedObject inObject) {
+        public object[] GetChoices(INakedObject inObject) {
             return Enum.GetNames(typeOfEnum).OrderBy(s => s, comparer).Select(s => Enum.Parse(typeOfEnum, s)).ToArray();
         }
 
-        public override object[] GetChoices(INakedObject inObject, object[] choiceValues) {
+        public object[] GetChoices(INakedObject inObject, object[] choiceValues) {
             return choiceValues.Select(o => Enum.Parse(typeOfEnum, o.ToString())).ToArray();
         }
 
-        public override string GetTitle(INakedObject inObject) {
+        public string GetTitle(INakedObject inObject) {
             return ToDisplayName(inObject.Object.ToString());
         }
+        #endregion
 
         #region Nested type: EnumNameComparer
 

@@ -47,7 +47,7 @@ namespace NakedObjects.Metamodel.Facet {
             // EqualByContentFacet, if appropriate
             bool equalByContent = semanticsProvider == null || semanticsProvider.IsEqualByContent;
             if (equalByContent) {
-                FacetUtils.AddFacet(new EqualByContentFacetViaValueSemantics(holder));
+                FacetUtils.AddFacet(new EqualByContentFacet(holder));
             }
 
             if (semanticsProvider != null) {

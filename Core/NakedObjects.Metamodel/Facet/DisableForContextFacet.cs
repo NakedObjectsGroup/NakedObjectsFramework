@@ -9,13 +9,15 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Utils;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class DisableForContextFacetViaMethod : DisableForContextFacetAbstract, IImperativeFacet {
+    public class DisableForContextFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public DisableForContextFacetViaMethod(MethodInfo method, ISpecification holder)
-            : base(holder) {
+        public DisableForContextFacet(MethodInfo method, ISpecification holder)
+            : base(typeof (IDisableForContextFacet), holder) {
             this.method = method;
         }
 
@@ -27,9 +29,21 @@ namespace NakedObjects.Metamodel.Facet {
 
         #endregion
 
-        public override string DisabledReason(INakedObject nakedObject) {
+        #region IDisableForContextFacet Members
+
+        public virtual string Disables(InteractionContext ic) {
+            INakedObject target = ic.Target;
+            return DisabledReason(target);
+        }
+
+        public virtual DisabledException CreateExceptionFor(InteractionContext ic) {
+            return new DisabledException(ic, Disables(ic));
+        }
+
+        public string DisabledReason(INakedObject nakedObject) {
             return (string) InvokeUtils.Invoke(method, nakedObject);
         }
+        #endregion
 
         protected override string ToStringValues() {
             return "method=" + method;

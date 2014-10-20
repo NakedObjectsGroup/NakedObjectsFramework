@@ -5,20 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public abstract class BoundedFacetAbstract : MarkerFacetAbstract, IBoundedFacet {
-        protected BoundedFacetAbstract(ISpecification holder)
-            : base(Type, holder) {}
+    public class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
+        public BoundedFacet(ISpecification holder)
+            : base(typeof (IBoundedFacet),holder) {}
 
-        public static Type Type {
-            get { return typeof (IBoundedFacet); }
-        }
 
         #region IBoundedFacet Members
 
@@ -35,10 +31,10 @@ namespace NakedObjects.Metamodel.Facet {
         }
 
         #endregion
-
-        /// <summary>
-        ///     Hook method for subclasses to override
-        /// </summary>
-        public abstract string DisabledReason(INakedObject nakedObject);
+        public  string DisabledReason(INakedObject inObject) {
+            return Resources.NakedObjects.Bounded;
+        }
     }
+
+    // Copyright (c) Naked Objects Group Ltd.
 }

@@ -50,7 +50,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Bounded {
             facetFactory.Process(typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IBoundedFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is BoundedFacetAbstract);
+            Assert.IsTrue(facet is BoundedFacet);
             AssertNoMethodsRemoved();
         }
 

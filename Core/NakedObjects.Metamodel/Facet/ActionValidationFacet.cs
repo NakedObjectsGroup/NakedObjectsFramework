@@ -9,13 +9,16 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Utils;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Interactions;
+using NakedObjects.Metamodel.Exception;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class ActionValidationFacetViaMethod : ActionValidationFacetAbstract, IImperativeFacet {
+    public class ActionValidationFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public ActionValidationFacetViaMethod(MethodInfo method, ISpecification holder)
-            : base(holder) {
+        public ActionValidationFacet(MethodInfo method, ISpecification holder)
+            : base(typeof (IActionValidationFacet), holder) {
             this.method = method;
         }
 
@@ -27,10 +30,20 @@ namespace NakedObjects.Metamodel.Facet {
 
         #endregion
 
-        public override string InvalidReason(INakedObject target, INakedObject[] proposedArguments) {
-            return (string) InvokeUtils.Invoke(method, target, proposedArguments);
+        #region IActionValidationFacet Members
+
+        public virtual string Invalidates(InteractionContext ic) {
+            return InvalidReason(ic.Target, ic.ProposedArguments);
         }
 
+        public virtual InvalidException CreateExceptionFor(InteractionContext ic) {
+            return new ActionArgumentsInvalidException(ic, Invalidates(ic));
+        }
+
+        public  string InvalidReason(INakedObject target, INakedObject[] proposedArguments) {
+            return (string) InvokeUtils.Invoke(method, target, proposedArguments);
+        }
+        #endregion
 
         protected override string ToStringValues() {
             return "method=" + method;

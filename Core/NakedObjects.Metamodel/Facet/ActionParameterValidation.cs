@@ -14,10 +14,10 @@ using NakedObjects.Metamodel.Exception;
 using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class ActionParameterValidationFacetViaMethod : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
+    public class ActionParameterValidation : FacetAbstract, IActionParameterValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public ActionParameterValidationFacetViaMethod(MethodInfo method, int param, ISpecification holder)
+        public ActionParameterValidation(MethodInfo method, int param, ISpecification holder)
             : base(typeof (IActionParameterValidationFacet), holder) {
             this.method = method;
         }

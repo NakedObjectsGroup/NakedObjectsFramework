@@ -92,8 +92,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         private void CheckValidatePrameterFacet(MethodInfo method, IActionParameterSpecImmutable parameter) {
             IFacet facet = parameter.GetFacet(typeof (IActionParameterValidationFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is ActionParameterValidationFacetViaMethod);
-            Assert.AreEqual(method, ((ActionParameterValidationFacetViaMethod) facet).GetMethod());
+            Assert.IsTrue(facet is ActionParameterValidation);
+            Assert.AreEqual(method, ((ActionParameterValidation) facet).GetMethod());
 
             AssertMethodRemoved(method);
         }
@@ -948,8 +948,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IActionValidationFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is ActionValidationFacetViaMethod);
-            var actionValidationFacetViaMethod = (ActionValidationFacetViaMethod) facet;
+            Assert.IsTrue(facet is ActionValidationFacet);
+            var actionValidationFacetViaMethod = (ActionValidationFacet) facet;
             Assert.AreEqual(validateMethod, actionValidationFacetViaMethod.GetMethod());
             AssertMethodRemoved(validateMethod);
         }
@@ -961,8 +961,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IActionValidationFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is ActionValidationFacetViaMethod);
-            var actionValidationFacetViaMethod = (ActionValidationFacetViaMethod) facet;
+            Assert.IsTrue(facet is ActionValidationFacet);
+            var actionValidationFacetViaMethod = (ActionValidationFacet) facet;
             Assert.AreEqual(validateMethod, actionValidationFacetViaMethod.GetMethod());
             AssertMethodRemoved(validateMethod);
         }
@@ -975,7 +975,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
             var facet = Specification.GetFacet<IDisableForContextFacet>();
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is DisableForContextFacetViaMethod);
+            Assert.IsTrue(facet is DisableForContextFacet);
             Assert.AreEqual(disableMethod, ((IImperativeFacet) facet).GetMethod());
             AssertMethodNotRemoved(disableMethod);
         }
@@ -1002,7 +1002,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
             var facet = Specification.GetFacet<IDisableForContextFacet>();
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is DisableForContextFacetViaMethod);
+            Assert.IsTrue(facet is DisableForContextFacet);
             Assert.AreEqual(hideMethod, ((IImperativeFacet) facet).GetMethod());
         }
 
@@ -1014,7 +1014,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
             var facet = Specification.GetFacet<IDisableForContextFacet>();
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is DisableForContextFacetViaMethod);
+            Assert.IsTrue(facet is DisableForContextFacet);
             Assert.AreEqual(hideMethod, ((IImperativeFacet) facet).GetMethod());
         }
 
@@ -1026,7 +1026,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
             var facet = Specification.GetFacet<IDisableForContextFacet>();
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is DisableForContextFacetViaMethod);
+            Assert.IsTrue(facet is DisableForContextFacet);
             Assert.AreEqual(disableMethod, ((IImperativeFacet) facet).GetMethod());
         }
 
@@ -1038,7 +1038,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
             var facet = Specification.GetFacet<IDisableForContextFacet>();
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is DisableForContextFacetViaMethod);
+            Assert.IsTrue(facet is DisableForContextFacet);
             Assert.AreEqual(hideMethod, ((IImperativeFacet) facet).GetMethod());
         }
 
@@ -1051,7 +1051,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
 
             var facet = Specification.GetFacet<IDisableForContextFacet>();
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is DisableForContextFacetViaMethod);
+            Assert.IsTrue(facet is DisableForContextFacet);
             Assert.AreEqual(hideMethodGood, ((IImperativeFacet) facet).GetMethod());
             Assert.AreNotEqual(hideMethodBad, ((IImperativeFacet) facet).GetMethod());
         }

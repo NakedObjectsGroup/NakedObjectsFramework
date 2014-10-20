@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static IBoundedFacet Create(BoundedAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new BoundedFacetAnnotation(holder);
+            return attribute == null ? null : new BoundedFacet(holder);
         }
     }
 }

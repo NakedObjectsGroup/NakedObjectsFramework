@@ -5,14 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Spec;
+using System;
+using NakedObjects.Capabilities;
+using NakedObjects.Util;
 
-namespace NakedObjects.Metamodel.Facet {
-    public class EqualByContentFacetViaValueSemantics : EqualByContentFacetAbstract {
-        public EqualByContentFacetViaValueSemantics(ISpecification holder)
-            : base(holder) {}
+namespace NakedObjects.Metamodel.Utils {
+    public static class EncoderDecoderUtils {
+        public static Type EncoderDecoderOrNull<T>(Type candidateClass, string classCandidateName) {
+            Type type = candidateClass != null ? TypeUtils.ImplementingTypeOrNull(candidateClass.FullName, typeof (IEncoderDecoder<T>)) : null;
+            return type ?? TypeUtils.ImplementingTypeOrNull(classCandidateName, typeof (IEncoderDecoder<T>));
+        }
     }
-
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

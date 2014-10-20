@@ -145,7 +145,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         protected void FindDefaultDisableMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] paramTypes, ISpecification specification) {
             MethodInfo method = FindMethodWithOrWithoutParameters(type, methodType, PrefixesAndRecognisedMethods.DisablePrefix + capitalizedName, typeof (string), paramTypes);
             if (method != null) {
-                facets.Add(new DisableForContextFacetViaMethod(method, specification));
+                facets.Add(new DisableForContextFacet(method, specification));
             }
         }
 
@@ -153,7 +153,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             MethodInfo method = FindMethodWithOrWithoutParameters(type, methodType, PrefixesAndRecognisedMethods.DisablePrefix + capitalizedName, typeof (string), paramTypes);
             if (method != null) {
                 methodRemover.RemoveMethod(method);
-                facets.Add(new DisableForContextFacetViaMethod(method, specification));
+                facets.Add(new DisableForContextFacet(method, specification));
             }
         }
 

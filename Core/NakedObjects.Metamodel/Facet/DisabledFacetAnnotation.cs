@@ -5,12 +5,36 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class DisabledFacetAnnotation : DisabledFacetImpl {
+    public class DisabledFacetAnnotation : DisabledFacetAbstract {
         public DisabledFacetAnnotation(WhenTo value, ISpecification holder)
             : base(value, holder) {}
+
+
+        public override string DisabledReason(INakedObject target) {
+            if (Value == WhenTo.Always) {
+                return Resources.NakedObjects.AlwaysDisabled;
+            }
+            if (Value == WhenTo.Never) {
+                return null;
+            }
+
+            // remaining tests depend upon the actual target in question
+            if (target == null) {
+                return null;
+            }
+            if (Value == WhenTo.UntilPersisted) {
+                return target.ResolveState.IsTransient() ? Resources.NakedObjects.DisabledUntilPersisted : null;
+            }
+            if (Value == WhenTo.OncePersisted) {
+                return target.ResolveState.IsPersistent() ? Resources.NakedObjects.DisabledOncePersisted : null;
+            }
+            return null;
+        }
     }
 
 

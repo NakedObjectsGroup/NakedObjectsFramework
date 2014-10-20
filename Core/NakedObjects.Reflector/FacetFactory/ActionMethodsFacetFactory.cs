@@ -118,7 +118,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             MethodInfo method = FindMethod(type, methodType, PrefixesAndRecognisedMethods.ValidatePrefix + capitalizedName, typeof (string), parms);
             if (method != null) {
                 RemoveMethod(methodRemover, method);
-                actionFacets.Add(new ActionValidationFacetViaMethod(method, action));
+                actionFacets.Add(new ActionValidationFacet(method, action));
             }
         }
 
@@ -268,7 +268,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                     RemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions 
-                    FacetUtils.AddFacet(new ActionParameterValidationFacetViaMethod(methodToUse, i, parameters[i]));
+                    FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, i, parameters[i]));
                     AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                     AddAjaxFacet(methodToUse, parameters[i]);
                 }

@@ -5,13 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class BoundedFacetAnnotation : BoundedFacetImpl {
-        public BoundedFacetAnnotation(ISpecification holder)
-            : base(holder) {}
+    public class EqualByContentFacet : MarkerFacetAbstract, IEqualByContentFacet {
+        public EqualByContentFacet(ISpecification holder)
+            : base(typeof (IEqualByContentFacet), holder) {}
     }
+
 
     // Copyright (c) Naked Objects Group Ltd.
 }
