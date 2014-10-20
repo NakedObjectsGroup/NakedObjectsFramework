@@ -87,6 +87,7 @@
     <Compile Include="Facet\DefaultedFacetAbstract.cs" />
     <Compile Include="Facet\DefaultedFacetAnnotation.cs" />
     <Compile Include="Facet\DefaultedFacetUsingDefaultsProvider.cs" />
+    <Compile Include="Facet\PropertyClearFacetAbstract.cs" />
     <Compile Include="SpecImmutable\ObjectSpecImmutable.cs" />
     <Compile Include="Facet\RangeFacet.cs">
       <SubType>Code</SubType>

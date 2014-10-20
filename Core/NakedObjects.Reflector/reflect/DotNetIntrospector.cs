@@ -23,6 +23,7 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Adapter;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Metamodel.SpecImmutable;
+using NakedObjects.Metamodel.Utils;
 using NakedObjects.Reflector.Reflect;
 using NakedObjects.Util;
 
