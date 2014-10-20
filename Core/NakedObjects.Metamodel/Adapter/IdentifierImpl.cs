@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Reflector.Peer {
+namespace NakedObjects.Metamodel.Adapter {
     public class IdentifierImpl : IIdentifier {
         private readonly IMetamodel metamodel;
         private readonly string className;

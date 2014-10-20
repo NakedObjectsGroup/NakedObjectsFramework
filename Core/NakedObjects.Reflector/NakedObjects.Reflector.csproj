@@ -227,7 +227,6 @@
     <Compile Include="i18n\resourcebundle\ResourceBasedI18nDecoratorInstaller.cs" />
     <Compile Include="i18n\resourcebundle\ResourceBasedI18nManager.cs" />
     <Compile Include="peer\IAuthoriserInstaller.cs" />
-    <Compile Include="peer\IdentifierImpl.cs" />
     <Compile Include="peer\IReflectionDecoratorInstaller.cs" />
     <Compile Include="peer\ModelException.cs" />
     <Compile Include="reflect\DeweyOrderSet.cs" />
@@ -246,7 +245,6 @@
     <Compile Include="security\IAuthorizer.cs" />
     <Compile Include="security\SecurityFacetDecorator.cs" />
     <Compile Include="spec\FacetDecoratorSet.cs" />
-    <Compile Include="spec\ObjectSpecImmutable.cs" />
     <Compile Include="spec\SimpleSpecificationCache.cs" />
     <Compile Include="spec\ISpecificationCache.cs" />
     <Compile Include="transaction\facets\actions\invoke\ActionInvocationFacetWrapTransaction.cs" />

@@ -45,8 +45,6 @@ namespace NakedObjects.Architecture.Reflect {
         ///     complete.
         /// </summary>
         void Introspect(IFacetDecoratorSet decorator);
-
-        void PopulateAssociatedActions(Type[] services);
         void MarkAsService();
         void AddSubclass(IObjectSpecImmutable subclass);
         bool IsOfType(IObjectSpecImmutable specification);

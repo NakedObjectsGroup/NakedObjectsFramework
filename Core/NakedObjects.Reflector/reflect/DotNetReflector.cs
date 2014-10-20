@@ -11,13 +11,17 @@ using System.Linq;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
+using NakedObjects.Metamodel.SpecImmutable;
 using NakedObjects.Reflector.Peer;
+using NakedObjects.Reflector.Reflect;
 using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 using NakedObjects.Architecture.Exceptions;
@@ -112,7 +116,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public virtual void PopulateContributedActions(Type[] services) {
             try {
                 if (!linked) {
-                    AllObjectSpecImmutables.ForEach(s => s.PopulateAssociatedActions(services));
+                    AllObjectSpecImmutables.ForEach(s => PopulateAssociatedActions(s, services));
                 }
             }
             finally {
@@ -120,6 +124,75 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 linked = true;
             }
         }
+
+        public void PopulateAssociatedActions(IObjectSpecImmutable spec, Type[] services) {
+            if (string.IsNullOrWhiteSpace(spec.FullName)) {
+                string id = (spec.Identifier != null ? spec.Identifier.ClassName : "unknown") ?? "unknown";
+                Log.WarnFormat("Specification with id : {0} as has null or empty name", id);
+            }
+
+            if (TypeUtils.IsSystem(spec.FullName) && !spec.IsCollection) {
+                return;
+            }
+            if (TypeUtils.IsNakedObjects(spec.FullName)) {
+                return;
+            }
+
+            PopulateContributedActions(spec, services);
+            PopulateRelatedActions(spec, services);
+        }
+
+
+        private void PopulateContributedActions(IObjectSpecImmutable spec,  Type[] services) {
+            if (!spec.Service) {
+                foreach (Type serviceType in services) {
+                    if (serviceType != spec.Type) {
+                        var serviceSpecification = GetSpecification(serviceType);
+
+                        IActionSpecImmutable[] matchingServiceActions = serviceSpecification.ObjectActions.Flattened.Where(serviceAction => serviceAction.IsContributedTo(spec)).ToArray();
+
+                        if (matchingServiceActions.Any()) {
+                            IOrderSet<IActionSpecImmutable> os = SimpleOrderSet<IActionSpecImmutable>.CreateOrderSet("", matchingServiceActions);
+                            var name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
+                            var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
+                            var t = new Tuple<string, string, IOrderSet<IActionSpecImmutable>>(id, name, os);
+
+                            spec.ContributedActions.Add(t);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void PopulateRelatedActions(IObjectSpecImmutable spec, Type[] services) {
+            foreach (Type serviceType in services) {
+                var serviceSpecification = GetSpecification(serviceType);
+                var matchingActions = new List<IActionSpecImmutable>();
+
+                foreach (var serviceAction in serviceSpecification.ObjectActions.Flattened.Where(a => a.IsFinderMethod)) {
+                    var returnType = serviceAction.ReturnType;
+                    if (returnType != null && returnType.IsCollection) {
+                        var elementType = returnType.GetFacet<ITypeOfFacet>().ValueSpec;
+                        if (elementType.IsOfType(spec)) {
+                            matchingActions.Add(serviceAction);
+                        }
+                    }
+                    else if (returnType != null && returnType.IsOfType(spec)) {
+                        matchingActions.Add(serviceAction);
+                    }
+                }
+
+                if (matchingActions.Any()) {
+                    IOrderSet<IActionSpecImmutable> os = SimpleOrderSet<IActionSpecImmutable>.CreateOrderSet("", matchingActions.ToArray());
+                    var name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
+                    var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
+                    var t = new Tuple<string, string, IOrderSet<IActionSpecImmutable>>(id, name, os);
+
+                    spec.RelatedActions.Add(t);
+                }
+            }
+        }
+
 
         public static bool IgnoreCase { get; set; }
 
@@ -166,12 +239,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 // need to be careful no other thread reads until introspected
                 cache.Cache(proxiedTypeName, specification);
 
-
                 specification.Introspect(facetDecorator);
 
                 if (!installingServices) {
                     var services = NonSystemServices ?? new Type[] {};
-                    specification.PopulateAssociatedActions(services);
+                    PopulateAssociatedActions(specification, services);
                 }
 
 
@@ -180,11 +252,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         private IObjectSpecImmutable CreateSpecification(Type type) {
-            return new ObjectSpecImmutable(type, this);
+            return new ObjectSpecImmutable(type, this, new DotNetIntrospector(this));
         }
 
         private IObjectSpecImmutable Install(Type type) {
-            return new ObjectSpecImmutable(type, this);
+            return new ObjectSpecImmutable(type, this, new DotNetIntrospector(this));
         }
     }
 

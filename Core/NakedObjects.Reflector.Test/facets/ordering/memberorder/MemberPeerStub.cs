@@ -9,6 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Metamodel.Adapter;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.Peer;
 

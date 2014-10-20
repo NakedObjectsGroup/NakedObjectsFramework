@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySet(), new FacetDecoratorSet());
 
             specification = LoadSpecification(reflector);
-            specification.PopulateAssociatedActions(new Type[] {});
+            reflector.PopulateAssociatedActions(specification, new Type[] {});
             Metamodel = (IMetamodel) reflector;
         }
 

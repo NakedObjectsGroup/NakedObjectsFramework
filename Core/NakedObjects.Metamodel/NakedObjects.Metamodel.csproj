@@ -65,6 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapter\IdentifierImpl.cs" />
+    <Compile Include="Exception\ModelException.cs" />
     <Compile Include="Facet\AbstractFacet.cs" />
     <Compile Include="Facet\ActionChoicesFacetViaMethod.cs" />
     <Compile Include="Facet\ActionDefaultsFacetAnnotation.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="Facet\DefaultedFacetAbstract.cs" />
     <Compile Include="Facet\DefaultedFacetAnnotation.cs" />
     <Compile Include="Facet\DefaultedFacetUsingDefaultsProvider.cs" />
+    <Compile Include="SpecImmutable\ObjectSpecImmutable.cs" />
     <Compile Include="Util\DefaultsProviderUtils.cs" />
     <Compile Include="Facet\DeletedCallbackFacetNull.cs" />
     <Compile Include="Facet\DeletedCallbackFacetViaMethod.cs" />
