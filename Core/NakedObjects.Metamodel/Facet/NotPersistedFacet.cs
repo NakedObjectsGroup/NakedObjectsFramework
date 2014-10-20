@@ -5,11 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class QueryOnlyFacetAnnotation : QueryOnlyFacet {
-        public QueryOnlyFacetAnnotation(ISpecification holder)
-            : base(holder) {}
+    public class NotPersistedFacet : MarkerFacetAbstract, INotPersistedFacet  {
+        public NotPersistedFacet(ISpecification holder)
+            : base(typeof (INotPersistedFacet), holder) {}
     }
+
+    // Copyright (c) Naked Objects Group Ltd.
 }

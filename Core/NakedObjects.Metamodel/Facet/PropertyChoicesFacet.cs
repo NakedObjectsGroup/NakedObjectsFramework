@@ -14,25 +14,43 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class PropertyChoicesFacetViaMethod : PropertyChoicesFacetAbstract, IImperativeFacet {
+    public class PropertyChoicesFacetx : FacetAbstract, IPropertyChoicesFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
         private readonly string[] parameterNames;
         private readonly Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes;
 
-        public PropertyChoicesFacetViaMethod(MethodInfo optionsMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, ISpecification holder)
-            : base(holder) {
+        public PropertyChoicesFacetx(MethodInfo optionsMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, ISpecification holder)
+            : base(typeof (IPropertyChoicesFacet),holder) {
             method = optionsMethod;
 
             this.parameterNamesAndTypes = parameterNamesAndTypes;
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
         }
 
-        public override Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes {
+        #region IPropertyChoicesFacet Members
+        public Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes {
             get { return parameterNamesAndTypes; }
         }
+
+        public object[] GetChoices(INakedObject inObject, IDictionary<string, INakedObject> parameterNameValues) {
+            INakedObject[] parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
+            try {
+                object options = InvokeUtils.Invoke(method, inObject, parms);
+                if (options is IEnumerable) {
+                    return ((IEnumerable)options).Cast<object>().ToArray();
+                }
+                throw new NakedObjectDomainException("Must return IEnumerable from choices method: " + method.Name);
+            } catch (ArgumentException ae) {
+                string msg = string.Format("Choices exception: {0} has mismatched (ie type of parameter does not match type of property) parameter types", method.Name);
+                throw new InvokeException(msg, ae);
+            }
+        }
+        #endregion
 
         #region IImperativeFacet Members
 
@@ -41,21 +59,6 @@ namespace NakedObjects.Metamodel.Facet {
         }
 
         #endregion
-
-        public override object[] GetChoices(INakedObject inObject, IDictionary<string, INakedObject> parameterNameValues) {
-            INakedObject[] parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
-            try {
-                object options = InvokeUtils.Invoke(method, inObject, parms);
-                if (options is IEnumerable) {
-                    return ((IEnumerable) options).Cast<object>().ToArray();
-                }
-                throw new NakedObjectDomainException("Must return IEnumerable from choices method: " + method.Name);
-            }
-            catch (ArgumentException ae) {
-                string msg = string.Format("Choices exception: {0} has mismatched (ie type of parameter does not match type of property) parameter types", method.Name);
-                throw new InvokeException(msg, ae);
-            }
-        }
 
         protected override string ToStringValues() {
             return "method=" + method;

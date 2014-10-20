@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             Type type = property.DeclaringType;
 
 
-            var facets = new List<IFacet> {new PropertyAccessorFacetViaAccessor(property, collection)};
+            var facets = new List<IFacet> {new PropertyAccessorFacet(property, collection)};
 
             AddSetFacet(facets, property, collection);
 

@@ -48,7 +48,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 Log.WarnFormat("Unsupported use of range attribute with explicit type on {0}", holder);
                 return null;
             }
-            return attribute == null ? null : new RangeFacetAnnotation(attribute.Minimum, attribute.Maximum, isDate, holder);
+            return attribute == null ? null : new RangeFacet(attribute.Minimum, attribute.Maximum, isDate, holder);
         }
     }
 }

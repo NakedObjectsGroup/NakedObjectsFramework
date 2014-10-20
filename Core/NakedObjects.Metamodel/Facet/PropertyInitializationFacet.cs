@@ -8,15 +8,28 @@
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Metamodel.Utils;
+
 
 namespace NakedObjects.Metamodel.Facet {
-    public class PropertyInitializationFacetViaSetterMethod : PropertyInitializationFacetAbstract, IImperativeFacet {
+    public class PropertyInitializationFacet : FacetAbstract, IPropertyInitializationFacet, IImperativeFacet {
         private readonly PropertyInfo property;
 
-        public PropertyInitializationFacetViaSetterMethod(PropertyInfo property, ISpecification holder)
-            : base(holder) {
+        public PropertyInitializationFacet(PropertyInfo property, ISpecification holder)
+            : base(typeof (IPropertyInitializationFacet), holder) {
             this.property = property;
         }
+
+        #region IPropertyInitializationFacet Members
+        public void InitProperty(INakedObject nakedObject, INakedObject value) {
+            try {
+                property.SetValue(nakedObject.GetDomainObject(), value.GetDomainObject(), null);
+            } catch (TargetInvocationException e) {
+                InvokeUtils.InvocationException("Exception executing " + property, e);
+            }
+        }
+        #endregion
 
         #region IImperativeFacet Members
 
@@ -25,15 +38,6 @@ namespace NakedObjects.Metamodel.Facet {
         }
 
         #endregion
-
-        public override void InitProperty(INakedObject nakedObject, INakedObject value) {
-            try {
-                property.SetValue(nakedObject.GetDomainObject(), value.GetDomainObject(), null);
-            }
-            catch (TargetInvocationException e) {
-                InvokeUtils.InvocationException("Exception executing " + property, e);
-            }
-        }
 
         protected override string ToStringValues() {
             return "property=" + property;

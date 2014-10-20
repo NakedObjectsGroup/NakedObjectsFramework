@@ -13,15 +13,17 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Exception;
 
 namespace NakedObjects.Metamodel.Facet {
-    public abstract class RangeFacetAbstract : FacetAbstract, IRangeFacet {
-        protected RangeFacetAbstract(object min, object max, ISpecification holder)
+    public class RangeFacet : FacetAbstract, IRangeFacet {
+        public RangeFacet(object min, object max, bool isDateRange, ISpecification holder)
             : base(Type, holder) {
-            Min = (IConvertible) min;
-            Max = (IConvertible) max;
+            Min = (IConvertible)min;
+            Max = (IConvertible)max;
+            IsDateRange = isDateRange;
         }
 
+
         public static Type Type {
-            get { return typeof (IRangeFacet); }
+            get { return typeof(IRangeFacet); }
         }
 
         #region IRangeFacet Members
@@ -32,7 +34,7 @@ namespace NakedObjects.Metamodel.Facet {
             if (nakedObject == null) {
                 return 0; //Date fields can contain nulls
             }
-            var origVal = ((IConvertible) nakedObject.Object);
+            var origVal = ((IConvertible)nakedObject.Object);
             if (IsSIntegral(origVal)) {
                 return Compare(origVal.ToInt64(null), Min.ToInt64(null), Max.ToInt64(null));
             }
@@ -115,4 +117,6 @@ namespace NakedObjects.Metamodel.Facet {
             return o is DateTime;
         }
     }
+
+    // Copyright (c) Naked Objects Group Ltd.
 }

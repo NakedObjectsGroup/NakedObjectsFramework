@@ -11,16 +11,14 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public abstract class TypeOfFacetAbstract : SingleClassValueFacetAbstract, ITypeOfFacet {
+    public abstract class TypeOfFacetAbstract : FacetAbstract, ITypeOfFacet {
         private readonly bool inferred;
 
         protected TypeOfFacetAbstract(Type valueType, bool inferred, ISpecification holder, IObjectSpecImmutable spec)
-            : base(Type, holder, valueType, spec) {
+            : base(typeof(ITypeOfFacet), holder) {
             this.inferred = inferred;
-        }
-
-        public static Type Type {
-            get { return typeof (ITypeOfFacet); }
+            this.valueType = valueType;
+            this.valueSpec = spec;
         }
 
         #region ITypeOfFacet Members
@@ -32,6 +30,24 @@ namespace NakedObjects.Metamodel.Facet {
         /// </summary>
         public virtual bool IsInferred {
             get { return inferred; }
+        }
+
+        #endregion
+
+        #region ISingleClassValueFacet Members
+
+        private readonly Type valueType;
+
+        public virtual Type Value {
+            get { return valueType; }
+        }
+
+        private readonly IObjectSpecImmutable valueSpec;
+        /// <summary>
+        ///     The <see cref="IObjectSpec" /> of the <see cref="Value" />
+        /// </summary>
+        public virtual IObjectSpecImmutable ValueSpec {
+            get { return valueSpec; }
         }
 
         #endregion

@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.Facet {
     public class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {

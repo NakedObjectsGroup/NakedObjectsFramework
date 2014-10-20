@@ -39,7 +39,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static IPasswordFacet Create(DataTypeAttribute attribute, ISpecification holder) {
-            return attribute != null && attribute.DataType == DataType.Password ? new PasswordFacetAnnotation(holder) : null;
+            return attribute != null && attribute.DataType == DataType.Password ? new PasswordFacet(holder) : null;
         }
     }
 }

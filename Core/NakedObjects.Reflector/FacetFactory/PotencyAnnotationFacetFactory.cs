@@ -30,7 +30,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 return FacetUtils.AddFacet(new IdempotentFacetAnnotation(holder));
             }
             if (AttributeUtils.GetCustomAttribute<QueryOnlyAttribute>(member) != null) {
-                return FacetUtils.AddFacet(new QueryOnlyFacetAnnotation(holder));
+                return FacetUtils.AddFacet(new QueryOnlyFacet(holder));
             }
             return false;
         }

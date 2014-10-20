@@ -134,7 +134,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
             PropertyInfo property = FindProperty(typeof (Customer5), "FirstName");
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
-            var regExFacet = (RegExFacetAnnotation) facet;
+            var regExFacet = (RegExFacet) facet;
             Assert.AreEqual(null, regExFacet.FailureMessage);
         }
 
@@ -144,8 +144,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
             facetFactory.ProcessParams(method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is RegExFacetAnnotation);
-            var regExFacet = (RegExFacetAnnotation) facet;
+            Assert.IsTrue(facet is RegExFacet);
+            var regExFacet = (RegExFacet) facet;
             Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
             Assert.AreEqual("Parameter message", regExFacet.FailureMessage);
             Assert.AreEqual(false, regExFacet.IsCaseSensitive);
@@ -156,8 +156,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
             facetFactory.Process(typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is RegExFacetAnnotation);
-            var regExFacet = (RegExFacetAnnotation) facet;
+            Assert.IsTrue(facet is RegExFacet);
+            var regExFacet = (RegExFacet) facet;
             Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
             Assert.AreEqual("Class message", regExFacet.FailureMessage);
             Assert.AreEqual(false, regExFacet.IsCaseSensitive);
@@ -169,8 +169,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is RegExFacetAnnotation);
-            var regExFacet = (RegExFacetAnnotation) facet;
+            Assert.IsTrue(facet is RegExFacet);
+            var regExFacet = (RegExFacet) facet;
             Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
             Assert.AreEqual("Property message", regExFacet.FailureMessage);
             Assert.AreEqual(false, regExFacet.IsCaseSensitive);
@@ -195,7 +195,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
             PropertyInfo property = FindProperty(typeof (Customer11), "FirstName");
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
-            var regExFacet = (RegExFacetAnnotation) facet;
+            var regExFacet = (RegExFacet) facet;
             Assert.AreEqual(null, regExFacet.FailureMessage);
         }
 
@@ -205,8 +205,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
             facetFactory.ProcessParams(method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is RegExFacetAnnotation);
-            var regExFacet = (RegExFacetAnnotation) facet;
+            Assert.IsTrue(facet is RegExFacet);
+            var regExFacet = (RegExFacet) facet;
             Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
             Assert.AreEqual("Parameter message", regExFacet.FailureMessage);
             Assert.AreEqual(true, regExFacet.IsCaseSensitive);
@@ -218,8 +218,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.RegEx {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IRegExFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is RegExFacetAnnotation);
-            var regExFacet = (RegExFacetAnnotation) facet;
+            Assert.IsTrue(facet is RegExFacet);
+            var regExFacet = (RegExFacet) facet;
             Assert.AreEqual("^A.*", regExFacet.ValidationPattern);
             Assert.AreEqual("Property message", regExFacet.FailureMessage);
             Assert.AreEqual(true, regExFacet.IsCaseSensitive);

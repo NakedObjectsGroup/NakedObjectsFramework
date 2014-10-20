@@ -55,7 +55,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             string capitalizedName = property.Name;
             var paramTypes = new[] {property.PropertyType};
 
-            var facets = new List<IFacet> {new PropertyAccessorFacetViaAccessor(property, specification)};
+            var facets = new List<IFacet> {new PropertyAccessorFacet(property, specification)};
 
             if (property.PropertyType.IsGenericType && (property.PropertyType.GetGenericTypeDefinition() == typeof (Nullable<>))) {
                 facets.Add(new NullableFacetAlways(specification));
@@ -68,11 +68,11 @@ namespace NakedObjects.Reflector.FacetFactory {
                 else {
                     facets.Add(new PropertySetterFacetViaSetterMethod(property, specification));
                 }
-                facets.Add(new PropertyInitializationFacetViaSetterMethod(property, specification));
+                facets.Add(new PropertyInitializationFacet(property, specification));
             }
             else {
                 //facets.Add(new DerivedFacetInferred(specification));
-                facets.Add(new NotPersistedFacetAnnotation(specification));
+                facets.Add(new NotPersistedFacet(specification));
                 facets.Add(new DisabledFacetAlways(specification));
             }
             FindAndRemoveModifyMethod(facets, methodRemover, property.DeclaringType, capitalizedName, paramTypes, specification);
@@ -164,7 +164,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 var parameterNamesAndTypes = method.GetParameters().Select(p => new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), Reflector.LoadSpecification(p.ParameterType))).ToArray();
-                propertyFacets.Add(new PropertyChoicesFacetViaMethod(method, parameterNamesAndTypes, property));
+                propertyFacets.Add(new PropertyChoicesFacetx(method, parameterNamesAndTypes, property));
                 AddOrAddToExecutedWhereFacet(method, property);
             }
         }

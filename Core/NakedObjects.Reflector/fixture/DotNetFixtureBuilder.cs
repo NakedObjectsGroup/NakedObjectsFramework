@@ -9,6 +9,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Core.Persist;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.DotNet.Fixture {
     public class DotNetFixtureBuilder : AbstractFixtureBuilder {

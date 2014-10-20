@@ -10,6 +10,7 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.Facet {
     public class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {

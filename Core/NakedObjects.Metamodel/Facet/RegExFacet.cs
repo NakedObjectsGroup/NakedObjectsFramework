@@ -5,44 +5,72 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using NakedObjects.Architecture.Adapter;
+using System.Text.RegularExpressions;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Interactions;
 using NakedObjects.Metamodel.Exception;
 
 namespace NakedObjects.Metamodel.Facet {
-    public abstract class RegExFacetAbstract : MultipleValueFacetAbstract {
-        private readonly string failureMessage;
-        private readonly string formatPattern;
-        private readonly bool isCaseSensitive;
-        private readonly string validationPattern;
-
-        protected RegExFacetAbstract(string validation, string format, bool caseSensitive, string failureMessage, ISpecification holder)
-            : base(Type, holder) {
+    public class RegExFacet : MultipleValueFacetAbstract, IRegExFacet {
+        public RegExFacet(string validation, string format, bool caseSensitive, string message, ISpecification holder)
+            : base(typeof (IRegExFacet), holder) {
+            Pattern = new Regex(ValidationPattern, PatternFlags);
             validationPattern = validation;
             formatPattern = format;
             isCaseSensitive = caseSensitive;
-            this.failureMessage = failureMessage;
+            this.failureMessage = message;
         }
 
-        public static Type Type {
-            get { return typeof (IRegExFacet); }
+        private RegexOptions PatternFlags {
+            get { return !IsCaseSensitive ? RegexOptions.IgnoreCase : RegexOptions.None; }
         }
 
+        #region IRegExFacet Members
+
+        public Regex Pattern { get; private set; }
+
+        public string Format(string text) {
+            if (text == null) {
+                return Resources.NakedObjects.EmptyString;
+            }
+            return string.IsNullOrEmpty(FormatPattern) ? text : Pattern.Replace(text, FormatPattern);
+        }
+
+        public bool DoesNotMatch(string text) {
+            if (text == null) {
+                return true;
+            }
+            return !Pattern.IsMatch(text);
+        }
+
+        #endregion
+
+        protected override string ToStringValues() {
+            return Pattern.ToString();
+        }
+
+       
+        private readonly string validationPattern;
 
         public string ValidationPattern {
             get { return validationPattern; }
         }
 
+        private readonly string failureMessage;
+
         public virtual string FailureMessage {
             get { return failureMessage; }
         }
 
+        private readonly string formatPattern;
+
         public string FormatPattern {
             get { return formatPattern; }
         }
+
+        private readonly bool isCaseSensitive;
 
         public bool IsCaseSensitive {
             get { return isCaseSensitive; }
@@ -66,8 +94,7 @@ namespace NakedObjects.Metamodel.Facet {
         public virtual InvalidException CreateExceptionFor(InteractionContext ic) {
             return new InvalidRegExException(ic, FormatPattern, ValidationPattern, IsCaseSensitive, Invalidates(ic));
         }
-
-        public abstract bool DoesNotMatch(string param1);
-        public abstract string Format(string param1);
     }
+
+    // Copyright (c) Naked Objects Group Ltd.
 }

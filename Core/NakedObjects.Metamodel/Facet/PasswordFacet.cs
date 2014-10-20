@@ -5,24 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public abstract class PropertyAccessorFacetAbstract : FacetAbstract, IPropertyAccessorFacet {
-        protected PropertyAccessorFacetAbstract(ISpecification holder)
-            : base(Type, holder) {}
-
-        public static Type Type {
-            get { return typeof (IPropertyAccessorFacet); }
-        }
-
-        #region IPropertyAccessorFacet Members
-
-        public abstract object GetProperty(INakedObject nakedObject);
-
-        #endregion
+    public class PasswordFacet : MarkerFacetAbstract, IPasswordFacet {
+        public PasswordFacet(ISpecification holder)
+            : base(typeof (IPasswordFacet), holder) {}
     }
 }

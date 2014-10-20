@@ -11,6 +11,6 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Metamodel.Facet {
     public class QueryOnlyFacet : MarkerFacetAbstract, IQueryOnlyFacet {
         public QueryOnlyFacet(ISpecification holder)
-            : base(typeof (IQueryOnlyFacet), holder) {}
+            : base(typeof(IQueryOnlyFacet), holder) { }
     }
 }

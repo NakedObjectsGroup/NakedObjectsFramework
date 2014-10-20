@@ -99,7 +99,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Password {
             facetFactory.ProcessParams(method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PasswordFacetAnnotation);
+            Assert.IsTrue(facet is PasswordFacet);
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Password {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PasswordFacetAnnotation);
+            Assert.IsTrue(facet is PasswordFacet);
         }
     }
 

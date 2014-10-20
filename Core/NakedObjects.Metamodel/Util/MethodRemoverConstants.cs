@@ -5,24 +5,29 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
+using System.Collections.Generic;
+using System.Reflection;
+using NakedObjects.Architecture.FacetFactory;
 
-namespace NakedObjects.Metamodel.Facet {
-    public abstract class PropertyInitializationFacetAbstract : FacetAbstract, IPropertyInitializationFacet {
-        protected PropertyInitializationFacetAbstract(ISpecification holder)
-            : base(Type, holder) {}
+namespace NakedObjects.Metamodel.Utils {
+    public class MethodRemoverConstants {
+        public static IMethodRemover NULL;
 
-        public static Type Type {
-            get { return typeof (IPropertyInitializationFacet); }
+        static MethodRemoverConstants() {
+            NULL = new NullMethodRemover();
         }
 
-        #region IPropertyInitializationFacet Members
+        #region Nested type: NullMethodRemover
 
-        public
-            abstract void InitProperty(INakedObject nakedObject, INakedObject nakedValue);
+        public class NullMethodRemover : IMethodRemover {
+            #region IMethodRemover Members
+
+            public virtual void RemoveMethod(MethodInfo method) {}
+
+            public virtual void RemoveMethods(IList<MethodInfo> methodList) {}
+
+            #endregion
+        }
 
         #endregion
     }

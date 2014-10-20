@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private INotContributedActionFacet Create(NotContributedActionAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new NotContributedActionFacetImpl(holder, attribute.NotContributedToTypes.Select(t => Reflector.LoadSpecification(t)).ToArray());
+            return attribute == null ? null : new NotContributedActionFacet(holder, attribute.NotContributedToTypes.Select(t => Reflector.LoadSpecification(t)).ToArray());
         }
     }
 }

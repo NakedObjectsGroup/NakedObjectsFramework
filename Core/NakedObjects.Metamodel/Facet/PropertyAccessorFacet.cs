@@ -8,13 +8,15 @@
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class PropertyAccessorFacetViaAccessor : PropertyAccessorFacetAbstract, IImperativeFacet {
+    public class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
         private readonly PropertyInfo propertyMethod;
 
-        public PropertyAccessorFacetViaAccessor(PropertyInfo property, ISpecification holder)
-            : base(holder) {
+        public PropertyAccessorFacet(PropertyInfo property, ISpecification holder)
+            : base(typeof (IPropertyAccessorFacet), holder) {
             propertyMethod = property;
         }
 
@@ -26,7 +28,8 @@ namespace NakedObjects.Metamodel.Facet {
 
         #endregion
 
-        public override object GetProperty(INakedObject nakedObject) {
+        #region IPropertyAccessorFacet Members
+        public object GetProperty(INakedObject nakedObject) {
             try {
                 return propertyMethod.GetValue(nakedObject.GetDomainObject(), null);
             }
@@ -35,6 +38,7 @@ namespace NakedObjects.Metamodel.Facet {
                 return null;
             }
         }
+        #endregion
 
         protected override string ToStringValues() {
             return "propertyMethod=" + propertyMethod;

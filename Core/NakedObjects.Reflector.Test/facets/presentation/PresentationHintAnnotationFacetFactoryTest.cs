@@ -103,8 +103,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
             facetFactory.Process(method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PresentationHintFacetAnnotation);
-            var maskFacet = (PresentationHintFacetAnnotation) facet;
+            Assert.IsTrue(facet is PresentationHintFacet);
+            var maskFacet = (PresentationHintFacet) facet;
             Assert.AreEqual("ahint", maskFacet.Value);
         }
 
@@ -114,8 +114,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
             facetFactory.ProcessParams(method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PresentationHintFacetAnnotation);
-            var maskFacet = (PresentationHintFacetAnnotation) facet;
+            Assert.IsTrue(facet is PresentationHintFacet);
+            var maskFacet = (PresentationHintFacet) facet;
             Assert.AreEqual("ahint", maskFacet.Value);
         }
 
@@ -124,8 +124,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
             facetFactory.Process(typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PresentationHintFacetAnnotation);
-            var maskFacet = (PresentationHintFacetAnnotation) facet;
+            Assert.IsTrue(facet is PresentationHintFacet);
+            var maskFacet = (PresentationHintFacet) facet;
             Assert.AreEqual("ahint", maskFacet.Value);
         }
 
@@ -135,8 +135,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PresentationHintFacetAnnotation);
-            var maskFacet = (PresentationHintFacetAnnotation) facet;
+            Assert.IsTrue(facet is PresentationHintFacet);
+            var maskFacet = (PresentationHintFacet) facet;
             Assert.AreEqual("ahint", maskFacet.Value);
         }
 
@@ -146,8 +146,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Presentation {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PresentationHintFacetAnnotation);
-            var maskFacet = (PresentationHintFacetAnnotation) facet;
+            Assert.IsTrue(facet is PresentationHintFacet);
+            var maskFacet = (PresentationHintFacet) facet;
             Assert.AreEqual("ahint", maskFacet.Value);
         }
     }

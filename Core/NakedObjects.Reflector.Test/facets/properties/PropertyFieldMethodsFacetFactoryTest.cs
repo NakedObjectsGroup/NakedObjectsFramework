@@ -570,8 +570,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
-            var propertyChoicesFacet = (PropertyChoicesFacetViaMethod) facet;
+            Assert.IsTrue(facet is PropertyChoicesFacetx);
+            var propertyChoicesFacet = (PropertyChoicesFacetx) facet;
             Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
             AssertMethodRemoved(propertyChoicesMethod);
             IFacet facetExecuted = Specification.GetFacet(typeof (IExecutedControlMethodFacet));
@@ -586,8 +586,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
-            var propertyChoicesFacet = (PropertyChoicesFacetViaMethod) facet;
+            Assert.IsTrue(facet is PropertyChoicesFacetx);
+            var propertyChoicesFacet = (PropertyChoicesFacetx) facet;
             Assert.AreEqual(propertyChoicesMethod1, propertyChoicesFacet.GetMethod());
             AssertMethodRemoved(propertyChoicesMethod1);
             AssertMethodNotRemoved(propertyChoicesMethod2);
@@ -603,8 +603,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
-            var propertyChoicesFacet = (PropertyChoicesFacetViaMethod) facet;
+            Assert.IsTrue(facet is PropertyChoicesFacetx);
+            var propertyChoicesFacet = (PropertyChoicesFacetx) facet;
             Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
             AssertMethodRemoved(propertyChoicesMethod);
             var facetExecuted = Specification.GetFacet<IExecutedControlMethodFacet>();
@@ -619,8 +619,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
-            var propertyChoicesFacet = (PropertyChoicesFacetViaMethod) facet;
+            Assert.IsTrue(facet is PropertyChoicesFacetx);
+            var propertyChoicesFacet = (PropertyChoicesFacetx) facet;
             Assert.AreEqual(propertyChoicesMethod, propertyChoicesFacet.GetMethod());
             AssertMethodRemoved(propertyChoicesMethod);
             var facetExecuted = Specification.GetFacet<IExecutedControlMethodFacet>();
@@ -635,8 +635,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPropertyChoicesFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyChoicesFacetViaMethod);
-            var propertyChoicesFacet = (PropertyChoicesFacetViaMethod) facet;
+            Assert.IsTrue(facet is PropertyChoicesFacetx);
+            var propertyChoicesFacet = (PropertyChoicesFacetx) facet;
             AssertMethodRemoved(propertyChoicesMethod);
             IFacet facetExecuted = Specification.GetFacet(typeof (IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted);
@@ -843,7 +843,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             IFacet facet = Specification.GetFacet(typeof (IPropertyInitializationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IPropertyInitializationFacet);
-            var propertySetterFacet = (PropertyInitializationFacetViaSetterMethod) facet;
+            var propertySetterFacet = (PropertyInitializationFacet) facet;
             Assert.AreEqual(property.GetSetMethod(), propertySetterFacet.GetMethod());
         }
 
@@ -872,7 +872,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (INotPersistedFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is NotPersistedFacetAnnotation);
+            Assert.IsTrue(facet is NotPersistedFacet);
             facet = Specification.GetFacet(typeof (IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAlways);
@@ -884,8 +884,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyAccessorFacetViaAccessor);
-            var propertyAccessorFacetViaAccessor = (PropertyAccessorFacetViaAccessor) facet;
+            Assert.IsTrue(facet is PropertyAccessorFacet);
+            var propertyAccessorFacetViaAccessor = (PropertyAccessorFacet) facet;
             Assert.AreEqual(property.GetGetMethod(), propertyAccessorFacetViaAccessor.GetMethod());
         }
 
