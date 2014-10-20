@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NUnit.Framework;
+using NakedObjects.Metamodel.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     [TestFixture]

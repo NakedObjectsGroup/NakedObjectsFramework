@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Metamodel.Utils;
 
-namespace NakedObjects.Architecture.Facets {
+namespace NakedObjects.Metamodel.Spec {
     /// <summary>
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>

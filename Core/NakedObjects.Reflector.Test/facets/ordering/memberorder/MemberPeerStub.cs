@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Metamodel.Adapter;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Metamodel.Spec;
 using NakedObjects.Reflector.Peer;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {

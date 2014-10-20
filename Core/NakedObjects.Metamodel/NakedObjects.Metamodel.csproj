@@ -196,14 +196,14 @@
     <Compile Include="Facet\DisableForSessionFacetAbstract.cs" />
     <Compile Include="Facet\DisableForSessionFacetNone.cs" />
     <Compile Include="Facet\FacetAbstract.cs" />
-    <Compile Include="SpecImmutable\Specification.cs" />
+    <Compile Include="Spec\Specification.cs" />
     <Compile Include="Util\FacetUtils.cs" />
     <Compile Include="Facet\HideForSessionFacetAbstract.cs" />
     <Compile Include="Facet\HideForSessionFacetNone.cs" />
     <Compile Include="Facet\MarkerFacetAbstract.cs" />
     <Compile Include="Util\MethodRemoverConstants.cs" />
     <Compile Include="Facet\MultipleValueFacetAbstract.cs" />
-    <Compile Include="SpecImmutable\NamedAndDescribedSpecification.cs" />
+    <Compile Include="Spec\NamedAndDescribedSpecification.cs" />
     <Compile Include="Facet\DescribedAsFacetAbstract.cs" />
     <Compile Include="Facet\DescribedAsFacetNone.cs" />
     <Compile Include="Facet\NamedFacetAbstract.cs" />

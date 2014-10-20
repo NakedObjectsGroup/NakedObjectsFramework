@@ -7,8 +7,9 @@
 
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Metamodel.Spec {
     /// <summary>
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>

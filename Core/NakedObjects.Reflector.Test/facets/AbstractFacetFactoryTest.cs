@@ -13,6 +13,7 @@ using Moq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Facets;
+using NakedObjects.Metamodel.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets {
     public abstract class AbstractFacetFactoryTest {

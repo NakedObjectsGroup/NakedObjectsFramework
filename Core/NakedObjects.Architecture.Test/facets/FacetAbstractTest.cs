@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 using NUnit.Framework;
 using NakedObjects.Metamodel.Utils;
+using NakedObjects.Metamodel.Spec;
 
 namespace INakedObjects.Architecture.Adapter {
     [TestFixture]

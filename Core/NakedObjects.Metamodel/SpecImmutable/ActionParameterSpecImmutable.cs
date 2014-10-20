@@ -7,6 +7,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Metamodel.Spec;
 
 namespace NakedObjects.Metamodel.SpecImmutable {
     public class ActionParameterSpecImmutable : Specification, IActionParameterSpecImmutable {

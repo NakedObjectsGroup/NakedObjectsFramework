@@ -20,6 +20,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Metamodel.Adapter;
 using NakedObjects.Metamodel.Exception;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Metamodel.Spec;
 
 namespace NakedObjects.Metamodel.SpecImmutable {
   

@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 using NUnit.Framework;
+using NakedObjects.Metamodel.Spec;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Naming.Named {
     [TestFixture]
