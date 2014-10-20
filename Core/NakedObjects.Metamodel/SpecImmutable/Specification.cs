@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Architecture.Facets {
     /// <summary>

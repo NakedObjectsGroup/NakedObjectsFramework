@@ -5,22 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections.Generic;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Metamodel.Facet {
-    /// <summary>
-    ///     Compares <see cref="IMemberSpecImmutable" /> by <see cref="ISpecification.Identifier" />
-    /// </summary>
-    public class MemberIdentifierComparator<T> : IComparer<T> where T : IOrderableElement<T>, ISpecification {
-        #region IComparer<T> Members
-
-        public int Compare(T o1, T o2) {
-            return o1.Identifier.CompareTo(o2.Identifier);
-        }
-
-        #endregion
+    public class FieldOrderFacet : SingleStringValueFacetAbstract, IFieldOrderFacet {
+        public FieldOrderFacet(string value, ISpecification holder)
+            : base(typeof(IFieldOrderFacet), holder, value) { }
     }
+
+    // Copyright (c) Naked Objects Group Ltd.
 }

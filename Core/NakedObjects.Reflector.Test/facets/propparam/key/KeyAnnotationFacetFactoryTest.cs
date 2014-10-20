@@ -77,7 +77,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Key {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IKeyFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is KeyFacetAnnotation);
+            Assert.IsTrue(facet is KeyFacet);
         }
     }
 

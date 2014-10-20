@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Architecture.Facets.Types {
+    //TODO: rename to AbstractMarkerFacet to avoid confusion with FacetAbstract!
     public class AbstractFacet : MarkerFacetAbstract, IAbstractFacet {
         public AbstractFacet(ISpecification holder)
             : base(Type, holder) {}

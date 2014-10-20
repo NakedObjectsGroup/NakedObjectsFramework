@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Util;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     public class MemberOrderAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
@@ -34,7 +35,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         }
 
         private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new MemberOrderFacetAnnotation(attribute.Name, attribute.Sequence, holder);
+            return attribute == null ? null : new MemberOrderFacet(attribute.Name, attribute.Sequence, holder);
         }
     }
 }

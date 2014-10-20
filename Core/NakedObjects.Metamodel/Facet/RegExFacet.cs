@@ -16,8 +16,8 @@ namespace NakedObjects.Metamodel.Facet {
     public class RegExFacet : MultipleValueFacetAbstract, IRegExFacet {
         public RegExFacet(string validation, string format, bool caseSensitive, string message, ISpecification holder)
             : base(typeof (IRegExFacet), holder) {
-            Pattern = new Regex(ValidationPattern, PatternFlags);
             validationPattern = validation;
+            Pattern = new Regex(validation, PatternFlags);
             formatPattern = format;
             isCaseSensitive = caseSensitive;
             this.failureMessage = message;

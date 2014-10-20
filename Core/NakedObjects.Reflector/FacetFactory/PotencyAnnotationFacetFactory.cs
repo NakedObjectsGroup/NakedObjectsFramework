@@ -27,7 +27,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         private static bool Process(MemberInfo member, ISpecification holder) {
             // give priority to Idempotent as more restrictive 
             if (AttributeUtils.GetCustomAttribute<IdempotentAttribute>(member) != null) {
-                return FacetUtils.AddFacet(new IdempotentFacetAnnotation(holder));
+                return FacetUtils.AddFacet(new IdempotentFacet(holder));
             }
             if (AttributeUtils.GetCustomAttribute<QueryOnlyAttribute>(member) != null) {
                 return FacetUtils.AddFacet(new QueryOnlyFacet(holder));

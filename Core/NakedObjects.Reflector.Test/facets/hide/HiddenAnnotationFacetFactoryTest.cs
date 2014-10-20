@@ -118,7 +118,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             MethodInfo actionMethod = FindMethod(typeof (Customer6), "SomeAction");
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
-            var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
+            var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.UntilPersisted, hiddenFacetAbstract.Value);
         }
 
@@ -138,7 +138,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is HiddenFacetAbstract);
+            Assert.IsTrue(facet is HiddenFacet);
             AssertNoMethodsRemoved();
         }
 
@@ -148,7 +148,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is HiddenFacetAbstract);
+            Assert.IsTrue(facet is HiddenFacet);
             AssertNoMethodsRemoved();
         }
 
@@ -158,7 +158,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is HiddenFacetAbstract);
+            Assert.IsTrue(facet is HiddenFacet);
             AssertNoMethodsRemoved();
         }
 
@@ -167,7 +167,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
-            var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
+            var hiddenFacetAbstract = (HiddenFacet)facet;
             Assert.AreEqual(WhenTo.Always, hiddenFacetAbstract.Value);
         }
 
@@ -176,7 +176,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             MethodInfo actionMethod = FindMethod(typeof (Customer4), "SomeAction");
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
-            var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
+            var hiddenFacetAbstract = (HiddenFacet)facet;
             Assert.AreEqual(WhenTo.Never, hiddenFacetAbstract.Value);
         }
 
@@ -185,7 +185,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             MethodInfo actionMethod = FindMethod(typeof (Customer5), "SomeAction");
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
-            var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
+            var hiddenFacetAbstract = (HiddenFacet)facet;
             Assert.AreEqual(WhenTo.OncePersisted, hiddenFacetAbstract.Value);
         }
 
@@ -194,7 +194,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             PropertyInfo property = FindProperty(typeof (Customer10), "NumberOfOrders");
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
-            var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
+            var hiddenFacetAbstract = (HiddenFacet)facet;
             Assert.AreEqual(WhenTo.Always, hiddenFacetAbstract.Value);
         }
 
@@ -204,7 +204,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is HiddenFacetAbstract);
+            Assert.IsTrue(facet is HiddenFacet);
             AssertNoMethodsRemoved();
         }
 
@@ -214,7 +214,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is HiddenFacetAbstract);
+            Assert.IsTrue(facet is HiddenFacet);
             AssertNoMethodsRemoved();
         }
 
@@ -223,7 +223,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Hide {
             PropertyInfo property = FindProperty(typeof (Customer9), "NumberOfOrders");
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHiddenFacet));
-            var hiddenFacetAbstract = (HiddenFacetAbstract) facet;
+            var hiddenFacetAbstract = (HiddenFacet)facet;
             Assert.AreEqual(WhenTo.Never, hiddenFacetAbstract.Value);
         }
     }

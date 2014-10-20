@@ -97,8 +97,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask {
             facetFactory.ProcessParams(method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MaskFacetAnnotation);
-            var maskFacet = (MaskFacetAnnotation) facet;
+            Assert.IsTrue(facet is MaskFacet);
+            var maskFacet = (MaskFacet) facet;
             Assert.AreEqual("###", maskFacet.Value);
         }
 
@@ -107,8 +107,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask {
             facetFactory.Process(typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MaskFacetAnnotation);
-            var maskFacet = (MaskFacetAnnotation) facet;
+            Assert.IsTrue(facet is MaskFacet);
+            var maskFacet = (MaskFacet) facet;
             Assert.AreEqual("###", maskFacet.Value);
         }
 
@@ -118,8 +118,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MaskFacetAnnotation);
-            var maskFacet = (MaskFacetAnnotation) facet;
+            Assert.IsTrue(facet is MaskFacet);
+            var maskFacet = (MaskFacet) facet;
             Assert.AreEqual("###", maskFacet.Value);
         }
     }

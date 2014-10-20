@@ -51,11 +51,11 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new HiddenFacetAnnotation(attribute.Value, holder);
+            return attribute == null ? null : new HiddenFacet(attribute.Value, holder);
         }
 
         private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new HiddenFacetAnnotation(attribute.Scaffold ? WhenTo.Never : WhenTo.Always, holder);
+            return attribute == null ? null : new HiddenFacet(attribute.Scaffold ? WhenTo.Never : WhenTo.Always, holder);
         }
     }
 }

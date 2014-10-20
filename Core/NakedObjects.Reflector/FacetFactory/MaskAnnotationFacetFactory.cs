@@ -46,7 +46,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask {
         }
 
         private static IMaskFacet Create(MaskAttribute attribute, ISpecification holder) {
-            return attribute != null ? new MaskFacetAnnotation(attribute.Value, holder) : null;
+            return attribute != null ? new MaskFacet(attribute.Value, holder) : null;
         }
     }
 }

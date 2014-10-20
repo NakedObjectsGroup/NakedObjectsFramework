@@ -60,8 +60,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.FieldOrder {
             facetFactory.Process(typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IFieldOrderFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is FieldOrderFacetAnnotation);
-            var fieldOrderFacetAnnotation = (FieldOrderFacetAnnotation) facet;
+            Assert.IsTrue(facet is FieldOrderFacet);
+            var fieldOrderFacetAnnotation = (FieldOrderFacet) facet;
             Assert.AreEqual("foo,bar", fieldOrderFacetAnnotation.Value);
             AssertNoMethodsRemoved();
         }

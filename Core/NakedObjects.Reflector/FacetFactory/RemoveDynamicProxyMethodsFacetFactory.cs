@@ -45,7 +45,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
             if (IsDynamicProxyType(property.DeclaringType) && property.Name == "RelationshipManager") {
-                return FacetUtils.AddFacet(new HiddenFacetAnnotation(WhenTo.Always, specification));
+                return FacetUtils.AddFacet(new HiddenFacet(WhenTo.Always, specification));
             }
             return false;
         }

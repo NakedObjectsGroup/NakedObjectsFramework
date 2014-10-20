@@ -8,10 +8,11 @@
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class HiddenFacetAnnotation : HiddenFacetImpl {
-        public HiddenFacetAnnotation(WhenTo value, ISpecification holder)
-            : base(value, holder) {}
+    public class ExecutedFacetDefault : ExecutedFacetAbstract {
+        public ExecutedFacetDefault(ISpecification holder)
+            : base(Where.Default, holder) {}
     }
+
 
     // Copyright (c) Naked Objects Group Ltd.
 }

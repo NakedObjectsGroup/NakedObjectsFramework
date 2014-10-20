@@ -135,11 +135,11 @@
     <Compile Include="audit\AuditInstaller.cs" />
     <Compile Include="audit\AuditManager.cs" />
     <Compile Include="audit\IAuditorInstaller.cs" />
-    <Compile Include="dotnet\DisposeFailedException.cs" />
-    <Compile Include="dotnet\DotNetDomainObjectContainer.cs" />
-    <Compile Include="dotnet\DotNetDomainObjectContainerInjector.cs" />
-    <Compile Include="dotnet\Methods.cs" />
-    <Compile Include="dotnet\PersistFailedException.cs" />
+    <Compile Include="audit\dotnet\DisposeFailedException.cs" />
+    <Compile Include="audit\dotnet\DotNetDomainObjectContainer.cs" />
+    <Compile Include="audit\dotnet\DotNetDomainObjectContainerInjector.cs" />
+    <Compile Include="audit\dotnet\Methods.cs" />
+    <Compile Include="audit\dotnet\PersistFailedException.cs" />
     <Compile Include="FacetFactory\FacetFactoryAbstract.cs" />
     <Compile Include="FacetFactory\TableViewAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\TypeOfAnnotationFacetFactory.cs" />
@@ -234,6 +234,8 @@
     <Compile Include="reflect\DotNetReflector.cs" />
     <Compile Include="reflect\DotNetReflectorInstaller.cs" />
     <Compile Include="reflect\IntrospectionControlParameters.cs" />
+    <Compile Include="reflect\MemberIdentifierComparator.cs" />
+    <Compile Include="reflect\MemberOrderComparator.cs" />
     <Compile Include="reflect\MethodFinderUtils.cs" />
     <Compile Include="reflect\OrderSet.cs" />
     <Compile Include="reflect\proxies\ProxyCreator.cs" />

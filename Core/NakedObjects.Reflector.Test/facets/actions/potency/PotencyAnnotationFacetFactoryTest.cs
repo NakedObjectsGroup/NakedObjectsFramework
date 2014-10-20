@@ -78,7 +78,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IIdempotentFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is IdempotentFacetAnnotation);
+            Assert.IsTrue(facet is IdempotentFacet);
             AssertNoMethodsRemoved();
         }
 
@@ -88,7 +88,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions.Executed {
             facetFactory.Process(actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IIdempotentFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is IdempotentFacetAnnotation);
+            Assert.IsTrue(facet is IdempotentFacet);
             facet = Specification.GetFacet(typeof (IQueryOnlyFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();

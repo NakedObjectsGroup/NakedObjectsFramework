@@ -5,11 +5,32 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class IdempotentFacetImpl : IdempotentFacetAbstract {
-        public IdempotentFacetImpl(ISpecification holder)
-            : base(holder) {}
+    public class MemberOrderFacet : MultipleValueFacetAbstract, IMemberOrderFacet {
+        public MemberOrderFacet(string name, string sequence, ISpecification holder)
+            : base(typeof(IMemberOrderFacet), holder) {
+            this.name = name;
+            this.sequence = sequence;
+        }
+
+
+        #region IMemberOrderFacet Members
+        private readonly string name;
+
+        public virtual string Name {
+            get { return name; }
+        }
+
+        private readonly string sequence;
+
+        public virtual string Sequence {
+            get { return sequence; }
+        }
+
+        #endregion
     }
+    // Copyright (c) Naked Objects Group Ltd.
 }

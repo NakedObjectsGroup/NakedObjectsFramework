@@ -6,15 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Resolve;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.Resolve;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class HiddenFacetImpl : HiddenFacetAbstract {
-        public HiddenFacetImpl(WhenTo when, ISpecification holder)
-            : base(when, holder) {}
+    public class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {
+        public HiddenFacet(WhenTo when, ISpecification holder)
+            : base(typeof(IHiddenFacet), holder, when) { }
 
-        public override string HiddenReason(INakedObject target) {
+        public string HiddenReason(INakedObject target) {
             if (Value == WhenTo.Always) {
                 return Resources.NakedObjects.AlwaysHidden;
             }
@@ -35,8 +38,20 @@ namespace NakedObjects.Metamodel.Facet {
             }
             return null;
         }
-    }
 
+
+        #region IHiddenFacet Members
+
+        public virtual string Hides(InteractionContext ic, ILifecycleManager persistor) {
+            return HiddenReason(ic.Target);
+        }
+
+        public virtual HiddenException CreateExceptionFor(InteractionContext ic, ILifecycleManager persistor) {
+            return new HiddenException(ic, Hides(ic, persistor));
+        }
+
+        #endregion
+    }
 
     // Copyright (c) Naked Objects Group Ltd.
 }

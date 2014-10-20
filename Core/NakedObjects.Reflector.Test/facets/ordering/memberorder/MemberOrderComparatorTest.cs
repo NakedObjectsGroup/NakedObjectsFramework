@@ -10,6 +10,8 @@ using Moq;
 using NakedObjects.Architecture.Component;
 using NUnit.Framework;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Metamodel.Utils;
+using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
     [TestFixture]
@@ -44,88 +46,88 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         [Test]
         public virtual void TestDefaultGroupOneComponent() {
             Reset();
-            m1.AddFacet(new MemberOrderFacetAnnotation("", "1", m1));
-            m2.AddFacet(new MemberOrderFacetAnnotation("", "2", m2));
+            m1.AddFacet(new MemberOrderFacet("", "1", m1));
+            m2.AddFacet(new MemberOrderFacet("", "2", m2));
             Assert.AreEqual(-1, comparator.Compare(m1, m2));
         }
 
         [Test]
         public void TestDefaultGroupOneComponentOtherWay() {
             Reset();
-            m1.AddFacet(new MemberOrderFacetAnnotation("", "2", m1));
-            m2.AddFacet(new MemberOrderFacetAnnotation("", "1", m2));
+            m1.AddFacet(new MemberOrderFacet("", "2", m1));
+            m2.AddFacet(new MemberOrderFacet("", "1", m2));
             Assert.AreEqual(+1, comparator.Compare(m1, m2));
         }
 
         [Test]
         public void TestDefaultGroupOneComponentSame() {
             Reset();
-            m1.AddFacet(new MemberOrderFacetAnnotation("", "1", m1));
-            m2.AddFacet(new MemberOrderFacetAnnotation("", "1", m2));
+            m1.AddFacet(new MemberOrderFacet("", "1", m1));
+            m2.AddFacet(new MemberOrderFacet("", "1", m2));
             Assert.AreEqual(0, comparator.Compare(m1, m2));
         }
 
         [Test]
         public void TestDefaultGroupOneSideRunsLotsOfComponents() {
             Reset();
-            m1.AddFacet(new MemberOrderFacetAnnotation("", "1.2.5.8.3.3", m1));
-            m2.AddFacet(new MemberOrderFacetAnnotation("", "1.2.5.8.3.4", m2));
+            m1.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.3", m1));
+            m2.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.4", m2));
             Assert.AreEqual(-1, comparator.Compare(m1, m2));
         }
 
         [Test]
         public void TestDefaultGroupOneSideRunsLotsOfComponentsOtherWay() {
             Reset();
-            m1.AddFacet(new MemberOrderFacetAnnotation("", "1.2.5.8.3.4", m1));
-            m2.AddFacet(new MemberOrderFacetAnnotation("", "1.2.5.8.3.3", m2));
+            m1.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.4", m1));
+            m2.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.3", m2));
             Assert.AreEqual(+1, comparator.Compare(m1, m2));
         }
 
         [Test]
         public void TestDefaultGroupOneSideRunsLotsOfComponentsSame() {
             Reset();
-            m1.AddFacet(new MemberOrderFacetAnnotation("", "1.2.5.8.3.3", m1));
-            m2.AddFacet(new MemberOrderFacetAnnotation("", "1.2.5.8.3.3", m2));
+            m1.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.3", m1));
+            m2.AddFacet(new MemberOrderFacet("", "1.2.5.8.3.3", m2));
             Assert.AreEqual(0, comparator.Compare(m1, m2));
         }
 
         [Test]
         public void TestDefaultGroupOneSideRunsOutOfComponentsFirst() {
             Reset();
-            m1.AddFacet(new MemberOrderFacetAnnotation("", "1", m1));
-            m2.AddFacet(new MemberOrderFacetAnnotation("", "1.1", m2));
+            m1.AddFacet(new MemberOrderFacet("", "1", m1));
+            m2.AddFacet(new MemberOrderFacet("", "1.1", m2));
             Assert.AreEqual(-1, comparator.Compare(m1, m2));
         }
 
         [Test]
         public void TestDefaultGroupOneSideRunsOutOfComponentsFirstOtherWay() {
             Reset();
-            m1.AddFacet(new MemberOrderFacetAnnotation("", "1.1", m1));
-            m2.AddFacet(new MemberOrderFacetAnnotation("", "1", m2));
+            m1.AddFacet(new MemberOrderFacet("", "1.1", m1));
+            m2.AddFacet(new MemberOrderFacet("", "1", m2));
             Assert.AreEqual(+1, comparator.Compare(m1, m2));
         }
 
         [Test]
         public void TestDefaultGroupOneSideRunsTwoComponents() {
             Reset();
-            m1.AddFacet(new MemberOrderFacetAnnotation("", "1.1", m1));
-            m2.AddFacet(new MemberOrderFacetAnnotation("", "1.2", m2));
+            m1.AddFacet(new MemberOrderFacet("", "1.1", m1));
+            m2.AddFacet(new MemberOrderFacet("", "1.2", m2));
             Assert.AreEqual(-1, comparator.Compare(m1, m2));
         }
 
         [Test]
         public void TestDefaultGroupOneSideRunsTwoComponentsOtherWay() {
             Reset();
-            m1.AddFacet(new MemberOrderFacetAnnotation("", "1.2", m1));
-            m2.AddFacet(new MemberOrderFacetAnnotation("", "1.1", m2));
+            m1.AddFacet(new MemberOrderFacet("", "1.2", m1));
+            m2.AddFacet(new MemberOrderFacet("", "1.1", m2));
             Assert.AreEqual(+1, comparator.Compare(m1, m2));
         }
 
         [Test]
         public void TestEnsuresInSameGroup() {
             Reset();
-            m1.AddFacet(new MemberOrderFacetAnnotation("abc", "1", m1));
-            m2.AddFacet(new MemberOrderFacetAnnotation("def", "2", m2));
+            m1.AddFacet(new MemberOrderFacet("abc", "1", m1));
+            m2.AddFacet(new MemberOrderFacet("def", "2", m2));
             try {
                 Assert.AreEqual(-1, comparator.Compare(m1, m2));
                 Assert.Fail("Exception should have been thrown");
@@ -136,16 +138,16 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         [Test]
         public void TestEnsuresInSameGroupCanBeDisabled() {
             Reset();
-            m1.AddFacet(new MemberOrderFacetAnnotation("abc", "1", m1));
-            m2.AddFacet(new MemberOrderFacetAnnotation("def", "2", m2));
+            m1.AddFacet(new MemberOrderFacet("abc", "1", m1));
+            m2.AddFacet(new MemberOrderFacet("def", "2", m2));
             Assert.AreEqual(-1, laxComparator.Compare(m1, m2));
         }
 
         [Test]
         public void TestNamedGroupOneSideRunsLotsOfComponents() {
             Reset();
-            m1.AddFacet(new MemberOrderFacetAnnotation("abc", "1.2.5.8.3.3", m1));
-            m2.AddFacet(new MemberOrderFacetAnnotation("abc", "1.2.5.8.3.4", m2));
+            m1.AddFacet(new MemberOrderFacet("abc", "1.2.5.8.3.3", m1));
+            m2.AddFacet(new MemberOrderFacet("abc", "1.2.5.8.3.4", m2));
             Assert.AreEqual(-1, comparator.Compare(m1, m2));
         }
 
@@ -153,7 +155,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
         public void TestNonAnnotatedAfterAnnotated() {
             Reset();
             // don't annotate m1
-            m2.AddFacet(new MemberOrderFacetAnnotation("def", "2", m2));
+            m2.AddFacet(new MemberOrderFacet("def", "2", m2));
             Assert.AreEqual(+1, comparator.Compare(m1, m2));
         }
     }

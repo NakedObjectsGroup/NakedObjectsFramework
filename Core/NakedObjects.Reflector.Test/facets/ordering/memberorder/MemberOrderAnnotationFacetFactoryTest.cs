@@ -82,8 +82,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             facetFactory.Process(method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MemberOrderFacetAnnotation);
-            var memberOrderFacetAnnotation = (MemberOrderFacetAnnotation) facet;
+            Assert.IsTrue(facet is MemberOrderFacet);
+            var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
             Assert.AreEqual("3", memberOrderFacetAnnotation.Sequence);
             AssertNoMethodsRemoved();
         }
@@ -94,8 +94,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MemberOrderFacetAnnotation);
-            var memberOrderFacetAnnotation = (MemberOrderFacetAnnotation) facet;
+            Assert.IsTrue(facet is MemberOrderFacet);
+            var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
             Assert.AreEqual("2", memberOrderFacetAnnotation.Sequence);
             AssertNoMethodsRemoved();
         }
@@ -106,8 +106,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is MemberOrderFacetAnnotation);
-            var memberOrderFacetAnnotation = (MemberOrderFacetAnnotation) facet;
+            Assert.IsTrue(facet is MemberOrderFacet);
+            var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
             Assert.AreEqual("1", memberOrderFacetAnnotation.Sequence);
             AssertNoMethodsRemoved();
         }

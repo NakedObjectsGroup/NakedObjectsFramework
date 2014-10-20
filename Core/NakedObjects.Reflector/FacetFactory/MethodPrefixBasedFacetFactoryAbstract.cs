@@ -168,7 +168,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         protected void FindDefaultHideMethod(IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] paramTypes, ISpecification specification) {
             MethodInfo method = FindMethodWithOrWithoutParameters(type, methodType, PrefixesAndRecognisedMethods.HidePrefix + capitalizedName, typeof (bool), paramTypes);
             if (method != null) {
-                facets.Add(new HideForContextFacetViaMethod(method, specification));
+                facets.Add(new HideForContextFacet(method, specification));
                 AddOrAddToExecutedWhereFacet(method, specification);
             }
         }
@@ -177,7 +177,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             MethodInfo method = FindMethodWithOrWithoutParameters(type, methodType, PrefixesAndRecognisedMethods.HidePrefix + capitalizedName, typeof (bool), paramTypes);
             if (method != null) {
                 methodRemover.RemoveMethod(method);
-                facets.Add(new HideForContextFacetViaMethod(method, specification));
+                facets.Add(new HideForContextFacet(method, specification));
                 AddOrAddToExecutedWhereFacet(method, specification);
             }
         }
@@ -199,7 +199,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             if (attribute != null && !attribute.IsAjax) {
                 var executedFacet = holder.GetFacet<IExecutedControlMethodFacet>();
                 if (executedFacet == null) {
-                    FacetUtils.AddFacet(new ExecutedFacetAnnotationForControlMethods(method, attribute.Value, holder));
+                    FacetUtils.AddFacet(new ExecutedControlMethodFacet(method, attribute.Value, holder));
                 }
                 else {
                     executedFacet.AddMethodExecutedWhere(method, attribute.Value);

@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
 
         private static IKeyFacet Create(Attribute attribute, ISpecification holder) {
-            return attribute == null ? null : new KeyFacetAnnotation(holder);
+            return attribute == null ? null : new KeyFacet(holder);
         }
     }
 }

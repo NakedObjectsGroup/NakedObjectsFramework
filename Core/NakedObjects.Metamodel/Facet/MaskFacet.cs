@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -13,12 +12,15 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Metamodel.Exception;
 
 namespace NakedObjects.Metamodel.Facet {
-    public abstract class MaskFacetAbstract : SingleStringValueFacetAbstract, IMaskFacet {
-        protected MaskFacetAbstract(string stringValue, ISpecification holder)
-            : base(Type, holder, stringValue) {}
+    public class MaskFacet : SingleStringValueFacetAbstract, IMaskFacet {
+        public MaskFacet(string value, ISpecification holder)
+            : base(typeof(IMaskFacet), holder, value) { }
 
-        public static Type Type {
-            get { return typeof (IMaskFacet); }
+        /// <summary>
+        ///     Not yet implemented, so always returns <c>false</c>.
+        /// </summary>
+        public bool DoesNotMatch(INakedObject nakedObject) {
+            return false;
         }
 
         #region IMaskFacet Members
@@ -35,8 +37,8 @@ namespace NakedObjects.Metamodel.Facet {
             return new InvalidMaskException(ic, Invalidates(ic));
         }
 
-        public abstract bool DoesNotMatch(INakedObject nakedObject);
-
         #endregion
     }
+
+    // Copyright (c) Naked Objects Group Ltd.
 }

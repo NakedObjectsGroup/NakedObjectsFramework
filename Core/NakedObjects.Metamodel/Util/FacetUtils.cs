@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 
+//TODO: Change namespace to .Utils
 namespace NakedObjects.Metamodel.Facet {
     public static class FacetUtils {
         /// <summary>

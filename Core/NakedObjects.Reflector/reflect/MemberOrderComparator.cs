@@ -11,8 +11,9 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Reflector.Reflect {
     /// <summary>
     ///     Compares by <see cref="IMemberOrderFacet" /> obtained from each <see cref="IMemberSpecImmutable" />
     /// </summary>

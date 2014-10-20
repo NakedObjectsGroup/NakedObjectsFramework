@@ -5,17 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public abstract class FieldOrderFacetAbstract : SingleStringValueFacetAbstract, IFieldOrderFacet {
-        protected FieldOrderFacetAbstract(string stringValue, ISpecification holder)
-            : base(Type, holder, stringValue) {}
-
-        public static Type Type {
-            get { return typeof (IFieldOrderFacet); }
-        }
+    public class IdempotentFacet : MarkerFacetAbstract, IIdempotentFacet {
+        public IdempotentFacet(ISpecification holder)
+            : base(typeof(IIdempotentFacet), holder) { }
     }
 }

@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static IFieldOrderFacet Create(FieldOrderAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new FieldOrderFacetAnnotation(attribute.Value, holder);
+            return attribute == null ? null : new FieldOrderFacet(attribute.Value, holder);
         }
     }
 }

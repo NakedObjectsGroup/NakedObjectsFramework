@@ -779,8 +779,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForContextFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is HideForContextFacetViaMethod);
-            var propertyValidateFacet = (HideForContextFacetViaMethod) facet;
+            Assert.IsTrue(facet is HideForContextFacet);
+            var propertyValidateFacet = (HideForContextFacet) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
             AssertMethodNotRemoved(hideMethod);
         }
@@ -792,8 +792,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForContextFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is HideForContextFacetViaMethod);
-            var propertyValidateFacet = (HideForContextFacetViaMethod) facet;
+            Assert.IsTrue(facet is HideForContextFacet);
+            var propertyValidateFacet = (HideForContextFacet) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
         }
 
@@ -804,8 +804,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForContextFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is HideForContextFacetViaMethod);
-            var propertyValidateFacet = (HideForContextFacetViaMethod) facet;
+            Assert.IsTrue(facet is HideForContextFacet);
+            var propertyValidateFacet = (HideForContextFacet) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
             AssertMethodRemoved(hideMethod);
         }
@@ -817,8 +817,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForContextFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is HideForContextFacetViaMethod);
-            var propertyValidateFacet = (HideForContextFacetViaMethod) facet;
+            Assert.IsTrue(facet is HideForContextFacet);
+            var propertyValidateFacet = (HideForContextFacet) facet;
             Assert.AreEqual(hideMethod, propertyValidateFacet.GetMethod());
             AssertMethodRemoved(hideMethod);
         }
