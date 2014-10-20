@@ -7,7 +7,6 @@
 
 using System.ComponentModel.DataAnnotations;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Metamodel.Facet {
     /// <summary>

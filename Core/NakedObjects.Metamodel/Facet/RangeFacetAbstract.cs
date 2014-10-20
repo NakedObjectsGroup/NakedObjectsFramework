@@ -24,9 +24,9 @@ namespace NakedObjects.Metamodel.Facet {
             get { return typeof (IRangeFacet); }
         }
 
-        public bool IsDateRange { get; set; }
-
         #region IRangeFacet Members
+
+        public bool IsDateRange { get; set; }
 
         public virtual int OutOfRange(INakedObject nakedObject) {
             if (nakedObject == null) {

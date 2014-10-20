@@ -8,7 +8,6 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Metamodel.Facet {
     public class LoadingCallbackFacetNull : LoadingCallbackFacetAbstract {

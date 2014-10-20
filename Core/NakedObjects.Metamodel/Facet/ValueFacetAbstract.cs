@@ -10,8 +10,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Util;
 
 namespace NakedObjects.Metamodel.Facet {
     public abstract class ValueFacetAbstract<T> : MultipleValueFacetAbstract, IValueFacet {

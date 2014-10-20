@@ -8,7 +8,6 @@
 using System.Text.RegularExpressions;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Metamodel.Facet {
     public class RegExFacetAnnotation : RegExFacetAbstract, IRegExFacet {

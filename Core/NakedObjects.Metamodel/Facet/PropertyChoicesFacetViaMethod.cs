@@ -14,7 +14,6 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Metamodel.Facet {
     public class PropertyChoicesFacetViaMethod : PropertyChoicesFacetAbstract, IImperativeFacet {

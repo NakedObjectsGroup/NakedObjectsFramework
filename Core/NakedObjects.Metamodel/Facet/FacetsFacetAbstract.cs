@@ -7,11 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using Common.Logging;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Util;
 
 namespace NakedObjects.Metamodel.Facet {
     public abstract class FacetsFacetAbstract : FacetAbstract, IFacetsFacet {

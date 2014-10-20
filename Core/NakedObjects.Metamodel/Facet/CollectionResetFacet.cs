@@ -9,10 +9,9 @@ using System;
 using System.Collections;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Exceptions;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Architecture.Exceptions;
 
 namespace NakedObjects.Metamodel.Facet {
     public class CollectionResetFacet : FacetAbstract, IImperativeFacet, ICollectionResetFacet {

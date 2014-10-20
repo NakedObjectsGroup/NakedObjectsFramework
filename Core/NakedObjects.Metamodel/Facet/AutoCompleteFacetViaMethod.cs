@@ -12,7 +12,6 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Metamodel.Facet {
     public class AutoCompleteFacetViaMethod : AutoCompleteFacetAbstract, IImperativeFacet {

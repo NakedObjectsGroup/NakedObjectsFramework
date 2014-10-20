@@ -9,8 +9,6 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Util;
 
 namespace NakedObjects.Metamodel.Facet {
     public abstract class DefaultedFacetAbstract<T> : FacetAbstract, IDefaultedFacet {

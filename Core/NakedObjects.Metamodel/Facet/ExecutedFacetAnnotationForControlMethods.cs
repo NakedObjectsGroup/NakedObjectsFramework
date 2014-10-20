@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Metamodel.Facet {
     public class ExecutedFacetAnnotationForControlMethods : ExecutedControlMethodFacetAbstract {

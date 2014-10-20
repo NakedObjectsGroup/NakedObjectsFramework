@@ -7,7 +7,6 @@
 
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Util;
 
 namespace NakedObjects.Metamodel.Facet {
     public class SimpleOrderSet<T> : OrderSet<T> where T : IOrderableElement<T>, ISpecification {

@@ -8,7 +8,6 @@
 using System;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Metamodel.Facet {
     public class TypeOfFacetInferredFromGenerics : TypeOfFacetAbstract {

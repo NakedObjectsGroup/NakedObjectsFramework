@@ -7,7 +7,6 @@
 
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Capabilities;
-using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Metamodel.Facet {
     public class ValueFacetUsingSemanticsProvider<T> : ValueFacetAbstract<T> {
