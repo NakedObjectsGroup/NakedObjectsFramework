@@ -9,14 +9,16 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Metamodel.Facet;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Reflector.Reflect {
     /// <summary>
     ///     Represents a nested hierarchy of ordered members.
     /// </summary>
     /// <para>
     ///     At each level the elements are either <see cref="IMemberSpecImmutable" />s or they are
-    ///     instances of <see cref="OrderSet" /> represent a group of <see cref="IMemberSpecImmutable" />s that
+    ///     instances of <see cref="OrderSet{T}" /> represent a group of <see cref="IMemberSpecImmutable" />s that
     ///     have a <see cref="IMemberOrderFacet" /> of the same name.
     /// </para>
     /// <para>

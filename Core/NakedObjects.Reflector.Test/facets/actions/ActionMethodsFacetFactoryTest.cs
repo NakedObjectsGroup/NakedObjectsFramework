@@ -110,8 +110,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         private void CheckAutoCompleteFacet(MethodInfo autoCompleteMethod, IActionParameterSpecImmutable parameter, int pageSize, int minLength) {
             IFacet facet = parameter.GetFacet(typeof (IAutoCompleteFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
-            var acf = (AutoCompleteFacetViaMethod) facet;
+            Assert.IsTrue(facet is AutoCompleteFacet);
+            var acf = (AutoCompleteFacet) facet;
             Assert.AreEqual(autoCompleteMethod, acf.GetMethod());
 
             AssertMethodRemoved(autoCompleteMethod);
@@ -576,7 +576,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             facetFactory.Process(method, MethodRemover, facetHolderWithParms);
             IFacet facet = facetHolderWithParms.Parameters[0].GetFacet(typeof (IAjaxFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AjaxFacetAnnotation);
+            Assert.IsTrue(facet is AjaxFacet);
         }
 
         [Test]
@@ -587,7 +587,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             facetFactory.Process(method, MethodRemover, facetHolderWithParms);
             IFacet facet = facetHolderWithParms.Parameters[0].GetFacet(typeof (IAjaxFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AjaxFacetAnnotation);
+            Assert.IsTrue(facet is AjaxFacet);
 
 
             AssertMethodRemoved(propertyValidateMethod);

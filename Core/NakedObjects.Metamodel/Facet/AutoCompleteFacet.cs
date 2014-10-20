@@ -10,29 +10,36 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class AutoCompleteFacetViaMethod : AutoCompleteFacetAbstract, IImperativeFacet {
+    public class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
+        protected const int DefaultPageSize = 50;
         private readonly MethodInfo method;
 
-        public AutoCompleteFacetViaMethod(MethodInfo autoCompleteMethod, int pageSize, int minLength, ISpecification holder)
-            : base(holder) {
+        private AutoCompleteFacet(ISpecification holder)
+            : base(Type, holder) {}
+
+        public AutoCompleteFacet(MethodInfo autoCompleteMethod, int pageSize, int minLength, ISpecification holder)
+            : this(holder) {
             method = autoCompleteMethod;
             PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
             MinLength = minLength;
         }
 
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return method;
+        public static Type Type {
+            get { return typeof (IAutoCompleteFacet); }
         }
 
-        #endregion
+        public int PageSize { get; protected set; }
 
-        public override object[] GetCompletions(INakedObject inObject, string autoCompleteParm) {
+        #region IAutoCompleteFacet Members
+
+        public int MinLength { get; private set; }
+
+        public object[] GetCompletions(INakedObject inObject, string autoCompleteParm) {
             try {
                 object autoComplete = InvokeUtils.Invoke(method, inObject.GetDomainObject(), new object[] {autoCompleteParm});
                 if (autoComplete is IQueryable) {
@@ -45,6 +52,16 @@ namespace NakedObjects.Metamodel.Facet {
                 throw new InvokeException(msg, ae);
             }
         }
+
+        #endregion
+
+        #region IImperativeFacet Members
+
+        public MethodInfo GetMethod() {
+            return method;
+        }
+
+        #endregion
 
         protected override string ToStringValues() {
             return "method=" + method;

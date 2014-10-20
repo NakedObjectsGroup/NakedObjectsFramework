@@ -10,12 +10,12 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public abstract class AjaxFacetAbstract : MarkerFacetAbstract, IAjaxFacet {
-        protected AjaxFacetAbstract(ISpecification holder)
+    public class ConcurrencyCheckFacet : MarkerFacetAbstract, IConcurrencyCheckFacet {
+        public ConcurrencyCheckFacet(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {
-            get { return typeof (IAjaxFacet); }
+            get { return typeof (IConcurrencyCheckFacet); }
         }
     }
 }

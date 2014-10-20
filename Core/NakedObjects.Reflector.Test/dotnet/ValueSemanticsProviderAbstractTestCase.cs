@@ -82,13 +82,13 @@ namespace NakedObjects.Reflector.DotNet {
 
         [Test]
         public void TestDecodeNull() {
-            object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.ENCODED_NULL, Manager);
+            object newValue = encodeableFacet.FromEncodedString(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, Manager);
             Assert.IsNull(newValue);
         }
 
         [Test]
         public void TestEmptyEncoding() {
-            Assert.AreEqual(EncodeableFacetUsingEncoderDecoder<object>.ENCODED_NULL, encodeableFacet.ToEncodedString(null));
+            Assert.AreEqual(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, encodeableFacet.ToEncodedString(null));
         }
     }
 }

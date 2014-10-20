@@ -234,7 +234,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                         RemoveMethod(methodRemover, method);
 
                         // add facets directly to parameters, not to actions 
-                        FacetUtils.AddFacet(new AutoCompleteFacetViaMethod(method, pageSize, minLength, parameters[i]));
+                        FacetUtils.AddFacet(new AutoCompleteFacet(method, pageSize, minLength, parameters[i]));
                         AddOrAddToExecutedWhereFacet(method, parameters[i]);
                     }
                 }

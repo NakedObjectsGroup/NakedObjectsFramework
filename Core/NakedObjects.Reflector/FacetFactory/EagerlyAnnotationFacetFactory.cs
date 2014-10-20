@@ -37,7 +37,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static IEagerlyFacet Create(EagerlyAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new EagerlyFacetAnnotation(EagerlyAttribute.Do.Rendering, holder);
+            return attribute == null ? null : new EagerlyFacet(EagerlyAttribute.Do.Rendering, holder);
         }
     }
 }

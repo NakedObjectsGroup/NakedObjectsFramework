@@ -9,43 +9,64 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class DotNetGenericIEnumerableFacet<T> : CollectionFacetAbstract {
-        public DotNetGenericIEnumerableFacet(ISpecification holder, Type elementClass, bool isASet)
+    public class GenericIQueryableFacet<T> : CollectionFacetAbstract {
+        public GenericIQueryableFacet(ISpecification holder, Type elementClass, bool isASet)
             : base(holder, elementClass, isASet) {}
 
         public override bool IsQueryable {
-            get { return false; }
+            get { return true; }
         }
 
-        protected static IEnumerable<T> AsGenericIEnumerable(INakedObject collection) {
-            return (IEnumerable<T>) collection.Object;
+
+        private static bool IsOrdered(IQueryable queryable) {
+            Expression expr = queryable.Expression;
+
+            if (expr is MethodCallExpression) {
+                MethodInfo method = (expr as MethodCallExpression).Method;
+                return method.Name.StartsWith("OrderBy") || method.Name.StartsWith("ThenBy");
+            }
+
+            return false;
+        }
+
+        protected static IQueryable<T> AsGenericIQueryable(INakedObject collection) {
+            var queryable = (IQueryable<T>) collection.Object;
+            return IsOrdered(queryable) ? queryable : queryable.OrderBy(x => "");
         }
 
         public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable) {
-            return manager.CreateAdapter(AsGenericIEnumerable(collection).Skip((page - 1)*size).Take(size).ToList(), null, null);
+            // page = 0 causes empty collection to be returned
+            IEnumerable<T> newCollection = page == 0 ? AsGenericIQueryable(collection).Take(0) : AsGenericIQueryable(collection).Skip((page - 1)*size).Take(size);
+            if (forceEnumerable) {
+                newCollection = newCollection.ToList();
+            }
+
+            return manager.CreateAdapter(newCollection, null, null);
         }
 
         public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager) {
-            return AsGenericIEnumerable(collection).Select(arg => manager.CreateAdapter(arg, null, null));
+            return AsGenericIQueryable(collection).AsEnumerable().Select(arg => manager.CreateAdapter(arg, null, null));
         }
 
         public override IQueryable AsQueryable(INakedObject collection) {
-            return AsGenericIEnumerable(collection).AsQueryable();
+            return AsGenericIQueryable(collection);
         }
 
         public override bool Contains(INakedObject collection, INakedObject element) {
-            return AsGenericIEnumerable(collection).Contains((T) element.Object);
+            return AsGenericIQueryable(collection).Contains((T) element.Object);
         }
 
         public override void Init(INakedObject collection, INakedObject[] initData) {
             IList newCollection = CollectionUtils.CloneCollectionAndPopulate(collection.Object, initData.Select(no => no.Object));
-            collection.ReplacePoco(newCollection);
+            collection.ReplacePoco(newCollection.AsQueryable());
         }
     }
 }

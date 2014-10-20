@@ -23,7 +23,6 @@ namespace NakedObjects.Metamodel.Facet {
         private readonly string[] parameterNames;
         private readonly Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes;
 
-
         public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, Type choicesType, ISpecification holder, bool isMultiple = false)
             : base(holder) {
             this.choicesMethod = choicesMethod;

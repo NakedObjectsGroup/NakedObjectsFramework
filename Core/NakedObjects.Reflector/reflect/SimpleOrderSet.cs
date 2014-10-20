@@ -7,8 +7,10 @@
 
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Facet;
+using NakedObjects.Util;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Reflector.Reflect {
     public class SimpleOrderSet<T> : OrderSet<T> where T : IOrderableElement<T>, ISpecification {
         private readonly T[] members;
         private readonly SimpleOrderSet<T> parent;

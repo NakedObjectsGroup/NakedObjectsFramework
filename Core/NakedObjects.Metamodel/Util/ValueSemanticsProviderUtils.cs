@@ -5,11 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Spec;
+using System;
+using NakedObjects.Capabilities;
+using NakedObjects.Util;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class AjaxFacetAnnotation : AjaxFacetImpl {
-        public AjaxFacetAnnotation(ISpecification holder)
-            : base(holder) {}
+    public static class ValueSemanticsProviderUtils {
+        public static Type ValueSemanticsProviderOrNull<T>(Type candidateClass, string classCandidateName) {
+            Type type = candidateClass != null ? TypeUtils.ImplementingTypeOrNull(candidateClass.FullName, typeof (IValueSemanticsProvider<T>)) : null;
+            return type ?? TypeUtils.ImplementingTypeOrNull(classCandidateName, typeof (IValueSemanticsProvider<T>));
+        }
     }
 }

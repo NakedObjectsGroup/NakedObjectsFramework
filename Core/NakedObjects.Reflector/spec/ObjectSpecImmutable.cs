@@ -23,6 +23,7 @@ using NakedObjects.Metamodel.Facet;
 
 using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.Peer;
+using NakedObjects.Reflector.Reflect;
 using NakedObjects.Util;
 using NakedObjects.Architecture.Exceptions;
 

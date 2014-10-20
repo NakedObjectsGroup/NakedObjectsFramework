@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             // create from annotation, if present
             var annotation = type.GetCustomAttributeByReflection<EncodeableAttribute>();
             if (annotation != null) {
-                var facet = TypeUtils.CreateGenericInstance<IEncodeableFacet>(typeof (EncodeableFacetAnnotation<>),
+                var facet = TypeUtils.CreateGenericInstance<IEncodeableFacet>(typeof (EncodeableFacet<>),
                     new[] {type},
                     new object[] {type, holder});
 

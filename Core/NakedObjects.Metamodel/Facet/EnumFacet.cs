@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Util;
 
 namespace NakedObjects.Metamodel.Facet {
     public class EnumFacet : EnumFacetAbstract {

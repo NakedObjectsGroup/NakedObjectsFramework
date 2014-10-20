@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Reflector.Peer;
+using NakedObjects.Reflector.Reflect;
 using NakedObjects.Util;
 using MemberInfo = System.Reflection.MemberInfo;
 using MethodInfo = System.Reflection.MethodInfo;

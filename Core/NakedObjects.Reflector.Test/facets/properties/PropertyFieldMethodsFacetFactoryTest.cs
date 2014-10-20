@@ -464,7 +464,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IAjaxFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AjaxFacetAnnotation);
+            Assert.IsTrue(facet is AjaxFacet);
         }
 
         [Test]
@@ -474,7 +474,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IAjaxFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AjaxFacetAnnotation);
+            Assert.IsTrue(facet is AjaxFacet);
             AssertMethodRemoved(propertyValidateMethod);
         }
 
@@ -505,8 +505,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IAutoCompleteFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
-            var propertyAutoCompleteFacet = (AutoCompleteFacetViaMethod) facet;
+            Assert.IsTrue(facet is AutoCompleteFacet);
+            var propertyAutoCompleteFacet = (AutoCompleteFacet) facet;
             Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
             AssertMethodRemoved(propertyAutoCompleteMethod);
             Assert.AreEqual(33, propertyAutoCompleteFacet.PageSize);
@@ -520,8 +520,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IAutoCompleteFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
-            var propertyAutoCompleteFacet = (AutoCompleteFacetViaMethod) facet;
+            Assert.IsTrue(facet is AutoCompleteFacet);
+            var propertyAutoCompleteFacet = (AutoCompleteFacet) facet;
             Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
             AssertMethodRemoved(propertyAutoCompleteMethod);
             Assert.AreEqual(50, propertyAutoCompleteFacet.PageSize);
@@ -535,8 +535,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties {
             facetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IAutoCompleteFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is AutoCompleteFacetViaMethod);
-            var propertyAutoCompleteFacet = (AutoCompleteFacetViaMethod) facet;
+            Assert.IsTrue(facet is AutoCompleteFacet);
+            var propertyAutoCompleteFacet = (AutoCompleteFacet) facet;
             Assert.AreEqual(propertyAutoCompleteMethod, propertyAutoCompleteFacet.GetMethod());
             AssertMethodRemoved(propertyAutoCompleteMethod);
             Assert.AreEqual(50, propertyAutoCompleteFacet.PageSize);

@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static IConcurrencyCheckFacet Create(Attribute attribute, ISpecification holder) {
-            return attribute == null ? null : new ConcurrencyCheckFacetAnnotation(holder);
+            return attribute == null ? null : new ConcurrencyCheckFacet(holder);
         }
     }
 }

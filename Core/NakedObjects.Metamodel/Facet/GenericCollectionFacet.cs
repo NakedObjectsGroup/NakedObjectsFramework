@@ -13,8 +13,8 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class DotNetGenericCollectionFacet<T> : CollectionFacetAbstract {
-        public DotNetGenericCollectionFacet(ISpecification holder, Type elementClass, bool isASet)
+    public class GenericCollectionFacet<T> : CollectionFacetAbstract {
+        public GenericCollectionFacet(ISpecification holder, Type elementClass, bool isASet)
             : base(holder, elementClass, isASet) {}
 
         public override bool IsQueryable {

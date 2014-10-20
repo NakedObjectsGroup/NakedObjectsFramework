@@ -191,7 +191,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                     int minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
 
                     RemoveMethod(methodRemover, method);
-                    propertyFacets.Add(new AutoCompleteFacetViaMethod(method, pageSize, minLength, property));
+                    propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property));
                     AddOrAddToExecutedWhereFacet(method, property);
                 }
             }

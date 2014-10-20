@@ -209,13 +209,13 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         protected static void AddAjaxFacet(MethodInfo method, ISpecification holder) {
             if (method == null) {
-                FacetUtils.AddFacet(new AjaxFacetAnnotation(holder));
+                FacetUtils.AddFacet(new AjaxFacet(holder));
             }
             else {
                 var attribute = AttributeUtils.GetCustomAttribute<ExecutedAttribute>(method);
                 if (attribute != null && attribute.IsAjax) {
                     if (attribute.AjaxValue == Ajax.Disabled) {
-                        FacetUtils.AddFacet(new AjaxFacetAnnotation(holder));
+                        FacetUtils.AddFacet(new AjaxFacet(holder));
                     }
                 }
             }

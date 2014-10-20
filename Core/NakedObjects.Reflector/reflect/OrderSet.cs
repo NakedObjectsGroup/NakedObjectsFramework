@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Reflector.Reflect {
     public class OrderSet<T> : IComparable<IOrderSet<T>>, IOrderSet<T> where T : IOrderableElement<T>, ISpecification {
         private readonly List<IOrderableElement<T>> childOrderSets = new List<IOrderableElement<T>>();
         private readonly List<IOrderableElement<T>> elements = new List<IOrderableElement<T>>();

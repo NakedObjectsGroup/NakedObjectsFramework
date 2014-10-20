@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Util;
 
 namespace NakedObjects.Metamodel.Facet {
     public abstract class ParseableFacetAbstract<T> : FacetAbstract, IParseableFacet {

@@ -73,8 +73,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
             annotationFacetFactory.Process(typeof (Customer2), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EagerlyFacetAnnotation);
-            var propertyDefaultFacetAnnotation = (EagerlyFacetAnnotation) facet;
+            Assert.IsTrue(facet is EagerlyFacet);
+            var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
             Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
         }
 
@@ -84,8 +84,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
             annotationFacetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EagerlyFacetAnnotation);
-            var propertyDefaultFacetAnnotation = (EagerlyFacetAnnotation) facet;
+            Assert.IsTrue(facet is EagerlyFacet);
+            var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
             Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
         }
 
@@ -95,8 +95,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
             annotationFacetFactory.Process(method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EagerlyFacetAnnotation);
-            var propertyDefaultFacetAnnotation = (EagerlyFacetAnnotation) facet;
+            Assert.IsTrue(facet is EagerlyFacet);
+            var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
             Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
         }
 
@@ -106,8 +106,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Properties.Eagerly {
             annotationFacetFactory.Process(property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IEagerlyFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EagerlyFacetAnnotation);
-            var propertyDefaultFacetAnnotation = (EagerlyFacetAnnotation) facet;
+            Assert.IsTrue(facet is EagerlyFacet);
+            var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
             Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
         }
 

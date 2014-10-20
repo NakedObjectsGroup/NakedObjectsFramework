@@ -13,12 +13,15 @@ using NakedObjects.Capabilities;
 
 namespace NakedObjects.Metamodel.Facet {
     public class EncodeableFacetUsingEncoderDecoder<T> : FacetAbstract, IEncodeableFacet {
-        public static string ENCODED_NULL = "NULL";
         private readonly IEncoderDecoder<T> encoderDecoder;
 
         public EncodeableFacetUsingEncoderDecoder(IEncoderDecoder<T> encoderDecoder, ISpecification holder)
             : base(typeof (IEncodeableFacet), holder) {
             this.encoderDecoder = encoderDecoder;
+        }
+
+        public static string EncodedNull {
+            get { return "NULL"; }
         }
 
         #region IEncodeableFacet Members
@@ -29,14 +32,14 @@ namespace NakedObjects.Metamodel.Facet {
 
         public INakedObject FromEncodedString(string encodedData, INakedObjectManager manager) {
             //Assert.assertNotNull(encodedData);
-            if (ENCODED_NULL.Equals(encodedData)) {
+            if (EncodedNull.Equals(encodedData)) {
                 return null;
             }
             return manager.CreateAdapter(encoderDecoder.FromEncodedString(encodedData), null, null);
         }
 
         public string ToEncodedString(INakedObject nakedObject) {
-            return nakedObject == null ? ENCODED_NULL : encoderDecoder.ToEncodedString(nakedObject.GetDomainObject<T>());
+            return nakedObject == null ? EncodedNull : encoderDecoder.ToEncodedString(nakedObject.GetDomainObject<T>());
         }
 
         #endregion

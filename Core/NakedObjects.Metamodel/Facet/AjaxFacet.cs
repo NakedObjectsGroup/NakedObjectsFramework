@@ -6,29 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public abstract class AutoCompleteFacetAbstract : FacetAbstract, IAutoCompleteFacet {
-        protected const int DefaultPageSize = 50;
-
-        protected AutoCompleteFacetAbstract(ISpecification holder)
+    public class AjaxFacet : MarkerFacetAbstract, IAjaxFacet {
+        public AjaxFacet(ISpecification holder)
             : base(Type, holder) {}
 
         public static Type Type {
-            get { return typeof (IAutoCompleteFacet); }
+            get { return typeof (IAjaxFacet); }
         }
-
-        public int PageSize { get; protected set; }
-
-        #region IAutoCompleteFacet Members
-
-        public int MinLength { get; protected set; }
-
-        public abstract object[] GetCompletions(INakedObject nakedObject, string autoCompleteParm);
-
-        #endregion
     }
 }

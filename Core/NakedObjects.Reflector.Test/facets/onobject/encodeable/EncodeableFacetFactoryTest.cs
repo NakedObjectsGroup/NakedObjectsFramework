@@ -94,7 +94,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
         [Test]
         public void TestEncodeableHaveANoArgConstructor() {
             facetFactory.Process(typeof (MyEncodeableWithoutNoArgConstructor), MethodRemover, Specification);
-            var encodeableFacet = (EncodeableFacetAbstract<MyEncodeableWithoutNoArgConstructor>) Specification.GetFacet(typeof (IEncodeableFacet));
+            var encodeableFacet = (EncodeableFacet<MyEncodeableWithoutNoArgConstructor>) Specification.GetFacet(typeof (IEncodeableFacet));
             Assert.IsNull(encodeableFacet);
         }
 
@@ -102,7 +102,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
         public void TestEncodeableHaveAPublicNoArgConstructor() {
             facetFactory.Process(typeof (MyEncodeableWithoutPublicNoArgConstructor), MethodRemover, Specification);
 
-            var encodeableFacet = (EncodeableFacetAbstract<MyEncodeableWithoutPublicNoArgConstructor>) Specification.GetFacet(typeof (IEncodeableFacet));
+            var encodeableFacet = (EncodeableFacet<MyEncodeableWithoutPublicNoArgConstructor>) Specification.GetFacet(typeof (IEncodeableFacet));
             Assert.IsNull(encodeableFacet);
         }
 
@@ -116,14 +116,14 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
         public void TestEncodeableUsingEncoderDecoderClass() {
             facetFactory.Process(typeof (MyEncodeableUsingEncoderDecoderClass), MethodRemover, Specification);
 
-            var encodeableFacet = (EncodeableFacetAbstract<MyEncodeableUsingEncoderDecoderClass>) Specification.GetFacet(typeof (IEncodeableFacet));
+            var encodeableFacet = (EncodeableFacet<MyEncodeableUsingEncoderDecoderClass>) Specification.GetFacet(typeof (IEncodeableFacet));
             Assert.AreEqual(typeof (MyEncodeableUsingEncoderDecoderClass), encodeableFacet.GetEncoderDecoderClass());
         }
 
         [Test]
         public void TestEncodeableUsingEncoderDecoderName() {
             facetFactory.Process(typeof (MyEncodeableUsingEncoderDecoderName), MethodRemover, Specification);
-            var encodeableFacet = (EncodeableFacetAbstract<MyEncodeableUsingEncoderDecoderName>) Specification.GetFacet(typeof (IEncodeableFacet));
+            var encodeableFacet = (EncodeableFacet<MyEncodeableUsingEncoderDecoderName>) Specification.GetFacet(typeof (IEncodeableFacet));
             Assert.AreEqual(typeof (MyEncodeableUsingEncoderDecoderName), encodeableFacet.GetEncoderDecoderClass());
         }
 
@@ -131,7 +131,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
         public void TestFacetFacetHolderStored() {
             facetFactory.Process(typeof (MyEncodeableUsingEncoderDecoderName), MethodRemover, Specification);
 
-            var valueFacet = (EncodeableFacetAbstract<MyEncodeableUsingEncoderDecoderName>) Specification.GetFacet(typeof (IEncodeableFacet));
+            var valueFacet = (EncodeableFacet<MyEncodeableUsingEncoderDecoderName>) Specification.GetFacet(typeof (IEncodeableFacet));
             Assert.AreEqual(Specification, valueFacet.Specification);
         }
 
@@ -141,7 +141,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Encodeable {
 
             var facet = (IEncodeableFacet) Specification.GetFacet(typeof (IEncodeableFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is EncodeableFacetAbstract<MyEncodeableUsingEncoderDecoderName>);
+            Assert.IsTrue(facet is EncodeableFacet<MyEncodeableUsingEncoderDecoderName>);
         }
 
         [Test]

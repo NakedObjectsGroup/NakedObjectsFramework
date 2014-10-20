@@ -10,11 +10,11 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class DotNetArrayFacet : DotNetCollectionFacet {
-        public DotNetArrayFacet(ISpecification holder)
+    public class ArrayFacet : CollectionFacet {
+        public ArrayFacet(ISpecification holder)
             : base(holder) {}
 
-        public DotNetArrayFacet(ISpecification holder, Type elementType)
+        public ArrayFacet(ISpecification holder, Type elementType)
             : base(holder, elementType) {}
 
 

@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             : base(reflector, FeatureType.ObjectsPropertiesAndCollections) {}
 
         private bool ProcessArray(Type type, ISpecification holder) {
-            holder.AddFacet(new DotNetArrayFacet(holder, type.GetElementType()));
+            holder.AddFacet(new ArrayFacet(holder, type.GetElementType()));
 
             var elementType = type.GetElementType();
             var elementSpec = Reflector.LoadSpecification(elementType);
@@ -47,7 +47,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 holder.AddFacet(new TypeOfFacetInferredFromGenerics(collectionElementType, holder, collectionElementSpec));
             }
 
-            Type facetType = isQueryable ? typeof (DotNetGenericIQueryableFacet<>) : (isCollection ? typeof (DotNetGenericCollectionFacet<>) : typeof (DotNetGenericIEnumerableFacet<>));
+            Type facetType = isQueryable ? typeof (GenericIQueryableFacet<>) : (isCollection ? typeof (GenericCollectionFacet<>) : typeof (GenericIEnumerableFacet<>));
 
             Type genericFacet = facetType.GetGenericTypeDefinition();
             Type genericCollectionFacetType = genericFacet.MakeGenericType(CollectionUtils.ElementType(type));
@@ -69,7 +69,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 var spec = Reflector.LoadSpecification(collectionElementType);
                 holder.AddFacet(new TypeOfFacetDefaultToObject(holder, collectionElementType, spec));
             }
-            holder.AddFacet(new DotNetCollectionFacet(holder, collectionElementType));
+            holder.AddFacet(new CollectionFacet(holder, collectionElementType));
             return true;
         }
 

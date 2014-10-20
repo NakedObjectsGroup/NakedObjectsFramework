@@ -14,11 +14,11 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class DotNetCollectionFacet : CollectionFacetAbstract {
-        public DotNetCollectionFacet(ISpecification holder)
+    public class CollectionFacet : CollectionFacetAbstract {
+        public CollectionFacet(ISpecification holder)
             : base(holder) {}
 
-        public DotNetCollectionFacet(ISpecification holder, Type elementType)
+        public CollectionFacet(ISpecification holder, Type elementType)
             : base(holder, elementType, false) {}
 
         public override bool IsQueryable {

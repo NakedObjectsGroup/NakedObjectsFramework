@@ -11,14 +11,14 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Util;
 
 namespace NakedObjects.Metamodel.Facet {
-    public abstract class EncodeableFacetAbstract<T> : FacetAbstract, IEncodeableFacet {
-        // to delegate to
+    public class EncodeableFacet<T> : FacetAbstract, IEncodeableFacet {
         private readonly EncodeableFacetUsingEncoderDecoder<T> encodeableFacetUsingEncoderDecoder;
         private readonly Type encoderDecoderClass;
 
-        protected EncodeableFacetAbstract(string candidateEncoderDecoderName,
+        private EncodeableFacet(string candidateEncoderDecoderName,
                                           Type candidateEncoderDecoderClass,
                                           ISpecification holder)
             : base(typeof (IEncodeableFacet), holder) {
@@ -26,6 +26,9 @@ namespace NakedObjects.Metamodel.Facet {
             encodeableFacetUsingEncoderDecoder = IsValid ? new EncodeableFacetUsingEncoderDecoder<T>((IEncoderDecoder<T>) TypeUtils.NewInstance(encoderDecoderClass), holder)
                 : null;
         }
+
+        public EncodeableFacet(Type annotatedClass, ISpecification holder)
+            : this(EncoderDecoderName(annotatedClass), EncoderDecoderClass(annotatedClass), holder) {}
 
         #region IEncodeableFacet Members
 
@@ -55,6 +58,17 @@ namespace NakedObjects.Metamodel.Facet {
 
         protected override string ToStringValues() {
             return encoderDecoderClass.FullName;
+        }
+
+        private static string EncoderDecoderName(Type annotatedClass) {
+            var annotation = annotatedClass.GetCustomAttributeByReflection<EncodeableAttribute>();
+            string encoderDecoderName = annotation.EncoderDecoderName;
+            return !string.IsNullOrEmpty(encoderDecoderName) ? encoderDecoderName : null;
+        }
+
+        private static Type EncoderDecoderClass(Type annotatedClass) {
+            var annotation = annotatedClass.GetCustomAttributeByReflection<EncodeableAttribute>();
+            return annotation.EncoderDecoderClass;
         }
     }
 }

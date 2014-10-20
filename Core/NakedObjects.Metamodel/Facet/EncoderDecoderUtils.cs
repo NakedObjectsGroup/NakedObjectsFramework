@@ -7,6 +7,7 @@
 
 using System;
 using NakedObjects.Capabilities;
+using NakedObjects.Util;
 
 namespace NakedObjects.Metamodel.Facet {
     public static class EncoderDecoderUtils {

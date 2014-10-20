@@ -230,12 +230,15 @@
     <Compile Include="peer\IdentifierImpl.cs" />
     <Compile Include="peer\IReflectionDecoratorInstaller.cs" />
     <Compile Include="peer\ModelException.cs" />
+    <Compile Include="reflect\DeweyOrderSet.cs" />
     <Compile Include="reflect\DotNetIntrospector.cs" />
     <Compile Include="reflect\DotNetReflector.cs" />
     <Compile Include="reflect\DotNetReflectorInstaller.cs" />
     <Compile Include="reflect\IntrospectionControlParameters.cs" />
     <Compile Include="reflect\MethodFinderUtils.cs" />
+    <Compile Include="reflect\OrderSet.cs" />
     <Compile Include="reflect\proxies\ProxyCreator.cs" />
+    <Compile Include="reflect\SimpleOrderSet.cs" />
     <Compile Include="reflect\strategy\DefaultClassStrategy.cs" />
     <Compile Include="security\AuthorizationManagerAbstract.cs" />
     <Compile Include="security\CustomAuthorizationManager.cs" />
