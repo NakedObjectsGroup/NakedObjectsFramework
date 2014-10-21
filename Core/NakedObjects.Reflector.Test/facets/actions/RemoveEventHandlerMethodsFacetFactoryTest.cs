@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             var metamodel = new Reflect.Metamodel(classStrategy);
             var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { });
             var servicesConfig = new ServicesConfiguration();
-            var reflector = new DotNetReflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig);
+            var reflector = new Reflect.Reflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig);
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(reflector);
         }
 

@@ -11,8 +11,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
     ///     that influence what is built
     /// </summary>
     /// <para>
-    ///     Assembled by <see cref="DotNetReflector" />, passed onto <see cref="ObjectSpec" /> and
-    ///     (in turn) <see cref="DotNetIntrospector" />.
+    ///     Assembled by <see cref="Reflector" />, passed onto <see cref="ObjectSpec" /> and
+    ///     (in turn) <see cref="Introspector" />.
     /// </para>
     public class IntrospectionControlParameters {
         public IntrospectionControlParameters(IFacetFactorySet facetFactorySet,

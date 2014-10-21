@@ -12,7 +12,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
     [TestFixture]
     public class Reflector_ArrayTest : AbstractDotNetReflectorTest {
-        protected override IObjectSpecImmutable LoadSpecification(DotNetReflector reflector) {
+        protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {
             return  reflector.LoadSpecification(typeof (TestPojo[]));
         }
 

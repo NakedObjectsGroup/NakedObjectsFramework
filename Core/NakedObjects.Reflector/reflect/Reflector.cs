@@ -25,57 +25,7 @@ using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
-    public class Metamodel : IMetamodelMutable {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (Metamodel));
-
-        private readonly ISpecificationCache cache = new SimpleSpecificationCache();
-        private readonly IClassStrategy classStrategy;
-
-        public Metamodel(IClassStrategy classStrategy) {
-            this.classStrategy = classStrategy;
-        }
-
-        #region IMetamodelMutable Members
-
-        public virtual IObjectSpecImmutable[] AllSpecifications {
-            get { return cache.AllSpecifications(); }
-        }
-
-        public IObjectSpecImmutable GetSpecification(Type type) {
-            return GetSpecificationFromCache(classStrategy.GetType(type));
-        }
-
-        public IObjectSpecImmutable GetSpecification(string name) {
-            try {
-                Type type = TypeFactory.GetTypeFromLoadedAssembly(name);
-                return GetSpecification(type);
-            }
-            catch (Exception e) {
-                Log.InfoFormat("Failed to Load Specification for: {0} error: {1} trying cache", name, e);
-                var spec = cache.GetSpecification(name);
-                if (spec != null) {
-                    Log.InfoFormat("Found {0} in cache", name);
-                    return spec;
-                }
-                throw;
-            }
-        }
-
-        public void Add(string name, IObjectSpecImmutable spec) {
-            cache.Cache(name, spec);
-        }
-
-        #endregion
-
-        private IObjectSpecImmutable GetSpecificationFromCache(Type type) {
-            string proxiedTypeName = type.GetProxiedTypeFullName();
-            TypeUtils.GetType(type.FullName); // This should ensure type is cached 
-
-            return cache.GetSpecification(proxiedTypeName);
-        }
-    }
-
-    public class DotNetReflector : IReflector {
+    public class Reflector : IReflector {
         private static readonly ILog Log;
 
         private readonly IClassStrategy classStrategy;
@@ -85,11 +35,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private readonly IMetamodelMutable metamodel;
         private readonly IServicesConfiguration servicesConfig;
 
-        static DotNetReflector() {
-            Log = LogManager.GetLogger(typeof (DotNetReflector));
+        static Reflector() {
+            Log = LogManager.GetLogger(typeof (Reflector));
         }
 
-        public DotNetReflector(IClassStrategy classStrategy, IFacetFactorySet facetFactorySet, FacetDecoratorSet facetDecoratorSet, IMetamodelMutable metamodel, IReflectorConfiguration config, IServicesConfiguration servicesConfig) {
+        public Reflector(IClassStrategy classStrategy, IFacetFactorySet facetFactorySet, FacetDecoratorSet facetDecoratorSet, IMetamodelMutable metamodel, IReflectorConfiguration config, IServicesConfiguration servicesConfig) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(facetFactorySet);
             Assert.AssertNotNull(facetDecoratorSet);
@@ -122,7 +72,6 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public virtual IObjectSpecImmutable[] AllObjectSpecImmutables {
             get { return metamodel.AllSpecifications.ToArray(); }
         }
-
 
         public IObjectSpecImmutable LoadSpecification(string className) {
             Assert.AssertNotNull("specification class must be specified", className);
@@ -334,7 +283,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             // need to be careful no other thread reads until introspected
             metamodel.Add(proxiedTypeName, specification);
 
-            specification.Introspect(facetDecorator, new DotNetIntrospector(this, metamodel));
+            specification.Introspect(facetDecorator, new Introspector(this, metamodel));
 
             return specification;
         }

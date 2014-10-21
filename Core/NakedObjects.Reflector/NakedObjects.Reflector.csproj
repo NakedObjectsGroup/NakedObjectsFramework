@@ -230,12 +230,13 @@
     <Compile Include="peer\IReflectionDecoratorInstaller.cs" />
     <Compile Include="peer\ModelException.cs" />
     <Compile Include="reflect\DeweyOrderSet.cs" />
-    <Compile Include="reflect\DotNetIntrospector.cs" />
-    <Compile Include="reflect\DotNetReflector.cs" />
+    <Compile Include="reflect\Introspector.cs" />
+    <Compile Include="reflect\Reflector.cs" />
     <Compile Include="reflect\DotNetReflectorInstaller.cs" />
     <Compile Include="reflect\IntrospectionControlParameters.cs" />
     <Compile Include="reflect\MemberIdentifierComparator.cs" />
     <Compile Include="reflect\MemberOrderComparator.cs" />
+    <Compile Include="reflect\Metamodel.cs" />
     <Compile Include="reflect\MethodFinderUtils.cs" />
     <Compile Include="reflect\OrderSet.cs" />
     <Compile Include="reflect\proxies\ProxyCreator.cs" />

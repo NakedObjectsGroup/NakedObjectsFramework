@@ -28,8 +28,8 @@ using NakedObjects.Reflector.Reflect;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
-    public class DotNetIntrospector : IIntrospector {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (DotNetIntrospector));
+    public class Introspector : IIntrospector {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (Introspector));
 
         private static readonly object[] NoParameters = new object[0];
         private readonly IReflector reflector;
@@ -41,7 +41,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private IOrderSet<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
 
-        public DotNetIntrospector(IReflector reflector, IMetamodel metamodel) {
+        public Introspector(IReflector reflector, IMetamodel metamodel) {
             Log.DebugFormat("Creating DotNetIntrospector");
             this.reflector = reflector;
             this.metamodel = metamodel;

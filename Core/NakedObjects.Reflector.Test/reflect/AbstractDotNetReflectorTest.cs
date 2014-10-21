@@ -25,14 +25,14 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             var metamodel = new Metamodel(classStrategy);
             var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { });
             var servicesConfig = new ServicesConfiguration();
-            var reflector = new DotNetReflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig);
+            var reflector = new Reflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig);
 
             Specification = LoadSpecification(reflector);
             //reflector.PopulateAssociatedActions(Specification, new Type[] {});
             Metamodel = metamodel;
         }
 
-        protected abstract IObjectSpecImmutable LoadSpecification(DotNetReflector reflector);
+        protected abstract IObjectSpecImmutable LoadSpecification(Reflector reflector);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

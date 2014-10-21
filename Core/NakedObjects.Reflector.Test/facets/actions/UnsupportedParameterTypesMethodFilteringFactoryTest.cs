@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { });
             var servicesConfig = new ServicesConfiguration();
 
-            Reflector = new DotNetReflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig);
+            Reflector = new Reflect.Reflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig);
 
             facetFactory = new UnsupportedParameterTypesMethodFilteringFactory(Reflector);
         }

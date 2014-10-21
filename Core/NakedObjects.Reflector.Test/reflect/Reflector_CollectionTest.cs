@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace NakedObjects.Reflector.DotNet.Reflect {
     [TestFixture]
     public class Reflector_CollectionTest : AbstractDotNetReflectorTest {
-        protected override IObjectSpecImmutable LoadSpecification(DotNetReflector reflector) {
+        protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {
             return reflector.LoadSpecification(typeof (ArrayList));
         }
 
