@@ -19,6 +19,10 @@ open TestCode
 open NakedObjects.Core.Security
 open System.Security.Principal
 open Microsoft.Practices.Unity
+open NakedObjects.Architecture.Configuration
+open NakedObjects.Core.Configuration
+open System.Data.Entity.Core.Objects.DataClasses
+
 
 let assemblyName = "NakedObjects.Persistor.Test.Data"
 #if AV
@@ -135,6 +139,13 @@ type EntityTestSuite() =
         let f = (fun () -> new TestDataContext() :> Data.Entity.DbContext)
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
         container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
+        let types = [| typeof<TestData.Person>;typeof<TestData.Order>;typeof<TestData.OrderFail>;typeof<TestData.Person[]>  |]
+        let ctypes = [| typeof<List<_>>; typeof<EntityCollection<_>>  |]
+        let ms = [| typeof<SimpleRepository<Person>> |]
+        let ca = [| typeof<SimpleRepository<Product>> |]
+        let ss = [| typeof<SimpleRepository<Address>> |]
+        let reflectorConfig = new ReflectorConfiguration(types, ctypes, ms, ca, ss)
+        container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
         ()
     
     member x.ClearOldTestData() = ()

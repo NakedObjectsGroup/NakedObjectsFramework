@@ -238,7 +238,7 @@ namespace NakedObjects.Xat {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
 
             // TODO still done for backward compatibility - 
-            var reflectorConfig = new ReflectorConfiguration(new Type[] { },
+            var reflectorConfig = new ReflectorConfiguration(new Type[] { }, new Type[] { },
                 MenuServices.GetServices().Select(s => s.GetType()).ToArray(),
                 ContributedActions.GetServices().Select(s => s.GetType()).ToArray(),
                 SystemServices.GetServices().Select(s => s.GetType()).ToArray());

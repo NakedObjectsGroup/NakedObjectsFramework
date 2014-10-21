@@ -40,9 +40,10 @@ type DomainTests() =
             let f = (fun () -> new TestObjectContext("XmlSnapshotTest") :> DbContext)
             config.UsingCodeFirstContext(Func<DbContext>(f)) |> ignore
             container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
-            let types = [| typeof<XmlSnapshot>  |]
+            let types = [| typeof<XmlSnapshot>; typeof<TestObject>; typeof<TestObject[]>  |]
+            let cTypes = [| typeof<List<_>>  |]
             let ms = [| typeof<SimpleRepository<TestObject>>;  typeof<XmlSnapshotService>; typeof<TransformRepository> |]
-            let reflectorConfig = new ReflectorConfiguration(types, ms, [||], [||])
+            let reflectorConfig = new ReflectorConfiguration(types, cTypes, ms, [||], [||])
             container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
             ()
         

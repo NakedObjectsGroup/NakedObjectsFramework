@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Configuration;
 using NakedObjects.EntityObjectStore;
 using NUnit.Framework;
 using NakedObjects.Architecture.Adapter;
@@ -95,6 +99,13 @@ namespace NakedObjects.Core.Persist {
             var c = new EntityObjectStoreConfiguration();
             c.UsingCodeFirstContext(() => new TestContext("TestContext"));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(c, (new ContainerControlledLifetimeManager()));
+
+            var types = new Type[] { typeof(TestDomainObject[]) };
+            var ctypes = new[] { typeof(List<>), typeof(ObjectQuery<>) };
+            var ms = new[] {typeof (SimpleRepository<TestDomainObject>)};
+            var rc = new ReflectorConfiguration(types, ctypes, ms, new Type[] {}, new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(rc, (new ContainerControlledLifetimeManager()));
         }
 
         [TestFixtureSetUp]

@@ -12,13 +12,14 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.spec;
 using NakedObjects.Core.Spec;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Managers {
     public class MetamodelManager : IMetamodelManager {
         private readonly SpecFactory memberFactory;
         private readonly IMetamodel metamodel;
 
-        public MetamodelManager(SpecFactory memberFactory,  IMetamodel metamodel) {
+        public MetamodelManager(SpecFactory memberFactory, IMetamodel metamodel) {
             this.memberFactory = memberFactory;
             this.metamodel = metamodel;
         }
@@ -30,17 +31,29 @@ namespace NakedObjects.Managers {
         }
 
         public IObjectSpec GetSpecification(Type type) {
-            return new ObjectSpec(memberFactory, this, metamodel.GetSpecification(type));
+            return new ObjectSpec(memberFactory, this, GetInnerSpec(type));
         }
 
         public IObjectSpec GetSpecification(string name) {
-            return new ObjectSpec(memberFactory, this, metamodel.GetSpecification(name));
+            return new ObjectSpec(memberFactory, this, GetInnerSpec(name));
         }
 
         public IObjectSpec GetSpecification(IObjectSpecImmutable spec) {
-            return new ObjectSpec(memberFactory,this, metamodel.GetSpecification(spec.Type));
+            return new ObjectSpec(memberFactory, this, GetInnerSpec(spec.Type));
         }
 
         #endregion
+
+        private IObjectSpecImmutable GetInnerSpec(Type type) {
+            var innerSpec = metamodel.GetSpecification(type);
+            Assert.AssertNotNull(string.Format("failed to find spec for {0}", type.FullName), innerSpec);
+            return innerSpec;
+        }
+
+        private IObjectSpecImmutable GetInnerSpec(string name) {
+            var innerSpec = metamodel.GetSpecification(name);
+            Assert.AssertNotNull(string.Format("failed to find spec for {0}", name), innerSpec);
+            return innerSpec;
+        }
     }
 }

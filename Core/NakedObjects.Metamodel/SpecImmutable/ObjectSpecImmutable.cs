@@ -217,5 +217,10 @@ namespace NakedObjects.Metamodel.SpecImmutable {
         private string DefaultTitle() {
             return Service ? SingularName : UntitledName;
         }
+
+
+        public override string ToString() {
+            return string.Format("{0} for {1}", GetType().Name, Type.Name);
+        }
     }
 }

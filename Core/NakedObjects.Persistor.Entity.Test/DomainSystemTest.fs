@@ -16,10 +16,24 @@ open NakedObjects.Architecture.Adapter
 open SystemTestCode
 open TestCode
 open NakedObjects.Architecture.Util
+open NakedObjects.Core.Configuration
+open NakedObjects.Architecture.Configuration
+open Microsoft.Practices.Unity
+open System.Data.Entity.Core.Objects.DataClasses
 
 [<TestFixture>]
 type DomainSystemTests() = 
     inherit NakedObjects.Xat.AcceptanceTestCase()
+
+     override x.RegisterTypes(container) = 
+        base.RegisterTypes(container)
+        let types = [| typeof<Product>; typeof<ProductSubcategory>  |]
+        let ctypes = [| typeof<List<_>>; typeof<EntityCollection<_>>  |]
+        let ms = [| typeof<SimpleRepository<ScrapReason>> |]
+        let reflectorConfig = new ReflectorConfiguration(types, ctypes, ms, [||], [||])
+        container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
+        ()
+
     
     [<TestFixtureSetUpAttribute>]
     member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)

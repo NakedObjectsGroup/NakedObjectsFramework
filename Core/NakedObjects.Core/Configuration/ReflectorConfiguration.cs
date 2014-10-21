@@ -7,20 +7,29 @@
 
 using System;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Configuration {
     public class ReflectorConfiguration : IReflectorConfiguration {
-
-        public ReflectorConfiguration(Type[] typesToIntrospect, Type[] menuServices, Type[] contributedActions, Type[] systemServices) {
+        public ReflectorConfiguration(Type[] typesToIntrospect, Type[] collectionsToIntrospect, Type[] menuServices, Type[] contributedActions, Type[] systemServices) {
+            CollectionsToIntrospect = collectionsToIntrospect;
             TypesToIntrospect = typesToIntrospect;
             MenuServices = menuServices;
             ContributedActions = contributedActions;
             SystemServices = systemServices;
+
+            CollectionsToIntrospect.ForEach(t => Assert.AssertTrue(string.Format("Must be generic type {0}", t.FullName), t.IsGenericType));
         }
 
+        #region IReflectorConfiguration Members
+
         public Type[] TypesToIntrospect { get; private set; }
+        public Type[] CollectionsToIntrospect { get; private set; }
         public Type[] MenuServices { get; private set; }
         public Type[] ContributedActions { get; private set; }
         public Type[] SystemServices { get; private set; }
+
+        #endregion
     }
 }

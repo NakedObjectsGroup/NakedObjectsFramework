@@ -165,17 +165,61 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
             // load collections of this type 
             // TODO this is initial naive implementation - optimise later 
-
-            if (!actualType.IsGenericType && !(actualType == typeof (void))) {
-                // needs to be more refined what about nullables or tuples ?
-                var listType = typeof (List<>).GetGenericTypeDefinition().MakeGenericType(actualType);
-                LoadSpecification(listType);
+            // needs to be more refined what about nullables or tuples ?
+            if (!(actualType == typeof (void))) {
+                LoadArraySpecification(actualType);
+                LoadCollectionSpecifications(actualType);
             }
 
             return spec;
         }
 
         #endregion
+
+        private bool IsAlreadyNestedArrayOrGeneric(Type type) {
+            if (type.IsGenericType) {
+                return type.GetGenericArguments().Any(ga => ga.IsArray || ga.IsGenericType);
+            }
+            if (type.IsArray) {
+                var elementType = type.GetElementType();
+                return elementType.IsArray || elementType.IsGenericType;
+            }
+
+            return false;
+        }
+
+
+        private void LoadArraySpecification(Type actualType) {
+            if (!IsAlreadyNestedArrayOrGeneric(actualType)) {
+                try {
+                    var aType = actualType.MakeArrayType();
+                    LoadSpecification(aType);
+                }
+                catch (Exception e) {
+                    Log.FatalFormat("Failed to create array type from: {0} reason: {1}", actualType.FullName, e.Message);
+                    throw;
+                }
+            }
+        }
+
+        private void LoadCollectionSpecifications(Type actualType) {
+            if (!IsAlreadyNestedArrayOrGeneric(actualType)) {
+                foreach (var gt in config.CollectionsToIntrospect) {
+                    try {
+                        var cType = gt.GetGenericTypeDefinition().MakeGenericType(actualType);
+                        LoadSpecification(cType);
+                    }
+                    catch (ArgumentException e) {
+                        // Odds are contraint on type is wrong so just warn but continue
+                        Log.WarnFormat("Failed to create generic type from: {0} on : {1} reason: {2}", gt.FullName, actualType.FullName, e.Message);
+                    }
+                    catch (Exception e) {
+                        Log.FatalFormat("Failed to create generic type from: {0} on : {1} reason: {2}", gt.FullName, actualType.FullName, e.Message);
+                        throw;
+                    }
+                }
+            }
+        }
 
         private void Reflect() {
             var s1 = config.MenuServices;
@@ -193,11 +237,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             servicesConfig.AddMenuServices(s3.Select(Activator.CreateInstance).ToArray());
         }
 
-        private  void InstallSpecifications(Type[] types, bool isService) {
+        private void InstallSpecifications(Type[] types, bool isService) {
             types.ForEach(type => InstallSpecification(type, isService));
         }
 
-        private  void PopulateContributedActions(Type[] services) {
+        private void PopulateContributedActions(Type[] services) {
             AllObjectSpecImmutables.ForEach(s => PopulateAssociatedActions(s, services));
         }
 

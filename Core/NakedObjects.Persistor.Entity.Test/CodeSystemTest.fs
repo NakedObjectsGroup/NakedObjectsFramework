@@ -22,6 +22,8 @@ open TestCode
 open NakedObjects.Architecture.Util
 open NakedObjects.Architecture.Persist
 open Microsoft.Practices.Unity
+open NakedObjects.Core.Configuration
+open NakedObjects.Architecture.Configuration
 
 [<TestFixture>]
 type CodeSystemTests() = 
@@ -33,6 +35,11 @@ type CodeSystemTests() =
         let f = (fun () -> new CodeFirstContext("CodeSystemTest") :> Data.Entity.DbContext)
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
         container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
+        let types = [| typeof<TestCodeOnly.CountryCode>  |]
+        let ctypes = [| typeof<List<_>>  |]
+        let ms = [| typeof<SimpleRepository<Person>> |]
+        let reflectorConfig = new ReflectorConfiguration(types, ctypes, ms, [||], [||])
+        container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
         ()
     
     [<TestFixtureSetUpAttribute>]
