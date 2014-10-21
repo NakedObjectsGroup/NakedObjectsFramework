@@ -29,7 +29,6 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
-
 using NakedObjects.Reflector.Peer;
 using NakedObjects.Util;
 using MethodInfo = System.Reflection.MethodInfo;
@@ -122,14 +121,6 @@ namespace NakedObjects.EntityObjectStore {
             IsInitializedCheck = config.IsInitializedCheck;
             Reset();
         }
-
-        //public INakedObjectManager Manager {
-        //    get { return manager; }
-        //    set {
-        //        manager = value;
-        //        contexts.Values.ForEach(c => c.Manager = manager);
-        //    }
-        //}
 
         #region for testing only
 

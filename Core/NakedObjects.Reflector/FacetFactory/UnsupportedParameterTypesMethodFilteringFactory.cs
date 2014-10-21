@@ -11,7 +11,6 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public class UnsupportedParameterTypesMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
@@ -23,14 +22,21 @@ namespace NakedObjects.Reflector.FacetFactory {
         #region IMethodFilteringFacetFactory Members
 
         public bool Filters(MethodInfo method) {
+            var typeName = method.DeclaringType == null ? "Unknown" : method.DeclaringType.FullName;
+
             if (method.IsGenericMethod) {
-                Log.InfoFormat("Ignoring method: {0}.{1} because it is generic", method.DeclaringType.FullName, method.Name);
+                Log.InfoFormat("Ignoring method: {0}.{1} because it is generic", typeName, method.Name);
+                return true;
+            }
+
+            if (Reflector.ClassStrategy.IsTypeUnsupportedByReflector(method.ReturnType)) {
+                Log.InfoFormat("Ignoring method: {0}.{1} because return type is of type {3}", typeName, method.Name, method.ReturnType);
                 return true;
             }
 
             foreach (ParameterInfo parameterInfo in method.GetParameters()) {
                 if (Reflector.ClassStrategy.IsTypeUnsupportedByReflector(parameterInfo.ParameterType)) {
-                    Log.InfoFormat("Ignoring method: {0}.{1} because parameter '{2}' is of type {3}", method.DeclaringType.FullName, method.Name, parameterInfo.Name, parameterInfo.ParameterType);
+                    Log.InfoFormat("Ignoring method: {0}.{1} because parameter '{2}' is of type {3}", typeName, method.Name, parameterInfo.Name, parameterInfo.ParameterType);
                     return true;
                 }
             }

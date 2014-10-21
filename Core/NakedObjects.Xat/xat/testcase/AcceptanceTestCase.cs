@@ -21,6 +21,7 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Boot;
 using NakedObjects.Core.Adapter.Map;
+using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.spec;
@@ -198,15 +199,15 @@ namespace NakedObjects.Xat {
             Log.Info("test initialize " + tc.Name);
             tc.servicesCache = new Dictionary<string, ITestService>();
 
-            var reflector = tc.GetConfiguredContainer().Resolve<IReflector>();
+            tc.GetConfiguredContainer().Resolve<IReflector>();
 
-            List<Type> s1 = tc.MenuServices.GetServices().Select(s => s.GetType()).ToList();
-            List<Type> s2 = tc.ContributedActions.GetServices().Select(s => s.GetType()).ToList();
-            List<Type> s3 = tc.SystemServices.GetServices().Select(s => s.GetType()).ToList();
-            Type[] services = s1.Union(s2).Union(s3).ToArray();
+            //List<Type> s1 = tc.MenuServices.GetServices().Select(s => s.GetType()).ToList();
+            //List<Type> s2 = tc.ContributedActions.GetServices().Select(s => s.GetType()).ToList();
+            //List<Type> s3 = tc.SystemServices.GetServices().Select(s => s.GetType()).ToList();
+            //Type[] services = s1.Union(s2).Union(s3).ToArray();
 
-            reflector.InstallServiceSpecifications(services);
-            reflector.PopulateContributedActions(s1.Union(s2).ToArray());
+            //reflector.InstallServiceSpecifications(services);
+            //reflector.PopulateContributedActions(s1.Union(s2).ToArray());
         }
 
         protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {
@@ -236,13 +237,15 @@ namespace NakedObjects.Xat {
 
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
 
-            var serviceConfig = new ServicesConfiguration();
+            // TODO still done for backward compatibility - 
+            var reflectorConfig = new ReflectorConfiguration(new Type[] { },
+                MenuServices.GetServices().Select(s => s.GetType()).ToArray(),
+                ContributedActions.GetServices().Select(s => s.GetType()).ToArray(),
+                SystemServices.GetServices().Select(s => s.GetType()).ToArray());
 
-            serviceConfig.AddMenuServices(MenuServices.GetServices());
-            serviceConfig.AddContributedActions(ContributedActions.GetServices());
-            serviceConfig.AddSystemServices(SystemServices.GetServices());
+            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
 
-            container.RegisterInstance<IServicesConfiguration>(serviceConfig, new ContainerControlledLifetimeManager());
+            container.RegisterType<IServicesConfiguration, ServicesConfiguration>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerResolveLifetimeManager());
             container.RegisterType<SpecFactory, SpecFactory>(new PerResolveLifetimeManager());

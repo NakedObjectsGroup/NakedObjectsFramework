@@ -29,10 +29,6 @@ namespace NakedObjects.Architecture.Component {
 
         IObjectSpecImmutable LoadSpecification(string name);
 
-        void InstallServiceSpecifications(Type[] types);
-
-        void PopulateContributedActions(Type[] services);
-
         void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore);
     }
 

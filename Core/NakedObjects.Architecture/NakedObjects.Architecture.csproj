@@ -140,6 +140,7 @@
     <Compile Include="Component\IMetamodel.cs" />
     <Compile Include="Component\IMetamodelManager.cs" />
     <Compile Include="Component\IReflector.cs" />
+    <Compile Include="Configuration\IReflectorConfiguration.cs" />
     <Compile Include="Exception\ResolveException.cs" />
     <Compile Include="FacetFactory\MethodType.cs" />
     <Compile Include="Facet\IArrayValueFacet.cs" />

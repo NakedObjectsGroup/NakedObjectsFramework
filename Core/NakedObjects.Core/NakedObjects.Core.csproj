@@ -154,6 +154,7 @@
     <Compile Include="Adapter\StringEncoderHelper.cs" />
     <Compile Include="Adapter\ValueSemanticsProviderImpl.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Configuration\ReflectorConfiguration.cs" />
     <Compile Include="context\SimpleMessageBroker.cs" />
     <Compile Include="context\SimpleUpdateNotifier.cs" />
     <Compile Include="Managers\LifeCycleManager.cs" />
@@ -165,7 +166,7 @@
     <Compile Include="Managers\ServicesManager.cs" />
     <Compile Include="objectstore\ObjectStoreTransaction.cs" />
     <Compile Include="objectstore\ObjectStoreTransactionManager.cs" />
-    <Compile Include="objectstore\ServicesConfiguration.cs" />
+    <Compile Include="Configuration\ServicesConfiguration.cs" />
     <Compile Include="persist\AbstractFixtureBuilder.cs" />
     <Compile Include="persist\AbstractObjectPersistorInstaller.cs" />
     <Compile Include="persist\AdapterException.cs" />

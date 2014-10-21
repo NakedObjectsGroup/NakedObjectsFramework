@@ -8,9 +8,11 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Xml.Schema;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Core.Configuration;
 using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.FacetFactory;
@@ -27,7 +29,10 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
             base.SetUp();
             var classStrategy = new DefaultClassStrategy();
             var metamodel = new Reflect.Metamodel(classStrategy);
-            Reflector = new DotNetReflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel);
+            var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
+            var servicesConfig = new ServicesConfiguration();
+
+            Reflector = new DotNetReflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig);
 
             facetFactory = new UnsupportedParameterTypesMethodFilteringFactory(Reflector);
         }

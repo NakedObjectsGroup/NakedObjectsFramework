@@ -14,6 +14,9 @@ open NakedObjects.EntityObjectStore
 open System.Data.Entity
 open System
 open System.IO
+open NakedObjects.Core.Configuration
+open NakedObjects.Snapshot.Xml.Utility
+open NakedObjects.Architecture.Configuration
 
 let writetests = false
 let testFiles = @"..\..\testfiles"
@@ -37,6 +40,10 @@ type DomainTests() =
             let f = (fun () -> new TestObjectContext("XmlSnapshotTest") :> DbContext)
             config.UsingCodeFirstContext(Func<DbContext>(f)) |> ignore
             container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
+            let types = [| typeof<XmlSnapshot>  |]
+            let ms = [| typeof<SimpleRepository<TestObject>>;  typeof<XmlSnapshotService>; typeof<TransformRepository> |]
+            let reflectorConfig = new ReflectorConfiguration(types, ms, [||], [||])
+            container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
             ()
         
         [<TestFixtureSetUp>]

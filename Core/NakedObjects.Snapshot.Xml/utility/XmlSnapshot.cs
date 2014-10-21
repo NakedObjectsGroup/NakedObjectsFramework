@@ -27,7 +27,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         private bool topLevelElementWritten;
 
-
         //  Start a snapshot at the root object, using own namespace manager.
         public XmlSnapshot(object obj, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager) : this(obj, new XmlSchema(), lifecycleManager, nakedObjectManager) { }
 

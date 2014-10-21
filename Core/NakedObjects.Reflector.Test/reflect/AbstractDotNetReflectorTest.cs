@@ -8,6 +8,7 @@
 using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Core.Configuration;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Spec;
@@ -22,10 +23,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public virtual void SetUp() {
             var classStrategy = new DefaultClassStrategy();
             var metamodel = new Metamodel(classStrategy);
-            var reflector = new DotNetReflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel);
+            var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { });
+            var servicesConfig = new ServicesConfiguration();
+            var reflector = new DotNetReflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig);
 
             Specification = LoadSpecification(reflector);
-            reflector.PopulateAssociatedActions(Specification, new Type[] {});
+            //reflector.PopulateAssociatedActions(Specification, new Type[] {});
             Metamodel = metamodel;
         }
 
