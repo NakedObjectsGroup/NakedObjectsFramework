@@ -34,11 +34,11 @@ type ModelSystemTests() =
         config.UsingEdmxContext "Model1Container" |> ignore
         container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
         let types = [| typeof<ModelFirst.Fruit> |]
-        let ctypes = [| typeof<List<_>>; typeof<EntityCollection<_>>  |]
+        
         let ms = [| typeof<SimpleRepository<Person>> |]
         let ca = [|  |]
         let ss = [|  |]
-        let reflectorConfig = new ReflectorConfiguration(types, ctypes, ms, ca, ss)
+        let reflectorConfig = new ReflectorConfiguration(types,  ms, ca, ss)
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
         ()
     

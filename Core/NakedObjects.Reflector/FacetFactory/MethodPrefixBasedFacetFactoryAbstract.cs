@@ -122,7 +122,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         private BindingFlags GetBindingFlagsForMethodType(MethodType methodType) {
             return BindingFlags.Public |
                    (methodType == MethodType.Object ? BindingFlags.Instance : BindingFlags.Static) |
-                   (DotNet.Reflect.Reflector.IgnoreCase ? BindingFlags.IgnoreCase : BindingFlags.Default);
+                   (Reflector.IgnoreCase ? BindingFlags.IgnoreCase : BindingFlags.Default);
         }
 
         protected static void RemoveMethod(IMethodRemover methodRemover, MethodInfo method) {

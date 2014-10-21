@@ -36,9 +36,8 @@ type CodeSystemTests() =
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
         container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
         let types = [| typeof<TestCodeOnly.CountryCode>  |]
-        let ctypes = [| typeof<List<_>>  |]
         let ms = [| typeof<SimpleRepository<Person>> |]
-        let reflectorConfig = new ReflectorConfiguration(types, ctypes, ms, [||], [||])
+        let reflectorConfig = new ReflectorConfiguration(types, ms, [||], [||])
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
         ()
     

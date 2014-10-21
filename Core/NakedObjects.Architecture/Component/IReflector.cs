@@ -24,6 +24,7 @@ namespace NakedObjects.Architecture.Component {
         IFacetFactorySet FacetFactorySet { get; }
 
         IObjectSpecImmutable[] AllObjectSpecImmutables { get; }
+        bool IgnoreCase { get; }
 
         IObjectSpecImmutable LoadSpecification(Type type);
 

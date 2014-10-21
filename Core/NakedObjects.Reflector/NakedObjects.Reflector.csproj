@@ -233,7 +233,6 @@
     <Compile Include="reflect\Introspector.cs" />
     <Compile Include="reflect\Reflector.cs" />
     <Compile Include="reflect\DotNetReflectorInstaller.cs" />
-    <Compile Include="reflect\IntrospectionControlParameters.cs" />
     <Compile Include="reflect\MemberIdentifierComparator.cs" />
     <Compile Include="reflect\MemberOrderComparator.cs" />
     <Compile Include="reflect\Metamodel.cs" />

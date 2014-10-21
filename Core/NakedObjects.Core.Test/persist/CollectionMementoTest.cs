@@ -100,10 +100,9 @@ namespace NakedObjects.Core.Persist {
             c.UsingCodeFirstContext(() => new TestContext("TestContext"));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(c, (new ContainerControlledLifetimeManager()));
 
-            var types = new Type[] { typeof(TestDomainObject[]) };
-            var ctypes = new[] { typeof(List<>), typeof(ObjectQuery<>) };
+            var types = new Type[] { typeof(TestDomainObject[]), typeof(List<TestDomainObject>), typeof(ObjectQuery<TestDomainObject>), typeof(List<Int32>) };
             var ms = new[] {typeof (SimpleRepository<TestDomainObject>)};
-            var rc = new ReflectorConfiguration(types, ctypes, ms, new Type[] {}, new Type[] {});
+            var rc = new ReflectorConfiguration(types, ms, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc, (new ContainerControlledLifetimeManager()));
         }

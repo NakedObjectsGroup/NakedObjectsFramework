@@ -13,6 +13,6 @@ namespace NakedObjects.Architecture.Configuration {
         Type[] MenuServices { get; }
         Type[] ContributedActions { get; }
         Type[] SystemServices { get; }
-        Type[] CollectionsToIntrospect { get; }
+        bool IgnoreCase { get; }
     }
 }

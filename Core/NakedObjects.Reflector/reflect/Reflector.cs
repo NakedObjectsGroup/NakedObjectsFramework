@@ -31,7 +31,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private readonly IClassStrategy classStrategy;
         private readonly IReflectorConfiguration config;
         private readonly FacetDecoratorSet facetDecorator;
-        private readonly IntrospectionControlParameters introspectionControlParameters;
+        private readonly IFacetFactorySet facetFactorySet;
         private readonly IMetamodelMutable metamodel;
         private readonly IServicesConfiguration servicesConfig;
 
@@ -44,30 +44,30 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             Assert.AssertNotNull(facetFactorySet);
             Assert.AssertNotNull(facetDecoratorSet);
             this.classStrategy = classStrategy;
+            this.facetFactorySet = facetFactorySet;
             facetDecorator = facetDecoratorSet;
             this.metamodel = metamodel;
             this.config = config;
             this.servicesConfig = servicesConfig;
 
             facetFactorySet.Init(this);
-            introspectionControlParameters = new IntrospectionControlParameters(facetFactorySet, classStrategy);
-            IgnoreCase = false;
 
             Reflect();
         }
 
-        public static bool IgnoreCase { get; set; }
-
         #region IReflector Members
 
+        public bool IgnoreCase {
+            get { return config.IgnoreCase; }
+        }
+
         public IClassStrategy ClassStrategy {
-            get { return introspectionControlParameters.ClassStrategy; }
+            get { return classStrategy; }
         }
 
         public IFacetFactorySet FacetFactorySet {
-            get { return introspectionControlParameters.FacetFactorySet; }
+            get { return facetFactorySet; }
         }
-
 
         public virtual IObjectSpecImmutable[] AllObjectSpecImmutables {
             get { return metamodel.AllSpecifications.ToArray(); }
@@ -115,60 +115,60 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             // load collections of this type 
             // TODO this is initial naive implementation - optimise later 
             // needs to be more refined what about nullables or tuples ?
-            if (!(actualType == typeof (void))) {
-                LoadArraySpecification(actualType);
-                LoadCollectionSpecifications(actualType);
-            }
+            //if (!(actualType == typeof (void))) {
+            //    LoadArraySpecification(actualType);
+            //    LoadCollectionSpecifications(actualType);
+            //}
 
             return spec;
         }
 
         #endregion
 
-        private bool IsAlreadyNestedArrayOrGeneric(Type type) {
-            if (type.IsGenericType) {
-                return type.GetGenericArguments().Any(ga => ga.IsArray || ga.IsGenericType);
-            }
-            if (type.IsArray) {
-                var elementType = type.GetElementType();
-                return elementType.IsArray || elementType.IsGenericType;
-            }
+        //private bool IsAlreadyNestedArrayOrGeneric(Type type) {
+        //    if (type.IsGenericType) {
+        //        return type.GetGenericArguments().Any(ga => ga.IsArray || ga.IsGenericType);
+        //    }
+        //    if (type.IsArray) {
+        //        var elementType = type.GetElementType();
+        //        return elementType.IsArray || elementType.IsGenericType;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
 
-        private void LoadArraySpecification(Type actualType) {
-            if (!IsAlreadyNestedArrayOrGeneric(actualType)) {
-                try {
-                    var aType = actualType.MakeArrayType();
-                    LoadSpecification(aType);
-                }
-                catch (Exception e) {
-                    Log.FatalFormat("Failed to create array type from: {0} reason: {1}", actualType.FullName, e.Message);
-                    throw;
-                }
-            }
-        }
+        //private void LoadArraySpecification(Type actualType) {
+        //    if (!IsAlreadyNestedArrayOrGeneric(actualType)) {
+        //        try {
+        //            var aType = actualType.MakeArrayType();
+        //            LoadSpecification(aType);
+        //        }
+        //        catch (Exception e) {
+        //            Log.FatalFormat("Failed to create array type from: {0} reason: {1}", actualType.FullName, e.Message);
+        //            throw;
+        //        }
+        //    }
+        //}
 
-        private void LoadCollectionSpecifications(Type actualType) {
-            if (!IsAlreadyNestedArrayOrGeneric(actualType)) {
-                foreach (var gt in config.CollectionsToIntrospect) {
-                    try {
-                        var cType = gt.GetGenericTypeDefinition().MakeGenericType(actualType);
-                        LoadSpecification(cType);
-                    }
-                    catch (ArgumentException e) {
-                        // Odds are contraint on type is wrong so just warn but continue
-                        Log.WarnFormat("Failed to create generic type from: {0} on : {1} reason: {2}", gt.FullName, actualType.FullName, e.Message);
-                    }
-                    catch (Exception e) {
-                        Log.FatalFormat("Failed to create generic type from: {0} on : {1} reason: {2}", gt.FullName, actualType.FullName, e.Message);
-                        throw;
-                    }
-                }
-            }
-        }
+        //private void LoadCollectionSpecifications(Type actualType) {
+        //    if (!IsAlreadyNestedArrayOrGeneric(actualType)) {
+        //        foreach (var gt in config.CollectionsToIntrospect) {
+        //            try {
+        //                var cType = gt.GetGenericTypeDefinition().MakeGenericType(actualType);
+        //                LoadSpecification(cType);
+        //            }
+        //            catch (ArgumentException e) {
+        //                // Odds are contraint on type is wrong so just warn but continue
+        //                Log.WarnFormat("Failed to create generic type from: {0} on : {1} reason: {2}", gt.FullName, actualType.FullName, e.Message);
+        //            }
+        //            catch (Exception e) {
+        //                Log.FatalFormat("Failed to create generic type from: {0} on : {1} reason: {2}", gt.FullName, actualType.FullName, e.Message);
+        //                throw;
+        //            }
+        //        }
+        //    }
+        //}
 
         private void Reflect() {
             var s1 = config.MenuServices;
