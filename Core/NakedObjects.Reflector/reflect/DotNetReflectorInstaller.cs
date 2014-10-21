@@ -24,25 +24,29 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         public bool OptionalByDefault { get; set; }
 
-        public IReflector CreateReflector() {
+        //public IReflector CreateReflector() {
             
-            var facetDecoratorSet = new FacetDecoratorSet();
+        //    var facetDecoratorSet = new FacetDecoratorSet();
           
-            var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySet(), facetDecoratorSet);
+        //    var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySet(), facetDecoratorSet, TODO);
 
-            if (enhancements.Count == 0) {
-                Log.Debug("No enhancements set up");
-            }
-            else {
-                AddEnhancement(facetDecoratorSet, reflector);
-            }
+        //    if (enhancements.Count == 0) {
+        //        Log.Debug("No enhancements set up");
+        //    }
+        //    else {
+        //        AddEnhancement(facetDecoratorSet, reflector);
+        //    }
 
-            if (OptionalByDefault) {
-              //  ((FacetFactorySetImpl)reflector.FacetFactorySet).ReplaceAndRegisterFactory(typeof(MandatoryDefaultFacetFactory), new OptionalDefaultFacetFactory(NakedObjectsContext.Reflector));
-            }
+        //    if (OptionalByDefault) {
+        //      //  ((FacetFactorySetImpl)reflector.FacetFactorySet).ReplaceAndRegisterFactory(typeof(MandatoryDefaultFacetFactory), new OptionalDefaultFacetFactory(NakedObjectsContext.Reflector));
+        //    }
 
-            return reflector;
+        //    return reflector;
           
+        //}
+
+        public IReflector CreateReflector() {
+            throw new System.NotImplementedException();
         }
 
         public void AddEnhancement(IReflectorEnhancementInstaller enhancement) {

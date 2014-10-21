@@ -22,5 +22,10 @@ namespace NakedObjects.Architecture.Component {
         IObjectSpecImmutable GetSpecification(string name);
     }
 
+
+    public interface IMetamodelMutable : IMetamodel {
+        void Add(string name, IObjectSpecImmutable spec);
+    }
+
     // Copyright (c) Naked Objects Group Ltd.
 }

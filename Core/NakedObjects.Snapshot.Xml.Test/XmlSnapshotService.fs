@@ -1,7 +1,7 @@
 ﻿module NakedObjects.XmlSnapshotService
 
 open NUnit.Framework
-open NakedObjects
+open NakedObjects.Xat
 open NakedObjects.Core.NakedObjectsSystem
 open NakedObjects.Services
 open NakedObjects.Boot
@@ -29,21 +29,21 @@ let checkResults resultsFile s =
 [<TestFixture>]
 type DomainTests() = 
     class
-        inherit NakedObjects.Xat.AcceptanceTestCase()
+        inherit AcceptanceTestCase()
         
         override x.RegisterTypes(container) = 
             base.RegisterTypes(container)
             let config = new EntityObjectStoreConfiguration()
             let f = (fun () -> new TestObjectContext("XmlSnapshotTest") :> DbContext)
-            let ignore = config.UsingCodeFirstContext(Func<DbContext>(f)) 
-            let ignore = container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager()))
+            config.UsingCodeFirstContext(Func<DbContext>(f)) |> ignore
+            container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
             ()
         
         [<TestFixtureSetUp>]
-        member x.FixtureSetup() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
+        member x.FixtureSetup() = AcceptanceTestCase.InitializeNakedObjectsFramework(x)
         
         [<TestFixtureTearDown>]
-        member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
+        member x.FixtureTearDown() = AcceptanceTestCase.CleanupNakedObjectsFramework(x)
         
         [<SetUp>]
         member x.Setup() = 

@@ -18,49 +18,49 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void TestCollectionFacet() {
-            IFacet facet = specification.GetFacet(typeof (ICollectionFacet));
+            IFacet facet = Specification.GetFacet(typeof (ICollectionFacet));
             Assert.IsNotNull(facet);
             //Assert.AreEqual(typeof(ArrayList).getName(), facet);
         }
 
         [Test]
         public void TestDescriptionFaced() {
-            IFacet facet = specification.GetFacet(typeof (IDescribedAsFacet));
+            IFacet facet = Specification.GetFacet(typeof (IDescribedAsFacet));
             Assert.IsNotNull(facet);
         }
 
         [Test]
         public void TestFacets() {
-            Assert.AreEqual(19, specification.FacetTypes.Length);
+            Assert.AreEqual(19, Specification.FacetTypes.Length);
         }
 
         [Test]
         public void TestName() {           
-            Assert.AreEqual(typeof (TestPojo[]).FullName, specification.FullName);
+            Assert.AreEqual(typeof (TestPojo[]).FullName, Specification.FullName);
         }
 
 
         [Test]
         public void TestNamedFaced() {
-            IFacet facet = specification.GetFacet(typeof (INamedFacet));
+            IFacet facet = Specification.GetFacet(typeof (INamedFacet));
             Assert.IsNotNull(facet);
         }
 
         [Test]
         public void TestPluralFaced() {
-            IFacet facet = specification.GetFacet(typeof (IPluralFacet));
+            IFacet facet = Specification.GetFacet(typeof (IPluralFacet));
             Assert.IsNotNull(facet);
         }
 
         [Test]
         public void TestType() {
            
-            Assert.IsTrue(specification.IsCollection);
+            Assert.IsTrue(Specification.IsCollection);
         }
 
         [Test]
         public void TestTypeOfFacet() {
-            var facet = (ITypeOfFacet) specification.GetFacet(typeof (ITypeOfFacet));
+            var facet = (ITypeOfFacet) Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(facet);
             Assert.AreEqual(typeof (TestPojo), ((TypeOfFacetAbstract) facet).Value);
         }

@@ -24,7 +24,9 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySet(), new FacetDecoratorSet());
+            var classStrategy = new DefaultClassStrategy();
+            var metamodel = new Reflect.Metamodel(classStrategy);
+            var reflector = new DotNetReflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel);
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(reflector);
         }
 

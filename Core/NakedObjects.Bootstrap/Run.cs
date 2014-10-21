@@ -105,9 +105,9 @@ namespace NakedObjects.Boot {
         //    get { return StaticContext.CreateInstance(); }
         //}
 
-        protected virtual IReflectorInstaller Reflector {
-            get { return new DotNetReflectorInstaller(); }
-        }
+        //protected virtual IReflectorInstaller Reflector {
+        //    get { return new DotNetReflectorInstaller(); }
+        //}
 
         /// <summary>
         ///     NakedObjects reflects over domain code during startup to build the view of the domain

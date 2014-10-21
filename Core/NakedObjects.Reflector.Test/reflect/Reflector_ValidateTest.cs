@@ -16,25 +16,25 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void TestSetup() {
-           Assert.AreEqual("Product", specification.ShortName);
-           Assert.AreEqual(3,  specification.Fields.Flattened.Count);
+           Assert.AreEqual("Product", Specification.ShortName);
+           Assert.AreEqual(3,  Specification.Fields.Flattened.Count);
         }
 
         [Test]
         public void ValidateMethodThatDontMatchAreIgnored() {
-            var actions = specification.ObjectActions.Flattened;
+            var actions = Specification.ObjectActions.Flattened;
             Assert.AreEqual(4, actions.Count);
         }
 
         [Test]
         public void ValidateMethodsDetected() {
-            var validation = specification.ValidationMethods;
+            var validation = Specification.ValidationMethods;
             Assert.AreEqual(2, validation.Length);
         }
 
         [Test]
         public void ValidateMethodsRun() {
-            INakedObjectValidation[] validation = specification.ValidationMethods;
+            INakedObjectValidation[] validation = Specification.ValidationMethods;
         }
     }
 

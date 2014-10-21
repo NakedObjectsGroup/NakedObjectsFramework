@@ -12,25 +12,72 @@ using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
 using NakedObjects.Metamodel.SpecImmutable;
-using NakedObjects.Reflector.Peer;
 using NakedObjects.Reflector.Reflect;
 using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 using NakedObjects.Architecture.Exceptions;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
-    public class DotNetReflector : IReflector, IMetamodel {
-        private static readonly ILog Log;
+
+    public class Metamodel : IMetamodelMutable {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Metamodel));
+        private readonly IClassStrategy classStrategy;
+
         private readonly ISpecificationCache cache = new SimpleSpecificationCache();
+
+        public Metamodel(IClassStrategy classStrategy) {
+            this.classStrategy = classStrategy;
+        }
+
+        public virtual IObjectSpecImmutable[] AllSpecifications {
+            get { return cache.AllSpecifications(); }
+        }
+
+
+        public IObjectSpecImmutable GetSpecificationFromCache(Type type) {
+            string proxiedTypeName = type.GetProxiedTypeFullName();
+            TypeUtils.GetType(type.FullName); // This should ensure type is cached 
+           
+            return cache.GetSpecification(proxiedTypeName);
+        }
+
+        public IObjectSpecImmutable GetSpecification(Type type) {
+            return GetSpecificationFromCache(classStrategy.GetType(type));
+        }
+
+        public IObjectSpecImmutable GetSpecification(string name) {
+            try {
+                Type type = TypeFactory.GetTypeFromLoadedAssembly(name);
+                return GetSpecification(type);
+            }
+            catch (Exception e) {
+                Log.InfoFormat("Failed to Load Specification for: {0} error: {1} trying cache", name, e);
+                var spec = cache.GetSpecification(name);
+                if (spec != null) {
+                    Log.InfoFormat("Found {0} in cache", name);
+                    return spec;
+                }
+                throw;
+            }
+        }
+
+        public void Add(string name, IObjectSpecImmutable spec) {
+            cache.Cache(name, spec);
+        }
+    }
+
+
+    public class DotNetReflector : IReflector {
+        private static readonly ILog Log;
+   
         private readonly FacetDecoratorSet facetDecorator;
+        private readonly IMetamodelMutable metamodel;
         private readonly IntrospectionControlParameters introspectionControlParameters;
 
         private bool installingServices;
@@ -40,11 +87,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             Log = LogManager.GetLogger(typeof (DotNetReflector));
         }
 
-        public DotNetReflector(IClassStrategy classStrategy, IFacetFactorySet facetFactorySet, FacetDecoratorSet facetDecoratorSet) {
+        public DotNetReflector(IClassStrategy classStrategy, IFacetFactorySet facetFactorySet, FacetDecoratorSet facetDecoratorSet, IMetamodelMutable metamodel) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(facetFactorySet);
             Assert.AssertNotNull(facetDecoratorSet);
             facetDecorator = facetDecoratorSet;
+            this.metamodel = metamodel;
 
             facetFactorySet.Init(this);
             introspectionControlParameters = new IntrospectionControlParameters(facetFactorySet, classStrategy);
@@ -52,27 +100,6 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         private Type[] NonSystemServices { get; set; }
-
-        #region IMetamodel Members
-
-        public virtual IObjectSpecImmutable[] AllSpecifications {
-            get { return cache.AllSpecifications(); }
-        }
-
-        public virtual IObjectSpecImmutable[] AllObjectSpecImmutables {
-            get { return cache.AllSpecifications().ToArray(); }
-        }
-
-        public IObjectSpecImmutable GetSpecification(Type type) {
-            return  LoadSpecification(type);
-        }
-
-        public IObjectSpecImmutable GetSpecification(string name) {
-            return LoadSpecification(name);
-        }
-
-
-        #endregion
 
         #region INakedObjectReflector Members
 
@@ -82,6 +109,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         public IFacetFactorySet FacetFactorySet {
             get { return introspectionControlParameters.FacetFactorySet; }
+        }
+
+
+        public virtual IObjectSpecImmutable[] AllObjectSpecImmutables {
+            get { return metamodel.AllSpecifications.ToArray(); }
         }
 
         public virtual IObjectSpecImmutable LoadSpecification(Type type) {
@@ -98,7 +130,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
             catch (Exception e) {
                 Log.InfoFormat("Failed to Load Specification for: {0} error: {1} trying cache", className, e);
-                var spec = cache.GetSpecification(className);
+                var spec = metamodel.GetSpecification(className);
                 if (spec != null) {
                     Log.InfoFormat("Found {0} in cache", className);
                     return spec;
@@ -147,7 +179,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             if (!spec.Service) {
                 foreach (Type serviceType in services) {
                     if (serviceType != spec.Type) {
-                        var serviceSpecification = GetSpecification(serviceType);
+                        var serviceSpecification = metamodel.GetSpecification(serviceType);
 
                         IActionSpecImmutable[] matchingServiceActions = serviceSpecification.ObjectActions.Flattened.Where(serviceAction => serviceAction.IsContributedTo(spec)).ToArray();
 
@@ -166,7 +198,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         private void PopulateRelatedActions(IObjectSpecImmutable spec, Type[] services) {
             foreach (Type serviceType in services) {
-                var serviceSpecification = GetSpecification(serviceType);
+                var serviceSpecification = metamodel.GetSpecification(serviceType);
                 var matchingActions = new List<IActionSpecImmutable>();
 
                 foreach (var serviceAction in serviceSpecification.ObjectActions.Flattened.Where(a => a.IsFinderMethod)) {
@@ -207,24 +239,24 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         #endregion
 
         private void InstallServiceSpecification(Type type) {
-            var spec = cache.GetSpecification(type.GetProxiedTypeFullName());
+            var spec = metamodel.GetSpecification(type.GetProxiedTypeFullName());
             if (spec != null) {
                 return;
             }
 
-            var specification = Install(type);
-            cache.Cache(type.GetProxiedTypeFullName(), specification);
-            specification.Introspect(facetDecorator, new DotNetIntrospector(this));
+            var specification = CreateSpecification(type);
+            metamodel.Add(type.GetProxiedTypeFullName(), specification);
+            specification.Introspect(facetDecorator, new DotNetIntrospector(this, metamodel));
             specification.MarkAsService();
         }
 
         private IObjectSpecImmutable LoadSpecificationAndCache(Type type) {
             string proxiedTypeName = type.GetProxiedTypeFullName();
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
-            lock (cache) {
+          
                 // this is a double check on the cache to check it was not written to during the unguarded 
                 // internal between the last check and the lock
-                var specification = cache.GetSpecification(proxiedTypeName);
+                var specification = metamodel.GetSpecification(proxiedTypeName);
                 if (specification != null) {
                     return specification;
                 }
@@ -237,9 +269,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
                 // we need the specification available in cache even though not yet full introspected 
                 // need to be careful no other thread reads until introspected
-                cache.Cache(proxiedTypeName, specification);
+                metamodel.Add(proxiedTypeName, specification);
 
-                specification.Introspect(facetDecorator, new DotNetIntrospector(this));
+                specification.Introspect(facetDecorator, new DotNetIntrospector(this, metamodel));
 
                 if (!installingServices) {
                     var services = NonSystemServices ?? new Type[] {};
@@ -248,16 +280,13 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
 
                 return specification;
-            }
+            
         }
 
         private IObjectSpecImmutable CreateSpecification(Type type) {
-            return new ObjectSpecImmutable(type, this);
+            return new ObjectSpecImmutable(type, metamodel);
         }
 
-        private IObjectSpecImmutable Install(Type type) {
-            return new ObjectSpecImmutable(type, this);
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

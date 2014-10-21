@@ -8,7 +8,6 @@
 using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
-
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Spec;
@@ -16,16 +15,18 @@ using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
     public abstract class AbstractDotNetReflectorTest {
-        protected IObjectSpecImmutable specification;
         protected IMetamodel Metamodel;
+        protected IObjectSpecImmutable Specification;
 
         [SetUp]
         public virtual void SetUp() {
-            var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySet(), new FacetDecoratorSet());
+            var classStrategy = new DefaultClassStrategy();
+            var metamodel = new Metamodel(classStrategy);
+            var reflector = new DotNetReflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel);
 
-            specification = LoadSpecification(reflector);
-            reflector.PopulateAssociatedActions(specification, new Type[] {});
-            Metamodel = (IMetamodel) reflector;
+            Specification = LoadSpecification(reflector);
+            reflector.PopulateAssociatedActions(Specification, new Type[] {});
+            Metamodel = metamodel;
         }
 
         protected abstract IObjectSpecImmutable LoadSpecification(DotNetReflector reflector);

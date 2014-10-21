@@ -33,6 +33,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         private static readonly object[] NoParameters = new object[0];
         private readonly IReflector reflector;
+        private readonly IMetamodel metamodel;
         private Type introspectedType;
         private MethodInfo[] methods;
         private IOrderSet<IActionSpecImmutable> orderedClassActions;
@@ -40,9 +41,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private IOrderSet<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
 
-        public DotNetIntrospector(IReflector reflector) {
+        public DotNetIntrospector(IReflector reflector, IMetamodel metamodel) {
             Log.DebugFormat("Creating DotNetIntrospector");
             this.reflector = reflector;
+            this.metamodel = metamodel;
         }
 
         private IClassStrategy ClassStrategy {
@@ -297,7 +299,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             foreach (PropertyInfo property in collectionProperties) {
                 Log.DebugFormat("Identified one-many association method {0}", property);
 
-                IIdentifier identifier = new IdentifierImpl((IMetamodel) reflector, FullName, property.Name);
+                IIdentifier identifier = new IdentifierImpl(metamodel, FullName, property.Name);
 
                 // create property and add facets
                 var returnType = property.PropertyType;
@@ -324,7 +326,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 Log.DebugFormat("Identified 1-1 association method {0}", property);
                 Log.DebugFormat("One-to-One association {0} -> {1}", property.Name, property);
 
-                IIdentifier identifier = new IdentifierImpl((IMetamodel) reflector, FullName, property.Name);
+                IIdentifier identifier = new IdentifierImpl(metamodel, FullName, property.Name);
 
                 // create a reference property
                 var propertyType = property.PropertyType;
@@ -421,7 +423,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
                 Type[] parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
 
-                IIdentifier identifier = new IdentifierImpl((IMetamodel) reflector, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
+                IIdentifier identifier = new IdentifierImpl(metamodel, FullName, fullMethodName, actionMethod.GetParameters().ToArray());
 
                 // build action & its parameters          
 
