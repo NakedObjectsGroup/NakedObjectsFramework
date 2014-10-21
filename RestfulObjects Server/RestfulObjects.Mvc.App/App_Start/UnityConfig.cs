@@ -101,7 +101,8 @@ namespace MvcTestApp {
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodel, DotNetReflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodelMutable, Metamodel>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
 

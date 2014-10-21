@@ -113,7 +113,8 @@ namespace NakedObjects.Mvc.App.App_Start {
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodel, DotNetReflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodel, Reflector.DotNet.Reflect.Metamodel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodelMutable, Reflector.DotNet.Reflect.Metamodel>(new ContainerControlledLifetimeManager()); ;
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IContainerInjector, DotNetDomainObjectContainerInjector>(new PerRequestLifetimeManager());
