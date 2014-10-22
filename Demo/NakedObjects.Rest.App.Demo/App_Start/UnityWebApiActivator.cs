@@ -25,10 +25,8 @@ namespace RestfulObjects.Mvc.App.App_Start {
             // var resolver = new UnityHierarchicalDependencyResolver(UnityConfig.GetConfiguredContainer());
             var resolver = new UnityDependencyResolver(UnityConfig.GetConfiguredContainer());
             GlobalConfiguration.Configuration.DependencyResolver = resolver;
-            var reflector = UnityConfig.GetConfiguredContainer().Resolve<IReflector>();
-            var services = UnityConfig.Services();
-            reflector.InstallServiceSpecifications(services);
-            reflector.PopulateContributedActions(services);
+            UnityConfig.GetConfiguredContainer().Resolve<IReflector>();
+          
         }
 
         /// <summary>Disposes the Unity container when the application is shut down.</summary>

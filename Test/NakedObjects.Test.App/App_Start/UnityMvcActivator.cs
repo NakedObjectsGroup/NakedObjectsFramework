@@ -32,12 +32,7 @@ namespace NakedObjects.Mvc.App.App_Start
             // TODO: Uncomment if you want to use PerRequestLifetimeManager
             Microsoft.Web.Infrastructure.DynamicModuleHelper.DynamicModuleUtility.RegisterModule(typeof(UnityPerRequestHttpModule));
 
-            var reflector = UnityConfig.GetConfiguredContainer().Resolve<IReflector>();
-
-            var services = UnityConfig.Services();
-
-            reflector.InstallServiceSpecifications(services);
-            reflector.PopulateContributedActions(services);
+            UnityConfig.GetConfiguredContainer().Resolve<IReflector>();
         }
 
         /// <summary>Disposes the Unity container when the application is shut down.</summary>

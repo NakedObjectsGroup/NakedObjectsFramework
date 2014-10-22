@@ -8,6 +8,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Adapter.Map;
+using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Security;
 using NakedObjects.Core.spec;
@@ -47,26 +48,7 @@ namespace NakedObjects.Mvc.App.App_Start {
 
         #endregion
 
-        private static ServicesConfiguration ServicesConfiguration() {
-            var config = new ServicesConfiguration();
-            config.AddMenuServices(
-                new CustomerRepository(),
-                new OrderRepository(),
-                new ProductRepository(),
-                new EmployeeRepository(),
-                new SalesRepository(),
-                new SpecialOfferRepository(),
-                new ContactRepository(),
-                new VendorRepository(),
-                new PurchaseOrderRepository(),
-                new WorkOrderRepository());
-            config.AddContributedActions(
-                new OrderContributedActions(),
-                new CustomerContributedActions());
-            config.AddSystemServices(
-                new SimpleEncryptDecrypt());
-            return config;
-        }
+      
 
         private static EntityObjectStoreConfiguration EntityObjectStore() {
             var config = new EntityObjectStoreConfiguration();
@@ -80,22 +62,40 @@ namespace NakedObjects.Mvc.App.App_Start {
             return allTypes.Where(t => t.BaseType == typeof(AWDomainObject) && !t.IsAbstract).ToArray();
         }
 
-        //TODO: The need for this (in addition to the ServicesConfiguration) should be removed.
-        public static Type[] Services() {
-            return new[] {
-                typeof (CustomerRepository),
-                typeof (OrderRepository),
-                typeof (ProductRepository),
-                typeof (EmployeeRepository),
-                typeof (SalesRepository),
-                typeof (SpecialOfferRepository),
-                typeof (ContactRepository),
-                typeof (VendorRepository),
-                typeof (PurchaseOrderRepository),
-                typeof (WorkOrderRepository),
-                typeof (OrderContributedActions),
-                typeof (CustomerContributedActions)
-            };
+        private static object[] MenuServices {
+            get {
+                return new object[] {
+                  new CustomerRepository(),
+                new OrderRepository(),
+                new ProductRepository(),
+                new EmployeeRepository(),
+                new SalesRepository(),
+                new SpecialOfferRepository(),
+                new ContactRepository(),
+                new VendorRepository(),
+                new PurchaseOrderRepository(),
+                new WorkOrderRepository()
+                };
+            }
+        }
+
+
+        private static object[] ContributedActions {
+            get {
+                return new object[] {
+                     new OrderContributedActions(),
+                new CustomerContributedActions()
+                };
+            }
+        }
+
+
+        private static object[] SystemServices {
+            get {
+                return new object[] {
+                   //new SimpleEncryptDecrypt()
+                };
+            }
         }
 
 
@@ -106,13 +106,18 @@ namespace NakedObjects.Mvc.App.App_Start {
         ///     change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.
         /// </remarks>
         public static void RegisterTypes(IUnityContainer container) {
-            container.RegisterInstance<IServicesConfiguration>(ServicesConfiguration(), new ContainerControlledLifetimeManager());
+            var reflectorConfig = new ReflectorConfiguration(new Type[] { },
+             MenuServices.Select(s => s.GetType()).ToArray(),
+             ContributedActions.Select(s => s.GetType()).ToArray(),
+             SystemServices.Select(s => s.GetType()).ToArray());
+
+            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(EntityObjectStore(), new ContainerControlledLifetimeManager());
 
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
-            container.RegisterType<IReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IReflector, Reflector.DotNet.Reflect.Reflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, Reflector.DotNet.Reflect.Metamodel>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodelMutable, Reflector.DotNet.Reflect.Metamodel>(new ContainerControlledLifetimeManager()); ;
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
