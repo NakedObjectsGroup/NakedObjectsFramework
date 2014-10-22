@@ -27,7 +27,7 @@ type DomainSystemTests() =
 
      override x.RegisterTypes(container) = 
         base.RegisterTypes(container)
-        let types = [| typeof<Product>; typeof<ProductSubcategory>  |]
+        let types = [| typeof<Product>; typeof<ProductSubcategory>; typeof<EntityCollection<Product>>;typeof<EntityCollection<ProductSubcategory>>  |]
         
         let ms = [| typeof<SimpleRepository<ScrapReason>> |]
         let reflectorConfig = new ReflectorConfiguration(types,  ms, [||], [||])

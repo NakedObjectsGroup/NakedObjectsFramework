@@ -33,7 +33,7 @@ type ModelSystemTests() =
         config.EnforceProxies <- false
         config.UsingEdmxContext "Model1Container" |> ignore
         container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
-        let types = [| typeof<ModelFirst.Fruit> |]
+        let types = [| typeof<ModelFirst.Fruit>;typeof<List<ModelFirst.Food>> |]
         
         let ms = [| typeof<SimpleRepository<Person>> |]
         let ca = [|  |]

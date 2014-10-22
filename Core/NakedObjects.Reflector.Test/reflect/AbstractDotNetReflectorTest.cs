@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Configuration;
@@ -23,7 +24,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public virtual void SetUp() {
             var classStrategy = new DefaultClassStrategy();
             var metamodel = new Metamodel(classStrategy);
-            var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { });
+            var config = new ReflectorConfiguration(new Type[] { typeof(List<TestPojo>)  }, new Type[] { }, new Type[] { }, new Type[] { });
             var servicesConfig = new ServicesConfiguration();
             var reflector = new Reflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig);
 
