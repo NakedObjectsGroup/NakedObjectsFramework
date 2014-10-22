@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using Microsoft.Practices.Unity;
@@ -14,6 +15,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Adapter.Map;
+using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Security;
 using NakedObjects.Core.spec;
@@ -100,7 +102,7 @@ namespace MvcTestApp {
 
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
-            container.RegisterType<IReflector, DotNetReflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IReflector, Reflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodelMutable, Metamodel>(new ContainerControlledLifetimeManager());
 
@@ -115,13 +117,14 @@ namespace MvcTestApp {
 
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, new ContainerControlledLifetimeManager());
 
-            var serviceConfig = new ServicesConfiguration();
+            var reflectorConfig = new ReflectorConfiguration(new Type[] { },
+               MenuServices.Select(s => s.GetType()).ToArray(),
+               ContributedActions.Select(s => s.GetType()).ToArray(),
+               SystemServices.Select(s => s.GetType()).ToArray());
 
-            serviceConfig.AddMenuServices(MenuServices);
-            serviceConfig.AddContributedActions(ContributedActions);
-            serviceConfig.AddSystemServices(SystemServices);
+            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
 
-            container.RegisterInstance<IServicesConfiguration>(serviceConfig, new ContainerControlledLifetimeManager());
+            container.RegisterType<IServicesConfiguration, ServicesConfiguration>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerResolveLifetimeManager());
             container.RegisterType<SpecFactory, SpecFactory>(new PerResolveLifetimeManager());

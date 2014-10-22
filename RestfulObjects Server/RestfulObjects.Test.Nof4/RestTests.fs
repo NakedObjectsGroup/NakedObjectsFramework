@@ -22,6 +22,11 @@ open NakedObjects.Surface.Nof4.Utility
 open NakedObjects.Surface
 open MvcTestApp.Controllers
 open NakedObjects.Rest.Test.RestTestsHelpers
+open NakedObjects.Architecture.Configuration
+open NakedObjects.Core.Configuration
+open System.Data.Entity.Core.Objects.DataClasses
+open System.Collections.Generic
+open System.Data.Objects
 
 [<TestFixture>]
 type Nof4Tests() = 
@@ -36,6 +41,33 @@ type Nof4Tests() =
             container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
             container.RegisterType(typeof<IOidStrategy>, typeof<ExternalOid>, null, (new PerResolveLifetimeManager())) |> ignore
             container.RegisterType(typeof<INakedObjectsSurface>, typeof<NakedObjectsSurface>, null, (new PerResolveLifetimeManager())) |> ignore
+            let types = [| typeof<NakedObjects.Value.FileAttachment>;
+                           typeof<NakedObjects.Value.Image>;
+                           typeof<Immutable>;
+                           typeof<WithActionViewModel>;
+                           typeof<WithCollectionViewModel>;
+                           typeof<WithScalars>;
+                           typeof<VerySimple>;
+                           typeof<VerySimpleEager>;
+                           typeof<WithAction>;
+                           typeof<WithActionObject>;
+                           typeof<WithAttachments>;
+                           typeof<WithCollection>;
+                           typeof<WithDateTimeKey>;
+                           typeof<WithError>;
+                           typeof<WithNestedViewModel>;
+                           typeof<TestEnum>;
+                           typeof<ObjectQuery<MostSimple>>;
+                           typeof<List<MostSimple>>;
+                           typeof<HashSet<MostSimple>>;
+                           typeof<SetWrapper<MostSimple>>;
+                           typeof<List<MostSimple[]>>;
+                           typeof<EntityCollection<MostSimpleViewModel>>;
+                           typeof<EntityCollection<MostSimple>> |]
+            let ms = [| typeof<RestDataRepository>;  typeof<WithActionService> |]
+            let ca = [| typeof<ContributorService> |]
+            let reflectorConfig = new ReflectorConfiguration(types, ms, ca, [||])
+            container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
             ()
         
         [<TestFixtureSetUp>]
