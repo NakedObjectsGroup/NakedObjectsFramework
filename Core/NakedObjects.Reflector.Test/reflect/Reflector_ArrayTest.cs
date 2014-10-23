@@ -62,7 +62,14 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public void TestTypeOfFacet() {
             var facet = (ITypeOfFacet) Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(facet);
-            Assert.AreEqual(typeof (TestPojo), ((TypeOfFacetAbstract) facet).Value);
+          
+        }
+
+        [Test]
+        public void TestElementTypeFacet() {
+            var facet = (IElementTypeFacet)Specification.GetFacet(typeof(IElementTypeFacet));
+            Assert.IsNotNull(facet);
+            Assert.AreEqual(typeof(TestPojo), facet.Value);
         }
     }
 

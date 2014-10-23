@@ -49,7 +49,6 @@ namespace NakedObjects.Reflector.FacetFactory {
 
             AddSetFacet(facets, property, collection);
 
-
             AddHideForSessionFacetNone(facets, collection);
             AddDisableFacetAlways(facets, collection);
             FindDefaultHideMethod(facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", new Type[0], collection);

@@ -1180,7 +1180,7 @@ namespace NakedObjects.EntityObjectStore {
         }
 
         public int CountField(INakedObject nakedObject, IAssociationSpec associationSpec) {
-            Type type = TypeUtils.GetType(associationSpec.GetFacet<ITypeOfFacet>().ValueSpec.FullName);
+            Type type = TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().ValueSpec.FullName);
             MethodInfo countMethod = GetType().GetMethod("Count").GetGenericMethodDefinition().MakeGenericMethod(type);
             return (int)countMethod.Invoke(this, new object[] { nakedObject, associationSpec, manager });
         }

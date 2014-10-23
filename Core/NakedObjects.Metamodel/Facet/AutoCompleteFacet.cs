@@ -12,7 +12,7 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util.Reflection;
 using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.Facet {

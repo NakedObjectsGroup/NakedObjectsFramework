@@ -51,8 +51,6 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             this.servicesConfig = servicesConfig;
 
             facetFactorySet.Init(this);
-
-            Reflect();
         }
 
         #region IReflector Members
@@ -69,6 +67,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             get { return facetFactorySet; }
         }
 
+        public IMetamodel Metamodel {
+            get { return metamodel; }
+        }
+
         public virtual IObjectSpecImmutable[] AllObjectSpecImmutables {
             get { return metamodel.AllSpecifications.ToArray(); }
         }
@@ -81,13 +83,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 return LoadSpecification(type);
             }
             catch (Exception e) {
-                // TODO don't think this is a good idea - fail fast ?
-                Log.InfoFormat("Failed to Load Specification for: {0} error: {1} trying cache", className, e);
-                var spec = metamodel.GetSpecification(className);
-                if (spec != null) {
-                    Log.InfoFormat("Found {0} in cache", className);
-                    return spec;
-                }
+                Log.FatalFormat("Failed to Load Specification for: {0} error: {1} trying cache", className, e);
                 throw;
             }
         }
@@ -103,74 +99,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public virtual IObjectSpecImmutable LoadSpecification(Type type) {
             Assert.AssertNotNull(type);
             var actualType = classStrategy.GetType(type);
-
-            var spec = metamodel.GetSpecification(actualType);
-
-            if (spec != null) {
-                return spec;
-            }
-
-            spec = LoadSpecificationAndCache(actualType);
-
-            // load collections of this type 
-            // TODO this is initial naive implementation - optimise later 
-            // needs to be more refined what about nullables or tuples ?
-            //if (!(actualType == typeof (void))) {
-            //    LoadArraySpecification(actualType);
-            //    LoadCollectionSpecifications(actualType);
-            //}
-
-            return spec;
+            return metamodel.GetSpecification(actualType) ?? LoadSpecificationAndCache(actualType);
         }
 
         #endregion
 
-        //private bool IsAlreadyNestedArrayOrGeneric(Type type) {
-        //    if (type.IsGenericType) {
-        //        return type.GetGenericArguments().Any(ga => ga.IsArray || ga.IsGenericType);
-        //    }
-        //    if (type.IsArray) {
-        //        var elementType = type.GetElementType();
-        //        return elementType.IsArray || elementType.IsGenericType;
-        //    }
-
-        //    return false;
-        //}
-
-
-        //private void LoadArraySpecification(Type actualType) {
-        //    if (!IsAlreadyNestedArrayOrGeneric(actualType)) {
-        //        try {
-        //            var aType = actualType.MakeArrayType();
-        //            LoadSpecification(aType);
-        //        }
-        //        catch (Exception e) {
-        //            Log.FatalFormat("Failed to create array type from: {0} reason: {1}", actualType.FullName, e.Message);
-        //            throw;
-        //        }
-        //    }
-        //}
-
-        //private void LoadCollectionSpecifications(Type actualType) {
-        //    if (!IsAlreadyNestedArrayOrGeneric(actualType)) {
-        //        foreach (var gt in config.CollectionsToIntrospect) {
-        //            try {
-        //                var cType = gt.GetGenericTypeDefinition().MakeGenericType(actualType);
-        //                LoadSpecification(cType);
-        //            }
-        //            catch (ArgumentException e) {
-        //                // Odds are contraint on type is wrong so just warn but continue
-        //                Log.WarnFormat("Failed to create generic type from: {0} on : {1} reason: {2}", gt.FullName, actualType.FullName, e.Message);
-        //            }
-        //            catch (Exception e) {
-        //                Log.FatalFormat("Failed to create generic type from: {0} on : {1} reason: {2}", gt.FullName, actualType.FullName, e.Message);
-        //                throw;
-        //            }
-        //        }
-        //    }
-        //}
-
-        private void Reflect() {
+        public void Reflect() {
             var s1 = config.MenuServices;
             var s2 = config.ContributedActions;
             var s3 = config.SystemServices;
@@ -240,7 +174,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 foreach (var serviceAction in serviceSpecification.ObjectActions.Flattened.Where(a => a.IsFinderMethod)) {
                     var returnType = serviceAction.ReturnType;
                     if (returnType != null && returnType.IsCollection) {
-                        var elementType = returnType.GetFacet<ITypeOfFacet>().ValueSpec;
+                        var elementType = returnType.GetFacet<IElementTypeFacet>().ValueSpec;
                         if (elementType.IsOfType(spec)) {
                             matchingActions.Add(serviceAction);
                         }
@@ -270,18 +204,16 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         private IObjectSpecImmutable LoadSpecificationAndCache(Type type) {
-            string proxiedTypeName = type.GetProxiedTypeFullName();
-            TypeUtils.GetType(type.FullName); // This should ensure type is cached 
-
+          
             var specification = CreateSpecification(type);
 
             if (specification == null) {
-                throw new ReflectionException("unrecognised class " + proxiedTypeName);
+                throw new ReflectionException("unrecognised type " + type.FullName);
             }
 
             // we need the specification available in cache even though not yet full introspected 
             // need to be careful no other thread reads until introspected
-            metamodel.Add(proxiedTypeName, specification);
+            metamodel.Add(type, specification);
 
             specification.Introspect(facetDecorator, new Introspector(this, metamodel));
 
@@ -289,6 +221,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         private IObjectSpecImmutable CreateSpecification(Type type) {
+            TypeUtils.GetType(type.FullName); // This should ensure type is cached 
             return new ObjectSpecImmutable(type, metamodel);
         }
     }

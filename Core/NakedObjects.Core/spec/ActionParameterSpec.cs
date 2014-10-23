@@ -205,7 +205,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             if (Spec.IsCollectionOfBoundedSet() || Spec.IsCollectionOfEnum()) {
-                var instanceSpec = metamodel.GetSpecification(Spec.GetFacet<ITypeOfFacet>().ValueSpec);
+                var instanceSpec = metamodel.GetSpecification(Spec.GetFacet<IElementTypeFacet>().ValueSpec);
 
                 var instanceEnumFacet = instanceSpec.GetFacet<IEnumFacet>();
 

@@ -23,7 +23,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         [SetUp]
         public virtual void SetUp() {
             var classStrategy = new DefaultClassStrategy();
-            var metamodel = new Metamodel(classStrategy);
+            var cache = new ImmutableInMemorySpecCache();
+            var metamodel = new Metamodel(classStrategy, cache);
             var config = new ReflectorConfiguration(new Type[] { typeof(List<TestPojo>)  }, new Type[] { }, new Type[] { }, new Type[] { });
             var servicesConfig = new ServicesConfiguration();
             var reflector = new Reflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig);

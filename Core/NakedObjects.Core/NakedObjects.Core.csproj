@@ -227,6 +227,7 @@
     <Compile Include="util\INakedObjectConfigurationAware.cs" />
     <Compile Include="util\NullUtils.cs" />
     <Compile Include="util\QueryableList.cs" />
+    <Compile Include="util\EnumerableUtils.cs" />
     <Compile Include="util\QueryableUtils.cs" />
     <Compile Include="util\ReasonBuffer.cs" />
     <Compile Include="util\SpecificationFacets.cs" />

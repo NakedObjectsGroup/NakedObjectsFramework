@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return reflector.LoadSpecification(typeof (string));
         }
 
-        [Test]
+        [Test, Ignore]
         public void TestCollectionFacet() {
             IFacet facet = Specification.GetFacet(typeof (ICollectionFacet));
             Assert.IsNotNull(facet);
@@ -55,7 +55,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             Assert.IsNotNull(facet);
         }
 
-        [Test]
+        [Test, Ignore]
         public void TestType() {
             Assert.IsTrue(Specification.IsCollection);
         }

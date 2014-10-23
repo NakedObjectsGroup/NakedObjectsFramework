@@ -144,6 +144,7 @@
     <Compile Include="Exception\ResolveException.cs" />
     <Compile Include="FacetFactory\MethodType.cs" />
     <Compile Include="Facet\IArrayValueFacet.cs" />
+    <Compile Include="Facet\IElementTypeFacet.cs" />
     <Compile Include="Facet\IEnumValueFacet.cs" />
     <Compile Include="Facet\IFileAttachmentValueFacet.cs" />
     <Compile Include="Facet\IGuidValueFacet.cs" />

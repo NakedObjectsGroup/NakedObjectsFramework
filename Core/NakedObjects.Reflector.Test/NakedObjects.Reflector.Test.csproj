@@ -180,6 +180,7 @@
     <Compile Include="proxies\ProxyCreatorTest.cs" />
     <Compile Include="reflect\AbstractDotNetReflectorTest.cs" />
     <Compile Include="reflect\ActionTestObject.cs" />
+    <Compile Include="reflect\ReflectorTest.cs" />
     <Compile Include="reflect\Reflector_ValidateTest.cs" />
     <Compile Include="reflect\Reflector_MetadataTest.cs" />
     <Compile Include="reflect\ObjectWithBasicProgramConventions.cs" />

@@ -1,7 +1,15 @@
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
@@ -10,11 +18,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
     public class Metamodel : IMetamodelMutable {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Metamodel));
 
-        private readonly ISpecificationCache cache = new SimpleSpecificationCache();
+        private readonly ISpecificationCache cache;
         private readonly IClassStrategy classStrategy;
 
-        public Metamodel(IClassStrategy classStrategy) {
+        public Metamodel(IClassStrategy classStrategy, ISpecificationCache cache) {
             this.classStrategy = classStrategy;
+            this.cache = cache;
         }
 
         #region IMetamodelMutable Members
@@ -43,17 +52,29 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
         }
 
-        public void Add(string name, IObjectSpecImmutable spec) {
-            cache.Cache(name, spec);
+        public void Add(Type type, IObjectSpecImmutable spec) {
+            cache.Cache(GetKeyForType(type), spec);
         }
 
         #endregion
 
+        private string GetKeyForType(Type type) {
+            if (type.IsGenericType && CollectionUtils.IsCollection(type)) {
+                return type.Namespace + "." + type.Name;
+            }
+
+            if (type.IsArray) {
+                return "System.Array";
+            }
+
+            return type.GetProxiedTypeFullName();
+        }
+
         private IObjectSpecImmutable GetSpecificationFromCache(Type type) {
-            string proxiedTypeName = type.GetProxiedTypeFullName();
+            string key = GetKeyForType(type);
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
 
-            return cache.GetSpecification(proxiedTypeName);
+            return cache.GetSpecification(key);
         }
     }
 }

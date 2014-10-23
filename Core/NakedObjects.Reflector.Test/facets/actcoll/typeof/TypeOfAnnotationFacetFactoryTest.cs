@@ -11,8 +11,8 @@ using System.Reflection;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Reflector.FacetFactory;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
@@ -93,11 +93,14 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
         public void TestTypeOfFacetInferredForActionWithArrayReturnType() {
             MethodInfo actionMethod = FindMethod(typeof (Customer9), "SomeAction");
             facetFactory.Process(actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITypeOfFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TypeOfFacetInferredFromArray);
-            var typeOfFacetInferredFromArray = (TypeOfFacetInferredFromArray) facet;
-            Assert.AreEqual(typeof (Order), typeOfFacetInferredFromArray.Value);
+            IFacet typeOfFacet = Specification.GetFacet(typeof (ITypeOfFacet));
+            Assert.IsNotNull(typeOfFacet);
+            Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
+
+            var elementTypeFacet = Specification.GetFacet<IElementTypeFacet>();
+            Assert.IsNotNull(elementTypeFacet);
+            Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
+            Assert.AreEqual(typeof (Order), elementTypeFacet.Value);
             AssertNoMethodsRemoved();
         }
 
@@ -105,36 +108,42 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actcoll.Typeof {
         public void TestTypeOfFacetInferredForActionWithGenericCollectionReturnType() {
             MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
             facetFactory.Process(actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITypeOfFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TypeOfFacetInferredFromGenerics);
-            var typeOfFacetInferredFromGenerics = (TypeOfFacetInferredFromGenerics) facet;
-            Assert.IsTrue(typeOfFacetInferredFromGenerics.IsInferred);
-            Assert.AreEqual(typeof (Order), typeOfFacetInferredFromGenerics.Value);
+            IFacet typeOfFacet = Specification.GetFacet(typeof (ITypeOfFacet));
+            Assert.IsNotNull(typeOfFacet);
+            Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
+
+            var elementTypeFacet = Specification.GetFacet<IElementTypeFacet>();
+            Assert.IsNotNull(elementTypeFacet);
+            Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
+            Assert.AreEqual(typeof (Order), elementTypeFacet.Value);
         }
 
         [Test]
         public void TestTypeOfFacetInferredForCollectionWithGenericCollectionReturnType() {
             PropertyInfo property = FindProperty(typeof (Customer4), "Orders");
             facetFactory.Process(property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITypeOfFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TypeOfFacetInferredFromGenerics);
-            var typeOfFacetInferredFromGenerics = (TypeOfFacetInferredFromGenerics) facet;
-            Assert.IsTrue(typeOfFacetInferredFromGenerics.IsInferred);
-            Assert.AreEqual(typeof (Order), typeOfFacetInferredFromGenerics.Value);
+            IFacet typeOfFacet = Specification.GetFacet(typeof (ITypeOfFacet));
+            Assert.IsNotNull(typeOfFacet);
+            Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
+
+            var elementTypeFacet = Specification.GetFacet<IElementTypeFacet>();
+            Assert.IsNotNull(elementTypeFacet);
+            Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
+            Assert.AreEqual(typeof (Order), elementTypeFacet.Value);
         }
 
         [Test]
         public void TestTypeOfFacetIsInferredForCollectionFromOrderArray() {
             PropertyInfo property = FindProperty(typeof (Customer10), "Orders");
             facetFactory.Process(property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (ITypeOfFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is TypeOfFacetInferredFromArray);
-            var typeOfFacetInferredFromArray = (TypeOfFacetInferredFromArray) facet;
-            Assert.IsTrue(typeOfFacetInferredFromArray.IsInferred);
-            Assert.AreEqual(typeof (Order), typeOfFacetInferredFromArray.Value);
+            IFacet typeOfFacet = Specification.GetFacet(typeof (ITypeOfFacet));
+            Assert.IsNotNull(typeOfFacet);
+            Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
+
+            var elementTypeFacet = Specification.GetFacet<IElementTypeFacet>();
+            Assert.IsNotNull(elementTypeFacet);
+            Assert.IsTrue(elementTypeFacet is ElementTypeFacet);
+            Assert.AreEqual(typeof (Order), elementTypeFacet.Value);
         }
     }
 

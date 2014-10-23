@@ -30,7 +30,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         [Test]
         public void TestFacets() {
-            Assert.AreEqual(18, Specification.FacetTypes.Length);
+            Assert.AreEqual(19, Specification.FacetTypes.Length);
         }
 
         [Test]
@@ -62,7 +62,14 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public void TestTypeOfFacet() {
             var facet = (ITypeOfFacet) Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(facet);
-            Assert.AreEqual(typeof (object), ((TypeOfFacetAbstract) facet).Value);
+          
+        }
+
+        [Test]
+        public void TestElementTypeFacet() {
+            var facet = (IElementTypeFacet)Specification.GetFacet(typeof(IElementTypeFacet));
+            Assert.IsNotNull(facet);
+            Assert.AreEqual(typeof(object), facet.Value);
         }
     }
 

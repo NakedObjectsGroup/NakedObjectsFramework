@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +14,9 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
     public class CollectionFacet : CollectionFacetAbstract {
+       
         public CollectionFacet(ISpecification holder)
-            : base(holder) {}
-
-        public CollectionFacet(ISpecification holder, Type elementType)
-            : base(holder, elementType, false) {}
+            : base(holder, false) {}
 
         public override bool IsQueryable {
             get { return false; }
@@ -53,16 +50,6 @@ namespace NakedObjects.Metamodel.Facet {
 
         public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable) {
             return manager.CreateAdapter(PageInternal(page, size, collection, manager), null, null);
-        }
-
-        public override void Init(INakedObject collection, INakedObject[] initData) {
-            IList wrappedCollection = AsCollection(collection);
-
-            List<object> toAdd = initData.Select(no => no.Object).Where(obj => !wrappedCollection.Contains(obj)).ToList();
-            toAdd.ForEach(obj => wrappedCollection.Add(obj));
-
-            List<object> toRemove = wrappedCollection.Cast<object>().Where(o => !initData.Select(x => x.Object).Contains(o)).ToList();
-            toRemove.ForEach(wrappedCollection.Remove);
         }
     }
 

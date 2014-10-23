@@ -12,14 +12,12 @@ using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Exceptions;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Adapter;
 using NakedObjects.Metamodel.Exception;
-using NakedObjects.Metamodel.Facet;
 using NakedObjects.Metamodel.Spec;
 using NakedObjects.Metamodel.Utils;
 
@@ -31,7 +29,7 @@ namespace NakedObjects.Metamodel.SpecImmutable {
         private readonly IIdentifier identifier;
 
         public ObjectSpecImmutable(Type type, IMetamodel metamodel) {
-            Type = type;
+            Type = type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type;
             identifier = new IdentifierImpl(metamodel, type.FullName);
             Interfaces = new IObjectSpecImmutable[] {};
             Subclasses = new IObjectSpecImmutable[] {};
@@ -189,7 +187,7 @@ namespace NakedObjects.Metamodel.SpecImmutable {
                 iconName = forObject == null ? iconFacet.GetIconName() : iconFacet.GetIconName(forObject);
             }
             else if (IsCollection) {
-                iconName = GetFacet<ITypeOfFacet>().ValueSpec.GetIconName(null);
+                iconName = GetFacet<IElementTypeFacet>().ValueSpec.GetIconName(null);
             }
 
             return string.IsNullOrEmpty(iconName) ? "Default" : iconName;

@@ -530,7 +530,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                         INakedObject collection = oneToManyAssociation.GetNakedObject(nakedObject);
                         ITypeOfFacet facet = collection.GetTypeOfFacetFromSpec();
 
-                        var referencedTypeNos = facet.ValueSpec;
+                        var referencedTypeNos = facet.GetValueSpec(collection);
                         string fullyQualifiedClassName = referencedTypeNos.FullName;
 
                         // XML

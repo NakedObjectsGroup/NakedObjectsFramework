@@ -149,7 +149,7 @@ namespace NakedObjects.Core.Persist {
                     helper.Add(parameter.Object);
                 }
                 else if (parameter.Spec.IsCollection) {
-                    var instanceSpec = parameter.Spec.GetFacet<ITypeOfFacet>().ValueSpec;
+                    var instanceSpec = parameter.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(parameter);
                     Type instanceType = TypeUtils.GetType(instanceSpec.FullName);
 
                     if (instanceSpec.IsParseable) {

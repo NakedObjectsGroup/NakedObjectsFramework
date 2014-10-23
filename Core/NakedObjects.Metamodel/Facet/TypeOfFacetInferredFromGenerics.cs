@@ -6,13 +6,37 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class TypeOfFacetInferredFromGenerics : TypeOfFacetAbstract {
-        public TypeOfFacetInferredFromGenerics(Type type, ISpecification holder, IObjectSpecImmutable spec)
-            : base(type, true, holder, spec) {}
+    public class TypeOfFacetInferredFromGenerics : FacetAbstract, ITypeOfFacet {
+        private readonly IMetamodel metamodel;
+
+        public TypeOfFacetInferredFromGenerics(ISpecification holder, IMetamodel metamodel)
+            : base(Type, holder) {
+            this.metamodel = metamodel;
+        }
+
+        public static Type Type {
+            get { return typeof (ITypeOfFacet); }
+        }
+
+        #region ITypeOfFacet Members
+
+        public Type GetValue(INakedObject collection) {
+            return collection.Object.GetType().GenericTypeArguments.First();
+        }
+
+        public IObjectSpecImmutable GetValueSpec(INakedObject collection) {
+            return metamodel.GetSpecification(GetValue(collection));
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

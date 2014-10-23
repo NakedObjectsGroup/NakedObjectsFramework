@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
@@ -20,7 +19,7 @@ namespace NakedObjects.Metamodel.Facet {
             IsASet = false;
         }
 
-        protected CollectionFacetAbstract(ISpecification holder, Type elementClass, bool isASet)
+        protected CollectionFacetAbstract(ISpecification holder, bool isASet)
             : this(holder) {
             IsASet = isASet;
         }
@@ -29,7 +28,6 @@ namespace NakedObjects.Metamodel.Facet {
 
         public abstract bool IsQueryable { get; }
         public abstract bool Contains(INakedObject collection, INakedObject element);
-        public abstract void Init(INakedObject nakedObject, INakedObject[] initData);
         public abstract INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable);
 
         public bool IsASet { get; private set; }

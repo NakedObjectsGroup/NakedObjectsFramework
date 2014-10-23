@@ -26,7 +26,8 @@ namespace NakedObjects.Reflector.DotNet.Facets.Actions {
         public override void SetUp() {
             base.SetUp();
             var classStrategy = new DefaultClassStrategy();
-            var metamodel = new Reflect.Metamodel(classStrategy);
+            var cache = new ImmutableInMemorySpecCache();
+            var metamodel = new Reflect.Metamodel(classStrategy, cache);
             var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { });
             var servicesConfig = new ServicesConfiguration();
             var reflector = new Reflect.Reflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig);

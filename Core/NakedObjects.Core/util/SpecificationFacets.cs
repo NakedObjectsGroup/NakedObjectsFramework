@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 
@@ -31,11 +32,11 @@ namespace NakedObjects.Architecture.Spec {
         }
 
         public static bool IsCollectionOfBoundedSet(this IObjectSpec spec) {
-            return spec.IsCollection && spec.GetFacet<ITypeOfFacet>().ValueSpec.IsBoundedSet();
+            return spec.IsCollection && spec.GetFacet<IElementTypeFacet>().ValueSpec.IsBoundedSet();
         }
 
         public static bool IsCollectionOfEnum(this IObjectSpec spec) {
-            return spec.IsCollection && spec.GetFacet<ITypeOfFacet>().ValueSpec.ContainsFacet<IEnumFacet>();
+            return spec.IsCollection && spec.GetFacet<IElementTypeFacet>().ValueSpec.ContainsFacet<IEnumFacet>();
         }
 
         public static bool IsBoundedSet(this IObjectSpecImmutable specification) {
@@ -43,11 +44,11 @@ namespace NakedObjects.Architecture.Spec {
         }
 
         public static bool IsCollectionOfBoundedSet(this IObjectSpecImmutable specification) {
-            return specification.IsCollection && specification.GetFacet<ITypeOfFacet>().ValueSpec.IsBoundedSet();
+            return specification.IsCollection && specification.GetFacet<IElementTypeFacet>().ValueSpec.IsBoundedSet();
         }
 
         public static bool IsCollectionOfEnum(this IObjectSpecImmutable specification) {
-            return specification.IsCollection && specification.GetFacet<ITypeOfFacet>().ValueSpec.ContainsFacet<IEnumFacet>();
+            return specification.IsCollection && specification.GetFacet<IElementTypeFacet>().ValueSpec.ContainsFacet<IEnumFacet>();
         }
     }
 

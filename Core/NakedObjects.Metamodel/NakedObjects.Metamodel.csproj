@@ -87,6 +87,7 @@
     <Compile Include="Facet\DefaultedFacetAbstract.cs" />
     <Compile Include="Facet\DefaultedFacetAnnotation.cs" />
     <Compile Include="Facet\DefaultedFacetUsingDefaultsProvider.cs" />
+    <Compile Include="Facet\ElementTypeFacet.cs" />
     <Compile Include="Facet\PropertyClearFacetAbstract.cs" />
     <Compile Include="SpecImmutable\ObjectSpecImmutable.cs" />
     <Compile Include="Facet\RangeFacet.cs">
@@ -175,7 +176,6 @@
     <Compile Include="Facet\TitleFacetViaProperty.cs" />
     <Compile Include="Facet\TitleFacetViaTitleMethod.cs" />
     <Compile Include="Facet\TitleFacetViaToStringMethod.cs" />
-    <Compile Include="Facet\TypeOfFacetAbstract.cs" />
     <Compile Include="Facet\ActionChoicesFacetAbstract.cs" />
     <Compile Include="Facet\ActionChoicesFacetNone.cs" />
     <Compile Include="Facet\ExcludeFromFindMenuFacet.cs" />

@@ -5,8 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,12 +12,16 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util.Reflection;
 
 namespace NakedObjects.Metamodel.Facet {
     public class GenericIQueryableFacet<T> : CollectionFacetAbstract {
-        public GenericIQueryableFacet(ISpecification holder, Type elementClass, bool isASet)
-            : base(holder, elementClass, isASet) {}
+
+        public GenericIQueryableFacet(ISpecification holder)
+            : this(holder, false) { }
+        
+        public GenericIQueryableFacet(ISpecification holder, bool isASet)
+            : base(holder,  isASet) {}
 
         public override bool IsQueryable {
             get { return true; }
@@ -62,11 +64,6 @@ namespace NakedObjects.Metamodel.Facet {
 
         public override bool Contains(INakedObject collection, INakedObject element) {
             return AsGenericIQueryable(collection).Contains((T) element.Object);
-        }
-
-        public override void Init(INakedObject collection, INakedObject[] initData) {
-            IList newCollection = CollectionUtils.CloneCollectionAndPopulate(collection.Object, initData.Select(no => no.Object));
-            collection.ReplacePoco(newCollection.AsQueryable());
         }
     }
 }

@@ -12,16 +12,17 @@ open NakedObjects.Boot
 open ModelFirst
 open NakedObjects.Services
 open NakedObjects.EntityObjectStore
+open NakedObjects.Architecture.Util
 open NakedObjects.Architecture.Adapter
 open SystemTestCode
 open NakedObjects
 open TestCode
 open System.Collections.Generic
-open NakedObjects.Architecture.Util
 open Microsoft.Practices.Unity
 open NakedObjects.Architecture.Configuration
 open NakedObjects.Core.Configuration
 open System.Data.Entity.Core.Objects.DataClasses
+open System.Linq
 
 [<TestFixture>]
 type ModelSystemTests() = 

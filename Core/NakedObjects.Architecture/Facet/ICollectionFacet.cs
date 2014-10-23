@@ -15,7 +15,6 @@ namespace NakedObjects.Architecture.Facet {
         bool IsASet { get; }
         bool IsQueryable { get; }
         bool Contains(INakedObject collection, INakedObject element);
-        void Init(INakedObject collection, INakedObject[] initData);
         INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable);
         IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager);
         IQueryable AsQueryable(INakedObject objectRepresentingCollection);

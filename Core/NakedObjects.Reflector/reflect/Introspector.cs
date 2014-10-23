@@ -73,7 +73,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         public string[] InterfacesNames {
-            get { return TypeUtils.GetInterfaces(introspectedType); }
+            get {
+                return introspectedType.GetInterfaces().Select(i => i.FullName ?? i.Namespace + "." + i.Name).ToArray();
+            }
         }
 
         public string SuperclassName {
@@ -309,7 +311,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), collection, FeatureType.Collection);
 
                 // figure out what the Type is
-                var typeOfFacet = collection.GetFacet<ITypeOfFacet>();
+                var typeOfFacet = collection.GetFacet<IElementTypeFacet>();
                 var elementType = typeOfFacet != null ? typeOfFacet.Value : typeof (object);
                 var elementSpec = typeOfFacet != null ? typeOfFacet.ValueSpec : reflector.LoadSpecification(typeof (object));
 

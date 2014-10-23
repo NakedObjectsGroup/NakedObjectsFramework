@@ -5,10 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.Collections;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
-namespace NakedObjects.Architecture.Util {
+namespace NakedObjects.Core.Util.Reflection {
     public static class QueryableUtils {
         public static int Count(this IQueryable q) {
             MethodInfo countMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "Count" && m.GetParameters().Count() == 1);
@@ -28,10 +31,28 @@ namespace NakedObjects.Architecture.Util {
             return (IQueryable) gm.Invoke(null, new object[] {q, count});
         }
 
+        public static IQueryable Skip(this IQueryable q, int count) {
+            MethodInfo takeMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Skip" && m.GetParameters().Count() == 2);
+            MethodInfo gm = takeMethod.MakeGenericMethod(q.ElementType);
+            return (IQueryable)gm.Invoke(null, new object[] { q, count });
+        }
+
+        public static bool Contains(this IQueryable q, object item) {
+            MethodInfo containsMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "Contains" && m.GetParameters().Count() == 2);
+            MethodInfo gm = containsMethod.MakeGenericMethod(q.ElementType);
+            return (bool) gm.Invoke(null, new object[] {q, item});
+        }
+    
         public static object[] ToArray(this IQueryable q) {
             MethodInfo toArrayMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "ToArray" && m.GetParameters().Count() == 1);
             MethodInfo gm = toArrayMethod.MakeGenericMethod(q.ElementType);
             return (object[]) gm.Invoke(null, new object[] {q});
+        }
+
+        public static IList ToList(this IQueryable q) {
+            MethodInfo toArrayMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "ToList" && m.GetParameters().Count() == 1);
+            MethodInfo gm = toArrayMethod.MakeGenericMethod(q.ElementType);
+            return (IList)gm.Invoke(null, new object[] { q });
         }
     }
 }

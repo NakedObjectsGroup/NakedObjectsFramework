@@ -33,6 +33,7 @@ using NakedObjects.Reflector.DotNet;
 using NakedObjects.Reflector.DotNet.Reflect;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Spec;
 using NakedObjects.Service;
 
 namespace NakedObjects.Xat {
@@ -199,7 +200,7 @@ namespace NakedObjects.Xat {
             Log.Info("test initialize " + tc.Name);
             tc.servicesCache = new Dictionary<string, ITestService>();
 
-            tc.GetConfiguredContainer().Resolve<IReflector>();
+            tc.GetConfiguredContainer().Resolve<IReflector>().Reflect();
 
             //List<Type> s1 = tc.MenuServices.GetServices().Select(s => s.GetType()).ToList();
             //List<Type> s2 = tc.ContributedActions.GetServices().Select(s => s.GetType()).ToList();
@@ -221,6 +222,7 @@ namespace NakedObjects.Xat {
 
 
         protected virtual void RegisterTypes(IUnityContainer container) {
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>();
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
 

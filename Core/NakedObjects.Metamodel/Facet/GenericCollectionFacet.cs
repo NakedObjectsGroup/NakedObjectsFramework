@@ -6,50 +6,45 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util.Reflection;
 
 namespace NakedObjects.Metamodel.Facet {
     public class GenericCollectionFacet<T> : CollectionFacetAbstract {
-        public GenericCollectionFacet(ISpecification holder, Type elementClass, bool isASet)
-            : base(holder, elementClass, isASet) {}
+        public GenericCollectionFacet(ISpecification holder) : this(holder, false) {}
+
+        public GenericCollectionFacet(ISpecification holder, bool isASet)
+            : base(holder, isASet) {}
 
         public override bool IsQueryable {
             get { return false; }
         }
 
-        protected static ICollection<T> AsGenericCollection(INakedObject collection) {
-            return (ICollection<T>) collection.Object;
+        protected static ICollection AsCollection(INakedObject collection) {
+            return (ICollection)collection.Object;
         }
 
         public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager) {
-            return AsGenericCollection(collection).Select(arg => manager.CreateAdapter(arg, null, null));
+            foreach (var item in AsCollection(collection)) {
+                yield return manager.CreateAdapter(item, null, null);
+            }
         }
 
         public override IQueryable AsQueryable(INakedObject collection) {
-            return AsGenericCollection(collection).AsQueryable();
+            return AsCollection(collection).AsQueryable();
         }
 
         public override bool Contains(INakedObject collection, INakedObject element) {
-            return AsGenericCollection(collection).Contains((T) element.Object);
+            return AsCollection(collection).Contains(element.Object);
         }
 
         public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable) {
-            return manager.CreateAdapter(AsGenericCollection(collection).Skip((page - 1)*size).Take(size).ToList(), null, null);
-        }
-
-        public override void Init(INakedObject collection, INakedObject[] initData) {
-            ICollection<T> wrappedCollection = AsGenericCollection(collection);
-            IList<T> newData = initData.Select(x => x.GetDomainObject<T>()).ToList();
-
-            List<T> toAdd = newData.Where(obj => !wrappedCollection.Contains(obj)).ToList();
-            toAdd.ForEach(wrappedCollection.Add);
-
-            List<T> toRemove = wrappedCollection.Where(obj => !newData.Contains(obj)).ToList();
-            toRemove.ForEach(obj => wrappedCollection.Remove(obj));
+            return manager.CreateAdapter(AsCollection(collection).Skip((page - 1)*size).Take(size).ToList(), null, null);
         }
     }
 }

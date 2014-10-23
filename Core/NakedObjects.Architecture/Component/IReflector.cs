@@ -25,12 +25,14 @@ namespace NakedObjects.Architecture.Component {
 
         IObjectSpecImmutable[] AllObjectSpecImmutables { get; }
         bool IgnoreCase { get; }
+        IMetamodel Metamodel { get; }
 
         IObjectSpecImmutable LoadSpecification(Type type);
 
         IObjectSpecImmutable LoadSpecification(string name);
 
         void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore);
+        void Reflect();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -30,7 +30,8 @@ namespace NakedObjects.Reflector.FacetFactory {
             if (methodReturnType.IsArray) {
                 var elementType = methodReturnType.GetElementType();
                 var elementSpec = Reflector.LoadSpecification(elementType);
-                return FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(elementType, holder, elementSpec));
+                FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
+                return FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder, Reflector.Metamodel));
             }
 
             if (methodReturnType.IsGenericType) {
@@ -38,7 +39,8 @@ namespace NakedObjects.Reflector.FacetFactory {
                 if (actualTypeArguments.Any()) {
                     var elementType = actualTypeArguments.First();
                     var elementSpec = Reflector.LoadSpecification(elementType);
-                    return FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(elementType, holder, elementSpec));
+                    FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
+                    return FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder, Reflector.Metamodel));
                 }
             }
             return false;

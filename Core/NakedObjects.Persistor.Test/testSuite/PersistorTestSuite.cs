@@ -11,14 +11,13 @@ using System.Linq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Persist;
 using NUnit.Framework;
 using TestData;
+using NakedObjects.Core.Util.Reflection;
 
 namespace NakedObjects.Persistor.TestSuite {
     /// <summary>
@@ -719,15 +718,15 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         public void SaveNewObjectCallsPersistingPersistedRecursively() {
-            Assert.AreEqual(0, Persistor.Instances(typeof (Order)).Count());
+            Assert.AreEqual(0, Persistor.Instances<Order>().Count());
 
             Order order = CreateNewTransientOrder();
             order.Name = Guid.NewGuid().ToString();
             INakedObject adapter = Save(order);
             Assert.AreEqual(1, order.GetEvents()["Persisting"], "persisting");
-            Assert.AreEqual(5, Persistor.Instances(typeof (Order)).Count());
+            Assert.AreEqual(5, Persistor.Instances<Order>().Count());
 
-            Assert.IsTrue(Persistor.Instances(typeof (Order)).Cast<Order>().ToList().All(i => i.PersistingCalled));
+            Assert.IsTrue(Persistor.Instances<Order>().All(i => i.PersistingCalled));
 
             // handle quirk in EF which swaps out object on save 
             // fix this when EF updated
@@ -752,7 +751,7 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         public void SaveNewObjectCallsPersistingPersistedRecursivelyFails() {
-            Assert.AreEqual(0, Persistor.Instances(typeof (OrderFail)).Count());
+            Assert.AreEqual(0, Persistor.Instances<OrderFail>().Count());
 
             OrderFail order = CreateNewTransientOrderFail();
             order.Name = Guid.NewGuid().ToString();
@@ -765,7 +764,7 @@ namespace NakedObjects.Persistor.TestSuite {
                 // expected
             }
 
-            Assert.AreEqual(0, Persistor.Instances(typeof (OrderFail)).Count());
+            Assert.AreEqual(0, Persistor.Instances<OrderFail>().Count());
         }
 
 
