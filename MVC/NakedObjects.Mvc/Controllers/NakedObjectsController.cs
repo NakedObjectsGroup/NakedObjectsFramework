@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util.Reflection;
 using NakedObjects.Core.Persist;
 using NakedObjects.Resources;
 using NakedObjects.Value;
@@ -206,7 +207,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     // handle collection mementos 
 
                     if (parm.IsMultipleChoicesEnabled || !CheckForAndAddCollectionMemento(name, values, controlData)) {
-                        var itemSpec = parm.Spec.GetFacet<ITypeOfFacet>().ValueSpec;
+                        var itemSpec = parm.GetFacet<IElementTypeFacet>().ValueSpec;
                         var itemvalues = values.Select(v => itemSpec.IsParseable ? (object) v : NakedObjectsContext.GetNakedObjectFromId(v).GetDomainObject()).ToList();
 
                         if (itemvalues.Any()) {
@@ -261,7 +262,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return NakedObjectsContext.GetNakedObjectFromId(stringValue);
             }
 
-            return NakedObjectsContext.GetTypedCollection(parm.Spec, collectionValue);
+            return NakedObjectsContext.GetTypedCollection(parm, collectionValue);
         }
 
         private static object GetRawParameterValue(IActionParameterSpec parm, ObjectAndControlData controlData, string name) {
@@ -660,10 +661,11 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     ValueProviderResult items = form.GetValue(name);
 
                     if (items != null && assoc.Count(nakedObject) == 0) {
-                        var itemIds = (string[]) items.RawValue;
-                        var values = itemIds.Select(NakedObjectsContext.GetNakedObjectFromId).ToArray();
-                        var collection = assoc.GetNakedObject(nakedObject);
-                        collection.Spec.GetFacet<ICollectionFacet>().Init(collection, values);
+                        throw new NotImplementedException();
+                        //var itemIds = (string[]) items.RawValue;
+                        //var values = itemIds.Select(NakedObjectsContext.GetNakedObjectFromId).ToArray();
+                        //var collection = assoc.GetNakedObject(nakedObject);
+                        //collection.Spec.GetFacet<ICollectionFacet>().Init(collection, values);
                     }
                 }
 
@@ -896,13 +898,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
                 else if (model is ActionResultModel) {
                     INakedObject nakedObject = NakedObjectsContext.GetNakedObject(((ActionResultModel) model).Result);
-                    SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().ValueSpec.ShortName);
+                    SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject).ShortName);
                 }
                 else if (model != null) {
                     INakedObject nakedObject = model is PropertyViewModel ? NakedObjectsContext.GetNakedObject(((PropertyViewModel) model).ContextObject) : NakedObjectsContext.GetNakedObject(model);
 
                     if (nakedObject.Spec.IsCollection) {
-                        SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().ValueSpec.ShortName);
+                        SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject).ShortName);
                     }
                     else {
                         SetControllerName(nakedObject.Object);

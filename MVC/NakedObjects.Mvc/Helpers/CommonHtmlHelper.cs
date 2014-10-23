@@ -885,7 +885,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
             INakedObject[] collection = collectionNakedObject.GetAsEnumerable(html.Framework().Manager).ToArray();
             
-            var collectionSpec =  html.Framework().Metamodel.GetSpecification( collectionNakedObject.GetTypeOfFacetFromSpec().ValueSpec);
+            var collectionSpec =  html.Framework().Metamodel.GetSpecification( collectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(collectionNakedObject));
                    
             IAssociationSpec[] collectionAssocs = html.CollectionAssociations(collection, collectionSpec, filter, order);
 
@@ -984,7 +984,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 var tagTotalCount = new TagBuilder("div");
                 tagTotalCount.AddCssClass(IdHelper.TotalCountClass);
                 
-                IObjectSpec typeSpec = html.Framework().Metamodel.GetSpecification(pagedCollectionNakedObject.GetTypeOfFacetFromSpec().ValueSpec);
+                IObjectSpec typeSpec = html.Framework().Metamodel.GetSpecification(pagedCollectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(pagedCollectionNakedObject));
 
 
                 tagTotalCount.InnerHtml += string.Format(MvcUi.TotalOfXType, total, total == 1 ? typeSpec.SingularName : typeSpec.PluralName);
@@ -1465,7 +1465,7 @@ namespace NakedObjects.Web.Mvc.Html {
                     return html.GetAndParseValueAsNakedObject(context, rawvalue);
                 }
                 if (context.Parameter.IsCollection) {
-                    var facet = context.Parameter.Spec.GetFacet<ITypeOfFacet>();
+                    var facet = context.Parameter.GetFacet<IElementTypeFacet>();
                     IObjectSpec itemSpec = html.Framework().Metamodel.GetSpecification(facet.ValueSpec);
 
                     if (itemSpec.IsParseable) {
@@ -1716,7 +1716,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static string CollectionItemTypeName(INakedObject collectionNakedObject) {
             ITypeOfFacet facet = collectionNakedObject.GetTypeOfFacetFromSpec();
-            return facet.ValueSpec.ShortName;
+            return facet.GetValueSpec(collectionNakedObject).ShortName;
         }
 
 

@@ -515,7 +515,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             INakedObject collectionNakedObject = property.GetNakedObject(context.Target);
             ITypeOfFacet facet = collectionNakedObject.GetTypeOfFacetFromSpec();
 
-            var introspectableSpecification = facet.ValueSpec;
+            var introspectableSpecification = facet.GetValueSpec(collectionNakedObject);
             var spec = framework.Metamodel.GetSpecification(introspectableSpecification);
             if (context.ProposedNakedObject.Spec.IsOfType(spec)) {
                 return new Allow();
@@ -603,22 +603,25 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                 return specification.GetFacet<IParseableFacet>().ParseTextEntry(rawValue.ToString(), framework.Manager);
             }
 
+            var no = framework.Manager.CreateAdapter(rawValue, null, null);
+
             if (specification.IsCollection) {
-                var elementSpec = specification.GetFacet<ITypeOfFacet>().ValueSpec;
+                var elementSpec = specification.GetFacet<ITypeOfFacet>().GetValueSpec(no);
 
                 if (elementSpec.IsParseable) {
-                    var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.Manager)).ToArray();
-                    var elementType = TypeUtils.GetType(elementSpec.FullName);
-                    Type collType = typeof (List<>).MakeGenericType(elementType);
-                    var collection = framework.Manager.CreateAdapter(Activator.CreateInstance(collType), null, null);
+                    //var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.Manager)).ToArray();
+                    //var elementType = TypeUtils.GetType(elementSpec.FullName);
+                    //Type collType = typeof (List<>).MakeGenericType(elementType);
+                    //var collection = framework.Manager.CreateAdapter(Activator.CreateInstance(collType), null, null);
 
-                    collection.Spec.GetFacet<ICollectionFacet>().Init(collection, elements);
-                    return collection;
+                    throw new NotImplementedException();
+                    //collection.Spec.GetFacet<ICollectionFacet>().Init(collection, elements);
+                    //return collection;
                 }
             }
 
 
-            return framework.Manager.CreateAdapter(rawValue, null, null);
+            return no;
         }
 
         private IConsent CanSetPropertyValue(PropertyContext context) {

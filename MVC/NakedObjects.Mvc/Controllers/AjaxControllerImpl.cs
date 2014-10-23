@@ -12,6 +12,7 @@ using System.Web.Script.Serialization;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter.Map;
@@ -116,7 +117,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
-        private  INakedObject GetValue(string[] values, IObjectSpec spec) {
+        private  INakedObject GetValue(string[] values, IFeatureSpec featureSpec) {
+            var spec = featureSpec.Spec;
             if (!values.Any()) {
                 return null;
             }
@@ -125,7 +127,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return spec.GetFacet<IParseableFacet>().ParseTextEntry(values.First(), NakedObjectsContext.Manager);
             }
             if (spec.IsCollection) {
-                return NakedObjectsContext.GetTypedCollection(spec, values);
+                return NakedObjectsContext.GetTypedCollection(featureSpec, values);
             }
 
             return NakedObjectsContext.GetNakedObjectFromId(values.First());
@@ -150,7 +152,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             foreach (IActionParameterSpec parm in action.Parameters) {
                 string[] values =  GetRawValues(parms, IdHelper.GetParameterInputId(action, parm));
-                results[parm.Id.ToLower()] = GetValue(values, parm.Spec);
+                results[parm.Id.ToLower()] = GetValue(values, parm);
             }
 
             return results;
@@ -164,7 +166,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             foreach (IOneToOneAssociationSpec assoc in nakedObject.Spec.Properties.Where(a => a.IsObject)) {
                 string[] values = GetRawValues(parms, GetFieldInputId(nakedObject, assoc));
-                results[assoc.Id.ToLower()] = GetValue(values, assoc.Spec);
+                results[assoc.Id.ToLower()] = GetValue(values, assoc);
             }
 
             return results;
@@ -181,7 +183,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 if (p.IsChoicesEnabled || p.IsMultipleChoicesEnabled) {
                     INakedObject[] nakedObjectChoices = p.GetChoices(nakedObject, otherValues);
                     string[] content = nakedObjectChoices.Select(c => c.TitleString()).ToArray();
-                    string[] value = NakedObjectsContext.IsParseableOrCollectionOfParseable(p.Spec) ? content : nakedObjectChoices.Select(NakedObjectsContext.GetObjectId).ToArray();
+                    string[] value = NakedObjectsContext.IsParseableOrCollectionOfParseable(p) ? content : nakedObjectChoices.Select(NakedObjectsContext.GetObjectId).ToArray();
 
                     choices[IdHelper.GetParameterInputId(action, p)] = new[] {value, content};
                 }

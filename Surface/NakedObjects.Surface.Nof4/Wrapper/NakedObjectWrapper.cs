@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util.Reflection;
 using NakedObjects.Surface.Interface;
 using NakedObjects.Value;
 
@@ -68,7 +68,7 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public INakedObjectSpecificationSurface ElementSpecification {
             get {
                 ITypeOfFacet typeOfFacet = nakedObject.GetTypeOfFacetFromSpec();
-                var introspectableSpecification = typeOfFacet.ValueSpec;
+                var introspectableSpecification = typeOfFacet.GetValueSpec(nakedObject);
                 var spec = framework.Metamodel.GetSpecification(introspectableSpecification);
                 return new NakedObjectSpecificationWrapper(spec, Surface, framework);
             }

@@ -136,9 +136,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         public INakedObjectSpecificationSurface ElementType {
             get {
                 if (IsCollection) {
-                    var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().ValueSpec;
-                    var elementSpec = framework.Metamodel.GetSpecification(introspectableSpecification);
-                    return new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
+                    throw new NotImplementedException();
+                    //var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().ValueSpec;
+                    //var elementSpec = framework.Metamodel.GetSpecification(introspectableSpecification);
+                    //return new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
                 }
                 return null;
             }

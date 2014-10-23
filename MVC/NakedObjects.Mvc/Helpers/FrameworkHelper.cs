@@ -40,8 +40,8 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static IEnumerable<IActionSpec> GetTopLevelActionsByReturnType(this INakedObjectsFramework framework, INakedObject nakedObject, IObjectSpec spec) {
             return framework.GetTopLevelActions(nakedObject).
-                Where(a => a is ActionSpecSet || (framework.IsOfTypeOrCollectionOfType(a.ReturnType, spec) && a.IsFinderMethod)).
-                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible( nakedObject) && framework.IsOfTypeOrCollectionOfType(sa.ReturnType, spec) && sa.IsFinderMethod));
+                Where(a => a is ActionSpecSet || (framework.IsOfTypeOrCollectionOfType(a, spec) && a.IsFinderMethod)).
+                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible( nakedObject) && framework.IsOfTypeOrCollectionOfType(sa, spec) && sa.IsFinderMethod));
         }
 
         public static IEnumerable<IActionSpec> GetChildActions(this INakedObjectsFramework framework, ActionContext actionContext) {
@@ -55,16 +55,25 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static IEnumerable<IActionSpec> GetChildActionsByReturnType(this INakedObjectsFramework framework, ActionContext actionContext, IObjectSpec spec) {
-            return framework.GetChildActions(actionContext).Where(a => framework.IsOfTypeOrCollectionOfType(a.ReturnType, spec)).
+            return framework.GetChildActions(actionContext).Where(a => framework.IsOfTypeOrCollectionOfType(a, spec)).
                                                   Where(action => action.Parameters.All(parm => parm.Spec.IsParseable || parm.IsChoicesEnabled || parm.Spec.IsOfType(actionContext.Target.Spec)));
         }
 
-        private static bool IsOfTypeOrCollectionOfType(this INakedObjectsFramework framework, IObjectSpec returnType, IObjectSpec spec) {
+        private static bool IsOfTypeOrCollectionOfType(this INakedObjectsFramework framework, IActionSpec actionSpec, IObjectSpec spec) {
+            var returnType = actionSpec.ReturnType;
+            
             if (returnType.IsOfType(spec)) {
                 return true;
             }
-            return returnType.IsCollection && framework.Metamodel.GetSpecification( returnType.GetFacet<ITypeOfFacet>().ValueSpec).IsOfType(spec);
+            return returnType.IsCollection && framework.Metamodel.GetSpecification(actionSpec.GetFacet<IElementTypeFacet>().ValueSpec).IsOfType(spec);
         }
+
+        //private static bool IsOfTypeOrCollectionOfType(this INakedObjectsFramework framework, IObjectSpec returnType, IObjectSpec spec) {
+        //    if (returnType.IsOfType(spec)) {
+        //        return true;
+        //    }
+        //    return returnType.IsCollection && framework.Metamodel.GetSpecification( returnType.GetFacet<ITypeOfFacet>().ValueSpec).IsOfType(spec);
+        //}
 
         public static string GetObjectType(Type type) {
             return type.GetProxiedTypeFullName().Replace('.', '-');
@@ -273,12 +282,14 @@ namespace NakedObjects.Web.Mvc.Html {
             return action.ContainsFacet<IIdempotentFacet>();
         }
 
-        public static bool IsParseableOrCollectionOfParseable(this INakedObjectsFramework framework, IObjectSpec spec) {
-            return spec.IsParseable || (spec.IsCollection && spec.GetFacet<ITypeOfFacet>().ValueSpec.IsParseable);
+        public static bool IsParseableOrCollectionOfParseable(this INakedObjectsFramework framework, IActionParameterSpec parmSpec) {
+            var spec = parmSpec.Spec;
+            return spec.IsParseable || (spec.IsCollection && parmSpec.GetFacet<IElementTypeFacet>().ValueSpec.IsParseable);
         }
 
-        public static INakedObject GetTypedCollection(this INakedObjectsFramework framework, IObjectSpec spec, IEnumerable collectionValue) {
-            IObjectSpec collectionitemSpec = framework.Metamodel.GetSpecification(spec.GetFacet<ITypeOfFacet>().ValueSpec);
+        public static INakedObject GetTypedCollection(this INakedObjectsFramework framework, IFeatureSpec featureSpec, IEnumerable collectionValue) {
+
+            IObjectSpec collectionitemSpec = framework.Metamodel.GetSpecification(featureSpec.GetFacet<IElementTypeFacet>().ValueSpec);
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
             object[] objCollection;
 
