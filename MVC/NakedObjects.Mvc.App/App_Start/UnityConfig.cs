@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using System.Security.Principal;
@@ -32,6 +33,7 @@ using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Web.Mvc.Helpers;
+using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Mvc.App.App_Start {
     /// <summary>
@@ -47,7 +49,7 @@ namespace NakedObjects.Mvc.App.App_Start {
 
         private static Type[] Types {
             get {
-                return new Type[] {typeof(EntityCollection<object>)} ;
+                return new Type[] { typeof(EntityCollection<object>), typeof(ObjectQuery<object>),typeof(ActionResultModelQ<object>) };
             }
         }
 

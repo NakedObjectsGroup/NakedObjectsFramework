@@ -49,6 +49,10 @@ namespace NakedObjects.Core.Spec {
 
         #region IActionSpec Members
 
+        public virtual IObjectSpec ElementType {
+            get { return null; }
+        }
+
         public virtual IActionSpec[] Actions {
             get { return actionsSpec; }
         }

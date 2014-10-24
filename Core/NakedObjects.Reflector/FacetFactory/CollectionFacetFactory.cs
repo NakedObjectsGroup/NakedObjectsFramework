@@ -39,21 +39,14 @@ namespace NakedObjects.Reflector.FacetFactory {
             bool isCollection = CollectionUtils.IsGenericCollection(type); // as opposed to IEnumerable 
             bool isQueryable = CollectionUtils.IsGenericQueryable(type);
             bool isSet = CollectionUtils.IsSet(type);
-            //Type collectionElementType;
-            if (elementTypeFacet != null) {
-                //collectionElementType = elementTypeFacet.Value;
-            }
-            else {
-                //collectionElementType = CollectionUtils.ElementType(type);
-                //var collectionElementSpec = Reflector.LoadSpecification(collectionElementType);
+
+            if (elementTypeFacet == null) {
                 holder.AddFacet(new TypeOfFacetInferredFromGenerics(holder, Reflector.Metamodel));
-                //holder.AddFacet(new ElementTypeFacet(holder, collectionElementType, collectionElementSpec));
             }
 
-            Type facetType = isQueryable ? typeof(GenericIQueryableFacet) : (isCollection ? typeof(GenericCollectionFacet) : typeof(GenericIEnumerableFacet));
+            Type facetType = isQueryable ? typeof (GenericIQueryableFacet) : (isCollection ? typeof (GenericCollectionFacet) : typeof (GenericIEnumerableFacet));
 
-            //Type genericFacet = facetType.GetGenericTypeDefinition();
-            var facet = (IFacet)Activator.CreateInstance(facetType, holder, isSet);
+            var facet = (IFacet) Activator.CreateInstance(facetType, holder, isSet);
             holder.AddFacet(facet);
             return true;
         }

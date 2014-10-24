@@ -60,7 +60,11 @@ namespace NakedObjects.Core.Spec {
         #region IActionSpec Members
 
         public virtual IObjectSpec ReturnType {
-            get { return metamodel.GetSpecification(ActionInvocationFacet.ReturnType); }
+            get { return metamodel.GetSpecification(actionSpecImmutable.ReturnType); }
+        }
+
+        public virtual IObjectSpec ElementType {
+            get { return metamodel.GetSpecification(actionSpecImmutable.ElementType); }
         }
 
         public virtual IObjectSpec OnType {

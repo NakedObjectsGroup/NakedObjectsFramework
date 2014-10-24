@@ -40,8 +40,8 @@ namespace NakedObjects.Web.Mvc.Html {
 
         public static IEnumerable<IActionSpec> GetTopLevelActionsByReturnType(this INakedObjectsFramework framework, INakedObject nakedObject, IObjectSpec spec) {
             return framework.GetTopLevelActions(nakedObject).
-                Where(a => a is ActionSpecSet || (framework.IsOfTypeOrCollectionOfType(a, spec) && a.IsFinderMethod)).
-                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible( nakedObject) && framework.IsOfTypeOrCollectionOfType(sa, spec) && sa.IsFinderMethod));
+                Where(a => a is ActionSpecSet || (IsOfTypeOrCollectionOfType(a, spec) && a.IsFinderMethod)).
+                Where(a => !a.Actions.Any() || a.Actions.Any(sa => sa.IsVisible( nakedObject) && IsOfTypeOrCollectionOfType(sa, spec) && sa.IsFinderMethod));
         }
 
         public static IEnumerable<IActionSpec> GetChildActions(this INakedObjectsFramework framework, ActionContext actionContext) {
@@ -55,25 +55,14 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static IEnumerable<IActionSpec> GetChildActionsByReturnType(this INakedObjectsFramework framework, ActionContext actionContext, IObjectSpec spec) {
-            return framework.GetChildActions(actionContext).Where(a => framework.IsOfTypeOrCollectionOfType(a, spec)).
+            return framework.GetChildActions(actionContext).Where(a => IsOfTypeOrCollectionOfType(a, spec)).
                                                   Where(action => action.Parameters.All(parm => parm.Spec.IsParseable || parm.IsChoicesEnabled || parm.Spec.IsOfType(actionContext.Target.Spec)));
         }
 
-        private static bool IsOfTypeOrCollectionOfType(this INakedObjectsFramework framework, IActionSpec actionSpec, IObjectSpec spec) {
+        private static bool IsOfTypeOrCollectionOfType(IActionSpec actionSpec, IObjectSpec spec) {
             var returnType = actionSpec.ReturnType;
-            
-            if (returnType.IsOfType(spec)) {
-                return true;
-            }
-            return returnType.IsCollection && framework.Metamodel.GetSpecification(actionSpec.GetFacet<IElementTypeFacet>().ValueSpec).IsOfType(spec);
+            return returnType.IsOfType(spec) || (returnType.IsCollection && actionSpec.ElementType.IsOfType(spec));
         }
-
-        //private static bool IsOfTypeOrCollectionOfType(this INakedObjectsFramework framework, IObjectSpec returnType, IObjectSpec spec) {
-        //    if (returnType.IsOfType(spec)) {
-        //        return true;
-        //    }
-        //    return returnType.IsCollection && framework.Metamodel.GetSpecification( returnType.GetFacet<ITypeOfFacet>().ValueSpec).IsOfType(spec);
-        //}
 
         public static string GetObjectType(Type type) {
             return type.GetProxiedTypeFullName().Replace('.', '-');

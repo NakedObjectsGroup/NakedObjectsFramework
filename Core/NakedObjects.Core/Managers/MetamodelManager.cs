@@ -31,18 +31,22 @@ namespace NakedObjects.Managers {
         }
 
         public IObjectSpec GetSpecification(Type type) {
-            return new ObjectSpec(memberFactory, this, GetInnerSpec(type));
+            return type == null ? null : NewObjectSpec(GetInnerSpec(type));
         }
 
         public IObjectSpec GetSpecification(string name) {
-            return new ObjectSpec(memberFactory, this, GetInnerSpec(name));
+            return string.IsNullOrWhiteSpace(name) ? null : NewObjectSpec(GetInnerSpec(name));
         }
 
         public IObjectSpec GetSpecification(IObjectSpecImmutable spec) {
-            return new ObjectSpec(memberFactory, this, GetInnerSpec(spec.Type));
+            return spec == null ? null : NewObjectSpec(GetInnerSpec(spec.Type));
         }
 
         #endregion
+
+        private ObjectSpec NewObjectSpec(IObjectSpecImmutable spec) {
+            return new ObjectSpec(memberFactory, this, spec);
+        }
 
         private IObjectSpecImmutable GetInnerSpec(Type type) {
             var innerSpec = metamodel.GetSpecification(type);
