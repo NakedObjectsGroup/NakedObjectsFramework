@@ -64,7 +64,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             var returnSpec = Reflector.LoadSpecification(actionMethod.ReturnType);
 
             IObjectSpecImmutable elementSpec = null;
-            if (returnSpec.IsCollection) {
+            if (returnSpec != null && returnSpec.IsCollection) {
                 var elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
                 elementSpec = Reflector.LoadSpecification(elementType);
             }
