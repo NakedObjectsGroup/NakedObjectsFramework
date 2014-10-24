@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
@@ -17,57 +20,66 @@ namespace NakedObjects.Metamodel.SpecImmutable {
 
 
     public class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
-        private readonly IObjectSpecImmutable specification;
         private readonly IActionParameterSpecImmutable[] parameters;
+        private readonly IObjectSpecImmutable specification;
 
-        public ActionSpecImmutable(IIdentifier identifier,  IObjectSpecImmutable specification, IActionParameterSpecImmutable[] parameters)
+        public ActionSpecImmutable(IIdentifier identifier, IObjectSpecImmutable specification, IActionParameterSpecImmutable[] parameters)
             : base(identifier) {
             this.specification = specification;
             this.parameters = parameters;
         }
 
+        #region IActionSpecImmutable Members
+
         public override IObjectSpecImmutable Specification {
             get { return specification; }
         }
 
-        #region INakedObjectActionPeer Members
-
         public IActionParameterSpecImmutable[] Parameters {
             get { return parameters; }
-        }  
+        }
 
-        #endregion
+        public IActionSpecImmutable Peer {
+            get { return this; }
+        }
 
-        public IActionSpecImmutable Peer { get { return this; }}
-        public IOrderSet<IActionSpecImmutable> Set { get { return null; } }
+        public IOrderSet<IActionSpecImmutable> Set {
+            get { return null; }
+        }
 
-        public  bool IsContributedMethod {
+        public IObjectSpecImmutable ElementType {
+            get { return GetFacet<IActionInvocationFacet>().ElementType; }
+        }
+
+        public bool IsContributedMethod {
             get {
                 if (Specification.Service && parameters.Any() &&
-                    (!ContainsFacet(typeof(INotContributedActionFacet)) || !GetFacet<INotContributedActionFacet>().NeverContributed())) {
+                    (!ContainsFacet(typeof (INotContributedActionFacet)) || !GetFacet<INotContributedActionFacet>().NeverContributed())) {
                     return Parameters.Any(p => p.Specification.IsObject || p.Specification.IsCollection);
                 }
                 return false;
             }
         }
 
-      
+
         public virtual IObjectSpecImmutable ReturnType {
             get { return GetFacet<IActionInvocationFacet>().ReturnType; }
         }
 
-        public virtual bool HasReturn() {
-            return ReturnType != null;
-        }
-
         public bool IsFinderMethod {
-            get { return HasReturn() && !ContainsFacet(typeof(IExcludeFromFindMenuFacet)); }
+            get { return HasReturn() && !ContainsFacet(typeof (IExcludeFromFindMenuFacet)); }
         }
 
         public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) {
             return IsContributedMethod
                    && Parameters.Any(parm => ContributeTo(parm.Specification, objectSpecImmutable))
                    && !(IsCollection(objectSpecImmutable) && IsCollection(GetFacet<IActionInvocationFacet>().ReturnType));
+        }
+
+        #endregion
+
+        public virtual bool HasReturn() {
+            return ReturnType != null;
         }
 
         private bool IsCollection(IObjectSpecImmutable spec) {

@@ -159,7 +159,7 @@ namespace NakedObjects.Architecture.Util {
         }
 
 
-        private static bool IsGenericType(Type type, Type toMatch) {
+        public static bool IsGenericType(Type type, Type toMatch) {
             return type.IsGenericType && (type.GetGenericTypeDefinition() == toMatch || type.GetInterfaces().Any(interfaceType => IsGenericType(interfaceType, toMatch)));
         }
 

@@ -50,11 +50,11 @@ namespace NakedObjects.Reflector.FacetFactory {
                 //holder.AddFacet(new ElementTypeFacet(holder, collectionElementType, collectionElementSpec));
             }
 
-            Type facetType = isQueryable ? typeof(GenericIQueryableFacet<>) : (isCollection ? typeof(GenericCollectionFacet<>) : typeof(GenericIEnumerableFacet<>));
+            Type facetType = isQueryable ? typeof(GenericIQueryableFacet) : (isCollection ? typeof(GenericCollectionFacet) : typeof(GenericIEnumerableFacet));
 
             //Type genericFacet = facetType.GetGenericTypeDefinition();
-            //var facet = (IFacet)Activator.CreateInstance(holder, isSet);
-            //holder.AddFacet(facet);
+            var facet = (IFacet)Activator.CreateInstance(facetType, holder, isSet);
+            holder.AddFacet(facet);
             return true;
         }
 

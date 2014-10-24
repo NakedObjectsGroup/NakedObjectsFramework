@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
@@ -59,7 +61,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         #endregion
 
         private string GetKeyForType(Type type) {
-            if (type.IsGenericType && CollectionUtils.IsCollection(type)) {
+            if (CollectionUtils.IsGenericType(type, typeof(IEnumerable<>))) {
                 return type.Namespace + "." + type.Name;
             }
 

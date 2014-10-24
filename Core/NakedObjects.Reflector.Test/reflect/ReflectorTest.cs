@@ -74,5 +74,20 @@ namespace NakedObjects.Reflector.Reflect {
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
+        [Test]
+        public void ReflectQueryableTypes() {
+            var container = GetContainer();
+            var qo = new List<object>() {}.AsQueryable();
+            var qi = new List<int>() { }.AsQueryable();
+            var rc = new ReflectorConfiguration(new Type[] { qo.GetType(), qi.GetType() }, new Type[] { }, new Type[] { }, new Type[] { });
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+            Assert.AreEqual(9, reflector.AllObjectSpecImmutables.Count());
+            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+        }
+
     }
 }

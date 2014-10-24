@@ -21,13 +21,15 @@ namespace NakedObjects.Metamodel.Facet {
         private readonly IObjectSpecImmutable onType;
         private readonly int paramCount;
         private readonly IObjectSpecImmutable returnType;
+        private readonly IObjectSpecImmutable elementType;
 
-        public ActionInvocationFacetViaMethod(MethodInfo method, IObjectSpecImmutable onType, IObjectSpecImmutable returnType, ISpecification holder)
+        public ActionInvocationFacetViaMethod(MethodInfo method, IObjectSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder)
             : base(holder) {
             actionMethod = method;
             paramCount = method.GetParameters().Length;
             this.onType = onType;
             this.returnType = returnType;
+            this.elementType = elementType;
         }
 
         public override IObjectSpecImmutable ReturnType {
@@ -37,6 +39,11 @@ namespace NakedObjects.Metamodel.Facet {
         public override IObjectSpecImmutable OnType {
             get { return onType; }
         }
+
+        public override IObjectSpecImmutable ElementType {
+            get { return elementType; }
+        }
+
 
         #region IImperativeFacet Members
 

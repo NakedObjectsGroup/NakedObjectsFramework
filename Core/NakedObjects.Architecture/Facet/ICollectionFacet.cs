@@ -18,6 +18,7 @@ namespace NakedObjects.Architecture.Facet {
         INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable);
         IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager);
         IQueryable AsQueryable(INakedObject objectRepresentingCollection);
+        void Init(INakedObject collection, INakedObject[] initData);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

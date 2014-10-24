@@ -31,6 +31,10 @@ namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
             get { return underlyingFacet.ReturnType; }
         }
 
+        public override IObjectSpecImmutable ElementType {
+            get { return underlyingFacet.ElementType; }
+        }
+
         public override IObjectSpecImmutable OnType {
             get { return underlyingFacet.OnType; }
         }

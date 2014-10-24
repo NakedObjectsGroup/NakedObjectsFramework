@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
@@ -25,6 +26,7 @@ using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Reflector.DotNet;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Spec;
 using NakedObjects.Service;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
@@ -42,12 +44,18 @@ namespace NakedObjects.Mvc.App.App_Start {
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
         //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
 
-       
+
+        private static Type[] Types {
+            get {
+                return new Type[] {typeof(EntityCollection<object>)} ;
+            }
+        }
+
 
         private static object[] MenuServices {
             get {
                 return new object[] {
-                  new CustomerRepository(),
+                new CustomerRepository(),
                 new OrderRepository(),
                 new ProductRepository(),
                 new EmployeeRepository(),
@@ -102,7 +110,7 @@ namespace NakedObjects.Mvc.App.App_Start {
         /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container) {
-            var reflectorConfig = new ReflectorConfiguration(new Type[] { },
+            var reflectorConfig = new ReflectorConfiguration(Types,
                MenuServices.Select(s => s.GetType()).ToArray(),
                ContributedActions.Select(s => s.GetType()).ToArray(),
                SystemServices.Select(s => s.GetType()).ToArray());
@@ -113,8 +121,9 @@ namespace NakedObjects.Mvc.App.App_Start {
             container.RegisterInstance<IEntityObjectStoreConfiguration>(EntityObjectStore(), new ContainerControlledLifetimeManager());
 
             // in architecture
-            container.RegisterType<IClassStrategy, DefaultClassStrategy>();
-            container.RegisterType<IFacetFactorySet, FacetFactorySet>();
+            container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IFacetFactorySet, FacetFactorySet>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager());
             container.RegisterType<IReflector, Reflector.DotNet.Reflect.Reflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, Reflector.DotNet.Reflect.Metamodel>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodelMutable, Reflector.DotNet.Reflect.Metamodel>(new ContainerControlledLifetimeManager());

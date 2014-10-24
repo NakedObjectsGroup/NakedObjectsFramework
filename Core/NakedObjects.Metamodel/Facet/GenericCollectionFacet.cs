@@ -5,18 +5,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Util.Reflection;
 
 namespace NakedObjects.Metamodel.Facet {
-    public class GenericCollectionFacet<T> : CollectionFacetAbstract {
-        public GenericCollectionFacet(ISpecification holder) : this(holder, false) {}
+    public class GenericCollectionFacet : CollectionFacetAbstract {
+
+        public GenericCollectionFacet(ISpecification holder)
+            : base(holder, false) { }
 
         public GenericCollectionFacet(ISpecification holder, bool isASet)
             : base(holder, isASet) {}
@@ -25,26 +24,56 @@ namespace NakedObjects.Metamodel.Facet {
             get { return false; }
         }
 
-        protected static ICollection AsCollection(INakedObject collection) {
-            return (ICollection)collection.Object;
+        protected static ICollection<T> AsGenericCollection<T>(INakedObject collection) {
+            return (ICollection<T>) collection.Object;
         }
 
+        public IEnumerable<INakedObject> AsEnumerableInternal<T>(INakedObject collection, INakedObjectManager manager) {
+            return AsGenericCollection<T>(collection).Select(arg => manager.CreateAdapter(arg, null, null));
+        }
+
+        public IQueryable AsQueryableInternal<T>(INakedObject collection) {
+            return AsGenericCollection<T>(collection).AsQueryable();
+        }
+
+        public bool ContainsInternal<T>(INakedObject collection, INakedObject element) {
+            return AsGenericCollection<T>(collection).Contains((T) element.Object);
+        }
+
+        public INakedObject PageInternal<T>(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable) {
+            return manager.CreateAdapter(AsGenericCollection<T>(collection).Skip((page - 1)*size).Take(size).ToList(), null, null);
+        }
+
+        public void InitInternal<T>(INakedObject collection, INakedObject[] initData) {
+            ICollection<T> wrappedCollection = AsGenericCollection<T>(collection);
+            IList<T> newData = initData.Select(x => x.GetDomainObject<T>()).ToList();
+
+            List<T> toAdd = newData.Where(obj => !wrappedCollection.Contains(obj)).ToList();
+            toAdd.ForEach(wrappedCollection.Add);
+
+            List<T> toRemove = wrappedCollection.Where(obj => !newData.Contains(obj)).ToList();
+            toRemove.ForEach(obj => wrappedCollection.Remove(obj));
+        }
+
+
         public override IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager) {
-            foreach (var item in AsCollection(collection)) {
-                yield return manager.CreateAdapter(item, null, null);
-            }
+            return (IEnumerable<INakedObject>) Call("AsEnumerableInternal", collection, collection, manager);
         }
 
         public override IQueryable AsQueryable(INakedObject collection) {
-            return AsCollection(collection).AsQueryable();
+            return (IQueryable) Call("AsQueryableInternal", collection, collection);
         }
 
         public override bool Contains(INakedObject collection, INakedObject element) {
-            return AsCollection(collection).Contains(element.Object);
+            return (bool) Call("ContainsInternal", collection, collection, element);
         }
 
         public override INakedObject Page(int page, int size, INakedObject collection, INakedObjectManager manager, bool forceEnumerable) {
-            return manager.CreateAdapter(AsCollection(collection).Skip((page - 1)*size).Take(size).ToList(), null, null);
+            return (INakedObject) Call("PageInternal", collection, page, size, collection, manager, forceEnumerable);
+        }
+
+        public override void Init(INakedObject collection, INakedObject[] initData) {
+            Call("InitInternal", collection, collection, initData);
         }
     }
 }

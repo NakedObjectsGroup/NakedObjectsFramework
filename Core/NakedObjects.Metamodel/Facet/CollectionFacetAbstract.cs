@@ -24,6 +24,13 @@ namespace NakedObjects.Metamodel.Facet {
             IsASet = isASet;
         }
 
+        protected object Call(string name, INakedObject collection, params object[] pp) {
+            var m = GetType().GetMethod(name);
+            var t = collection.Object.GetType().GenericTypeArguments.First();
+
+            return m.MakeGenericMethod(t).Invoke(this, pp);
+        }
+
         #region ICollectionFacet Members
 
         public abstract bool IsQueryable { get; }
@@ -35,6 +42,8 @@ namespace NakedObjects.Metamodel.Facet {
         public abstract IQueryable AsQueryable(INakedObject collection);
 
         #endregion
+
+        public abstract void Init(INakedObject collection, INakedObject[] initData);
     }
 
 

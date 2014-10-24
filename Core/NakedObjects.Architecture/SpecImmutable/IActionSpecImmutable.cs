@@ -12,6 +12,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
         IActionParameterSpecImmutable[] Parameters { get; }
         bool IsFinderMethod { get; }
         IObjectSpecImmutable ReturnType { get; }
+        IObjectSpecImmutable ElementType { get; }
         bool IsContributedMethod { get; }
         bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable);
     }

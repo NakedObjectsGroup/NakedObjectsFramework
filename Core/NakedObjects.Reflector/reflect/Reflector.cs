@@ -174,7 +174,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 foreach (var serviceAction in serviceSpecification.ObjectActions.Flattened.Where(a => a.IsFinderMethod)) {
                     var returnType = serviceAction.ReturnType;
                     if (returnType != null && returnType.IsCollection) {
-                        var elementType = returnType.GetFacet<IElementTypeFacet>().ValueSpec;
+                        var elementType = serviceAction.ElementType;
                         if (elementType.IsOfType(spec)) {
                             matchingActions.Add(serviceAction);
                         }

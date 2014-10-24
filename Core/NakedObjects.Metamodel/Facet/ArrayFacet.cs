@@ -5,12 +5,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
     public class ArrayFacet : CollectionFacet {
         public ArrayFacet(ISpecification holder)
             : base(holder) {}
+
+
+        public override void Init(INakedObject collection, INakedObject[] initData) {
+            Array newCollection = Array.CreateInstance(collection.GetDomainObject().GetType().GetElementType(), initData.Length);
+            collection.ReplacePoco(newCollection);
+
+            int i = 0;
+            foreach (INakedObject nakedObject in initData) {
+                AsCollection(collection)[i++] = nakedObject.Object;
+            }
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

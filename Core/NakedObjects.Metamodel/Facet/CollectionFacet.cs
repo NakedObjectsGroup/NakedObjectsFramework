@@ -34,6 +34,16 @@ namespace NakedObjects.Metamodel.Facet {
             return AsCollection(collection).AsQueryable();
         }
 
+        public override void Init(INakedObject collection, INakedObject[] initData) {
+            IList wrappedCollection = AsCollection(collection);
+
+            List<object> toAdd = initData.Select(no => no.Object).Where(obj => !wrappedCollection.Contains(obj)).ToList();
+            toAdd.ForEach(obj => wrappedCollection.Add(obj));
+
+            List<object> toRemove = wrappedCollection.Cast<object>().Where(o => !initData.Select(x => x.Object).Contains(o)).ToList();
+            toRemove.ForEach(wrappedCollection.Remove);
+        }
+
         public override bool Contains(INakedObject collection, INakedObject element) {
             return AsCollection(collection).Contains(element.Object);
         }

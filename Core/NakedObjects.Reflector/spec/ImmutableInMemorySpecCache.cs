@@ -15,12 +15,12 @@ namespace NakedObjects.Reflector.Spec {
 
         #region ISpecificationCache Members
 
-        public virtual IObjectSpecImmutable GetSpecification(string className) {
-            return specs.ContainsKey(className) ? specs[className] : null;
+        public virtual IObjectSpecImmutable GetSpecification(string key) {
+            return specs.ContainsKey(key) ? specs[key] : null;
         }
 
-        public virtual void Cache(string className, IObjectSpecImmutable spec) {
-            specs = specs.Add(className, spec);
+        public virtual void Cache(string key, IObjectSpecImmutable spec) {
+            specs = specs.Add(key, spec);
         }
 
         public virtual void Clear() {

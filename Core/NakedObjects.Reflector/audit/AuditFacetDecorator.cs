@@ -79,6 +79,10 @@ namespace NakedObjects.Reflector.Audit {
                 get { return underlyingFacet.ReturnType; }
             }
 
+            public override IObjectSpecImmutable ElementType {
+                get { return underlyingFacet.ElementType; }
+            }
+
             public override IObjectSpecImmutable OnType {
                 get { return underlyingFacet.OnType; }
             }

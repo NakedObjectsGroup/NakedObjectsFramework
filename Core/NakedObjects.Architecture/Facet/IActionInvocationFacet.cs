@@ -23,6 +23,7 @@ namespace NakedObjects.Architecture.Facet {
         IObjectSpecImmutable ReturnType { get; }
 
         IObjectSpecImmutable OnType { get; }
+        IObjectSpecImmutable ElementType { get; }
 
         INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectManager manager, ISession session, ITransactionManager transactionManager);
 

@@ -25,6 +25,7 @@ namespace NakedObjects.Metamodel.Facet {
 
         public abstract IObjectSpecImmutable OnType { get; }
         public abstract IObjectSpecImmutable ReturnType { get; }
+        public abstract IObjectSpecImmutable ElementType { get; }
 
         public abstract INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, INakedObjectManager manager, ISession session, ITransactionManager transactionManager);
 

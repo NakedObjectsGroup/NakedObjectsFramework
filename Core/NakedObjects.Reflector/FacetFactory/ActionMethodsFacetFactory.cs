@@ -63,8 +63,15 @@ namespace NakedObjects.Reflector.FacetFactory {
             var onType = Reflector.LoadSpecification(type);
             var returnSpec = Reflector.LoadSpecification(actionMethod.ReturnType);
 
+            IObjectSpecImmutable elementSpec = null;
+            if (CollectionUtils.IsGenericCollection(actionMethod.ReturnType) || CollectionUtils.IsGenericQueryable(actionMethod.ReturnType)) {
+
+                var elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
+                elementSpec = Reflector.LoadSpecification(elementType);
+            }
+
             RemoveMethod(methodRemover, actionMethod);
-            facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, action));
+            facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action));
 
             MethodType methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
             Type[] paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
