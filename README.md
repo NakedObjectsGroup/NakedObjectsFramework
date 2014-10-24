@@ -12,7 +12,7 @@ MVC Tests Status [![Build status](https://ci.appveyor.com/api/projects/status/15
 Getting Started
 ===============
 
-There is a comprehensive Developer Manual for the Naked Objects Framework, download it as a .docx from here: https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/DeveloperManual.docx?raw=true
+There is a comprehensive Developer Manual for the Naked Objects Framework, download it as a .docx from here: https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/6aadec10146d007067baeeeb302fb135c869d3b8/Documentation/DeveloperManual.docx?raw=true
 
 At the start of the manual, under 'Writing your first Naked Objects application' is a very simple worked example.
 
