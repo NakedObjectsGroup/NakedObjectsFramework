@@ -91,7 +91,7 @@
       <HintPath>..\..\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Surface">
-      <HintPath>..\..\packages\NakedObjects.Surface.3.0.0\lib\net451\NakedObjects.Surface.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Surface.7.0.0-alpha2\lib\net451\NakedObjects.Surface.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

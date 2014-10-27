@@ -11,6 +11,7 @@ using System.Collections.Generic;
 namespace NakedObjects.Surface {
     public interface INakedObjectActionParameterSurface : IScalarPropertyHolder, ISurfaceHolder {
         INakedObjectSpecificationSurface Specification { get; }
+        INakedObjectSpecificationSurface ElementType { get; }
         INakedObjectActionSurface Action { get; }
         string Id { get; }
         bool IsChoicesEnabled { get; }

@@ -21,6 +21,10 @@ namespace NakedObjects.Surface {
             get { return Target.Specification; }
         }
 
+        public override INakedObjectSpecificationSurface ElementSpecification {
+            get { return Target.ElementSpecification; }
+        }
+
         public PropertyContextSurface[] VisibleProperties { get; set; }
 
         public ActionContextSurface[] VisibleActions { get; set; }

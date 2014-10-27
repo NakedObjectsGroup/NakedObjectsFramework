@@ -34,7 +34,8 @@ namespace RestfulObjects.Snapshot.Strategies {
                 pattern: null,
                 memberOrder: propertyContext.Property.MemberOrder(),
                 customExtensions: propertyContext.Property.ExtensionData(),
-                returnType: collection.Specification);
+                returnType: collection.Specification,
+                elementType: propertyContext.ElementSpecification);
         }
 
         public LinkRepresentation[] GetValue() {

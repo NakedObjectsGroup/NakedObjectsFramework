@@ -107,7 +107,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         private bool IsUnconditionalChoices() {
             return propertyContext.Property.IsChoicesEnabled &&
-                   (propertyContext.Property.Specification.IsParseable() || (propertyContext.Property.Specification.IsCollection() && propertyContext.Property.Specification.ElementType.IsParseable())) &&
+                   (propertyContext.Property.Specification.IsParseable() || (propertyContext.Property.Specification.IsCollection() && propertyContext.Property.ElementSpecification.IsParseable())) &&
                    !propertyContext.Property.GetChoicesParameters().Any();
         }
 
@@ -123,7 +123,8 @@ namespace RestfulObjects.Snapshot.Strategies {
                 pattern: propertyContext.Property.Pattern(),
                 memberOrder: propertyContext.Property.MemberOrder(),
                 customExtensions: GetCustomPropertyExtensions(),
-                returnType: propertyContext.Specification);
+                returnType: propertyContext.Specification,
+                elementType: propertyContext.ElementSpecification );
         }
 
         public bool GetHasChoices() {

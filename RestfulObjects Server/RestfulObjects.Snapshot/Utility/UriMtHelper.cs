@@ -517,7 +517,7 @@ namespace RestfulObjects.Snapshot.Utility {
         public void AddActionResultRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {
             INakedObjectSpecificationSurface resultSpec = action.ReturnType;
             bool isCollection = resultSpec.IsCollection() && !resultSpec.IsParseable();
-            INakedObjectSpecificationSurface parameterValueSpec = isCollection ? resultSpec.ElementType : resultSpec;
+            INakedObjectSpecificationSurface parameterValueSpec = isCollection ? action.ElementType : resultSpec;
             string parameterValue = GetParameterValue(flags, parameterValueSpec);
 
             if (parameterValue != null) {

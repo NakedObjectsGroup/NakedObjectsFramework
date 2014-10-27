@@ -21,7 +21,10 @@ namespace NakedObjects.Architecture.Spec {
         /// </para>
         IObjectSpec Spec { get; }
 
+        IObjectSpec ElementSpec { get; }
+
         bool IsNullable { get; }
+       
         IConsent IsUsable(INakedObject target);
     }
 }

@@ -127,6 +127,10 @@ namespace NakedObjects.Core.Spec {
             get { return null; }
         }
 
+        public IObjectSpec ElementSpec {
+            get { return null; }
+        }
+
         public virtual INakedObject Execute(INakedObject target, INakedObject[] parameterSet) {
             throw new UnexpectedCallException();
         }

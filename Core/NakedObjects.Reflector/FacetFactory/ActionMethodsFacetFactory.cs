@@ -104,13 +104,21 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
-            IFacet facet = null;
+            var facets = new List<IFacet>();
 
             if (parameter.ParameterType.IsGenericType && (parameter.ParameterType.GetGenericTypeDefinition() == typeof (Nullable<>))) {
-                facet = new NullableFacetAlways(holder);
+                facets.Add(new NullableFacetAlways(holder));
             }
 
-            return FacetUtils.AddFacet(facet);
+            var returnSpec = Reflector.LoadSpecification(parameter.ParameterType);
+
+            if (returnSpec != null && returnSpec.IsCollection) {
+                var elementType = CollectionUtils.ElementType(parameter.ParameterType);
+                IObjectSpecImmutable elementSpec = Reflector.LoadSpecification(elementType);
+                facets.Add(new ElementTypeFacet(holder, elementType, elementSpec));
+            }
+
+            return FacetUtils.AddFacets(facets);
         }
 
 

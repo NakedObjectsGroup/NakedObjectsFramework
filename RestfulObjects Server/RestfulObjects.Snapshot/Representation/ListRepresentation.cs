@@ -83,7 +83,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetLinks(HttpRequestMessage req, ActionContextSurface actionContext) {
-            SetLinks(req, actionContext.Specification.ElementType);
+            SetLinks(req, actionContext.ElementSpecification);
         }
 
         private void SetHeader(bool isListOfServices) {

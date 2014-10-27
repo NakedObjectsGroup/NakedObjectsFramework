@@ -61,7 +61,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static bool IsOfTypeOrCollectionOfType(IActionSpec actionSpec, IObjectSpec spec) {
             var returnType = actionSpec.ReturnType;
-            return returnType.IsOfType(spec) || (returnType.IsCollection && actionSpec.ElementType.IsOfType(spec));
+            return returnType.IsOfType(spec) || (returnType.IsCollection && actionSpec.ElementSpec.IsOfType(spec));
         }
 
         public static string GetObjectType(Type type) {

@@ -85,7 +85,7 @@ namespace RestfulObjects.Snapshot.Representations {
             };
 
             if (actionTypeContext.ActionContext.Action.ReturnType.IsCollection()) {
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, actionTypeContext.ActionContext.Action.ReturnType.ElementType)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, actionTypeContext.ActionContext.Action.ElementType)), Flags));
             }
 
             Links = tempLinks.ToArray();

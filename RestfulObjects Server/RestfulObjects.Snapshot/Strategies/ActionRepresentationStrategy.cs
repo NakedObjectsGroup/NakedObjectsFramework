@@ -110,7 +110,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateElementTypeLink() {
-            return LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, actionContext.Specification.ElementType)), Flags);
+            return LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, actionContext.ElementSpecification)), Flags);
         }
 
         private LinkRepresentation CreateReturnTypeLink() {
@@ -139,7 +139,8 @@ namespace RestfulObjects.Snapshot.Strategies {
                 pattern: null,
                 memberOrder: actionContext.Action.MemberOrder(),
                 customExtensions: actionContext.Action.ExtensionData(),
-                returnType: actionContext.Action.ReturnType);
+                returnType: actionContext.Action.ReturnType,
+                elementType: actionContext.Action.ElementType);
         }
 
         private LinkRepresentation CreateActionLink() {

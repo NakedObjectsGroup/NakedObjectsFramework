@@ -10,7 +10,7 @@ using System;
 namespace NakedObjects.Surface {
     public interface INakedObjectSpecificationSurface : IScalarPropertyHolder, ISurfaceHolder {
         INakedObjectAssociationSurface[] Properties { get; }
-        INakedObjectSpecificationSurface ElementType { get; }
+        INakedObjectSpecificationSurface GetElementType(INakedObjectSurface nakedObject);
         bool IsImmutable(INakedObjectSurface nakedObject);
         string GetIconName(INakedObjectSurface nakedObject);
         INakedObjectActionSurface[] GetActionLeafNodes();

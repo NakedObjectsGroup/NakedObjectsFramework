@@ -23,14 +23,14 @@ namespace NakedObjects.Core.Spec {
         private readonly IMetamodelManager metamodel;
         private readonly int number;
         private readonly IActionSpec parentAction;
-        private readonly IActionParameterSpecImmutable peer;
+        private readonly IActionParameterSpecImmutable actionParameterSpecImmutable;
         private readonly IObjectPersistor persistor;
         private readonly ISession session;
 
-        protected internal ActionParameterSpec(IMetamodelManager metamodel, int number, IActionSpec actionSpec, IActionParameterSpecImmutable peer, INakedObjectManager manager, ISession session, IObjectPersistor persistor) {
+        protected internal ActionParameterSpec(IMetamodelManager metamodel, int number, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(actionSpec);
-            Assert.AssertNotNull(peer);
+            Assert.AssertNotNull(actionParameterSpecImmutable);
             Assert.AssertNotNull(manager);
             Assert.AssertNotNull(session);
             Assert.AssertNotNull(persistor);
@@ -38,13 +38,13 @@ namespace NakedObjects.Core.Spec {
             this.metamodel = metamodel;
             this.number = number;
             parentAction = actionSpec;
-            this.peer = peer;
+            this.actionParameterSpecImmutable = actionParameterSpecImmutable;
             this.manager = manager;
             this.session = session;
             this.persistor = persistor;
         }
 
-        public INakedObjectManager Manager {
+        protected INakedObjectManager Manager {
             get { return manager; }
         }
 
@@ -59,7 +59,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         public bool IsMultipleChoicesEnabled {
-            get { return Spec.IsCollectionOfBoundedSet() || Spec.IsCollectionOfEnum() || (ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple); }
+            get {
+                
+                return Spec.IsCollectionOfBoundedSet(ElementSpec) ||
+                Spec.IsCollectionOfEnum(ElementSpec) ||
+                (ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple); }
         }
 
         /// <summary>
@@ -85,7 +89,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual IObjectSpec Spec {
-            get { return metamodel.GetSpecification(peer.Specification); }
+            get { return metamodel.GetSpecification(actionParameterSpecImmutable.Specification); }
+        }
+
+        public virtual IObjectSpec ElementSpec {
+            get { return metamodel.GetSpecification(GetFacet<IElementTypeFacet>().ValueSpec); }
         }
 
         public string GetName() {
@@ -106,7 +114,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual Type[] FacetTypes {
-            get { return peer != null ? peer.FacetTypes : new Type[] {}; }
+            get { return actionParameterSpecImmutable != null ? actionParameterSpecImmutable.FacetTypes : new Type[] {}; }
         }
 
         public virtual IIdentifier Identifier {
@@ -114,46 +122,46 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual bool ContainsFacet(Type facetType) {
-            return peer != null && peer.ContainsFacet(facetType);
+            return actionParameterSpecImmutable != null && actionParameterSpecImmutable.ContainsFacet(facetType);
         }
 
         public virtual bool ContainsFacet<T>() where T : IFacet {
-            return peer != null && peer.ContainsFacet<T>();
+            return actionParameterSpecImmutable != null && actionParameterSpecImmutable.ContainsFacet<T>();
         }
 
         public virtual IFacet GetFacet(Type type) {
-            return peer != null ? peer.GetFacet(type) : null;
+            return actionParameterSpecImmutable != null ? actionParameterSpecImmutable.GetFacet(type) : null;
         }
 
         public virtual T GetFacet<T>() where T : IFacet {
-            return peer != null ? peer.GetFacet<T>() : default(T);
+            return actionParameterSpecImmutable != null ? actionParameterSpecImmutable.GetFacet<T>() : default(T);
         }
 
         public virtual IEnumerable<IFacet> GetFacets() {
-            return peer != null ? peer.GetFacets() : new IFacet[] {};
+            return actionParameterSpecImmutable != null ? actionParameterSpecImmutable.GetFacets() : new IFacet[] {};
         }
 
         public virtual void AddFacet(IFacet facet) {
-            if (peer != null) {
-                peer.AddFacet(facet);
+            if (actionParameterSpecImmutable != null) {
+                actionParameterSpecImmutable.AddFacet(facet);
             }
         }
 
         public virtual void AddFacet(IMultiTypedFacet facet) {
-            if (peer != null) {
-                peer.AddFacet(facet);
+            if (actionParameterSpecImmutable != null) {
+                actionParameterSpecImmutable.AddFacet(facet);
             }
         }
 
         public virtual void RemoveFacet(IFacet facet) {
-            if (peer != null) {
-                peer.RemoveFacet(facet);
+            if (actionParameterSpecImmutable != null) {
+                actionParameterSpecImmutable.RemoveFacet(facet);
             }
         }
 
         public virtual void RemoveFacet(Type facetType) {
-            if (peer != null) {
-                peer.RemoveFacet(facetType);
+            if (actionParameterSpecImmutable != null) {
+                actionParameterSpecImmutable.RemoveFacet(facetType);
             }
         }
 
@@ -204,7 +212,7 @@ namespace NakedObjects.Core.Spec {
                 return Manager.GetCollectionOfAdaptedObjects(persistor.Instances(Spec)).ToArray();
             }
 
-            if (Spec.IsCollectionOfBoundedSet() || Spec.IsCollectionOfEnum()) {
+            if (Spec.IsCollectionOfBoundedSet(ElementSpec) || Spec.IsCollectionOfEnum(ElementSpec)) {
                 var instanceSpec = metamodel.GetSpecification(Spec.GetFacet<IElementTypeFacet>().ValueSpec);
 
                 var instanceEnumFacet = instanceSpec.GetFacet<IEnumFacet>();

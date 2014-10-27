@@ -50,12 +50,6 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         IObjectSpec ReturnType { get; }
 
-
-        /// <summary>
-        ///     Returns the specifications for the element type (if the reurn type is a collection) otherwise null
-        /// </summary>
-        IObjectSpec ElementType { get; }
-
         /// <summary>
         ///     Lists the sub-actions that are available under this name. If any actions are returned then this action
         ///     is only a set and not an action itself.

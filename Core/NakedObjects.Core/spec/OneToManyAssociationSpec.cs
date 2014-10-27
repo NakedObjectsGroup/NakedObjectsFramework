@@ -41,6 +41,13 @@ namespace NakedObjects.Core.Spec {
             return GetCollection(inObject);
         }
 
+        public override IObjectSpec ElementSpec {
+            get {
+                // TODO make all this more obvious return collection spec in Spec and element spec here
+                return this.Spec;
+            }
+        }
+
         public override bool IsCollection {
             get { return true; }
         }

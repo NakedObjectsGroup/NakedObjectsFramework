@@ -24,5 +24,9 @@ namespace NakedObjects.Surface {
         public override INakedObjectSpecificationSurface Specification {
             get { return Result == null ? ActionContext.Specification : Result.Specification; }
         }
+
+        public override INakedObjectSpecificationSurface ElementSpecification {
+            get { return Result == null ? ActionContext.ElementSpecification : Result.ElementSpecification; }
+        }
     }
 }

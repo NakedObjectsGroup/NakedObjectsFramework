@@ -12,8 +12,8 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
     public class ActionParseableParameterSpec : ActionParameterSpec, IActionParseableParameterSpec {
-        public ActionParseableParameterSpec(IMetamodelManager metamodel, int index, IActionSpec actionSpec, IActionParameterSpecImmutable peer, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
-            : base(metamodel, index, actionSpec, peer, manager, session, persistor) {}
+        public ActionParseableParameterSpec(IMetamodelManager metamodel, int index, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
+            : base(metamodel, index, actionSpec, actionParameterSpecImmutable, manager, session, persistor) {}
 
         public virtual int NoLines {
             get { return GetFacet<IMultiLineFacet>().NumberOfLines; }

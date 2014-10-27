@@ -18,5 +18,9 @@ namespace NakedObjects.Surface {
         public override INakedObjectSpecificationSurface Specification {
             get { return Property.Specification; }
         }
+
+        public override INakedObjectSpecificationSurface ElementSpecification {
+            get { return Property.ElementSpecification; }
+        }
     }
 }

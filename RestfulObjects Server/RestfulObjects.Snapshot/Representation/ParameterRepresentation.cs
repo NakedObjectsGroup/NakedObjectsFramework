@@ -120,7 +120,8 @@ namespace RestfulObjects.Snapshot.Representations {
                     pattern: parameter.Pattern(),
                     memberOrder: null,
                     customExtensions: custom,
-                    returnType: parameter.Specification);
+                    returnType: parameter.Specification,
+                    elementType: parameter.ElementType);
             }
             else {
                 Extensions = MapRepresentation.Create();
@@ -129,7 +130,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private static bool IsUnconditionalChoices(INakedObjectActionParameterSurface parameter) {
             return parameter.IsChoicesEnabled &&
-                   (parameter.Specification.IsParseable() || (parameter.Specification.IsCollection() && parameter.Specification.ElementType.IsParseable())) &&
+                   (parameter.Specification.IsParseable() || (parameter.Specification.IsCollection() && parameter.ElementType.IsParseable())) &&
                    !parameter.GetChoicesParameters().Any();
         }
 

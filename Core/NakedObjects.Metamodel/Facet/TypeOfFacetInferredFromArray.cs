@@ -28,7 +28,7 @@ namespace NakedObjects.Metamodel.Facet {
         #region ITypeOfFacet Members
 
         public Type GetValue(INakedObject collection) {
-            throw new NotImplementedException();
+            return collection.Object.GetType().GetElementType();
         }
 
         public IObjectSpecImmutable GetValueSpec(INakedObject collection) {

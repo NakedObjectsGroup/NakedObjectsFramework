@@ -133,16 +133,13 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
             return actionsAndUid.Select(a => new NakedObjectActionWrapper(a.Item1, Surface, framework, a.Item2)).Cast<INakedObjectActionSurface>().ToArray();
         }
 
-        public INakedObjectSpecificationSurface ElementType {
-            get {
-                if (IsCollection) {
-                    throw new NotImplementedException();
-                    //var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().ValueSpec;
-                    //var elementSpec = framework.Metamodel.GetSpecification(introspectableSpecification);
-                    //return new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
-                }
-                return null;
+        public INakedObjectSpecificationSurface GetElementType(INakedObjectSurface nakedObject) {
+            if (IsCollection) {
+                var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().GetValueSpec(((NakedObjectWrapper)nakedObject).WrappedNakedObject);
+                var elementSpec = framework.Metamodel.GetSpecification(introspectableSpecification);
+                return new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
             }
+            return null;
         }
 
         public bool IsOfType(INakedObjectSpecificationSurface otherSpec) {

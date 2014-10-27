@@ -39,17 +39,18 @@ namespace RestfulObjects.Snapshot.Utility {
         };
 
         public static MapRepresentation GetExtensions(string friendlyname,
-            string description,
-            string pluralName,
-            string domainType,
-            bool? isService,
-            bool? hasParams,
-            bool? optional,
-            int? maxLength,
-            string pattern,
-            int? memberOrder,
-            IDictionary<string, object> customExtensions,
-            INakedObjectSpecificationSurface returnType) {
+                                                      string description,
+                                                      string pluralName,
+                                                      string domainType,
+                                                      bool? isService,
+                                                      bool? hasParams,
+                                                      bool? optional,
+                                                      int? maxLength,
+                                                      string pattern,
+                                                      int? memberOrder,
+                                                      IDictionary<string, object> customExtensions,
+                                                      INakedObjectSpecificationSurface returnType,
+                                                      INakedObjectSpecificationSurface elementType) {
             var exts = new Dictionary<string, object> {
                 {JsonPropertyNames.FriendlyName, friendlyname},
                 {JsonPropertyNames.Description, description}
@@ -93,8 +94,8 @@ namespace RestfulObjects.Snapshot.Utility {
                     exts.Add(JsonPropertyNames.Pattern, pattern ?? "");
                 }
                 else if (returnType.IsCollection()) {
-                    exts.Add(JsonPropertyNames.ElementType, SpecToTypeAndFormatString(returnType.ElementType).Item1);
-                    exts.Add(JsonPropertyNames.PluralName, returnType.ElementType.PluralName());
+                    exts.Add(JsonPropertyNames.ElementType, SpecToTypeAndFormatString(elementType).Item1);
+                    exts.Add(JsonPropertyNames.PluralName, elementType.PluralName());
                 }
             }
 

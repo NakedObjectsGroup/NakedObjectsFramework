@@ -124,7 +124,8 @@ namespace RestfulObjects.Snapshot.Representations {
                     pattern: null,
                     memberOrder: null,
                     customExtensions: GetCustomExtensions(nakedObject),
-                    returnType: null);
+                    returnType: null,
+                    elementType: null);
             }
             else {
                 Extensions = MapRepresentation.Create();

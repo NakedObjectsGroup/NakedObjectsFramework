@@ -22,5 +22,9 @@ namespace NakedObjects.Surface {
         public override INakedObjectSpecificationSurface Specification {
             get { return spec; }
         }
+
+        public override INakedObjectSpecificationSurface ElementSpecification {
+            get { return null; }
+        }
     }
 }

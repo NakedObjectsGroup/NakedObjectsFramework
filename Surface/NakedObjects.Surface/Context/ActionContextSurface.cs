@@ -17,6 +17,10 @@ namespace NakedObjects.Surface {
             get { return Action.ReturnType; }
         }
 
+        public override INakedObjectSpecificationSurface ElementSpecification {
+            get { return Action.ElementType; }
+        }
+
         public ParameterContextSurface[] VisibleParameters { get; set; }
     }
 }

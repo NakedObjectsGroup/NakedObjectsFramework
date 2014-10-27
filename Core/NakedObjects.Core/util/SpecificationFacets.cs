@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 
@@ -31,24 +30,24 @@ namespace NakedObjects.Architecture.Spec {
             return spec.ContainsFacet<IBoundedFacet>() || spec.ContainsFacet<IEnumValueFacet>();
         }
 
-        public static bool IsCollectionOfBoundedSet(this IObjectSpec spec) {
-            return spec.IsCollection && spec.GetFacet<IElementTypeFacet>().ValueSpec.IsBoundedSet();
+        public static bool IsCollectionOfBoundedSet(this IObjectSpec spec, IObjectSpec elementSpec) {
+            return spec.IsCollection && elementSpec.IsBoundedSet();
         }
 
-        public static bool IsCollectionOfEnum(this IObjectSpec spec) {
-            return spec.IsCollection && spec.GetFacet<IElementTypeFacet>().ValueSpec.ContainsFacet<IEnumFacet>();
+        public static bool IsCollectionOfEnum(this IObjectSpec spec, IObjectSpec elementSpec) {
+            return spec.IsCollection && elementSpec.ContainsFacet<IEnumFacet>();
         }
 
         public static bool IsBoundedSet(this IObjectSpecImmutable specification) {
             return specification.ContainsFacet<IBoundedFacet>() || specification.ContainsFacet<IEnumValueFacet>();
         }
 
-        public static bool IsCollectionOfBoundedSet(this IObjectSpecImmutable specification) {
-            return specification.IsCollection && specification.GetFacet<IElementTypeFacet>().ValueSpec.IsBoundedSet();
+        public static bool IsCollectionOfBoundedSet(this IObjectSpecImmutable specification, IObjectSpecImmutable elementSpec) {
+            return specification.IsCollection && elementSpec.IsBoundedSet();
         }
 
-        public static bool IsCollectionOfEnum(this IObjectSpecImmutable specification) {
-            return specification.IsCollection && specification.GetFacet<IElementTypeFacet>().ValueSpec.ContainsFacet<IEnumFacet>();
+        public static bool IsCollectionOfEnum(this IObjectSpecImmutable specification, IObjectSpecImmutable elementSpec) {
+            return specification.IsCollection && elementSpec.ContainsFacet<IEnumFacet>();
         }
     }
 

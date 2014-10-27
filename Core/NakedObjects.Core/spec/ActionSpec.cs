@@ -63,7 +63,7 @@ namespace NakedObjects.Core.Spec {
             get { return metamodel.GetSpecification(actionSpecImmutable.ReturnType); }
         }
 
-        public virtual IObjectSpec ElementType {
+        public override IObjectSpec ElementSpec {
             get { return metamodel.GetSpecification(actionSpecImmutable.ElementType); }
         }
 

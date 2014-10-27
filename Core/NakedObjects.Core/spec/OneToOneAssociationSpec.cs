@@ -31,6 +31,10 @@ namespace NakedObjects.Core.Spec {
 
         #region IOneToOneAssociationSpec Members
 
+        public override IObjectSpec ElementSpec {
+            get { return null; }
+        }
+
         public override bool IsObject {
             get { return true; }
         }
@@ -186,6 +190,8 @@ namespace NakedObjects.Core.Spec {
             str.Append("type", Spec.ShortName);
             return str.ToString();
         }
+
+     
     }
 
     // Copyright (c) Naked Objects Group Ltd.

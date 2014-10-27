@@ -8,6 +8,7 @@
 namespace NakedObjects.Surface {
     public interface INakedObjectActionSurface : INakedObjectMemberSurface, ISurfaceHolder {
         INakedObjectSpecificationSurface ReturnType { get; }
+        INakedObjectSpecificationSurface ElementType { get; }
         int ParameterCount { get; }
         INakedObjectActionParameterSurface[] Parameters { get; }
         INakedObjectSpecificationSurface OnType { get; }

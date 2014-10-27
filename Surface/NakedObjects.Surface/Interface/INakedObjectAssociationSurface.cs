@@ -11,6 +11,7 @@ using System.Collections.Generic;
 namespace NakedObjects.Surface {
     public interface INakedObjectAssociationSurface : INakedObjectMemberSurface, ISurfaceHolder {
         INakedObjectSpecificationSurface Specification { get; }
+        INakedObjectSpecificationSurface ElementSpecification { get; }
         bool IsChoicesEnabled { get; }
         bool IsAutoCompleteEnabled { get; }
         IConsentSurface IsUsable(INakedObjectSurface target);

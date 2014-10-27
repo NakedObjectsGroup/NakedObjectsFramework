@@ -11,8 +11,8 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
     public class OneToManyActionParameterImpl : ActionParameterSpec, IOneToManyFeatureSpec {
-        public OneToManyActionParameterImpl(IMetamodelManager metamodel, int index, IActionSpec actionImpl, IActionParameterSpecImmutable peer, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
-            : base(metamodel, index, actionImpl, peer, manager, session, persistor) {}
+        public OneToManyActionParameterImpl(IMetamodelManager metamodel, int index, IActionSpec actionImpl, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor)
+            : base(metamodel, index, actionImpl, actionParameterSpecImmutable, manager, session, persistor) {}
 
         public override bool IsCollection {
             get { return true; }
