@@ -6,12 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
@@ -55,25 +52,13 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         public void Add(Type type, IObjectSpecImmutable spec) {
-            cache.Cache(GetKeyForType(type), spec);
+            cache.Cache(classStrategy.GetKeyForType(type), spec);
         }
 
         #endregion
 
-        private string GetKeyForType(Type type) {
-            if (CollectionUtils.IsGenericType(type, typeof(IEnumerable<>))) {
-                return type.Namespace + "." + type.Name;
-            }
-
-            if (type.IsArray) {
-                return "System.Array";
-            }
-
-            return type.GetProxiedTypeFullName();
-        }
-
         private IObjectSpecImmutable GetSpecificationFromCache(Type type) {
-            string key = GetKeyForType(type);
+            string key = classStrategy.GetKeyForType(type);
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
 
             return cache.GetSpecification(key);

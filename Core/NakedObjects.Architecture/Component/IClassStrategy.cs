@@ -29,6 +29,7 @@ namespace NakedObjects.Architecture.Component {
         bool IsSystemClass(Type type);
 
         bool IsTypeUnsupportedByReflector(Type type);
+        string GetKeyForType(Type type);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

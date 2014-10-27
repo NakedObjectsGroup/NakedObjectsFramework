@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.Unity;
@@ -19,6 +20,104 @@ using NUnit.Framework;
 
 namespace NakedObjects.Reflector.Reflect {
     public class ReflectorTest {
+
+        public class SetWrapper<T> : ISet<T> {
+            private readonly ICollection<T> wrapped;
+
+            public SetWrapper(ICollection<T> wrapped) {
+                this.wrapped = wrapped;
+            }
+
+            #region ISet<T> Members
+
+            public IEnumerator<T> GetEnumerator() {
+                return wrapped.GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() {
+                return GetEnumerator();
+            }
+
+            //public void ICollection<T>.Add(T item) {
+            //   wrapped.Add(item);
+            //}
+
+            public void UnionWith(IEnumerable<T> other) {
+                throw new NotImplementedException();
+            }
+
+            public void IntersectWith(IEnumerable<T> other) {
+                throw new NotImplementedException();
+            }
+
+            public void ExceptWith(IEnumerable<T> other) {
+                throw new NotImplementedException();
+            }
+
+            public void SymmetricExceptWith(IEnumerable<T> other) {
+                throw new NotImplementedException();
+            }
+
+            public bool IsSubsetOf(IEnumerable<T> other) {
+                throw new NotImplementedException();
+            }
+
+            public bool IsSupersetOf(IEnumerable<T> other) {
+                throw new NotImplementedException();
+            }
+
+            public bool IsProperSupersetOf(IEnumerable<T> other) {
+                throw new NotImplementedException();
+            }
+
+            public bool IsProperSubsetOf(IEnumerable<T> other) {
+                throw new NotImplementedException();
+            }
+
+            public bool Overlaps(IEnumerable<T> other) {
+                throw new NotImplementedException();
+            }
+
+            public bool SetEquals(IEnumerable<T> other) {
+                throw new NotImplementedException();
+            }
+
+            public bool Add(T item) {
+                wrapped.Add(item);
+                return true;
+            }
+
+            void ICollection<T>.Add(T item) {
+                wrapped.Add(item);
+            }
+
+            public void Clear() {
+                wrapped.Clear();
+            }
+
+            public bool Contains(T item) {
+                throw new NotImplementedException();
+            }
+
+            public void CopyTo(T[] array, int arrayIndex) {
+                throw new NotImplementedException();
+            }
+
+            public bool Remove(T item) {
+                throw new NotImplementedException();
+            }
+
+            public int Count {
+                get { return wrapped.Count; }
+            }
+
+            public bool IsReadOnly {
+                get { return wrapped.IsReadOnly; }
+            }
+
+            #endregion
+        }
+
         protected IUnityContainer GetContainer() {
             var c = new UnityContainer();
             RegisterTypes(c);
@@ -73,6 +172,21 @@ namespace NakedObjects.Reflector.Reflect {
             Assert.AreEqual(10, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
+
+        [Test]
+        public void ReflectSetTypes() {
+            var container = GetContainer();
+            var rc = new ReflectorConfiguration(new Type[] { typeof(SetWrapper<object>) }, new Type[] { }, new Type[] { }, new Type[] { });
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+            Assert.AreEqual(16, reflector.AllObjectSpecImmutables.Count());
+            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+        }
+
+
 
         [Test]
         public void ReflectQueryableTypes() {
