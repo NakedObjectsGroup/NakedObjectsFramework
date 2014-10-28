@@ -94,22 +94,6 @@ namespace NakedObjects.Architecture.Reflect {
             return specification.GetFacets();
         }
 
-        public virtual void AddFacet(IFacet facet) {
-            specification.AddFacet(facet);
-        }
-
-        public virtual void AddFacet(IMultiTypedFacet facet) {
-            specification.AddFacet(facet);
-        }
-
-        public virtual void RemoveFacet(IFacet facet) {
-            specification.RemoveFacet(facet);
-        }
-
-        public virtual void RemoveFacet(Type facetType) {
-            specification.RemoveFacet(facetType);
-        }
-
 
         /// <summary>
         ///     Loops over all <see cref="IHidingInteractionAdvisor" /> <see cref="IFacet" />s and

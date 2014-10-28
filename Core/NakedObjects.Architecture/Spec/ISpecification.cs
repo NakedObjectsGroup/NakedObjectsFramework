@@ -79,15 +79,5 @@ namespace NakedObjects.Architecture.Spec {
         ///     or if the existing <see cref="IFacet" /> is an <see cref="IFacet.IsNoOp" />
         /// </para>
         void AddFacet(IMultiTypedFacet facet);
-
-        /// <summary>
-        ///     Remove the facet whose type is that reported by <see cref="IFacet.FacetType" />
-        /// </summary>
-        void RemoveFacet(IFacet facet);
-
-        /// <summary>
-        ///     Remove the facet of the specified type
-        /// </summary>
-        void RemoveFacet(Type facetType);
     }
 }

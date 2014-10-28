@@ -17,13 +17,13 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstract<bool>, IBooleanValueFacet {
-        private const bool defaultValue = false;
-        private const bool equalByContent = true;
-        private const bool immutable = true;
-        private const int typicalLength = 5;
+        private const bool DefaultValueConst = false;
+        private const bool EqualByContent = true;
+        private const bool Immutable = true;
+        private const int TypicalLengthConst = 5;
 
         public BooleanValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) {}
+            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.

@@ -27,11 +27,11 @@ namespace NakedObjects.Architecture.Reflect {
         IOrderSet<IActionSpecImmutable> ObjectActions { get; }
         IList<Tuple<string, string, IOrderSet<IActionSpecImmutable>>> ContributedActions { get; }
         IList<Tuple<string, string, IOrderSet<IActionSpecImmutable>>> RelatedActions { get; }
-        IOrderSet<IAssociationSpecImmutable> Fields { get; set; }
-        IObjectSpecImmutable[] Interfaces { get; set; }
-        IObjectSpecImmutable[] Subclasses { get; set; }
-        bool Service { get; set; }
-        INakedObjectValidation[] ValidationMethods { get; set; }
+        IOrderSet<IAssociationSpecImmutable> Fields { get;  }
+        IObjectSpecImmutable[] Interfaces { get;  }
+        IObjectSpecImmutable[] Subclasses { get;  }
+        bool Service { get;  }
+        INakedObjectValidation[] ValidationMethods { get;  }
         IObjectSpecImmutable Superclass { get; }
         bool IsObject { get; }
         bool IsCollection { get; }

@@ -7,7 +7,6 @@
 
 using System;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
 using NakedObjects.Util;

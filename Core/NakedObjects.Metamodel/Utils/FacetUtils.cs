@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
@@ -22,7 +21,7 @@ namespace NakedObjects.Metamodel.Utils {
         /// </returns>
         public static bool AddFacet(IFacet facet) {
             if (facet != null) {
-                ((ISpecificationBuilder)facet.Specification).AddFacet(facet);
+                ((ISpecificationBuilder) facet.Specification).AddFacet(facet);
                 return true;
             }
             return false;
@@ -42,54 +41,8 @@ namespace NakedObjects.Metamodel.Utils {
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        public static bool AddFacets(IFacet[] facets) {
-            return facets.Aggregate(false, (current, facet) => current | AddFacet(facet));
-        }
-
-        /// <summary>
-        ///     Attaches each <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
-        /// </summary>
-        /// <returns>
-        ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
-        /// </returns>
-        public static bool AddFacets(IList<IFacet> facetList) {
+        public static bool AddFacets(IEnumerable<IFacet> facetList) {
             return facetList.Aggregate(false, (current, facet) => current | AddFacet(facet));
-        }
-
-        /// <summary>
-        ///     Bit nasty, for use only by <see cref="ISpecification" />s that index their <see cref="IFacet" />s
-        ///     in a <see cref="Dictionary{TKey,TValue}" />.
-        /// </summary>
-        public static Type[] GetFacetTypes(Dictionary<Type, IFacet> facetsByClass) {
-            return new List<Type>(facetsByClass.Keys).ToArray();
-        }
-
-
-        public static void RemoveFacet(IDictionary<Type, IFacet> facetsByClass, IFacet facet) {
-            RemoveFacet(facetsByClass, facet.FacetType);
-        }
-
-        public static IFacet GetFacet(IDictionary<Type, IFacet> facetsByClass, Type facetType) {
-            return facetsByClass.ContainsKey(facetType) ? facetsByClass[facetType] : null;
-        }
-
-        public static void RemoveFacet(IDictionary<Type, IFacet> facetsByClass, Type facetType) {
-            if (facetsByClass.ContainsKey(facetType)) {
-                IFacet facet = facetsByClass[facetType];
-                facetsByClass.Remove(facetType);
-                facet.Specification = null;
-            }
-        }
-
-        public static void AddFacet(IDictionary<Type, IFacet> facetsByClass, IFacet facet) {
-            facetsByClass[facet.FacetType] = facet;
-        }
-
-        public static IFacet[] ToArray(IList<IFacet> facetList) {
-            if (facetList == null) {
-                return new IFacet[0];
-            }
-            return new List<IFacet>(facetList).ToArray();
         }
 
         public static INakedObject[] MatchParameters(string[] parameterNames, IDictionary<string, INakedObject> parameterNameValues) {

@@ -151,17 +151,6 @@ namespace NakedObjects.Core.Spec {
             return actionSpecImmutable.GetFacets();
         }
 
-        public override void AddFacet(IFacet facet) {
-            actionSpecImmutable.AddFacet(facet);
-        }
-
-        public override void RemoveFacet(IFacet facet) {
-            actionSpecImmutable.RemoveFacet(facet);
-        }
-
-        public override void RemoveFacet(Type facetType) {
-            actionSpecImmutable.RemoveFacet(facetType);
-        }
 
         public virtual IActionParameterSpec[] Parameters {
             get { return parametersSpec; }

@@ -9,10 +9,10 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
     public class PageSizeFacetDefault : PageSizeFacetAbstract {
-        private const int defaultPageSize = 20;
+        private const int DefaultPageSize = 20;
 
         public PageSizeFacetDefault(ISpecification holder)
-            : base(defaultPageSize, holder) {}
+            : base(DefaultPageSize, holder) {}
     }
 
 

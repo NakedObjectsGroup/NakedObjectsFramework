@@ -7,22 +7,23 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.Spec {
     /// <summary>
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>
     public class Specification : ISpecification, ISpecificationBuilder {
-        private readonly Dictionary<Type, IFacet> facetsByClass = new Dictionary<Type, IFacet>();
+        private ImmutableDictionary<Type, IFacet> facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
 
         #region ISpecification Members
 
         public virtual Type[] FacetTypes {
-            get { return FacetUtils.GetFacetTypes(facetsByClass); }
+            get { return facetsByClass.Keys.ToArray(); }
         }
 
         public virtual IIdentifier Identifier {
@@ -34,11 +35,11 @@ namespace NakedObjects.Metamodel.Spec {
         }
 
         public bool ContainsFacet<T>() where T : IFacet {
-            return GetFacet<T>() != null;
+            return GetFacet(typeof (T)) != null;
         }
 
         public virtual IFacet GetFacet(Type facetType) {
-            return FacetUtils.GetFacet(facetsByClass, facetType);
+            return facetsByClass.ContainsKey(facetType) ? facetsByClass[facetType] : null;
         }
 
         public T GetFacet<T>() where T : IFacet {
@@ -51,7 +52,7 @@ namespace NakedObjects.Metamodel.Spec {
 
         #endregion
 
-        #region ISpecificationMutable Members
+        #region ISpecificationBuilder Members
 
         public void AddFacet(IFacet facet) {
             AddFacet(facet.FacetType, facet);
@@ -63,20 +64,12 @@ namespace NakedObjects.Metamodel.Spec {
             }
         }
 
-        public void RemoveFacet(IFacet facet) {
-            FacetUtils.RemoveFacet(facetsByClass, facet);
-        }
-
-        public void RemoveFacet(Type facetType) {
-            FacetUtils.RemoveFacet(facetsByClass, facetType);
-        }
-
         #endregion
 
         private void AddFacet(Type facetType, IFacet facet) {
             IFacet existingFacet = GetFacet(facetType);
             if (existingFacet == null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
-                facetsByClass[facetType] = facet;
+                facetsByClass = facetsByClass.Add(facetType, facet);
             }
         }
     }

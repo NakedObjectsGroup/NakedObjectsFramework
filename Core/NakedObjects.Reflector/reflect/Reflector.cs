@@ -25,6 +25,8 @@ using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
+
+    // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
     public class Reflector : IReflector {
         private static readonly ILog Log;
 
@@ -198,6 +200,8 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private void InstallSpecification(Type type, bool isService) {
             var spec = LoadSpecification(type);
 
+            // Do this here so that if the service spec was found and loaded earlier for any reason it is still marked 
+            // as a service
             if (isService) {
                 spec.MarkAsService();
             }
@@ -211,8 +215,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 throw new ReflectionException("unrecognised type " + type.FullName);
             }
 
-            // we need the specification available in cache even though not yet full introspected 
-            // need to be careful no other thread reads until introspected
+            // We need the specification available in cache even though not yet fully introspected 
             metamodel.Add(type, specification);
 
             specification.Introspect(facetDecorator, new Introspector(this, metamodel));

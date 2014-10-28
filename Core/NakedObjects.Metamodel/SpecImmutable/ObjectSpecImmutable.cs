@@ -54,11 +54,11 @@ namespace NakedObjects.Metamodel.SpecImmutable {
             get { return identifier; }
         }
 
-        public Type Type { get; set; }
+        public Type Type { get; private set; }
 
-        public string FullName { get; set; }
+        public string FullName { get; private set; }
 
-        public string ShortName { get; set; }
+        public string ShortName { get; private set; }
 
         public IOrderSet<IActionSpecImmutable> ObjectActions { get; private set; }
 
@@ -66,15 +66,15 @@ namespace NakedObjects.Metamodel.SpecImmutable {
 
         public IList<Tuple<string, string, IOrderSet<IActionSpecImmutable>>> RelatedActions { get; private set; }
 
-        public IOrderSet<IAssociationSpecImmutable> Fields { get; set; }
+        public IOrderSet<IAssociationSpecImmutable> Fields { get; private set; }
 
-        public IObjectSpecImmutable[] Interfaces { get; set; }
+        public IObjectSpecImmutable[] Interfaces { get; private set; }
 
-        public IObjectSpecImmutable[] Subclasses { get; set; }
+        public IObjectSpecImmutable[] Subclasses { get; private set; }
 
-        public bool Service { get; set; }
+        public bool Service { get; private set; }
 
-        public INakedObjectValidation[] ValidationMethods { get; set; }
+        public INakedObjectValidation[] ValidationMethods { get; private set; }
 
         public override IFacet GetFacet(Type facetType) {
             IFacet facet = base.GetFacet(facetType);

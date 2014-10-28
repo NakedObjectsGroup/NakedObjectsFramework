@@ -16,10 +16,10 @@ using NakedObjects.Capabilities;
 
 namespace NakedObjects.Reflector.DotNet.Value {
     public class UShortValueSemanticsProvider : ValueSemanticsProviderAbstract<ushort>, IPropertyDefaultFacet {
-        private const ushort defaultValue = 0;
-        private const bool equalByContent = true;
-        private const bool immutable = true;
-        private const int typicalLength = 5;
+        private const ushort DefaultValueConst = 0;
+        private const bool EqualByContent = true;
+        private const bool Immutable = true;
+        private const int TypicalLengthConst = 5;
 
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
             : this(spec, null) {}
 
         public UShortValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) {}
+            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
         public static Type Type {
             get { return typeof (IShortValueFacet); }
@@ -42,7 +42,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         #region IPropertyDefaultFacet Members
 
         public object GetDefault(INakedObject inObject) {
-            return defaultValue;
+            return DefaultValueConst;
         }
 
         #endregion
