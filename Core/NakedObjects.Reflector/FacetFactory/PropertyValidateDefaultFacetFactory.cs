@@ -17,7 +17,7 @@ using NakedObjects.Metamodel.Utils;
 namespace NakedObjects.Reflector.FacetFactory {
     public class PropertyValidateDefaultFacetFactory : FacetFactoryAbstract {
         public PropertyValidateDefaultFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.PropertiesOnly) {}
+            : base(reflector, FeatureType.Property) {}
 
         public override bool Process(PropertyInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return FacetUtils.AddFacet(Create(specification));

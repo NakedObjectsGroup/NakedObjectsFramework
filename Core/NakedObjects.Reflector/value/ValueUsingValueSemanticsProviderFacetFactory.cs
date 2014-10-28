@@ -16,7 +16,7 @@ using NakedObjects.Metamodel.Utils;
 namespace NakedObjects.Reflector.DotNet.Value {
     public abstract class ValueUsingValueSemanticsProviderFacetFactory<T> : FacetFactoryAbstract {
         protected ValueUsingValueSemanticsProviderFacetFactory(IReflector reflector, Type adapterFacetType)
-            : base(reflector, FeatureType.ObjectsOnly) {}
+            : base(reflector,FeatureType.Objects) {}
 
         protected void AddFacets(ValueSemanticsProviderAbstract<T> adapter) {
             FacetUtils.AddFacet(new ValueFacetUsingSemanticsProvider<T>(adapter, adapter));

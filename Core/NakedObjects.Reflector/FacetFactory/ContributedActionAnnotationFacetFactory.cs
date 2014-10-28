@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     /// </summary>
     public class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ContributedActionAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ActionsOnly) {}
+            : base(reflector,FeatureType.Action) {}
 
         private bool Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<NotContributedActionAttribute>(member);

@@ -63,11 +63,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
         private class Customer4 {}
 
         public class CustomerFacetFactory : FacetFactoryAbstract {
-            public CustomerFacetFactory() : base(null, null) {}
+            public CustomerFacetFactory() : base(null, FeatureType.None) {}
 
 
-            public override FeatureType[] FeatureTypes {
-                get { return null; }
+            public override FeatureType FeatureTypes {
+                get { return FeatureType.None; }
             }
 
             public override bool Process(Type clazz, IMethodRemover methodRemover, ISpecificationBuilder specification) {
@@ -84,11 +84,11 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
         }
 
         public class CustomerFacetFactory2 : FacetFactoryAbstract {
-            public CustomerFacetFactory2() : base(null, null) {}
+            public CustomerFacetFactory2() : base(null, FeatureType.None) {}
 
 
-            public override FeatureType[] FeatureTypes {
-                get { return null; }
+            public override FeatureType FeatureTypes {
+                get { return FeatureType.None; }
             }
 
             public override bool Process(Type clazz, IMethodRemover methodRemover, ISpecificationBuilder specification) {
@@ -153,12 +153,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
 
         [Test]
         public override void TestFeatureTypes() {
-            FeatureType[] featureTypes = facetFactory.FeatureTypes;
-            Assert.IsTrue(Contains(featureTypes, FeatureType.Objects));
-            Assert.IsFalse(Contains(featureTypes, FeatureType.Property));
-            Assert.IsFalse(Contains(featureTypes, FeatureType.Collection));
-            Assert.IsFalse(Contains(featureTypes, FeatureType.Action));
-            Assert.IsFalse(Contains(featureTypes, FeatureType.ActionParameter));
+            FeatureType featureTypes = facetFactory.FeatureTypes;
+            Assert.IsTrue(featureTypes.HasFlag( FeatureType.Objects));
+            Assert.IsFalse(featureTypes.HasFlag( FeatureType.Property));
+            Assert.IsFalse(featureTypes.HasFlag( FeatureType.Collections));
+            Assert.IsFalse(featureTypes.HasFlag( FeatureType.Action));
+            Assert.IsFalse(featureTypes.HasFlag( FeatureType.ActionParameter));
         }
     }
 

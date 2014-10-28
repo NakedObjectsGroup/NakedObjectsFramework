@@ -188,9 +188,11 @@ namespace NakedObjects.Reflector.FacetFactory {
                 if (factoriesByFeatureType == null) {
                     factoriesByFeatureType = new Dictionary<FeatureType, IList<IFacetFactory>>();
                     foreach (IFacetFactory factory in factories) {
-                        foreach (FeatureType featureType in factory.FeatureTypes) {
-                            IList<IFacetFactory> factoryList = GetList(factoriesByFeatureType, featureType);
-                            factoryList.Add(factory);
+                        foreach (FeatureType featureType in Enum.GetValues(typeof(FeatureType))) {
+                            if (factory.FeatureTypes.HasFlag(featureType)) {
+                                IList<IFacetFactory> factoryList = GetList(factoriesByFeatureType, featureType);
+                                factoryList.Add(factory);
+                            }
                         }
                     }
                 }

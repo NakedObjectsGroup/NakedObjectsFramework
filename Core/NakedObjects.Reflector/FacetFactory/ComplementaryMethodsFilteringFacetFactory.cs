@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
@@ -27,7 +26,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)
         /// </summary>
         public ComplementaryMethodsFilteringFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ActionsOnly) {}
+            : base(reflector, FeatureType.Action) {}
 
         #region IMethodFilteringFacetFactory Members
 

@@ -27,7 +27,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         public DisableDefaultMethodFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ObjectsOnly) {}
+            : base(reflector,FeatureType.Objects) {}
 
 
         public override string[] Prefixes {

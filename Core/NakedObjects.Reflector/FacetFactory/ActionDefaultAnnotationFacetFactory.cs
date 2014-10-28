@@ -19,7 +19,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflector.FacetFactory {
     public class ActionDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ActionDefaultAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ParametersOnly) {}
+            : base(reflector, FeatureType.ActionParameter) {}
 
 
         public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {

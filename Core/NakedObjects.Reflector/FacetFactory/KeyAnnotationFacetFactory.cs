@@ -21,7 +21,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflector.FacetFactory {
     public class KeyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public KeyAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.PropertiesOnly) {}
+            : base(reflector, FeatureType.Property) {}
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = AttributeUtils.GetCustomAttribute<KeyAttribute>(property);

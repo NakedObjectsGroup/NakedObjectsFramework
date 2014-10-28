@@ -13,7 +13,7 @@ using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public abstract class AnnotationBasedFacetFactoryAbstract : FacetFactoryAbstract, IAnnotationBasedFacetFactory {
-        protected AnnotationBasedFacetFactoryAbstract(IReflector reflector, FeatureType[] featureTypes)
+        protected AnnotationBasedFacetFactoryAbstract(IReflector reflector, FeatureType featureTypes)
             : base(reflector, featureTypes) {}
 
         /// <summary>

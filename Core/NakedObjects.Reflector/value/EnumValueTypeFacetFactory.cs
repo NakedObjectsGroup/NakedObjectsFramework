@@ -19,7 +19,7 @@ using NakedObjects.Metamodel.Utils;
 namespace NakedObjects.Reflector.DotNet.Value {
     public class EnumValueTypeFacetFactory : FacetFactoryAbstract {
         public EnumValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ObjectsOnly) {}
+            : base(reflector,FeatureType.Objects) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (typeof (Enum).IsAssignableFrom(type)) {

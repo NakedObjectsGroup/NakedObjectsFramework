@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         public CollectionFieldMethodsFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.CollectionsOnly) {}
+            : base(reflector, FeatureType.Collections) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

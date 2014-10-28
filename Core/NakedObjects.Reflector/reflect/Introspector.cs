@@ -310,7 +310,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 var returnSpec = reflector.LoadSpecification(returnType);
 
                 var collection = new OneToManyAssociationSpecImmutable(identifier, returnType, returnSpec);
-                FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), collection, FeatureType.Collection);
+                FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), collection, FeatureType.Collections);
 
                 // figure out what the Type is
                 var typeOfFacet = collection.GetFacet<IElementTypeFacet>();

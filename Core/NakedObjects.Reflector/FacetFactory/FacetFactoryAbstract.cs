@@ -15,10 +15,10 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Facet {
     public abstract class FacetFactoryAbstract : IFacetFactory {
-        private readonly FeatureType[] featureTypes;
+        private readonly FeatureType featureTypes;
         private readonly IReflector reflector;
 
-        protected FacetFactoryAbstract(IReflector reflector, FeatureType[] featureTypes) {
+        protected FacetFactoryAbstract(IReflector reflector, FeatureType featureTypes) {
             this.reflector = reflector;
             this.featureTypes = featureTypes;
         }
@@ -29,7 +29,7 @@ namespace NakedObjects.Metamodel.Facet {
 
         #region IFacetFactory Members
 
-        public virtual FeatureType[] FeatureTypes {
+        public virtual FeatureType FeatureTypes {
             get { return featureTypes; }
         }
 

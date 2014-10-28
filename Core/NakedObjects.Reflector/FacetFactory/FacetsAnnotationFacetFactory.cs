@@ -19,7 +19,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflector.FacetFactory {
     public class FacetsAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public FacetsAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ObjectsOnly) {}
+            : base(reflector,FeatureType.Objects) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<FacetsAttribute>();

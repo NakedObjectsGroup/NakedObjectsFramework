@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     /// </summary>
     public class PotencyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PotencyAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ActionsOnly) {}
+            : base(reflector,FeatureType.Action) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             // give priority to Idempotent as more restrictive 

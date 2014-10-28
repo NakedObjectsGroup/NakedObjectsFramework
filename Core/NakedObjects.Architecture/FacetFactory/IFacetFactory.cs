@@ -22,7 +22,7 @@ namespace NakedObjects.Architecture.FacetFactory {
         ///     Used by the <see cref="IFacetFactorySet" /> to reduce the number of <see cref="IFacetFactory" />s that are
         ///     queried when building up the meta-model.
         /// </para>
-        FeatureType[] FeatureTypes { get; }
+        FeatureType FeatureTypes { get; }
 
         /// <summary>
         ///     Process the class, and return the correctly setup annotation if present.

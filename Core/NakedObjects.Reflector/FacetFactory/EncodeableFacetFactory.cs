@@ -20,7 +20,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflector.FacetFactory {
     public class EncodeableFacetFactory : AnnotationBasedFacetFactoryAbstract, INakedObjectConfigurationAware {
         public EncodeableFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ObjectsOnly) {}
+            : base(reflector,FeatureType.Objects) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return FacetUtils.AddFacet(Create(type, specification));

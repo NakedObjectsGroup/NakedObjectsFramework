@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     /// </summary>
     public class PageSizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PageSizeAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ActionsOnly) {}
+            : base(reflector,FeatureType.Action) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<PageSizeAttribute>(member);

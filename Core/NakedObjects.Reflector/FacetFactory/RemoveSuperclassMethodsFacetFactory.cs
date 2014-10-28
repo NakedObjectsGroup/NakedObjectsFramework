@@ -31,7 +31,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         public RemoveSuperclassMethodsFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ObjectsOnly) {}
+            : base(reflector,FeatureType.Objects) {}
 
         private static void InitForType(Type type) {
             if (!typeToMethods.ContainsKey(type)) {

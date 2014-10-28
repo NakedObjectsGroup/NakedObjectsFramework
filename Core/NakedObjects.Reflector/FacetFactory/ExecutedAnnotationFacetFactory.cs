@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     /// </summary>
     public class ExecutedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ExecutedAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ActionsOnly) {}
+            : base(reflector,FeatureType.Action) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<ExecutedAttribute>(member);

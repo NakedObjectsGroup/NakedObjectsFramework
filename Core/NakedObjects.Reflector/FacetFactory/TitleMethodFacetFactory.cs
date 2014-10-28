@@ -33,7 +33,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
         }
 
         public TitleMethodFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ObjectsOnly) {}
+            : base(reflector,FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

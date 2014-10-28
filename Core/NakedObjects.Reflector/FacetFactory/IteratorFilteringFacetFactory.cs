@@ -30,7 +30,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         public IteratorFilteringFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ObjectsOnly) {}
+            : base(reflector,FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

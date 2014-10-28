@@ -26,7 +26,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         public IconMethodFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ObjectsOnly) {}
+            : base(reflector,FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return prefixes; }

@@ -20,7 +20,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflector.FacetFactory {
     public class PropertyDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PropertyDefaultAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.PropertiesOnly) {}
+            : base(reflector, FeatureType.Property) {}
 
 
         private static bool Process(MemberInfo member, ISpecification holder) {

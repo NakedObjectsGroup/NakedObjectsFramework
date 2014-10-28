@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     /// </summary>
     public class ExcludeFromFindMenuAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ExcludeFromFindMenuAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ActionsOnly) {}
+            : base(reflector,FeatureType.Action) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<ExcludeFromFindMenuAttribute>(member);
