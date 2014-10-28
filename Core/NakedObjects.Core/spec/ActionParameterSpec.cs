@@ -93,7 +93,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         public virtual IObjectSpec ElementSpec {
-            get { return metamodel.GetSpecification(GetFacet<IElementTypeFacet>().ValueSpec); }
+            get {
+                var facet = GetFacet<IElementTypeFacet>();
+                var spec = facet != null ? facet.ValueSpec : null;
+                return spec == null ? null : metamodel.GetSpecification(spec);
+            }
         }
 
         public string GetName() {

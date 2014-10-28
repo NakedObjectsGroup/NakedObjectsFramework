@@ -26,7 +26,7 @@ open NakedObjects.Architecture.Configuration
 open NakedObjects.Core.Configuration
 open System.Data.Entity.Core.Objects.DataClasses
 open System.Collections.Generic
-open System.Data.Objects
+open System.Data.Entity.Core.Objects
 
 [<TestFixture>]
 type Nof4Tests() = 

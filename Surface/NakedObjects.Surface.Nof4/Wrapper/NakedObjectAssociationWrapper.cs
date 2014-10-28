@@ -116,7 +116,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSpecificationSurface ElementSpecification {
-            get { return new NakedObjectSpecificationWrapper(assoc.ElementSpec, Surface, framework); }
+            get {
+                var elementSpec = assoc.ElementSpec;
+                return elementSpec == null ? null : new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
+            }
         }
 
         public string Id {

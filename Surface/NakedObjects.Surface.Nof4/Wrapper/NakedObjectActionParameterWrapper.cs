@@ -89,7 +89,10 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         }
 
         public INakedObjectSpecificationSurface ElementType {
-            get { return new NakedObjectSpecificationWrapper(nakedObjectActionParameter.ElementSpec, Surface, framework); }
+            get {
+                var elementSpec = nakedObjectActionParameter.ElementSpec;
+                return elementSpec == null ? null : new NakedObjectSpecificationWrapper(elementSpec, Surface, framework);
+            }
         }
 
         public INakedObjectActionSurface Action {

@@ -203,5 +203,23 @@ namespace NakedObjects.Reflector.Reflect {
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
+        public class TestObjectWithByteArray {
+            public byte[] ByteArray { get; set; }
+        }
+
+        [Test]
+        public void ReflectByteArray() {
+            var container = GetContainer();
+           
+            var rc = new ReflectorConfiguration(new Type[] { typeof(TestObjectWithByteArray) }, new Type[] { }, new Type[] { }, new Type[] { });
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+           // Assert.AreEqual(20, reflector.AllObjectSpecImmutables.Count());
+            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+        }
+
     }
 }
