@@ -29,8 +29,8 @@ let testNakedObjectSpecification = mockNakedObjectSpecification.Object
 
 mockNakedObjectSpecification.Setup(fun x -> x.ContainsFacet()).Returns(false) |> ignore
 mockNakedObjectSpecification.Setup(fun x -> x.ContainsFacet(null)).Returns(false) |> ignore
-mockNakedObjectSpecification.Setup(fun x -> x.AddFacet(It.IsAny<IFacet>())).Callback<IFacet> 
-    (fun f -> Assert.IsInstanceOf<IComplexTypeFacet>(f)) |> ignore
+//mockNakedObjectSpecification.Setup(fun x -> x.AddFacet(It.IsAny<IFacet>())).Callback<IFacet> 
+//    (fun f -> Assert.IsInstanceOf<IComplexTypeFacet>(f)) |> ignore
 
 let mockMetamodelManager = new Mock<IMetamodelManager>()
 let objects = new Dictionary<Object, INakedObject>()

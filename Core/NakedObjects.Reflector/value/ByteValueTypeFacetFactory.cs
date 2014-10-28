@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public ByteValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IByteValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ByteValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(ByteValueSemanticsProvider.AdaptedType);
                 AddFacets(new ByteValueSemanticsProvider(spec, specification));

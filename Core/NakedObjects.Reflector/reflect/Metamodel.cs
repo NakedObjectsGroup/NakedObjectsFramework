@@ -14,7 +14,7 @@ using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.DotNet.Reflect {
-    public class Metamodel : IMetamodelMutable {
+    public class Metamodel : IMetamodelBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Metamodel));
 
         private readonly ISpecificationCache cache;
@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             this.cache = cache;
         }
 
-        #region IMetamodelMutable Members
+        #region IMetamodelBuilder Members
 
         public virtual IObjectSpecImmutable[] AllSpecifications {
             get { return cache.AllSpecifications(); }

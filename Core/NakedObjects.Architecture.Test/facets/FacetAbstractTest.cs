@@ -49,16 +49,16 @@ namespace INakedObjects.Architecture.Adapter {
             Assert.AreEqual(specification, fooFacet.Specification);
         }
 
-        [Test]
-        public void Reparent() {
-            Assert.AreEqual(specification, fooFacet.Specification);
-            Assert.IsNotNull(specification.GetFacet<IFooFacet>());
-            Assert.IsNull(facetHolder2.GetFacet<IFooFacet>());
-            fooFacet.Reparent(facetHolder2);
-            Assert.AreEqual(facetHolder2, fooFacet.Specification);
-            Assert.IsNull(specification.GetFacet<IFooFacet>());
-            Assert.IsNotNull(facetHolder2.GetFacet<IFooFacet>());
-        }
+        //[Test]
+        //public void Reparent() {
+        //    Assert.AreEqual(specification, fooFacet.Specification);
+        //    Assert.IsNotNull(specification.GetFacet<IFooFacet>());
+        //    Assert.IsNull(facetHolder2.GetFacet<IFooFacet>());
+        //    fooFacet.Reparent(facetHolder2);
+        //    Assert.AreEqual(facetHolder2, fooFacet.Specification);
+        //    Assert.IsNull(specification.GetFacet<IFooFacet>());
+        //    Assert.IsNotNull(facetHolder2.GetFacet<IFooFacet>());
+        //}
 
         [Test]
         public void SetFacetHolder() {

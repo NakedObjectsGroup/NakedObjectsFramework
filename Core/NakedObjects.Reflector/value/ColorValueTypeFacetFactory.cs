@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public ColorValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IColorValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ColorValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(ColorValueSemanticsProvider.AdaptedType);
                 AddFacets(new ColorValueSemanticsProvider(spec, specification));

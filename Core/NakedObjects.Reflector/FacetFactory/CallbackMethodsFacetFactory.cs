@@ -50,7 +50,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             get { return prefixes; }
         }
 
-        public override bool Process(Type type, IMethodRemover remover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover remover, ISpecificationBuilder specification) {
             var facets = new List<IFacet>();
             var methods = new List<MethodInfo>();
 

@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Facet;
+using NakedObjects.Metamodel.Utils;
 
 
 namespace NakedObjects.Reflector.FacetFactory {
@@ -22,12 +23,12 @@ namespace NakedObjects.Reflector.FacetFactory {
             : base(reflector, FeatureType.ObjectsPropertiesAndCollections) {}
 
         private bool ProcessArray(Type type, ISpecification holder) {
-            holder.AddFacet(new ArrayFacet(holder));
+            FacetUtils.AddFacet(new ArrayFacet(holder));
 
             var elementType = type.GetElementType();
             var elementSpec = Reflector.LoadSpecification(elementType);
-            holder.AddFacet(new TypeOfFacetInferredFromArray(holder, Reflector.Metamodel));
-            holder.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
+            FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder, Reflector.Metamodel));
+            FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
             return true;
         }
 
@@ -38,13 +39,13 @@ namespace NakedObjects.Reflector.FacetFactory {
             bool isSet = CollectionUtils.IsSet(type);
 
             if (elementTypeFacet == null) {
-                holder.AddFacet(new TypeOfFacetInferredFromGenerics(holder, Reflector.Metamodel));
+                FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder, Reflector.Metamodel));
             }
 
             Type facetType = isQueryable ? typeof (GenericIQueryableFacet) : (isCollection ? typeof (GenericCollectionFacet) : typeof (GenericIEnumerableFacet));
 
             var facet = (IFacet) Activator.CreateInstance(facetType, holder, isSet);
-            holder.AddFacet(facet);
+            FacetUtils.AddFacet(facet);
             return true;
         }
 
@@ -54,15 +55,15 @@ namespace NakedObjects.Reflector.FacetFactory {
             if (elementTypeFacet == null) {
                 Type collectionElementType = typeof (object);
                 var spec = Reflector.LoadSpecification(collectionElementType);
-                holder.AddFacet(new TypeOfFacetDefaultToObject(holder, Reflector.Metamodel));
-                holder.AddFacet(new ElementTypeFacet(holder, collectionElementType, spec));
+                FacetUtils.AddFacet(new TypeOfFacetDefaultToObject(holder, Reflector.Metamodel));
+                FacetUtils.AddFacet(new ElementTypeFacet(holder, collectionElementType, spec));
             }
-            holder.AddFacet(new CollectionFacet(holder));
+            FacetUtils.AddFacet(new CollectionFacet(holder));
             return true;
         }
 
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (CollectionUtils.IsGenericEnumerable(type)) {
                 return ProcessGenericEnumerable(type, specification);
             }
@@ -76,7 +77,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return false;
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (CollectionUtils.IsCollectionButNotArray(property.PropertyType)) {
                 specification.AddFacet(new CollectionResetFacet(property, specification));
                 return true;

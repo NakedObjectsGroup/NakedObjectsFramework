@@ -7,8 +7,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Metamodel.Utils {
     public static class FacetUtils {
@@ -20,7 +22,7 @@ namespace NakedObjects.Metamodel.Utils {
         /// </returns>
         public static bool AddFacet(IFacet facet) {
             if (facet != null) {
-                facet.Specification.AddFacet(facet);
+                ((ISpecificationBuilder)facet.Specification).AddFacet(facet);
                 return true;
             }
             return false;
@@ -28,7 +30,7 @@ namespace NakedObjects.Metamodel.Utils {
 
         public static bool AddFacet(IMultiTypedFacet facet) {
             if (facet != null) {
-                facet.Specification.AddFacet(facet);
+                ((ISpecificationBuilder)facet.Specification).AddFacet(facet);
                 return true;
             }
             return false;
@@ -41,11 +43,7 @@ namespace NakedObjects.Metamodel.Utils {
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
         public static bool AddFacets(IFacet[] facets) {
-            bool addedFacets = false;
-            foreach (IFacet facet in facets) {
-                addedFacets |= AddFacet(facet);
-            }
-            return addedFacets;
+            return facets.Aggregate(false, (current, facet) => current | AddFacet(facet));
         }
 
         /// <summary>
@@ -55,11 +53,7 @@ namespace NakedObjects.Metamodel.Utils {
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
         public static bool AddFacets(IList<IFacet> facetList) {
-            bool addedFacets = false;
-            foreach (IFacet facet in facetList) {
-                addedFacets |= AddFacet(facet);
-            }
-            return addedFacets;
+            return facetList.Aggregate(false, (current, facet) => current | AddFacet(facet));
         }
 
         /// <summary>
@@ -76,10 +70,7 @@ namespace NakedObjects.Metamodel.Utils {
         }
 
         public static IFacet GetFacet(IDictionary<Type, IFacet> facetsByClass, Type facetType) {
-            if (facetsByClass.ContainsKey(facetType)) {
-                return facetsByClass[facetType];
-            }
-            return null;
+            return facetsByClass.ContainsKey(facetType) ? facetsByClass[facetType] : null;
         }
 
         public static void RemoveFacet(IDictionary<Type, IFacet> facetsByClass, Type facetType) {

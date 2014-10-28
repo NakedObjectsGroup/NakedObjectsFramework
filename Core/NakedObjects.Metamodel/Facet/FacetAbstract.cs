@@ -51,7 +51,6 @@ namespace NakedObjects.Metamodel.Facet {
             get { return facetType; }
         }
 
-
         /// <summary>
         ///     Default implementation of this method that returns <c>true</c>, ie
         ///     should replace non-<see cref="IsNoOp" /> implementations.
@@ -66,16 +65,18 @@ namespace NakedObjects.Metamodel.Facet {
 
         #endregion
 
-        public virtual void Reparent(ISpecification newSpecification) {
-            ISpecification oldSpecification = Specification;
+        // Don't think we ever want to do this 
 
-            oldSpecification.RemoveFacet(this);
+        //public virtual void Reparent(ISpecification newSpecification) {
+        //    ISpecification oldSpecification = Specification;
 
-            newSpecification.AddFacet(this);
-            if (Specification != newSpecification) {
-                Specification = newSpecification;
-            }
-        }
+        //    oldSpecification.RemoveFacet(this);
+
+        //    newSpecification.AddFacet(this);
+        //    if (Specification != newSpecification) {
+        //        Specification = newSpecification;
+        //    }
+        //}
 
         public override string ToString() {
             string details = "";

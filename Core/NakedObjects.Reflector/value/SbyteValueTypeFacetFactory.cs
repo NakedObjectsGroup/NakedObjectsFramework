@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public SbyteValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (ISbyteValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (SbyteValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(SbyteValueSemanticsProvider.AdaptedType);
                 AddFacets(new SbyteValueSemanticsProvider(spec, specification));

@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         public EncodeableFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return FacetUtils.AddFacet(Create(type, specification));
         }
 

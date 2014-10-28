@@ -473,10 +473,12 @@ namespace NakedObjects.EntityObjectStore {
             if (EntityFrameworkKnowsType(nakedObject.Object.GetProxiedType())) {
                 foreach (PropertyInfo pi in GetContext(nakedObject).GetComplexMembers(nakedObject.Object.GetProxiedType())) {
                     IObjectSpec spec = loadSpecification(pi.PropertyType);
-                    if (!spec.ContainsFacet<IComplexTypeFacet>()) {
-                        Log.InfoFormat("Adding InlineFacet to {0} by convention", spec.FullName);
-                        spec.AddFacet(new ComplexTypeFacetConvention(spec));
-                    }
+
+                    // TODO Work out WTH to do here !!
+                    //if (!spec.ContainsFacet<IComplexTypeFacet>()) {
+                    //    Log.InfoFormat("Adding InlineFacet to {0} by convention", spec.FullName);
+                    //    spec.AddFacet(new ComplexTypeFacetConvention(spec));
+                    //}
                     object complexObject = pi.GetValue(nakedObject.Object, null);
                     Assert.AssertNotNull("Complex type members should never be null", complexObject);
                     InjectParentIntoChild(nakedObject.Object, complexObject);

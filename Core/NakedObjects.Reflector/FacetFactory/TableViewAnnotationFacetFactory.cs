@@ -36,11 +36,11 @@ namespace NakedObjects.Reflector.FacetFactory {
             return attribute == null ? null : new TableViewFacet(attribute.Title, attribute.Columns, holder);
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(method, method.ReturnType, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (property.GetGetMethod() != null) {
                 return Process(property, property.PropertyType, specification);
             }

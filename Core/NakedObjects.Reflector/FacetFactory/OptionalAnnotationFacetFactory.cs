@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if ((method.ReturnType.IsPrimitive || TypeUtils.IsEnum(method.ReturnType)) && AttributeUtils.GetCustomAttribute<OptionallyAttribute>(method) != null) {
                 Log.Warn("Ignoring Optionally annotation on primitive parameter on " + method.ReflectedType + "." + method.Name);
                 return false;
@@ -37,7 +37,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return Process(method, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if ((property.PropertyType.IsPrimitive || TypeUtils.IsEnum(property.PropertyType)) && AttributeUtils.GetCustomAttribute<OptionallyAttribute>(property) != null) {
                 Log.Warn("Ignoring Optionally annotation on primitive or un-readable parameter on " + property.ReflectedType + "." + property.Name);
                 return false;
@@ -48,7 +48,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return false;
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             if ((parameter.ParameterType.IsPrimitive || TypeUtils.IsEnum(parameter.ParameterType))) {
                 if (AttributeUtils.GetCustomAttribute<OptionallyAttribute>(method) != null) {

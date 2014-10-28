@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public BooleanValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IBooleanValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (BooleanValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(BooleanValueSemanticsProvider.AdaptedType);
                 AddFacets(new BooleanValueSemanticsProvider(spec, specification));

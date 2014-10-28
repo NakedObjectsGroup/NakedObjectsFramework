@@ -56,6 +56,9 @@ namespace NakedObjects.Architecture.Spec {
         ///     Returns all <see cref="IFacet" />s matching the specified <see cref="IFacetFilter" />
         /// </summary>
         IEnumerable<IFacet> GetFacets();
+    }
+
+    public interface ISpecificationBuilder : ISpecification {
 
         /// <summary>
         ///     Adds the facet, extracting its <see cref="IFacet.FacetType" /> as the key.

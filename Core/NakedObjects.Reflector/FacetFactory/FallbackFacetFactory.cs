@@ -31,7 +31,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return false;
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return FacetUtils.AddFacets(
                 new IFacet[] {
                     new DescribedAsFacetNone(specification),
@@ -73,15 +73,15 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(specification);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             var facets = new List<IFacet>();
 
             if (holder is ActionParameterSpecImmutable) {

@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         public ConcurrencyCheckAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesOnly) {}
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = AttributeUtils.GetCustomAttribute<ConcurrencyCheckAttribute>(property);
             return FacetUtils.AddFacet(Create(attribute, specification));
         }

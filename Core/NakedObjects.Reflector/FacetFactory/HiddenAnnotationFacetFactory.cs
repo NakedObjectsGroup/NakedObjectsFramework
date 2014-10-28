@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         public HiddenAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(type.GetCustomAttributeByReflection<HiddenAttribute>,
                 type.GetCustomAttributeByReflection<ScaffoldColumnAttribute>, specification);
         }
@@ -43,11 +43,11 @@ namespace NakedObjects.Reflector.FacetFactory {
             return FacetUtils.AddFacet(Create((ScaffoldColumnAttribute) attribute, specification));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(method, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(property, specification);
         }
 

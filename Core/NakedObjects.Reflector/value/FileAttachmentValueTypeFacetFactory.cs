@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public FileAttachmentValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IFileAttachmentValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (FileAttachmentValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(FileAttachmentValueSemanticsProvider.AdaptedType);
                 AddFacets(new FileAttachmentValueSemanticsProvider(spec, specification));

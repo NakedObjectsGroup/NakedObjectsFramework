@@ -20,7 +20,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         public ActionOrderAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<ActionOrderAttribute>();
             return FacetUtils.AddFacet(Create(attribute, specification));
         }

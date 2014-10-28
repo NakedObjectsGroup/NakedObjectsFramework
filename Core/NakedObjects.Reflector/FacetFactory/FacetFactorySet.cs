@@ -9,7 +9,6 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
 using NakedObjects.Metamodel.Utils;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Defaults;
 using NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title;
@@ -115,7 +114,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return Prefixes.Any(prefix => method.Name.StartsWith(prefix));
         }
 
-        public bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             bool facetsAdded = false;
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.Objects)) {
                 facetsAdded = facetFactory.Process(type, RemoverElseNullRemover(methodRemover), specification) | facetsAdded;
@@ -123,7 +122,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return facetsAdded;
         }
 
-        public bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification, FeatureType featureType) {
+        public bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
             bool facetsAdded = false;
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
                 facetsAdded = facetFactory.Process(method, RemoverElseNullRemover(methodRemover), specification) | facetsAdded;
@@ -131,7 +130,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return facetsAdded;
         }
 
-        public bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification, FeatureType featureType) {
+        public bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
             bool facetsAdded = false;
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
                 facetsAdded = facetFactory.Process(property, RemoverElseNullRemover(methodRemover), specification) | facetsAdded;
@@ -139,7 +138,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return facetsAdded;
         }
 
-        public bool ProcessParams(MethodInfo method, int paramNum, ISpecification specification) {
+        public bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder specification) {
             bool facetsAdded = false;
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameter)) {
                 facetsAdded = facetFactory.ProcessParams(method, paramNum, specification) | facetsAdded;

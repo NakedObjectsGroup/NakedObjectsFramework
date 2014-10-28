@@ -34,7 +34,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             get { return FixedPrefixes; }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             try {
                 foreach (string methodName in FixedPrefixes) {
                     MethodInfo methodInfo = FindMethod(type, MethodType.Object, methodName, typeof (bool), Type.EmptyTypes);

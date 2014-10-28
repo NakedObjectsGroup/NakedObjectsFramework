@@ -32,14 +32,14 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         private readonly IReflectorConfiguration config;
         private readonly FacetDecoratorSet facetDecorator;
         private readonly IFacetFactorySet facetFactorySet;
-        private readonly IMetamodelMutable metamodel;
+        private readonly IMetamodelBuilder metamodel;
         private readonly IServicesConfiguration servicesConfig;
 
         static Reflector() {
             Log = LogManager.GetLogger(typeof (Reflector));
         }
 
-        public Reflector(IClassStrategy classStrategy, IFacetFactorySet facetFactorySet, FacetDecoratorSet facetDecoratorSet, IMetamodelMutable metamodel, IReflectorConfiguration config, IServicesConfiguration servicesConfig) {
+        public Reflector(IClassStrategy classStrategy, IFacetFactorySet facetFactorySet, FacetDecoratorSet facetDecoratorSet, IMetamodelBuilder metamodel, IReflectorConfiguration config, IServicesConfiguration servicesConfig) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(facetFactorySet);
             Assert.AssertNotNull(facetDecoratorSet);

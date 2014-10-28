@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine {
         public MultiLineAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsPropertiesAndParameters) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<MultiLineAttribute>();
             return FacetUtils.AddFacet(Create(attribute, specification));
         }
@@ -32,21 +32,21 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine {
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (TypeUtils.IsString(method.ReturnType)) {
                 return Process(method, specification);
             }
             return false;
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (property.GetGetMethod() != null && TypeUtils.IsString(property.PropertyType)) {
                 return Process(property, specification);
             }
             return false;
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             if (TypeUtils.IsString(parameter.ParameterType)) {
                 var attribute = parameter.GetCustomAttributeByReflection<MultiLineAttribute>();

@@ -145,29 +145,29 @@ namespace NakedObjects.Core.Spec {
             return actionParameterSpecImmutable != null ? actionParameterSpecImmutable.GetFacets() : new IFacet[] {};
         }
 
-        public virtual void AddFacet(IFacet facet) {
-            if (actionParameterSpecImmutable != null) {
-                actionParameterSpecImmutable.AddFacet(facet);
-            }
-        }
+        //public virtual void AddFacet(IFacet facet) {
+        //    if (actionParameterSpecImmutable != null) {
+        //        actionParameterSpecImmutable.AddFacet(facet);
+        //    }
+        //}
 
-        public virtual void AddFacet(IMultiTypedFacet facet) {
-            if (actionParameterSpecImmutable != null) {
-                actionParameterSpecImmutable.AddFacet(facet);
-            }
-        }
+        //public virtual void AddFacet(IMultiTypedFacet facet) {
+        //    if (actionParameterSpecImmutable != null) {
+        //        actionParameterSpecImmutable.AddFacet(facet);
+        //    }
+        //}
 
-        public virtual void RemoveFacet(IFacet facet) {
-            if (actionParameterSpecImmutable != null) {
-                actionParameterSpecImmutable.RemoveFacet(facet);
-            }
-        }
+        //public virtual void RemoveFacet(IFacet facet) {
+        //    if (actionParameterSpecImmutable != null) {
+        //        actionParameterSpecImmutable.RemoveFacet(facet);
+        //    }
+        //}
 
-        public virtual void RemoveFacet(Type facetType) {
-            if (actionParameterSpecImmutable != null) {
-                actionParameterSpecImmutable.RemoveFacet(facetType);
-            }
-        }
+        //public virtual void RemoveFacet(Type facetType) {
+        //    if (actionParameterSpecImmutable != null) {
+        //        actionParameterSpecImmutable.RemoveFacet(facetType);
+        //    }
+        //}
 
         public IConsent IsValid(INakedObject nakedObject, INakedObject proposedValue) {
             if (proposedValue != null && !proposedValue.Spec.IsOfType(Spec)) {

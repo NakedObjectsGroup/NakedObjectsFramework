@@ -228,7 +228,7 @@ namespace NakedObjects.Xat {
 
             container.RegisterType<IReflector, Reflector.DotNet.Reflect.Reflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, NakedObjects.Reflector.DotNet.Reflect.Metamodel>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodelMutable, NakedObjects.Reflector.DotNet.Reflect.Metamodel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodelBuilder, NakedObjects.Reflector.DotNet.Reflect.Metamodel>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPrincipal>(new InjectionFactory(c => TestPrincipal));
 

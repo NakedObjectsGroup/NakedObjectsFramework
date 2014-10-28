@@ -30,18 +30,18 @@ namespace NakedObjects.Reflector.FacetFactory {
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(method, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (property.GetGetMethod() != null) {
                 return Process(property, specification);
             }
             return false;
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttributeByReflection<RequiredAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));

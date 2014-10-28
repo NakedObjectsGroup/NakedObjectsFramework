@@ -43,7 +43,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
         ///     If no title or ToString can be used then will use Facets provided by
         ///     <see cref="FallbackFacetFactory" /> instead.
         /// </summary>
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             IList<MethodInfo> attributedMethods = new List<MethodInfo>();
             foreach (PropertyInfo propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
                 if (AttributeUtils.GetCustomAttribute<TitleAttribute>(propertyInfo) != null) {

@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public UShortValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IUnsignedShortValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (UShortValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(UShortValueSemanticsProvider.AdaptedType);
                 AddFacets(new UShortValueSemanticsProvider(spec, specification));

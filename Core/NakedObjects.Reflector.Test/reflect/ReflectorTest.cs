@@ -131,7 +131,7 @@ namespace NakedObjects.Reflector.Reflect {
 
             container.RegisterType<IReflector, DotNet.Reflect.Reflector>();
             container.RegisterType<IMetamodel, DotNet.Reflect.Metamodel>();
-            container.RegisterType<IMetamodelMutable, DotNet.Reflect.Metamodel>();
+            container.RegisterType<IMetamodelBuilder, DotNet.Reflect.Metamodel>();
             container.RegisterType<IServicesConfiguration, ServicesConfiguration>();
         }
 

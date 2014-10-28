@@ -27,15 +27,15 @@ namespace NakedObjects.Reflector.FacetFactory {
         public OptionalDefaultFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesAndParameters) {}
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return FacetUtils.AddFacet(method.ReturnType.IsPrimitive ? CreateMandatory(specification) : CreateOptional(specification));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return FacetUtils.AddFacet(property.PropertyType.IsPrimitive || property.GetGetMethod() == null ? CreateMandatory(specification) : CreateOptional(specification));
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             return FacetUtils.AddFacet(parameter.ParameterType.IsPrimitive ? CreateMandatory(holder) : CreateOptional(holder));
         }

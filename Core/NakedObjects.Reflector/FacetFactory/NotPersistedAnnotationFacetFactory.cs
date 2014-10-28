@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         public NotPersistedAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsPropertiesAndCollections) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<NotPersistedAttribute>();
             return FacetUtils.AddFacet(Create(attribute, specification));
         }
@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(property, specification);
         }
 

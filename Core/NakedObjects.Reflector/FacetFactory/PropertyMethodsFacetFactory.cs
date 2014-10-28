@@ -52,7 +52,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             get { return prefixes; }
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             string capitalizedName = property.Name;
             var paramTypes = new[] {property.PropertyType};
 

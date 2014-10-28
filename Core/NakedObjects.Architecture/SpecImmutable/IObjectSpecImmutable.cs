@@ -17,7 +17,7 @@ namespace NakedObjects.Architecture.Reflect {
     ///   serialised/deserialised and hence persisted.  However, it needs to be wrapped as an IObjectSpec at run-time in order to 
     ///   provide various run-time behaviours required of the Spec, which depend upon the run-time framework services.
     /// </summary>
-    public interface IObjectSpecImmutable : ISpecification {
+    public interface IObjectSpecImmutable : ISpecificationBuilder {
         // TODO expose lots of stuff while refactoring 
 
 

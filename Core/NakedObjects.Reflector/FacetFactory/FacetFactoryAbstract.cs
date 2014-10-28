@@ -33,19 +33,19 @@ namespace NakedObjects.Metamodel.Facet {
             get { return featureTypes; }
         }
 
-        public virtual bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public virtual bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return false;
         }
 
-        public virtual bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public virtual bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return false;
         }
 
-        public virtual bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public virtual bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return false;
         }
 
-        public virtual bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+        public virtual bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             return false;
         }
 

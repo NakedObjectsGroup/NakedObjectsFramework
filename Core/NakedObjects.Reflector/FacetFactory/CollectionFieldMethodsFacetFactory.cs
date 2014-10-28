@@ -40,7 +40,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             get { return FixedPrefixes; }
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification collection) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection) {
             string capitalizedName = property.Name;
             Type type = property.DeclaringType;
 

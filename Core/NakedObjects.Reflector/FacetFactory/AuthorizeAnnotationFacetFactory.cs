@@ -28,12 +28,12 @@ namespace NakedObjects.Reflector.FacetFactory {
             : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}
 
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return false;
         }
 
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var classAttribute = method.DeclaringType.GetCustomAttributeByReflection<AuthorizeActionAttribute>();
             var methodAttribute = AttributeUtils.GetCustomAttribute<AuthorizeActionAttribute>(method);
 
@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return Create(classAttribute ?? methodAttribute, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var classAttribute = property.DeclaringType.GetCustomAttributeByReflection<AuthorizePropertyAttribute>();
             var propertyAttribute = AttributeUtils.GetCustomAttribute<AuthorizePropertyAttribute>(property);
 

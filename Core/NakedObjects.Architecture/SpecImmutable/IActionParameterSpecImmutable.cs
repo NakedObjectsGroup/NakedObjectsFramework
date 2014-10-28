@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.SpecImmutable {
-    public interface IActionParameterSpecImmutable : ISpecification {
+    public interface IActionParameterSpecImmutable : ISpecificationBuilder {
         IObjectSpecImmutable Specification { get; }
     }
 }

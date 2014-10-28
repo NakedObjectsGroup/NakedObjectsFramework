@@ -28,7 +28,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(property, specification);
         }
 

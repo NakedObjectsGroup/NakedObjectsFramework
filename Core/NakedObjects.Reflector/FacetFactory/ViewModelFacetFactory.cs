@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     public class ViewModelFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ViewModelFacetFactory(IReflector reflector) : base(reflector, FeatureType.ObjectsOnly) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             IFacet facet = null;
 
             if (!type.IsInterface && typeof (IViewModel).IsAssignableFrom(type)) {

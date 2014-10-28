@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             get { return new string[] {}; }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             FindAndRemoveInitMethod(type, methodRemover);
             return false;
         }

@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public DateTimeValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IDateValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (DateTimeValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(DateTimeValueSemanticsProvider.AdaptedType);
                 AddFacets(new DateTimeValueSemanticsProvider(spec, specification));

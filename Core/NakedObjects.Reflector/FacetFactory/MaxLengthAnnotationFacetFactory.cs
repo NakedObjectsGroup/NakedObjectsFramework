@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.MaxLength {
         public MaxLengthAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsPropertiesAndParameters) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = type.GetCustomAttributeByReflection<StringLengthAttribute>() ?? (Attribute) type.GetCustomAttributeByReflection<MaxLengthAttribute>();
             return FacetUtils.AddFacet(Create(attribute, specification));
         }
@@ -34,15 +34,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.MaxLength {
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(method, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(property, specification);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             Attribute attribute = parameter.GetCustomAttributeByReflection<StringLengthAttribute>() ?? (Attribute) parameter.GetCustomAttributeByReflection<MaxLengthAttribute>();
 

@@ -36,7 +36,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             get { return FixedPrefixes; }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (typeof (IEnumerable).IsAssignableFrom(type) && !TypeUtils.IsSystem(type)) {
                 MethodInfo method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.GetEnumeratorMethod, null, Type.EmptyTypes);
                 if (method != null) {

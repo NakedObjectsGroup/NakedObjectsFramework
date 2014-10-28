@@ -10,14 +10,13 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
 using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.Spec {
     /// <summary>
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>
-    public class Specification : ISpecification {
+    public class Specification : ISpecification, ISpecificationBuilder {
         private readonly Dictionary<Type, IFacet> facetsByClass = new Dictionary<Type, IFacet>();
 
         #region ISpecification Members
@@ -38,6 +37,22 @@ namespace NakedObjects.Metamodel.Spec {
             return GetFacet<T>() != null;
         }
 
+        public virtual IFacet GetFacet(Type facetType) {
+            return FacetUtils.GetFacet(facetsByClass, facetType);
+        }
+
+        public T GetFacet<T>() where T : IFacet {
+            return (T) GetFacet(typeof (T));
+        }
+
+        public IEnumerable<IFacet> GetFacets() {
+            return facetsByClass.Values;
+        }
+
+        #endregion
+
+        #region ISpecificationMutable Members
+
         public void AddFacet(IFacet facet) {
             AddFacet(facet.FacetType, facet);
         }
@@ -54,18 +69,6 @@ namespace NakedObjects.Metamodel.Spec {
 
         public void RemoveFacet(Type facetType) {
             FacetUtils.RemoveFacet(facetsByClass, facetType);
-        }
-
-        public virtual IFacet GetFacet(Type facetType) {
-            return FacetUtils.GetFacet(facetsByClass, facetType);
-        }
-
-        public T GetFacet<T>() where T : IFacet {
-            return (T) GetFacet(typeof (T));
-        }
-
-        public IEnumerable<IFacet> GetFacets() {
-            return facetsByClass.Values;
         }
 
         #endregion

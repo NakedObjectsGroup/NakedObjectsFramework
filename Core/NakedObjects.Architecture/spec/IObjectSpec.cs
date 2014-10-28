@@ -7,6 +7,7 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Spec {

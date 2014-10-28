@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         public TypicalLengthAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsPropertiesAndParameters) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<TypicalLengthAttribute>();
             return FacetUtils.AddFacet(Create(attribute, specification));
         }
@@ -32,15 +32,15 @@ namespace NakedObjects.Reflector.FacetFactory {
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(method, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(property, specification);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttributeByReflection<TypicalLengthAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));

@@ -36,50 +36,50 @@ namespace NakedObjects.Architecture.Component {
         bool Filters(MethodInfo method);
 
         /// <summary>
-        ///     Delegates to <see cref="IFacetFactory.Process(Type,IMethodRemover,ISpecification)" /> for each appropriate factory.
+        ///     Delegates to <see cref="IFacetFactory.Process(System.Type,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" /> for each appropriate factory.
         /// </summary>
         /// <param name="type">type to process</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
-        /// <param name="specificationholder to attach facets to</param>
+        /// <param name="specification"> holder to attach facets to</param>
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        bool Process(Type type, IMethodRemover methodRemover, ISpecification specification);
+        bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification);
 
         /// <summary>
-        ///     Delegates to <see cref="IFacetFactory.Process(MethodInfo,IMethodRemover,ISpecification)" />for each appropriate factory.
+        ///     Delegates to <see cref="IFacetFactory.Process(System.Reflection.MethodInfo,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" />for each appropriate factory.
         /// </summary>
         /// <param name="method">method to process</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
-        /// <param name="specificationholder to attach facets to</param>
+        /// <param name="specification"> holder to attach facets to</param>
         /// <param name="featureType">what type of feature the method represents (property, action, collection etc)</param>
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification, FeatureType featureType);
+        bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType);
 
         /// <summary>
-        ///     Delegates to <see cref="IFacetFactory.Process(PropertyInfo,IMethodRemover,ISpecification)" />for each appropriate factory.
+        ///     Delegates to <see cref="IFacetFactory.Process(System.Reflection.PropertyInfo,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" />for each appropriate factory.
         /// </summary>
         /// <param name="property">property to process</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
-        /// <param name="specificationholder to attach facets to</param>
+        /// <param name="specification"> holder to attach facets to</param>
         /// <param name="featureType">what type of feature the method represents (property, action, collection etc)</param>
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification, FeatureType featureType);
+        bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType);
 
         /// <summary>
         ///     Delegates to <see cref="IFacetFactory.ProcessParams" /> for each appropriate factory.
         /// </summary>
         /// <param name="method">action method to process</param>
         /// <param name="paramNum">zero-based</param>
-        /// <param name="specificationholder to attach facets to</param>
+        /// <param name="specification"> holder to attach facets to</param>
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        bool ProcessParams(MethodInfo method, int paramNum, ISpecification specification);
+        bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder specification);
 
         void Init(IReflector reflector);
     }

@@ -23,9 +23,5 @@ namespace NakedObjects.Architecture.Component {
     }
 
 
-    public interface IMetamodelMutable : IMetamodel {
-        void Add(Type type, IObjectSpecImmutable spec);
-    }
-
     // Copyright (c) Naked Objects Group Ltd.
 }

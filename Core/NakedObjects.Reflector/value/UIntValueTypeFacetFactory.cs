@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public UIntValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IUnsignedIntegerValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (UIntValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(UIntValueSemanticsProvider.AdaptedType);
                 AddFacets(new UIntValueSemanticsProvider(spec, specification));

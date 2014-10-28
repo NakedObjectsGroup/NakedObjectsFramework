@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             get { return prefixes; }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             MethodInfo method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.IconNameMethod, typeof (string), Type.EmptyTypes);
             var attribute = type.GetCustomAttributeByReflection<IconNameAttribute>();
             if (method != null) {

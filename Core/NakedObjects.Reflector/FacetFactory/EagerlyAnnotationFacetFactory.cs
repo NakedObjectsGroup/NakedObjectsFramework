@@ -22,17 +22,17 @@ namespace NakedObjects.Reflector.FacetFactory {
         public EagerlyAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.EverythingButParameters) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<EagerlyAttribute>();
             return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = AttributeUtils.GetCustomAttribute<EagerlyAttribute>(property);
             return FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = AttributeUtils.GetCustomAttribute<EagerlyAttribute>(method);
             return FacetUtils.AddFacet(Create(attribute, specification));
         }

@@ -48,7 +48,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Type currentType = type;
             while (currentType != null) {
                 if (TypeUtils.IsSystem(currentType)) {

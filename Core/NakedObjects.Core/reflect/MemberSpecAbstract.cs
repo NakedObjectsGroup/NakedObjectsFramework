@@ -17,13 +17,13 @@ using NakedObjects.Util;
 namespace NakedObjects.Architecture.Reflect {
     public abstract class MemberSpecAbstract : IMemberSpec {
         private readonly string defaultName;
-        private readonly ISpecification specification;
+        private readonly ISpecificationBuilder specification;
         private readonly string id;
         private readonly ILifecycleManager lifecycleManager;
         private readonly ISession session;
 
 
-        protected internal MemberSpecAbstract(string id, ISpecification specification, ISession session, ILifecycleManager lifecycleManager) {
+        protected internal MemberSpecAbstract(string id, ISpecificationBuilder specification, ISession session, ILifecycleManager lifecycleManager) {
             AssertArgNotNull(id, Resources.NakedObjects.NameNotSetMessage);
             AssertArgNotNull(specification);
             AssertArgNotNull(session);

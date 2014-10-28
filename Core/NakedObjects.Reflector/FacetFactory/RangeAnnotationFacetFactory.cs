@@ -32,12 +32,12 @@ namespace NakedObjects.Reflector.FacetFactory {
             return FacetUtils.AddFacet(Create(attribute, isDate, specification));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             bool isDate = property.PropertyType.IsAssignableFrom(typeof (DateTime));
             return Process(property, isDate, specification);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             bool isDate = parameter.ParameterType.IsAssignableFrom(typeof (DateTime));
             var range = parameter.GetCustomAttributeByReflection<RangeAttribute>();

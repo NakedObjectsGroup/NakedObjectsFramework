@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public DoubleValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IDoubleFloatingPointValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (DoubleValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(DoubleValueSemanticsProvider.AdaptedType);
                 AddFacets(new DoubleValueSemanticsProvider(spec, specification));

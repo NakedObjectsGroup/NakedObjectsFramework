@@ -21,16 +21,16 @@ namespace NakedObjects.Reflector.FacetFactory {
         public TypicalLengthDerivedFromTypeFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesAndParameters) {}
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return AddFacetDerivedFromTypeIfPresent(specification, property.PropertyType);
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Type type = method.ReturnType;
             return AddFacetDerivedFromTypeIfPresent(specification, type);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             return AddFacetDerivedFromTypeIfPresent(holder, parameter.ParameterType);
         }

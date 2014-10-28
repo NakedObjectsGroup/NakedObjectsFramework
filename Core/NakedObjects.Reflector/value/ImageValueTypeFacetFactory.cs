@@ -17,7 +17,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public ImageValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IImageValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ImageValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(ImageValueSemanticsProvider.AdaptedType);
                 AddFacets(new ImageValueSemanticsProvider(spec, specification));

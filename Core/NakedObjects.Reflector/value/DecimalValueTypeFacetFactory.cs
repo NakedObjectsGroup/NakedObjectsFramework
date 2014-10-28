@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public DecimalValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IDecimalValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (DecimalValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(DecimalValueSemanticsProvider.AdaptedType);
                 AddFacets(new DecimalValueSemanticsProvider(spec, specification));

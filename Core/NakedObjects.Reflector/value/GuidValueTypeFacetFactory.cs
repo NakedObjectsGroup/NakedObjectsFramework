@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public GuidValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IGuidValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (GuidValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(GuidValueSemanticsProvider.AdaptedType);
                 AddFacets(new GuidValueSemanticsProvider(spec, specification));

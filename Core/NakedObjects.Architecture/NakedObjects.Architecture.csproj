@@ -139,6 +139,7 @@
     <Compile Include="Component\IFacetFactorySet.cs" />
     <Compile Include="Component\IMetamodel.cs" />
     <Compile Include="Component\IMetamodelManager.cs" />
+    <Compile Include="Component\IMetamodelBuilder.cs" />
     <Compile Include="Component\IReflector.cs" />
     <Compile Include="Configuration\IReflectorConfiguration.cs" />
     <Compile Include="Exception\ResolveException.cs" />

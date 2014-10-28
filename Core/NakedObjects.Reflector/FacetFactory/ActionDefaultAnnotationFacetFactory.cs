@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             : base(reflector, FeatureType.ParametersOnly) {}
 
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttributeByReflection<DefaultValueAttribute>();
             return FacetUtils.AddFacet(Create(attribute, holder));

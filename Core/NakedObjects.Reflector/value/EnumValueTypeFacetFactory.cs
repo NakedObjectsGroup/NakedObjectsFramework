@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public EnumValueTypeFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (typeof (Enum).IsAssignableFrom(type)) {
                 Type semanticsProviderType = typeof (EnumValueSemanticsProvider<>).MakeGenericType(type);
                 var spec = Reflector.LoadSpecification(type);

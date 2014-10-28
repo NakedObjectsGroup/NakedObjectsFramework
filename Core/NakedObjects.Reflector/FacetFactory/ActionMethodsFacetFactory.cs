@@ -55,7 +55,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             get { return FixedPrefixes; }
         }
 
-        public override bool Process(MethodInfo actionMethod, IMethodRemover methodRemover, ISpecification action) {
+        public override bool Process(MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action) {
             string capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
             Type type = actionMethod.DeclaringType;
@@ -102,7 +102,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return FacetUtils.AddFacets(facets);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var facets = new List<IFacet>();
 

@@ -8,6 +8,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.Spec {
     public class FacetDecoratorSet : IFacetDecoratorSet {
@@ -40,7 +41,7 @@ namespace NakedObjects.Reflector.Spec {
                     IFacet previousFacet = holder.GetFacet(facetType);
                     IFacet decoratedFacet = decorator.Decorate(previousFacet, holder);
                     if (decoratedFacet != null && decoratedFacet != previousFacet) {
-                        holder.AddFacet(decoratedFacet);
+                        FacetUtils.AddFacet(decoratedFacet);
                     }
                 }
             }

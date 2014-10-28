@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         public ComplexTypeAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsOnly) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute ctAttribute = type.GetCustomAttributeByReflection<ComplexTypeAttribute>();
             return FacetUtils.AddFacet(Create(ctAttribute, specification));
         }

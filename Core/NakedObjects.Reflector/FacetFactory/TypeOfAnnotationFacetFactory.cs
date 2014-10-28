@@ -47,11 +47,11 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(method.ReturnType, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (property.GetGetMethod() != null) {
                 return Process(property.PropertyType, specification);
             }

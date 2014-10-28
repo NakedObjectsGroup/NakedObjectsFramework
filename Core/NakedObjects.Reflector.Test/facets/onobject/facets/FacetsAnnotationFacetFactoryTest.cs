@@ -70,15 +70,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
                 get { return null; }
             }
 
-            public override bool Process(Type clazz, IMethodRemover methodRemover, ISpecification specification) {
+            public override bool Process(Type clazz, IMethodRemover methodRemover, ISpecificationBuilder specification) {
                 return false;
             }
 
-            public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
                 return false;
             }
 
-            public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+            public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
                 return false;
             }
         }
@@ -91,15 +91,15 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Facets {
                 get { return null; }
             }
 
-            public override bool Process(Type clazz, IMethodRemover methodRemover, ISpecification specification) {
+            public override bool Process(Type clazz, IMethodRemover methodRemover, ISpecificationBuilder specification) {
                 return false;
             }
 
-            public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification) {
+            public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
                 return false;
             }
 
-            public override bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder) {
+            public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
                 return false;
             }
         }

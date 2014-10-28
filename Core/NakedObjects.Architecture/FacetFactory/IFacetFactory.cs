@@ -29,34 +29,34 @@ namespace NakedObjects.Architecture.FacetFactory {
         /// </summary>
         /// <param name="type">class being processed</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
-        /// <param name="specificationtach the facets to</param>
+        /// <param name="specification"> attach the facets to</param>
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        bool Process(Type type, IMethodRemover methodRemover, ISpecification specification);
+        bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification);
 
         /// <summary>
         ///     Process the method, and return the correctly setup annotation if present.
         /// </summary>
         /// <param name="method">MethodInfo representing the feature being processed</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
-        /// <param name="specificationtach the facets to</param>
+        /// <param name="specification"> attach the facets to</param>
         /// <returns>
         ///     <c>true</c> if any facets were added and therefore should be removed, <c>false</c> otherwise.
         ///     Returning true will cause the method to be removed
         /// </returns>
-        bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecification specification);
+        bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification);
 
         /// <summary>
         ///     Process the property, and return the correctly setup annotation if present.
         /// </summary>
         /// <param name="property">PropertyInfo representing the feature being processed</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
-        /// <param name="specificationtach the facets to</param>
+        /// <param name="specification"> attach the facets to</param>
         /// <returns>
         ///     <c>true</c> if any facets were added  <c>false</c> otherwise.
         /// </returns>
-        bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecification specification);
+        bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification);
 
         /// <summary>
         ///     Process the parameters of the method, and return the correctly setup annotation if present.
@@ -67,7 +67,7 @@ namespace NakedObjects.Architecture.FacetFactory {
         /// <returns>
         ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
         /// </returns>
-        bool ProcessParams(MethodInfo method, int paramNum, ISpecification holder);
+        bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder);
 
         void FindCollectionProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo);
 

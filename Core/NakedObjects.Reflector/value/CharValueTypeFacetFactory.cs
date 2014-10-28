@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public CharValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (ICharValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (CharValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(CharValueSemanticsProvider.AdaptedType);
                 AddFacets(new CharValueSemanticsProvider(spec, specification));

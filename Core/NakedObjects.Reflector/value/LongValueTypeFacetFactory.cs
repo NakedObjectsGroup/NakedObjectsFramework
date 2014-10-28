@@ -16,7 +16,7 @@ namespace NakedObjects.Reflector.DotNet.Value {
         public LongValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (ILongValueFacet)) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecification specification) {
+        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (LongValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(LongValueSemanticsProvider.AdaptedType);
                 AddFacets(new LongValueSemanticsProvider(spec, specification));

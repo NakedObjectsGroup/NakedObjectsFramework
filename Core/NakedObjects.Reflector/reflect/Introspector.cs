@@ -135,14 +135,16 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             // this will also remove some methods, such as the superclass methods.
             var methodRemover = new DotnetIntrospectorMethodRemover(methods);
             FacetFactorySet.Process(introspectedType, methodRemover, spec);
+            
+            // TODO remove all this 
             // if this class has additional facets then Process them.
-            var facetsFacet = spec.GetFacet<IFacetsFacet>();
-            if (facetsFacet != null) {
-                foreach (Type facetFactory in facetsFacet.FacetFactories) {
-                    var facetFactoryInstance = (IFacetFactory) Activator.CreateInstance(facetFactory, reflector);
-                    facetFactoryInstance.Process(introspectedType, methodRemover, spec);
-                }
-            }
+            //var facetsFacet = spec.GetFacet<IFacetsFacet>();
+            //if (facetsFacet != null) {
+            //    foreach (Type facetFactory in facetsFacet.FacetFactories) {
+            //        var facetFactoryInstance = (IFacetFactory) Activator.CreateInstance(facetFactory, reflector);
+            //        facetFactoryInstance.Process(introspectedType, methodRemover, spec);
+            //    }
+            //}
 
             // all this should be done in factories ! 
             var namedFacet = spec.GetFacet<INamedFacet>();
