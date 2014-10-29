@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class TypicalLengthFacetInferred : TypicalLengthFacetAbstract, ITypicalLengthFacet {
         public TypicalLengthFacetInferred(int intValue, ISpecification holder)
             : base(intValue, holder) {}

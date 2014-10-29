@@ -13,7 +13,7 @@ using System.Linq;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Reflector.Reflect {
+namespace NakedObjects.Reflect {
     public class OrderSet<T> : IComparable<IOrderSet<T>>, IOrderSet<T> where T : IOrderableElement<T>, ISpecification {
         private readonly List<IOrderableElement<T>> childOrderSets = new List<IOrderableElement<T>>();
         private readonly List<IOrderableElement<T>> elements = new List<IOrderableElement<T>>();
@@ -30,7 +30,7 @@ namespace NakedObjects.Reflector.Reflect {
         #region IComparable<IOrderSet<T>> Members
 
         /// <summary>
-        ///     Natural ordering is to compare by <see cref="OrderSet.GroupFullName" />
+        ///     Natural ordering is to compare by <see cref="OrderSet{T}.GroupFullName" />
         /// </summary>
         public int CompareTo(IOrderSet<T> o) {
             return GroupFullName.CompareTo(o.GroupFullName);

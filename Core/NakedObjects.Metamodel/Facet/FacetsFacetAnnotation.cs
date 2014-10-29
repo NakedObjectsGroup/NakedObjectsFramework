@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class FacetsFacetAnnotation : FacetsFacetAbstract {
         public FacetsFacetAnnotation(FacetsAttribute attribute, ISpecification holder)
             : base(attribute.FacetFactoryNames, attribute.FacetFactoryClasses, holder) {}

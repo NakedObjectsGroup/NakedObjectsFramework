@@ -5,10 +5,10 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Metamodel.Facet;
+using NakedObjects.Meta.Facet;
 using NUnit.Framework;
 
-namespace NakedObjects.Reflector.DotNet.Reflect {
+namespace NakedObjects.Reflect.DotNet.Reflect {
     public class TestPojo {}
 
     [TestFixture]

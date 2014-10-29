@@ -12,7 +12,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Reflector.FacetFactory {
+namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
     ///     Removes any calls to <c>Init</c>
     /// </summary>

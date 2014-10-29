@@ -12,15 +12,15 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Utils;
 
 using NakedObjects.Util;
 using MethodInfo = System.Reflection.MethodInfo;
 using PropertyInfo = System.Reflection.PropertyInfo;
 using MemberInfo = System.Reflection.MemberInfo;
 
-namespace NakedObjects.Reflector.FacetFactory {
+namespace NakedObjects.Reflect.FacetFactory {
     public class HiddenAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public HiddenAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}

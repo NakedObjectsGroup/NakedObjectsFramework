@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class PluralFacetAnnotation : PluralFacetAbstract {
         public PluralFacetAnnotation(string value, ISpecification holder)
             : base(value, holder) {}

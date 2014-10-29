@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Metamodel.SpecImmutable {
+namespace NakedObjects.Meta.SpecImmutable {
     public class OneToManyAssociationSpecImmutable : AssociationSpecImmutable {
         private Type elementType;
         private IObjectSpecImmutable specification;

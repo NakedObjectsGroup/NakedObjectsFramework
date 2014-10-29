@@ -11,14 +11,14 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Metamodel.Facet;
+using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Reflector.Reflect {
+namespace NakedObjects.Reflect {
     /// <summary>
     ///     Compares by <see cref="IMemberOrderFacet" /> obtained from each <see cref="IMemberSpecImmutable" />
     /// </summary>
     /// <para>
-    ///     Will also compare <see cref="OrderSet" />s; these are put after any <see cref="IMemberSpecImmutable" />s.
+    ///     Will also compare <see cref="OrderSet{T}" />s; these are put after any <see cref="IMemberSpecImmutable" />s.
     /// </para>
     /// <para>
     ///     If there is no attribute on either member, then will compare the members by name instead.

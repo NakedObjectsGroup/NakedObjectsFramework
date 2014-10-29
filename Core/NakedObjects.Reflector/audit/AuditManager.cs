@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Audit;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Reflector.Audit {
+namespace NakedObjects.Reflect.Audit {
     public class AuditManager {
         private readonly IAuditor defaultAuditor;
         private readonly INamespaceAuditor[] namespaceAuditors;

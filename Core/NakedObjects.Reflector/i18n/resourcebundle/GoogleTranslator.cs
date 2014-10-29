@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using Common.Logging;
 
-namespace NakedObjects.Reflector.I18n.Resourcebundle {
+namespace NakedObjects.Reflect.I18n.Resourcebundle {
     public class GoogleTranslator : ITranslator {
         private const string GOOGLE = "http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&";
         private static readonly ILog Log = LogManager.GetLogger(typeof (GoogleTranslator));

@@ -7,7 +7,7 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
-using NakedObjects.Reflector.DotNet;
+using NakedObjects.Reflect.DotNet;
 
 namespace NakedObjects.Boot {
     public class BatchClient : INakedObjectsClient {

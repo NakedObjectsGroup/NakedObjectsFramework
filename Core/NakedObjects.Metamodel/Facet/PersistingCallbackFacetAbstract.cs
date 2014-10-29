@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class PersistingCallbackFacetAbstract : CallbackFacetAbstract, IPersistingCallbackFacet {
         protected PersistingCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

@@ -14,8 +14,8 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Util;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.EntityObjectStore {
     public static class ObjectContextUtils {

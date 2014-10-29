@@ -5,7 +5,7 @@
 using System;
 using NakedObjects.Architecture;
 
-namespace NakedObjects.Reflector.Peer {
+namespace NakedObjects.Reflect.Peer {
     /// <summary>
     ///     ModelException represents a problem with the definition of the domain model.
     /// </summary>

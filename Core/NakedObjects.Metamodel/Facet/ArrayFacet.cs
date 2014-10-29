@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ArrayFacet : CollectionFacet {
         public ArrayFacet(ISpecification holder)
             : base(holder) {}

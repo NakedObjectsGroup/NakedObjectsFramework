@@ -10,7 +10,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Test;
 using NUnit.Framework;
 
-namespace NakedObjects.Reflector.DotNet.Reflect {
+namespace NakedObjects.Reflect.DotNet.Reflect {
     [TestFixture]
     public class Reflector_ObjectTest : AbstractDotNetReflectorTest {
         protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {

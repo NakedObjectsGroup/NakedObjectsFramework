@@ -6,10 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Component;
-using NakedObjects.Reflector.Peer;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Reflect.Peer;
+using NakedObjects.Reflect.Spec;
 
-namespace NakedObjects.Reflector.I18n.Resourcebundle {
+namespace NakedObjects.Reflect.I18n.Resourcebundle {
     public class ResourceBasedI18nDecoratorInstaller : IReflectionDecoratorInstaller {
         private readonly string resourceFile;
 

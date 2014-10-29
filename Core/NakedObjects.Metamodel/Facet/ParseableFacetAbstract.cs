@@ -11,10 +11,10 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
-using NakedObjects.Metamodel.Utils;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class ParseableFacetAbstract<T> : FacetAbstract, IParseableFacet {
         // to delegate to
         private readonly ParseableFacetUsingParser<T> parseableFacetUsingParser;

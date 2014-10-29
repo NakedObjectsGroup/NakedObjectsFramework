@@ -15,7 +15,7 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.Transaction;
+using NakedObjects.Reflect.Transaction;
 
 namespace NakedObjects.Boot {
     // TODO move this to NakedObjects.Core.NakedObjectsSystem in core project once reflector dependency has been removed

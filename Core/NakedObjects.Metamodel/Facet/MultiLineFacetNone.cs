@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class MultiLineFacetNone : MultiLineFacetAbstract {
         public MultiLineFacetNone(ISpecification holder)
             : base(1, 0, holder) {}

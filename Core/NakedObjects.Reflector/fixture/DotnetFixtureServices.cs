@@ -8,7 +8,7 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Security;
 
-namespace NakedObjects.Reflector.DotNet.Fixture {
+namespace NakedObjects.Reflect.DotNet.Fixture {
     public class DotNetFixtureServices {
         public DotNetFixtureServices() {
             Clock = FixtureClock.Initialize();

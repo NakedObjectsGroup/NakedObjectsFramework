@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class PasswordFacet : MarkerFacetAbstract, IPasswordFacet {
         public PasswordFacet(ISpecification holder)
             : base(typeof (IPasswordFacet), holder) {}

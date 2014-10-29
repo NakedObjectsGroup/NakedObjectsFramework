@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class MultiLineFacetAnnotation : MultiLineFacetAbstract {
         public MultiLineFacetAnnotation(int numberOfLines, int width, ISpecification holder)
             : base(numberOfLines, width, holder) {}

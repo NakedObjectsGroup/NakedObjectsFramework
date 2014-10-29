@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class TitleFacetAbstract : FacetAbstract, ITitleFacet {
         protected TitleFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

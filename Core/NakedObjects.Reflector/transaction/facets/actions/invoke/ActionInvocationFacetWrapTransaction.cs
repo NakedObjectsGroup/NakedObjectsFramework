@@ -12,9 +12,9 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Metamodel.Facet;
+using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Reflector.Transaction.Facets.Actions.Invoke {
+namespace NakedObjects.Reflect.Transaction.Facets.Actions.Invoke {
     public class ActionInvocationFacetWrapTransaction : ActionInvocationFacetAbstract {
         private static readonly ILog Log;
         private readonly IActionInvocationFacet underlyingFacet;

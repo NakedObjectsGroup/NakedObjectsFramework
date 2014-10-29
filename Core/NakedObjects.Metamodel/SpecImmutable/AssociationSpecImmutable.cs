@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Metamodel.SpecImmutable {
+namespace NakedObjects.Meta.SpecImmutable {
     public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
 
         protected readonly Type ReturnType;

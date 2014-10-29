@@ -10,10 +10,10 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Reflect.Spec;
 
-namespace NakedObjects.Reflector.Security {
+namespace NakedObjects.Reflect.Security {
     public class SecurityFacetDecorator : IFacetDecorator {
         private readonly IAuthorizationManager manager;
 

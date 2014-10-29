@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 using NakedObjects.Architecture.Facet;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class EnumFacet : MarkerFacetAbstract, IEnumFacet {
         private readonly EnumNameComparer comparer;
         private readonly Type typeOfEnum;

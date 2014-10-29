@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class QueryOnlyFacet : MarkerFacetAbstract, IQueryOnlyFacet {
         public QueryOnlyFacet(ISpecification holder)
             : base(typeof(IQueryOnlyFacet), holder) { }

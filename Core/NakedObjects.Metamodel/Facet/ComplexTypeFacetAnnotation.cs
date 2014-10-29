@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ComplexTypeFacetAnnotation : ComplexTypeFacetAbstract {
         public ComplexTypeFacetAnnotation(ISpecification holder)
             : base(holder) {}

@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class PropertyValidateFacetDefault : FacetAbstract, IPropertyValidateFacet {
         public PropertyValidateFacetDefault(ISpecification holder)
             : base(typeof (IPropertyValidateFacet), holder) {}

@@ -9,9 +9,9 @@ using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Metamodel.Facet;
+using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Reflector.FacetFactory {
+namespace NakedObjects.Reflect.FacetFactory {
     public abstract class AnnotationBasedFacetFactoryAbstract : FacetFactoryAbstract, IAnnotationBasedFacetFactory {
         protected AnnotationBasedFacetFactoryAbstract(IReflector reflector, FeatureType featureTypes)
             : base(reflector, featureTypes) {}

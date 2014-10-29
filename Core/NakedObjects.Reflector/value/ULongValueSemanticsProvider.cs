@@ -15,7 +15,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Capabilities;
 
-namespace NakedObjects.Reflector.DotNet.Value {
+namespace NakedObjects.Reflect.DotNet.Value {
     public class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract<ulong>, IPropertyDefaultFacet {
         private const ulong defaultValue = 0;
         private const bool equalByContent = true;

@@ -17,7 +17,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
-    <RootNamespace>NakedObjects.Reflector</RootNamespace>
+    <RootNamespace>NakedObjects.Reflect</RootNamespace>
     <NoStandardLibraries>false</NoStandardLibraries>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
@@ -240,7 +240,6 @@
     <Compile Include="reflect\DotNetReflectorInstaller.cs" />
     <Compile Include="reflect\MemberIdentifierComparator.cs" />
     <Compile Include="reflect\MemberOrderComparator.cs" />
-    <Compile Include="reflect\Metamodel.cs" />
     <Compile Include="reflect\MethodFinderUtils.cs" />
     <Compile Include="reflect\OrderSet.cs" />
     <Compile Include="reflect\proxies\ProxyCreator.cs" />
@@ -253,7 +252,6 @@
     <Compile Include="security\SecurityFacetDecorator.cs" />
     <Compile Include="spec\FacetDecoratorSet.cs" />
     <Compile Include="spec\ImmutableInMemorySpecCache.cs" />
-    <Compile Include="spec\ISpecificationCache.cs" />
     <Compile Include="transaction\facets\actions\invoke\ActionInvocationFacetWrapTransaction.cs" />
     <Compile Include="transaction\facets\properties\write\PropertyClearFacetWrapTransaction.cs" />
     <Compile Include="transaction\facets\properties\write\ProxySetterFacetWrapTransaction.cs" />

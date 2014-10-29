@@ -9,9 +9,9 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
+using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Reflector.I18n {
+namespace NakedObjects.Reflect.I18n {
     public class DescribedAsFacetDynamicWrapI18n : FacetAbstract, IDescribedAsFacet {
         private readonly IDescribedAsFacet describedAsFacet;
         private readonly IIdentifier identifier;

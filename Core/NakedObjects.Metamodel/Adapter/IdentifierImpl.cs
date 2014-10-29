@@ -14,7 +14,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Metamodel.Adapter {
+namespace NakedObjects.Meta.Adapter {
     public class IdentifierImpl : IIdentifier {
         private readonly IMetamodel metamodel;
         private readonly string className;

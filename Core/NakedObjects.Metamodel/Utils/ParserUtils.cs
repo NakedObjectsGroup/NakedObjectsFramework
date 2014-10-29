@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Capabilities;
 using NakedObjects.Util;
 
-namespace NakedObjects.Metamodel.Utils {
+namespace NakedObjects.Meta.Utils {
     public static class ParserUtils {
         public static Type ParserOrNull<T>(Type candidateType, string classCandidateName) {
             Type type = candidateType != null ? TypeUtils.ImplementingTypeOrNull(candidateType.FullName, typeof (IParser<T>)) : null;

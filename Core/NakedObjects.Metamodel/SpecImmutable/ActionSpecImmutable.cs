@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Metamodel.SpecImmutable {
+namespace NakedObjects.Meta.SpecImmutable {
     // TODO (in all DotNet...Peer classes) make all methodsArray throw ReflectiveActionException when 
     // an exception occurs when calling a method reflectively (see execute method).  Then instead of 
     // calling invocationExcpetion() the exception will be passed though, and dealt with generally by 

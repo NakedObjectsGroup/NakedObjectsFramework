@@ -4,7 +4,7 @@
 
 using NakedObjects.Architecture;
 
-namespace NakedObjects.Metamodel.Exception {
+namespace NakedObjects.Meta.Except {
     /// <summary>
     ///     ModelException represents a problem with the definition of the domain model.
     /// </summary>

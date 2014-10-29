@@ -7,10 +7,10 @@ using System.IO;
 using Common.Logging;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
-using NakedObjects.Reflector.Audit;
-using NakedObjects.Reflector.DotNet.Reflect;
-using NakedObjects.Reflector.I18n.Resourcebundle;
-using NakedObjects.Reflector.Security;
+using NakedObjects.Reflect.Audit;
+using NakedObjects.Reflect.DotNet.Reflect;
+using NakedObjects.Reflect.I18n.Resourcebundle;
+using NakedObjects.Reflect.Security;
 
 namespace NakedObjects.Boot {
     public abstract class Run {

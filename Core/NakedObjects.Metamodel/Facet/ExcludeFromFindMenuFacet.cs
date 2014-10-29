@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ExcludeFromFindMenuFacet : MarkerFacetAbstract, IExcludeFromFindMenuFacet {
         public ExcludeFromFindMenuFacet(ISpecification holder) 
             : base(typeof (IExcludeFromFindMenuFacet), holder) {}

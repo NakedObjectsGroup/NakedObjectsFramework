@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class PropertyValidateFacetNone : PropertyValidateFacetAbstract {
         public PropertyValidateFacetNone(ISpecification holder)
             : base(holder) {}

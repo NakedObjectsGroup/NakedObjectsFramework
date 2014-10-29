@@ -9,7 +9,7 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.Metamodel.Utils {
+namespace NakedObjects.Meta.Utils {
     public class NakedObjectValidationMethod {
         private readonly MethodInfo method;
 

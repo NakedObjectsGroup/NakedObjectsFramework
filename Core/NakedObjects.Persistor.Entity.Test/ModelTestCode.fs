@@ -16,7 +16,7 @@ open NakedObjects
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Architecture.Component
 open System.Data.Entity.Core.Objects
-open NakedObjects.Reflector.DotNet
+open NakedObjects.Reflect.DotNet
 open Moq
 
 let ModelConfig = 

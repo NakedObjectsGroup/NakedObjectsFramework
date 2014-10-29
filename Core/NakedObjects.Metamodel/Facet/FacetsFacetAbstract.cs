@@ -13,7 +13,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class FacetsFacetAbstract : FacetAbstract, IFacetsFacet {
         private static readonly ILog Log = LogManager.GetLogger(typeof (FacetsFacetAbstract));
 

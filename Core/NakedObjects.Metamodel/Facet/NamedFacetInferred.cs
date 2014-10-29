@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class NamedFacetInferred : NamedFacetAbstract {
         public NamedFacetInferred(string value, ISpecification holder)
             : base(value, holder) {}

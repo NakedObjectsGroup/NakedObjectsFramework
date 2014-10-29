@@ -11,7 +11,7 @@ using System.Linq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Reflector.DotNet {
+namespace NakedObjects.Reflect.DotNet {
     public class DotNetDomainObjectContainerInjector : IContainerInjector {
         private object container;
         private bool initialized;

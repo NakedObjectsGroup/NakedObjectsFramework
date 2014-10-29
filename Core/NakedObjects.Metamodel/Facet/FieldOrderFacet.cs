@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class FieldOrderFacet : SingleStringValueFacetAbstract, IFieldOrderFacet {
         public FieldOrderFacet(string value, ISpecification holder)
             : base(typeof(IFieldOrderFacet), holder, value) { }

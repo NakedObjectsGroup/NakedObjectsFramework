@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     /// <summary>
     ///     Hide a property, collection or action based on the current session.
     /// </summary>

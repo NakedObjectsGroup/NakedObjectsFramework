@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ParseableFacetAnnotation<T> : ParseableFacetAbstract<T> {
         public ParseableFacetAnnotation(Type annotatedClass, ISpecification holder)
             : this(ParserName(annotatedClass), ParserClass(annotatedClass), holder) {}

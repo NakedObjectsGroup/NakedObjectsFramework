@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ImmutableFacetViaValueSemantics : ImmutableFacetImpl {
         public ImmutableFacetViaValueSemantics(ISpecification holder)
             : base(WhenTo.Always, holder) {}

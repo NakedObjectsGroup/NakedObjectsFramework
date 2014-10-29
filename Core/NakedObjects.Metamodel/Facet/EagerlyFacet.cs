@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class EagerlyFacet : FacetAbstract, IEagerlyFacet {
         public EagerlyFacet(EagerlyAttribute.Do what, ISpecification holder)
             : base(Type, holder) {

@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class IsASetFacet : MarkerFacetAbstract, IIsASetFacet {
         public IsASetFacet(ISpecification holder) : base(Type, holder) {}
 

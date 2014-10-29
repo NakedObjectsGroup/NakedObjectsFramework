@@ -9,9 +9,9 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Utils;
+using NakedObjects.Meta.Utils;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class PersistedCallbackFacetViaMethod : PersistedCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 

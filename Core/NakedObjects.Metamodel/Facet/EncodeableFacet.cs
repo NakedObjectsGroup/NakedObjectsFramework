@@ -11,10 +11,10 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
-using NakedObjects.Metamodel.Utils;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class EncodeableFacet<T> : FacetAbstract, IEncodeableFacet {
         private readonly EncodeableFacetUsingEncoderDecoder<T> encodeableFacetUsingEncoderDecoder;
         private readonly Type encoderDecoderClass;

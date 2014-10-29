@@ -15,7 +15,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Capabilities;
 
-namespace NakedObjects.Reflector.DotNet.Value {
+namespace NakedObjects.Reflect.DotNet.Value {
     public class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<long>, IPropertyDefaultFacet {
         private const bool equalByContent = true;
         private const bool immutable = true;

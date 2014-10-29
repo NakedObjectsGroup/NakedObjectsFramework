@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class CollectionFacet : CollectionFacetAbstract {
        
         public CollectionFacet(ISpecification holder)

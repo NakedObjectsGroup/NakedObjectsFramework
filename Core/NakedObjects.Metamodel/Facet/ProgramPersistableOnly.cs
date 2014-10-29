@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ProgramPersistableOnly : MarkerFacetAbstract, IProgramPersistableOnlyFacet {
         public ProgramPersistableOnly(ISpecification holder)
             : base(typeof (IProgramPersistableOnlyFacet), holder) {}

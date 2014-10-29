@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class PropertySetterFacetAbstract : FacetAbstract, IPropertySetterFacet {
         protected PropertySetterFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

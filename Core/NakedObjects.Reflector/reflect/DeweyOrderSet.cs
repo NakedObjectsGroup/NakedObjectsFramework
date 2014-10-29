@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Reflector.Reflect {
+namespace NakedObjects.Reflect {
     /// <summary>
     ///     Represents a nested hierarchy of ordered members.
     /// </summary>

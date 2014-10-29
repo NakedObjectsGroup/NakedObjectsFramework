@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Resolve;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {
         public HiddenFacet(WhenTo when, ISpecification holder)
             : base(typeof(IHiddenFacet), holder, when) { }

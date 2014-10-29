@@ -8,13 +8,11 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Core.Adapter;
-
-
-using NakedObjects.Reflector.DotNet.Value;
+using NakedObjects.Reflect.DotNet.Value;
 using NUnit.Framework;
-using NakedObjects.Metamodel.Facet;
+using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Reflector.DotNet {
+namespace NakedObjects.Reflect.DotNet {
     public abstract class ValueSemanticsProviderAbstractTestCase<T> {
         private EncodeableFacetUsingEncoderDecoder<T> encodeableFacet;
         private ParseableFacetUsingParser<T> parseableFacet;

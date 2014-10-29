@@ -8,11 +8,11 @@
 using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Reflector.Spec;
-using NakedObjects.Reflector.Transaction.Facets.Actions.Invoke;
-using NakedObjects.Reflector.Transaction.Facets.Properties.Write;
+using NakedObjects.Reflect.Spec;
+using NakedObjects.Reflect.Transaction.Facets.Actions.Invoke;
+using NakedObjects.Reflect.Transaction.Facets.Properties.Write;
 
-namespace NakedObjects.Reflector.Transaction {
+namespace NakedObjects.Reflect.Transaction {
     public class TransactionDecorator : IFacetDecorator {
         #region IFacetDecorator Members
 

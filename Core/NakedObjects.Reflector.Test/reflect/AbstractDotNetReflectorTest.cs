@@ -8,15 +8,15 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
-using NakedObjects.Reflector.DotNet.Reflect.Strategy;
-using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Meta;
+using NakedObjects.Reflect.DotNet.Reflect.Strategy;
+using NakedObjects.Reflect.FacetFactory;
+using NakedObjects.Reflect.Spec;
 using NUnit.Framework;
 
-namespace NakedObjects.Reflector.DotNet.Reflect {
+namespace NakedObjects.Reflect.DotNet.Reflect {
     public abstract class AbstractDotNetReflectorTest {
         protected IMetamodel Metamodel;
         protected IObjectSpecImmutable Specification;

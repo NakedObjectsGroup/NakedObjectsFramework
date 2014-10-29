@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
         public BoundedFacet(ISpecification holder)
             : base(typeof (IBoundedFacet),holder) {}

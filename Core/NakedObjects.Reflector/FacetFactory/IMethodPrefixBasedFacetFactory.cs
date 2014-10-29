@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 
-namespace NakedObjects.Reflector.FacetFactory {
+namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
     ///     Indicates that the <see cref="IFacetFactory" /> works by recognizing methods
     ///     with a certain prefix (or prefixes).

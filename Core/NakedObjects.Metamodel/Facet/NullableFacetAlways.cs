@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class NullableFacetAlways : FacetAbstract, INullableFacet {
         public NullableFacetAlways(ISpecification holder) : base(typeof(INullableFacet), holder) { }
     }

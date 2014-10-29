@@ -7,10 +7,10 @@
 
 using System.Collections.Immutable;
 using System.Linq;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Reflector.Spec {
+namespace NakedObjects.Reflect.Spec {
     public class ImmutableInMemorySpecCache : ISpecificationCache {
         private ImmutableDictionary<string, IObjectSpecImmutable> specs = ImmutableDictionary<string, IObjectSpecImmutable>.Empty;
 

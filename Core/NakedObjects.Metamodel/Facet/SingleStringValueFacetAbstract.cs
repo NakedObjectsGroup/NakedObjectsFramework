@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class SingleStringValueFacetAbstract : FacetAbstract, ISingleStringValueFacet {
         private readonly string valueString;
 

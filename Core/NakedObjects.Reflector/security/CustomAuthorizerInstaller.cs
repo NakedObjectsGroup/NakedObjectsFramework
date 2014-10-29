@@ -7,8 +7,8 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Reflector.Security;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Reflect.Security;
+using NakedObjects.Reflect.Spec;
 
 namespace NakedObjects.Security {
     public class CustomAuthorizerInstaller : IAuthorizerInstaller {

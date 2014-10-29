@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class MarkerFacetAbstract : FacetAbstract, IMarkerFacet {
         protected MarkerFacetAbstract(Type facetType, ISpecification holder)
             : base(facetType, holder) {}

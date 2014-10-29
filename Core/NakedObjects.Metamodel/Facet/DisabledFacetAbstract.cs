@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class DisabledFacetAbstract : SingleWhenValueFacetAbstract, IDisabledFacet {
         protected DisabledFacetAbstract(WhenTo when, ISpecification holder)
             : base(Type, holder, when) {}

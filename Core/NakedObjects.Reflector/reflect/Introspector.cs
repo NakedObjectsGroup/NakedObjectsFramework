@@ -21,13 +21,12 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Metamodel.Adapter;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.SpecImmutable;
-using NakedObjects.Reflector.Reflect;
+using NakedObjects.Meta.Adapter;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Reflect {
+namespace NakedObjects.Reflect {
     public class Introspector : IIntrospector {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Introspector));
 

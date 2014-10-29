@@ -16,9 +16,9 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NUnit.Framework;
-using NakedObjects.Metamodel.Spec;
+using NakedObjects.Meta.Spec;
 
-namespace NakedObjects.Reflector.DotNet.Value {
+namespace NakedObjects.Reflect.DotNet.Value {
     [TestFixture]
     public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<bool> {
         #region Setup/Teardown

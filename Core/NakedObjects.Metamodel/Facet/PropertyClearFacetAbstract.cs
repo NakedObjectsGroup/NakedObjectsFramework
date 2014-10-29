@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class PropertyClearFacetAbstract : FacetAbstract, IPropertyClearFacet {
         protected PropertyClearFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

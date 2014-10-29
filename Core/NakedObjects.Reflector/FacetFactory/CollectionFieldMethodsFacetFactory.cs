@@ -15,11 +15,11 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Utils;
 
 
-namespace NakedObjects.Reflector.FacetFactory {
+namespace NakedObjects.Reflect.FacetFactory {
     public class CollectionFieldMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
         private static readonly ILog Log;
         private static readonly string[] FixedPrefixes;

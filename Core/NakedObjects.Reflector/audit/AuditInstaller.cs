@@ -4,9 +4,9 @@
 
 using NakedObjects.Architecture.Component;
 using NakedObjects.Audit;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Reflect.Spec;
 
-namespace NakedObjects.Reflector.Audit {
+namespace NakedObjects.Reflect.Audit {
     public class AuditInstaller : IAuditorInstaller {
         private readonly AuditManager auditManager;
 

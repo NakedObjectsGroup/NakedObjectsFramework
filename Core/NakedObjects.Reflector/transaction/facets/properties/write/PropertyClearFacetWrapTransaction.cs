@@ -10,9 +10,9 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Metamodel.Facet;
+using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Reflector.Transaction.Facets.Properties.Write {
+namespace NakedObjects.Reflect.Transaction.Facets.Properties.Write {
     public class PropertyClearFacetWrapTransaction : PropertyClearFacetAbstract {
         private readonly IPropertyClearFacet underlyingFacet;
 

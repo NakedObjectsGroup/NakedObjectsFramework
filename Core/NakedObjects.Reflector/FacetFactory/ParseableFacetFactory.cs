@@ -12,12 +12,12 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Utils;
 
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.FacetFactory {
+namespace NakedObjects.Reflect.FacetFactory {
     public class ParseableFacetFactory : AnnotationBasedFacetFactoryAbstract, INakedObjectConfigurationAware {
         public ParseableFacetFactory(IReflector reflector)
             : base(reflector,FeatureType.Objects) {}

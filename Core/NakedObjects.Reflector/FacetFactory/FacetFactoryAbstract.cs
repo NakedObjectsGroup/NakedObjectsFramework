@@ -13,7 +13,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class FacetFactoryAbstract : IFacetFactory {
         private readonly FeatureType featureTypes;
         private readonly IReflector reflector;

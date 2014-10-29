@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class ImmutableFacetAbstract : SingleWhenValueFacetAbstract, IImmutableFacet {
         protected ImmutableFacetAbstract(WhenTo when, ISpecification holder)
             : base(Type, holder, when) {}

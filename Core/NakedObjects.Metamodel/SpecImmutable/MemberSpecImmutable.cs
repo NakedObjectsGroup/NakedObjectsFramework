@@ -8,9 +8,9 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Metamodel.Spec;
+using NakedObjects.Meta.Spec;
 
-namespace NakedObjects.Metamodel.SpecImmutable {
+namespace NakedObjects.Meta.SpecImmutable {
     public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable {
         private readonly IIdentifier identifier;
 

@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class AggregatedFacetAlways : MarkerFacetAbstract {
         public AggregatedFacetAlways(ISpecification holder)
             : base(typeof (IAggregatedFacet), holder) {}

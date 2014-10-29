@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Interactions;
 
-namespace NakedObjects.Metamodel.Exception {
+namespace NakedObjects.Meta.Except {
     public class ActionArgumentsInvalidException : InvalidException {
         public ActionArgumentsInvalidException(InteractionContext ic)
             : this(ic, Resources.NakedObjects.InvalidArguments) {}

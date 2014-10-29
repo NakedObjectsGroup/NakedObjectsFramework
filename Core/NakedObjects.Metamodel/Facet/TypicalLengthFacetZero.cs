@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class TypicalLengthFacetZero : TypicalLengthFacetAbstract {
         public TypicalLengthFacetZero(ISpecification holder)
             : base(0, holder) {}

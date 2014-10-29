@@ -12,7 +12,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Value;
 
-namespace NakedObjects.Reflector.DotNet.Value {
+namespace NakedObjects.Reflect.DotNet.Value {
     public class FileAttachmentValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<FileAttachment> {
         public FileAttachmentValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IFileAttachmentValueFacet)) {}

@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class TypeOfFacetDefaultToObject : FacetAbstract, ITypeOfFacet {
         private readonly IMetamodel metamodel;
 

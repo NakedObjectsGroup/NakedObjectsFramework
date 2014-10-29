@@ -15,7 +15,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Capabilities;
 using NakedObjects.Value;
 
-namespace NakedObjects.Reflector.DotNet.Value {
+namespace NakedObjects.Reflect.DotNet.Value {
     public class FileAttachmentValueSemanticsProvider : ValueSemanticsProviderAbstract<FileAttachment>, IFromStream {
         private const bool EqualByContent = true;
         private const bool Immutable = true;

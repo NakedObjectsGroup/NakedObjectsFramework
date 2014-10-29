@@ -8,7 +8,7 @@
 using System.Reflection;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     /// <summary>
     ///     A <see cref="IFacet" /> implementation that ultimately wraps a
     ///     <see cref="MethodInfo" />, for a implementation of a <see cref="IMemberSpec" />

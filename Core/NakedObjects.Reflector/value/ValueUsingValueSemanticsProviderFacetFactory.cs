@@ -9,11 +9,11 @@ using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Utils;
 
 
-namespace NakedObjects.Reflector.DotNet.Value {
+namespace NakedObjects.Reflect.DotNet.Value {
     public abstract class ValueUsingValueSemanticsProviderFacetFactory<T> : FacetFactoryAbstract {
         protected ValueUsingValueSemanticsProviderFacetFactory(IReflector reflector, Type adapterFacetType)
             : base(reflector,FeatureType.Objects) {}

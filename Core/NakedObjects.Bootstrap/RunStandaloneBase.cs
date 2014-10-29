@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Threading;
 using Common.Logging;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Reflector.I18n.Resourcebundle;
+using NakedObjects.Reflect.I18n.Resourcebundle;
 
 namespace NakedObjects.Boot {
     public abstract class RunStandaloneBase : Run {

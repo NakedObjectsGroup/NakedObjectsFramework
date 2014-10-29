@@ -15,7 +15,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Capabilities;
 using NakedObjects.Value;
 
-namespace NakedObjects.Reflector.DotNet.Value {
+namespace NakedObjects.Reflect.DotNet.Value {
     public class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract<Image>, IFromStream {
         private const bool equalByContent = true;
         private const bool immutable = true;

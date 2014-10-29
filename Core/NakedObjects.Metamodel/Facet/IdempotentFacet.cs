@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class IdempotentFacet : MarkerFacetAbstract, IIdempotentFacet {
         public IdempotentFacet(ISpecification holder)
             : base(typeof(IIdempotentFacet), holder) { }

@@ -17,7 +17,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Resources;
 
-namespace NakedObjects.Reflector.I18n.Resourcebundle {
+namespace NakedObjects.Reflect.I18n.Resourcebundle {
     public class ResourceBasedI18nManager : II18nManager {
         private const string Action = "action";
         private const string Description = "description";

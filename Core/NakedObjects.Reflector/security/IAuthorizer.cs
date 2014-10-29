@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Reflector.Security {
+namespace NakedObjects.Reflect.Security {
     public interface IAuthorizer {
         bool IsUsable(ISession session, INakedObject target, IIdentifier member);
 

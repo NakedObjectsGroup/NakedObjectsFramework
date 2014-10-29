@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class GenericIEnumerableFacet : CollectionFacetAbstract {
         public GenericIEnumerableFacet(ISpecification holder, bool isASet)
             : base(holder, isASet) {}

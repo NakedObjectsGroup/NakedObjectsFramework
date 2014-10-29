@@ -4,7 +4,7 @@
 
 using NUnit.Framework;
 
-namespace NakedObjects.Reflector.spec {
+namespace NakedObjects.Reflect.spec {
 
     // TODO redo tests
 

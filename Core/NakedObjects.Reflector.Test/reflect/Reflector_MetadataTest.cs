@@ -7,11 +7,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Reflect.Spec;
 using NakedObjects.Test;
 using NUnit.Framework;
 
-namespace NakedObjects.Reflector.DotNet.Reflect {
+namespace NakedObjects.Reflect.DotNet.Reflect {
     [TestFixture]
     public class Reflector_MetaDataTest : AbstractDotNetReflectorTest {
         protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {

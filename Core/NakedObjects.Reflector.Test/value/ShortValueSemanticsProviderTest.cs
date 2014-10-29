@@ -14,9 +14,9 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NUnit.Framework;
-using NakedObjects.Metamodel.Spec;
+using NakedObjects.Meta.Spec;
 
-namespace NakedObjects.Reflector.DotNet.Value {
+namespace NakedObjects.Reflect.DotNet.Value {
     [TestFixture]
     public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<short> {
         #region Setup/Teardown

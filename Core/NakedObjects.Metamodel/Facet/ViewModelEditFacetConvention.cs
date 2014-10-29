@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ViewModelEditFacetConvention : ViewModelFacetConvention {
         public ViewModelEditFacetConvention(ISpecification holder) : base(Type, holder) {}
 

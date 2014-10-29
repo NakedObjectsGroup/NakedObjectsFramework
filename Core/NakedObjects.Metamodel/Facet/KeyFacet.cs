@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class KeyFacet : MarkerFacetAbstract, IKeyFacet {
         public KeyFacet(ISpecification holder)
             : base(typeof(IKeyFacet), holder) {}

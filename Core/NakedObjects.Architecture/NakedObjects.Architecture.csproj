@@ -141,6 +141,7 @@
     <Compile Include="Component\IMetamodelManager.cs" />
     <Compile Include="Component\IMetamodelBuilder.cs" />
     <Compile Include="Component\IReflector.cs" />
+    <Compile Include="Component\ISpecificationCache.cs" />
     <Compile Include="Configuration\IReflectorConfiguration.cs" />
     <Compile Include="Exception\ResolveException.cs" />
     <Compile Include="FacetFactory\MethodType.cs" />

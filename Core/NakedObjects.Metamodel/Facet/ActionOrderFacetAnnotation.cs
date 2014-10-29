@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ActionOrderFacetAnnotation : SingleStringValueFacetAbstract, IActionOrderFacet {
         public ActionOrderFacetAnnotation(string value, ISpecification holder)
             : base(typeof (IActionOrderFacet), holder, value) {}

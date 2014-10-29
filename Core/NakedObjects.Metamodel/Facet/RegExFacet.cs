@@ -10,9 +10,9 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Interactions;
-using NakedObjects.Metamodel.Exception;
+using NakedObjects.Meta.Except;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class RegExFacet : MultipleValueFacetAbstract, IRegExFacet {
         public RegExFacet(string validation, string format, bool caseSensitive, string message, ISpecification holder)
             : base(typeof (IRegExFacet), holder) {

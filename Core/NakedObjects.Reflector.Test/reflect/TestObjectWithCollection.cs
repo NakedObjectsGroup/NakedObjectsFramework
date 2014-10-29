@@ -5,7 +5,7 @@
 using System;
 using System.Collections;
 
-namespace NakedObjects.Reflector.DotNet.Reflect {
+namespace NakedObjects.Reflect.DotNet.Reflect {
     public class TestObjectWithCollection {
         private readonly ArrayList arrayList;
         private readonly bool throwException;

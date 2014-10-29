@@ -8,9 +8,9 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Utils;
+using NakedObjects.Meta.Utils;
 
-namespace NakedObjects.Reflector.Spec {
+namespace NakedObjects.Reflect.Spec {
     public class FacetDecoratorSet : IFacetDecoratorSet {
         private readonly IDictionary<Type, IList<IFacetDecorator>> facetDecorators = new Dictionary<Type, IList<IFacetDecorator>>();
 

@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class PageSizeFacetAbstract : SingleIntValueFacetAbstract, IPageSizeFacet {
         protected PageSizeFacetAbstract(int pageSize, ISpecification holder)
             : base(Type, holder, pageSize) {}

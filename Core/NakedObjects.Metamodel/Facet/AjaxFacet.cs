@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class AjaxFacet : MarkerFacetAbstract, IAjaxFacet {
         public AjaxFacet(ISpecification holder)
             : base(Type, holder) {}

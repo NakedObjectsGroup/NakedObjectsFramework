@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativeFacet {
         private readonly MethodInfo maskMethod;
         private readonly MethodInfo method;

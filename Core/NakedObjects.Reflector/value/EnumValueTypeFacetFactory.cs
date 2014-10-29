@@ -12,11 +12,11 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Utils;
 
 
-namespace NakedObjects.Reflector.DotNet.Value {
+namespace NakedObjects.Reflect.DotNet.Value {
     public class EnumValueTypeFacetFactory : FacetFactoryAbstract {
         public EnumValueTypeFacetFactory(IReflector reflector)
             : base(reflector,FeatureType.Objects) {}

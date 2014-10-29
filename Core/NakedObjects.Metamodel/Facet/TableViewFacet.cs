@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class TableViewFacet : MultipleValueFacetAbstract, ITableViewFacet {
         public TableViewFacet(bool title, string[] columns, ISpecification holder)
             : base(typeof (ITableViewFacet), holder) {

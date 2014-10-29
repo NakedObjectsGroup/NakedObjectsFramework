@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ImmutableFacetImpl : ImmutableFacetAbstract {
         public ImmutableFacetImpl(WhenTo when, ISpecification holder)
             : base(when, holder) {}

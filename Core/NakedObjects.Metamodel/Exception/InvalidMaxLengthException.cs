@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Interactions;
 
-namespace NakedObjects.Metamodel.Exception {
+namespace NakedObjects.Meta.Except {
     /// <summary>
     ///     The interaction is invalid because the input value has exceeded the specified maximum length.
     /// </summary>

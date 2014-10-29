@@ -9,20 +9,14 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Utils;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Defaults;
-using NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title;
-using NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder;
-using NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine;
-using NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.Mask;
-using NakedObjects.Reflector.DotNet.Facets.Propparam.Validate.MaxLength;
-using NakedObjects.Reflector.DotNet.Value;
+using NakedObjects.Meta.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NakedObjects.Reflect.DotNet.Value;
 
-namespace NakedObjects.Reflector.FacetFactory {
+namespace NakedObjects.Reflect.FacetFactory {
     public class FacetFactorySet : IFacetFactorySet {
 
         private readonly object cacheLock = true;

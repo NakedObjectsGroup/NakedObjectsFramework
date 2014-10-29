@@ -2,8 +2,8 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
-using NakedObjects.Reflector.Peer;
+using NakedObjects.Reflect.Peer;
 
-namespace NakedObjects.Reflector.Security {
+namespace NakedObjects.Reflect.Security {
     public interface IAuthorizerInstaller : IReflectionDecoratorInstaller {}
 }

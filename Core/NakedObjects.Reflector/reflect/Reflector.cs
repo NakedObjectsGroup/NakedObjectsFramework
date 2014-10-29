@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -20,12 +19,11 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
-using NakedObjects.Metamodel.SpecImmutable;
-using NakedObjects.Reflector.Reflect;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Meta.SpecImmutable;
+using NakedObjects.Reflect.Spec;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Reflect {
+namespace NakedObjects.Reflect {
 
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
     public class Reflector : IReflector {

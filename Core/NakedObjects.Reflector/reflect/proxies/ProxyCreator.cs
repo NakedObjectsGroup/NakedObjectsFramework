@@ -12,10 +12,10 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Reflect.Proxies {
+namespace NakedObjects.Reflect.DotNet.Reflect.Proxies {
     public static class ProxyCreator {
        
         private static readonly object ModuleBuilderLock = new object();

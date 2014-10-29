@@ -15,12 +15,11 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
+namespace NakedObjects.Reflect.FacetFactory {
     public class TitleMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (TitleMethodFacetFactory));
         private static readonly string[] FixedPrefixes;

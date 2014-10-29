@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ConcurrencyCheckFacet : MarkerFacetAbstract, IConcurrencyCheckFacet {
         public ConcurrencyCheckFacet(ISpecification holder)
             : base(Type, holder) {}

@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Reflect.Strategy {
+namespace NakedObjects.Reflect.DotNet.Reflect.Strategy {
     /// <summary>
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>

@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace NakedObjects.Reflector.DotNet.Reflect {
+namespace NakedObjects.Reflect.DotNet.Reflect {
     public class ObjectWithGenericList {
         private const bool available = false;
         private const bool valid = false;

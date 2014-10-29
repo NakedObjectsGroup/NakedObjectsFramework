@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class PageSizeFacetAnnotation : PageSizeFacetAbstract {
         public PageSizeFacetAnnotation(int pageSize, ISpecification holder)
             : base(pageSize, holder) {}

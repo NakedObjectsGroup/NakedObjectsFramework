@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Metamodel.Facet;
+using NakedObjects.Meta.Facet;
 using NUnit.Framework;
 
 
-namespace NakedObjects.Reflector.DotNet.Reflect {
+namespace NakedObjects.Reflect.DotNet.Reflect {
     [TestFixture]
     public class Reflector_GenericCollectionTest : AbstractDotNetReflectorTest {
         protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {

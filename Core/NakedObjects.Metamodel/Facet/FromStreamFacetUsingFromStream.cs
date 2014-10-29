@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class FromStreamFacetUsingFromStream : FacetAbstract, IFromStreamFacet {
         private readonly IFromStream fromStream;
 

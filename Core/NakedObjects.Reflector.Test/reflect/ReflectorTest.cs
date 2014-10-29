@@ -13,12 +13,13 @@ using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
-using NakedObjects.Reflector.DotNet.Reflect.Strategy;
-using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Meta;
+using NakedObjects.Reflect.DotNet.Reflect.Strategy;
+using NakedObjects.Reflect.FacetFactory;
+using NakedObjects.Reflect.Spec;
 using NUnit.Framework;
 
-namespace NakedObjects.Reflector.Reflect {
+namespace NakedObjects.Reflect.Reflect {
     public class ReflectorTest {
 
         public class SetWrapper<T> : ISet<T> {
@@ -129,9 +130,9 @@ namespace NakedObjects.Reflector.Reflect {
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
 
-            container.RegisterType<IReflector, DotNet.Reflect.Reflector>();
-            container.RegisterType<IMetamodel, DotNet.Reflect.Metamodel>();
-            container.RegisterType<IMetamodelBuilder, DotNet.Reflect.Metamodel>();
+            container.RegisterType<IReflector, Reflector>();
+            container.RegisterType<IMetamodel, Metamodel>();
+            container.RegisterType<IMetamodelBuilder, Metamodel>();
             container.RegisterType<IServicesConfiguration, ServicesConfiguration>();
         }
 

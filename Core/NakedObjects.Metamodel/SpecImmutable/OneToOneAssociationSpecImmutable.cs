@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Metamodel.SpecImmutable {
+namespace NakedObjects.Meta.SpecImmutable {
     public class OneToOneAssociationSpecImmutable : AssociationSpecImmutable {
         public OneToOneAssociationSpecImmutable(IIdentifier identifier, Type returnType, IObjectSpecImmutable returnSpec)
             : base(identifier, returnType, returnSpec) {}

@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.FacetFactory;
 
-namespace NakedObjects.Reflector.FacetFactory {
+namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
     ///     Marker interface to indicate that the <see cref="IFacetFactory" /> works by checking for certain annotations
     /// </summary>

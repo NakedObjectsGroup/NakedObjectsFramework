@@ -9,10 +9,10 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Reflect.Spec;
 
-namespace NakedObjects.Reflector.Audit {
+namespace NakedObjects.Reflect.Audit {
     public class AuditFacetDecorator : IFacetDecorator {
         private readonly AuditManager manager;
         private readonly IMetamodel metamodel;

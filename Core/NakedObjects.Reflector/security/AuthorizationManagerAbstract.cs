@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Reflector.Security {
+namespace NakedObjects.Reflect.Security {
     public abstract class AuthorizationManagerAbstract {
         private IAuthorizer authorizer;
 

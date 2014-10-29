@@ -9,10 +9,10 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
+using NakedObjects.Meta.Facet;
 using NUnit.Framework;
-using NakedObjects.Metamodel.Utils;
-using NakedObjects.Metamodel.Spec;
+using NakedObjects.Meta.Utils;
+using NakedObjects.Meta.Spec;
 
 namespace INakedObjects.Architecture.Adapter {
     [TestFixture]

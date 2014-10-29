@@ -27,13 +27,15 @@ using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.spec;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Managers;
+using NakedObjects.Meta;
 using NakedObjects.Persistor.Objectstore;
-using NakedObjects.Reflector.DotNet;
+using NakedObjects.Reflect;
+using NakedObjects.Reflect.DotNet;
 
-using NakedObjects.Reflector.DotNet.Reflect;
-using NakedObjects.Reflector.DotNet.Reflect.Strategy;
-using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Reflect.DotNet.Reflect;
+using NakedObjects.Reflect.DotNet.Reflect.Strategy;
+using NakedObjects.Reflect.FacetFactory;
+using NakedObjects.Reflect.Spec;
 using NakedObjects.Service;
 
 namespace NakedObjects.Xat {
@@ -226,9 +228,9 @@ namespace NakedObjects.Xat {
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
 
-            container.RegisterType<IReflector, Reflector.DotNet.Reflect.Reflector>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodel, NakedObjects.Reflector.DotNet.Reflect.Metamodel>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodelBuilder, NakedObjects.Reflector.DotNet.Reflect.Metamodel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IReflector, Reflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodelBuilder, Metamodel>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPrincipal>(new InjectionFactory(c => TestPrincipal));
 

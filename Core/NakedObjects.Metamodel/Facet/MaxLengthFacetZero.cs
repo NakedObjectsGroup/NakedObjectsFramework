@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class MaxLengthFacetZero : MaxLengthFacetAbstract {
         private const int NoLimit = 0;
 

@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class ViewModelFacetAbstract : FacetAbstract, IViewModelFacet {
         protected ViewModelFacetAbstract(Type type, ISpecification holder)
             : base(type, holder) {}

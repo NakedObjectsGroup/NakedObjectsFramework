@@ -16,7 +16,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Services;
 using NakedObjects.UtilInternal;
 
-namespace NakedObjects.Reflector.DotNet {
+namespace NakedObjects.Reflect.DotNet {
     public class DotNetDomainObjectContainer : IDomainObjectContainer, IInternalAccess {
         private readonly INakedObjectsFramework framework;
 

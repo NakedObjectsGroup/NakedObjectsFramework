@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class MemberOrderFacet : MultipleValueFacetAbstract, IMemberOrderFacet {
         public MemberOrderFacet(string name, string sequence, ISpecification holder)
             : base(typeof(IMemberOrderFacet), holder) {

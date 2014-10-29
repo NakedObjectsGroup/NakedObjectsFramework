@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class ExecutedFacetAbstract : SingleValueFacetAbstract, IExecutedFacet {
         private readonly Where executedWhere;
 

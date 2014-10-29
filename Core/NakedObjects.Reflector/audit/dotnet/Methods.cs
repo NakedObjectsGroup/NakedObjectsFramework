@@ -12,7 +12,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet {
+namespace NakedObjects.Reflect.DotNet {
     public static class Methods {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Methods));
 

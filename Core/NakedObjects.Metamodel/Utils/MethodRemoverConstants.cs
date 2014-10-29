@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using NakedObjects.Architecture.FacetFactory;
 
-namespace NakedObjects.Metamodel.Utils {
+namespace NakedObjects.Meta.Utils {
     public class MethodRemoverConstants {
         public static IMethodRemover Null;
 

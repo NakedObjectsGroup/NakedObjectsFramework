@@ -12,12 +12,11 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Propparam.MultiLine {
+namespace NakedObjects.Reflect.FacetFactory {
     public class MultiLineAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public MultiLineAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.ObjectsPropertiesAndParameters) {}

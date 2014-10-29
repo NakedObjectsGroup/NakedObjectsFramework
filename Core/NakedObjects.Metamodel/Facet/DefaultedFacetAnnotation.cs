@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class DefaultedFacetAnnotation<T> : DefaultedFacetAbstract<T> {
         public DefaultedFacetAnnotation(Type annotatedClass, ISpecification holder)
             : this(ProviderName(annotatedClass), ProviderClass(annotatedClass), holder) {}

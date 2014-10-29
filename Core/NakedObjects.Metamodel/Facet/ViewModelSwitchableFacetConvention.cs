@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ViewModelSwitchableFacetConvention : ViewModelFacetConvention {
         public ViewModelSwitchableFacetConvention(ISpecification holder) : base(Type, holder) {}
 

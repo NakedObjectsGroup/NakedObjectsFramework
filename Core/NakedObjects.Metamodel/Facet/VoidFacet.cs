@@ -8,7 +8,7 @@
 using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
+using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Architecture.Facets.Types {
     public class VoidFacet : MarkerFacetAbstract, IVoidFacet {

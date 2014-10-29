@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Reflector.DotNet.Value {
+namespace NakedObjects.Reflect.DotNet.Value {
     public class GuidValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<Guid> {
         public GuidValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IGuidValueFacet)) {}

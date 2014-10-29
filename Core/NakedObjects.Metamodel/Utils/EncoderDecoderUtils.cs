@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Capabilities;
 using NakedObjects.Util;
 
-namespace NakedObjects.Metamodel.Utils {
+namespace NakedObjects.Meta.Utils {
     public static class EncoderDecoderUtils {
         public static Type EncoderDecoderOrNull<T>(Type candidateClass, string classCandidateName) {
             Type type = candidateClass != null ? TypeUtils.ImplementingTypeOrNull(candidateClass.FullName, typeof (IEncoderDecoder<T>)) : null;

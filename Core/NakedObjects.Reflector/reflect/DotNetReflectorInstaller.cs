@@ -9,13 +9,12 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Reflect.Peer;
+using NakedObjects.Reflect.Spec;
+using NakedObjects.Reflect.DotNet.Reflect.Strategy;
+using NakedObjects.Reflect.FacetFactory;
 
-using NakedObjects.Reflector.DotNet.Reflect.Strategy;
-using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.Peer;
-using NakedObjects.Reflector.Spec;
-
-namespace NakedObjects.Reflector.DotNet.Reflect {
+namespace NakedObjects.Reflect {
     public class DotNetReflectorInstaller : IReflectorInstaller {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DotNetReflectorInstaller));
         private readonly List<IReflectorEnhancementInstaller> enhancements = new List<IReflectorEnhancementInstaller>();

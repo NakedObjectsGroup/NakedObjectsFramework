@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class OnUpdatingErrorCallbackFacetNull : OnUpdatingErrorCallbackFacetAbstract {
         public OnUpdatingErrorCallbackFacetNull(ISpecification holder)
             : base(holder) {}

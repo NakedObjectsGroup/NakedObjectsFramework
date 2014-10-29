@@ -4,7 +4,7 @@
 
 using System.Collections;
 
-namespace NakedObjects.Reflector.DotNet.Reflect {
+namespace NakedObjects.Reflect.DotNet.Reflect {
     public class ObjectWithList {
         private readonly ArrayList collection = new ArrayList();
         private ReferencedObject added;

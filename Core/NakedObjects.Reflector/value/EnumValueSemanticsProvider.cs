@@ -15,7 +15,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Capabilities;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Value {
+namespace NakedObjects.Reflect.DotNet.Value {
     public class EnumValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T>, IPropertyDefaultFacet, IEnumValueFacet {
         private const bool EqualBycontent = true;
         private const bool Immutable = true;

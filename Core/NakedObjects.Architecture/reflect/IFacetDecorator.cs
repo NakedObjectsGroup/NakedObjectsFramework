@@ -9,7 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Reflector.Spec {
+namespace NakedObjects.Reflect.Spec {
     public interface IFacetDecorator {
         Type[] ForFacetTypes { get; }
         IFacet Decorate(IFacet facet, ISpecification holder);

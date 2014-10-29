@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class NotContributedActionFacet : FacetAbstract, INotContributedActionFacet {
         public NotContributedActionFacet(ISpecification holder, IObjectSpecImmutable[] notContributedToTypes) 
             : base(typeof (INotContributedActionFacet), holder) {

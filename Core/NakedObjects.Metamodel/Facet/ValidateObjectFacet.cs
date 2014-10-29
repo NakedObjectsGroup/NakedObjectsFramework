@@ -11,9 +11,9 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Utils;
+using NakedObjects.Meta.Utils;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
         public ValidateObjectFacet(ISpecification holder, IList<NakedObjectValidationMethod> validateMethods)
             : base(Type, holder) {

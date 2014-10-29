@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.Reflector.I18n {
+namespace NakedObjects.Reflect.I18n {
     /// <summary>
     ///     Authorizes the user in the current session view and use members of an object
     /// </summary>

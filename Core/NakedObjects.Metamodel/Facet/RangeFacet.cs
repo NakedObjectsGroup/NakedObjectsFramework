@@ -10,9 +10,9 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Exception;
+using NakedObjects.Meta.Except;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class RangeFacet : FacetAbstract, IRangeFacet {
         public RangeFacet(object min, object max, bool isDateRange, ISpecification holder)
             : base(Type, holder) {

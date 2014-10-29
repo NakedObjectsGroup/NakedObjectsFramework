@@ -5,9 +5,9 @@
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Reflect.Spec;
 
-namespace NakedObjects.Reflector.Peer {
+namespace NakedObjects.Reflect.Peer {
     public interface IReflectionDecoratorInstaller : IReflectorEnhancementInstaller {
         IFacetDecorator[] CreateDecorators(IReflector reflector);
     }

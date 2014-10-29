@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Exceptions;
 
-namespace NakedObjects.Metamodel.Utils {
+namespace NakedObjects.Meta.Utils {
     public class InvokeUtils {
         /// <summary>
         ///     Invoke the specified method with all its parameter, if any, as null.

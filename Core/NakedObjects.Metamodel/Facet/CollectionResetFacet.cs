@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Exceptions;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class CollectionResetFacet : FacetAbstract, IImperativeFacet, ICollectionResetFacet {
         private readonly PropertyInfo property;
 

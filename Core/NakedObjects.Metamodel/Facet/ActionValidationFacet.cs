@@ -8,12 +8,12 @@
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Utils;
+using NakedObjects.Meta.Except;
+using NakedObjects.Meta.Utils;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
-using NakedObjects.Metamodel.Exception;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ActionValidationFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;
 

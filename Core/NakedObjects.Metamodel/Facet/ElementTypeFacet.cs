@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
         private readonly IObjectSpecImmutable spec;
         private readonly Type type;

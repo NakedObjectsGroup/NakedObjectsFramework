@@ -8,10 +8,10 @@ using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Core.Persist;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Utils;
 
-namespace NakedObjects.Reflector.DotNet.Fixture {
+namespace NakedObjects.Reflect.DotNet.Fixture {
     public class DotNetFixtureBuilder : AbstractFixtureBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DotNetFixtureBuilder));
         private DotNetFixtureServices fixtureServices;

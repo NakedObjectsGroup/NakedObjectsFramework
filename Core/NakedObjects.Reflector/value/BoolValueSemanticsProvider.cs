@@ -16,7 +16,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Reflector.DotNet.Value {
+namespace NakedObjects.Reflect.DotNet.Value {
     public class BooleanValueSemanticsProvider : ValueSemanticsProviderAbstract<bool>, IBooleanValueFacet {
         private const bool DefaultValueConst = false;
         private const bool EqualByContent = true;

@@ -6,7 +6,7 @@ using System.Collections;
 using System.Security.Principal;
 using NUnit.Framework;
 
-namespace NakedObjects.Reflector.DotNet.Reflect {
+namespace NakedObjects.Reflect.DotNet.Reflect {
     internal interface Interface1 {}
 
     internal interface Interface2 {}

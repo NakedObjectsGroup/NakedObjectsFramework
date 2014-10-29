@@ -13,12 +13,12 @@ using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
 using NakedObjects.Persistor;
 using NakedObjects.Persistor.Objectstore;
-using NakedObjects.Reflector.DotNet.Reflect.Proxies;
+using NakedObjects.Reflect.DotNet.Reflect.Proxies;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
 
-namespace NakedObjects.Reflector.DotNet.Proxies {
+namespace NakedObjects.Reflect.DotNet.Proxies {
     public class HasProperty {
         public virtual string Prop { get; set; }
     }

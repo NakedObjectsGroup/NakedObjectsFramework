@@ -9,10 +9,10 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
+using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
-using NakedObjects.Metamodel.Utils;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class DefaultedFacetAbstract<T> : FacetAbstract, IDefaultedFacet {
         // to delegate to
         private readonly DefaultedFacetUsingDefaultsProvider<T> defaultedFacetUsingDefaultsProvider;

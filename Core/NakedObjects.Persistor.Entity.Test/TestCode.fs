@@ -15,7 +15,7 @@ open System.Collections
 open NakedObjects.Core.Context
 open NakedObjects.Core.Security
 open System.Security.Principal
-open NakedObjects.Reflector.DotNet
+open NakedObjects.Reflect.DotNet
 open Moq
 open NakedObjects.Architecture.Transaction
 open NakedObjects.Architecture.Persist

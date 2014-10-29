@@ -8,7 +8,7 @@
 using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
+using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Architecture.Facets.Types {
     //TODO: rename to AbstractMarkerFacet to avoid confusion with FacetAbstract!

@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Utils {
+namespace NakedObjects.Meta.Utils {
     public static class FacetUtils {
         /// <summary>
         ///     Attaches the <see cref="IFacet" /> to its <see cref="IFacet.Specification" />

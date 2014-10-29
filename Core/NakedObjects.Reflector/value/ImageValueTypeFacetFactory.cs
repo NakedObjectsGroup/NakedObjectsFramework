@@ -12,7 +12,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Value;
 
-namespace NakedObjects.Reflector.DotNet.Value {
+namespace NakedObjects.Reflect.DotNet.Value {
     public class ImageValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<Image> {
         public ImageValueTypeFacetFactory(IReflector reflector)
             : base(reflector, typeof (IImageValueFacet)) {}

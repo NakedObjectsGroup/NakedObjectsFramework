@@ -17,12 +17,12 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
-using NakedObjects.Metamodel.Adapter;
-using NakedObjects.Metamodel.Exception;
-using NakedObjects.Metamodel.Spec;
-using NakedObjects.Metamodel.Utils;
+using NakedObjects.Meta.Adapter;
+using NakedObjects.Meta.Except;
+using NakedObjects.Meta.Spec;
+using NakedObjects.Meta.Utils;
 
-namespace NakedObjects.Metamodel.SpecImmutable {
+namespace NakedObjects.Meta.SpecImmutable {
     public class ObjectSpecImmutable : Specification, IObjectSpecImmutable, IObjectSpecBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpecImmutable));
 

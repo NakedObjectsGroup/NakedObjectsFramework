@@ -11,12 +11,11 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
+namespace NakedObjects.Reflect.FacetFactory {
     public class MemberOrderAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public MemberOrderAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}

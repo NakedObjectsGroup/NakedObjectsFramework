@@ -8,7 +8,7 @@
 using System.ComponentModel.DataAnnotations;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     /// <summary>
     ///     Derived by presence of a <see cref="RequiredAttribute" /> annotation.
     /// </summary>

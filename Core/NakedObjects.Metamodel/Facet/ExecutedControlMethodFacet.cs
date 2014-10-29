@@ -12,7 +12,7 @@ using System.Text;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public class ExecutedControlMethodFacet : FacetAbstract, IExecutedControlMethodFacet {
         private readonly IDictionary<MethodInfo, Where> methodToWhere = new Dictionary<MethodInfo, Where>();
 

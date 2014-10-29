@@ -10,9 +10,9 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Exception;
+using NakedObjects.Meta.Except;
 
-namespace NakedObjects.Metamodel.Facet {
+namespace NakedObjects.Meta.Facet {
     public abstract class MaxLengthFacetAbstract : SingleIntValueFacetAbstract, IMaxLengthFacet {
         protected MaxLengthFacetAbstract(int intValue, ISpecification holder)
             : base(Type, holder, intValue) {}

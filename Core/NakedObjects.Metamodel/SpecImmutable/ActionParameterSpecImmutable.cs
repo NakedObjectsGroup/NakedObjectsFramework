@@ -9,9 +9,9 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Metamodel.Spec;
+using NakedObjects.Meta.Spec;
 
-namespace NakedObjects.Metamodel.SpecImmutable {
+namespace NakedObjects.Meta.SpecImmutable {
     public class ActionParameterSpecImmutable : Specification, IActionParameterSpecImmutable {
         private readonly IObjectSpecImmutable specification;
 

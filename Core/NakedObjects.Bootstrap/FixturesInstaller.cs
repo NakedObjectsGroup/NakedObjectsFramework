@@ -7,7 +7,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Reflector.DotNet.Fixture;
+using NakedObjects.Reflect.DotNet.Fixture;
 
 namespace NakedObjects.Boot {
     public class FixturesInstaller : IFixturesInstaller {
