@@ -23,7 +23,6 @@ using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.Spec;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Models;
 

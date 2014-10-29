@@ -3,7 +3,7 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Reflector.DotNet;
+using NakedObjects.Reflect.DotNet;
 using NakedObjects.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

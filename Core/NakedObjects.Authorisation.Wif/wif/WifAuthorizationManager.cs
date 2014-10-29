@@ -12,7 +12,7 @@ using System.Security.Claims;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Reflector.Security.Wif {
+namespace NakedObjects.Reflect.Security.Wif {
     public class WifAuthorizationManager : AuthorizationManagerAbstract, IAuthorizationManager {
         #region IAuthorizationManager Members
 

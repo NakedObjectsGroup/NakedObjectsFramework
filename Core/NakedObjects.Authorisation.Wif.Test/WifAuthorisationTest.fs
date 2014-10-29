@@ -11,8 +11,8 @@ open System.Security.Claims
 open Moq
 open NakedObjects.Architecture.Component
 open NakedObjects.Architecture.Adapter
-open NakedObjects.Reflector.Security.Wif
-open NakedObjects.Metamodel.Adapter
+open NakedObjects.Reflect.Security.Wif
+open NakedObjects.Meta.Adapter
 
 type XElement(name : string, [<ParamArray>] values : obj []) = 
     inherit System.Xml.Linq.XElement(System.Xml.Linq.XName.op_Implicit (name), values)

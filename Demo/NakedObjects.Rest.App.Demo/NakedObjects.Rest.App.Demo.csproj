@@ -124,6 +124,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Helpers.dll</HintPath>
     </Reference>
+    <Reference Include="NakedObjects.Metamodel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Metamodel.dll</HintPath>
+    </Reference>
     <Reference Include="NakedObjects.Persistor.Entity">
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Persistor.Entity.dll</HintPath>
     </Reference>

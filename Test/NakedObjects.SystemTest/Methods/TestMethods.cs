@@ -8,14 +8,9 @@ using NakedObjects.Services;
 using NakedObjects.Xat;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data.Entity;
-using NakedObjects;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using NakedObjects.Reflector.Spec;
 using System.Collections.Generic;
-using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.SystemTest.Method
 {

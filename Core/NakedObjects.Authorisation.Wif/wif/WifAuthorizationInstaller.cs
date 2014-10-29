@@ -7,9 +7,9 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Reflector.Spec;
+using NakedObjects.Reflect.Spec;
 
-namespace NakedObjects.Reflector.Security.Wif {
+namespace NakedObjects.Reflect.Security.Wif {
     public class WifAuthorizationInstaller : IAuthorizerInstaller {
         #region IAuthorizerInstaller Members
 

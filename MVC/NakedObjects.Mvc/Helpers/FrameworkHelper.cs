@@ -18,7 +18,6 @@ using NakedObjects.Core.Persist;
 using NakedObjects.Core.Service;
 using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;
 using NakedObjects.Value;
 

@@ -11,10 +11,9 @@ using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
+using NakedObjects.Meta.Utils;
+
 
 namespace NakedObjects.Surface.Nof4.Utility {
     public static class SurfaceUtils {

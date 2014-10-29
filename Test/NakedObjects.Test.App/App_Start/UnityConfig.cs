@@ -14,17 +14,16 @@ using NakedObjects.Core.Security;
 using NakedObjects.Core.spec;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Managers;
+using NakedObjects.Meta;
 using NakedObjects.Persistor.Objectstore;
-using NakedObjects.Reflector.DotNet;
-using NakedObjects.Reflector.DotNet.Facets;
-using NakedObjects.Reflector.DotNet.Reflect;
-using NakedObjects.Reflector.DotNet.Reflect.Strategy;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflect;
+using NakedObjects.Reflect.DotNet;
+using NakedObjects.Reflect.DotNet.Reflect.Strategy;
+using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Service;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
-using NakedObjects.Web.Mvc.Helpers;
 
 namespace NakedObjects.Mvc.App.App_Start
 {
@@ -127,9 +126,9 @@ namespace NakedObjects.Mvc.App.App_Start
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
-            container.RegisterType<IReflector, Reflector.DotNet.Reflect.Reflector>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodel, Reflector.DotNet.Reflect.Metamodel>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodelBuilder, Reflector.DotNet.Reflect.Metamodel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IReflector, Reflector>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodelBuilder, Metamodel>(new ContainerControlledLifetimeManager());
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IContainerInjector, DotNetDomainObjectContainerInjector>(new PerRequestLifetimeManager());

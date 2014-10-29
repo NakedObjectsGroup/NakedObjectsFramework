@@ -14,10 +14,9 @@ using System.Xml.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Core.Util;
-using NakedObjects.Metamodel.Adapter;
-using NakedObjects.Reflector.Peer;
+using NakedObjects.Meta.Adapter;
 
-namespace NakedObjects.Reflector.Security.Wif {
+namespace NakedObjects.Reflect.Security.Wif {
     public class NakedObjectsClaimsAuthorizationManager : ClaimsAuthorizationManager {
         private static readonly ILog LOG = LogManager.GetLogger(typeof (NakedObjectsClaimsAuthorizationManager));
 
