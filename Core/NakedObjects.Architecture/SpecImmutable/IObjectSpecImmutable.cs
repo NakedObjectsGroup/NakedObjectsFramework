@@ -18,25 +18,27 @@ namespace NakedObjects.Architecture.Reflect {
     ///   provide various run-time behaviours required of the Spec, which depend upon the run-time framework services.
     /// </summary>
     public interface IObjectSpecImmutable : ISpecificationBuilder {
-        // TODO expose lots of stuff while refactoring 
-
-
         Type Type { get; }
         string FullName { get; }
         string ShortName { get; }
-        IOrderSet<IActionSpecImmutable> ObjectActions { get; }
-        IList<Tuple<string, string, IOrderSet<IActionSpecImmutable>>> ContributedActions { get; }
-        IList<Tuple<string, string, IOrderSet<IActionSpecImmutable>>> RelatedActions { get; }
-        IOrderSet<IAssociationSpecImmutable> Fields { get;  }
-        IObjectSpecImmutable[] Interfaces { get;  }
-        IObjectSpecImmutable[] Subclasses { get;  }
-        bool Service { get;  }
-        INakedObjectValidation[] ValidationMethods { get;  }
+        IList<IOrderableElement<IActionSpecImmutable>> ObjectActions { get; }
+        IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> ContributedActions { get; }
+        IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> RelatedActions { get; }
+        IList<IOrderableElement<IAssociationSpecImmutable>> Fields { get; }
+        IList<IObjectSpecImmutable> Interfaces { get; }
+        IList<IObjectSpecImmutable> Subclasses { get; }
+        bool Service { get; }
+        INakedObjectValidation[] ValidationMethods { get; }
         IObjectSpecImmutable Superclass { get; }
         bool IsObject { get; }
         bool IsCollection { get; }
         bool IsParseable { get; }
+        bool IsOfType(IObjectSpecImmutable specification);
+        string GetIconName(INakedObject forObject);
+        string GetTitle(INakedObject nakedObject);
+    }
 
+    public interface IObjectSpecBuilder : IObjectSpecImmutable {
         /// <summary>
         ///     Discovers what attributes and behaviour the type specified by this specification. As specification are
         ///     cyclic (specifically a class will reference its subclasses, which in turn reference their superclass)
@@ -45,13 +47,10 @@ namespace NakedObjects.Architecture.Reflect {
         ///     complete.
         /// </summary>
         void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector);
+
         void MarkAsService();
         void AddSubclass(IObjectSpecImmutable subclass);
-        bool IsOfType(IObjectSpecImmutable specification);
-        string GetIconName(INakedObject forObject);
-        string GetTitle(INakedObject nakedObject);
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

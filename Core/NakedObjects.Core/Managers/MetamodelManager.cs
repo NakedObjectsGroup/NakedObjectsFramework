@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
@@ -16,6 +16,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Managers {
     public class MetamodelManager : IMetamodelManager {
+        private readonly IDictionary<IObjectSpecImmutable, IObjectSpec> localCache = new Dictionary<IObjectSpecImmutable, IObjectSpec>();
         private readonly SpecFactory memberFactory;
         private readonly IMetamodel metamodel;
 
@@ -25,10 +26,6 @@ namespace NakedObjects.Managers {
         }
 
         #region IMetamodelManager Members
-
-        public virtual IObjectSpec[] AllSpecs {
-            get { return metamodel.AllSpecifications.Select(s => new ObjectSpec(memberFactory, this, s)).Cast<IObjectSpec>().ToArray(); }
-        }
 
         public IObjectSpec GetSpecification(Type type) {
             return type == null ? null : NewObjectSpec(GetInnerSpec(type));
@@ -44,8 +41,12 @@ namespace NakedObjects.Managers {
 
         #endregion
 
-        private ObjectSpec NewObjectSpec(IObjectSpecImmutable spec) {
-            return new ObjectSpec(memberFactory, this, spec);
+        private IObjectSpec NewObjectSpec(IObjectSpecImmutable spec) {
+            if (!localCache.ContainsKey(spec)) {
+                localCache[spec] = new ObjectSpec(memberFactory, this, spec);
+            }
+
+            return localCache[spec];
         }
 
         private IObjectSpecImmutable GetInnerSpec(Type type) {

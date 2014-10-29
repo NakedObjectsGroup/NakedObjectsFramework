@@ -10,8 +10,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Metamodel.Facet;
-using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Reflector.Reflect {
     /// <summary>
@@ -55,13 +53,13 @@ namespace NakedObjects.Reflector.Reflect {
             // spin over all the members and put them into a Map of SortedSets
             // any non-annotated members go into additional nonAnnotatedGroup set.
             foreach (var member in members) {
-                var memberOrder = member.Peer.GetFacet<IMemberOrderFacet>();
+                var memberOrder = member.Spec.GetFacet<IMemberOrderFacet>();
                 if (memberOrder != null) {
                     List<T> sortedMembersForGroup = GetSortedSet(sortedMembersByGroup, memberOrder.Name);
                     sortedMembersForGroup.Add(member);
                 }
                 else {
-                    nonAnnotatedGroup.Add(member.Peer);
+                    nonAnnotatedGroup.Add(member.Spec);
                 }
             }
 

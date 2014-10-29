@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -39,12 +40,14 @@ namespace NakedObjects.Metamodel.SpecImmutable {
             get { return parameters; }
         }
 
-        public IActionSpecImmutable Peer {
+        public IActionSpecImmutable Spec {
             get { return this; }
         }
 
-        public IOrderSet<IActionSpecImmutable> Set {
-            get { return null; }
+        public IList<IOrderableElement<IActionSpecImmutable>> Set {
+            get {
+                return  null;
+            }
         }
 
         public IObjectSpecImmutable ElementType {

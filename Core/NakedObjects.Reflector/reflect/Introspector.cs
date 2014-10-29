@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -86,16 +87,16 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             get { return TypeNameUtils.GetShortName(introspectedType.Name); }
         }
 
-        public IOrderSet<IAssociationSpecImmutable> Fields {
-            get { return orderedFields; }
+        public IList<IOrderableElement<IAssociationSpecImmutable>> Fields {
+            get { return orderedFields.Cast<IOrderableElement<IAssociationSpecImmutable>>().ToImmutableList(); ; }
         }
 
-        public IOrderSet<IActionSpecImmutable> ClassActions {
-            get { return orderedClassActions; }
+        public  IList<IOrderableElement<IActionSpecImmutable>> ClassActions {
+            get { return orderedClassActions.Cast<IOrderableElement<IActionSpecImmutable>>().ToImmutableList(); }
         }
 
-        public IOrderSet<IActionSpecImmutable> ObjectActions {
-            get { return orderedObjectActions; }
+        public  IList<IOrderableElement<IActionSpecImmutable>> ObjectActions {
+            get { return orderedObjectActions.Cast<IOrderableElement<IActionSpecImmutable>>().ToImmutableList(); }
         }
 
         public bool IsAbstract {
@@ -116,9 +117,9 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
         public INakedObjectValidation[] ValidationMethods { get; set; }
 
-        public IObjectSpecImmutable[] Interfaces { get; set; }
+        public IObjectSpecBuilder[] Interfaces { get; set; }
 
-        public IObjectSpecImmutable Superclass { get; set; }
+        public IObjectSpecBuilder Superclass { get; set; }
 
         public void IntrospectType(Type typeToIntrospect, IObjectSpecImmutable spec) {
             Log.InfoFormat("introspecting {0}: class-level details", typeToIntrospect.FullName);
@@ -191,7 +192,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 }
             }
 
-            var interfaces = new List<IObjectSpecImmutable>();
+            var interfaces = new List<IObjectSpecBuilder>();
             foreach (string interfaceName in InterfacesNames) {
                 var interfaceSpec = reflector.LoadSpecification(interfaceName);
                 interfaceSpec.AddSubclass(spec);
@@ -461,10 +462,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         private static OrderSet<T> CreateOrderSet<T>(string order, T[] members) where T : IOrderableElement<T>, ISpecification {
-            if (order != null) {
-                return SimpleOrderSet<T>.CreateOrderSet(order, members);
+            if (order == null) {
+                return DeweyOrderSet<T>.CreateOrderSet(members);
             }
-            return DeweyOrderSet<T>.CreateOrderSet(members);
+            return SimpleOrderSet<T>.CreateOrderSet(order, members);
         }
 
         private string InvokeSortOrderMethod(string name) {

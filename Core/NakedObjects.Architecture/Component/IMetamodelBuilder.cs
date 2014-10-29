@@ -10,6 +10,6 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Component {
     public interface IMetamodelBuilder : IMetamodel {
-        void Add(Type type, IObjectSpecImmutable spec);
+        void Add(Type type, IObjectSpecBuilder spec);
     }
 }

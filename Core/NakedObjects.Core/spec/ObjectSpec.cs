@@ -114,22 +114,6 @@ namespace NakedObjects.Core.Spec {
             return innerSpec.GetFacets();
         }
 
-        public void AddFacet(IFacet facet) {
-            throw new NotImplementedException();
-        }
-
-        public void AddFacet(IMultiTypedFacet facet) {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveFacet(IFacet facet) {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveFacet(Type facetType) {
-            throw new NotImplementedException();
-        }
-
         public virtual bool IsParseable {
             get { return innerSpec.ContainsFacet(typeof (IParseableFacet)); }
         }
@@ -197,7 +181,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public bool HasSubclasses {
-            get { return innerSpec.Subclasses.Length > 0; }
+            get { return innerSpec.Subclasses.Count > 0; }
         }
 
         public IObjectSpec[] Interfaces {
@@ -361,11 +345,11 @@ namespace NakedObjects.Core.Spec {
         }
 
 
-        private IAssociationSpec[] OrderFields(IOrderSet<IAssociationSpecImmutable> order) {
+        private IAssociationSpec[] OrderFields(IList<IOrderableElement<IAssociationSpecImmutable>> order) {
             var orderedFields = new List<IAssociationSpec>();
             foreach (var element in order) {
-                if (element.Peer != null) {
-                    orderedFields.Add(memberFactory.CreateNakedObjectField(element.Peer));
+                if (element.Spec != null) {
+                    orderedFields.Add(memberFactory.CreateNakedObjectField(element.Spec));
                 }
                 else if (element.Set != null) {
                     throw new NotImplementedException();

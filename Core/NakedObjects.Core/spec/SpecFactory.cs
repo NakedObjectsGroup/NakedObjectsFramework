@@ -50,15 +50,15 @@ namespace NakedObjects.Core.spec {
             throw new ReflectionException("Unknown peer type: " + specImmutable);
         }
 
-        public IActionSpec[] OrderActions(IOrderSet<IActionSpecImmutable> order) {
+        public IActionSpec[] OrderActions(IList<IOrderableElement<IActionSpecImmutable>> order) {
             Assert.AssertNotNull(framework);
             var actions = new List<IActionSpec>();
             foreach (var element in order) {
-                if (element.Peer != null) {
-                    actions.Add(CreateNakedObjectAction(element.Peer));
+                if (element.Spec != null) {
+                    actions.Add(CreateNakedObjectAction(element.Spec));
                 }
                 else if (element.Set != null) {
-                    actions.Add(CreateNakedObjectActionSet(element.Set));
+                    actions.Add(CreateNakedObjectActionSet(element.Set, element.GroupFullName));
                 }
                 else {
                     throw new UnknownTypeException(element);
@@ -68,16 +68,16 @@ namespace NakedObjects.Core.spec {
             return actions.ToArray();
         }
 
-        public IActionSpec[] OrderActions(IList<Tuple<string, string, IOrderSet<IActionSpecImmutable>>> order) {
+        public IActionSpec[] OrderActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> order) {
             Assert.AssertNotNull(framework);
             return order.Select(element => CreateNakedObjectActionSet(element.Item1, element.Item2, element.Item3)).Cast<IActionSpec>().ToArray();
         }
 
-        private ActionSpecSet CreateNakedObjectActionSet(IOrderSet<IActionSpecImmutable> orderSet) {
-            return new ActionSpecSet(orderSet.GroupFullName.Replace(" ", ""), orderSet.GroupFullName, OrderActions(orderSet), framework.Services);
+        private ActionSpecSet CreateNakedObjectActionSet(IList<IOrderableElement<IActionSpecImmutable>> orderSet, string groupFullName) {
+            return new ActionSpecSet(groupFullName.Replace(" ", ""), groupFullName, OrderActions(orderSet), framework.Services);
         }
 
-        private ActionSpecSet CreateNakedObjectActionSet(string id, string name, IOrderSet<IActionSpecImmutable> orderSet) {
+        private ActionSpecSet CreateNakedObjectActionSet(string id, string name, IList<IOrderableElement<IActionSpecImmutable>> orderSet) {
             return new ActionSpecSet(id, name, OrderActions(orderSet), framework.Services);
         }
 

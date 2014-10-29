@@ -69,7 +69,7 @@ namespace NakedObjects.Metamodel.Spec {
         private void AddFacet(Type facetType, IFacet facet) {
             IFacet existingFacet = GetFacet(facetType);
             if (existingFacet == null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
-                facetsByClass = facetsByClass.Add(facetType, facet);
+                facetsByClass = facetsByClass.SetItem(facetType, facet);
             }
         }
     }

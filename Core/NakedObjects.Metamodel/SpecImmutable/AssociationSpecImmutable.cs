@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
@@ -36,8 +37,10 @@ namespace NakedObjects.Metamodel.SpecImmutable {
 
         #endregion
 
-        public IAssociationSpecImmutable Peer { get { return this; } }
-        public IOrderSet<IAssociationSpecImmutable> Set { get { return null; } }
+        public IAssociationSpecImmutable Spec { get { return this; } }
+        public IList<IOrderableElement<IAssociationSpecImmutable>> Set {
+            get { return null; } 
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

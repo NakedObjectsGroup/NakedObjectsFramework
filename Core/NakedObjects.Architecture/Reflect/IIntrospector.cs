@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using NakedObjects.Architecture.SpecImmutable;
 
@@ -22,16 +23,16 @@ namespace NakedObjects.Architecture.Reflect {
         string[] InterfacesNames { get; }
         string SuperclassName { get; }
         string ShortName { get; }
-        IOrderSet<IAssociationSpecImmutable> Fields { get; }
-        IOrderSet<IActionSpecImmutable> ClassActions { get; }
-        IOrderSet<IActionSpecImmutable> ObjectActions { get; }
+        IList<IOrderableElement<IAssociationSpecImmutable>> Fields { get; }
+        IList<IOrderableElement<IActionSpecImmutable>> ClassActions { get; }
+        IList<IOrderableElement<IActionSpecImmutable>> ObjectActions { get; }
         bool IsAbstract { get; }
         bool IsInterface { get; }
         bool IsSealed { get; }
         bool IsVoid { get; }
         INakedObjectValidation[] ValidationMethods { get; set; }
-        IObjectSpecImmutable[] Interfaces { get; set; }
-        IObjectSpecImmutable Superclass { get; set; }
+        IObjectSpecBuilder[] Interfaces { get; set; }
+        IObjectSpecBuilder Superclass { get; set; }
         void IntrospectType(Type typeToIntrospect, IObjectSpecImmutable specification);
     }
 }

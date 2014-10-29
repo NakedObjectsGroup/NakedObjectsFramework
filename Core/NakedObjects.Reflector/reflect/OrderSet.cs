@@ -6,8 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
@@ -48,11 +50,11 @@ namespace NakedObjects.Reflector.Reflect {
             get {
                 var list = new List<T>();
                 foreach (var e in this) {
-                    if (e.Peer != null) {
-                        list.Add(e.Peer);
+                    if (e.Spec != null) {
+                        list.Add(e.Spec);
                     }
                     else {
-                        list.AddRange(e.Set.Flattened);
+                        list.AddRange(e.Set.Cast<T>());
                     }
                 }
                 return list;
@@ -106,16 +108,16 @@ namespace NakedObjects.Reflector.Reflect {
             return elements.Count;
         }
 
-        public IEnumerator<IOrderableElement<T>> GetEnumerator() {
-            return elements.GetEnumerator();
-        }
+        //public IEnumerator<IOrderableElement<T>> GetEnumerator() {
+        //    return elements.GetEnumerator();
+        //}
 
-        public T Peer {
+        public T Spec {
             get { return default(T); }
         }
 
-        public IOrderSet<T> Set {
-            get { return this; }
+        public IList<IOrderableElement<T>> Set {
+            get { return this.Cast<IOrderableElement<T>>().ToList(); }
         }
 
         #endregion
@@ -166,6 +168,14 @@ namespace NakedObjects.Reflector.Reflect {
             foreach (IOrderableElement<T> o in sortedMembers) {
                 AddElement(o);
             }
+        }
+
+        public IEnumerator<T> GetEnumerator() {
+            return elements.Select(orderableElement => (T) orderableElement).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
         }
     }
 

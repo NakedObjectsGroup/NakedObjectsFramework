@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
@@ -35,13 +36,12 @@ namespace NakedObjects.Reflector.DotNet.Facets.Ordering.MemberOrder {
 
         #region IOrderableElement<MemberPeerStub> Members
 
-        public MemberPeerStub Peer {
+        public MemberPeerStub Spec {
             get { return this; }
         }
 
-        IOrderSet<MemberPeerStub> IOrderableElement<MemberPeerStub>.Set {
-            get { return null; }
-        }
+        public IList<IOrderableElement<MemberPeerStub>> Set { get { return null; } }
+        public string GroupFullName { get { return ""; } }
 
         #endregion
 

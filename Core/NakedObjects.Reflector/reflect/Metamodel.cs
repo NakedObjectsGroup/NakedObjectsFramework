@@ -51,7 +51,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
         }
 
-        public void Add(Type type, IObjectSpecImmutable spec) {
+        public void Add(Type type, IObjectSpecBuilder spec) {
             cache.Cache(classStrategy.GetKeyForType(type), spec);
         }
 

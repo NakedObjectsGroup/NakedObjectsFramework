@@ -7,7 +7,6 @@
 
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Metamodel.Facet;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.Reflect {
@@ -84,7 +83,7 @@ namespace NakedObjects.Reflector.Reflect {
             for (int i = 0; i < members.Length; i++) {
                 T member = members[i];
                 if (member != null) {
-                    string testName = NameUtils.SimpleName(member.Peer.Identifier.MemberName);
+                    string testName = NameUtils.SimpleName(member.Spec.Identifier.MemberName);
                     if (testName.Equals(searchName)) {
                         members[i] = default(T);
                         return member;

@@ -17,12 +17,12 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         [Test]
         public void TestSetup() {
            Assert.AreEqual("Product", Specification.ShortName);
-           Assert.AreEqual(3,  Specification.Fields.Flattened.Count);
+           Assert.AreEqual(3,  Specification.Fields.Count);
         }
 
         [Test]
         public void ValidateMethodThatDontMatchAreIgnored() {
-            var actions = Specification.ObjectActions.Flattened;
+            var actions = Specification.ObjectActions;
             Assert.AreEqual(4, actions.Count);
         }
 

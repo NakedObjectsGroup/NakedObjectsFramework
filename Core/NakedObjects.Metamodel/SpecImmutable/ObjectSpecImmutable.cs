@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -22,20 +23,20 @@ using NakedObjects.Metamodel.Spec;
 using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.SpecImmutable {
-  
-    public class ObjectSpecImmutable : Specification, IObjectSpecImmutable {
+    public class ObjectSpecImmutable : Specification, IObjectSpecImmutable, IObjectSpecBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpecImmutable));
 
         private readonly IIdentifier identifier;
+        private ImmutableList<IObjectSpecImmutable> subclasses;
 
         public ObjectSpecImmutable(Type type, IMetamodel metamodel) {
             Type = type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type;
             identifier = new IdentifierImpl(metamodel, type.FullName);
-            Interfaces = new IObjectSpecImmutable[] {};
-            Subclasses = new IObjectSpecImmutable[] {};
+            Interfaces = ImmutableList<IObjectSpecImmutable>.Empty;
+            subclasses = ImmutableList<IObjectSpecImmutable>.Empty;
             ValidationMethods = new INakedObjectValidation[] {};
-            ContributedActions = new List<Tuple<string, string, IOrderSet<IActionSpecImmutable>>>();
-            RelatedActions = new List<Tuple<string, string, IOrderSet<IActionSpecImmutable>>>();
+            ContributedActions = new List<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>();
+            RelatedActions = new List<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>();
         }
 
         private string SingularName {
@@ -45,6 +46,35 @@ namespace NakedObjects.Metamodel.SpecImmutable {
         private string UntitledName {
             get { return Resources.NakedObjects.Untitled + SingularName; }
         }
+
+        #region IObjectSpecBuilder Members
+
+        public void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector) {
+            introspector.IntrospectType(Type, this);
+            FullName = introspector.FullName;
+            ShortName = introspector.ShortName;
+            Superclass = introspector.Superclass;
+            Interfaces = introspector.Interfaces.Cast<IObjectSpecImmutable>().ToImmutableList();
+            Fields = introspector.Fields;
+            ValidationMethods = introspector.ValidationMethods;
+            ObjectActions = introspector.ObjectActions;
+            DecorateAllFacets(decorator);
+        }
+
+
+        public void MarkAsService() {
+            if (Fields.Any(field => field.Spec.Identifier.MemberName != "Id")) {
+                string fieldNames = Fields.Where(field => field.Spec.Identifier.MemberName != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
+                throw new ModelException(string.Format(Resources.NakedObjects.ServiceObjectWithFieldsError, FullName, fieldNames));
+            }
+            Service = true;
+        }
+
+        public void AddSubclass(IObjectSpecImmutable subclass) {
+            subclasses = subclasses.Add(subclass);
+        }
+
+        #endregion
 
         #region IObjectSpecImmutable Members
 
@@ -60,17 +90,19 @@ namespace NakedObjects.Metamodel.SpecImmutable {
 
         public string ShortName { get; private set; }
 
-        public IOrderSet<IActionSpecImmutable> ObjectActions { get; private set; }
+        public IList< IOrderableElement<IActionSpecImmutable>> ObjectActions { get; private set; }
 
-        public IList<Tuple<string, string, IOrderSet<IActionSpecImmutable>>> ContributedActions { get; private set; }
+        public IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> ContributedActions { get; private set; }
 
-        public IList<Tuple<string, string, IOrderSet<IActionSpecImmutable>>> RelatedActions { get; private set; }
+        public IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> RelatedActions { get; private set; }
 
-        public IOrderSet<IAssociationSpecImmutable> Fields { get; private set; }
+        public IList<IOrderableElement<IAssociationSpecImmutable>> Fields { get; private set; }
 
-        public IObjectSpecImmutable[] Interfaces { get; private set; }
+        public IList<IObjectSpecImmutable> Interfaces { get; private set; }
 
-        public IObjectSpecImmutable[] Subclasses { get; private set; }
+        public IList<IObjectSpecImmutable> Subclasses {
+            get { return subclasses; }
+        }
 
         public bool Service { get; private set; }
 
@@ -93,45 +125,18 @@ namespace NakedObjects.Metamodel.SpecImmutable {
                     noopFacet = superClassFacet;
                 }
             }
-            if (Interfaces != null) {
-                var interfaceSpecs = Interfaces;
-                foreach (var interfaceSpec in interfaceSpecs) {
-                    IFacet interfaceFacet = interfaceSpec.GetFacet(facetType);
-                    if (FacetUtils.IsNotANoopFacet(interfaceFacet)) {
-                        return interfaceFacet;
-                    }
-                    if (noopFacet == null) {
-                        noopFacet = interfaceFacet;
-                    }
+
+            foreach (var interfaceSpec in Interfaces) {
+                IFacet interfaceFacet = interfaceSpec.GetFacet(facetType);
+                if (FacetUtils.IsNotANoopFacet(interfaceFacet)) {
+                    return interfaceFacet;
+                }
+                if (noopFacet == null) {
+                    noopFacet = interfaceFacet;
                 }
             }
+
             return noopFacet;
-        }
-
-        public void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector) {
-            introspector.IntrospectType(Type, this);
-            FullName = introspector.FullName;
-            ShortName = introspector.ShortName;
-            Superclass = introspector.Superclass;
-            Interfaces = introspector.Interfaces.ToArray();
-            Fields = introspector.Fields;
-            ValidationMethods = introspector.ValidationMethods;
-            ObjectActions = introspector.ObjectActions;
-            DecorateAllFacets(decorator);
-        }
-
-
-        public void MarkAsService() {
-            if (Fields.Flattened.Any(field => field.Identifier.MemberName != "Id")) {
-                string fieldNames = Fields.Flattened.Where(field => field.Identifier.MemberName != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
-                throw new ModelException(string.Format(Resources.NakedObjects.ServiceObjectWithFieldsError, FullName, fieldNames));
-            }
-            Service = true;
-        }
-
-        public void AddSubclass(IObjectSpecImmutable subclass) {
-            var subclassList = new List<IObjectSpecImmutable>(Subclasses) {subclass};
-            Subclasses = subclassList.ToArray();
         }
 
         public string GetTitle(INakedObject nakedObject) {
@@ -200,7 +205,7 @@ namespace NakedObjects.Metamodel.SpecImmutable {
             foreach (IAssociationSpecImmutable field in Fields) {
                 decorator.DecorateAllHoldersFacets(field);
             }
-            foreach (IActionSpecImmutable action in ObjectActions.Flattened) {
+            foreach (IActionSpecImmutable action in ObjectActions) {
                 DecorateAction(decorator, action);
             }
         }

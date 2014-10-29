@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Reflect {
-    public interface IOrderSet<T> : IOrderableElement<T> where T : IOrderableElement<T>, ISpecification {
+    public interface IOrderSet<T> : IEnumerable<T>, IOrderableElement<T> where T : IOrderableElement<T>, ISpecification {
         IOrderSet<T> Parent { set; get; }
         IList<IOrderableElement<T>> Children { get; }
 
@@ -30,7 +30,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     For example, if supplied <c>abc,def,ghi</c> in the constructor, then this will return the same
         ///     string <c>abc,def,ghi</c>.
         /// </para>
-        string GroupFullName { get; }
+        //string GroupFullName { get; }
 
         /// <summary>
         ///     Represents the parent groups, derived from the group name supplied in the constructor (analogous to the
@@ -55,6 +55,6 @@ namespace NakedObjects.Architecture.Reflect {
         IList<IOrderableElement<T>> ElementList();
 
         int Size();
-        IEnumerator<IOrderableElement<T>> GetEnumerator();
+      
     }
 }

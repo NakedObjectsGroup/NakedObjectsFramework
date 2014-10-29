@@ -23,13 +23,13 @@ namespace NakedObjects.Architecture.Component {
 
         IFacetFactorySet FacetFactorySet { get; }
 
-        IObjectSpecImmutable[] AllObjectSpecImmutables { get; }
+        IObjectSpecBuilder[] AllObjectSpecImmutables { get; }
         bool IgnoreCase { get; }
         IMetamodel Metamodel { get; }
 
-        IObjectSpecImmutable LoadSpecification(Type type);
+        IObjectSpecBuilder LoadSpecification(Type type);
 
-        IObjectSpecImmutable LoadSpecification(string name);
+        IObjectSpecBuilder LoadSpecification(string name);
 
         void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore);
         void Reflect();

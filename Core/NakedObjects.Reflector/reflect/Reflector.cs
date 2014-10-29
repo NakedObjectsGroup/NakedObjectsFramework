@@ -73,11 +73,11 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             get { return metamodel; }
         }
 
-        public virtual IObjectSpecImmutable[] AllObjectSpecImmutables {
-            get { return metamodel.AllSpecifications.ToArray(); }
+        public virtual IObjectSpecBuilder[] AllObjectSpecImmutables {
+            get { return metamodel.AllSpecifications.Cast<IObjectSpecBuilder>().ToArray(); }
         }
 
-        public IObjectSpecImmutable LoadSpecification(string className) {
+        public IObjectSpecBuilder LoadSpecification(string className) {
             Assert.AssertNotNull("specification class must be specified", className);
 
             try {
@@ -98,10 +98,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
         }
 
-        public virtual IObjectSpecImmutable LoadSpecification(Type type) {
+        public virtual IObjectSpecBuilder LoadSpecification(Type type) {
             Assert.AssertNotNull(type);
             var actualType = classStrategy.GetType(type);
-            return metamodel.GetSpecification(actualType) ?? LoadSpecificationAndCache(actualType);
+            return (IObjectSpecBuilder) metamodel.GetSpecification(actualType) ?? LoadSpecificationAndCache(actualType);
         }
 
         #endregion
@@ -153,13 +153,13 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                     if (serviceType != spec.Type) {
                         var serviceSpecification = metamodel.GetSpecification(serviceType);
 
-                        IActionSpecImmutable[] matchingServiceActions = serviceSpecification.ObjectActions.Flattened.Where(serviceAction => serviceAction.IsContributedTo(spec)).ToArray();
+                        IActionSpecImmutable[] matchingServiceActions = serviceSpecification.ObjectActions.Select(oe => oe.Spec).Where(serviceAction => serviceAction.IsContributedTo(spec)).ToArray();
 
                         if (matchingServiceActions.Any()) {
                             IOrderSet<IActionSpecImmutable> os = SimpleOrderSet<IActionSpecImmutable>.CreateOrderSet("", matchingServiceActions);
                             var name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
                             var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
-                            var t = new Tuple<string, string, IOrderSet<IActionSpecImmutable>>(id, name, os);
+                            var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.Cast<IOrderableElement<IActionSpecImmutable>>().ToList());
 
                             spec.ContributedActions.Add(t);
                         }
@@ -173,7 +173,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                 var serviceSpecification = metamodel.GetSpecification(serviceType);
                 var matchingActions = new List<IActionSpecImmutable>();
 
-                foreach (var serviceAction in serviceSpecification.ObjectActions.Flattened.Where(a => a.IsFinderMethod)) {
+                foreach (var serviceAction in serviceSpecification.ObjectActions.Select(oe => oe.Spec).Where(a => a.IsFinderMethod)) {
                     var returnType = serviceAction.ReturnType;
                     if (returnType != null && returnType.IsCollection) {
                         var elementType = serviceAction.ElementType;
@@ -190,7 +190,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                     IOrderSet<IActionSpecImmutable> os = SimpleOrderSet<IActionSpecImmutable>.CreateOrderSet("", matchingActions.ToArray());
                     var name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
                     var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
-                    var t = new Tuple<string, string, IOrderSet<IActionSpecImmutable>>(id, name, os);
+                    var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.Cast<IOrderableElement<IActionSpecImmutable>>().ToList());
 
                     spec.RelatedActions.Add(t);
                 }
@@ -207,7 +207,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             }
         }
 
-        private IObjectSpecImmutable LoadSpecificationAndCache(Type type) {
+        private IObjectSpecBuilder LoadSpecificationAndCache(Type type) {
           
             var specification = CreateSpecification(type);
 
@@ -223,7 +223,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             return specification;
         }
 
-        private IObjectSpecImmutable CreateSpecification(Type type) {
+        private IObjectSpecBuilder CreateSpecification(Type type) {
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
             return new ObjectSpecImmutable(type, metamodel);
         }
