@@ -115,6 +115,7 @@
     <Compile Include="annotations\ObjectWithAnnotations.cs" />
     <Compile Include="dotnet\ValueSemanticsProviderAbstractTestCase.cs" />
     <Compile Include="FacetFactory\TableViewAnnotationFacetFactoryTest.cs" />
+    <Compile Include="FacetFactory\ValidateObjectFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\TypeOfAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\ActionMethodsFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\ExcludeFromFindMenuAnnotationFacetFactoryTest.cs" />
@@ -140,7 +141,6 @@
     <Compile Include="FacetFactory\CallbackMethodsFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\DefaultedFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\EncodeableFacetFactoryTest.cs" />
-    <Compile Include="FacetFactory\FacetsAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\IconMethodFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\PluralAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\TitleMethodFacetFactoryTest.cs" />

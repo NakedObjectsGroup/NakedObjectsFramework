@@ -177,7 +177,6 @@
     <Compile Include="FacetFactory\CallbackMethodsFacetFactory.cs" />
     <Compile Include="FacetFactory\DefaultedFacetFactory.cs" />
     <Compile Include="FacetFactory\EncodeableFacetFactory.cs" />
-    <Compile Include="FacetFactory\FacetsAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\IconMethodFacetFactory.cs" />
     <Compile Include="FacetFactory\PluralAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\TitleMethodFacetFactory.cs" />

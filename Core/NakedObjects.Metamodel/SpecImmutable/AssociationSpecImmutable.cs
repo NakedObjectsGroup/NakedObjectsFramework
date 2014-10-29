@@ -13,34 +13,37 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
     public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
-
         protected readonly Type ReturnType;
         private readonly IObjectSpecImmutable returnSpec;
 
         protected AssociationSpecImmutable(IIdentifier identifier, Type returnType, IObjectSpecImmutable returnSpec)
             : base(identifier) {
-       
             ReturnType = returnType;
             this.returnSpec = returnSpec;
         }
 
-        #region INakedObjectAssociationPeer Members
+        #region IAssociationSpecImmutable Members
 
-        public override  IObjectSpecImmutable Specification {
-            get {
-                return returnSpec;
-            }
+        public override IObjectSpecImmutable Specification {
+            get { return returnSpec; }
         }
 
         public abstract bool IsOneToMany { get; }
         public abstract bool IsOneToOne { get; }
 
-        #endregion
-
-        public IAssociationSpecImmutable Spec { get { return this; } }
-        public IList<IOrderableElement<IAssociationSpecImmutable>> Set {
-            get { return null; } 
+        public IAssociationSpecImmutable Spec {
+            get { return this; }
         }
+
+        public IList<IOrderableElement<IAssociationSpecImmutable>> Set {
+            get { return null; }
+        }
+
+        public string GroupFullName {
+            get { return ""; }
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

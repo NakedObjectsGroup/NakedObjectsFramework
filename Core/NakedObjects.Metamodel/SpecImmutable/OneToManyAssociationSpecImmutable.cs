@@ -7,28 +7,35 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
     public class OneToManyAssociationSpecImmutable : AssociationSpecImmutable {
-        private Type elementType;
-        private IObjectSpecImmutable specification;
+        private readonly IMetamodel metamodel;
 
-        public OneToManyAssociationSpecImmutable(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec)
-            : base(name, returnType, returnSpec) {}
+        public OneToManyAssociationSpecImmutable(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec, IMetamodel metamodel)
+            : base(name, returnType, returnSpec) {
+            this.metamodel = metamodel;
+        }
 
         public Type ElementType {
-            get { return elementType; }
+            get {
+                var typeOfFacet = GetFacet<IElementTypeFacet>();
+                return typeOfFacet != null ? typeOfFacet.Value : typeof (object);
+            }
         }
 
         /// <summary>
         ///     Return the <see cref="IObjectSpec" /> for the  Type that the collection holds.
         /// </summary>
         public override IObjectSpecImmutable Specification {
-            get { return specification; }
+            get {
+                var typeOfFacet = GetFacet<IElementTypeFacet>();
+                return typeOfFacet != null ? typeOfFacet.ValueSpec : metamodel.GetSpecification(typeof (object));
+            }
         }
 
         public override bool IsOneToMany {
@@ -37,11 +44,6 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public override bool IsOneToOne {
             get { return false; }
-        }
-
-        public void SetupElementType(Type type, IObjectSpecImmutable spec) {
-            elementType = type;
-            specification = spec;
         }
 
         public override string ToString() {

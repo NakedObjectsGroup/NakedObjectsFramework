@@ -118,7 +118,6 @@
     <Compile Include="Facet\EnumFacet.cs" />
     <Compile Include="Facet\ExecutedFacetAnnotation.cs" />
     <Compile Include="Facet\ExecutedControlMethodFacet.cs" />
-    <Compile Include="Facet\FacetsFacetAnnotation.cs" />
     <Compile Include="Facet\FieldOrderFacet.cs" />
     <Compile Include="Facet\FromStreamFacetUsingFromStream.cs" />
     <Compile Include="Facet\HiddenFacet.cs" />
@@ -235,7 +234,6 @@
     <Compile Include="Facet\UpdatedCallbackFacetNull.cs" />
     <Compile Include="Facet\UpdatedCallbackFacetViaMethod.cs" />
     <Compile Include="Facet\UpdatingCallbackFacetAbstract.cs" />
-    <Compile Include="Facet\FacetsFacetAbstract.cs" />
     <Compile Include="Facet\IconFacetAbstract.cs" />
     <Compile Include="Facet\PluralFacetAbstract.cs" />
     <Compile Include="Facet\TitleFacetAbstract.cs" />

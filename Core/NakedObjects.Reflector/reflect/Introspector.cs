@@ -24,6 +24,7 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
+using NakedObjects.Reflect.DotNet;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect {
@@ -132,16 +133,7 @@ namespace NakedObjects.Reflect {
             // this will also remove some methods, such as the superclass methods.
             var methodRemover = new DotnetIntrospectorMethodRemover(methods);
             FacetFactorySet.Process(introspectedType, methodRemover, spec);
-            
-            // TODO remove all this 
-            // if this class has additional facets then Process them.
-            //var facetsFacet = spec.GetFacet<IFacetsFacet>();
-            //if (facetsFacet != null) {
-            //    foreach (Type facetFactory in facetsFacet.FacetFactories) {
-            //        var facetFactoryInstance = (IFacetFactory) Activator.CreateInstance(facetFactory, reflector);
-            //        facetFactoryInstance.Process(introspectedType, methodRemover, spec);
-            //    }
-            //}
+           
 
             // all this should be done in factories ! 
             var namedFacet = spec.GetFacet<INamedFacet>();
@@ -300,15 +292,8 @@ namespace NakedObjects.Reflect {
                 var returnType = property.PropertyType;
                 var returnSpec = reflector.LoadSpecification(returnType);
 
-                var collection = new OneToManyAssociationSpecImmutable(identifier, returnType, returnSpec);
+                var collection = new OneToManyAssociationSpecImmutable(identifier, returnType, returnSpec, metamodel);
                 FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), collection, FeatureType.Collections);
-
-                // figure out what the Type is
-                var typeOfFacet = collection.GetFacet<IElementTypeFacet>();
-                var elementType = typeOfFacet != null ? typeOfFacet.Value : typeof (object);
-                var elementSpec = typeOfFacet != null ? typeOfFacet.ValueSpec : reflector.LoadSpecification(typeof (object));
-
-                collection.SetupElementType(elementType, elementSpec);
                 fieldsListToAppendto.Add(collection);
             }
         }

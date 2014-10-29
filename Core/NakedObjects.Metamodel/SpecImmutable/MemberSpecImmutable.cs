@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Spec;
 
@@ -16,10 +15,6 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         protected MemberSpecImmutable(IIdentifier identifier) {
             this.identifier = identifier;
-        }
-
-        public virtual string GroupFullName {
-            get { return ""; }
         }
 
         #region IMemberSpecImmutable Members

@@ -322,7 +322,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             RegisterFactory(new ArrayValueTypeFacetFactory<byte>(reflector));
             RegisterFactory(new CollectionFacetFactory(reflector)); // written to not trample over TypeOf if already installed
             RegisterFactory(new ValueFacetFactory(reflector)); // so we can dogfood the NO applib "value" types
-            RegisterFactory(new FacetsAnnotationFacetFactory(reflector));
+            
         }
     }
 }

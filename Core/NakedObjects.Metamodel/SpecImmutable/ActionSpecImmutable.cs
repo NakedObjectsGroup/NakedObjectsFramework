@@ -45,9 +45,11 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public IList<IOrderableElement<IActionSpecImmutable>> Set {
-            get {
-                return  null;
-            }
+            get { return null; }
+        }
+
+        public string GroupFullName {
+            get { return ""; }
         }
 
         public IObjectSpecImmutable ElementType {
@@ -81,7 +83,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #endregion
 
-        public virtual bool HasReturn() {
+        private bool HasReturn() {
             return ReturnType != null;
         }
 
