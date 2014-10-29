@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -130,7 +131,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             AllObjectSpecImmutables.ForEach(s => PopulateAssociatedActions(s, services));
         }
 
-        private void PopulateAssociatedActions(IObjectSpecImmutable spec, Type[] services) {
+        private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services) {
             if (string.IsNullOrWhiteSpace(spec.FullName)) {
                 string id = (spec.Identifier != null ? spec.Identifier.ClassName : "unknown") ?? "unknown";
                 Log.WarnFormat("Specification with id : {0} as has null or empty name", id);
@@ -147,8 +148,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             PopulateRelatedActions(spec, services);
         }
 
-        private void PopulateContributedActions(IObjectSpecImmutable spec, Type[] services) {
+        private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services) {
             if (!spec.Service) {
+
+                IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> contributedActions =  new List<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>();
                 foreach (Type serviceType in services) {
                     if (serviceType != spec.Type) {
                         var serviceSpecification = metamodel.GetSpecification(serviceType);
@@ -161,14 +164,17 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                             var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
                             var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.Cast<IOrderableElement<IActionSpecImmutable>>().ToList());
 
-                            spec.ContributedActions.Add(t);
+                            contributedActions.Add(t);
                         }
                     }
                 }
+                spec.AddContributedActions(contributedActions);
             }
         }
 
-        private void PopulateRelatedActions(IObjectSpecImmutable spec, Type[] services) {
+        private void PopulateRelatedActions(IObjectSpecBuilder spec, Type[] services) {
+
+            IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> relatedActions = new List<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>();
             foreach (Type serviceType in services) {
                 var serviceSpecification = metamodel.GetSpecification(serviceType);
                 var matchingActions = new List<IActionSpecImmutable>();
@@ -192,9 +198,10 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
                     var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
                     var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.Cast<IOrderableElement<IActionSpecImmutable>>().ToList());
 
-                    spec.RelatedActions.Add(t);
+                    relatedActions.Add(t);
                 }
             }
+            spec.AddRelatedActions(relatedActions);
         }
 
         private void InstallSpecification(Type type, bool isService) {

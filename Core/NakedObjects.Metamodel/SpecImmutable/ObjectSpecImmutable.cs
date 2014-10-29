@@ -35,8 +35,8 @@ namespace NakedObjects.Metamodel.SpecImmutable {
             Interfaces = ImmutableList<IObjectSpecImmutable>.Empty;
             subclasses = ImmutableList<IObjectSpecImmutable>.Empty;
             ValidationMethods = new INakedObjectValidation[] {};
-            ContributedActions = new List<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>();
-            RelatedActions = new List<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>();
+            ContributedActions =  ImmutableList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>.Empty;
+            RelatedActions = ImmutableList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>.Empty;
         }
 
         private string SingularName {
@@ -72,6 +72,14 @@ namespace NakedObjects.Metamodel.SpecImmutable {
 
         public void AddSubclass(IObjectSpecImmutable subclass) {
             subclasses = subclasses.Add(subclass);
+        }
+
+        public void AddContributedActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> contributedActions) {
+            ContributedActions = contributedActions.ToImmutableList();
+        }
+
+        public void AddRelatedActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> relatedActions) {
+            RelatedActions = relatedActions.ToImmutableList();
         }
 
         #endregion
@@ -202,17 +210,17 @@ namespace NakedObjects.Metamodel.SpecImmutable {
 
         private void DecorateAllFacets(IFacetDecoratorSet decorator) {
             decorator.DecorateAllHoldersFacets(this);
-            foreach (IAssociationSpecImmutable field in Fields) {
-                decorator.DecorateAllHoldersFacets(field);
+            foreach (var field in Fields) {
+                decorator.DecorateAllHoldersFacets(field.Spec);
             }
-            foreach (IActionSpecImmutable action in ObjectActions) {
-                DecorateAction(decorator, action);
+            foreach (var action in ObjectActions) {
+                DecorateAction(decorator, action.Spec);
             }
         }
 
         private static void DecorateAction(IFacetDecoratorSet decorator, IActionSpecImmutable action) {
             decorator.DecorateAllHoldersFacets(action);
-            foreach (IActionParameterSpecImmutable parm in action.Parameters) {
+            foreach (var parm in action.Parameters) {
                 decorator.DecorateAllHoldersFacets(parm);
             }
         }

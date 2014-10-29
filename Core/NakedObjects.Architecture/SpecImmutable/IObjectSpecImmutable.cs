@@ -36,6 +36,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
         bool IsOfType(IObjectSpecImmutable specification);
         string GetIconName(INakedObject forObject);
         string GetTitle(INakedObject nakedObject);
+       
     }
 
     // Copyright (c) Naked Objects Group Ltd.

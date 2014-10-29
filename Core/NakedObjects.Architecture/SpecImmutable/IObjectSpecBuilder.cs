@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.Collections.Generic;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.SpecImmutable {
@@ -20,5 +22,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
 
         void MarkAsService();
         void AddSubclass(IObjectSpecImmutable subclass);
+        void AddContributedActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> contributedActions);
+        void AddRelatedActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> relatedActions);
     }
 }

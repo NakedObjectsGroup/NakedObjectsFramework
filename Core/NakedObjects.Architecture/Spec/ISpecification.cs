@@ -53,30 +53,8 @@ namespace NakedObjects.Architecture.Spec {
         T GetFacet<T>() where T : IFacet;
 
         /// <summary>
-        ///     Returns all <see cref="IFacet" />s matching the specified <see cref="IFacetFilter" />
+        ///     Returns all <see cref="IFacet" />s  />
         /// </summary>
         IEnumerable<IFacet> GetFacets();
-    }
-
-    public interface ISpecificationBuilder : ISpecification {
-        /// <summary>
-        ///     Adds the facet, extracting its <see cref="IFacet.FacetType" /> as the key.
-        /// </summary>
-        /// <para>
-        ///     If there are any facet of the same type, they will be overwritten <i>provided</i>
-        ///     that either the <see cref="IFacet" /> specifies to <see cref="IFacet.CanAlwaysReplace" />
-        ///     or if the existing <see cref="IFacet" /> is an <see cref="IFacet.IsNoOp" />
-        /// </para>
-        void AddFacet(IFacet facet);
-
-        /// <summary>
-        ///     Adds the <see cref="IMultiTypedFacet" />, extracting each of its <see cref="IMultiTypedFacet.FacetTypes" /> as keys.
-        /// </summary>
-        /// <para>
-        ///     If there are any facet of the same type, they will be overwritten <i>provided</i>
-        ///     that either the <see cref="IFacet" /> specifies to <see cref="IFacet.CanAlwaysReplace" />
-        ///     or if the existing <see cref="IFacet" /> is an <see cref="IFacet.IsNoOp" />
-        /// </para>
-        void AddFacet(IMultiTypedFacet facet);
     }
 }

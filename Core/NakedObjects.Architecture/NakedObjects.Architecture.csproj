@@ -332,7 +332,6 @@
     <Compile Include="Reflect\InitiatedBy.cs" />
     <Compile Include="Spec\IActionSpec.cs" />
     <Compile Include="Reflect\IOrderableElement.cs" />
-    <Compile Include="Reflect\IOrderSet.cs" />
     <Compile Include="Spec\IActionParameterSpec.cs" />
     <Compile Include="Reflect\ActionType.cs" />
     <Compile Include="Spec\IAssociationSpec.cs" />
@@ -350,6 +349,7 @@
     <Compile Include="attributes\ParseableAttribute.cs" />
     <Compile Include="attributes\ValueAttribute.cs" />
     <Compile Include="Component\IAuthorisationManager.cs" />
+    <Compile Include="Spec\ISpecificationBuilder.cs" />
     <Compile Include="Transaction\ICreateObjectCommand.cs" />
     <Compile Include="Transaction\IDestroyObjectCommand.cs" />
     <Compile Include="Transaction\ISaveObjectCommand.cs" />

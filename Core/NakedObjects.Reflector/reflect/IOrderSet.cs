@@ -6,9 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Reflect {
+namespace NakedObjects.Reflector.Reflect {
     public interface IOrderSet<T> : IEnumerable<T>, IOrderableElement<T> where T : IOrderableElement<T>, ISpecification {
         IOrderSet<T> Parent { set; get; }
         IList<IOrderableElement<T>> Children { get; }
