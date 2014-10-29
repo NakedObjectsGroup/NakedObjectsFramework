@@ -485,19 +485,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             if (ModelState.IsValid) {
-                INakedObjectValidation[] validators = nakedObject.Spec.ValidateMethods();
+                var validateFacet = nakedObject.Spec.GetFacet<IValidateObjectFacet>();
 
-                foreach (INakedObjectValidation validator in validators) {
-                    string[] parmNames = validator.ParameterNames;
-                 
-                    var matchingparms = parmNames.Select(pn => fieldsAndMatchingValues.Single(t => t.Item1.Id.ToLower() == pn)).ToList();
+                if (validateFacet != null) {
+                    var result = validateFacet.Validate(nakedObject);
 
-                    if (matchingparms.Count() == parmNames.Count()) {
-                        string result = validator.Execute(nakedObject, matchingparms.Select(t => GetNakedObjectValue(t.Item1, nakedObject, t.Item2)).ToArray());
-
-                        if (!string.IsNullOrEmpty(result)) {                         
-                            ModelState.AddModelError(string.Empty, result);
-                        }
+                    if (!string.IsNullOrEmpty(result)) {
+                        ModelState.AddModelError(string.Empty, result);
                     }
                 }
             }

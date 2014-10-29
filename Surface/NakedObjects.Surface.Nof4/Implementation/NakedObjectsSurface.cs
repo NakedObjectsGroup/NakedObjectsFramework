@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Principal;
 using NakedObjects.Architecture;
@@ -298,19 +299,13 @@ namespace NakedObjects.Surface.Nof4.Implementation {
 
 
         private IConsent CrossValidate(ObjectContext context) {
-            INakedObjectValidation[] validators = context.Specification.ValidateMethods();
 
-            foreach (INakedObjectValidation validator in validators) {
-                string[] parmNames = validator.ParameterNames;
+            var validateFacet = context.Specification.GetFacet<IValidateObjectFacet>();
 
-                List<PropertyContext> matchingparms = parmNames.Select(pn => context.VisibleProperties.Single(p => p.Id.ToLower() == pn)).ToList();
-
-                if (matchingparms.Count() == parmNames.Count()) {
-                    string result = validator.Execute(context.Target, matchingparms.Select(p => p.ProposedNakedObject).ToArray());
-
-                    if (!string.IsNullOrEmpty(result)) {
-                        return new Veto(result);
-                    }
+            if (validateFacet != null) {
+                string result = validateFacet.Validate(context.Target);
+                if (!string.IsNullOrEmpty(result)) {
+                    return new Veto(result);
                 }
             }
 

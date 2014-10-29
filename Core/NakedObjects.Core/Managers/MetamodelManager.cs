@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.spec;
@@ -27,6 +27,10 @@ namespace NakedObjects.Managers {
         }
 
         #region IMetamodelManager Members
+
+        public virtual IObjectSpec[] AllSpecs {
+            get { return metamodel.AllSpecifications.Select(s => new ObjectSpec(memberFactory, this, s)).Cast<IObjectSpec>().ToArray(); }
+        }
 
         public IObjectSpec GetSpecification(Type type) {
             return type == null ? null : NewObjectSpec(GetInnerSpec(type));

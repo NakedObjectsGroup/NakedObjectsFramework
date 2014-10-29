@@ -15,6 +15,9 @@ namespace NakedObjects.Architecture.Component {
     /// The Manager takes responsibility to inject these specifications with the necessary framework services.
     /// </summary>
     public interface IMetamodelManager {
+
+        IObjectSpec[] AllSpecs { get; }
+
         IObjectSpec GetSpecification(Type type);
 
         IObjectSpec GetSpecification(string name);
