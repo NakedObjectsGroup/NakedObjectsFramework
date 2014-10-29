@@ -233,7 +233,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static IMethodRemover RemoverElseNullRemover(IMethodRemover methodRemover) {
-            return methodRemover ?? MethodRemoverConstants.NULL;
+            return methodRemover ?? MethodRemoverConstants.Null;
         }
 
 
@@ -256,6 +256,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             RegisterFactory(new IconMethodFacetFactory(reflector));
             RegisterFactory(new CallbackMethodsFacetFactory(reflector));
             RegisterFactory(new TitleMethodFacetFactory(reflector));
+            RegisterFactory(new ValidateObjectFacetFactory(reflector));
             RegisterFactory(new ActionOrderAnnotationFacetFactory(reflector));
             RegisterFactory(new ComplexTypeAnnotationFacetFactory(reflector));
             RegisterFactory(new ViewModelFacetFactory(reflector));

@@ -30,7 +30,6 @@ namespace NakedObjects.Architecture.Reflect {
         bool IsInterface { get; }
         bool IsSealed { get; }
         bool IsVoid { get; }
-        INakedObjectValidation[] ValidationMethods { get; set; }
         IObjectSpecBuilder[] Interfaces { get; set; }
         IObjectSpecBuilder Superclass { get; set; }
         void IntrospectType(Type typeToIntrospect, IObjectSpecImmutable specification);

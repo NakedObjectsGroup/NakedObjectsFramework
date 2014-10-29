@@ -51,7 +51,7 @@ namespace NakedObjects.Reflector.DotNet.Facets.Objects.Ident.Title {
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Log.DebugFormat("Looking for validate methods for {0}", type);
 
-            var methodPeers = new List<INakedObjectValidation>();
+            var methodPeers = new List<NakedObjectValidationMethod>();
             var methods = FindMethods(type, MethodType.Object, PrefixesAndRecognisedMethods.ValidatePrefix, typeof (string));
 
             if (methods.Any()) {

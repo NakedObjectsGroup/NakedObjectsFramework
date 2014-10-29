@@ -329,7 +329,6 @@
     <Compile Include="Reflect\IFacetDecorator.cs" />
     <Compile Include="Reflect\IFacetDecoratorSet.cs" />
     <Compile Include="SpecImmutable\IObjectSpecImmutable.cs" />
-    <Compile Include="Reflect\INakedObjectValidation.cs" />
     <Compile Include="Reflect\InitiatedBy.cs" />
     <Compile Include="Spec\IActionSpec.cs" />
     <Compile Include="Reflect\IOrderableElement.cs" />

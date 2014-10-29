@@ -8,17 +8,14 @@
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Metamodel.Utils {
-    public class NakedObjectValidationMethod : INakedObjectValidation {
+    public class NakedObjectValidationMethod {
         private readonly MethodInfo method;
 
         public NakedObjectValidationMethod(MethodInfo method) {
             this.method = method;
         }
-
-        #region INakedObjectValidation Members
 
         public string[] ParameterNames {
             get { return method.GetParameters().Select(p => p.Name.ToLower()).ToArray(); }
@@ -27,7 +24,5 @@ namespace NakedObjects.Metamodel.Utils {
         public string Execute(INakedObject obj, INakedObject[] parameters) {
             return InvokeUtils.Invoke(method, obj, parameters) as string;
         }
-
-        #endregion
     }
 }

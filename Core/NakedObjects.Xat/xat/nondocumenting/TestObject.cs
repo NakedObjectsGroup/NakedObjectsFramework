@@ -13,6 +13,7 @@ using Common.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Util;
@@ -108,23 +109,13 @@ namespace NakedObjects.Xat {
 
             Properties.ForEach(p => p.AssertIsValidToSave());
 
+            var validatorFacet = NakedObject.Spec.GetFacet<IValidateObjectFacet>();
 
-            INakedObjectValidation[] validators = NakedObject.Spec.ValidateMethods();
+            var result = validatorFacet.Validate(NakedObject);
 
-            foreach (INakedObjectValidation validator in validators) {
-                string[] parmNames = validator.ParameterNames;
-
-                List<ITestProperty> matchingparms = parmNames.Select(pn => Properties.Single(t => t.Id.ToLower() == pn)).ToList();
-
-                if (matchingparms.Count() == parmNames.Count()) {
-                    string result = validator.Execute(NakedObject, matchingparms.Select(t => t.Content != null ? t.Content.NakedObject : null).ToArray());
-
-                    if (!string.IsNullOrEmpty(result)) {
-                        Assert.Fail(result);
-                    }
-                }
+            if (!string.IsNullOrEmpty(result)) {
+                Assert.Fail(result);
             }
-
 
             return this;
         }

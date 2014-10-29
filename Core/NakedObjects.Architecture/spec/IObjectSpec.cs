@@ -179,8 +179,6 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         IAssociationSpec GetProperty(string id);
 
-        INakedObjectValidation[] ValidateMethods();
-
         #endregion
 
         #region Actions

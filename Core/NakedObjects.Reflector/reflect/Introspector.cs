@@ -24,7 +24,6 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Adapter;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Metamodel.SpecImmutable;
-using NakedObjects.Metamodel.Utils;
 using NakedObjects.Reflector.Reflect;
 using NakedObjects.Util;
 
@@ -88,7 +87,7 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         }
 
         public IList<IOrderableElement<IAssociationSpecImmutable>> Fields {
-            get { return orderedFields.Cast<IOrderableElement<IAssociationSpecImmutable>>().ToImmutableList(); ; }
+            get { return orderedFields.Cast<IOrderableElement<IAssociationSpecImmutable>>().ToImmutableList(); }
         }
 
         public  IList<IOrderableElement<IActionSpecImmutable>> ClassActions {
@@ -114,8 +113,6 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
         public bool IsVoid {
             get { return introspectedType == typeof (void); }
         }
-
-        public INakedObjectValidation[] ValidationMethods { get; set; }
 
         public IObjectSpecBuilder[] Interfaces { get; set; }
 
@@ -201,7 +198,6 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             Interfaces = interfaces.ToArray();
 
             IntrospectPropertiesAndCollections(spec);
-            IntrospectObjectValidationMethods(spec);
             IntrospectActions(spec);
         }
 
@@ -217,11 +213,6 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
             // TODO: the calling of fieldOrder() should be a facet
             string fieldOrder = fieldOrderFacet == null ? InvokeSortOrderMethod("Field") : fieldOrderFacet.Value;
             orderedFields = CreateOrderSet(fieldOrder, findFieldMethods);
-        }
-
-        public void IntrospectObjectValidationMethods(IObjectSpecImmutable spec) {
-            Log.InfoFormat("introspecting {0}: object validation methods", ClassName);
-            ValidationMethods = FindAndCreateValidationPeers();
         }
 
         public void IntrospectActions(IObjectSpecImmutable spec) {
@@ -343,55 +334,6 @@ namespace NakedObjects.Reflector.DotNet.Reflect {
 
                 fieldListToAppendto.Add(referenceProperty);
             }
-        }
-
-        private INakedObjectValidation[] FindAndCreateValidationPeers() {
-            if (ClassStrategy.IsSystemClass(introspectedType)) {
-                Log.DebugFormat("Skipping methods in {0} (system class according to ClassStrategy)", introspectedType.Name);
-                return new INakedObjectValidation[0];
-            }
-
-            Log.DebugFormat("Looking for validate methods for {0}", introspectedType);
-
-            var methodPeers = new List<INakedObjectValidation>();
-
-            for (int i = 0; i < methods.Length; i++) {
-                if (methods[i] == null) {
-                    continue;
-                }
-                MethodInfo validateMethod = methods[i];
-                if (!validateMethod.Name.Equals("Validate")) {
-                    continue;
-                }
-                if (validateMethod.IsStatic) {
-                    continue;
-                }
-                if (!(validateMethod.ReturnType == typeof (string))) {
-                    continue;
-                }
-                ParameterInfo[] parameters = validateMethod.GetParameters();
-                if (parameters.Length < 2) {
-                    continue;
-                }
-                bool parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => name[0].ToString().ToUpper() + name.Substring(1)).All(ContainsField);
-                if (!parametersMatch) {
-                    continue;
-                }
-
-                methods[i] = null;
-                methodPeers.Add(new NakedObjectValidationMethod(validateMethod));
-            }
-            return methodPeers.ToArray();
-        }
-
-        private bool ContainsField(string name) {
-            foreach (var field in Fields) {
-                var field1 = (IAssociationSpecImmutable) field;
-                if (field1.IsOneToOne && ((OneToOneAssociationSpecImmutable) field1).Identifier.MemberName.Equals(name)) {
-                    return true;
-                }
-            }
-            return false;
         }
 
         private IActionSpecImmutable[] FindActionMethods(MethodType methodType, IObjectSpecImmutable spec) {

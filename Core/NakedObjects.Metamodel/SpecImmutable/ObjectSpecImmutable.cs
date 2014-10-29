@@ -34,7 +34,6 @@ namespace NakedObjects.Metamodel.SpecImmutable {
             identifier = new IdentifierImpl(metamodel, type.FullName);
             Interfaces = ImmutableList<IObjectSpecImmutable>.Empty;
             subclasses = ImmutableList<IObjectSpecImmutable>.Empty;
-            ValidationMethods = new INakedObjectValidation[] {};
             ContributedActions =  ImmutableList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>.Empty;
             RelatedActions = ImmutableList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>.Empty;
         }
@@ -56,7 +55,6 @@ namespace NakedObjects.Metamodel.SpecImmutable {
             Superclass = introspector.Superclass;
             Interfaces = introspector.Interfaces.Cast<IObjectSpecImmutable>().ToImmutableList();
             Fields = introspector.Fields;
-            ValidationMethods = introspector.ValidationMethods;
             ObjectActions = introspector.ObjectActions;
             DecorateAllFacets(decorator);
         }
@@ -113,8 +111,6 @@ namespace NakedObjects.Metamodel.SpecImmutable {
         }
 
         public bool Service { get; private set; }
-
-        public INakedObjectValidation[] ValidationMethods { get; private set; }
 
         public override IFacet GetFacet(Type facetType) {
             IFacet facet = base.GetFacet(facetType);

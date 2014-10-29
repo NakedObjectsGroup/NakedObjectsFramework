@@ -28,7 +28,6 @@ namespace NakedObjects.Architecture.SpecImmutable {
         IList<IObjectSpecImmutable> Interfaces { get; }
         IList<IObjectSpecImmutable> Subclasses { get; }
         bool Service { get; }
-        INakedObjectValidation[] ValidationMethods { get; }
         IObjectSpecImmutable Superclass { get; }
         bool IsObject { get; }
         bool IsCollection { get; }

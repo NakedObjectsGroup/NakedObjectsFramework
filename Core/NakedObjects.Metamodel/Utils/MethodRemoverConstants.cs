@@ -11,10 +11,10 @@ using NakedObjects.Architecture.FacetFactory;
 
 namespace NakedObjects.Metamodel.Utils {
     public class MethodRemoverConstants {
-        public static IMethodRemover NULL;
+        public static IMethodRemover Null;
 
         static MethodRemoverConstants() {
-            NULL = new NullMethodRemover();
+            Null = new NullMethodRemover();
         }
 
         #region Nested type: NullMethodRemover

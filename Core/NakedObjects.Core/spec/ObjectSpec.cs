@@ -152,10 +152,6 @@ namespace NakedObjects.Core.Spec {
         }
 
 
-        public INakedObjectValidation[] ValidateMethods() {
-            return innerSpec.ValidationMethods;
-        }
-
         public virtual IActionSpec[] GetAllActions() {
             if (combinedActions == null) {
                 var ca = new List<IActionSpec>();
@@ -173,10 +169,7 @@ namespace NakedObjects.Core.Spec {
         public bool IsASet {
             get {
                 var collectionFacet = innerSpec.GetFacet<ICollectionFacet>();
-                if (collectionFacet != null) {
-                    return collectionFacet.IsASet;
-                }
-                return false;
+                return collectionFacet != null && collectionFacet.IsASet;
             }
         }
 

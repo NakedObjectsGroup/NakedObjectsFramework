@@ -10,12 +10,12 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.Facet {
     public class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
-        public ValidateObjectFacet(ISpecification holder, IList<INakedObjectValidation> validateMethods)
+        public ValidateObjectFacet(ISpecification holder, IList<NakedObjectValidationMethod> validateMethods)
             : base(Type, holder) {
             ValidateMethods = validateMethods;
         }
@@ -24,12 +24,12 @@ namespace NakedObjects.Metamodel.Facet {
             get { return typeof (IValidateObjectFacet); }
         }
 
-        private IEnumerable<INakedObjectValidation> ValidateMethods { get; set; }
+        private IEnumerable<NakedObjectValidationMethod> ValidateMethods { get; set; }
 
         #region IValidateObjectFacet Members
 
         public string Validate(INakedObject nakedObject) {
-            foreach (INakedObjectValidation validator in ValidateMethods) {
+            foreach (NakedObjectValidationMethod validator in ValidateMethods) {
                 IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => nakedObject.Spec.Properties.Single(p => p.Id.ToLower() == name).GetNakedObject(nakedObject));
                 string result = validator.Execute(nakedObject, parameters.ToArray());
                 if (result != null) {
