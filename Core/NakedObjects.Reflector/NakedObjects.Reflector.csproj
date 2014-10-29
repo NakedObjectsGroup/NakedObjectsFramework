@@ -145,6 +145,7 @@
     <Compile Include="audit\dotnet\PersistFailedException.cs" />
     <Compile Include="FacetFactory\FacetFactoryAbstract.cs" />
     <Compile Include="FacetFactory\TableViewAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\ValidateObjectFacetFactory.cs" />
     <Compile Include="FacetFactory\TypeOfAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\ActionMethodsFacetFactory.cs" />
     <Compile Include="FacetFactory\ComplementaryMethodsFilteringFacetFactory.cs" />

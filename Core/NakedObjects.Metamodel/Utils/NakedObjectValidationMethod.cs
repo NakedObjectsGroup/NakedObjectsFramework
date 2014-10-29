@@ -9,7 +9,6 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Metamodel.Facet;
 
 namespace NakedObjects.Metamodel.Utils {
     public class NakedObjectValidationMethod : INakedObjectValidation {

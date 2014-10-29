@@ -169,15 +169,18 @@ namespace NakedObjects.Core.Adapter {
                 }
             }
 
-            foreach (INakedObjectValidation validator in spec.ValidateMethods()) {
-                IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => spec.Properties.Single(p => p.Id.ToLower() == name).GetNakedObject(this));
-                string result = validator.Execute(this, parameters.ToArray());
-                if (result != null) {
-                    return result;
-                }
-            }
+            var validateFacet = spec.GetFacet<IValidateObjectFacet>();
+            return validateFacet == null ? null : validateFacet.Validate(this);
 
-            return null;
+            //foreach (INakedObjectValidation validator in spec.ValidateMethods()) {
+            //    IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => spec.Properties.Single(p => p.Id.ToLower() == name).GetNakedObject(this));
+            //    string result = validator.Execute(this, parameters.ToArray());
+            //    if (result != null) {
+            //        return result;
+            //    }
+            //}
+
+            //return null;
         }
 
         public void SetATransientOid(IOid newOid) {

@@ -182,6 +182,7 @@
     <Compile Include="Facet\IAbstractFacet.cs" />
     <Compile Include="Facet\IInterfaceFacet.cs" />
     <Compile Include="Facet\ISealedFacet.cs" />
+    <Compile Include="Facet\IValidateObjectFacet.cs" />
     <Compile Include="Facet\IVoidFacet.cs" />
     <Compile Include="Framework\INakedObjectsFramework.cs" />
     <Compile Include="Exception\InvalidEntryException.cs" />
