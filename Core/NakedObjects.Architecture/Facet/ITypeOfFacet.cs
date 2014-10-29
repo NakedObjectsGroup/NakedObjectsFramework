@@ -7,8 +7,8 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Facet {
     public interface ITypeOfFacet : IFacet {

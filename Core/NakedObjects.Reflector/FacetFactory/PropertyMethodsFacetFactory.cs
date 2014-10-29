@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Metamodel.Utils;

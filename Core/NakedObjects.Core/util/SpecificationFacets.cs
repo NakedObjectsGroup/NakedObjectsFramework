@@ -7,6 +7,7 @@
 
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Spec {
     public static class SpecificationFacets {

@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>

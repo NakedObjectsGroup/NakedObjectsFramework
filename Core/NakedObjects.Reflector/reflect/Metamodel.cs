@@ -9,6 +9,7 @@ using System;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Reflector.Spec;
 using NakedObjects.Util;

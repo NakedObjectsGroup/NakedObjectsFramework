@@ -18,8 +18,8 @@ namespace NakedObjects.Architecture.Spec {
     /// to the static version of the specification: IObjectSpecImmutable.
     /// </summary>
     public interface IObjectSpec : ISpecification {
-
         #region Name & Description
+
         /// <summary>
         ///     Returns the name of this specification. This will be the fully qualified name of the Class object that
         ///     this object represents (i.e. it includes the full namespace).
@@ -53,6 +53,7 @@ namespace NakedObjects.Architecture.Spec {
         string UntitledName { get; }
 
         string UniqueShortName(string sep);
+
         #endregion
 
         /// <summary>
@@ -134,6 +135,7 @@ namespace NakedObjects.Architecture.Spec {
         string GetInvariantString(INakedObject nakedObject);
 
         #region Inheritance Hierarchy
+
         /// <summary>
         ///     Returns true if the <see cref="Subclasses" /> method will return an array of one or more elements (ie,
         ///     not an empty array).
@@ -161,9 +163,11 @@ namespace NakedObjects.Architecture.Spec {
         ///     specification.
         /// </summary>
         bool IsOfType(IObjectSpec spec);
+
         #endregion
 
         #region Properties
+
         /// <summary>
         ///     Return all the properties that exist in an object of this specification,
         ///     although they need not all be accessible or visible.
@@ -176,23 +180,28 @@ namespace NakedObjects.Architecture.Spec {
         IAssociationSpec GetProperty(string id);
 
         INakedObjectValidation[] ValidateMethods();
+
         #endregion
 
         #region Actions
+
         IActionSpec[] GetRelatedServiceActions();
 
         /// <summary>
         ///     Returns an array of actions of the specified type
         /// </summary>
         IActionSpec[] GetAllActions();
+
         #endregion
 
         #region Default Provider
+
         /// <summary>
         ///     Default value to be provided for properties or parameters that are not declared as
         ///     <see cref="OptionallyAttribute" /> but where the UI has not (yet) provided a value.
         /// </summary>
         object DefaultValue { get; }
+
         #endregion
     }
 

@@ -24,7 +24,7 @@ namespace NakedObjects.Architecture.Spec {
         IObjectSpec ElementSpec { get; }
 
         bool IsNullable { get; }
-       
+
         IConsent IsUsable(INakedObject target);
     }
 }

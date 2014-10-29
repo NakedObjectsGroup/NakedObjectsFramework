@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>

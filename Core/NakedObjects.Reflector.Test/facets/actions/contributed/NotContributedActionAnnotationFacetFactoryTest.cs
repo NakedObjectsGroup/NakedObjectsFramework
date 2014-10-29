@@ -11,6 +11,7 @@ using Moq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Metamodel.Facet;
 using NakedObjects.Reflector.FacetFactory;
 using NUnit.Framework;

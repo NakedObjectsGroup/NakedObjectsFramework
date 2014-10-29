@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>

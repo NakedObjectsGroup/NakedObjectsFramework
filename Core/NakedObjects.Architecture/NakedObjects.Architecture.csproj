@@ -210,6 +210,7 @@
     <Compile Include="Facet\IFacet.cs" />
     <Compile Include="FacetFactory\IFacetFactory.cs" />
     <Compile Include="Reflect\IIntrospector.cs" />
+    <Compile Include="SpecImmutable\IObjectSpecBuilder.cs" />
     <Compile Include="Spec\ISpecification.cs" />
     <Compile Include="Facet\IHiddenFacet.cs" />
     <Compile Include="Facet\IHideForContextFacet.cs" />

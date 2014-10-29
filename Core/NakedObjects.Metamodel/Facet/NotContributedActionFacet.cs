@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using System.Collections.Generic;
 using System.Linq;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Metamodel.Facet {
     public class NotContributedActionFacet : FacetAbstract, INotContributedActionFacet {

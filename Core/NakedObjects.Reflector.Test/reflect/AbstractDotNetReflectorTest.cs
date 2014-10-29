@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Reflector.DotNet.Reflect.Strategy;
 using NakedObjects.Reflector.FacetFactory;

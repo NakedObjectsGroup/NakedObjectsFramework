@@ -7,7 +7,6 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Security;
 
 namespace NakedObjects.Architecture.ResolveStateMachine {
     public interface IResolveState {

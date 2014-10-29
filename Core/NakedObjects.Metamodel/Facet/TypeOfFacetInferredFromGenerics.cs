@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Metamodel.Facet {
     public class TypeOfFacetInferredFromGenerics : FacetAbstract, ITypeOfFacet {

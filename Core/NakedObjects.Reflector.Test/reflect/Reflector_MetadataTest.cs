@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Reflector.Spec;
 using NakedObjects.Test;
 using NUnit.Framework;

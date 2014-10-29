@@ -8,10 +8,10 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Architecture.Reflect {
+namespace NakedObjects.Architecture.SpecImmutable {
     /// <summary>
     ///   This is the immutable or 'static' core of the IObjectSpec.  It is created by the reflector during start-up, but can also be
     ///   serialised/deserialised and hence persisted.  However, it needs to be wrapped as an IObjectSpec at run-time in order to 
@@ -36,20 +36,6 @@ namespace NakedObjects.Architecture.Reflect {
         bool IsOfType(IObjectSpecImmutable specification);
         string GetIconName(INakedObject forObject);
         string GetTitle(INakedObject nakedObject);
-    }
-
-    public interface IObjectSpecBuilder : IObjectSpecImmutable {
-        /// <summary>
-        ///     Discovers what attributes and behaviour the type specified by this specification. As specification are
-        ///     cyclic (specifically a class will reference its subclasses, which in turn reference their superclass)
-        ///     they need be created first, and then later work out its internals. This allows for cyclic references to
-        ///     the be accommodated as there should always a specification available even though it might not be
-        ///     complete.
-        /// </summary>
-        void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector);
-
-        void MarkAsService();
-        void AddSubclass(IObjectSpecImmutable subclass);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

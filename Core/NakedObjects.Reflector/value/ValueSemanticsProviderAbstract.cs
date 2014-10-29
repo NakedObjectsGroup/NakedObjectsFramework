@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Capabilities;
 using NakedObjects.Metamodel.Facet;
 

@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Metamodel.Utils;
 
 namespace NakedObjects.Metamodel.Facet {

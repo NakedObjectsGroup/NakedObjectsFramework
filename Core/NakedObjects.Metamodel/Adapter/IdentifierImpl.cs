@@ -10,6 +10,7 @@ using System.Text;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Util;
 

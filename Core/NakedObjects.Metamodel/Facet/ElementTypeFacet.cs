@@ -9,6 +9,7 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Metamodel.Facet {
     public class ElementTypeFacet : FacetAbstract, IElementTypeFacet {

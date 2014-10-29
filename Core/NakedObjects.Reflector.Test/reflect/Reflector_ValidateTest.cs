@@ -4,6 +4,7 @@
 
 using System;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Reflector.Spec;
 using NUnit.Framework;
 

@@ -8,6 +8,7 @@
 using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Metamodel.SpecImmutable {
     public class OneToOneAssociationSpecImmutable : AssociationSpecImmutable {

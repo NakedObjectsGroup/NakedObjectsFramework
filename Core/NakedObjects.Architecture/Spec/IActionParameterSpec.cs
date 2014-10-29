@@ -64,7 +64,6 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         bool IsAutoCompleteEnabled { get; }
 
-       
 
         /// <summary>
         ///     Whether proposed value for this parameter is valid

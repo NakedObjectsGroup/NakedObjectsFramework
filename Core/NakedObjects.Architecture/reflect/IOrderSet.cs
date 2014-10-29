@@ -31,7 +31,6 @@ namespace NakedObjects.Architecture.Reflect {
         ///     string <c>abc,def,ghi</c>.
         /// </para>
         //string GroupFullName { get; }
-
         /// <summary>
         ///     Represents the parent groups, derived from the group name supplied in the constructor (analogous to the
         ///     directory portion of a fully qualified file name).
@@ -55,6 +54,5 @@ namespace NakedObjects.Architecture.Reflect {
         IList<IOrderableElement<T>> ElementList();
 
         int Size();
-      
     }
 }

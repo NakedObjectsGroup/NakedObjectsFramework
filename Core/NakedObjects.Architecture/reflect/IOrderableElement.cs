@@ -12,6 +12,6 @@ namespace NakedObjects.Architecture.Reflect {
     public interface IOrderableElement<T> where T : IOrderableElement<T>, ISpecification {
         T Spec { get; }
         IList<IOrderableElement<T>> Set { get; }
-        string GroupFullName { get; } 
+        string GroupFullName { get; }
     }
 }

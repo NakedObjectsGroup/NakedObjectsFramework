@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.spec;
 using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;

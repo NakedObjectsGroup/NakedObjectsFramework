@@ -8,6 +8,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Reflector.Spec {
     public class ImmutableInMemorySpecCache : ISpecificationCache {
