@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflect.DotNet.Reflect.Strategy {
+namespace NakedObjects.Reflect {
     /// <summary>
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>
@@ -54,7 +54,7 @@ namespace NakedObjects.Reflect.DotNet.Reflect.Strategy {
 
         public string GetKeyForType(Type type) {
             // becauase Sets don't implement IEnumerable<>
-            if (CollectionUtils.IsGenericType(type, typeof (IEnumerable<>)) || 
+            if (CollectionUtils.IsGenericType(type, typeof (IEnumerable<>)) ||
                 CollectionUtils.IsGenericType(type, typeof (ISet<>))) {
                 return type.Namespace + "." + type.Name;
             }

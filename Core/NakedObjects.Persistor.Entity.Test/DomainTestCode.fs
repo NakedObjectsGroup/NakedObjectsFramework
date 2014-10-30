@@ -11,6 +11,7 @@ open NakedObjects.EntityObjectStore
 open AdventureWorksModel
 open NakedObjects.Architecture.Resolve
 open System
+open NakedObjects.Architecture
 open NakedObjects.Architecture.Persist
 open NakedObjects.Architecture.Facet
 open NakedObjects.Architecture.Adapter

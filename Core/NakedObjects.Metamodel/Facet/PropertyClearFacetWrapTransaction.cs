@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Reflect.Transaction.Facets.Properties.Write {
+namespace NakedObjects.Meta.Facet {
     public class PropertyClearFacetWrapTransaction : PropertyClearFacetAbstract {
         private readonly IPropertyClearFacet underlyingFacet;
 

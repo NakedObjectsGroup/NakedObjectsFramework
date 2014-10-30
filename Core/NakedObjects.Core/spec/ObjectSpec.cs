@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
+using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -20,7 +21,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
-using NakedObjects.Architecture.Exceptions;
 
 namespace NakedObjects.Core.Spec {
     public class ObjectSpec : IObjectSpec {

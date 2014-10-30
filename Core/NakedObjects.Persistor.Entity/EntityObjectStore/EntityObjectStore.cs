@@ -13,6 +13,7 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Transactions;
 using Common.Logging;
@@ -30,13 +31,8 @@ using NakedObjects.Core.Container;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
-using NakedObjects.Reflect.Peer;
 using NakedObjects.Util;
-using MethodInfo = System.Reflection.MethodInfo;
-using PropertyInfo = System.Reflection.PropertyInfo;
-using BindingFlags = System.Reflection.BindingFlags;
-using IsolationLevel = System.Transactions.IsolationLevel;
-using NakedObjects.Meta.Facet;
+
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityObjectStore : IObjectStore {
@@ -464,7 +460,7 @@ namespace NakedObjects.EntityObjectStore {
         private static void InjectParentIntoChild(object parent, object child) {
             PropertyInfo property = child.GetType().GetProperties().SingleOrDefault(p => p.CanWrite &&
                                                                                          p.PropertyType.IsAssignableFrom(parent.GetType()) &&
-                                                                                         p.GetCustomAttribute<RootAttribute>() != null);
+                                                                                         AttributeUtils.GetCustomAttribute<RootAttribute>(p) != null);
             if (property != null) {
                 property.SetValue(child, parent, null);
             }
@@ -748,7 +744,7 @@ namespace NakedObjects.EntityObjectStore {
                     }
                 }
 
-                PropertyInfo[] notPersistedMembers = objectToProxy.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && p.GetCustomAttribute<NotPersistedAttribute>() != null).ToArray();
+                PropertyInfo[] notPersistedMembers = objectToProxy.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && AttributeUtils.GetCustomAttribute<NotPersistedAttribute>(p) != null).ToArray();
                 notPersistedMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
             }
 

@@ -13,6 +13,7 @@ open TestCodeOnly
 open TestCode
 open TestTypes
 open AdventureWorksModel
+open NakedObjects.Architecture
 open NakedObjects.Architecture.Persist
 open System.Data.Entity.Core.Objects
 

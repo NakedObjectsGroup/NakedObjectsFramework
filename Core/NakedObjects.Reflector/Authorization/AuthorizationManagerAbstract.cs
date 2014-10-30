@@ -8,10 +8,20 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Reflect.Security {
-    public interface IAuthorizer {
-        bool IsUsable(ISession session, INakedObject target, IIdentifier member);
+namespace NakedObjects.Reflect.Authorization {
+    public abstract class AuthorizationManagerAbstract {
+        private IAuthorizer authorizer;
 
-        bool IsVisible(ISession session, INakedObject target, IIdentifier member);
+        protected internal virtual IAuthorizer Authorizer {
+            set { authorizer = value; }
+        }
+
+        public virtual bool IsEditable(ISession session, INakedObject target, IIdentifier identifier) {
+            return authorizer.IsUsable(session, target, identifier);
+        }
+
+        public virtual bool IsVisible(ISession session, INakedObject target, IIdentifier identifier) {
+            return authorizer.IsVisible(session, target, identifier);
+        }
     }
 }

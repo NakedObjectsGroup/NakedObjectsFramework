@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Component;
-using NakedObjects.Reflect.Peer;
+using NakedObjects.Reflect.Installer;
 using NakedObjects.Reflect.Spec;
 
 namespace NakedObjects.Reflect.I18n.Resourcebundle {

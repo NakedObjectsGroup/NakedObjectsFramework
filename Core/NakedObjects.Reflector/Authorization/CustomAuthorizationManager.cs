@@ -12,9 +12,10 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
+using NakedObjects.Security;
 using NakedObjects.Util;
 
-namespace NakedObjects.Security {
+namespace NakedObjects.Reflect.Authorization {
     public class CustomAuthorizationManager : IAuthorizationManager {
         private readonly ITypeAuthorizer<object> defaultAuthorizer;
         private readonly INamespaceAuthorizer[] namespaceAuthorizers = {};

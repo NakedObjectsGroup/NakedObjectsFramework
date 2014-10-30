@@ -1,4 +1,4 @@
-// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
@@ -8,18 +8,14 @@
 using System;
 
 namespace NakedObjects.Architecture {
-    public abstract class ObjectPersistenceException : NakedObjectApplicationException {
-        protected ObjectPersistenceException() {}
+    /// <summary>
+    ///     ModelException represents a problem with the definition of the domain model.
+    /// </summary>
+    public class ModelException : NakedObjectApplicationException {
+        public ModelException(string messsage) : base(messsage) {}
 
-        protected ObjectPersistenceException(string message)
-            : base(message) {}
+        public ModelException(Exception cause) : base(cause) {}
 
-        protected ObjectPersistenceException(string message, Exception cause)
-            : base(message, cause) {}
-
-        protected ObjectPersistenceException(Exception cause)
-            : base(cause) {}
+        public ModelException(string messsage, Exception cause) : base(messsage, cause) {}
     }
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

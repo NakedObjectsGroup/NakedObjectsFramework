@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Architecture.Persist {
+namespace NakedObjects.Architecture {
     public class NotPersistableException : ObjectPersistenceException {
         public NotPersistableException() {}
 

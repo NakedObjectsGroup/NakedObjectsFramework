@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
-using NakedObjects.Reflect.DotNet.Reflect.Strategy;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.Spec;
 using NUnit.Framework;

@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Web;
 using Common.Logging;
+using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;

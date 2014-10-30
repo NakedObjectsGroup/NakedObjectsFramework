@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Reflect.Transaction.Facets.Actions.Invoke {
+namespace NakedObjects.Meta.Facet {
     public class ActionInvocationFacetWrapTransaction : ActionInvocationFacetAbstract {
         private static readonly ILog Log;
         private readonly IActionInvocationFacet underlyingFacet;

@@ -13,6 +13,7 @@ open TestCodeOnly
 open NakedObjects.Services
 open System
 open NakedObjects.EntityObjectStore
+open NakedObjects.Architecture
 open NakedObjects.Architecture.Adapter
 open SystemTestCode
 open System.Collections.Generic

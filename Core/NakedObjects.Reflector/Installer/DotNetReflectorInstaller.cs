@@ -1,32 +1,30 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Reflect.Peer;
 using NakedObjects.Reflect.Spec;
-using NakedObjects.Reflect.DotNet.Reflect.Strategy;
-using NakedObjects.Reflect.FacetFactory;
 
-namespace NakedObjects.Reflect {
+namespace NakedObjects.Reflect.Installer {
     public class DotNetReflectorInstaller : IReflectorInstaller {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DotNetReflectorInstaller));
         private readonly List<IReflectorEnhancementInstaller> enhancements = new List<IReflectorEnhancementInstaller>();
 
-        #region IReflectorInstaller Members
-
         public bool OptionalByDefault { get; set; }
 
         //public IReflector CreateReflector() {
-            
+
         //    var facetDecoratorSet = new FacetDecoratorSet();
-          
+
         //    var reflector = new DotNetReflector(new DefaultClassStrategy(), new FacetFactorySet(), facetDecoratorSet, TODO);
 
         //    if (enhancements.Count == 0) {
@@ -41,11 +39,13 @@ namespace NakedObjects.Reflect {
         //    }
 
         //    return reflector;
-          
+
         //}
 
+        #region IReflectorInstaller Members
+
         public IReflector CreateReflector() {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void AddEnhancement(IReflectorEnhancementInstaller enhancement) {

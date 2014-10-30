@@ -7,10 +7,10 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Reflect.Security;
 using NakedObjects.Reflect.Spec;
+using NakedObjects.Security;
 
-namespace NakedObjects.Security {
+namespace NakedObjects.Reflect.Authorization {
     public class CustomAuthorizerInstaller : IAuthorizerInstaller {
         private readonly CustomAuthorizationManager authManager;
 
@@ -47,7 +47,7 @@ namespace NakedObjects.Security {
 
         public IFacetDecorator[] CreateDecorators(IMetamodel metamodel) {
             authManager.Metamodel = metamodel;
-            return new IFacetDecorator[] {new SecurityFacetDecorator(authManager)};
+            return new IFacetDecorator[] {new AuthorizationFacetDecorator(authManager)};
         }
     }
 }

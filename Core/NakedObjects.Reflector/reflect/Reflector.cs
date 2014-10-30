@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
+using NakedObjects.Architecture;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Architecture.Exceptions;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
@@ -24,7 +24,6 @@ using NakedObjects.Reflect.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect {
-
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
     public class Reflector : IReflector {
         private static readonly ILog Log;
@@ -103,8 +102,6 @@ namespace NakedObjects.Reflect {
             return (IObjectSpecBuilder) metamodel.GetSpecification(actualType) ?? LoadSpecificationAndCache(actualType);
         }
 
-        #endregion
-
         public void Reflect() {
             var s1 = config.MenuServices;
             var s2 = config.ContributedActions;
@@ -120,6 +117,8 @@ namespace NakedObjects.Reflect {
             servicesConfig.AddContributedActions(s2.Select(Activator.CreateInstance).ToArray());
             servicesConfig.AddMenuServices(s3.Select(Activator.CreateInstance).ToArray());
         }
+
+        #endregion
 
         private void InstallSpecifications(Type[] types, bool isService) {
             types.ForEach(type => InstallSpecification(type, isService));
@@ -148,8 +147,7 @@ namespace NakedObjects.Reflect {
 
         private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services) {
             if (!spec.Service) {
-
-                IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> contributedActions =  new List<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>();
+                IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> contributedActions = new List<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>();
                 foreach (Type serviceType in services) {
                     if (serviceType != spec.Type) {
                         var serviceSpecification = metamodel.GetSpecification(serviceType);
@@ -171,7 +169,6 @@ namespace NakedObjects.Reflect {
         }
 
         private void PopulateRelatedActions(IObjectSpecBuilder spec, Type[] services) {
-
             IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> relatedActions = new List<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>();
             foreach (Type serviceType in services) {
                 var serviceSpecification = metamodel.GetSpecification(serviceType);
@@ -213,7 +210,6 @@ namespace NakedObjects.Reflect {
         }
 
         private IObjectSpecBuilder LoadSpecificationAndCache(Type type) {
-          
             var specification = CreateSpecification(type);
 
             if (specification == null) {

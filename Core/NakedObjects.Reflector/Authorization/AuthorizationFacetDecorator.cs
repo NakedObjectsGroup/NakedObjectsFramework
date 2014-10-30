@@ -13,11 +13,11 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.Spec;
 
-namespace NakedObjects.Reflect.Security {
-    public class SecurityFacetDecorator : IFacetDecorator {
+namespace NakedObjects.Reflect.Authorization {
+    public class AuthorizationFacetDecorator : IFacetDecorator {
         private readonly IAuthorizationManager manager;
 
-        public SecurityFacetDecorator(IAuthorizationManager manager) {
+        public AuthorizationFacetDecorator(IAuthorizationManager manager) {
             this.manager = manager;
         }
 
@@ -47,11 +47,11 @@ namespace NakedObjects.Reflect.Security {
         #region Nested type: SecurityDisableForSessionFacet
 
         private class SecurityDisableForSessionFacet : DisableForSessionFacetAbstract {
-            private readonly SecurityFacetDecorator decorator;
+            private readonly AuthorizationFacetDecorator decorator;
             private readonly IIdentifier identifier;
 
             public SecurityDisableForSessionFacet(IIdentifier identifier,
-                                                  SecurityFacetDecorator decorator,
+                                                  AuthorizationFacetDecorator decorator,
                                                   ISpecification holder)
                 : base(holder) {
                 this.identifier = identifier;
@@ -68,11 +68,11 @@ namespace NakedObjects.Reflect.Security {
         #region Nested type: SecurityHideForSessionFacet
 
         private class SecurityHideForSessionFacet : HideForSessionFacetAbstract {
-            private readonly SecurityFacetDecorator decorator;
+            private readonly AuthorizationFacetDecorator decorator;
             private readonly IIdentifier identifier;
 
             public SecurityHideForSessionFacet(IIdentifier identifier,
-                                               SecurityFacetDecorator decorator,
+                                               AuthorizationFacetDecorator decorator,
                                                ISpecification holder)
                 : base(holder) {
                 this.identifier = identifier;

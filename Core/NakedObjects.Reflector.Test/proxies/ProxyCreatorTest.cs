@@ -5,15 +5,8 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Practices.Unity;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Boot;
-using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Core.Persist;
-using NakedObjects.Persistor;
-using NakedObjects.Persistor.Objectstore;
-using NakedObjects.Reflect.DotNet.Reflect.Proxies;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;

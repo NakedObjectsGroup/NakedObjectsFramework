@@ -5,20 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Reflect.Spec;
 
-namespace NakedObjects.Architecture {
-    public abstract class ObjectPersistenceException : NakedObjectApplicationException {
-        protected ObjectPersistenceException() {}
-
-        protected ObjectPersistenceException(string message)
-            : base(message) {}
-
-        protected ObjectPersistenceException(string message, Exception cause)
-            : base(message, cause) {}
-
-        protected ObjectPersistenceException(Exception cause)
-            : base(cause) {}
+namespace NakedObjects.Reflect.Installer {
+    public interface IReflectionDecoratorInstaller : IReflectorEnhancementInstaller {
+        IFacetDecorator[] CreateDecorators(IReflector reflector);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

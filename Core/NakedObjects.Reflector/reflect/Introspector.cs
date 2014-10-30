@@ -11,9 +11,9 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
+using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Exceptions;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -22,7 +22,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.SpecImmutable;
-using NakedObjects.Reflect.DotNet;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect {
@@ -30,8 +29,8 @@ namespace NakedObjects.Reflect {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Introspector));
 
         private static readonly object[] NoParameters = new object[0];
-        private readonly IReflector reflector;
         private readonly IMetamodel metamodel;
+        private readonly IReflector reflector;
         private Type introspectedType;
         private MethodInfo[] methods;
         private IOrderSet<IActionSpecImmutable> orderedClassActions;
@@ -71,9 +70,7 @@ namespace NakedObjects.Reflect {
         }
 
         public string[] InterfacesNames {
-            get {
-                return introspectedType.GetInterfaces().Select(i => i.FullName ?? i.Namespace + "." + i.Name).ToArray();
-            }
+            get { return introspectedType.GetInterfaces().Select(i => i.FullName ?? i.Namespace + "." + i.Name).ToArray(); }
         }
 
         public string SuperclassName {
@@ -88,11 +85,11 @@ namespace NakedObjects.Reflect {
             get { return orderedFields.Cast<IOrderableElement<IAssociationSpecImmutable>>().ToImmutableList(); }
         }
 
-        public  IList<IOrderableElement<IActionSpecImmutable>> ClassActions {
+        public IList<IOrderableElement<IActionSpecImmutable>> ClassActions {
             get { return orderedClassActions.Cast<IOrderableElement<IActionSpecImmutable>>().ToImmutableList(); }
         }
 
-        public  IList<IOrderableElement<IActionSpecImmutable>> ObjectActions {
+        public IList<IOrderableElement<IActionSpecImmutable>> ObjectActions {
             get { return orderedObjectActions.Cast<IOrderableElement<IActionSpecImmutable>>().ToImmutableList(); }
         }
 
@@ -145,6 +142,8 @@ namespace NakedObjects.Reflect {
             IntrospectActions(spec);
         }
 
+        #endregion
+
         public void IntrospectPropertiesAndCollections(IObjectSpecImmutable spec) {
             Log.InfoFormat("introspecting {0}: properties and collections", ClassName);
 
@@ -182,8 +181,6 @@ namespace NakedObjects.Reflect {
 
             orderedClassActions = CreateOrderSet(actionOrder, findClassActionMethods);
         }
-
-        #endregion
 
         private MethodInfo[] GetFilteredMethods() {
             var allMethods = new List<MethodInfo>(introspectedType.GetMethods());

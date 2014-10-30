@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
+using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -171,16 +172,6 @@ namespace NakedObjects.Core.Adapter {
 
             var validateFacet = spec.GetFacet<IValidateObjectFacet>();
             return validateFacet == null ? null : validateFacet.Validate(this);
-
-            //foreach (INakedObjectValidation validator in spec.ValidateMethods()) {
-            //    IEnumerable<INakedObject> parameters = validator.ParameterNames.Select(name => spec.Properties.Single(p => p.Id.ToLower() == name).GetNakedObject(this));
-            //    string result = validator.Execute(this, parameters.ToArray());
-            //    if (result != null) {
-            //        return result;
-            //    }
-            //}
-
-            //return null;
         }
 
         public void SetATransientOid(IOid newOid) {

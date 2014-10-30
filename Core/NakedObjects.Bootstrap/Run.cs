@@ -8,8 +8,8 @@ using Common.Logging;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
 using NakedObjects.Reflect.Audit;
+using NakedObjects.Reflect.Authorization;
 using NakedObjects.Reflect.I18n.Resourcebundle;
-using NakedObjects.Reflect.Security;
 
 namespace NakedObjects.Boot {
     public abstract class Run {

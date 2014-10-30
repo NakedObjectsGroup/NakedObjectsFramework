@@ -11,12 +11,11 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Configuration;
-using NakedObjects.Reflect.DotNet.Reflect;
-using NakedObjects.Reflect.DotNet.Reflect.Strategy;
+using NakedObjects.Meta;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.Spec;
 using NUnit.Framework;
-using Metamodel = NakedObjects.Meta.Metamodel;
+
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestFixture]

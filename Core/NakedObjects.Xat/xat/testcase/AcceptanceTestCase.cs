@@ -31,10 +31,6 @@ using NakedObjects.Managers;
 using NakedObjects.Meta;
 using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Reflect;
-using NakedObjects.Reflect.DotNet;
-
-using NakedObjects.Reflect.DotNet.Reflect;
-using NakedObjects.Reflect.DotNet.Reflect.Strategy;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.Spec;
 using NakedObjects.Service;

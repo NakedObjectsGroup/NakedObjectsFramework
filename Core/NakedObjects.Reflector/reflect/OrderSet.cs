@@ -120,6 +120,14 @@ namespace NakedObjects.Reflect {
             get { return this.Cast<IOrderableElement<T>>().ToList(); }
         }
 
+        public IEnumerator<T> GetEnumerator() {
+            return elements.Select(orderableElement => (T) orderableElement).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
+        }
+
         #endregion
 
         /// <summary>
@@ -168,14 +176,6 @@ namespace NakedObjects.Reflect {
             foreach (IOrderableElement<T> o in sortedMembers) {
                 AddElement(o);
             }
-        }
-
-        public IEnumerator<T> GetEnumerator() {
-            return elements.Select(orderableElement => (T) orderableElement).GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() {
-            return GetEnumerator();
         }
     }
 

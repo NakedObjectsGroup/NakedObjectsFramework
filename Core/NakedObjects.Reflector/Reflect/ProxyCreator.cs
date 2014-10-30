@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Linq;
@@ -15,9 +18,8 @@ using NakedObjects.Architecture.Util;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflect.DotNet.Reflect.Proxies {
+namespace NakedObjects.Reflect {
     public static class ProxyCreator {
-       
         private static readonly object ModuleBuilderLock = new object();
         private static readonly ILog Log = LogManager.GetLogger(typeof (ProxyCreator));
         private static ModuleBuilder ModuleBuilder { get; set; }
@@ -147,7 +149,7 @@ namespace NakedObjects.Reflect.DotNet.Reflect.Proxies {
             };
 
             prefixesToUse.Select(p => p + captializedName).
-                          ForEach(name => SubclassCollectionAccessorIfFound(typeToProxy, name, typeBuilder, containerField));
+                ForEach(name => SubclassCollectionAccessorIfFound(typeToProxy, name, typeBuilder, containerField));
         }
 
         private static void SubclassAllCollectionAccessors(IMetamodelManager metamodel, ILifecycleManager persistor, TypeBuilder typeBuilder, Type typeToProxy, FieldBuilder containerField) {
