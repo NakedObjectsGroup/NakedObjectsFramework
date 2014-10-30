@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Container;
 using NakedObjects.Core.Persist;
 using NUnit.Framework;
 using TestData;

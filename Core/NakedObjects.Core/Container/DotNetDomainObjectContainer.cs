@@ -13,10 +13,9 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Services;
 using NakedObjects.UtilInternal;
 
-namespace NakedObjects.Reflect.DotNet {
+namespace NakedObjects.Core.Container {
     public class DotNetDomainObjectContainer : IDomainObjectContainer, IInternalAccess {
         private readonly INakedObjectsFramework framework;
 

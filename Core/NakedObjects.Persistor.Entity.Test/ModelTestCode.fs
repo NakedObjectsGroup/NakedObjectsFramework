@@ -18,6 +18,7 @@ open NakedObjects.Architecture.Component
 open System.Data.Entity.Core.Objects
 open NakedObjects.Reflect.DotNet
 open Moq
+open NakedObjects.Core.Container
 
 let ModelConfig = 
     let pc = new PocoEntityContextConfiguration()

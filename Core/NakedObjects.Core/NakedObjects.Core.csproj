@@ -155,6 +155,11 @@
     <Compile Include="Adapter\ValueSemanticsProviderImpl.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Configuration\ReflectorConfiguration.cs" />
+    <Compile Include="Container\DisposeFailedException.cs" />
+    <Compile Include="Container\DotNetDomainObjectContainer.cs" />
+    <Compile Include="Container\DotNetDomainObjectContainerInjector.cs" />
+    <Compile Include="Container\Methods.cs" />
+    <Compile Include="Container\PersistFailedException.cs" />
     <Compile Include="context\SimpleMessageBroker.cs" />
     <Compile Include="context\SimpleUpdateNotifier.cs" />
     <Compile Include="Managers\LifeCycleManager.cs" />
@@ -296,7 +301,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Component\" />

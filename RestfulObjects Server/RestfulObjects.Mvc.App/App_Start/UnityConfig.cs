@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Configuration;
+using NakedObjects.Core.Container;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.Security;
 using NakedObjects.Core.spec;

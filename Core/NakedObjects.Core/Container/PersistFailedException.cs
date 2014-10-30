@@ -6,18 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Architecture;
 
-namespace NakedObjects.Services {
+namespace NakedObjects.Core.Container {
     /// <summary>
     ///     Indicates that the persistence of an object failed.
     /// </summary>
-    public class DisposeFailedException : Exception {
-        public DisposeFailedException() {}
-
-        public DisposeFailedException(string msg)
+    public class PersistFailedException : NakedObjectApplicationException {
+        public PersistFailedException(string msg)
             : base(msg) {}
 
-        public DisposeFailedException(string msg, Exception cause)
+        public PersistFailedException(string msg, Exception cause)
             : base(msg, cause) {}
     }
 

@@ -15,11 +15,9 @@ open System.Collections
 open NakedObjects.Core.Context
 open NakedObjects.Core.Security
 open System.Security.Principal
-open NakedObjects.Reflect.DotNet
 open Moq
-open NakedObjects.Architecture.Transaction
-open NakedObjects.Architecture.Persist
 open NakedObjects.Architecture.Component
+open NakedObjects.Core.Container
 
 let resetPersistor (p : EntityObjectStore) = 
     p.Reset()

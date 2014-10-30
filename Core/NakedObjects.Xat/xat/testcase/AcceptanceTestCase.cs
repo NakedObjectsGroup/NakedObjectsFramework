@@ -22,6 +22,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Boot;
 using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Configuration;
+using NakedObjects.Core.Container;
 using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.spec;
