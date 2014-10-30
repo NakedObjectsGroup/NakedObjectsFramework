@@ -12,8 +12,8 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Util.Reflection;
-using NakedObjects.Meta.Utils;
+using NakedObjects.Core.Util;
+using NakedObjects.Core.Util.Query;
 
 namespace NakedObjects.Meta.Facet {
     public class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {

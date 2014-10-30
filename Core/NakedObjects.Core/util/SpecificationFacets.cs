@@ -6,10 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.Architecture.Spec {
+namespace NakedObjects.Core.Util {
     public static class SpecificationFacets {
         public static bool IsAlwaysImmutable(this IObjectSpec spec) {
             var immutableFacet = spec.GetFacet<IImmutableFacet>();

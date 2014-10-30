@@ -15,7 +15,7 @@ open System
 open NakedObjects.Architecture.Adapter
 open SystemTestCode
 open TestCode
-open NakedObjects.Architecture.Util
+open NakedObjects.Core.Util
 open NakedObjects.Core.Configuration
 open NakedObjects.Architecture.Configuration
 open Microsoft.Practices.Unity

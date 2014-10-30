@@ -13,12 +13,11 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Container;
 using NakedObjects.Core.Persist;
-using NUnit.Framework;
+using NakedObjects.Core.Util;
 using TestData;
-using NakedObjects.Core.Util.Reflection;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Persistor.TestSuite {
     /// <summary>

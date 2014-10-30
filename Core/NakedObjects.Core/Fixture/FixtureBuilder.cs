@@ -7,7 +7,7 @@ using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Persist;
-using NakedObjects.Meta.Utils;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Fixture {
     public class FixtureBuilder : AbstractFixtureBuilder {

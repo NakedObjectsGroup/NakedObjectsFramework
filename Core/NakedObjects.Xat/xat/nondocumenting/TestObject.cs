@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Common.Logging;
@@ -14,10 +13,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Util;
+using NakedObjects.Core.Util;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert; 
 
 namespace NakedObjects.Xat {
     internal class TestObject : TestHasActions, ITestObject {

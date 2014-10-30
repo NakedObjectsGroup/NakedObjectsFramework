@@ -12,8 +12,7 @@ open NakedObjects.Boot
 open ModelFirst
 open NakedObjects.Services
 open NakedObjects.EntityObjectStore
-open NakedObjects.Architecture.Util
-open NakedObjects.Architecture.Adapter
+open NakedObjects.Core.Util
 open SystemTestCode
 open NakedObjects
 open TestCode
@@ -23,6 +22,7 @@ open NakedObjects.Architecture.Configuration
 open NakedObjects.Core.Configuration
 open System.Data.Entity.Core.Objects.DataClasses
 open System.Linq
+open NakedObjects.Architecture.Adapter
 
 [<TestFixture>]
 type ModelSystemTests() = 

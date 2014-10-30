@@ -13,7 +13,7 @@ using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     public class GenericIQueryableFacet : CollectionFacetAbstract {

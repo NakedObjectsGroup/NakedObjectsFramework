@@ -9,7 +9,7 @@ using System.Collections;
 using System.Linq;
 using System.Reflection;
 
-namespace NakedObjects.Core.Util.Reflection {
+namespace NakedObjects.Core.Util.Query {
     public static class QueryableUtils {
         public static int Count(this IQueryable q) {
             MethodInfo countMethod = typeof (Queryable).GetMethods().Single(m => m.Name == "Count" && Enumerable.Count(m.GetParameters()) == 1);

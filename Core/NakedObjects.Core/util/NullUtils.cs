@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Reflect {
+namespace NakedObjects.Core.Util {
     public static class NullUtils {
         public static bool NullSafeEquals(object previousValue, object newValue) {
             if (previousValue == null && newValue == null)

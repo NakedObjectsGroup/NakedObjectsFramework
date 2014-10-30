@@ -26,7 +26,6 @@ using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.ResolveStateMachine;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Transaction;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Container;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;

@@ -14,7 +14,7 @@ using System.Threading;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 
 namespace NakedObjects.Reflect.I18n.Resourcebundle {

@@ -12,6 +12,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Core.Util;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert; 
+
 
 namespace NakedObjects.Xat {
     internal class TestCollection : ITestCollection {

@@ -20,7 +20,7 @@ open System.Collections.Generic
 open CodeOnlyTestCode
 open NakedObjects
 open TestCode
-open NakedObjects.Architecture.Util
+open NakedObjects.Core.Util
 open NakedObjects.Architecture.Persist
 open Microsoft.Practices.Unity
 open NakedObjects.Core.Configuration

@@ -10,17 +10,10 @@ using System.Data.Entity.Core.Objects;
 using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
-using NakedObjects.Architecture.Util;
-using NakedObjects.Core.Adapter.Map;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core.Util;
 using NakedObjects.Persistor;
-using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Resources;
-using NakedObjects.Util;
 
 namespace NakedObjects.EntityObjectStore {
     public class EntityPersistorInstaller : AbstractObjectPersistorInstaller {

@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Reflect {
+namespace NakedObjects.Core.Util {
     public static class FeatureSpecUtils {
         public static string PropertyTitle(this IFeatureSpec featureSpec, INakedObject nakedObject, INakedObjectManager manager) {
             if (nakedObject == null) {

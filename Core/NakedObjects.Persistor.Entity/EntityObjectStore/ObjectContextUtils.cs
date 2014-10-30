@@ -11,11 +11,9 @@ using System.Linq;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core.Util;
 using NakedObjects.Util;
-using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.EntityObjectStore {
     public static class ObjectContextUtils {

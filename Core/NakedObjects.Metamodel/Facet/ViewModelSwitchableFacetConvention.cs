@@ -10,6 +10,7 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     public class ViewModelSwitchableFacetConvention : ViewModelFacetConvention {

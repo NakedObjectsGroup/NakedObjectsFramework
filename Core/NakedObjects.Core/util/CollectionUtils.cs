@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Util {
+namespace NakedObjects.Core.Util {
     public static class CollectionUtils {
         #region public
 

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Xml.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public static class NofMetaModel {

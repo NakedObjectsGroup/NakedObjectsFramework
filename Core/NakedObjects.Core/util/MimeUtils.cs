@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NakedObjects.Architecture.Util {
+namespace NakedObjects.Core.Util {
     public static class MimeUtils {
         #region extensionToMimeType
 

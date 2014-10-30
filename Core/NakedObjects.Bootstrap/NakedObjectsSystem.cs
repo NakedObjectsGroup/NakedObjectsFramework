@@ -12,6 +12,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
+using NakedObjects.Core;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
 using NakedObjects.Core.Util;

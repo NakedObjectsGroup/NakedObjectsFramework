@@ -17,9 +17,8 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
-using NakedObjects.Meta.Except;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
 

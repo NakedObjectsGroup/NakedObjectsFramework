@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core;
 using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;

@@ -7,9 +7,7 @@ using System.Data.Entity.Core;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 

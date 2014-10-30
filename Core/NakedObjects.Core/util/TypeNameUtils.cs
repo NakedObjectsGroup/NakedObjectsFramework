@@ -10,8 +10,10 @@ using System.Linq;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 
-namespace NakedObjects.Architecture.Util {
+namespace NakedObjects.Core.Util {
     public static class TypeNameUtils {
+
+       
         public static string DecodeTypeName(string typeName, string separator = "-") {
             if (typeName.Contains("-")) {
                 string rootType = typeName.Substring(0, typeName.IndexOf('`') + 2);

@@ -13,11 +13,12 @@ using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Spec;
 using NUnit.Framework;
+using NakedObjects.Core.Util;
+using Assert = NUnit.Framework.Assert; 
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestFixture]

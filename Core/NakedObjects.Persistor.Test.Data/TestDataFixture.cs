@@ -2,8 +2,8 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
-using NakedObjects.Architecture.Util;
 using TestData;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Persistor.TestData {
     public class TestDataFixture  {

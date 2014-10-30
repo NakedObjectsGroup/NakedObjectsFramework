@@ -10,13 +10,12 @@ using System.Globalization;
 using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Architecture.Util;
 using NUnit.Framework;
 using NakedObjects.Meta.Spec;
+using NakedObjects.Core.Util;
+using Assert = NUnit.Framework.Assert; 
 
 namespace NakedObjects.Reflect.DotNet.Value {
     [TestFixture]

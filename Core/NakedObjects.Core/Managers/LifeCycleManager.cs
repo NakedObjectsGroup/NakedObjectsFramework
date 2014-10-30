@@ -16,7 +16,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;

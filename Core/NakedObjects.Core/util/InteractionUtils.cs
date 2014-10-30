@@ -8,10 +8,11 @@
 using System.Linq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Interactions {
+namespace NakedObjects.Core.Util {
     public static class InteractionUtils {
         public static bool IsVisible(ISpecification specification, InteractionContext ic, ILifecycleManager persistor) {
             var buf = new InteractionBuffer();

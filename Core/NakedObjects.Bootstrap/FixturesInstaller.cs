@@ -5,9 +5,9 @@
 using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Fixture;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Boot {
     public class FixturesInstaller : IFixturesInstaller {

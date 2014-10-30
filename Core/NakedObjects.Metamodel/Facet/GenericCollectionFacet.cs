@@ -10,6 +10,7 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     public class GenericCollectionFacet : CollectionFacetAbstract {

@@ -9,11 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Core.Container {
     public static class Methods {
+
+       
         private static readonly ILog Log = LogManager.GetLogger(typeof (Methods));
 
         public static void InjectContainer(object target, object container) {

@@ -8,6 +8,7 @@
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Utils {
     public class NakedObjectValidationMethod {

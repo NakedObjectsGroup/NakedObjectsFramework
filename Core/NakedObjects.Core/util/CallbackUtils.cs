@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 
-namespace NakedObjects.Architecture.Util {
+namespace NakedObjects.Core.Util {
     public static class CallbackUtils {
         private static void CallCallback<T>(INakedObject nakedObject, ISession session) where T : ICallbackFacet {
             if (nakedObject != null && nakedObject.Spec != null) {

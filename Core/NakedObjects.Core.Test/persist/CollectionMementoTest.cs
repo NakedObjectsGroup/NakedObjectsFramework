@@ -16,6 +16,8 @@ using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Services;
 using NakedObjects.Xat;
+using NakedObjects.Core.Util;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Core.Persist {
     public class TestDomainObject {

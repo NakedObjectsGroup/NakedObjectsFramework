@@ -5,8 +5,8 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using Common.Logging;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 
 namespace NakedObjects.EntityObjectStore {

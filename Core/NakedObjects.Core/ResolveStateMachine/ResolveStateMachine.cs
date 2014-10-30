@@ -12,7 +12,7 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.ResolveStateMachine;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Architecture.Resolve {
     public class ResolveStateMachine : IResolveStateMachine {

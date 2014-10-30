@@ -17,6 +17,7 @@ open System.IO
 open NakedObjects.Core.Configuration
 open NakedObjects.Snapshot.Xml.Utility
 open NakedObjects.Architecture.Configuration
+open NakedObjects.Core.Util
 
 let writetests = false
 let testFiles = @"..\..\testfiles"

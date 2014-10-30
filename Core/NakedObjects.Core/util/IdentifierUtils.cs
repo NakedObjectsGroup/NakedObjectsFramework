@@ -11,7 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.Architecture.Facets {
+namespace NakedObjects.Core.Util {
     public static class IdentifierUtils {
         public static int ComputeMD5HashAsInt(this IIdentifier id, CheckType checkType) {
             return Math.Abs(BitConverter.ToInt32(ComputeMD5HashFromIdentifier(id, checkType), 0));

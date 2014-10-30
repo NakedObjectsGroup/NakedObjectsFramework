@@ -3,19 +3,16 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.ResolveStateMachine;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;

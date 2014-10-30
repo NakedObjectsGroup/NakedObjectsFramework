@@ -5,12 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Meta.Utils {
+namespace NakedObjects.Core.Util {
     public class InvokeUtils {
         /// <summary>
         ///     Invoke the specified method with all its parameter, if any, as null.
@@ -61,8 +62,8 @@ namespace NakedObjects.Meta.Utils {
             }
         }
 
-        public static void InvocationException(string error, System.Exception e) {
-            System.Exception innerException = e.InnerException;
+        public static void InvocationException(string error, Exception e) {
+            Exception innerException = e.InnerException;
             if (innerException is DomainException) {
                 // a domain  exception from the domain code is re-thrown as an NO exception with same
                 // semantics
@@ -76,6 +77,6 @@ namespace NakedObjects.Meta.Utils {
     }
 
     public class InvokeException : NakedObjectApplicationException {
-        public InvokeException(string message, System.Exception exception) : base(message, exception) {}
+        public InvokeException(string message, Exception exception) : base(message, exception) {}
     }
 }

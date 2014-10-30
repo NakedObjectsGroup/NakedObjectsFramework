@@ -5,7 +5,6 @@
 using System;
 using System.Globalization;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {

@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect {

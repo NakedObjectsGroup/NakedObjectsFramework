@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core.Util;
 using NakedObjects.Reflect.Spec;
 
 namespace NakedObjects.Reflect.Installer {
@@ -59,6 +59,8 @@ namespace NakedObjects.Reflect.Installer {
         #endregion
 
         private void AddEnhancement(FacetDecoratorSet facetDecoratorSet, IReflector reflector) {
+
+        
             foreach (IReflectionDecoratorInstaller installer in enhancements.Where(x => x is IReflectionDecoratorInstaller)) {
                 installer.CreateDecorators(reflector).ForEach(facetDecoratorSet.Add);
             }

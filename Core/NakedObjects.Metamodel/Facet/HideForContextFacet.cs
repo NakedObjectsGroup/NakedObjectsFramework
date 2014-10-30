@@ -9,6 +9,7 @@ using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;

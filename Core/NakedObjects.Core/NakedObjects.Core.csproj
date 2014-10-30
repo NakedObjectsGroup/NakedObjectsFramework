@@ -120,9 +120,6 @@
     <Reference Include="NakedObjects.Helpers">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.Metamodel">
-      <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Metamodel.dll</HintPath>
-    </Reference>
     <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.PMResources.dll</HintPath>
@@ -237,8 +234,9 @@
     <Compile Include="util\HashCodeUtils.cs" />
     <Compile Include="util\IdentifierUtils.cs" />
     <Compile Include="util\InteractionUtils.cs" />
+    <Compile Include="util\InvokeUtils.cs" />
     <Compile Include="util\MimeUtils.cs" />
-    <Compile Include="util\NakedObjectAssertException.cs" />
+    <Compile Include="Exception\NakedObjectAssertException.cs" />
     <Compile Include="util\INakedObjectConfigurationAware.cs" />
     <Compile Include="util\NullUtils.cs" />
     <Compile Include="util\QueryableList.cs" />
@@ -247,8 +245,8 @@
     <Compile Include="util\ReasonBuffer.cs" />
     <Compile Include="util\SpecificationFacets.cs" />
     <Compile Include="util\TypeNameUtils.cs" />
-    <Compile Include="util\UnexpectedCallException.cs" />
-    <Compile Include="util\UnknownTypeException.cs" />
+    <Compile Include="Exception\UnexpectedCallException.cs" />
+    <Compile Include="Exception\UnknownTypeException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj">
@@ -300,8 +298,8 @@
     <Compile Include="security\WindowsAuthenticatorInstaller.cs" />
     <Compile Include="security\WindowsSession.cs" />
     <Compile Include="util\CopyUtils.cs" />
-    <Compile Include="util\InvalidDataException.cs" />
-    <Compile Include="util\InvalidStateException.cs" />
+    <Compile Include="Exception\InvalidDataException.cs" />
+    <Compile Include="Exception\InvalidStateException.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="version.xml" />
