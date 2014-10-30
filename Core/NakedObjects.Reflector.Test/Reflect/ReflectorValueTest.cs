@@ -1,27 +1,25 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Meta.Facet;
 using NUnit.Framework;
 
-namespace NakedObjects.Reflect.DotNet.Reflect {
-    public class TestPojo {}
-
+namespace NakedObjects.Reflect.Test {
     [TestFixture]
-    public class Reflector_ArrayTest : AbstractDotNetReflectorTest {
+    public class ReflectorValueTest : AbstractReflectorTest {
         protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {
-            return  reflector.LoadSpecification(typeof (TestPojo[]));
+            return reflector.LoadSpecification(typeof (string));
         }
 
-        [Test]
+        [Test, Ignore]
         public void TestCollectionFacet() {
             IFacet facet = Specification.GetFacet(typeof (ICollectionFacet));
             Assert.IsNotNull(facet);
-            //Assert.AreEqual(typeof(ArrayList).getName(), facet);
         }
 
         [Test]
@@ -32,14 +30,18 @@ namespace NakedObjects.Reflect.DotNet.Reflect {
 
         [Test]
         public void TestFacets() {
-            Assert.AreEqual(20, Specification.FacetTypes.Length);
+            Assert.AreEqual(24, Specification.FacetTypes.Length);
         }
 
         [Test]
-        public void TestName() {           
-            Assert.AreEqual(typeof (TestPojo[]).FullName, Specification.FullName);
+        public void TestIsParseable() {
+            Assert.IsTrue(Specification.IsParseable);
         }
 
+        [Test]
+        public void TestName() {
+            Assert.AreEqual(typeof (string).FullName, Specification.FullName);
+        }
 
         [Test]
         public void TestNamedFaced() {
@@ -53,9 +55,8 @@ namespace NakedObjects.Reflect.DotNet.Reflect {
             Assert.IsNotNull(facet);
         }
 
-        [Test]
+        [Test, Ignore]
         public void TestType() {
-           
             Assert.IsTrue(Specification.IsCollection);
         }
 
@@ -63,14 +64,6 @@ namespace NakedObjects.Reflect.DotNet.Reflect {
         public void TestTypeOfFacet() {
             var facet = (ITypeOfFacet) Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(facet);
-          
-        }
-
-        [Test]
-        public void TestElementTypeFacet() {
-            var facet = (IElementTypeFacet)Specification.GetFacet(typeof(IElementTypeFacet));
-            Assert.IsNotNull(facet);
-            Assert.AreEqual(typeof(TestPojo), facet.Value);
         }
     }
 

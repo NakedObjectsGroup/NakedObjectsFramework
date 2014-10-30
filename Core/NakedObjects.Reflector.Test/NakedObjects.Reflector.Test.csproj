@@ -111,8 +111,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="annotations\ObjectAnnotatedAsImmutable.cs" />
-    <Compile Include="annotations\ObjectWithAnnotations.cs" />
     <Compile Include="FacetFactory\TypeMarkerFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\TableViewAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\DefaultedNamingFacetFactoryTest.cs" />
@@ -174,28 +172,16 @@
     <Compile Include="FacetFactory\AbstractFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\MetadataAnnotationFacetFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="proxies\ProxyCreatorTest.cs" />
-    <Compile Include="reflect\AbstractDotNetReflectorTest.cs" />
-    <Compile Include="reflect\ActionTestObject.cs" />
-    <Compile Include="reflect\ReflectorTest.cs" />
-    <Compile Include="reflect\Reflector_ValidateTest.cs" />
-    <Compile Include="reflect\Reflector_MetadataTest.cs" />
-    <Compile Include="reflect\ObjectWithBasicProgramConventions.cs" />
-    <Compile Include="reflect\ObjectWithGenericList.cs" />
-    <Compile Include="reflect\ObjectWithList.cs" />
-    <Compile Include="reflect\ObjectWithOneToOneAssociations.cs" />
-    <Compile Include="reflect\ReferencedObject.cs" />
-    <Compile Include="reflect\Reflector_ArrayTest.cs" />
-    <Compile Include="reflect\Reflector_CollectionTest.cs" />
-    <Compile Include="reflect\Reflector_GenericCollectionTest.cs" />
-    <Compile Include="reflect\Reflector_ObjectTest.cs" />
-    <Compile Include="reflect\Reflector_ValueTest.cs" />
-    <Compile Include="reflect\TestObject.cs" />
-    <Compile Include="reflect\TestObjectAsAggregated.cs" />
-    <Compile Include="reflect\TestObjectAsService.cs" />
-    <Compile Include="reflect\TestObjectWithCollection.cs" />
-    <Compile Include="spec\OneToManyAssociationTest.cs" />
-    <Compile Include="test\dom\TestDomainObject.cs" />
+    <Compile Include="Reflect\ProxyCreatorTest.cs" />
+    <Compile Include="Reflect\AbstractReflectorTest.cs" />
+    <Compile Include="Reflect\ReflectorTest.cs" />
+    <Compile Include="Reflect\ReflectorValidateTest.cs" />
+    <Compile Include="Reflect\ReflectorMetadataTest.cs" />
+    <Compile Include="Reflect\ReflectorArrayTest.cs" />
+    <Compile Include="Reflect\ReflectorCollectionTest.cs" />
+    <Compile Include="Reflect\ReflectorGenericCollectionTest.cs" />
+    <Compile Include="Reflect\ReflectorObjectTest.cs" />
+    <Compile Include="Reflect\ReflectorValueTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj">
@@ -227,10 +213,7 @@
       <Name>NakedObjects.Xat</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="dotnet\" />
-    <Folder Include="value\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

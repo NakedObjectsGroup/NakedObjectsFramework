@@ -14,12 +14,109 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
-using NakedObjects.Reflect.FacetFactory;
-using NakedObjects.Reflect.Spec;
 using NUnit.Framework;
 
-namespace NakedObjects.Reflect.Reflect {
+namespace NakedObjects.Reflect.Test {
     public class ReflectorTest {
+        protected IUnityContainer GetContainer() {
+            var c = new UnityContainer();
+            RegisterTypes(c);
+            return c;
+        }
+
+        protected virtual void RegisterTypes(IUnityContainer container) {
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>();
+            container.RegisterType<IClassStrategy, DefaultClassStrategy>();
+            container.RegisterType<IFacetFactorySet, FacetFactorySet>();
+
+            container.RegisterType<IReflector, Reflector>();
+            container.RegisterType<IMetamodel, Metamodel>();
+            container.RegisterType<IMetamodelBuilder, Metamodel>();
+            container.RegisterType<IServicesConfiguration, ServicesConfiguration>();
+        }
+
+        [Test]
+        public void ReflectNoTypes() {
+            var container = GetContainer();
+            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+            Assert.IsFalse(reflector.AllObjectSpecImmutables.Any());
+        }
+
+        [Test]
+        public void ReflectObjectType() {
+            var container = GetContainer();
+            var rc = new ReflectorConfiguration(new Type[] {typeof (object)}, new Type[] {}, new Type[] {}, new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof (object));
+        }
+
+        [Test]
+        public void ReflectListTypes() {
+            var container = GetContainer();
+            var rc = new ReflectorConfiguration(new Type[] {typeof (List<object>), typeof (List<int>)}, new Type[] {}, new Type[] {}, new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+            Assert.AreEqual(10, reflector.AllObjectSpecImmutables.Count());
+            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+        }
+
+        [Test]
+        public void ReflectSetTypes() {
+            var container = GetContainer();
+            var rc = new ReflectorConfiguration(new Type[] {typeof (SetWrapper<object>)}, new Type[] {}, new Type[] {}, new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+            Assert.AreEqual(16, reflector.AllObjectSpecImmutables.Count());
+            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+        }
+
+
+        [Test]
+        public void ReflectQueryableTypes() {
+            var container = GetContainer();
+            var qo = new List<object>() {}.AsQueryable();
+            var qi = new List<int>() {}.AsQueryable();
+            var rc = new ReflectorConfiguration(new Type[] {qo.GetType(), qi.GetType()}, new Type[] {}, new Type[] {}, new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+            Assert.AreEqual(9, reflector.AllObjectSpecImmutables.Count());
+            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+        }
+
+        [Test]
+        public void ReflectByteArray() {
+            var container = GetContainer();
+
+            var rc = new ReflectorConfiguration(new Type[] {typeof (TestObjectWithByteArray)}, new Type[] {}, new Type[] {}, new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+            // Assert.AreEqual(20, reflector.AllObjectSpecImmutables.Count());
+            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
+        }
+
+        #region Nested type: SetWrapper
 
         public class SetWrapper<T> : ISet<T> {
             private readonly ICollection<T> wrapped;
@@ -118,108 +215,14 @@ namespace NakedObjects.Reflect.Reflect {
             #endregion
         }
 
-        protected IUnityContainer GetContainer() {
-            var c = new UnityContainer();
-            RegisterTypes(c);
-            return c;
-        }
+        #endregion
 
-        protected virtual void RegisterTypes(IUnityContainer container) {
-            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>();
-            container.RegisterType<IClassStrategy, DefaultClassStrategy>();
-            container.RegisterType<IFacetFactorySet, FacetFactorySet>();
-
-            container.RegisterType<IReflector, Reflector>();
-            container.RegisterType<IMetamodel, Metamodel>();
-            container.RegisterType<IMetamodelBuilder, Metamodel>();
-            container.RegisterType<IServicesConfiguration, ServicesConfiguration>();
-        }
-
-        [Test]
-        public void ReflectNoTypes() {
-            var container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
-
-            container.RegisterInstance<IReflectorConfiguration>(rc);
-
-            var reflector = container.Resolve<IReflector>();
-            reflector.Reflect();
-            Assert.IsFalse(reflector.AllObjectSpecImmutables.Any());
-        }
-
-        [Test]
-        public void ReflectObjectType() {
-            var container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] {typeof (object)}, new Type[] {}, new Type[] {}, new Type[] {});
-
-            container.RegisterInstance<IReflectorConfiguration>(rc);
-
-            var reflector = container.Resolve<IReflector>();
-            reflector.Reflect();
-            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Count());
-            Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof (object));
-        }
-
-        [Test]
-        public void ReflectListTypes() {
-            var container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] { typeof(List<object>), typeof(List<int>) }, new Type[] { }, new Type[] { }, new Type[] { });
-
-            container.RegisterInstance<IReflectorConfiguration>(rc);
-
-            var reflector = container.Resolve<IReflector>();
-            reflector.Reflect();
-            Assert.AreEqual(10, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
-        }
-
-        [Test]
-        public void ReflectSetTypes() {
-            var container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] { typeof(SetWrapper<object>) }, new Type[] { }, new Type[] { }, new Type[] { });
-
-            container.RegisterInstance<IReflectorConfiguration>(rc);
-
-            var reflector = container.Resolve<IReflector>();
-            reflector.Reflect();
-            Assert.AreEqual(16, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
-        }
-
-
-
-        [Test]
-        public void ReflectQueryableTypes() {
-            var container = GetContainer();
-            var qo = new List<object>() {}.AsQueryable();
-            var qi = new List<int>() { }.AsQueryable();
-            var rc = new ReflectorConfiguration(new Type[] { qo.GetType(), qi.GetType() }, new Type[] { }, new Type[] { }, new Type[] { });
-
-            container.RegisterInstance<IReflectorConfiguration>(rc);
-
-            var reflector = container.Resolve<IReflector>();
-            reflector.Reflect();
-            Assert.AreEqual(9, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
-        }
+        #region Nested type: TestObjectWithByteArray
 
         public class TestObjectWithByteArray {
             public byte[] ByteArray { get; set; }
         }
 
-        [Test]
-        public void ReflectByteArray() {
-            var container = GetContainer();
-           
-            var rc = new ReflectorConfiguration(new Type[] { typeof(TestObjectWithByteArray) }, new Type[] { }, new Type[] { }, new Type[] { });
-
-            container.RegisterInstance<IReflectorConfiguration>(rc);
-
-            var reflector = container.Resolve<IReflector>();
-            reflector.Reflect();
-           // Assert.AreEqual(20, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
-        }
-
+        #endregion
     }
 }

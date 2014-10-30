@@ -4,7 +4,7 @@
 
 using NUnit.Framework;
 
-namespace NakedObjects.Reflect.spec {
+namespace NakedObjects.Meta.Test.SpecImmutable {
 
     // TODO redo tests
 

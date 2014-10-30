@@ -11,12 +11,11 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
-using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.Spec;
 using NUnit.Framework;
 
-namespace NakedObjects.Reflect.DotNet.Reflect {
-    public abstract class AbstractDotNetReflectorTest {
+namespace NakedObjects.Reflect.Test {
+    public abstract class AbstractReflectorTest {
         protected IMetamodel Metamodel;
         protected IObjectSpecImmutable Specification;
 
@@ -25,7 +24,7 @@ namespace NakedObjects.Reflect.DotNet.Reflect {
             var classStrategy = new DefaultClassStrategy();
             var cache = new ImmutableInMemorySpecCache();
             var metamodel = new Metamodel(classStrategy, cache);
-            var config = new ReflectorConfiguration(new Type[] { typeof(List<TestPojo>)  }, new Type[] { }, new Type[] { }, new Type[] { });
+            var config = new ReflectorConfiguration(new[] {typeof (List<TestPoco>)}, new Type[] {}, new Type[] {}, new Type[] {});
             var servicesConfig = new ServicesConfiguration();
             var reflector = new Reflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig, null);
 

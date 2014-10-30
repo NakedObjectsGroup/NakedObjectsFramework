@@ -9,7 +9,6 @@ using System;
 using Moq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Reflect.Reflect;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {

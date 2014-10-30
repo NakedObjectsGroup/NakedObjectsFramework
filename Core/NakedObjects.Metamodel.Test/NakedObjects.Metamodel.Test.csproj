@@ -61,6 +61,7 @@
     <Compile Include="SemanticsProvider\ShortValueSemanticsProviderTest.cs" />
     <Compile Include="SemanticsProvider\TimeValueSemanticsProviderTest.cs" />
     <Compile Include="SemanticsProvider\ValueSemanticsProviderAbstractTestCase.cs" />
+    <Compile Include="SpecImmutable\OneToManyAssociationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

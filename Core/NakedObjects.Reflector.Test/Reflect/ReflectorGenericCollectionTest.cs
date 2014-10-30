@@ -5,22 +5,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NUnit.Framework;
 
-namespace NakedObjects.Reflect.DotNet.Reflect {
+namespace NakedObjects.Reflect.Test {
     [TestFixture]
-    public class Reflector_ValueTest : AbstractDotNetReflectorTest {
+    public class ReflectorGenericCollectionTest : AbstractReflectorTest {
         protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {
-            return reflector.LoadSpecification(typeof (string));
+            return reflector.LoadSpecification(typeof (List<TestPoco>));
         }
 
-        [Test, Ignore]
+        [Test]
         public void TestCollectionFacet() {
             IFacet facet = Specification.GetFacet(typeof (ICollectionFacet));
             Assert.IsNotNull(facet);
+            //Assert.AreEqual(typeof(ArrayList).FullName, facet);
         }
 
         [Test]
@@ -29,20 +30,23 @@ namespace NakedObjects.Reflect.DotNet.Reflect {
             Assert.IsNotNull(facet);
         }
 
+        [Test, Ignore]
+        public void TestElementTypeFacet() {
+            var facet = (IElementTypeFacet) Specification.GetFacet(typeof (IElementTypeFacet));
+            Assert.IsNotNull(facet);
+            Assert.AreEqual(typeof (TestPoco), facet.Value);
+        }
+
         [Test]
         public void TestFacets() {
-            Assert.AreEqual(24, Specification.FacetTypes.Length);
+            Assert.AreEqual(18, Specification.FacetTypes.Length);
         }
 
-        [Test]
-        public void TestIsParseable() {
-            Assert.IsTrue(Specification.IsParseable);
-        }
-
-        [Test]
+        [Test, Ignore]
         public void TestName() {
-            Assert.AreEqual(typeof (string).FullName, Specification.FullName);
+            Assert.AreEqual(typeof (List<TestPoco>).FullName, Specification.FullName);
         }
+
 
         [Test]
         public void TestNamedFaced() {
@@ -56,7 +60,7 @@ namespace NakedObjects.Reflect.DotNet.Reflect {
             Assert.IsNotNull(facet);
         }
 
-        [Test, Ignore]
+        [Test]
         public void TestType() {
             Assert.IsTrue(Specification.IsCollection);
         }
