@@ -16,7 +16,6 @@ using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.DatabaseHelpers;
@@ -26,6 +25,8 @@ using NakedObjects.Web.Mvc.Controllers;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
+using NakedObjects.Core.Util;
+using Assert = NUnit.Framework.Assert;
 
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]

@@ -33,6 +33,8 @@ using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
+using NakedObjects.Core.Util;
+using Assert = NUnit.Framework.Assert;
 
 namespace MvcTestApp.Tests.Helpers {
     public static class StringHelper {

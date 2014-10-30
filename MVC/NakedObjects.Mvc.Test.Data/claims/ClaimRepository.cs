@@ -10,7 +10,7 @@ using Expenses.ExpenseClaims.Items;
 using Expenses.ExpenseEmployees;
 using Expenses.Services;
 using NakedObjects;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util;
 using NakedObjects.Services;
 
 namespace Expenses {

@@ -7,6 +7,7 @@
 
 using System;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Reflect.Authorization;
 using NakedObjects.Reflect.Spec;
 
 namespace NakedObjects.Reflect.Security.Wif {
@@ -26,7 +27,7 @@ namespace NakedObjects.Reflect.Security.Wif {
         public IFacetDecorator[] CreateDecorators() {
             IAuthorizationManager authManager = new WifAuthorizationManager();
             //authManager.Init();
-            return new IFacetDecorator[] {new SecurityFacetDecorator(authManager)};
+            return new IFacetDecorator[] {new AuthorizationFacetDecorator(authManager)};
         }
     }
 }

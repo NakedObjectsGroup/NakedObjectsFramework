@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter.Map {
     public class MvcIdentityAdapterHashMap : IIdentityAdapterMap {

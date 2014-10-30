@@ -13,6 +13,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
 

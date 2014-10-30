@@ -15,11 +15,9 @@ using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
+using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.DatabaseHelpers;
@@ -31,6 +29,8 @@ using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Xat;
 using NUnit.Framework;
+using NakedObjects.Core.Util;
+using Assert = NUnit.Framework.Assert;
 
 namespace MvcTestApp.Tests.Controllers {
     [TestFixture]

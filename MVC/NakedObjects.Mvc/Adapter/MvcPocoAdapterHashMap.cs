@@ -9,7 +9,7 @@ using System.Web;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter.Map {
     public class MvcPocoAdapterHashMap : IPocoAdapterMap {

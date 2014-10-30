@@ -18,8 +18,6 @@ using NakedObjects.Managers;
 using NakedObjects.Meta;
 using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Reflect;
-using NakedObjects.Reflect.DotNet;
-using NakedObjects.Reflect.DotNet.Reflect.Strategy;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Service;
 using NakedObjects.Surface;
@@ -122,7 +120,7 @@ namespace NakedObjects.Mvc.App.App_Start {
             container.RegisterType<IMetamodelBuilder, Metamodel>(new ContainerControlledLifetimeManager()); ;
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
-            container.RegisterType<IContainerInjector, DotNetDomainObjectContainerInjector>(new PerRequestLifetimeManager());
+            container.RegisterType<IContainerInjector, DomainObjectContainerInjector>(new PerRequestLifetimeManager());
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerRequestLifetimeManager());
             container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerRequestLifetimeManager());
             container.RegisterType<IObjectStore, EntityObjectStore.EntityObjectStore>(new PerRequestLifetimeManager());

@@ -2,6 +2,7 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using NakedObjects.Boot;
+using NakedObjects.Core.Container;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Reflect.DotNet;
 using NakedObjects.Services;
@@ -54,7 +55,7 @@ namespace NakedObjects.SystemTest.Injection {
         public void InjectContainer() {
             var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
             Assert.IsNotNull(testObject.Container);
-            Assert.IsInstanceOfType(testObject.Container, typeof(DotNetDomainObjectContainer));
+            Assert.IsInstanceOfType(testObject.Container, typeof(DomainObjectContainer));
         }
 
         [TestMethod, Ignore] // fix

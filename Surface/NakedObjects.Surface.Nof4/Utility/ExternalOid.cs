@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 using NakedObjects.Services;
 using NakedObjects.Surface.Nof4.Wrapper;
 using NakedObjects.Surface.Utility;

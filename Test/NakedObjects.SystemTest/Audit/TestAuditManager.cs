@@ -6,13 +6,14 @@ using System;
 using System.Linq;
 using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Audit;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core.Util;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using System.Data.Entity;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.SystemTest.Audit {
     [TestClass, Ignore]

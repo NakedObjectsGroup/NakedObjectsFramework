@@ -15,9 +15,7 @@ using Expenses.RecordedActions;
 using Expenses.Services;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
@@ -27,6 +25,8 @@ using NakedObjects.Services;
 using NakedObjects.Web.Mvc.Html;
 using NakedObjects.Xat;
 using NUnit.Framework;
+using NakedObjects.Core.Util;
+using Assert = NUnit.Framework.Assert;
 
 namespace MvcTestApp.Tests.Helpers {
     [TestFixture]

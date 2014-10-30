@@ -18,6 +18,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 using NakedObjects.Surface.Context;
 using NakedObjects.Surface.Nof4.Context;
 using NakedObjects.Surface.Nof4.Utility;

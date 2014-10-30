@@ -9,10 +9,8 @@ using System;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture;
-using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Meta.Utils;
+using NakedObjects.Core.Util;
 
 
 namespace NakedObjects.Surface.Nof4.Utility {

@@ -8,9 +8,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Web.Mvc.Html {
     public static class PropertyExtensions {
