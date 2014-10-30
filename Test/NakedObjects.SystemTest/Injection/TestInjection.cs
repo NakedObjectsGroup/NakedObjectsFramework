@@ -4,7 +4,6 @@
 using NakedObjects.Boot;
 using NakedObjects.Core.Container;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Reflect.DotNet;
 using NakedObjects.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
