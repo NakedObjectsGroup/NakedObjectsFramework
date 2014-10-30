@@ -8,6 +8,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Core.Adapter;
+using NakedObjects.Meta.SemanticsProvider;
 using NakedObjects.Reflect.DotNet.Value;
 using NUnit.Framework;
 using NakedObjects.Meta.Facet;

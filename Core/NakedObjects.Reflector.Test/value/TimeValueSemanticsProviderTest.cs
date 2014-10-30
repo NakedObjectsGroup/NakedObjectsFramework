@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facets;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Meta.SemanticsProvider;
 using NUnit.Framework;
 using NakedObjects.Meta.Spec;
 

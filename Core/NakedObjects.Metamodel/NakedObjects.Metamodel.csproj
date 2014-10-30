@@ -61,6 +61,8 @@
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -69,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapter\IdentifierImpl.cs" />
+    <Compile Include="Component\ImmutableInMemorySpecCache.cs" />
     <Compile Include="Facet\AbstractFacet.cs" />
     <Compile Include="Facet\ActionChoicesFacetViaMethod.cs" />
     <Compile Include="Facet\ActionDefaultsFacetAnnotation.cs" />
@@ -100,6 +103,29 @@
     <Compile Include="I18n\DescribedAsFacetWrapI18n.cs" />
     <Compile Include="I18n\NamedFacetDynamicWrapI18n.cs" />
     <Compile Include="I18n\NamedFacetWrapI18n.cs" />
+    <Compile Include="SemanticsProvider\ArrayValueSematicsProvider.cs" />
+    <Compile Include="SemanticsProvider\BoolValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\ByteValueSematicsProvider.cs" />
+    <Compile Include="SemanticsProvider\CharValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\ColorValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\DateTimeValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\DecimalValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\DoubleValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\EnumValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\FileAttachmentValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\FloatValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\GuidValueSematicsProvider.cs" />
+    <Compile Include="SemanticsProvider\ImageValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\IntValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\LongValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\SbyteValueSematicsProvider.cs" />
+    <Compile Include="SemanticsProvider\ShortValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\StringValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\TimeValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\UIntValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\ULongValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\UShortValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\ValueSemanticsProviderAbstract.cs" />
     <Compile Include="SpecImmutable\ObjectSpecImmutable.cs" />
     <Compile Include="Facet\RangeFacet.cs">
       <SubType>Code</SubType>

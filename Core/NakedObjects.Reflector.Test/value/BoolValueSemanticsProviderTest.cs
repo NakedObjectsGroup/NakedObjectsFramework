@@ -12,6 +12,7 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Meta.SemanticsProvider;
 using NUnit.Framework;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Core.Util;
