@@ -16,10 +16,10 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.UtilInternal;
 
 namespace NakedObjects.Core.Container {
-    public class DotNetDomainObjectContainer : IDomainObjectContainer, IInternalAccess {
+    public class DomainObjectContainer : IDomainObjectContainer, IInternalAccess {
         private readonly INakedObjectsFramework framework;
 
-        public DotNetDomainObjectContainer(INakedObjectsFramework framework) {
+        public DomainObjectContainer(INakedObjectsFramework framework) {
             this.framework = framework;
         }
 

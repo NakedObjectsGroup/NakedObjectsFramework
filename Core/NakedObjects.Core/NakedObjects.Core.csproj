@@ -120,6 +120,9 @@
     <Reference Include="NakedObjects.Helpers">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.Helpers.dll</HintPath>
     </Reference>
+    <Reference Include="NakedObjects.Metamodel">
+      <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Metamodel.dll</HintPath>
+    </Reference>
     <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.0.0-alpha2\lib\net40\NakedObjects.PMResources.dll</HintPath>
@@ -137,6 +140,7 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapter\AbstractVersion.cs" />
@@ -156,12 +160,18 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Configuration\ReflectorConfiguration.cs" />
     <Compile Include="Container\DisposeFailedException.cs" />
-    <Compile Include="Container\DotNetDomainObjectContainer.cs" />
-    <Compile Include="Container\DotNetDomainObjectContainerInjector.cs" />
+    <Compile Include="Container\DomainObjectContainer.cs" />
+    <Compile Include="Container\DomainObjectContainerInjector.cs" />
     <Compile Include="Container\Methods.cs" />
     <Compile Include="Container\PersistFailedException.cs" />
     <Compile Include="context\SimpleMessageBroker.cs" />
     <Compile Include="context\SimpleUpdateNotifier.cs" />
+    <Compile Include="Fixture\FixtureBuilder.cs" />
+    <Compile Include="Fixture\FixtureServices.cs" />
+    <Compile Include="I18n\resourcebundle\GoogleTranslator.cs" />
+    <Compile Include="I18n\resourcebundle\ITranslator.cs" />
+    <Compile Include="I18n\resourcebundle\NonTranslator.cs" />
+    <Compile Include="I18n\resourcebundle\ResourceBasedI18nManager.cs" />
     <Compile Include="Managers\LifeCycleManager.cs" />
     <Compile Include="Managers\MetamodelManager.cs" />
     <Compile Include="Managers\NakedObjectFactory.cs" />

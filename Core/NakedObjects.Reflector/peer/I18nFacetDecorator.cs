@@ -7,13 +7,15 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Spec;
+using NakedObjects.Reflect.I18n;
 using NakedObjects.Reflect.Spec;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflect.I18n {
+namespace NakedObjects.Core.I18n {
     public class I18nFacetDecorator : IFacetDecorator {
         private readonly II18nManager i18nManager;
         private readonly bool staticFacets;

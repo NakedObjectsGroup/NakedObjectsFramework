@@ -6,8 +6,8 @@ using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Util;
+using NakedObjects.Core.Fixture;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Reflect.DotNet.Fixture;
 
 namespace NakedObjects.Boot {
     public class FixturesInstaller : IFixturesInstaller {
@@ -28,7 +28,7 @@ namespace NakedObjects.Boot {
             //    return;
             //}
 
-            var builder = new DotNetFixtureBuilder();
+            var builder = new FixtureBuilder();
             fixtures.ForEach(builder.AddFixture);
             builder.InstallFixtures(transactionManager, injector);
         }
@@ -37,7 +37,7 @@ namespace NakedObjects.Boot {
             object fixture = fixtures.FirstOrDefault(f => f.GetType().Name == fixtureName);
 
             if (fixture != null) {
-                var builder = new DotNetFixtureBuilder();
+                var builder = new FixtureBuilder();
                 builder.AddFixture(fixture);
                 builder.InstallFixture(transactionManager, injector, fixtureName);
             }

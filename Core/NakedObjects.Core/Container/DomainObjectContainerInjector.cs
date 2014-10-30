@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Container {
-    public class DotNetDomainObjectContainerInjector : IContainerInjector {
+    public class DomainObjectContainerInjector : IContainerInjector {
         private object container;
         private bool initialized;
         private List<object> services;
@@ -52,7 +52,7 @@ namespace NakedObjects.Core.Container {
         private void Initialize() {
             if (!initialized) {
                 Assert.AssertNotNull(Framework);
-                container = new DotNetDomainObjectContainer(Framework);
+                container = new DomainObjectContainer(Framework);
                 initialized = true;
             }
         }

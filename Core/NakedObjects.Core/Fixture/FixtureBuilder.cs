@@ -6,22 +6,20 @@ using System;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Core.Persist;
-using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedObjects.Reflect.DotNet.Fixture {
-    public class DotNetFixtureBuilder : AbstractFixtureBuilder {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (DotNetFixtureBuilder));
-        private DotNetFixtureServices fixtureServices;
+namespace NakedObjects.Core.Fixture {
+    public class FixtureBuilder : AbstractFixtureBuilder {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (FixtureBuilder));
+        private FixtureServices fixtureServices;
 
         public override string Name {
             get { return "Dotnet fixtures builder"; }
         }
 
         protected override void PreInstallFixtures(ITransactionManager transactionManager) {
-            fixtureServices = new DotNetFixtureServices();
+            fixtureServices = new FixtureServices();
         }
 
         private static void SetValue(PropertyInfo property, object injectee, object value) {

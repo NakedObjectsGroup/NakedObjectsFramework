@@ -137,6 +137,7 @@
     <Compile Include="Adapter\PersistableType.cs" />
     <Compile Include="Component\IClassStrategy.cs" />
     <Compile Include="Component\IFacetFactorySet.cs" />
+    <Compile Include="Component\II18nManager.cs" />
     <Compile Include="Component\IMetamodel.cs" />
     <Compile Include="Component\IMetamodelManager.cs" />
     <Compile Include="Component\IMetamodelBuilder.cs" />

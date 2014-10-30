@@ -7,43 +7,47 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
+using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.I18n {
-    public class DescribedAsFacetDynamicWrapI18n : FacetAbstract, IDescribedAsFacet {
-        private readonly IDescribedAsFacet describedAsFacet;
+    public class NamedFacetDynamicWrapI18n : FacetAbstract, INamedFacet {
         private readonly IIdentifier identifier;
         private readonly int index;
         private readonly II18nManager manager;
+        private readonly INamedFacet namedFacet;
 
 
-        public DescribedAsFacetDynamicWrapI18n(II18nManager manager, ISpecification holder, IIdentifier identifier, IDescribedAsFacet describedAsFacet, int index = -1)
+        public NamedFacetDynamicWrapI18n(II18nManager manager, ISpecification holder, IIdentifier identifier, INamedFacet namedFacet, int index = -1)
             : base(Type, holder) {
             this.manager = manager;
             this.identifier = identifier;
-            this.describedAsFacet = describedAsFacet;
+            this.namedFacet = namedFacet;
+
             this.index = index;
         }
 
         public static Type Type {
-            get { return typeof (IDescribedAsFacet); }
+            get { return typeof (INamedFacet); }
         }
 
-        #region IDescribedAsFacet Members
+        #region INamedFacet Members
 
         public string Value {
             get {
                 if (index >= 0) {
-                    return manager.GetParameterDescription(identifier, index, null) ?? describedAsFacet.Value;
+                    return manager.GetParameterName(identifier, index, null) ?? namedFacet.Value ?? NameUtils.NaturalName(identifier.MemberName);
                 }
-                return manager.GetDescription(identifier, null) ?? describedAsFacet.Value;
+                return manager.GetName(identifier, null) ?? namedFacet.Value ?? NameUtils.NaturalName(identifier.MemberName);
             }
         }
 
         #endregion
     }
+
 
     // Copyright (c) Naked Objects Group Ltd.
 }

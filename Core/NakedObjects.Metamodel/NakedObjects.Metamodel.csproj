@@ -94,6 +94,10 @@
     <Compile Include="Component\Metamodel.cs" />
     <Compile Include="Facet\ValueFacetAbstract.cs" />
     <Compile Include="Facet\ValueFacetUsingSemanticsProvider.cs" />
+    <Compile Include="I18n\DescribedAsFacetDynamicWrapI18n.cs" />
+    <Compile Include="I18n\DescribedAsFacetWrapI18n.cs" />
+    <Compile Include="I18n\NamedFacetDynamicWrapI18n.cs" />
+    <Compile Include="I18n\NamedFacetWrapI18n.cs" />
     <Compile Include="SpecImmutable\ObjectSpecImmutable.cs" />
     <Compile Include="Facet\RangeFacet.cs">
       <SubType>Code</SubType>

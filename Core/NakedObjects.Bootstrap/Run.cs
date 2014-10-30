@@ -8,7 +8,6 @@ using Common.Logging;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
 using NakedObjects.Reflect.Audit;
-using NakedObjects.Reflect.DotNet.Reflect;
 using NakedObjects.Reflect.I18n.Resourcebundle;
 using NakedObjects.Reflect.Security;
 

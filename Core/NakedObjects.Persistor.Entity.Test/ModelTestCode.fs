@@ -26,7 +26,7 @@ let ModelConfig =
     pc.DefaultMergeOption <- MergeOption.AppendOnly
     pc
 
-let injector = new DotNetDomainObjectContainerInjector()
+let injector = new DomainObjectContainerInjector()
 
 injector.set_Framework (new Mock<INakedObjectsFramework>()).Object
 injector.set_ServiceTypes [| typeof<NakedObjects.Services.SimpleRepository<Person>> |]
