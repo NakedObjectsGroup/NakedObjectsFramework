@@ -113,7 +113,6 @@
   <ItemGroup>
     <Compile Include="annotations\ObjectAnnotatedAsImmutable.cs" />
     <Compile Include="annotations\ObjectWithAnnotations.cs" />
-    <Compile Include="dotnet\ValueSemanticsProviderAbstractTestCase.cs" />
     <Compile Include="FacetFactory\TypeMarkerFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\TableViewAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\DefaultedNamingFacetFactoryTest.cs" />
@@ -197,18 +196,6 @@
     <Compile Include="reflect\TestObjectWithCollection.cs" />
     <Compile Include="spec\OneToManyAssociationTest.cs" />
     <Compile Include="test\dom\TestDomainObject.cs" />
-    <Compile Include="value\BoolValueSemanticsProviderTest.cs" />
-    <Compile Include="value\CharValueSemanticsProviderTest.cs" />
-    <Compile Include="value\ByteArrayValueSemanticsProviderTest.cs" />
-    <Compile Include="value\EnumValueSemanticsProviderTest.cs" />
-    <Compile Include="value\SbyteValueSemanticsProviderTest.cs" />
-    <Compile Include="value\ShortValueSemanticsProviderTest.cs" />
-    <Compile Include="value\LongValueSemanticsProviderTest.cs" />
-    <Compile Include="value\IntValueSemanticsProviderTest.cs" />
-    <Compile Include="value\FloatValueSemanticsProviderTest.cs" />
-    <Compile Include="value\DoubleValueSemanticsProviderTest.cs" />
-    <Compile Include="value\DateTimeValueSemanticsProviderTest.cs" />
-    <Compile Include="value\TimeValueSemanticsProviderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj">
@@ -240,7 +227,10 @@
       <Name>NakedObjects.Xat</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="dotnet\" />
+    <Folder Include="value\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

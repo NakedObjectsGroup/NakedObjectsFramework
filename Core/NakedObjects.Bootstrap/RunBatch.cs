@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Linq;
-using System.Threading;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Security;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Core.Security;
-using NakedObjects.Reflect.DotNet;
 
 namespace NakedObjects.Boot {
     public class BatchClient : INakedObjectsClient {

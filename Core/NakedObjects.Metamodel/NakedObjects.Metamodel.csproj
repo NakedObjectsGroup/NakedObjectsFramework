@@ -61,6 +61,8 @@
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -69,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapter\IdentifierImpl.cs" />
+    <Compile Include="Meta\ImmutableInMemorySpecCache.cs" />
     <Compile Include="Facet\AbstractFacet.cs" />
     <Compile Include="Facet\ActionChoicesFacetViaMethod.cs" />
     <Compile Include="Facet\ActionDefaultsFacetAnnotation.cs" />
@@ -93,7 +96,7 @@
     <Compile Include="Facet\PropertyClearFacetWrapTransaction.cs" />
     <Compile Include="Facet\ProxySetterFacetWrapTransaction.cs" />
     <Compile Include="Facet\ValidateObjectFacet.cs" />
-    <Compile Include="Component\Metamodel.cs" />
+    <Compile Include="Meta\Metamodel.cs" />
     <Compile Include="Facet\ValueFacetAbstract.cs" />
     <Compile Include="Facet\ValueFacetUsingSemanticsProvider.cs" />
     <Compile Include="I18n\DescribedAsFacetDynamicWrapI18n.cs" />
@@ -105,11 +108,33 @@
     <Compile Include="Menus\MenuAction.cs" />
     <Compile Include="Menus\MenuFactory.cs" />
     <Compile Include="Menus\TypedMenu.cs" />
+    <Compile Include="SemanticsProvider\ArrayValueSematicsProvider.cs" />
+    <Compile Include="SemanticsProvider\BoolValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\ByteValueSematicsProvider.cs" />
+    <Compile Include="SemanticsProvider\CharValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\ColorValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\DateTimeValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\DecimalValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\DoubleValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\EnumValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\FileAttachmentValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\FloatValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\GuidValueSematicsProvider.cs" />
+    <Compile Include="SemanticsProvider\ImageValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\IntValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\LongValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\SbyteValueSematicsProvider.cs" />
+    <Compile Include="SemanticsProvider\ShortValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\StringValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\TimeValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\UIntValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\ULongValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\UShortValueSemanticsProvider.cs" />
+    <Compile Include="SemanticsProvider\ValueSemanticsProviderAbstract.cs" />
     <Compile Include="SpecImmutable\ObjectSpecImmutable.cs" />
     <Compile Include="Facet\RangeFacet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utils\DefaultsProviderUtils.cs" />
     <Compile Include="Facet\DeletedCallbackFacetNull.cs" />
     <Compile Include="Facet\DeletedCallbackFacetViaMethod.cs" />
     <Compile Include="Facet\DeletingCallbackFacetNull.cs" />
@@ -124,7 +149,6 @@
     <Compile Include="Facet\GenericIQueryableFacet.cs" />
     <Compile Include="Facet\EagerlyFacet.cs" />
     <Compile Include="Facet\EncodeableFacetUsingEncoderDecoder.cs" />
-    <Compile Include="Utils\EncoderDecoderUtils.cs" />
     <Compile Include="Facet\EnumFacet.cs" />
     <Compile Include="Facet\ExecutedFacetAnnotation.cs" />
     <Compile Include="Facet\ExecutedControlMethodFacet.cs" />
@@ -147,7 +171,6 @@
     <Compile Include="Facet\MaxLengthFacetAnnotation.cs" />
     <Compile Include="Facet\MemberOrderFacet.cs" />
     <Compile Include="Facet\MultiLineFacetAnnotation.cs" />
-    <Compile Include="Utils\NakedObjectValidationMethod.cs" />
     <Compile Include="Facet\NamedFacetAnnotation.cs" />
     <Compile Include="Facet\NamedFacetInferred.cs" />
     <Compile Include="Facet\NotCountedFacet.cs" />
@@ -159,7 +182,6 @@
     <Compile Include="Facet\OptionalFacet.cs" />
     <Compile Include="Facet\PageSizeFacetAnnotation.cs" />
     <Compile Include="Facet\ParseableFacetUsingParser.cs" />
-    <Compile Include="Utils\ParserUtils.cs" />
     <Compile Include="Facet\PasswordFacet.cs" />
     <Compile Include="Facet\PersistedCallbackFacetNull.cs" />
     <Compile Include="Facet\PersistedCallbackFacetViaMethod.cs" />
@@ -213,7 +235,6 @@
     <Compile Include="Facet\HideForSessionFacetAbstract.cs" />
     <Compile Include="Facet\HideForSessionFacetNone.cs" />
     <Compile Include="Facet\MarkerFacetAbstract.cs" />
-    <Compile Include="Utils\MethodRemoverConstants.cs" />
     <Compile Include="Facet\MultipleValueFacetAbstract.cs" />
     <Compile Include="Spec\NamedAndDescribedSpecification.cs" />
     <Compile Include="Facet\DescribedAsFacetAbstract.cs" />
@@ -258,7 +279,6 @@
     <Compile Include="Facet\EqualByContentFacet.cs" />
     <Compile Include="Facet\ImmutableFacetViaValueSemantics.cs" />
     <Compile Include="Facet\ValidateProgrammaticUpdatesFacetAnnotation.cs" />
-    <Compile Include="Utils\ValueSemanticsProviderUtils.cs" />
     <Compile Include="Facet\ViewModelEditFacetConvention.cs" />
     <Compile Include="Facet\ViewModelFacetAbstract.cs" />
     <Compile Include="Facet\PropertyDefaultFacetAbstract.cs" />

@@ -8,10 +8,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Meta.Utils;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     public class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
@@ -40,5 +41,22 @@ namespace NakedObjects.Meta.Facet {
         }
 
         #endregion
+
+
+        public class NakedObjectValidationMethod {
+            private readonly MethodInfo method;
+
+            public NakedObjectValidationMethod(MethodInfo method) {
+                this.method = method;
+            }
+
+            public string[] ParameterNames {
+                get { return method.GetParameters().Select(p => p.Name.ToLower()).ToArray(); }
+            }
+
+            public string Execute(INakedObject obj, INakedObject[] parameters) {
+                return InvokeUtils.Invoke(method, obj, parameters) as string;
+            }
+        }
     }
 }
