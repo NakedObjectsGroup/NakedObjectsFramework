@@ -35,6 +35,8 @@ using NakedObjects.Surface.Nof4.Implementation;
 using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Web.Mvc.Helpers;
 using NakedObjects.Web.Mvc.Models;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Meta.Menus;
 
 namespace NakedObjects.Mvc.App.App_Start {
     /// <summary>
@@ -50,7 +52,7 @@ namespace NakedObjects.Mvc.App.App_Start {
 
         private static Type[] Types {
             get {
-                return new Type[] { typeof(EntityCollection<object>), typeof(ObjectQuery<object>),typeof(ActionResultModelQ<object>) };
+                return new Type[] { typeof(EntityCollection<object>), typeof(ObjectQuery<object>), typeof(ActionResultModelQ<object>) };
             }
         }
 
@@ -94,14 +96,15 @@ namespace NakedObjects.Mvc.App.App_Start {
         private static EntityObjectStoreConfiguration EntityObjectStore() {
             var config = new EntityObjectStoreConfiguration();
             config.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
-            config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
+            config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
             return config;
         }
 
         private static Type[] AdventureWorksTypes() {
             var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-            return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
+            return allTypes.Where(t => t.BaseType == typeof(AWDomainObject) && !t.IsAbstract).ToArray();
         }
+
 
 
         #endregion
@@ -122,6 +125,7 @@ namespace NakedObjects.Mvc.App.App_Start {
 
             container.RegisterType<IServicesConfiguration, ServicesConfiguration>(new ContainerControlledLifetimeManager());
             container.RegisterInstance<IEntityObjectStoreConfiguration>(EntityObjectStore(), new ContainerControlledLifetimeManager());
+            container.RegisterType<IMenuBuilder, MyMenuBuilder>(new ContainerControlledLifetimeManager());
 
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
@@ -130,6 +134,7 @@ namespace NakedObjects.Mvc.App.App_Start {
             container.RegisterType<IReflector, Reflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodelBuilder, Metamodel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMenuFactory, MenuFactory>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerRequestLifetimeManager(), new InjectionConstructor(10));
@@ -180,5 +185,20 @@ namespace NakedObjects.Mvc.App.App_Start {
         }
 
         #endregion
+    }
+
+    public class MyMenuBuilder : IMenuBuilder {
+        private IMenuFactory factory;
+
+        public MyMenuBuilder(IMenuFactory factory) {
+            this.factory = factory;
+        }
+
+        public IMenu[] DefineMainMenus() {
+            var menu1 = factory.NewMenu<CustomerRepository>(true);
+            var menu2 = factory.NewMenu<OrderRepository>(true);
+            var menu3 = factory.NewMenu<ProductRepository>(true);
+            return new IMenu[] { menu1, menu2, menu3 };
+        }
     }
 }

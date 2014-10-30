@@ -9,10 +9,13 @@ using System.Collections.Immutable;
 using System.Linq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
+using System.Collections.Generic;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Reflect.Spec {
     public class ImmutableInMemorySpecCache : ISpecificationCache {
         private ImmutableDictionary<string, IObjectSpecImmutable> specs = ImmutableDictionary<string, IObjectSpecImmutable>.Empty;
+        private ImmutableList<IMenu> mainMenus = ImmutableList<IMenu>.Empty;
 
         #region ISpecificationCache Members
 
@@ -32,6 +35,13 @@ namespace NakedObjects.Reflect.Spec {
             return specs.Values.ToArray();
         }
 
+        public void Cache(IMenu mainMenu) {
+            mainMenus = mainMenus.Add(mainMenu);
+        }
+
+        public IMenu[] AllMainMenus() {
+            return mainMenus.ToArray();
+        }
         #endregion
     }
 

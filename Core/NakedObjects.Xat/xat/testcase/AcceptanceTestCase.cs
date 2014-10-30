@@ -226,7 +226,7 @@ namespace NakedObjects.Xat {
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
 
             container.RegisterType<IReflector, Reflector>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodel, Meta.Metamodel>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodelBuilder, Metamodel>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPrincipal>(new InjectionFactory(c => TestPrincipal));

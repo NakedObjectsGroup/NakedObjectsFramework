@@ -52,7 +52,7 @@ namespace NakedObjects.Reflect.Audit {
             private readonly AuditManager auditManager;
             private readonly IMetamodel metamodel;
             private readonly IActionInvocationFacet underlyingFacet;
-            private bool? isQueryOnly;
+            private bool? isQueryOnly = false;
 
             public AuditActionInvocationFacet(IActionInvocationFacet underlyingFacet, AuditManager auditManager, IMetamodel metamodel)
                 : base(underlyingFacet.Specification) {

@@ -100,6 +100,11 @@
     <Compile Include="I18n\DescribedAsFacetWrapI18n.cs" />
     <Compile Include="I18n\NamedFacetDynamicWrapI18n.cs" />
     <Compile Include="I18n\NamedFacetWrapI18n.cs" />
+    <Compile Include="Menus\IMenuItem.cs" />
+    <Compile Include="Menus\Menu.cs" />
+    <Compile Include="Menus\MenuAction.cs" />
+    <Compile Include="Menus\MenuFactory.cs" />
+    <Compile Include="Menus\TypedMenu.cs" />
     <Compile Include="SpecImmutable\ObjectSpecImmutable.cs" />
     <Compile Include="Facet\RangeFacet.cs">
       <SubType>Code</SubType>

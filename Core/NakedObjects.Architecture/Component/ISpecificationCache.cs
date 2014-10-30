@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Component {
@@ -16,6 +17,10 @@ namespace NakedObjects.Architecture.Component {
         IObjectSpecImmutable[] AllSpecifications();
 
         void Cache(string key, IObjectSpecImmutable spec);
+
+        void Cache(IMenu mainMenu);
+
+        IMenu[] AllMainMenus();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

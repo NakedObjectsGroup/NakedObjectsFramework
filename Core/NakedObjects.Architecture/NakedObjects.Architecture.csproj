@@ -212,6 +212,10 @@
     <Compile Include="Facet\IDisableForSessionFacet.cs" />
     <Compile Include="Facet\IFacet.cs" />
     <Compile Include="FacetFactory\IFacetFactory.cs" />
+    <Compile Include="Menu\IMenu.cs" />
+    <Compile Include="Menu\IMenuBuilder.cs" />
+    <Compile Include="Menu\IMenuFactory.cs" />
+    <Compile Include="Menu\ITypedMenu.cs" />
     <Compile Include="Reflect\IIntrospector.cs" />
     <Compile Include="SpecImmutable\IObjectSpecBuilder.cs" />
     <Compile Include="Spec\ISpecification.cs" />

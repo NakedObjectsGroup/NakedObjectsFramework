@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Util;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Meta {
     public class Metamodel : IMetamodelBuilder {
@@ -54,6 +55,9 @@ namespace NakedObjects.Meta {
             cache.Cache(classStrategy.GetKeyForType(type), spec);
         }
 
+        public void AddMainMenu(IMenu menu) {
+            cache.Cache(menu);
+        }
         #endregion
 
         private IObjectSpecImmutable GetSpecificationFromCache(Type type) {
@@ -62,5 +66,8 @@ namespace NakedObjects.Meta {
 
             return cache.GetSpecification(key);
         }
+
+
+
     }
 }

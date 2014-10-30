@@ -21,6 +21,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflect.Spec;
 using NakedObjects.Util;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Reflect {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
@@ -33,12 +34,20 @@ namespace NakedObjects.Reflect {
         private readonly IFacetFactorySet facetFactorySet;
         private readonly IMetamodelBuilder metamodel;
         private readonly IServicesConfiguration servicesConfig;
+        private readonly IMenuBuilder menuBuilder;
 
         static Reflector() {
             Log = LogManager.GetLogger(typeof (Reflector));
         }
 
-        public Reflector(IClassStrategy classStrategy, IFacetFactorySet facetFactorySet, FacetDecoratorSet facetDecoratorSet, IMetamodelBuilder metamodel, IReflectorConfiguration config, IServicesConfiguration servicesConfig) {
+        public Reflector(
+            IClassStrategy classStrategy, 
+            IFacetFactorySet facetFactorySet, 
+            FacetDecoratorSet facetDecoratorSet, 
+            IMetamodelBuilder metamodel, 
+            IReflectorConfiguration config, 
+            IServicesConfiguration servicesConfig,
+            IMenuBuilder menuBuilder) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(facetFactorySet);
             Assert.AssertNotNull(facetDecoratorSet);
@@ -48,7 +57,7 @@ namespace NakedObjects.Reflect {
             this.metamodel = metamodel;
             this.config = config;
             this.servicesConfig = servicesConfig;
-
+            this.menuBuilder = menuBuilder;
             facetFactorySet.Init(this);
         }
 
@@ -111,13 +120,15 @@ namespace NakedObjects.Reflect {
             InstallSpecifications(services, true);
             InstallSpecifications(nonServices, false);
             PopulateContributedActions(s1.Union(s2).ToArray());
+            //Main menus installed once rest of metamodel has been built:
+            InstallMainMenus();
 
             servicesConfig.AddMenuServices(s1.Select(Activator.CreateInstance).ToArray());
             servicesConfig.AddContributedActions(s2.Select(Activator.CreateInstance).ToArray());
             servicesConfig.AddMenuServices(s3.Select(Activator.CreateInstance).ToArray());
         }
 
-        #endregion
+       #endregion
 
         private void InstallSpecifications(Type[] types, bool isService) {
             types.ForEach(type => InstallSpecification(type, isService));
@@ -142,6 +153,13 @@ namespace NakedObjects.Reflect {
 
             PopulateContributedActions(spec, services);
             PopulateRelatedActions(spec, services);
+        }
+
+        private void InstallMainMenus() {
+            if (menuBuilder == null) return; //TODO: Remove temporary guard, added to keep tests running without an implementation
+            foreach (IMenu menu in menuBuilder.DefineMainMenus()) {
+                metamodel.AddMainMenu(menu);
+            }
         }
 
         private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services) {

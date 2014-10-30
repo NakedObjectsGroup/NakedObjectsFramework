@@ -7,9 +7,12 @@
 
 using System;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Architecture.Component {
     public interface IMetamodelBuilder : IMetamodel {
         void Add(Type type, IObjectSpecBuilder spec);
+
+        void AddMainMenu(IMenu menu);
     }
 }
