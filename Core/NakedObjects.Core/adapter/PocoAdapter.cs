@@ -11,9 +11,9 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Architecture.ResolveStateMachine;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Persist;
+using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 

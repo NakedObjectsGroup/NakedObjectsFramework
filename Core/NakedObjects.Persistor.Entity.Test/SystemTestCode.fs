@@ -11,6 +11,7 @@ open NakedObjects.EntityObjectStore
 open NakedObjects.Core.Persist
 open NakedObjects.Architecture.Resolve
 open NakedObjects.Architecture.Adapter
+open NakedObjects.Core.Resolve
 
 let getNo (obj : obj) (ctx : INakedObjectsFramework) = 
     match obj with

@@ -345,9 +345,9 @@
     <Compile Include="Spec\IMemberSpec.cs" />
     <Compile Include="Spec\IOneToManyFeatureSpec.cs" />
     <Compile Include="Exception\ReflectionException.cs" />
-    <Compile Include="ResolveStateMachine\IResolveEvent.cs" />
-    <Compile Include="ResolveStateMachine\IResolveState.cs" />
-    <Compile Include="ResolveStateMachine\IResolveStateMachine.cs" />
+    <Compile Include="Resolve\IResolveEvent.cs" />
+    <Compile Include="Resolve\IResolveState.cs" />
+    <Compile Include="Resolve\IResolveStateMachine.cs" />
     <Compile Include="Component\IAuthorisationManager.cs" />
     <Compile Include="Spec\ISpecificationBuilder.cs" />
     <Compile Include="Transaction\ICreateObjectCommand.cs" />

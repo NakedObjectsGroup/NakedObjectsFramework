@@ -9,12 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.ResolveStateMachine;
+using NakedObjects.Architecture.Resolve;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Architecture.Resolve {
+namespace NakedObjects.Core.Resolve {
     public class ResolveStateMachine : IResolveStateMachine {
         #region Delegates
 

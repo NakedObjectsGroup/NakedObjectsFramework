@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Core.Resolve;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.Facet {

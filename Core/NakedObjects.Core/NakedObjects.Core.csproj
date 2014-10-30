@@ -197,11 +197,11 @@
     <Compile Include="reflect\MemberSpecAbstract.cs" />
     <Compile Include="reflect\NakedObjectActionContext.cs" />
     <Compile Include="reflect\Veto.cs" />
-    <Compile Include="ResolveStateMachine\Events.cs" />
-    <Compile Include="ResolveStateMachine\ResolveStateMachine.cs" />
-    <Compile Include="ResolveStateMachine\StateHelperUtils.cs" />
-    <Compile Include="ResolveStateMachine\States.cs" />
-    <Compile Include="ResolveStateMachine\TransientReferenceException.cs" />
+    <Compile Include="Resolve\Events.cs" />
+    <Compile Include="Resolve\ResolveStateMachine.cs" />
+    <Compile Include="Resolve\StateHelperUtils.cs" />
+    <Compile Include="Resolve\States.cs" />
+    <Compile Include="Resolve\TransientReferenceException.cs" />
     <Compile Include="security\IAuthenticatorInstaller.cs" />
     <Compile Include="security\SimpleSession.cs" />
     <Compile Include="service\ServiceUtils.cs" />

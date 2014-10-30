@@ -51,6 +51,7 @@
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.Domain\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.ModelFirst\*.csproj"/>   
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test\*.fsproj"/>
+    <FWTFiles Include="$(CorePath)\NakedObjects.Metamodel.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Reflector.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Snapshot.Xml.Test\*.fsproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Snapshot.Xml.Test.Data\*.fsproj"/>
@@ -156,6 +157,7 @@
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Test.dll"'/>
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll"'/>
+    <Exec Command='nunit-console "$(CorePath)\NakedObjects.Metamodel.Test\bin\%(Configuration.Identity)\NakedObjects.Metamodel.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Reflector.Test\bin\%(Configuration.Identity)\NakedObjects.Reflector.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Snapshot.Xml.Test\bin\%(Configuration.Identity)\NakedObjects.Snapshot.Xml.Test.dll"'/>
 

@@ -17,6 +17,7 @@ open System.Collections.Generic
 open System.Reflection
 open Moq
 open NakedObjects.Architecture.Facet
+open NakedObjects.Core.Resolve
 
 let injectedObjects = new List<Object>()
 let mockInjector = new Mock<IContainerInjector>()

@@ -6,7 +6,5 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Architecture.Resolve {
-    public class TransientReferenceException : NakedObjectApplicationException {
-        public TransientReferenceException(string msg) : base(msg) {}
-    }
+    public interface IResolveEvent {}
 }

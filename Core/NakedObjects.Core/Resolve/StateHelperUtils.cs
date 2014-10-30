@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.ResolveStateMachine;
+using NakedObjects.Architecture.Resolve;
 
-namespace NakedObjects.Architecture.Resolve {
+namespace NakedObjects.Core.Resolve {
     public static class StateHelperUtils {
         public static bool IsGhost(this IResolveStateMachine stateMachine) {
             return stateMachine.CurrentState is ResolveStateMachine.GhostState;

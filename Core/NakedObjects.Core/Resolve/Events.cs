@@ -5,9 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Architecture.ResolveStateMachine;
+using NakedObjects.Architecture.Resolve;
 
-namespace NakedObjects.Architecture.Resolve {
+namespace NakedObjects.Core.Resolve {
     public static class Events {
         public static IResolveEvent DestroyEvent;
         public static IResolveEvent EndPartResolvingEvent;

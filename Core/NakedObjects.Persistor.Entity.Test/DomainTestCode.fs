@@ -10,6 +10,7 @@ open NUnit.Framework
 open NakedObjects.EntityObjectStore
 open AdventureWorksModel
 open NakedObjects.Architecture.Resolve
+open NakedObjects.Core.Resolve
 open System
 open NakedObjects.Architecture
 open NakedObjects.Architecture.Persist

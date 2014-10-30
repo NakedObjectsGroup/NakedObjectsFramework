@@ -8,6 +8,7 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Resolve;
 
 namespace NakedObjects.Meta.Facet {
     public class ImmutableFacetImpl : ImmutableFacetAbstract {
