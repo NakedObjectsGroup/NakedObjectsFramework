@@ -18,11 +18,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
     public class TimeValueSemanticsProvider : ValueSemanticsProviderAbstract<TimeSpan>, ITimeValueFacet {
         private const bool EqualByContent = false;
         private const bool Immutable = false;
-        private const int typicalLength = 6;
-        private static readonly TimeSpan defaultValue = new TimeSpan();
+        private const int TypicalLengthConst = 6;
+        private static readonly TimeSpan DefaultValueConst = new TimeSpan();
 
         public TimeValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, typicalLength, Immutable, EqualByContent, defaultValue, spec) {}
+            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
         public static Type Type {
             get { return typeof (ITimeValueFacet); }

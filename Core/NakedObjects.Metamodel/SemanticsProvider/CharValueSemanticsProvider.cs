@@ -17,10 +17,10 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     public class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<char>, IPropertyDefaultFacet {
-        private const char defaultValue = ' ';
-        private const bool equalByContent = true;
-        private const bool immutable = true;
-        private const int typicalLength = 2;
+        private const char DefaultValueConst = ' ';
+        private const bool EqualByContent = true;
+        private const bool Immutable = true;
+        private const int TypicalLengthConst = 2;
 
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
             : this(spec, null) {}
 
         public CharValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) {}
+            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
         public static Type Type {
             get { return typeof (ICharValueFacet); }
@@ -43,7 +43,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         #region IPropertyDefaultFacet Members
 
         public object GetDefault(INakedObject inObject) {
-            return defaultValue;
+            return DefaultValueConst;
         }
 
         #endregion

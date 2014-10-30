@@ -16,9 +16,9 @@ using NakedObjects.Value;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     public class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract<Image>, IFromStream {
-        private const bool equalByContent = true;
-        private const bool immutable = true;
-        private const int typicalLength = 0;
+        private const bool EqualByContent = true;
+        private const bool Immutable = true;
+        private const int TypicalLengthConst = 0;
         private static readonly ILog Log = LogManager.GetLogger(typeof (ImageValueSemanticsProvider));
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
 
         public ImageValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, null, spec) {}
+            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, null, spec) {}
 
         public static Type Type {
             get { return typeof (IImageValueFacet); }

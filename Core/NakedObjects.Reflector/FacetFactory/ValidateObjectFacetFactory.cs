@@ -50,7 +50,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Log.DebugFormat("Looking for validate methods for {0}", type);
 
-            var methodPeers = new List<NakedObjectValidationMethod>();
+            var methodPeers = new List<ValidateObjectFacet.NakedObjectValidationMethod>();
             var methods = FindMethods(type, MethodType.Object, PrefixesAndRecognisedMethods.ValidatePrefix, typeof (string));
 
             if (methods.Any()) {
@@ -59,7 +59,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     if (parameters.Length >= 2) {
                         bool parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => name[0].ToString().ToUpper() + name.Substring(1)).All(p => ContainsField(p, type));
                         if (parametersMatch) {
-                            methodPeers.Add(new NakedObjectValidationMethod(method));
+                            methodPeers.Add(new ValidateObjectFacet.NakedObjectValidationMethod(method));
                             methodRemover.RemoveMethod(method);
                         }
                     }

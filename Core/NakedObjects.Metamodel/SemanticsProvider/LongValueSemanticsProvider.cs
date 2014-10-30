@@ -17,10 +17,10 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     public class LongValueSemanticsProvider : ValueSemanticsProviderAbstract<long>, IPropertyDefaultFacet {
-        private const bool equalByContent = true;
-        private const bool immutable = true;
-        private const int typicalLength = 20;
-        private const long defaultValue = 0;
+        private const bool EqualByContent = true;
+        private const bool Immutable = true;
+        private const int TypicalLengthConst = 20;
+        private const long DefaultValueConst = 0;
 
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
@@ -29,7 +29,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
             : this(spec, null) {}
 
         public LongValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) {}
+            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
         public static Type Type {
             get { return typeof (ILongValueFacet); }
@@ -42,7 +42,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         #region IPropertyDefaultFacet Members
 
         public object GetDefault(INakedObject inObject) {
-            return defaultValue;
+            return DefaultValueConst;
         }
 
         #endregion

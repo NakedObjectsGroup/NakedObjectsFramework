@@ -17,10 +17,10 @@ using NakedObjects.Capabilities;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     public class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract<Color>, IPropertyDefaultFacet {
-        private const bool equalByContent = true;
-        private const bool immutable = true;
-        private const int typicalLength = 4;
-        private static readonly Color defaultValue = Color.Black;
+        private const bool EqualByContent = true;
+        private const bool Immutable = true;
+        private const int TypicalLengthConst = 4;
+        private static readonly Color DefaultValueConst = Color.Black;
 
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
@@ -29,7 +29,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
             : this(spec, null) {}
 
         public ColorValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) {}
+            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
         public static Type Type {
             get { return typeof (IColorValueFacet); }
@@ -42,7 +42,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         #region IPropertyDefaultFacet Members
 
         public object GetDefault(INakedObject inObject) {
-            return defaultValue;
+            return DefaultValueConst;
         }
 
         #endregion

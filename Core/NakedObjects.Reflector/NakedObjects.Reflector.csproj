@@ -216,6 +216,7 @@
     <Compile Include="Reflect\DeweyOrderSet.cs" />
     <Compile Include="Reflect\Introspector.cs" />
     <Compile Include="Reflect\IOrderSet.cs" />
+    <Compile Include="Reflect\MethodRemoverConstants.cs" />
     <Compile Include="Reflect\Reflector.cs" />
     <Compile Include="Installer\DotNetReflectorInstaller.cs" />
     <Compile Include="Reflect\MemberIdentifierComparator.cs" />

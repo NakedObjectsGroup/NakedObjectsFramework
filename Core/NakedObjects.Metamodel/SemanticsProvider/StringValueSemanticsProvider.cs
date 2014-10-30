@@ -16,10 +16,10 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     public class StringValueSemanticsProvider : ValueSemanticsProviderAbstract<string>, IStringValueFacet {
-        private const string defaultValue = null;
-        private const bool equalByContent = true;
-        private const bool immutable = true;
-        private const int typicalLength = 25;
+        private const string DefaultValueConst = null;
+        private const bool EqualByContent = true;
+        private const bool Immutable = true;
+        private const int TypicalLengthConst = 25;
 
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
@@ -28,7 +28,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
             : this(spec, null) {}
 
         public StringValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, typicalLength, immutable, equalByContent, defaultValue, spec) {}
+            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
         public static Type Type {
             get { return typeof (IStringValueFacet); }

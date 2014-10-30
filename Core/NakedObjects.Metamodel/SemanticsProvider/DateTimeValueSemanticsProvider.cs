@@ -18,8 +18,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
     public class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstract<DateTime>, IDateValueFacet {
         private const bool EqualByContent = false;
         private const bool Immutable = false;
-        private const int typicalLength = 18;
-        private static readonly DateTime defaultValue = new DateTime();
+        private const int TypicalLengthConst = 18;
+        private static readonly DateTime DefaultValueConst = new DateTime();
 
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
@@ -28,7 +28,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
             : this(spec, null) {}
 
         public DateTimeValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
-            : base(Type, holder, AdaptedType, typicalLength, Immutable, EqualByContent, defaultValue, spec) {}
+            : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
         // inject for testing 
         public static DateTime? TestDateTime { get; set; }
