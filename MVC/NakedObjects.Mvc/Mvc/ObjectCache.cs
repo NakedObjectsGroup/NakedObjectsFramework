@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Context;
+using NakedObjects.Core.Resolve;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc {

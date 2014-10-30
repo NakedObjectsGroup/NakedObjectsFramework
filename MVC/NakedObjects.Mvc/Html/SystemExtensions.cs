@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Xml.Linq;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Core.Resolve;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Models;
 

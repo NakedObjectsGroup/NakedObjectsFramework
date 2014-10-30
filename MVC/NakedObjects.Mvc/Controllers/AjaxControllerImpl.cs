@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Persist;
+using NakedObjects.Core.Resolve;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Html;
 

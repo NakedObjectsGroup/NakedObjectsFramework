@@ -4,6 +4,7 @@
 using System.Web;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Core.Resolve;
 using NakedObjects.Web.Mvc.Html;
 
 namespace NakedObjects.Web.Mvc {

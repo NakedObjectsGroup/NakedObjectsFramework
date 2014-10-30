@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
 using NakedObjects.Surface.Interface;
