@@ -8,15 +8,13 @@
 using System;
 using System.Globalization;
 using Moq;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 using NakedObjects.Meta.Spec;
+using NUnit.Framework;
 
-namespace NakedObjects.Reflect.DotNet.Value {
+namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestFixture]
     public class DateTimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<DateTime> {
         #region Setup/Teardown

@@ -9,52 +9,48 @@ using System;
 using System.Globalization;
 using Moq;
 using NakedObjects.Architecture;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 using NakedObjects.Meta.Spec;
+using NUnit.Framework;
 
-namespace NakedObjects.Reflect.DotNet.Value {
+namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestFixture]
-    public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<float> {
+    public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<short> {
         #region Setup/Teardown
 
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-
+            s = 32;
             holder = new Specification();
             var spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(new FloatValueSemanticsProvider(spec, holder));
-
-            floatObj = 32.5F;
+            SetValue(value = new ShortValueSemanticsProvider(spec, holder));
         }
 
         #endregion
 
-        private Single floatObj;
-
         private ISpecification holder;
+        private short s;
+        private ShortValueSemanticsProvider value;
 
         [Test]
         public void TestDecode() {
-            float decoded = GetValue().FromEncodedString("3.042112234E6");
-            Assert.AreEqual(3042112.234f, decoded);
+            long decoded = GetValue().FromEncodedString("30421");
+            Assert.AreEqual(30421, decoded);
         }
 
         [Test]
         public void TestEncode() {
-            string encoded = GetValue().ToEncodedString(0.0000454566f);
-            Assert.AreEqual("4.54566E-05", encoded);
+            string encoded = GetValue().ToEncodedString(21343);
+            Assert.AreEqual("21343", encoded);
         }
 
         [Test]
         public void TestInvalidParse() {
             try {
-                GetValue().ParseTextEntry("one");
+                value.ParseTextEntry("one");
                 Assert.Fail();
             }
             catch (Exception e) {
@@ -64,20 +60,14 @@ namespace NakedObjects.Reflect.DotNet.Value {
 
         [Test]
         public void TestParse() {
-            object newValue = GetValue().ParseTextEntry("120.56");
-            Assert.AreEqual(120.56F, newValue);
-        }
-
-        [Test]
-        public void TestParse2() {
-            object newValue = GetValue().ParseTextEntry("1,20.0");
-            Assert.AreEqual(120F, newValue);
+            object newValue = value.ParseTextEntry("120");
+            Assert.AreEqual((short) 120, newValue);
         }
 
         [Test]
         public new void TestParseEmptyString() {
             try {
-                object newValue = GetValue().ParseTextEntry("");
+                object newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
             }
             catch (Exception) {
@@ -87,20 +77,21 @@ namespace NakedObjects.Reflect.DotNet.Value {
 
         [Test]
         public void TestParseInvariant() {
-            const float c1 = 123.456F;
+            const short c1 = (short) 12346;
             string s1 = c1.ToString(CultureInfo.InvariantCulture);
             object c2 = GetValue().ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
         }
 
         [Test]
-        public void TestTitleOf() {
-            Assert.AreEqual("3500000", GetValue().DisplayTitleOf(3500000.0F));
+        public void TestParseOddlyFormedEntry() {
+            object newValue = value.ParseTextEntry("1,20.0");
+            Assert.AreEqual((short) 120, newValue);
         }
 
         [Test]
-        public void TestValue() {
-            Assert.AreEqual("32.5", GetValue().DisplayTitleOf(floatObj));
+        public void TestTitleString() {
+            Assert.AreEqual("32", value.DisplayTitleOf(s));
         }
     }
 

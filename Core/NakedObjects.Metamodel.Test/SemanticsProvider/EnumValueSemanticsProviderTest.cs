@@ -9,15 +9,13 @@ using System;
 using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 using NakedObjects.Meta.Spec;
+using NUnit.Framework;
 
-namespace NakedObjects.Reflect.DotNet.Value {
+namespace NakedObjects.Meta.Test.SemanticsProvider {
     public enum TestEnum {
         London,
         Paris,
@@ -99,7 +97,9 @@ namespace NakedObjects.Reflect.DotNet.Value {
 
         [Test]
         public void TestDecode() {
-            TestEnum decoded = GetValue().FromEncodedString("NakedObjects.Reflect.DotNet.Value.TestEnum:Paris");
+
+
+            TestEnum decoded = GetValue().FromEncodedString("NakedObjects.Meta.Test.SemanticsProvider.TestEnum:Paris");
             Assert.AreEqual(TestEnum.Paris, decoded);
         }
 
@@ -114,7 +114,7 @@ namespace NakedObjects.Reflect.DotNet.Value {
         [Test]
         public void TestEncode() {
             string encoded = GetValue().ToEncodedString(TestEnum.Paris);
-            Assert.AreEqual("NakedObjects.Reflect.DotNet.Value.TestEnum:Paris", encoded);
+            Assert.AreEqual("NakedObjects.Meta.Test.SemanticsProvider.TestEnum:Paris", encoded);
         }
 
 

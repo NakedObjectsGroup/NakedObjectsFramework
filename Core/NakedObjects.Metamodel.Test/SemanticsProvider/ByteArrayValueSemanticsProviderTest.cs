@@ -11,15 +11,13 @@ using System.Linq;
 using Moq;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 using NakedObjects.Meta.Spec;
+using NUnit.Framework;
 
-namespace NakedObjects.Reflect.DotNet.Value {
+namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestFixture]
     public class ByteArrayValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<byte[]> {
         #region Setup/Teardown

@@ -9,50 +9,40 @@ using System;
 using System.Globalization;
 using Moq;
 using NakedObjects.Architecture;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 using NakedObjects.Meta.Spec;
+using NUnit.Framework;
 
-namespace NakedObjects.Reflect.DotNet.Value {
+namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestFixture]
-    public class ShortValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<short> {
+    public class SbyteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<sbyte> {
         #region Setup/Teardown
 
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            s = 32;
+            byteObj = 102;
             holder = new Specification();
             var spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(value = new ShortValueSemanticsProvider(spec, holder));
+            SetValue(value = new SbyteValueSemanticsProvider(spec, holder));
         }
 
         #endregion
 
+        private sbyte byteObj;
         private ISpecification holder;
-        private short s;
-        private ShortValueSemanticsProvider value;
+        private SbyteValueSemanticsProvider value;
 
-        [Test]
-        public void TestDecode() {
-            long decoded = GetValue().FromEncodedString("30421");
-            Assert.AreEqual(30421, decoded);
+        public void TestParseValidString() {
+            Object parsed = value.ParseTextEntry("21");
+            Assert.AreEqual((sbyte) 21, parsed);
         }
 
-        [Test]
-        public void TestEncode() {
-            string encoded = GetValue().ToEncodedString(21343);
-            Assert.AreEqual("21343", encoded);
-        }
-
-        [Test]
-        public void TestInvalidParse() {
+        public void TestParseInvalidString() {
             try {
-                value.ParseTextEntry("one");
+                value.ParseTextEntry("xs21z4xxx23");
                 Assert.Fail();
             }
             catch (Exception e) {
@@ -60,10 +50,17 @@ namespace NakedObjects.Reflect.DotNet.Value {
             }
         }
 
-        [Test]
-        public void TestParse() {
-            object newValue = value.ParseTextEntry("120");
-            Assert.AreEqual((short) 120, newValue);
+        public void TestTitleOf() {
+            Assert.AreEqual("102", value.DisplayTitleOf(byteObj));
+        }
+
+        public void TestEncode() {
+            Assert.AreEqual("102", value.ToEncodedString(byteObj));
+        }
+
+        public void TestDecode() {
+            Object parsed = value.FromEncodedString("-91");
+            Assert.AreEqual((sbyte) -91, parsed);
         }
 
         [Test]
@@ -79,23 +76,12 @@ namespace NakedObjects.Reflect.DotNet.Value {
 
         [Test]
         public void TestParseInvariant() {
-            const short c1 = (short) 12346;
+            const sbyte c1 = (sbyte) 11;
             string s1 = c1.ToString(CultureInfo.InvariantCulture);
             object c2 = GetValue().ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
         }
 
-        [Test]
-        public void TestParseOddlyFormedEntry() {
-            object newValue = value.ParseTextEntry("1,20.0");
-            Assert.AreEqual((short) 120, newValue);
-        }
-
-        [Test]
-        public void TestTitleString() {
-            Assert.AreEqual("32", value.DisplayTitleOf(s));
-        }
+        // Copyright (c) Naked Objects Group Ltd.
     }
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

@@ -13,12 +13,11 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 using NakedObjects.Meta.Spec;
-using NakedObjects.Core.Util;
-using Assert = NUnit.Framework.Assert; 
+using NUnit.Framework;
+using CollectionUtils = NakedObjects.Core.Util.CollectionUtils;
 
-namespace NakedObjects.Reflect.DotNet.Value {
+namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestFixture]
     public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<bool> {
         #region Setup/Teardown
@@ -102,7 +101,7 @@ namespace NakedObjects.Reflect.DotNet.Value {
 
         [Test]
         public void TestParseInvariant() {
-            new[] {true, false}.ForEach(b => {
+            CollectionUtils.ForEach(new[] {true, false}, b => {
                 string b1 = b.ToString(CultureInfo.InvariantCulture);
                 object b2 = value.ParseInvariant(b1);
                 Assert.AreEqual(b, b2);

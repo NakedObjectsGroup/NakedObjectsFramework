@@ -9,43 +9,59 @@ using System;
 using System.Globalization;
 using Moq;
 using NakedObjects.Architecture;
-using NakedObjects.Architecture.Facets;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NUnit.Framework;
 using NakedObjects.Meta.Spec;
+using NUnit.Framework;
 
-namespace NakedObjects.Reflect.DotNet.Value {
+namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestFixture]
-    public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<char> {
+    public class IntValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<int> {
         #region Setup/Teardown
 
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            character = 'r';
+            integer = 32;
             holder = new Specification();
             var spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(value = new CharValueSemanticsProvider(spec, holder));
+            SetValue(value = new IntValueSemanticsProvider(spec, holder));
         }
 
         #endregion
 
-        private Char character;
         private ISpecification holder;
-        private CharValueSemanticsProvider value;
+        private int integer;
+        private IntValueSemanticsProvider value;
 
         [Test]
         public void TestDecode() {
-            object restore = value.FromEncodedString("Y");
-            Assert.AreEqual('Y', restore);
+            int decoded = GetValue().FromEncodedString("304211223");
+            Assert.AreEqual(304211223, decoded);
         }
 
         [Test]
         public void TestEncode() {
-            Assert.AreEqual("r", value.ToEncodedString(character));
+            string encoded = GetValue().ToEncodedString(213434790);
+            Assert.AreEqual("213434790", encoded);
+        }
+
+        [Test]
+        public void TestInvalidParse() {
+            try {
+                value.ParseTextEntry("one");
+                Assert.Fail();
+            }
+            catch (Exception e) {
+                Assert.IsInstanceOf(typeof (InvalidEntryException), e);
+            }
+        }
+
+        [Test]
+        public void TestParse() {
+            object newValue = value.ParseTextEntry("120");
+            Assert.AreEqual(120, newValue);
         }
 
         [Test]
@@ -61,34 +77,24 @@ namespace NakedObjects.Reflect.DotNet.Value {
 
         [Test]
         public void TestParseInvariant() {
-            const char c1 = 'z';
+            const int c1 = 123;
             string s1 = c1.ToString(CultureInfo.InvariantCulture);
-            object c2 = value.ParseInvariant(s1);
+            object c2 = GetValue().ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
         }
 
         [Test]
-        public void TestParseLongString() {
-            try {
-                value.ParseTextEntry("one");
-                Assert.Fail();
-            }
-            catch (Exception e) {
-                Assert.IsInstanceOf(typeof (InvalidEntryException), e);
-            }
+        public void TestParseOddlyFormedEntry() {
+            object newValue = value.ParseTextEntry("1,20.0");
+            Assert.AreEqual(120, newValue);
         }
 
         [Test]
-        public void TestTitleOf() {
-            Assert.AreEqual("r", value.DisplayTitleOf(character));
+        public void TestTitleString() {
+            Assert.AreEqual("32", value.DisplayTitleOf(integer));
         }
-
-        [Test]
-        public void TestValidParse() {
-            object parse = value.ParseTextEntry("t");
-            Assert.AreEqual('t', parse);
-        }
-
-        // Copyright (c) Naked Objects Group Ltd.
     }
+
+
+    // Copyright (c) Naked Objects Group Ltd.
 }

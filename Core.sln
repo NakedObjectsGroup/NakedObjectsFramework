@@ -61,6 +61,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Reflector.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Metamodel", "Core\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj", "{51310042-B65B-4480-A8C0-11E6B39C7587}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Metamodel.Test", "Core\NakedObjects.Metamodel.Test\NakedObjects.Metamodel.Test.csproj", "{36C4978D-F8E0-48B2-8267-AF8D45978EB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -219,6 +221,12 @@ Global
 		{51310042-B65B-4480-A8C0-11E6B39C7587}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51310042-B65B-4480-A8C0-11E6B39C7587}.Release|Any CPU.Build.0 = Release|Any CPU
 		{51310042-B65B-4480-A8C0-11E6B39C7587}.Release|x86.ActiveCfg = Release|Any CPU
+		{36C4978D-F8E0-48B2-8267-AF8D45978EB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36C4978D-F8E0-48B2-8267-AF8D45978EB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36C4978D-F8E0-48B2-8267-AF8D45978EB1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{36C4978D-F8E0-48B2-8267-AF8D45978EB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36C4978D-F8E0-48B2-8267-AF8D45978EB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36C4978D-F8E0-48B2-8267-AF8D45978EB1}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
