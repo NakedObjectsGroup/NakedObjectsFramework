@@ -87,13 +87,13 @@
     <Compile Include="Facet\ConcurrencyCheckFacet.cs" />
     <Compile Include="Facet\CreatedCallbackFacetNull.cs" />
     <Compile Include="Facet\CreatedCallbackFacetViaMethod.cs" />
-    <Compile Include="Facet\DefaultedFacetAbstract.cs" />
-    <Compile Include="Facet\DefaultedFacetAnnotation.cs" />
     <Compile Include="Facet\DefaultedFacetUsingDefaultsProvider.cs" />
     <Compile Include="Facet\ElementTypeFacet.cs" />
     <Compile Include="Facet\PropertyClearFacetAbstract.cs" />
     <Compile Include="Facet\ValidateObjectFacet.cs" />
     <Compile Include="Component\Metamodel.cs" />
+    <Compile Include="Facet\ValueFacetAbstract.cs" />
+    <Compile Include="Facet\ValueFacetUsingSemanticsProvider.cs" />
     <Compile Include="SpecImmutable\ObjectSpecImmutable.cs" />
     <Compile Include="Facet\RangeFacet.cs">
       <SubType>Code</SubType>
@@ -112,7 +112,6 @@
     <Compile Include="Facet\GenericIEnumerableFacet.cs" />
     <Compile Include="Facet\GenericIQueryableFacet.cs" />
     <Compile Include="Facet\EagerlyFacet.cs" />
-    <Compile Include="Facet\EncodeableFacet.cs" />
     <Compile Include="Facet\EncodeableFacetUsingEncoderDecoder.cs" />
     <Compile Include="Utils\EncoderDecoderUtils.cs" />
     <Compile Include="Facet\EnumFacet.cs" />
@@ -148,8 +147,6 @@
     <Compile Include="Facet\OnUpdatingErrorCallbackFacetViaMethod.cs" />
     <Compile Include="Facet\OptionalFacet.cs" />
     <Compile Include="Facet\PageSizeFacetAnnotation.cs" />
-    <Compile Include="Facet\ParseableFacetAbstract.cs" />
-    <Compile Include="Facet\ParseableFacetAnnotation.cs" />
     <Compile Include="Facet\ParseableFacetUsingParser.cs" />
     <Compile Include="Utils\ParserUtils.cs" />
     <Compile Include="Facet\PasswordFacet.cs" />
@@ -250,9 +247,6 @@
     <Compile Include="Facet\EqualByContentFacet.cs" />
     <Compile Include="Facet\ImmutableFacetViaValueSemantics.cs" />
     <Compile Include="Facet\ValidateProgrammaticUpdatesFacetAnnotation.cs" />
-    <Compile Include="Facet\ValueFacetAbstract.cs" />
-    <Compile Include="Facet\ValueFacetAnnotation.cs" />
-    <Compile Include="Facet\ValueFacetUsingSemanticsProvider.cs" />
     <Compile Include="Utils\ValueSemanticsProviderUtils.cs" />
     <Compile Include="Facet\ViewModelEditFacetConvention.cs" />
     <Compile Include="Facet\ViewModelFacetAbstract.cs" />

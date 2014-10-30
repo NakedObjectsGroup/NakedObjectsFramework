@@ -5,20 +5,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using NakedObjects.Reflect.DotNet.Value;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class FacetFactorySet : IFacetFactorySet {
-
         private readonly object cacheLock = true;
 
         /// <summary>
@@ -182,7 +181,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 if (factoriesByFeatureType == null) {
                     factoriesByFeatureType = new Dictionary<FeatureType, IList<IFacetFactory>>();
                     foreach (IFacetFactory factory in factories) {
-                        foreach (FeatureType featureType in Enum.GetValues(typeof(FeatureType))) {
+                        foreach (FeatureType featureType in Enum.GetValues(typeof (FeatureType))) {
                             if (factory.FeatureTypes.HasFlag(featureType)) {
                                 IList<IFacetFactory> factoryList = GetList(factoriesByFeatureType, featureType);
                                 factoryList.Add(factory);
@@ -240,6 +239,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             RegisterFactory(new RemoveInitMethodFacetFactory(reflector));
             RegisterFactory(new RemoveDynamicProxyMethodsFacetFactory(reflector));
             RegisterFactory(new RemoveEventHandlerMethodsFacetFactory(reflector));
+            RegisterFactory(new TypeMarkerFacetFactory(reflector));
             // must be before any other FacetFactories that install MandatoryFacet.class facets
             RegisterFactory(new MandatoryDefaultFacetFactory(reflector));
             RegisterFactory(new PropertyValidateDefaultFacetFactory(reflector));
@@ -258,11 +258,9 @@ namespace NakedObjects.Reflect.FacetFactory {
             RegisterFactory(new EnumFacetFactory(reflector));
             RegisterFactory(new ActionDefaultAnnotationFacetFactory(reflector));
             RegisterFactory(new PropertyDefaultAnnotationFacetFactory(reflector));
-            RegisterFactory(new DefaultedFacetFactory(reflector));
             RegisterFactory(new DescribedAsAnnotationFacetFactory(reflector));
             RegisterFactory(new DisabledAnnotationFacetFactory(reflector));
             RegisterFactory(new PasswordAnnotationFacetFactory(reflector));
-            RegisterFactory(new EncodeableFacetFactory(reflector));
             RegisterFactory(new ExecutedAnnotationFacetFactory(reflector));
             RegisterFactory(new PotencyAnnotationFacetFactory(reflector));
             RegisterFactory(new PageSizeAnnotationFacetFactory(reflector));
@@ -282,8 +280,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             RegisterFactory(new ProgramPersistableOnlyAnnotationFacetFactory(reflector));
             RegisterFactory(new OptionalAnnotationFacetFactory(reflector));
             RegisterFactory(new RequiredAnnotationFacetFactory(reflector));
-            RegisterFactory(new ParseableFacetFactory(reflector));
             RegisterFactory(new PluralAnnotationFacetFactory(reflector));
+            RegisterFactory(new DefaultNamingFacetFactory(reflector)); // must come after Named and Plural factories
             RegisterFactory(new KeyAnnotationFacetFactory(reflector));
             RegisterFactory(new ConcurrencyCheckAnnotationFacetFactory(reflector));
             RegisterFactory(new ContributedActionAnnotationFacetFactory(reflector));
@@ -321,8 +319,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             RegisterFactory(new ImageValueTypeFacetFactory(reflector));
             RegisterFactory(new ArrayValueTypeFacetFactory<byte>(reflector));
             RegisterFactory(new CollectionFacetFactory(reflector)); // written to not trample over TypeOf if already installed
-            RegisterFactory(new ValueFacetFactory(reflector)); // so we can dogfood the NO applib "value" types
-            
         }
     }
 }

@@ -54,8 +54,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new PropertyValidateFacetNone(holder));
             }
 
-            // TODO this should really only be applied to objects marked as ParseableEntryFacet or ones that are externally processed as such
-            if (holder is IParseableFacet || holder is OneToOneAssociationSpecImmutable) {
+            if (holder is OneToOneAssociationSpecImmutable) {
                 var association = (OneToOneAssociationSpecImmutable) holder;
                 facets.Add(new MaxLengthFacetZero(holder));
                 DefaultTypicalLength(facets, association.Specification, holder);
@@ -86,17 +85,8 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             if (holder is ActionParameterSpecImmutable) {
                 var param = (ActionParameterSpecImmutable) holder;
-
-                INamedFacet namedFacet;
                 string name = method.GetParameters()[paramNum].Name;
-
-                if (name == null) {
-                    namedFacet = new NamedFacetNone(holder);
-                }
-                else {
-                    namedFacet = new NamedFacetInferred(NameUtils.NaturalName(name), holder);
-                }
-
+                var namedFacet = name == null ? (INamedFacet) new NamedFacetNone(holder) : new NamedFacetInferred(NameUtils.NaturalName(name), holder);
                 facets.Add(namedFacet);
                 facets.Add(new DescribedAsFacetNone(holder));
                 facets.Add(new MultiLineFacetNone(holder));

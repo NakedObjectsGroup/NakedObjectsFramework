@@ -16,13 +16,11 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Exceptions;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Facets.Types;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Util;
 using NakedObjects.Meta.Adapter;
-using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflect.DotNet;
 using NakedObjects.Util;
@@ -98,22 +96,6 @@ namespace NakedObjects.Reflect {
             get { return orderedObjectActions.Cast<IOrderableElement<IActionSpecImmutable>>().ToImmutableList(); }
         }
 
-        public bool IsAbstract {
-            get { return introspectedType.IsAbstract; }
-        }
-
-        public bool IsInterface {
-            get { return introspectedType.IsInterface; }
-        }
-
-        public bool IsSealed {
-            get { return introspectedType.IsSealed; }
-        }
-
-        public bool IsVoid {
-            get { return introspectedType == typeof (void); }
-        }
-
         public IObjectSpecBuilder[] Interfaces { get; set; }
 
         public IObjectSpecBuilder Superclass { get; set; }
@@ -131,53 +113,25 @@ namespace NakedObjects.Reflect {
 
             // Process facets at object level
             // this will also remove some methods, such as the superclass methods.
-            var methodRemover = new DotnetIntrospectorMethodRemover(methods);
+            var methodRemover = new IntrospectorMethodRemover(methods);
             FacetFactorySet.Process(introspectedType, methodRemover, spec);
-           
 
-            // all this should be done in factories ! 
-            var namedFacet = spec.GetFacet<INamedFacet>();
-            if (namedFacet == null) {
-                namedFacet = new NamedFacetInferred(NameUtils.NaturalName(ShortName), spec);
-                spec.AddFacet(namedFacet);
-            }
+            Action<string> addSubclass = s => {
+                if (Superclass != null) {
+                    Log.DebugFormat("Superclass {0}", s);
+                    Superclass.AddSubclass(spec);
+                }
+            };
 
-            var pluralFacet = spec.GetFacet<IPluralFacet>();
-            if (pluralFacet == null) {
-                pluralFacet = new PluralFacetInferred(NameUtils.PluralName(namedFacet.Value), spec);
-                spec.AddFacet(pluralFacet);
-            }
-
-            if (IsAbstract) {
-                spec.AddFacet(new AbstractFacet(spec));
-            }
-
-            if (IsInterface) {
-                spec.AddFacet(new InterfaceFacet(spec));
-            }
-
-            if (IsSealed) {
-                spec.AddFacet(new SealedFacet(spec));
-            }
-
-            if (IsVoid) {
-                spec.AddFacet(new VoidFacet(spec));
-            }
-
+            var typeOfObj = typeof (object);
             if (SuperclassName != null && !TypeUtils.IsSystem(SuperclassName)) {
                 Superclass = reflector.LoadSpecification(SuperclassName);
-                if (Superclass != null) {
-                    Log.DebugFormat("Superclass {0}", SuperclassName);
-                    Superclass.AddSubclass(spec);
-                }
+                addSubclass(SuperclassName);
             }
-            else if (spec.Type != typeof (object)) {
-                // always root in object (unless this is object!) 
-                Superclass = reflector.LoadSpecification(typeof (object));
-                if (Superclass != null) {
-                    Log.DebugFormat("Superclass {0}", typeof (object).Name);
-                    Superclass.AddSubclass(spec);
-                }
+            else if (spec.Type != typeOfObj) {
+                // always root in object (unless this is object!)            
+                Superclass = reflector.LoadSpecification(typeOfObj);
+                addSubclass(typeOfObj.Name);
             }
 
             var interfaces = new List<IObjectSpecBuilder>();
@@ -187,7 +141,6 @@ namespace NakedObjects.Reflect {
                 interfaces.Add(interfaceSpec);
             }
             Interfaces = interfaces.ToArray();
-
             IntrospectPropertiesAndCollections(spec);
             IntrospectActions(spec);
         }
@@ -196,7 +149,7 @@ namespace NakedObjects.Reflect {
             Log.InfoFormat("introspecting {0}: properties and collections", ClassName);
 
             // find the properties and collections (fields) ...
-            IAssociationSpecImmutable[] findFieldMethods = FindAndCreateFieldPeers();
+            IAssociationSpecImmutable[] findFieldMethods = FindAndCreateFieldSpecs();
 
             // ... and the ordering of the properties and collections  
             var fieldOrderFacet = spec.GetFacet<IFieldOrderFacet>();
@@ -245,7 +198,7 @@ namespace NakedObjects.Reflect {
             return reflector.LoadSpecification(returnType);
         }
 
-        private IAssociationSpecImmutable[] FindAndCreateFieldPeers() {
+        private IAssociationSpecImmutable[] FindAndCreateFieldSpecs() {
             if (ClassStrategy.IsSystemClass(introspectedType)) {
                 Log.DebugFormat("Skipping fields in {0} (system class according to ClassStrategy)", introspectedType.Name);
                 return new IAssociationSpecImmutable[0];
@@ -256,33 +209,33 @@ namespace NakedObjects.Reflect {
             var candidates = new List<PropertyInfo>(properties);
             reflector.LoadSpecificationForReturnTypes(candidates, introspectedType);
 
-            // now create FieldPeers for value properties, for collections and for reference properties
-            var fieldPeers = new List<IAssociationSpecImmutable>();
+            // now create fieldSpecs for value properties, for collections and for reference properties
+            var fieldSpecs = new List<IAssociationSpecImmutable>();
 
-            FindCollectionPropertiesAndCreateCorrespondingFieldPeers(candidates, fieldPeers);
+            FindCollectionPropertiesAndCreateCorrespondingFieldSpecs(candidates, fieldSpecs);
             // every other accessor is assumed to be a reference property.
-            FindPropertiesAndCreateCorrespondingFieldPeers(candidates, fieldPeers);
+            FindPropertiesAndCreateCorrespondingFieldSpecs(candidates, fieldSpecs);
 
-            return fieldPeers.ToArray();
+            return fieldSpecs.ToArray();
         }
 
-        private void FindCollectionPropertiesAndCreateCorrespondingFieldPeers(IList<PropertyInfo> candidates, ICollection<IAssociationSpecImmutable> fieldPeers) {
+        private void FindCollectionPropertiesAndCreateCorrespondingFieldSpecs(IList<PropertyInfo> candidates, ICollection<IAssociationSpecImmutable> fieldSpecs) {
             var collectionProperties = new List<PropertyInfo>();
             FacetFactorySet.FindCollectionProperties(candidates, collectionProperties);
-            CreateCollectionPeersFromAccessors(collectionProperties, fieldPeers);
+            CreateCollectionSpecsFromAccessors(collectionProperties, fieldSpecs);
         }
 
         /// <summary>
         ///     Since the value properties and collections have already been processed, this will
         ///     pick up the remaining reference properties
         /// </summary>
-        private void FindPropertiesAndCreateCorrespondingFieldPeers(IList<PropertyInfo> candidates, ICollection<IAssociationSpecImmutable> fieldPeers) {
+        private void FindPropertiesAndCreateCorrespondingFieldSpecs(IList<PropertyInfo> candidates, ICollection<IAssociationSpecImmutable> fieldSpecs) {
             var foundProperties = new List<PropertyInfo>();
             FacetFactorySet.FindProperties(candidates, foundProperties);
-            CreatePropertyPeersFromAccessors(foundProperties, fieldPeers);
+            CreatePropertySpecsFromAccessors(foundProperties, fieldSpecs);
         }
 
-        private void CreateCollectionPeersFromAccessors(IEnumerable<PropertyInfo> collectionProperties, ICollection<IAssociationSpecImmutable> fieldsListToAppendto) {
+        private void CreateCollectionSpecsFromAccessors(IEnumerable<PropertyInfo> collectionProperties, ICollection<IAssociationSpecImmutable> fieldsListToAppendto) {
             foreach (PropertyInfo property in collectionProperties) {
                 Log.DebugFormat("Identified one-many association method {0}", property);
 
@@ -293,7 +246,7 @@ namespace NakedObjects.Reflect {
                 var returnSpec = reflector.LoadSpecification(returnType);
 
                 var collection = new OneToManyAssociationSpecImmutable(identifier, returnType, returnSpec, metamodel);
-                FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), collection, FeatureType.Collections);
+                FacetFactorySet.Process(property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections);
                 fieldsListToAppendto.Add(collection);
             }
         }
@@ -301,7 +254,7 @@ namespace NakedObjects.Reflect {
         /// <summary>
         ///     Creates a list of Association fields for all the properties that use NakedObjects.
         /// </summary>
-        private void CreatePropertyPeersFromAccessors(IEnumerable<PropertyInfo> foundProperties, ICollection<IAssociationSpecImmutable> fieldListToAppendto) {
+        private void CreatePropertySpecsFromAccessors(IEnumerable<PropertyInfo> foundProperties, ICollection<IAssociationSpecImmutable> fieldListToAppendto) {
             foreach (PropertyInfo property in foundProperties) {
                 Log.DebugFormat("Identified 1-1 association method {0}", property);
                 Log.DebugFormat("One-to-One association {0} -> {1}", property.Name, property);
@@ -314,7 +267,7 @@ namespace NakedObjects.Reflect {
                 var referenceProperty = new OneToOneAssociationSpecImmutable(identifier, propertyType, propertySpec);
 
                 // Process facets for the property
-                FacetFactorySet.Process(property, new DotnetIntrospectorMethodRemover(methods), referenceProperty, FeatureType.Property);
+                FacetFactorySet.Process(property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Property);
 
                 fieldListToAppendto.Add(referenceProperty);
             }
@@ -328,7 +281,7 @@ namespace NakedObjects.Reflect {
 
             Log.Debug("Looking for action methods");
 
-            var actionPeers = new List<IActionSpecImmutable>();
+            var actionSpecs = new List<IActionSpecImmutable>();
 
             Array.Sort(methods, new SortActionsFirst(FacetFactorySet));
             for (int i = 0; i < methods.Length; i++) {
@@ -363,7 +316,7 @@ namespace NakedObjects.Reflect {
                 var action = new ActionSpecImmutable(identifier, spec, actionParams);
 
                 // Process facets on the action & parameters
-                FacetFactorySet.Process(actionMethod, new DotnetIntrospectorMethodRemover(methods), action, FeatureType.Action);
+                FacetFactorySet.Process(actionMethod, new IntrospectorMethodRemover(methods), action, FeatureType.Action);
                 for (int l = 0; l < actionParams.Length; l++) {
                     FacetFactorySet.ProcessParams(actionMethod, l, actionParams[l]);
                 }
@@ -372,10 +325,10 @@ namespace NakedObjects.Reflect {
                     reflector.LoadSpecification(actionMethod.ReturnType);
                 }
 
-                actionPeers.Add(action);
+                actionSpecs.Add(action);
             }
 
-            return actionPeers.ToArray();
+            return actionSpecs.ToArray();
         }
 
         /// <summary>
@@ -416,10 +369,10 @@ namespace NakedObjects.Reflect {
 
         #region Nested Type: DotnetIntrospectorMethodRemover
 
-        private class DotnetIntrospectorMethodRemover : IMethodRemover {
+        private class IntrospectorMethodRemover : IMethodRemover {
             private readonly MethodInfo[] methods;
 
-            public DotnetIntrospectorMethodRemover(MethodInfo[] methods) {
+            public IntrospectorMethodRemover(MethodInfo[] methods) {
                 this.methods = methods;
             }
 

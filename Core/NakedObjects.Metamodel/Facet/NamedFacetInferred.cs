@@ -12,7 +12,6 @@ namespace NakedObjects.Meta.Facet {
         public NamedFacetInferred(string value, ISpecification holder)
             : base(value, holder) {}
 
-
         public override bool CanAlwaysReplace {
             get { return false; }
         }

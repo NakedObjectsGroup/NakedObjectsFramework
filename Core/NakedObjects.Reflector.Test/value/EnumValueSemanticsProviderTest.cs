@@ -98,7 +98,7 @@ namespace NakedObjects.Reflect.DotNet.Value {
 
         [Test]
         public void TestDecode() {
-            TestEnum decoded = GetValue().FromEncodedString("NakedObjects.Reflector.DotNet.Value.TestEnum:Paris");
+            TestEnum decoded = GetValue().FromEncodedString("NakedObjects.Reflect.DotNet.Value.TestEnum:Paris");
             Assert.AreEqual(TestEnum.Paris, decoded);
         }
 
@@ -113,7 +113,7 @@ namespace NakedObjects.Reflect.DotNet.Value {
         [Test]
         public void TestEncode() {
             string encoded = GetValue().ToEncodedString(TestEnum.Paris);
-            Assert.AreEqual("NakedObjects.Reflector.DotNet.Value.TestEnum:Paris", encoded);
+            Assert.AreEqual("NakedObjects.Reflect.DotNet.Value.TestEnum:Paris", encoded);
         }
 
 

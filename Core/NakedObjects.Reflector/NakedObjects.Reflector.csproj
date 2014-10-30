@@ -143,8 +143,10 @@
     <Compile Include="audit\dotnet\DotNetDomainObjectContainerInjector.cs" />
     <Compile Include="audit\dotnet\Methods.cs" />
     <Compile Include="audit\dotnet\PersistFailedException.cs" />
+    <Compile Include="FacetFactory\TypeMarkerFacetFactory.cs" />
     <Compile Include="FacetFactory\FacetFactoryAbstract.cs" />
     <Compile Include="FacetFactory\TableViewAnnotationFacetFactory.cs" />
+    <Compile Include="FacetFactory\DefaultNamingFacetFactory.cs" />
     <Compile Include="FacetFactory\ValidateObjectFacetFactory.cs" />
     <Compile Include="FacetFactory\TypeOfAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\ActionMethodsFacetFactory.cs" />
@@ -175,16 +177,12 @@
     <Compile Include="FacetFactory\ComplexTypeAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\BoundedAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\CallbackMethodsFacetFactory.cs" />
-    <Compile Include="FacetFactory\DefaultedFacetFactory.cs" />
-    <Compile Include="FacetFactory\EncodeableFacetFactory.cs" />
     <Compile Include="FacetFactory\IconMethodFacetFactory.cs" />
     <Compile Include="FacetFactory\PluralAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\TitleMethodFacetFactory.cs" />
     <Compile Include="FacetFactory\ImmutableAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\ProgramPersistableOnlyAnnotationfacetFactory.cs" />
-    <Compile Include="FacetFactory\ParseableFacetFactory.cs" />
     <Compile Include="FacetFactory\ValidateProgrammaticUpdatesAnnotationFacetFactory.cs" />
-    <Compile Include="FacetFactory\ValueFacetFactory.cs" />
     <Compile Include="FacetFactory\ViewModelFacetFactory.cs" />
     <Compile Include="FacetFactory\ActionOrderAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\FieldOrderAnnotationFacetFactory.cs" />

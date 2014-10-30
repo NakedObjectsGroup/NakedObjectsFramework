@@ -65,19 +65,6 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        // Don't think we ever want to do this 
-
-        //public virtual void Reparent(ISpecification newSpecification) {
-        //    ISpecification oldSpecification = Specification;
-
-        //    oldSpecification.RemoveFacet(this);
-
-        //    newSpecification.AddFacet(this);
-        //    if (Specification != newSpecification) {
-        //        Specification = newSpecification;
-        //    }
-        //}
-
         public override string ToString() {
             string details = "";
             if (typeof (IValidatingInteractionAdvisor).IsAssignableFrom(GetType())) {

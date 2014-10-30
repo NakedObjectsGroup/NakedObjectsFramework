@@ -342,11 +342,6 @@
     <Compile Include="ResolveStateMachine\IResolveEvent.cs" />
     <Compile Include="ResolveStateMachine\IResolveState.cs" />
     <Compile Include="ResolveStateMachine\IResolveStateMachine.cs" />
-    <Compile Include="attributes\DefaultedAttribute.cs" />
-    <Compile Include="attributes\EncodeableAttribute.cs" />
-    <Compile Include="attributes\EqualByContentAttribute.cs" />
-    <Compile Include="attributes\ParseableAttribute.cs" />
-    <Compile Include="attributes\ValueAttribute.cs" />
     <Compile Include="Component\IAuthorisationManager.cs" />
     <Compile Include="Spec\ISpecificationBuilder.cs" />
     <Compile Include="Transaction\ICreateObjectCommand.cs" />

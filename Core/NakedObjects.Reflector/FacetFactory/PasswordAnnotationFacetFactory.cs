@@ -22,12 +22,10 @@ namespace NakedObjects.Reflect.FacetFactory {
         public PasswordAnnotationFacetFactory(IReflector reflector)
             : base(reflector, FeatureType.PropertiesAndParameters) {}
 
-
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<DataTypeAttribute>(member);
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
-
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return Process(property, specification);
