@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflect {
-    public interface IOrderSet<T> : IEnumerable<T>, IOrderableElement<T> where T : IOrderableElement<T>, ISpecification {
+    public interface IOrderSet<T> :  IOrderableElement<T> where T : IOrderableElement<T>, ISpecification {
         IOrderSet<T> Parent { set; get; }
         IList<IOrderableElement<T>> Children { get; }
 
@@ -55,5 +55,7 @@ namespace NakedObjects.Reflect {
         IList<IOrderableElement<T>> ElementList();
 
         int Size();
+
+        bool IsDewey { get; }
     }
 }

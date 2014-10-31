@@ -209,8 +209,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             foreach (var field in Fields) {
                 decorator.DecorateAllHoldersFacets(field.Spec);
             }
-            foreach (var action in ObjectActions) {
-                DecorateAction(decorator, action.Spec);
+            foreach (var action in ObjectActions.Select(oa => oa.Spec).Where(s => s != null)) {
+                DecorateAction(decorator, action);
             }
         }
 

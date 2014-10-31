@@ -12,8 +12,10 @@ using System.Linq;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
+using NakedObjects.Xat;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test {
@@ -24,7 +26,14 @@ namespace NakedObjects.Reflect.Test {
             return c;
         }
 
+        public class NullMenuBuilder : IMenuBuilder {
+            public IMenu[] DefineMainMenus() {
+               return new IMenu[]{};
+            }
+        }
+
         protected virtual void RegisterTypes(IUnityContainer container) {
+            container.RegisterType<IMenuBuilder, NullMenuBuilder>();
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>();
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();

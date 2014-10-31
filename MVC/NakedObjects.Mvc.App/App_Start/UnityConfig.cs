@@ -195,10 +195,11 @@ namespace NakedObjects.Mvc.App.App_Start {
         }
 
         public IMenu[] DefineMainMenus() {
-            var menu1 = factory.NewMenu<CustomerRepository>(true);
-            var menu2 = factory.NewMenu<OrderRepository>(true);
-            var menu3 = factory.NewMenu<ProductRepository>(true);
-            return new IMenu[] { menu1, menu2, menu3 };
+            //var menu1 = factory.NewMenu<CustomerRepository>(true);
+            //var menu2 = factory.NewMenu<OrderRepository>(true);
+            //var menu3 = factory.NewMenu<ProductRepository>(true);
+            //return new IMenu[] { menu1, menu2, menu3 };
+            return new IMenu[]{};
         }
     }
 }

@@ -169,13 +169,13 @@ namespace NakedObjects.Reflect {
                     if (serviceType != spec.Type) {
                         var serviceSpecification = metamodel.GetSpecification(serviceType);
 
-                        IActionSpecImmutable[] matchingServiceActions = serviceSpecification.ObjectActions.Select(oe => oe.Spec).Where(serviceAction => serviceAction.IsContributedTo(spec)).ToArray();
+                        IActionSpecImmutable[] matchingServiceActions = serviceSpecification.ObjectActions.Select(oe => oe.Spec).Where(s => s != null).Where(serviceAction => serviceAction.IsContributedTo(spec)).ToArray();
 
                         if (matchingServiceActions.Any()) {
-                            IOrderSet<IActionSpecImmutable> os = SimpleOrderSet<IActionSpecImmutable>.CreateOrderSet("", matchingServiceActions);
+                            IOrderSet<IActionSpecImmutable> os = OrderSet<IActionSpecImmutable>.CreateSimpleOrderSet("", matchingServiceActions);
                             var name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
                             var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
-                            var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.Cast<IOrderableElement<IActionSpecImmutable>>().ToList());
+                            var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.ElementList());
 
                             contributedActions.Add(t);
                         }
@@ -191,7 +191,7 @@ namespace NakedObjects.Reflect {
                 var serviceSpecification = metamodel.GetSpecification(serviceType);
                 var matchingActions = new List<IActionSpecImmutable>();
 
-                foreach (var serviceAction in serviceSpecification.ObjectActions.Select(oe => oe.Spec).Where(a => a.IsFinderMethod)) {
+                foreach (var serviceAction in serviceSpecification.ObjectActions.Select(oe => oe.Spec).Where(s => s != null).Where(a => a.IsFinderMethod)) {
                     var returnType = serviceAction.ReturnType;
                     if (returnType != null && returnType.IsCollection) {
                         var elementType = serviceAction.ElementType;
@@ -205,10 +205,10 @@ namespace NakedObjects.Reflect {
                 }
 
                 if (matchingActions.Any()) {
-                    IOrderSet<IActionSpecImmutable> os = SimpleOrderSet<IActionSpecImmutable>.CreateOrderSet("", matchingActions.ToArray());
+                    IOrderSet<IActionSpecImmutable> os = OrderSet<IActionSpecImmutable>.CreateSimpleOrderSet("", matchingActions.ToArray());
                     var name = serviceSpecification.GetFacet<INamedFacet>().Value ?? serviceSpecification.ShortName;
                     var id = serviceSpecification.Identifier.ClassName.Replace(" ", "");
-                    var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.Cast<IOrderableElement<IActionSpecImmutable>>().ToList());
+                    var t = new Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>(id, name, os.ElementList());
 
                     relatedActions.Add(t);
                 }

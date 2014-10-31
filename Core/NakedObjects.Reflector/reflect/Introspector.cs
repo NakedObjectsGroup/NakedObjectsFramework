@@ -19,6 +19,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Container;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.SpecImmutable;
@@ -82,15 +83,15 @@ namespace NakedObjects.Reflect {
         }
 
         public IList<IOrderableElement<IAssociationSpecImmutable>> Fields {
-            get { return orderedFields.Cast<IOrderableElement<IAssociationSpecImmutable>>().ToImmutableList(); }
+            get { return orderedFields.ElementList().ToImmutableList(); }
         }
 
         public IList<IOrderableElement<IActionSpecImmutable>> ClassActions {
-            get { return orderedClassActions.Cast<IOrderableElement<IActionSpecImmutable>>().ToImmutableList(); }
+            get { return orderedClassActions.ElementList().ToImmutableList(); }
         }
 
         public IList<IOrderableElement<IActionSpecImmutable>> ObjectActions {
-            get { return orderedObjectActions.Cast<IOrderableElement<IActionSpecImmutable>>().ToImmutableList(); }
+            get { return orderedObjectActions.ElementList().ToImmutableList(); }
         }
 
         public IObjectSpecBuilder[] Interfaces { get; set; }
@@ -337,11 +338,11 @@ namespace NakedObjects.Reflect {
             return MethodFinderUtils.RemoveMethod(methods, methodType, name, returnType, paramTypes);
         }
 
-        private static OrderSet<T> CreateOrderSet<T>(string order, T[] members) where T : IOrderableElement<T>, ISpecification {
+        private static IOrderSet<T> CreateOrderSet<T>(string order, T[] members) where T : IOrderableElement<T>, ISpecification {
             if (order == null) {
-                return DeweyOrderSet<T>.CreateOrderSet(members);
+                return OrderSet<T>.CreateDeweyOrderSet(members);
             }
-            return SimpleOrderSet<T>.CreateOrderSet(order, members);
+            return OrderSet<T>.CreateSimpleOrderSet(order, members);
         }
 
         private string InvokeSortOrderMethod(string name) {

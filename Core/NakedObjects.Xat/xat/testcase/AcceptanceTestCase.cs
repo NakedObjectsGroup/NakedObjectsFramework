@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Boot;
@@ -219,8 +220,17 @@ namespace NakedObjects.Xat {
             tc.testObjectFactory = null;
         }
 
+        public class NullMenuBuilder : IMenuBuilder {
+            public IMenu[] DefineMainMenus() {
+                return new IMenu[]{};
+            }
+        }
+
+
 
         protected virtual void RegisterTypes(IUnityContainer container) {
+            container.RegisterType<IMenuBuilder, NullMenuBuilder>();
+
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>();
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
