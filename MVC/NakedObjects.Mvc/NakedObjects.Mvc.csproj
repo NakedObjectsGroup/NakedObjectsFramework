@@ -197,6 +197,7 @@
     <Compile Include="Helpers\SimpleEncryptDecrypt.cs" />
     <Compile Include="Html\ActionExtensions.cs" />
     <Compile Include="Html\CollectionExtensions.cs" />
+    <Compile Include="Html\MenuExtensions.cs" />
     <Compile Include="Html\ObjectExtensions.cs" />
     <Compile Include="Html\PropertyExtensions.cs" />
     <Compile Include="Html\ServiceExtensions.cs" />

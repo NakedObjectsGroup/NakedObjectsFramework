@@ -26,6 +26,7 @@ using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Models;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Web.Mvc.Html {
     public class CustomMenuItem {
@@ -720,6 +721,25 @@ namespace NakedObjects.Web.Mvc.Html {
 
         private static Tuple<bool, string> IsDuplicate(this HtmlHelper html, IEnumerable<IActionSpec> allActions, IActionSpec action) {
             return new Tuple<bool, string>(allActions.Count(a => a.GetName() == action.GetName()) > 1, MvcUi.DuplicateAction);
+        }
+
+        internal static IList<ElementDescriptor> MenuActions(this HtmlHelper html, IMenu menu) {
+            //TODO: All this could/should be cached somehow?
+            //TODO: Turn this back into LINQ when done
+            var descriptors = new List<ElementDescriptor>();
+            IEnumerable<IActionSpec> allActions = null;
+            //foreach (IMenuItem item in menu.Items) {
+            //TODO: First pass -  get the top level actions only
+                //For MenuActions (not submenus) only:
+            IActionSpec action = null;    //get the IActionSpec for the IActionSpecImmutable               
+            INakedObject service = null; //get the (INakedObject) service for the objectspec on the IActionSpec
+            var descriptor = html.ObjectActionAsElementDescriptor(new ActionContext(false, service, action),
+                                                                                    new { id = html.Framework().GetObjectId(service) },
+                                                                                    false,
+                                                                                    html.IsDuplicate(allActions, action));
+            descriptors.Add(descriptor);
+            //end of loop
+            return descriptors;
         }
 
 

@@ -19,6 +19,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public const string NofMessages = "Nof-Messages";
         public const string NofWarnings = "Nof-Warnings";
         public const string NofServices = "Services";
+        public const string NofMainMenus  = "NofMainMenus";
         public const string NoFramework = "NakedObjectsFramework";
         public const string SystemMessages = "Messages";
         public const string PagingData = "Nof-PagingData";
