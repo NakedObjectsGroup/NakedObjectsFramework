@@ -171,10 +171,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static INakedObject RestoreObject(this INakedObjectsFramework framework, IOid oid) {
-            if (oid.IsTransient) {
-                return framework.LifecycleManager.RecreateInstance(oid, oid.Spec);
-            }
-            return framework.LifecycleManager.LoadObject(oid, oid.Spec);
+            return oid.IsTransient ? framework.LifecycleManager.RecreateInstance(oid, oid.Spec) : framework.LifecycleManager.LoadObject(oid, oid.Spec);
         }
 
         public static INakedObject GetNakedObject(this INakedObjectsFramework framework, object domainObject) {
@@ -259,11 +256,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static bool IsQueryOnly(this IActionSpec action) {
-            if (action.ReturnType.IsQueryable) {
-                return true;
-            }
-
-            return action.ContainsFacet<IQueryOnlyFacet>();
+            return action.ReturnType.IsQueryable || action.ContainsFacet<IQueryOnlyFacet>();
         }
 
         public static bool IsIdempotent(this IActionSpec action) {
