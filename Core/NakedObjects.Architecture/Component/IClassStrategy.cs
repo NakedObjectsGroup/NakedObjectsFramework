@@ -13,8 +13,6 @@ namespace NakedObjects.Architecture.Component {
     ///     used as a field. Alternative implementations could, for example, exclude types in a specific namespace.
     /// </summary>
     public interface IClassStrategy {
-        void Init();
-
         /// <summary>
         ///     Return the actual Type for the supplied Type.  For example, if the application uses
         ///     proxies or other means to wrap a Type, then this method should return the

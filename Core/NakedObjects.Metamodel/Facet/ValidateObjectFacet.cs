@@ -45,6 +45,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region Nested type: NakedObjectValidationMethod
 
+        [Serializable]
         public class NakedObjectValidationMethod {
             private readonly MethodInfo method;
 

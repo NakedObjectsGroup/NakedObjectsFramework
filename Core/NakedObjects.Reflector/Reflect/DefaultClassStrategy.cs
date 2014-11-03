@@ -16,12 +16,11 @@ namespace NakedObjects.Reflect {
     /// <summary>
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>
+    [Serializable]
     public class DefaultClassStrategy : IClassStrategy {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultClassStrategy));
 
         #region IClassStrategy Members
-
-        public virtual void Init() {}
 
         public virtual Type GetType(Type type) {
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>)) {

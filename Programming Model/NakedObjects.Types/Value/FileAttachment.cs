@@ -13,6 +13,7 @@ namespace NakedObjects.Value {
     /// Type that may be used to present a File Attachment;  contains the file content (as a byte[]), plus, optionally
     /// the file name and the MIME type.
     /// </summary>
+     [Serializable]
     public class FileAttachment : IStreamResource {
         private byte[] buffer;
 

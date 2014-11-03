@@ -14,6 +14,8 @@ using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Util;
 
 namespace NakedObjects.Meta {
+
+    [Serializable]
     public class Metamodel : IMetamodelBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Metamodel));
 

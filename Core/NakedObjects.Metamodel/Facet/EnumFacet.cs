@@ -16,19 +16,17 @@ using NakedObjects.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class EnumFacet : MarkerFacetAbstract, IEnumFacet {
-        private readonly EnumNameComparer comparer;
         private readonly Type typeOfEnum;
 
         public EnumFacet(ISpecification holder, Type typeOfEnum)
             : base(typeof (IEnumFacet), holder) {
             this.typeOfEnum = typeOfEnum;
-            comparer = new EnumNameComparer(this);
         }
 
         #region IEnumFacet Members
 
         public object[] GetChoices(INakedObject inObject) {
-            return Enum.GetNames(typeOfEnum).OrderBy(s => s, comparer).Select(s => Enum.Parse(typeOfEnum, s)).ToArray();
+            return Enum.GetNames(typeOfEnum).OrderBy(s => s, new EnumNameComparer(this)).Select(s => Enum.Parse(typeOfEnum, s)).ToArray();
         }
 
         public object[] GetChoices(INakedObject inObject, object[] choiceValues) {
@@ -47,6 +45,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region Nested type: EnumNameComparer
 
+    
         private class EnumNameComparer : IComparer<string> {
             private readonly EnumFacet facet;
 

@@ -17,7 +17,6 @@ namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public class OneToManyAssociationSpecImmutable : AssociationSpecImmutable {
 
-        [NonSerialized]
         private readonly IMetamodel metamodel;
 
         public OneToManyAssociationSpecImmutable(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec, IMetamodel metamodel)
