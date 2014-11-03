@@ -11,9 +11,9 @@ namespace NakedObjects.Architecture.Menu {
     public interface IMainMenuDefinition {
 
         /// <summary>
-        /// Typically this will be implemented by delegating work to an injected IMenuFactory
+        /// Constructs the IMenus using methods on the factory passed in
         /// </summary>
         /// <returns></returns>
-        IMenu[] MainMenus();
+        IMenu[] MainMenus(IMenuFactory factory);
     }
 }

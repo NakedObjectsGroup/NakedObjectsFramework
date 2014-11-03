@@ -121,7 +121,7 @@ namespace NakedObjects.Reflect.Test {
         public class NullMenuDefinition : IMainMenuDefinition {
             #region IMenuBuilder Members
 
-            public IMenu[] MainMenus() {
+            public IMenu[] MainMenus(IMenuFactory factory) {
                 return new IMenu[] {};
             }
 

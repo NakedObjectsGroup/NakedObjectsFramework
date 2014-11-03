@@ -31,7 +31,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
             var servicesConfig = new ServicesConfiguration();
 
-            Reflector = new Reflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig, null);
+            Reflector = new Reflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig, null, null);
 
             facetFactory = new UnsupportedParameterTypesMethodFilteringFactory(Reflector);
         }

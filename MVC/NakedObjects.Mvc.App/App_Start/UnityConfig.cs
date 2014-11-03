@@ -188,13 +188,8 @@ namespace NakedObjects.Mvc.App.App_Start {
     }
 
     public class MyMainMenuDefinition : IMainMenuDefinition {
-        private IMenuFactory factory;
 
-        public MyMainMenuDefinition(IMenuFactory factory) {
-            this.factory = factory;
-        }
-
-        public IMenu[] DefineMainMenus() {
+        public IMenu[] MainMenus(IMenuFactory factory) {
             var menu1 = factory.NewMenu<CustomerRepository>(true);
             var menu2 = factory.NewMenu<OrderRepository>(true);
             var menu3 = factory.NewMenu<ProductRepository>(true);

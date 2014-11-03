@@ -30,7 +30,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var metamodel = new Metamodel(classStrategy, cache);
             var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
             var servicesConfig = new ServicesConfiguration();
-            var reflector = new Reflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig, null);
+            var reflector = new Reflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig, null, null);
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(reflector);
         }
 

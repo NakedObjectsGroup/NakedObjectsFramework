@@ -34,7 +34,8 @@ namespace NakedObjects.Reflect {
         private readonly IFacetFactorySet facetFactorySet;
         private readonly IMetamodelBuilder metamodel;
         private readonly IServicesConfiguration servicesConfig;
-        private readonly IMainMenuDefinition menuBuilder;
+        private readonly IMainMenuDefinition menuDefinition;
+        private readonly IMenuFactory menuFactory;
 
         static Reflector() {
             Log = LogManager.GetLogger(typeof (Reflector));
@@ -47,7 +48,8 @@ namespace NakedObjects.Reflect {
             IMetamodelBuilder metamodel, 
             IReflectorConfiguration config, 
             IServicesConfiguration servicesConfig,
-            IMainMenuDefinition menuBuilder) {
+            IMainMenuDefinition menuDefinition,
+            IMenuFactory menuFactory) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(facetFactorySet);
             Assert.AssertNotNull(facetDecoratorSet);
@@ -57,7 +59,8 @@ namespace NakedObjects.Reflect {
             this.metamodel = metamodel;
             this.config = config;
             this.servicesConfig = servicesConfig;
-            this.menuBuilder = menuBuilder;
+            this.menuDefinition = menuDefinition;
+            this.menuFactory = menuFactory;
             facetFactorySet.Init(this);
         }
 
@@ -156,8 +159,8 @@ namespace NakedObjects.Reflect {
         }
 
         private void InstallMainMenus() {
-            if (menuBuilder == null) return; //TODO: Remove temporary guard, added to keep tests running without an implementation
-            foreach (IMenu menu in menuBuilder.MainMenus()) {
+            if (menuDefinition == null) return; //TODO: Remove temporary guard, added to keep tests running without an implementation
+            foreach (IMenu menu in menuDefinition.MainMenus(menuFactory)) {
                 metamodel.AddMainMenu(menu);
             }
         }

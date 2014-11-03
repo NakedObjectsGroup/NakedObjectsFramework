@@ -221,7 +221,7 @@ namespace NakedObjects.Xat {
         }
 
         public class NullMainMenuDefinition : IMainMenuDefinition {
-            public IMenu[] MainMenus() {
+            public IMenu[] MainMenus(IMenuFactory factory) {
                 return new IMenu[]{};
             }
         }
