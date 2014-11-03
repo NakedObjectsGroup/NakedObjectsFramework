@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
-using NakedObjects.Xat;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test {
@@ -26,18 +25,11 @@ namespace NakedObjects.Reflect.Test {
             return c;
         }
 
-        public class NullMainMenuDefinition : IMainMenuDefinition {
-            public IMenu[] MainMenus() {
-               return new IMenu[]{};
-            }
-        }
-
-        protected virtual void RegisterTypes(IUnityContainer container) {
-            container.RegisterType<IMainMenuDefinition, NullMainMenuDefinition>();
+       protected virtual void RegisterTypes(IUnityContainer container) {
+            container.RegisterType<IMainMenuDefinition, NullMenuDefinition>();
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>();
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
-
             container.RegisterType<IReflector, Reflector>();
             container.RegisterType<IMetamodel, Metamodel>();
             container.RegisterType<IMetamodelBuilder, Metamodel>();
@@ -95,7 +87,6 @@ namespace NakedObjects.Reflect.Test {
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
-
         [Test]
         public void ReflectQueryableTypes() {
             var container = GetContainer();
@@ -124,6 +115,20 @@ namespace NakedObjects.Reflect.Test {
             // Assert.AreEqual(20, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
+
+        #region Nested type: NullMenuBuilder
+
+        public class NullMenuDefinition : IMainMenuDefinition {
+            #region IMenuBuilder Members
+
+            public IMenu[] MainMenus() {
+                return new IMenu[] {};
+            }
+
+            #endregion
+        }
+
+        #endregion
 
         #region Nested type: SetWrapper
 

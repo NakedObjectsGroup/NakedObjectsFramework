@@ -15,6 +15,7 @@ using NakedObjects.Capabilities;
 using NakedObjects.Value;
 
 namespace NakedObjects.Meta.SemanticsProvider {
+    [Serializable]
     public class ImageValueSemanticsProvider : ValueSemanticsProviderAbstract<Image>, IFromStream {
         private const bool EqualByContent = true;
         private const bool Immutable = true;

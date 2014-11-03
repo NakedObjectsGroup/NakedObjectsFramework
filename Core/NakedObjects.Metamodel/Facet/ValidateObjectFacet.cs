@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
         public ValidateObjectFacet(ISpecification holder, IList<NakedObjectValidationMethod> validateMethods)
             : base(Type, holder) {
@@ -42,6 +43,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
+        #region Nested type: NakedObjectValidationMethod
 
         public class NakedObjectValidationMethod {
             private readonly MethodInfo method;
@@ -58,5 +60,7 @@ namespace NakedObjects.Meta.Facet {
                 return InvokeUtils.Invoke(method, obj, parameters) as string;
             }
         }
+
+        #endregion
     }
 }

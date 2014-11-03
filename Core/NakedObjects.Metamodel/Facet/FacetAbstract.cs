@@ -10,9 +10,9 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class FacetAbstract : IFacet {
         private readonly Type facetType;
         private ISpecification holder;
@@ -94,23 +94,6 @@ namespace NakedObjects.Meta.Facet {
                 last = typeName.Length - 1;
             }
             return typeName.Substring(typeName.LastIndexOf('.', last) + 1) + "[" + details + stringValues + "]";
-        }
-
-
-        /// <summary>
-        ///     For convenience of subclass facets that implement
-        ///     <see cref="IValidatingInteractionAdvisor" />, <see cref="IHidingInteractionAdvisor" /> or
-        ///     <see cref="IDisablingInteractionAdvisor" />
-        /// </summary>
-        protected internal virtual string UnwrapString(INakedObject nakedObject) {
-            object obj = nakedObject.GetDomainObject();
-            if (obj == null) {
-                return null;
-            }
-            if (!(obj is string)) {
-                return null;
-            }
-            return (string) obj;
         }
 
         protected virtual string ToStringValues() {

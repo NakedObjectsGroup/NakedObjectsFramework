@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Except;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class MandatoryFacetAbstract : MarkerFacetAbstract, IMandatoryFacet {
         protected MandatoryFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

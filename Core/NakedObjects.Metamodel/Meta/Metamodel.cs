@@ -8,10 +8,10 @@
 using System;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Util;
-using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Meta {
     public class Metamodel : IMetamodelBuilder {
@@ -40,7 +40,7 @@ namespace NakedObjects.Meta {
                 Type type = TypeFactory.GetTypeFromLoadedAssembly(name);
                 return GetSpecification(type);
             }
-            catch (System.Exception e) {
+            catch (Exception e) {
                 Log.InfoFormat("Failed to Load Specification for: {0} error: {1} trying cache", name, e);
                 var spec = cache.GetSpecification(name);
                 if (spec != null) {
@@ -70,10 +70,5 @@ namespace NakedObjects.Meta {
 
             return cache.GetSpecification(key);
         }
-
-
-
-
-
     }
 }

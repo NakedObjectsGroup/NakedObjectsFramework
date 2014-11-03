@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class NamedFacetAbstract : SingleStringValueFacetAbstract, INamedFacet {
         protected NamedFacetAbstract(string valueString, ISpecification holder)
             : base(Type, holder, valueString) {}

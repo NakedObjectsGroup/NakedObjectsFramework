@@ -16,6 +16,7 @@ using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
+    [Serializable]
     public class CharValueSemanticsProvider : ValueSemanticsProviderAbstract<char>, IPropertyDefaultFacet {
         private const char DefaultValueConst = ' ';
         private const bool EqualByContent = true;

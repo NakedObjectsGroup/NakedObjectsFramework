@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class IsASetFacet : MarkerFacetAbstract, IIsASetFacet {
         public IsASetFacet(ISpecification holder) : base(Type, holder) {}
 

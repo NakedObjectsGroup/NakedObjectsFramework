@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -13,9 +14,12 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Except;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class MaskFacet : SingleStringValueFacetAbstract, IMaskFacet {
         public MaskFacet(string value, ISpecification holder)
-            : base(typeof(IMaskFacet), holder, value) { }
+            : base(typeof (IMaskFacet), holder, value) {}
+
+        #region IMaskFacet Members
 
         /// <summary>
         ///     Not yet implemented, so always returns <c>false</c>.
@@ -23,8 +27,6 @@ namespace NakedObjects.Meta.Facet {
         public bool DoesNotMatch(INakedObject nakedObject) {
             return false;
         }
-
-        #region IMaskFacet Members
 
         public virtual string Invalidates(InteractionContext ic) {
             INakedObject proposedArgument = ic.ProposedArgument;

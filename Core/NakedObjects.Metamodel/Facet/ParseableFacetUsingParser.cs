@@ -14,6 +14,7 @@ using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
         private readonly IParser<T> parser;
 

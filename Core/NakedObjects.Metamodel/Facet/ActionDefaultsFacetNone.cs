@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ActionDefaultsFacetNone : ActionDefaultsFacetAbstract {
         public ActionDefaultsFacetNone(ISpecification holder)
             : base(holder) {}

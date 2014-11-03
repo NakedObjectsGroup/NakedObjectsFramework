@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class PropertyDefaultFacetAbstract : FacetAbstract, IPropertyDefaultFacet {
         protected PropertyDefaultFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

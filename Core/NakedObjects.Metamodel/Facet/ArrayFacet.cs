@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ArrayFacet : CollectionFacet {
         public ArrayFacet(ISpecification holder)
             : base(holder) {}

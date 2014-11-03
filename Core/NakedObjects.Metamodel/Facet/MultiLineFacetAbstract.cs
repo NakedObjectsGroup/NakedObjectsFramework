@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class MultiLineFacetAbstract : MultipleValueFacetAbstract, IMultiLineFacet {
         private readonly int numberOfLines;
         private readonly int width;

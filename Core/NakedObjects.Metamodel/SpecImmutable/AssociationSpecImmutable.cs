@@ -12,6 +12,8 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
+
+    [Serializable]
     public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
         protected readonly Type ReturnType;
         private readonly IObjectSpecImmutable returnSpec;

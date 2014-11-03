@@ -16,6 +16,7 @@ using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
+    [Serializable]
     public class ULongValueSemanticsProvider : ValueSemanticsProviderAbstract<ulong>, IPropertyDefaultFacet {
         private const ulong DefaultValueConst = 0;
         private const bool EqualByContent = true;

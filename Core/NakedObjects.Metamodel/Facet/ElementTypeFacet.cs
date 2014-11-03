@@ -7,11 +7,11 @@
 
 using System;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
         private readonly IObjectSpecImmutable spec;
         private readonly Type type;

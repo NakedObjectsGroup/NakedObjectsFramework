@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class PropertyClearFacetAbstract : FacetAbstract, IPropertyClearFacet {
         protected PropertyClearFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

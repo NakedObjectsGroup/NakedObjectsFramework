@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ViewModelSwitchableFacetConvention : ViewModelFacetConvention {
         public ViewModelSwitchableFacetConvention(ISpecification holder) : base(Type, holder) {}
 

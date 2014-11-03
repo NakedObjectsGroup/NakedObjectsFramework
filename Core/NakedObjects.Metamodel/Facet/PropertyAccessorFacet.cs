@@ -5,14 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class PropertyAccessorFacet : FacetAbstract, IPropertyAccessorFacet, IImperativeFacet {
         private readonly PropertyInfo propertyMethod;
 
@@ -30,6 +31,7 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         #region IPropertyAccessorFacet Members
+
         public object GetProperty(INakedObject nakedObject) {
             try {
                 return propertyMethod.GetValue(nakedObject.GetDomainObject(), null);
@@ -39,6 +41,7 @@ namespace NakedObjects.Meta.Facet {
                 return null;
             }
         }
+
         #endregion
 
         protected override string ToStringValues() {

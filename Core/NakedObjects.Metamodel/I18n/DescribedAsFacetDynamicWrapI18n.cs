@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Reflect.I18n {
+    [Serializable]
     public class DescribedAsFacetDynamicWrapI18n : FacetAbstract, IDescribedAsFacet {
         private readonly IDescribedAsFacet describedAsFacet;
         private readonly IIdentifier identifier;

@@ -15,6 +15,7 @@ using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
+    [Serializable]
     public class GuidValueSemanticsProvider : ValueSemanticsProviderAbstract<Guid>, IPropertyDefaultFacet {
         private const bool EqualByContent = true;
         private const bool Immutable = true;

@@ -9,27 +9,29 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ExecutedControlMethodFacet : FacetAbstract, IExecutedControlMethodFacet {
         private readonly IDictionary<MethodInfo, Where> methodToWhere = new Dictionary<MethodInfo, Where>();
 
         public ExecutedControlMethodFacet(MethodInfo method, Where where, ISpecification holder)
-            : base(typeof (IExecutedControlMethodFacet),holder) {
+            : base(typeof (IExecutedControlMethodFacet), holder) {
             methodToWhere[method] = where;
         }
 
         #region IExecutedControlMethodFacet Members
 
-        public  Where ExecutedWhere(MethodInfo method) {
+        public Where ExecutedWhere(MethodInfo method) {
             return methodToWhere.ContainsKey(method) ? methodToWhere[method] : Where.Default;
         }
 
-        public  void AddMethodExecutedWhere(MethodInfo method, Where where) {
+        public void AddMethodExecutedWhere(MethodInfo method, Where where) {
             methodToWhere[method] = where;
         }
+
         #endregion
 
         protected override string ToStringValues() {
@@ -39,7 +41,6 @@ namespace NakedObjects.Meta.Facet {
             }
             return sb.ToString();
         }
-
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -5,19 +5,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.Resolve;
 using NakedObjects.Core.Resolve;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class HiddenFacet : SingleWhenValueFacetAbstract, IHiddenFacet {
         public HiddenFacet(WhenTo when, ISpecification holder)
-            : base(typeof(IHiddenFacet), holder, when) { }
+            : base(typeof (IHiddenFacet), holder, when) {}
+
+        #region IHiddenFacet Members
 
         public string HiddenReason(INakedObject target) {
             if (Value == WhenTo.Always) {
@@ -40,9 +43,6 @@ namespace NakedObjects.Meta.Facet {
             }
             return null;
         }
-
-
-        #region IHiddenFacet Members
 
         public virtual string Hides(InteractionContext ic, ILifecycleManager persistor) {
             return HiddenReason(ic.Target);

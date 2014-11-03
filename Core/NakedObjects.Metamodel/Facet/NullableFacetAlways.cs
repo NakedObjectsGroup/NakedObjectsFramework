@@ -10,7 +10,8 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class NullableFacetAlways : FacetAbstract, INullableFacet {
-        public NullableFacetAlways(ISpecification holder) : base(typeof(INullableFacet), holder) { }
+        public NullableFacetAlways(ISpecification holder) : base(typeof (INullableFacet), holder) {}
     }
 }

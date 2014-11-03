@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class TypicalLengthFacetAbstract : SingleIntValueFacetAbstract, ITypicalLengthFacet {
         protected TypicalLengthFacetAbstract(int intValue, ISpecification holder)
             : base(Type, holder, intValue) {}

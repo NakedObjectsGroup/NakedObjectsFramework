@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,13 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class GenericIEnumerableFacet : CollectionFacetAbstract {
         public GenericIEnumerableFacet(ISpecification holder, bool isASet)
             : base(holder, isASet) {}
 
         public GenericIEnumerableFacet(ISpecification holder)
-            : base(holder, false) { }
+            : base(holder, false) {}
 
         public override bool IsQueryable {
             get { return false; }

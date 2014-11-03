@@ -5,25 +5,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
-using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionInvocationFacetViaMethod));
 
         private readonly MethodInfo actionMethod;
+        private readonly IObjectSpecImmutable elementType;
         private readonly IObjectSpecImmutable onType;
         private readonly int paramCount;
         private readonly IObjectSpecImmutable returnType;
-        private readonly IObjectSpecImmutable elementType;
 
         public ActionInvocationFacetViaMethod(MethodInfo method, IObjectSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder)
             : base(holder) {
@@ -45,7 +45,6 @@ namespace NakedObjects.Meta.Facet {
         public override IObjectSpecImmutable ElementType {
             get { return elementType; }
         }
-
 
         #region IImperativeFacet Members
 

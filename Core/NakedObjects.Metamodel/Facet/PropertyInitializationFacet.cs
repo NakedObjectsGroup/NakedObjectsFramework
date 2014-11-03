@@ -5,15 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Meta.Utils;
-
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class PropertyInitializationFacet : FacetAbstract, IPropertyInitializationFacet, IImperativeFacet {
         private readonly PropertyInfo property;
 
@@ -22,20 +22,23 @@ namespace NakedObjects.Meta.Facet {
             this.property = property;
         }
 
-        #region IPropertyInitializationFacet Members
-        public void InitProperty(INakedObject nakedObject, INakedObject value) {
-            try {
-                property.SetValue(nakedObject.GetDomainObject(), value.GetDomainObject(), null);
-            } catch (TargetInvocationException e) {
-                InvokeUtils.InvocationException("Exception executing " + property, e);
-            }
-        }
-        #endregion
-
         #region IImperativeFacet Members
 
         public MethodInfo GetMethod() {
             return property.GetSetMethod();
+        }
+
+        #endregion
+
+        #region IPropertyInitializationFacet Members
+
+        public void InitProperty(INakedObject nakedObject, INakedObject value) {
+            try {
+                property.SetValue(nakedObject.GetDomainObject(), value.GetDomainObject(), null);
+            }
+            catch (TargetInvocationException e) {
+                InvokeUtils.InvocationException("Exception executing " + property, e);
+            }
         }
 
         #endregion

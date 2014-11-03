@@ -5,13 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class OnUpdatingErrorCallbackFacetViaMethod : OnUpdatingErrorCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
@@ -28,7 +29,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override string Invoke(INakedObject nakedObject, System.Exception exception) {
+        public override string Invoke(INakedObject nakedObject, Exception exception) {
             return (string) InvokeUtils.Invoke(method, nakedObject.Object, new object[] {exception});
         }
 

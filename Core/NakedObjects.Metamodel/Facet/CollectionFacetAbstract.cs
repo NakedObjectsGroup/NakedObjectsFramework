@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
@@ -13,6 +14,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet {
         protected CollectionFacetAbstract(ISpecification holder)
             : base(typeof (ICollectionFacet), holder) {
@@ -22,13 +24,6 @@ namespace NakedObjects.Meta.Facet {
         protected CollectionFacetAbstract(ISpecification holder, bool isASet)
             : this(holder) {
             IsASet = isASet;
-        }
-
-        protected object Call(string name, INakedObject collection, params object[] pp) {
-            var m = GetType().GetMethod(name);
-            var t = collection.Object.GetType().GenericTypeArguments.First();
-
-            return m.MakeGenericMethod(t).Invoke(this, pp);
         }
 
         #region ICollectionFacet Members
@@ -41,9 +36,16 @@ namespace NakedObjects.Meta.Facet {
         public abstract IEnumerable<INakedObject> AsEnumerable(INakedObject collection, INakedObjectManager manager);
         public abstract IQueryable AsQueryable(INakedObject collection);
 
+        public abstract void Init(INakedObject collection, INakedObject[] initData);
+
         #endregion
 
-        public abstract void Init(INakedObject collection, INakedObject[] initData);
+        protected object Call(string name, INakedObject collection, params object[] pp) {
+            var m = GetType().GetMethod(name);
+            var t = collection.Object.GetType().GenericTypeArguments.First();
+
+            return m.MakeGenericMethod(t).Invoke(this, pp);
+        }
     }
 
 

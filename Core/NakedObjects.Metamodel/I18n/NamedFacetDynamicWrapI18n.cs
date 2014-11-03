@@ -14,6 +14,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.I18n {
+    [Serializable]
     public class NamedFacetDynamicWrapI18n : FacetAbstract, INamedFacet {
         private readonly IIdentifier identifier;
         private readonly int index;

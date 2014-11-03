@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class AjaxFacet : MarkerFacetAbstract, IAjaxFacet {
         public AjaxFacet(ISpecification holder)
             : base(Type, holder) {}

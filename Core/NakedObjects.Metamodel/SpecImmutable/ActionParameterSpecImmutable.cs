@@ -11,6 +11,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Spec;
 
 namespace NakedObjects.Meta.SpecImmutable {
+    [Serializable]
     public class ActionParameterSpecImmutable : Specification, IActionParameterSpecImmutable {
         private readonly IObjectSpecImmutable specification;
 
@@ -25,7 +26,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public override IIdentifier Identifier {
-            get { throw new NotImplementedException(); }
+            get { return null; }
         }
 
         #endregion

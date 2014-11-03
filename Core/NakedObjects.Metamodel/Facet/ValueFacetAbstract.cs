@@ -14,6 +14,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class ValueFacetAbstract<T> : MultipleValueFacetAbstract, IValueFacet {
         private readonly IValueSemanticsProvider<T> semanticsProvider;
         private readonly Specification specification = new Specification();

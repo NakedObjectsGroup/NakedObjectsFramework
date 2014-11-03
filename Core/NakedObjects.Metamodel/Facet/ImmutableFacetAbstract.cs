@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class ImmutableFacetAbstract : SingleWhenValueFacetAbstract, IImmutableFacet {
         protected ImmutableFacetAbstract(WhenTo when, ISpecification holder)
             : base(Type, holder, when) {}

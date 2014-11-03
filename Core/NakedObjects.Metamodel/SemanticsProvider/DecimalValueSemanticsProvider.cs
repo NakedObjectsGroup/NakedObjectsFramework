@@ -16,6 +16,7 @@ using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
+    [Serializable]
     public class DecimalValueSemanticsProvider : ValueSemanticsProviderAbstract<decimal>, IPropertyDefaultFacet {
         private const decimal DefaultValueConst = 0;
         private const bool EqualByContent = true;

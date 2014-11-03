@@ -19,6 +19,7 @@ using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
+    [Serializable]
     public class ArrayValueSemanticsProvider<T> : ValueSemanticsProviderAbstract<T[]>, IPropertyDefaultFacet, IArrayValueFacet<T>, IFromStream {
         private const T[] DefaultValueConst = null;
         private const bool EqualByContent = true;

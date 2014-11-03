@@ -8,11 +8,11 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ActionChoicesFacetNone : ActionChoicesFacetAbstract {
         public ActionChoicesFacetNone(ISpecification holder)
             : base(holder) {}

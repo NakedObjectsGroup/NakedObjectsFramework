@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Common.Logging;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
@@ -23,6 +24,7 @@ using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
+    [Serializable]
     public class ObjectSpecImmutable : Specification, IObjectSpecImmutable, IObjectSpecBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpecImmutable));
 
@@ -224,6 +226,39 @@ namespace NakedObjects.Meta.SpecImmutable {
         private string DefaultTitle() {
             return Service ? SingularName : UntitledName;
         }
+
+        #region ISerializable
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue("Type", Type);
+            info.AddValue("FullName", FullName);
+            info.AddValue("ShortName", ShortName);
+            info.AddValue("identifier", identifier);
+            info.AddValue("Fields", Fields.ToList());
+            info.AddValue("Interfaces", Interfaces.ToList());
+            info.AddValue("subclasses", subclasses.ToList());
+            info.AddValue("ObjectActions", ObjectActions.ToList());
+            info.AddValue("ContributedActions", ContributedActions.ToList());
+            info.AddValue("RelatedActions", RelatedActions.ToList());
+            base.GetObjectData(info, context);
+        }
+
+         // The special constructor is used to deserialize values. 
+        public ObjectSpecImmutable(SerializationInfo info, StreamingContext context) :base(info, context)  {
+            Type = (Type) info.GetValue("Type", typeof (Type));
+            FullName = (string)info.GetValue("FullName", typeof(string));
+            ShortName = (string)info.GetValue("ShortName", typeof(string));
+            identifier = (IIdentifier)info.GetValue("identifier", typeof(IIdentifier));
+            Fields = ((IList<IOrderableElement<IAssociationSpecImmutable>>)info.GetValue("Fields", typeof(IList<IOrderableElement<IAssociationSpecImmutable>>))).ToImmutableList();
+            Interfaces = ((IList<IObjectSpecImmutable>)info.GetValue("Interfaces", typeof(IList<IObjectSpecImmutable>))).ToImmutableList();
+            subclasses = ((IList<IObjectSpecImmutable>)info.GetValue("subclasses", typeof(IList<IObjectSpecImmutable>))).ToImmutableList();
+            ObjectActions = ((IList<IOrderableElement<IActionSpecImmutable>>)info.GetValue("ObjectActions", typeof(IList<IOrderableElement<IActionSpecImmutable>>))).ToImmutableList();
+            ContributedActions = ((IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>)info.GetValue("ContributedActions", typeof(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>))).ToImmutableList();
+            RelatedActions = ((IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>)info.GetValue("RelatedActions", typeof(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>))).ToImmutableList();
+        }
+
+
+        #endregion
 
 
         public override string ToString() {

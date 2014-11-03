@@ -9,11 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
-using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class EnumFacet : MarkerFacetAbstract, IEnumFacet {
         private readonly EnumNameComparer comparer;
         private readonly Type typeOfEnum;
@@ -25,9 +26,6 @@ namespace NakedObjects.Meta.Facet {
         }
 
         #region IEnumFacet Members
-        private string ToDisplayName(string enumName) {
-            return NameUtils.NaturalName(Enum.Parse(typeOfEnum, enumName).ToString());
-        }
 
         public object[] GetChoices(INakedObject inObject) {
             return Enum.GetNames(typeOfEnum).OrderBy(s => s, comparer).Select(s => Enum.Parse(typeOfEnum, s)).ToArray();
@@ -40,7 +38,12 @@ namespace NakedObjects.Meta.Facet {
         public string GetTitle(INakedObject inObject) {
             return ToDisplayName(inObject.Object.ToString());
         }
+
         #endregion
+
+        private string ToDisplayName(string enumName) {
+            return NameUtils.NaturalName(Enum.Parse(typeOfEnum, enumName).ToString());
+        }
 
         #region Nested type: EnumNameComparer
 
