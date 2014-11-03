@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
-using NakedObjects.Xat;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test {
@@ -26,18 +25,11 @@ namespace NakedObjects.Reflect.Test {
             return c;
         }
 
-        public class NullMenuBuilder : IMenuBuilder {
-            public IMenu[] DefineMainMenus() {
-               return new IMenu[]{};
-            }
-        }
-
         protected virtual void RegisterTypes(IUnityContainer container) {
             container.RegisterType<IMenuBuilder, NullMenuBuilder>();
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>();
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
-
             container.RegisterType<IReflector, Reflector>();
             container.RegisterType<IMetamodel, Metamodel>();
             container.RegisterType<IMetamodelBuilder, Metamodel>();
@@ -124,6 +116,23 @@ namespace NakedObjects.Reflect.Test {
             // Assert.AreEqual(20, reflector.AllObjectSpecImmutables.Count());
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
+
+
+
+
+        #region Nested type: NullMenuBuilder
+
+        public class NullMenuBuilder : IMenuBuilder {
+            #region IMenuBuilder Members
+
+            public IMenu[] DefineMainMenus() {
+                return new IMenu[] {};
+            }
+
+            #endregion
+        }
+
+        #endregion
 
         #region Nested type: SetWrapper
 

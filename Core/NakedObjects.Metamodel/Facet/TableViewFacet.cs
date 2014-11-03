@@ -5,10 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class TableViewFacet : MultipleValueFacetAbstract, ITableViewFacet {
         public TableViewFacet(bool title, string[] columns, ISpecification holder)
             : base(typeof (ITableViewFacet), holder) {
@@ -16,7 +18,6 @@ namespace NakedObjects.Meta.Facet {
             Columns = columns;
         }
 
-            
         #region ITableViewFacet Members
 
         public bool Title { get; set; }

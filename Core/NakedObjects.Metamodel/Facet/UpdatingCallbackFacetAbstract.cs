@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class UpdatingCallbackFacetAbstract : CallbackFacetAbstract, IUpdatingCallbackFacet {
         protected UpdatingCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

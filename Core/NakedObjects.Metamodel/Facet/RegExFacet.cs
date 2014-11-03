@@ -5,16 +5,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Text.RegularExpressions;
 using NakedObjects.Architecture;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Except;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class RegExFacet : MultipleValueFacetAbstract, IRegExFacet {
+        private readonly string failureMessage;
+        private readonly string formatPattern;
+        private readonly bool isCaseSensitive;
+        private readonly string validationPattern;
+
         public RegExFacet(string validation, string format, bool caseSensitive, string message, ISpecification holder)
             : base(typeof (IRegExFacet), holder) {
             validationPattern = validation;
@@ -26,6 +33,18 @@ namespace NakedObjects.Meta.Facet {
 
         private RegexOptions PatternFlags {
             get { return !IsCaseSensitive ? RegexOptions.IgnoreCase : RegexOptions.None; }
+        }
+
+        public string ValidationPattern {
+            get { return validationPattern; }
+        }
+
+        public string FormatPattern {
+            get { return formatPattern; }
+        }
+
+        public bool IsCaseSensitive {
+            get { return isCaseSensitive; }
         }
 
         #region IRegExFacet Members
@@ -46,35 +65,8 @@ namespace NakedObjects.Meta.Facet {
             return !Pattern.IsMatch(text);
         }
 
-        #endregion
-
-        protected override string ToStringValues() {
-            return Pattern.ToString();
-        }
-
-       
-        private readonly string validationPattern;
-
-        public string ValidationPattern {
-            get { return validationPattern; }
-        }
-
-        private readonly string failureMessage;
-
         public virtual string FailureMessage {
             get { return failureMessage; }
-        }
-
-        private readonly string formatPattern;
-
-        public string FormatPattern {
-            get { return formatPattern; }
-        }
-
-        private readonly bool isCaseSensitive;
-
-        public bool IsCaseSensitive {
-            get { return isCaseSensitive; }
         }
 
 
@@ -94,6 +86,12 @@ namespace NakedObjects.Meta.Facet {
 
         public virtual InvalidException CreateExceptionFor(InteractionContext ic) {
             return new InvalidRegExException(ic, FormatPattern, ValidationPattern, IsCaseSensitive, Invalidates(ic));
+        }
+
+        #endregion
+
+        protected override string ToStringValues() {
+            return Pattern.ToString();
         }
     }
 

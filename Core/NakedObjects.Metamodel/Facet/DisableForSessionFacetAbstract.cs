@@ -12,6 +12,8 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+
+    [Serializable]
     public abstract class DisableForSessionFacetAbstract : FacetAbstract, IDisableForSessionFacet {
         protected DisableForSessionFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

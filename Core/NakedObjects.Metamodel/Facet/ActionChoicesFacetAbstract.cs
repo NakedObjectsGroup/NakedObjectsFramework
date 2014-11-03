@@ -9,11 +9,11 @@ using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class ActionChoicesFacetAbstract : FacetAbstract, IActionChoicesFacet {
         protected ActionChoicesFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

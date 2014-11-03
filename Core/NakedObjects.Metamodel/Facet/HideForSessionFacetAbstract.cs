@@ -21,6 +21,8 @@ namespace NakedObjects.Meta.Facet {
     ///     In the standard Naked Objects Programming Model, corresponds to
     ///     invoking the <c>HideXxx</c> support method for the member.
     /// </para>
+    /// 
+    [Serializable]
     public abstract class HideForSessionFacetAbstract : FacetAbstract, IHideForSessionFacet {
         protected HideForSessionFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

@@ -12,13 +12,13 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, IImperativeFacet {
         private readonly MethodInfo choicesMethod;
         private readonly Type choicesType;

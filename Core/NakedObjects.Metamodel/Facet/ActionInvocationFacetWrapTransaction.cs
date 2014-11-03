@@ -10,11 +10,10 @@ using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ActionInvocationFacetWrapTransaction : ActionInvocationFacetAbstract {
         private static readonly ILog Log;
         private readonly IActionInvocationFacet underlyingFacet;

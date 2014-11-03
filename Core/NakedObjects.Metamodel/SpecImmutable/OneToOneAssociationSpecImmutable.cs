@@ -10,6 +10,8 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
+
+    [Serializable]
     public class OneToOneAssociationSpecImmutable : AssociationSpecImmutable {
         public OneToOneAssociationSpecImmutable(IIdentifier identifier, Type returnType, IObjectSpecImmutable returnSpec)
             : base(identifier, returnType, returnSpec) {}

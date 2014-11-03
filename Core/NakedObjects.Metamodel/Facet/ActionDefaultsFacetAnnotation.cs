@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ActionDefaultsFacetAnnotation : ActionDefaultsFacetAbstract {
         private readonly object value;
 

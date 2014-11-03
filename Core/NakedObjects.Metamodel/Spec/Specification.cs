@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -17,7 +18,8 @@ namespace NakedObjects.Meta.Spec {
     /// <summary>
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>
-    public class Specification : ISpecification, ISpecificationBuilder {
+    [Serializable]
+    public class Specification : ISpecification, ISpecificationBuilder, ISerializable {
         private ImmutableDictionary<Type, IFacet> facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
 
         #region ISpecification Members
@@ -71,6 +73,10 @@ namespace NakedObjects.Meta.Spec {
             if (existingFacet == null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
                 facetsByClass = facetsByClass.SetItem(facetType, facet);
             }
+        }
+
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue("facetsByClass", facetsByClass.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
         }
     }
 }

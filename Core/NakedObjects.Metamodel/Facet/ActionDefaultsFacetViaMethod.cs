@@ -11,9 +11,9 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
         private readonly MethodInfo actionMethod;
         private readonly MethodInfo method;

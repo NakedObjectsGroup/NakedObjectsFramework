@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class PersistingCallbackFacetAbstract : CallbackFacetAbstract, IPersistingCallbackFacet {
         protected PersistingCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

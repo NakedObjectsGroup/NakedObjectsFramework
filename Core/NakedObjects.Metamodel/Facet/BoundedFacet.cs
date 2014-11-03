@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -12,10 +13,10 @@ using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class BoundedFacet : MarkerFacetAbstract, IBoundedFacet {
         public BoundedFacet(ISpecification holder)
-            : base(typeof (IBoundedFacet),holder) {}
-
+            : base(typeof (IBoundedFacet), holder) {}
 
         #region IBoundedFacet Members
 
@@ -32,7 +33,8 @@ namespace NakedObjects.Meta.Facet {
         }
 
         #endregion
-        public  string DisabledReason(INakedObject inObject) {
+
+        public string DisabledReason(INakedObject inObject) {
             return Resources.NakedObjects.Bounded;
         }
     }

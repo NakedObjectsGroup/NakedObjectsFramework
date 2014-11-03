@@ -5,15 +5,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class OnPersistingErrorCallbackFacetNull : OnPersistingErrorCallbackFacetAbstract {
         public OnPersistingErrorCallbackFacetNull(ISpecification holder)
             : base(holder) {}
 
-        public override string Invoke(INakedObject nakedObject, System.Exception exception) {
+        public override string Invoke(INakedObject nakedObject, Exception exception) {
             throw exception;
         }
     }

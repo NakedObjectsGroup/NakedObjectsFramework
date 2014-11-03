@@ -5,26 +5,28 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class MemberOrderFacet : MultipleValueFacetAbstract, IMemberOrderFacet {
+        private readonly string name;
+
+        private readonly string sequence;
+
         public MemberOrderFacet(string name, string sequence, ISpecification holder)
-            : base(typeof(IMemberOrderFacet), holder) {
+            : base(typeof (IMemberOrderFacet), holder) {
             this.name = name;
             this.sequence = sequence;
         }
 
-
         #region IMemberOrderFacet Members
-        private readonly string name;
 
         public virtual string Name {
             get { return name; }
         }
-
-        private readonly string sequence;
 
         public virtual string Sequence {
             get { return sequence; }
@@ -32,5 +34,6 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
     }
+
     // Copyright (c) Naked Objects Group Ltd.
 }

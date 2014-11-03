@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
@@ -20,6 +21,7 @@ namespace NakedObjects.Meta.Facet {
     ///     In the standard Naked Objects Programming Model, specify mandatory by
     ///     <i>omitting</i> the <see cref="OptionallyAttribute" /> annotation.
     /// </para>
+    [Serializable]
     public class MandatoryFacetDefault : MandatoryFacetAbstract {
         public MandatoryFacetDefault(ISpecification holder)
             : base(holder) {}

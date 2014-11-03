@@ -5,17 +5,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.SpecImmutable;
-using System.Collections.Generic;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta {
+    [Serializable]
     public class ImmutableInMemorySpecCache : ISpecificationCache {
-        private ImmutableDictionary<string, IObjectSpecImmutable> specs = ImmutableDictionary<string, IObjectSpecImmutable>.Empty;
         private ImmutableList<IMenu> mainMenus = ImmutableList<IMenu>.Empty;
+        private ImmutableDictionary<string, IObjectSpecImmutable> specs = ImmutableDictionary<string, IObjectSpecImmutable>.Empty;
+
+        public ImmutableInMemorySpecCache() {
+            
+        }
 
         #region ISpecificationCache Members
 
@@ -42,6 +49,20 @@ namespace NakedObjects.Meta {
         public IMenu[] AllMainMenus() {
             return mainMenus.ToArray();
         }
+
+        #endregion
+
+        #region ISerializable
+
+        // The special constructor is used to deserialize values. 
+        public ImmutableInMemorySpecCache(SerializationInfo info, StreamingContext context) {
+            specs = ((Dictionary<string, IObjectSpecImmutable>) info.GetValue("specs", typeof (Dictionary<string, IObjectSpecImmutable>))).ToImmutableDictionary();
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue("specs", specs.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+        }
+
         #endregion
     }
 

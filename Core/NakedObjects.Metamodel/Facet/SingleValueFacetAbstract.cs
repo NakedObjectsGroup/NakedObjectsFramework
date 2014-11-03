@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class SingleValueFacetAbstract : FacetAbstract, ISingleValueFacet {
         protected SingleValueFacetAbstract(Type facetType, ISpecification holder)
             : base(facetType, holder) {}

@@ -12,14 +12,14 @@ using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class PropertyChoicesFacetx : FacetAbstract, IPropertyChoicesFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
@@ -27,14 +27,23 @@ namespace NakedObjects.Meta.Facet {
         private readonly Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes;
 
         public PropertyChoicesFacetx(MethodInfo optionsMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, ISpecification holder)
-            : base(typeof (IPropertyChoicesFacet),holder) {
+            : base(typeof (IPropertyChoicesFacet), holder) {
             method = optionsMethod;
 
             this.parameterNamesAndTypes = parameterNamesAndTypes;
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
         }
 
+        #region IImperativeFacet Members
+
+        public MethodInfo GetMethod() {
+            return method;
+        }
+
+        #endregion
+
         #region IPropertyChoicesFacet Members
+
         public Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes {
             get { return parameterNamesAndTypes; }
         }
@@ -44,20 +53,14 @@ namespace NakedObjects.Meta.Facet {
             try {
                 object options = InvokeUtils.Invoke(method, inObject, parms);
                 if (options is IEnumerable) {
-                    return ((IEnumerable)options).Cast<object>().ToArray();
+                    return ((IEnumerable) options).Cast<object>().ToArray();
                 }
                 throw new NakedObjectDomainException("Must return IEnumerable from choices method: " + method.Name);
-            } catch (ArgumentException ae) {
+            }
+            catch (ArgumentException ae) {
                 string msg = string.Format("Choices exception: {0} has mismatched (ie type of parameter does not match type of property) parameter types", method.Name);
                 throw new InvokeException(msg, ae);
             }
-        }
-        #endregion
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return method;
         }
 
         #endregion

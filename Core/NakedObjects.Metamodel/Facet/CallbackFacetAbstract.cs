@@ -15,6 +15,8 @@ namespace NakedObjects.Meta.Facet {
     /// <summary>
     ///     Adapter superclass for <see cref="IFacet" />s for <see cref="ICallbackFacet" />
     /// </summary>
+    /// 
+    [Serializable]
     public abstract class CallbackFacetAbstract : FacetAbstract, ICallbackFacet {
         protected CallbackFacetAbstract(Type facetType, ISpecification holder)
             : base(facetType, holder) {}

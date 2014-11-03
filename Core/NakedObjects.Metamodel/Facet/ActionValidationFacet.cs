@@ -5,17 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Except;
-using NakedObjects.Meta.Utils;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class ActionValidationFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
@@ -23,14 +24,6 @@ namespace NakedObjects.Meta.Facet {
             : base(typeof (IActionValidationFacet), holder) {
             this.method = method;
         }
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return method;
-        }
-
-        #endregion
 
         #region IActionValidationFacet Members
 
@@ -42,9 +35,18 @@ namespace NakedObjects.Meta.Facet {
             return new ActionArgumentsInvalidException(ic, Invalidates(ic));
         }
 
-        public  string InvalidReason(INakedObject target, INakedObject[] proposedArguments) {
+        public string InvalidReason(INakedObject target, INakedObject[] proposedArguments) {
             return (string) InvokeUtils.Invoke(method, target, proposedArguments);
         }
+
+        #endregion
+
+        #region IImperativeFacet Members
+
+        public MethodInfo GetMethod() {
+            return method;
+        }
+
         #endregion
 
         protected override string ToStringValues() {

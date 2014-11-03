@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -12,6 +13,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
         private readonly IParser<T> parser;
 

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
@@ -13,10 +14,11 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
-    public class GenericCollectionFacet : CollectionFacetAbstract {
 
+    [Serializable]
+    public class GenericCollectionFacet : CollectionFacetAbstract {
         public GenericCollectionFacet(ISpecification holder)
-            : base(holder, false) { }
+            : base(holder, false) {}
 
         public GenericCollectionFacet(ISpecification holder, bool isASet)
             : base(holder, isASet) {}

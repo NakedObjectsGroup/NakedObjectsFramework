@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
@@ -14,6 +15,7 @@ namespace NakedObjects.Meta.Facet {
     /// <para>
     ///     This implementation indicates that the <see cref="ISpecification" /> is <i>not</i> mandatory.
     /// </para>
+    [Serializable]
     public class OptionalFacet : MandatoryFacetAbstract {
         public OptionalFacet(ISpecification holder)
             : base(holder) {}

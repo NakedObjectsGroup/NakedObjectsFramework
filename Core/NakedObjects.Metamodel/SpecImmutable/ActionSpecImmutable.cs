@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
@@ -19,7 +20,7 @@ namespace NakedObjects.Meta.SpecImmutable {
     // the reflection package (which will be the same for all reflectors and will allow the message to
     // be better passed back to the client).
 
-
+    [Serializable]
     public class ActionSpecImmutable : MemberSpecImmutable, IActionSpecImmutable {
         private readonly IActionParameterSpecImmutable[] parameters;
         private readonly IObjectSpecImmutable specification;

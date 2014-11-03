@@ -5,11 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Architecture.Facets.Propparam.TypicalLength {
+    [Serializable]
     public class TypicalLengthFacetDerivedFromType : TypicalLengthFacetAbstract {
         public TypicalLengthFacetDerivedFromType(ITypicalLengthFacet typicalLengthFacet, ISpecification holder)
             : base(typicalLengthFacet.Value, holder) {}

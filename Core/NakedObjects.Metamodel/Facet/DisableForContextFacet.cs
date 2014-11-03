@@ -5,16 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Reflection;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Util;
-using NakedObjects.Meta.Utils;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
+
+    [Serializable]
     public class DisableForContextFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
@@ -22,14 +24,6 @@ namespace NakedObjects.Meta.Facet {
             : base(typeof (IDisableForContextFacet), holder) {
             this.method = method;
         }
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return method;
-        }
-
-        #endregion
 
         #region IDisableForContextFacet Members
 
@@ -45,6 +39,15 @@ namespace NakedObjects.Meta.Facet {
         public string DisabledReason(INakedObject nakedObject) {
             return (string) InvokeUtils.Invoke(method, nakedObject);
         }
+
+        #endregion
+
+        #region IImperativeFacet Members
+
+        public MethodInfo GetMethod() {
+            return method;
+        }
+
         #endregion
 
         protected override string ToStringValues() {

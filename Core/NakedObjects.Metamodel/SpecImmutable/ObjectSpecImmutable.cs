@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Common.Logging;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
@@ -23,6 +24,7 @@ using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
+    [Serializable]
     public class ObjectSpecImmutable : Specification, IObjectSpecImmutable, IObjectSpecBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpecImmutable));
 
@@ -223,6 +225,16 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         private string DefaultTitle() {
             return Service ? SingularName : UntitledName;
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue("Type", Type);
+            info.AddValue("identifier", identifier);
+            info.AddValue("Interfaces", Interfaces.ToList());
+            info.AddValue("subclasses", subclasses.ToList());
+            info.AddValue("ContributedActions", ContributedActions.ToList());
+            info.AddValue("RelatedActions", RelatedActions.ToList());
+            base.GetObjectData(info, context);
         }
 
 

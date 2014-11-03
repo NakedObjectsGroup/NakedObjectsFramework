@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -13,6 +14,8 @@ using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
+
+    [Serializable]
     public class EncodeableFacetUsingEncoderDecoder<T> : FacetAbstract, IEncodeableFacet {
         private readonly IEncoderDecoder<T> encoderDecoder;
 

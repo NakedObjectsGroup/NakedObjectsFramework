@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
@@ -12,6 +13,7 @@ namespace NakedObjects.Meta.Facet {
     ///     Has a name of <c>null</c>
     /// </summary>
     // TODO: should this instead be the empty string?  
+    [Serializable]
     public class NamedFacetNone : NamedFacetAbstract {
         public NamedFacetNone(ISpecification holder)
             : base(null, holder) {}

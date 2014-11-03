@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class FacetAbstract : IFacet {
         private readonly Type facetType;
         private ISpecification holder;

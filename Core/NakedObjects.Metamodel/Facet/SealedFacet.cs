@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Architecture.Facets.Types {
+    [Serializable]
     public class SealedFacet : MarkerFacetAbstract, ISealedFacet {
         public SealedFacet(ISpecification holder)
             : base(Type, holder) {}

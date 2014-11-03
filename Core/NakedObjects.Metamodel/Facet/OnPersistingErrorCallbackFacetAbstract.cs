@@ -10,6 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class OnPersistingErrorCallbackFacetAbstract : CallbackWithExceptionFacetAbstract, IOnPersistingErrorCallbackFacet {
         protected OnPersistingErrorCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

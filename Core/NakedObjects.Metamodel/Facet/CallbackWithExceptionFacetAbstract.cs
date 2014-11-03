@@ -11,13 +11,14 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+    [Serializable]
     public abstract class CallbackWithExceptionFacetAbstract : FacetAbstract, ICallbackWithExceptionFacet {
         protected CallbackWithExceptionFacetAbstract(Type facetType, ISpecification holder)
             : base(facetType, holder) {}
 
         #region ICallbackWithExceptionFacet Members
 
-        public abstract string Invoke(INakedObject nakedObject, System.Exception exception);
+        public abstract string Invoke(INakedObject nakedObject, Exception exception);
 
         #endregion
     }

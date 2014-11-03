@@ -13,7 +13,10 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Adapter {
+
+    [Serializable]
     public class IdentifierImpl : IIdentifier {
+        [NonSerialized]
         private readonly IMetamodel metamodel;
         private readonly string className;
         private readonly bool isField;

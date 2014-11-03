@@ -10,6 +10,8 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
+
+    [Serializable]
     public abstract class DeletedCallbackFacetAbstract : CallbackFacetAbstract, IDeletedCallbackFacet {
         protected DeletedCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}

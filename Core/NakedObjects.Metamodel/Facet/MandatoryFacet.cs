@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects.Architecture.Spec;
 
@@ -15,6 +16,7 @@ namespace NakedObjects.Meta.Facet {
     /// <para>
     ///     This implementation indicates that the <see cref="ISpecification" /> is mandatory.
     /// </para>
+    [Serializable]
     public class MandatoryFacet : MandatoryFacetAbstract {
         public MandatoryFacet(ISpecification holder)
             : base(holder) {}
