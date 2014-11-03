@@ -30,7 +30,9 @@ namespace NakedObjects.Reflect.Test {
         }
 
         protected virtual void RegisterTypes(IUnityContainer container) {
-            container.RegisterType<IMenuBuilder, NullMenuBuilder>();
+            container.RegisterType<IMainMenuDefinition, NullMenuDfinition>();
+
+            container.RegisterType<IMenuFactory, NullMenuBuilder>();
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
@@ -38,6 +40,12 @@ namespace NakedObjects.Reflect.Test {
             container.RegisterType<IMetamodel, Metamodel>();
             container.RegisterType<IMetamodelBuilder, Metamodel>();
             container.RegisterType<IServicesConfiguration, ServicesConfiguration>();
+        }
+
+        public class NullMenuDfinition : IMainMenuDefinition {
+            public IMenu[] MainMenus(IMenuFactory factory) {
+                return new IMenu[]{};
+            }
         }
 
         [TestMethod]
@@ -156,7 +164,7 @@ namespace NakedObjects.Reflect.Test {
 
         #region Nested type: NullMenuBuilder
 
-        public class NullMenuBuilder : IMenuBuilder {
+        public class NullMenuBuilder : IMenuFactory {
             #region IMenuBuilder Members
 
             public IMenu[] DefineMainMenus() {
@@ -164,6 +172,14 @@ namespace NakedObjects.Reflect.Test {
             }
 
             #endregion
+
+            public IMenu NewMenu(string name) {
+                throw new NotImplementedException();
+            }
+
+            public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
+                throw new NotImplementedException();
+            }
         }
 
         #endregion

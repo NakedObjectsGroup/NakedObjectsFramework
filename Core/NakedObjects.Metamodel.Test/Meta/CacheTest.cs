@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.Practices.Unity;
@@ -29,6 +30,7 @@ namespace NakedObjects.Meta.Test {
         }
 
         protected virtual void RegisterTypes(IUnityContainer container) {
+            container.RegisterType<IMenuFactory, NullMenuFactory>();
             container.RegisterType<IMainMenuDefinition, NullMenuDefinition>();
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
@@ -94,6 +96,16 @@ namespace NakedObjects.Meta.Test {
             }
 
             #endregion
+        }
+
+        public class NullMenuFactory : IMenuFactory {
+            public IMenu NewMenu(string name) {
+                return null;
+            }
+
+            public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
+                return null;
+            }
         }
 
         #endregion
