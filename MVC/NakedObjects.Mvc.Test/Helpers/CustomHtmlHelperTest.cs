@@ -154,6 +154,7 @@ namespace MvcTestApp.Tests.Helpers {
 
         private void SetupViewData(object model) {
             mocks.ViewDataContainer.Object.ViewData.Model = model;
+            mocks.ViewDataContainer.Object.ViewData[IdHelper.NofMainMenus] = NakedObjectsFramework.Metamodel.MainMenus();
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NofServices] = NakedObjectsFramework.GetServices();
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NoFramework] = NakedObjectsFramework;
         }
@@ -1897,7 +1898,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestRefView");
         }
 
-        [Test]
+        [Test] //TODO: When transition to Menus complete, replace with test of adding CustomMenuItems to a menu
         public void ServiceWithCustomItems() {
             object ts = GetTestService("Custom Helper Test Classes").NakedObject.Object;
 
@@ -1917,7 +1918,7 @@ namespace MvcTestApp.Tests.Helpers {
                 "ServiceWithCustomItems");
         }
 
-        [Test]
+        [Test] //TODO: When conversion to Menus complete, replace this test with call to MenuExtensions#MainMenu.
         public void SingleServiceMenu() {
             SetupViewData(new object());
             object ts = GetTestService("Custom Helper Test Classes").NakedObject.Object;

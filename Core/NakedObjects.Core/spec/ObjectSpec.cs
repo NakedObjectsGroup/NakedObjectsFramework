@@ -342,7 +342,7 @@ namespace NakedObjects.Core.Spec {
             var orderedFields = new List<IAssociationSpec>();
             foreach (var element in order) {
                 if (element.Spec != null) {
-                    orderedFields.Add(memberFactory.CreateNakedObjectField(element.Spec));
+                    orderedFields.Add(memberFactory.CreateAssociationSpec(element.Spec));
                 }
                 else if (element.Set != null) {
                     throw new NotImplementedException();

@@ -220,8 +220,8 @@ namespace NakedObjects.Xat {
             tc.testObjectFactory = null;
         }
 
-        public class NullMenuBuilder : IMenuBuilder {
-            public IMenu[] DefineMainMenus() {
+        public class NullMainMenuDefinition : IMainMenuDefinition {
+            public IMenu[] MainMenus() {
                 return new IMenu[]{};
             }
         }
@@ -229,7 +229,7 @@ namespace NakedObjects.Xat {
 
 
         protected virtual void RegisterTypes(IUnityContainer container) {
-            container.RegisterType<IMenuBuilder, NullMenuBuilder>();
+            container.RegisterType<IMainMenuDefinition, NullMainMenuDefinition>();
 
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>();
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();

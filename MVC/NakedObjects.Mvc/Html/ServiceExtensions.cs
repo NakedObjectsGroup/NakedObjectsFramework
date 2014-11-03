@@ -5,19 +5,16 @@ using System.Collections;
 using System.Linq;
 using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
+using System;
 
 namespace NakedObjects.Web.Mvc.Html {
-    public static class ServiceExtensions {
 
-     
+    public static class ServiceExtensions {
 
         #region ServiceMenus
 
-        /// <summary>
-        /// Create menus for all services in ViewData
-        /// </summary>
-        /// <param name="html"></param>
-        /// <returns></returns>
+        //TODO: Mark obsolete when Menus refactoring complete
+        //[Obsolete("Use MenuExtensions#MainMenus")]
         public static MvcHtmlString Services(this HtmlHelper html) {
             var tag = new TagBuilder("div");
             tag.AddCssClass(IdHelper.ServicesContainerName);
@@ -32,10 +29,8 @@ namespace NakedObjects.Web.Mvc.Html {
             return MvcHtmlString.Create("");
         }
 
-        /// <summary>
-        /// Create menu from actions of service - inserting additional items from menuItems parameter. To emulate generic services 
-        /// list wrap in a div with class=IdHelper.ServicesContainerName with any other required services. 
-        /// </summary> 
+        //TODO: Mark obsolete when Menus refactoring complete
+        //[Obsolete("Add CustomMenuItems into an IMenu directly when constructing menus")]
         public static MvcHtmlString Service(this HtmlHelper html, object service, params CustomMenuItem[] menuItems) {
             INakedObject nakedObject = html.Framework().GetNakedObject(service);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
@@ -44,12 +39,8 @@ namespace NakedObjects.Web.Mvc.Html {
                                                        nakedObject.TitleString());
         }
 
-        /// <summary>
-        /// create menu for service
-        /// </summary>
-        /// <param name="html"></param>
-        /// <param name="service"></param>
-        /// <returns></returns>
+        //TODO: Mark obsolete when Menus refactoring complete
+        //[Obsolete("Use MenuExtensions#MainMenu")]
         public static MvcHtmlString ServiceMenu(this HtmlHelper html, object service) {
             return html.Service(service);
         }

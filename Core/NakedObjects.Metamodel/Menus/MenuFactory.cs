@@ -18,11 +18,11 @@ namespace NakedObjects.Meta.Menus {
         }
 
         public IMenu NewMenu(string name) {
-            return new Menu(metamodel, name);
+            return new MenuImmutable(metamodel, name);
         }
 
         public ITypedMenu<TService> NewMenu<TService>(bool addAllActions, string name = null) {
-            return new TypedMenu<TService>(metamodel, addAllActions, name);
+            return new TypedMenuImmutable<TService>(metamodel, addAllActions, name);
         }
     }
 }

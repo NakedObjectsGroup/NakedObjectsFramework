@@ -20,7 +20,7 @@ namespace NakedObjects.Architecture.Component {
 
         void Cache(IMenu mainMenu);
 
-        IMenu[] AllMainMenus();
+        IMenu[] MainMenus();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

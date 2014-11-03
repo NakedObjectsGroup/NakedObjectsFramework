@@ -1942,7 +1942,15 @@ namespace MvcTestApp.Tests.Helpers {
             Assert.IsFalse(mocks.HtmlHelper.ObjectHasVisibleFields(service.Object));
         }
 
-        [Test]
+        [Test, Ignore] //Pending completion of Menus work
+        public void MainMenus() {
+            string s = mocks.HtmlHelper.MainMenus().ToString();
+
+
+            CheckResults("MainMenus", s);
+        }
+
+        [Test] //TODO: Remove when transition to Menus design complete
         public void ServiceList() {
             string s = mocks.HtmlHelper.Services().ToString();
 

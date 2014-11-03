@@ -14,22 +14,23 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.spec;
 using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Managers {
     public class MetamodelManager : IMetamodelManager {
         private readonly IDictionary<IObjectSpecImmutable, IObjectSpec> localCache = new Dictionary<IObjectSpecImmutable, IObjectSpec>();
-        private readonly SpecFactory memberFactory;
+        private readonly SpecFactory specFactory;
         private readonly IMetamodel metamodel;
 
         public MetamodelManager(SpecFactory memberFactory, IMetamodel metamodel) {
-            this.memberFactory = memberFactory;
+            this.specFactory = memberFactory;
             this.metamodel = metamodel;
         }
 
         #region IMetamodelManager Members
 
         public virtual IObjectSpec[] AllSpecs {
-            get { return metamodel.AllSpecifications.Select(s => new ObjectSpec(memberFactory, this, s)).Cast<IObjectSpec>().ToArray(); }
+            get { return metamodel.AllSpecifications.Select(s => new ObjectSpec(specFactory, this, s)).Cast<IObjectSpec>().ToArray(); }
         }
 
         public IObjectSpec GetSpecification(Type type) {
@@ -48,7 +49,7 @@ namespace NakedObjects.Managers {
 
         private IObjectSpec NewObjectSpec(IObjectSpecImmutable spec) {
             if (!localCache.ContainsKey(spec)) {
-                localCache[spec] = new ObjectSpec(memberFactory, this, spec);
+                localCache[spec] = new ObjectSpec(specFactory, this, spec);
             }
 
             return localCache[spec];
@@ -64,6 +65,14 @@ namespace NakedObjects.Managers {
             var innerSpec = metamodel.GetSpecification(name);
             Assert.AssertNotNull(string.Format("failed to find spec for {0}", name), innerSpec);
             return innerSpec;
+        }
+
+        public IMenu[] MainMenus() {
+            return metamodel.MainMenus;
+        }
+
+        public IActionSpec GetActionSpec(IActionSpecImmutable spec) {
+            return specFactory.CreateActionSpec(spec);
         }
     }
 }

@@ -27,9 +27,12 @@ using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.spec;
+using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Web.Mvc.Html {
-    public class CustomMenuItem {
+    public class CustomMenuItem : IMenuItem {
         public string Controller { get; set; }
         public string Name { get; set; }
         public string Action { get; set; }
@@ -574,7 +577,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
 
-        private static string GetVetoedAction(this HtmlHelper html, ActionContext actionContext, IConsent consent, out string value, out RouteValueDictionary attributes) {
+        internal static string GetVetoedAction(this HtmlHelper html, ActionContext actionContext, IConsent consent, out string value, out RouteValueDictionary attributes) {
             value = actionContext.Action.GetName();
             attributes = new RouteValueDictionary(new {
                 id = actionContext.GetActionId(),
@@ -584,7 +587,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return "div";
         }
 
-        private static string GetDuplicateAction(this HtmlHelper html, ActionContext actionContext, string reason, out string value, out RouteValueDictionary attributes) {
+        internal static string GetDuplicateAction(this HtmlHelper html, ActionContext actionContext, string reason, out string value, out RouteValueDictionary attributes) {
             value = actionContext.Action.GetName();
             attributes = new RouteValueDictionary(new {
                 id = actionContext.GetActionId(),
@@ -646,7 +649,7 @@ namespace NakedObjects.Web.Mvc.Html {
 
        
 
-        private static string GetActionAsForm(this HtmlHelper html, ActionContext actionContext, string controllerName, object routeValues, out string value, out RouteValueDictionary attributes) {
+        internal static string GetActionAsForm(this HtmlHelper html, ActionContext actionContext, string controllerName, object routeValues, out string value, out RouteValueDictionary attributes) {
             const string tagType = "form";
 
             IEnumerable<ElementDescriptor> concurrencyElements = html.GetConcurrencyElements(actionContext.Target, actionContext.GetConcurrencyActionInputId);
@@ -685,7 +688,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return tagType;
         }
 
-        private static string GetActionAsButton(this HtmlHelper html, ActionContext actionContext, out string value, out RouteValueDictionary attributes) {
+        internal static string GetActionAsButton(this HtmlHelper html, ActionContext actionContext, out string value, out RouteValueDictionary attributes) {
             const string tagType = "button";
 
             value = actionContext.Action.GetName();
@@ -719,28 +722,11 @@ namespace NakedObjects.Web.Mvc.Html {
             return visibleFields.Select(property => html.ViewObjectField(new PropertyContext(nakedObject, property, false, parentContext)));
         }
 
-        private static Tuple<bool, string> IsDuplicate(this HtmlHelper html, IEnumerable<IActionSpec> allActions, IActionSpec action) {
+        internal static Tuple<bool, string> IsDuplicate(this HtmlHelper html, IEnumerable<IActionSpec> allActions, IActionSpec action) {
             return new Tuple<bool, string>(allActions.Count(a => a.GetName() == action.GetName()) > 1, MvcUi.DuplicateAction);
         }
 
-        internal static IList<ElementDescriptor> MenuActions(this HtmlHelper html, IMenu menu) {
-            //TODO: All this could/should be cached somehow?
-            //TODO: Turn this back into LINQ when done
-            var descriptors = new List<ElementDescriptor>();
-            IEnumerable<IActionSpec> allActions = null;
-            //foreach (IMenuItem item in menu.Items) {
-            //TODO: First pass -  get the top level actions only
-                //For MenuActions (not submenus) only:
-            IActionSpec action = null;    //get the IActionSpec for the IActionSpecImmutable               
-            INakedObject service = null; //get the (INakedObject) service for the objectspec on the IActionSpec
-            var descriptor = html.ObjectActionAsElementDescriptor(new ActionContext(false, service, action),
-                                                                                    new { id = html.Framework().GetObjectId(service) },
-                                                                                    false,
-                                                                                    html.IsDuplicate(allActions, action));
-            descriptors.Add(descriptor);
-            //end of loop
-            return descriptors;
-        }
+   
 
 
         internal static IList<ElementDescriptor> ObjectActions(this HtmlHelper html, INakedObject nakedObject, bool isEdit) {
@@ -2461,7 +2447,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return value.ToString();
         }
 
-        private static IList<ElementDescriptor> WrapInCollection(this IEnumerable<ElementDescriptor> collection, string tagType, object routeValues) {
+        internal static IList<ElementDescriptor> WrapInCollection(this IEnumerable<ElementDescriptor> collection, string tagType, object routeValues) {
             List<ElementDescriptor> children = collection.ToList();
             if (children.Any()) {
                 return new ElementDescriptor {

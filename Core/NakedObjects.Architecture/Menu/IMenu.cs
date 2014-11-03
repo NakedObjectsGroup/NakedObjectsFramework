@@ -1,12 +1,12 @@
-﻿using System;
+﻿using NakedObjects.Architecture.Spec;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace NakedObjects.Architecture.Menu {
-    //Implements IMenuItem in order to allow sub-menus to sit alongside simple actions
-    public interface IMenu {
+
+    //IMenu is to IMenuImmutable, as IObjectSpec is to IObjectSpecImmutable -  the runtime equivalent with injected services
+    public interface IMenu : IMenuItem {
+
+        IList<IMenuItem> MenuItems { get; }
+
         //Adds specified action as the next menu item
         //Returns this menu (for fluent programming)
         IMenu AddAction<TService>(string actionName, string renamedTo = null);
@@ -22,6 +22,5 @@ namespace NakedObjects.Architecture.Menu {
         //Returns this menu (for fluent programming)
         IMenu AddAsSubMenu(IMenu subMenu);
 
-        string Name { get; }
     }
 }

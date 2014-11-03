@@ -34,7 +34,7 @@ namespace NakedObjects.Reflect {
         private readonly IFacetFactorySet facetFactorySet;
         private readonly IMetamodelBuilder metamodel;
         private readonly IServicesConfiguration servicesConfig;
-        private readonly IMenuBuilder menuBuilder;
+        private readonly IMainMenuDefinition menuBuilder;
 
         static Reflector() {
             Log = LogManager.GetLogger(typeof (Reflector));
@@ -47,7 +47,7 @@ namespace NakedObjects.Reflect {
             IMetamodelBuilder metamodel, 
             IReflectorConfiguration config, 
             IServicesConfiguration servicesConfig,
-            IMenuBuilder menuBuilder) {
+            IMainMenuDefinition menuBuilder) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(facetFactorySet);
             Assert.AssertNotNull(facetDecoratorSet);
@@ -157,7 +157,7 @@ namespace NakedObjects.Reflect {
 
         private void InstallMainMenus() {
             if (menuBuilder == null) return; //TODO: Remove temporary guard, added to keep tests running without an implementation
-            foreach (IMenu menu in menuBuilder.DefineMainMenus()) {
+            foreach (IMenu menu in menuBuilder.MainMenus()) {
                 metamodel.AddMainMenu(menu);
             }
         }

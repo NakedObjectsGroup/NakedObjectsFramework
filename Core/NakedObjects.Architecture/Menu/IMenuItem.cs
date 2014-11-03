@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NakedObjects.Meta.Menus {
-    //Abstraction of MenuAction and Menu, to allow sub-menus
+namespace NakedObjects.Architecture.Menu {
     public interface IMenuItem {
-
         string Name { get; }
     }
 }

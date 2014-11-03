@@ -39,7 +39,7 @@ namespace NakedObjects.Meta {
             mainMenus = mainMenus.Add(mainMenu);
         }
 
-        public IMenu[] AllMainMenus() {
+        public IMenu[] MainMenus() {
             return mainMenus.ToArray();
         }
         #endregion

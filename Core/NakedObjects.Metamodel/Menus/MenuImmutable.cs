@@ -12,15 +12,14 @@ using System.Threading.Tasks;
 
 namespace NakedObjects.Meta.Menus {
     //Implements IMenuItem to permit sub-menus
-    public class Menu : IMenu, IMenuItem {
+    public class MenuImmutable : IMenu, IMenuItem {
         #region Injected Services
-        protected readonly IMetamodelBuilder metamodel; 
+        protected readonly IMetamodelBuilder metamodel;
 
         #endregion
 
-        public Menu(IMetamodelBuilder metamodel, string name) {
+        public MenuImmutable(IMetamodelBuilder metamodel, string name) {
             this.metamodel = metamodel;
-            this.MenuItems = ImmutableList<IMenuItem>.Empty;
             this.Name = name;
             if (name == null) {
                 this.Name = "Undefined";
@@ -29,11 +28,16 @@ namespace NakedObjects.Meta.Menus {
 
         #region properties
         public string Name { get; set; }
+
+        private ImmutableList<IMenuItem> items = ImmutableList<IMenuItem>.Empty;
         //Includes both actions and sub-menus
-        public ImmutableList<IMenuItem> MenuItems { get; set; }
+        public IList<IMenuItem> MenuItems { get { return items; } }
 
         protected void AddMenuItem(IMenuItem item) {
-            MenuItems = MenuItems.Add(item); //Only way to add to an immutable collection
+            if (items.Any(i => i.Name == item.Name)) {
+                throw new ReflectionException("Menu already contains an item named: "+item.Name);
+            }
+            items = items.Add(item); //Only way to add to an immutable collection
         }
 
         #endregion
@@ -45,7 +49,7 @@ namespace NakedObjects.Meta.Menus {
             if (actionSpec == null) {
                 throw new ReflectionException("No such action: " + actionName + " on " + serviceType);
             }
-            AddMenuItem(new MenuAction(actionSpec, renamedTo));
+            AddMenuItem(new MenuActionImmutable(actionSpec, renamedTo));
             return this;
         }
 
@@ -58,32 +62,44 @@ namespace NakedObjects.Meta.Menus {
         }
 
         public IMenu AddAllRemainingActionsFrom<TService>() {
-            var actions = GetActionsForService<TService>();
-            //TODO: Will this add them in the correct order?
-            foreach (var action in actions) {
-                if (!MenuItems.OfType<MenuAction>().Any(mi => mi.ActionSpec == action)) {
-                    AddMenuItem(new MenuAction(action, null));
-                }
-            }
+            var ordeableElements = GetObjectSpec<TService>().ObjectActions;
+            AddOrderableElementsToMenu(ordeableElements, this);
             return this;
         }
 
+        protected  void AddOrderableElementsToMenu(IList<IOrderableElement<IActionSpecImmutable>> ordeableElements, MenuImmutable toMenu) {
+            foreach (var element in ordeableElements) {
+                var action = element.Spec;
+                if (action != null && !toMenu.MenuItems.OfType<MenuActionImmutable>().Any(mi => mi.Action == action)) {
+                    toMenu.AddMenuItem(new MenuActionImmutable(action, null));
+                }
+                else if (element.GroupFullName != null) { //i.e. sub-menu
+                    var sub = CreateMenuImmutableAsSubMenu(element.GroupFullName);
+                    AddOrderableElementsToMenu(element.Set, sub);
+                }
+            }
+        }
+
         public IMenu CreateSubMenu(string subMenuName) {
-            var sub = new Menu(metamodel, subMenuName);
+            return CreateMenuImmutableAsSubMenu(subMenuName);
+        }
+
+        private MenuImmutable CreateMenuImmutableAsSubMenu(string subMenuName) {
+            var sub = new MenuImmutable(metamodel, subMenuName);
             this.AddAsSubMenu(sub);
             return sub;
         }
 
-        public IMenu AddAsSubMenu(IMenu subMenu) {          
+        public IMenu AddAsSubMenu(IMenu subMenu) {
             AddMenuItem(AsMenu(subMenu));
             return this;
         }
 
-        private static Menu AsMenu(IMenu menu) {
-            if (!(menu is Menu)) {
+        private static MenuImmutable AsMenu(IMenu menu) {
+            if (!(menu is MenuImmutable)) {
                 throw new ReflectionException("Using an unrecognised implementation of IMenu");
             }
-            return menu as Menu;
+            return menu as MenuImmutable;
         }
 
 

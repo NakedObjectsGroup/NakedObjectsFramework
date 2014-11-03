@@ -7,6 +7,7 @@
 
 using System;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
@@ -20,6 +21,8 @@ namespace NakedObjects.Architecture.Component {
 
         // remove this
         IObjectSpecImmutable GetSpecification(string name);
+
+        IMenu[] MainMenus { get; }
     }
 
 

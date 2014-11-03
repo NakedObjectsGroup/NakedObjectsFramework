@@ -56,6 +56,10 @@ namespace NakedObjects.Web.Mvc.Controllers {
             ViewData[IdHelper.NofServices] = NakedObjectsContext.GetServices();
         }
 
+        protected void SetMainMenus() {
+            ViewData[IdHelper.NofMainMenus] = NakedObjectsContext.Metamodel.MainMenus();
+        }
+
         protected void SetFramework() {
             ViewData[IdHelper.NoFramework] = NakedObjectsContext;
         }
@@ -64,6 +68,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
             //NakedObjectsContext.EnsureReady();
             //SetSession();
             SetServices();
+            SetMainMenus();
             SetFramework();
             NakedObjectsContext.TransactionManager.StartTransaction();
         }

@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace NakedObjects.Meta.Menus {
-    public class TypedMenu<TService> : Menu, ITypedMenu<TService> {
+    public class TypedMenuImmutable<TService> : MenuImmutable, ITypedMenu<TService> {
 
-        public TypedMenu(IMetamodelBuilder metamodel, bool addAllActions, string name)
+        public TypedMenuImmutable(IMetamodelBuilder metamodel, bool addAllActions, string name)
             : base(metamodel, name) {
             if (name == null) {
                 this.Name = GetFriendlyNameForService();
@@ -36,7 +36,7 @@ namespace NakedObjects.Meta.Menus {
         }
 
         public ITypedMenu<TService> CreateSubMenuOfSameType(string subMenuName) {
-            var sub = new TypedMenu<TService>(metamodel, false, subMenuName);
+            var sub = new TypedMenuImmutable<TService>(metamodel, false, subMenuName);
             this.MenuItems.Add(sub);
             return sub;
         }

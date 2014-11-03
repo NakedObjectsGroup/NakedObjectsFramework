@@ -55,10 +55,10 @@ namespace NakedObjects.Core.spec {
             var actions = new List<IActionSpec>();
             foreach (var element in order) {
                 if (element.Spec != null) {
-                    actions.Add(CreateNakedObjectAction(element.Spec));
+                    actions.Add(CreateActionSpec(element.Spec));
                 }
                 else if (element.Set != null) {
-                    actions.Add(CreateNakedObjectActionSet(element.Set, element.GroupFullName));
+                    actions.Add(CreateActionSpecSet(element.Set, element.GroupFullName));
                 }
                 else {
                     throw new UnknownTypeException(element);
@@ -70,22 +70,22 @@ namespace NakedObjects.Core.spec {
 
         public IActionSpec[] OrderActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> order) {
             Assert.AssertNotNull(framework);
-            return order.Select(element => CreateNakedObjectActionSet(element.Item1, element.Item2, element.Item3)).Cast<IActionSpec>().ToArray();
+            return order.Select(element => CreateActionSpecSet(element.Item1, element.Item2, element.Item3)).Cast<IActionSpec>().ToArray();
         }
 
-        private ActionSpecSet CreateNakedObjectActionSet(IList<IOrderableElement<IActionSpecImmutable>> orderSet, string groupFullName) {
+        private ActionSpecSet CreateActionSpecSet(IList<IOrderableElement<IActionSpecImmutable>> orderSet, string groupFullName) {
             return new ActionSpecSet(groupFullName.Replace(" ", ""), groupFullName, OrderActions(orderSet), framework.Services);
         }
 
-        private ActionSpecSet CreateNakedObjectActionSet(string id, string name, IList<IOrderableElement<IActionSpecImmutable>> orderSet) {
+        private ActionSpecSet CreateActionSpecSet(string id, string name, IList<IOrderableElement<IActionSpecImmutable>> orderSet) {
             return new ActionSpecSet(id, name, OrderActions(orderSet), framework.Services);
         }
 
-        private ActionSpec CreateNakedObjectAction(IActionSpecImmutable specImmutable) {
+        public ActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {
             return new ActionSpec(this, framework.Metamodel, framework.LifecycleManager, framework.Session, framework.Services, framework.TransactionManager, framework.Manager, specImmutable);
         }
 
-        public IAssociationSpec CreateNakedObjectField(IAssociationSpecImmutable specImmutable) {
+        public IAssociationSpec CreateAssociationSpec(IAssociationSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
             return CreateAssociation(specImmutable);
         }

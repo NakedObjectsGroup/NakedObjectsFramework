@@ -26,14 +26,14 @@ namespace NakedObjects.Reflect.Test {
             return c;
         }
 
-        public class NullMenuBuilder : IMenuBuilder {
-            public IMenu[] DefineMainMenus() {
+        public class NullMainMenuDefinition : IMainMenuDefinition {
+            public IMenu[] MainMenus() {
                return new IMenu[]{};
             }
         }
 
         protected virtual void RegisterTypes(IUnityContainer container) {
-            container.RegisterType<IMenuBuilder, NullMenuBuilder>();
+            container.RegisterType<IMainMenuDefinition, NullMainMenuDefinition>();
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>();
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();

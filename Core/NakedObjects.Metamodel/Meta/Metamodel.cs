@@ -58,6 +58,10 @@ namespace NakedObjects.Meta {
         public void AddMainMenu(IMenu menu) {
             cache.Cache(menu);
         }
+
+        public IMenu[] MainMenus {
+            get { return cache.MainMenus(); }
+        }
         #endregion
 
         private IObjectSpecImmutable GetSpecificationFromCache(Type type) {
@@ -66,6 +70,8 @@ namespace NakedObjects.Meta {
 
             return cache.GetSpecification(key);
         }
+
+
 
 
 

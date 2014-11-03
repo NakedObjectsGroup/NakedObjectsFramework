@@ -125,7 +125,7 @@ namespace NakedObjects.Mvc.App.App_Start {
 
             container.RegisterType<IServicesConfiguration, ServicesConfiguration>(new ContainerControlledLifetimeManager());
             container.RegisterInstance<IEntityObjectStoreConfiguration>(EntityObjectStore(), new ContainerControlledLifetimeManager());
-            container.RegisterType<IMenuBuilder, MyMenuBuilder>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMainMenuDefinition, MyMainMenuDefinition>(new ContainerControlledLifetimeManager());
 
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
@@ -187,19 +187,26 @@ namespace NakedObjects.Mvc.App.App_Start {
         #endregion
     }
 
-    public class MyMenuBuilder : IMenuBuilder {
+    public class MyMainMenuDefinition : IMainMenuDefinition {
         private IMenuFactory factory;
 
-        public MyMenuBuilder(IMenuFactory factory) {
+        public MyMainMenuDefinition(IMenuFactory factory) {
             this.factory = factory;
         }
 
         public IMenu[] DefineMainMenus() {
-            //var menu1 = factory.NewMenu<CustomerRepository>(true);
-            //var menu2 = factory.NewMenu<OrderRepository>(true);
-            //var menu3 = factory.NewMenu<ProductRepository>(true);
-            //return new IMenu[] { menu1, menu2, menu3 };
-            return new IMenu[]{};
+            var menu1 = factory.NewMenu<CustomerRepository>(true);
+            var menu2 = factory.NewMenu<OrderRepository>(true);
+            var menu3 = factory.NewMenu<ProductRepository>(true);
+            var menu4 = factory.NewMenu<EmployeeRepository>(true);
+            var menu5 = factory.NewMenu<SalesRepository>(true);
+            var menu6 = factory.NewMenu<SpecialOfferRepository>(true);
+            var menu7 = factory.NewMenu<ContactRepository>(true);
+            var menu8 = factory.NewMenu<VendorRepository>(true);
+            var menu9 = factory.NewMenu<PurchaseOrderRepository>(true);
+            var menu10 = factory.NewMenu<WorkOrderRepository>(true);
+
+            return new IMenu[] { menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8, menu9, menu10};
         }
     }
 }
