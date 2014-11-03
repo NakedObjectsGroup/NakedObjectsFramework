@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
-
     [Serializable]
     public abstract class DisabledFacetAbstract : SingleWhenValueFacetAbstract, IDisabledFacet {
         protected DisabledFacetAbstract(WhenTo when, ISpecification holder)

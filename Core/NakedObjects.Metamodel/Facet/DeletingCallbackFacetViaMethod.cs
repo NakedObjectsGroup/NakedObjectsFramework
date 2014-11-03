@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
-
     [Serializable]
     public class DeletingCallbackFacetViaMethod : DeletingCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;

@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Reflection;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -26,7 +25,6 @@ namespace NakedObjects.Meta.Facet {
     ///     <see cref="IFacet" />s relating to the class itself (ie for <see cref="IObjectSpec" />
     ///     should not implement this interface.
     /// </para>
-   
     public interface IImperativeFacet {
         /// <summary>
         ///     The <see cref="MethodInfo" /> invoked by this Facet.

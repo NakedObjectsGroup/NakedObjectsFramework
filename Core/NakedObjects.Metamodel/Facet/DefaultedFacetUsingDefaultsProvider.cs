@@ -11,7 +11,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
 
 namespace NakedObjects.Meta.Facet {
-
     [Serializable]
     public class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDefaultedFacet {
         private readonly IDefaultsProvider<T> defaultsProvider;

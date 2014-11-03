@@ -16,6 +16,7 @@ using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
+    [Serializable]
     public class FloatValueSemanticsProvider : ValueSemanticsProviderAbstract<float>, IPropertyDefaultFacet {
         private const float DefaultValueConst = 0;
         private const bool EqualByContent = true;

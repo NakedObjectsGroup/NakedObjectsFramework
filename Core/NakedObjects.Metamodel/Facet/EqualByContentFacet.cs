@@ -10,7 +10,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
-
     [Serializable]
     public class EqualByContentFacet : MarkerFacetAbstract, IEqualByContentFacet {
         public EqualByContentFacet(ISpecification holder)

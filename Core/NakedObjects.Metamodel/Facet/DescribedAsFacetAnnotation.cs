@@ -9,7 +9,6 @@ using System;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
-
     [Serializable]
     public class DescribedAsFacetAnnotation : DescribedAsFacetAbstract {
         public DescribedAsFacetAnnotation(string value, ISpecification holder)

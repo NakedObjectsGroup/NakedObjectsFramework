@@ -16,6 +16,7 @@ using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
+    [Serializable]
     public class ShortValueSemanticsProvider : ValueSemanticsProviderAbstract<short>, IPropertyDefaultFacet {
         private const short DefaultValueConst = 0;
         private const bool EqualByContent = true;

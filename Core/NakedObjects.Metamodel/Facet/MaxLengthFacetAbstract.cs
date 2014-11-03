@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Except;
 
 namespace NakedObjects.Meta.Facet {
@@ -29,7 +30,7 @@ namespace NakedObjects.Meta.Facet {
         ///     Whether the provided argument exceeds the <see cref="SingleIntValueFacetAbstract.Value" /> maximum length}.
         /// </summary>
         public virtual bool Exceeds(INakedObject nakedObject) {
-            string str = UnwrapString(nakedObject);
+            var str = nakedObject.GetDomainObject() as string;
             if (str == null) {
                 return false;
             }

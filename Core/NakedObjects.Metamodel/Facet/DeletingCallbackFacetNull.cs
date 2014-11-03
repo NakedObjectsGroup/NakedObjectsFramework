@@ -11,7 +11,6 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
-
     [Serializable]
     public class DeletingCallbackFacetNull : DeletingCallbackFacetAbstract {
         public DeletingCallbackFacetNull(ISpecification holder)

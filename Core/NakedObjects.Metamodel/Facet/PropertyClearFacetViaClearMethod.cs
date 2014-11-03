@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
-   [Serializable]
+    [Serializable]
     public class PropertyClearFacetViaClearMethod : PropertyClearFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 

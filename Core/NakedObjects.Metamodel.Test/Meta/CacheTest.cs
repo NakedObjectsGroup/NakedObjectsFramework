@@ -12,16 +12,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization.Formatters.Soap;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Reflect;
-using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace NakedObjects.Meta.Test {
     public class CacheTest {
@@ -42,31 +39,6 @@ namespace NakedObjects.Meta.Test {
             container.RegisterType<IServicesConfiguration, ServicesConfiguration>();
         }
 
-    
-        [Test]
-        public void JsonSerializeIntTypes() {
-            var container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] {typeof (int)}, new Type[] {}, new Type[] {}, new Type[] {});
-
-            container.RegisterInstance<IReflectorConfiguration>(rc);
-
-            var reflector = container.Resolve<IReflector>();
-            reflector.Reflect();
-            //Assert.AreEqual(10, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
-
-            var cache = container.Resolve<ISpecificationCache>();
-
-            using (var fs = File.Open(@"c:\testmetadata\metadataint.json", FileMode.OpenOrCreate))
-            using (var sw = new StreamWriter(fs))
-            using (var jw = new JsonTextWriter(sw)) {
-                jw.Formatting = Formatting.Indented;
-
-                var serializer = new JsonSerializer {ReferenceLoopHandling = ReferenceLoopHandling.Ignore};
-
-                serializer.Serialize(jw, cache);
-            }
-        }
 
         [Test]
         public void BinarySerializeIntTypes() {
@@ -77,8 +49,6 @@ namespace NakedObjects.Meta.Test {
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-            //Assert.AreEqual(10, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
 
             var cache = container.Resolve<ISpecificationCache>();
 
@@ -93,36 +63,26 @@ namespace NakedObjects.Meta.Test {
 
             using (var fs = File.Open(@"c:\testmetadata\metadataint.bin", FileMode.Open)) {
                 IFormatter formatter = new BinaryFormatter();
-                newCache = (ISpecificationCache)formatter.Deserialize(fs);
+                var obj = formatter.Deserialize(fs);
+                newCache = (ISpecificationCache) obj;
             }
 
-            Assert.AreEqual(cache, newCache);
+            Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
 
-        }
+            var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new {a, b});
 
+            foreach (var item in zipped) {
+                Assert.AreEqual(item.a.FullName, item.b.FullName);
 
+                Assert.AreEqual(item.a.GetFacets().Count(), item.b.GetFacets().Count());
 
+                var zipfacets = item.a.GetFacets().Zip(item.b.GetFacets(), (x, y) => new {x, y});
 
-        [Test]
-        public void SoapSerializeIntTypes() {
-            var container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] { typeof(int) }, new Type[] { }, new Type[] { }, new Type[] { });
-
-            container.RegisterInstance<IReflectorConfiguration>(rc);
-
-            var reflector = container.Resolve<IReflector>();
-            reflector.Reflect();
-            //Assert.AreEqual(10, reflector.AllObjectSpecImmutables.Count());
-            //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
-
-            var cache = container.Resolve<ISpecificationCache>();
-
-            using (var fs = File.Open(@"c:\testmetadata\metadataint.soap", FileMode.OpenOrCreate)) {
-                IFormatter formatter = new SoapFormatter();
-                formatter.Serialize(fs, cache);
+                foreach (var zipfacet in zipfacets) {
+                    Assert.AreEqual(zipfacet.x.FacetType, zipfacet.y.FacetType);
+                }
             }
         }
-
 
         #region Nested type: NullMenuBuilder
 

@@ -17,7 +17,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
-
     [Serializable]
     public class GenericIQueryableFacet : CollectionFacetAbstract {
         public GenericIQueryableFacet(ISpecification holder)

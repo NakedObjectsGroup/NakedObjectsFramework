@@ -6,10 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,9 +20,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
 
-
 namespace NakedObjects.Reflect.Test {
-
     [TestClass]
     public class ReflectorTest {
         protected IUnityContainer GetContainer() {
@@ -32,7 +31,7 @@ namespace NakedObjects.Reflect.Test {
 
         protected virtual void RegisterTypes(IUnityContainer container) {
             container.RegisterType<IMenuBuilder, NullMenuBuilder>();
-            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>();
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, Reflector>();
@@ -55,7 +54,7 @@ namespace NakedObjects.Reflect.Test {
 
         private static Type[] AdventureWorksTypes() {
             var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-            return allTypes.Where(t => t.BaseType == typeof(AWDomainObject) && !t.IsAbstract).ToArray();
+            return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
         }
 
         [TestMethod]
@@ -66,7 +65,7 @@ namespace NakedObjects.Reflect.Test {
 
             var types = AdventureWorksTypes();
             var container = GetContainer();
-            var rc = new ReflectorConfiguration(types, new Type[] { }, new Type[] { }, new Type[] { });
+            var rc = new ReflectorConfiguration(types, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -80,7 +79,80 @@ namespace NakedObjects.Reflect.Test {
 
             Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
             Assert.IsTrue(interval.Milliseconds < 1000);
-        }   
+        }
+
+
+        [TestMethod]
+        public void SerializeAdventureworks() {
+            // load adventurework
+
+            AssemblyHook.EnsureAssemblyLoaded();
+
+            var types = AdventureWorksTypes();
+            var container = GetContainer();
+            var rc = new ReflectorConfiguration(types, new Type[] {}, new Type[] {}, new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            reflector.Reflect();
+            stopwatch.Stop();
+            var reflectInterval = stopwatch.Elapsed;
+            stopwatch.Reset();
+
+            Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
+
+            var cache = container.Resolve<ISpecificationCache>();
+
+            TimeSpan serializeInterval;
+            using (var fs = File.Open(@"c:\testmetadata\metadataAW.bin", FileMode.OpenOrCreate)) {
+                IFormatter formatter = new BinaryFormatter();
+
+                stopwatch.Start();
+                formatter.Serialize(fs, cache);
+                stopwatch.Stop();
+                serializeInterval = stopwatch.Elapsed;
+                stopwatch.Reset();
+            }
+
+            // and roundtrip 
+
+            ISpecificationCache newCache;
+
+            TimeSpan deserializeInterval;
+            using (var fs = File.Open(@"c:\testmetadata\metadataAW.bin", FileMode.Open)) {
+                IFormatter formatter = new BinaryFormatter();
+
+                stopwatch.Start();
+                newCache = (ISpecificationCache) formatter.Deserialize(fs);
+
+                stopwatch.Stop();
+                deserializeInterval = stopwatch.Elapsed;
+                stopwatch.Reset();
+            }
+
+            Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
+
+            var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new {a, b});
+
+            foreach (var item in zipped) {
+                Assert.AreEqual(item.a.FullName, item.b.FullName);
+
+                Assert.AreEqual(item.a.GetFacets().Count(), item.b.GetFacets().Count());
+
+                var zipfacets = item.a.GetFacets().Zip(item.b.GetFacets(), (x, y) => new {x, y});
+
+                foreach (var zipfacet in zipfacets) {
+                    Assert.AreEqual(zipfacet.x.FacetType, zipfacet.y.FacetType);
+                }
+            }
+
+            Console.WriteLine(string.Format("reflect: {0} serialize {1} deserialize {2} ", reflectInterval, serializeInterval, deserializeInterval));
+        }
 
         #region Nested type: NullMenuBuilder
 
@@ -95,6 +167,5 @@ namespace NakedObjects.Reflect.Test {
         }
 
         #endregion
-
     }
 }

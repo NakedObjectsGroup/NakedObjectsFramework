@@ -27,7 +27,7 @@ namespace NakedObjects.Reflect.Test {
 
         protected virtual void RegisterTypes(IUnityContainer container) {
             container.RegisterType<IMenuBuilder, NullMenuBuilder>();
-            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>();
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new InjectionConstructor());
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, Reflector>();

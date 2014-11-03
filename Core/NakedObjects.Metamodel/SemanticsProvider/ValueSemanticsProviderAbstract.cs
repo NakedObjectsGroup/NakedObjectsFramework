@@ -13,6 +13,7 @@ using NakedObjects.Capabilities;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.SemanticsProvider {
+    [Serializable]
     public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T>, IEncoderDecoder<T>, IParser<T>, IDefaultsProvider<T> {
         private readonly Type adaptedType;
         private readonly T defaultValue;

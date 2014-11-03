@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
-
     [Serializable]
     public class GenericIEnumerableFacet : CollectionFacetAbstract {
         public GenericIEnumerableFacet(ISpecification holder, bool isASet)

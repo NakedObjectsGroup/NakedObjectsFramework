@@ -5,10 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Reflect.I18n {
+    [Serializable]
     public class DescribedAsFacetWrapI18n : DescribedAsFacetAbstract {
         public DescribedAsFacetWrapI18n(string valueString, ISpecification holder)
             : base(valueString, holder) {}

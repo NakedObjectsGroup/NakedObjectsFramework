@@ -15,6 +15,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Capabilities;
 
 namespace NakedObjects.Meta.SemanticsProvider {
+    [Serializable]
     public class DateTimeValueSemanticsProvider : ValueSemanticsProviderAbstract<DateTime>, IDateValueFacet {
         private const bool EqualByContent = false;
         private const bool Immutable = false;

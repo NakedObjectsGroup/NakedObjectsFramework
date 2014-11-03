@@ -10,7 +10,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
-
     [Serializable]
     public class IconFacetAnnotation : IconFacetAbstract {
         private readonly string iconName;

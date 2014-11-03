@@ -22,7 +22,7 @@ namespace NakedObjects.Meta.Facet {
     ///     all properties and parameters are optional by default and need to be annotated
     ///     as manadatory.
     /// </para>
-   [Serializable]
+    [Serializable]
     public class OptionalFacetDefault : MandatoryFacetAbstract {
         public OptionalFacetDefault(ISpecification holder)
             : base(holder) {}

@@ -22,6 +22,8 @@ namespace NakedObjects.Meta.Spec {
     public class Specification : ISpecification, ISpecificationBuilder, ISerializable {
         private ImmutableDictionary<Type, IFacet> facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
 
+        public Specification() {}
+
         #region ISpecification Members
 
         public virtual Type[] FacetTypes {
@@ -68,15 +70,27 @@ namespace NakedObjects.Meta.Spec {
 
         #endregion
 
+        #region ISerializable
+
+        // The special constructor is used to deserialize values. 
+        public Specification(SerializationInfo info, StreamingContext context) {
+            var dict = (Dictionary<Type, IFacet>)info.GetValue("facetsByClass", typeof(Dictionary<Type, IFacet>));
+            dict.OnDeserialization(this);
+            facetsByClass = dict.ToImmutableDictionary();        
+        }
+
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
+            var dict = facetsByClass.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            info.AddValue("facetsByClass", dict);
+        }
+
+        #endregion
+
         private void AddFacet(Type facetType, IFacet facet) {
             IFacet existingFacet = GetFacet(facetType);
             if (existingFacet == null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
                 facetsByClass = facetsByClass.SetItem(facetType, facet);
             }
-        }
-
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue("facetsByClass", facetsByClass.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
         }
     }
 }

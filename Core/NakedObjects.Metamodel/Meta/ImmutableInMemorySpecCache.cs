@@ -16,7 +16,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta {
     [Serializable]
-    public class ImmutableInMemorySpecCache : ISpecificationCache {
+    public class ImmutableInMemorySpecCache : ISpecificationCache, IDeserializationCallback {
         private ImmutableList<IMenu> mainMenus = ImmutableList<IMenu>.Empty;
         private ImmutableDictionary<string, IObjectSpecImmutable> specs = ImmutableDictionary<string, IObjectSpecImmutable>.Empty;
 
@@ -54,16 +54,27 @@ namespace NakedObjects.Meta {
 
         #region ISerializable
 
+        private readonly Dictionary<string, IObjectSpecImmutable> deserializeTempDict; 
+
         // The special constructor is used to deserialize values. 
         public ImmutableInMemorySpecCache(SerializationInfo info, StreamingContext context) {
-            specs = ((Dictionary<string, IObjectSpecImmutable>) info.GetValue("specs", typeof (Dictionary<string, IObjectSpecImmutable>))).ToImmutableDictionary();
+            deserializeTempDict = (Dictionary<string, IObjectSpecImmutable>)info.GetValue("specs", typeof(IDictionary<string, IObjectSpecImmutable>));
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue("specs", specs.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+            var dict = specs.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            info.AddValue("specs", dict);
         }
 
         #endregion
+
+        // Have to do this because dictionary will not be populated until deserialization event. 
+        // Have to do here rather than linline in the ctor because otherwise the values in the dictionary are null
+        // presumably dictionary is populated then before values have been deserialized.
+        public void OnDeserialization(object sender) {
+            deserializeTempDict.OnDeserialization(sender);
+            specs = deserializeTempDict.ToImmutableDictionary();
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

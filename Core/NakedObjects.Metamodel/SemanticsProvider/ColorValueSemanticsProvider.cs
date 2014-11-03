@@ -16,6 +16,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Capabilities;
 
 namespace NakedObjects.Meta.SemanticsProvider {
+    [Serializable]
     public class ColorValueSemanticsProvider : ValueSemanticsProviderAbstract<Color>, IPropertyDefaultFacet {
         private const bool EqualByContent = true;
         private const bool Immutable = true;

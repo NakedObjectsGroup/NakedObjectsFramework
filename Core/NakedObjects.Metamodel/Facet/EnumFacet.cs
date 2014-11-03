@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Facet {
-
     [Serializable]
     public class EnumFacet : MarkerFacetAbstract, IEnumFacet {
         private readonly EnumNameComparer comparer;
