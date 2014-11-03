@@ -26,7 +26,7 @@ namespace NakedObjects.Meta.Menus {
         }
 
         public ITypedMenu<TService> AddAction(string actionName, string renamedTo = null) {
-            AddAction<TService>(actionName, renamedTo);
+            AddActionFrom<TService>(actionName, renamedTo);
             return this;
         }
 

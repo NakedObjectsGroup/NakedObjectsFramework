@@ -226,8 +226,6 @@ namespace NakedObjects.Xat {
             }
         }
 
-
-
         protected virtual void RegisterTypes(IUnityContainer container) {
             container.RegisterType<IMainMenuDefinition, NullMainMenuDefinition>();
 

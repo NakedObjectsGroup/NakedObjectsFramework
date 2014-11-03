@@ -42,7 +42,7 @@ namespace NakedObjects.Meta.Menus {
 
         #endregion
 
-        public IMenu AddAction<TService>(string actionName, string renamedTo = null) {
+        public IMenu AddActionFrom<TService>(string actionName, string renamedTo = null) {
             Type serviceType = typeof(TService);
 
             IActionSpecImmutable actionSpec = GetActionsForService<TService>().Where(a => a.Identifier.MemberName == actionName).FirstOrDefault();
