@@ -16,12 +16,8 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class TypeOfFacetInferredFromGenerics : FacetAbstract, ITypeOfFacet {
-        private readonly IMetamodel metamodel;
-
-        public TypeOfFacetInferredFromGenerics(ISpecification holder, IMetamodel metamodel)
-            : base(Type, holder) {
-            this.metamodel = metamodel;
-        }
+        public TypeOfFacetInferredFromGenerics(ISpecification holder)
+            : base(Type, holder) {}
 
         public static Type Type {
             get { return typeof (ITypeOfFacet); }
@@ -33,7 +29,7 @@ namespace NakedObjects.Meta.Facet {
             return collection.Object.GetType().GenericTypeArguments.First();
         }
 
-        public IObjectSpecImmutable GetValueSpec(INakedObject collection) {
+        public IObjectSpecImmutable GetValueSpec(INakedObject collection, IMetamodel metamodel) {
             return metamodel.GetSpecification(GetValue(collection));
         }
 

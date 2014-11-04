@@ -198,7 +198,7 @@ namespace NakedObjects.Meta.SpecImmutable {
                 iconName = forObject == null ? iconFacet.GetIconName() : iconFacet.GetIconName(forObject);
             }
             else if (IsCollection) {
-                iconName = GetFacet<ITypeOfFacet>().GetValueSpec(forObject).GetIconName(null);
+                iconName = GetFacet<ITypeOfFacet>().GetValueSpec(forObject, Metamodel).GetIconName(null);
             }
 
             return string.IsNullOrEmpty(iconName) ? "Default" : iconName;

@@ -242,8 +242,10 @@ namespace NakedObjects.Reflect {
                 // create property and add facets
                 var returnType = property.PropertyType;
                 var returnSpec = reflector.LoadSpecification(returnType);
+                var defaultType = typeof (object);
+                var defaultSpec = reflector.LoadSpecification(defaultType);
 
-                var collection = new OneToManyAssociationSpecImmutable(identifier, returnType, returnSpec, metamodel);
+                var collection = new OneToManyAssociationSpecImmutable(identifier, returnType, returnSpec, defaultType, defaultSpec);
                 FacetFactorySet.Process(property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections);
                 fieldsListToAppendto.Add(collection);
             }

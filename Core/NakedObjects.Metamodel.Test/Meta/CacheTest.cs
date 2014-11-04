@@ -12,7 +12,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.Practices.Unity;
@@ -25,11 +24,7 @@ using NakedObjects.Value;
 using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test {
-
-
-   
     public class TestService {
-     
         public virtual TestSimpleDomainObject TestAction(TestSimpleDomainObject testParm) {
             return testParm;
         }
@@ -37,8 +32,6 @@ namespace NakedObjects.Meta.Test {
         public virtual TestAnnotatedDomainObject TestAction1(TestAnnotatedDomainObject testParm) {
             return testParm;
         }
-
-      
     }
 
     public class TestSimpleDomainObject {
@@ -61,32 +54,14 @@ namespace NakedObjects.Meta.Test {
         private IList<TestAnnotatedDomainObject> testCollection = new List<TestAnnotatedDomainObject>();
 
 
-        public void Persisted() {
-          
-        }
-
         [Title]
         public virtual TestSimpleDomainObject TestProperty { get; set; }
-
-        [PageSize(20)]
-        public IQueryable<TestAnnotatedDomainObject> AutoCompleteTestProperty([MinLength(2)] string name) {
-            return null;
-        }
 
         public virtual Image TestImage { get; set; }
 
         public virtual IList<TestAnnotatedDomainObject> TestCollection {
             get { return testCollection; }
             set { testCollection = value; }
-        }
-
-        public virtual TestAnnotatedDomainObject TestAction([Named("test"), DefaultValue(null)] TestAnnotatedDomainObject testParm) {
-            return this;
-        }
-
-        [PageSize(20)]
-        public IQueryable<TestAnnotatedDomainObject> AutoComplete0TestAction([MinLength(2)] string name) {
-            return null;
         }
 
         [Disabled]
@@ -103,20 +78,40 @@ namespace NakedObjects.Meta.Test {
         [TypicalLength(20)]
         public virtual string TestString { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Range(typeof(DateTime), "", "")]
+        [System.ComponentModel.DataAnnotations.Range(typeof (DateTime), "", "")]
         public virtual DateTime TestDateTime { get; set; }
 
-        public virtual CacheTest.TestEnum TestEnum { get; set; }
+        public virtual TestEnum TestEnum { get; set; }
+
+        [ConcurrencyCheck]
+        public virtual string TestConcurrency { get; set; }
+
+        public void Persisted() {}
+
+        [PageSize(20)]
+        public IQueryable<TestAnnotatedDomainObject> AutoCompleteTestProperty([MinLength(2)] string name) {
+            return null;
+        }
+
+        public virtual TestAnnotatedDomainObject TestAction(
+            [Named("test"), DefaultValue(null)] TestAnnotatedDomainObject testParm) {
+            return this;
+        }
+
+        [PageSize(20)]
+        public IQueryable<TestAnnotatedDomainObject> AutoComplete0TestAction([MinLength(2)] string name) {
+            return null;
+        }
 
         public string DisableTestString(string value) {
             return null;
         }
-
-        [ConcurrencyCheck]
-        public virtual string TestConcurrency { get; set; }
     }
 
-
+    public enum TestEnum {
+        Value1,
+        Value2
+    };
 
     public class CacheTest {
         protected IUnityContainer GetContainer() {
@@ -128,7 +123,8 @@ namespace NakedObjects.Meta.Test {
         protected virtual void RegisterTypes(IUnityContainer container) {
             container.RegisterType<IMenuFactory, NullMenuFactory>();
             container.RegisterType<IMainMenuDefinition, NullMenuDefinition>();
-            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(
+                new ContainerControlledLifetimeManager(), new InjectionConstructor());
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, Reflector>();
@@ -138,134 +134,53 @@ namespace NakedObjects.Meta.Test {
         }
 
 
-        [Test]
-        public void BinarySerializeIntTypes() {
-            var container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] {typeof (int)}, new Type[] {}, new Type[] {}, new Type[] {});
+        public void BinarySerialize(ReflectorConfiguration rc, string file) {
+            IUnityContainer container = GetContainer();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
-
             var cache = container.Resolve<ISpecificationCache>();
-
-            using (var fs = File.Open(@"c:\testmetadata\metadataint.bin", FileMode.OpenOrCreate)) {
-                IFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(fs, cache);
-            }
+            cache.Serialize(file);
 
             // and roundtrip 
 
-            ISpecificationCache newCache;
-
-            using (var fs = File.Open(@"c:\testmetadata\metadataint.bin", FileMode.Open)) {
-                IFormatter formatter = new BinaryFormatter();
-                var obj = formatter.Deserialize(fs);
-                newCache = (ISpecificationCache) obj;
-            }
-
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new PerResolveLifetimeManager(),
+                new InjectionConstructor(file));
+            var newCache = container.Resolve<ISpecificationCache>();
             CompareCaches(cache, newCache);
-
         }
 
-        public enum TestEnum {
-            Value1,
-            Value2
-        };
+        [Test]
+        public void BinarySerializeIntTypes() {
+            var rc = new ReflectorConfiguration(new[] {typeof (int)}, new Type[] {}, new Type[] {}, new Type[] {});
+            const string file = @"c:\testmetadata\metadataint.bin";
+            BinarySerialize(rc, file);
+        }
 
         [Test]
         public void BinarySerializeEnumTypes() {
-            var container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] { typeof(TestEnum) }, new Type[] { }, new Type[] { }, new Type[] { });
-
-            container.RegisterInstance<IReflectorConfiguration>(rc);
-
-            var reflector = container.Resolve<IReflector>();
-            reflector.Reflect();
-
-            var cache = container.Resolve<ISpecificationCache>();
-
-            using (var fs = File.Open(@"c:\testmetadata\metadataint.bin", FileMode.OpenOrCreate)) {
-                IFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(fs, cache);
-            }
-
-            // and roundtrip 
-
-            ISpecificationCache newCache;
-
-            using (var fs = File.Open(@"c:\testmetadata\metadataint.bin", FileMode.Open)) {
-                IFormatter formatter = new BinaryFormatter();
-                var obj = formatter.Deserialize(fs);
-                newCache = (ISpecificationCache)obj;
-            }
-
-            CompareCaches(cache, newCache);
-
+            var rc = new ReflectorConfiguration(new[] {typeof (TestEnum)}, new Type[] {}, new Type[] {}, new Type[] {});
+            const string file = @"c:\testmetadata\metadataint.bin";
+            BinarySerialize(rc, file);
         }
-
 
         [Test]
         public void BinarySerializeSimpleDomainObjectTypes() {
-            var container = GetContainer();            var rc = new ReflectorConfiguration(new Type[] { typeof(TestSimpleDomainObject) }, new Type[] {typeof(TestService)}, new Type[] { }, new Type[] { });
-
-
-            container.RegisterInstance<IReflectorConfiguration>(rc);
-
-            var reflector = container.Resolve<IReflector>();
-            reflector.Reflect();
-
-            var cache = container.Resolve<ISpecificationCache>();
-
-            using (var fs = File.Open(@"c:\testmetadata\metadatatsdo.bin", FileMode.OpenOrCreate)) {
-                IFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(fs, cache);
-            }
-
-            // and roundtrip 
-
-            ISpecificationCache newCache;
-
-            using (var fs = File.Open(@"c:\testmetadata\metadatatsdo.bin", FileMode.Open)) {
-                IFormatter formatter = new BinaryFormatter();
-                var obj = formatter.Deserialize(fs);
-                newCache = (ISpecificationCache)obj;
-            }
-
-            CompareCaches(cache, newCache);
-
+            var rc = new ReflectorConfiguration(new[] {typeof (TestSimpleDomainObject)}, new[] {typeof (TestService)},
+                new Type[] {}, new Type[] {});
+            const string file = @"c:\testmetadata\metadatatsdo.bin";
+            BinarySerialize(rc, file);
         }
 
 
         [Test]
-        public void BinarySerializeAnnotatedDomainObjectTypes() {
-            var container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] { typeof(TestAnnotatedDomainObject) }, new Type[] { typeof(TestService) }, new Type[] { }, new Type[] { });
-
-            container.RegisterInstance<IReflectorConfiguration>(rc);
-
-            var reflector = container.Resolve<IReflector>();
-            reflector.Reflect();
-
-            var cache = container.Resolve<ISpecificationCache>();
-
-            using (var fs = File.Open(@"c:\testmetadata\metadatatado.bin", FileMode.OpenOrCreate)) {
-                IFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(fs, cache);
-            }
-
-            // and roundtrip 
-
-            ISpecificationCache newCache;
-
-            using (var fs = File.Open(@"c:\testmetadata\metadatatado.bin", FileMode.Open)) {
-                IFormatter formatter = new BinaryFormatter();
-                var obj = formatter.Deserialize(fs);
-                newCache = (ISpecificationCache)obj;
-            }
-
-            CompareCaches(cache, newCache);
+        public void BinarySerializeAnnotatedDomainObjectTypes() {    
+            var rc = new ReflectorConfiguration(new[] {typeof (TestAnnotatedDomainObject)}, new[] {typeof (TestService)},
+                new Type[] {}, new Type[] {});
+            const string file = @"c:\testmetadata\metadatatado.bin";
+            BinarySerialize(rc, file);
         }
 
         private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {

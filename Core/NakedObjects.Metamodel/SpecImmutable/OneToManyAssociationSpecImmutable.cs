@@ -16,20 +16,22 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public class OneToManyAssociationSpecImmutable : AssociationSpecImmutable {
+        private readonly Type defaultElementType;
+        private readonly IObjectSpecImmutable defaultElementSpec;
         private readonly IMetamodel metamodel;
 
         // TODO remork so that either elemnt type is passed in or guarantee elementtype facet is available
         // so that do not need to pass in metamodel
-        public OneToManyAssociationSpecImmutable(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec,
-            IMetamodel metamodel)
+        public OneToManyAssociationSpecImmutable(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec, Type defaultElementType, IObjectSpecImmutable defaultElementSpec)
             : base(name, returnType, returnSpec) {
-            this.metamodel = metamodel;
+            this.defaultElementType = defaultElementType;
+            this.defaultElementSpec = defaultElementSpec;
         }
 
         public Type ElementType {
             get {
                 var typeOfFacet = GetFacet<IElementTypeFacet>();
-                return typeOfFacet != null ? typeOfFacet.Value : typeof (object);
+                return typeOfFacet != null ? typeOfFacet.Value : defaultElementType;
             }
         }
 
@@ -39,7 +41,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         public override IObjectSpecImmutable Specification {
             get {
                 var typeOfFacet = GetFacet<IElementTypeFacet>();
-                return typeOfFacet != null ? typeOfFacet.ValueSpec : metamodel.GetSpecification(typeof (object));
+                return typeOfFacet != null ? typeOfFacet.ValueSpec : defaultElementSpec;
             }
         }
 
@@ -58,13 +60,15 @@ namespace NakedObjects.Meta.SpecImmutable {
         #region ISerializable
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue("metamodel", metamodel);
+            info.AddValue("defaultElementType", defaultElementType);
+            info.AddValue("defaultElementSpec", defaultElementSpec);
             base.GetObjectData(info, context);
         }
 
         // The special constructor is used to deserialize values. 
         public OneToManyAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-            metamodel = (IMetamodel)info.GetValue("metamodel", typeof(IMetamodel));
+            defaultElementType = (Type)info.GetValue("metamodel", typeof(Type));
+            defaultElementSpec = (IObjectSpecImmutable)info.GetValue("metamodel", typeof(IObjectSpecImmutable));
         }
 
         #endregion

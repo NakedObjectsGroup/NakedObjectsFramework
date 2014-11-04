@@ -15,11 +15,11 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class TypeOfFacetInferredFromArray : FacetAbstract, ITypeOfFacet {
-        private readonly IMetamodel metamodel;
+        
 
-        public TypeOfFacetInferredFromArray(ISpecification holder, IMetamodel metamodel)
+        public TypeOfFacetInferredFromArray(ISpecification holder)
             : base(Type, holder) {
-            this.metamodel = metamodel;
+          
         }
 
         public static Type Type {
@@ -32,7 +32,7 @@ namespace NakedObjects.Meta.Facet {
             return collection.Object.GetType().GetElementType();
         }
 
-        public IObjectSpecImmutable GetValueSpec(INakedObject collection) {
+        public IObjectSpecImmutable GetValueSpec(INakedObject collection, IMetamodel metamodel) {
             return metamodel.GetSpecification(GetValue(collection));
         }
 

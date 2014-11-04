@@ -198,7 +198,7 @@ namespace NakedObjects.Core.Adapter {
 
         private string CollectionTitleString(ICollectionFacet facet) {
             int size = ElementsLoaded() ? facet.AsEnumerable(this, manager).Count() : CollectionUtils.IncompleteCollection;
-            var elementSpecification = TypeOfFacet == null ? null :  metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this));
+            var elementSpecification = TypeOfFacet == null ? null :  metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel));
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
         }
 

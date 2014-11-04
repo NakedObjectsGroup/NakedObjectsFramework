@@ -30,7 +30,11 @@ namespace NakedObjects.Managers {
         #region IMetamodelManager Members
 
         public virtual IObjectSpec[] AllSpecs {
-            get { return metamodel.AllSpecifications.Select(s => new ObjectSpec(specFactory, this, s)).Cast<IObjectSpec>().ToArray(); }
+            get { return Metamodel.AllSpecifications.Select(s => new ObjectSpec(specFactory, this, s)).Cast<IObjectSpec>().ToArray(); }
+        }
+
+        public IMetamodel Metamodel {
+            get { return metamodel; }
         }
 
         public IObjectSpec GetSpecification(Type type) {
@@ -56,19 +60,19 @@ namespace NakedObjects.Managers {
         }
 
         private IObjectSpecImmutable GetInnerSpec(Type type) {
-            var innerSpec = metamodel.GetSpecification(type);
+            var innerSpec = Metamodel.GetSpecification(type);
             Assert.AssertNotNull(string.Format("failed to find spec for {0}", type.FullName), innerSpec);
             return innerSpec;
         }
 
         private IObjectSpecImmutable GetInnerSpec(string name) {
-            var innerSpec = metamodel.GetSpecification(name);
+            var innerSpec = Metamodel.GetSpecification(name);
             Assert.AssertNotNull(string.Format("failed to find spec for {0}", name), innerSpec);
             return innerSpec;
         }
 
         public IMenu[] MainMenus() {
-            return metamodel.MainMenus;
+            return Metamodel.MainMenus;
         }
 
         public IActionSpec GetActionSpec(IActionSpecImmutable spec) {

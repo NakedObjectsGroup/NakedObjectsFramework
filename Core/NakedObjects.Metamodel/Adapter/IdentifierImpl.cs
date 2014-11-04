@@ -16,8 +16,6 @@ namespace NakedObjects.Meta.Adapter {
 
     [Serializable]
     public class IdentifierImpl : IIdentifier {
-      
-        private readonly IMetamodel metamodel;
         private readonly string className;
         private readonly bool isField;
         private readonly string name;
@@ -39,10 +37,10 @@ namespace NakedObjects.Meta.Adapter {
             : this(metamodel, className, methodName, parameterTypeNames.Select(p => "").ToArray(), parameterTypeNames, false) { }
 
         private IdentifierImpl(IMetamodel metamodel, string className, string fieldName, string[] parameterNames, string[] parameterTypeNames, bool isField) {
-            this.metamodel = metamodel;
             this.className = className;
             name = fieldName;
             parameterTypes = parameterTypeNames;
+            MemberParameterSpecifications =  parameterTypes.Select(x => metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(x))).ToArray();
             this.parameterNames = parameterNames;
             this.isField = isField;
         }
@@ -69,14 +67,7 @@ namespace NakedObjects.Meta.Adapter {
             get { return isField; }
         }
 
-        public virtual IObjectSpecImmutable[] MemberParameterSpecifications {
-            get {
-                var specifications = new List<IObjectSpecImmutable>();
-
-                parameterTypes.ForEach(x => specifications.Add(metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(x))));
-                return specifications.ToArray();
-            }
-        }
+        public IObjectSpecImmutable[] MemberParameterSpecifications { get; private set; }
 
         public virtual string ToIdentityString(IdentifierDepth depth) {
             Assert.AssertTrue(depth >= IdentifierDepth.Class && depth <= IdentifierDepth.Parms);

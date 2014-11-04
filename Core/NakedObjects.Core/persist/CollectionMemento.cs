@@ -32,21 +32,21 @@ namespace NakedObjects.Core.Persist {
 
         private readonly ILifecycleManager lifecycleManager;
         private readonly INakedObjectManager nakedObjectManager;
+        private readonly IMetamodelManager metamodel;
         private object[] selectedObjects;
 
-        private CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager) {
+        private CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel) {
             Assert.AssertNotNull(lifecycleManager);
             Assert.AssertNotNull(nakedObjectManager);
-
-
             this.lifecycleManager = lifecycleManager;
             this.nakedObjectManager = nakedObjectManager;
+            this.metamodel = metamodel;
         }
 
 
         public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, CollectionMemento otherMemento, object[] selectedObjects)
-            : this(lifecycleManager, nakedObjectManager) {
-            Assert.AssertNotNull(metamodel);
+            : this(lifecycleManager, nakedObjectManager, metamodel) {
+           
             Assert.AssertNotNull(otherMemento);
 
             IsPaged = otherMemento.IsPaged;
@@ -58,8 +58,8 @@ namespace NakedObjects.Core.Persist {
         }
 
         public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, INakedObject target, IActionSpec actionSpec, INakedObject[] parameters)
-            : this(lifecycleManager, nakedObjectManager) {
-            Assert.AssertNotNull(metamodel);
+            : this(lifecycleManager, nakedObjectManager, metamodel) {
+          
 
             Target = target;
             Action = actionSpec;
@@ -71,8 +71,8 @@ namespace NakedObjects.Core.Persist {
         }
 
         public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, string[] strings)
-            : this(lifecycleManager, nakedObjectManager) {
-            Assert.AssertNotNull(metamodel);
+            : this(lifecycleManager, nakedObjectManager, metamodel) {
+          
 
 
             var helper = new StringDecoderHelper(metamodel, strings, true);
@@ -148,7 +148,7 @@ namespace NakedObjects.Core.Persist {
                     helper.Add(parameter.Object);
                 }
                 else if (parameter.Spec.IsCollection) {
-                    var instanceSpec = parameter.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(parameter);
+                    var instanceSpec = parameter.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(parameter, metamodel.Metamodel);
                     Type instanceType = TypeUtils.GetType(instanceSpec.FullName);
 
                     if (instanceSpec.IsParseable) {

@@ -531,7 +531,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                         INakedObject collection = oneToManyAssociation.GetNakedObject(nakedObject);
                         ITypeOfFacet facet = collection.GetTypeOfFacetFromSpec();
 
-                        var referencedTypeNos = facet.GetValueSpec(collection);
+                        var referencedTypeNos = facet.GetValueSpec(collection, metamodel);
                         string fullyQualifiedClassName = referencedTypeNos.FullName;
 
                         // XML

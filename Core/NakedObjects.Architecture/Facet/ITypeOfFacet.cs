@@ -7,6 +7,7 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
@@ -18,6 +19,6 @@ namespace NakedObjects.Architecture.Facet {
         ///     Convenience to return the <see cref="IObjectSpec" /> corresponding to this facet's
         ///     <see cref="Value" />
         /// </summary>
-        IObjectSpecImmutable GetValueSpec(INakedObject collection);
+        IObjectSpecImmutable GetValueSpec(INakedObject collection, IMetamodel metamodel);
     }
 }

@@ -18,6 +18,7 @@ namespace NakedObjects.Architecture.Component {
     public interface IMetamodelManager {
 
         IObjectSpec[] AllSpecs { get; }
+        IMetamodel Metamodel { get; }
 
         IObjectSpec GetSpecification(Type type);
 

@@ -14,12 +14,14 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class TypeOfFacetDefaultToObject : FacetAbstract, ITypeOfFacet {
-        private readonly IMetamodel metamodel;
+    public class TypeOfFacetDefaultToType : FacetAbstract, ITypeOfFacet {
+        private readonly IObjectSpecImmutable spec;
+        private readonly Type type;
 
-        public TypeOfFacetDefaultToObject(ISpecification holder, IMetamodel metamodel)
+        public TypeOfFacetDefaultToType(ISpecification holder, Type type, IObjectSpecImmutable spec)
             : base(Type, holder) {
-            this.metamodel = metamodel;
+            this.type = type;
+            this.spec = spec;
         }
 
         public static Type Type {
@@ -29,11 +31,11 @@ namespace NakedObjects.Meta.Facet {
         #region ITypeOfFacet Members
 
         public Type GetValue(INakedObject collection) {
-            return typeof (object);
+            return type;
         }
 
-        public IObjectSpecImmutable GetValueSpec(INakedObject collection) {
-            return metamodel.GetSpecification(GetValue(collection));
+        public IObjectSpecImmutable GetValueSpec(INakedObject collection, IMetamodel metamodel) {
+            return spec;
         }
 
         #endregion

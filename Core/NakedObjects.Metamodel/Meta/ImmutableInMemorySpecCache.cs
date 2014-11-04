@@ -5,26 +5,42 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta {
-    [Serializable]
-    public class ImmutableInMemorySpecCache : ISpecificationCache, IDeserializationCallback {
+    public class ImmutableInMemorySpecCache : ISpecificationCache {
         private ImmutableList<IMenu> mainMenus = ImmutableList<IMenu>.Empty;
-        private ImmutableDictionary<string, IObjectSpecImmutable> specs = ImmutableDictionary<string, IObjectSpecImmutable>.Empty;
 
-        public ImmutableInMemorySpecCache() {
-            
+        private ImmutableDictionary<string, IObjectSpecImmutable> specs =
+            ImmutableDictionary<string, IObjectSpecImmutable>.Empty;
+
+        // constructor to use when reflecting
+        public ImmutableInMemorySpecCache() {}
+
+        // constructor to use when loading metadata from file
+        public ImmutableInMemorySpecCache(string file) {
+            using (FileStream fs = File.Open(file, FileMode.Open)) {
+                IFormatter formatter = new BinaryFormatter();
+                specs = ((IDictionary<string, IObjectSpecImmutable>) formatter.Deserialize(fs)).ToImmutableDictionary();
+            }
         }
 
         #region ISpecificationCache Members
+
+        public void Serialize(string file) {
+            using (FileStream fs = File.Open(file, FileMode.OpenOrCreate)) {
+                IFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(fs, specs.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+            }
+        }
 
         public virtual IObjectSpecImmutable GetSpecification(string key) {
             return specs.ContainsKey(key) ? specs[key] : null;
@@ -51,30 +67,6 @@ namespace NakedObjects.Meta {
         }
 
         #endregion
-
-        #region ISerializable
-
-        private readonly Dictionary<string, IObjectSpecImmutable> deserializeTempDict; 
-
-        // The special constructor is used to deserialize values. 
-        public ImmutableInMemorySpecCache(SerializationInfo info, StreamingContext context) {
-            deserializeTempDict = (Dictionary<string, IObjectSpecImmutable>)info.GetValue("specs", typeof(IDictionary<string, IObjectSpecImmutable>));
-        }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context) {
-            var dict = specs.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-            info.AddValue("specs", dict);
-        }
-
-        #endregion
-
-        // Have to do this because dictionary will not be populated until deserialization event. 
-        // Have to do here rather than linline in the ctor because otherwise the values in the dictionary are null
-        // presumably dictionary is populated then before values have been deserialized.
-        public void OnDeserialization(object sender) {
-            deserializeTempDict.OnDeserialization(sender);
-            specs = deserializeTempDict.ToImmutableDictionary();
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

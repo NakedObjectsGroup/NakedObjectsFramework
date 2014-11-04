@@ -31,7 +31,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 var elementType = methodReturnType.GetElementType();
                 var elementSpec = Reflector.LoadSpecification(elementType);
                 FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
-                return FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder, Reflector.Metamodel));
+                return FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
             }
 
             if (methodReturnType.IsGenericType) {

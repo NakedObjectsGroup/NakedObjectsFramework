@@ -252,7 +252,7 @@
     <Compile Include="Facet\OnUpdatingErrorCallbackFacetAbstract.cs" />
     <Compile Include="Facet\PersistedCallbackFacetAbstract.cs" />
     <Compile Include="Facet\PersistingCallbackFacetAbstract.cs" />
-    <Compile Include="Facet\TypeOfFacetDefaultToObject.cs" />
+    <Compile Include="Facet\TypeOfFacetDefaultToType.cs" />
     <Compile Include="Facet\TypeOfFacetInferredFromArray.cs" />
     <Compile Include="Facet\TypeOfFacetInferredFromGenerics.cs" />
     <Compile Include="Facet\TypicalLengthFacetAnnotation.cs" />
