@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
@@ -25,7 +26,8 @@ namespace NakedObjects.Meta.SpecImmutable {
         private readonly IActionParameterSpecImmutable[] parameters;
         private readonly IObjectSpecImmutable specification;
 
-        public ActionSpecImmutable(IIdentifier identifier, IObjectSpecImmutable specification, IActionParameterSpecImmutable[] parameters)
+        public ActionSpecImmutable(IIdentifier identifier, IObjectSpecImmutable specification,
+            IActionParameterSpecImmutable[] parameters)
             : base(identifier) {
             this.specification = specification;
             this.parameters = parameters;
@@ -60,7 +62,8 @@ namespace NakedObjects.Meta.SpecImmutable {
         public bool IsContributedMethod {
             get {
                 if (Specification.Service && parameters.Any() &&
-                    (!ContainsFacet(typeof (INotContributedActionFacet)) || !GetFacet<INotContributedActionFacet>().NeverContributed())) {
+                    (!ContainsFacet(typeof (INotContributedActionFacet)) ||
+                     !GetFacet<INotContributedActionFacet>().NeverContributed())) {
                     return Parameters.Any(p => p.Specification.IsObject || p.Specification.IsCollection);
                 }
                 return false;
@@ -79,7 +82,8 @@ namespace NakedObjects.Meta.SpecImmutable {
         public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) {
             return IsContributedMethod
                    && Parameters.Any(parm => ContributeTo(parm.Specification, objectSpecImmutable))
-                   && !(IsCollection(objectSpecImmutable) && IsCollection(GetFacet<IActionInvocationFacet>().ReturnType));
+                   &&
+                   !(IsCollection(objectSpecImmutable) && IsCollection(GetFacet<IActionInvocationFacet>().ReturnType));
         }
 
         #endregion
@@ -101,6 +105,23 @@ namespace NakedObjects.Meta.SpecImmutable {
 
             return contributeeSpec.IsOfType(parmSpec) && !ncf.NotContributedTo(contributeeSpec);
         }
+
+        #region ISerializable
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue("specification", specification);
+            info.AddValue("parameters", parameters);
+
+            base.GetObjectData(info, context);
+        }
+
+        // The special constructor is used to deserialize values. 
+        public ActionSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
+            specification = (IObjectSpecImmutable)info.GetValue("specification", typeof(IObjectSpecImmutable));
+            parameters = (IActionParameterSpecImmutable[])info.GetValue("parameters", typeof(IActionParameterSpecImmutable[]));
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

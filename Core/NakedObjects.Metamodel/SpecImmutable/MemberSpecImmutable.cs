@@ -6,12 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Spec;
 
 namespace NakedObjects.Meta.SpecImmutable {
-
     [Serializable]
     public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable {
         private readonly IIdentifier identifier;
@@ -27,6 +27,20 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public abstract IObjectSpecImmutable Specification { get; }
+
+        #endregion
+
+        #region ISerializable
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue("identifier", identifier);
+            base.GetObjectData(info, context);
+        }
+
+        // The special constructor is used to deserialize values. 
+        protected MemberSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
+            identifier = (IIdentifier)info.GetValue("identifier", typeof(IIdentifier));
+        }
 
         #endregion
     }

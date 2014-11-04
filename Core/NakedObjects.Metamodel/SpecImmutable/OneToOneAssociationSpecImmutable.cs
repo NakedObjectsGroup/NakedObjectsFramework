@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
-
     [Serializable]
     public class OneToOneAssociationSpecImmutable : AssociationSpecImmutable {
         public OneToOneAssociationSpecImmutable(IIdentifier identifier, Type returnType, IObjectSpecImmutable returnSpec)
@@ -27,6 +27,14 @@ namespace NakedObjects.Meta.SpecImmutable {
         public override string ToString() {
             return "Reference Association [name=\"" + Identifier + ", Type=" + Specification + " ]";
         }
+
+        #region ISerializable
+
+
+        // The special constructor is used to deserialize values. 
+        public OneToOneAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) { }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

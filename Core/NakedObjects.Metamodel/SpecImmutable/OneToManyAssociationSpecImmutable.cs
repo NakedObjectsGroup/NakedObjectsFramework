@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -13,13 +14,14 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
-
     [Serializable]
     public class OneToManyAssociationSpecImmutable : AssociationSpecImmutable {
-
         private readonly IMetamodel metamodel;
 
-        public OneToManyAssociationSpecImmutable(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec, IMetamodel metamodel)
+        // TODO remork so that either elemnt type is passed in or guarantee elementtype facet is available
+        // so that do not need to pass in metamodel
+        public OneToManyAssociationSpecImmutable(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec,
+            IMetamodel metamodel)
             : base(name, returnType, returnSpec) {
             this.metamodel = metamodel;
         }
@@ -52,6 +54,20 @@ namespace NakedObjects.Meta.SpecImmutable {
         public override string ToString() {
             return "OneToManyAssociation [name=\"" + Identifier + "\",Type=" + Specification + " ]";
         }
+
+        #region ISerializable
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue("metamodel", metamodel);
+            base.GetObjectData(info, context);
+        }
+
+        // The special constructor is used to deserialize values. 
+        public OneToManyAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
+            metamodel = (IMetamodel)info.GetValue("metamodel", typeof(IMetamodel));
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

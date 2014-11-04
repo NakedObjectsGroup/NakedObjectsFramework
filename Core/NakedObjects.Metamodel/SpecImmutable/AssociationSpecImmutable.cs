@@ -7,12 +7,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
-
     [Serializable]
     public abstract class AssociationSpecImmutable : MemberSpecImmutable, IAssociationSpecImmutable {
         protected readonly Type ReturnType;
@@ -43,6 +43,24 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public string GroupFullName {
             get { return ""; }
+        }
+
+        #endregion
+
+        #region ISerializable
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue("ReturnType", ReturnType);
+            info.AddValue("returnSpec", returnSpec);
+
+            base.GetObjectData(info, context);
+        }
+
+        // The special constructor is used to deserialize values. 
+        protected AssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
+            ReturnType = (Type)info.GetValue("ReturnType", typeof(Type));
+            returnSpec = (IObjectSpecImmutable)info.GetValue("returnSpec", typeof(IObjectSpecImmutable));
+
         }
 
         #endregion

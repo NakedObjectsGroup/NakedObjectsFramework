@@ -22,6 +22,22 @@ using NakedObjects.Reflect;
 using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test {
+
+    public class TestSimpleDomainObject {
+        private IList<TestSimpleDomainObject> testCollection = new List<TestSimpleDomainObject>();
+        public virtual TestSimpleDomainObject TestProperty { get; set; }
+
+        public virtual IList<TestSimpleDomainObject> TestCollection {
+            get { return testCollection; }
+            set { testCollection = value; }
+        }
+
+        public virtual TestSimpleDomainObject TestAction(TestSimpleDomainObject testParm) {
+            return this;
+        }
+    }
+
+
     public class CacheTest {
         protected IUnityContainer GetContainer() {
             var c = new UnityContainer();
@@ -79,6 +95,51 @@ namespace NakedObjects.Meta.Test {
                 Assert.AreEqual(item.a.GetFacets().Count(), item.b.GetFacets().Count());
 
                 var zipfacets = item.a.GetFacets().Zip(item.b.GetFacets(), (x, y) => new {x, y});
+
+                foreach (var zipfacet in zipfacets) {
+                    Assert.AreEqual(zipfacet.x.FacetType, zipfacet.y.FacetType);
+                }
+            }
+        }
+
+
+        [Test]
+        public void BinarySerializeSimpleDomainObjectTypes() {
+            var container = GetContainer();
+            var rc = new ReflectorConfiguration(new Type[] { typeof(TestSimpleDomainObject) }, new Type[] { }, new Type[] { }, new Type[] { });
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+
+            var cache = container.Resolve<ISpecificationCache>();
+
+            using (var fs = File.Open(@"c:\testmetadata\metadatatsdo.bin", FileMode.OpenOrCreate)) {
+                IFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(fs, cache);
+            }
+
+            // and roundtrip 
+
+            ISpecificationCache newCache;
+
+            using (var fs = File.Open(@"c:\testmetadata\metadatatsdo.bin", FileMode.Open)) {
+                IFormatter formatter = new BinaryFormatter();
+                var obj = formatter.Deserialize(fs);
+                newCache = (ISpecificationCache)obj;
+            }
+
+            Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
+
+            var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new { a, b });
+
+            foreach (var item in zipped) {
+                Assert.AreEqual(item.a.FullName, item.b.FullName);
+
+                Assert.AreEqual(item.a.GetFacets().Count(), item.b.GetFacets().Count());
+
+                var zipfacets = item.a.GetFacets().Zip(item.b.GetFacets(), (x, y) => new { x, y });
 
                 foreach (var zipfacet in zipfacets) {
                     Assert.AreEqual(zipfacet.x.FacetType, zipfacet.y.FacetType);
