@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Architecture.Facets.Types {
+namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class InterfaceFacet : MarkerFacetAbstract, IInterfaceFacet {
         public InterfaceFacet(ISpecification holder)

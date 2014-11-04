@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -16,7 +17,9 @@ using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
 
@@ -33,7 +36,8 @@ namespace NakedObjects.Reflect.Test {
             container.RegisterType<IMainMenuDefinition, NullMenuDfinition>();
 
             container.RegisterType<IMenuFactory, NullMenuBuilder>();
-            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(
+                new ContainerControlledLifetimeManager(), new InjectionConstructor());
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, Reflector>();
@@ -42,15 +46,9 @@ namespace NakedObjects.Reflect.Test {
             container.RegisterType<IServicesConfiguration, ServicesConfiguration>();
         }
 
-        public class NullMenuDfinition : IMainMenuDefinition {
-            public IMenu[] MainMenus(IMenuFactory factory) {
-                return new IMenu[]{};
-            }
-        }
-
         [TestMethod]
         public void ReflectNoTypes() {
-            var container = GetContainer();
+            IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -61,7 +59,10 @@ namespace NakedObjects.Reflect.Test {
         }
 
         private static Type[] AdventureWorksTypes() {
-            var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
+            Type[] allTypes =
+                AppDomain.CurrentDomain.GetAssemblies()
+                    .Single(a => a.GetName().Name == "AdventureWorksModel")
+                    .GetTypes();
             return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
         }
 
@@ -71,8 +72,8 @@ namespace NakedObjects.Reflect.Test {
 
             AssemblyHook.EnsureAssemblyLoaded();
 
-            var types = AdventureWorksTypes();
-            var container = GetContainer();
+            Type[] types = AdventureWorksTypes();
+            IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(types, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -83,7 +84,7 @@ namespace NakedObjects.Reflect.Test {
 
             reflector.Reflect();
             stopwatch.Stop();
-            var interval = stopwatch.Elapsed;
+            TimeSpan interval = stopwatch.Elapsed;
 
             Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
             Assert.IsTrue(interval.Milliseconds < 1000);
@@ -96,8 +97,8 @@ namespace NakedObjects.Reflect.Test {
 
             AssemblyHook.EnsureAssemblyLoaded();
 
-            var types = AdventureWorksTypes();
-            var container = GetContainer();
+            Type[] types = AdventureWorksTypes();
+            IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(types, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -109,7 +110,7 @@ namespace NakedObjects.Reflect.Test {
 
             reflector.Reflect();
             stopwatch.Stop();
-            var reflectInterval = stopwatch.Elapsed;
+            TimeSpan reflectInterval = stopwatch.Elapsed;
             stopwatch.Reset();
 
             Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
@@ -117,7 +118,7 @@ namespace NakedObjects.Reflect.Test {
             var cache = container.Resolve<ISpecificationCache>();
 
             TimeSpan serializeInterval;
-            using (var fs = File.Open(@"c:\testmetadata\metadataAW.bin", FileMode.OpenOrCreate)) {
+            using (FileStream fs = File.Open(@"c:\testmetadata\metadataAW.bin", FileMode.OpenOrCreate)) {
                 IFormatter formatter = new BinaryFormatter();
 
                 stopwatch.Start();
@@ -132,7 +133,7 @@ namespace NakedObjects.Reflect.Test {
             ISpecificationCache newCache;
 
             TimeSpan deserializeInterval;
-            using (var fs = File.Open(@"c:\testmetadata\metadataAW.bin", FileMode.Open)) {
+            using (FileStream fs = File.Open(@"c:\testmetadata\metadataAW.bin", FileMode.Open)) {
                 IFormatter formatter = new BinaryFormatter();
 
                 stopwatch.Start();
@@ -143,6 +144,203 @@ namespace NakedObjects.Reflect.Test {
                 stopwatch.Reset();
             }
 
+            CompareCaches(cache, newCache);
+
+            Console.WriteLine("reflect: {0} serialize {1} deserialize {2} ", reflectInterval, serializeInterval,
+                deserializeInterval);
+        }
+
+        [TestMethod]
+        public void SerializeAdventureworksByType() {
+            // load adventurework
+
+            AssemblyHook.EnsureAssemblyLoaded();
+
+            int count = AdventureWorksTypes().Count();
+
+            Type[] spec51 = AdventureWorksTypes().Skip(50).Take(1).ToArray();
+            Type[] types = AdventureWorksTypes().Take(51).ToArray();
+            IUnityContainer container = GetContainer();
+            var rc = new ReflectorConfiguration(spec51, new Type[] {}, new Type[] {}, new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            reflector.Reflect();
+            stopwatch.Stop();
+            TimeSpan reflectInterval = stopwatch.Elapsed;
+            stopwatch.Reset();
+
+            Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
+
+            var cache = container.Resolve<ISpecificationCache>();
+
+            TimeSpan serializeInterval;
+            using (FileStream fs = File.Open(@"c:\testmetadata\metadataAW.bin", FileMode.OpenOrCreate)) {
+                IFormatter formatter = new BinaryFormatter();
+
+                stopwatch.Start();
+                formatter.Serialize(fs, cache);
+                stopwatch.Stop();
+                serializeInterval = stopwatch.Elapsed;
+                stopwatch.Reset();
+            }
+
+            // and roundtrip 
+
+            ISpecificationCache newCache;
+
+            TimeSpan deserializeInterval;
+            using (FileStream fs = File.Open(@"c:\testmetadata\metadataAW.bin", FileMode.Open)) {
+                IFormatter formatter = new BinaryFormatter();
+
+                stopwatch.Start();
+                newCache = (ISpecificationCache) formatter.Deserialize(fs);
+
+                stopwatch.Stop();
+                deserializeInterval = stopwatch.Elapsed;
+                stopwatch.Reset();
+            }
+
+            CompareCaches(cache, newCache);
+
+            Console.WriteLine("reflect: {0} serialize {1} deserialize {2} ", reflectInterval, serializeInterval,
+                deserializeInterval);
+        }
+
+        [TestMethod]
+        public void SerializeAdventureworksFacets() {
+            // load adventurework
+
+            AssemblyHook.EnsureAssemblyLoaded();
+
+            int count = AdventureWorksTypes().Count();
+
+
+            Type[] types50 = AdventureWorksTypes().Take(50).ToArray();
+            Type[] types51 = AdventureWorksTypes().Take(51).ToArray();
+            IUnityContainer container = GetContainer();
+            var rc = new ReflectorConfiguration(types50, new Type[] {}, new Type[] {}, new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+
+
+            reflector.Reflect();
+
+            IObjectSpecImmutable[] cache1 = container.Resolve<ISpecificationCache>().AllSpecifications();
+
+
+            rc = new ReflectorConfiguration(types51, new Type[] {}, new Type[] {}, new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            reflector = container.Resolve<IReflector>();
+
+            reflector.Reflect();
+
+            IObjectSpecImmutable[] cache2 = container.Resolve<ISpecificationCache>().AllSpecifications();
+
+            int c1 = cache1.Count();
+            int c2 = cache2.Count();
+
+            foreach (IObjectSpecImmutable objectSpecImmutable in cache2) {
+                if (cache1.Any(s => s.FullName == objectSpecImmutable.FullName)) {
+                    //Console.WriteLine("Found {0}", objectSpecImmutable.FullName);
+                }
+                else {
+                    Console.WriteLine("Not Found object spec {0}", objectSpecImmutable.FullName);
+                }
+            }
+
+            IEnumerable<IFacet> f1 = cache1.SelectMany(s => s.GetFacets()).Distinct();
+            IEnumerable<IFacet> f2 = cache2.SelectMany(s => s.GetFacets()).Distinct();
+
+            foreach (IFacet f in f2) {
+                if (f1.Any(s => s.GetType() == f.GetType())) {
+                    //Console.WriteLine("Found {0}", f.GetType().FullName);
+                }
+                else {
+                    Console.WriteLine("Not Found object facet {0}", f.GetType().FullName);
+                }
+            }
+
+            f1 =
+                cache1.SelectMany(s => s.ObjectActions)
+                    .Select(s => s.Spec)
+                    .Where(s => s != null)
+                    .SelectMany(s => s.GetFacets())
+                    .Distinct();
+            f2 =
+                cache2.SelectMany(s => s.ObjectActions)
+                    .Select(s => s.Spec)
+                    .Where(s => s != null)
+                    .SelectMany(s => s.GetFacets())
+                    .Distinct();
+
+            foreach (IFacet f in f2) {
+                if (f1.Any(s => s.GetType() == f.GetType())) {
+                    //Console.WriteLine("Found {0}", f.GetType().FullName);
+                }
+                else {
+                    Console.WriteLine("Not Found action facet  {0}", f.GetType().FullName);
+                }
+            }
+
+            f1 =
+              cache1.SelectMany(s => s.ObjectActions)
+                  .Select(s => s.Spec)
+                  .Where(s => s != null)
+                  .SelectMany(s => s.Parameters)
+                  .SelectMany(s => s.GetFacets())
+                  .Distinct();
+            f2 =
+                cache2.SelectMany(s => s.ObjectActions)
+                    .Select(s => s.Spec)
+                    .Where(s => s != null)
+                     .SelectMany(s => s.Parameters)
+                    .SelectMany(s => s.GetFacets())
+                    .Distinct();
+
+            foreach (IFacet f in f2) {
+                if (f1.Any(s => s.GetType() == f.GetType())) {
+                    //Console.WriteLine("Found {0}", f.GetType().FullName);
+                }
+                else {
+                    Console.WriteLine("Not Found parm facet  {0}", f.GetType().FullName);
+                }
+            }
+
+            f1 =
+              cache1.SelectMany(s => s.Fields)
+                  .Select(s => s.Spec)
+                  .Where(s => s != null)
+                  .SelectMany(s => s.GetFacets())
+                  .Distinct();
+            f2 =
+                cache2.SelectMany(s => s.Fields)
+                    .Select(s => s.Spec)
+                    .Where(s => s != null)
+                    .SelectMany(s => s.GetFacets())
+                    .Distinct();
+
+            foreach (IFacet f in f2) {
+                if (f1.Any(s => s.GetType() == f.GetType())) {
+                    //Console.WriteLine("Found {0}", f.GetType().FullName);
+                }
+                else {
+                    Console.WriteLine("Not Found field facet  {0}", f.GetType().FullName);
+                }
+            }
+        }
+
+
+        private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {
             Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
 
             var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new {a, b});
@@ -158,8 +356,6 @@ namespace NakedObjects.Reflect.Test {
                     Assert.AreEqual(zipfacet.x.FacetType, zipfacet.y.FacetType);
                 }
             }
-
-            Console.WriteLine(string.Format("reflect: {0} serialize {1} deserialize {2} ", reflectInterval, serializeInterval, deserializeInterval));
         }
 
         #region Nested type: NullMenuBuilder
@@ -183,5 +379,11 @@ namespace NakedObjects.Reflect.Test {
         }
 
         #endregion
+
+        public class NullMenuDfinition : IMainMenuDefinition {
+            public IMenu[] MainMenus(IMenuFactory factory) {
+                return new IMenu[] {};
+            }
+        }
     }
 }

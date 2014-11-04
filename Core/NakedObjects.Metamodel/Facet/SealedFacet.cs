@@ -8,9 +8,8 @@
 using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Architecture.Facets.Types {
+namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class SealedFacet : MarkerFacetAbstract, ISealedFacet {
         public SealedFacet(ISpecification holder)

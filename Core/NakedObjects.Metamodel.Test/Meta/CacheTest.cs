@@ -8,6 +8,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -19,9 +21,25 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Reflect;
+using NakedObjects.Value;
 using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test {
+
+
+   
+    public class TestService {
+     
+        public virtual TestSimpleDomainObject TestAction(TestSimpleDomainObject testParm) {
+            return testParm;
+        }
+
+        public virtual TestAnnotatedDomainObject TestAction1(TestAnnotatedDomainObject testParm) {
+            return testParm;
+        }
+
+      
+    }
 
     public class TestSimpleDomainObject {
         private IList<TestSimpleDomainObject> testCollection = new List<TestSimpleDomainObject>();
@@ -36,6 +54,68 @@ namespace NakedObjects.Meta.Test {
             return this;
         }
     }
+
+    [Named("Test")]
+    [IconName("aname")]
+    public class TestAnnotatedDomainObject {
+        private IList<TestAnnotatedDomainObject> testCollection = new List<TestAnnotatedDomainObject>();
+
+
+        public void Persisted() {
+          
+        }
+
+        [Title]
+        public virtual TestSimpleDomainObject TestProperty { get; set; }
+
+        [PageSize(20)]
+        public IQueryable<TestAnnotatedDomainObject> AutoCompleteTestProperty([MinLength(2)] string name) {
+            return null;
+        }
+
+        public virtual Image TestImage { get; set; }
+
+        public virtual IList<TestAnnotatedDomainObject> TestCollection {
+            get { return testCollection; }
+            set { testCollection = value; }
+        }
+
+        public virtual TestAnnotatedDomainObject TestAction([Named("test"), DefaultValue(null)] TestAnnotatedDomainObject testParm) {
+            return this;
+        }
+
+        [PageSize(20)]
+        public IQueryable<TestAnnotatedDomainObject> AutoComplete0TestAction([MinLength(2)] string name) {
+            return null;
+        }
+
+        [Disabled]
+        [DisplayName("Discount")]
+        [MemberOrder(30)]
+        [Mask("C")]
+        public virtual decimal TestDecimal { get; set; }
+
+        [Hidden]
+        public virtual decimal TestHidden { get; set; }
+
+
+        [Optionally]
+        [TypicalLength(20)]
+        public virtual string TestString { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Range(typeof(DateTime), "", "")]
+        public virtual DateTime TestDateTime { get; set; }
+
+        public virtual CacheTest.TestEnum TestEnum { get; set; }
+
+        public string DisableTestString(string value) {
+            return null;
+        }
+
+        [ConcurrencyCheck]
+        public virtual string TestConcurrency { get; set; }
+    }
+
 
 
     public class CacheTest {
@@ -85,28 +165,51 @@ namespace NakedObjects.Meta.Test {
                 newCache = (ISpecificationCache) obj;
             }
 
-            Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
+            CompareCaches(cache, newCache);
 
-            var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new {a, b});
+        }
 
-            foreach (var item in zipped) {
-                Assert.AreEqual(item.a.FullName, item.b.FullName);
+        public enum TestEnum {
+            Value1,
+            Value2
+        };
 
-                Assert.AreEqual(item.a.GetFacets().Count(), item.b.GetFacets().Count());
+        [Test]
+        public void BinarySerializeEnumTypes() {
+            var container = GetContainer();
+            var rc = new ReflectorConfiguration(new Type[] { typeof(TestEnum) }, new Type[] { }, new Type[] { }, new Type[] { });
 
-                var zipfacets = item.a.GetFacets().Zip(item.b.GetFacets(), (x, y) => new {x, y});
+            container.RegisterInstance<IReflectorConfiguration>(rc);
 
-                foreach (var zipfacet in zipfacets) {
-                    Assert.AreEqual(zipfacet.x.FacetType, zipfacet.y.FacetType);
-                }
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+
+            var cache = container.Resolve<ISpecificationCache>();
+
+            using (var fs = File.Open(@"c:\testmetadata\metadataint.bin", FileMode.OpenOrCreate)) {
+                IFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(fs, cache);
             }
+
+            // and roundtrip 
+
+            ISpecificationCache newCache;
+
+            using (var fs = File.Open(@"c:\testmetadata\metadataint.bin", FileMode.Open)) {
+                IFormatter formatter = new BinaryFormatter();
+                var obj = formatter.Deserialize(fs);
+                newCache = (ISpecificationCache)obj;
+            }
+
+            CompareCaches(cache, newCache);
+
         }
 
 
         [Test]
         public void BinarySerializeSimpleDomainObjectTypes() {
-            var container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] { typeof(TestSimpleDomainObject) }, new Type[] { }, new Type[] { }, new Type[] { });
+            var container = GetContainer();            var rc = new ReflectorConfiguration(new Type[] { typeof(TestSimpleDomainObject) }, new Type[] {typeof(TestService)}, new Type[] { }, new Type[] { });
+
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -130,16 +233,52 @@ namespace NakedObjects.Meta.Test {
                 newCache = (ISpecificationCache)obj;
             }
 
+            CompareCaches(cache, newCache);
+
+        }
+
+
+        [Test]
+        public void BinarySerializeAnnotatedDomainObjectTypes() {
+            var container = GetContainer();
+            var rc = new ReflectorConfiguration(new Type[] { typeof(TestAnnotatedDomainObject) }, new Type[] { typeof(TestService) }, new Type[] { }, new Type[] { });
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+
+            var cache = container.Resolve<ISpecificationCache>();
+
+            using (var fs = File.Open(@"c:\testmetadata\metadatatado.bin", FileMode.OpenOrCreate)) {
+                IFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(fs, cache);
+            }
+
+            // and roundtrip 
+
+            ISpecificationCache newCache;
+
+            using (var fs = File.Open(@"c:\testmetadata\metadatatado.bin", FileMode.Open)) {
+                IFormatter formatter = new BinaryFormatter();
+                var obj = formatter.Deserialize(fs);
+                newCache = (ISpecificationCache)obj;
+            }
+
+            CompareCaches(cache, newCache);
+        }
+
+        private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {
             Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
 
-            var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new { a, b });
+            var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new {a, b});
 
             foreach (var item in zipped) {
                 Assert.AreEqual(item.a.FullName, item.b.FullName);
 
                 Assert.AreEqual(item.a.GetFacets().Count(), item.b.GetFacets().Count());
 
-                var zipfacets = item.a.GetFacets().Zip(item.b.GetFacets(), (x, y) => new { x, y });
+                var zipfacets = item.a.GetFacets().Zip(item.b.GetFacets(), (x, y) => new {x, y});
 
                 foreach (var zipfacet in zipfacets) {
                     Assert.AreEqual(zipfacet.x.FacetType, zipfacet.y.FacetType);

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -13,13 +14,18 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public abstract class FacetAbstract : IFacet {
+    public abstract class FacetAbstract : IFacet, IDeserializationCallback {
         private readonly Type facetType;
         private ISpecification holder;
 
         protected FacetAbstract(Type facetType, ISpecification holder) {
             this.facetType = facetType;
             this.holder = holder;
+        }
+
+        public virtual void OnDeserialization(object sender) {
+            // for debugging
+            Console.WriteLine("OnDeserialization {0}", this.GetType());
         }
 
         /// <summary>
