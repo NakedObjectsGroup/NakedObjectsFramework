@@ -301,7 +301,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public string GetIconName(INakedObject forObject) {
-            return innerSpec.GetIconName(forObject);
+            return innerSpec.GetIconName(forObject, metamodelManager.Metamodel);
         }
 
         public IConsent ValidToPersist(INakedObject target, ISession session) {

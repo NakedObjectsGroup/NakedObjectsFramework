@@ -13,7 +13,7 @@ namespace NakedObjects.Snapshot {
 
         [NotContributedAction]
         public IXmlSnapshot GenerateSnapshot(object domainObject) {
-            return new XmlSnapshot(domainObject, Framework.LifecycleManager, Framework.Manager);
+            return new XmlSnapshot(domainObject, Framework.LifecycleManager, Framework.Manager, Framework.Metamodel);
         }
 
         #endregion

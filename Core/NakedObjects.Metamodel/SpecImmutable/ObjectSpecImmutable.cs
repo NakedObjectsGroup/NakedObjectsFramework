@@ -191,14 +191,14 @@ namespace NakedObjects.Meta.SpecImmutable {
             return Superclass != null && Superclass.IsOfType(specification);
         }
 
-        public string GetIconName(INakedObject forObject) {
+        public string GetIconName(INakedObject forObject, IMetamodel metamodel) {
             var iconFacet = GetFacet<IIconFacet>();
             string iconName = null;
             if (iconFacet != null) {
                 iconName = forObject == null ? iconFacet.GetIconName() : iconFacet.GetIconName(forObject);
             }
             else if (IsCollection) {
-                iconName = GetFacet<ITypeOfFacet>().GetValueSpec(forObject, Metamodel).GetIconName(null);
+                iconName = GetFacet<ITypeOfFacet>().GetValueSpec(forObject, metamodel).GetIconName(null, metamodel);
             }
 
             return string.IsNullOrEmpty(iconName) ? "Default" : iconName;

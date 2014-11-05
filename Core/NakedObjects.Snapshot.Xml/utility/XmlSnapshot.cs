@@ -22,6 +22,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
     public class XmlSnapshot : IXmlSnapshot {
         private readonly ILifecycleManager lifecycleManager;
         private readonly INakedObjectManager nakedObjectManager;
+        private readonly IMetamodelManager metamodelManager;
         private static readonly ILog Log = LogManager.GetLogger(typeof (XmlSnapshot));
 
         private readonly Place rootPlace;
@@ -29,14 +30,15 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         private bool topLevelElementWritten;
 
         //  Start a snapshot at the root object, using own namespace manager.
-        public XmlSnapshot(object obj, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager) : this(obj, new XmlSchema(), lifecycleManager, nakedObjectManager) { }
+        public XmlSnapshot(object obj, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) : this(obj, new XmlSchema(), lifecycleManager, nakedObjectManager, metamodelManager) { }
 
         // Start a snapshot at the root object, using supplied namespace manager.
-        public XmlSnapshot(object obj, XmlSchema schema, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager) {
+        public XmlSnapshot(object obj, XmlSchema schema, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) {
             this.lifecycleManager = lifecycleManager;
             this.nakedObjectManager = nakedObjectManager;
-          
-           
+            this.metamodelManager = metamodelManager;
+
+
             INakedObject rootObject = nakedObjectManager.CreateAdapter(obj, null, null);
             Log.Debug(".ctor(" + DoLog("rootObj", rootObject) + AndLog("schema", schema) + AndLog("addOids", "" + true) + ")");
 
@@ -531,7 +533,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                         INakedObject collection = oneToManyAssociation.GetNakedObject(nakedObject);
                         ITypeOfFacet facet = collection.GetTypeOfFacetFromSpec();
 
-                        var referencedTypeNos = facet.GetValueSpec(collection, metamodel);
+                        var referencedTypeNos = facet.GetValueSpec(collection, metamodelManager.Metamodel);
                         string fullyQualifiedClassName = referencedTypeNos.FullName;
 
                         // XML

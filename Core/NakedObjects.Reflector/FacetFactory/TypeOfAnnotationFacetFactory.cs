@@ -40,7 +40,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     var elementType = actualTypeArguments.First();
                     var elementSpec = Reflector.LoadSpecification(elementType);
                     FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
-                    return FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder, Reflector.Metamodel));
+                    return FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
                 }
             }
             return false;

@@ -8,7 +8,6 @@
 using System;
 using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
@@ -18,7 +17,6 @@ namespace NakedObjects.Meta.SpecImmutable {
     public class OneToManyAssociationSpecImmutable : AssociationSpecImmutable {
         private readonly Type defaultElementType;
         private readonly IObjectSpecImmutable defaultElementSpec;
-        private readonly IMetamodel metamodel;
 
         // TODO remork so that either elemnt type is passed in or guarantee elementtype facet is available
         // so that do not need to pass in metamodel

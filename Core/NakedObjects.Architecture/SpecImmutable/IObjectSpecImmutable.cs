@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
@@ -33,7 +34,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
         bool IsCollection { get; }
         bool IsParseable { get; }
         bool IsOfType(IObjectSpecImmutable specification);
-        string GetIconName(INakedObject forObject);
+        string GetIconName(INakedObject forObject, IMetamodel metamodel);
         string GetTitle(INakedObject nakedObject);
     }
 
