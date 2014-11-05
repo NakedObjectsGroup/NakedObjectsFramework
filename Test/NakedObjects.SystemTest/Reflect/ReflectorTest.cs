@@ -111,42 +111,44 @@ namespace NakedObjects.Reflect.Test {
             reflector.Reflect();
             stopwatch.Stop();
             TimeSpan reflectInterval = stopwatch.Elapsed;
-            stopwatch.Reset();
+            Console.WriteLine("reflect {0}", reflectInterval);
 
             Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
 
             var cache = container.Resolve<ISpecificationCache>();
 
-            TimeSpan serializeInterval;
-            using (FileStream fs = File.Open(@"c:\testmetadata\metadataAW.bin", FileMode.OpenOrCreate)) {
-                IFormatter formatter = new BinaryFormatter();
+            const string file = @"c:\testmetadata\metadataAW.bin";
 
-                stopwatch.Start();
-                formatter.Serialize(fs, cache);
-                stopwatch.Stop();
-                serializeInterval = stopwatch.Elapsed;
-                stopwatch.Reset();
-            }
+            SerializeDeserialize(cache, file);
+        }
+
+        private  void SerializeDeserialize(ISpecificationCache cache, string file) {
+            var stopwatch = new Stopwatch();
+            IUnityContainer container = GetContainer();
+           
+            stopwatch.Start();
+
+            cache.Serialize(file);
+
+            stopwatch.Stop();
+            TimeSpan serializeInterval = stopwatch.Elapsed;
+            stopwatch.Reset();
 
             // and roundtrip 
 
-            ISpecificationCache newCache;
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(
+                new PerResolveLifetimeManager(), new InjectionConstructor(file));
 
-            TimeSpan deserializeInterval;
-            using (FileStream fs = File.Open(@"c:\testmetadata\metadataAW.bin", FileMode.Open)) {
-                IFormatter formatter = new BinaryFormatter();
+            stopwatch.Start();
+            var newCache = container.Resolve<ISpecificationCache>();
+            stopwatch.Stop();
+            TimeSpan deserializeInterval = stopwatch.Elapsed;
+            stopwatch.Reset();
 
-                stopwatch.Start();
-                newCache = (ISpecificationCache) formatter.Deserialize(fs);
-
-                stopwatch.Stop();
-                deserializeInterval = stopwatch.Elapsed;
-                stopwatch.Reset();
-            }
 
             CompareCaches(cache, newCache);
 
-            Console.WriteLine("reflect: {0} serialize {1} deserialize {2} ", reflectInterval, serializeInterval,
+            Console.WriteLine("serialize {0} deserialize {1} ", serializeInterval,
                 deserializeInterval);
         }
 
@@ -179,37 +181,10 @@ namespace NakedObjects.Reflect.Test {
 
             var cache = container.Resolve<ISpecificationCache>();
 
-            TimeSpan serializeInterval;
-            using (FileStream fs = File.Open(@"c:\testmetadata\metadataAW.bin", FileMode.OpenOrCreate)) {
-                IFormatter formatter = new BinaryFormatter();
+            const string file = @"c:\testmetadata\metadataAWT.bin";
 
-                stopwatch.Start();
-                formatter.Serialize(fs, cache);
-                stopwatch.Stop();
-                serializeInterval = stopwatch.Elapsed;
-                stopwatch.Reset();
-            }
-
-            // and roundtrip 
-
-            ISpecificationCache newCache;
-
-            TimeSpan deserializeInterval;
-            using (FileStream fs = File.Open(@"c:\testmetadata\metadataAW.bin", FileMode.Open)) {
-                IFormatter formatter = new BinaryFormatter();
-
-                stopwatch.Start();
-                newCache = (ISpecificationCache) formatter.Deserialize(fs);
-
-                stopwatch.Stop();
-                deserializeInterval = stopwatch.Elapsed;
-                stopwatch.Reset();
-            }
-
-            CompareCaches(cache, newCache);
-
-            Console.WriteLine("reflect: {0} serialize {1} deserialize {2} ", reflectInterval, serializeInterval,
-                deserializeInterval);
+            SerializeDeserialize(cache, file);
+          
         }
 
         [TestMethod]
@@ -293,17 +268,17 @@ namespace NakedObjects.Reflect.Test {
             }
 
             f1 =
-              cache1.SelectMany(s => s.ObjectActions)
-                  .Select(s => s.Spec)
-                  .Where(s => s != null)
-                  .SelectMany(s => s.Parameters)
-                  .SelectMany(s => s.GetFacets())
-                  .Distinct();
+                cache1.SelectMany(s => s.ObjectActions)
+                    .Select(s => s.Spec)
+                    .Where(s => s != null)
+                    .SelectMany(s => s.Parameters)
+                    .SelectMany(s => s.GetFacets())
+                    .Distinct();
             f2 =
                 cache2.SelectMany(s => s.ObjectActions)
                     .Select(s => s.Spec)
                     .Where(s => s != null)
-                     .SelectMany(s => s.Parameters)
+                    .SelectMany(s => s.Parameters)
                     .SelectMany(s => s.GetFacets())
                     .Distinct();
 
@@ -317,11 +292,11 @@ namespace NakedObjects.Reflect.Test {
             }
 
             f1 =
-              cache1.SelectMany(s => s.Fields)
-                  .Select(s => s.Spec)
-                  .Where(s => s != null)
-                  .SelectMany(s => s.GetFacets())
-                  .Distinct();
+                cache1.SelectMany(s => s.Fields)
+                    .Select(s => s.Spec)
+                    .Where(s => s != null)
+                    .SelectMany(s => s.GetFacets())
+                    .Distinct();
             f2 =
                 cache2.SelectMany(s => s.Fields)
                     .Select(s => s.Spec)

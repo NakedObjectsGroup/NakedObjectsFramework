@@ -65,8 +65,8 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         // The special constructor is used to deserialize values. 
         public OneToManyAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-            defaultElementType = (Type)info.GetValue("metamodel", typeof(Type));
-            defaultElementSpec = (IObjectSpecImmutable)info.GetValue("metamodel", typeof(IObjectSpecImmutable));
+            defaultElementType = (Type)info.GetValue("defaultElementType", typeof(Type));
+            defaultElementSpec = (IObjectSpecImmutable)info.GetValue("defaultElementSpec", typeof(IObjectSpecImmutable));
         }
 
         #endregion
