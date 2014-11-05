@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
@@ -32,7 +31,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             return FacetUtils.AddFacet(Create(attribute, isDate, specification));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override bool Process(PropertyInfo property, IMethodRemover methodRemover,
+            ISpecificationBuilder specification) {
             bool isDate = property.PropertyType.IsAssignableFrom(typeof (DateTime));
             return Process(property, isDate, specification);
         }
@@ -45,11 +45,24 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private static IRangeFacet Create(RangeAttribute attribute, bool isDate, ISpecification holder) {
-            if (attribute != null && attribute.OperandType != typeof (int) && attribute.OperandType != typeof (double)) {
+            if (attribute == null) {
+                return null;
+            }
+
+            if (attribute.OperandType != typeof (int) && attribute.OperandType != typeof (double)) {
                 Log.WarnFormat("Unsupported use of range attribute with explicit type on {0}", holder);
                 return null;
             }
-            return attribute == null ? null : new RangeFacet(attribute.Minimum, attribute.Maximum, isDate, holder);
+
+            var min = attribute.Minimum as IConvertible;
+            var max = attribute.Maximum as IConvertible;
+
+            if (min == null || max == null) {
+                Log.WarnFormat("Min Max values must be IConvertible for Range on {0}", holder);
+                return null;
+            }
+
+            return new RangeFacet(min, max, isDate, holder);
         }
     }
 }

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Runtime.Serialization;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -15,14 +16,20 @@ using NakedObjects.Meta.Except;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public class RangeFacet : FacetAbstract, IRangeFacet {
-        public RangeFacet(object min, object max, bool isDateRange, ISpecification holder)
-            : base(Type, holder) {
-            Min = (IConvertible) min;
-            Max = (IConvertible) max;
-            IsDateRange = isDateRange;
-        }
+    public class RangeFacet :  IRangeFacet, ISerializable {
 
+        // not using FacetAbstract because of implementing ISerializable
+        private readonly Type facetType;
+        private ISpecification holder;
+
+        public RangeFacet(IConvertible min, IConvertible max, bool isDateRange, ISpecification holder)
+          {
+            this.holder = holder;
+            Min = min;
+            Max = max;
+            IsDateRange = isDateRange;
+            facetType = Type;
+        }
 
         public static Type Type {
             get { return typeof (IRangeFacet); }
@@ -118,6 +125,58 @@ namespace NakedObjects.Meta.Facet {
         private static bool IsDateTime(object o) {
             return o is DateTime;
         }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue("Min", Min);
+            info.AddValue("Max", Max);
+            info.AddValue("IsDateRange", IsDateRange);
+            info.AddValue("facetType", facetType);
+            info.AddValue("holder", holder);
+        }
+
+          // The special constructor is used to deserialize values. 
+        public RangeFacet(SerializationInfo info, StreamingContext context)  {
+            Min = (IConvertible) info.GetValue("Min", typeof (IConvertible));
+            Max = (IConvertible) info.GetValue("Max", typeof (IConvertible));
+            IsDateRange = (bool)info.GetValue("IsDateRange", typeof(bool));
+            facetType = (Type)info.GetValue("facetType", typeof(Type));
+            holder = (ISpecification)info.GetValue("holder", typeof(ISpecification));
+        }
+
+        #region IFacet Members
+
+        public virtual ISpecification Specification {
+            get { return holder; }
+            set { holder = value; }
+        }
+
+        /// <summary>
+        ///     Assume implementation is <i>not</i> a no-op.
+        /// </summary>
+        /// <para>
+        ///     No-op implementations should override and return <c>true</c>.
+        /// </para>
+        public virtual bool IsNoOp {
+            get { return false; }
+        }
+
+        public Type FacetType {
+            get { return facetType; }
+        }
+
+        /// <summary>
+        ///     Default implementation of this method that returns <c>true</c>, ie
+        ///     should replace non-<see cref="IsNoOp" /> implementations.
+        /// </summary>
+        /// <para>
+        ///     Implementations that don't wish to replace non-<see cref="IsNoOp" /> implementations
+        ///     should override and return <c>false</c>.
+        /// </para>
+        public virtual bool CanAlwaysReplace {
+            get { return true; }
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

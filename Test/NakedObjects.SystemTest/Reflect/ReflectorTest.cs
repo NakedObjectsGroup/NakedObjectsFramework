@@ -8,10 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -117,15 +114,29 @@ namespace NakedObjects.Reflect.Test {
 
             var cache = container.Resolve<ISpecificationCache>();
 
+            //var f1 =
+            //    cache.AllSpecifications().SelectMany(s => s.Fields)
+            //        .Select(s => s.Spec)
+            //        .Where(s => s != null)
+            //        .OfType<OneToOneAssociationSpecImmutable>()
+            //        .SelectMany(s => s.GetFacets())
+            //        .Select(f => f.GetType().FullName)
+            //        .Distinct();
+
+
+            //foreach (var f in f1) {
+            //    Console.WriteLine(" field facet  {0}", f);
+            //}
+
             const string file = @"c:\testmetadata\metadataAW.bin";
 
             SerializeDeserialize(cache, file);
         }
 
-        private  void SerializeDeserialize(ISpecificationCache cache, string file) {
+        private void SerializeDeserialize(ISpecificationCache cache, string file) {
             var stopwatch = new Stopwatch();
             IUnityContainer container = GetContainer();
-           
+
             stopwatch.Start();
 
             cache.Serialize(file);
@@ -184,7 +195,6 @@ namespace NakedObjects.Reflect.Test {
             const string file = @"c:\testmetadata\metadataAWT.bin";
 
             SerializeDeserialize(cache, file);
-          
         }
 
         [TestMethod]

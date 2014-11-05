@@ -74,13 +74,13 @@ namespace NakedObjects.Meta.Spec {
 
         // The special constructor is used to deserialize values. 
         public Specification(SerializationInfo info, StreamingContext context) {
-            var dict = (Dictionary<Type, IFacet>)info.GetValue("facetsByClass", typeof(Dictionary<Type, IFacet>));
+            var dict = (Dictionary<Type, IFacet>) info.GetValue("facetsByClass", typeof (Dictionary<Type, IFacet>));
             dict.OnDeserialization(this);
-            facetsByClass = dict.ToImmutableDictionary();        
+            facetsByClass = dict.ToImmutableDictionary();
         }
 
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
-            var dict = facetsByClass.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            Dictionary<Type, IFacet> dict = facetsByClass.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             info.AddValue("facetsByClass", dict);
         }
 

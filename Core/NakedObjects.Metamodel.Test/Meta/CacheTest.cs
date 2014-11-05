@@ -19,6 +19,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
+using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflect;
 using NakedObjects.Value;
 using NUnit.Framework;
@@ -76,7 +77,26 @@ namespace NakedObjects.Meta.Test {
 
         [Optionally]
         [TypicalLength(20)]
+        [MaxLength(100)]
+        [MultiLine]
+        [RegEx(Validation = "a", Format = "a", Message = "a")]
+        [DataType(DataType.Password)]
         public virtual string TestString { get; set; }
+
+        public virtual string[] ChoicesTestString() {
+            return new string[] {};
+        }
+
+        public virtual string DefaultTestString() {
+            return "";
+        }
+
+        [System.ComponentModel.DataAnnotations.Range(0, 100)]
+        public virtual int? TestInt { get; set; }
+
+        public virtual string ValidateTestString(string tovalidate) {
+            return "";
+        }
 
         [System.ComponentModel.DataAnnotations.Range(typeof (DateTime), "", "")]
         public virtual DateTime TestDateTime { get; set; }
@@ -142,6 +162,24 @@ namespace NakedObjects.Meta.Test {
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
             var cache = container.Resolve<ISpecificationCache>();
+
+
+            var f1 =
+               cache.AllSpecifications().SelectMany(s => s.Fields)
+                   .Select(s => s.Spec)
+                   .Where(s => s != null)
+                   .OfType<OneToOneAssociationSpecImmutable>()
+                   .SelectMany(s => s.GetFacets())
+                   .Select(f => f.GetType().FullName)
+                   .Distinct();
+
+
+            foreach (var f in f1) {
+                Console.WriteLine(" field facet  {0}", f);
+            }
+
+
+
             cache.Serialize(file);
 
             // and roundtrip 
