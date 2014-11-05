@@ -512,7 +512,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             INakedObject collectionNakedObject = property.GetNakedObject(context.Target);
             ITypeOfFacet facet = collectionNakedObject.GetTypeOfFacetFromSpec();
 
-            var introspectableSpecification = facet.GetValueSpec(collectionNakedObject);
+            var introspectableSpecification = facet.GetValueSpec(collectionNakedObject, framework.Metamodel.Metamodel);
             var spec = framework.Metamodel.GetSpecification(introspectableSpecification);
             if (context.ProposedNakedObject.Spec.IsOfType(spec)) {
                 return new Allow();
@@ -603,7 +603,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
             var no = framework.Manager.CreateAdapter(rawValue, null, null);
 
             if (specification.IsCollection) {
-                var elementSpec = specification.GetFacet<ITypeOfFacet>().GetValueSpec(no);
+                var elementSpec = specification.GetFacet<ITypeOfFacet>().GetValueSpec(no, framework.Metamodel.Metamodel);
 
                 if (elementSpec.IsParseable) {
                     //var elements = ((IEnumerable) rawValue).Cast<object>().Select(e => elementSpec.GetFacet<IParseableFacet>().ParseTextEntry(e.ToString(), framework.Manager)).ToArray();

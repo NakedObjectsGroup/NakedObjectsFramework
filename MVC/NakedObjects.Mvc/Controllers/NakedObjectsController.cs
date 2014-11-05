@@ -897,13 +897,13 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 }
                 else if (model is ActionResultModel) {
                     INakedObject nakedObject = NakedObjectsContext.GetNakedObject(((ActionResultModel) model).Result);
-                    SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject).ShortName);
+                    SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, nakedObjectsContext.Metamodel.Metamodel).ShortName);
                 }
                 else if (model != null) {
                     INakedObject nakedObject = model is PropertyViewModel ? NakedObjectsContext.GetNakedObject(((PropertyViewModel) model).ContextObject) : NakedObjectsContext.GetNakedObject(model);
 
                     if (nakedObject.Spec.IsCollection) {
-                        SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject).ShortName);
+                        SetControllerName(nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, nakedObjectsContext.Metamodel.Metamodel).ShortName);
                     }
                     else {
                         SetControllerName(nakedObject.Object);

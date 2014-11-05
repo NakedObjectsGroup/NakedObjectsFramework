@@ -884,14 +884,14 @@ namespace NakedObjects.Web.Mvc.Html {
                                               bool withTitle,
                                               bool defaultChecked = false) {
             var table = new TagBuilder("table");
-            table.AddCssClass(CollectionItemTypeName(collectionNakedObject));
+            table.AddCssClass(html.CollectionItemTypeName(collectionNakedObject));
             table.InnerHtml += Environment.NewLine;
 
             string innerHtml = "";
 
             INakedObject[] collection = collectionNakedObject.GetAsEnumerable(html.Framework().Manager).ToArray();
             
-            var collectionSpec =  html.Framework().Metamodel.GetSpecification( collectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(collectionNakedObject));
+            var collectionSpec =  html.Framework().Metamodel.GetSpecification( collectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(collectionNakedObject, html.Framework().Metamodel.Metamodel));
                    
             IAssociationSpec[] collectionAssocs = html.CollectionAssociations(collection, collectionSpec, filter, order);
 
@@ -990,7 +990,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 var tagTotalCount = new TagBuilder("div");
                 tagTotalCount.AddCssClass(IdHelper.TotalCountClass);
                 
-                IObjectSpec typeSpec = html.Framework().Metamodel.GetSpecification(pagedCollectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(pagedCollectionNakedObject));
+                IObjectSpec typeSpec = html.Framework().Metamodel.GetSpecification(pagedCollectionNakedObject.GetTypeOfFacetFromSpec().GetValueSpec(pagedCollectionNakedObject, html.Framework().Metamodel.Metamodel));
 
 
                 tagTotalCount.InnerHtml += string.Format(MvcUi.TotalOfXType, total, total == 1 ? typeSpec.SingularName : typeSpec.PluralName);
@@ -1720,9 +1720,9 @@ namespace NakedObjects.Web.Mvc.Html {
             return assocs.ToArray();
         }
 
-        private static string CollectionItemTypeName(INakedObject collectionNakedObject) {
+        private static string CollectionItemTypeName(this HtmlHelper html, INakedObject collectionNakedObject) {
             ITypeOfFacet facet = collectionNakedObject.GetTypeOfFacetFromSpec();
-            return facet.GetValueSpec(collectionNakedObject).ShortName;
+            return facet.GetValueSpec(collectionNakedObject, html.Framework().Metamodel.Metamodel).ShortName;
         }
 
 
