@@ -224,7 +224,19 @@ namespace NakedObjects.Meta.Test {
         private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {
             Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
 
+            // checks for fields and Objects actions 
+
+            Assert.IsTrue(newCache.AllSpecifications().Select(s => s.Fields).All(fs => !fs.Any() || fs.All(f => f != null)));
+            Assert.IsTrue(newCache.AllSpecifications().Select(s => s.ObjectActions).All(fs => !fs.Any() || fs.All(f => f != null)));
+
+
             var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new {a, b});
+
+
+
+
+
+
 
             foreach (var item in zipped) {
                 Assert.AreEqual(item.a.FullName, item.b.FullName);
