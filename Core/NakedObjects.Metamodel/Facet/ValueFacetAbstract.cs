@@ -9,15 +9,15 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Capabilities;
-using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
+using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public abstract class ValueFacetAbstract<T> : MultipleValueFacetAbstract, IValueFacet {
         private readonly IValueSemanticsProvider<T> semanticsProvider;
-        private readonly Specification specification = new Specification();
+        private readonly ISpecificationBuilder specification = new ValueSpecImmutable();
 
         protected ValueFacetAbstract(Type semanticsProviderClass, bool addFacetsIfInvalid, ISpecification holder)
             : this(NewValueSemanticsProviderOrNull(semanticsProviderClass), addFacetsIfInvalid, holder) {}

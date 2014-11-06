@@ -27,7 +27,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.SetUp();
             byteArray = new byte[0];
             byteArrayNakedObject = CreateAdapter(byteArray);
-            specification = new Specification();
+            specification = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new ArrayValueSemanticsProvider<byte>(spec, specification));
         }

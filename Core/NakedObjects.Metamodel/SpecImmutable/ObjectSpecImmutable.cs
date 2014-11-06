@@ -61,7 +61,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             DecorateAllFacets(decorator);
         }
 
-
         public void MarkAsService() {
             if (Fields.Any(field => field.Spec.Identifier.MemberName != "Id")) {
                 string fieldNames = Fields.Where(field => field.Spec.Identifier.MemberName != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);

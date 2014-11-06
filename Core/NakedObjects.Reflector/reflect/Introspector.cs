@@ -74,8 +74,8 @@ namespace NakedObjects.Reflect {
             get { return introspectedType.GetInterfaces().Select(i => i.FullName ?? i.Namespace + "." + i.Name).ToArray(); }
         }
 
-        public string SuperclassName {
-            get { return TypeUtils.GetBaseType(introspectedType); }
+        public Type SuperclassType {
+            get { return introspectedType.BaseType; }
         }
 
         public string ShortName {
@@ -113,24 +113,18 @@ namespace NakedObjects.Reflect {
             // this will also remove some methods, such as the superclass methods.
             var methodRemover = new IntrospectorMethodRemover(methods);
             FacetFactorySet.Process(introspectedType, methodRemover, spec);
-
-            Action<string> addSubclass = s => {
-                if (Superclass != null) {
-                    Log.DebugFormat("Superclass {0}", s);
-                    Superclass.AddSubclass(spec);
-                }
-            };
-
+    
             var typeOfObj = typeof (object);
-            if (SuperclassName != null && !TypeUtils.IsSystem(SuperclassName)) {
-                Superclass = reflector.LoadSpecification(SuperclassName);
-                addSubclass(SuperclassName);
+            if (SuperclassType != null && !TypeUtils.IsSystem(SuperclassType)) {
+                Superclass = reflector.LoadSpecification(SuperclassType);
+               
             }
             else if (spec.Type != typeOfObj) {
                 // always root in object (unless this is object!)            
-                Superclass = reflector.LoadSpecification(typeOfObj);
-                addSubclass(typeOfObj.Name);
+                Superclass = reflector.LoadSpecification(typeOfObj);      
             }
+
+            AddAsSubclass(spec);
 
             var interfaces = new List<IObjectSpecBuilder>();
             foreach (string interfaceName in InterfacesNames) {
@@ -141,6 +135,13 @@ namespace NakedObjects.Reflect {
             Interfaces = interfaces.ToArray();
             IntrospectPropertiesAndCollections(spec);
             IntrospectActions(spec);
+        }
+
+        private void AddAsSubclass(IObjectSpecImmutable spec) {
+            if (Superclass != null) {
+                Log.DebugFormat("Superclass {0}", Superclass.FullName);
+                Superclass.AddSubclass(spec);
+            }
         }
 
         #endregion

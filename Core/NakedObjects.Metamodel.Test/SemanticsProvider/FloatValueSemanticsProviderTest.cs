@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public override void SetUp() {
             base.SetUp();
 
-            holder = new Specification();
+            holder = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(new FloatValueSemanticsProvider(spec, holder));
 

@@ -23,7 +23,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public override void SetUp() {
             base.SetUp();
             SetupSpecification(typeof (DateTime));
-            holder = new Specification();
+            holder = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(adapter = new DateTimeValueSemanticsProvider(spec, holder));
         }

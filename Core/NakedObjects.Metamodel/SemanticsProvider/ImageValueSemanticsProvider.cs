@@ -25,32 +25,18 @@ namespace NakedObjects.Meta.SemanticsProvider {
         /// <summary>
         ///     Required because implementation of <see cref="IParser{T}" /> and <see cref="IEncoderDecoder{T}" />.
         /// </summary>
-        public ImageValueSemanticsProvider(IObjectSpecImmutable spec)
-            : this(spec, null) {}
-
-
+        //public ImageValueSemanticsProvider(IObjectSpecImmutable spec)
+        //    : this(spec, null) {}
         public ImageValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, null, spec) {}
 
-        public static Type Type {
+        private static Type Type {
             get { return typeof (IImageValueFacet); }
         }
 
         public static Type AdaptedType {
             get { return typeof (Image); }
         }
-
-
-        // TODO return null so they are ignored
-        /*
-        public IParser<Image> Parser {
-            get { throw new System.NotImplementedException(); }
-        }
-
-        public IDefaultsProvider<Image> DefaultsProvider {
-            get { throw new System.NotImplementedException(); }
-        }
-        */
 
         public override IFromStream FromStream {
             get { return this; }
@@ -68,11 +54,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return type == AdaptedType;
         }
 
-
         protected override Image DoParse(string entry) {
             throw new NotImplementedException();
         }
-
 
         protected override Image DoParseInvariant(string entry) {
             throw new NotImplementedException();
@@ -102,7 +86,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return new Image(stream);
         }
 
-        public object ParseFromStream(Stream stream) {
+        private object ParseFromStream(Stream stream) {
             return new Image(stream);
         }
 

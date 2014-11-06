@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Moq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
@@ -20,8 +21,8 @@ namespace NakedObjects.Meta.Test.Facet {
 
         [SetUp]
         public void SetUp() {
-            specification = new Specification();
-            facetHolder2 = new Specification();
+            specification = new Mock<ISpecification>().Object;
+            facetHolder2 = new Mock<ISpecification>().Object;
             fooFacet = new ConcreteFacet(typeof (IFooFacet), specification);
             FacetUtils.AddFacet(fooFacet);
         }

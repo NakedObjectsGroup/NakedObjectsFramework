@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.SetUp();
             SetupSpecification(typeof (TimeSpan));
             time = new TimeSpan(8, 13, 0);
-            holder = new Specification();
+            holder  = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(adapter = new TimeValueSemanticsProvider(spec, holder));
         }

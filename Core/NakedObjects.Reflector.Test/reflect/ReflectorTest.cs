@@ -31,8 +31,8 @@ namespace NakedObjects.Reflect.Test {
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, Reflector>();
-            container.RegisterType<IMetamodel, Metamodel>();
-            container.RegisterType<IMetamodelBuilder, Metamodel>();
+            container.RegisterType<IMetamodel, Meta.Metamodel>();
+            container.RegisterType<IMetamodelBuilder, Meta.Metamodel>();
             container.RegisterType<IServicesConfiguration, ServicesConfiguration>();
         }
 

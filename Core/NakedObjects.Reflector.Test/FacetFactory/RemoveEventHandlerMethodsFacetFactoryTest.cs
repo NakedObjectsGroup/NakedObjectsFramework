@@ -27,7 +27,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             base.SetUp();
             var classStrategy = new DefaultClassStrategy();
             var cache = new ImmutableInMemorySpecCache();
-            var metamodel = new Metamodel(classStrategy, cache);
+            var metamodel = new Meta.Metamodel(classStrategy, cache);
             var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
             var servicesConfig = new ServicesConfiguration();
             var reflector = new Reflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig, null, null);

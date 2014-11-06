@@ -7,7 +7,7 @@
     <ProjectGuid>{51310042-B65B-4480-A8C0-11E6B39C7587}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NakedObjects.Metamodel</RootNamespace>
+    <RootNamespace>NakedObjects.Meta</RootNamespace>
     <AssemblyName>NakedObjects.Metamodel</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -229,6 +229,7 @@
     <Compile Include="Facet\DisableForSessionFacetAbstract.cs" />
     <Compile Include="Facet\DisableForSessionFacetNone.cs" />
     <Compile Include="Facet\FacetAbstract.cs" />
+    <Compile Include="SpecImmutable\ValueSpecImmutable.cs" />
     <Compile Include="Spec\Specification.cs" />
     <Compile Include="Utils\FacetUtils.cs" />
     <Compile Include="Facet\HideForSessionFacetAbstract.cs" />
