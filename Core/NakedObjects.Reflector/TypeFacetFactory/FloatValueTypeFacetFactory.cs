@@ -7,21 +7,19 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class FloatValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<float> {
+    public class FloatValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public FloatValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, typeof (IFloatingPointValueFacet)) {}
+            : base(reflector) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (FloatValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(FloatValueSemanticsProvider.AdaptedType);
-                AddFacets(new FloatValueSemanticsProvider(spec, specification));
-                return true;
+                return AddValueFacets(new FloatValueSemanticsProvider(spec, specification), specification);
             }
             return false;
         }

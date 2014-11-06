@@ -7,21 +7,19 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class GuidValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<Guid> {
+    public class GuidValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public GuidValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, typeof (IGuidValueFacet)) {}
+            : base(reflector) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (GuidValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(GuidValueSemanticsProvider.AdaptedType);
-                AddFacets(new GuidValueSemanticsProvider(spec, specification));
-                return true;
+                return AddValueFacets(new GuidValueSemanticsProvider(spec, specification), specification);
             }
             return false;
         }

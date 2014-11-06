@@ -7,21 +7,19 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class StringValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<string> {
+    public class StringValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public StringValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, typeof (IStringValueFacet)) {}
+            : base(reflector) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (StringValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(StringValueSemanticsProvider.AdaptedType);
-                AddFacets(new StringValueSemanticsProvider(spec, specification));
-                return true;
+                return AddValueFacets(new StringValueSemanticsProvider(spec, specification), specification);
             }
             return false;
         }

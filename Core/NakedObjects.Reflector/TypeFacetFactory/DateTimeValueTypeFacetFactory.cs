@@ -7,21 +7,19 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class DateTimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<DateTime> {
+    public class DateTimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public DateTimeValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, typeof (IDateValueFacet)) {}
+            : base(reflector) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (DateTimeValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(DateTimeValueSemanticsProvider.AdaptedType);
-                AddFacets(new DateTimeValueSemanticsProvider(spec, specification));
-                return true;
+                return AddValueFacets(new DateTimeValueSemanticsProvider(spec, specification), specification);
             }
             return false;
         }

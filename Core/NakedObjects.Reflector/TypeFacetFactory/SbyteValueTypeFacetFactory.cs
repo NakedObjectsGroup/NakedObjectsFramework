@@ -7,21 +7,19 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class SbyteValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<sbyte> {
+    public class SbyteValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public SbyteValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, typeof (ISbyteValueFacet)) {}
+            : base(reflector) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (SbyteValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(SbyteValueSemanticsProvider.AdaptedType);
-                AddFacets(new SbyteValueSemanticsProvider(spec, specification));
-                return true;
+                return AddValueFacets(new SbyteValueSemanticsProvider(spec, specification), specification);
             }
             return false;
         }

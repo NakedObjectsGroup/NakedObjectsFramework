@@ -7,22 +7,19 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.SemanticsProvider;
-using NakedObjects.Value;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class FileAttachmentValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<FileAttachment> {
+    public class FileAttachmentValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public FileAttachmentValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, typeof (IFileAttachmentValueFacet)) {}
+            : base(reflector) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (FileAttachmentValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(FileAttachmentValueSemanticsProvider.AdaptedType);
-                AddFacets(new FileAttachmentValueSemanticsProvider(spec, specification));
-                return true;
+                return AddValueFacets(new FileAttachmentValueSemanticsProvider(spec, specification), specification);
             }
             return false;
         }
