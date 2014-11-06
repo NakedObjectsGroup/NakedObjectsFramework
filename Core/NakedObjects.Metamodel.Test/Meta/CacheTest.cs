@@ -22,6 +22,22 @@ using NakedObjects.Value;
 using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test {
+
+    public class AbstractTestWithByteArray {
+
+        public virtual byte[] Ba { get; set; }
+
+        public virtual byte[] GetBa(byte[] baparm) {
+            return baparm;
+        }
+    }
+
+    public class TestWithByteArray : AbstractTestWithByteArray {
+
+    }
+
+
+
     public class TestService {
         //public virtual TestSimpleDomainObject TestAction(TestSimpleDomainObject testParm) {
         //    return testParm;
@@ -202,6 +218,15 @@ namespace NakedObjects.Meta.Test {
         }
 
         [Test]
+        public void BinarySerializeBaTypes() {
+
+            var rc = new ReflectorConfiguration(new[] { typeof(TestWithByteArray) }, new Type[] { }, new Type[] { }, new Type[] { });
+            const string file = @"c:\testmetadata\metadataimg.bin";
+            BinarySerialize(rc, file);
+        }
+
+
+        [Test]
         public void BinarySerializeEnumTypes() {
             var rc = new ReflectorConfiguration(new[] {typeof (TestEnum)}, new Type[] {}, new Type[] {}, new Type[] {});
             const string file = @"c:\testmetadata\metadataint.bin";
@@ -233,7 +258,10 @@ namespace NakedObjects.Meta.Test {
             var error = newCache.AllSpecifications().Where(s => s.Fields.Any() && s.Fields.Any(f => f == null)).Select(s => s.FullName).Aggregate("", (s, t) => s + " " + t);
 
             Assert.IsTrue(newCache.AllSpecifications().Select(s => s.Fields).All(fs => !fs.Any() || fs.All(f => f != null)), error);
-            Assert.IsTrue(newCache.AllSpecifications().Select(s => s.ObjectActions).All(fs => !fs.Any() || fs.All(f => f != null)));
+
+            error = newCache.AllSpecifications().Where(s => s.ObjectActions.Any() && s.ObjectActions.Any(f => f == null)).Select(s => s.FullName).Aggregate("", (s, t) => s + " " + t);
+            
+            Assert.IsTrue(newCache.AllSpecifications().Select(s => s.ObjectActions).All(fs => !fs.Any() || fs.All(f => f != null)), error);
 
             var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new {a, b});
 
