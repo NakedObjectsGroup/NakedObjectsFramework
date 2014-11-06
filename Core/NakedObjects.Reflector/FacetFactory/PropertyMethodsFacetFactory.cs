@@ -193,15 +193,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
 
-        public override void FindProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo) {
-            foreach (PropertyInfo property in candidates) {
-                if (property.GetGetMethod() != null &&
-                    AttributeUtils.GetCustomAttribute<NakedObjectsIgnoreAttribute>(property) == null &&
-                    !CollectionUtils.IsQueryable(property.PropertyType)) {
-                    methodListToAppendTo.Add(property);
-                }
-            }
-            candidates.Clear();
+        public override IList<PropertyInfo>  FindProperties(IList<PropertyInfo> candidates) {
+       
+            return candidates.Where(property => property.GetGetMethod() != null &&
+                                                AttributeUtils.GetCustomAttribute<NakedObjectsIgnoreAttribute>(property) == null &&
+                                                !Reflector.ClassStrategy.IsTypeUnsupportedByReflector(property.PropertyType) &&
+                                                !CollectionUtils.IsQueryable(property.PropertyType)).ToList();
         }
     }
 }

@@ -49,9 +49,13 @@ namespace NakedObjects.Meta.Facet {
             return false;
         }
 
-        public virtual void FindCollectionProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo) {}
+        public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates) {
+            return new PropertyInfo[]{};
+        }
 
-        public virtual void FindProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo) {}
+        public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates) {
+            return new PropertyInfo[] { };
+        }
 
         #endregion
     }

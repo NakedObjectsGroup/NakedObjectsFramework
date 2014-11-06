@@ -7,6 +7,7 @@
 
 using System;
 using System.Runtime.Serialization;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -15,6 +16,9 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public abstract class FacetAbstract : IFacet, IDeserializationCallback {
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(FacetAbstract));
+        
         private readonly Type facetType;
         private ISpecification holder;
 
@@ -24,8 +28,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public virtual void OnDeserialization(object sender) {
-            // for debugging
-            Console.WriteLine("OnDeserialization {0}", this.GetType());
+            Log.DebugFormat("OnDeserialization {0}", GetType());
         }
 
         /// <summary>

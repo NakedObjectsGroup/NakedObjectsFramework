@@ -10,10 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -26,13 +23,13 @@ using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test {
     public class TestService {
-        public virtual TestSimpleDomainObject TestAction(TestSimpleDomainObject testParm) {
-            return testParm;
-        }
+        //public virtual TestSimpleDomainObject TestAction(TestSimpleDomainObject testParm) {
+        //    return testParm;
+        //}
 
-        public virtual TestAnnotatedDomainObject TestAction1(TestAnnotatedDomainObject testParm) {
-            return testParm;
-        }
+        //public virtual TestAnnotatedDomainObject TestAction1(TestAnnotatedDomainObject testParm) {
+        //    return testParm;
+        //}
     }
 
     public class TestSimpleDomainObject {
@@ -91,14 +88,13 @@ namespace NakedObjects.Meta.Test {
             return "";
         }
 
-        [System.ComponentModel.DataAnnotations.Range(0, 100)]
+        //[System.ComponentModel.DataAnnotations.Range(0, 100)]
         public virtual int? TestInt { get; set; }
 
         public virtual string ValidateTestString(string tovalidate) {
             return "";
         }
 
-        [System.ComponentModel.DataAnnotations.Range(typeof (DateTime), "", "")]
         public virtual DateTime TestDateTime { get; set; }
 
         public virtual TestEnum TestEnum { get; set; }
@@ -175,10 +171,8 @@ namespace NakedObjects.Meta.Test {
 
 
             foreach (var f in f1) {
-                Console.WriteLine(" field facet  {0}", f);
+                //Console.WriteLine(" field facet  {0}", f);
             }
-
-
 
             cache.Serialize(file);
 
@@ -192,8 +186,18 @@ namespace NakedObjects.Meta.Test {
 
         [Test]
         public void BinarySerializeIntTypes() {
+
             var rc = new ReflectorConfiguration(new[] {typeof (int)}, new Type[] {}, new Type[] {}, new Type[] {});
             const string file = @"c:\testmetadata\metadataint.bin";
+            BinarySerialize(rc, file);
+        }
+
+
+        [Test]
+        public void BinarySerializeImageTypes() {
+
+            var rc = new ReflectorConfiguration(new[] { typeof(Image) }, new Type[] { }, new Type[] { }, new Type[] { });
+            const string file = @"c:\testmetadata\metadataimg.bin";
             BinarySerialize(rc, file);
         }
 
@@ -226,16 +230,12 @@ namespace NakedObjects.Meta.Test {
 
             // checks for fields and Objects actions 
 
-            Assert.IsTrue(newCache.AllSpecifications().Select(s => s.Fields).All(fs => !fs.Any() || fs.All(f => f != null)));
+            var error = newCache.AllSpecifications().Where(s => s.Fields.Any() && s.Fields.Any(f => f == null)).Select(s => s.FullName).Aggregate("", (s, t) => s + " " + t);
+
+            Assert.IsTrue(newCache.AllSpecifications().Select(s => s.Fields).All(fs => !fs.Any() || fs.All(f => f != null)), error);
             Assert.IsTrue(newCache.AllSpecifications().Select(s => s.ObjectActions).All(fs => !fs.Any() || fs.All(f => f != null)));
 
-
             var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new {a, b});
-
-
-
-
-
 
 
             foreach (var item in zipped) {

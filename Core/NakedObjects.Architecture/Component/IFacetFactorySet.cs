@@ -18,8 +18,8 @@ namespace NakedObjects.Architecture.Component {
     /// must be set up to know about all the FacetFactories.
     /// </summary>
     public interface IFacetFactorySet {
-        void FindCollectionProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo);
-        void FindProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo);
+        IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates);
+        IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates);
 
 
         /// <summary>

@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
@@ -17,7 +18,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class CollectionFieldMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
@@ -69,36 +69,17 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private static IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties) {
-            IList<Type> types = new List<Type>();
-
-            foreach (PropertyInfo property in properties) {
-                if (property.GetGetMethod() != null &&
-                    CollectionUtils.IsCollection(property.PropertyType) &&
-                    !CollectionUtils.IsBlobOrClob(property.PropertyType) &&
-                    property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
-                    !CollectionUtils.IsQueryable(property.PropertyType)) {
-                    types.Add(property.PropertyType);
-                }
-            }
-            return types;
+            return properties.Where(property => property.GetGetMethod() != null &&
+                                                CollectionUtils.IsCollection(property.PropertyType) &&
+                                                !CollectionUtils.IsBlobOrClob(property.PropertyType) &&
+                                                property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
+                                                !CollectionUtils.IsQueryable(property.PropertyType)).Select(p => p.PropertyType).ToList();
         }
 
-        public override void FindCollectionProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo) {
-            var propertiesToRemove = new List<PropertyInfo>();
+        public override IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates) {
             IList<Type> collectionTypes = BuildCollectionTypes(candidates);
-            foreach (PropertyInfo property in candidates) {
-                foreach (Type returnType in collectionTypes) {
-                    if (property.GetGetMethod() != null && property.PropertyType == returnType) {
-                        propertiesToRemove.Add(property);
-                        methodListToAppendTo.Add(property);
-                        break;
-                    }
-                }
-            }
-
-            foreach (PropertyInfo property in propertiesToRemove) {
-                candidates.Remove(property);
-            }
+            return candidates.Where(property => property.GetGetMethod() != null &&
+                                                collectionTypes.Contains(property.PropertyType)).ToList();
         }
     }
 }

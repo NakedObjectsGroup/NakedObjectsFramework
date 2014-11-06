@@ -8,9 +8,8 @@
 using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Architecture.Facets.Propparam.TypicalLength {
+namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class TypicalLengthFacetDerivedFromType : TypicalLengthFacetAbstract {
         public TypicalLengthFacetDerivedFromType(ITypicalLengthFacet typicalLengthFacet, ISpecification holder)

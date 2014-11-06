@@ -204,73 +204,61 @@ namespace NakedObjects.Reflect {
 
             Log.DebugFormat("Looking for fields for {0}", introspectedType);
 
-            var candidates = new List<PropertyInfo>(properties);
-            reflector.LoadSpecificationForReturnTypes(candidates, introspectedType);
+            // now create fieldSpecs for value properties, for collections and for reference properties        
+            var collectionProperties = FacetFactorySet.FindCollectionProperties(properties);
+            var collectionSpecs = CreateCollectionSpecs(collectionProperties);
 
-            // now create fieldSpecs for value properties, for collections and for reference properties
-            var fieldSpecs = new List<IAssociationSpecImmutable>();
-
-            FindCollectionPropertiesAndCreateCorrespondingFieldSpecs(candidates, fieldSpecs);
             // every other accessor is assumed to be a reference property.
-            FindPropertiesAndCreateCorrespondingFieldSpecs(candidates, fieldSpecs);
+            var allProperties = FacetFactorySet.FindProperties(properties);
+            var refProperties = allProperties.Except(collectionProperties);
+            var refSpecs = CreateRefPropertySpecs(refProperties);
 
-            return fieldSpecs.ToArray();
+            return collectionSpecs.Union(refSpecs).ToArray();
         }
 
-        private void FindCollectionPropertiesAndCreateCorrespondingFieldSpecs(IList<PropertyInfo> candidates, ICollection<IAssociationSpecImmutable> fieldSpecs) {
-            var collectionProperties = new List<PropertyInfo>();
-            FacetFactorySet.FindCollectionProperties(candidates, collectionProperties);
-            CreateCollectionSpecsFromAccessors(collectionProperties, fieldSpecs);
-        }
+        private IEnumerable<IAssociationSpecImmutable> CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties) {
+            var specs = new List<IAssociationSpecImmutable>();
 
-        /// <summary>
-        ///     Since the value properties and collections have already been processed, this will
-        ///     pick up the remaining reference properties
-        /// </summary>
-        private void FindPropertiesAndCreateCorrespondingFieldSpecs(IList<PropertyInfo> candidates, ICollection<IAssociationSpecImmutable> fieldSpecs) {
-            var foundProperties = new List<PropertyInfo>();
-            FacetFactorySet.FindProperties(candidates, foundProperties);
-            CreatePropertySpecsFromAccessors(foundProperties, fieldSpecs);
-        }
-
-        private void CreateCollectionSpecsFromAccessors(IEnumerable<PropertyInfo> collectionProperties, ICollection<IAssociationSpecImmutable> fieldsListToAppendto) {
             foreach (PropertyInfo property in collectionProperties) {
                 Log.DebugFormat("Identified one-many association method {0}", property);
 
                 IIdentifier identifier = new IdentifierImpl(metamodel, FullName, property.Name);
 
-                // create property and add facets
+                // create a collection property spec
                 var returnType = property.PropertyType;
                 var returnSpec = reflector.LoadSpecification(returnType);
                 var defaultType = typeof (object);
                 var defaultSpec = reflector.LoadSpecification(defaultType);
-
                 var collection = new OneToManyAssociationSpecImmutable(identifier, returnType, returnSpec, defaultType, defaultSpec);
+
                 FacetFactorySet.Process(property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections);
-                fieldsListToAppendto.Add(collection);
+                specs.Add(collection);
             }
+            return specs;
         }
 
         /// <summary>
         ///     Creates a list of Association fields for all the properties that use NakedObjects.
         /// </summary>
-        private void CreatePropertySpecsFromAccessors(IEnumerable<PropertyInfo> foundProperties, ICollection<IAssociationSpecImmutable> fieldListToAppendto) {
+        private IEnumerable<IAssociationSpecImmutable> CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties) {
+            var specs = new List<IAssociationSpecImmutable>();
+
             foreach (PropertyInfo property in foundProperties) {
                 Log.DebugFormat("Identified 1-1 association method {0}", property);
                 Log.DebugFormat("One-to-One association {0} -> {1}", property.Name, property);
 
-                IIdentifier identifier = new IdentifierImpl(metamodel, FullName, property.Name);
-
-                // create a reference property
+                // create a reference property spec
+                var identifier = new IdentifierImpl(metamodel, FullName, property.Name);
                 var propertyType = property.PropertyType;
                 var propertySpec = reflector.LoadSpecification(propertyType);
                 var referenceProperty = new OneToOneAssociationSpecImmutable(identifier, propertyType, propertySpec);
 
                 // Process facets for the property
                 FacetFactorySet.Process(property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Property);
-
-                fieldListToAppendto.Add(referenceProperty);
+                specs.Add(referenceProperty);
             }
+
+            return specs;
         }
 
         private IActionSpecImmutable[] FindActionMethods(MethodType methodType, IObjectSpecImmutable spec) {
@@ -282,7 +270,7 @@ namespace NakedObjects.Reflect {
             Log.Debug("Looking for action methods");
 
             var actionSpecs = new List<IActionSpecImmutable>();
-
+            // TOdo why isn't this on th factoryset cf Fields ?
             Array.Sort(methods, new SortActionsFirst(FacetFactorySet));
             for (int i = 0; i < methods.Length; i++) {
                 if (methods[i] == null) {
