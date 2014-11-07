@@ -20,8 +20,9 @@ namespace NakedObjects.Meta.Spec {
     ///     For base subclasses or, more likely, to help write tests
     /// </summary>
     [Serializable]
-    public abstract class Specification : ISpecification, ISpecificationBuilder, ISerializable {
+    public abstract class Specification : ISpecification, ISpecificationBuilder, ISerializable, IDeserializationCallback {
         private IImmutableDictionary<Type, IFacet> facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
+        
 
         protected Specification() {}
 
@@ -73,9 +74,12 @@ namespace NakedObjects.Meta.Spec {
 
         #region ISerializable
 
+        // temp variables for deserialization 
+        private readonly Dictionary<Type, IFacet> tempDict; 
+
         // The special constructor is used to deserialize values. 
         protected Specification(SerializationInfo info, StreamingContext context) {
-            facetsByClass = info.GetValue<Type, IFacet>("facetsByClass");
+            tempDict = info.GetValue<Type, IFacet>("facetsByClass");   
         }
 
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
@@ -89,6 +93,11 @@ namespace NakedObjects.Meta.Spec {
             if (existingFacet == null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
                 facetsByClass = facetsByClass.SetItem(facetType, facet);
             }
+        }
+
+        public virtual void OnDeserialization(object sender) {
+            tempDict.OnDeserialization(sender);
+            facetsByClass = tempDict.ToImmutableDictionary();
         }
     }
 }

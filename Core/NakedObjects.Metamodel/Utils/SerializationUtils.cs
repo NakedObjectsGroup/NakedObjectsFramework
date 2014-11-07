@@ -20,22 +20,13 @@ namespace NakedObjects.Meta.Utils {
             return (T) info.GetValue(id, typeof (T));
         }
 
-        public static void AddValue<TKey, TValue>(this SerializationInfo info, string id, IImmutableDictionary<TKey, TValue> dict) {
-            var keyId = id + "Keys";
-            var valueId = id + "Values";
-
-            info.AddValue(keyId, dict.Keys);
-            info.AddValue(valueId, dict.Values);
+        public static void AddValue<TKey, TValue>(this SerializationInfo info, string id, IImmutableDictionary<TKey, TValue> immutableDict) {
+            var dict = immutableDict.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            info.AddValue(id, dict, typeof (Dictionary<TKey, TValue>));
         }
 
-        public static IImmutableDictionary<TKey, TValue> GetValue<TKey, TValue>(this SerializationInfo info, string id) {
-            var keyId = id + "Keys";
-            var valueId = id + "Values";
-
-            var keys = (ICollection<TKey>) info.GetValue(keyId, typeof (ICollection<TKey>));
-            var values = (ICollection<TValue>) info.GetValue(valueId, typeof (ICollection<TValue>));
-
-            return keys.Zip(values, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+        public static Dictionary<TKey, TValue> GetValue<TKey, TValue>(this SerializationInfo info, string id) {
+            return (Dictionary<TKey, TValue>) info.GetValue(id, typeof (Dictionary<TKey, TValue>));
         }
     }
 }
