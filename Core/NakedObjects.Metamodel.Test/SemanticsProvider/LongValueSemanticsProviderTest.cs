@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public override void SetUp() {
             base.SetUp();
             l = 32;
-            holder = new Specification();
+            holder = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new LongValueSemanticsProvider(spec, holder));
         }

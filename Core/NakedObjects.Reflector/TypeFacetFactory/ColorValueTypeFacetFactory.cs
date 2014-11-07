@@ -6,23 +6,20 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Drawing;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class ColorValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<Color> {
+    public class ColorValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public ColorValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, typeof (IColorValueFacet)) {}
+            : base(reflector) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ColorValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(ColorValueSemanticsProvider.AdaptedType);
-                AddFacets(new ColorValueSemanticsProvider(spec, specification));
-                return true;
+                return AddValueFacets(new ColorValueSemanticsProvider(spec, specification), specification);
             }
             return false;
         }

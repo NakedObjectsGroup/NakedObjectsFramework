@@ -12,6 +12,7 @@ using System.Reflection;
 using Moq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Spec;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
@@ -19,7 +20,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected IMetamodelManager Metamodel;
         protected IMethodRemover MethodRemover;
         protected IReflector Reflector;
-        protected Specification Specification;
+        protected ISpecificationBuilder Specification;
         private Mock<IMetamodelManager> mockMetadata;
         private Mock<IMethodRemover> mockMethodRemover;
         private Mock<IReflector> mockReflector;
@@ -27,7 +28,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected abstract IFacetFactory FacetFactory { get; }
 
         public virtual void SetUp() {
-            Specification = new Specification();
+            Specification = new Mock<ISpecificationBuilder>().Object;
 
             mockMethodRemover = new Mock<IMethodRemover>();
             mockReflector = new Mock<IReflector>();

@@ -7,22 +7,19 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.SemanticsProvider;
-using NakedObjects.Value;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class ImageValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<Image> {
+    public class ImageValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public ImageValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, typeof (IImageValueFacet)) {}
+            : base(reflector) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ImageValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(ImageValueSemanticsProvider.AdaptedType);
-                AddFacets(new ImageValueSemanticsProvider(spec, specification));
-                return true;
+                return AddValueFacets(new ImageValueSemanticsProvider(spec, specification), specification);
             }
             return false;
         }

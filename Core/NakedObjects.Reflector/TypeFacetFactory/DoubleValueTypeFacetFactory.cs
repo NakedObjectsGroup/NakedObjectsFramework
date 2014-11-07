@@ -7,21 +7,19 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class DoubleValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<double> {
+    public class DoubleValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public DoubleValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, typeof (IDoubleFloatingPointValueFacet)) {}
+            : base(reflector) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (DoubleValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(DoubleValueSemanticsProvider.AdaptedType);
-                AddFacets(new DoubleValueSemanticsProvider(spec, specification));
-                return true;
+                return AddValueFacets(new DoubleValueSemanticsProvider(spec, specification), specification);
             }
             return false;
         }

@@ -27,7 +27,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.SetUp();
             booleanObj = true;
             booleanNO = CreateAdapter(booleanObj);
-            specification = new Specification();
+            specification = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new BooleanValueSemanticsProvider(spec, specification));
         }

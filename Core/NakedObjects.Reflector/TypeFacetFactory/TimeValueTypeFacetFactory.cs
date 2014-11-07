@@ -7,21 +7,19 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class TimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<TimeSpan> {
+    public class TimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public TimeValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, typeof (IDateValueFacet)) {}
+            : base(reflector) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (TimeValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(TimeValueSemanticsProvider.AdaptedType);
-                AddFacets(new TimeValueSemanticsProvider(spec, specification));
-                return true;
+                return AddValueFacets(new TimeValueSemanticsProvider(spec, specification), specification);
             }
             return false;
         }

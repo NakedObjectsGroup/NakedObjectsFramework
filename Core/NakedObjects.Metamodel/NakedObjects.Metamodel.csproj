@@ -7,7 +7,7 @@
     <ProjectGuid>{51310042-B65B-4480-A8C0-11E6B39C7587}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NakedObjects.Metamodel</RootNamespace>
+    <RootNamespace>NakedObjects.Meta</RootNamespace>
     <AssemblyName>NakedObjects.Metamodel</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -97,8 +97,6 @@
     <Compile Include="Facet\ProxySetterFacetWrapTransaction.cs" />
     <Compile Include="Facet\ValidateObjectFacet.cs" />
     <Compile Include="Meta\Metamodel.cs" />
-    <Compile Include="Facet\ValueFacetAbstract.cs" />
-    <Compile Include="Facet\ValueFacetUsingSemanticsProvider.cs" />
     <Compile Include="I18n\DescribedAsFacetDynamicWrapI18n.cs" />
     <Compile Include="I18n\DescribedAsFacetWrapI18n.cs" />
     <Compile Include="I18n\NamedFacetDynamicWrapI18n.cs" />
@@ -229,6 +227,7 @@
     <Compile Include="Facet\DisableForSessionFacetAbstract.cs" />
     <Compile Include="Facet\DisableForSessionFacetNone.cs" />
     <Compile Include="Facet\FacetAbstract.cs" />
+    <Compile Include="SpecImmutable\ValueSpecImmutable.cs" />
     <Compile Include="Spec\Specification.cs" />
     <Compile Include="Utils\FacetUtils.cs" />
     <Compile Include="Facet\HideForSessionFacetAbstract.cs" />

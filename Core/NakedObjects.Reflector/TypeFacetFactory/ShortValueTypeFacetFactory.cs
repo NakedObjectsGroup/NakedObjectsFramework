@@ -7,21 +7,19 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class ShortValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<short> {
+    public class ShortValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public ShortValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, typeof (IShortValueFacet)) {}
+            : base(reflector) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ShortValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(ShortValueSemanticsProvider.AdaptedType);
-                AddFacets(new ShortValueSemanticsProvider(spec, specification));
-                return true;
+                return AddValueFacets(new ShortValueSemanticsProvider(spec, specification), specification);
             }
             return false;
         }

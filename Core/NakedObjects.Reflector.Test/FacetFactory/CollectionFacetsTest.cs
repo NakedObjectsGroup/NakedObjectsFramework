@@ -13,6 +13,7 @@ using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Spec;
@@ -23,7 +24,7 @@ using Assert = NUnit.Framework.Assert;
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestFixture]
     public class CollectionFacetsTest {
-        private readonly Specification specification = new Specification();
+        private readonly ISpecification specification = new Mock<ISpecification>().Object;
 
         private readonly Mock<ILifecycleManager> mockLifecycleManager = new Mock<ILifecycleManager>();
         private readonly Mock<INakedObjectManager> mockManager = new Mock<INakedObjectManager>();

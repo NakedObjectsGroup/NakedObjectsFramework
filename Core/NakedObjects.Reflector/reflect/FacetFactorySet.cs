@@ -65,17 +65,13 @@ namespace NakedObjects.Reflect {
 
         #region IFacetFactorySet Members
 
-        public void FindCollectionProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo) {
+        public IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates) {
             CachePropertyOrCollectionIdentifyingFacetFactoriesIfRequired();
-            foreach (IFacetFactory facetFactory in propertyOrCollectionIdentifyingFactories) {
-                facetFactory.FindCollectionProperties(candidates, methodListToAppendTo);
-            }
+            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindCollectionProperties(candidates)).ToList();
         }
 
-        public void FindProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo) {
-            foreach (IFacetFactory facetFactory in propertyOrCollectionIdentifyingFactories) {
-                facetFactory.FindProperties(candidates, methodListToAppendTo);
-            }
+        public IList<PropertyInfo>  FindProperties(IList<PropertyInfo> candidates) {
+            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindProperties(candidates)).ToList();
         }
 
         /// <summary>

@@ -6,13 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
+using System.Runtime.Serialization;
+using NakedObjects.Meta.Spec;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
-    public class TypicalLengthFacetDerivedFromType : TypicalLengthFacetAbstract {
-        public TypicalLengthFacetDerivedFromType(ITypicalLengthFacet typicalLengthFacet, ISpecification holder)
-            : base(typicalLengthFacet.Value, holder) {}
+    public class ValueSpecImmutable : Specification {
+        public ValueSpecImmutable() {}
+
+        #region ISerializable
+
+        // The special constructor is used to deserialize values. 
+        public ValueSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {}
+
+        #endregion
     }
 }

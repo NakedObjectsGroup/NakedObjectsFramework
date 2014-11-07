@@ -7,21 +7,19 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class DecimalValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory<decimal> {
+    public class DecimalValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public DecimalValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, typeof (IDecimalValueFacet)) {}
+            : base(reflector) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (DecimalValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = Reflector.LoadSpecification(DecimalValueSemanticsProvider.AdaptedType);
-                AddFacets(new DecimalValueSemanticsProvider(spec, specification));
-                return true;
+                return AddValueFacets(new DecimalValueSemanticsProvider(spec, specification), specification);
             }
             return false;
         }

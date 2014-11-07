@@ -69,8 +69,8 @@ namespace NakedObjects.Architecture.FacetFactory {
         /// </returns>
         bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder);
 
-        void FindCollectionProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo);
+        IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates);
 
-        void FindProperties(IList<PropertyInfo> candidates, IList<PropertyInfo> methodListToAppendTo);
+        IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates);
     }
 }

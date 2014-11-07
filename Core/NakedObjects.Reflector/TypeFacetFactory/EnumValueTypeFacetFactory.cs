@@ -6,30 +6,25 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Reflection;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
-using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
-    public class EnumValueTypeFacetFactory : FacetFactoryAbstract {
+    public class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public EnumValueTypeFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+            : base(reflector) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (typeof (Enum).IsAssignableFrom(type)) {
                 Type semanticsProviderType = typeof (EnumValueSemanticsProvider<>).MakeGenericType(type);
                 var spec = Reflector.LoadSpecification(type);
-
                 object semanticsProvider = Activator.CreateInstance(semanticsProviderType, spec, specification);
-                Type facetType = typeof (ValueFacetUsingSemanticsProvider<>).MakeGenericType(type);
-                var facet = (IFacet) Activator.CreateInstance(facetType, semanticsProvider, semanticsProvider);
-                FacetUtils.AddFacet(facet);
-                return true;
+
+                var method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
+                return (bool) method.Invoke(null, new object[] {semanticsProvider, specification});
             }
             return false;
         }

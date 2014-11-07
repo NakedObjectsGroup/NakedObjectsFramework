@@ -30,7 +30,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            holder = new Specification();
+            holder  = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new EnumValueSemanticsProvider<TestEnum>(spec, holder));
         }

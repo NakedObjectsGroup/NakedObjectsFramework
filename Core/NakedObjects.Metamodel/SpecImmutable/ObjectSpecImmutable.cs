@@ -253,8 +253,10 @@ namespace NakedObjects.Meta.SpecImmutable {
             info.AddValue("FullName", FullName);
             info.AddValue("ShortName", ShortName);
             info.AddValue("identifier", identifier);
+            info.AddValue("Service", Service);
             info.AddValue("Fields", Fields.ToList());
             info.AddValue("Interfaces", Interfaces.ToList());
+            info.AddValue("Superclass", Superclass);
             info.AddValue("subclasses", subclasses.ToList());
             info.AddValue("ObjectActions", ObjectActions.ToList());
             info.AddValue("ContributedActions", ContributedActions.ToList());
@@ -268,6 +270,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             FullName = (string)info.GetValue("FullName", typeof(string));
             ShortName = (string)info.GetValue("ShortName", typeof(string));
             identifier = (IIdentifier)info.GetValue("identifier", typeof(IIdentifier));
+            Superclass = (IObjectSpecImmutable)info.GetValue("Superclass", typeof(IObjectSpecImmutable));
+            Service = (bool)info.GetValue("Service", typeof(bool));
             Fields = ((IList<IOrderableElement<IAssociationSpecImmutable>>)info.GetValue("Fields", typeof(IList<IOrderableElement<IAssociationSpecImmutable>>))).ToImmutableList();
             Interfaces = ((IList<IObjectSpecImmutable>)info.GetValue("Interfaces", typeof(IList<IObjectSpecImmutable>))).ToImmutableList();
             subclasses = ((IList<IObjectSpecImmutable>)info.GetValue("subclasses", typeof(IList<IObjectSpecImmutable>))).ToImmutableList();
