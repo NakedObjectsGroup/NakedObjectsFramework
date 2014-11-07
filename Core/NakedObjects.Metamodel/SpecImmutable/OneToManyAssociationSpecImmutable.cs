@@ -11,15 +11,14 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public class OneToManyAssociationSpecImmutable : AssociationSpecImmutable {
-        private readonly Type defaultElementType;
         private readonly IObjectSpecImmutable defaultElementSpec;
+        private readonly Type defaultElementType;
 
-        // TODO remork so that either elemnt type is passed in or guarantee elementtype facet is available
-        // so that do not need to pass in metamodel
         public OneToManyAssociationSpecImmutable(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec, Type defaultElementType, IObjectSpecImmutable defaultElementSpec)
             : base(name, returnType, returnSpec) {
             this.defaultElementType = defaultElementType;
@@ -57,16 +56,16 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #region ISerializable
 
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue("defaultElementType", defaultElementType);
-            info.AddValue("defaultElementSpec", defaultElementSpec);
-            base.GetObjectData(info, context);
-        }
-
         // The special constructor is used to deserialize values. 
         public OneToManyAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-            defaultElementType = (Type)info.GetValue("defaultElementType", typeof(Type));
-            defaultElementSpec = (IObjectSpecImmutable)info.GetValue("defaultElementSpec", typeof(IObjectSpecImmutable));
+            defaultElementType = info.GetValue<Type>("defaultElementType");
+            defaultElementSpec = info.GetValue<IObjectSpecImmutable>("defaultElementSpec");
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue<Type>("defaultElementType", defaultElementType);
+            info.AddValue<IObjectSpecImmutable>("defaultElementSpec", defaultElementSpec);
+            base.GetObjectData(info, context);
         }
 
         #endregion

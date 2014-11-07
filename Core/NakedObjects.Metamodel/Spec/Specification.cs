@@ -13,7 +13,7 @@ using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Meta.SpecImmutable;
+using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Spec {
     /// <summary>
@@ -21,7 +21,7 @@ namespace NakedObjects.Meta.Spec {
     /// </summary>
     [Serializable]
     public abstract class Specification : ISpecification, ISpecificationBuilder, ISerializable {
-        private ImmutableDictionary<Type, IFacet> facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
+        private IImmutableDictionary<Type, IFacet> facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
 
         protected Specification() {}
 
@@ -75,44 +75,11 @@ namespace NakedObjects.Meta.Spec {
 
         // The special constructor is used to deserialize values. 
         protected Specification(SerializationInfo info, StreamingContext context) {
-
-            if (//GetType() == typeof(ObjectSpecImmutable) ||
-                //GetType() == typeof(ActionSpecImmutable)  ||
-                GetType() == typeof(OneToOneAssociationSpecImmutable) //||
-                //GetType() == typeof(OneToManyAssociationSpecImmutable) //||
-                //GetType() == typeof(ActionParameterSpecImmutable) ||
-               // GetType() == typeof(ValueSpecImmutable)
-                
-                ) {
-                facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
-            }
-            else {
-                var dict = (Dictionary<Type, IFacet>)info.GetValue("facetsByClass", typeof(Dictionary<Type, IFacet>));
-                dict.OnDeserialization(this);
-                facetsByClass = dict.ToImmutableDictionary();
-            }
-
-            //var dict = (Dictionary<Type, IFacet>)info.GetValue("facetsByClass", typeof(Dictionary<Type, IFacet>));
-            //dict.OnDeserialization(this);
-            //facetsByClass = dict.ToImmutableDictionary();
-            //facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
+            facetsByClass = info.GetValue<Type, IFacet>("facetsByClass");
         }
 
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
-            if (//GetType() != typeof (ObjectSpecImmutable) &&
-                //GetType() != typeof (ActionSpecImmutable) &&
-                GetType() != typeof (OneToOneAssociationSpecImmutable) //&&
-                //GetType() != typeof (OneToManyAssociationSpecImmutable) //&&
-                //GetType() != typeof (ActionParameterSpecImmutable) &&
-                //GetType() != typeof (ValueSpecImmutable)
-                ) {
-                Dictionary<Type, IFacet> dict = facetsByClass.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-                info.AddValue("facetsByClass", dict);
-            }
-            
-
-            //Dictionary<Type, IFacet> dict = facetsByClass.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-            //info.AddValue("facetsByClass", dict);
+            info.AddValue<Type, IFacet>("facetsByClass", facetsByClass);
         }
 
         #endregion

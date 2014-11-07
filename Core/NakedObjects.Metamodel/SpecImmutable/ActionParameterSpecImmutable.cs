@@ -10,6 +10,7 @@ using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Spec;
+using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
@@ -34,14 +35,14 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #region ISerializable
 
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue("specification", specification);
-            base.GetObjectData(info, context);
-        }
-
         // The special constructor is used to deserialize values. 
         public ActionParameterSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-            specification = (IObjectSpecImmutable)info.GetValue("specification", typeof(IObjectSpecImmutable));
+            specification = info.GetValue<IObjectSpecImmutable>("specification");
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue<IObjectSpecImmutable>("specification", specification);
+            base.GetObjectData(info, context);
         }
 
         #endregion

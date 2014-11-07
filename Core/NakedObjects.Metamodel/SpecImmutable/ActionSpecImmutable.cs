@@ -12,7 +12,9 @@ using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     // TODO (in all DotNet...Peer classes) make all methodsArray throw ReflectiveActionException when 
@@ -27,7 +29,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         private readonly IObjectSpecImmutable specification;
 
         public ActionSpecImmutable(IIdentifier identifier, IObjectSpecImmutable specification,
-            IActionParameterSpecImmutable[] parameters)
+                                   IActionParameterSpecImmutable[] parameters)
             : base(identifier) {
             this.specification = specification;
             this.parameters = parameters;
@@ -108,17 +110,17 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #region ISerializable
 
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue("specification", specification);
-            info.AddValue("parameters", parameters);
-
-            base.GetObjectData(info, context);
-        }
-
         // The special constructor is used to deserialize values. 
         public ActionSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-            specification = (IObjectSpecImmutable)info.GetValue("specification", typeof(IObjectSpecImmutable));
-            parameters = (IActionParameterSpecImmutable[])info.GetValue("parameters", typeof(IActionParameterSpecImmutable[]));
+            specification = info.GetValue<IObjectSpecImmutable>("specification");
+            parameters = info.GetValue<IActionParameterSpecImmutable[]>("parameters");
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue<ISpecification>("specification", specification);
+            info.AddValue<IActionParameterSpecImmutable[]>("parameters", parameters);
+
+            base.GetObjectData(info, context);
         }
 
         #endregion
