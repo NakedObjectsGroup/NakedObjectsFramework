@@ -26,7 +26,7 @@ namespace NakedObjects.Architecture.Component {
 
         IObjectSpec GetSpecification(IObjectSpecImmutable spec);
 
-        IMenu[] MainMenus();
+        IMenuImmutable[] MainMenus();
 
         IActionSpec GetActionSpec(IActionSpecImmutable spec);
     }

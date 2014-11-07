@@ -22,7 +22,7 @@ namespace NakedObjects.Architecture.Component {
         // remove this
         IObjectSpecImmutable GetSpecification(string name);
 
-        IMenu[] MainMenus { get; }
+        IMenuImmutable[] MainMenus { get; }
     }
 
 

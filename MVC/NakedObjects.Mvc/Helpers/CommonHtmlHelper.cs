@@ -32,7 +32,7 @@ using NakedObjects.Core.spec;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Web.Mvc.Html {
-    public class CustomMenuItem : IMenuItem {
+    public class CustomMenuItem : IMenuItemImmutable {
         public string Controller { get; set; }
         public string Name { get; set; }
         public string Action { get; set; }

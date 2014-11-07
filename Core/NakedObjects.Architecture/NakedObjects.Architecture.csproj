@@ -213,10 +213,11 @@
     <Compile Include="Facet\IFacet.cs" />
     <Compile Include="FacetFactory\IFacetFactory.cs" />
     <Compile Include="Menu\IMenu.cs" />
-    <Compile Include="Menu\IMenuAction.cs" />
+    <Compile Include="Menu\IMenuActionImmutable.cs" />
     <Compile Include="Menu\IMainMenuDefinition.cs" />
     <Compile Include="Menu\IMenuFactory.cs" />
-    <Compile Include="Menu\IMenuItem.cs" />
+    <Compile Include="Menu\IMenuImmutable.cs" />
+    <Compile Include="Menu\IMenuItemImmutable.cs" />
     <Compile Include="Menu\ITypedMenu.cs" />
     <Compile Include="Reflect\IIntrospector.cs" />
     <Compile Include="SpecImmutable\IObjectSpecBuilder.cs" />

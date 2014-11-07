@@ -71,7 +71,7 @@ namespace NakedObjects.Managers {
             return innerSpec;
         }
 
-        public IMenu[] MainMenus() {
+        public IMenuImmutable[] MainMenus() {
             return Metamodel.MainMenus;
         }
 

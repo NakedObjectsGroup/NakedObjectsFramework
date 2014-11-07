@@ -23,7 +23,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
         Type Type { get; }
         string FullName { get; }
         string ShortName { get; }
-        IMenu ObjectMenu { get; }
+        IMenuImmutable ObjectMenu { get; }
         IList<IOrderableElement<IActionSpecImmutable>> ObjectActions { get; }
         IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> ContributedActions { get; }
         IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> RelatedActions { get; }

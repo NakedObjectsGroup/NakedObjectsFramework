@@ -82,12 +82,12 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         private void CreateObjectMenu() {
-            Menu menu = new Menu(metamodel, "Object Actions");
+            Menu menu = new Menu(metamodel, "Actions");
             //First add the native actions
             menu.AddOrderableElementsToMenu(ObjectActions, menu);
             //Then add the contributed actions
             foreach (var ca in ContributedActions) {
-                Menu sub = new Menu(metamodel, ca.Item1); //Item 1 should be friendly name of the contributing service
+                Menu sub = new Menu(metamodel, ca.Item2); //Item 2 should be friendly name of the contributing service
                 //Item2 is contributing service class name, not used.
                 sub.AddOrderableElementsToMenu(ca.Item3, sub); //Item 3 should be the actions
                 menu.AddAsSubMenu(sub);
@@ -115,7 +115,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public string ShortName { get; private set; }
 
-        public IMenu ObjectMenu { get; private set; }
+        public IMenuImmutable ObjectMenu { get; private set; }
 
         public IList< IOrderableElement<IActionSpecImmutable>> ObjectActions { get; private set; }
 

@@ -61,7 +61,7 @@ namespace NakedObjects.Meta {
             cache.Cache(menu);
         }
 
-        public IMenu[] MainMenus {
+        public IMenuImmutable[] MainMenus {
             get { return cache.MainMenus(); }
         }
         #endregion

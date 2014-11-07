@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace NakedObjects.Architecture.Menu {
-    public interface IMenuAction : IMenuItem {
+    public interface IMenuActionImmutable : IMenuItemImmutable {
         IActionSpecImmutable Action { get; }
     }
 }

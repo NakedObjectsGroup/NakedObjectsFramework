@@ -191,7 +191,7 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         IActionSpec[] GetAllActions();
 
-        IMenu ObjectMenu { get; }
+        IMenuImmutable ObjectMenu { get; }
         #endregion
 
         #region Default Provider

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace NakedObjects.Architecture.Menu {
-    public interface IMenuItem {
-        string Name { get; }
+    public interface IMenuImmutable : IMenuItemImmutable {
+        IList<IMenuItemImmutable> MenuItems { get; }
     }
 }

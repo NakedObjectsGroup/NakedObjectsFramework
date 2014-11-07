@@ -34,11 +34,11 @@ namespace NakedObjects.Meta.Menus {
         /// </summary>
         public IMenu SuperMenu { get; private set; }
 
-        private ImmutableList<IMenuItem> items = ImmutableList<IMenuItem>.Empty;
+        private ImmutableList<IMenuItemImmutable> items = ImmutableList<IMenuItemImmutable>.Empty;
         //Includes both actions and sub-menus
-        public IList<IMenuItem> MenuItems { get { return items; } }
+        public IList<IMenuItemImmutable> MenuItems { get { return items; } }
 
-        protected void AddMenuItem(IMenuItem item) {
+        protected void AddMenuItem(IMenuItemImmutable item) {
             items = items.Add(item); //Only way to add to an immutable collection
         }
 

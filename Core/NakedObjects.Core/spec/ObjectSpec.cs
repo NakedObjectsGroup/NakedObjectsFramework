@@ -166,7 +166,7 @@ namespace NakedObjects.Core.Spec {
             return RelatedActions;
         }
 
-        public IMenu ObjectMenu {
+        public IMenuImmutable ObjectMenu {
             get { return innerSpec.ObjectMenu; }
         }
 

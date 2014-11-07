@@ -3,9 +3,7 @@ using System.Collections.Generic;
 namespace NakedObjects.Architecture.Menu {
 
     //IMenu is to IMenuImmutable, as IObjectSpec is to IObjectSpecImmutable -  the runtime equivalent with injected services
-    public interface IMenu : IMenuItem {
-
-        IList<IMenuItem> MenuItems { get; }
+    public interface IMenu : IMenuImmutable {
 
         //Adds specified action as the next menu item
         //Returns this menu (for fluent programming)
