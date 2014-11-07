@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -16,6 +17,12 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta {
+    [Serializable]
+    internal class SerializedData {
+        public IList<string> Keys { get; set; }
+        public IList<IObjectSpecImmutable> Values { get; set; }
+    }
+
     public class ImmutableInMemorySpecCache : ISpecificationCache {
         private ImmutableList<IMenu> mainMenus = ImmutableList<IMenu>.Empty;
 
@@ -29,7 +36,8 @@ namespace NakedObjects.Meta {
         public ImmutableInMemorySpecCache(string file) {
             using (FileStream fs = File.Open(file, FileMode.Open)) {
                 IFormatter formatter = new BinaryFormatter();
-                specs = ((IDictionary<string, IObjectSpecImmutable>) formatter.Deserialize(fs)).ToImmutableDictionary();
+                var data = (SerializedData) formatter.Deserialize(fs);
+                specs = data.Keys.Zip(data.Values, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
             }
         }
 
@@ -38,7 +46,8 @@ namespace NakedObjects.Meta {
         public void Serialize(string file) {
             using (FileStream fs = File.Open(file, FileMode.OpenOrCreate)) {
                 IFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(fs, specs.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+                var data = new SerializedData() {Keys = specs.Keys.ToList(), Values = specs.Values.ToList()};
+                formatter.Serialize(fs, data);
             }
         }
 

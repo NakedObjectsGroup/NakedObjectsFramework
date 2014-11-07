@@ -312,6 +312,7 @@
     <Compile Include="SpecImmutable\MemberSpecImmutable.cs" />
     <Compile Include="SpecImmutable\OneToManyAssociationSpecImmutable.cs" />
     <Compile Include="SpecImmutable\OneToOneAssociationSpecImmutable.cs" />
+    <Compile Include="Utils\SerializationUtils.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

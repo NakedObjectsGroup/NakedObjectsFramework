@@ -11,6 +11,7 @@ using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
@@ -49,18 +50,17 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #region ISerializable
 
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue("ReturnType", ReturnType);
-            info.AddValue("returnSpec", returnSpec);
-
-            base.GetObjectData(info, context);
-        }
-
         // The special constructor is used to deserialize values. 
         protected AssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-            ReturnType = (Type)info.GetValue("ReturnType", typeof(Type));
-            returnSpec = (IObjectSpecImmutable)info.GetValue("returnSpec", typeof(IObjectSpecImmutable));
+            ReturnType = info.GetValue<Type>("ReturnType");
+            returnSpec = info.GetValue<IObjectSpecImmutable>("returnSpec");
+        }
 
+        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue<Type>("ReturnType", ReturnType);
+            info.AddValue<IObjectSpecImmutable>("returnSpec", returnSpec);
+
+            base.GetObjectData(info, context);
         }
 
         #endregion

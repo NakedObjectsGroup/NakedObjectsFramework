@@ -39,7 +39,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             identifier = new IdentifierImpl(metamodel, type.FullName);
             Interfaces = ImmutableList<IObjectSpecImmutable>.Empty;
             subclasses = ImmutableList<IObjectSpecImmutable>.Empty;
-            ContributedActions =  ImmutableList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>.Empty;
+            ContributedActions = ImmutableList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>.Empty;
             RelatedActions = ImmutableList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>.Empty;
         }
 
@@ -246,46 +246,63 @@ namespace NakedObjects.Meta.SpecImmutable {
             return Service ? SingularName : UntitledName;
         }
 
-        #region ISerializable
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue("Type", Type);
-            info.AddValue("FullName", FullName);
-            info.AddValue("ShortName", ShortName);
-            info.AddValue("identifier", identifier);
-            info.AddValue("Service", Service);
-            info.AddValue("Fields", Fields.ToList());
-            info.AddValue("Interfaces", Interfaces.ToList());
-            info.AddValue("Superclass", Superclass);
-            info.AddValue("subclasses", subclasses.ToList());
-            info.AddValue("ObjectActions", ObjectActions.ToList());
-            info.AddValue("ContributedActions", ContributedActions.ToList());
-            info.AddValue("RelatedActions", RelatedActions.ToList());
-            base.GetObjectData(info, context);
-        }
-
-         // The special constructor is used to deserialize values. 
-        public ObjectSpecImmutable(SerializationInfo info, StreamingContext context) :base(info, context)  {
-            Type = (Type) info.GetValue("Type", typeof (Type));
-            FullName = (string)info.GetValue("FullName", typeof(string));
-            ShortName = (string)info.GetValue("ShortName", typeof(string));
-            identifier = (IIdentifier)info.GetValue("identifier", typeof(IIdentifier));
-            Superclass = (IObjectSpecImmutable)info.GetValue("Superclass", typeof(IObjectSpecImmutable));
-            Service = (bool)info.GetValue("Service", typeof(bool));
-            Fields = ((IList<IOrderableElement<IAssociationSpecImmutable>>)info.GetValue("Fields", typeof(IList<IOrderableElement<IAssociationSpecImmutable>>))).ToImmutableList();
-            Interfaces = ((IList<IObjectSpecImmutable>)info.GetValue("Interfaces", typeof(IList<IObjectSpecImmutable>))).ToImmutableList();
-            subclasses = ((IList<IObjectSpecImmutable>)info.GetValue("subclasses", typeof(IList<IObjectSpecImmutable>))).ToImmutableList();
-            ObjectActions = ((IList<IOrderableElement<IActionSpecImmutable>>)info.GetValue("ObjectActions", typeof(IList<IOrderableElement<IActionSpecImmutable>>))).ToImmutableList();
-            ContributedActions = ((IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>)info.GetValue("ContributedActions", typeof(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>))).ToImmutableList();
-            RelatedActions = ((IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>)info.GetValue("RelatedActions", typeof(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>))).ToImmutableList();
-        }
-
-
-        #endregion
-
-
         public override string ToString() {
             return string.Format("{0} for {1}", GetType().Name, Type.Name);
         }
+
+        #region ISerializable
+
+        private readonly IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> tempContributedActions;
+        private readonly IList<IOrderableElement<IAssociationSpecImmutable>> tempFields;
+        private readonly IList<IObjectSpecImmutable> tempInterfaces;
+        private readonly IList<IOrderableElement<IActionSpecImmutable>> tempObjectActions;
+        private readonly IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> tempRelatedActions;
+        private readonly IList<IObjectSpecImmutable> tempSubclasses;
+
+
+        // The special constructor is used to deserialize values. 
+        public ObjectSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
+            Type = info.GetValue<Type>("Type");
+            FullName = info.GetValue<string>("FullName");
+            ShortName = info.GetValue<string>("ShortName");
+            identifier = info.GetValue<IIdentifier>("identifier");
+            Superclass = info.GetValue<IObjectSpecImmutable>("Superclass");
+            Service = info.GetValue<bool>("Service");
+            tempFields = info.GetValue<IList<IOrderableElement<IAssociationSpecImmutable>>>("Fields");
+            tempInterfaces = info.GetValue<IList<IObjectSpecImmutable>>("Interfaces");
+            tempSubclasses = info.GetValue<IList<IObjectSpecImmutable>>("subclasses");
+            tempObjectActions = info.GetValue<IList<IOrderableElement<IActionSpecImmutable>>>("ObjectActions");
+            tempContributedActions = info.GetValue<IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>>("ContributedActions");
+            tempRelatedActions = info.GetValue<IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>>("RelatedActions");
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue<Type>("Type", Type);
+            info.AddValue<string>("FullName", FullName);
+            info.AddValue<string>("ShortName", ShortName);
+            info.AddValue<IIdentifier>("identifier", identifier);
+            info.AddValue<bool>("Service", Service);
+            info.AddValue<IList<IOrderableElement<IAssociationSpecImmutable>>>("Fields", Fields.ToList());
+            info.AddValue<IList<IObjectSpecImmutable>>("Interfaces", Interfaces.ToList());
+            info.AddValue<IObjectSpecImmutable>("Superclass", Superclass);
+            info.AddValue<IList<IObjectSpecImmutable>>("subclasses", subclasses.ToList());
+            info.AddValue<IList<IOrderableElement<IActionSpecImmutable>>>("ObjectActions", ObjectActions.ToList());
+            info.AddValue<IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>>("ContributedActions", ContributedActions.ToList());
+            info.AddValue<IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>>>("RelatedActions", RelatedActions.ToList());
+            base.GetObjectData(info, context);
+        }
+
+
+        public override void OnDeserialization(object sender) {
+            Fields = tempFields.ToImmutableList();
+            Interfaces = tempInterfaces.ToImmutableList();
+            subclasses = tempSubclasses.ToImmutableList();
+            ObjectActions = tempObjectActions.ToImmutableList();
+            ContributedActions = tempContributedActions.ToImmutableList();
+            RelatedActions = tempRelatedActions.ToImmutableList();
+            base.OnDeserialization(sender);
+        }
+
+        #endregion
     }
 }

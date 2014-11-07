@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -23,13 +24,13 @@ using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test {
 
-    public class AbstractTestWithByteArray {
+    public  class AbstractTestWithByteArray {
 
-        public virtual byte[] Ba { get; set; }
+        public virtual object Ba { get; set; }
 
-        public virtual byte[] GetBa(byte[] baparm) {
-            return baparm;
-        }
+        //public virtual byte[] GetBa(byte[] baparm) {
+        //    return baparm;
+        //}
     }
 
     public class TestWithByteArray : AbstractTestWithByteArray {
@@ -200,6 +201,41 @@ namespace NakedObjects.Meta.Test {
             CompareCaches(cache, newCache);
         }
 
+        //public void XmlSerialize(ReflectorConfiguration rc, string file) {
+        //    IUnityContainer container = GetContainer();
+
+        //    container.RegisterInstance<IReflectorConfiguration>(rc);
+
+        //    var reflector = container.Resolve<IReflector>();
+        //    reflector.Reflect();
+        //    var cache = container.Resolve<ISpecificationCache>();
+
+
+        //    var f1 =
+        //       cache.AllSpecifications().SelectMany(s => s.Fields)
+        //           .Select(s => s.Spec)
+        //           .Where(s => s != null)
+        //           .OfType<OneToOneAssociationSpecImmutable>()
+        //           .SelectMany(s => s.GetFacets())
+        //           .Select(f => f.GetType().FullName)
+        //           .Distinct();
+
+
+        //    foreach (var f in f1) {
+        //        //Console.WriteLine(" field facet  {0}", f);
+        //    }
+
+        //    cache.Serialize(file, new NetDataContractSerializer());
+
+        //    // and roundtrip 
+
+        //    container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new PerResolveLifetimeManager(),
+        //        new InjectionConstructor(file,  new NetDataContractSerializer()));
+        //    var newCache = container.Resolve<ISpecificationCache>();
+        //    CompareCaches(cache, newCache);
+        //}
+
+
         [Test]
         public void BinarySerializeIntTypes() {
 
@@ -220,16 +256,24 @@ namespace NakedObjects.Meta.Test {
         [Test]
         public void BinarySerializeBaTypes() {
 
-            var rc = new ReflectorConfiguration(new[] { typeof(TestWithByteArray) }, new Type[] { }, new Type[] { }, new Type[] { });
-            const string file = @"c:\testmetadata\metadataimg.bin";
+            var rc = new ReflectorConfiguration(new[] { typeof(AbstractTestWithByteArray) }, new Type[] { }, new Type[] { }, new Type[] { });
+            const string file = @"c:\testmetadata\metadataba.bin";
             BinarySerialize(rc, file);
         }
+
+        //[Test]
+        //public void XmlSerializeBaTypes() {
+
+        //    var rc = new ReflectorConfiguration(new[] { typeof(AbstractTestWithByteArray) }, new Type[] { }, new Type[] { }, new Type[] { });
+        //    const string file = @"c:\testmetadata\metadataimg.xml";
+        //    XmlSerialize(rc, file);
+        //}
 
 
         [Test]
         public void BinarySerializeEnumTypes() {
             var rc = new ReflectorConfiguration(new[] {typeof (TestEnum)}, new Type[] {}, new Type[] {}, new Type[] {});
-            const string file = @"c:\testmetadata\metadataint.bin";
+            const string file = @"c:\testmetadata\metadataenum.bin";
             BinarySerialize(rc, file);
         }
 
