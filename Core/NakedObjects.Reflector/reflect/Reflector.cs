@@ -122,7 +122,7 @@ namespace NakedObjects.Reflect {
 
             InstallSpecifications(services, true);
             InstallSpecifications(nonServices, false);
-            PopulateContributedActions(s1.Union(s2).ToArray());
+            PopulateAssociatedActions(s1.Union(s2).ToArray());
             //Main menus installed once rest of metamodel has been built:
             InstallMainMenus();
 
@@ -137,8 +137,9 @@ namespace NakedObjects.Reflect {
             types.ForEach(type => InstallSpecification(type, isService));
         }
 
-        private void PopulateContributedActions(Type[] services) {
-            AllObjectSpecImmutables.ForEach(s => PopulateAssociatedActions(s, services));
+        private void PopulateAssociatedActions(Type[] services) {
+           var nonServiceSpecs = AllObjectSpecImmutables.Where(x => !x.Service);
+           nonServiceSpecs.ForEach(s => PopulateAssociatedActions(s, services));
         }
 
         private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services) {

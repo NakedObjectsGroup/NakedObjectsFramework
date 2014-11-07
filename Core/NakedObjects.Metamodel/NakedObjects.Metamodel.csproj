@@ -103,10 +103,10 @@
     <Compile Include="I18n\DescribedAsFacetWrapI18n.cs" />
     <Compile Include="I18n\NamedFacetDynamicWrapI18n.cs" />
     <Compile Include="I18n\NamedFacetWrapI18n.cs" />
-    <Compile Include="Menus\MenuImmutable.cs" />
+    <Compile Include="Menus\Menu.cs" />
     <Compile Include="Menus\MenuActionImmutable.cs" />
     <Compile Include="Menus\MenuFactory.cs" />
-    <Compile Include="Menus\TypedMenuImmutable.cs" />
+    <Compile Include="Menus\TypedMenu.cs" />
     <Compile Include="SemanticsProvider\ArrayValueSematicsProvider.cs" />
     <Compile Include="SemanticsProvider\BoolValueSemanticsProvider.cs" />
     <Compile Include="SemanticsProvider\ByteValueSematicsProvider.cs" />

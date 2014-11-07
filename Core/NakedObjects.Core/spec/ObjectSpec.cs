@@ -21,6 +21,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Core.Spec {
     public class ObjectSpec : IObjectSpec {
@@ -151,7 +152,6 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-
         public virtual IActionSpec[] GetAllActions() {
             if (combinedActions == null) {
                 var ca = new List<IActionSpec>();
@@ -164,6 +164,10 @@ namespace NakedObjects.Core.Spec {
 
         public virtual IActionSpec[] GetRelatedServiceActions() {
             return RelatedActions;
+        }
+
+        public IMenu ObjectMenu {
+            get { return innerSpec.ObjectMenu; }
         }
 
         public bool IsASet {

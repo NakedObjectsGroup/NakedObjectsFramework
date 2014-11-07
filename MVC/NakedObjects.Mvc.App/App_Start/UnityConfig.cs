@@ -130,7 +130,7 @@ namespace NakedObjects.Mvc.App.App_Start {
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
             container.RegisterType<IFacetFactorySet, FacetFactorySet>(new ContainerControlledLifetimeManager());
-            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
             container.RegisterType<IReflector, Reflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodelBuilder, Metamodel>(new ContainerControlledLifetimeManager());

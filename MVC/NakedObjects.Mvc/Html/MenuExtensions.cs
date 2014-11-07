@@ -16,6 +16,14 @@ using NakedObjects.Architecture.Reflect;
 namespace NakedObjects.Web.Mvc.Html {
     public static class MenuExtensions {
 
+        /// <summary>
+        ///     Create menu from actions of domainObject
+        /// </summary>
+        public static MvcHtmlString ObjectMenu(this HtmlHelper html, object domainObject) {
+            INakedObject nakedObject = html.Framework().GetNakedObject(domainObject);
+            IMenu objectMenu = nakedObject.Spec.ObjectMenu;
+            return html.Menu(objectMenu);
+        }
 
         /// <summary>
         /// Create main menus for all menus in ViewData
@@ -29,14 +37,14 @@ namespace NakedObjects.Web.Mvc.Html {
 
             if (menus != null && menus.Cast<IMenu>().Any()) {
                 foreach (IMenu menu in menus) {
-                    tag.InnerHtml += html.MainMenu(menu);
+                    tag.InnerHtml += html.Menu(menu);
                 }
                 return MvcHtmlString.Create(tag.ToString());
             }
             return MvcHtmlString.Create("");
         }
 
-        public static MvcHtmlString MainMenu(this HtmlHelper html, IMenu menu) {
+        public static MvcHtmlString Menu(this HtmlHelper html, IMenu menu) {
             var descriptors = new List<ElementDescriptor>();
             foreach (IMenuItem item in menu.MenuItems) {
                 ElementDescriptor descriptor = MenuItemAsElementDescriptor(html, item);

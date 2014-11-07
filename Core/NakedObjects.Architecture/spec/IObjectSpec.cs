@@ -8,6 +8,7 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Spec {
@@ -190,6 +191,7 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         IActionSpec[] GetAllActions();
 
+        IMenu ObjectMenu { get; }
         #endregion
 
         #region Default Provider

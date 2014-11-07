@@ -22,16 +22,19 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Meta.Menus;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public class ObjectSpecImmutable : Specification, IObjectSpecImmutable, IObjectSpecBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpecImmutable));
-
+        private readonly IMetamodel metamodel;
         private readonly IIdentifier identifier;
         private ImmutableList<IObjectSpecImmutable> subclasses;
 
         public ObjectSpecImmutable(Type type, IMetamodel metamodel) {
+            this.metamodel = metamodel;
             Type = type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type;
             identifier = new IdentifierImpl(metamodel, type.FullName);
             Interfaces = ImmutableList<IObjectSpecImmutable>.Empty;
@@ -61,7 +64,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             DecorateAllFacets(decorator);
         }
 
-
         public void MarkAsService() {
             if (Fields.Any(field => field.Spec.Identifier.MemberName != "Id")) {
                 string fieldNames = Fields.Where(field => field.Spec.Identifier.MemberName != "Id").Aggregate("", (current, field) => current + (current.Length > 0 ? ", " : "") /*+ field.GetName(persistor)*/);
@@ -76,6 +78,21 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public void AddContributedActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> contributedActions) {
             ContributedActions = contributedActions.ToImmutableList();
+            CreateObjectMenu();
+        }
+
+        private void CreateObjectMenu() {
+            Menu menu = new Menu(metamodel, "Object Actions");
+            //First add the native actions
+            menu.AddOrderableElementsToMenu(ObjectActions, menu);
+            //Then add the contributed actions
+            foreach (var ca in ContributedActions) {
+                Menu sub = new Menu(metamodel, ca.Item1); //Item 1 should be friendly name of the contributing service
+                //Item2 is contributing service class name, not used.
+                sub.AddOrderableElementsToMenu(ca.Item3, sub); //Item 3 should be the actions
+                menu.AddAsSubMenu(sub);
+            }
+            ObjectMenu = menu;
         }
 
         public void AddRelatedActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> relatedActions) {
@@ -97,6 +114,8 @@ namespace NakedObjects.Meta.SpecImmutable {
         public string FullName { get; private set; }
 
         public string ShortName { get; private set; }
+
+        public IMenu ObjectMenu { get; private set; }
 
         public IList< IOrderableElement<IActionSpecImmutable>> ObjectActions { get; private set; }
 

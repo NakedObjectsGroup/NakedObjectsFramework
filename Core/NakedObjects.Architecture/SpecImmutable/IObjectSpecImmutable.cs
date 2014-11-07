@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Architecture.SpecImmutable {
     /// <summary>
@@ -22,6 +23,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
         Type Type { get; }
         string FullName { get; }
         string ShortName { get; }
+        IMenu ObjectMenu { get; }
         IList<IOrderableElement<IActionSpecImmutable>> ObjectActions { get; }
         IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> ContributedActions { get; }
         IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> RelatedActions { get; }
