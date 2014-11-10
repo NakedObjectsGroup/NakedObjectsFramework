@@ -42,14 +42,12 @@ namespace NakedObjects.EntityObjectStore {
         private static CreateAggregatedAdapterDelegate createAggregatedAdapter;
         private static NotifyUiDelegate notifyUi;
 
-        private static Action<INakedObject, ISession> persisted;
-        private static Action<INakedObject, ISession> persisting;
+        
         private static RemoveAdapterDelegate removeAdapter;
         private static ReplacePocoDelegate replacePoco;
 
         private static EventHandler savingChangesHandlerDelegate;
-        private static Action<INakedObject, ISession> updated;
-        private static Action<INakedObject, ISession> updating;
+       
         private static Action<INakedObject> handleLoaded;
         private static Func<Type, IObjectSpec> loadSpecification;
 
@@ -94,10 +92,7 @@ namespace NakedObjects.EntityObjectStore {
             removeAdapter = o => manager.RemoveAdapter(o);
             createAggregatedAdapter = (parent, property, obj) => manager.CreateAggregatedAdapter(parent, parent.Spec.GetProperty(property.Name).Id, obj);
 
-            updating = (x, s) => x.Updating(s);
-            updated = (x, s) => x.Updated(s);
-            persisting = (x, s) => x.Persisting(s);
-            persisted = (x, s) => x.Persisted(s);
+          
             handleLoaded = HandleLoadedDefault;
             savingChangesHandlerDelegate = SavingChangesHandler;
             loadSpecification = metamodel.GetSpecification;
@@ -126,10 +121,6 @@ namespace NakedObjects.EntityObjectStore {
                                     RemoveAdapterDelegate removeAdapterDelegate,
                                     CreateAggregatedAdapterDelegate createAggregatedAdapterDelegate,
                                     NotifyUiDelegate notifyUiDelegate,
-                                    Action<INakedObject, ISession> updatedFunc,
-                                    Action<INakedObject, ISession> updatingFunc,
-                                    Action<INakedObject, ISession> persistedFunc,
-                                    Action<INakedObject, ISession> persistingFunc,
                                     Action<INakedObject> handleLoadedTest,
                                     EventHandler savingChangeshandler,
                                     Func<Type, IObjectSpec> loadSpecificationHandler) {
@@ -139,10 +130,6 @@ namespace NakedObjects.EntityObjectStore {
             removeAdapter = removeAdapterDelegate;
             createAggregatedAdapter = createAggregatedAdapterDelegate;
             notifyUi = notifyUiDelegate;
-            updated = updatedFunc;
-            updating = updatingFunc;
-            persisted = persistedFunc;
-            persisting = persistingFunc;
             savingChangesHandlerDelegate = savingChangeshandler;
             handleLoaded = handleLoadedTest;
             EnforceProxies = false;
@@ -675,7 +662,7 @@ namespace NakedObjects.EntityObjectStore {
                 }
 
                 objectToProxyScratchPad[originalObject] = objectToAdd;
-                persisting(adapterForOriginalObject, session);
+                adapterForOriginalObject.Persisting();
 
                 // create transient adapter here so that LoadObject knows proxy domainObject is transient
                 // if not proxied this should just be the same as adapterForOriginalObject
@@ -708,7 +695,7 @@ namespace NakedObjects.EntityObjectStore {
                 foreach (PropertyInfo pi in complexMembers) {
                     object complexObject = pi.GetValue(parent.Object, null);
                     INakedObject childAdapter = createAggregatedAdapter(nakedObject, pi, complexObject);
-                    persisting(childAdapter, session);
+                    childAdapter.Persisting();
                     context.PersistedNakedObjects.Add(childAdapter);
                 }
             }
@@ -979,11 +966,11 @@ namespace NakedObjects.EntityObjectStore {
                 WrappedObjectContext.DetectChanges();
                 added.AddRange(WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added).Where(ose => !ose.IsRelationship).Select(ose => ose.Entity).ToList());
                 updatingNakedObjects = GetChangedObjectsInContext(WrappedObjectContext).Select(obj => createAdapter(null, obj)).ToList();
-                updatingNakedObjects.ForEach(no => updating(no, session));
+                updatingNakedObjects.ForEach(no => no.Updating());
 
                 // need to do complextype separately as they'll not be updated in the SavingChangeshandler as they're not proxied. 
                 coUpdating = GetChangedComplexObjectsInContext(this).Select(obj => createAdapter(null, obj)).ToList();
-                coUpdating.ForEach(no => updating(no, session));
+                coUpdating.ForEach(no => no.Updating());
             }
 
             public bool HasChanges() {
@@ -994,13 +981,13 @@ namespace NakedObjects.EntityObjectStore {
 
             public void PostSave(EntityObjectStore store) {
                 try {
-                    updatingNakedObjects.ForEach(no => updated(no, session));
+                    updatingNakedObjects.ForEach(no => no.Updated());
                     updatingNakedObjects.ForEach(x => x.UpdateVersion(session, Manager));
-                    coUpdating.ForEach(no => updated(no, session));
+                    coUpdating.ForEach(no => no.Updated());
                     // Take a copy of PersistedNakedObjects and clear original so new ones can be added 
                     INakedObject[] currentPersistedNakedObjects = PersistedNakedObjects.ToArray();
                     PersistedNakedObjects.Clear();
-                    currentPersistedNakedObjects.ForEach(no => persisted(no, session));
+                    currentPersistedNakedObjects.ForEach(no => no.Persisted());
                 }
                 finally {
                     coUpdating.ForEach(x => notifyUi(x));
@@ -1282,9 +1269,9 @@ namespace NakedObjects.EntityObjectStore {
         public void Refresh(INakedObject nakedObject) {
             Log.Debug("Refresh nakedobject: " + nakedObject);
             if (nakedObject.Spec.GetFacet<IComplexTypeFacet>() == null) {
-                updating(nakedObject, session);
+                nakedObject.Updating();
                 GetContext(nakedObject.Object.GetType()).WrappedObjectContext.Refresh(RefreshMode.StoreWins, nakedObject.Object);
-                updated(nakedObject, session);
+                nakedObject.Updated();
             }
         }
 

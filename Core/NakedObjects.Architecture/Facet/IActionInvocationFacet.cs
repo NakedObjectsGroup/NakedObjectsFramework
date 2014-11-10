@@ -23,13 +23,14 @@ namespace NakedObjects.Architecture.Facet {
         IObjectSpecImmutable ReturnType { get; }
 
         IObjectSpecImmutable OnType { get; }
+
         IObjectSpecImmutable ElementType { get; }
 
-        INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectManager manager, ISession session, ITransactionManager transactionManager);
+        INakedObject Invoke(INakedObject target, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager);
 
-        INakedObject Invoke(INakedObject target, INakedObject[] parameters, int resultPage, INakedObjectManager manager, ISession session, ITransactionManager transactionManager);
+        INakedObject Invoke(INakedObject target, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager);
 
-        bool GetIsRemoting(INakedObject target);
+        bool IsQueryOnly { get; }
     }
 
 

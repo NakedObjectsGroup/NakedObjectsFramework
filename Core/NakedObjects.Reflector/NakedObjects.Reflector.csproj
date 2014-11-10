@@ -134,10 +134,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Audit\AuditFacetDecorator.cs" />
-    <Compile Include="Audit\AuditInstaller.cs" />
-    <Compile Include="Audit\AuditManager.cs" />
-    <Compile Include="Audit\IAuditorInstaller.cs" />
     <Compile Include="FacetFactory\TypeMarkerFacetFactory.cs" />
     <Compile Include="FacetFactory\FacetFactoryAbstract.cs" />
     <Compile Include="FacetFactory\TableViewAnnotationFacetFactory.cs" />

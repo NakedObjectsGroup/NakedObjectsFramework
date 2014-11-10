@@ -111,8 +111,16 @@ namespace NakedObjects.Architecture.Adapter {
         /// <param name="oid"></param>
         void SetATransientOid(IOid oid);
 
-
         void LoadAnyComplexTypes();
+        void Created();
+        void Deleting();
+        void Deleted();
+        void Loading();
+        void Loaded();
+        void Persisting();
+        void Persisted();
+        void Updating();
+        void Updated();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

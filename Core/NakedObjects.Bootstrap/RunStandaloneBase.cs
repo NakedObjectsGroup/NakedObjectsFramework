@@ -30,9 +30,9 @@ namespace NakedObjects.Boot {
             }
 
 
-            if (Auditor != null) {
-                enhancements.Add(Auditor);
-            }
+            //if (Auditor != null) {
+            //    enhancements.Add(Auditor);
+            //}
 
             ResourceBasedI18nDecoratorInstaller i18n = I18N;
             if (i18n != null) {

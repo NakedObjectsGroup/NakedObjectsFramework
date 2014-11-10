@@ -6,38 +6,26 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Util;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedObjects.Meta.Audit {
     [Serializable]
-    public class PersistedCallbackFacetViaMethod : PersistedCallbackFacetAbstract, IImperativeFacet {
-        private readonly MethodInfo method;
+    public class AuditUpdatedFacet : UpdatedCallbackFacetAbstract {
+        private readonly IAuditManager manager;
+        private readonly IUpdatedCallbackFacet underlyingFacet;
 
-        public PersistedCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
-            : base(holder) {
-            this.method = method;
+        public AuditUpdatedFacet(IUpdatedCallbackFacet underlyingFacet, IAuditManager auditManager)
+            : base(underlyingFacet.Specification) {
+            this.underlyingFacet = underlyingFacet;
+            manager = auditManager;
         }
-
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return method;
-        }
-
-        #endregion
 
         public override void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
-            InvokeUtils.Invoke(method, nakedObject);
-        }
-
-        protected override string ToStringValues() {
-            return "method=" + method;
+            manager.Updated(nakedObject, session, lifecycleManager, metamodelManager);
+            underlyingFacet.Invoke(nakedObject, session, lifecycleManager, metamodelManager);
         }
     }
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

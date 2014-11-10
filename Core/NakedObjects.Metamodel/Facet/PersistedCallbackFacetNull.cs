@@ -16,7 +16,7 @@ namespace NakedObjects.Meta.Facet {
         public PersistedCallbackFacetNull(ISpecification holder)
             : base(holder) {}
 
-        public override void Invoke(INakedObject nakedObject, ISession session) {}
+        public override void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {}
     }
 
     // Copyright (c) Naked Objects Group Ltd.

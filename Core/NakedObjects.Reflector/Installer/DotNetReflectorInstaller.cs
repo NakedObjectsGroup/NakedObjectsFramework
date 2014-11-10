@@ -61,9 +61,16 @@ namespace NakedObjects.Reflect.Installer {
         private void AddEnhancement(FacetDecoratorSet facetDecoratorSet, IReflector reflector) {
 
         
-            foreach (IReflectionDecoratorInstaller installer in enhancements.Where(x => x is IReflectionDecoratorInstaller)) {
-                installer.CreateDecorators(reflector).ForEach(facetDecoratorSet.Add);
-            }
+            //foreach (IReflectionDecoratorInstaller installer in enhancements.Where(x => x is IReflectionDecoratorInstaller)) {
+            //    installer.CreateDecorators(reflector).ForEach(decorator => {
+            //        foreach (Type type in decorator.ForFacetTypes) {
+            //            if (!facetDecoratorSet.facetDecorators.ContainsKey(type)) {
+            //                facetDecoratorSet.facetDecorators[type] = new List<IFacetDecorator>();
+            //            }
+            //            facetDecoratorSet.facetDecorators[type].Add(decorator);
+            //        }
+            //    });
+            //}
         }
     }
 

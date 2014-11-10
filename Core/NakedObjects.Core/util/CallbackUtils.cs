@@ -11,11 +11,19 @@ using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Core.Util {
     public static class CallbackUtils {
+        private static void CallCallback<T>(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) where T : ICallbackFacet {
+            if (nakedObject != null && nakedObject.Spec != null) {
+                // TODO this is for testing where the adapter or specification may be null 
+                // remove when this is no longer true. 
+                nakedObject.Spec.GetFacet<T>().Invoke(nakedObject, session, lifecycleManager, metamodelManager);
+            }
+        }
+
         private static void CallCallback<T>(INakedObject nakedObject, ISession session) where T : ICallbackFacet {
             if (nakedObject != null && nakedObject.Spec != null) {
                 // TODO this is for testing where the adapter or specification may be null 
                 // remove when this is no longer true. 
-                nakedObject.Spec.GetFacet<T>().Invoke(nakedObject, session);
+                nakedObject.Spec.GetFacet<T>().Invoke(nakedObject, session, null, null);
             }
         }
 
@@ -43,16 +51,16 @@ namespace NakedObjects.Core.Util {
             CallCallback<IPersistingCallbackFacet>(nakedObject, session);
         }
 
-        public static void Persisted(this INakedObject nakedObject, ISession session) {
-            CallCallback<IPersistedCallbackFacet>(nakedObject, session);
+        public static void Persisted(this INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
+            CallCallback<IPersistedCallbackFacet>(nakedObject, session, lifecycleManager, metamodelManager);
         }
 
         public static void Updating(this INakedObject nakedObject, ISession session) {
             CallCallback<IUpdatingCallbackFacet>(nakedObject, session);
         }
 
-        public static void Updated(this INakedObject nakedObject, ISession session) {
-            CallCallback<IUpdatedCallbackFacet>(nakedObject, session);
+        public static void Updated(this INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
+            CallCallback<IUpdatedCallbackFacet>(nakedObject, session, lifecycleManager, metamodelManager);
         }
     }
 }

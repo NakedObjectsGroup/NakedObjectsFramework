@@ -75,6 +75,8 @@ let mutable updatingCount = 0
 let mutable persistedCount = 0
 let mutable persistingCount = 0
 
+
+// todo need to reimplement this on nakedobject mock
 let updated (nakedObject : INakedObject) (sess : ISession) = 
     updatedCount <- updatedCount + 1
     ()
@@ -102,8 +104,7 @@ let setupPersistorForTesting (p : EntityObjectStore) =
     p.SetupForTesting
         (testInjector, EntityObjectStore.CreateAdapterDelegate(AdapterForTest), EntityObjectStore.ReplacePocoDelegate(ReplacePocoForTest), 
          EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
-         EntityObjectStore.NotifyUiDelegate(NotifyUIForTest), Action<INakedObject, ISession>(updated), Action<INakedObject, ISession>(updating), 
-         Action<INakedObject, ISession>(persisted), Action<INakedObject, ISession>(persisting), Action<INakedObject>(handleLoadingTest), 
+         EntityObjectStore.NotifyUiDelegate(NotifyUIForTest), Action<INakedObject>(handleLoadingTest), 
          EventHandler(savingChangesHandler), Func<Type, IObjectSpec>(loadSpecificationHandler))
     p.Reset()
     p.SetProxyingAndDeferredLoading setProxyingAndDeferredLoading

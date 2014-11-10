@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Linq;
@@ -20,13 +23,13 @@ using NakedObjects.Util;
 namespace NakedObjects.Core.Adapter {
     public class PocoAdapter : INakedObject {
         private static readonly ILog Log;
+        private readonly ILifecycleManager lifecycleManager;
+        private readonly INakedObjectManager manager;
+        private readonly IMetamodelManager metamodel;
+        private readonly IObjectPersistor persistor;
+        private readonly ISession session;
         private string defaultTitle;
         private IOid oid;
-        private readonly IMetamodelManager metamodel;
-        private readonly ISession session;
-        private readonly IObjectPersistor persistor;
-        private readonly INakedObjectManager manager;
-        private readonly ILifecycleManager lifecycleManager;
         private object poco;
         private IObjectSpec spec;
         private ITypeOfFacet typeOfFacet;
@@ -128,7 +131,6 @@ namespace NakedObjects.Core.Adapter {
 
 
         public virtual string InvariantString() {
-
             return Spec.GetInvariantString(this);
         }
 
@@ -194,11 +196,57 @@ namespace NakedObjects.Core.Adapter {
             }
         }
 
+        public void LoadAnyComplexTypes() {
+            if (Spec.IsService ||
+                Spec.IsViewModel ||
+                Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
+                return;
+            }
+            persistor.LoadComplexTypes(this, ResolveState.IsGhost());
+        }
+
+
+        public void Created() {
+            CallCallback<ICreatedCallbackFacet>();
+        }
+
+        public void Deleting() {
+            CallCallback<IDeletingCallbackFacet>();
+        }
+
+        public void Deleted() {
+            CallCallback<IDeletedCallbackFacet>();
+        }
+
+        public void Loading() {
+            CallCallback<ILoadingCallbackFacet>();
+        }
+
+        public void Loaded() {
+            CallCallback<ILoadedCallbackFacet>();
+        }
+
+        public void Persisting() {
+            CallCallback<IPersistingCallbackFacet>();
+        }
+
+        public void Persisted() {
+            CallCallback<IPersistedCallbackFacet>();
+        }
+
+        public void Updating() {
+            CallCallback<IUpdatingCallbackFacet>();
+        }
+
+        public void Updated() {
+            CallCallback<IUpdatedCallbackFacet>();
+        }
+
         #endregion
 
         private string CollectionTitleString(ICollectionFacet facet) {
             int size = ElementsLoaded() ? facet.AsEnumerable(this, manager).Count() : CollectionUtils.IncompleteCollection;
-            var elementSpecification = TypeOfFacet == null ? null :  metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel));
+            var elementSpecification = TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel));
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
         }
 
@@ -222,7 +270,7 @@ namespace NakedObjects.Core.Adapter {
             return newVersion.IsDifferent(version);
         }
 
-        protected internal virtual void ToString(AsString str) {
+        private void ToString(AsString str) {
             str.Append(ResolveState.CurrentState.Code);
 
             if (Oid != null) {
@@ -251,13 +299,8 @@ namespace NakedObjects.Core.Adapter {
             str.Append("version", version == null ? null : version.AsSequence());
         }
 
-        public  void LoadAnyComplexTypes() {          
-            if (Spec.IsService ||
-                Spec.IsViewModel ||
-                Spec.ContainsFacet(typeof(IComplexTypeFacet))) {
-                return;
-            }
-            persistor.LoadComplexTypes(this, ResolveState.IsGhost());
+        private void CallCallback<T>() where T : ICallbackFacet {
+            Spec.GetFacet<T>().Invoke(this, session, lifecycleManager, metamodel);
         }
     }
 

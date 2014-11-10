@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
-using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
@@ -124,7 +123,7 @@ namespace NakedObjects.Core.Spec {
             Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);
             INakedObject[] parms = RealParameters(nakedObject, parameterSet);
             INakedObject target = RealTarget(nakedObject);
-            return GetFacet<IActionInvocationFacet>().Invoke(target, parms, nakedObjectManager, Session, transactionManager);
+            return GetFacet<IActionInvocationFacet>().Invoke(target, parms, LifecycleManager, metamodel, Session, transactionManager, nakedObjectManager);
         }
 
         public virtual INakedObject RealTarget(INakedObject target) {

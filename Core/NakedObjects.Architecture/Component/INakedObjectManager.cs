@@ -26,7 +26,6 @@ namespace NakedObjects.Architecture.Component {
 
         void ReplacePoco(INakedObject nakedObject, object newDomainObject);
 
-
         INakedObject CreateAggregatedAdapter(INakedObject parent, string fieldId, object obj);
 
         INakedObject NewAdapterForKnownObject(object domainObject, IOid transientOid);

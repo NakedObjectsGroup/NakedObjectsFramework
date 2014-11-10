@@ -46,7 +46,7 @@ namespace NakedObjects.Reflect.Authorization {
 
         #region Nested type: SecurityDisableForSessionFacet
 
-        private class SecurityDisableForSessionFacet : DisableForSessionFacetAbstract {
+        public class SecurityDisableForSessionFacet : DisableForSessionFacetAbstract {
             private readonly AuthorizationFacetDecorator decorator;
             private readonly IIdentifier identifier;
 
@@ -67,7 +67,7 @@ namespace NakedObjects.Reflect.Authorization {
 
         #region Nested type: SecurityHideForSessionFacet
 
-        private class SecurityHideForSessionFacet : HideForSessionFacetAbstract {
+        public class SecurityHideForSessionFacet : HideForSessionFacetAbstract {
             private readonly AuthorizationFacetDecorator decorator;
             private readonly IIdentifier identifier;
 

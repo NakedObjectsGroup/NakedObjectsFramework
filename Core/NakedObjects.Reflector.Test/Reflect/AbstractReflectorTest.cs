@@ -26,7 +26,7 @@ namespace NakedObjects.Reflect.Test {
             var metamodel = new Meta.Metamodel(classStrategy, cache);
             var config = new ReflectorConfiguration(new[] {typeof (List<TestPoco>)}, new Type[] {}, new Type[] {}, new Type[] {});
             var servicesConfig = new ServicesConfiguration();
-            var reflector = new Reflector(classStrategy, new FacetFactorySet(), new FacetDecoratorSet(), metamodel, config, servicesConfig, null, null);
+            var reflector = new Reflector(classStrategy, new FacetFactorySet(), metamodel, config, servicesConfig, null, null, new IFacetDecorator[]{});
 
             Specification = LoadSpecification(reflector);
             //reflector.PopulateAssociatedActions(Specification, new Type[] {});

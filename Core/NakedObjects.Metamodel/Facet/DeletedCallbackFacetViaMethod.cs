@@ -30,7 +30,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override void Invoke(INakedObject nakedObject, ISession session) {
+        public override void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
             InvokeUtils.Invoke(method, nakedObject);
         }
 

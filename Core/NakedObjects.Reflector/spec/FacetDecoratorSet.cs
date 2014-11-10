@@ -7,22 +7,36 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.Spec {
     public class FacetDecoratorSet : IFacetDecoratorSet {
         private readonly IDictionary<Type, IList<IFacetDecorator>> facetDecorators = new Dictionary<Type, IList<IFacetDecorator>>();
 
-        #region IFacetDecoratorSet Members
-
-        public virtual bool IsEmpty {
-            get { return (facetDecorators.Count == 0); }
+        public FacetDecoratorSet(IFacetDecorator[] decorators) {
+            if (decorators != null) {
+                decorators.ForEach(Add);
+            }
         }
 
-        public virtual void Add(IFacetDecorator decorator) {
+        #region IFacetDecoratorSet Members
+
+        public virtual void DecorateAllHoldersFacets(ISpecification holder) {
+            if (facetDecorators.Any()) {
+                foreach (Type facetType in holder.FacetTypes) {
+                    DecorateFacet(facetType, holder);
+                }
+            }
+        }
+
+        #endregion
+
+        private void Add(IFacetDecorator decorator) {
             foreach (Type type in decorator.ForFacetTypes) {
                 if (!facetDecorators.ContainsKey(type)) {
                     facetDecorators[type] = new List<IFacetDecorator>();
@@ -31,17 +45,7 @@ namespace NakedObjects.Reflect.Spec {
             }
         }
 
-        public virtual void DecorateAllHoldersFacets(ISpecification holder) {
-            if (!IsEmpty) {
-                foreach (Type facetType in holder.FacetTypes) {
-                    DecoratedFacet(facetType, holder);
-                }
-            }
-        }
-
-        #endregion
-
-        private void DecoratedFacet(Type facetType, ISpecification holder) {
+        private void DecorateFacet(Type facetType, ISpecification holder) {
             if (facetDecorators.ContainsKey(facetType)) {
                 foreach (IFacetDecorator decorator in facetDecorators[facetType]) {
                     IFacet previousFacet = holder.GetFacet(facetType);

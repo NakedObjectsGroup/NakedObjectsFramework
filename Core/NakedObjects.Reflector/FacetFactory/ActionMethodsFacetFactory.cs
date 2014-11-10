@@ -55,6 +55,11 @@ namespace NakedObjects.Reflect.FacetFactory {
             get { return FixedPrefixes; }
         }
 
+        private bool IsQueryOnly(MethodInfo method) {
+            return (AttributeUtils.GetCustomAttribute<IdempotentAttribute>(method) == null) &&
+                   (AttributeUtils.GetCustomAttribute<QueryOnlyAttribute>(method) != null);
+        }
+
         public override bool Process(MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action) {
             string capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
@@ -64,13 +69,15 @@ namespace NakedObjects.Reflect.FacetFactory {
             var returnSpec = Reflector.LoadSpecification(actionMethod.ReturnType);
 
             IObjectSpecImmutable elementSpec = null;
+            var isQueryable = false;
             if (returnSpec != null && returnSpec.IsCollection) {
                 var elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
                 elementSpec = Reflector.LoadSpecification(elementType);
+                isQueryable = returnSpec.GetFacet<ICollectionFacet>().IsQueryable || IsQueryOnly(actionMethod);
             }
 
             RemoveMethod(methodRemover, actionMethod);
-            facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action));
+            facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable));
 
             MethodType methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
             Type[] paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();

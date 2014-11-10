@@ -24,14 +24,16 @@ namespace NakedObjects.Meta.Facet {
         private readonly IObjectSpecImmutable onType;
         private readonly int paramCount;
         private readonly IObjectSpecImmutable returnType;
+        private readonly bool isQueryOnly;
 
-        public ActionInvocationFacetViaMethod(MethodInfo method, IObjectSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder)
+        public ActionInvocationFacetViaMethod(MethodInfo method, IObjectSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder, bool isQueryOnly)
             : base(holder) {
             actionMethod = method;
             paramCount = method.GetParameters().Length;
             this.onType = onType;
             this.returnType = returnType;
             this.elementType = elementType;
+            this.isQueryOnly = isQueryOnly;
         }
 
         public override IObjectSpecImmutable ReturnType {
@@ -57,20 +59,24 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override INakedObject Invoke(INakedObject inObject, INakedObject[] parameters, INakedObjectManager manager, ISession session, ITransactionManager transactionManager) {
+        public override INakedObject Invoke(INakedObject inObject, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager) {
             if (parameters.Length != paramCount) {
                 Log.Error(actionMethod + " requires " + paramCount + " parameters, not " + parameters.Length);
             }
 
             object result = InvokeUtils.Invoke(actionMethod, inObject, parameters);
-            INakedObject adaptedResult = manager.CreateAdapter(result, null, null);
+            INakedObject adaptedResult = nakedObjectManager.CreateAdapter(result, null, null);
 
             Log.DebugFormat("Action result {0}", adaptedResult);
             return adaptedResult;
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectManager manager, ISession session, ITransactionManager transactionManager) {
-            return Invoke(nakedObject, parameters, manager, session, transactionManager);
+        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager) {
+            return Invoke(nakedObject, parameters, lifecycleManager, manager, session, transactionManager, nakedObjectManager);
+        }
+
+        public override bool IsQueryOnly {
+            get { return isQueryOnly; }
         }
 
         protected override string ToStringValues() {

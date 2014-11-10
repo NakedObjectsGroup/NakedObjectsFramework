@@ -156,12 +156,12 @@ namespace NakedObjects.Managers {
             }
         }
 
-        public void ObjectChanged(INakedObject nakedObject) {
+        public void ObjectChanged(INakedObject nakedObject, ILifecycleManager lifecycleManager, IMetamodelManager metamodel) {
             Log.DebugFormat("ObjectChanged nakedObject: {0}", nakedObject);
             if (nakedObject.ResolveState.RespondToChangesInPersistentObjects()) {
                 if (nakedObject.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                     nakedObject.Updating(session);
-                    nakedObject.Updated(session);
+                    nakedObject.Updated(session, lifecycleManager, metamodel);
                     updateNotifier.AddChangedObject(nakedObject);
                 }
                 else {
@@ -172,7 +172,7 @@ namespace NakedObjects.Managers {
                     nakedObject.Updating(session);
                     ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject, session);
                     transactionManager.AddCommand(saveObjectCommand);
-                    nakedObject.Updated(session);
+                    nakedObject.Updated(session, lifecycleManager, metamodel);
                     updateNotifier.AddChangedObject(nakedObject);
                 }
             }

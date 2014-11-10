@@ -14,14 +14,16 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.SpecImmutable;
+using NakedObjects.Meta.Utils;
 using NakedObjects.Reflect.Spec;
 using NakedObjects.Util;
-using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Reflect {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
@@ -32,35 +34,35 @@ namespace NakedObjects.Reflect {
         private readonly IReflectorConfiguration config;
         private readonly FacetDecoratorSet facetDecorator;
         private readonly IFacetFactorySet facetFactorySet;
-        private readonly IMetamodelBuilder metamodel;
-        private readonly IServicesConfiguration servicesConfig;
         private readonly IMainMenuDefinition menuDefinition;
         private readonly IMenuFactory menuFactory;
+        private readonly IMetamodelBuilder metamodel;
+        private readonly IServicesConfiguration servicesConfig;
 
         static Reflector() {
             Log = LogManager.GetLogger(typeof (Reflector));
         }
 
-        public Reflector(
-            IClassStrategy classStrategy, 
-            IFacetFactorySet facetFactorySet, 
-            FacetDecoratorSet facetDecoratorSet, 
-            IMetamodelBuilder metamodel, 
-            IReflectorConfiguration config, 
-            IServicesConfiguration servicesConfig,
-            IMainMenuDefinition menuDefinition,
-            IMenuFactory menuFactory) {
+        public Reflector(IClassStrategy classStrategy,
+                         IFacetFactorySet facetFactorySet,
+                         IMetamodelBuilder metamodel,
+                         IReflectorConfiguration config,
+                         IServicesConfiguration servicesConfig,
+                         IMainMenuDefinition menuDefinition,
+                         IMenuFactory menuFactory,
+                         IFacetDecorator[] facetDecorators) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(facetFactorySet);
-            Assert.AssertNotNull(facetDecoratorSet);
+
+
             this.classStrategy = classStrategy;
             this.facetFactorySet = facetFactorySet;
-            facetDecorator = facetDecoratorSet;
             this.metamodel = metamodel;
             this.config = config;
             this.servicesConfig = servicesConfig;
             this.menuDefinition = menuDefinition;
             this.menuFactory = menuFactory;
+            this.facetDecorator = new FacetDecoratorSet(facetDecorators);
             facetFactorySet.Init(this);
         }
 
@@ -131,15 +133,15 @@ namespace NakedObjects.Reflect {
             servicesConfig.AddMenuServices(s3.Select(Activator.CreateInstance).ToArray());
         }
 
-       #endregion
+        #endregion
 
         private void InstallSpecifications(Type[] types, bool isService) {
             types.ForEach(type => InstallSpecification(type, isService));
         }
 
         private void PopulateAssociatedActions(Type[] services) {
-           var nonServiceSpecs = AllObjectSpecImmutables.Where(x => !x.Service);
-           nonServiceSpecs.ForEach(s => PopulateAssociatedActions(s, services));
+            var nonServiceSpecs = AllObjectSpecImmutables.Where(x => !x.Service);
+            nonServiceSpecs.ForEach(s => PopulateAssociatedActions(s, services));
         }
 
         private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services) {

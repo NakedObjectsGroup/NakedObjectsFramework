@@ -88,7 +88,7 @@ namespace NakedObjects.Xat {
 
             INakedObject[] parms = actionSpec.RealParameters(owningObject.NakedObject, parameterObjects);
             INakedObject target = actionSpec.RealTarget(owningObject.NakedObject);
-            INakedObject result = actionSpec.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, manager, session, transactionManager);
+            INakedObject result = actionSpec.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, lifecycleManager, metamodelManager, session, transactionManager, manager);
 
             if (result == null) {
                 return null;

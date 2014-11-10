@@ -34,10 +34,10 @@ namespace NakedObjects.Architecture.Component {
         INakedObject FindByKeys(Type type, object[] keys);
         void Refresh(INakedObject nakedObject);
         void ResolveImmediately(INakedObject nakedObject);
-        void ObjectChanged(INakedObject nakedObject);
         void DestroyObject(INakedObject nakedObject);
         object CreateObject(IObjectSpec spec);
         IEnumerable GetBoundedSet(IObjectSpec spec);
         void LoadComplexTypes(INakedObject pocoAdapter, bool isGhost);
+        void ObjectChanged(INakedObject nakedObject, ILifecycleManager lifecycleManager, IMetamodelManager metamodel);
     }
 }

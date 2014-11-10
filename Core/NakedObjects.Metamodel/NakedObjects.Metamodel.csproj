@@ -71,6 +71,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapter\IdentifierImpl.cs" />
+    <Compile Include="Audit\AuditActionInvocationFacet.cs" />
+    <Compile Include="Audit\AuditConfiguration.cs" />
+    <Compile Include="Audit\AuditManager.cs" />
+    <Compile Include="Audit\AuditPersistedFacet.cs" />
+    <Compile Include="Audit\AuditUpdatedFacet.cs" />
+    <Compile Include="Audit\IAuditConfiguration.cs" />
+    <Compile Include="Audit\IAuditManager.cs" />
     <Compile Include="Meta\ImmutableInMemorySpecCache.cs" />
     <Compile Include="Facet\AbstractFacet.cs" />
     <Compile Include="Facet\ActionChoicesFacetViaMethod.cs" />

@@ -94,7 +94,7 @@ namespace NakedObjects.Core.Container {
             if (obj != null) {
                 INakedObject adapter = AdapterFor(obj);
                 Validate(adapter);
-                framework.Persistor.ObjectChanged(adapter);
+                framework.Persistor.ObjectChanged(adapter, framework.LifecycleManager, framework.Metamodel);
             }
         }
 

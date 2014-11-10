@@ -5,19 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Meta.Facet {
-    [Serializable]
-    public class DeletingCallbackFacetNull : DeletingCallbackFacetAbstract {
-        public DeletingCallbackFacetNull(ISpecification holder)
-            : base(holder) {}
-
-        public override void Invoke(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {}
+namespace NakedObjects.Meta.Audit {
+    public interface IAuditManager {
+        void Invoke(INakedObject nakedObject, INakedObject[] parameters, bool queryOnly, IIdentifier identifier, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager);
+        void Updated(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager);
+        void Persisted(INakedObject nakedObject, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager);
     }
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

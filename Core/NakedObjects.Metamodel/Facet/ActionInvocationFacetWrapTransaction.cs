@@ -39,8 +39,9 @@ namespace NakedObjects.Meta.Facet {
             get { return underlyingFacet.OnType; }
         }
 
-        public override bool GetIsRemoting(INakedObject target) {
-            return underlyingFacet.GetIsRemoting(target);
+
+        public override bool IsQueryOnly {
+            get { return underlyingFacet.IsQueryOnly; }
         }
 
 
@@ -63,12 +64,12 @@ namespace NakedObjects.Meta.Facet {
             }
         }
 
-        public override INakedObject Invoke(INakedObject target, INakedObject[] parameters, INakedObjectManager manager, ISession session, ITransactionManager transactionManager) {
-            return InvokeInTransaction(() => underlyingFacet.Invoke(target, parameters, manager, session, transactionManager), transactionManager);
+        public override INakedObject Invoke(INakedObject target, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager) {
+            return InvokeInTransaction(() => underlyingFacet.Invoke(target, parameters, lifecycleManager, manager, session, transactionManager, nakedObjectManager), transactionManager);
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, INakedObjectManager manager, ISession session, ITransactionManager transactionManager) {
-            return InvokeInTransaction(() => underlyingFacet.Invoke(nakedObject, parameters, resultPage, manager, session, transactionManager), transactionManager);
+        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager) {
+            return InvokeInTransaction(() => underlyingFacet.Invoke(nakedObject, parameters, resultPage, lifecycleManager, manager, session, transactionManager, nakedObjectManager), transactionManager);
         }
 
         public override string ToString() {

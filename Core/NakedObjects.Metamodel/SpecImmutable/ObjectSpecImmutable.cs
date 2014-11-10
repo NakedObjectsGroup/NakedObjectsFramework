@@ -16,21 +16,21 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
+using NakedObjects.Meta.Menus;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Meta.Menus;
 
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public class ObjectSpecImmutable : Specification, IObjectSpecImmutable, IObjectSpecBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectSpecImmutable));
-        private readonly IMetamodel metamodel;
         private readonly IIdentifier identifier;
+        private readonly IMetamodel metamodel;
         private ImmutableList<IObjectSpecImmutable> subclasses;
 
         public ObjectSpecImmutable(Type type, IMetamodel metamodel) {
@@ -81,20 +81,6 @@ namespace NakedObjects.Meta.SpecImmutable {
             CreateObjectMenu();
         }
 
-        private void CreateObjectMenu() {
-            Menu menu = new Menu(metamodel, "Actions");
-            //First add the native actions
-            menu.AddOrderableElementsToMenu(ObjectActions, menu);
-            //Then add the contributed actions
-            foreach (var ca in ContributedActions) {
-                Menu sub = new Menu(metamodel, ca.Item2); //Item 2 should be friendly name of the contributing service
-                //Item2 is contributing service class name, not used.
-                sub.AddOrderableElementsToMenu(ca.Item3, sub); //Item 3 should be the actions
-                menu.AddAsSubMenu(sub);
-            }
-            ObjectMenu = menu;
-        }
-
         public void AddRelatedActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> relatedActions) {
             RelatedActions = relatedActions.ToImmutableList();
         }
@@ -117,7 +103,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public IMenuImmutable ObjectMenu { get; private set; }
 
-        public IList< IOrderableElement<IActionSpecImmutable>> ObjectActions { get; private set; }
+        public IList<IOrderableElement<IActionSpecImmutable>> ObjectActions { get; private set; }
 
         public IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> ContributedActions { get; private set; }
 
@@ -225,21 +211,29 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #endregion
 
+        private void CreateObjectMenu() {
+            Menu menu = new Menu(metamodel, "Actions");
+            //First add the native actions
+            menu.AddOrderableElementsToMenu(ObjectActions, menu);
+            //Then add the contributed actions
+            foreach (var ca in ContributedActions) {
+                Menu sub = new Menu(metamodel, ca.Item2); //Item 2 should be friendly name of the contributing service
+                //Item2 is contributing service class name, not used.
+                sub.AddOrderableElementsToMenu(ca.Item3, sub); //Item 3 should be the actions
+                menu.AddAsSubMenu(sub);
+            }
+            ObjectMenu = menu;
+        }
+
         private void DecorateAllFacets(IFacetDecoratorSet decorator) {
             decorator.DecorateAllHoldersFacets(this);
-            foreach (var field in Fields) {
-                decorator.DecorateAllHoldersFacets(field.Spec);
-            }
-            foreach (var action in ObjectActions.Select(oa => oa.Spec).Where(s => s != null)) {
-                DecorateAction(decorator, action);
-            }
+            Fields.ForEach(field => decorator.DecorateAllHoldersFacets(field.Spec));
+            ObjectActions.Select(oa => oa.Spec).Where(s => s != null).ForEach(action => DecorateAction(decorator, action));
         }
 
         private static void DecorateAction(IFacetDecoratorSet decorator, IActionSpecImmutable action) {
             decorator.DecorateAllHoldersFacets(action);
-            foreach (var parm in action.Parameters) {
-                decorator.DecorateAllHoldersFacets(parm);
-            }
+            action.Parameters.ForEach(decorator.DecorateAllHoldersFacets);
         }
 
         private string DefaultTitle() {

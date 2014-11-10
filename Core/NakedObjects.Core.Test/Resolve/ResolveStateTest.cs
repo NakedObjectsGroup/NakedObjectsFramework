@@ -50,7 +50,7 @@ namespace NakedObjects.Core.Test.Resolve {
             var mockFacet = new Mock<ITestCallbackFacet>();
             var testFacet = mockFacet.Object;
 
-            mockFacet.Setup(f => f.Invoke(null, null));
+            mockFacet.Setup(f => f.Invoke(null, null, null, null));
 
             mockAdapter.Setup(a => a.Spec).Returns(testSpecification);
 
