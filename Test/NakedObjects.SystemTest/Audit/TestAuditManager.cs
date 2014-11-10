@@ -195,7 +195,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorAction() {
-            ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
+            ITestObject foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
 
             myDefaultAuditor.SetActionCallbacksUnexpected();
 

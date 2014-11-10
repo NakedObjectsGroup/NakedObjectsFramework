@@ -32,8 +32,6 @@ using NakedObjects.Managers;
 using NakedObjects.Meta;
 using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Reflect;
-using NakedObjects.Reflect.FacetFactory;
-using NakedObjects.Reflect.Spec;
 using NakedObjects.Service;
 
 namespace NakedObjects.Xat {
