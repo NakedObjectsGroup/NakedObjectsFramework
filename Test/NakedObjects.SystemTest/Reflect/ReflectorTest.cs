@@ -31,12 +31,10 @@ namespace NakedObjects.Reflect.Test {
 
         protected virtual void RegisterTypes(IUnityContainer container) {
             container.RegisterType<IMainMenuDefinition, NullMenuDfinition>();
-
             container.RegisterType<IMenuFactory, NullMenuBuilder>();
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(
                 new ContainerControlledLifetimeManager(), new InjectionConstructor());
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
-            container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, Reflector>();
             container.RegisterType<IMetamodel, Metamodel>();
             container.RegisterType<IMetamodelBuilder, Metamodel>();

@@ -6,9 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Principal;
 using NakedObjects.Architecture;
@@ -16,7 +14,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
@@ -418,7 +415,7 @@ namespace NakedObjects.Surface.Nof4.Implementation {
                             framework.LifecycleManager.MakePersistent(nakedObject);
                         }
                         else {
-                            framework.Persistor.ObjectChanged(nakedObject);
+                            framework.Persistor.ObjectChanged(nakedObject, framework.LifecycleManager, framework.Metamodel);
                         }
                         propertiesToDisplay = nakedObject.Spec.Properties.
                             Where(p => p.IsVisible(nakedObject)).

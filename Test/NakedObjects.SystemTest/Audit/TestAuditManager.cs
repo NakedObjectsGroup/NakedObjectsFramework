@@ -5,19 +5,34 @@
 using System;
 using System.Linq;
 using System.Security.Principal;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Audit;
 using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
+using NakedObjects.Meta.Audit;
+using NakedObjects.Reflect.Spec;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using System.Data.Entity;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.SystemTest.Audit {
-    [TestClass, Ignore]
+    [TestClass]
     public class TestAuditManager : AbstractSystemTest<AuditDbContext> {
+
+        #region Run Configuration
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new AuditConfiguration {DefaultAuditor = typeof (MyDefaultAuditor)};
+            config.SetNameSpaceAuditors(fooAuditor, quxAuditor);
+            container.RegisterInstance<IAuditConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IFacetDecorator, AuditManager>(new ContainerControlledLifetimeManager());
+        }
+        #endregion
+
+
         #region Setup/Teardown
         [ClassInitialize]
         public static void ClassInitialize(TestContext tc)
@@ -47,7 +62,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         #region "Services & Fixtures"
 
-        protected static FooAuditor fooAuditor = new FooAuditor();
+        private static FooAuditor fooAuditor = new FooAuditor();
         protected static MyDefaultAuditor myDefaultAuditor = new MyDefaultAuditor();
         protected static QuxAuditor quxAuditor = new QuxAuditor();
 
@@ -58,11 +73,6 @@ namespace NakedObjects.SystemTest.Audit {
         protected override IServicesInstaller MenuServices {
             get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>(), new SimpleRepository<Bar>(), new SimpleRepository<Qux>(), new FooService(), new BarService(), new QuxService()}); }
         }
-
-
-        //protected override IAuditorInstaller Auditor {
-        //    get { return new AuditInstaller(new Da(), new Fa(), new Qa()); }
-        //}
 
         public class Da : IAuditor {
 
@@ -591,6 +601,7 @@ namespace NakedObjects.SystemTest.Audit {
         public DbSet<Bar> Bars { get; set; }
         public DbSet<Qux> Quxes { get; set; }
     }
+
     public abstract class Auditor : IAuditor {
         public Action<IPrincipal, string, object, bool, object[]> actionInvokedCallback;
         public Action<IPrincipal, object> objectPersistedCallback;

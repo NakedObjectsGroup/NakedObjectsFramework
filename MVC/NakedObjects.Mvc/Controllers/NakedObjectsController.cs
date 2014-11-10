@@ -551,7 +551,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         NakedObjectsContext.LifecycleManager.MakePersistent(nakedObject);
                     }
                     else {
-                        NakedObjectsContext.Persistor.ObjectChanged(nakedObject);
+                        NakedObjectsContext.Persistor.ObjectChanged(nakedObject, nakedObjectsContext.LifecycleManager, nakedObjectsContext.Metamodel );
                     }
                 }
             }

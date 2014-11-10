@@ -2,8 +2,9 @@
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 using System.Linq;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Reflect.Test;
 using NakedObjects.Xat;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Practices.Unity;
 using NakedObjects.EntityObjectStore;
 using System;
@@ -20,8 +21,10 @@ namespace NakedObjects.SystemTest {
         {
             base.RegisterTypes(container);
             var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
-            config.UsingCodeFirstContext(() => Activator.CreateInstance<TContext>());
+            config.UsingCodeFirstContext(Activator.CreateInstance<TContext>);
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IMainMenuDefinition, ReflectorTest.NullMenuDfinition>();
+            container.RegisterType<IMenuFactory, ReflectorTest.NullMenuBuilder>();
         }
         #endregion
 
