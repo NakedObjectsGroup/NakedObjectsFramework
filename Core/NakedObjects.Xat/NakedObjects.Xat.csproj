@@ -111,9 +111,13 @@
     <Compile Include="xat\interface\ITestHasProperties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="xat\interface\ITestAction.cs" />
+    <Compile Include="xat\interface\ITestMenu.cs" />
+    <Compile Include="xat\interface\ITestMenuItem.cs" />
     <Compile Include="xat\interface\ITestProperty.cs" />
     <Compile Include="xat\interface\ITestParameter.cs" />
+    <Compile Include="xat\nondocumenting\TestMenu.cs" />
     <Compile Include="xat\nondocumenting\TestAction.cs" />
+    <Compile Include="xat\nondocumenting\TestMenuItem.cs" />
     <Compile Include="xat\nondocumenting\TestMessagesAndWarnings.cs" />
     <Compile Include="xat\nondocumenting\TestProperty.cs" />
     <Compile Include="xat\nondocumenting\TestHasActions.cs" />

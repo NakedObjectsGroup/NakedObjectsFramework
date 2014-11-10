@@ -17,7 +17,8 @@ using NakedObjects.Architecture.Resolve;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Util;
 using NakedObjects.Core.Util;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert; 
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using NakedObjects.Architecture.Menu; 
 
 namespace NakedObjects.Xat {
     internal class TestObject : TestHasActions, ITestObject {
@@ -157,6 +158,10 @@ namespace NakedObjects.Xat {
             return this;
         }
 
+        public ITestMenu GetMenu() {
+            IMenuImmutable menu = NakedObject.Spec.ObjectMenu;
+            return new TestMenu(menu, factory, this);
+        }
         #endregion
 
         public override bool Equals(Object obj) {

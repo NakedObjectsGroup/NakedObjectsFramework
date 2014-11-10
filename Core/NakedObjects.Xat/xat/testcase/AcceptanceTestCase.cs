@@ -65,7 +65,7 @@ namespace NakedObjects.Xat {
         protected virtual ITestObjectFactory TestObjectFactoryClass {
             get {
                 if (testObjectFactory == null) {
-                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Manager, NakedObjectsFramework.TransactionManager);
+                    testObjectFactory = new TestObjectFactory(NakedObjectsFramework.Metamodel, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.Manager, NakedObjectsFramework.TransactionManager, NakedObjectsFramework.Services);
                 }
                 return testObjectFactory;
             }
@@ -153,6 +153,14 @@ namespace NakedObjects.Xat {
                 Assert.Fail("No such service: " + serviceName);
             }
             return servicesCache[serviceName.ToLower()];
+        }
+
+        protected ITestMenu GetMainMenu(string menuName) {
+            IMenuImmutable menu = NakedObjectsFramework.Metamodel.MainMenus().FirstOrDefault(m => m.Name == menuName);
+            if (menu == null) {
+                Assert.Fail("No such main menu " + menuName);
+            }
+            return TestObjectFactoryClass.CreateTestMenuMain(menu);
         }
 
         protected ITestObject GetBoundedInstance<T>(string title) {

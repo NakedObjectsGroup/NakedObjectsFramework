@@ -9,6 +9,9 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.SpecImmutable;
+using System.Linq;
 
 namespace NakedObjects.Xat {
     public class TestObjectFactory : ITestObjectFactory {
@@ -17,14 +20,16 @@ namespace NakedObjects.Xat {
         private readonly IMetamodelManager metamodelManager;
         private readonly IObjectPersistor persistor;
         private readonly ITransactionManager transactionManager;
+        private readonly IServicesManager servicesManager;
 
-        public TestObjectFactory(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager manager, ITransactionManager transactionManager) {
+        public TestObjectFactory(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager manager, ITransactionManager transactionManager, IServicesManager servicesManager) {
             this.metamodelManager = metamodelManager;
             this.Session = session;
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.manager = manager;
             this.transactionManager = transactionManager;
+            this.servicesManager = servicesManager;
         }
 
         #region ITestObjectFactory Members
@@ -33,7 +38,23 @@ namespace NakedObjects.Xat {
 
         public ITestService CreateTestService(Object service) {
             var no = manager.GetAdapterFor(service);
-            return new TestService(no, lifecycleManager, this);
+            return CreateTestService(no);
+        }
+
+        public ITestService CreateTestService(INakedObject service) {
+            return new TestService(service, lifecycleManager, this);
+        }
+
+        public ITestMenu CreateTestMenuMain(IMenuImmutable menu) {
+            return new TestMenu(menu, this, null);
+        }
+
+        public ITestMenu CreateTestMenuForObject(IMenuImmutable menu, ITestObject owningObject) {
+            return new TestMenu(menu, this, owningObject);
+        }
+
+        public ITestMenuItem CreateTestMenuItem(IMenuItemImmutable item, ITestObject owningObject) {
+            return new TestMenuItem(item, this, owningObject);
         }
 
         public ITestCollection CreateTestCollection(INakedObject instances) {
@@ -64,6 +85,24 @@ namespace NakedObjects.Xat {
         public ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject) {
             return new TestAction(metamodelManager, Session, lifecycleManager, actionSpec, owningObject, this, manager, transactionManager);
         }
+
+        public ITestAction CreateTestAction(IActionSpecImmutable actionSpec, ITestObject owningObject) {
+            throw new NotImplementedException();
+        }
+
+        public ITestAction CreateTestActionOnService(IActionSpecImmutable actionSpecImm) {
+            IObjectSpecImmutable objectIm = actionSpecImm.Specification; //This is the spec for the service
+
+            if (!objectIm.Service) {
+                throw new Exception("Action is not on a known object or service");
+            }
+            IObjectSpec objectSpec = metamodelManager.GetSpecification(objectIm);            
+            INakedObject service = servicesManager.GetService(objectSpec);
+            ITestService testService = CreateTestService(service);
+            IActionSpec actionSpec = metamodelManager.GetActionSpec(actionSpecImm);
+            return CreateTestAction(actionSpec, testService);
+        }
+
 
         public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) {
             return new TestAction(metamodelManager, Session, lifecycleManager, contributor, actionSpec, owningObject, this, manager, transactionManager);

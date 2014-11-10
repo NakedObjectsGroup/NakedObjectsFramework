@@ -119,6 +119,10 @@ namespace NakedObjects.Xat {
             get { throw new NotImplementedException(); }
         }
 
+        public ITestMenu GetMenu() {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 

@@ -19,6 +19,8 @@ namespace NakedObjects.Architecture.Component {
 
         INakedObject GetService(string id);
 
+        INakedObject GetService(IObjectSpec spec);
+
         ServiceType GetServiceType(IObjectSpec spec);
 
         INakedObject[] GetServices();

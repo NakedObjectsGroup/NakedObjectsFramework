@@ -9,6 +9,8 @@ using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Xat {
     /// <summary>
@@ -19,11 +21,21 @@ namespace NakedObjects.Xat {
         ISession Session { get; set; }
         ITestService CreateTestService(Object service);
 
+        ITestMenu CreateTestMenuMain(IMenuImmutable menu);
+
+        ITestMenu CreateTestMenuForObject(IMenuImmutable menu, ITestObject owningObject);
+
+        ITestMenuItem CreateTestMenuItem(IMenuItemImmutable item, ITestObject owningObject);
+
         ITestCollection CreateTestCollection(INakedObject instances);
 
         ITestObject CreateTestObject(INakedObject nakedObject);
 
         ITestNaked CreateTestNaked(INakedObject nakedObject);
+
+         ITestAction CreateTestActionOnService(IActionSpecImmutable actionSpecImm);
+
+         ITestAction CreateTestAction(IActionSpecImmutable actionSpec, ITestObject owningObject);
 
         ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject);
 

@@ -57,6 +57,10 @@ namespace NakedObjects.Managers {
             return (Services.Where(sw => id.Equals(ServiceUtils.GetId(sw.Service))).Select(sw => manager.GetServiceAdapter(sw.Service))).FirstOrDefault();
         }
 
+        public INakedObject GetService(IObjectSpec spec) {
+            return GetServices().FirstOrDefault(s => s.Spec == spec);
+        }
+
         public virtual INakedObject[] GetServices() {
             Log.Debug("GetServices");
             return Services.Select(sw => manager.GetServiceAdapter(sw.Service)).ToArray();
