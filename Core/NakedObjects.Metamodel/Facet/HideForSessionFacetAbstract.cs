@@ -33,15 +33,15 @@ namespace NakedObjects.Meta.Facet {
 
         #region IHideForSessionFacet Members
 
-        public virtual string Hides(InteractionContext ic, ILifecycleManager persistor) {
-            return HiddenReason(ic.Session, ic.Target, persistor);
+        public virtual string Hides(InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+            return HiddenReason(ic.Session, ic.Target, lifecycleManager, manager);
         }
 
-        public virtual HiddenException CreateExceptionFor(InteractionContext ic, ILifecycleManager persistor) {
-            return new HiddenException(ic, Hides(ic, persistor));
+        public virtual HiddenException CreateExceptionFor(InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+            return new HiddenException(ic, Hides(ic, lifecycleManager, manager));
         }
 
-        public abstract string HiddenReason(ISession session, INakedObject target, ILifecycleManager persistor);
+        public abstract string HiddenReason(ISession session, INakedObject target, ILifecycleManager persistor, IMetamodelManager manager);
 
         #endregion
     }

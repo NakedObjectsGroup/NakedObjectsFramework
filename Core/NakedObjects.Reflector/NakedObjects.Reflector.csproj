@@ -206,7 +206,6 @@
     <Compile Include="FacetFactory\RemoveInitMethodFacetFactory.cs" />
     <Compile Include="FacetFactory\RemoveSuperclassMethodsFacetFactory.cs" />
     <Compile Include="I18n\I18nFacetDecorator.cs" />
-    <Compile Include="Authorization\IAuthoriserInstaller.cs" />
     <Compile Include="Installer\IReflectionDecoratorInstaller.cs" />
     <Compile Include="I18n\ResourceBasedI18nDecoratorInstaller.cs" />
     <Compile Include="Reflect\DeweyOrderSet.cs" />
@@ -222,11 +221,6 @@
     <Compile Include="Reflect\ProxyCreator.cs" />
     <Compile Include="Reflect\SimpleOrderSet.cs" />
     <Compile Include="Reflect\DefaultClassStrategy.cs" />
-    <Compile Include="Authorization\AuthorizationManagerAbstract.cs" />
-    <Compile Include="Authorization\CustomAuthorizationManager.cs" />
-    <Compile Include="Authorization\CustomAuthorizerInstaller.cs" />
-    <Compile Include="Authorization\IAuthorizer.cs" />
-    <Compile Include="Authorization\AuthorizationFacetDecorator.cs" />
     <Compile Include="Spec\FacetDecoratorSet.cs" />
     <Compile Include="Transaction\TransactionDecorator.cs" />
     <Compile Include="Transaction\TransactionDecoratorInstaller.cs" />
@@ -305,6 +299,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

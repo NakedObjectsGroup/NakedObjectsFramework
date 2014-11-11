@@ -58,7 +58,7 @@ namespace NakedObjects.Core.Spec {
         public override Tuple<string, IObjectSpec>[] GetChoicesParameters() {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
             return propertyChoicesFacet == null ? new Tuple<string, IObjectSpec>[] {} :
-                propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, Metamodel.GetSpecification(t.Item2))).ToArray();
+                propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, MetamodelManager.GetSpecification(t.Item2))).ToArray();
         }
 
         public override INakedObject[] GetChoices(INakedObject target, IDictionary<string, INakedObject> parameterNameValues) {
@@ -159,7 +159,7 @@ namespace NakedObjects.Core.Spec {
             if (obj == null) {
                 return null;
             }
-            IObjectSpec spec = Metamodel.GetSpecification(obj.GetType());
+            IObjectSpec spec = MetamodelManager.GetSpecification(obj.GetType());
             if (spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                 return Manager.CreateAggregatedAdapter(fromObject, ((IAssociationSpec) this).Id, obj);
             }

@@ -14,16 +14,16 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Core.Util {
     public static class InteractionUtils {
-        public static bool IsVisible(ISpecification specification, InteractionContext ic, ILifecycleManager persistor) {
+        public static bool IsVisible(ISpecification specification, InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             var buf = new InteractionBuffer();
             var facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
             foreach (IHidingInteractionAdvisor advisor in facets) {
-                buf.Append(advisor.Hides(ic, persistor));
+                buf.Append(advisor.Hides(ic, lifecycleManager, manager));
             }
             return IsVisible(buf);
         }
 
-        public static bool IsVisibleWhenPersistent(ISpecification specification, InteractionContext ic, ILifecycleManager persistor) {
+        public static bool IsVisibleWhenPersistent(ISpecification specification, InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             var buf = new InteractionBuffer();
             var facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
             foreach (IHidingInteractionAdvisor advisor in facets) {
@@ -32,7 +32,7 @@ namespace NakedObjects.Core.Util {
                         continue;
                     }
                 }
-                buf.Append(advisor.Hides(ic, persistor));
+                buf.Append(advisor.Hides(ic, lifecycleManager, manager));
             }
             return IsVisible(buf);
         }

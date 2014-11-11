@@ -27,12 +27,12 @@ namespace NakedObjects.Meta.Facet {
 
         #region IHideForContextFacet Members
 
-        public virtual string Hides(InteractionContext ic, ILifecycleManager persistor) {
+        public virtual string Hides(InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             return HiddenReason(ic.Target);
         }
 
-        public virtual HiddenException CreateExceptionFor(InteractionContext ic, ILifecycleManager persistor) {
-            return new HiddenException(ic, Hides(ic, persistor));
+        public virtual HiddenException CreateExceptionFor(InteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+            return new HiddenException(ic, Hides(ic, lifecycleManager, manager));
         }
 
         public string HiddenReason(INakedObject nakedObject) {

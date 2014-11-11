@@ -78,6 +78,12 @@
     <Compile Include="Audit\AuditUpdatedFacet.cs" />
     <Compile Include="Audit\IAuditConfiguration.cs" />
     <Compile Include="Audit\IAuditManager.cs" />
+    <Compile Include="Authorization\AuthorizationConfiguration.cs" />
+    <Compile Include="Authorization\AuthorizationDisableForSessionFacet.cs" />
+    <Compile Include="Authorization\AuthorizationHideForSessionFacet.cs" />
+    <Compile Include="Authorization\AuthorizationManager.cs" />
+    <Compile Include="Authorization\IAuthorizationConfiguration.cs" />
+    <Compile Include="Authorization\IAuthorizer.cs" />
     <Compile Include="Meta\ImmutableInMemorySpecCache.cs" />
     <Compile Include="Facet\AbstractFacet.cs" />
     <Compile Include="Facet\ActionChoicesFacetViaMethod.cs" />

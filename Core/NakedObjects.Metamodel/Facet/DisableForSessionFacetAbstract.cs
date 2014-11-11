@@ -23,7 +23,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IDisableForSessionFacet Members
 
-        public abstract string DisabledReason(ISession session, INakedObject target, ILifecycleManager persistor);
+        public abstract string DisabledReason(ISession session, INakedObject target, ILifecycleManager persistor, IMetamodelManager manager);
 
         #endregion
     }

@@ -21,10 +21,11 @@ namespace NakedObjects.Architecture.Reflect {
         private readonly ISpecificationBuilder specification;
         private readonly string id;
         private readonly ILifecycleManager lifecycleManager;
+        private readonly IMetamodelManager metamodelManager;
         private readonly ISession session;
 
 
-        protected internal MemberSpecAbstract(string id, ISpecificationBuilder specification, ISession session, ILifecycleManager lifecycleManager) {
+        protected internal MemberSpecAbstract(string id, ISpecificationBuilder specification, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
             AssertArgNotNull(id, Resources.NakedObjects.NameNotSetMessage);
             AssertArgNotNull(specification);
             AssertArgNotNull(session);
@@ -35,6 +36,7 @@ namespace NakedObjects.Architecture.Reflect {
             this.specification = specification;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
+            this.metamodelManager = metamodelManager;
         }
 
         public ISession Session {
@@ -43,6 +45,10 @@ namespace NakedObjects.Architecture.Reflect {
 
         public ILifecycleManager LifecycleManager {
             get { return lifecycleManager; }
+        }
+
+        protected IMetamodelManager MetamodelManager {
+            get { return metamodelManager; }
         }
 
         #region INakedObjectMember Members
@@ -102,7 +108,7 @@ namespace NakedObjects.Architecture.Reflect {
         /// </summary>
         public virtual bool IsVisible(INakedObject target) {
             InteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
-            return InteractionUtils.IsVisible(this, ic, LifecycleManager);
+            return InteractionUtils.IsVisible(this, ic, LifecycleManager, metamodelManager);
         }
 
         /// <summary>

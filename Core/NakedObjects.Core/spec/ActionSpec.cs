@@ -28,7 +28,6 @@ namespace NakedObjects.Core.Spec {
         private readonly IActionSpecImmutable actionSpecImmutable;
 
         private readonly SpecFactory memberFactory;
-        private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IServicesManager servicesManager;
         private readonly ITransactionManager transactionManager;
@@ -40,12 +39,11 @@ namespace NakedObjects.Core.Spec {
         }
 
         public ActionSpec(SpecFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager, IActionSpecImmutable actionSpecImmutable)
-            : base(actionSpecImmutable.Identifier.MemberName, actionSpecImmutable, session, lifecycleManager) {
+            : base(actionSpecImmutable.Identifier.MemberName, actionSpecImmutable, session, lifecycleManager, metamodel) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(actionSpecImmutable);
 
             this.memberFactory = memberFactory;
-            this.metamodel = metamodel;
             this.servicesManager = servicesManager;
             this.transactionManager = transactionManager;
             this.nakedObjectManager = nakedObjectManager;
@@ -60,15 +58,15 @@ namespace NakedObjects.Core.Spec {
         #region IActionSpec Members
 
         public virtual IObjectSpec ReturnType {
-            get { return metamodel.GetSpecification(actionSpecImmutable.ReturnType); }
+            get { return MetamodelManager.GetSpecification(actionSpecImmutable.ReturnType); }
         }
 
         public override IObjectSpec ElementSpec {
-            get { return metamodel.GetSpecification(actionSpecImmutable.ElementType); }
+            get { return MetamodelManager.GetSpecification(actionSpecImmutable.ElementType); }
         }
 
         public virtual IObjectSpec OnType {
-            get { return metamodel.GetSpecification(ActionInvocationFacet.OnType); }
+            get { return MetamodelManager.GetSpecification(ActionInvocationFacet.OnType); }
         }
 
         public virtual IActionSpec[] Actions {
@@ -123,7 +121,7 @@ namespace NakedObjects.Core.Spec {
             Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);
             INakedObject[] parms = RealParameters(nakedObject, parameterSet);
             INakedObject target = RealTarget(nakedObject);
-            return GetFacet<IActionInvocationFacet>().Invoke(target, parms, LifecycleManager, metamodel, Session, transactionManager, nakedObjectManager);
+            return GetFacet<IActionInvocationFacet>().Invoke(target, parms, LifecycleManager, MetamodelManager, Session, transactionManager, nakedObjectManager);
         }
 
         public virtual INakedObject RealTarget(INakedObject target) {

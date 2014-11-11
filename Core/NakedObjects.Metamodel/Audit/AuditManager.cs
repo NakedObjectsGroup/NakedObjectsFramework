@@ -26,6 +26,16 @@ namespace NakedObjects.Meta.Audit {
         public AuditManager(IAuditConfiguration config) {
             defaultAuditor = config.DefaultAuditor;
             namespaceAuditors = config.NamespaceAuditors.ToImmutableDictionary();
+
+            Validate();
+        }
+
+        // validate all the passed in types to fail at reflection time as far as possible
+        private void Validate() {
+            Assert.AssertTrue(defaultAuditor.FullName + "is not an IAuditor", typeof(IAuditor).IsAssignableFrom(defaultAuditor));
+            if (namespaceAuditors.Any()) {
+                namespaceAuditors.ForEach(kvp => Assert.AssertTrue(kvp.Value.FullName + "is not an IAuditor", typeof(IAuditor).IsAssignableFrom(kvp.Value)));
+            }
         }
 
         #region IAuditManager Members

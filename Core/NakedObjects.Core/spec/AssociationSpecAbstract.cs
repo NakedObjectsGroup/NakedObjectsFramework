@@ -20,17 +20,15 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Spec {
     public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
         private readonly INakedObjectManager manager;
-        private readonly IMetamodelManager metamodel;
         private readonly IObjectSpec spec;
 
         protected AssociationSpecAbstract(IMetamodelManager metamodel, IAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager)
-            : base(association.Identifier.MemberName, association, session, lifecycleManager) {
-            Assert.AssertNotNull(metamodel);
+            : base(association.Identifier.MemberName, association, session, lifecycleManager, metamodel) {
+       
             Assert.AssertNotNull(manager);
 
-            this.metamodel = metamodel;
             this.manager = manager;
-            spec = Metamodel.GetSpecification(association.Specification);
+            spec = MetamodelManager.GetSpecification(association.Specification);
         }
 
         public virtual bool IsChoicesEnabled {
@@ -41,9 +39,6 @@ namespace NakedObjects.Core.Spec {
             get { return ContainsFacet(typeof (IAutoCompleteFacet)); }
         }
 
-        public IMetamodelManager Metamodel {
-            get { return metamodel; }
-        }
 
         public INakedObjectManager Manager {
             get { return manager; }
@@ -127,7 +122,7 @@ namespace NakedObjects.Core.Spec {
 
             if (reason == null) {
                 var fs = GetFacet<IDisableForSessionFacet>();
-                reason = fs == null ? null : fs.DisabledReason(Session, target, LifecycleManager);
+                reason = fs == null ? null : fs.DisabledReason(Session, target, LifecycleManager, MetamodelManager);
             }
 
             return GetConsent(reason);

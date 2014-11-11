@@ -107,7 +107,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             return false;
         }
 
-        #region Nested type: SecurityDisableForSessionFacet
+        #region Nested type: AuthorizationDisableForSessionFacet
 
         public class SecurityDisableForSessionFacet : DisableForSessionFacetAbstract {
             private readonly string[] roles;
@@ -121,14 +121,14 @@ namespace NakedObjects.Reflect.FacetFactory {
                 this.users = SplitOnComma(users);
             }
 
-            public override string DisabledReason(ISession session, INakedObject target, ILifecycleManager persistor) {
+            public override string DisabledReason(ISession session, INakedObject target, ILifecycleManager persistor, IMetamodelManager manager) {
                 return IsAllowed(session, roles, users) ? null : "Not authorized to edit";
             }
         }
 
         #endregion
 
-        #region Nested type: SecurityHideForSessionFacet
+        #region Nested type: AuthorizationHideForSessionFacet
 
         public class SecurityHideForSessionFacet : HideForSessionFacetAbstract {
             private readonly string[] roles;
@@ -142,7 +142,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 this.users = SplitOnComma(users);
             }
 
-            public override string HiddenReason(ISession session, INakedObject target, ILifecycleManager persistor) {
+            public override string HiddenReason(ISession session, INakedObject target, ILifecycleManager persistor, IMetamodelManager manager) {
                 return IsAllowed(session, roles, users) ? null : "Not authorized to view";
             }
         }

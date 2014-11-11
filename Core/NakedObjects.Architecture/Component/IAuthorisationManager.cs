@@ -17,21 +17,15 @@ namespace NakedObjects.Architecture.Component {
         ///     class/object represented by the member identifier. Normally the view of the specified field, or the
         ///     display of the action will be suppress if this returns false.
         /// </summary>
-        bool IsVisible(ISession session, ILifecycleManager persistor, INakedObject target, IIdentifier identifier);
+        bool IsVisible(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier);
 
         /// <summary>
         ///     Returns true when the use represented by the specified session is authorized to change the field
         ///     represented by the member identifier. Normally the specified field will be not appear editable if this
         ///     returns false.
         /// </summary>
-        bool IsEditable(ISession session, ILifecycleManager persistor, INakedObject target, IIdentifier identifier);
+        bool IsEditable(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier);
 
-        /// <summary>
-        ///     This is an optimisation to update the cache for usability and visibility in one hit.
-        ///     Calling or not calling it should have no functional difference. Depending on the authorization manager
-        ///     implementation it may do nothing.
-        /// </summary>
-        void UpdateAuthorizationCache(INakedObject nakedObject);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

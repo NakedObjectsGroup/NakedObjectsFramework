@@ -7,7 +7,6 @@ using System.IO;
 using Common.Logging;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
-using NakedObjects.Reflect.Authorization;
 using NakedObjects.Reflect.I18n.Resourcebundle;
 
 namespace NakedObjects.Boot {
@@ -91,22 +90,7 @@ namespace NakedObjects.Boot {
             get { return null; }
         }
 
-        protected virtual IAuthorizerInstaller Authorizer {
-            get { return null; }
-        }
-
-        //protected virtual IAuditorInstaller Auditor {
-        //    get { return null; }
-        //}
-
-        //protected virtual NakedObjectsContext Context {
-        //    get { return StaticContext.CreateInstance(); }
-        //}
-
-        //protected virtual IReflectorInstaller Reflector {
-        //    get { return new DotNetReflectorInstaller(); }
-        //}
-
+     
         /// <summary>
         ///     NakedObjects reflects over domain code during startup to build the view of the domain
         ///     model. For this reason domain assemblies need to be in memory during startup.
