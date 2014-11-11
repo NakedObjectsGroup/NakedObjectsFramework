@@ -8,7 +8,7 @@
 using System.Security.Claims;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Reflect.Authorization;
+using NakedObjects.Meta.Authorization;
 
 namespace NakedObjects.Reflect.Security.Wif {
     public class WifAuthorizer : IAuthorizer {
@@ -40,12 +40,6 @@ namespace NakedObjects.Reflect.Security.Wif {
 
         #endregion
 
-        public void Init() {
-            // do nothing
-        }
-
-        public void Shutdown() {
-            // do nothing
-        }
+        
     }
 }

@@ -5,31 +5,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Configuration;
 using System.IdentityModel.Configuration;
 using System.Security.Claims;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Reflect.Authorization;
+using NakedObjects.Meta.Authorization;
 
 namespace NakedObjects.Reflect.Security.Wif {
-    public class WifAuthorizationManager : AuthorizationManagerAbstract, IAuthorizationManager {
-        #region IAuthorizationManager Members
+    public class WifAuthorizationManager :  IAuthorizationManager {
 
-        public bool IsVisible(ISession session, ILifecycleManager persistor, INakedObject target, IIdentifier identifier) {
-            throw new NotImplementedException();
+        private IAuthorizer authorizer;
+
+        protected internal virtual IAuthorizer Authorizer {
+            set { authorizer = value; }
         }
-
-        public bool IsEditable(ISession session, ILifecycleManager persistor, INakedObject target, IIdentifier identifier) {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateAuthorizationCache(INakedObject nakedObject) {
-            // do nothing 
-        }
-
-        #endregion
 
         private static ClaimsAuthorizationManager CreateManager() {
             var identityModelSection = (SystemIdentityModelSection) ConfigurationManager.GetSection("microsoft.identityModel");
@@ -40,6 +30,14 @@ namespace NakedObjects.Reflect.Security.Wif {
 
         protected void InitAuthorizer() {
             Authorizer = new WifAuthorizer(CreateManager());
+        }
+
+        public bool IsVisible(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier) {
+            return authorizer.IsVisible(session, target, identifier);
+        }
+
+        public bool IsEditable(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier) {
+            return authorizer.IsUsable(session, target, identifier);
         }
     }
 }
