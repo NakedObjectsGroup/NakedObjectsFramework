@@ -207,14 +207,6 @@ namespace NakedObjects.Xat {
             tc.servicesCache = new Dictionary<string, ITestService>();
 
             tc.GetConfiguredContainer().Resolve<IReflector>().Reflect();
-
-            //List<Type> s1 = tc.MenuServices.GetServices().Select(s => s.GetType()).ToList();
-            //List<Type> s2 = tc.ContributedActions.GetServices().Select(s => s.GetType()).ToList();
-            //List<Type> s3 = tc.SystemServices.GetServices().Select(s => s.GetType()).ToList();
-            //Type[] services = s1.Union(s2).Union(s3).ToArray();
-
-            //reflector.InstallServiceSpecifications(services);
-            //reflector.PopulateContributedActions(s1.Union(s2).ToArray());
         }
 
         protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {
@@ -235,13 +227,13 @@ namespace NakedObjects.Xat {
         protected virtual void RegisterTypes(IUnityContainer container) {
             container.RegisterType<IMainMenuDefinition, NullMainMenuDefinition>();
 
-            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new InjectionConstructor());
-            container.RegisterType<IClassStrategy, DefaultClassStrategy>();
-            container.RegisterType<IFacetFactorySet, FacetFactorySet>();
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
+            container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IFacetFactorySet, FacetFactorySet>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<IReflector, Reflector>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodel, Meta.Metamodel>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IMetamodelBuilder, Meta.Metamodel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMetamodelBuilder, Metamodel>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPrincipal>(new InjectionFactory(c => TestPrincipal));
 

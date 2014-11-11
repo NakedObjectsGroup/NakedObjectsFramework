@@ -18,6 +18,17 @@ using NakedObjects.Meta;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test {
+
+    public class NullMenuFactory : IMenuFactory {
+        public IMenu NewMenu(string name) {
+            return null;
+        }
+
+        public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
+           return null;
+        }
+    }
+
     public class ReflectorTest {
         protected IUnityContainer GetContainer() {
             var c = new UnityContainer();
@@ -27,13 +38,14 @@ namespace NakedObjects.Reflect.Test {
 
        protected virtual void RegisterTypes(IUnityContainer container) {
             container.RegisterType<IMainMenuDefinition, NullMenuDefinition>();
-            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>();
+            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new InjectionConstructor());
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
             container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, Reflector>();
-            container.RegisterType<IMetamodel, Meta.Metamodel>();
-            container.RegisterType<IMetamodelBuilder, Meta.Metamodel>();
+            container.RegisterType<IMetamodel, Metamodel>();
+            container.RegisterType<IMetamodelBuilder, Metamodel>();
             container.RegisterType<IServicesConfiguration, ServicesConfiguration>();
+            container.RegisterType<IMenuFactory, NullMenuFactory>();
         }
 
         [Test]

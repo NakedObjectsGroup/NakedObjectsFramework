@@ -16,12 +16,10 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.SpecImmutable;
-using NakedObjects.Meta.Utils;
 using NakedObjects.Reflect.Spec;
 using NakedObjects.Util;
 
