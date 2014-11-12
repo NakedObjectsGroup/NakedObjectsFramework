@@ -217,8 +217,6 @@
     <Compile Include="system\InitialisationException.cs" />
     <Compile Include="system\IInstaller.cs" />
     <Compile Include="system\IObjectPersistorInstaller.cs" />
-    <Compile Include="system\IReflectorEnhancementInstaller.cs" />
-    <Compile Include="system\IReflectorInstaller.cs" />
     <Compile Include="system\IServicesInstaller.cs" />
     <Compile Include="system\TypeFactory.cs" />
     <Compile Include="util\AdapterUtils.cs" />

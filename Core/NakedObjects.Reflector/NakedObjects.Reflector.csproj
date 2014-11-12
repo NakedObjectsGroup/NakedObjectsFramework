@@ -205,13 +205,11 @@
     <Compile Include="FacetFactory\RemoveEventHandlerMethodsFacetFactory.cs" />
     <Compile Include="FacetFactory\RemoveInitMethodFacetFactory.cs" />
     <Compile Include="FacetFactory\RemoveSuperclassMethodsFacetFactory.cs" />
-    <Compile Include="Installer\IReflectionDecoratorInstaller.cs" />
     <Compile Include="Reflect\DeweyOrderSet.cs" />
     <Compile Include="Reflect\Introspector.cs" />
     <Compile Include="Reflect\IOrderSet.cs" />
     <Compile Include="Reflect\MethodRemoverConstants.cs" />
     <Compile Include="Reflect\Reflector.cs" />
-    <Compile Include="Installer\DotNetReflectorInstaller.cs" />
     <Compile Include="Reflect\MemberIdentifierComparator.cs" />
     <Compile Include="Reflect\MemberOrderComparator.cs" />
     <Compile Include="Reflect\MethodFinderUtils.cs" />
@@ -220,8 +218,6 @@
     <Compile Include="Reflect\SimpleOrderSet.cs" />
     <Compile Include="Reflect\DefaultClassStrategy.cs" />
     <Compile Include="Spec\FacetDecoratorSet.cs" />
-    <Compile Include="Transaction\TransactionDecorator.cs" />
-    <Compile Include="Transaction\TransactionDecoratorInstaller.cs" />
     <Compile Include="TypeFacetFactory\ArrayValueTypeFacetFactory.cs" />
     <Compile Include="TypeFacetFactory\BoolValueTypeFacetFactory.cs" />
     <Compile Include="TypeFacetFactory\ByteValueTypeFacetFactory.cs" />

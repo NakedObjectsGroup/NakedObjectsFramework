@@ -22,7 +22,7 @@ namespace NakedObjects.Boot {
             }
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
-            var enhancements = new List<IReflectorEnhancementInstaller>();
+         //   var enhancements = new List<IReflectorEnhancementInstaller>();
 
 
             //ResourceBasedI18nDecoratorInstaller i18n = I18N;
@@ -30,10 +30,10 @@ namespace NakedObjects.Boot {
             //    enhancements.Add(i18n);
             //}
 
-            AddReflectorEnhancements(enhancements);
-            foreach (IReflectorEnhancementInstaller enhancement in enhancements) {
-                System.AddReflectorEnhancement(enhancement);
-            }
+            //AddReflectorEnhancements(enhancements);
+            //foreach (IReflectorEnhancementInstaller enhancement in enhancements) {
+            //    System.AddReflectorEnhancement(enhancement);
+            //}
 
             System.ObjectPersistorInstaller = Persistor;
             System.AuthenticatorInstaller = Authenticator;
@@ -43,7 +43,7 @@ namespace NakedObjects.Boot {
             System.FixtureInstaller = Fixtures;
         }
 
-        protected virtual void AddReflectorEnhancements(List<IReflectorEnhancementInstaller> enhancements) {}
+       // protected virtual void AddReflectorEnhancements(List<IReflectorEnhancementInstaller> enhancements) {}
 
         protected virtual void ProductSpecificStart(NakedObjectsSystem system) {}
 

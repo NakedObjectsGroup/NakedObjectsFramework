@@ -92,7 +92,6 @@
     <Compile Include="Facet\ActionDefaultsFacetDerivedFromDefaultedFacets.cs" />
     <Compile Include="Facet\ActionDefaultsFacetViaMethod.cs" />
     <Compile Include="Facet\ActionInvocationFacetViaMethod.cs" />
-    <Compile Include="Facet\ActionInvocationFacetWrapTransaction.cs" />
     <Compile Include="Facet\ActionOrderFacetAnnotation.cs" />
     <Compile Include="Facet\ActionParameterValidation.cs" />
     <Compile Include="Facet\ActionValidationFacet.cs" />
@@ -107,8 +106,6 @@
     <Compile Include="Facet\DefaultedFacetUsingDefaultsProvider.cs" />
     <Compile Include="Facet\ElementTypeFacet.cs" />
     <Compile Include="Facet\PropertyClearFacetAbstract.cs" />
-    <Compile Include="Facet\PropertyClearFacetWrapTransaction.cs" />
-    <Compile Include="Facet\ProxySetterFacetWrapTransaction.cs" />
     <Compile Include="Facet\ValidateObjectFacet.cs" />
     <Compile Include="Meta\Metamodel.cs" />
     <Compile Include="I18N\DescribedAsFacetI18N.cs" />

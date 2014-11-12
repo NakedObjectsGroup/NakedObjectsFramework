@@ -13,11 +13,21 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Meta.Utils;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
 
 namespace NakedObjects.Reflect {
+
+    // to do make this configurable so the list of factories can be managed
+    // eg need to implement 
+
+    //    if (OptionalByDefault) {
+    //      //  ((FacetFactorySetImpl)reflector.FacetFactorySet).ReplaceAndRegisterFactory(typeof(MandatoryDefaultFacetFactory), new OptionalDefaultFacetFactory(NakedObjectsContext.Reflector));
+    //    }
+
+
+
+
     public class FacetFactorySet : IFacetFactorySet {
         private readonly object cacheLock = true;
 

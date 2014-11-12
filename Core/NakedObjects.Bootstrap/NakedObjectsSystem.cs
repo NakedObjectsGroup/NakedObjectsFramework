@@ -10,13 +10,10 @@ using System.ServiceModel;
 using System.Threading;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Core;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
-using NakedObjects.Core.Util;
-using NakedObjects.Reflect.Transaction;
 
 namespace NakedObjects.Boot {
     // TODO move this to NakedObjects.Core.NakedObjectsSystem in core project once reflector dependency has been removed
@@ -30,7 +27,7 @@ namespace NakedObjects.Boot {
         private ServiceHost host;
         private IServicesInstaller menuServicesInstaller;
         private IObjectPersistorInstaller objectPersistorInstaller;
-        private IReflector reflector;
+        //private IReflector reflector;
         private IServicesInstaller systemServicesInstaller;
 
         static NakedObjectsSystem() {
@@ -54,7 +51,7 @@ namespace NakedObjects.Boot {
             get { return objectPersistorInstaller; }
         }
 
-        public IReflectorInstaller ReflectorInstaller { get; set; }
+      //  public IReflectorInstaller ReflectorInstaller { get; set; }
 
         public IServicesInstaller MenuServicesInstaller {
             set { menuServicesInstaller = value; }
@@ -97,11 +94,11 @@ namespace NakedObjects.Boot {
 
         #endregion
 
-        public void AddReflectorEnhancement(IReflectorEnhancementInstaller enhancementInstaller) {
-            if (enhancementInstaller != null) {
-                ReflectorInstaller.AddEnhancement(enhancementInstaller);
-            }
-        }
+        //public void AddReflectorEnhancement(IReflectorEnhancementInstaller enhancementInstaller) {
+        //    if (enhancementInstaller != null) {
+        //        ReflectorInstaller.AddEnhancement(enhancementInstaller);
+        //    }
+        //}
 
 
         public static NameValueCollection GetProperties() {
@@ -117,17 +114,17 @@ namespace NakedObjects.Boot {
             Log.Info("initialising naked objects system");
             Log.Info("working directory: " + new FileInfo(".").FullName);
             try {
-                IReflectorEnhancementInstaller enhancement = new TransactionDecoratorInstaller();
-                ReflectorInstaller.AddEnhancement(enhancement);
+                //IReflectorEnhancementInstaller enhancement = new TransactionDecoratorInstaller();
+                //ReflectorInstaller.AddEnhancement(enhancement);
 
-                reflector = ReflectorInstaller.CreateReflector();
+                //reflector = ReflectorInstaller.CreateReflector();
 
-                Log.DebugFormat("Culture is {0}", Thread.CurrentThread.CurrentCulture);
+                //Log.DebugFormat("Culture is {0}", Thread.CurrentThread.CurrentCulture);
 
-                if (authenticatorInstaller != null) {
-                    AuthenticationManager = authenticatorInstaller.CreateAuthenticationManager();
-                    AuthenticationManager.Init();
-                }
+                //if (authenticatorInstaller != null) {
+                //    AuthenticationManager = authenticatorInstaller.CreateAuthenticationManager();
+                //    AuthenticationManager.Init();
+                //}
 
                 // TODO shutdown the startup context (eg on main thread)
                 // NakedObjectsContext.shutdown();        
