@@ -115,7 +115,7 @@
     <Compile Include="I18N\DescribedAsFacetI18N.cs" />
     <Compile Include="I18N\NamedFacetI18N.cs" />
     <Compile Include="Menus\Menu.cs" />
-    <Compile Include="Menus\MenuActionImmutable.cs" />
+    <Compile Include="Menus\MenuAction.cs" />
     <Compile Include="Menus\MenuFactory.cs" />
     <Compile Include="Menus\TypedMenu.cs" />
     <Compile Include="SemanticsProvider\ArrayValueSematicsProvider.cs" />

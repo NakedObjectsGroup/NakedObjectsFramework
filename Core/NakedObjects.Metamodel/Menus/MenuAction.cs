@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace NakedObjects.Meta.Menus {
-    public class MenuActionImmutable : IMenuActionImmutable {
+    public class MenuAction : IMenuActionImmutable {
 
-        public MenuActionImmutable(IActionSpecImmutable actionSpec, string renamedTo = null) {
+        public MenuAction(IActionSpecImmutable actionSpec, string renamedTo = null) {
             this.Action = actionSpec;
             if (renamedTo == null) {
                 Name = actionSpec.Identifier.MemberName;  

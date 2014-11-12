@@ -51,7 +51,7 @@ namespace NakedObjects.Meta.Menus {
             if (actionSpec == null) {
                 throw new ReflectionException("No such action: " + actionName + " on " + serviceType);
             }
-            AddMenuItem(new MenuActionImmutable(actionSpec, renamedTo));
+            AddMenuItem(new MenuAction(actionSpec, renamedTo));
             return this;
         }
 
@@ -72,8 +72,8 @@ namespace NakedObjects.Meta.Menus {
         public void AddOrderableElementsToMenu(IList<IOrderableElement<IActionSpecImmutable>> ordeableElements, Menu toMenu) {
             foreach (var element in ordeableElements) {
                 var action = element.Spec;
-                if (action != null && !toMenu.MenuItems.OfType<MenuActionImmutable>().Any(mi => mi.Action == action)) {
-                    toMenu.AddMenuItem(new MenuActionImmutable(action, null));
+                if (action != null && !toMenu.MenuItems.OfType<MenuAction>().Any(mi => mi.Action == action)) {
+                    toMenu.AddMenuItem(new MenuAction(action, null));
                 }
                 else if (element.GroupFullName != null) { //i.e. sub-menu
                     var sub = CreateMenuImmutableAsSubMenu(element.GroupFullName);
@@ -99,7 +99,7 @@ namespace NakedObjects.Meta.Menus {
         }
 
         public IMenuActionImmutable GetAction(string actionName) {
-            var action = MenuItems.OfType<MenuActionImmutable>().FirstOrDefault(a => a.Name == actionName);
+            var action = MenuItems.OfType<MenuAction>().FirstOrDefault(a => a.Name == actionName);
             if (action == null) {
                 throw new Exception("No action named " + actionName);
             }
