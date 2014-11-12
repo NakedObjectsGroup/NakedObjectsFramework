@@ -4,7 +4,6 @@ open NUnit.Framework
 open NakedObjects.Xat
 open NakedObjects.Core.NakedObjectsSystem
 open NakedObjects.Services
-open NakedObjects.Boot
 open Snapshot.Xml.Test
 open NakedObjects.Snapshot
 open NakedObjects.Architecture.Adapter
@@ -65,9 +64,9 @@ type DomainTests() =
             let testService = new SimpleRepository<TestObject>()
             let xmlService = new XmlSnapshotService()
             let transformService = new TransformRepository()
-            box (new ServicesInstaller([| (box testService)
-                                          (box xmlService)
-                                          (box transformService) |])) :?> IServicesInstaller : IServicesInstaller
+            [| (box testService)
+               (box xmlService)
+               (box transformService) |]
         
         member x.TestService = x.GetTestService("Test Objects")
         

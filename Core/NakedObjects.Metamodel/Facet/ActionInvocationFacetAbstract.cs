@@ -28,9 +28,9 @@ namespace NakedObjects.Meta.Facet {
         public abstract IObjectSpecImmutable ReturnType { get; }
         public abstract IObjectSpecImmutable ElementType { get; }
 
-        public abstract INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager);
+        public abstract INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager);
 
-        public abstract INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager);
+        public abstract INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager);
 
         public abstract bool IsQueryOnly { get; }
 

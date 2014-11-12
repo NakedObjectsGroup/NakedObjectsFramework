@@ -12,7 +12,6 @@ open System
 open System.Collections.Generic
 open TestTypes
 open System.Collections
-open NakedObjects.Core.Context
 open NakedObjects.Core.Security
 open System.Security.Principal
 open Moq

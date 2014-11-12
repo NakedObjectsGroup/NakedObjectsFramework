@@ -160,9 +160,7 @@
     <Compile Include="Container\DomainObjectContainerInjector.cs" />
     <Compile Include="Container\Methods.cs" />
     <Compile Include="Container\PersistFailedException.cs" />
-    <Compile Include="context\SimpleMessageBroker.cs" />
-    <Compile Include="Fixture\FixtureBuilder.cs" />
-    <Compile Include="Fixture\FixtureServices.cs" />
+    <Compile Include="Managers\MessageBroker.cs" />
     <Compile Include="Managers\LifeCycleManager.cs" />
     <Compile Include="Managers\MetamodelManager.cs" />
     <Compile Include="Managers\NakedObjectFactory.cs" />
@@ -173,8 +171,6 @@
     <Compile Include="objectstore\ObjectStoreTransaction.cs" />
     <Compile Include="objectstore\ObjectStoreTransactionManager.cs" />
     <Compile Include="Configuration\ServicesConfiguration.cs" />
-    <Compile Include="persist\AbstractFixtureBuilder.cs" />
-    <Compile Include="persist\AbstractObjectPersistorInstaller.cs" />
     <Compile Include="persist\AdapterException.cs" />
     <Compile Include="persist\CollectionMemento.cs" />
     <Compile Include="persist\CollectionMementoHelper.cs" />
@@ -210,11 +206,7 @@
     <Compile Include="spec\OneToManyAssociationSpec.cs" />
     <Compile Include="spec\OneToOneActionParameterImpl.cs" />
     <Compile Include="spec\OneToOneAssociationSpec.cs" />
-    <Compile Include="system\IFixturesInstaller.cs" />
     <Compile Include="system\InitialisationException.cs" />
-    <Compile Include="system\IInstaller.cs" />
-    <Compile Include="system\IObjectPersistorInstaller.cs" />
-    <Compile Include="system\IServicesInstaller.cs" />
     <Compile Include="system\TypeFactory.cs" />
     <Compile Include="util\AdapterUtils.cs" />
     <Compile Include="util\Assert.cs" />

@@ -12,8 +12,6 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.EntityObjectStore;
 using NUnit.Framework;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NakedObjects.Core.Util;
@@ -125,12 +123,12 @@ namespace NakedObjects.Core.Persist {
             StartTest();
         }
 
-        protected override IFixturesInstaller Fixtures {
-            get { return new FixturesInstaller(new object[] {new TestDataFixture()}); }
+        protected override object[] Fixtures {
+            get { return new object[] {new TestDataFixture()}; }
         }
 
-        protected override IServicesInstaller MenuServices {
-            get { return new ServicesInstaller(new object[] {new SimpleRepository<TestDomainObject>()}); }
+        protected override object[] MenuServices {
+            get { return new object[] {new SimpleRepository<TestDomainObject>()}; }
         }
 
         private void RoundTrip(CollectionMemento memento) {

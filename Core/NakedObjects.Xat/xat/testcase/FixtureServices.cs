@@ -3,10 +3,6 @@
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
 
 using System;
-using System.Security.Principal;
-using NakedObjects.Architecture.Security;
-using NakedObjects.Core.Context;
-using NakedObjects.Core.Security;
 
 namespace NakedObjects.Core.Fixture {
     public class FixtureServices {

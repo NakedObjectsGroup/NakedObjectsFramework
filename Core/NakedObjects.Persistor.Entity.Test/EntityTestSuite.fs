@@ -8,7 +8,6 @@ module NakedObjects.EntityTestSuite
 
 open NUnit.Framework
 open NakedObjects.Core.NakedObjectsSystem
-open NakedObjects.Boot
 open NakedObjects.Services
 open System
 open NakedObjects.EntityObjectStore
@@ -163,24 +162,21 @@ type EntityTestSuite() =
     [<TestFixtureTearDown>]
     member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
     
-    override x.Fixtures = box (new FixturesInstaller([| box (new TestDataFixture()) |])) :?> IFixturesInstaller : IFixturesInstaller
+    override x.Fixtures = [| box (new TestDataFixture()) |]
     
     override x.MenuServices = 
         let service = new SimpleRepository<Person>()
-        box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller : IServicesInstaller
+        [| (box service) |]
     
     override x.ContributedActions = 
         let service = new SimpleRepository<Product>()
-        box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller : IServicesInstaller
+        [| (box service) |]
     
     override x.SystemServices = 
         let service = new SimpleRepository<Address>()
-        box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller : IServicesInstaller
+        [| (box service) |]
     
-    override x.Persistor = 
-        let inst = new EntityPersistorInstaller()
-        ignore (inst.UsingCodeFirstContext(Func<Data.Entity.DbContext>(fun () -> upcast new TestDataContext())))
-        box (inst) :?> IObjectPersistorInstaller : IObjectPersistorInstaller
+    
     
     member x.Tests = new PersistorTestSuite(x.NakedObjectsFramework)
     

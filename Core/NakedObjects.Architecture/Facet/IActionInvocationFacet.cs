@@ -26,9 +26,9 @@ namespace NakedObjects.Architecture.Facet {
 
         IObjectSpecImmutable ElementType { get; }
 
-        INakedObject Invoke(INakedObject target, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager);
+        INakedObject Invoke(INakedObject target, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager);
 
-        INakedObject Invoke(INakedObject target, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager);
+        INakedObject Invoke(INakedObject target, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager);
 
         bool IsQueryOnly { get; }
     }

@@ -188,10 +188,6 @@
       <Project>{BF6D9655-B873-4980-ACE7-A122EA45F045}</Project>
       <Name>NakedObjects.Architecture</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Bootstrap\NakedObjects.Bootstrap.csproj">
-      <Project>{027C99E2-2AD7-4700-A871-DE543C9D83C8}</Project>
-      <Name>NakedObjects.Bootstrap</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj">
       <Project>{3F1E438C-020C-4751-A65A-63C2990D8278}</Project>
       <Name>NakedObjects.Core</Name>

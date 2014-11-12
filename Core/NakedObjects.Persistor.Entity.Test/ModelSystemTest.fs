@@ -8,7 +8,6 @@ module NakedObjects.ModelSystemTest
 
 open NUnit.Framework
 open NakedObjects.Core.NakedObjectsSystem
-open NakedObjects.Boot
 open ModelFirst
 open NakedObjects.Services
 open NakedObjects.EntityObjectStore
@@ -57,7 +56,7 @@ type ModelSystemTests() =
     
     override x.MenuServices = 
         let service = new SimpleRepository<Person>()
-        box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller
+        [| (box service) |]
     
     member x.CreatePerson() = 
         let setter (p : Person) = 

@@ -121,7 +121,7 @@ namespace NakedObjects.Core.Spec {
             Log.DebugFormat("Execute action {0}.{1}", nakedObject, Id);
             INakedObject[] parms = RealParameters(nakedObject, parameterSet);
             INakedObject target = RealTarget(nakedObject);
-            return GetFacet<IActionInvocationFacet>().Invoke(target, parms, LifecycleManager, MetamodelManager, Session, transactionManager, nakedObjectManager);
+            return GetFacet<IActionInvocationFacet>().Invoke(target, parms, LifecycleManager, MetamodelManager, Session, nakedObjectManager);
         }
 
         public virtual INakedObject RealTarget(INakedObject target) {

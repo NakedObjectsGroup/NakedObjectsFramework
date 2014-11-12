@@ -7,10 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Architecture",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Architecture.Test", "Core\NakedObjects.Architecture.Test\NakedObjects.Architecture.Test.csproj", "{299B7A16-5D0F-4D21-9584-50865ADB786F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Bootstrap", "Core\NakedObjects.Bootstrap\NakedObjects.Bootstrap.csproj", "{027C99E2-2AD7-4700-A871-DE543C9D83C8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Bootstrap.Test", "Core\NakedObjects.Bootstrap.Test\NakedObjects.Bootstrap.Test.csproj", "{28A0F7FD-7E74-4858-920B-B6AD12E13F26}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Core", "Core\NakedObjects.Core\NakedObjects.Core.csproj", "{3F1E438C-020C-4751-A65A-63C2990D8278}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Core.Test", "Core\NakedObjects.Core.Test\NakedObjects.Core.Test.csproj", "{34CD2E76-7C5C-4DF2-AAAC-2AD167480649}"
@@ -83,18 +79,6 @@ Global
 		{299B7A16-5D0F-4D21-9584-50865ADB786F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{299B7A16-5D0F-4D21-9584-50865ADB786F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{299B7A16-5D0F-4D21-9584-50865ADB786F}.Release|x86.ActiveCfg = Release|Any CPU
-		{027C99E2-2AD7-4700-A871-DE543C9D83C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{027C99E2-2AD7-4700-A871-DE543C9D83C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{027C99E2-2AD7-4700-A871-DE543C9D83C8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{027C99E2-2AD7-4700-A871-DE543C9D83C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{027C99E2-2AD7-4700-A871-DE543C9D83C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{027C99E2-2AD7-4700-A871-DE543C9D83C8}.Release|x86.ActiveCfg = Release|Any CPU
-		{28A0F7FD-7E74-4858-920B-B6AD12E13F26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28A0F7FD-7E74-4858-920B-B6AD12E13F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28A0F7FD-7E74-4858-920B-B6AD12E13F26}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{28A0F7FD-7E74-4858-920B-B6AD12E13F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28A0F7FD-7E74-4858-920B-B6AD12E13F26}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28A0F7FD-7E74-4858-920B-B6AD12E13F26}.Release|x86.ActiveCfg = Release|Any CPU
 		{3F1E438C-020C-4751-A65A-63C2990D8278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3F1E438C-020C-4751-A65A-63C2990D8278}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F1E438C-020C-4751-A65A-63C2990D8278}.Debug|x86.ActiveCfg = Debug|Any CPU

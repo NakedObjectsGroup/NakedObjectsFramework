@@ -12,11 +12,10 @@ using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
-using NakedObjects.Persistor;
 using NakedObjects.Resources;
 
 namespace NakedObjects.EntityObjectStore {
-    public class EntityPersistorInstaller : AbstractObjectPersistorInstaller {
+    public class EntityPersistorInstaller  {
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityPersistorInstaller));
 
         //private bool isContextSet = false;
@@ -76,7 +75,7 @@ namespace NakedObjects.EntityObjectStore {
         /// </summary>
         public int MaximumCommitCycles { get; set; }
 
-        public override string Name {
+        public  string Name {
             get { return "entity"; }
         }
 
@@ -122,7 +121,7 @@ namespace NakedObjects.EntityObjectStore {
            // isContextSet = true;
         }
 
-        public override ILifecycleManager CreateObjectPersistor() {
+        public  ILifecycleManager CreateObjectPersistor() {
             //if (!isContextSet) {
             //    throw new InitialisationException(@"No context set on EntityPersistorInstaller, must call either ""UsingCodeFirstContext"" or ""UsingEdmxContext""");
             //}

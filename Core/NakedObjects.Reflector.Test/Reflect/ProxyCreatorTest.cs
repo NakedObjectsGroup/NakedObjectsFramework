@@ -8,8 +8,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Practices.Unity;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -96,8 +94,8 @@ namespace NakedObjects.Reflect.Test {
             CleanupNakedObjectsFramework(this);
         }
 
-        protected override IServicesInstaller MenuServices {
-            get { return new ServicesInstaller(new SimpleRepository<HasProperty>()); }
+        protected override object[] MenuServices {
+            get { return new[] {new SimpleRepository<HasProperty>()}; }
         }
 
         [Test]

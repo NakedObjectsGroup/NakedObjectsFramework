@@ -146,11 +146,6 @@
       <Project>{bf6d9655-b873-4980-ace7-a122ea45f045}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Bootstrap\NakedObjects.Bootstrap.csproj">
-      <Name>NakedObjects.Bootstrap</Name>
-      <Project>{027c99e2-2ad7-4700-a871-de543c9d83c8}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj">
       <Name>NakedObjects.Core</Name>
       <Project>{3f1e438c-020c-4751-a65a-63c2990d8278}</Project>

@@ -9,10 +9,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Principal;
 using Common.Logging;
 using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -20,19 +20,19 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Boot;
 using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Container;
-using NakedObjects.Core.Context;
-using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core.Fixture;
 using NakedObjects.Core.spec;
+using NakedObjects.Core.Util;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Managers;
 using NakedObjects.Meta;
 using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Reflect;
 using NakedObjects.Service;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
@@ -100,35 +100,109 @@ namespace NakedObjects.Xat {
             get { return nakedObjectsFramework; }
         }
 
-        protected virtual IFixturesInstaller Fixtures {
-            get { return new FixturesInstaller(new object[] {}); }
+        protected virtual object[] Fixtures {
+            get { return new object[] {}; }
         }
 
-        protected virtual IServicesInstaller MenuServices {
-            get { return new ServicesInstaller(new object[] {}); }
+        protected virtual object[] MenuServices {
+            get { return new object[] {}; }
         }
 
-        protected virtual IServicesInstaller ContributedActions {
-            get { return new ServicesInstaller(new object[] {}); }
+        protected virtual object[] ContributedActions {
+            get { return new object[] {}; }
         }
 
-        protected virtual IServicesInstaller SystemServices {
-            get { return new ServicesInstaller(new object[] {}); }
-        }
-
-        protected virtual IObjectPersistorInstaller Persistor {
-            get { return null; }
+        protected virtual object[] SystemServices {
+            get { return new object[] {}; }
         }
 
         protected void StartTest() {
             nakedObjectsFramework = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
         }
 
+        private void InstallFixtures(ITransactionManager transactionManager, IContainerInjector injector, object[] newFixtures) {
+            foreach (object fixture in newFixtures) {
+                InstallFixture(transactionManager, injector, fixture);
+            }
+        }
+        private static void SetValue(PropertyInfo property, object injectee, object value) {
+            if (property != null) {
+                try {
+                    property.SetValue(injectee, value, null);
+                }
+                catch (TargetInvocationException e) {
+                    InvokeUtils.InvocationException("Exception executing " + property, e);
+                }
+            }
+            else {
+            }
+        }
+
+        private FixtureServices fixtureServices;
+
+       
+
+        protected  void PreInstallFixtures(ITransactionManager transactionManager) {
+            fixtureServices = new FixtureServices();
+        }
+
+
+        private static MethodInfo GetInstallMethod(object fixture) {
+            return fixture.GetType().GetMethod("Install", new Type[0]) ??
+                   fixture.GetType().GetMethod("install", new Type[0]);
+        }
+
+        protected object[] GetFixtures(object fixture) {
+            MethodInfo getFixturesMethod = fixture.GetType().GetMethod("GetFixtures", new Type[] { });
+            return getFixturesMethod == null ? new object[] { } : (object[])getFixturesMethod.Invoke(fixture, new object[] { });
+        }
+
+        protected  void InstallFixture(object fixture) {
+            PropertyInfo property = fixture.GetType().GetProperty("Service");
+            SetValue(property, fixture, fixtureServices);
+
+            MethodInfo installMethod = GetInstallMethod(fixture);
+            Log.Debug("Invoking install method");
+            try {
+                installMethod.Invoke(fixture, new object[0]);
+            }
+            catch (TargetInvocationException e) {
+                InvokeUtils.InvocationException("Exception executing " + installMethod, e);
+            }
+        }
+
+        private void InstallFixture(ITransactionManager transactionManager, IContainerInjector injector, object fixture) {
+            injector.InitDomainObject(fixture);
+
+            // first, install any child fixtures (if this is a composite.
+            object[] childFixtures = GetFixtures(fixture);
+            InstallFixtures(transactionManager, injector, childFixtures);
+
+            // now, install the fixture itself
+            try {
+                Log.Info("installing fixture: " + fixture);
+                transactionManager.StartTransaction();
+                InstallFixture(fixture);
+                transactionManager.EndTransaction();
+                Log.Info("fixture installed");
+            }
+            catch (Exception e) {
+                Log.Error("installing fixture " + fixture.GetType().FullName + " failed (" + e.Message + "); aborting fixture ", e);
+                try {
+                    transactionManager.AbortTransaction();
+                }
+                catch (Exception e2) {
+                    Log.Error("failure during abort", e2);
+                }
+                throw;
+            }
+        }
+
         protected void RunFixtures() {
             if (nakedObjectsFramework == null) {
                 nakedObjectsFramework = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
             }
-            Fixtures.InstallFixtures(nakedObjectsFramework.TransactionManager, nakedObjectsFramework.Injector);
+            InstallFixtures(NakedObjectsFramework.TransactionManager, NakedObjectsFramework.Injector, Fixtures);
         }
 
         protected ITestService GetTestService(Type type) {
@@ -246,9 +320,9 @@ namespace NakedObjects.Xat {
 
             // TODO still done for backward compatibility - 
             var reflectorConfig = new ReflectorConfiguration(new Type[] { },
-                MenuServices.GetServices().Select(s => s.GetType()).ToArray(),
-                ContributedActions.GetServices().Select(s => s.GetType()).ToArray(),
-                SystemServices.GetServices().Select(s => s.GetType()).ToArray());
+                MenuServices.Select(s => s.GetType()).ToArray(),
+                ContributedActions.Select(s => s.GetType()).ToArray(),
+                SystemServices.Select(s => s.GetType()).ToArray());
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
 

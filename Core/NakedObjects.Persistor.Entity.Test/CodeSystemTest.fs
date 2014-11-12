@@ -8,7 +8,6 @@ module NakedObjects.CodeSystemTest
 
 open NUnit.Framework
 open NakedObjects.Core.NakedObjectsSystem
-open NakedObjects.Boot
 open TestCodeOnly
 open NakedObjects.Services
 open System
@@ -58,7 +57,7 @@ type CodeSystemTests() =
     
     override x.MenuServices = 
         let service = new SimpleRepository<Person>()
-        box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller : IServicesInstaller
+        [| (box service) |]
     
     member x.GetPersonDomainObject() = 
         let pp = x.NakedObjectsFramework.Persistor.Instances<Person>()

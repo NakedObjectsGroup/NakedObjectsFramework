@@ -42,14 +42,14 @@ namespace NakedObjects.Meta.Audit {
             get { return underlyingFacet.OnType; }
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager) {
+        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
             auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session, lifecycleManager, manager);
-            return underlyingFacet.Invoke(nakedObject, parameters, lifecycleManager, manager, session, transactionManager, nakedObjectManager);
+            return underlyingFacet.Invoke(nakedObject, parameters, lifecycleManager, manager, session, nakedObjectManager);
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager) {
+        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
             auditManager.Invoke(nakedObject, parameters, IsQueryOnly, identifier, session, lifecycleManager, manager);
-            return underlyingFacet.Invoke(nakedObject, parameters, resultPage, lifecycleManager, manager, session, transactionManager, nakedObjectManager);
+            return underlyingFacet.Invoke(nakedObject, parameters, resultPage, lifecycleManager, manager, session, nakedObjectManager);
         }
     }
 }

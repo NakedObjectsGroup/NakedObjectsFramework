@@ -8,7 +8,6 @@ module NakedObjects.DomainSystemTest
 
 open NUnit.Framework
 open NakedObjects.Core.NakedObjectsSystem
-open NakedObjects.Boot
 open AdventureWorksModel
 open NakedObjects.Services
 open System
@@ -49,7 +48,7 @@ type DomainSystemTests() =
     
     override x.MenuServices = 
         let service = new SimpleRepository<ScrapReason>()
-        box (new ServicesInstaller([| (box service) |])) :?> IServicesInstaller
+        ([| (box service) |])
     
     member x.GetScrapReasonDomainObject() = 
         let srs = x.NakedObjectsFramework.Persistor.Instances<ScrapReason>()

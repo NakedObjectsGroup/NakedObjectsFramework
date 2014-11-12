@@ -59,7 +59,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override INakedObject Invoke(INakedObject inObject, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager) {
+        public override INakedObject Invoke(INakedObject inObject, INakedObject[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
             if (parameters.Length != paramCount) {
                 Log.Error(actionMethod + " requires " + paramCount + " parameters, not " + parameters.Length);
             }
@@ -71,8 +71,8 @@ namespace NakedObjects.Meta.Facet {
             return adaptedResult;
         }
 
-        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, ITransactionManager transactionManager, INakedObjectManager nakedObjectManager) {
-            return Invoke(nakedObject, parameters, lifecycleManager, manager, session, transactionManager, nakedObjectManager);
+        public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
+            return Invoke(nakedObject, parameters, lifecycleManager, manager, session, nakedObjectManager);
         }
 
         public override bool IsQueryOnly {
