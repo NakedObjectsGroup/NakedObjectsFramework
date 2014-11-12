@@ -8,14 +8,14 @@
 using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Capabilities;
+using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class DefaultedFacetUsingDefaultsProvider<T> : FacetAbstract, IDefaultedFacet {
-        private readonly IDefaultsProvider<T> defaultsProvider;
+        private readonly IValueSemanticsProvider<T> defaultsProvider;
 
-        public DefaultedFacetUsingDefaultsProvider(IDefaultsProvider<T> parser, ISpecification holder)
+        public DefaultedFacetUsingDefaultsProvider(IValueSemanticsProvider<T> parser, ISpecification holder)
             : base(typeof (IDefaultedFacet), holder) {
             defaultsProvider = parser;
         }

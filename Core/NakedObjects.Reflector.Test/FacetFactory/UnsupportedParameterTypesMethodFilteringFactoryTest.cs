@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -26,7 +27,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             base.SetUp();
             var classStrategy = new DefaultClassStrategy();
             var cache = new ImmutableInMemorySpecCache();
-            var metamodel = new Meta.Metamodel(classStrategy, cache);
+            var metamodel = new Metamodel(classStrategy, cache);
             var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
             var servicesConfig = new ServicesConfiguration();
 

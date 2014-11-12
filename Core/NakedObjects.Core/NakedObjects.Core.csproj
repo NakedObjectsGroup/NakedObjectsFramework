@@ -161,7 +161,6 @@
     <Compile Include="Container\Methods.cs" />
     <Compile Include="Container\PersistFailedException.cs" />
     <Compile Include="context\SimpleMessageBroker.cs" />
-    <Compile Include="context\SimpleUpdateNotifier.cs" />
     <Compile Include="Fixture\FixtureBuilder.cs" />
     <Compile Include="Fixture\FixtureServices.cs" />
     <Compile Include="Managers\LifeCycleManager.cs" />

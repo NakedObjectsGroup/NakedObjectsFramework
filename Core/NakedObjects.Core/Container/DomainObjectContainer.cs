@@ -43,7 +43,6 @@ namespace NakedObjects.Core.Container {
             if (!IsPersistent(persistentObject)) {
                 throw new DisposeFailedException(string.Format(Resources.NakedObjects.NotPersistentMessage, adapter));
             }
-            framework.UpdateNotifier.AddDisposedObject(adapter);
             framework.Persistor.DestroyObject(adapter);
         }
 

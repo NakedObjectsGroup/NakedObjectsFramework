@@ -205,14 +205,10 @@ type EntityTestSuite() =
     [<Test>]
     member x.GetInstanceHasVersion() = x.Tests.GetInstanceHasVersion()
     
-    [<Test>]
-    member x.ChangeScalarOnPersistentNotifiesUi() = x.Tests.ChangeScalarOnPersistentNotifiesUi()
     
     [<Test>]
     member x.ChangeScalarOnPersistentCallsUpdatingUpdated() = x.Tests.ChangeScalarOnPersistentCallsUpdatingUpdated()
     
-    [<Test>]
-    member x.ChangeReferenceOnPersistentNotifiesUi() = x.Tests.ChangeReferenceOnPersistentNotifiesUi()
     
     [<Test>]
     member x.ChangeReferenceOnPersistentCallsUpdatingUpdated() = x.Tests.ChangeReferenceOnPersistentCallsUpdatingUpdated()
@@ -277,17 +273,14 @@ type EntityTestSuite() =
     [<Test>]
     member x.AddToCollectionOnPersistentCallsUpdatingUpdated() = x.Tests.AddToCollectionOnPersistentCallsUpdatingUpdated()
     
-    [<Test>]
-    member x.AddToCollectionOnPersistentNotifiesUi() = x.Tests.AddToCollectionOnPersistentNotifiesUi()
-    
+
     [<Test>]
     member x.RemoveFromCollectionOnPersistent() = x.Tests.RemoveFromCollectionOnPersistent()
     
     [<Test>]
     member x.RemoveFromCollectionOnPersistentCallsUpdatingUpdated() = x.Tests.RemoveFromCollectionOnPersistentCallsUpdatingUpdated()
     
-    [<Test>]
-    member x.RemoveFromCollectionOnPersistentNotifiesUi() = x.Tests.RemoveFromCollectionOnPersistentNotifiesUi()
+  
     
     [<Test>]
     member x.ClearCollectionOnPersistent() = x.Tests.ClearCollectionOnPersistent()
@@ -295,8 +288,6 @@ type EntityTestSuite() =
     [<Test>]
     member x.ClearCollectionOnPersistentCallsUpdatingUpdated() = x.Tests.ClearCollectionOnPersistentCallsUpdatingUpdated()
     
-    [<Test>]
-    member x.ClearFromCollectionOnPersistentNotifiesUi() = x.Tests.ClearCollectionOnPersistentNotifiesUi()
     
     [<Test>]
     member x.NewObjectHasContainerInjected() = x.Tests.NewObjectHasContainerInjected()
@@ -409,8 +400,7 @@ type EntityTestSuite() =
     [<Test>]
     member x.ChangeScalarOnInlineObjectCallsUpdatingUpdated() = x.Tests.ChangeScalarOnInlineObjectCallsUpdatingUpdated()
     
-    [<Test>]
-    member x.UpdateInlineObjectUpdatesUi() = x.Tests.UpdateInlineObjectUpdatesUi()
+  
     
     [<Test>]
     member x.RefreshResetsObject() = x.Tests.RefreshResetsObject()

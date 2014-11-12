@@ -280,9 +280,6 @@ namespace NakedObjects.Xat {
 
             container.RegisterType<ISession>(new PerResolveLifetimeManager(), new InjectionFactory(c => TestSession));
 
-            container.RegisterType<IUpdateNotifier, SimpleUpdateNotifier>(new PerResolveLifetimeManager());
-            container.RegisterType<IMessageBroker, SimpleMessageBroker>(new PerResolveLifetimeManager());
-
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>();
         }
 

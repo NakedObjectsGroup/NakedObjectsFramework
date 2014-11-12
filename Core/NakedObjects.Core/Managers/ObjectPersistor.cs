@@ -30,7 +30,6 @@ namespace NakedObjects.Managers {
         private readonly IObjectStore objectStore;
         private readonly ISession session;
         private readonly ITransactionManager transactionManager;
-        private readonly IUpdateNotifier updateNotifier;
 
         static ObjectPersistor() {
             Log = LogManager.GetLogger(typeof (ObjectPersistor));
@@ -39,13 +38,11 @@ namespace NakedObjects.Managers {
         public ObjectPersistor(IObjectStore objectStore,
                                ITransactionManager transactionManager,
                                ISession session,
-                               INakedObjectManager manager,
-                               IUpdateNotifier updateNotifier) {
+                               INakedObjectManager manager) {
             this.objectStore = objectStore;
             this.transactionManager = transactionManager;
             this.session = session;
             this.manager = manager;
-            this.updateNotifier = updateNotifier;
         }
 
         #region IObjectPersistor Members
@@ -162,7 +159,6 @@ namespace NakedObjects.Managers {
                 if (nakedObject.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                     nakedObject.Updating(session);
                     nakedObject.Updated(session, lifecycleManager, metamodel);
-                    updateNotifier.AddChangedObject(nakedObject);
                 }
                 else {
                     IObjectSpec spec = nakedObject.Spec;
@@ -173,13 +169,11 @@ namespace NakedObjects.Managers {
                     ISaveObjectCommand saveObjectCommand = objectStore.CreateSaveObjectCommand(nakedObject, session);
                     transactionManager.AddCommand(saveObjectCommand);
                     nakedObject.Updated(session, lifecycleManager, metamodel);
-                    updateNotifier.AddChangedObject(nakedObject);
                 }
             }
 
             if (nakedObject.ResolveState.RespondToChangesInPersistentObjects() ||
                 nakedObject.ResolveState.IsTransient()) {
-                updateNotifier.AddChangedObject(nakedObject);
             }
         }
 

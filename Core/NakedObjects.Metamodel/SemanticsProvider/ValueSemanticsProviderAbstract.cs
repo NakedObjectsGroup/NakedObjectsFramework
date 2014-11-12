@@ -9,12 +9,11 @@ using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Capabilities;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]
-    public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T>, IEncoderDecoder<T>, IParser<T>, IDefaultsProvider<T> {
+    public abstract class ValueSemanticsProviderAbstract<T> : FacetAbstract, IValueSemanticsProvider<T> {
         private readonly Type adaptedType;
         private readonly T defaultValue;
 
@@ -27,13 +26,13 @@ namespace NakedObjects.Meta.SemanticsProvider {
         ///     Lazily looked up per <see cref="SpecImmutable" />
         /// </summary>
         protected ValueSemanticsProviderAbstract(Type adapterFacetType,
-                                                 ISpecification holder,
-                                                 Type adaptedType,
-                                                 int typicalLength,
-                                                 bool immutable,
-                                                 bool equalByContent,
-                                                 T defaultValue,
-                                                 IObjectSpecImmutable specImmutable)
+            ISpecification holder,
+            Type adaptedType,
+            int typicalLength,
+            bool immutable,
+            bool equalByContent,
+            T defaultValue,
+            IObjectSpecImmutable specImmutable)
             : base(adapterFacetType, holder) {
             this.adaptedType = adaptedType;
             this.typicalLength = typicalLength;
@@ -57,15 +56,24 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return false; }
         }
 
-        #region IDefaultsProvider<T> Members
 
         public T DefaultValue {
             get { return defaultValue; }
         }
 
-        #endregion
+        public int TypicalLength {
+            get { return typicalLength; }
+        }
 
-        #region IEncoderDecoder<T> Members
+
+        public bool IsEqualByContent {
+            get { return equalByContent; }
+        }
+
+        public bool IsImmutable {
+            get { return immutable; }
+        }
+
 
         public string ToEncodedString(T obj) {
             return DoEncode(obj);
@@ -75,9 +83,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return DoRestore(data);
         }
 
-        #endregion
-
-        #region IParser<T> Members
 
         public virtual object ParseTextEntry(string entry) {
             if (entry == null) {
@@ -109,44 +114,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return TitleStringWithMask(mask, obj);
         }
 
-        public int TypicalLength {
-            get { return typicalLength; }
-        }
-
-        #endregion
-
-        #region IValueSemanticsProvider<T> Members
-
-        public IEncoderDecoder<T> EncoderDecoder {
-            get { return this; }
-        }
-
-        public virtual IParser<T> Parser {
-            get { return this; }
-        }
-
-        public IDefaultsProvider<T> DefaultsProvider {
-            get { return this; }
-        }
-
-        public virtual IFromStream FromStream {
-            get { return null; }
-        }
-
-        public bool IsEqualByContent {
-            get { return equalByContent; }
-        }
-
-        public bool IsImmutable {
-            get { return immutable; }
-        }
-
-        #endregion
-
         public Type GetAdaptedClass() {
             return adaptedType;
         }
-
 
         protected abstract T DoParse(string entry);
 

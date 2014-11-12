@@ -8,14 +8,14 @@
 using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Capabilities;
+using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class TypicalLengthFacetUsingParser<T> : FacetAbstract, ITypicalLengthFacet {
-        private readonly IParser<T> parser;
+        private readonly IValueSemanticsProvider<T> parser;
 
-        public TypicalLengthFacetUsingParser(IParser<T> parser, ISpecification holder)
+        public TypicalLengthFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
             : base(typeof (ITypicalLengthFacet), holder) {
             this.parser = parser;
         }

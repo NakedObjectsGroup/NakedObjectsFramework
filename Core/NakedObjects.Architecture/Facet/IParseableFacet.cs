@@ -7,7 +7,6 @@
 
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Capabilities;
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>

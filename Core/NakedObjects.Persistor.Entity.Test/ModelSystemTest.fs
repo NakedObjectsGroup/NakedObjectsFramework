@@ -217,17 +217,7 @@ type ModelSystemTests() =
         Assert.AreEqual(1, findValue "Persisting", "persisting")
         Assert.AreEqual(1, findValue "Persisted", "persisted")
     
-    [<Test>]
-    member x.UpdateComplexTypeUpdatesUI() = 
-        x.NakedObjectsFramework.TransactionManager.StartTransaction()
-        let p = x.GetPersonDomainObject()
-        let co = p.ComplexProperty
-        co.Firstname <- uniqueName()
-        x.NakedObjectsFramework.UpdateNotifier.EnsureEmpty()
-        x.NakedObjectsFramework.TransactionManager.EndTransaction()
-        let updates = CollectionUtils.ToEnumerable<INakedObject>(x.NakedObjectsFramework.UpdateNotifier.AllChangedObjects())
-        Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box co), "complex object")
-    
+   
     [<Test>]
     member x.ComplexTypeObjectCallsLoadingLoaded() = 
         x.NakedObjectsFramework.TransactionManager.StartTransaction()
@@ -302,10 +292,7 @@ type ModelSystemTests() =
         let noP = SystemTestCode.CreateAndSetup<Person> setter ctx
         save noP ctx
         let p = noP.Object :?> Person
-        ctx.UpdateNotifier.EnsureEmpty()
         ctx.TransactionManager.StartTransaction()
         p.Food.Add(fruit)
         ctx.TransactionManager.EndTransaction()
-        let updates = CollectionUtils.ToEnumerable<INakedObject>(ctx.UpdateNotifier.AllChangedObjects())
-        Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box p), "Person")
 

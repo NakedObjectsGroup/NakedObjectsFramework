@@ -24,15 +24,15 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         protected IReflector Reflector = new Mock<IReflector>().Object;
         private EncodeableFacetUsingEncoderDecoder<T> encodeableFacet;
         private ParseableFacetUsingParser<T> parseableFacet;
-        private ValueSemanticsProviderAbstract<T> value;
+        private IValueSemanticsProvider<T> value;
 
-        protected void SetValue(ValueSemanticsProviderAbstract<T> newValue) {
+        protected void SetValue(IValueSemanticsProvider<T> newValue) {
             value = newValue;
             encodeableFacet = new EncodeableFacetUsingEncoderDecoder<T>(newValue, null);
             parseableFacet = new ParseableFacetUsingParser<T>(newValue, null);
         }
 
-        protected ValueSemanticsProviderAbstract<T> GetValue() {
+        protected IValueSemanticsProvider<T> GetValue() {
             return value;
         }
 

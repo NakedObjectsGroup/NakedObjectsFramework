@@ -10,15 +10,15 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
+using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class EncodeableFacetUsingEncoderDecoder<T> : FacetAbstract, IEncodeableFacet {
-        private readonly IEncoderDecoder<T> encoderDecoder;
+        private readonly IValueSemanticsProvider<T> encoderDecoder;
 
-        public EncodeableFacetUsingEncoderDecoder(IEncoderDecoder<T> encoderDecoder, ISpecification holder)
+        public EncodeableFacetUsingEncoderDecoder(IValueSemanticsProvider<T> encoderDecoder, ISpecification holder)
             : base(typeof (IEncodeableFacet), holder) {
             this.encoderDecoder = encoderDecoder;
         }

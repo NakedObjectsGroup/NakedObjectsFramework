@@ -5,22 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections.Generic;
-using NakedObjects.Architecture.Adapter;
+using System;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Component {
-    public interface IUpdateNotifier {
-        void AddChangedObject(INakedObject nakedObject);
-
-        void AddDisposedObject(INakedObject nakedObject);
-
-        IEnumerator<INakedObject> AllChangedObjects();
-
-        IEnumerator<INakedObject> AllDisposedObjects();
-
-        void EnsureEmpty();
+    public interface IFacetDecorator {
+        Type[] ForFacetTypes { get; }
+        IFacet Decorate(IFacet facet, ISpecification holder);
     }
-
 
     // Copyright (c) Naked Objects Group Ltd.
 }

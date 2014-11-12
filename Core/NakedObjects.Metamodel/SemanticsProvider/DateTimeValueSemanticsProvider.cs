@@ -12,7 +12,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Capabilities;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]

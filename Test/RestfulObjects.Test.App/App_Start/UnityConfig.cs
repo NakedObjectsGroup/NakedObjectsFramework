@@ -143,7 +143,6 @@ namespace RestfulObjects.Test.App
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerResolveLifetimeManager());
             container.RegisterType<IMetamodelManager, MetamodelManager>(new PerResolveLifetimeManager());
             container.RegisterType<ISession, WindowsSession>(new PerResolveLifetimeManager());
-            container.RegisterType<IUpdateNotifier, SimpleUpdateNotifier>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, SimpleMessageBroker>(new PerResolveLifetimeManager());
 
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerResolveLifetimeManager());

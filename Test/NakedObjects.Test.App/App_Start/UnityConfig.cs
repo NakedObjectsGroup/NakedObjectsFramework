@@ -153,7 +153,6 @@ namespace NakedObjects.Mvc.App.App_Start
             //Temporary scaffolding
             container.RegisterType<NakedObjectFactory, NakedObjectFactory>(new PerRequestLifetimeManager());
             container.RegisterType<SpecFactory, SpecFactory>(new PerRequestLifetimeManager());
-            container.RegisterType<IUpdateNotifier, SimpleUpdateNotifier>(new PerRequestLifetimeManager());
 
             //Externals
             container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));

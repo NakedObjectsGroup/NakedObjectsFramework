@@ -11,7 +11,6 @@ using Common.Logging;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Capabilities;
 using NakedObjects.Value;
 
 namespace NakedObjects.Meta.SemanticsProvider {
@@ -36,10 +35,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         public static Type AdaptedType {
             get { return typeof (Image); }
-        }
-
-        public override IFromStream FromStream {
-            get { return this; }
         }
 
         #region IFromStream Members

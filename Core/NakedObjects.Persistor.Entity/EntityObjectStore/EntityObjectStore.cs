@@ -55,7 +55,6 @@ namespace NakedObjects.EntityObjectStore {
 
         private IDictionary<EntityContextConfiguration, LocalContext> contexts = new Dictionary<EntityContextConfiguration, LocalContext>();
         private IContainerInjector injector;
-        private IUpdateNotifier updateNotifier;
         private readonly INakedObjectManager manager;
 
         #region Delegates
@@ -80,10 +79,9 @@ namespace NakedObjects.EntityObjectStore {
             IsInitializedCheck = () => true;
         }
 
-        internal EntityObjectStore(IMetamodelManager metamodel, ISession session, IUpdateNotifier updateNotifier, IContainerInjector injector, INakedObjectManager nakedObjectManager) {
+        internal EntityObjectStore(IMetamodelManager metamodel, ISession session,  IContainerInjector injector, INakedObjectManager nakedObjectManager) {
             this.metamodel = metamodel;
             this.session = session;
-            this.updateNotifier = updateNotifier;
             this.injector = injector;
             this.manager = nakedObjectManager;
 
@@ -96,12 +94,11 @@ namespace NakedObjects.EntityObjectStore {
             handleLoaded = HandleLoadedDefault;
             savingChangesHandlerDelegate = SavingChangesHandler;
             loadSpecification = metamodel.GetSpecification;
-            notifyUi = updateNotifier.AddChangedObject;
         }
 
 
-        public EntityObjectStore(ISession session, IUpdateNotifier updateNotifier, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodelManager metamodel, IContainerInjector injector, INakedObjectManager nakedObjectManager)
-            : this(metamodel, session, updateNotifier, injector, nakedObjectManager) {
+        public EntityObjectStore(ISession session, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodelManager metamodel, IContainerInjector injector, INakedObjectManager nakedObjectManager)
+            : this(metamodel, session, injector, nakedObjectManager) {
             this.oidGenerator = oidGenerator;
             contexts = config.ContextConfiguration.ToDictionary<EntityContextConfiguration, EntityContextConfiguration, LocalContext>(c => c, c => null);
         

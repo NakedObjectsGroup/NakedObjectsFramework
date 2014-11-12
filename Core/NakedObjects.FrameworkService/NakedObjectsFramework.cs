@@ -21,11 +21,9 @@ namespace NakedObjects.Service {
         private readonly IObjectPersistor persistor;
         private readonly IReflector reflector;
         private readonly ISession session;
-        private readonly IUpdateNotifier updateNotifier;
         private readonly ITransactionManager transactionManager;
 
         public NakedObjectsFramework(IMessageBroker messageBroker,
-                                     IUpdateNotifier updateNotifier,
                                      ISession session,
                                      ILifecycleManager lifecycleManager,
                                      IServicesManager services,
@@ -39,7 +37,6 @@ namespace NakedObjects.Service {
                                      SpecFactory memberFactory, 
                                      ITransactionManager transactionManager) {
             this.messageBroker = messageBroker;
-            this.updateNotifier = updateNotifier;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
             this.services = services;
@@ -67,10 +64,6 @@ namespace NakedObjects.Service {
 
         public IMessageBroker MessageBroker {
             get { return messageBroker; }
-        }
-
-        public IUpdateNotifier UpdateNotifier {
-            get { return updateNotifier; }
         }
 
         public ISession Session {

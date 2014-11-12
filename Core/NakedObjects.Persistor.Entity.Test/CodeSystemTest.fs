@@ -227,17 +227,7 @@ type CodeSystemTests() =
         Assert.AreEqual(1, findValue "Updating", "updating")
         Assert.AreEqual(1, findValue "Updated", "updated")
     
-    [<Test>]
-    member x.UpdateScalarOnPersistentObjectNotifiesUI() = 
-        x.NakedObjectsFramework.UpdateNotifier.EnsureEmpty()
-        let p1 = x.GetPersonDomainObject()
-        
-        let changeName() = 
-            let newName = uniqueName()
-            p1.Name <- newName
-        makeAndSaveChanges changeName x.NakedObjectsFramework
-        let updates = CollectionUtils.ToEnumerable<INakedObject>(x.NakedObjectsFramework.UpdateNotifier.AllChangedObjects())
-        Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box p1))
+  
     
     [<Test>]
     member x.UpdateReferenceOnPersistentObject() = 
@@ -254,22 +244,7 @@ type CodeSystemTests() =
         let p2 = x.GetPersonDomainObject()
         Assert.AreEqual(p1.Favourite, p2.Favourite)
     
-    [<Test>]
-    member x.UpdateReferenceOnPersistentObjectNotifiesUI() = 
-        x.NakedObjectsFramework.UpdateNotifier.EnsureEmpty()
-        let p1 = x.GetPersonDomainObject()
-        let pp = x.NakedObjectsFramework.Persistor.Instances<Product>()
-        
-        let pr = 
-            pp
-            |> Seq.toList
-            |> Seq.filter (fun i -> p1.Favourite <> i)
-            |> Seq.head
-        
-        let changeFav() = p1.Favourite <- pr
-        makeAndSaveChanges changeFav x.NakedObjectsFramework
-        let updates = CollectionUtils.ToEnumerable<INakedObject>(x.NakedObjectsFramework.UpdateNotifier.AllChangedObjects())
-        Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box p1))
+ 
     
     [<Test>]
     member x.UpdateReferenceOnPersistentObjectCallsUpdatingUpdated() = 

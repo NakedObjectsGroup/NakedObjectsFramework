@@ -16,8 +16,6 @@ namespace NakedObjects {
     public interface INakedObjectsFramework {
         IMessageBroker MessageBroker { get; }
 
-        IUpdateNotifier UpdateNotifier { get; }
-
         ISession Session { get; }
 
         ILifecycleManager LifecycleManager { get; }

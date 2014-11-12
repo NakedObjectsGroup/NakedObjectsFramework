@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Principal;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Audit;

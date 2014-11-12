@@ -50,10 +50,6 @@ namespace NakedObjects.Persistor.TestSuite {
             get { return framework.Metamodel; }
         }
 
-        private IUpdateNotifier Notifier {
-            get { return framework.UpdateNotifier; }
-        }
-
         private INakedObject AdapterFor(object domainObject) {
             return framework.Manager.CreateAdapter(domainObject, null, null);
         }
@@ -75,7 +71,6 @@ namespace NakedObjects.Persistor.TestSuite {
             TransactionManager.StartTransaction();
             person.Name = Guid.NewGuid().ToString();
             TransactionManager.EndTransaction();
-            Notifier.AllChangedObjects();
             person.ResetEvents();
             TransactionManager.StartTransaction();
             person.Name = originalName;
@@ -89,7 +84,6 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private Person ChangeReferenceOnPerson(int id) {
             Person person = GetPerson(id);
-            Notifier.AllChangedObjects();
             person.ResetEvents();
             TransactionManager.StartTransaction();
             person.FavouriteProduct = GetProduct(3);
@@ -99,7 +93,6 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private Person AddToCollectionOnPersonOne(Person personToAdd) {
             Person person = GetPerson(1);
-            Notifier.AllChangedObjects();
             person.ResetEvents();
             TransactionManager.StartTransaction();
             person.AddToRelatives(personToAdd);
@@ -109,7 +102,6 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private Person RemoveFromCollectionOnPersonOne(Person personToRemove) {
             Person person = GetPerson(1);
-            Notifier.AllChangedObjects();
             person.ResetEvents();
             TransactionManager.StartTransaction();
             person.RemoveFromRelatives(personToRemove);
@@ -119,7 +111,6 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private Person ClearCollectionOnPerson(int id) {
             Person person = GetPerson(id);
-            Notifier.AllChangedObjects();
             person.ResetEvents();
             TransactionManager.StartTransaction();
             person.ClearRelatives();
@@ -210,7 +201,6 @@ namespace NakedObjects.Persistor.TestSuite {
             TransactionManager.StartTransaction();
             address.Line1 = Guid.NewGuid().ToString();
             TransactionManager.EndTransaction();
-            Notifier.AllChangedObjects();
             address.ResetEvents();
             TransactionManager.StartTransaction();
             address.Line1 = original1;
@@ -270,10 +260,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsNotNull(adapter.Version, "should have version");
         }
 
-        public void ChangeScalarOnPersistentNotifiesUi() {
-            Person person = ChangeScalarOnPerson(1);
-            Assert.Contains(person, Notifier.AllChangedObjects().ToEnumerable().Select(no => no.Object).ToList(), "no person in notifier");
-        }
+     
 
         public void ChangeScalarOnPersistentCallsUpdatingUpdated() {
             Person person = ChangeScalarOnPerson(1);
@@ -281,10 +268,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, person.GetEvents()["Updated"], "updated");
         }
 
-        public void ChangeReferenceOnPersistentNotifiesUi() {
-            Person person = ChangeReferenceOnPerson(6);
-            Assert.Contains(person, Notifier.AllChangedObjects().ToEnumerable().Select(no => no.Object).ToList(), "no person in notifier");
-        }
+     
 
         public void ChangeReferenceOnPersistentCallsUpdatingUpdated() {
             Person person = ChangeReferenceOnPerson(7);
@@ -300,11 +284,6 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(countbefore + 1, person1.Relatives.Count());
         }
 
-        public void AddToCollectionOnPersistentNotifiesUi() {
-            Person person5 = GetPerson(5);
-            Person person1 = AddToCollectionOnPersonOne(person5);
-            Assert.Contains(person1, Notifier.AllChangedObjects().ToEnumerable().Select(no => no.Object).ToList(), "no person in notifier");
-        }
 
         public void AddToCollectionOnPersistentCallsUpdatingUpdated() {
             Person person6 = GetPerson(6);
@@ -321,11 +300,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(countbefore - 1, person1.Relatives.Count());
         }
 
-        public void RemoveFromCollectionOnPersistentNotifiesUi() {
-            Person person7 = GetPerson(7);
-            Person person1 = RemoveFromCollectionOnPersonOne(person7);
-            Assert.Contains(person1, Notifier.AllChangedObjects().ToEnumerable().Select(no => no.Object).ToList(), "no person in notifier");
-        }
+    
 
         public void RemoveFromCollectionOnPersistentCallsUpdatingUpdated() {
             Person person8 = GetPerson(8);
@@ -339,10 +314,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(0, person.Relatives.Count);
         }
 
-        public void ClearCollectionOnPersistentNotifiesUi() {
-            Person person = ClearCollectionOnPerson(7);
-            Assert.Contains(person, Notifier.AllChangedObjects().ToEnumerable().Select(no => no.Object).ToList(), "no person in notifier");
-        }
+    
 
         public void ClearCollectionOnPersistentCallsUpdatingUpdated() {
             Person person = ClearCollectionOnPerson(8);
@@ -888,10 +860,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, address.GetEvents()["Updated"], "updated");
         }
 
-        public void UpdateInlineObjectUpdatesUi() {
-            Address address = ChangeScalarOnAddress();
-            Assert.Contains(address, Notifier.AllChangedObjects().ToEnumerable().Select(no => no.Object).ToList(), "no address in notifier");
-        }
+     
 
         public void RefreshResetsObject() {
             Person person1 = GetPerson(1);

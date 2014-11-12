@@ -10,15 +10,15 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
+using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
-        private readonly IParser<T> parser;
+        private readonly IValueSemanticsProvider<T> parser;
 
-        public ParseableFacetUsingParser(IParser<T> parser, ISpecification holder)
+        public ParseableFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
             : base(typeof (IParseableFacet), holder) {
             this.parser = parser;
         }

@@ -205,10 +205,5 @@ type DomainSystemTests() =
             newPc.ProductSubcategories.Add(psc)
             ctx.TransactionManager.EndTransaction()
             Assert.AreEqual(newPc, psc.ProductCategory)
-        x.NakedObjectsFramework.UpdateNotifier.EnsureEmpty()
         swapSubcatsForCollection origPc replPc
         swapSubcatsForCollection replPc origPc
-        let updates = Seq.toList (CollectionUtils.ToEnumerable<INakedObject>(x.NakedObjectsFramework.UpdateNotifier.AllChangedObjects()))
-        Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box origPc), "original PC")
-        Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box replPc), "repl PC")
-        Assert.IsTrue(updates |> Seq.exists (fun i -> i.Object = box psc), "PSC")

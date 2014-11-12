@@ -9,8 +9,8 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Capabilities;
 using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.SemanticsProvider;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
@@ -20,10 +20,6 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
 
         public static bool AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {
             FacetUtils.AddFacet(semanticsProvider as IFacet);
-
-            // we now figure add all the facets supported.  Note that we do not use FacetUtil.addFacet,
-            // because we need to add them explicitly to our delegate facetholder but have the
-            // facets themselves reference this value's holder.
 
 
             // value implies aggregated 
@@ -42,29 +38,18 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
             }
 
             if (semanticsProvider != null) {
-                // install the EncodeableFacet if we've been given an EncoderDecoder
-                IEncoderDecoder<T> encoderDecoder = semanticsProvider.EncoderDecoder;
-                if (encoderDecoder != null) {
-                    FacetUtils.AddFacet(new EncodeableFacetUsingEncoderDecoder<T>(encoderDecoder, holder));
-                }
+                FacetUtils.AddFacet(new EncodeableFacetUsingEncoderDecoder<T>(semanticsProvider, holder));
+                FacetUtils.AddFacet(new ParseableFacetUsingParser<T>(semanticsProvider, holder));
+                FacetUtils.AddFacet(new TitleFacetUsingParser<T>(semanticsProvider, holder));
+                FacetUtils.AddFacet(new TypicalLengthFacetUsingParser<T>(semanticsProvider, holder));
 
-                // install the ParseableFacet and other facets if we've been given a Parser
-                IParser<T> parser = semanticsProvider.Parser;
-                if (parser != null) {
-                    FacetUtils.AddFacet(new ParseableFacetUsingParser<T>(parser, holder));
-                    FacetUtils.AddFacet(new TitleFacetUsingParser<T>(parser, holder));
-                    FacetUtils.AddFacet(new TypicalLengthFacetUsingParser<T>(parser, holder));
-                }
-
-                IFromStream fromStream = semanticsProvider.FromStream;
+                var fromStream = semanticsProvider as IFromStream;
                 if (fromStream != null) {
                     FacetUtils.AddFacet(new FromStreamFacetUsingFromStream(fromStream, holder));
                 }
 
-                // install the DefaultedFacet if we've been given a DefaultsProvider
-                IDefaultsProvider<T> defaultsProvider = semanticsProvider.DefaultsProvider;
-                if (defaultsProvider != null && defaultsProvider.DefaultValue != null) {
-                    FacetUtils.AddFacet(new DefaultedFacetUsingDefaultsProvider<T>(defaultsProvider, holder));
+                if (semanticsProvider.DefaultValue != null) {
+                    FacetUtils.AddFacet(new DefaultedFacetUsingDefaultsProvider<T>(semanticsProvider, holder));
                 }
             }
 

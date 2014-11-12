@@ -11,14 +11,14 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Capabilities;
+using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class TitleFacetUsingParser<T> : FacetAbstract, ITitleFacet {
-        private readonly IParser<T> parser;
+        private readonly IValueSemanticsProvider<T> parser;
 
-        public TitleFacetUsingParser(IParser<T> parser, ISpecification holder)
+        public TitleFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
             : base(typeof (ITitleFacet), holder) {
             this.parser = parser;
         }

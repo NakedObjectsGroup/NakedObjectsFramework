@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Capabilities;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
@@ -41,10 +40,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         public static Type AdaptedType {
             get { return typeof (T[]); }
-        }
-
-        public override IFromStream FromStream {
-            get { return typeof (T) == typeof (byte) ? this : null; }
         }
 
         #region IArrayValueFacet<T> Members
