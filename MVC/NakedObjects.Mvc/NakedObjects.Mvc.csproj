@@ -205,7 +205,6 @@
     <Compile Include="Models\PropertyViewModel.cs" />
     <Compile Include="Models\FindViewModel.cs" />
     <Compile Include="Models\ObjectAndControlData.cs" />
-    <Compile Include="Mvc\MvcUserInterface.cs" />
     <Compile Include="Helpers\CommonHtmlHelper.cs" />
     <Compile Include="Helpers\ElementDescriptor.cs" />
     <Compile Include="Helpers\IdHelper.cs" />
