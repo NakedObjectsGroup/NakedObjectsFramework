@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
 using NakedObjects.Reflect.FacetFactory;
-using NakedObjects.Reflect.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {

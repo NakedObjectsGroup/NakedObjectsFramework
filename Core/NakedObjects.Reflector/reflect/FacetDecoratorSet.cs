@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
 
-namespace NakedObjects.Reflect.Spec {
+namespace NakedObjects.Reflect {
     public class FacetDecoratorSet : IFacetDecoratorSet {
         private readonly IDictionary<Type, IList<IFacetDecorator>> facetDecorators = new Dictionary<Type, IList<IFacetDecorator>>();
 

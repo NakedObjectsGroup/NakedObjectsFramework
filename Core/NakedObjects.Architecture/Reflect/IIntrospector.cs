@@ -18,6 +18,7 @@ namespace NakedObjects.Architecture.Reflect {
         ///     As per <see cref="MemberInfo.Name" />
         /// </summary>
         string ClassName { get; }
+
         string FullName { get; }
         string ShortName { get; }
         IList<IOrderableElement<IAssociationSpecImmutable>> Fields { get; }

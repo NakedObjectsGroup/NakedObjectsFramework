@@ -217,7 +217,7 @@
     <Compile Include="Reflect\ProxyCreator.cs" />
     <Compile Include="Reflect\SimpleOrderSet.cs" />
     <Compile Include="Reflect\DefaultClassStrategy.cs" />
-    <Compile Include="Spec\FacetDecoratorSet.cs" />
+    <Compile Include="Reflect\FacetDecoratorSet.cs" />
     <Compile Include="TypeFacetFactory\ArrayValueTypeFacetFactory.cs" />
     <Compile Include="TypeFacetFactory\BoolValueTypeFacetFactory.cs" />
     <Compile Include="TypeFacetFactory\ByteValueTypeFacetFactory.cs" />

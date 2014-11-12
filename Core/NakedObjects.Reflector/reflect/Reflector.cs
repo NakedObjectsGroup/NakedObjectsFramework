@@ -20,7 +20,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.SpecImmutable;
-using NakedObjects.Reflect.Spec;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect {
