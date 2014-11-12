@@ -29,7 +29,7 @@ namespace NakedObjects.Reflect {
 
         private readonly IClassStrategy classStrategy;
         private readonly IReflectorConfiguration config;
-        private readonly FacetDecoratorSet facetDecorator;
+        private readonly FacetDecoratorSet facetDecoratorSet;
         private readonly IFacetFactorySet facetFactorySet;
         private readonly IMainMenuDefinition menuDefinition;
         private readonly IMenuFactory menuFactory;
@@ -59,9 +59,12 @@ namespace NakedObjects.Reflect {
             this.servicesConfig = servicesConfig;
             this.menuDefinition = menuDefinition;
             this.menuFactory = menuFactory;
-            this.facetDecorator = new FacetDecoratorSet(facetDecorators);
+            facetDecoratorSet = new FacetDecoratorSet(facetDecorators);
             facetFactorySet.Init(this);
         }
+
+        // exposed for testing
+        public IFacetDecoratorSet FacetDecoratorSet { get { return facetDecoratorSet; } }
 
         #region IReflector Members
 
@@ -239,7 +242,7 @@ namespace NakedObjects.Reflect {
             // We need the specification available in cache even though not yet fully introspected 
             metamodel.Add(type, specification);
 
-            specification.Introspect(facetDecorator, new Introspector(this, metamodel));
+            specification.Introspect(facetDecoratorSet, new Introspector(this, metamodel));
 
             return specification;
         }

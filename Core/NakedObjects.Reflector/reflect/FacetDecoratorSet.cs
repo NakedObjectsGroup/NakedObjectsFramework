@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
@@ -22,6 +23,11 @@ namespace NakedObjects.Reflect {
             if (decorators != null) {
                 decorators.ForEach(Add);
             }
+        }
+
+        // for testing
+        public IImmutableDictionary<Type, IList<IFacetDecorator>> FacetDecorators {
+            get { return facetDecorators.ToImmutableDictionary(); }
         }
 
         #region IFacetDecoratorSet Members

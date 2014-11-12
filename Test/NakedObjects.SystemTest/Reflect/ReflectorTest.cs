@@ -9,16 +9,24 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Security.Principal;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Audit;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
+using NakedObjects.Meta.Audit;
+using NakedObjects.Meta.Authorization;
+using NakedObjects.Meta.I18N;
 
 namespace NakedObjects.Reflect.Test {
     [TestClass]
@@ -39,6 +47,7 @@ namespace NakedObjects.Reflect.Test {
             container.RegisterType<IMetamodel, Metamodel>();
             container.RegisterType<IMetamodelBuilder, Metamodel>();
             container.RegisterType<IServicesConfiguration, ServicesConfiguration>();
+            container.RegisterType<IFacetFactorySet, FacetFactorySet>();
         }
 
         [TestMethod]
@@ -51,6 +60,47 @@ namespace NakedObjects.Reflect.Test {
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
             Assert.IsFalse(reflector.AllObjectSpecImmutables.Any());
+        }
+
+        public class TestAuditor : IAuditor {
+            public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {}
+
+            public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {}
+
+            public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {}
+
+            public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {}
+        }
+
+        public class TestAuthorizer : IAuthorizer {
+            public bool IsUsable(ISession session, INakedObject target, IIdentifier member) {
+                return true;
+            }
+
+            public bool IsVisible(ISession session, INakedObject target, IIdentifier member) {
+                return true;
+            }
+        }
+
+        [TestMethod]
+        public void ReflectWithDecorators() {
+            IUnityContainer container = GetContainer();
+            var rc = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { });
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            container.RegisterInstance<IAuditConfiguration>(new AuditConfiguration {DefaultAuditor = typeof (TestAuditor), NamespaceAuditors = new Dictionary<string, Type>()});
+            container.RegisterInstance<IAuthorizationConfiguration>(new AuthorizationConfiguration { DefaultAuthorizer = typeof(TestAuthorizer), NamespaceAuthorizers = new Dictionary<string, Type>(), TypeAuthorizers = new Dictionary<Type, Type>()  });
+
+            container.RegisterType<IFacetDecorator, AuditManager>("AuditManager");
+            container.RegisterType<IFacetDecorator, AuthorizationManager>("AuthorizationManager");
+            container.RegisterType<IFacetDecorator, I18NManager>("I18NManager");
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+
+            var set = ((Reflector) reflector).FacetDecoratorSet;
+            Assert.AreEqual(7,  ((FacetDecoratorSet)set).FacetDecorators.Count);
         }
 
         private static Type[] AdventureWorksTypes() {

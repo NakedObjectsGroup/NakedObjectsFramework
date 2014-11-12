@@ -153,7 +153,6 @@
     <Compile Include="Adapter\SerialNumberVersion.cs" />
     <Compile Include="Adapter\StringDecoderHelper.cs" />
     <Compile Include="Adapter\StringEncoderHelper.cs" />
-    <Compile Include="Adapter\ValueSemanticsProviderImpl.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Configuration\ReflectorConfiguration.cs" />
     <Compile Include="Container\DisposeFailedException.cs" />
