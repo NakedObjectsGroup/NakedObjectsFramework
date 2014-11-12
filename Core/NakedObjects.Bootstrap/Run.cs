@@ -7,7 +7,6 @@ using System.IO;
 using Common.Logging;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Security;
-using NakedObjects.Reflect.I18n.Resourcebundle;
 
 namespace NakedObjects.Boot {
     public abstract class Run {
@@ -57,14 +56,14 @@ namespace NakedObjects.Boot {
             get { return null; }
         }
 
-        protected virtual ResourceBasedI18nDecoratorInstaller I18N {
-            get {
-                if (Localize) {
-                    return new ResourceBasedI18nDecoratorInstaller(ModelResourceFile);
-                }
-                return null;
-            }
-        }
+        //protected virtual ResourceBasedI18nDecoratorInstaller I18N {
+        //    get {
+        //        if (Localize) {
+        //            return new ResourceBasedI18nDecoratorInstaller(ModelResourceFile);
+        //        }
+        //        return null;
+        //    }
+        //}
 
         protected virtual string Culture {
             get { return null; }

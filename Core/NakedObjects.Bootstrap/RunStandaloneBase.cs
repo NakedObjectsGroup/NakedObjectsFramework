@@ -8,7 +8,6 @@ using System.Globalization;
 using System.Threading;
 using Common.Logging;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Reflect.I18n.Resourcebundle;
 
 namespace NakedObjects.Boot {
     public abstract class RunStandaloneBase : Run {
@@ -26,10 +25,10 @@ namespace NakedObjects.Boot {
             var enhancements = new List<IReflectorEnhancementInstaller>();
 
 
-            ResourceBasedI18nDecoratorInstaller i18n = I18N;
-            if (i18n != null) {
-                enhancements.Add(i18n);
-            }
+            //ResourceBasedI18nDecoratorInstaller i18n = I18N;
+            //if (i18n != null) {
+            //    enhancements.Add(i18n);
+            //}
 
             AddReflectorEnhancements(enhancements);
             foreach (IReflectorEnhancementInstaller enhancement in enhancements) {

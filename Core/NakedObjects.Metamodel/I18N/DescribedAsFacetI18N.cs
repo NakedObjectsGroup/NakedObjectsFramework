@@ -9,10 +9,10 @@ using System;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Reflect.I18n {
+namespace NakedObjects.Meta.I18N {
     [Serializable]
-    public class NamedFacetWrapI18n : NamedFacetAbstract {
-        public NamedFacetWrapI18n(string valueString, ISpecification holder)
+    public class DescribedAsFacetI18N : DescribedAsFacetAbstract {
+        public DescribedAsFacetI18N(string valueString, ISpecification holder)
             : base(valueString, holder) {}
     }
 

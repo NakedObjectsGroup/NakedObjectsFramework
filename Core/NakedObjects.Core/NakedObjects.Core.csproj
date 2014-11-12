@@ -165,10 +165,6 @@
     <Compile Include="context\SimpleUpdateNotifier.cs" />
     <Compile Include="Fixture\FixtureBuilder.cs" />
     <Compile Include="Fixture\FixtureServices.cs" />
-    <Compile Include="I18n\resourcebundle\GoogleTranslator.cs" />
-    <Compile Include="I18n\resourcebundle\ITranslator.cs" />
-    <Compile Include="I18n\resourcebundle\NonTranslator.cs" />
-    <Compile Include="I18n\resourcebundle\ResourceBasedI18nManager.cs" />
     <Compile Include="Managers\LifeCycleManager.cs" />
     <Compile Include="Managers\MetamodelManager.cs" />
     <Compile Include="Managers\NakedObjectFactory.cs" />
@@ -313,10 +309,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Component\" />
-    <Folder Include="object\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

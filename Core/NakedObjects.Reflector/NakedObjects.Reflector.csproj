@@ -205,9 +205,7 @@
     <Compile Include="FacetFactory\RemoveEventHandlerMethodsFacetFactory.cs" />
     <Compile Include="FacetFactory\RemoveInitMethodFacetFactory.cs" />
     <Compile Include="FacetFactory\RemoveSuperclassMethodsFacetFactory.cs" />
-    <Compile Include="I18n\I18nFacetDecorator.cs" />
     <Compile Include="Installer\IReflectionDecoratorInstaller.cs" />
-    <Compile Include="I18n\ResourceBasedI18nDecoratorInstaller.cs" />
     <Compile Include="Reflect\DeweyOrderSet.cs" />
     <Compile Include="Reflect\Introspector.cs" />
     <Compile Include="Reflect\IOrderSet.cs" />
