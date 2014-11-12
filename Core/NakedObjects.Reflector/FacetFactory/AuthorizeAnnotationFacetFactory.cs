@@ -6,10 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 using System.Reflection;
 using Common.Logging;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -31,7 +29,6 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             return false;
         }
-
 
         public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var classAttribute = method.DeclaringType.GetCustomAttributeByReflection<AuthorizeActionAttribute>();
@@ -60,12 +57,12 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             if (attribute != null) {
                 if (attribute.ViewRoles != null || attribute.ViewUsers != null) {
-                    var facet = new SecurityHideForSessionFacet(attribute.ViewRoles, attribute.ViewUsers, holder);
+                    var facet = new AuthorizationHideForSessionFacet(attribute.ViewRoles, attribute.ViewUsers, holder);
                     added = FacetUtils.AddFacet(facet);
                 }
 
                 if (attribute.EditRoles != null || attribute.EditUsers != null) {
-                    var facet = new SecurityDisableForSessionFacet(attribute.EditRoles, attribute.EditUsers, holder);
+                    var facet = new AuthorizationDisableForSessionFacet(attribute.EditRoles, attribute.EditUsers, holder);
                     added |= FacetUtils.AddFacet(facet);
                 }
             }
@@ -78,75 +75,14 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             if (attribute != null) {
                 if (attribute.Roles != null || attribute.Users != null) {
-                    IFacet facet = new SecurityHideForSessionFacet(attribute.Roles, attribute.Users, holder);
+                    IFacet facet = new AuthorizationHideForSessionFacet(attribute.Roles, attribute.Users, holder);
                     added = FacetUtils.AddFacet(facet);
-                    facet = new SecurityDisableForSessionFacet(attribute.Roles, attribute.Users, holder);
+                    facet = new AuthorizationDisableForSessionFacet(attribute.Roles, attribute.Users, holder);
                     added |= FacetUtils.AddFacet(facet);
                 }
             }
 
             return added;
         }
-
-        private static string[] SplitOnComma(string toSplit) {
-            if (string.IsNullOrEmpty(toSplit)) {
-                return new string[] {};
-            }
-            return toSplit.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
-        }
-
-        private static bool IsAllowed(ISession session, string[] roles, string[] users) {
-            if (roles.Any(role => session.Principal.IsInRole(role))) {
-                return true;
-            }
-
-            if (users.Any(user => session.Principal.Identity.Name == user)) {
-                return true;
-            }
-
-            return false;
-        }
-
-        #region Nested type: AuthorizationDisableForSessionFacet
-
-        public class SecurityDisableForSessionFacet : DisableForSessionFacetAbstract {
-            private readonly string[] roles;
-            private readonly string[] users;
-
-            public SecurityDisableForSessionFacet(string roles,
-                                                  string users,
-                                                  ISpecification holder)
-                : base(holder) {
-                this.roles = SplitOnComma(roles);
-                this.users = SplitOnComma(users);
-            }
-
-            public override string DisabledReason(ISession session, INakedObject target, ILifecycleManager persistor, IMetamodelManager manager) {
-                return IsAllowed(session, roles, users) ? null : "Not authorized to edit";
-            }
-        }
-
-        #endregion
-
-        #region Nested type: AuthorizationHideForSessionFacet
-
-        public class SecurityHideForSessionFacet : HideForSessionFacetAbstract {
-            private readonly string[] roles;
-            private readonly string[] users;
-
-            public SecurityHideForSessionFacet(string roles,
-                                               string users,
-                                               ISpecification holder)
-                : base(holder) {
-                this.roles = SplitOnComma(roles);
-                this.users = SplitOnComma(users);
-            }
-
-            public override string HiddenReason(ISession session, INakedObject target, ILifecycleManager persistor, IMetamodelManager manager) {
-                return IsAllowed(session, roles, users) ? null : "Not authorized to view";
-            }
-        }
-
-        #endregion
     }
 }

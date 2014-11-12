@@ -361,11 +361,7 @@
     <Compile Include="Spec\IOneToOneAssociationSpec.cs" />
     <Compile Include="Spec\IOneToOneFeatureSpec.cs" />
     <Compile Include="Spec\IActionParseableParameterSpec.cs" />
-    <Compile Include="Security\IAuthenticationRequest.cs" />
-    <Compile Include="Security\IAuthenticator.cs" />
-    <Compile Include="Security\IConnectionManager.cs" />
     <Compile Include="Component\ISession.cs" />
-    <Compile Include="Component\IAuthenticationManager.cs" />
     <Compile Include="Spec\IObjectSpec.cs" />
     <Compile Include="Spec\INamedAndDescribed.cs" />
   </ItemGroup>

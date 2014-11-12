@@ -40,9 +40,9 @@ namespace NakedObjects.Boot {
 
         #region overridable properties
 
-        protected virtual IAuthenticatorInstaller Authenticator {
-            get { return new WindowsAuthenticatorInstaller(); }
-        }
+        //protected virtual IAuthenticatorInstaller Authenticator {
+        //    get { return new WindowsAuthenticatorInstaller(); }
+        //}
 
         protected virtual INakedObjectsClient Client {
             get { return null; }

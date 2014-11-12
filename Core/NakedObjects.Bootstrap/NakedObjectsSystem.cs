@@ -13,14 +13,13 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Security;
 using NakedObjects.Core;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Core.Security;
 
 namespace NakedObjects.Boot {
     // TODO move this to NakedObjects.Core.NakedObjectsSystem in core project once reflector dependency has been removed
 
-    public sealed class NakedObjectsSystem : IConnectionManager {
+    public sealed class NakedObjectsSystem  {
         private static readonly ILog Log;
-        private IAuthenticatorInstaller authenticatorInstaller;
+        //private IAuthenticatorInstaller authenticatorInstaller;
       
         private IServicesInstaller contributedActionsInstaller;
         private IFixturesInstaller fixtureInstaller;
@@ -34,11 +33,11 @@ namespace NakedObjects.Boot {
             Log = LogManager.GetLogger(typeof (NakedObjectsSystem));
         }
 
-        public IAuthenticationManager AuthenticationManager { get; private set; }
+       // public IAuthenticationManager AuthenticationManager { get; private set; }
 
-        public IAuthenticatorInstaller AuthenticatorInstaller {
-            set { authenticatorInstaller = value; }
-        }
+        //public IAuthenticatorInstaller AuthenticatorInstaller {
+        //    set { authenticatorInstaller = value; }
+        //}
 
        
         public IFixturesInstaller FixtureInstaller {

@@ -18,7 +18,7 @@ using NakedObjects.Meta.Adapter;
 
 namespace NakedObjects.Reflect.Security.Wif {
     public class NakedObjectsClaimsAuthorizationManager : ClaimsAuthorizationManager {
-        private static readonly ILog LOG = LogManager.GetLogger(typeof (NakedObjectsClaimsAuthorizationManager));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectsClaimsAuthorizationManager));
 
         private readonly IDictionary<IIdentifier, IDictionary<CheckType, AccessRequest>> rules = new Dictionary<IIdentifier, IDictionary<CheckType, AccessRequest>>();
 
@@ -35,7 +35,7 @@ namespace NakedObjects.Reflect.Security.Wif {
                     IDictionary<CheckType, AccessRequest> subRules = rules[r.Identifier];
 
                     if (subRules.ContainsKey(r.CheckType)) {
-                        LOG.ErrorFormat("Error in ClaimsAuthorizationManager config. Duplicate key [{0}][{1}]", r.Identifier, r.CheckType);
+                        Log.ErrorFormat("Error in ClaimsAuthorizationManager config. Duplicate key [{0}][{1}]", r.Identifier, r.CheckType);
                     }
                     else {
                         subRules.Add(r.CheckType, r);

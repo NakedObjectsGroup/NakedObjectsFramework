@@ -36,7 +36,7 @@ namespace NakedObjects.Boot {
             //}
 
             System.ObjectPersistorInstaller = Persistor;
-            System.AuthenticatorInstaller = Authenticator;
+            //System.AuthenticatorInstaller = Authenticator;
             System.MenuServicesInstaller = MenuServices;
             System.ContributedActionsInstaller = ContributedActions;
             System.SystemServicesInstaller = SystemServices;

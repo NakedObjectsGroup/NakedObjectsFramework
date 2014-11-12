@@ -20,13 +20,13 @@ using NakedObjects.Resources;
 using NakedObjects.Util;
 
 namespace NakedObjects.Meta.I18N {
-    public class Ii18NManager : II18NManager, IFacetDecorator {
+    public class I18NManager : II18NManager, IFacetDecorator {
         private const string Action = "action";
         private const string Description = "description";
         private const string Name = "name";
         private const string Parameter = "parameter";
         private const string Property = "property";
-        private static readonly ILog Log = LogManager.GetLogger(typeof (Ii18NManager));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (I18NManager));
 
         #region IFacetDecorator Members
 

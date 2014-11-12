@@ -5,14 +5,35 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Utils {
     public static class FacetUtils {
+        public static string[] SplitOnComma(string toSplit) {
+            if (string.IsNullOrEmpty(toSplit)) {
+                return new string[] { };
+            }
+            return toSplit.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+        }
+
+        public static bool IsAllowed(ISession session, string[] roles, string[] users) {
+            if (roles.Any(role => session.Principal.IsInRole(role))) {
+                return true;
+            }
+
+            if (users.Any(user => session.Principal.Identity.Name == user)) {
+                return true;
+            }
+
+            return false;
+        }
+
         /// <summary>
         ///     Attaches the <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
         /// </summary>

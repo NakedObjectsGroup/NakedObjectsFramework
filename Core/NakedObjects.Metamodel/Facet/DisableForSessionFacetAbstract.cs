@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -26,6 +27,8 @@ namespace NakedObjects.Meta.Facet {
         public abstract string DisabledReason(ISession session, INakedObject target, ILifecycleManager persistor, IMetamodelManager manager);
 
         #endregion
+
+      
     }
 
 

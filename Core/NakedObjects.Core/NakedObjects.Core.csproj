@@ -198,7 +198,6 @@
     <Compile Include="Resolve\StateHelperUtils.cs" />
     <Compile Include="Resolve\States.cs" />
     <Compile Include="Resolve\TransientReferenceException.cs" />
-    <Compile Include="security\IAuthenticatorInstaller.cs" />
     <Compile Include="security\SimpleSession.cs" />
     <Compile Include="service\ServiceUtils.cs" />
     <Compile Include="service\ServiceWrapper.cs" />
@@ -288,8 +287,6 @@
     <Compile Include="Adapter\FileVersion.cs" />
     <Compile Include="Adapter\IClock.cs" />
     <Compile Include="Adapter\TitleException.cs" />
-    <Compile Include="security\WindowsAuthenticationManager.cs" />
-    <Compile Include="security\WindowsAuthenticatorInstaller.cs" />
     <Compile Include="security\WindowsSession.cs" />
     <Compile Include="util\CopyUtils.cs" />
     <Compile Include="Exception\InvalidDataException.cs" />

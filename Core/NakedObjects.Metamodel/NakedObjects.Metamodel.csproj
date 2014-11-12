@@ -84,6 +84,8 @@
     <Compile Include="Authorization\AuthorizationManager.cs" />
     <Compile Include="Authorization\IAuthorizationConfiguration.cs" />
     <Compile Include="Authorization\IAuthorizer.cs" />
+    <Compile Include="Facet\AuthorizationDisableForSessionFacet.cs" />
+    <Compile Include="Facet\AuthorizationHideForSessionFacet.cs" />
     <Compile Include="I18N\I18NManager.cs" />
     <Compile Include="Meta\ImmutableInMemorySpecCache.cs" />
     <Compile Include="Facet\AbstractFacet.cs" />

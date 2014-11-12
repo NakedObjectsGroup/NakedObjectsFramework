@@ -40,8 +40,8 @@ namespace NakedObjects.Boot {
         #region INakedObjectsClient Members
 
         public void StartClient(NakedObjectsSystem system) {
-            ISession session = system.AuthenticationManager.Authenticate();
-            system.Connect(session);
+           // ISession session = system.AuthenticationManager.Authenticate();
+          //  system.Connect(session);
             Inject(batchStartPoint);
 
             try {
