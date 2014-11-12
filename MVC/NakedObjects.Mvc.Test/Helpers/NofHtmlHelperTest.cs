@@ -23,10 +23,7 @@ using Expenses.Services;
 using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Mvc.Test.Data;
@@ -87,13 +84,13 @@ namespace MvcTestApp.Tests.Helpers {
         private ContextMocks mocks;
 
 
-        protected override IServicesInstaller MenuServices {
-            get { return new ServicesInstaller(DemoServicesSet.ServicesSet()); }
+        protected override object[] MenuServices {
+            get { return (DemoServicesSet.ServicesSet()); }
         }
 
-        protected override IServicesInstaller ContributedActions {
+        protected override object[] ContributedActions {
             get {
-                return new ServicesInstaller(new object[] {
+                return (new object[] {
                     new RecordedActionContributedActions(),
                     new NotContributedTestService(),
                     new ViewModelTestService()
@@ -101,8 +98,8 @@ namespace MvcTestApp.Tests.Helpers {
             }
         }
 
-        protected override IFixturesInstaller Fixtures {
-            get { return new FixturesInstaller(DemoFixtureSet.FixtureSet()); }
+        protected override object[] Fixtures {
+            get { return (DemoFixtureSet.FixtureSet()); }
         }
 
 

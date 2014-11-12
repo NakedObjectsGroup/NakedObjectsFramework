@@ -29,7 +29,6 @@
     <FWFiles Include="$(CorePath)\NakedObjects.Architecture\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Metamodel\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Async\*.csproj"/>
-    <FWFiles Include="$(CorePath)\NakedObjects.Bootstrap\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Core\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.FrameworkService\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Persistor.Entity\*.csproj"/>
@@ -43,7 +42,6 @@
 
   <ItemGroup>
     <FWTFiles Include="$(CorePath)\NakedObjects.Architecture.Test\*.csproj"/>
-    <FWTFiles Include="$(CorePath)\NakedObjects.Bootstrap.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Core.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Test.Data\*.csproj"/>
@@ -110,7 +108,6 @@
       <FWPdb Include="$(CorePath)\NakedObjects.Architecture\bin\%(Configuration.Identity)\NakedObjects.Architecture.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Metamodel\bin\%(Configuration.Identity)\NakedObjects.Metamodel.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Async\bin\%(Configuration.Identity)\NakedObjects.Async.pdb"/>
-      <FWPdb Include="$(CorePath)\NakedObjects.Bootstrap\bin\%(Configuration.Identity)\NakedObjects.Bootstrap.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Core\bin\%(Configuration.Identity)\NakedObjects.Core.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Persistor.Entity\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Reflector\bin\%(Configuration.Identity)\NakedObjects.Reflector.pdb"/>
@@ -124,7 +121,6 @@
       <FWSrc Include="$(CorePath)\*NakedObjects.Architecture\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Metamodel\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Async\**\*.cs"/>
-      <FWSrc Include="$(CorePath)\*NakedObjects.Bootstrap\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Core\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Persistor.Entity\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Reflector\**\*.cs"/>
@@ -153,7 +149,6 @@
 
    
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Architecture.Test\bin\%(Configuration.Identity)\NakedObjects.Architecture.Test.dll"'/>
-    <Exec Command='nunit-console "$(CorePath)\NakedObjects.Bootstrap.Test\bin\%(Configuration.Identity)\NakedObjects.Bootstrap.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll"' />
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Test.dll"'/>
     <Exec Command='nunit-console "$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll"'/>

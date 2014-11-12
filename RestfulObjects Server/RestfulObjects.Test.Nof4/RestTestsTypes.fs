@@ -8,7 +8,6 @@ module NakedObjects.Rest.Test.Nof4Types
 
 open NUnit.Framework
 open NakedObjects.Core.NakedObjectsSystem
-open NakedObjects.Boot
 open RestfulObjects.Mvc
 open RestfulObjects.Mvc.Media
 open System
@@ -66,11 +65,11 @@ type Nof4TestsTypes() =
         [<TestFixtureTearDown>]
         member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
         
-        override x.MenuServices : IServicesInstaller = 
-            box (new ServicesInstaller([| box (new RestDataRepository())
-                                          box (new WithActionService()) |])) :?> IServicesInstaller
+        override x.MenuServices  = 
+           [| box (new RestDataRepository())
+              box (new WithActionService()) |]
         
-        override x.ContributedActions : IServicesInstaller = box (new ServicesInstaller([| box (new ContributorService()) |])) :?> IServicesInstaller
+        override x.ContributedActions  = [| box (new ContributorService()) |]
         member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
         
         [<Test>]

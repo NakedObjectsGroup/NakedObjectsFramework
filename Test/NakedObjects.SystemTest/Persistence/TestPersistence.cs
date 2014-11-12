@@ -44,14 +44,14 @@ namespace NakedObjects.SystemTest.Persistence
 
         #region Run configuration
 
-        protected override IServicesInstaller MenuServices
+            protected override object[] MenuServices
         {
             get
             {
-                return new ServicesInstaller(
+                return new object[]{
                     new SimpleRepository<Foo1>(),
                     new SimpleRepository<Bar1>(),
-                    new SimpleRepository<Qux1>());
+                    new SimpleRepository<Qux1>()};
             }
         }
 

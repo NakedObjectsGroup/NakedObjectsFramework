@@ -44,11 +44,11 @@ namespace NakedObjects.SystemTest.Method
 
         #endregion
 
-        protected override IServicesInstaller MenuServices
+        protected override object[] MenuServices
         {
             get
             {
-                return new ServicesInstaller(
+                return new object[]{
                         new SimpleRepository<Auto1>(),
                         new SimpleRepository<Auto2>(),
                         new SimpleRepository<Auto3>(),
@@ -98,7 +98,7 @@ namespace NakedObjects.SystemTest.Method
                          new SimpleRepository<Validate3>(),
                          new SimpleRepository<Validate4>(),
                          new SimpleRepository<Validate5>()
-                     );
+                     };
             }
         }
 

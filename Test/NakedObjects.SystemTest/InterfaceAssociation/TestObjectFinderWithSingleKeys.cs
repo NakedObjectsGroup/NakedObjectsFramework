@@ -26,15 +26,15 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
         private ITestObject payment1 = null;
         private ITestObject supplier1 = null;
 
-        protected override IServicesInstaller MenuServices {
+        protected override object[] MenuServices {
             get {
-                return new ServicesInstaller(new object[] {
+                return new object[] {
                     new ObjectFinder(),
                     new SimpleRepository<Payment>(),
                     new SimpleRepository<Customer>(),
                     new SimpleRepository<Supplier>(),
                     new SimpleRepository<Employee>()
-                });
+                };
             }
         }
 

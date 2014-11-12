@@ -8,8 +8,6 @@
 using System;
 using System.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 
@@ -18,9 +16,9 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
     [TestClass]
     public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinderWithCompoundKeysAbstract {
 
-        protected override IServicesInstaller MenuServices {
+        protected override object[] MenuServices {
             get {
-                return new ServicesInstaller(new object[] {
+                return (new object[] {
                     new ObjectFinderWithTypeCodeMapper(),
                     new SimpleRepository<Payment>(),
                     new SimpleRepository<CustomerOne>(),

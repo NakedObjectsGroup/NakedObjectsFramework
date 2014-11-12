@@ -16,11 +16,11 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
 
     [TestClass]
     public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
-      
 
-        protected override IServicesInstaller MenuServices {
+
+        protected override object[] MenuServices {
             get {
-                return new ServicesInstaller(new object[] {
+                return (new object[] {
                     new ObjectFinder(),
                     new SimpleRepository<Payment>(),
                     new SimpleRepository<CustomerOne>(),

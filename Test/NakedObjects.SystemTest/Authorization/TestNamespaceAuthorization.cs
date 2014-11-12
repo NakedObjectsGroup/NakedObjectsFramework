@@ -60,15 +60,15 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization
         #endregion
 
         #region Services & Fixtures
-        protected override IServicesInstaller MenuServices
+        protected override object[] MenuServices
         {
             get
             {
-                return new ServicesInstaller(
+                return new object[]{
                     new SimpleRepository<Foo1>(),
                     new SimpleRepository<Bar1>(),
                     new SimpleRepository<Foo2>(),
-                    new SimpleRepository<Bar2>());
+                    new SimpleRepository<Bar2>()};
             }
         }
         #endregion

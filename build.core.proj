@@ -46,7 +46,6 @@
     <FWFiles Include="$(CorePath)\NakedObjects.Architecture\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Metamodel\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Async\*.csproj"/>
-    <FWFiles Include="$(CorePath)\NakedObjects.Bootstrap\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Core\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.FrameworkService\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Persistor.Entity\*.csproj"/>
@@ -60,7 +59,6 @@
 
   <ItemGroup>
     <FWTFiles Include="$(CorePath)\NakedObjects.Architecture.Test\*.csproj"/>
-    <FWTFiles Include="$(CorePath)\NakedObjects.Bootstrap.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Core.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Test.Data\*.csproj"/>
@@ -99,7 +97,6 @@
       <OldCode Include="$(CorePath)\**\bin\**\*.dll"/>
       <OldCode Include="$(CorePath)\**\obj\**\*.*"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Architecture.Test.xml"/>
-      <OldTests Include="$(TestResultsPath)\NakedObjects.Bootstrap.Test.xml"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Core.Test.xml"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Persistor.Test.xml"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Persistor.Entity.Test.xml"/>
@@ -160,7 +157,6 @@
       <FWPdb Include="$(CorePath)\NakedObjects.Architecture\bin\%(Configuration.Identity)\NakedObjects.Architecture.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Metamodel\bin\%(Configuration.Identity)\NakedObjects.Metamodel.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Async\bin\%(Configuration.Identity)\NakedObjects.Async.pdb"/>
-      <FWPdb Include="$(CorePath)\NakedObjects.Bootstrap\bin\%(Configuration.Identity)\NakedObjects.Bootstrap.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Core\bin\%(Configuration.Identity)\NakedObjects.Core.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Persistor.Entity\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.pdb"/>
       <FWPdb Include="$(CorePath)\NakedObjects.Reflector\bin\%(Configuration.Identity)\NakedObjects.Reflector.pdb"/>
@@ -174,7 +170,6 @@
       <FWSrc Include="$(CorePath)\*NakedObjects.Architecture\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Metamodel\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Async\**\*.cs"/>
-      <FWSrc Include="$(CorePath)\*NakedObjects.Bootstrap\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Core\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Persistor.Entity\**\*.cs"/>
       <FWSrc Include="$(CorePath)\*NakedObjects.Reflector\**\*.cs"/>
@@ -199,7 +194,6 @@
     <MSBuild Projects="@(FWTFiles)" Properties="Configuration=%(Configuration.Identity)"/>
 
     <NUnit Assemblies="$(CorePath)\NakedObjects.Architecture.Test\bin\%(Configuration.Identity)\NakedObjects.Architecture.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Architecture.Test.xml" />
-    <NUnit Assemblies="$(CorePath)\NakedObjects.Bootstrap.Test\bin\%(Configuration.Identity)\NakedObjects.Bootstrap.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Bootstrap.Test.xml" />
     <NUnit Assemblies="$(CorePath)\NakedObjects.Core.Test\bin\%(Configuration.Identity)\NakedObjects.Core.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Core.Test.xml" />
     <NUnit Assemblies="$(CorePath)\NakedObjects.Persistor.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Persistor.Test.xml" />
     <NUnit Assemblies="$(CorePath)\NakedObjects.Persistor.Entity.Test\bin\%(Configuration.Identity)\NakedObjects.Persistor.Entity.Test.dll" ToolPath="$(NUnitPath)" ContinueOnError="false" Force32Bit="true" OutputXmlFile="$(TestResultsPath)\NakedObjects.Persistor.Entity.Test.xml" />

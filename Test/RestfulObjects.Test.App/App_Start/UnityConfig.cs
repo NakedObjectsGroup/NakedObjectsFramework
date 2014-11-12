@@ -10,7 +10,6 @@ using NakedObjects.Architecture.Security;
 using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Container;
-using NakedObjects.Core.Context;
 using NakedObjects.Core.Security;
 using NakedObjects.Core.spec;
 using NakedObjects.EntityObjectStore;
@@ -18,7 +17,6 @@ using NakedObjects.Managers;
 using NakedObjects.Meta;
 using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Reflect;
-using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Service;
 using NakedObjects.Surface;
 using NakedObjects.Surface.Nof4.Implementation;
@@ -143,7 +141,7 @@ namespace RestfulObjects.Test.App
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerResolveLifetimeManager());
             container.RegisterType<IMetamodelManager, MetamodelManager>(new PerResolveLifetimeManager());
             container.RegisterType<ISession, WindowsSession>(new PerResolveLifetimeManager());
-            container.RegisterType<IMessageBroker, SimpleMessageBroker>(new PerResolveLifetimeManager());
+            container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
 
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerResolveLifetimeManager());
 

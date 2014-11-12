@@ -11,8 +11,6 @@ using System.Web.Mvc;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Mvc.App.Controllers;
@@ -59,9 +57,9 @@ namespace MvcTestApp.Tests.Controllers {
         private ContextMocks mocks;
 
 
-        protected override IServicesInstaller MenuServices {
+        protected override object[] MenuServices {
             get {
-                return new ServicesInstaller(new object[] {
+                return new object[] {
                     new CustomerRepository(),
                     new OrderRepository(),
                     new ProductRepository(),
@@ -72,7 +70,7 @@ namespace MvcTestApp.Tests.Controllers {
                     new VendorRepository(),
                     new PurchaseOrderRepository(),
                     new WorkOrderRepository()
-                });
+                };
             }
         }
 

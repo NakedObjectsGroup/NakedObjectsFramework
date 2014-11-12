@@ -18,8 +18,6 @@ using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Persist;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Mvc.Test.Data;
@@ -74,16 +72,16 @@ namespace MvcTestApp.Tests.Helpers {
             mocks.ViewDataContainer.Object.ViewData[IdHelper.NoFramework] = NakedObjectsFramework;
         }
 
-        protected override IServicesInstaller MenuServices {
-            get { return new ServicesInstaller(DemoServicesSet.ServicesSet()); }
+        protected override object[] MenuServices {
+            get { return (DemoServicesSet.ServicesSet()); }
         }
 
-        protected override IServicesInstaller ContributedActions {
-            get { return new ServicesInstaller(new object[] {new RecordedActionContributedActions()}); }
+        protected override object[] ContributedActions {
+            get { return (new object[] {new RecordedActionContributedActions()}); }
         }
 
-        protected override IFixturesInstaller Fixtures {
-            get { return new FixturesInstaller(DemoFixtureSet.FixtureSet()); }
+        protected override object[] Fixtures {
+            get { return (DemoFixtureSet.FixtureSet()); }
         }
 
         private class DummyController : Controller {}

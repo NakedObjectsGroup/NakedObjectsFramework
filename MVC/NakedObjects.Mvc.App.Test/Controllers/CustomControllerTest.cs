@@ -16,8 +16,6 @@ using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Services;
@@ -64,9 +62,9 @@ namespace MvcTestApp.Tests.Controllers {
         private CustomControllerWrapper controller;
         private ContextMocks mocks;
 
-        protected override IServicesInstaller MenuServices {
+        protected override object[] MenuServices {
             get {
-                return new ServicesInstaller(new object[] {
+                return (new object[] {
                     new CustomerRepository(),
                     new OrderRepository(),
                     new ProductRepository(),
@@ -82,8 +80,8 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
-        protected override IServicesInstaller ContributedActions {
-            get { return new ServicesInstaller(new object[] {new OrderContributedActions()}); }
+        protected override object[] ContributedActions {
+            get { return (new object[] {new OrderContributedActions()}); }
         }
 
 

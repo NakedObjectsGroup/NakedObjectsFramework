@@ -1,10 +1,8 @@
 // Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
 // All Rights Reserved. This code released under the terms of the 
 // Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
+
 using NakedObjects.Services;
-using NakedObjects.Xat;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -41,13 +39,13 @@ namespace NakedObjects.SystemTest.ParentChild {
 
             #endregion
 
-            protected override IServicesInstaller MenuServices {
+            protected override object[] MenuServices {
                 get {
-                    return new ServicesInstaller(new object[] {
+                    return new object[] {
                                                                   new SimpleRepository<Parent>(),
                                                                   new SimpleRepository<Parent2>(), 
                                                                   new SimpleRepository<Child>()
-                                                              });
+                                                              };
                 }
             }
 

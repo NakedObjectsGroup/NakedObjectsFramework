@@ -29,14 +29,14 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
         private ITestObject payment1;
         private ITestObject supplier1;
 
-        protected override IServicesInstaller MenuServices {
+        protected override object[] MenuServices {
             get {
-                return new ServicesInstaller(new object[] {
+                return new object[] {
                     new ObjectFinder(),
                     new SimpleRepository<Payment>(),
                     new SimpleRepository<Customer>(),
                     new SimpleRepository<Supplier>()
-                });
+                };
             }
         }
 

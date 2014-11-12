@@ -8,7 +8,6 @@ module NakedObjects.Rest.Test.Nof4TypesDomainType
 
 open NUnit.Framework
 open NakedObjects.Core.NakedObjectsSystem
-open NakedObjects.Boot
 open RestfulObjects.Mvc
 open RestfulObjects.Mvc.Media
 open System
@@ -65,15 +64,15 @@ type Nof4TestsTypeDomainType() =
             RestTestFunctions.ctk <- fun code -> keyMapper.KeyStringFromCode(code)
             RestTestFunctions.ktc <- fun key -> keyMapper.CodeFromKeyString(key)
         
-        override x.MenuServices : IServicesInstaller = 
-            box (new ServicesInstaller([| box (new RestDataRepository())
-                                          box (new WithActionService()) |])) :?> IServicesInstaller
+        override x.MenuServices   = 
+            [| box (new RestDataRepository())
+               box (new WithActionService()) |]
         
-        override x.SystemServices : IServicesInstaller = 
-            box (new ServicesInstaller([| box (new TestTypeCodeMapper())
-                                          box (new TestKeyCodeMapper()) |])) :?> IServicesInstaller
+        override x.SystemServices  = 
+            [| box (new TestTypeCodeMapper())
+               box (new TestKeyCodeMapper()) |]
         
-        override x.ContributedActions : IServicesInstaller = box (new ServicesInstaller([| box (new ContributorService()) |])) :?> IServicesInstaller
+        override x.ContributedActions = [| box (new ContributorService()) |]
         member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
         
         [<Test>]

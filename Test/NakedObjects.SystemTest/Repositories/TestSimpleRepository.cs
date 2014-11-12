@@ -53,9 +53,9 @@ namespace NakedObjects.SystemTest.Repositories {
 
         #endregion
 
-        protected override IServicesInstaller MenuServices {
+        protected override object[] MenuServices {
             get {
-                return new ServicesInstaller(new object[] {
+                return (new object[] {
                            new SimpleRepository<Customer>()
                 });
             }

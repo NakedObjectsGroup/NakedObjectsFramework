@@ -18,7 +18,6 @@ using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Boot;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.DatabaseHelpers;
 using NakedObjects.EntityObjectStore;
@@ -68,9 +67,9 @@ namespace MvcTestApp.Tests.Controllers {
         private GenericController controller;
         private ContextMocks mocks;
 
-        protected override IServicesInstaller MenuServices {
+        protected override object[] MenuServices {
             get {
-                return new ServicesInstaller(new object[] {
+                return new object[] {
                     new CustomerRepository(),
                     new OrderRepository(),
                     new ProductRepository(),
@@ -82,16 +81,16 @@ namespace MvcTestApp.Tests.Controllers {
                     new PurchaseOrderRepository(),
                     new WorkOrderRepository(),
                     new SimpleRepository<NotPersistedObject>()
-                });
+                };
             }
         }
 
-        protected override IServicesInstaller ContributedActions {
+        protected override object[] ContributedActions {
             get {
-                return new ServicesInstaller(new object[] {
+                return new object[] {
                     new OrderContributedActions(),
                     new CustomerContributedActions()
-                });
+                };
             }
         }
 
@@ -2150,9 +2149,9 @@ namespace MvcTestApp.Tests.Controllers {
             return GetForm(idToRawValue);
         }
 
-        protected override IServicesInstaller MenuServices {
+        protected override object[] MenuServices {
             get {
-                return new ServicesInstaller(new object[] {
+                return (new object[] {
                     new CustomerRepository(),
                     new OrderRepository(),
                     new ProductRepository(),
@@ -2168,8 +2167,8 @@ namespace MvcTestApp.Tests.Controllers {
             }
         }
 
-        protected override IServicesInstaller ContributedActions {
-            get { return new ServicesInstaller(new object[] {new OrderContributedActions()}); }
+        protected override object[] ContributedActions {
+            get { return (new object[] {new OrderContributedActions()}); }
         }
 
 

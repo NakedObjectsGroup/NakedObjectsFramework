@@ -35,15 +35,15 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
 
         #region Run configuration
 
-        protected override IServicesInstaller MenuServices {
+        protected override object[] MenuServices {
             get {
-                return new ServicesInstaller(
+                return new object[]{
                     new SimpleRepository<PolymorphicPayment>(),
                     new SimpleRepository<CustomerAsPayee>(),
                     new SimpleRepository<SupplierAsPayee>(),
                     new SimpleRepository<InvoiceAsPayableItem>(),
                     new SimpleRepository<ExpenseClaimAsPayableItem>(),
-                    new Services.PolymorphicNavigator());
+                    new Services.PolymorphicNavigator()};
             }
         }
         #endregion
