@@ -237,6 +237,15 @@ namespace NakedObjects.Xat {
             return TestObjectFactoryClass.CreateTestMenuMain(menu);
         }
 
+        protected ITestMenu[] AllMainMenus() {
+            return NakedObjectsFramework.Metamodel.MainMenus().Select(m => TestObjectFactoryClass.CreateTestMenuMain(m)).ToArray();
+        }
+
+        protected void AssertMainMenuCountIs(int expected) {
+            var actual = NakedObjectsFramework.Metamodel.MainMenus().Count();
+            Assert.AreEqual(expected, actual);
+        }
+
         protected ITestObject GetBoundedInstance<T>(string title) {
             return GetBoundedInstance(typeof (T), title);
         }

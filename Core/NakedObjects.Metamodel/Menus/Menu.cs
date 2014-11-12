@@ -97,5 +97,21 @@ namespace NakedObjects.Meta.Menus {
             subMenu.SuperMenu = this;
             return this;
         }
+
+        public IMenuActionImmutable GetAction(string actionName) {
+            var action = MenuItems.OfType<MenuActionImmutable>().FirstOrDefault(a => a.Name == actionName);
+            if (action == null) {
+                throw new Exception("No action named " + actionName);
+            }
+            return action;
+        }
+
+        public IMenuImmutable GetSubMenu(string menuName) {
+            var menu = MenuItems.OfType<Menu>().FirstOrDefault(a => a.Name == menuName);
+            if (menu == null) {
+                throw new Exception("No sub-menu named " + menuName);
+            }
+            return menu;
+        }
     }
 }
