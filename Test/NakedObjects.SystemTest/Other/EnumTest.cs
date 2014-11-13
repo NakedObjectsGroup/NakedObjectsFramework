@@ -17,11 +17,6 @@ namespace NakedObjects.SystemTest.Enum {
     public class EnumTest : AbstractSystemTest<EnumDbContext> {
         #region Setup/Teardown
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new EnumTest());
-        }
-
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new EnumTest());
@@ -30,6 +25,7 @@ namespace NakedObjects.SystemTest.Enum {
 
         [TestInitialize()]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
         }
 

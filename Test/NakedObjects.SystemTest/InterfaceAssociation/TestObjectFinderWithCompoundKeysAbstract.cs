@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
@@ -24,17 +25,18 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
 
         [TestInitialize]
         public void Initialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
-            payment1 = GetAllInstances("Payments", 0);
+            payment1 = GetAllInstances(typeof(SimpleRepository<Payment>), 0);
             payee1 = payment1.GetPropertyByName("Payee");
             key1 = payment1.GetPropertyByName("Payee Compound Key");
 
-            customer1 = GetAllInstances("Customer Ones", 0);
-            customer2a = GetAllInstances("Customer Twos", 0);
-            customer2b = GetAllInstances("Customer Twos", 1);
-            customer3 = GetAllInstances("Customer Threes", 0);
-            supplier1 = GetAllInstances("Suppliers", 0);
-            emp1 = GetAllInstances("Employees", 0);
+            customer1 = GetAllInstances(typeof(SimpleRepository<CustomerOne>), 0);
+            customer2a = GetAllInstances(typeof(SimpleRepository<CustomerTwo>), 0);
+            customer2b = GetAllInstances(typeof(SimpleRepository<CustomerTwo>), 1);
+            customer3 = GetAllInstances(typeof(SimpleRepository<CustomerThree>), 0);
+            supplier1 = GetAllInstances(typeof(SimpleRepository<Supplier>), 0);
+            emp1 = GetAllInstances(typeof(SimpleRepository<Employee>), 0);
         }
 
         [TestCleanup]

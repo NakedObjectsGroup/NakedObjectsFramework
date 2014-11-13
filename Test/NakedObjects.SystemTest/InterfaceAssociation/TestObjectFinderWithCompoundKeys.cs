@@ -27,11 +27,6 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
             }
         }
 
-        [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestObjectFinderWithCompoundKeys());
-        }
-
         [ClassCleanup]
         public static void TearDownTest() {
             CleanupNakedObjectsFramework(new TestObjectFinderWithCompoundKeys());

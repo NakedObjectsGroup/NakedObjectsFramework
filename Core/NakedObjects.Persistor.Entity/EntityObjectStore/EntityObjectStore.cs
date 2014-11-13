@@ -40,8 +40,7 @@ namespace NakedObjects.EntityObjectStore {
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStore));
         private static CreateAdapterDelegate createAdapter;
         private static CreateAggregatedAdapterDelegate createAggregatedAdapter;
-        private static NotifyUiDelegate notifyUi;
-
+  
         
         private static RemoveAdapterDelegate removeAdapter;
         private static ReplacePocoDelegate replacePoco;
@@ -117,7 +116,6 @@ namespace NakedObjects.EntityObjectStore {
                                     ReplacePocoDelegate replacePocoDelegate,
                                     RemoveAdapterDelegate removeAdapterDelegate,
                                     CreateAggregatedAdapterDelegate createAggregatedAdapterDelegate,
-                                    NotifyUiDelegate notifyUiDelegate,
                                     Action<INakedObject> handleLoadedTest,
                                     EventHandler savingChangeshandler,
                                     Func<Type, IObjectSpec> loadSpecificationHandler) {
@@ -126,7 +124,7 @@ namespace NakedObjects.EntityObjectStore {
             replacePoco = replacePocoDelegate;
             removeAdapter = removeAdapterDelegate;
             createAggregatedAdapter = createAggregatedAdapterDelegate;
-            notifyUi = notifyUiDelegate;
+        
             savingChangesHandlerDelegate = savingChangeshandler;
             handleLoaded = handleLoadedTest;
             EnforceProxies = false;
@@ -561,7 +559,7 @@ namespace NakedObjects.EntityObjectStore {
             IEnumerable<INakedObject> adaptedObjects = changedObjects.Where(o => TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => manager.CreateAdapter(domainObject, null, null)).ToArray();
             adaptedObjects.Where(x => x.ResolveState.IsGhost()).ForEach(ResolveImmediately);
             adaptedObjects.ForEach(ValidateIfRequired);
-            adaptedObjects.ForEach(x => notifyUi(x));
+           
         }
 
         private static T ExecuteCommand<T>(T command) where T : IPersistenceCommand {
@@ -987,7 +985,7 @@ namespace NakedObjects.EntityObjectStore {
                     currentPersistedNakedObjects.ForEach(no => no.Persisted());
                 }
                 finally {
-                    coUpdating.ForEach(x => notifyUi(x));
+                   
                     updatingNakedObjects.Clear();
                     coUpdating.Clear();
                 }

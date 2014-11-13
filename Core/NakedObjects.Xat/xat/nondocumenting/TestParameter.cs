@@ -54,7 +54,7 @@ namespace NakedObjects.Xat {
             INakedObject defaultValue = parameterSpec.GetDefault(NakedObject);
             TypeOfDefaultValue defaultType = parameterSpec.GetDefaultType(NakedObject);
 
-            if (defaultType == TypeOfDefaultValue.Implicit && defaultValue.Object is Enum) {
+            if (defaultValue != null && defaultType == TypeOfDefaultValue.Implicit && defaultValue.Object is Enum) {
                 defaultValue = null;
             }
 

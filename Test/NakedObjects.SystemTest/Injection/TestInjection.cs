@@ -16,10 +16,7 @@ namespace NakedObjects.SystemTest.Injection {
     public class TestInjection : AbstractSystemTest<InjectionDbContext> {
         #region Setup/Teardown
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestInjection());
-        }
+        
 
         [ClassCleanup]
         public static void ClassCleanup() {
@@ -29,11 +26,10 @@ namespace NakedObjects.SystemTest.Injection {
 
         [TestInitialize()]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
         }
 
-        [TestCleanup()]
-        public void TestCleanup() {}
 
         #endregion
 

@@ -21,10 +21,6 @@ namespace NakedObjects.SystemTest.XATs {
     public class TestFailureScenarios : AbstractSystemTest<XatDbContext> {
         #region Setup/Teardown
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestFailureScenarios());
-        }
 
         [ClassCleanup]
         public static void ClassCleanup() {
@@ -34,6 +30,7 @@ namespace NakedObjects.SystemTest.XATs {
 
         [TestInitialize()]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
         }
 

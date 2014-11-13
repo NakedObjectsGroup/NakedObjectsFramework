@@ -30,11 +30,6 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
         }
 
 
-        [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestObjectFinderWithCompoundKeysAndTypeCodeMapper());
-        }
-
         [ClassCleanup]
         public static void TearDownTest() {
             CleanupNakedObjectsFramework(new TestObjectFinderWithCompoundKeysAndTypeCodeMapper());

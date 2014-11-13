@@ -60,6 +60,10 @@ namespace NakedObjects.SystemTest {
             return GetTestService(simpleRepositoryName).GetAction("All Instances").InvokeReturnCollection().ElementAt(number);
         }
 
+        protected ITestObject GetAllInstances(Type repositoryType, int number) {
+            return GetTestService(repositoryType).GetAction("All Instances").InvokeReturnCollection().ElementAt(number);
+        }
+
         protected ITestObject FindById<T>(int id) {
             return GetTestService<T>().GetAction("Find By Key").InvokeReturnObject(id);
         }

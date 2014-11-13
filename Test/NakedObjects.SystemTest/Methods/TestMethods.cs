@@ -19,11 +19,6 @@ namespace NakedObjects.SystemTest.Method {
     public class TestMethods : AbstractSystemTest<MethodsDbContext> {
         #region Setup/Teardown
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestMethods());
-        }
-
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestMethods());
@@ -32,11 +27,9 @@ namespace NakedObjects.SystemTest.Method {
 
         [TestInitialize()]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
         }
-
-        [TestCleanup()]
-        public void TestCleanup() {}
 
         #endregion
 

@@ -104,8 +104,7 @@ let setupPersistorForTesting (p : EntityObjectStore) =
     p.SetupForTesting
         (testInjector, EntityObjectStore.CreateAdapterDelegate(AdapterForTest), EntityObjectStore.ReplacePocoDelegate(ReplacePocoForTest), 
          EntityObjectStore.RemoveAdapterDelegate(RemoveAdapterForTest), EntityObjectStore.CreateAggregatedAdapterDelegate(AggregateAdapterForTest), 
-         EntityObjectStore.NotifyUiDelegate(NotifyUIForTest), Action<INakedObject>(handleLoadingTest), 
-         EventHandler(savingChangesHandler), Func<Type, IObjectSpec>(loadSpecificationHandler))
+         Action<INakedObject>(handleLoadingTest), EventHandler(savingChangesHandler), Func<Type, IObjectSpec>(loadSpecificationHandler))
     p.Reset()
     p.SetProxyingAndDeferredLoading setProxyingAndDeferredLoading
     p

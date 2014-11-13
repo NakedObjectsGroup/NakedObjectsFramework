@@ -7,22 +7,43 @@
 
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Architecture.Configuration;
+using NakedObjects.Core.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Persistence {
     [TestClass]
-    public class TestPersistence :
-        AbstractSystemTest<PersistenceDbContext> {
-        #region Setup/Teardown
+    public class TestPersistence :    AbstractSystemTest<PersistenceDbContext> {
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestPersistence());
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+        
+
+            var reflectorConfig = new ReflectorConfiguration(new[] {
+                typeof (ObjectQuery<Qux1>)
+            },
+                new[] {
+                    typeof (SimpleRepository<Foo1>),
+                    typeof (SimpleRepository<Bar1>),
+                    typeof (SimpleRepository<Qux1>)
+                },
+                new Type[] { },
+                new Type[] { });
+
+
+            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
 
+
+
+        #region Setup/Teardown
+
+   
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestPersistence());
@@ -31,33 +52,20 @@ namespace NakedObjects.SystemTest.Persistence {
 
         [TestInitialize()]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
         }
 
-        [TestCleanup()]
-        public void TestCleanup() {}
 
         #endregion
 
-        #region Run configuration
-
-        protected override object[] MenuServices {
-            get {
-                return new object[] {
-                    new SimpleRepository<Foo1>(),
-                    new SimpleRepository<Bar1>(),
-                    new SimpleRepository<Qux1>()
-                };
-            }
-        }
-
-        #endregion
+     
 
         private static bool triggerFail = false;
 
         [TestMethod]
         public virtual void IdIsSetByTheTimePersistedIsCalled() {
-            ITestObject foo = GetTestService("Foo1s").GetAction("New Instance").InvokeReturnObject();
+            ITestObject foo = GetTestService(typeof(SimpleRepository<Foo1>)).GetAction("New Instance").InvokeReturnObject();
             foo.AssertIsTransient();
             ITestProperty id = foo.GetPropertyByName("Id").AssertValueIsEqual("0");
             ITestProperty idPersisting = foo.GetPropertyByName("Id On Persisting").AssertValueIsEqual("0");
@@ -87,7 +95,7 @@ namespace NakedObjects.SystemTest.Persistence {
 
         [TestMethod]
         public virtual void ExceptionInUpdatedCausesWholeTransactionToFail() {
-            ITestAction qs = GetTestService("Qux1s").GetAction("All Instances");
+            ITestAction qs = GetTestService(typeof(SimpleRepository<Qux1>)).GetAction("All Instances");
             ITestObject q = qs.InvokeReturnCollection().AssertCountIs(1).ElementAt(0);
             ITestProperty name = q.GetPropertyByName("Name");
             name.AssertValueIsEqual("Qux 1");

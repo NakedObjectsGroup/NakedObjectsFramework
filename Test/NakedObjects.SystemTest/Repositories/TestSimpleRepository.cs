@@ -18,11 +18,6 @@ namespace NakedObjects.SystemTest.Repositories {
         private Customer cust1;
         private Customer cust2;
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestSimpleRepository());
-        }
-
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestSimpleRepository());
@@ -31,6 +26,7 @@ namespace NakedObjects.SystemTest.Repositories {
 
         [TestInitialize()]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             ITestObject cust1To = NewTestObject<Customer>();
             cust1 = (Customer) cust1To.GetDomainObject();
