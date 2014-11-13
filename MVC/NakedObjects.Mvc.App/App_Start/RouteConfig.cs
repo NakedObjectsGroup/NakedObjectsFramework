@@ -22,8 +22,13 @@ namespace NakedObjects.Mvc.App
         private static void RegisterNakedObjectsRoutes(RouteCollection routes) {
             routes.IgnoreRoute("{*favicon}", new {favicon = @"(.*/)?favicon.ico(/.*)?"});
             routes.IgnoreRoute("{*nakedobjects}", new {nakedobjects = @"(.*/)?nakedobjects.ico(/.*)?"});
+            routes.IgnoreRoute("Content/{*wildcard}");
+            routes.IgnoreRoute("Scripts/{*wildcard}");
+            routes.IgnoreRoute("Images/{*wildcard}");
+            routes.IgnoreRoute("fonts/{*wildcard}");
+
             routes.RouteExistingFiles = true; //This is to stop Attachments (where link name includes file extension)
-            //from being intercepted by web server.
+            //from being intercepted by web server. (This also necessitates the additional IgnoreRoutes above).
 
             RestfulObjectsConfig.RegisterRestfulObjectsRoutes(routes); // must be rest first 
             NakedObjectsRouteConfig.RegisterGenericRoutes(routes);
