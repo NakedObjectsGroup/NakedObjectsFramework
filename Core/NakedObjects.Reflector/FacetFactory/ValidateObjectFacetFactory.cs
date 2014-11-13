@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
@@ -66,7 +67,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 }
             }
 
-            var validateFacet = methodPeers.Any() ? new ValidateObjectFacet(specification, methodPeers) : null;
+            var validateFacet = methodPeers.Any() ? (IValidateObjectFacet)  new ValidateObjectFacet(specification, methodPeers) : new ValidateObjectFacetNull(specification);
             return FacetUtils.AddFacet(validateFacet);
         }
     }
