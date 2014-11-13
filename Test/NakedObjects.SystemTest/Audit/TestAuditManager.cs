@@ -1,29 +1,31 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Principal;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Audit;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Services;
 using NakedObjects.Xat;
-using System.Data.Entity;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.SystemTest.Audit {
     [TestClass]
     public class TestAuditManager : AbstractSystemTest<AuditDbContext> {
-
         #region Run Configuration
+
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
             var config = new AuditConfiguration {DefaultAuditor = typeof (MyDefaultAuditor)};
@@ -32,10 +34,10 @@ namespace NakedObjects.SystemTest.Audit {
             container.RegisterType<IFacetDecorator, AuditManager>("AuditManager", new ContainerControlledLifetimeManager());
 
             var reflectorConfig = new ReflectorConfiguration(new Type[] {
-                typeof(MyDefaultAuditor),
-                typeof(FooAuditor),
-                typeof(QuxAuditor),
-                typeof(QueryableList<Foo>)
+                typeof (MyDefaultAuditor),
+                typeof (FooAuditor),
+                typeof (QuxAuditor),
+                typeof (QueryableList<Foo>)
             },
                 new[] {
                     typeof (SimpleRepository<Foo>),
@@ -46,51 +48,45 @@ namespace NakedObjects.SystemTest.Audit {
                 new Type[] {},
                 new Type[] {});
 
-            
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
+
         #endregion
 
-
         #region Setup/Teardown
-      
 
         [ClassCleanup]
-        public static void ClassCleanup()
-        {
+        public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestAuditManager());
             Database.Delete(AuditDbContext.DatabaseName);
         }
 
         [TestInitialize()]
-        public void TestInitialize()
-        {
+        public void TestInitialize() {
             InitializeNakedObjectsFramework(this);
             StartTest();
             SetUser("sven");
         }
 
         [TestCleanup()]
-        public void TestCleanup()
-        {
-        }
+        public void TestCleanup() {}
+
         #endregion
 
         #region "Services & Fixtures"
 
-        private static FooAuditor fooAuditor = new FooAuditor();
+        private static readonly FooAuditor fooAuditor = new FooAuditor();
         protected static MyDefaultAuditor myDefaultAuditor = new MyDefaultAuditor();
         protected static QuxAuditor quxAuditor = new QuxAuditor();
 
-       
-        
+        #region Nested type: Da
 
         public class Da : IAuditor {
-
-
             public IDomainObjectContainer Container { get; set; }
             public SimpleRepository<Foo> Service { get; set; }
+
+            #region IAuditor Members
 
             public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
                 Assert.IsNotNull(Container);
@@ -115,12 +111,19 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(Service);
                 myDefaultAuditor.ObjectPersisted(byPrincipal, updatedObject);
             }
+
+            #endregion
         }
 
-        public class Fa : INamespaceAuditor {
+        #endregion
 
+        #region Nested type: Fa
+
+        public class Fa : INamespaceAuditor {
             public IDomainObjectContainer Container { get; set; }
             public SimpleRepository<Foo> Service { get; set; }
+
+            #region INamespaceAuditor Members
 
             public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
                 Assert.IsNotNull(Container);
@@ -148,14 +151,20 @@ namespace NakedObjects.SystemTest.Audit {
 
             public string NamespaceToAudit {
                 get { return fooAuditor.NamespaceToAudit; }
-            
             }
+
+            #endregion
         }
 
-        public class Qa : INamespaceAuditor {
+        #endregion
 
+        #region Nested type: Qa
+
+        public class Qa : INamespaceAuditor {
             public IDomainObjectContainer Container { get; set; }
             public SimpleRepository<Foo> Service { get; set; }
+
+            #region INamespaceAuditor Members
 
             public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
                 Assert.IsNotNull(Container);
@@ -183,9 +192,12 @@ namespace NakedObjects.SystemTest.Audit {
 
             public string NamespaceToAudit {
                 get { return quxAuditor.NamespaceToAudit; }
-            
             }
+
+            #endregion
         }
+
+        #endregion
 
         #endregion
 
@@ -207,7 +219,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorAction() {
-            ITestObject foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
+            ITestObject foo = GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
 
             MyDefaultAuditor.SetActionCallbacksUnexpected();
 
@@ -604,17 +616,16 @@ namespace NakedObjects.SystemTest.Audit {
 
     #region Classes used by tests
 
-    public class AuditDbContext : DbContext
-    {
+    public class AuditDbContext : DbContext {
         public const string DatabaseName = "TestAudit";
-        public AuditDbContext() : base(DatabaseName) { }
+        public AuditDbContext() : base(DatabaseName) {}
 
         public DbSet<Foo> Foos { get; set; }
         public DbSet<Bar> Bars { get; set; }
         public DbSet<Qux> Quxes { get; set; }
     }
 
-    public  class Auditor  {
+    public class Auditor {
         public Action<IPrincipal, string, object, bool, object[]> actionInvokedCallback;
         public Action<IPrincipal, object> objectPersistedCallback;
         public Action<IPrincipal, object> objectUpdatedCallback;
@@ -626,17 +637,35 @@ namespace NakedObjects.SystemTest.Audit {
             objectPersistedCallback = TestAuditManager.UnexpectedCallback(name);
             objectUpdatedCallback = TestAuditManager.UnexpectedCallback(name);
         }
-
-       
     }
 
     public class MyDefaultAuditor : IAuditor {
+        public static readonly Auditor Auditor = new Auditor("default");
 
-       
-        public MyDefaultAuditor()  {
+        public MyDefaultAuditor() {
             Auditor.actionInvokedCallback = (p, a, o, b, pp) => { };
             Auditor.serviceActionInvokedCallback = (p, a, s, b, pp) => { };
         }
+
+        #region IAuditor Members
+
+        public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
+            Auditor.actionInvokedCallback(byPrincipal, actionName, onObject, queryOnly, withParameters);
+        }
+
+        public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
+            Auditor.serviceActionInvokedCallback(byPrincipal, actionName, serviceName, queryOnly, withParameters);
+        }
+
+        public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
+            Auditor.objectUpdatedCallback(byPrincipal, updatedObject);
+        }
+
+        public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
+            Auditor.objectPersistedCallback(byPrincipal, updatedObject);
+        }
+
+        #endregion
 
         public static void SetActionCallbacksExpected() {
             Auditor.actionInvokedCallback = (p, a, o, b, pp) => { };
@@ -647,102 +676,73 @@ namespace NakedObjects.SystemTest.Audit {
             Auditor.actionInvokedCallback = TestAuditManager.UnexpectedActionCallback("default");
             Auditor.serviceActionInvokedCallback = TestAuditManager.UnexpectedServiceActionCallback("default");
         }
-
-        public static readonly Auditor Auditor = new Auditor("default");
-
-
-        public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
-
-            Auditor.actionInvokedCallback(byPrincipal, actionName, onObject, queryOnly, withParameters);
-        }
-
-        public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
-
-            Auditor.serviceActionInvokedCallback(byPrincipal, actionName, serviceName, queryOnly, withParameters);
-        }
-
-        public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
-
-            Auditor.objectUpdatedCallback(byPrincipal, updatedObject);
-        }
-
-        public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
-
-            Auditor.objectPersistedCallback(byPrincipal, updatedObject);
-        }
     }
 
     public class FooAuditor : INamespaceAuditor {
-        public FooAuditor(){
-          
+        public static readonly Auditor Auditor = new Auditor("foo");
+
+        public FooAuditor() {
             NamespaceToAudit = typeof (Foo).FullName;
         }
 
+        #region INamespaceAuditor Members
+
         public string NamespaceToAudit { get; private set; }
 
 
-        public static readonly Auditor Auditor = new Auditor("foo");
-
-
         public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
-
             Auditor.actionInvokedCallback(byPrincipal, actionName, onObject, queryOnly, withParameters);
         }
 
         public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
-
             Auditor.serviceActionInvokedCallback(byPrincipal, actionName, serviceName, queryOnly, withParameters);
         }
 
         public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
-
             Auditor.objectUpdatedCallback(byPrincipal, updatedObject);
         }
 
         public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
-
             Auditor.objectPersistedCallback(byPrincipal, updatedObject);
         }
 
+        #endregion
     }
 
-    public class QuxAuditor :  INamespaceAuditor {
-        public QuxAuditor()
-            {
+    public class QuxAuditor : INamespaceAuditor {
+        public static readonly Auditor Auditor = new Auditor("qux");
+
+        public QuxAuditor() {
             NamespaceToAudit = typeof (Qux).FullName;
         }
 
+        #region INamespaceAuditor Members
+
         public string NamespaceToAudit { get; private set; }
 
 
-        public static readonly Auditor Auditor = new Auditor("qux");
-
-
         public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
-
             Auditor.actionInvokedCallback(byPrincipal, actionName, onObject, queryOnly, withParameters);
         }
 
         public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
-
             Auditor.serviceActionInvokedCallback(byPrincipal, actionName, serviceName, queryOnly, withParameters);
         }
 
         public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
-
             Auditor.objectUpdatedCallback(byPrincipal, updatedObject);
         }
 
         public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
-
             Auditor.objectPersistedCallback(byPrincipal, updatedObject);
         }
+
+        #endregion
     }
 
     public class Foo {
-        
         public virtual int Id { get; set; }
-      
+
         [Optionally]
         public virtual string Prop1 { get; set; }
 
@@ -752,22 +752,24 @@ namespace NakedObjects.SystemTest.Audit {
 
         [QueryOnly]
         public virtual void AQueryOnlyAction() {}
-        public virtual IQueryable<Foo> AnotherQueryOnlyAction() { return new QueryableList<Foo>(); }
+
+        public virtual IQueryable<Foo> AnotherQueryOnlyAction() {
+            return new QueryableList<Foo>();
+        }
     }
 
-    public class Bar
-    {
+    public class Bar {
         public virtual int Id { get; set; }
 
         [Optionally]
         public virtual string Prop1 { get; set; }
 
-        public void AnAction() { }
-        public void AnActionWithParm(int aParm) { }
-        public void AnActionWithParms(int parm1, Foo parm2) { }
+        public void AnAction() {}
+        public void AnActionWithParm(int aParm) {}
+        public void AnActionWithParms(int parm1, Foo parm2) {}
 
         [QueryOnly]
-        public virtual void AQueryOnlyAction() { }
+        public virtual void AQueryOnlyAction() {}
     }
 
     public class Qux {
@@ -811,5 +813,5 @@ namespace NakedObjects.SystemTest.Audit {
         public virtual void AQueryOnlyAction() {}
     }
 
- #endregion
+    #endregion
 }

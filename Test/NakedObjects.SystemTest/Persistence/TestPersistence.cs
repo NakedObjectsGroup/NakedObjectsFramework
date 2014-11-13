@@ -1,65 +1,62 @@
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Data.Entity;
-using System.Data.Entity.SqlServer;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.EntityObjectStore;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 
-namespace NakedObjects.SystemTest.Persistence
-{
+namespace NakedObjects.SystemTest.Persistence {
     [TestClass]
-    public class TestPersistence : 
-        AbstractSystemTest<PersistenceDbContext>
-    {
-            #region Setup/Teardown
-            [ClassInitialize]
-            public static void ClassInitialize(TestContext tc)
-            {
-                InitializeNakedObjectsFramework(new TestPersistence());
-            }
+    public class TestPersistence :
+        AbstractSystemTest<PersistenceDbContext> {
+        #region Setup/Teardown
 
-            [ClassCleanup]
-            public static void ClassCleanup()
-            {
-                CleanupNakedObjectsFramework(new TestPersistence());
-                Database.Delete(PersistenceDbContext.DatabaseName);
-            }
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            InitializeNakedObjectsFramework(new TestPersistence());
+        }
 
-            [TestInitialize()]
-            public void TestInitialize()
-            {
-                StartTest();
-            }
+        [ClassCleanup]
+        public static void ClassCleanup() {
+            CleanupNakedObjectsFramework(new TestPersistence());
+            Database.Delete(PersistenceDbContext.DatabaseName);
+        }
 
-            [TestCleanup()]
-            public void TestCleanup()
-            {
-            }
+        [TestInitialize()]
+        public void TestInitialize() {
+            StartTest();
+        }
 
-            #endregion
+        [TestCleanup()]
+        public void TestCleanup() {}
+
+        #endregion
 
         #region Run configuration
 
-            protected override object[] MenuServices
-        {
-            get
-            {
-                return new object[]{
+        protected override object[] MenuServices {
+            get {
+                return new object[] {
                     new SimpleRepository<Foo1>(),
                     new SimpleRepository<Bar1>(),
-                    new SimpleRepository<Qux1>()};
+                    new SimpleRepository<Qux1>()
+                };
             }
         }
 
         #endregion
 
+        private static bool triggerFail = false;
+
         [TestMethod]
-        public virtual void IdIsSetByTheTimePersistedIsCalled()
-        {
+        public virtual void IdIsSetByTheTimePersistedIsCalled() {
             ITestObject foo = GetTestService("Foo1s").GetAction("New Instance").InvokeReturnObject();
             foo.AssertIsTransient();
             ITestProperty id = foo.GetPropertyByName("Id").AssertValueIsEqual("0");
@@ -72,42 +69,33 @@ namespace NakedObjects.SystemTest.Persistence
         }
 
         [TestMethod]
-        public virtual void ExceptionInPersistedCausesWholeTransactionToFail()
-        {
+        public virtual void ExceptionInPersistedCausesWholeTransactionToFail() {
             ITestObject bar = GetTestService("Bar1s").GetAction("New Instance").InvokeReturnObject();
-            try
-            {
+            try {
                 bar.Save();
             }
-            catch
-            {
+            catch {
                 bar.AssertIsTransient();
             }
         }
 
-        private static bool triggerFail = false;
-        internal static void FailAsRequired()
-        {
-            if (triggerFail)
-            {
+        internal static void FailAsRequired() {
+            if (triggerFail) {
                 throw new NotImplementedException();
             }
         }
 
         [TestMethod]
-        public virtual void ExceptionInUpdatedCausesWholeTransactionToFail()
-        {
+        public virtual void ExceptionInUpdatedCausesWholeTransactionToFail() {
             ITestAction qs = GetTestService("Qux1s").GetAction("All Instances");
             ITestObject q = qs.InvokeReturnCollection().AssertCountIs(1).ElementAt(0);
             ITestProperty name = q.GetPropertyByName("Name");
             name.AssertValueIsEqual("Qux 1");
-            try
-            {
+            try {
                 triggerFail = true;
                 name.SetValue("yyy");
             }
-            catch
-            {
+            catch {
                 triggerFail = false;
                 q.Refresh();
                 q = qs.InvokeReturnCollection().AssertCountIs(1).ElementAt(0);
@@ -119,80 +107,68 @@ namespace NakedObjects.SystemTest.Persistence
 
     #region Classes used by tests
 
-    public class PersistenceDbContext : DbContext
-    {
-         public const string DatabaseName = "TestPersistence";
-         public PersistenceDbContext() : base(DatabaseName) { }
+    public class PersistenceDbContext : DbContext {
+        public const string DatabaseName = "TestPersistence";
+        public PersistenceDbContext() : base(DatabaseName) {}
 
         public DbSet<Foo1> Foos { get; set; }
         public DbSet<Bar1> Bars { get; set; }
         public DbSet<Qux1> Quxes { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             Database.SetInitializer(new MyDbInitialiser());
         }
     }
 
-    public class MyDbInitialiser : DropCreateDatabaseAlways<PersistenceDbContext>
-    {
-        protected override void Seed(PersistenceDbContext context)
-        {
+    public class MyDbInitialiser : DropCreateDatabaseAlways<PersistenceDbContext> {
+        protected override void Seed(PersistenceDbContext context) {
             Qux1 q1 = NewQux("Qux 1", context);
         }
 
-        private Qux1 NewQux(string name, PersistenceDbContext context)
-        {
-            var q = new Qux1 { Name = name };
+        private Qux1 NewQux(string name, PersistenceDbContext context) {
+            var q = new Qux1 {Name = name};
             context.Quxes.Add(q);
             return q;
         }
     }
 
-    public class Foo1
-    {
+    public class Foo1 {
         private int myIdOnPersisted;
         public virtual int Id { get; set; }
 
         public virtual int IdOnPersisting { get; set; }
 
-        public virtual int IdOnPersisted
-        {
+        public virtual int IdOnPersisted {
             get { return myIdOnPersisted; }
         }
 
-        public void Persisting()
-        {
+        public void Persisting() {
             IdOnPersisting = Id;
         }
 
-        public void Persisted()
-        {
+        public void Persisted() {
             myIdOnPersisted = Id;
         }
     }
 
-    public class Bar1
-    {
+    public class Bar1 {
         public virtual int Id { get; set; }
 
-        public void Persisted()
-        {
+        public void Persisted() {
             throw new NotImplementedException();
         }
     }
 
-    public class Qux1
-    {
+    public class Qux1 {
         public virtual int Id { get; set; }
 
         [Optionally]
         public virtual string Name { get; set; }
 
-        public void Updated()
-        {
+        public void Updated() {
             TestPersistence.FailAsRequired();
         }
     }
+
     #endregion
 }

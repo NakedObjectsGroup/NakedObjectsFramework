@@ -8,19 +8,14 @@
 using System;
 using System.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
-
     [TestClass]
-    public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract
-    {
+    public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
         #region Setup/Teardown
-
 
         [ClassInitialize]
         public static void SetupTestFixture(TestContext tc) {
@@ -39,12 +34,13 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
 
         protected override object[] MenuServices {
             get {
-                return (new object[]{
+                return (new object[] {
                     new SimpleRepository<PolymorphicPayment>(),
                     new SimpleRepository<CustomerAsPayee>(),
                     new SimpleRepository<SupplierAsPayee>(),
                     new SimpleRepository<InvoiceAsPayableItem>(),
-                    new SimpleRepository<ExpenseClaimAsPayableItem>()});
+                    new SimpleRepository<ExpenseClaimAsPayableItem>()
+                });
             }
         }
 
@@ -55,71 +51,60 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         #endregion
 
         [TestMethod]
-        public void SetPolymorphicPropertyOnTransientObject()
-        {
+        public void SetPolymorphicPropertyOnTransientObject() {
             base.SetPolymorphicPropertyOnTransientObject("CUS");
         }
 
         [TestMethod]
-        public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject()
-        {
+        public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {
             base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
         }
 
         [TestMethod, Ignore] // temp ignore to get build running on server
-        public  void SetPolymorphicPropertyOnPersistentObject()
-        {
+        public void SetPolymorphicPropertyOnPersistentObject() {
             base.SetPolymorphicPropertyOnPersistentObject("CUS");
         }
 
         [TestMethod, Ignore]
-        public override void ChangePolymorphicPropertyOnPersistentObject()
-        {
+        public override void ChangePolymorphicPropertyOnPersistentObject() {
             base.ChangePolymorphicPropertyOnPersistentObject();
         }
 
         [TestMethod, Ignore]
-        public override void ClearPolymorphicProperty()
-        {
+        public override void ClearPolymorphicProperty() {
             base.ClearPolymorphicProperty();
         }
 
         [TestMethod]
-        public  void PolymorphicCollectionAddMutlipleItemsOfOneType()
-        {
+        public void PolymorphicCollectionAddMutlipleItemsOfOneType() {
             base.PolymorphicCollectionAddMutlipleItemsOfOneType("INV");
         }
 
         [TestMethod]
-        public  void PolymorphicCollectionAddDifferentItems()
-        {
+        public void PolymorphicCollectionAddDifferentItems() {
             base.PolymorphicCollectionAddDifferentItems("INV", "EXP");
         }
 
 
         [TestMethod, Ignore]
-        public override void AttemptToAddSameItemTwice()
-        {
+        public override void AttemptToAddSameItemTwice() {
             base.AttemptToAddSameItemTwice();
         }
 
         [TestMethod, Ignore]
-        public override void RemoveItem()
-        {
+        public override void RemoveItem() {
             base.RemoveItem();
         }
 
 
         [TestMethod]
-        public override void AttemptToRemoveNonExistentItem()
-        {
+        public override void AttemptToRemoveNonExistentItem() {
             base.AttemptToRemoveNonExistentItem();
         }
 
 
         [TestMethod, Ignore]
-        public override void FindOwnersForObject()
-        {
+        public override void FindOwnersForObject() {
             base.FindOwnersForObject();
         }
     }

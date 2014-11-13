@@ -8,16 +8,11 @@
 using System;
 using System.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Services;
 
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
-
     [TestClass]
     public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
-
-
         protected override object[] MenuServices {
             get {
                 return (new object[] {
@@ -33,18 +28,18 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         }
 
         [ClassInitialize]
-        public  static void SetupTestFixture(TestContext tc) {
+        public static void SetupTestFixture(TestContext tc) {
             InitializeNakedObjectsFramework(new TestObjectFinderWithCompoundKeys());
         }
 
         [ClassCleanup]
-        public  static void TearDownTest() {
+        public static void TearDownTest() {
             CleanupNakedObjectsFramework(new TestObjectFinderWithCompoundKeys());
             Database.Delete(PaymentContext.DatabaseName);
         }
 
 
-               [TestMethod]
+        [TestMethod]
         public virtual void SetAssociatedObject() {
             payee1.SetObject(customer2a);
             key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
@@ -67,8 +62,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         }
 
         [TestMethod]
-        public virtual void WorksWithTripleIntegerKey()
-        {
+        public virtual void WorksWithTripleIntegerKey() {
             payee1.SetObject(customer3);
             key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree|1|1001|2001");
             payee1.ClearObject();
@@ -79,8 +73,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         }
 
         [TestMethod]
-        public virtual void FailsIfTypeNameIsEmpty()
-        {
+        public virtual void FailsIfTypeNameIsEmpty() {
             key1.SetValue("|1|1001|2001");
             try {
                 payee1.AssertIsNotEmpty();
@@ -92,8 +85,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         }
 
         [TestMethod]
-        public virtual void FailsIfTypeNameIsWrong()
-        {
+        public virtual void FailsIfTypeNameIsWrong() {
             key1.SetValue("CustomerThree|1|1001|2001");
             try {
                 payee1.AssertIsNotEmpty();
@@ -106,8 +98,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
 
 
         [TestMethod]
-        public virtual void FailsIfTooFewKeysSupplied()
-        {
+        public virtual void FailsIfTooFewKeysSupplied() {
             key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree|1|1001");
             try {
                 payee1.AssertIsNotEmpty();
@@ -120,8 +111,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
 
 
         [TestMethod]
-        public virtual void FailsIfTooManyKeysSupplied()
-        {
+        public virtual void FailsIfTooManyKeysSupplied() {
             key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001|2001");
             try {
                 payee1.AssertIsNotEmpty();
@@ -134,8 +124,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
 
 
         [TestMethod]
-        public virtual void ChangeAssociatedObjectType()
-        {
+        public virtual void ChangeAssociatedObjectType() {
             payee1.SetObject(customer2a);
             key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
             payee1.SetObject(supplier1);
@@ -146,8 +135,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
 
 
         [TestMethod]
-        public virtual void ClearAssociatedObject()
-        {
+        public virtual void ClearAssociatedObject() {
             payee1.SetObject(customer2a);
             payee1.ClearObject();
             key1.AssertIsEmpty();
@@ -155,8 +143,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
 
 
         [TestMethod]
-        public virtual void GetAssociatedObject()
-        {
+        public virtual void GetAssociatedObject() {
             key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
             payee1.AssertIsNotEmpty();
             payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("1");
@@ -169,10 +156,8 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         }
 
         [TestMethod]
-        public virtual void NoAssociatedObject()
-        {
+        public virtual void NoAssociatedObject() {
             key1.AssertIsEmpty();
         }
     }
-
 }

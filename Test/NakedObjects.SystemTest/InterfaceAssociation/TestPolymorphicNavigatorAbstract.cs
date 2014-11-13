@@ -13,11 +13,8 @@ using NakedObjects.SystemTest.PolymorphicAssociations;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
-
     [TestClass]
-    public abstract class TestPolymorphicNavigatorAbstract : AbstractSystemTest<PolymorphicNavigationContext>
-    {
-
+    public abstract class TestPolymorphicNavigatorAbstract : AbstractSystemTest<PolymorphicNavigationContext> {
         #region Setup/Teardown
 
         // to get EF SqlServer Dll in memory
@@ -26,12 +23,10 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         [TestInitialize]
         public void Initialize() {
             StartTest();
-     
         }
 
         [TestCleanup]
-        public void CleanUp() {
-        }
+        public void CleanUp() {}
 
         #endregion
 
@@ -51,9 +46,8 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             ITestProperty associatedId = payeeLink.GetPropertyByName("Associated Role Object Id").AssertIsUnmodifiable();
             associatedId.AssertValueIsEqual(cusId);
         }
- 
-        public virtual void AttemptSetPolymorphicPropertyWithATransientAssociatedObject()
-        {
+
+        public virtual void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {
             ITestObject transPayment = GetTestService("Polymorphic Payments").GetAction("New Instance").InvokeReturnObject().Save();
 
             ITestObject customer1 = GetTestService("Customer As Payees").GetAction("New Instance").InvokeReturnObject();
@@ -70,10 +64,9 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             }
         }
 
-        public virtual void SetPolymorphicPropertyOnPersistentObject(string roleObjectType)
-        {
+        public virtual void SetPolymorphicPropertyOnPersistentObject(string roleObjectType) {
             var payment1 = FindById<PolymorphicPayment>(1);
-            var customer1 = FindById<CustomerAsPayee>(1);    
+            var customer1 = FindById<CustomerAsPayee>(1);
             string cusId = customer1.GetPropertyByName("Id").Title;
 
             ITestProperty payeeProp = payment1.GetPropertyByName("Payee").AssertIsEmpty();
@@ -87,9 +80,9 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             associatedId.AssertValueIsEqual(cusId);
         }
 
-        public virtual  void ChangePolymorphicPropertyOnPersistentObject() {
+        public virtual void ChangePolymorphicPropertyOnPersistentObject() {
             var payment2 = FindById<PolymorphicPayment>(3);
-            var customer1 = FindById<CustomerAsPayee>(1);  
+            var customer1 = FindById<CustomerAsPayee>(1);
             string cusId = customer1.GetPropertyByName("Id").Title;
 
             ITestProperty payeeProp = payment2.GetPropertyByName("Payee");
@@ -114,10 +107,9 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             payeeProp.AssertIsEmpty();
         }
 
-        public virtual void ClearPolymorphicProperty()
-        {
+        public virtual void ClearPolymorphicProperty() {
             var payment3 = FindById<PolymorphicPayment>(2);
-            
+
             var payeeProp = payment3.GetPropertyByName("Payee");
             var payeeLinkProp = payment3.GetPropertyByName("Payee Link");
 
@@ -129,10 +121,9 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             payeeProp.AssertIsEmpty();
         }
 
-        public virtual void PolymorphicCollectionAddMutlipleItemsOfOneType(string roleObjectType)
-        {
+        public virtual void PolymorphicCollectionAddMutlipleItemsOfOneType(string roleObjectType) {
             var payment = FindById<PolymorphicPayment>(4);
-            var inv = FindById<InvoiceAsPayableItem>(1);  
+            var inv = FindById<InvoiceAsPayableItem>(1);
 
             string invId = inv.GetPropertyByName("Id").Title;
             ITestObject inv2 = GetTestService("Invoice As Payable Items").GetAction("New Instance").InvokeReturnObject().Save();
@@ -166,8 +157,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             item.AssertIsType(typeof (InvoiceAsPayableItem));
         }
 
-        public virtual void PolymorphicCollectionAddDifferentItems(string roleType1, string roleType2)
-        {
+        public virtual void PolymorphicCollectionAddDifferentItems(string roleType1, string roleType2) {
             var payment = FindById<PolymorphicPayment>(5);
             var inv = FindById<InvoiceAsPayableItem>(1);
 
@@ -202,10 +192,9 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             item.AssertIsType(typeof (ExpenseClaimAsPayableItem));
         }
 
-        public virtual void AttemptToAddSameItemTwice()
-        {
+        public virtual void AttemptToAddSameItemTwice() {
             var payment = FindById<PolymorphicPayment>(6);
-            var inv = FindById<InvoiceAsPayableItem>(1); 
+            var inv = FindById<InvoiceAsPayableItem>(1);
             string invId = inv.GetPropertyByName("Id").Title;
 
             ITestCollection links = payment.GetPropertyByName("Payable Item Links").ContentAsCollection;
@@ -227,10 +216,9 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             items.AssertCountIs(1);
         }
 
-        public virtual void RemoveItem()
-        {
+        public virtual void RemoveItem() {
             var payment = FindById<PolymorphicPayment>(7);
-            var inv = FindById<InvoiceAsPayableItem>(1); 
+            var inv = FindById<InvoiceAsPayableItem>(1);
             string invId = inv.GetPropertyByName("Id").Title;
 
             ITestCollection links = payment.GetPropertyByName("Payable Item Links").ContentAsCollection;
@@ -252,11 +240,10 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             items.AssertCountIs(0);
         }
 
-        public virtual void AttemptToRemoveNonExistentItem()
-        {
+        public virtual void AttemptToRemoveNonExistentItem() {
             var payment = FindById<PolymorphicPayment>(8);
             var inv = FindById<InvoiceAsPayableItem>(1);
-            var inv2 = FindById<InvoiceAsPayableItem>(2); 
+            var inv2 = FindById<InvoiceAsPayableItem>(2);
 
             string invId = inv.GetPropertyByName("Id").Title;
 
@@ -280,8 +267,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             item = items.AssertCountIs(1).ElementAt(0);
         }
 
-        public virtual void FindOwnersForObject()
-        {
+        public virtual void FindOwnersForObject() {
             var payment9 = FindById<PolymorphicPayment>(9);
             var payment10 = FindById<PolymorphicPayment>(10);
             var payment11 = FindById<PolymorphicPayment>(11);

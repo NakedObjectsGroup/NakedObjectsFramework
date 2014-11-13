@@ -9,13 +9,11 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
-        [TestClass]
+    [TestClass]
     public class TestObjectFinderWithSingleKeys : AbstractSystemTest<PaymentContext> {
         private ITestObject customer1 = null;
         private ITestObject customer2 = null;
@@ -146,32 +144,28 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
     #region Classes used by test
 
     public class PaymentContext : DbContext {
-
         public const string DatabaseName = "ObjectFinderSingleKey";
 
-        public PaymentContext() : base(DatabaseName) { }
+        public PaymentContext() : base(DatabaseName) {}
 
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            Database.SetInitializer(new DatabaseInitializer()); 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+            Database.SetInitializer(new DatabaseInitializer());
         }
     }
 
-    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext>
-    {
-        protected override void Seed(PaymentContext context)
-        {
+    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {
+        protected override void Seed(PaymentContext context) {
             context.Payments.Add(new Payment());
             context.Customers.Add(new Customer());
             context.Customers.Add(new Customer());
             context.Suppliers.Add(new Supplier());
-            context.Employees.Add(new Employee() { Id = "foo" });
-            context.Employees.Add(new Employee() { Id = "bar" });
+            context.Employees.Add(new Employee() {Id = "foo"});
+            context.Employees.Add(new Employee() {Id = "bar"});
             context.SaveChanges();
         }
     }
@@ -223,21 +217,18 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
 
 
     public class Customer : IPayee {
-   
         [Disabled]
         public virtual int Id { get; set; }
     }
 
 
     public class Supplier : IPayee {
-
         [Disabled]
         public virtual int Id { get; set; }
     }
 
 
     public class Employee : IPayee {
-
         [Key]
         public virtual string Id { get; set; }
     }

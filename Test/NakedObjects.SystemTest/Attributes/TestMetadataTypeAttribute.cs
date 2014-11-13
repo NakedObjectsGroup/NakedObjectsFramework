@@ -1,59 +1,27 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System.ComponentModel.DataAnnotations;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
 using NakedObjects.Xat;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NakedObjects.SystemTest.Attributes {
     namespace MetadataType {
         [TestClass, Ignore] // Pending deletion  -  see #5169  
         public class TestMetadataTypeAttribute : AcceptanceTestCase {
-
+            private ITestObject obj;
 
             /// <summary>
             /// Assumes that a SimpleRepository for the type T has been registered in Services
             /// </summary>
-            protected ITestObject NewTestObject<T>()
-            {
-                return GetTestService(typeof(T).Name + "s").GetAction("New Instance").InvokeReturnObject();
+            protected ITestObject NewTestObject<T>() {
+                return GetTestService(typeof (T).Name + "s").GetAction("New Instance").InvokeReturnObject();
             }
-
-            #region Setup/Teardown
-
-            [TestInitialize()]
-            public void SetUp() {
-                InitializeNakedObjectsFramework(this);
-                obj = NewTestObject<Object1>();
-            }
-
-            [TestCleanup()]
-            public void TearDown() {
-                CleanupNakedObjectsFramework(this);
-                obj = null;
-            }
-
-            #endregion
-
-            #region "Services & Fixtures"
-            protected override IServicesInstaller MenuServices {
-                get {
-                    return new ServicesInstaller(new object[] {
-                                                                  new SimpleRepository<Object1>(),
-                                                                  new SimpleRepository<Object3>()
-                                                              }); }
-            }
-
-            //Specify as you would for the run class in a prototype
-            protected override IFixturesInstaller Fixtures {
-                get { return new FixturesInstaller(new object[] {}); }
-            }
-#endregion
-
-            private ITestObject obj;
 
             [TestMethod]
             public virtual void PropertyNotIncludedInBuddyClass() {
@@ -91,7 +59,6 @@ namespace NakedObjects.SystemTest.Attributes {
                 ITestProperty prop6 = obj1.GetPropertyByName("Prop6");
                 prop6.SetValue("FooBar");
                 obj1.AssertTitleEquals("FooBar");
-
             }
 
             // this test need .net 4 to run 
@@ -103,8 +70,41 @@ namespace NakedObjects.SystemTest.Attributes {
                 Assert.AreEqual(properties[1].Id, "Prop10");
                 Assert.AreEqual(properties[2].Id, "Prop7");
                 Assert.AreEqual(properties[3].Id, "Prop9");
-
             }
+
+            #region Setup/Teardown
+
+            [TestInitialize()]
+            public void SetUp() {
+                InitializeNakedObjectsFramework(this);
+                obj = NewTestObject<Object1>();
+            }
+
+            [TestCleanup()]
+            public void TearDown() {
+                CleanupNakedObjectsFramework(this);
+                obj = null;
+            }
+
+            #endregion
+
+            #region "Services & Fixtures"
+
+            protected override object[] MenuServices {
+                get {
+                    return (new object[] {
+                        new SimpleRepository<Object1>(),
+                        new SimpleRepository<Object3>()
+                    });
+                }
+            }
+
+            //Specify as you would for the run class in a prototype
+            protected override object[] Fixtures {
+                get { return (new object[] {}); }
+            }
+
+            #endregion
         }
 
         public partial class Object1 {
@@ -147,31 +147,31 @@ namespace NakedObjects.SystemTest.Attributes {
             public string Prop8 { get; set; }
         }
 
-        [MetadataType(typeof(Object2_Metadata))]
-        public partial class Object2{}
+        [MetadataType(typeof (Object2_Metadata))]
+        public partial class Object2 {}
 
         public class Object2_Metadata {
             [MemberOrder("3")]
             public string Prop7 { get; set; }
+
             [MemberOrder("1")]
             public string Prop8 { get; set; }
         }
 
-        public partial class Object3 : Object2{
+        public partial class Object3 : Object2 {
             public string Prop9 { get; set; }
             public string Prop10 { get; set; }
         }
 
-        [MetadataType(typeof(Object3_Metadata))]
-        public partial class Object3 { }
+        [MetadataType(typeof (Object3_Metadata))]
+        public partial class Object3 {}
 
-        public class Object3_Metadata  {
+        public class Object3_Metadata {
             [MemberOrder("4")]
             public string Prop9 { get; set; }
+
             [MemberOrder("2")]
             public string Prop10 { get; set; }
         }
-
-
     }
 }

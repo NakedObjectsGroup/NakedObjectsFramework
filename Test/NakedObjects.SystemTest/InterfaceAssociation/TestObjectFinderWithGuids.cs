@@ -6,22 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.Xat;
-using System.Linq;
-using System.ComponentModel.DataAnnotations;
 
 namespace NakedObjects.SystemTest.ObjectFinderGuid {
-
     [TestClass]
-    public class TestObjectFinderWithGuids : AbstractSystemTest<PaymentContext>
-    {
-
+    public class TestObjectFinderWithGuids : AbstractSystemTest<PaymentContext> {
         private ITestObject customer1;
         private ITestObject customer2;
         private ITestProperty key1;
@@ -120,27 +115,24 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
     public class PaymentContext : DbContext {
         public const string DatabaseName = "ObjectFinderGuid";
-        public PaymentContext() : base(DatabaseName) { }
+        public PaymentContext() : base(DatabaseName) {}
 
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             Database.SetInitializer(new DatabaseInitializer());
         }
     }
 
-    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext>
-    {
-        protected override void Seed(PaymentContext context)
-        {
+    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {
+        protected override void Seed(PaymentContext context) {
             context.Payments.Add(new Payment());
-            context.Customers.Add(new Customer() { Guid = new Guid("0c1ced04-7016-11e0-9c44-78544824019b") });
-            context.Customers.Add(new Customer() { Guid = new Guid("3d9d6ca0-7016-11e0-b12a-9e544824019b") });
-            context.Suppliers.Add(new Supplier() { Guid = new Guid("89bc90ec-7017-11e0-a08c-57564824019b") });
+            context.Customers.Add(new Customer() {Guid = new Guid("0c1ced04-7016-11e0-9c44-78544824019b")});
+            context.Customers.Add(new Customer() {Guid = new Guid("3d9d6ca0-7016-11e0-b12a-9e544824019b")});
+            context.Suppliers.Add(new Supplier() {Guid = new Guid("89bc90ec-7017-11e0-a08c-57564824019b")});
             context.SaveChanges();
         }
     }
@@ -190,6 +182,7 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
     public class Customer : IPayee {
         #region IPayee Members
+
         [Key]
         public virtual Guid Guid { get; set; }
 
@@ -199,6 +192,7 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
     public class Supplier : IPayee {
         #region IPayee Members
+
         [Key]
         public virtual Guid Guid { get; set; }
 

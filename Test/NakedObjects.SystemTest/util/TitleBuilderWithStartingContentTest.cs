@@ -5,8 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.SystemTest.Util
-{
+namespace NakedObjects.SystemTest.Util {
     internal class ObjectWithToString {
         public override string ToString() {
             return "from ToString";

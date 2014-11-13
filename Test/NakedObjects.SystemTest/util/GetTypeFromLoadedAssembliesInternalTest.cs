@@ -8,8 +8,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Util;
 
-namespace NakedObjects.SystemTest.Util
-{
+namespace NakedObjects.SystemTest.Util {
     [TestClass]
     public class GetTypeFromLoadedAssembliesInternalTest : GetTypeFromLoadedAssembliesTestAbstract {
         [ClassInitialize]

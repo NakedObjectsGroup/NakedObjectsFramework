@@ -1,54 +1,50 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Services;
 using NakedObjects.Xat;
-using System.Data.Entity;
 
 namespace NakedObjects.SystemTest.Enum {
     [TestClass]
     public class EnumTest : AbstractSystemTest<EnumDbContext> {
         #region Setup/Teardown
+
         [ClassInitialize]
-        public static void ClassInitialize(TestContext tc)
-        {
+        public static void ClassInitialize(TestContext tc) {
             InitializeNakedObjectsFramework(new EnumTest());
         }
 
         [ClassCleanup]
-        public static void ClassCleanup()
-        {
+        public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new EnumTest());
             Database.Delete(EnumDbContext.DatabaseName);
         }
 
         [TestInitialize()]
-        public void TestInitialize()
-        {
+        public void TestInitialize() {
             StartTest();
         }
 
         [TestCleanup()]
-        public void TestCleanup()
-        {
-        }
+        public void TestCleanup() {}
 
         #endregion
 
         #region Run configuration
-        protected override IServicesInstaller MenuServices {
-            get { return new ServicesInstaller(new object[] {new SimpleRepository<Foo>()}); }
+
+        protected override object[] MenuServices {
+            get { return (new object[] {new SimpleRepository<Foo>()}); }
         }
 
         #endregion
-
-
 
         [TestMethod]
         public virtual void EnumPropertyBasic() {
@@ -144,22 +140,19 @@ namespace NakedObjects.SystemTest.Enum {
             Assert.AreEqual("Unknown", act2.Parameters[0].GetDefault().Title);
         }
     }
+
     #region Classes used in tests
 
-    public class EnumDbContext : DbContext
-    {
+    public class EnumDbContext : DbContext {
         public const string DatabaseName = "TestEnums";
-        public EnumDbContext() : base(DatabaseName) { }
+        public EnumDbContext() : base(DatabaseName) {}
 
         public DbSet<Foo> Foos { get; set; }
-
     }
 
     public class Foo {
-
-        
         public virtual int Id { get; set; }
-      
+
         #region Sex1
 
         public virtual Sexes Sex1 { get; set; }
@@ -246,5 +239,5 @@ namespace NakedObjects.SystemTest.Enum {
         White = 5
     }
 
-#endregion
+    #endregion
 }

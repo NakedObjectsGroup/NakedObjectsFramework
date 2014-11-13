@@ -1,74 +1,68 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Core.Spec;
 using NakedObjects.Services;
 using NakedObjects.Xat;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Data.Entity;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Collections.Generic;
-using NakedObjects.Architecture.Adapter;
 
-namespace NakedObjects.SystemTest.Attributes
-{
+namespace NakedObjects.SystemTest.Attributes {
     [TestClass]
-    public class TestAttributes : AbstractSystemTest<AttributesDbContext>
-    {
+    public class TestAttributes : AbstractSystemTest<AttributesDbContext> {
         #region Setup/Teardown
+
         [ClassInitialize]
-        public static void ClassInitialize(TestContext tc)
-        {
+        public static void ClassInitialize(TestContext tc) {
             InitializeNakedObjectsFramework(new TestAttributes());
         }
 
         [ClassCleanup]
-        public static void ClassCleanup()
-        {
+        public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestAttributes());
             Database.Delete(AttributesDbContext.DatabaseName);
         }
 
         [TestInitialize()]
-        public void TestInitialize()
-        {
+        public void TestInitialize() {
             StartTest();
         }
 
         [TestCleanup()]
-        public void TestCleanup()
-        {
-        }
+        public void TestCleanup() {}
 
         #endregion
 
-        protected override IServicesInstaller MenuServices
-        {
-            get
-            {
-                return new ServicesInstaller(
+        protected override object[] MenuServices {
+            get {
+                return new object[] {
                     new SimpleRepository<Default1>(),
                     new SimpleRepository<Describedas1>(),
                     new SimpleRepository<Describedas2>(),
                     new SimpleRepository<Description1>(),
                     new SimpleRepository<Description2>(),
-                     new SimpleRepository<Disabled1>(),
-                     new SimpleRepository<Displayname1>(),
-                     new SimpleRepository<Hidden1>(),
-                     new SimpleRepository<Iconname1>(),
-                     new SimpleRepository<Iconname2>(),
-                     new SimpleRepository<Iconname3>(),
-                     new SimpleRepository<Iconname4>(),
-                     new SimpleRepository<Immutable1>(),
-                     new SimpleRepository<Immutable2>(),
-                     new SimpleRepository<Immutable3>(),
-                     new SimpleRepository<Mask1>(),
-                     new SimpleRepository<Mask2>(),
+                    new SimpleRepository<Disabled1>(),
+                    new SimpleRepository<Displayname1>(),
+                    new SimpleRepository<Hidden1>(),
+                    new SimpleRepository<Iconname1>(),
+                    new SimpleRepository<Iconname2>(),
+                    new SimpleRepository<Iconname3>(),
+                    new SimpleRepository<Iconname4>(),
+                    new SimpleRepository<Immutable1>(),
+                    new SimpleRepository<Immutable2>(),
+                    new SimpleRepository<Immutable3>(),
+                    new SimpleRepository<Mask1>(),
+                    new SimpleRepository<Mask2>(),
                     new SimpleRepository<Maxlength1>(),
                     new SimpleRepository<Maxlength2>(),
                     new SimpleRepository<Named1>(),
@@ -88,21 +82,21 @@ namespace NakedObjects.SystemTest.Attributes
                     new SimpleRepository<Title7>(),
                     new SimpleRepository<Title8>(),
                     new SimpleRepository<Title9>(),
-                    new SimpleRepository<Validateprogrammaticupdates1>(), 
-                    new SimpleRepository<Validateprogrammaticupdates2>(), 
+                    new SimpleRepository<Validateprogrammaticupdates1>(),
+                    new SimpleRepository<Validateprogrammaticupdates2>(),
                     new TestServiceValidateProgrammaticUpdates(),
                     new SimpleRepository<Notcontributedaction1>(),
                     new TestServiceNotContributedAction(),
                     new SimpleRepository<Exclude1>(),
                     new TestServiceExcludeFromFindMenu()
-                     );
+                };
             }
         }
 
         #region Default
+
         [TestMethod]
-        public virtual void DefaultNumericProperty()
-        {
+        public virtual void DefaultNumericProperty() {
             var default1 = NewTestObject<Default1>();
             ITestProperty prop = default1.GetPropertyByName("Prop1");
             string def = prop.GetDefault().Title;
@@ -111,8 +105,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public void DefaultParameters()
-        {
+        public void DefaultParameters() {
             var default1 = NewTestObject<Default1>();
             ITestAction action = default1.GetAction("Do Something");
             string def0 = action.Parameters[0].GetDefault().Title;
@@ -125,20 +118,20 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void DefaultStringProperty()
-        {
+        public virtual void DefaultStringProperty() {
             var default1 = NewTestObject<Default1>();
             ITestProperty prop = default1.GetPropertyByName("Prop2");
             string def = prop.GetDefault().Title;
             Assert.IsNotNull(def);
             Assert.AreEqual("Foo", def);
         }
+
         #endregion
 
         #region DescribedAs
+
         [TestMethod]
-        public virtual void DescribedAsAppliedToAction()
-        {
+        public virtual void DescribedAsAppliedToAction() {
             var describedAs1 = NewTestObject<Describedas1>();
             ITestAction action = describedAs1.GetAction("Do Something");
             Assert.IsNotNull(action);
@@ -146,15 +139,13 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void DescribedAsAppliedToObject()
-        {
+        public virtual void DescribedAsAppliedToObject() {
             var describedAs1 = NewTestObject<Describedas1>();
             describedAs1.AssertIsDescribedAs("Foo");
         }
 
         [TestMethod]
-        public virtual void DescribedAsAppliedToParameter()
-        {
+        public virtual void DescribedAsAppliedToParameter() {
             var describedAs1 = NewTestObject<Describedas1>();
             ITestAction action = describedAs1.GetAction("Do Something");
             ITestParameter param = action.Parameters[0];
@@ -162,16 +153,14 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void DescribedAsAppliedToProperty()
-        {
+        public virtual void DescribedAsAppliedToProperty() {
             var describedAs1 = NewTestObject<Describedas1>();
             ITestProperty prop = describedAs1.GetPropertyByName("Prop1");
             prop.AssertIsDescribedAs("Bar");
         }
 
         [TestMethod]
-        public virtual void NullDescribedAsAppliedToAction()
-        {
+        public virtual void NullDescribedAsAppliedToAction() {
             var describedAs2 = NewTestObject<Describedas2>();
             ITestAction action = describedAs2.GetAction("Do Something");
             Assert.IsNotNull(action);
@@ -179,15 +168,13 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void NullDescribedAsAppliedToObject()
-        {
+        public virtual void NullDescribedAsAppliedToObject() {
             var describedAs2 = NewTestObject<Describedas2>();
             describedAs2.AssertIsDescribedAs("");
         }
 
         [TestMethod]
-        public virtual void NullDescribedAsAppliedToParameter()
-        {
+        public virtual void NullDescribedAsAppliedToParameter() {
             var describedAs2 = NewTestObject<Describedas2>();
             ITestAction action = describedAs2.GetAction("Do Something");
             ITestParameter param = action.Parameters[0];
@@ -195,18 +182,18 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void NullDescribedAsAppliedToProperty()
-        {
+        public virtual void NullDescribedAsAppliedToProperty() {
             var describedAs2 = NewTestObject<Describedas2>();
             ITestProperty prop = describedAs2.GetPropertyByName("Prop1");
             prop.AssertIsDescribedAs("");
         }
+
         #endregion
 
         #region Description
+
         [TestMethod]
-        public virtual void DescriptionAppliedToAction()
-        {
+        public virtual void DescriptionAppliedToAction() {
             var description1 = NewTestObject<Description1>();
             ITestAction action = description1.GetAction("Do Something");
             Assert.IsNotNull(action);
@@ -214,15 +201,13 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void DescriptionAppliedToObject()
-        {
+        public virtual void DescriptionAppliedToObject() {
             var description1 = NewTestObject<Description1>();
             description1.AssertIsDescribedAs("Foo");
         }
 
         [TestMethod]
-        public virtual void DescriptionAppliedToParameter()
-        {
+        public virtual void DescriptionAppliedToParameter() {
             var description1 = NewTestObject<Description1>();
             ITestAction action = description1.GetAction("Do Something");
             ITestParameter param = action.Parameters[0];
@@ -230,16 +215,14 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void DescriptionAppliedToProperty()
-        {
+        public virtual void DescriptionAppliedToProperty() {
             var description1 = NewTestObject<Description1>();
             ITestProperty prop = description1.GetPropertyByName("Prop1");
             prop.AssertIsDescribedAs("Bar");
         }
 
         [TestMethod]
-        public virtual void NullDescriptionAppliedToAction()
-        {
+        public virtual void NullDescriptionAppliedToAction() {
             var description2 = NewTestObject<Description2>();
             ITestAction action = description2.GetAction("Do Something");
             Assert.IsNotNull(action);
@@ -247,15 +230,13 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void NullDescriptionAppliedToObject()
-        {
+        public virtual void NullDescriptionAppliedToObject() {
             var description2 = NewTestObject<Description2>();
             description2.AssertIsDescribedAs("");
         }
 
         [TestMethod]
-        public virtual void NullDescriptionAppliedToParameter()
-        {
+        public virtual void NullDescriptionAppliedToParameter() {
             var description2 = NewTestObject<Description2>();
             ITestAction action = description2.GetAction("Do Something");
             ITestParameter param = action.Parameters[0];
@@ -263,23 +244,22 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void NullDescriptionAppliedToProperty()
-        {
+        public virtual void NullDescriptionAppliedToProperty() {
             var description2 = NewTestObject<Description2>();
             ITestProperty prop = description2.GetPropertyByName("Prop1");
             prop.AssertIsDescribedAs("");
         }
+
         #endregion
 
         #region Disabled
-        private ITestObject NewTransientDisabled1()
-        {
+
+        private ITestObject NewTransientDisabled1() {
             return GetTestService("Disabled1s").GetAction("New Instance").InvokeReturnObject();
         }
 
         [TestMethod]
-        public virtual void Disabled()
-        {
+        public virtual void Disabled() {
             var obj = NewTransientDisabled1();
             ITestProperty prop1 = obj.GetPropertyByName("Prop1");
             prop1.AssertIsUnmodifiable();
@@ -288,65 +268,65 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void DisabledAlways()
-        {
-            var obj = NewTransientDisabled1(); ITestProperty prop5 = obj.GetPropertyByName("Prop5");
+        public virtual void DisabledAlways() {
+            var obj = NewTransientDisabled1();
+            ITestProperty prop5 = obj.GetPropertyByName("Prop5");
             prop5.AssertIsUnmodifiable();
             obj.Save();
             prop5.AssertIsUnmodifiable();
         }
 
         [TestMethod]
-        public virtual void DisabledNever()
-        {
-            var obj = NewTransientDisabled1(); ITestProperty prop4 = obj.GetPropertyByName("Prop4");
+        public virtual void DisabledNever() {
+            var obj = NewTransientDisabled1();
+            ITestProperty prop4 = obj.GetPropertyByName("Prop4");
             prop4.AssertIsModifiable();
             obj.Save();
             prop4.AssertIsModifiable();
         }
 
         [TestMethod]
-        public virtual void DisabledOncePersisted()
-        {
-            var obj = NewTransientDisabled1(); ITestProperty prop2 = obj.GetPropertyByName("Prop2");
+        public virtual void DisabledOncePersisted() {
+            var obj = NewTransientDisabled1();
+            ITestProperty prop2 = obj.GetPropertyByName("Prop2");
             prop2.AssertIsModifiable();
             obj.Save();
             prop2.AssertIsUnmodifiable();
         }
 
         [TestMethod]
-        public virtual void DisabledUntilPersisted()
-        {
-            var obj = NewTransientDisabled1(); ITestProperty prop3 = obj.GetPropertyByName("Prop3");
+        public virtual void DisabledUntilPersisted() {
+            var obj = NewTransientDisabled1();
+            ITestProperty prop3 = obj.GetPropertyByName("Prop3");
             prop3.AssertIsUnmodifiable();
             obj.Save();
             prop3.AssertIsModifiable();
         }
+
         #endregion
 
         #region DisplayName
+
         [TestMethod]
-        public virtual void DisplayNameAppliedToAction()
-        {
+        public virtual void DisplayNameAppliedToAction() {
             var displayname1 = NewTestObject<Displayname1>();
             ITestAction hex = displayname1.GetAction("Hex");
             Assert.IsNotNull(hex);
-            StringAssert.Equals("Hex", hex.Name);
+            Equals("Hex", hex.Name);
         }
 
         [TestMethod]
-        public virtual void DisplayNameAppliedToObject()
-        {
+        public virtual void DisplayNameAppliedToObject() {
             var displayname1 = NewTestObject<Displayname1>();
             displayname1.AssertTitleEquals("Untitled Foo");
         }
+
         #endregion
 
         #region Hidden
 
         [TestMethod]
-        public virtual void Hidden()
-        {
+        public virtual void Hidden() {
             var hidden1 = NewTestObject<Hidden1>();
             ITestProperty prop1 = hidden1.GetPropertyByName("Prop1");
             prop1.AssertIsInvisible();
@@ -356,8 +336,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void HiddenAlways()
-        {
+        public virtual void HiddenAlways() {
             var hidden1 = NewTestObject<Hidden1>();
             ITestProperty prop5 = hidden1.GetPropertyByName("Prop5");
             prop5.AssertIsInvisible();
@@ -366,8 +345,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void HiddenNever()
-        {
+        public virtual void HiddenNever() {
             var hidden1 = NewTestObject<Hidden1>();
             ITestProperty prop4 = hidden1.GetPropertyByName("Prop4");
             prop4.AssertIsVisible();
@@ -376,8 +354,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void HiddenOncePersisted()
-        {
+        public virtual void HiddenOncePersisted() {
             var hidden1 = NewTestObject<Hidden1>();
             ITestProperty prop2 = hidden1.GetPropertyByName("Prop2");
             prop2.AssertIsVisible();
@@ -386,21 +363,20 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void HiddenUntilPersisted()
-        {
+        public virtual void HiddenUntilPersisted() {
             var hidden1 = NewTestObject<Hidden1>();
             ITestProperty prop3 = hidden1.GetPropertyByName("Prop3");
             prop3.AssertIsInvisible();
             hidden1.Save();
             prop3.AssertIsVisible();
         }
+
         #endregion
 
         #region Immutable
 
         [TestMethod]
-        public virtual void ObjectImmutable()
-        {
+        public virtual void ObjectImmutable() {
             ITestObject obj = NewTestObject<Immutable2>();
             ITestProperty prop0 = obj.GetPropertyByName("Prop0");
             prop0.AssertIsUnmodifiable();
@@ -427,8 +403,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void TestObjectImmutableOncePersisted()
-        {
+        public virtual void TestObjectImmutableOncePersisted() {
             ITestObject obj = NewTestObject<Immutable3>();
             ITestProperty prop0 = obj.GetPropertyByName("Prop0");
             prop0.AssertIsModifiable();
@@ -455,47 +430,48 @@ namespace NakedObjects.SystemTest.Attributes
             prop5.AssertIsUnmodifiable();
             prop6.AssertIsUnmodifiable();
         }
+
         #endregion
 
         #region Mask
+
         [TestMethod]
-        public virtual void CMaskOnDecimalProperty()
-        {
+        public virtual void CMaskOnDecimalProperty() {
             var mask1 = NewTestObject<Mask2>();
             var prop1 = mask1.GetPropertyByName("Prop1");
             prop1.SetValue("32.70");
-            var dom = (Mask2)mask1.GetDomainObject();
-            StringAssert.Equals("32.7", dom.Prop1.ToString());
-            StringAssert.Equals("32.70", prop1.Content.Title);
-            StringAssert.Equals("£32.70", prop1.Title);
+            var dom = (Mask2) mask1.GetDomainObject();
+            Equals("32.7", dom.Prop1.ToString());
+            Equals("32.70", prop1.Content.Title);
+            Equals("£32.70", prop1.Title);
             prop1.AssertTitleIsEqual("£32.70");
             prop1.AssertValueIsEqual("32.70");
         }
 
         [TestMethod]
-        public virtual void DMaskOnDateProperty()
-        {
+        public virtual void DMaskOnDateProperty() {
             var mask1 = NewTestObject<Mask1>();
             var prop1 = mask1.GetPropertyByName("Prop1");
             prop1.SetValue("23/09/2009 11:34:50");
             var prop2 = mask1.GetPropertyByName("Prop2");
             prop2.SetValue("23/09/2009 11:34:50");
-            var dom = (Mask1)mask1.GetDomainObject();
-            StringAssert.Equals("23/09/2009 11:34:50", dom.Prop1.ToString());
-            StringAssert.Equals("23/09/2009 11:34:50", prop1.Content.Title);
-            StringAssert.Equals("23/09/2009 11:34:50", dom.Prop2.ToString());
-            StringAssert.Equals("23/09/2009", prop2.Content.Title);
+            var dom = (Mask1) mask1.GetDomainObject();
+            Equals("23/09/2009 11:34:50", dom.Prop1.ToString());
+            Equals("23/09/2009 11:34:50", prop1.Content.Title);
+            Equals("23/09/2009 11:34:50", dom.Prop2.ToString());
+            Equals("23/09/2009", prop2.Content.Title);
             prop1.AssertTitleIsEqual("23/09/2009 11:34:50");
             prop1.AssertValueIsEqual("23/09/2009 11:34:50");
             prop2.AssertTitleIsEqual("23/09/2009");
             prop2.AssertValueIsEqual("23/09/2009 11:34:50");
         }
+
         #endregion
 
         #region MaxLength
+
         [TestMethod]
-        public virtual void NakedObjectsMaxLengthOnProperty()
-        {
+        public virtual void NakedObjectsMaxLengthOnProperty() {
             ITestObject obj = NewTestObject<Maxlength1>();
             ITestProperty prop2 = obj.GetPropertyByName("Prop2");
             prop2.AssertFieldEntryInvalid("12345678");
@@ -504,8 +480,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void NakedObjectsMaxLengthOnParm()
-        {
+        public virtual void NakedObjectsMaxLengthOnParm() {
             ITestObject obj = NewTestObject<Maxlength1>();
             ITestAction act = obj.GetAction("Action");
 
@@ -515,8 +490,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void ComponentModelMaxLengthOnProperty()
-        {
+        public virtual void ComponentModelMaxLengthOnProperty() {
             ITestObject obj = NewTestObject<Maxlength2>();
             ITestProperty prop2 = obj.GetPropertyByName("Prop2");
             prop2.AssertFieldEntryInvalid("12345678");
@@ -525,8 +499,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void ComponentModelMaxLengthOnParm()
-        {
+        public virtual void ComponentModelMaxLengthOnParm() {
             ITestObject obj = NewTestObject<Maxlength2>();
             ITestAction act = obj.GetAction("Action");
 
@@ -534,56 +507,55 @@ namespace NakedObjects.SystemTest.Attributes
             act.AssertIsInvalidWithParms("12345678 ");
             act.AssertIsValidWithParms("12345678");
         }
+
         #endregion
 
         #region Named
+
         [TestMethod]
-        public virtual void NamedAppliedToAction()
-        {
+        public virtual void NamedAppliedToAction() {
             var named1 = NewTestObject<Named1>();
             ITestAction hex = named1.GetAction("Hex");
             Assert.IsNotNull(hex);
-            StringAssert.Equals("Hex", hex.Name);
+            Equals("Hex", hex.Name);
         }
 
         [TestMethod]
-        public virtual void NamedAppliedToObject()
-        {
+        public virtual void NamedAppliedToObject() {
             var named1 = NewTestObject<Named1>();
             named1.AssertTitleEquals("Untitled Foo");
         }
 
         [TestMethod]
-        public virtual void NamedAppliedToParameter()
-        {
+        public virtual void NamedAppliedToParameter() {
             var named1 = NewTestObject<Named1>();
             ITestAction hex = named1.GetAction("Hex");
             ITestParameter param = hex.Parameters[0];
-            StringAssert.Equals("Yop", param.Name);
+            Equals("Yop", param.Name);
         }
 
         [TestMethod]
-        public virtual void NamedAppliedToProperty()
-        {
+        public virtual void NamedAppliedToProperty() {
             var named1 = NewTestObject<Named1>();
             ITestProperty bar = named1.GetPropertyByName("Bar");
             Assert.IsNotNull(bar);
         }
+
         #endregion
 
         #region Range
-        private static string todayMinus31 = DateTime.Today.AddDays(-31).ToShortDateString();
-        private static string todayMinus30 = DateTime.Today.AddDays(-30).ToShortDateString();
-        private static string todayMinus1 = DateTime.Today.AddDays(-1).ToShortDateString();
-        private static string today = DateTime.Today.ToShortDateString();
-        private static string todayPlus1 = DateTime.Today.AddDays(1).ToShortDateString();
-        private static string todayPlus30 = DateTime.Today.AddDays(30).ToShortDateString();
-        private static string todayPlus31 = DateTime.Today.AddDays(31).ToShortDateString();
+
+        private static readonly string todayMinus31 = DateTime.Today.AddDays(-31).ToShortDateString();
+        private static readonly string todayMinus30 = DateTime.Today.AddDays(-30).ToShortDateString();
+        private static readonly string todayMinus1 = DateTime.Today.AddDays(-1).ToShortDateString();
+        private static readonly string today = DateTime.Today.ToShortDateString();
+        private static readonly string todayPlus1 = DateTime.Today.AddDays(1).ToShortDateString();
+        private static readonly string todayPlus30 = DateTime.Today.AddDays(30).ToShortDateString();
+        private static readonly string todayPlus31 = DateTime.Today.AddDays(31).ToShortDateString();
 
 
         [TestMethod]
-        public virtual void RangeOnNumericProperties()
-        {
+        public virtual void RangeOnNumericProperties() {
             NumericPropertyRangeTest("Prop3");
             NumericPropertyRangeTest("Prop4");
             NumericPropertyRangeTest("Prop5");
@@ -606,116 +578,99 @@ namespace NakedObjects.SystemTest.Attributes
             NumericPropertyRangeTest("Prop23");
         }
 
-        private void NumericPropertyRangeTest(string name)
-        {
+        private void NumericPropertyRangeTest(string name) {
             ITestObject obj = NewTestObject<Range1>();
             ITestProperty prop = obj.GetPropertyById(name);
-            try
-            {
+            try {
                 prop.AssertFieldEntryInvalid("-2");
                 prop.AssertFieldEntryInvalid("11");
                 prop.SetValue("1");
             }
-            catch
-            {
+            catch {
                 Console.WriteLine("Failed " + name);
                 throw;
             }
         }
 
         [TestMethod]
-        public virtual void RangeOnDateProperties()
-        {
+        public virtual void RangeOnDateProperties() {
             ITestObject obj = NewTestObject<Range1>();
             ITestProperty prop = obj.GetPropertyById("Prop25");
-            try
-            {
+            try {
                 prop.AssertFieldEntryInvalid(todayMinus31);
                 prop.AssertFieldEntryIsValid(todayMinus30);
                 prop.AssertFieldEntryIsValid(today);
                 prop.AssertFieldEntryInvalid(todayPlus1);
                 prop.SetValue(todayMinus1);
             }
-            catch
-            {
+            catch {
                 Console.WriteLine("Failed " + "Prop25");
                 throw;
             }
 
 
             prop = obj.GetPropertyById("Prop26");
-            try
-            {
+            try {
                 prop.AssertFieldEntryInvalid(today);
                 prop.AssertFieldEntryIsValid(todayPlus1);
                 prop.AssertFieldEntryIsValid(todayPlus30);
                 prop.AssertFieldEntryInvalid(todayPlus31);
                 prop.SetValue(todayPlus1);
             }
-            catch
-            {
+            catch {
                 Console.WriteLine("Failed " + "Prop25");
                 throw;
             }
         }
 
         [TestMethod]
-        public virtual void RangeOnDateParms()
-        {
+        public virtual void RangeOnDateParms() {
             ITestObject obj = NewTestObject<Range1>();
             ITestAction act = obj.GetAction("Action 24");
-            try
-            {
+            try {
                 act.AssertIsInvalidWithParms(todayMinus31);
                 act.AssertIsValidWithParms(todayMinus30);
                 act.AssertIsValidWithParms(today);
                 act.AssertIsInvalidWithParms(todayPlus1);
                 act.InvokeReturnObject(todayMinus1);
             }
-            catch
-            {
+            catch {
                 Console.WriteLine("Failed " + "Action24");
                 throw;
             }
 
             act = obj.GetAction("Action 25");
-            try
-            {
+            try {
                 act.AssertIsInvalidWithParms(today);
                 act.AssertIsValidWithParms(todayPlus1);
                 act.AssertIsValidWithParms(todayPlus30);
                 act.AssertIsInvalidWithParms(todayPlus31);
                 act.InvokeReturnObject(todayPlus1);
             }
-            catch
-            {
+            catch {
                 Console.WriteLine("Failed " + "Action25");
                 throw;
             }
         }
 
-        private void NumericParmRangeTest(string name)
-        {
+        private void NumericParmRangeTest(string name) {
             ITestObject obj = NewTestObject<Range1>();
             ITestAction act = obj.GetAction(name);
 
-            try
-            {
+            try {
                 act.AssertIsInvalidWithParms(4);
                 act.AssertIsValidWithParms(5);
                 act.AssertIsValidWithParms(6);
                 act.AssertIsInvalidWithParms(7);
             }
-            catch
-            {
+            catch {
                 Console.WriteLine("Failed " + name);
                 throw;
             }
         }
 
         [TestMethod]
-        public virtual void RangeOnNumericParms()
-        {
+        public virtual void RangeOnNumericParms() {
             NumericParmRangeTest("Action1");
             NumericParmRangeTest("Action2");
             NumericParmRangeTest("Action3");
@@ -741,8 +696,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void UnsupportedRangeOnProperty()
-        {
+        public virtual void UnsupportedRangeOnProperty() {
             ITestObject obj = NewTestObject<Range1>();
             ITestProperty prop = obj.GetPropertyById("Prop24");
             prop.SetValue("-2");
@@ -751,8 +705,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void UnsupportedRangeOnParm()
-        {
+        public virtual void UnsupportedRangeOnParm() {
             ITestObject obj = NewTestObject<Range1>();
             ITestAction act = obj.GetAction("Action 23");
             act.AssertIsValidWithParms(4);
@@ -763,9 +716,9 @@ namespace NakedObjects.SystemTest.Attributes
         #endregion
 
         #region Regex
+
         [TestMethod]
-        public virtual void SimpleRegExAttributeOnProperty()
-        {
+        public virtual void SimpleRegExAttributeOnProperty() {
             ITestObject obj = NewTestObject<Regex1>();
             ITestProperty email = obj.GetPropertyByName("Email");
             email.AssertFieldEntryInvalid("richard @hotmail.com");
@@ -777,8 +730,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void SimpleRegularExpressionAttributeOnProperty()
-        {
+        public virtual void SimpleRegularExpressionAttributeOnProperty() {
             ITestObject obj = NewTestObject<Regex1>();
             ITestProperty email = obj.GetPropertyByName("Email");
             email.AssertFieldEntryInvalid("richard @hotmail.com");
@@ -788,12 +740,13 @@ namespace NakedObjects.SystemTest.Attributes
             email.AssertFieldEntryInvalid("personal richardp@hotmail.com");
             email.SetValue("richard@hotmail.com");
         }
+
         #endregion
 
         #region MemberOrder
+
         [TestMethod]
-        public void PropertyOrder()
-        {
+        public void PropertyOrder() {
             ITestObject obj2 = NewTestObject<Memberorder1>();
             obj2.AssertPropertyOrderIs("Prop2, Prop1");
 
@@ -803,8 +756,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public void PropertyOrderOnSubClass()
-        {
+        public void PropertyOrderOnSubClass() {
             ITestObject obj3 = NewTestObject<Memberorder2>();
             obj3.AssertPropertyOrderIs("Prop2, Prop4, Prop1, Prop3");
 
@@ -816,8 +768,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public void ActionOrder()
-        {
+        public void ActionOrder() {
             ITestObject obj2 = NewTestObject<Memberorder1>();
             ITestAction[] actions = obj2.Actions;
             Assert.AreEqual(actions[0].Name, "Action2");
@@ -827,8 +778,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public void ActionOrderOnSubClass()
-        {
+        public void ActionOrderOnSubClass() {
             ITestObject obj3 = NewTestObject<Memberorder2>();
             ITestAction[] actions = obj3.Actions;
             Assert.AreEqual(actions[0].Name, "Action2");
@@ -840,8 +790,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public void ActionOrderWithSubMenus()
-        {
+        public void ActionOrderWithSubMenus() {
             ITestObject obj4 = NewTestObject<Memberorder3>();
             obj4.AssertActionOrderIs("Action1, Action4, (Sub1:Action3, Action2), (Sub2:Action5)");
 
@@ -858,22 +807,20 @@ namespace NakedObjects.SystemTest.Attributes
             obj4.GetAction("Action2", "Sub1").AssertIsVisible();
             obj4.GetAction("Action5", "Sub2").AssertIsVisible();
 
-            try
-            {
+            try {
                 obj4.GetAction("Action1", "Sub1").AssertIsVisible();
             }
-            catch (System.Exception e)
-            {
+            catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'Action1' within sub-menu 'Sub1'", e.Message);
             }
-
         }
+
         #endregion
 
         #region StringLength
+
         [TestMethod]
-        public virtual void StringLengthOnProperty()
-        {
+        public virtual void StringLengthOnProperty() {
             ITestObject obj = NewTestObject<Stringlength1>();
             ITestProperty prop2 = obj.GetPropertyByName("Prop2");
             prop2.AssertFieldEntryInvalid("12345678");
@@ -882,8 +829,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void StringLengthOnParm()
-        {
+        public virtual void StringLengthOnParm() {
             ITestObject obj = NewTestObject<Stringlength1>();
             ITestAction act = obj.GetAction("Action");
 
@@ -891,12 +837,13 @@ namespace NakedObjects.SystemTest.Attributes
             act.AssertIsInvalidWithParms("12345678 ");
             act.AssertIsValidWithParms("12345678");
         }
+
         #endregion
 
         #region Title
+
         [TestMethod]
-        public virtual void ObjectWithTitleAttributeOnString()
-        {
+        public virtual void ObjectWithTitleAttributeOnString() {
             var obj = NewTestObject<Title1>();
             obj.AssertTitleEquals("Untitled Title1");
             var prop1 = obj.GetPropertyByName("Prop1");
@@ -907,8 +854,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod, Ignore] // fix 
-        public virtual void TitleAttributeOnReferencePropertyThatHasATitleAttribute()
-        {
+        public virtual void TitleAttributeOnReferencePropertyThatHasATitleAttribute() {
             var obj1 = NewTestObject<Title1>();
             obj1.GetPropertyByName("Prop1").SetValue("Foo");
             obj1.AssertTitleEquals("Foo");
@@ -922,8 +868,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod, Ignore] // fix
-        public virtual void TitleAttributeOnReferencePropertyThatHasATitleMethod()
-        {
+        public virtual void TitleAttributeOnReferencePropertyThatHasATitleMethod() {
             var obj4 = NewTestObject<Title4>();
             obj4.GetPropertyByName("Prop1").SetValue("Foo");
             obj4.AssertTitleEquals("Foo");
@@ -937,12 +882,11 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void TitleAttributeOnReferencePropertyThatHasAToString()
-        {
+        public virtual void TitleAttributeOnReferencePropertyThatHasAToString() {
             var obj2 = NewTestObject<Title2>();
             obj2.GetPropertyByName("Prop1").SetValue("Foo");
-            var dom2 = (Title2)obj2.GetDomainObject();
-            StringAssert.Equals("Foo", dom2.ToString());
+            var dom2 = (Title2) obj2.GetDomainObject();
+            Equals("Foo", dom2.ToString());
             obj2.AssertTitleEquals("Foo");
             obj2.Save();
 
@@ -954,109 +898,96 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TestMethod]
-        public virtual void TitleAttributeTakesPrecedenceOverTitleMethod()
-        {
+        public virtual void TitleAttributeTakesPrecedenceOverTitleMethod() {
             var obj = NewTestObject<Title6>();
-            var dom = (Title6)obj.GetDomainObject();
-            StringAssert.Equals("Bar", dom.ToString());
-            StringAssert.Equals("Hex", dom.Title());
+            var dom = (Title6) obj.GetDomainObject();
+            Equals("Bar", dom.ToString());
+            Equals("Hex", dom.Title());
             obj.AssertTitleEquals("Untitled Title6");
             var prop1 = obj.GetPropertyByName("Prop1");
             prop1.SetValue("Foo");
             obj.AssertTitleEquals("Foo");
             obj.Save();
             obj.AssertTitleEquals("Foo");
-
-
         }
 
         [TestMethod]
-        public virtual void TitleAttributeTakesPrecedenceOverToString()
-        {
+        public virtual void TitleAttributeTakesPrecedenceOverToString() {
             var obj = NewTestObject<Title3>();
-            StringAssert.Equals("Bar", obj.GetDomainObject().ToString());
+            Equals("Bar", obj.GetDomainObject().ToString());
             obj.AssertTitleEquals("Untitled Title3");
             var prop1 = obj.GetPropertyByName("Prop1");
             prop1.SetValue("Foo");
             obj.AssertTitleEquals("Foo");
             obj.Save();
             obj.AssertTitleEquals("Foo");
-
-
         }
+
         #endregion
 
         #region ValidateProgrammaticUpdates
 
         [TestMethod]
-        public virtual void ValidateObjectSave()
-        {
-            ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
+        public virtual void ValidateObjectSave() {
+            ITestService service = GetTestService(typeof (TestServiceValidateProgrammaticUpdates));
             var vpu1 = NewTestObject<Validateprogrammaticupdates1>();
 
-            try
-            {
+            try {
                 (vpu1.GetDomainObject() as Validateprogrammaticupdates1).Prop1 = "fail";
 
                 service.GetAction("Save Object1").InvokeReturnObject(vpu1);
                 Assert.Fail();
             }
-            catch (Exception /*expected*/) { }
+            catch (Exception /*expected*/) {}
         }
 
         [TestMethod]
-        public virtual void ValidateObjectCrossValidationSave()
-        {
-            ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
+        public virtual void ValidateObjectCrossValidationSave() {
+            ITestService service = GetTestService(typeof (TestServiceValidateProgrammaticUpdates));
             var vpu2 = NewTestObject<Validateprogrammaticupdates2>();
-            try
-            {
+            try {
                 (vpu2.GetDomainObject() as Validateprogrammaticupdates2).Prop1 = "fail";
                 service.GetAction("Save Object2").InvokeReturnObject(vpu2);
                 Assert.Fail();
             }
-            catch (Exception /*expected*/) { }
+            catch (Exception /*expected*/) {}
         }
 
         [TestMethod]
-        public virtual void ValidateObjectChange()
-        {
-            ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
+        public virtual void ValidateObjectChange() {
+            ITestService service = GetTestService(typeof (TestServiceValidateProgrammaticUpdates));
             var vpu1 = NewTestObject<Validateprogrammaticupdates1>();
 
             service.GetAction("Save Object1").InvokeReturnObject(vpu1);
 
-            try
-            {
+            try {
                 (vpu1.GetDomainObject() as Validateprogrammaticupdates1).Prop1 = "fail";
                 Assert.Fail();
             }
-            catch (Exception /*expected*/) { }
+            catch (Exception /*expected*/) {}
         }
 
         [TestMethod]
-        public virtual void ValidateObjectCrossValidationChange()
-        {
-            ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
+        public virtual void ValidateObjectCrossValidationChange() {
+            ITestService service = GetTestService(typeof (TestServiceValidateProgrammaticUpdates));
             var vpu2 = NewTestObject<Validateprogrammaticupdates2>();
 
             service.GetAction("Save Object2").InvokeReturnObject(vpu2);
 
-            try
-            {
+            try {
                 (vpu2.GetDomainObject() as Validateprogrammaticupdates2).Prop1 = "fail";
                 Assert.Fail();
             }
-            catch (Exception /*expected*/) { }
+            catch (Exception /*expected*/) {}
         }
+
         #endregion
 
         #region NotContributedAction
 
         [TestMethod, Ignore] //Needs re-writing to use new framework
-        public virtual void Contributed()
-        {
-            var service = (TestServiceNotContributedAction) GetTestService(typeof(TestServiceNotContributedAction)).NakedObject.Object;
+        public virtual void Contributed() {
+            var service = (TestServiceNotContributedAction) GetTestService(typeof (TestServiceNotContributedAction)).NakedObject.Object;
             var obj = NewTestObject<Notcontributedaction1>().GetDomainObject();
             var adapter = NakedObjectsFramework.Manager.CreateAdapter(obj, null, null);
             var actions = adapter.Spec.GetAllActions();
@@ -1067,13 +998,14 @@ namespace NakedObjects.SystemTest.Attributes
             Assert.IsTrue(actions[0].Actions[0] is ActionSpec);
             Assert.AreEqual("Contributed Action", actions[0].Actions[0].GetName());
         }
+
         #endregion
 
         #region ExcludeFromFindMenu
+
         [TestMethod, Ignore] //Needs re-writing for new framework
-        public virtual void ActionExcludedFromFindMenu()
-        {
-            var service = (TestServiceExcludeFromFindMenu)GetTestService(typeof(TestServiceExcludeFromFindMenu)).NakedObject.Object;
+        public virtual void ActionExcludedFromFindMenu() {
+            var service = (TestServiceExcludeFromFindMenu) GetTestService(typeof (TestServiceExcludeFromFindMenu)).NakedObject.Object;
             Exclude1 obj = service.NewObject1();
             INakedObject adapter = NakedObjectsFramework.Manager.CreateAdapter(obj, null, null);
             var actions = adapter.Spec.GetRelatedServiceActions();
@@ -1086,15 +1018,15 @@ namespace NakedObjects.SystemTest.Attributes
             Assert.AreEqual("Finder Action1", actions[0].Actions[0].GetName());
             Assert.AreEqual("Finder Action2", actions[0].Actions[1].GetName());
         }
+
         #endregion
     }
 
     #region Classes used in test
 
-    public class AttributesDbContext : DbContext
-    {
+    public class AttributesDbContext : DbContext {
         public const string DatabaseName = "TestAttributes";
-        public AttributesDbContext() : base(DatabaseName) { }
+        public AttributesDbContext() : base(DatabaseName) {}
 
         public DbSet<Default1> Default1s { get; set; }
         public DbSet<Describedas1> DescribedAs1s { get; set; }
@@ -1138,8 +1070,8 @@ namespace NakedObjects.SystemTest.Attributes
     }
 
     #region Default
-    public class Default1
-    {
+
+    public class Default1 {
         public virtual int Id { get; set; }
 
         [DefaultValue(8)]
@@ -1150,59 +1082,59 @@ namespace NakedObjects.SystemTest.Attributes
 
 
         public virtual void DoSomething([DefaultValue(8)] int param0,
-                                [DefaultValue("Foo")] string param1) { }
+                                        [DefaultValue("Foo")] string param1) {}
     }
+
     #endregion
 
     #region DescribedAs
+
     [DescribedAs("Foo")]
-    public class Describedas1
-    {
+    public class Describedas1 {
         public virtual int Id { get; set; }
 
         [DescribedAs("Bar")]
         public virtual string Prop1 { get; set; }
 
         [DescribedAs("Hex")]
-        public void DoSomething([DescribedAs("Yop")] string param1) { }
+        public void DoSomething([DescribedAs("Yop")] string param1) {}
     }
 
-    public class Describedas2
-    {
+    public class Describedas2 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
-        public void DoSomething(string param1) { }
+        public void DoSomething(string param1) {}
     }
+
     #endregion
 
     #region Description
+
     [System.ComponentModel.Description("Foo")]
-    public class Description1
-    {
+    public class Description1 {
         public virtual int Id { get; set; }
 
         [System.ComponentModel.Description("Bar")]
         public virtual string Prop1 { get; set; }
 
         [System.ComponentModel.Description("Hex")]
-        public void DoSomething([System.ComponentModel.Description("Yop")] string param1) { }
+        public void DoSomething([System.ComponentModel.Description("Yop")] string param1) {}
     }
 
-    public class Description2
-    {
+    public class Description2 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
-        public void DoSomething(string param1) { }
+        public void DoSomething(string param1) {}
     }
+
     #endregion
 
     #region Disabled
-    public class Disabled1
-    {
-        public Disabled1()
-        {
+
+    public class Disabled1 {
+        public Disabled1() {
             Prop0 = Prop1 = Prop2 = Prop3 = Prop4 = Prop5 = Prop6 = "";
         }
 
@@ -1227,37 +1159,35 @@ namespace NakedObjects.SystemTest.Attributes
 
         public virtual string Prop6 { get; set; }
 
-        public string DisableProp6()
-        {
-            if (Prop4 == "Disable 6")
-            {
+        public string DisableProp6() {
+            if (Prop4 == "Disable 6") {
                 return "Disabled Message";
             }
             return null;
         }
     }
+
     #endregion
 
     #region DisplayName
-    [DisplayName("Foo")]
-    public class Displayname1
-    {
 
+    [DisplayName("Foo")]
+    public class Displayname1 {
         public virtual int Id { get; set; }
 
         [DisplayName("Bar")]
         public virtual string Prop1 { get; set; }
 
         [DisplayName("Hex")]
-        public virtual void DoSomething(string param1) { }
+        public virtual void DoSomething(string param1) {}
     }
+
     #endregion
 
     #region Hidden
-    public class Hidden1
-    {
-        public Hidden1()
-        {
+
+    public class Hidden1 {
+        public Hidden1() {
             // initialise all fields 
             Prop0 = Prop1 = Prop2 = Prop3 = Prop4 = Prop5 = string.Empty;
         }
@@ -1282,55 +1212,51 @@ namespace NakedObjects.SystemTest.Attributes
         [Hidden(WhenTo.Always)]
         public virtual string Prop5 { get; set; }
     }
+
     #endregion
 
     #region IconName
-    public class Iconname1
-    {
+
+    public class Iconname1 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
     }
 
     [IconName("Foo")]
-    public class Iconname2
-    {
+    public class Iconname2 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
     }
 
-    public class Iconname3
-    {
+    public class Iconname3 {
         public virtual int Id { get; set; }
 
-        public string IconName()
-        {
+        public virtual string Prop1 { get; set; }
+
+        public string IconName() {
             return "Bar";
         }
-
-        public virtual string Prop1 { get; set; }
     }
 
     [IconName("Foo")]
-    public class Iconname4
-    {
+    public class Iconname4 {
         public virtual int Id { get; set; }
 
-        public string IconName()
-        {
+        public virtual string Prop1 { get; set; }
+
+        public string IconName() {
             return "Bar";
         }
-
-        public virtual string Prop1 { get; set; }
     }
+
     #endregion
 
     #region Immutable
-    public class Immutable1
-    {
-        public Immutable1()
-        {
+
+    public class Immutable1 {
+        public Immutable1() {
             // initialise all fields 
             Prop0 = Prop1 = Prop2 = Prop3 = Prop4 = Prop5 = Prop6 = string.Empty;
         }
@@ -1356,10 +1282,8 @@ namespace NakedObjects.SystemTest.Attributes
 
         public virtual string Prop6 { get; set; }
 
-        public string DisableProp6()
-        {
-            if (Prop4 == "Disable 6")
-            {
+        public string DisableProp6() {
+            if (Prop4 == "Disable 6") {
                 return "Disabled Message";
             }
             return null;
@@ -1367,46 +1291,42 @@ namespace NakedObjects.SystemTest.Attributes
     }
 
     [Immutable]
-    public class Immutable2 : Immutable1
-    {
-        public void ChangeProp1()
-        {
+    public class Immutable2 : Immutable1 {
+        public void ChangeProp1() {
             Prop1 = "Foo";
         }
     }
 
     [Immutable(WhenTo.OncePersisted)]
-    public class Immutable3 : Immutable1 { }
+    public class Immutable3 : Immutable1 {}
+
     #endregion
 
     #region Mask
-    public class Mask1
-    {
 
+    public class Mask1 {
         public virtual int Id { get; set; }
 
         public virtual DateTime Prop1 { get; set; }
 
-        [NakedObjects.Mask("d")]
+        [Mask("d")]
         public virtual DateTime Prop2 { get; set; }
 
-        public void DoSomething([NakedObjects.Mask("d")] DateTime d1) { }
+        public void DoSomething([Mask("d")] DateTime d1) {}
     }
 
-    public class Mask2
-    {
-
+    public class Mask2 {
         public virtual int Id { get; set; }
 
-        [NakedObjects.Mask("c")]
+        [Mask("c")]
         public virtual decimal Prop1 { get; set; }
     }
+
     #endregion
 
     #region MaxLength
-    public class Maxlength1
-    {
 
+    public class Maxlength1 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
@@ -1414,12 +1334,10 @@ namespace NakedObjects.SystemTest.Attributes
         [MaxLength(7)]
         public virtual string Prop2 { get; set; }
 
-        public void Action([MaxLength(8)] string parm) { }
+        public void Action([MaxLength(8)] string parm) {}
     }
 
-    public class Maxlength2
-    {
-
+    public class Maxlength2 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
@@ -1427,28 +1345,29 @@ namespace NakedObjects.SystemTest.Attributes
         [MaxLength(7)]
         public virtual string Prop2 { get; set; }
 
-        public void Action([MaxLength(8)] string parm) { }
+        public void Action([MaxLength(8)] string parm) {}
     }
+
     #endregion
 
     #region Named
-    [Named("Foo")]
-    public class Named1
-    {
 
+    [Named("Foo")]
+    public class Named1 {
         public virtual int Id { get; set; }
 
         [Named("Bar")]
         public virtual string Prop1 { get; set; }
 
         [Named("Hex")]
-        public void DoSomething([Named("Yop")] string param1) { }
+        public void DoSomething([Named("Yop")] string param1) {}
     }
+
     #endregion
 
     #region Range
-    public class Range1
-    {
+
+    public class Range1 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
@@ -1484,7 +1403,6 @@ namespace NakedObjects.SystemTest.Attributes
         public virtual decimal Prop12 { get; set; }
 
 
-
         [Range(-1d, 10d)]
         public virtual short Prop14 { get; set; }
 
@@ -1515,7 +1433,7 @@ namespace NakedObjects.SystemTest.Attributes
         [Range(-1.9d, 10.9d)]
         public virtual decimal Prop23 { get; set; }
 
-        [Range(typeof(string), "1", "10")]
+        [Range(typeof (string), "1", "10")]
         public virtual int Prop24 { get; set; }
 
         [Range(-30, 0)]
@@ -1524,58 +1442,57 @@ namespace NakedObjects.SystemTest.Attributes
         [Range(1, 30)]
         public virtual DateTime Prop26 { get; set; }
 
-        public void Action1([Range(5, 6)]sbyte parm) { }
-        public void Action2([Range(5, 6)]short parm) { }
-        public void Action3([Range(5, 6)]int parm) { }
-        public void Action4([Range(5, 6)]long parm) { }
-        public void Action5([Range(5, 6)]byte parm) { }
-        public void Action6([Range(5, 6)]ushort parm) { }
-        public void Action7([Range(5, 6)]uint parm) { }
-        public void Action8([Range(5, 6)]ulong parm) { }
-        public void Action9([Range(5, 6)]float parm) { }
-        public void Action10([Range(5, 6)]double parm) { }
-        public void Action11([Range(5, 6)]decimal parm) { }
-        public void Action12([Range(5d, 6d)]sbyte parm) { }
-        public void Action13([Range(5d, 6d)]short parm) { }
-        public void Action14([Range(5d, 6d)]int parm) { }
-        public void Action15([Range(5d, 6d)]long parm) { }
-        public void Action16([Range(5d, 6d)]byte parm) { }
-        public void Action17([Range(5d, 6d)]ushort parm) { }
-        public void Action18([Range(5d, 6d)]uint parm) { }
-        public void Action19([Range(5d, 6d)]ulong parm) { }
-        public void Action20([Range(5d, 6d)]float parm) { }
-        public void Action21([Range(5d, 6d)]double parm) { }
-        public void Action22([Range(5d, 6d)]decimal parm) { }
-        public void Action23([Range(typeof(string), "5", "6")]int parm) { }
+        public void Action1([Range(5, 6)] sbyte parm) {}
+        public void Action2([Range(5, 6)] short parm) {}
+        public void Action3([Range(5, 6)] int parm) {}
+        public void Action4([Range(5, 6)] long parm) {}
+        public void Action5([Range(5, 6)] byte parm) {}
+        public void Action6([Range(5, 6)] ushort parm) {}
+        public void Action7([Range(5, 6)] uint parm) {}
+        public void Action8([Range(5, 6)] ulong parm) {}
+        public void Action9([Range(5, 6)] float parm) {}
+        public void Action10([Range(5, 6)] double parm) {}
+        public void Action11([Range(5, 6)] decimal parm) {}
+        public void Action12([Range(5d, 6d)] sbyte parm) {}
+        public void Action13([Range(5d, 6d)] short parm) {}
+        public void Action14([Range(5d, 6d)] int parm) {}
+        public void Action15([Range(5d, 6d)] long parm) {}
+        public void Action16([Range(5d, 6d)] byte parm) {}
+        public void Action17([Range(5d, 6d)] ushort parm) {}
+        public void Action18([Range(5d, 6d)] uint parm) {}
+        public void Action19([Range(5d, 6d)] ulong parm) {}
+        public void Action20([Range(5d, 6d)] float parm) {}
+        public void Action21([Range(5d, 6d)] double parm) {}
+        public void Action22([Range(5d, 6d)] decimal parm) {}
+        public void Action23([Range(typeof (string), "5", "6")] int parm) {}
 
-        public void Action24([Range(-30, 0)] DateTime parm) { }
-        public void Action25([Range(1, 30)] DateTime parm) { }
-
+        public void Action24([Range(-30, 0)] DateTime parm) {}
+        public void Action25([Range(1, 30)] DateTime parm) {}
     }
+
     #endregion
 
     #region Regex
-    public class Regex1
-    {
 
+    public class Regex1 {
         public virtual int Id { get; set; }
 
         [RegEx(Validation = @"^[\-\w\.]+@[\-\w\.]+\.[A-Za-z]+$")]
         public virtual string Email { get; set; }
     }
 
-    public class Regex2
-    {
+    public class Regex2 {
         public virtual int Id { get; set; }
 
         [RegularExpression(@"^[\-\w\.]+@[\-\w\.]+\.[A-Za-z]+$")]
         public virtual string Email { get; set; }
     }
+
     #endregion
 
     #region MemberOrder
-    public class Memberorder1
-    {
+
+    public class Memberorder1 {
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
@@ -1586,14 +1503,13 @@ namespace NakedObjects.SystemTest.Attributes
         public virtual string Prop2 { get; set; }
 
         [MemberOrder(3)]
-        public virtual void Action1() { }
+        public virtual void Action1() {}
 
         [MemberOrder(1)]
-        public virtual void Action2() { }
+        public virtual void Action2() {}
     }
 
-    public class Memberorder2 : Memberorder1
-    {
+    public class Memberorder2 : Memberorder1 {
         [MemberOrder(4)]
         public virtual string Prop3 { get; set; }
 
@@ -1601,52 +1517,49 @@ namespace NakedObjects.SystemTest.Attributes
         public virtual string Prop4 { get; set; }
 
         [MemberOrder(4)]
-        public void Action3() { }
+        public void Action3() {}
 
         [MemberOrder(2)]
-        public void Action4() { }
+        public void Action4() {}
     }
 
-    public class Memberorder3
-    {
+    public class Memberorder3 {
         [MemberOrder(1)]
-        public void Action1() { }
+        public void Action1() {}
 
         [MemberOrder(Name = "Sub2", Sequence = "1")]
-        public void Action5() { }
+        public void Action5() {}
 
         [MemberOrder(Name = "Sub1", Sequence = "2")]
-        public void Action2() { }
+        public void Action2() {}
 
         [MemberOrder(Name = "Sub1", Sequence = "1")]
-        public void Action3() { }
+        public void Action3() {}
 
         [MemberOrder(2)]
-        public void Action4() { }
-
-
+        public void Action4() {}
     }
+
     #endregion
 
     #region StringLength
-    public class Stringlength1
-    {
 
+    public class Stringlength1 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
 
-        [System.ComponentModel.DataAnnotations.StringLength(7)]
+        [StringLength(7)]
         public virtual string Prop2 { get; set; }
 
-        public void Action([System.ComponentModel.DataAnnotations.StringLength(8)]string parm) { }
+        public void Action([StringLength(8)] string parm) {}
     }
+
     #endregion
 
     #region Title
-    public class Title1
-    {
 
+    public class Title1 {
         public virtual int Id { get; set; }
 
         [Title]
@@ -1654,130 +1567,108 @@ namespace NakedObjects.SystemTest.Attributes
         public virtual string Prop1 { get; set; }
     }
 
-    public class Title2
-    {
-
+    public class Title2 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return Prop1;
         }
     }
 
-    public class Title3
-    {
-
+    public class Title3 {
         public virtual int Id { get; set; }
 
         [Title]
         public virtual string Prop1 { get; set; }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return "Bar";
         }
     }
 
-    public class Title4
-    {
-
+    public class Title4 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
 
-        public string Title()
-        {
+        public string Title() {
             return Prop1;
         }
     }
 
-    public class Title5
-    {
-
+    public class Title5 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
 
-        public string Title()
-        {
+        public string Title() {
             return Prop1;
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return "Bar";
         }
     }
 
-    public class Title6
-    {
-
+    public class Title6 {
         public virtual int Id { get; set; }
 
         [Title]
         public virtual string Prop1 { get; set; }
 
-        public string Title()
-        {
+        public string Title() {
             return "Hex";
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return "Bar";
         }
     }
 
-    public class Title7
-    {
+    public class Title7 {
         public virtual int Id { get; set; }
 
         [Title]
         public virtual Title4 Prop1 { get; set; }
     }
 
-    public class Title8
-    {
+    public class Title8 {
         public virtual int Id { get; set; }
 
         [Title]
         public virtual Title1 Prop1 { get; set; }
     }
 
-    public class Title9
-    {
+    public class Title9 {
         public virtual int Id { get; set; }
 
         [Title]
         public virtual Title2 Prop1 { get; set; }
     }
+
     #endregion
 
     #region ValidateProgrammaticUpdates
-    [ValidateProgrammaticUpdates]
-    public class Validateprogrammaticupdates1
-    {
 
+    [ValidateProgrammaticUpdates]
+    public class Validateprogrammaticupdates1 {
         public virtual int Id { get; set; }
 
         [Optionally]
         public virtual string Prop1 { get; set; }
 
-        public string ValidateProp1(string prop1)
-        {
-            return prop1 == "fail" ? "fail" : null;
-        }
-
         [Optionally]
         public string Prop2 { get; set; }
+
+        public string ValidateProp1(string prop1) {
+            return prop1 == "fail" ? "fail" : null;
+        }
     }
 
     [ValidateProgrammaticUpdates]
-    public class Validateprogrammaticupdates2
-    {
+    public class Validateprogrammaticupdates2 {
         public virtual int Id { get; set; }
 
         [Optionally]
@@ -1786,83 +1677,72 @@ namespace NakedObjects.SystemTest.Attributes
         [Optionally]
         public virtual string Prop2 { get; set; }
 
-        public string Validate(string prop1, string prop2)
-        {
+        public string Validate(string prop1, string prop2) {
             return prop1 == "fail" ? "fail" : null;
         }
     }
 
-    public class TestServiceValidateProgrammaticUpdates
-
-    {
+    public class TestServiceValidateProgrammaticUpdates {
         public IDomainObjectContainer Container { set; protected get; }
 
-        public void SaveObject1(Validateprogrammaticupdates1 obj)
-        {
+        public void SaveObject1(Validateprogrammaticupdates1 obj) {
             Container.Persist(ref obj);
         }
 
-        public void SaveObject2(Validateprogrammaticupdates2 obj)
-        {
+        public void SaveObject2(Validateprogrammaticupdates2 obj) {
             Container.Persist(ref obj);
         }
     }
-#endregion
 
-#region NotContributedAction
-    public class TestServiceNotContributedAction
-    {
-        public void ContributedAction(Notcontributedaction1 obj) { }
+    #endregion
+
+    #region NotContributedAction
+
+    public class TestServiceNotContributedAction {
+        public void ContributedAction(Notcontributedaction1 obj) {}
 
         [NotContributedAction]
-        public void NotContributedAction(Notcontributedaction1 obj) { }
+        public void NotContributedAction(Notcontributedaction1 obj) {}
     }
 
-    public class Notcontributedaction1
-    {
-
+    public class Notcontributedaction1 {
         public virtual int Id { get; set; }
-
     }
-#endregion
+
+    #endregion
 
     #region ExcludeFromFindMenu
-    public class TestServiceExcludeFromFindMenu
-    {
-        public Exclude1 FinderAction1()
-        {
+
+    public class TestServiceExcludeFromFindMenu {
+        public Exclude1 FinderAction1() {
             return null;
         }
 
-        public ICollection<Exclude1> FinderAction2()
-        {
-            return null;
-        }
-
-        [ExcludeFromFindMenu]
-        public Exclude1 NotFinderAction1()
-        {
+        public ICollection<Exclude1> FinderAction2() {
             return null;
         }
 
         [ExcludeFromFindMenu]
-        public ICollection<Exclude1> NotFinderAction2()
-        {
+        public Exclude1 NotFinderAction1() {
             return null;
         }
 
         [ExcludeFromFindMenu]
-        public Exclude1 NewObject1()
-        {
+        public ICollection<Exclude1> NotFinderAction2() {
+            return null;
+        }
+
+        [ExcludeFromFindMenu]
+        public Exclude1 NewObject1() {
             return new Exclude1();
         }
     }
 
-    public class Exclude1
-    {
-
+    public class Exclude1 {
         public virtual int Id { get; set; }
     }
-#endregion 
+
+    #endregion
+
     #endregion
 }

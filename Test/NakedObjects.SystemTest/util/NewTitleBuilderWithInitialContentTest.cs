@@ -7,8 +7,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace NakedObjects.SystemTest.Util
-{
+namespace NakedObjects.SystemTest.Util {
     [TestClass]
     public class NewTitleBuilderWithInitialContentTest {
         private NewTitleBuilder builder;

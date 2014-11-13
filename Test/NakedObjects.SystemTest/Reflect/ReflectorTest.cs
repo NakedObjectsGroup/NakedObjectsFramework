@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Security.Principal;
 using AdventureWorksModel;
 using Microsoft.Practices.Unity;
@@ -19,7 +18,6 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Audit;
 using NakedObjects.Core.Configuration;
@@ -62,35 +60,15 @@ namespace NakedObjects.Reflect.Test {
             Assert.IsFalse(reflector.AllObjectSpecImmutables.Any());
         }
 
-        public class TestAuditor : IAuditor {
-            public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {}
-
-            public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {}
-
-            public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {}
-
-            public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {}
-        }
-
-        public class TestAuthorizer : IAuthorizer {
-            public bool IsUsable(ISession session, INakedObject target, IIdentifier member) {
-                return true;
-            }
-
-            public bool IsVisible(ISession session, INakedObject target, IIdentifier member) {
-                return true;
-            }
-        }
-
         [TestMethod]
         public void ReflectWithDecorators() {
             IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new Type[] { }, new Type[] { });
+            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             container.RegisterInstance<IAuditConfiguration>(new AuditConfiguration {DefaultAuditor = typeof (TestAuditor), NamespaceAuditors = new Dictionary<string, Type>()});
-            container.RegisterInstance<IAuthorizationConfiguration>(new AuthorizationConfiguration { DefaultAuthorizer = typeof(TestAuthorizer), NamespaceAuthorizers = new Dictionary<string, Type>(), TypeAuthorizers = new Dictionary<Type, Type>()  });
+            container.RegisterInstance<IAuthorizationConfiguration>(new AuthorizationConfiguration {DefaultAuthorizer = typeof (TestAuthorizer), NamespaceAuthorizers = new Dictionary<string, Type>(), TypeAuthorizers = new Dictionary<Type, Type>()});
 
             container.RegisterType<IFacetDecorator, AuditManager>("AuditManager");
             container.RegisterType<IFacetDecorator, AuthorizationManager>("AuthorizationManager");
@@ -100,7 +78,7 @@ namespace NakedObjects.Reflect.Test {
             reflector.Reflect();
 
             var set = ((Reflector) reflector).FacetDecoratorSet;
-            Assert.AreEqual(7,  ((FacetDecoratorSet)set).FacetDecorators.Count);
+            Assert.AreEqual(7, ((FacetDecoratorSet) set).FacetDecorators.Count);
         }
 
         private static Type[] AdventureWorksTypes() {
@@ -397,13 +375,7 @@ namespace NakedObjects.Reflect.Test {
         #region Nested type: NullMenuBuilder
 
         public class NullMenuBuilder : IMenuFactory {
-            #region IMenuBuilder Members
-
-            public IMenu[] DefineMainMenus() {
-                return new IMenu[] {};
-            }
-
-            #endregion
+            #region IMenuFactory Members
 
             public IMenu NewMenu(string name) {
                 throw new NotImplementedException();
@@ -412,14 +384,64 @@ namespace NakedObjects.Reflect.Test {
             public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
                 throw new NotImplementedException();
             }
+
+            #endregion
+
+            public IMenu[] DefineMainMenus() {
+                return new IMenu[] {};
+            }
         }
 
         #endregion
 
+        #region Nested type: NullMenuDfinition
+
         public class NullMenuDfinition : IMainMenuDefinition {
+            #region IMainMenuDefinition Members
+
             public IMenu[] MainMenus(IMenuFactory factory) {
                 return new IMenu[] {};
             }
+
+            #endregion
         }
+
+        #endregion
+
+        #region Nested type: TestAuditor
+
+        public class TestAuditor : IAuditor {
+            #region IAuditor Members
+
+            public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {}
+
+            public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {}
+
+            public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {}
+
+            public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {}
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Nested type: TestAuthorizer
+
+        public class TestAuthorizer : IAuthorizer {
+            #region IAuthorizer Members
+
+            public bool IsUsable(ISession session, INakedObject target, IIdentifier member) {
+                return true;
+            }
+
+            public bool IsVisible(ISession session, INakedObject target, IIdentifier member) {
+                return true;
+            }
+
+            #endregion
+        }
+
+        #endregion
     }
 }

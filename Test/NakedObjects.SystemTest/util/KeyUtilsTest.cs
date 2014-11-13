@@ -14,8 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Util;
 using NakedObjects.UtilInternal;
 
-namespace NakedObjects.SystemTest.Util
-{
+namespace NakedObjects.SystemTest.Util {
     [TestClass]
     public class KeyUtilsTest {
         #region Test classes ComponentModel.DataAnnotations.Key 

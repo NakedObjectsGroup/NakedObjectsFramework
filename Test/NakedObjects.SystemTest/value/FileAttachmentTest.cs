@@ -8,8 +8,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Value;
 
-namespace NakedObjects.SystemTest.Value
-{
+namespace NakedObjects.SystemTest.Value {
     [TestClass]
     public class FileAttachmentTest {
         [TestMethod]

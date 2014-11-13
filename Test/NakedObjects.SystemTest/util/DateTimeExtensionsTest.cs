@@ -83,7 +83,6 @@ namespace NakedObjects.SystemTest.Util {
 
             Enumerable.Range(1, 9).
                 Select(x => wellKnownDay.AddDays(x)).ToList().
-
                 ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
 
 

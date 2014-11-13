@@ -9,10 +9,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
-
     [TestClass]
-    public abstract class TestObjectFinderWithCompoundKeysAbstract : AbstractSystemTest<PaymentContext>
-    {
+    public abstract class TestObjectFinderWithCompoundKeysAbstract : AbstractSystemTest<PaymentContext> {
         protected ITestObject customer1;
         protected ITestObject customer2a;
         protected ITestObject customer2b;

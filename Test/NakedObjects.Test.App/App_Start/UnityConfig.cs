@@ -141,7 +141,7 @@ namespace NakedObjects.Mvc.App.App_Start
             container.RegisterType<ILifecycleManager, LifeCycleManager>(new PerRequestLifetimeManager());
             container.RegisterType<IMetamodelManager, MetamodelManager>(new PerResolveLifetimeManager());
             container.RegisterType<ISession, WindowsSession>(new PerRequestLifetimeManager());
-            container.RegisterType<IMessageBroker, SimpleMessageBroker>(new PerRequestLifetimeManager());
+            container.RegisterType<IMessageBroker, MessageBroker>(new PerRequestLifetimeManager());
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerRequestLifetimeManager());
 
             // surface

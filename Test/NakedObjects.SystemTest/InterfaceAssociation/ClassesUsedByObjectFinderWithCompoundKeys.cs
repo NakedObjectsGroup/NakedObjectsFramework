@@ -1,21 +1,23 @@
-﻿using NakedObjects.Services;
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NakedObjects.Services;
 
-namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
-{
+namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
+
     #region Classes used by test
 
-    public class PaymentContext : DbContext
-    {
+    public class PaymentContext : DbContext {
         public const string DatabaseName = "ObjectFinderWithCompoundKeys";
-        public PaymentContext() : base(DatabaseName) { }
+        public PaymentContext() : base(DatabaseName) {}
 
         public DbSet<Payment> Payments { get; set; }
         public DbSet<CustomerOne> CustomerOnes { get; set; }
@@ -24,29 +26,25 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             Database.SetInitializer(new DatabaseInitializer());
         }
     }
 
-    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext>
-    {
-        protected override void Seed(PaymentContext context)
-        {
+    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {
+        protected override void Seed(PaymentContext context) {
             context.Payments.Add(new Payment());
-            context.CustomerOnes.Add(new CustomerOne() { Id = 1 });
-            context.CustomerTwos.Add(new CustomerTwo() { Id = 1, Id2 = "1001" });
-            context.CustomerTwos.Add(new CustomerTwo() { Id = 2, Id2 = "1002" });
-            context.CustomerThrees.Add(new CustomerThree() { Id = 1, Id2 = "1001", Number = 2001 });
-            context.Suppliers.Add(new Supplier() { Id = 1, Id2 = 2001 });
-            context.Employees.Add(new Employee() { Id = 1, Id2 = "foo" });
+            context.CustomerOnes.Add(new CustomerOne() {Id = 1});
+            context.CustomerTwos.Add(new CustomerTwo() {Id = 1, Id2 = "1001"});
+            context.CustomerTwos.Add(new CustomerTwo() {Id = 2, Id2 = "1002"});
+            context.CustomerThrees.Add(new CustomerThree() {Id = 1, Id2 = "1001", Number = 2001});
+            context.Suppliers.Add(new Supplier() {Id = 1, Id2 = 2001});
+            context.Employees.Add(new Employee() {Id = 1, Id2 = "foo"});
             context.SaveChanges();
         }
     }
 
-    public class Payment
-    {
+    public class Payment {
         public IDomainObjectContainer Container { protected get; set; }
         public virtual int Id { get; set; }
 
@@ -59,25 +57,19 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         public virtual string PayeeCompoundKey { get; set; }
 
         [NotPersisted, Optionally]
-        public IPayee Payee
-        {
-            get
-            {
-                if (myPayee == null & !String.IsNullOrEmpty(PayeeCompoundKey))
-                {
+        public IPayee Payee {
+            get {
+                if (myPayee == null & !String.IsNullOrEmpty(PayeeCompoundKey)) {
                     myPayee = ObjectFinder.FindObject<IPayee>(PayeeCompoundKey);
                 }
                 return myPayee;
             }
-            set
-            {
+            set {
                 myPayee = value;
-                if (value == null)
-                {
+                if (value == null) {
                     PayeeCompoundKey = null;
                 }
-                else
-                {
+                else {
                     PayeeCompoundKey = ObjectFinder.GetCompoundKey(value);
                 }
             }
@@ -86,16 +78,13 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         #endregion
     }
 
-    public interface IPayee { }
+    public interface IPayee {}
 
-    public class CustomerOne : IPayee
-    {
-
+    public class CustomerOne : IPayee {
         public virtual int Id { get; set; }
     }
 
-    public class CustomerTwo : IPayee
-    {
+    public class CustomerTwo : IPayee {
         [Key]
         [Column(Order = 1)]
         public virtual int Id { get; set; }
@@ -106,8 +95,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
     }
 
 
-    public class CustomerThree : IPayee
-    {
+    public class CustomerThree : IPayee {
         [Key]
         [Column(Order = 1)]
         public virtual int Id { get; set; }
@@ -121,8 +109,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         public virtual int Number { get; set; }
     }
 
-    public class Supplier : IPayee
-    {
+    public class Supplier : IPayee {
         [Key]
         [Column(Order = 1)]
         public virtual int Id { get; set; }
@@ -133,8 +120,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
     }
 
 
-    public class Employee : IPayee
-    {
+    public class Employee : IPayee {
         [Key]
         [Column(Order = 1)]
         public virtual int Id { get; set; }

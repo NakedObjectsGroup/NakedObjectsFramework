@@ -12,10 +12,8 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 
 namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper {
-
     [TestClass]
     public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinderWithCompoundKeysAbstract {
-
         protected override object[] MenuServices {
             get {
                 return (new object[] {
@@ -33,23 +31,19 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
 
 
         [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc)
-        {
+        public static void SetupTestFixture(TestContext tc) {
             InitializeNakedObjectsFramework(new TestObjectFinderWithCompoundKeysAndTypeCodeMapper());
         }
 
         [ClassCleanup]
-        public  static void TearDownTest()
-        {
+        public static void TearDownTest() {
             CleanupNakedObjectsFramework(new TestObjectFinderWithCompoundKeysAndTypeCodeMapper());
             Database.Delete(PaymentContext.DatabaseName);
         }
 
-    
 
         [TestMethod]
-        public  void SetAssociatedObject()
-        {
+        public void SetAssociatedObject() {
             payee1.SetObject(customer2a);
             key1.AssertValueIsEqual("CU2|1|1001");
 
@@ -60,7 +54,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
         }
 
         [TestMethod]
-        public   void WorksWithASingleIntegerKey() {
+        public void WorksWithASingleIntegerKey() {
             payee1.SetObject(customer1);
             key1.AssertValueIsEqual("CU1|1");
             payee1.ClearObject();
@@ -71,8 +65,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
         }
 
         [TestMethod]
-        public  void WorksWithTripleIntegerKey()
-        {
+        public void WorksWithTripleIntegerKey() {
             payee1.SetObject(customer3);
             key1.AssertValueIsEqual("CU3|1|1001|2001");
             payee1.ClearObject();
@@ -83,8 +76,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
         }
 
         [TestMethod]
-        public  void FailsIfTypeNameIsEmpty()
-        {
+        public void FailsIfTypeNameIsEmpty() {
             key1.SetValue("|1|1001|2001");
             try {
                 payee1.AssertIsNotEmpty();
@@ -96,7 +88,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
         }
 
         [TestMethod]
-        public  void FailsIfCodeNotRecognised() {
+        public void FailsIfCodeNotRecognised() {
             key1.SetValue("EMP|1");
             try {
                 payee1.AssertIsNotEmpty();
@@ -108,8 +100,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
         }
 
         [TestMethod]
-        public void FailsIfTypeNotRecognisedByEncodingService()
-        {
+        public void FailsIfTypeNotRecognisedByEncodingService() {
             try {
                 payee1.SetObject(emp1);
                 throw new AssertFailedException("Exception should have been thrown");
@@ -120,8 +111,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
         }
 
         [TestMethod]
-        public  void FailsIfTooFewKeysSupplied()
-        {
+        public void FailsIfTooFewKeysSupplied() {
             key1.SetValue("CU3|1|1001");
             try {
                 payee1.AssertIsNotEmpty();
@@ -134,8 +124,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
 
 
         [TestMethod]
-        public  void FailsIfTooManyKeysSupplied()
-        {
+        public void FailsIfTooManyKeysSupplied() {
             key1.SetValue("CU2|1|1001|2001");
             try {
                 payee1.AssertIsNotEmpty();
@@ -148,7 +137,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
 
 
         [TestMethod]
-        public  void ChangeAssociatedObjectType() {
+        public void ChangeAssociatedObjectType() {
             payee1.SetObject(customer2a);
             key1.AssertValueIsEqual("CU2|1|1001");
             payee1.SetObject(supplier1);
@@ -159,8 +148,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
 
 
         [TestMethod]
-        public  void ClearAssociatedObject()
-        {
+        public void ClearAssociatedObject() {
             payee1.SetObject(customer2a);
             payee1.ClearObject();
             key1.AssertIsEmpty();
@@ -168,8 +156,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
 
 
         [TestMethod]
-        public void GetAssociatedObject()
-        {
+        public void GetAssociatedObject() {
             key1.SetValue("CU2|1|1001");
             payee1.AssertIsNotEmpty();
             payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("1");
@@ -182,8 +169,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
         }
 
         [TestMethod]
-        public void NoAssociatedObject()
-        {
+        public void NoAssociatedObject() {
             key1.AssertIsEmpty();
         }
     }

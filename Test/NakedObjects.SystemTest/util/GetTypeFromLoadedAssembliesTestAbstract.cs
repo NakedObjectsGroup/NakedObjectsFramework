@@ -17,8 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace NakedObjects.SystemTest.Util
-{
+namespace NakedObjects.SystemTest.Util {
     public class GetTypeFromLoadedAssembliesTestAbstract {
         private static readonly IList<string> MasterTypeList = new List<string>();
         private static readonly IDictionary<string, Runs> Results = new Dictionary<string, Runs>();

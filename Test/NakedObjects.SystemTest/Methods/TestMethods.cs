@@ -1,145 +1,132 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using NakedObjects.Boot;
-using NakedObjects.Core.NakedObjectsSystem;
+using System.Data.Entity;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
 using NakedObjects.Xat;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Data.Entity;
-using System;
-using System.Linq;
-using System.Collections.Generic;
 
-namespace NakedObjects.SystemTest.Method
-{
+namespace NakedObjects.SystemTest.Method {
     [TestClass]
-    public class TestMethods : AbstractSystemTest<MethodsDbContext>
-    {
+    public class TestMethods : AbstractSystemTest<MethodsDbContext> {
         #region Setup/Teardown
+
         [ClassInitialize]
-        public static void ClassInitialize(TestContext tc)
-        {
+        public static void ClassInitialize(TestContext tc) {
             InitializeNakedObjectsFramework(new TestMethods());
         }
 
         [ClassCleanup]
-        public static void ClassCleanup()
-        {
+        public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestMethods());
             Database.Delete(MethodsDbContext.DatabaseName);
         }
 
         [TestInitialize()]
-        public void TestInitialize()
-        {
+        public void TestInitialize() {
             StartTest();
         }
 
         [TestCleanup()]
-        public void TestCleanup()
-        {
-        }
+        public void TestCleanup() {}
 
         #endregion
 
-        protected override object[] MenuServices
-        {
-            get
-            {
-                return new object[]{
-                        new SimpleRepository<Auto1>(),
-                        new SimpleRepository<Auto2>(),
-                        new SimpleRepository<Auto3>(),
-                        new SimpleRepository<Choices1>(),
-                        new SimpleRepository<Choices2>(),
-                        new SimpleRepository<Choices3>(),
-                        new SimpleRepository<Choices4>(),
-                        new SimpleRepository<Clear1>(),
-                        new SimpleRepository<Clear2>(),
-                        new SimpleRepository<Clear3>(),
-                        new SimpleRepository<Created1>(),
-                        new SimpleRepository<Created2>(),
-                        new SimpleRepository<Default1>(),
-                        new SimpleRepository<Default2>(),
-                        new SimpleRepository<Default3>(),
-                        new SimpleRepository<Default4>(),
-                        new SimpleRepository<Deleted1>(),
-                        new SimpleRepository<Deleted2>(),
-                        new SimpleRepository<Deleting1>(),
-                        new SimpleRepository<Deleting2>(),
-                        new SimpleRepository<Disable1>(),
-                        new SimpleRepository<Disable2>(),
-                        new SimpleRepository<Disable3>(),
-                        new SimpleRepository<Hide1>(),
-                        new SimpleRepository<Hide2>(),
-                        new SimpleRepository<Hide3>(),
-                        new SimpleRepository<Modify1>(),
-                        new SimpleRepository<Modify2>(),
-                        new SimpleRepository<Modify3>(),
-                        new SimpleRepository<Modify4>(),
-                        new SimpleRepository<Persisted1>(),
-                        new SimpleRepository<Persisted2>(),
-                        new SimpleRepository<Persisting1>(),
-                        new SimpleRepository<Persisting2>(),
-                         new SimpleRepository<Saved1>(),
-                         new SimpleRepository<Title1>(),
-                         new SimpleRepository<Title2>(),
-                         new SimpleRepository<Title3>(),
-                         new SimpleRepository<Title4>(),
-                         new SimpleRepository<Title5>(),
-                         new SimpleRepository<Updated1>(),
-                         new SimpleRepository<Updated2>(),
-                         new SimpleRepository<Updating1>(),
-                         new SimpleRepository<Updating2>(),
-                         new SimpleRepository<Validate1>(),
-                         new SimpleRepository<Validate2>(),
-                         new SimpleRepository<Validate3>(),
-                         new SimpleRepository<Validate4>(),
-                         new SimpleRepository<Validate5>()
-                     };
+        protected override object[] MenuServices {
+            get {
+                return new object[] {
+                    new SimpleRepository<Auto1>(),
+                    new SimpleRepository<Auto2>(),
+                    new SimpleRepository<Auto3>(),
+                    new SimpleRepository<Choices1>(),
+                    new SimpleRepository<Choices2>(),
+                    new SimpleRepository<Choices3>(),
+                    new SimpleRepository<Choices4>(),
+                    new SimpleRepository<Clear1>(),
+                    new SimpleRepository<Clear2>(),
+                    new SimpleRepository<Clear3>(),
+                    new SimpleRepository<Created1>(),
+                    new SimpleRepository<Created2>(),
+                    new SimpleRepository<Default1>(),
+                    new SimpleRepository<Default2>(),
+                    new SimpleRepository<Default3>(),
+                    new SimpleRepository<Default4>(),
+                    new SimpleRepository<Deleted1>(),
+                    new SimpleRepository<Deleted2>(),
+                    new SimpleRepository<Deleting1>(),
+                    new SimpleRepository<Deleting2>(),
+                    new SimpleRepository<Disable1>(),
+                    new SimpleRepository<Disable2>(),
+                    new SimpleRepository<Disable3>(),
+                    new SimpleRepository<Hide1>(),
+                    new SimpleRepository<Hide2>(),
+                    new SimpleRepository<Hide3>(),
+                    new SimpleRepository<Modify1>(),
+                    new SimpleRepository<Modify2>(),
+                    new SimpleRepository<Modify3>(),
+                    new SimpleRepository<Modify4>(),
+                    new SimpleRepository<Persisted1>(),
+                    new SimpleRepository<Persisted2>(),
+                    new SimpleRepository<Persisting1>(),
+                    new SimpleRepository<Persisting2>(),
+                    new SimpleRepository<Saved1>(),
+                    new SimpleRepository<Title1>(),
+                    new SimpleRepository<Title2>(),
+                    new SimpleRepository<Title3>(),
+                    new SimpleRepository<Title4>(),
+                    new SimpleRepository<Title5>(),
+                    new SimpleRepository<Updated1>(),
+                    new SimpleRepository<Updated2>(),
+                    new SimpleRepository<Updating1>(),
+                    new SimpleRepository<Updating2>(),
+                    new SimpleRepository<Validate1>(),
+                    new SimpleRepository<Validate2>(),
+                    new SimpleRepository<Validate3>(),
+                    new SimpleRepository<Validate4>(),
+                    new SimpleRepository<Validate5>()
+                };
             }
         }
 
         #region AutoComplete
 
         [TestMethod]
-        public void AutoCompleteMethodDoesNotShowUpAsAction()
-        {
+        public void AutoCompleteMethodDoesNotShowUpAsAction() {
             var obj1 = NewTestObject<Auto1>();
 
-            try
-            {
+            try {
                 obj1.GetAction("Auto Complete Prop1");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
 
-            try
-            {
+            try {
                 obj1.GetAction("Auto Complete 0 Do Something");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
 
-        private void CreateAuto2(string prop1)
-        {
+        private void CreateAuto2(string prop1) {
             var obj2 = NewTestObject<Auto2>();
             obj2.GetPropertyByName("Prop1").SetValue(prop1);
             obj2.Save();
         }
 
         [TestMethod]
-        public virtual void AutoCompleteParameters()
-        {
+        public virtual void AutoCompleteParameters() {
             CreateAuto2("Bar1");
             CreateAuto2("Bar2");
             CreateAuto2("Bar3");
@@ -147,13 +134,11 @@ namespace NakedObjects.SystemTest.Method
             var obj1 = NewTestObject<Auto1>();
             ITestAction action = obj1.GetAction("Do Something");
 
-            try
-            {
+            try {
                 action.Parameters[0].GetCompletions("bar");
                 Assert.Fail("expect exception");
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 // expected
             }
 
@@ -167,8 +152,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public virtual void AutoCompleteReferenceProperty()
-        {
+        public virtual void AutoCompleteReferenceProperty() {
             CreateAuto2("Foo1");
             CreateAuto2("Foo2");
             CreateAuto2("Foo3");
@@ -181,8 +165,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public virtual void AutoCompleteStringProperty()
-        {
+        public virtual void AutoCompleteStringProperty() {
             var obj1 = NewTestObject<Auto1>();
             ITestProperty prop = obj1.GetPropertyByName("Prop2");
             ITestNaked[] cho = prop.GetCompletions("any");
@@ -191,18 +174,15 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public virtual void AutoCompleteIntProperty()
-        {
+        public virtual void AutoCompleteIntProperty() {
             var obj1 = NewTestObject<Auto1>();
             ITestProperty prop = obj1.GetPropertyByName("Prop1");
 
-            try
-            {
+            try {
                 prop.GetCompletions("any");
                 Assert.Fail("expect exception");
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 // expected
             }
             obj1.GetAction("Auto Complete Prop1");
@@ -210,8 +190,7 @@ namespace NakedObjects.SystemTest.Method
 
 
         [TestMethod]
-        public void UnmatchedAutoCompleteMethodShowsUpAsAction()
-        {
+        public void UnmatchedAutoCompleteMethodShowsUpAsAction() {
             ITestObject obj3 = NewTestObject<Auto3>();
             obj3.GetAction("Auto Complete Prop1");
             obj3.GetAction("Auto Complete Prop2");
@@ -219,37 +198,33 @@ namespace NakedObjects.SystemTest.Method
             obj3.GetAction("Auto Complete 0 Do Somthing");
             obj3.GetAction("Auto Complete 0 Do Something");
         }
+
         #endregion
 
         #region Choices
+
         [TestMethod]
-        public void ChoicesMethodDoesNotShowUpAsAction()
-        {
+        public void ChoicesMethodDoesNotShowUpAsAction() {
             var obj1 = NewTestObject<Choices1>();
-            try
-            {
+            try {
                 obj1.GetAction("Choices Prop1");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
 
-            try
-            {
+            try {
                 obj1.GetAction("Choices 0 Do Something");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
 
         [TestMethod]
-        public virtual void ChoicesNumericProperty()
-        {
+        public virtual void ChoicesNumericProperty() {
             var obj1 = NewTestObject<Choices1>();
             ITestProperty prop = obj1.GetPropertyByName("Prop1");
             ITestNaked[] cho = prop.GetChoices();
@@ -257,16 +232,14 @@ namespace NakedObjects.SystemTest.Method
             Assert.AreEqual("4", cho[0].Title);
         }
 
-        private void CreateChoices<T>(string prop1)
-        {
+        private void CreateChoices<T>(string prop1) {
             var obj2 = NewTestObject<T>();
             obj2.GetPropertyByName("Prop1").SetValue(prop1);
             obj2.Save();
         }
 
         [TestMethod]
-        public virtual void ChoicesParameters()
-        {
+        public virtual void ChoicesParameters() {
             CreateChoices<Choices2>("Bar1");
             CreateChoices<Choices2>("Bar2");
             CreateChoices<Choices2>("Bar3");
@@ -288,8 +261,7 @@ namespace NakedObjects.SystemTest.Method
 
 
         [TestMethod]
-        public virtual void ChoicesReferenceProperty()
-        {
+        public virtual void ChoicesReferenceProperty() {
             CreateChoices<Choices4>("Bar1");
             CreateChoices<Choices4>("Bar2");
             CreateChoices<Choices4>("Bar3");
@@ -302,8 +274,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public virtual void ChoicesStringProperty()
-        {
+        public virtual void ChoicesStringProperty() {
             var obj1 = NewTestObject<Choices1>();
             ITestProperty prop = obj1.GetPropertyByName("Prop2");
             ITestNaked[] cho = prop.GetChoices();
@@ -312,8 +283,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void UnmatchedChoicesMethodShowsUpAsAction()
-        {
+        public void UnmatchedChoicesMethodShowsUpAsAction() {
             var obj3 = NewTestObject<Choices3>();
             obj3.GetAction("Choices Prop1");
             obj3.GetAction("Choices Prop2");
@@ -321,11 +291,12 @@ namespace NakedObjects.SystemTest.Method
             obj3.GetAction("Choices 0 Do Somthing");
             obj3.GetAction("Choices 0 Do Something");
         }
+
         #endregion
 
         #region Clear
-        private void SetupForClearTests(out ITestProperty prop0, out ITestProperty prop1)
-        {
+
+        private void SetupForClearTests(out ITestProperty prop0, out ITestProperty prop1) {
             ITestObject obj = NewTestObject<Clear1>();
             prop0 = obj.GetPropertyByName("Prop0");
             prop1 = obj.GetPropertyByName("Prop1");
@@ -338,30 +309,25 @@ namespace NakedObjects.SystemTest.Method
             prop0.AssertIsEmpty();
         }
 
-        private static void CheckForClearTests(ITestProperty prop0, ITestProperty prop1)
-        {
+        private static void CheckForClearTests(ITestProperty prop0, ITestProperty prop1) {
             prop1.AssertIsEmpty();
             prop0.AssertValueIsEqual("Prop1 has been cleared");
         }
 
         [TestMethod]
-        public void ClearMethodDoesNotShowUpAsAnAction()
-        {
+        public void ClearMethodDoesNotShowUpAsAnAction() {
             ITestObject obj1 = NewTestObject<Clear1>();
-            try
-            {
+            try {
                 obj1.GetAction("Clear Prop1");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
 
         [TestMethod]
-        public void ClearMethodOnReferenceProperty()
-        {
+        public void ClearMethodOnReferenceProperty() {
             ITestObject obj3 = NewTestObject<Clear3>();
             obj3.GetPropertyByName("Prop1").SetValue("Foo");
             obj3.Save();
@@ -382,8 +348,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void ClearMethodOnValueProperty()
-        {
+        public void ClearMethodOnValueProperty() {
             ITestProperty prop0, prop1;
             SetupForClearTests(out prop0, out prop1);
             prop1.ClearValue();
@@ -391,8 +356,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void SetToEmptyStringOnValueProperty()
-        {
+        public void SetToEmptyStringOnValueProperty() {
             ITestProperty prop0, prop1;
             SetupForClearTests(out prop0, out prop1);
             prop1.SetValue("");
@@ -400,87 +364,76 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void UnmatchedClearMethodShowsUpAsAnAction()
-        {
+        public void UnmatchedClearMethodShowsUpAsAnAction() {
             ITestObject obj2 = NewTestObject<Clear2>();
             obj2.GetAction("Clear Prop2");
             obj2.GetAction("Clear Prop3");
             obj2.GetAction("Clear Prop4");
         }
+
         #endregion
 
         #region Created
 
         [TestMethod]
-        public void CreatedCalled()
-        {
+        public void CreatedCalled() {
             ITestObject obj1 = NewTestObject<Created1>();
-            var dom1 = (Created1)obj1.GetDomainObject();
+            var dom1 = (Created1) obj1.GetDomainObject();
             Assert.IsTrue(dom1.CreatedCalled);
         }
 
         [TestMethod]
-        public void CreatedDoesNotShowUpAsAnAction()
-        {
+        public void CreatedDoesNotShowUpAsAnAction() {
             ITestObject obj1 = NewTestObject<Created1>();
-            try
-            {
+            try {
                 obj1.GetAction("Created");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
 
         [TestMethod]
-        public void LowerCaseCreatedNotRecognisedAndShowsAsAction()
-        {
+        public void LowerCaseCreatedNotRecognisedAndShowsAsAction() {
             ITestObject obj1 = NewTestObject<Created2>();
-            var dom1 = (Created2)obj1.GetDomainObject();
+            var dom1 = (Created2) obj1.GetDomainObject();
             Assert.IsFalse(dom1.CreatedCalled);
 
-            try
-            {
+            try {
                 obj1.GetAction("created");
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
+
         #endregion
 
         #region Default
+
         [TestMethod]
-        public void DefaultMethodDoesNotShowUpAsAction()
-        {
+        public void DefaultMethodDoesNotShowUpAsAction() {
             var obj = NewTestObject<Default1>();
-            try
-            {
+            try {
                 obj.GetAction("Default Prop1");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
 
-            try
-            {
+            try {
                 obj.GetAction("Default 0 Do Something");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
 
         [TestMethod]
-        public virtual void DefaultNumericProperty()
-        {
+        public virtual void DefaultNumericProperty() {
             var obj1 = NewTestObject<Default1>();
             var prop = obj1.GetPropertyByName("Prop1");
             string def = prop.GetDefault().Title;
@@ -489,8 +442,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void DefaultParameters()
-        {
+        public void DefaultParameters() {
             //Set up choices
             var obj2 = NewTestObject<Default4>();
             obj2.GetPropertyByName("Prop1").SetValue("Bar1");
@@ -518,8 +470,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public virtual void DefaultReferenceProperty()
-        {
+        public virtual void DefaultReferenceProperty() {
             //Set up choices
             var obj2 = NewTestObject<Default2>();
             obj2.GetPropertyByName("Prop1").SetValue("Bar1");
@@ -539,8 +490,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public virtual void DefaultStringProperty()
-        {
+        public virtual void DefaultStringProperty() {
             var obj1 = NewTestObject<Default1>();
             var prop = obj1.GetPropertyByName("Prop2");
             string def = prop.GetDefault().Title;
@@ -549,8 +499,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void UnmatchedDefaultMethodShowsUpAsAction()
-        {
+        public void UnmatchedDefaultMethodShowsUpAsAction() {
             var obj = NewTestObject<Default3>();
             obj.GetAction("Default Prop1");
             obj.GetAction("Default Prop2");
@@ -559,8 +508,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void DefaultNumericMethodOverAnnotation()
-        {
+        public void DefaultNumericMethodOverAnnotation() {
             var obj1 = NewTestObject<Default1>();
             var prop = obj1.GetPropertyByName("Prop4");
             string def = prop.GetDefault().Title;
@@ -569,8 +517,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void DefaultStringMethodOverAnnotation()
-        {
+        public void DefaultStringMethodOverAnnotation() {
             var obj1 = NewTestObject<Default1>();
             var prop = obj1.GetPropertyByName("Prop5");
             string def = prop.GetDefault().Title;
@@ -579,8 +526,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void DefaultParametersOverAnnotation()
-        {
+        public void DefaultParametersOverAnnotation() {
             var obj1 = NewTestObject<Default1>();
             var action = obj1.GetAction("Do Something Else");
             string def0 = action.Parameters[0].GetDefault().Title;
@@ -591,15 +537,15 @@ namespace NakedObjects.SystemTest.Method
             Assert.IsNotNull(def1);
             Assert.AreEqual("Foo", def1);
         }
+
         #endregion
 
         #region Deleted
-        
+
         [TestMethod]
-        public void DeletedCalled()
-        {
+        public void DeletedCalled() {
             ITestObject obj1 = NewTestObject<Deleted1>();
-            var dom1 = (Deleted1)obj1.GetDomainObject();
+            var dom1 = (Deleted1) obj1.GetDomainObject();
             obj1.Save();
 
             Assert.IsFalse(Deleted1.DeletedCalled);
@@ -609,43 +555,37 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void DeletedDoesNotShowUpAsAnAction()
-        {
+        public void DeletedDoesNotShowUpAsAnAction() {
             ITestObject obj1 = NewTestObject<Deleted1>();
-            try
-            {
+            try {
                 obj1.GetAction("Deleted");
                 Assert.Fail("Should not get here");
             }
-            catch (Exception)
-            {
-            }
+            catch (Exception) {}
         }
 
         [TestMethod]
-        public void LowerCaseDeletedNotRecognisedAndShowsAsAction()
-        {
+        public void LowerCaseDeletedNotRecognisedAndShowsAsAction() {
             ITestObject obj1 = NewTestObject<Deleted2>();
-            var dom1 = (Deleted2)obj1.GetDomainObject();
+            var dom1 = (Deleted2) obj1.GetDomainObject();
             Assert.IsFalse(Deleted2.DeletedCalled);
 
-            try
-            {
+            try {
                 obj1.GetAction("Deleted");
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
+
         #endregion
 
         #region Deleting
+
         [TestMethod]
-        public void DeletingCalled()
-        {
+        public void DeletingCalled() {
             ITestObject obj1 = NewTestObject<Deleting1>();
-            var dom1 = (Deleting1)obj1.GetDomainObject();
+            var dom1 = (Deleting1) obj1.GetDomainObject();
             obj1.Save();
 
             Assert.IsFalse(Deleting1.DeletingCalled);
@@ -656,25 +596,21 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void DeletingDoesNotShowUpAsAnAction()
-        {
+        public void DeletingDoesNotShowUpAsAnAction() {
             ITestObject obj1 = NewTestObject<Deleting1>();
-            try
-            {
+            try {
                 obj1.GetAction("Deleting");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
 
         [TestMethod]
-        public void LowerCaseDeletingNotRecognisedAndShowsAsAction()
-        {
+        public void LowerCaseDeletingNotRecognisedAndShowsAsAction() {
             ITestObject obj1 = NewTestObject<Deleting2>().Save();
-            var dom1 = (Deleting2)obj1.GetDomainObject();
+            var dom1 = (Deleting2) obj1.GetDomainObject();
 
             //Check method is visible as an action
             obj1.GetAction("Deleting").AssertIsVisible();
@@ -683,12 +619,13 @@ namespace NakedObjects.SystemTest.Method
             obj1.GetAction("Delete").InvokeReturnObject();
             Assert.IsFalse(Deleting2.DeletingCalled); //Still false
         }
+
         #endregion
 
         #region Disable
+
         [TestMethod]
-        public void DisableAction()
-        {
+        public void DisableAction() {
             ITestObject obj = NewTestObject<Disable3>();
             obj.GetPropertyByName("Prop4").SetValue("avalue");
             obj.GetPropertyByName("Prop6").SetValue("avalue");
@@ -700,24 +637,20 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void DisableMethodDoesNotShowUpAsAnAction()
-        {
+        public void DisableMethodDoesNotShowUpAsAnAction() {
             ITestObject obj = NewTestObject<Disable3>();
-            try
-            {
+            try {
                 obj.GetAction("Disable Prop6");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
                 //TODO:  Test exception message (see #804)
             }
         }
 
         [TestMethod]
-        public void DisableProperty()
-        {
+        public void DisableProperty() {
             ITestObject obj = NewTestObject<Disable3>();
             ITestProperty prop6 = obj.GetPropertyByName("Prop6");
             prop6.AssertIsModifiable();
@@ -730,24 +663,21 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void UnmatchedDisableMethodShowsUpAsAction()
-        {
+        public void UnmatchedDisableMethodShowsUpAsAction() {
             ITestObject obj = NewTestObject<Disable3>();
             obj.GetAction("Disable Prop1");
             obj.GetAction("Disable Prop4");
         }
 
         [TestMethod]
-        public void DisableActionDefault()
-        {
+        public void DisableActionDefault() {
             ITestObject obj = NewTestObject<Disable2>();
             obj.GetAction("Action1").AssertIsDisabled();
             obj.GetAction("Action2").AssertIsDisabled();
         }
 
         [TestMethod]
-        public void DisableActionDefaultDoesNotDisableProperties()
-        {
+        public void DisableActionDefaultDoesNotDisableProperties() {
             ITestObject obj = NewTestObject<Disable2>();
             obj.GetPropertyByName("Prop1").AssertIsModifiable();
             obj.GetPropertyByName("Prop2").AssertIsModifiable();
@@ -756,31 +686,26 @@ namespace NakedObjects.SystemTest.Method
 
 
         [TestMethod]
-        public void DisableActionDefaultDoesNotShowUpAsAnAction()
-        {
+        public void DisableActionDefaultDoesNotShowUpAsAnAction() {
             ITestObject obj = NewTestObject<Disable2>();
-            try
-            {
+            try {
                 obj.GetAction("Disable Action Default");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
                 //TODO:  Test exception message (see #804)
             }
         }
 
         [TestMethod]
-        public void DisableActionDefaultOverriddenByActionLevelMethod()
-        {
+        public void DisableActionDefaultOverriddenByActionLevelMethod() {
             ITestObject obj = NewTestObject<Disable2>();
             obj.GetAction("Action3").AssertIsEnabled();
         }
 
         [TestMethod]
-        public void DisablePropertyDefault()
-        {
+        public void DisablePropertyDefault() {
             ITestObject obj = NewTestObject<Disable1>();
             obj.GetPropertyByName("Prop1").AssertIsUnmodifiable();
             obj.GetPropertyByName("Prop2").AssertIsUnmodifiable();
@@ -788,76 +713,66 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void DisablePropertyDefaultDoesNotDisableActions()
-        {
+        public void DisablePropertyDefaultDoesNotDisableActions() {
             ITestObject obj = NewTestObject<Disable1>();
             obj.GetAction("Action1").AssertIsEnabled();
             obj.GetAction("Action2").AssertIsEnabled();
         }
 
         [TestMethod]
-        public void DisablePropertyDefaultDoesNotShowUpAsAnAction()
-        {
+        public void DisablePropertyDefaultDoesNotShowUpAsAnAction() {
             ITestObject obj = NewTestObject<Disable1>();
-            try
-            {
+            try {
                 obj.GetAction("Disable Property Default ");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
 
         [TestMethod]
-        public void DisablePropertyPropertyOverriddenByPropertyLevelMethod()
-        {
+        public void DisablePropertyPropertyOverriddenByPropertyLevelMethod() {
             ITestObject obj = NewTestObject<Disable1>();
             obj.GetPropertyByName("Prop3").AssertIsModifiable();
             //obj.GetPropertyByName("Prop5").AssertIsModifiable(); - collection disabled by default
         }
+
         #endregion
 
         #region Hide
+
         [TestMethod]
-        public void HideAction()
-        {
+        public void HideAction() {
             ITestObject obj = NewTestObject<Hide3>();
             obj.Save();
             obj.GetAction("Do Something");
             obj.GetPropertyByName("Prop4").SetValue("Hide 6");
 
-            try
-            {
+            try {
                 obj.GetAction("Do Something");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
                 //TODO:  Test exception message (see #804)
             }
         }
 
         [TestMethod]
-        public void HideMethodDoesNotShowUpAsAnAction()
-        {
+        public void HideMethodDoesNotShowUpAsAnAction() {
             ITestObject obj = NewTestObject<Hide3>();
-            try
-            {
+            try {
                 obj.GetAction("Hide Prop6");
                 Assert.Fail("'Hide Prop6' is showing as an action");
             }
-            catch (AssertFailedException e)
-            {
+            catch (AssertFailedException e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'Hide Prop6'", e.Message);
             }
         }
 
         [TestMethod]
-        public void HideProperty()
-        {
+        public void HideProperty() {
             ITestObject obj = NewTestObject<Hide3>();
             ITestProperty prop6 = obj.GetPropertyByName("Prop6");
             prop6.AssertIsVisible();
@@ -870,8 +785,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void UnmatchedHideMethodShowsUpAsAnAction()
-        {
+        public void UnmatchedHideMethodShowsUpAsAnAction() {
             ITestObject obj = NewTestObject<Hide3>();
             obj.GetAction("Hide Prop7");
             obj.GetAction("Hide Prop4");
@@ -880,16 +794,14 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void HideActionDefault()
-        {
+        public void HideActionDefault() {
             ITestObject obj = NewTestObject<Hide2>();
             obj.GetAction("Action1").AssertIsInvisible();
             obj.GetAction("Action2").AssertIsInvisible();
         }
 
         [TestMethod]
-        public void HideActionDefaultDoesNotHideProperties()
-        {
+        public void HideActionDefaultDoesNotHideProperties() {
             ITestObject obj = NewTestObject<Hide2>();
             obj.GetPropertyByName("Prop1").AssertIsVisible();
             obj.GetPropertyByName("Prop2").AssertIsVisible();
@@ -898,31 +810,26 @@ namespace NakedObjects.SystemTest.Method
 
 
         [TestMethod]
-        public void HideActionDefaultDoesNotShowUpAsAnAction()
-        {
+        public void HideActionDefaultDoesNotShowUpAsAnAction() {
             ITestObject obj = NewTestObject<Hide2>();
-            try
-            {
+            try {
                 obj.GetAction("Hide Action Default");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
                 //TODO:  Test exception message (see #804)
             }
         }
 
         [TestMethod]
-        public void HideActionDefaultOverriddenByActionLevelMethod()
-        {
+        public void HideActionDefaultOverriddenByActionLevelMethod() {
             ITestObject obj = NewTestObject<Hide2>();
             obj.GetAction("Action3").AssertIsVisible();
         }
 
         [TestMethod]
-        public void HidePropertyDefault()
-        {
+        public void HidePropertyDefault() {
             ITestObject obj = NewTestObject<Hide1>();
             obj.GetPropertyByName("Prop1").AssertIsInvisible();
             obj.GetPropertyByName("Prop2").AssertIsInvisible();
@@ -930,56 +837,49 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void HidePropertyDefaultDoesNotHideActions()
-        {
+        public void HidePropertyDefaultDoesNotHideActions() {
             ITestObject obj = NewTestObject<Hide1>();
             obj.GetAction("Action1").AssertIsVisible();
             obj.GetAction("Action2").AssertIsVisible();
         }
 
         [TestMethod]
-        public void HidePropertyDefaultDoesNotShowUpAsAnAction()
-        {
+        public void HidePropertyDefaultDoesNotShowUpAsAnAction() {
             ITestObject obj = NewTestObject<Hide1>();
-            try
-            {
+            try {
                 obj.GetAction("Hide Property Default ");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
 
         [TestMethod]
-        public void HidePropertyPropertyOverriddenByPropertyLevelMethod()
-        {
+        public void HidePropertyPropertyOverriddenByPropertyLevelMethod() {
             ITestObject obj = NewTestObject<Hide1>();
             obj.GetPropertyByName("Prop3").AssertIsVisible();
             obj.GetPropertyByName("Prop5").AssertIsVisible();
         }
+
         #endregion
 
         #region Modify
+
         [TestMethod]
-        public void ModifyMethodDoesNotShowUpAsAnAction()
-        {
+        public void ModifyMethodDoesNotShowUpAsAnAction() {
             ITestObject obj1 = NewTestObject<Modify1>();
-            try
-            {
+            try {
                 obj1.GetAction("Modify Prop1");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
 
         [TestMethod]
-        public void ModifyMethodOnReferenceProperty()
-        {
+        public void ModifyMethodOnReferenceProperty() {
             ITestObject obj3 = NewTestObject<Modify3>();
             obj3.GetPropertyByName("Prop1").SetValue("Foo");
             obj3.Save();
@@ -997,8 +897,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void ModifyMethodOnValueProperty()
-        {
+        public void ModifyMethodOnValueProperty() {
             ITestObject obj = NewTestObject<Modify1>();
             ITestProperty prop0 = obj.GetPropertyByName("Prop0");
             ITestProperty prop1 = obj.GetPropertyByName("Prop1");
@@ -1012,8 +911,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void CalledWhenReferencePropertyCleared()
-        {
+        public void CalledWhenReferencePropertyCleared() {
             ITestObject obj3 = NewTestObject<Modify3>();
             obj3.GetPropertyByName("Prop1").SetValue("Foo");
             obj3.Save();
@@ -1035,8 +933,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void CalledWhenValuePropertyIsCleared()
-        {
+        public void CalledWhenValuePropertyIsCleared() {
             ITestObject obj = NewTestObject<Modify1>();
             ITestProperty prop0 = obj.GetPropertyByName("Prop0");
             ITestProperty prop1 = obj.GetPropertyByName("Prop1");
@@ -1050,8 +947,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void NotCalledWhenReferencePropertyClearedIfClear()
-        {
+        public void NotCalledWhenReferencePropertyClearedIfClear() {
             ITestObject obj3 = NewTestObject<Modify3>();
             obj3.GetPropertyByName("Prop1").SetValue("Foo");
             obj3.Save();
@@ -1073,8 +969,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void NotCalledWhenValuePropertyIsClearedIfClear()
-        {
+        public void NotCalledWhenValuePropertyIsClearedIfClear() {
             ITestObject obj = NewTestObject<Modify4>();
             ITestProperty prop0 = obj.GetPropertyByName("Prop0");
             ITestProperty prop1 = obj.GetPropertyByName("Prop1");
@@ -1088,73 +983,62 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void UnmatchedModifyMethodShowsUpAsAnAction()
-        {
+        public void UnmatchedModifyMethodShowsUpAsAnAction() {
             ITestObject obj2 = NewTestObject<Modify2>();
             obj2.GetAction("Modify Prop2");
             obj2.GetAction("Modify Prop3");
             obj2.GetAction("Modify Prop4");
         }
+
         #endregion
 
         #region Persisted
+
         [TestMethod]
-        public void LowerCasePersistedNotRecognisedAndShowsAsAction()
-        {
+        public void LowerCasePersistedNotRecognisedAndShowsAsAction() {
             ITestObject obj1 = NewTestObject<Persisted2>();
-            var dom1 = (Persisted2)obj1.GetDomainObject();
+            var dom1 = (Persisted2) obj1.GetDomainObject();
             Assert.IsFalse(dom1.PersistedCalled);
 
-            try
-            {
+            try {
                 obj1.GetAction("persisted");
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
 
         [TestMethod]
-        public void PersistedCalled()
-        {
+        public void PersistedCalled() {
             ITestObject obj1 = NewTestObject<Persisted1>();
-            var dom1 = (Persisted1)obj1.GetDomainObject();
-            try
-            {
+            var dom1 = (Persisted1) obj1.GetDomainObject();
+            try {
                 obj1.Save();
                 Assert.Fail("Shouldn't get to here");
             }
-            catch (Exception)
-            {
-
-            }
-            
-
+            catch (Exception) {}
         }
 
         [TestMethod]
-        public void PersistedDoesNotShowUpAsAnAction()
-        {
+        public void PersistedDoesNotShowUpAsAnAction() {
             ITestObject obj1 = NewTestObject<Persisted1>();
-            try
-            {
+            try {
                 obj1.GetAction("Persisted");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
+
         #endregion
 
         #region Persisting
+
         [TestMethod]
-        public void PersistingCalled()
-        {
+        public void PersistingCalled() {
             ITestObject obj1 = NewTestObject<Persisting1>();
-            var dom1 = (Persisting1)obj1.GetDomainObject();
+            var dom1 = (Persisting1) obj1.GetDomainObject();
             Assert.IsFalse(Persisting1.PersistingCalled);
 
             obj1.Save();
@@ -1163,52 +1047,46 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void PersistingDoesNotShowUpAsAnAction()
-        {
+        public void PersistingDoesNotShowUpAsAnAction() {
             ITestObject obj1 = NewTestObject<Persisting1>();
-            try
-            {
+            try {
                 obj1.GetAction("Persisting");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
+
         #endregion
 
         #region Saved & Saving
+
         [TestMethod]
-        public void SavedAndSavingDoNotShowUpAsActions()
-        {
+        public void SavedAndSavingDoNotShowUpAsActions() {
             ITestObject obj1 = NewTestObject<Saved1>();
-            try
-            {
+            try {
                 obj1.GetAction("Saved");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
-            try
-            {
+            try {
                 obj1.GetAction("Saving");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
+
         #endregion
 
         #region Title & ToString
-        [TestMethod]
-        public virtual void ObjectWithSimpleToString()
-        {
 
+        [TestMethod]
+        public virtual void ObjectWithSimpleToString() {
             var obj = NewTestObject<Title1>();
             var prop1 = obj.GetPropertyByName("Prop1");
             prop1.SetValue("Bar");
@@ -1218,8 +1096,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public virtual void TitleMethod()
-        {
+        public virtual void TitleMethod() {
             var obj = NewTestObject<Title3>();
             obj.AssertTitleEquals("Untitled Title3");
             var prop1 = obj.GetPropertyByName("Prop1");
@@ -1230,10 +1107,9 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public virtual void TitleMethodTakesPrecedenceOverToString()
-        {
+        public virtual void TitleMethodTakesPrecedenceOverToString() {
             var obj = NewTestObject<Title4>();
-            StringAssert.Equals("Bar", obj.GetDomainObject().ToString());
+            Equals("Bar", obj.GetDomainObject().ToString());
             obj.AssertTitleEquals("Untitled Title4");
             var prop1 = obj.GetPropertyByName("Prop1");
             prop1.SetValue("Foo");
@@ -1243,8 +1119,7 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public virtual void ToStringRecognisedAsATitle()
-        {
+        public virtual void ToStringRecognisedAsATitle() {
             var obj = NewTestObject<Title5>();
             var prop1 = obj.GetPropertyByName("Prop1");
             prop1.SetValue("Bar");
@@ -1252,114 +1127,95 @@ namespace NakedObjects.SystemTest.Method
             obj.Save();
             obj.AssertTitleEquals("Bar");
         }
+
         #endregion
 
         #region Updated
+
         [TestMethod]
-        public void LowerCaseNotRecognisedAndShowsAsAction()
-        {
+        public void LowerCaseNotRecognisedAndShowsAsAction() {
             var obj1 = NewTestObject<Updated2>();
-            var dom1 = (Updated2)obj1.GetDomainObject();
+            var dom1 = (Updated2) obj1.GetDomainObject();
             Assert.IsFalse(Updated2.UpdatedCalled);
 
-            try
-            {
+            try {
                 obj1.GetAction("updated");
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
 
         [TestMethod]
-        public void UpdatedCalled()
-        {
+        public void UpdatedCalled() {
             var obj1 = NewTestObject<Updated1>();
-            var dom1 = (Updated1)obj1.GetDomainObject();
+            var dom1 = (Updated1) obj1.GetDomainObject();
             obj1.Save();
-            try
-            {
+            try {
                 obj1.GetPropertyByName("Prop1").SetValue("Foo");
                 Assert.Fail("Shouldn't get to here");
             }
-            catch (Exception)
-            {
-
-            }
-
+            catch (Exception) {}
         }
 
         [TestMethod]
-        public void UpdatedDoesNotShowUpAsAnAction()
-        {
+        public void UpdatedDoesNotShowUpAsAnAction() {
             var obj1 = NewTestObject<Updated1>();
-            try
-            {
+            try {
                 obj1.GetAction("Updated");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
+
         #endregion
 
         #region Updating
+
         [TestMethod]
-        public void LowerCaseUpdatingNotRecognisedAndShowsAsAction()
-        {
+        public void LowerCaseUpdatingNotRecognisedAndShowsAsAction() {
             ITestObject obj1 = NewTestObject<Updating2>();
-            try
-            {
+            try {
                 obj1.GetAction("Updating");
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
 
         [TestMethod]
-        public void UpdatingCalled()
-        {
+        public void UpdatingCalled() {
             ITestObject obj1 = NewTestObject<Updating1>();
-            var dom1 = (Updating1)obj1.GetDomainObject();
+            var dom1 = (Updating1) obj1.GetDomainObject();
             obj1.Save();
 
-            try
-            {
+            try {
                 obj1.GetPropertyByName("Prop1").SetValue("Foo");
                 Assert.Fail("Should not get to here");
             }
-            catch (Exception)
-            {
-
-
-            }
+            catch (Exception) {}
         }
 
         [TestMethod]
-        public void UpdatingDoesNotShowUpAsAnAction()
-        {
+        public void UpdatingDoesNotShowUpAsAnAction() {
             ITestObject obj1 = NewTestObject<Updating1>();
-            try
-            {
+            try {
                 obj1.GetAction("Updating");
                 Assert.Fail();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.IsNotNull(e);
             }
         }
+
         #endregion
 
         #region Validate
+
         [TestMethod]
-        public void UnmatchedValidateMethodShowsUpAsAnAction()
-        {
+        public void UnmatchedValidateMethodShowsUpAsAnAction() {
             ITestObject obj = NewTestObject<Validate3>();
             obj.GetAction("Validate Prop1");
             obj.GetAction("Validate Prop2");
@@ -1370,83 +1226,68 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [TestMethod]
-        public void ValidateMethodDoesNotShowUpAsAnAction()
-        {
+        public void ValidateMethodDoesNotShowUpAsAnAction() {
             ITestObject obj = NewTestObject<Validate1>();
-            try
-            {
+            try {
                 obj.GetAction("Validate Prop1");
                 Assert.Fail("'Validate Prop1' is showing as an action");
             }
-            catch (AssertFailedException e)
-            {
+            catch (AssertFailedException e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'Validate Prop1'", e.Message);
             }
 
-            try
-            {
+            try {
                 obj.GetAction("Validate0 Do Something");
                 Assert.Fail("'Validate0 Do Something' is showing as an action");
             }
-            catch (AssertFailedException e)
-            {
+            catch (AssertFailedException e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'Validate0 Do Something'", e.Message);
             }
 
-            try
-            {
+            try {
                 obj.GetAction("Validate Do Something Else");
                 Assert.Fail("'Validate Do Something Else' is showing as an action");
             }
-            catch (AssertFailedException e)
-            {
+            catch (AssertFailedException e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'Validate Do Something Else'", e.Message);
             }
         }
 
         [TestMethod]
-        public virtual void ValidateNumericalProperty()
-        {
+        public virtual void ValidateNumericalProperty() {
             ITestObject obj = NewTestObject<Validate1>();
             ITestProperty prop1 = obj.GetPropertyByName("Prop1");
             prop1.AssertFieldEntryInvalid("2").AssertLastMessageIs("Value must be between 3 & 10");
             prop1.AssertFieldEntryInvalid("11").AssertLastMessageIs("Value must be between 3 & 10");
             prop1.SetValue("6").AssertLastMessageIs("");
-            try
-            {
+            try {
                 prop1.SetValue("11");
                 Assert.Fail();
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 prop1.SetValue("7");
             }
         }
 
         [TestMethod]
-        public virtual void ValidateStringProperty()
-        {
+        public virtual void ValidateStringProperty() {
             ITestObject obj = NewTestObject<Validate1>();
             ITestProperty prop1 = obj.GetPropertyByName("Prop2");
             prop1.AssertFieldEntryInvalid("foo").AssertLastMessageIs("Value must start with a");
             prop1.AssertFieldEntryInvalid("bar").AssertLastMessageIs("Value must start with a");
             prop1.SetValue("afoo").AssertLastMessageIs("");
-            try
-            {
+            try {
                 prop1.SetValue("bar");
                 Assert.Fail();
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 prop1.SetValue("abar");
             }
         }
 
 
-
         [TestMethod]
-        public virtual void ValidateReferenceProperty()
-        {
+        public virtual void ValidateReferenceProperty() {
             ITestObject obj1 = NewTestObject<Validate1>();
             ITestProperty obj1Prop3 = obj1.GetPropertyByName("Prop3");
 
@@ -1458,20 +1299,17 @@ namespace NakedObjects.SystemTest.Method
             obj1Prop3.AssertSetObjectInvalid(obj2b).AssertLastMessageIs("Invalid Object");
             obj1Prop3.AssertSetObjectIsValid(obj2a).AssertLastMessageIs("");
 
-            try
-            {
+            try {
                 obj1Prop3.SetObject(obj2b);
                 Assert.Fail();
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 obj1Prop3.SetObject(obj2a);
             }
         }
 
         [TestMethod]
-        public void ValidateParametersIndividually()
-        {
+        public void ValidateParametersIndividually() {
             ITestObject obj1 = NewTestObject<Validate1>();
             ITestAction action = obj1.GetAction("Do Something");
 
@@ -1480,16 +1318,15 @@ namespace NakedObjects.SystemTest.Method
             ITestObject obj2b = NewTestObject<Validate2>();
             obj2b.GetPropertyByName("Prop1").SetValue("b");
 
-            action.InvokeReturnObject(new object[] { 5, "abar", obj2a });
+            action.InvokeReturnObject(new object[] {5, "abar", obj2a});
 
-            action.AssertIsInvalidWithParms(new object[] { 2, "abar", obj2a }).AssertLastMessageIs("Value must be between 3 & 10");
-            action.AssertIsInvalidWithParms(new object[] { 5, "bar", obj2a }).AssertLastMessageIs("Value must start with a");
-            action.AssertIsInvalidWithParms(new object[] { 5, "abar", obj2b }).AssertLastMessageIs("Invalid Object");
+            action.AssertIsInvalidWithParms(new object[] {2, "abar", obj2a}).AssertLastMessageIs("Value must be between 3 & 10");
+            action.AssertIsInvalidWithParms(new object[] {5, "bar", obj2a}).AssertLastMessageIs("Value must start with a");
+            action.AssertIsInvalidWithParms(new object[] {5, "abar", obj2b}).AssertLastMessageIs("Invalid Object");
         }
 
         [TestMethod]
-        public void ValidateParametersCollectively()
-        {
+        public void ValidateParametersCollectively() {
             ITestObject obj1 = NewTestObject<Validate1>();
             ITestAction action = obj1.GetAction("Do Something Else");
 
@@ -1498,35 +1335,31 @@ namespace NakedObjects.SystemTest.Method
             ITestObject obj2b = NewTestObject<Validate2>();
             obj2b.GetPropertyByName("Prop1").SetValue("b");
 
-            action.InvokeReturnObject(new object[] { 5, "abar", obj2a });
+            action.InvokeReturnObject(new object[] {5, "abar", obj2a});
 
-            action.AssertIsInvalidWithParms(new object[] { 2, "abar", obj2a }).AssertLastMessageIs("Something amiss");
-            action.AssertIsInvalidWithParms(new object[] { 5, "bar", obj2a }).AssertLastMessageIs("Something amiss");
-            action.AssertIsInvalidWithParms(new object[] { 5, "abar", obj2b }).AssertLastMessageIs("Something amiss");
+            action.AssertIsInvalidWithParms(new object[] {2, "abar", obj2a}).AssertLastMessageIs("Something amiss");
+            action.AssertIsInvalidWithParms(new object[] {5, "bar", obj2a}).AssertLastMessageIs("Something amiss");
+            action.AssertIsInvalidWithParms(new object[] {5, "abar", obj2b}).AssertLastMessageIs("Something amiss");
         }
 
 
         [TestMethod]
-        public virtual void ValidateCrossValidationFail4()
-        {
+        public virtual void ValidateCrossValidationFail4() {
             ITestObject obj = NewTestObject<Validate4>();
             obj.GetPropertyByName("Prop1").SetValue("value1");
             obj.GetPropertyByName("Prop2").SetValue("value2");
 
-            try
-            {
+            try {
                 obj.Save();
                 Assert.Fail("Expect exception");
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. Expect prop1 == prop2", e.Message);
             }
         }
 
         [TestMethod]
-        public virtual void ValidateCrossValidationSuccess4()
-        {
+        public virtual void ValidateCrossValidationSuccess4() {
             ITestObject obj = NewTestObject<Validate4>();
             obj.GetPropertyByName("Prop1").SetValue("value1");
             obj.GetPropertyByName("Prop2").SetValue("value1");
@@ -1535,8 +1368,7 @@ namespace NakedObjects.SystemTest.Method
 
 
         [TestMethod]
-        public virtual void ValidateCrossValidationFail5A()
-        {
+        public virtual void ValidateCrossValidationFail5A() {
             ITestObject obj = NewTestObject<Validate5>();
             ITestObject obj4 = NewTestObject<Validate4>();
             obj.GetPropertyByName("Prop1").SetValue("value1");
@@ -1544,20 +1376,17 @@ namespace NakedObjects.SystemTest.Method
             obj.GetPropertyByName("Prop3").SetValue("1");
             obj.GetPropertyByName("Prop4").SetObject(obj4);
 
-            try
-            {
+            try {
                 obj.Save();
                 Assert.Fail("Expect exception");
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. Condition Fail", e.Message);
             }
         }
 
         [TestMethod]
-        public virtual void ValidateCrossValidationFail5B()
-        {
+        public virtual void ValidateCrossValidationFail5B() {
             ITestObject obj = NewTestObject<Validate5>();
             ITestObject obj4 = NewTestObject<Validate4>();
             obj.GetPropertyByName("Prop1").SetValue("value1");
@@ -1566,41 +1395,35 @@ namespace NakedObjects.SystemTest.Method
             obj.GetPropertyByName("Prop4").SetObject(obj4);
 
 
-            try
-            {
+            try {
                 obj.Save();
                 Assert.Fail("Expect exception");
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. Condition Fail", e.Message);
             }
         }
 
         [TestMethod]
-        public virtual void ValidateCrossValidationFail5C()
-        {
+        public virtual void ValidateCrossValidationFail5C() {
             ITestObject obj = NewTestObject<Validate5>();
             obj.GetPropertyByName("Prop1").SetValue("value1");
             obj.GetPropertyByName("Prop2").SetValue("value1");
             obj.GetPropertyByName("Prop3").SetValue("1");
             obj.GetPropertyByName("Prop4").ClearObject();
 
-            try
-            {
+            try {
                 obj.Save();
                 Assert.Fail("Expect exception");
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. Condition Fail", e.Message);
             }
         }
 
 
         [TestMethod]
-        public virtual void ValidateCrossValidationSuccess5()
-        {
+        public virtual void ValidateCrossValidationSuccess5() {
             ITestObject obj = NewTestObject<Validate5>();
             ITestObject obj4 = NewTestObject<Validate4>();
             obj.GetPropertyByName("Prop1").SetValue("value1");
@@ -1611,16 +1434,14 @@ namespace NakedObjects.SystemTest.Method
             obj.Save();
         }
 
-
-#endregion
+        #endregion
     }
 
     #region Classes used in test
 
-    public class MethodsDbContext : DbContext
-    {
+    public class MethodsDbContext : DbContext {
         public const string DatabaseName = "TestMethods";
-        public MethodsDbContext() : base(DatabaseName) { }
+        public MethodsDbContext() : base(DatabaseName) {}
 
         public DbSet<Auto1> Auto1 { get; set; }
         public DbSet<Auto2> Auto2 { get; set; }
@@ -1671,12 +1492,11 @@ namespace NakedObjects.SystemTest.Method
         public DbSet<Validate3> Validate3 { get; set; }
         public DbSet<Validate4> Validate4 { get; set; }
         public DbSet<Validate5> Validate5 { get; set; }
-
     }
 
     #region AutoComplete
-    public class Auto1
-    {
+
+    public class Auto1 {
         public virtual int Id { get; set; }
 
         public IDomainObjectContainer Container { set; protected get; }
@@ -1687,92 +1507,79 @@ namespace NakedObjects.SystemTest.Method
 
         public virtual Auto2 Prop3 { get; set; }
 
-        public IQueryable<int> AutoCompleteProp1(string autoCompleteParm)
-        {
-            return new List<int> { 4, 8, 9 }.AsQueryable();
+        public IQueryable<int> AutoCompleteProp1(string autoCompleteParm) {
+            return new List<int> {4, 8, 9}.AsQueryable();
         }
 
-        public IQueryable<string> AutoCompleteProp2(string autoCompleteParm)
-        {
-            return new List<string> { "Fee", "Foo", "Fuu" }.AsQueryable();
+        public IQueryable<string> AutoCompleteProp2(string autoCompleteParm) {
+            return new List<string> {"Fee", "Foo", "Fuu"}.AsQueryable();
         }
 
-        public IQueryable<Auto2> AutoCompleteProp3(string autoCompleteParm)
-        {
+        public IQueryable<Auto2> AutoCompleteProp3(string autoCompleteParm) {
             return Container.Instances<Auto2>().Where(a => a.Prop1.ToUpper().Contains(autoCompleteParm.ToUpper()));
         }
 
         #region Do Something
 
-        public void DoSomething(int param0, string param1, Auto2 param2) { }
+        public void DoSomething(int param0, string param1, Auto2 param2) {}
 
-        public IQueryable<int> AutoComplete0DoSomething(string autoCompleteParm)
-        {
+        public IQueryable<int> AutoComplete0DoSomething(string autoCompleteParm) {
             return AutoCompleteProp1(autoCompleteParm);
         }
 
-        public IQueryable<string> AutoComplete1DoSomething(string autoCompleteParm)
-        {
+        public IQueryable<string> AutoComplete1DoSomething(string autoCompleteParm) {
             return AutoCompleteProp2(autoCompleteParm);
         }
 
-        public IQueryable<Auto2> AutoComplete2DoSomething(string autoCompleteParm)
-        {
+        public IQueryable<Auto2> AutoComplete2DoSomething(string autoCompleteParm) {
             return AutoCompleteProp3(autoCompleteParm);
         }
 
         #endregion
     }
 
-    public class Auto2
-    {
+    public class Auto2 {
         public virtual int Id { get; set; }
 
         [Title]
         public virtual string Prop1 { get; set; }
     }
 
-    public class Auto3
-    {
+    public class Auto3 {
         public virtual int Id { get; set; }
 
         public virtual int Prop1 { get; set; }
 
         public virtual string Prop2 { get; set; }
 
-        public IQueryable<string> AutoCompleteProp1()
-        {
+        public IQueryable<string> AutoCompleteProp1() {
             return null;
         }
 
-        public string AutoCompleteProp2(string autoCompleteParm)
-        {
+        public string AutoCompleteProp2(string autoCompleteParm) {
             return null;
         }
 
-        public string AutoCompleteProp3(string autoCompleteParm)
-        {
+        public string AutoCompleteProp3(string autoCompleteParm) {
             return null;
         }
 
-        public void DoSomething(int param0, string param1, Auto2 param2) { }
+        public void DoSomething(int param0, string param1, Auto2 param2) {}
 
-        public IQueryable<int> AutoComplete0DoSomthing(string autoCompleteParm)
-        {
+        public IQueryable<int> AutoComplete0DoSomthing(string autoCompleteParm) {
             return null;
         }
 
-        public IQueryable<string> AutoComplete0DoSomething(string autoCompleteParm)
-        {
+        public IQueryable<string> AutoComplete0DoSomething(string autoCompleteParm) {
             return null;
         }
     }
-#endregion
 
-#region Choices
+    #endregion
 
-    public class Choices1
-    {
+    #region Choices
+
+    public class Choices1 {
         public IDomainObjectContainer Container { set; protected get; }
 
         public virtual int Id { get; set; }
@@ -1783,105 +1590,86 @@ namespace NakedObjects.SystemTest.Method
 
         public Choices4 Prop3 { get; set; }
 
-        public List<int> ChoicesProp1()
-        {
-            return new List<int> { 4, 8, 9 };
+        public List<int> ChoicesProp1() {
+            return new List<int> {4, 8, 9};
         }
 
-        public List<string> ChoicesProp2()
-        {
-            return new List<string> { "Fee", "Foo", "Fuu" };
+        public List<string> ChoicesProp2() {
+            return new List<string> {"Fee", "Foo", "Fuu"};
         }
 
-        public List<Choices4> ChoicesProp3()
-        {
+        public List<Choices4> ChoicesProp3() {
             return Container.Instances<Choices4>().ToList();
         }
 
         #region Do Something
 
-        public void DoSomething(int param0, string param1, Choices2 param2) { }
+        public void DoSomething(int param0, string param1, Choices2 param2) {}
 
-        public List<int> Choices0DoSomething()
-        {
+        public List<int> Choices0DoSomething() {
             return ChoicesProp1();
         }
 
-        public List<string> Choices1DoSomething()
-        {
+        public List<string> Choices1DoSomething() {
             return ChoicesProp2();
         }
 
-        public List<Choices2> Choices2DoSomething()
-        {
+        public List<Choices2> Choices2DoSomething() {
             return Container.Instances<Choices2>().ToList();
         }
 
         #endregion
     }
 
-    public class Choices2
-    {
-
+    public class Choices2 {
         public virtual int Id { get; set; }
 
         [Title]
         public virtual string Prop1 { get; set; }
     }
 
-    public class Choices3
-    {
-
+    public class Choices3 {
         public virtual int Id { get; set; }
 
         public virtual int Prop1 { get; set; }
 
         public virtual string Prop2 { get; set; }
 
-        public List<string> ChoicesProp1()
-        {
+        public List<string> ChoicesProp1() {
             return null;
         }
 
-        public string ChoicesProp2()
-        {
+        public string ChoicesProp2() {
             return null;
         }
 
-        public string ChoicesProp3()
-        {
+        public string ChoicesProp3() {
             return null;
         }
 
-        public void DoSomething(int param0, string param1, Choices2 param2) { }
+        public void DoSomething(int param0, string param1, Choices2 param2) {}
 
-        public List<int> Choices0DoSomthing()
-        {
+        public List<int> Choices0DoSomthing() {
             return null;
         }
 
-        public List<string> Choices0DoSomething()
-        {
+        public List<string> Choices0DoSomething() {
             return null;
         }
     }
 
-    public class Choices4
-    {
-
+    public class Choices4 {
         public virtual int Id { get; set; }
 
         [Title]
         public virtual string Prop1 { get; set; }
     }
 
+    #endregion
 
-#endregion
+    #region Clear
 
-#region Clear
-    public class Clear1
-    {
-
+    public class Clear1 {
         public virtual int Id { get; set; }
 
         public virtual string Prop0 { get; set; }
@@ -1893,22 +1681,18 @@ namespace NakedObjects.SystemTest.Method
 
         public virtual Clear3 Prop4 { get; set; }
 
-        public void ClearProp1()
-        {
+        public void ClearProp1() {
             Prop1 = null;
             Prop0 = "Prop1 has been cleared";
         }
 
-        public void ClearProp4()
-        {
+        public void ClearProp4() {
             Prop4 = null;
             Prop3 = "Prop4 has been cleared";
         }
     }
 
-    public class Clear2
-    {
-
+    public class Clear2 {
         public virtual int Id { get; set; }
 
         public virtual string Prop2 { get; set; }
@@ -1916,61 +1700,55 @@ namespace NakedObjects.SystemTest.Method
         public virtual string Prop3 { get; set; }
 
         //Has param
-        public void ClearProp2(string value) { }
+        public void ClearProp2(string value) {}
 
         //Non-void method
-        public bool ClearProp3()
-        {
+        public bool ClearProp3() {
             return false;
         }
 
         //No corresponding Prop4
-        public void ClearProp4() { }
+        public void ClearProp4() {}
     }
 
-    public class Clear3
-    {
-
+    public class Clear3 {
         public virtual int Id { get; set; }
 
         [Title]
         public virtual string Prop1 { get; set; }
     }
-#endregion
 
-#region Created
-    public class Created1
-    {
-        public virtual int Id { get; set; }
+    #endregion
 
+    #region Created
+
+    public class Created1 {
         public bool CreatedCalled;
+        public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
 
-        public void Created()
-        {
+        public void Created() {
             CreatedCalled = true;
         }
     }
 
-    public class Created2
-    {
-        public virtual int Id { get; set; }
-
+    public class Created2 {
         public bool CreatedCalled;
+        public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
 
-        public void created()
-        {
+        public void created() {
             CreatedCalled = true;
         }
     }
-#endregion
 
-#region Default
-    public class Default1
-    {
+    #endregion
+
+    #region Default
+
+    public class Default1 {
         public IDomainObjectContainer Container { set; protected get; }
 
         public virtual int Id { get; set; }
@@ -1981,56 +1759,47 @@ namespace NakedObjects.SystemTest.Method
 
         public virtual Default2 Prop3 { get; set; }
 
-        public int DefaultProp1()
-        {
-            return 8;
-        }
-
-        public string DefaultProp2()
-        {
-            return "Foo";
-        }
-
-        public Default2 DefaultProp3()
-        {
-            return Container.Instances<Default2>().Where(x => x.Prop1 == "Bar2").FirstOrDefault();
-        }
-
         [DefaultValue(7)]
         public virtual int Prop4 { get; set; }
 
         [DefaultValue("Bar")]
         public virtual string Prop5 { get; set; }
 
-
-        public int DefaultProp4()
-        {
+        public int DefaultProp1() {
             return 8;
         }
 
-        public string DefaultProp5()
-        {
+        public string DefaultProp2() {
+            return "Foo";
+        }
+
+        public Default2 DefaultProp3() {
+            return Container.Instances<Default2>().Where(x => x.Prop1 == "Bar2").FirstOrDefault();
+        }
+
+
+        public int DefaultProp4() {
+            return 8;
+        }
+
+        public string DefaultProp5() {
             return "Foo";
         }
 
         #region Do Something
 
-        public void DoSomething(int param0, string param1, Default4 param2) { }
+        public void DoSomething(int param0, string param1, Default4 param2) {}
 
-        public int Default0DoSomething()
-        {
+        public int Default0DoSomething() {
             return DefaultProp1();
         }
 
-        public string Default1DoSomething()
-        {
+        public string Default1DoSomething() {
             return DefaultProp2();
         }
 
-        public Default4 Default2DoSomething()
-        {
+        public Default4 Default2DoSomething() {
             return Container.Instances<Default4>().Where(x => x.Prop1 == "Bar2").FirstOrDefault();
-
         }
 
         #endregion
@@ -2038,76 +1807,62 @@ namespace NakedObjects.SystemTest.Method
         #region Do Something Else
 
         public void DoSomethingElse([DefaultValue(7)] int param0,
-                                    [DefaultValue("Bar")] string param1) { }
+                                    [DefaultValue("Bar")] string param1) {}
 
-        public int Default0DoSomethingElse()
-        {
+        public int Default0DoSomethingElse() {
             return DefaultProp1();
         }
 
-        public string Default1DoSomethingElse()
-        {
+        public string Default1DoSomethingElse() {
             return DefaultProp2();
         }
 
-
-
         #endregion
-
     }
 
-    public class Default2
-    {
-
+    public class Default2 {
         public virtual int Id { get; set; }
 
         [Title]
         public virtual string Prop1 { get; set; }
     }
 
-    public class Default3
-    {
-
+    public class Default3 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
 
-        public virtual int DefaultProp1()
-        {
+        public virtual int DefaultProp1() {
             return 0;
         }
 
-        public virtual string DefaultProp2()
-        {
+        public virtual string DefaultProp2() {
             return null;
         }
 
-        public void DoSomething(int param0, string param1, Default2 param2) { }
+        public void DoSomething(int param0, string param1, Default2 param2) {}
 
-        public string Default0DoSomthing(int param0)
-        {
+        public string Default0DoSomthing(int param0) {
             return null;
         }
 
-        public string Default0DoSomething(decimal param0)
-        {
+        public string Default0DoSomething(decimal param0) {
             return null;
         }
     }
 
-    public class Default4
-    {
-
+    public class Default4 {
         public virtual int Id { get; set; }
 
         [Title]
         public virtual string Prop1 { get; set; }
     }
-#endregion
 
-#region Deleted
-    public class Deleted1
-    {
+    #endregion
+
+    #region Deleted
+
+    public class Deleted1 {
         public static bool DeletedCalled;
         public IDomainObjectContainer Container { protected get; set; }
 
@@ -2116,39 +1871,35 @@ namespace NakedObjects.SystemTest.Method
         [Optionally]
         public virtual string Prop1 { get; set; }
 
-        public void Deleted()
-        {
+        public void Deleted() {
             DeletedCalled = true;
         }
 
-        public void Delete()
-        {
+        public void Delete() {
             Container.DisposeInstance(this);
         }
     }
 
-    public class Deleted2
-    {
+    public class Deleted2 {
         public static bool DeletedCalled;
 
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
 
-        public void Deleted()
-        {
+        public void Deleted() {
             DeletedCalled = true;
         }
     }
-#endregion
 
-#region Deleting
-    public class Deleting1
-    {
+    #endregion
+
+    #region Deleting
+
+    public class Deleting1 {
         public static bool DeletingCalled;
 
-        public Deleting1()
-        {
+        public Deleting1() {
             DeletingCalled = false;
         }
 
@@ -2156,23 +1907,19 @@ namespace NakedObjects.SystemTest.Method
 
         public virtual int Id { get; set; }
 
-        public void Deleting()
-        {
+        public void Deleting() {
             DeletingCalled = true;
         }
 
-        public void Delete()
-        {
+        public void Delete() {
             Container.DisposeInstance(this);
         }
     }
 
-    public class Deleting2
-    {
+    public class Deleting2 {
         public static bool DeletingCalled;
 
-        public Deleting2()
-        {
+        public Deleting2() {
             DeletingCalled = false;
         }
 
@@ -2180,22 +1927,20 @@ namespace NakedObjects.SystemTest.Method
 
         public virtual int Id { get; set; }
 
-        public void deleting()
-        {
+        public void deleting() {
             DeletingCalled = true;
         }
 
-        public void Delete()
-        {
+        public void Delete() {
             Container.DisposeInstance(this);
         }
     }
-#endregion
 
-#region Disable
-    public class Disable1
-    {
+    #endregion
 
+    #region Disable
+
+    public class Disable1 {
         private ICollection<Disable1> prop4 = new List<Disable1>();
         private ICollection<Disable1> prop5 = new List<Disable1>();
 
@@ -2208,74 +1953,61 @@ namespace NakedObjects.SystemTest.Method
 
         public virtual string Prop3 { get; set; }
 
-        public virtual ICollection<Disable1> Prop4
-        {
+        public virtual ICollection<Disable1> Prop4 {
             get { return prop4; }
             set { prop4 = value; }
         }
 
-        public virtual ICollection<Disable1> Prop5
-        {
+        public virtual ICollection<Disable1> Prop5 {
             get { return prop5; }
             set { prop5 = value; }
         }
 
-        public string DisablePropertyDefault()
-        {
+        public string DisablePropertyDefault() {
             return "This property has been disabled by default";
         }
 
-        public string DisableProp3()
-        {
+        public string DisableProp3() {
             return null;
         }
 
-        public string DisableProp5()
-        {
+        public string DisableProp5() {
             return null;
         }
 
-        public void Action1() { }
+        public void Action1() {}
 
-        public void Action2(string param) { }
+        public void Action2(string param) {}
     }
 
-    public class Disable2
-    {
-
-        public virtual int Id { get; set; }
-
+    public class Disable2 {
         private ICollection<Disable1> prop4 = new List<Disable1>();
+        public virtual int Id { get; set; }
         public virtual string Prop1 { get; set; }
 
         public virtual Disable1 Prop2 { get; set; }
 
-        public virtual ICollection<Disable1> Prop4
-        {
+        public virtual ICollection<Disable1> Prop4 {
             get { return prop4; }
             set { prop4 = value; }
         }
 
-        public string DisableActionDefault()
-        {
+        public string DisableActionDefault() {
             return "This property has been disabled by default";
         }
 
-        public void Action1() { }
+        public void Action1() {}
 
-        public void Action2(string param) { }
+        public void Action2(string param) {}
 
-        public void Action3() { }
+        public void Action3() {}
 
-        public string DisableAction3()
-        {
+        public string DisableAction3() {
             return null;
         }
     }
 
-    public class Disable3
-    {
-
+    public class Disable3 {
         public virtual int Id { get; set; }
 
         [Disabled(WhenTo.Never)]
@@ -2285,37 +2017,33 @@ namespace NakedObjects.SystemTest.Method
         [Optionally]
         public virtual string Prop6 { get; set; }
 
-        public string DisableProp6()
-        {
-            if (Prop4 == "Disable 6")
-            {
+        public string DisableProp6() {
+            if (Prop4 == "Disable 6") {
                 return "Disabled Message";
             }
             return null;
         }
 
-        public string DisableProp1()
-        {
+        public string DisableProp1() {
             return null;
         }
 
-        public bool DisableProp4()
-        {
+        public bool DisableProp4() {
             return false;
         }
 
-        public void DoSomething() { }
+        public void DoSomething() {}
 
-        public string DisableDoSomething()
-        {
+        public string DisableDoSomething() {
             return DisableProp6();
         }
     }
-#endregion
 
-#region Hide
-    public class Hide1
-    {
+    #endregion
+
+    #region Hide
+
+    public class Hide1 {
         private ICollection<Hide1> prop4 = new List<Hide1>();
         private ICollection<Hide1> prop5 = new List<Hide1>();
 
@@ -2328,40 +2056,34 @@ namespace NakedObjects.SystemTest.Method
 
         public virtual string Prop3 { get; set; }
 
-        public virtual ICollection<Hide1> Prop4
-        {
+        public virtual ICollection<Hide1> Prop4 {
             get { return prop4; }
             set { prop4 = value; }
         }
 
-        public virtual ICollection<Hide1> Prop5
-        {
+        public virtual ICollection<Hide1> Prop5 {
             get { return prop5; }
             set { prop5 = value; }
         }
 
-        public bool HidePropertyDefault()
-        {
+        public bool HidePropertyDefault() {
             return true;
         }
 
-        public bool HideProp3()
-        {
+        public bool HideProp3() {
             return false;
         }
 
-        public bool HideProp5()
-        {
+        public bool HideProp5() {
             return false;
         }
 
-        public void Action1() { }
+        public void Action1() {}
 
-        public void Action2(string param) { }
+        public void Action2(string param) {}
     }
 
-    public class Hide2
-    {
+    public class Hide2 {
         private ICollection<Hide1> prop4 = new List<Hide1>();
 
         public virtual int Id { get; set; }
@@ -2370,33 +2092,28 @@ namespace NakedObjects.SystemTest.Method
 
         public virtual Hide1 Prop2 { get; set; }
 
-        public virtual ICollection<Hide1> Prop4
-        {
+        public virtual ICollection<Hide1> Prop4 {
             get { return prop4; }
             set { prop4 = value; }
         }
 
-        public bool HideActionDefault()
-        {
+        public bool HideActionDefault() {
             return true;
         }
 
 
-        public void Action1() { }
+        public void Action1() {}
 
-        public void Action2(string param) { }
+        public void Action2(string param) {}
 
-        public void Action3() { }
+        public void Action3() {}
 
-        public bool HideAction3()
-        {
+        public bool HideAction3() {
             return false;
         }
     }
 
-    public class Hide3
-    {
-
+    public class Hide3 {
         public virtual int Id { get; set; }
 
         [Optionally]
@@ -2405,46 +2122,40 @@ namespace NakedObjects.SystemTest.Method
         [Optionally]
         public virtual string Prop6 { get; set; }
 
-        public bool HideProp6()
-        {
+        public bool HideProp6() {
             return Prop4 == "Hide 6";
         }
 
-        public void DoSomething() { }
+        public void DoSomething() {}
 
-        public bool HideDoSomething()
-        {
+        public bool HideDoSomething() {
             return HideProp6();
         }
 
-        public void DoSomethingElse() { }
+        public void DoSomethingElse() {}
 
-        public bool HideProp7()
-        {
+        public bool HideProp7() {
             return false;
         }
 
-        public string HideProp4()
-        {
+        public string HideProp4() {
             return null;
         }
 
-        public bool HideDoSomthingElse()
-        {
+        public bool HideDoSomthingElse() {
             return false;
         }
 
-        public string HideDoSomethingElse()
-        {
+        public string HideDoSomethingElse() {
             return null;
         }
     }
-#endregion
 
-#region Modify
-    public class Modify1
-    {
+    #endregion
 
+    #region Modify
+
+    public class Modify1 {
         public virtual int Id { get; set; }
 
         public virtual string Prop0 { get; set; }
@@ -2456,22 +2167,18 @@ namespace NakedObjects.SystemTest.Method
 
         public virtual Modify3 Prop4 { get; set; }
 
-        public void ModifyProp1(string value)
-        {
+        public void ModifyProp1(string value) {
             Prop1 = value;
             Prop0 = "Prop1 has been modified";
         }
 
-        public void ModifyProp4(Modify3 value)
-        {
+        public void ModifyProp4(Modify3 value) {
             Prop4 = value;
             Prop3 = "Prop4 has been modified";
         }
     }
 
-    public class Modify2
-    {
-
+    public class Modify2 {
         public virtual int Id { get; set; }
 
         public virtual string Prop2 { get; set; }
@@ -2479,30 +2186,25 @@ namespace NakedObjects.SystemTest.Method
         //Has the wrong type of parameter
 
         public virtual string Prop3 { get; set; }
-        public void ModifyProp2(int value) { }
+        public void ModifyProp2(int value) {}
 
         //Non-void method
-        public bool ModifyProp3(string value)
-        {
+        public bool ModifyProp3(string value) {
             return false;
         }
 
         //No corresponding Prop4
-        public void ModifyProp4(string value) { }
+        public void ModifyProp4(string value) {}
     }
 
-    public class Modify3
-    {
-
+    public class Modify3 {
         public virtual int Id { get; set; }
 
         [Title]
         public virtual string Prop1 { get; set; }
     }
 
-    public class Modify4
-    {
-
+    public class Modify4 {
         public virtual int Id { get; set; }
 
         public virtual string Prop0 { get; set; }
@@ -2514,281 +2216,239 @@ namespace NakedObjects.SystemTest.Method
 
         public virtual Modify3 Prop4 { get; set; }
 
-        public void ModifyProp1(string value)
-        {
+        public void ModifyProp1(string value) {
             Prop1 = value;
             Prop0 = "Prop1 has been modified";
         }
 
-        public void ModifyProp4(Modify3 value)
-        {
+        public void ModifyProp4(Modify3 value) {
             Prop4 = value;
             Prop3 = "Prop4 has been modified";
         }
 
-        public void ClearProp1()
-        {
+        public void ClearProp1() {
             Prop1 = null;
-
         }
 
-        public void ClearProp4()
-        {
+        public void ClearProp4() {
             Prop4 = null;
-
         }
     }
-#endregion
 
-#region Persisted
-    public class Persisted1
-    {
+    #endregion
+
+    #region Persisted
+
+    public class Persisted1 {
         public virtual int Id { get; set; }
 
 
-        public void Persisted()
-        {
+        public void Persisted() {
             throw new DomainException("Persisting");
         }
     }
 
-    public class Persisted2
-    {
+    public class Persisted2 {
         public bool PersistedCalled;
 
         public virtual int Id { get; set; }
 
-        public void peristed()
-        {
+        public void peristed() {
             PersistedCalled = true;
         }
     }
-#endregion
 
-#region Persisting
-    public class Persisting1
-    {
-        public Persisting1()
-        {
+    #endregion
+
+    #region Persisting
+
+    public class Persisting1 {
+        public static bool PersistingCalled;
+
+        public Persisting1() {
             PersistingCalled = false;
         }
-        public static bool PersistingCalled;
 
         public virtual int Id { get; set; }
 
 
-        public void Persisting()
-        {
+        public void Persisting() {
             PersistingCalled = true;
         }
     }
 
-    public class Persisting2
-    {
+    public class Persisting2 {
         public static bool PersistingCalled;
 
         public virtual int Id { get; set; }
 
-        public void peristing()
-        {
+        public void peristing() {
             PersistingCalled = true;
         }
     }
-#endregion
 
-#region Saved & Saving
-    public class Saved1
-    {
+    #endregion
 
+    #region Saved & Saving
+
+    public class Saved1 {
         public virtual int Id { get; set; }
 
 
-        public void Saved()
-        {
+        public void Saved() {}
 
-        }
-
-        public void Saving()
-        {
-
-        }
+        public void Saving() {}
     }
-#endregion
 
-#region Title & ToString
+    #endregion
 
-    public class Title1
-    {
+    #region Title & ToString
 
+    public class Title1 {
         public virtual int Id { get; set; }
 
         [Optionally]
         public virtual string Prop1 { get; set; }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return Prop1;
         }
     }
 
-    public class Title2
-    {
-
+    public class Title2 {
         public virtual int Id { get; set; }
 
         [Title]
         public virtual string Prop1 { get; set; }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return "Bar";
         }
     }
 
-    public class Title3
-    {
+    public class Title3 {
         public virtual int Id { get; set; }
 
         [Optionally]
         public virtual string Prop1 { get; set; }
 
-        public string Title()
-        {
+        public string Title() {
             return Prop1;
         }
     }
 
-    public class Title4
-    {
+    public class Title4 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
 
-        public string Title()
-        {
+        public string Title() {
             return Prop1;
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return "Bar";
         }
     }
 
-    public class Title5
-    {
-     
+    public class Title5 {
         public virtual int Id { get; set; }
-      
+
         [Optionally]
         public virtual string Prop1 { get; set; }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return Prop1;
         }
     }
-#endregion
 
-#region Updated
-    public class Updated1
-    {
+    #endregion
+
+    #region Updated
+
+    public class Updated1 {
         public virtual int Id { get; set; }
 
 
         [Optionally]
         public virtual string Prop1 { get; set; }
 
-        public void Updated()
-        {
+        public void Updated() {
             throw new DomainException("Update called");
         }
     }
 
-    public class Updated2
-    {
+    public class Updated2 {
+        public static bool UpdatedCalled;
 
-        public Updated2()
-        {
+        public Updated2() {
             UpdatedCalled = false;
         }
-        public static bool UpdatedCalled;
 
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
 
-        public void updated()
-        {
+        public void updated() {
             UpdatedCalled = true;
         }
     }
-#endregion
 
-#region Updating
-    public class Updating1
-    {
-        
+    #endregion
+
+    #region Updating
+
+    public class Updating1 {
         public virtual int Id { get; set; }
-      
+
 
         [Optionally]
         public virtual string Prop1 { get; set; }
 
-        public void Updating()
-        {
+        public void Updating() {
             throw new DomainException("Updating called");
         }
     }
 
-    public class Updating2
-    {
+    public class Updating2 {
         public virtual int Id { get; set; }
-      
+
         public virtual string Prop1 { get; set; }
 
-        public void updating()
-        {
+        public void updating() {
             throw new DomainException("Updating called");
         }
     }
-#endregion
 
-#region Validate
+    #endregion
 
-    public class Validate1
-    {
-        
+    #region Validate
+
+    public class Validate1 {
         public virtual int Id { get; set; }
-      
+
         public virtual int Prop1 { get; set; }
 
         public virtual string Prop2 { get; set; }
 
         public virtual Validate2 Prop3 { get; set; }
 
-        public string ValidateProp1(int value)
-        {
-            if (value < 3 || value > 10)
-            {
+        public string ValidateProp1(int value) {
+            if (value < 3 || value > 10) {
                 return "Value must be between 3 & 10";
             }
             return null;
         }
 
-        public string ValidateProp2(string value)
-        {
-            if (!value.StartsWith("a"))
-            {
+        public string ValidateProp2(string value) {
+            if (!value.StartsWith("a")) {
                 return "Value must start with a";
             }
             return null;
         }
 
-        public string ValidateProp3(Validate2 value)
-        {
-            if (!value.Prop1.StartsWith("a"))
-            {
+        public string ValidateProp3(Validate2 value) {
+            if (!value.Prop1.StartsWith("a")) {
                 return "Invalid Object";
             }
             return null;
@@ -2796,20 +2456,17 @@ namespace NakedObjects.SystemTest.Method
 
         #region Do Something
 
-        public void DoSomething(int param0, string param1, Validate2 param2) { }
+        public void DoSomething(int param0, string param1, Validate2 param2) {}
 
-        public string Validate0DoSomething(int value)
-        {
+        public string Validate0DoSomething(int value) {
             return ValidateProp1(value);
         }
 
-        public string Validate1DoSomething(string value)
-        {
+        public string Validate1DoSomething(string value) {
             return ValidateProp2(value);
         }
 
-        public string Validate2DoSomething(Validate2 value)
-        {
+        public string Validate2DoSomething(Validate2 value) {
             return ValidateProp3(value);
         }
 
@@ -2817,12 +2474,10 @@ namespace NakedObjects.SystemTest.Method
 
         #region Do Something Else
 
-        public void DoSomethingElse(int param0, string param1, Validate2 param2) { }
+        public void DoSomethingElse(int param0, string param1, Validate2 param2) {}
 
-        public string ValidateDoSomethingElse(int param0, string param1, Validate2 param2)
-        {
-            if (ValidateProp1(param0) != null || ValidateProp2(param1) != null || ValidateProp3(param2) != null)
-            {
+        public string ValidateDoSomethingElse(int param0, string param1, Validate2 param2) {
+            if (ValidateProp1(param0) != null || ValidateProp2(param1) != null || ValidateProp3(param2) != null) {
                 return "Something amiss";
             }
             return null;
@@ -2831,79 +2486,64 @@ namespace NakedObjects.SystemTest.Method
         #endregion
     }
 
-    public class Validate2
-    {
-        
+    public class Validate2 {
         public virtual int Id { get; set; }
-      
+
         public virtual string Prop1 { get; set; }
     }
 
-    public class Validate3
-    {
-        
+    public class Validate3 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
 
         public virtual string Prop2 { get; set; }
 
-        public string ValidateProp1(int value)
-        {
+        public string ValidateProp1(int value) {
             return null;
         }
 
-        public bool ValidateProp2(string value)
-        {
+        public bool ValidateProp2(string value) {
             return false;
         }
 
-        public string ValidateProp3(string value)
-        {
+        public string ValidateProp3(string value) {
             return null;
         }
 
-        public void DoSomething(int par1) { }
+        public void DoSomething(int par1) {}
 
-        public string ValidateDoSomething(decimal par1)
-        {
+        public string ValidateDoSomething(decimal par1) {
             return null;
         }
 
-        public string Validate0DoSomething(bool par1)
-        {
+        public string Validate0DoSomething(bool par1) {
             return null;
         }
 
-        public string Validate1DoSomething(int par1)
-        {
+        public string Validate1DoSomething(int par1) {
             return null;
         }
     }
 
-    public class Validate4
-    {
-        
+    public class Validate4 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
 
         public virtual string Prop2 { get; set; }
 
-        public string Validate(string prop1, string prop2)
-        {
-            if (prop1 != prop2)
-            {
+        public string Validate(string prop1, string prop2) {
+            if (prop1 != prop2) {
                 return "Expect prop1 == prop2";
             }
             return null;
         }
     }
 
-    public class Validate5
-    {       
+    public class Validate5 {
         public virtual int Id { get; set; }
-      
+
         public virtual string Prop1 { get; set; }
 
         public virtual string Prop2 { get; set; }
@@ -2913,15 +2553,15 @@ namespace NakedObjects.SystemTest.Method
         [Optionally]
         public virtual Validate4 Prop4 { get; set; }
 
-        public string Validate(Validate4 prop4, string prop1, int prop3, string prop2)
-        {
-            if (prop1 != prop2 || prop3 == 0 || prop4 == null)
-            {
+        public string Validate(Validate4 prop4, string prop1, int prop3, string prop2) {
+            if (prop1 != prop2 || prop3 == 0 || prop4 == null) {
                 return "Condition Fail";
             }
             return null;
         }
     }
-#endregion
+
+    #endregion
+
     #endregion
 }

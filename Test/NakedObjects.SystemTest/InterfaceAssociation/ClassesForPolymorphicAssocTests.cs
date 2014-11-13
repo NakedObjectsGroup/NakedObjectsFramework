@@ -154,24 +154,21 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
         public DbSet<ExpenseClaimAsPayableItem> ExpenseClaims { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
- 
             Database.SetInitializer(new MyDbInitialiser());
         }
     }
 
-    public class MyDbInitialiser : DropCreateDatabaseIfModelChanges<PolymorphicNavigationContext>
-    {
-
-        protected override void Seed(PolymorphicNavigationContext context)
-        {
+    public class MyDbInitialiser : DropCreateDatabaseIfModelChanges<PolymorphicNavigationContext> {
+        protected override void Seed(PolymorphicNavigationContext context) {
             context.Payments.Add(new PolymorphicPayment());
             context.Payments.Add(new PolymorphicPayment());
             //3
             var payment3 = new PolymorphicPayment();
             context.Payments.Add(payment3);
             var payeeLink = new PolymorphicPaymentPayeeLink() {
-                AssociatedRoleObjectType = "NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee", 
-                AssociatedRoleObjectId = 1};
+                AssociatedRoleObjectType = "NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee",
+                AssociatedRoleObjectId = 1
+            };
             context.PayeeLinks.Add(payeeLink);
             payment3.PayeeLink = payeeLink;
 
