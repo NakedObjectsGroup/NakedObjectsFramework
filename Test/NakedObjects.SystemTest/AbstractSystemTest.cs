@@ -31,6 +31,15 @@ namespace NakedObjects.SystemTest {
 
         #endregion
 
+        private bool initialized;
+
+        protected void InitializeNakedObjectsFrameworkOnce() {
+            if (!initialized) {
+                InitializeNakedObjectsFramework(this);
+                initialized = true;
+            }
+        }
+
         /// <summary>
         /// Assumes that a SimpleRepository for the type T has been registered in Services
         /// </summary>

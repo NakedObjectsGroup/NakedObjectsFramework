@@ -6,12 +6,24 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Security.Principal;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Configuration;
+using NakedObjects.Core.Configuration;
 using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core.Util;
+using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.Audit;
+using NakedObjects.SystemTest.Authorization.CustomAuthorizer;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using Bar = NakedObjects.SystemTest.Authorization.CustomAuthorizer.Bar;
+using Qux = NakedObjects.SystemTest.Authorization.CustomAuthorizer.Qux;
 
 namespace NakedObjects.SystemTest.Authorization.Installer {
     public abstract class TestCustomAuthorizer : AbstractSystemTest<CustomAuthorizerInstallerDbContext> {
@@ -20,28 +32,36 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
     }
 
-    [TestClass, Ignore] //Use DefaultAuthorizer1
+    [TestClass] //Use DefaultAuthorizer1
     public class TestCustomAuthorizer1 : TestCustomAuthorizer {
-        #region Setup/Teardown
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new AuthorizationConfiguration {DefaultAuthorizer = typeof (DefaultAuthorizer1)};
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestCustomAuthorizer1());
+            config.SetTypeAuthorizers();
+            config.NamespaceAuthorizers = new Dictionary<string, Type>();
+
+            container.RegisterInstance<IAuthorizationConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IFacetDecorator, AuthorizationManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
+
+            var reflectorConfig = new ReflectorConfiguration(
+                new[] {
+                    typeof (DefaultAuthorizer1)
+                },
+                new Type[] {},
+                new Type[] {},
+                new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
+
+        #region Setup/Teardown
 
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestCustomAuthorizer1());
             Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
         }
-
-        [TestInitialize()]
-        public void TestInitialize() {
-            StartTest();
-        }
-
-        [TestCleanup()]
-        public void TestCleanup() {}
 
         #endregion
 
@@ -56,14 +76,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
     }
 
-    [TestClass, Ignore] //Use DefaultAuthorizer2
+    [TestClass] //Use DefaultAuthorizer2
     public class TestCustomAuthorizer2 : TestCustomAuthorizer {
         #region Setup/Teardown
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestCustomAuthorizer2());
-        }
 
         [ClassCleanup]
         public static void ClassCleanup() {
@@ -73,6 +88,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
 
         [TestInitialize()]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
         }
 
@@ -92,14 +108,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
     }
 
-    [TestClass, Ignore] //Use DefaultAuthorizer1
+    [TestClass] //Use DefaultAuthorizer1
     public class TestCustomAuthorizer3 : TestCustomAuthorizer {
         #region Setup/Teardown
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestCustomAuthorizer3());
-        }
 
         [ClassCleanup]
         public static void ClassCleanup() {
@@ -107,12 +118,13 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
         }
 
-        [TestInitialize()]
+        [TestInitialize]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
         }
 
-        [TestCleanup()]
+        [TestCleanup]
         public void TestCleanup() {}
 
         #endregion
@@ -128,14 +140,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
     }
 
-    [TestClass, Ignore] //Use DefaultAuthorizer3
+    [TestClass] //Use DefaultAuthorizer3
     public class TestCustomAuthoriser4 : TestCustomAuthorizer {
         #region Setup/Teardown
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestCustomAuthoriser4());
-        }
 
         [ClassCleanup]
         public static void ClassCleanup() {
@@ -143,13 +150,14 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
         }
 
-        [TestInitialize()]
+        [TestInitialize]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             SetUser("Fred");
         }
 
-        [TestCleanup()]
+        [TestCleanup]
         public void TestCleanup() {}
 
         #endregion
@@ -160,14 +168,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
     }
 
-    [TestClass, Ignore] //Use DefaultAuthorizer3
+    [TestClass] //Use DefaultAuthorizer3
     public class TestCustomAuthoriser5 : TestCustomAuthorizer {
         #region Setup/Teardown
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestCustomAuthoriser5());
-        }
 
         [ClassCleanup]
         public static void ClassCleanup() {
@@ -175,8 +178,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
         }
 
-        [TestInitialize()]
+        [TestInitialize]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             SetUser("Anon");
         }
@@ -192,14 +196,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
     }
 
-    [TestClass, Ignore] //Use DefaultAuthorizer3
+    [TestClass] //Use DefaultAuthorizer3
     public class TestCustomAuthoriser6 : TestCustomAuthorizer {
         #region Setup/Teardown
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestCustomAuthoriser6());
-        }
 
         [ClassCleanup]
         public static void ClassCleanup() {
@@ -207,8 +206,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
         }
 
-        [TestInitialize()]
+        [TestInitialize]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             SetUser("Anon", "sysAdmin");
         }
@@ -224,14 +224,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
     }
 
-    [TestClass, Ignore] //Use DefaultAuthorizer3
+    [TestClass] //Use DefaultAuthorizer3
     public class TestCustomAuthoriser7 : TestCustomAuthorizer {
         #region Setup/Teardown
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestCustomAuthoriser5());
-        }
 
         [ClassCleanup]
         public static void ClassCleanup() {
@@ -239,8 +234,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
         }
 
-        [TestInitialize()]
+        [TestInitialize]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             SetUser("Anon", "service", "sysAdmin");
         }

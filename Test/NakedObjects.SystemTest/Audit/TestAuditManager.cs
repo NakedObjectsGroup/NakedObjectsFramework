@@ -33,7 +33,7 @@ namespace NakedObjects.SystemTest.Audit {
             container.RegisterInstance<IAuditConfiguration>(config, (new ContainerControlledLifetimeManager()));
             container.RegisterType<IFacetDecorator, AuditManager>("AuditManager", new ContainerControlledLifetimeManager());
 
-            var reflectorConfig = new ReflectorConfiguration(new Type[] {
+            var reflectorConfig = new ReflectorConfiguration(new[] {
                 typeof (MyDefaultAuditor),
                 typeof (FooAuditor),
                 typeof (QuxAuditor),
@@ -64,7 +64,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestInitialize()]
         public void TestInitialize() {
-            InitializeNakedObjectsFramework(this);
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             SetUser("sven");
         }

@@ -6,22 +6,61 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Security.Principal;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Configuration;
+using NakedObjects.Core.Configuration;
+using NakedObjects.Core.Util;
+using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.Audit;
 using NakedObjects.Xat;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
-    [TestClass, Ignore]
+    [TestClass]
     public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
-        #region Setup/Teardown
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestCustomAuthorizationManager());
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new AuthorizationConfiguration { DefaultAuthorizer = typeof(MyDefaultAuthorizer) };
+
+            config.SetTypeAuthorizers(new FooAuthorizer(), new QuxAuthorizer());
+            config.NamespaceAuthorizers = new Dictionary<string, Type>();
+
+            container.RegisterInstance<IAuthorizationConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IFacetDecorator, AuthorizationManager>("AuthorizerManager", new ContainerControlledLifetimeManager());
+
+            var reflectorConfig = new ReflectorConfiguration(
+                new[] {
+                    typeof (MyDefaultAuthorizer),
+                    typeof (FooAuthorizer),
+                    typeof (QuxAuthorizer),
+                    typeof (QueryableList<Foo>)
+                },
+                new[] {
+                    typeof (SimpleRepository<Foo>),
+                    typeof (SimpleRepository<Bar>),
+                    typeof (SimpleRepository<Qux>),
+                    typeof (FooService),
+                    typeof (BarService),
+                    typeof (QuxService)
+                },
+                new Type[] {},
+                new Type[] {});
+
+
+            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
+
+
+
+        #region Setup/Teardown
 
         [ClassCleanup]
         public static void ClassCleanup() {
@@ -31,6 +70,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         [TestInitialize()]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             SetUser("sven");
         }
@@ -49,11 +89,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         protected override object[] MenuServices {
             get { return (new object[] {new SimpleRepository<Foo>(), new SimpleRepository<Bar>(), new SimpleRepository<FooSub>(), new SimpleRepository<Qux>()}); }
         }
-
-
-        //protected override IAuthorizerInstaller Authorizer {
-        //    get { return new CustomAuthorizerInstaller( new MyDefaultAuthorizer(), new FooAuthorizer(), new QuxAuthorizer()); }
-        //}
 
         #endregion
 

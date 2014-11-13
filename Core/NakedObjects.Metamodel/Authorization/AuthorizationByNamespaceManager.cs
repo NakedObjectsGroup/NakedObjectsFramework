@@ -11,44 +11,29 @@ using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.NakedObjectsSystem;
 using NakedObjects.Core.Util;
-using NakedObjects.Util;
+using NakedObjects.Security;
 
 namespace NakedObjects.Meta.Authorization {
     [Serializable]
-    public class AuthorizationManager : IAuthorizationManager, IFacetDecorator {
+    public class AuthorizationByNamespaceManager : IAuthorizationManager, IFacetDecorator {
         private readonly Type defaultAuthorizer;
         private readonly Type[] forFacetTypes = {typeof (IHideForSessionFacet), typeof (IDisableForSessionFacet)};
         private readonly ImmutableDictionary<string, Type> namespaceAuthorizers = ImmutableDictionary<string, Type>.Empty;
-        private readonly ImmutableDictionary<Type, Type> typeAuthorizers = ImmutableDictionary<Type, Type>.Empty;
 
         #region Constructors
 
-        public AuthorizationManager(IAuthorizationConfiguration authorizationConfiguration) {
+        public AuthorizationByNamespaceManager(IAuthorizationByNamespaceConfiguration authorizationConfiguration) {
             defaultAuthorizer = authorizationConfiguration.DefaultAuthorizer;
+            if (defaultAuthorizer == null) throw new InitialisationException("Default Authorizer cannot be null");
 
             if (authorizationConfiguration.NamespaceAuthorizers.Any()) {
                 namespaceAuthorizers = authorizationConfiguration.NamespaceAuthorizers.ToImmutableDictionary();
             }
-            else {
-                typeAuthorizers = authorizationConfiguration.TypeAuthorizers.ToImmutableDictionary();
-            }
-
-            if (defaultAuthorizer == null) throw new InitialisationException("Default Authorizer cannot be null");
 
             Validate();
-        }
-
-        // validate all the passed in types to fail at reflection time as far as possible
-        private void Validate() {
-            Assert.AssertTrue(defaultAuthorizer.FullName + "is not an IAuthorizer", typeof(IAuthorizer).IsAssignableFrom(defaultAuthorizer));
-            if (namespaceAuthorizers.Any()) {             
-                namespaceAuthorizers.ForEach(kvp => Assert.AssertTrue(kvp.Value.FullName + "is not an IAuthorizer", typeof(IAuthorizer).IsAssignableFrom(kvp.Value)));
-            }
-            // typeAuthorizers validated in config class
         }
 
         public virtual IFacet Decorate(IFacet facet, ISpecification holder) {
@@ -70,45 +55,50 @@ namespace NakedObjects.Meta.Authorization {
             get { return forFacetTypes; }
         }
 
+        // validate all the passed in types to fail at reflection time as far as possible
+        private void Validate() {
+            if (!typeof (INamespaceAuthorizer).IsAssignableFrom(defaultAuthorizer)) {
+                throw new InitialisationException(defaultAuthorizer.FullName + "is not an INamespaceAuthorizer");
+            }
+
+            if (namespaceAuthorizers.Any()) {
+                namespaceAuthorizers.ForEach(kvp => {
+                    if (!typeof (INamespaceAuthorizer).IsAssignableFrom(kvp.Value)) {
+                        throw new InitialisationException(kvp.Value.FullName + "is not an INamespaceAuthorizer");
+                    }
+                });
+            }
+        }
+
         #endregion
 
         #region IAuthorizationManager Members
 
         public bool IsEditable(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier) {
-            return IsEditableOrVisible(session, lifecycleManager, manager, target, identifier, "IsEditable");
+            Assert.AssertNotNull(target);
+
+            INamespaceAuthorizer authorizer = GetNamespaceAuthorizerFor(target, lifecycleManager, manager) ?? GetDefaultAuthorizer(lifecycleManager, manager);
+            return authorizer.IsEditable(session.Principal, target.Object, identifier.MemberName);
         }
 
         public bool IsVisible(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier) {
-            return IsEditableOrVisible(session, lifecycleManager, manager, target, identifier, "IsVisible");
+            Assert.AssertNotNull(target);
+
+            INamespaceAuthorizer authorizer = GetNamespaceAuthorizerFor(target, lifecycleManager, manager) ?? GetDefaultAuthorizer(lifecycleManager, manager);
+            return authorizer.IsVisible(session.Principal, target.Object, identifier.MemberName);
         }
 
         #endregion
 
-        private bool IsEditableOrVisible(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier, string toInvoke) {
-            Assert.AssertNotNull(target);
-
-            object authorizer = GetNamespaceAuthorizerFor(target, lifecycleManager, manager) ?? GetTypeAuthorizerFor(target, lifecycleManager, manager) ?? GetDefaultAuthorizer(lifecycleManager, manager);
-            return (bool) authorizer.GetType().GetMethod(toInvoke).Invoke(authorizer, new[] {session.Principal, target.Object, identifier.MemberName});
-        }
-
-        private object GetTypeAuthorizerFor(INakedObject target, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            Assert.AssertNotNull(target);
-            Type domainType = TypeUtils.GetType(target.Spec.FullName).GetProxiedType();
-            Type authorizer;
-            typeAuthorizers.TryGetValue(domainType, out authorizer);
-            return authorizer == null ? null : CreateAuthorizer(authorizer, lifecycleManager, manager);
-        }
-
-        private object GetDefaultAuthorizer(ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        private INamespaceAuthorizer GetDefaultAuthorizer(ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             return CreateAuthorizer(defaultAuthorizer, lifecycleManager, manager);
         }
 
-        private object CreateAuthorizer(Type authorizer, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            return lifecycleManager.CreateInstance(manager.GetSpecification(authorizer)).GetDomainObject<IAuthorizer>();
+        private INamespaceAuthorizer CreateAuthorizer(Type authorizer, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+            return lifecycleManager.CreateInstance(manager.GetSpecification(authorizer)).GetDomainObject<INamespaceAuthorizer>();
         }
 
-        //TODO:  Change return type to INamespaceAuthorizer when TypeAuthorization has been obsoleted.
-        private object GetNamespaceAuthorizerFor(INakedObject target, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        private INamespaceAuthorizer GetNamespaceAuthorizerFor(INakedObject target, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             Assert.AssertNotNull(target);
             string fullyQualifiedOfTarget = target.Spec.FullName;
             Type authorizer = namespaceAuthorizers.

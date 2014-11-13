@@ -343,6 +343,7 @@ namespace NakedObjects.Xat {
             container.RegisterType<IPocoAdapterMap, PocoAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IIdentityAdapterMap, IdentityAdapterHashMap>(new PerResolveLifetimeManager(), new InjectionConstructor(10));
 
+            container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
             container.RegisterType<IContainerInjector, DomainObjectContainerInjector>(new PerResolveLifetimeManager());
 
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerResolveLifetimeManager());

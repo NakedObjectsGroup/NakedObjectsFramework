@@ -22,11 +22,6 @@ namespace NakedObjects.SystemTest.Attributes {
     public class TestAttributes : AbstractSystemTest<AttributesDbContext> {
         #region Setup/Teardown
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestAttributes());
-        }
-
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestAttributes());
@@ -35,6 +30,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
         [TestInitialize()]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
         }
 
