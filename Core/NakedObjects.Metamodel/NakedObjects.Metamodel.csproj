@@ -86,6 +86,7 @@
     <Compile Include="Authorization\AuthorizationByTypeManager.cs" />
     <Compile Include="Authorization\IAuthorizationByNamespaceConfiguration.cs" />
     <Compile Include="Authorization\IAuthorizationByTypeConfiguration.cs" />
+    <Compile Include="Facet\ValidateObjectFacetNull.cs" />
     <Compile Include="SemanticsProvider\IFromStream.cs" />
     <Compile Include="SemanticsProvider\IValueSemanticsProvider.cs" />
     <Compile Include="Facet\AuthorizationDisableForSessionFacet.cs" />

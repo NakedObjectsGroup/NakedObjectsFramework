@@ -205,7 +205,7 @@ namespace NakedObjects.Reflect.Test {
                 deserializeInterval);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void SerializeAdventureworksByType() {
             // load adventurework
 
