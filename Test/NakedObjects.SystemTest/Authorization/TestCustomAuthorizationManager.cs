@@ -28,13 +28,13 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            var config = new AuthorizationConfiguration { DefaultAuthorizer = typeof(MyDefaultAuthorizer) };
+            var config = new AuthorizationByTypeConfiguration { DefaultAuthorizer = typeof(MyDefaultAuthorizer) };
 
             config.SetTypeAuthorizers(new FooAuthorizer(), new QuxAuthorizer());
-            config.NamespaceAuthorizers = new Dictionary<string, Type>();
+           
 
-            container.RegisterInstance<IAuthorizationConfiguration>(config, (new ContainerControlledLifetimeManager()));
-            container.RegisterType<IFacetDecorator, AuthorizationManager>("AuthorizerManager", new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IAuthorizationByTypeConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IFacetDecorator, AuthorizationByTypeManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
 
             var reflectorConfig = new ReflectorConfiguration(
                 new[] {

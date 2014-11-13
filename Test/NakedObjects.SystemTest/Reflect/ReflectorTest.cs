@@ -25,6 +25,7 @@ using NakedObjects.Meta;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.I18N;
+using NakedObjects.Security;
 
 namespace NakedObjects.Reflect.Test {
     [TestClass]
@@ -68,10 +69,10 @@ namespace NakedObjects.Reflect.Test {
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
             container.RegisterInstance<IAuditConfiguration>(new AuditConfiguration {DefaultAuditor = typeof (TestAuditor), NamespaceAuditors = new Dictionary<string, Type>()});
-            container.RegisterInstance<IAuthorizationConfiguration>(new AuthorizationConfiguration {DefaultAuthorizer = typeof (TestAuthorizer), NamespaceAuthorizers = new Dictionary<string, Type>(), TypeAuthorizers = new Dictionary<Type, Type>()});
+            container.RegisterInstance<IAuthorizationByNamespaceConfiguration>(new AuthorizationByNamespaceConfiguration() {DefaultAuthorizer = typeof (TestAuthorizer), NamespaceAuthorizers = new Dictionary<string, Type>()});
 
             container.RegisterType<IFacetDecorator, AuditManager>("AuditManager");
-            container.RegisterType<IFacetDecorator, AuthorizationManager>("AuthorizationManager");
+            container.RegisterType<IFacetDecorator, AuthorizationByNamespaceManager>("AuthorizationManager");
             container.RegisterType<IFacetDecorator, I18NManager>("I18NManager");
 
             var reflector = container.Resolve<IReflector>();
@@ -79,6 +80,18 @@ namespace NakedObjects.Reflect.Test {
 
             var set = ((Reflector) reflector).FacetDecoratorSet;
             Assert.AreEqual(7, ((FacetDecoratorSet) set).FacetDecorators.Count);
+        }
+
+        public class TestAuthorizer : INamespaceAuthorizer {
+            public bool IsEditable(IPrincipal principal, object target, string memberName) {
+                throw new NotImplementedException();
+            }
+
+            public bool IsVisible(IPrincipal principal, object target, string memberName) {
+                throw new NotImplementedException();
+            }
+
+            public string NamespaceToAuthorize { get; private set; }
         }
 
         private static Type[] AdventureWorksTypes() {
@@ -426,22 +439,8 @@ namespace NakedObjects.Reflect.Test {
 
         #endregion
 
-        #region Nested type: TestAuthorizer
+      
 
-        public class TestAuthorizer : IAuthorizer {
-            #region IAuthorizer Members
-
-            public bool IsUsable(ISession session, INakedObject target, IIdentifier member) {
-                return true;
-            }
-
-            public bool IsVisible(ISession session, INakedObject target, IIdentifier member) {
-                return true;
-            }
-
-            #endregion
-        }
-
-        #endregion
+   
     }
 }

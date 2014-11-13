@@ -122,7 +122,7 @@ namespace RestfulObjects.Mvc.App.App_Start
             container.RegisterType<IContainerInjector, DomainObjectContainerInjector>(new PerResolveLifetimeManager());
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerResolveLifetimeManager());
             container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerResolveLifetimeManager());
-            container.RegisterType<IObjectStore, NakedObjects.EntityObjectStore.EntityObjectStore>(new PerResolveLifetimeManager());
+            container.RegisterType<IObjectStore, EntityObjectStore>(new PerResolveLifetimeManager());
             container.RegisterType<IIdentityMap, IdentityMapImpl>(new PerResolveLifetimeManager());
             container.RegisterType<ITransactionManager, ObjectStoreTransactionManager>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerResolveLifetimeManager());

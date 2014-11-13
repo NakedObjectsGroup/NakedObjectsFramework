@@ -8,7 +8,6 @@
 using System.Security.Claims;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Meta.Authorization;
 
 namespace NakedObjects.Reflect.Security.Wif {
     public class WifAuthorizer : IAuthorizer {

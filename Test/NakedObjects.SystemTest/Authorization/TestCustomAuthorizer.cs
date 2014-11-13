@@ -36,13 +36,12 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     public class TestCustomAuthorizer1 : TestCustomAuthorizer {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            var config = new AuthorizationConfiguration {DefaultAuthorizer = typeof (DefaultAuthorizer1)};
+            var config = new AuthorizationByTypeConfiguration {DefaultAuthorizer = typeof (DefaultAuthorizer1)};
 
-            config.SetTypeAuthorizers();
-            config.NamespaceAuthorizers = new Dictionary<string, Type>();
+        
 
-            container.RegisterInstance<IAuthorizationConfiguration>(config, (new ContainerControlledLifetimeManager()));
-            container.RegisterType<IFacetDecorator, AuthorizationManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
+            container.RegisterInstance<IAuthorizationByTypeConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IFacetDecorator, AuthorizationByTypeManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
 
             var reflectorConfig = new ReflectorConfiguration(
                 new[] {
