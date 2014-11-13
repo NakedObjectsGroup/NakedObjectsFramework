@@ -8,23 +8,95 @@
 using System;
 using System.Data.Entity;
 using System.Security.Principal;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyApp.MyCluster1;
 using MyApp.MyCluster2;
 using NakedObjects;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Configuration;
+using NakedObjects.Core.Configuration;
+using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
 using NotMyApp.MyCluster2;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
-    [TestClass, Ignore]
+    [TestClass]
     public class TestNamespaceAuthorization : AbstractSystemTest<NamespaceAuthorizationDbContext> {
-        #region Setup/Teardown
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new AuthorizationByNamespaceConfiguration();
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            InitializeNakedObjectsFramework(new TestNamespaceAuthorization());
+            config.SetNameSpaceAuthorizers(
+                new MyDefaultAuthorizer(),
+                new MyAppAuthorizer(),
+                new MyCluster1Authorizer(),
+                new MyBar1Authorizer());
+
+
+            container.RegisterInstance<IAuthorizationByNamespaceConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IFacetDecorator, AuthorizationByNamespaceManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
+
+            var reflectorConfig = new ReflectorConfiguration(
+                new[] {
+                    typeof (MyDefaultAuthorizer),
+                    typeof (MyAppAuthorizer),
+                    typeof (MyCluster1Authorizer),
+                    typeof (MyBar1Authorizer)
+                },
+                new[] {
+                    typeof (SimpleRepository<Bar1>),
+                    typeof (SimpleRepository<Bar2>),
+                    typeof (SimpleRepository<Foo1>),
+                    typeof (SimpleRepository<Foo2>),
+                },
+                new Type[] {},
+                new Type[] {});
+
+
+            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
+
+        [TestMethod]
+        public void AuthorizerWithMostSpecificNamespaceIsInvokedForVisibility() {
+            //Bar1
+            var bar1 = GetTestService(typeof(SimpleRepository<Bar1>)).GetAction("New Instance").InvokeReturnObject();
+            try {
+                bar1.GetPropertyByName("Prop1").AssertIsVisible();
+                Assert.Fail("Should not get to here");
+            }
+            catch (Exception e) {
+                Assert.AreEqual("MyBar1Authorizer#IsVisible, user: sven, target: Bar1, memberName: Prop1", e.Message);
+            }
+
+            //Foo1
+            var foo1 = GetTestService(typeof(SimpleRepository<Foo1>)).GetAction("New Instance").InvokeReturnObject();
+            try {
+                foo1.GetPropertyByName("Prop1").AssertIsVisible();
+                Assert.Fail("Should not get to here");
+            }
+            catch (Exception e) {
+                Assert.AreEqual("MyCluster1Authorizer#IsVisible, user: sven, target: Foo1, memberName: Prop1", e.Message);
+            }
+
+            //Foo2
+            var foo2 = GetTestService(typeof(SimpleRepository<Foo2>)).GetAction("New Instance").InvokeReturnObject();
+            try {
+                foo2.GetPropertyByName("Prop1").AssertIsVisible();
+                Assert.Fail("Should not get to here");
+            }
+            catch (Exception e) {
+                Assert.AreEqual("MyAppAuthorizer#IsVisible, user: sven, target: Foo2, memberName: Prop1", e.Message);
+            }
+
+            //Bar2
+            var bar2 = GetTestService(typeof(SimpleRepository<Bar2>)).GetAction("New Instance").InvokeReturnObject();
+            bar2.GetPropertyByName("Prop1").AssertIsVisible();
+        }
+
+        #region Setup/Teardown
 
         [ClassCleanup]
         public static void ClassCleanup() {
@@ -34,6 +106,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
 
         [TestInitialize()]
         public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             SetUser("sven");
         }
@@ -57,56 +130,6 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         }
 
         #endregion
-
-        //protected override IAuthorizerInstaller Authorizer
-        //{
-        //    get
-        //    {
-        //        return new CustomAuthorizerInstaller(
-        //            new MyDefaultAuthorizer(),
-        //            new MyAppAuthorizer(),
-        //            new MyCluster1Authorizer(),
-        //            new MyBar1Authorizer()
-        //            );
-        //    }
-        //}
-
-        [TestMethod]
-        public void AuthorizerWithMostSpecificNamespaceIsInvokedForVisibility() {
-            //Bar1
-            var bar1 = GetTestService("Bar1s").GetAction("New Instance").InvokeReturnObject();
-            try {
-                bar1.GetPropertyByName("Prop1").AssertIsVisible();
-                Assert.Fail("Should not get to here");
-            }
-            catch (Exception e) {
-                Assert.AreEqual("MyBar1Authorizer#IsVisible, user: sven, target: Bar1, memberName: Prop1", e.InnerException.Message);
-            }
-
-            //Foo1
-            var foo1 = GetTestService("Foo1s").GetAction("New Instance").InvokeReturnObject();
-            try {
-                foo1.GetPropertyByName("Prop1").AssertIsVisible();
-                Assert.Fail("Should not get to here");
-            }
-            catch (Exception e) {
-                Assert.AreEqual("MyCluster1Authorizer#IsVisible, user: sven, target: Foo1, memberName: Prop1", e.InnerException.Message);
-            }
-
-            //Foo2
-            var foo2 = GetTestService("Foo2s").GetAction("New Instance").InvokeReturnObject();
-            try {
-                foo2.GetPropertyByName("Prop1").AssertIsVisible();
-                Assert.Fail("Should not get to here");
-            }
-            catch (Exception e) {
-                Assert.AreEqual("MyAppAuthorizer#IsVisible, user: sven, target: Foo2, memberName: Prop1", e.InnerException.Message);
-            }
-
-            //Bar2
-            var bar2 = GetTestService("Bar2s").GetAction("New Instance").InvokeReturnObject();
-            bar2.GetPropertyByName("Prop1").AssertIsVisible();
-        }
     }
 
     #region Classes used by tests 
@@ -121,15 +144,10 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         public DbSet<Bar2> Bar2s { get; set; }
     }
 
-    public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
+    public class MyDefaultAuthorizer : INamespaceAuthorizer {
         //bool initialized = false;
 
-        #region ITypeAuthorizer<object> Members
-
-        public void Init() {
-            //initialized = false;
-            throw new NotImplementedException();
-        }
+        #region INamespaceAuthorizer Members
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) {
             return true;
@@ -139,11 +157,18 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
             return true;
         }
 
-        public void Shutdown() {
+        public string NamespaceToAuthorize { get; private set; }
+
+        #endregion
+
+        public void Init() {
+            //initialized = false;
             throw new NotImplementedException();
         }
 
-        #endregion
+        public void Shutdown() {
+            throw new NotImplementedException();
+        }
     }
 
     public class MyAppAuthorizer : INamespaceAuthorizer {
@@ -225,6 +250,8 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
 
 namespace MyApp.MyCluster1 {
     public class Foo1 {
+        public virtual int Id { get; set; }
+
         [Optionally]
         public virtual string Prop1 { get; set; }
 
@@ -236,6 +263,8 @@ namespace MyApp.MyCluster1 {
     }
 
     public class Bar1 {
+        public virtual int Id { get; set; }
+
         [Optionally]
         public virtual string Prop1 { get; set; }
 
@@ -249,6 +278,8 @@ namespace MyApp.MyCluster1 {
 
 namespace MyApp.MyCluster2 {
     public class Foo2 {
+        public virtual int Id { get; set; }
+
         [Optionally]
         public virtual string Prop1 { get; set; }
 
@@ -262,6 +293,8 @@ namespace MyApp.MyCluster2 {
 
 namespace NotMyApp.MyCluster2 {
     public class Bar2 {
+        public virtual int Id { get; set; }
+
         [Optionally]
         public virtual string Prop1 { get; set; }
 

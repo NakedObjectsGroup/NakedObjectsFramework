@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Security.Principal;
 using Microsoft.Practices.Unity;
@@ -25,13 +24,11 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     [TestClass]
     public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
-
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            var config = new AuthorizationByTypeConfiguration { DefaultAuthorizer = typeof(MyDefaultAuthorizer) };
+            var config = new AuthorizationByTypeConfiguration();
 
-            config.SetTypeAuthorizers(new FooAuthorizer(), new QuxAuthorizer());
-           
+            config.SetTypeAuthorizers(new MyDefaultAuthorizer(), new FooAuthorizer(), new QuxAuthorizer());
 
             container.RegisterInstance<IAuthorizationByTypeConfiguration>(config, (new ContainerControlledLifetimeManager()));
             container.RegisterType<IFacetDecorator, AuthorizationByTypeManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
@@ -45,6 +42,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
                 },
                 new[] {
                     typeof (SimpleRepository<Foo>),
+                    typeof (SimpleRepository<FooSub>),
                     typeof (SimpleRepository<Bar>),
                     typeof (SimpleRepository<Qux>),
                     typeof (FooService),
@@ -57,8 +55,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
-
-
 
         #region Setup/Teardown
 
@@ -87,7 +83,11 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         }
 
         protected override object[] MenuServices {
-            get { return (new object[] {new SimpleRepository<Foo>(), new SimpleRepository<Bar>(), new SimpleRepository<FooSub>(), new SimpleRepository<Qux>()}); }
+            get { return (new object[] {
+                new SimpleRepository<Foo>(),
+                new SimpleRepository<Bar>(), 
+                new SimpleRepository<FooSub>(),
+                new SimpleRepository<Qux>()}); }
         }
 
         #endregion
@@ -96,7 +96,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         [TestMethod]
         public void VisibilityUsingSpecificTypeAuthorizer() {
-            ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
+            ITestObject foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
             try {
                 foo.GetPropertyByName("Prop1").AssertIsVisible();
                 Assert.Fail("Should not get to here");
@@ -108,7 +108,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         [TestMethod]
         public void EditabilityUsingSpecificTypeAuthorizer() {
-            ITestObject qux = GetTestService("Quxes").GetAction("New Instance").InvokeReturnObject();
+            ITestObject qux = GetTestService(typeof(SimpleRepository<Qux>)).GetAction("New Instance").InvokeReturnObject();
             try {
                 qux.GetPropertyByName("Prop1").AssertIsModifiable();
                 Assert.Fail("Should not get to here");
@@ -120,7 +120,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         [TestMethod]
         public void DefaultAuthorizerCalledForNonSpecificType() {
-            ITestObject bar1 = GetTestService("Bars").GetAction("New Instance").InvokeReturnObject();
+            ITestObject bar1 = GetTestService(typeof(SimpleRepository<Bar>)).GetAction("New Instance").InvokeReturnObject();
             ITestProperty prop1 = bar1.GetPropertyByName("Prop1");
             prop1.AssertIsVisible();
             prop1.AssertIsModifiable();
@@ -128,7 +128,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         [TestMethod]
         public void SubClassIsNotPickedUpByTypeAuthorizer() {
-            ITestObject fooSub = GetTestService("Foo Subs").GetAction("New Instance").InvokeReturnObject();
+            ITestObject fooSub = GetTestService(typeof(SimpleRepository<FooSub>)).GetAction("New Instance").InvokeReturnObject();
             ITestProperty prop1 = fooSub.GetPropertyByName("Prop1");
             prop1.AssertIsVisible();
             prop1.AssertIsModifiable();
@@ -237,6 +237,8 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     }
 
     public class Foo {
+        public virtual int Id { get; set; }
+
         [Optionally]
         public virtual string Prop1 { get; set; }
 
@@ -246,6 +248,8 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     }
 
     public class Bar {
+        public virtual int Id { get; set; }
+
         [Optionally]
         public virtual string Prop1 { get; set; }
 
@@ -253,6 +257,8 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     }
 
     public class Qux {
+        public virtual int Id { get; set; }
+
         [Optionally]
         public virtual string Prop1 { get; set; }
 

@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Security.Principal;
 using Microsoft.Practices.Unity;
@@ -15,20 +14,32 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.NakedObjectsSystem;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.Audit;
-using NakedObjects.SystemTest.Authorization.CustomAuthorizer;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-using Bar = NakedObjects.SystemTest.Authorization.CustomAuthorizer.Bar;
-using Qux = NakedObjects.SystemTest.Authorization.CustomAuthorizer.Qux;
 
 namespace NakedObjects.SystemTest.Authorization.Installer {
     public abstract class TestCustomAuthorizer : AbstractSystemTest<CustomAuthorizerInstallerDbContext> {
         protected override object[] MenuServices {
             get { return (new object[] {new SimpleRepository<Foo>()}); }
+        }
+
+        protected void RegisterAuthorizerTypes(IUnityContainer container, Type authType) {
+            base.RegisterTypes(container);
+            var config = new AuthorizationByTypeConfiguration {DefaultAuthorizer = authType};
+
+            container.RegisterInstance<IAuthorizationByTypeConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IFacetDecorator, AuthorizationByTypeManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
+
+            var reflectorConfig = new ReflectorConfiguration(
+                new[] {
+                    authType
+                },
+                new Type[] {typeof (SimpleRepository<Foo>)},
+                new Type[] {},
+                new Type[] {});
+
+            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
     }
 
@@ -36,22 +47,17 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     public class TestCustomAuthorizer1 : TestCustomAuthorizer {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-            var config = new AuthorizationByTypeConfiguration {DefaultAuthorizer = typeof (DefaultAuthorizer1)};
+            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer1));
+        }
 
-        
-
-            container.RegisterInstance<IAuthorizationByTypeConfiguration>(config, (new ContainerControlledLifetimeManager()));
-            container.RegisterType<IFacetDecorator, AuthorizationByTypeManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
-
-            var reflectorConfig = new ReflectorConfiguration(
-                new[] {
-                    typeof (DefaultAuthorizer1)
-                },
-                new Type[] {},
-                new Type[] {},
-                new Type[] {});
-
-            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
+        [TestMethod]
+        public void AttemptToUseAuthorizerForAbstractType() {
+            try {
+                InitializeNakedObjectsFramework(this);
+            }
+            catch (InitialisationException e) {
+                Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", e.Message);
+            }
         }
 
         #region Setup/Teardown
@@ -63,38 +69,14 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         #endregion
-
-        [TestMethod]
-        public void AttemptToUseAuthorizerForAbstractType() {
-            try {
-                InitializeNakedObjectsFramework(this);
-            }
-            catch (InitialisationException e) {
-                Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", e.Message);
-            }
-        }
     }
 
     [TestClass] //Use DefaultAuthorizer2
     public class TestCustomAuthorizer2 : TestCustomAuthorizer {
-        #region Setup/Teardown
-
-        [ClassCleanup]
-        public static void ClassCleanup() {
-            CleanupNakedObjectsFramework(new TestCustomAuthorizer2());
-            Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer2));
         }
-
-        [TestInitialize()]
-        public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();
-            StartTest();
-        }
-
-        [TestCleanup()]
-        public void TestCleanup() {}
-
-        #endregion
 
         [TestMethod]
         public void AttemptToUseNonImplementationOfITestAuthorizer() {
@@ -105,10 +87,35 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
                 Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", e.Message);
             }
         }
+
+        #region Setup/Teardown
+
+        [ClassCleanup]
+        public static void ClassCleanup() {
+            CleanupNakedObjectsFramework(new TestCustomAuthorizer2());
+            Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
+        }
+
+        #endregion
     }
 
     [TestClass] //Use DefaultAuthorizer1
     public class TestCustomAuthorizer3 : TestCustomAuthorizer {
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer1));
+        }
+
+        [TestMethod]
+        public void AttemptToUseITestAuthorizerOfObject() {
+            try {
+                InitializeNakedObjectsFramework(this);
+            }
+            catch (InitialisationException e) {
+                Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", e.Message);
+            }
+        }
+
         #region Setup/Teardown
 
         [ClassCleanup]
@@ -123,24 +130,21 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             StartTest();
         }
 
-        [TestCleanup]
-        public void TestCleanup() {}
-
         #endregion
-
-        [TestMethod]
-        public void AttemptToUseITestAuthorizerOfObject() {
-            try {
-                InitializeNakedObjectsFramework(this);
-            }
-            catch (InitialisationException e) {
-                Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", e.Message);
-            }
-        }
     }
 
     [TestClass] //Use DefaultAuthorizer3
     public class TestCustomAuthoriser4 : TestCustomAuthorizer {
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer3));
+        }
+
+        [TestMethod]
+        public void AccessByAuthorizedUserName() {
+            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
+        }
+
         #region Setup/Teardown
 
         [ClassCleanup]
@@ -156,19 +160,21 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             SetUser("Fred");
         }
 
-        [TestCleanup]
-        public void TestCleanup() {}
-
         #endregion
-
-        [TestMethod]
-        public void AccessByAuthorizedUserName() {
-            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
-        }
     }
 
     [TestClass] //Use DefaultAuthorizer3
     public class TestCustomAuthoriser5 : TestCustomAuthorizer {
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer3));
+        }
+
+        [TestMethod]
+        public void AccessByAnonUserWithoutRole() {
+            GetTestService("Foos").GetAction("New Instance").AssertIsInvisible();
+        }
+
         #region Setup/Teardown
 
         [ClassCleanup]
@@ -184,19 +190,21 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             SetUser("Anon");
         }
 
-        [TestCleanup()]
-        public void TestCleanup() {}
-
         #endregion
-
-        [TestMethod]
-        public void AccessByAnonUserWithoutRole() {
-            GetTestService("Foos").GetAction("New Instance").AssertIsInvisible();
-        }
     }
 
     [TestClass] //Use DefaultAuthorizer3
     public class TestCustomAuthoriser6 : TestCustomAuthorizer {
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer3));
+        }
+
+        [TestMethod]
+        public void AccessByAnonUserWithRole() {
+            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
+        }
+
         #region Setup/Teardown
 
         [ClassCleanup]
@@ -212,19 +220,21 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             SetUser("Anon", "sysAdmin");
         }
 
-        [TestCleanup()]
-        public void TestCleanup() {}
-
         #endregion
-
-        [TestMethod]
-        public void AccessByAnonUserWithRole() {
-            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
-        }
     }
 
     [TestClass] //Use DefaultAuthorizer3
     public class TestCustomAuthoriser7 : TestCustomAuthorizer {
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            RegisterAuthorizerTypes(container, typeof (DefaultAuthorizer3));
+        }
+
+        [TestMethod]
+        public void AccessByAnonUserWithMultipleRoles() {
+            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
+        }
+
         #region Setup/Teardown
 
         [ClassCleanup]
@@ -240,15 +250,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             SetUser("Anon", "service", "sysAdmin");
         }
 
-        [TestCleanup()]
-        public void TestCleanup() {}
-
         #endregion
-
-        [TestMethod]
-        public void AccessByAnonUserWithMultipleRoles() {
-            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
-        }
     }
 
     #region Classes used by tests
@@ -353,6 +355,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     }
 
     public class Foo {
+        public virtual int Id { get; set; }
         public virtual string Prop1 { get; set; }
     }
 
