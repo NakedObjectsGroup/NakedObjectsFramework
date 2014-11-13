@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace NakedObjects.Meta.Menus {
-    //Implements IMenuItem to permit sub-menus
+    
     public class Menu : IMenu {
         #region Injected Services
         protected readonly IMetamodel metamodel;

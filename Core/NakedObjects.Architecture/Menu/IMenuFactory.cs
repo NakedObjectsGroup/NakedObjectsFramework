@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace NakedObjects.Architecture.Menu {
+
+    /// <summary>
+    /// Injected service that provides implementations of IMenu.
+    /// </summary>
     public interface IMenuFactory {
         //Creates an empty, un-typed menu, (for which a name must be specified).
         IMenu NewMenu(string name);

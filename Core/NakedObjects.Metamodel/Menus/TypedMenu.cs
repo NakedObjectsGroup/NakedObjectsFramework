@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace NakedObjects.Meta.Menus {
+
     public class TypedMenu<TObject> : Menu, ITypedMenu<TObject> {
 
         public TypedMenu(IMetamodel metamodel, bool addAllActions, string name)

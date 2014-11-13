@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace NakedObjects.Meta.Menus {
+
     public class MenuFactory : IMenuFactory {
 
         #region Injected Services
