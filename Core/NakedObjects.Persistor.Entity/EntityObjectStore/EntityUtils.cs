@@ -6,6 +6,7 @@ using System;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 

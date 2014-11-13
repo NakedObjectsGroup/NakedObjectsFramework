@@ -8,7 +8,7 @@
 using System;
 using Moq;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Core.Persist;
+using NakedObjects.Core.Adapter;
 using NUnit.Framework;
 
 namespace NakedObjects.Core {

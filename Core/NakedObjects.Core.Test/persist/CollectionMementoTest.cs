@@ -8,6 +8,7 @@ using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Configuration;
 using NakedObjects.EntityObjectStore;
 using NUnit.Framework;

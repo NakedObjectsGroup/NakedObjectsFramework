@@ -6,28 +6,30 @@ using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Persist;
 using NakedObjects.Architecture.Transaction;
+using NakedObjects.Core;
 using NakedObjects.Core.Persist;
+using NakedObjects.Core.Transaction;
 
-namespace NakedObjects.Persistor.Objectstore {
-    public class ObjectStoreTransactionManager : ITransactionManager {
+namespace NakedObjects.Managers {
+    public class TransactionManager : ITransactionManager {
         private static readonly ILog Log;
         private readonly IObjectStore objectStore;
         private ITransaction transaction;
         private int transactionLevel;
         private bool userAborted;
 
-        static ObjectStoreTransactionManager() {
-            Log = LogManager.GetLogger(typeof (ObjectStoreTransactionManager));
+        static TransactionManager() {
+            Log = LogManager.GetLogger(typeof (TransactionManager));
         }
 
-        public ObjectStoreTransactionManager(IObjectStore objectStore) {
+        public TransactionManager(IObjectStore objectStore) {
             this.objectStore = objectStore;
         }
 
         public virtual ITransaction Transaction {
             get {
                 if (transaction == null) {
-                    return new ObjectStoreTransaction(objectStore);
+                    return new Transaction(objectStore);
                 }
                 return transaction;
             }
@@ -37,7 +39,7 @@ namespace NakedObjects.Persistor.Objectstore {
 
         public virtual void StartTransaction() {
             if (transaction == null) {
-                transaction = new ObjectStoreTransaction(objectStore);
+                transaction = new Transaction(objectStore);
                 transactionLevel = 0;
                 userAborted = false;
                 objectStore.StartTransaction();

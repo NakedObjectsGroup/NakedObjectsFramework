@@ -17,6 +17,7 @@ open System.Security.Principal
 open Moq
 open NakedObjects.Architecture.Component
 open NakedObjects.Core.Container
+open NakedObjects.Core.Adapter
 
 let resetPersistor (p : EntityObjectStore) = 
     p.Reset()

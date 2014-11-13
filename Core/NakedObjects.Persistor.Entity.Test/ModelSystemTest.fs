@@ -7,7 +7,6 @@
 module NakedObjects.ModelSystemTest
 
 open NUnit.Framework
-open NakedObjects.Core.NakedObjectsSystem
 open ModelFirst
 open NakedObjects.Services
 open NakedObjects.EntityObjectStore

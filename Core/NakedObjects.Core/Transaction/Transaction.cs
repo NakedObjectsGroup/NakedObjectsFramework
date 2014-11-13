@@ -13,19 +13,19 @@ using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Persistor.Objectstore {
-    public class ObjectStoreTransaction : ITransaction {
+namespace NakedObjects.Core.Transaction {
+    public class Transaction : ITransaction {
         private static readonly ILog Log;
         private readonly List<IPersistenceCommand> commands = new List<IPersistenceCommand>(10);
         private readonly IObjectStore objectStore;
         private readonly List<INakedObject> toNotify = new List<INakedObject>(10);
         private bool complete;
 
-        static ObjectStoreTransaction() {
-            Log = LogManager.GetLogger(typeof (ObjectStoreTransaction));
+        static Transaction() {
+            Log = LogManager.GetLogger(typeof (Transaction));
         }
 
-        public ObjectStoreTransaction(IObjectStore objectStore) {
+        public Transaction(IObjectStore objectStore) {
             this.objectStore = objectStore;
             Log.DebugFormat("New transaction {0}", this);
         }

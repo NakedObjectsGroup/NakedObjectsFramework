@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core;
 
 namespace NakedObjects.Meta.Authorization {
     public class AuthorizationByTypeConfiguration : IAuthorizationByTypeConfiguration {

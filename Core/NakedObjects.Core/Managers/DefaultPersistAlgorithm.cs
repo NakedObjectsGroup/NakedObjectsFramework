@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Persistor {
+namespace NakedObjects.Managers {
     public class DefaultPersistAlgorithm : IPersistAlgorithm {
         private readonly IObjectPersistor persistor;
         private readonly INakedObjectManager manager;

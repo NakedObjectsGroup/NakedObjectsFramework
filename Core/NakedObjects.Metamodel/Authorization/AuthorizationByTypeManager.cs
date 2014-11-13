@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 

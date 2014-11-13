@@ -7,7 +7,6 @@
 module NakedObjects.DomainSystemTest
 
 open NUnit.Framework
-open NakedObjects.Core.NakedObjectsSystem
 open AdventureWorksModel
 open NakedObjects.Services
 open System

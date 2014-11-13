@@ -11,7 +11,7 @@ using System.Linq;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 

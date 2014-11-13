@@ -2,7 +2,6 @@
 
 open NUnit.Framework
 open NakedObjects.Xat
-open NakedObjects.Core.NakedObjectsSystem
 open NakedObjects.Services
 open Snapshot.Xml.Test
 open NakedObjects.Snapshot

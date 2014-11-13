@@ -8,7 +8,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.EntityObjectStore {
+namespace NakedObjects.Core.Adapter {
     public class ConcurrencyCheckVersion : IVersion, IEncodedToStrings {
         private readonly DateTime time;
         private readonly string user;

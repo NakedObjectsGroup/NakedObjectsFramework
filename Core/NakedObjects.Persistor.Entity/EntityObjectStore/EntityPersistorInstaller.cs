@@ -10,7 +10,7 @@ using System.Data.Entity.Core.Objects;
 using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Core.NakedObjectsSystem;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 

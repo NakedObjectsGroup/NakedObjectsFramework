@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Service;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Managers {
     public class ServicesManager : IServicesManager {

@@ -7,7 +7,6 @@
 module NakedObjects.CodeSystemTest
 
 open NUnit.Framework
-open NakedObjects.Core.NakedObjectsSystem
 open TestCodeOnly
 open NakedObjects.Services
 open System

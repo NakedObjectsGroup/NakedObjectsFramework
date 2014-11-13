@@ -20,6 +20,7 @@ open NakedObjects.Architecture.Component
 open TestTypes
 open TestCode
 open System.Data.Entity.Core.Objects
+open NakedObjects.Core.Adapter
 
 let PocoConfig = 
     let pc = new NakedObjects.EntityObjectStore.PocoEntityContextConfiguration()
