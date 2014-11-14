@@ -9,11 +9,11 @@ module NakedObjects.AMultiDomainDatabaseTest
 open NUnit.Framework
 open TestTypes
 open TestCode
-open NakedObjects.EntityObjectStore
 open MultiDatabaseTestCode
 open CodeOnlyTestCode
 open AdventureWorksModel
 open ModelFirst
+open NakedObjects.Persistor.Entity.Configuration
 
 let multiDomainDatabasePersistor = 
     let c = new EntityObjectStoreConfiguration()

@@ -8,9 +8,9 @@ module NakedObjects.CodeOnlyCeTest
 
 open NUnit.Framework
 open CodeOnlyTestCode
-open NakedObjects.EntityObjectStore
 open TestTypes
 open TestCode
+open NakedObjects.Persistor.Entity.Configuration
 
 let codeOnlyCePersistor = 
     let c = new EntityObjectStoreConfiguration()

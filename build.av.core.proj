@@ -30,7 +30,6 @@
     <FWFiles Include="$(CorePath)\NakedObjects.Metamodel\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Async\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Core\*.csproj"/>
-    <FWFiles Include="$(CorePath)\NakedObjects.FrameworkService\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Persistor.Entity\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Reflector\*.csproj"/>
     <FWFiles Include="$(CorePath)\NakedObjects.Snapshot.Xml\*.csproj"/>

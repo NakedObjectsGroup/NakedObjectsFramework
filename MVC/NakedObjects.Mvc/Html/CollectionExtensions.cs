@@ -10,7 +10,6 @@ using System.Web.Mvc;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Web.Mvc.Html {

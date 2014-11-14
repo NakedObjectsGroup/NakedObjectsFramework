@@ -111,9 +111,6 @@
     <Reference Include="NakedObjects.Core">
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.Core.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.FrameworkService">
-      <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.FrameworkService.dll</HintPath>
-    </Reference>
     <Reference Include="NakedObjects.FWResources">
       <HintPath>..\..\packages\NakedObjects.Core.7.0.0-alpha2\lib\net451\NakedObjects.FWResources.dll</HintPath>
     </Reference>

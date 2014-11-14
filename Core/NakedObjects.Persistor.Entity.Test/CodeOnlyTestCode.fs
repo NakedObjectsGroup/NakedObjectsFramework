@@ -7,7 +7,6 @@
 module NakedObjects.CodeOnlyTestCode
 
 open NUnit.Framework
-open NakedObjects.EntityObjectStore
 open NakedObjects.Architecture
 open System
 open NakedObjects.Architecture.Persist
@@ -15,6 +14,9 @@ open TestCodeOnly
 open TestTypes
 open TestCode
 open System.Data.Entity.ModelConfiguration
+open NakedObjects.Persistor.Entity.Configuration
+open NakedObjects.Persistor.Entity
+open NakedObjects.Persistor.Entity.Util
 
 let categorySetter codeOnlyPersistor (c : Category) = 
     c.ID <- GetNextID<Category> codeOnlyPersistor (fun i -> i.ID)

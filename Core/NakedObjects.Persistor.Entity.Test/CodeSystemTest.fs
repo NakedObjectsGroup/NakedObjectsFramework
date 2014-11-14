@@ -10,7 +10,6 @@ open NUnit.Framework
 open TestCodeOnly
 open NakedObjects.Services
 open System
-open NakedObjects.EntityObjectStore
 open NakedObjects.Architecture
 open NakedObjects.Architecture.Adapter
 open SystemTestCode
@@ -23,6 +22,7 @@ open NakedObjects.Architecture.Persist
 open Microsoft.Practices.Unity
 open NakedObjects.Core.Configuration
 open NakedObjects.Architecture.Configuration
+open NakedObjects.Persistor.Entity.Configuration
 
 [<TestFixture>]
 type CodeSystemTests() = 

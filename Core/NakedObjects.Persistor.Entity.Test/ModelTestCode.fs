@@ -7,7 +7,6 @@
 module NakedObjects.ModelTestCode
 
 open NUnit.Framework
-open NakedObjects.EntityObjectStore
 open ModelFirst
 open TestCode
 open TestTypes
@@ -18,6 +17,8 @@ open NakedObjects.Architecture.Component
 open System.Data.Entity.Core.Objects
 open Moq
 open NakedObjects.Core.Container
+open NakedObjects.Persistor.Entity.Configuration
+open NakedObjects.Persistor.Entity
 
 let ModelConfig = 
     let pc = new PocoEntityContextConfiguration()

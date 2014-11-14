@@ -9,7 +9,6 @@ module NakedObjects.ModelSystemTest
 open NUnit.Framework
 open ModelFirst
 open NakedObjects.Services
-open NakedObjects.EntityObjectStore
 open NakedObjects.Core.Util
 open SystemTestCode
 open NakedObjects
@@ -21,6 +20,7 @@ open NakedObjects.Core.Configuration
 open System.Data.Entity.Core.Objects.DataClasses
 open System.Linq
 open NakedObjects.Architecture.Adapter
+open NakedObjects.Persistor.Entity.Configuration
 
 [<TestFixture>]
 type ModelSystemTests() = 

@@ -9,9 +9,9 @@ module NakedObjects.DomainTest
 open NUnit.Framework
 open DomainTestCode
 open TestTypes
-open NakedObjects.EntityObjectStore
 open TestCode
 open System.Data.Entity.Core.Objects
+open NakedObjects.Persistor.Entity.Configuration
 
 let persistor = 
     let c = new EntityObjectStoreConfiguration()

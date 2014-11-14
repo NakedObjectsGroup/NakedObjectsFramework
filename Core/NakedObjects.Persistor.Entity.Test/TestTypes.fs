@@ -7,7 +7,6 @@
 module NakedObjects.TestTypes
 
 open NUnit.Framework
-open NakedObjects.EntityObjectStore
 open NakedObjects.Architecture.Component
 open NakedObjects.Architecture.Spec
 open NakedObjects.Architecture.Resolve
@@ -19,6 +18,7 @@ open Moq
 open NakedObjects.Architecture.Facet
 open NakedObjects.Core.Resolve
 open NakedObjects.Core.Adapter
+open NakedObjects.Persistor.Entity
 
 let injectedObjects = new List<Object>()
 let mockInjector = new Mock<IContainerInjector>()

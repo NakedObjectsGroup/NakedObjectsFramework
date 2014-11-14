@@ -8,7 +8,6 @@ open NakedObjects.Snapshot
 open NakedObjects.Architecture.Adapter
 open System.Xml.Linq
 open Microsoft.Practices.Unity
-open NakedObjects.EntityObjectStore
 open System.Data.Entity
 open System
 open System.IO
@@ -16,6 +15,8 @@ open NakedObjects.Core.Configuration
 open NakedObjects.Snapshot.Xml.Utility
 open NakedObjects.Architecture.Configuration
 open NakedObjects.Core.Util
+open NakedObjects.Persistor.Entity
+open NakedObjects.Persistor.Entity.Configuration
 
 let writetests = false
 let testFiles = @"..\..\testfiles"

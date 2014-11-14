@@ -7,7 +7,6 @@
 module NakedObjects.DomainTestCode
 
 open NUnit.Framework
-open NakedObjects.EntityObjectStore
 open AdventureWorksModel
 open NakedObjects.Architecture.Resolve
 open NakedObjects.Core.Resolve
@@ -21,9 +20,12 @@ open TestTypes
 open TestCode
 open System.Data.Entity.Core.Objects
 open NakedObjects.Core.Adapter
+open NakedObjects.Persistor.Entity
+open NakedObjects.Persistor.Entity.Configuration
+open NakedObjects.Persistor.Entity.Util
 
 let PocoConfig = 
-    let pc = new NakedObjects.EntityObjectStore.PocoEntityContextConfiguration()
+    let pc = new PocoEntityContextConfiguration()
     pc.ContextName <- "AdventureWorksEntities"
     pc.DefaultMergeOption <- MergeOption.AppendOnly
     pc

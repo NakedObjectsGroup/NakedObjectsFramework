@@ -8,7 +8,6 @@ module NakedObjects.MultiDatabaseTestCode
 
 open System
 open NUnit.Framework
-open NakedObjects.EntityObjectStore
 open TestCodeOnly
 open TestCode
 open TestTypes
@@ -16,6 +15,8 @@ open AdventureWorksModel
 open NakedObjects.Architecture
 open NakedObjects.Architecture.Persist
 open System.Data.Entity.Core.Objects
+open NakedObjects.Persistor.Entity.Configuration
+open NakedObjects.Persistor.Entity
 
 let CanCreateEntityPersistor multiDatabasePersistor = Assert.IsNotNull(multiDatabasePersistor)
 

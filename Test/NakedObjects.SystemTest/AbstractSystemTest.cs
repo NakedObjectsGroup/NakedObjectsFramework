@@ -10,7 +10,7 @@ using System.Data.Entity;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.EntityObjectStore;
+using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Reflect.Test;
 using NakedObjects.Util;
 using NakedObjects.Xat;

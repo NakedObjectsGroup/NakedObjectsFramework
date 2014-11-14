@@ -13,7 +13,6 @@ open System
 open RestfulObjects.Snapshot.Utility
 open System.Web.Http
 open Microsoft.Practices.Unity
-open NakedObjects.EntityObjectStore
 open RestfulObjects.Test.Data
 open NakedObjects.Surface.Nof4.Implementation
 open NakedObjects.Surface.Nof4.Utility
@@ -25,6 +24,8 @@ open NakedObjects.Core.Configuration
 open System.Data.Entity.Core.Objects.DataClasses
 open System.Collections.Generic
 open System.Data.Entity.Core.Objects
+open NakedObjects.Persistor.Entity.Configuration
+open NakedObjects.Persistor.Entity
 
 [<TestFixture>]
 type Nof4Tests() = 

@@ -8,8 +8,8 @@ module NakedObjects.ModelTest
 
 open NUnit.Framework
 open TestCode
-open NakedObjects.EntityObjectStore
 open ModelTestCode
+open NakedObjects.Persistor.Entity.Configuration
 
 let persistor = 
     let c = new EntityObjectStoreConfiguration()
