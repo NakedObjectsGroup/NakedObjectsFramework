@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Persist;
 
 namespace NakedObjects.Web.Mvc.Models {

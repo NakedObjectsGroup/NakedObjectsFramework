@@ -17,7 +17,7 @@ using Microsoft.Practices.Unity;
 using MvcTestApp.Tests.Util;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Persist;
+using NakedObjects.Core.Adapter;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Mvc.Test.Data;
 using NakedObjects.Web.Mvc.Html;

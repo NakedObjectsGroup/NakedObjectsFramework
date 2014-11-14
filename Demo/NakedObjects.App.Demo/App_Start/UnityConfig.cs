@@ -15,7 +15,6 @@ using NakedObjects.Core.spec;
 using NakedObjects.EntityObjectStore;
 using NakedObjects.Managers;
 using NakedObjects.Meta;
-using NakedObjects.Persistor.Objectstore;
 using NakedObjects.Reflect;
 using NakedObjects.Service;
 using NakedObjects.Surface;
@@ -123,7 +122,7 @@ namespace NakedObjects.Mvc.App.App_Start {
             container.RegisterType<IPersistAlgorithm, EntityPersistAlgorithm>(new PerRequestLifetimeManager());
             container.RegisterType<IObjectStore, EntityObjectStore.EntityObjectStore>(new PerRequestLifetimeManager());
             container.RegisterType<IIdentityMap, IdentityMapImpl>(new PerRequestLifetimeManager());
-            container.RegisterType<ITransactionManager, ObjectStoreTransactionManager>(new PerRequestLifetimeManager());
+            container.RegisterType<ITransactionManager, TransactionManager>(new PerRequestLifetimeManager());
             container.RegisterType<INakedObjectManager, NakedObjectManager>(new PerRequestLifetimeManager());
             container.RegisterType<IObjectPersistor, ObjectPersistor>(new PerRequestLifetimeManager());
             container.RegisterType<IServicesManager, ServicesManager>(new PerRequestLifetimeManager());

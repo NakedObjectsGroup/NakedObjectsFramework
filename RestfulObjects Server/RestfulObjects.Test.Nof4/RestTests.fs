@@ -7,7 +7,6 @@
 module NakedObjects.Rest.Test.Nof4
 
 open NUnit.Framework
-open NakedObjects.Core.NakedObjectsSystem
 open RestfulObjects.Mvc
 open RestfulObjects.Mvc.Media
 open System

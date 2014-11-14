@@ -16,20 +16,16 @@ using System.Web.Routing;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
+using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Adapter.Map;
-using NakedObjects.Core.Persist;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Models;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.spec;
-using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Web.Mvc.Html {
     public class CustomMenuItem : IMenuItemImmutable {
