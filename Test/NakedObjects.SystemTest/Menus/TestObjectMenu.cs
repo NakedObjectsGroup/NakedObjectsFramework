@@ -6,6 +6,7 @@ using NakedObjects.Meta.Menus;
 using NakedObjects.Services;
 using System.Data.Entity;
 using System.Linq;
+using TestObjectMenu;
 
 namespace NakedObjects.SystemTest.Menus {
     [TestClass]
@@ -43,7 +44,7 @@ namespace NakedObjects.SystemTest.Menus {
         }
         #endregion
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void TestDefaultMenu() {
             var foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject().Save();
             var menu = foo.GetMenu();
@@ -54,15 +55,29 @@ namespace NakedObjects.SystemTest.Menus {
             items[0].AssertIsAction().AssertNameEquals("Action1");
 
         }
+
+        [TestMethod]
+        public void TestDefaultMenu2() {
+            var foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject().Save();
+            var menu = foo.GetMenu();
+
+            menu.AssertItemCountIs(3);
+
+            var items = menu.AllItems();
+            items[0].AssertIsAction().AssertNameEquals("Action1");
+
+        }
     }
-    #region Classes used in test
+}
+
+namespace TestObjectMenu {
     public class MenusDbContext : DbContext {
         public const string DatabaseName = "TestMenus";
         public MenusDbContext() : base(DatabaseName) {}
         
             public DbSet<Foo> Foo { get; set; }      
         }
- 
+
     public class Foo {
 
         [NakedObjectsIgnore]
@@ -75,6 +90,4 @@ namespace NakedObjects.SystemTest.Menus {
         public void Action3() { }
      
     }
-
-#endregion
 }
