@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 
+
 namespace NakedObjects.Reflect.Test.FacetFactory {
     public abstract class AbstractFacetFactoryTest {
         protected IMetamodelManager Metamodel;
@@ -27,7 +28,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected abstract IFacetFactory FacetFactory { get; }
 
         public virtual void SetUp() {
-            Specification = new Mock<ISpecificationBuilder>().Object;
+            Specification = new TestSpecification();
 
             mockMethodRemover = new Mock<IMethodRemover>();
             mockReflector = new Mock<IReflector>();

@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Test.Facet {
 
         [SetUp]
         public void SetUp() {
-            specification = new Mock<ISpecification>().Object;
+            specification = new Mock<ISpecificationBuilder>().Object;
             facetHolder2 = new Mock<ISpecification>().Object;
             fooFacet = new ConcreteFacet(typeof (IFooFacet), specification);
             FacetUtils.AddFacet(fooFacet);

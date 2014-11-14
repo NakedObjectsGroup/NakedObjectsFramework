@@ -410,7 +410,7 @@ namespace NakedObjects.Persistor.Entity {
 
         public PropertyInfo[] GetKeys(Type type) {
             Log.Debug("GetKeys of: " + type);
-            return GetContext(type.GetEntityProxiedType()).GetIdMembers(type.GetEntityProxiedType());
+            return GetContext(type.GetProxiedType()).GetIdMembers(type.GetProxiedType());
         }
 
         public void Refresh(INakedObject nakedObject) {

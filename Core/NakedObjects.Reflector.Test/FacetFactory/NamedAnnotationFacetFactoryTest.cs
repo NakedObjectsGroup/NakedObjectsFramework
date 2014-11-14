@@ -136,7 +136,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void SomeAction1() {}
         }
 
-        private readonly ISpecificationBuilder facetHolder1 = new Mock<ISpecificationBuilder>().Object;
+        private readonly ISpecificationBuilder facetHolder1 = new TestSpecification();
 
 
         [Test]

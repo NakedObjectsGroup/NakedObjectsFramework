@@ -23,7 +23,6 @@ namespace NakedObjects.Meta.Spec {
     public abstract class Specification : ISpecification, ISpecificationBuilder, ISerializable, IDeserializationCallback {
         private IImmutableDictionary<Type, IFacet> facetsByClass = ImmutableDictionary<Type, IFacet>.Empty;
 
-
         protected Specification() {}
 
         #region IDeserializationCallback Members

@@ -39,7 +39,7 @@ namespace NakedObjects.Reflect.Test {
 
         [Test]
         public void TestFacets() {
-            Assert.AreEqual(19, Specification.FacetTypes.Length);
+            Assert.AreEqual(20, Specification.FacetTypes.Length);
         }
 
         [Test]

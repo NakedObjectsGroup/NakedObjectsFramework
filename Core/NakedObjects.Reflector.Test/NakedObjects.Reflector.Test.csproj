@@ -111,6 +111,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FacetFactory\TestSpecification.cs" />
     <Compile Include="FacetFactory\TypeMarkerFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\TableViewAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\DefaultedNamingFacetFactoryTest.cs" />

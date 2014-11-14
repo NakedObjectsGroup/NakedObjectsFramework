@@ -37,6 +37,11 @@ mockNakedObjectSpecification.Setup(fun x -> x.ContainsFacet(null)).Returns(false
 let mockMetamodelManager = new Mock<IMetamodelManager>()
 let objects = new Dictionary<Object, INakedObject>()
 
+let mutable updatedCount = 0
+let mutable updatingCount = 0
+let mutable persistedCount = 0
+let mutable persistingCount = 0
+
 let AddAdapter (ob : obj) oid = 
     let mockNakedObject = new Mock<INakedObject>()
     let testNakedObject = mockNakedObject.Object
@@ -50,6 +55,11 @@ let AddAdapter (ob : obj) oid =
     mockNakedObject.Setup(fun no -> no.Object).Returns(dobj) |> ignore
     mockNakedObject.Setup(fun no -> no.Oid).Returns(eoid) |> ignore
     mockNakedObject.Setup(fun no -> no.ResolveState).Returns(rsm) |> ignore
+    mockNakedObject.Setup(fun no -> no.Updating()).Callback(fun () -> updatingCount <- updatingCount + 1) |> ignore
+    mockNakedObject.Setup(fun no -> no.Updated()).Callback(fun () -> updatedCount <- updatedCount + 1) |> ignore
+    mockNakedObject.Setup(fun no -> no.Persisting()).Callback(fun () -> persistingCount <- persistingCount + 1) |> ignore
+    mockNakedObject.Setup(fun no -> no.Persisted()).Callback(fun () -> persistedCount <- persistedCount + 1) |> ignore
+
     match oid with
     | null -> testNakedObject.ResolveState.Handle Events.InitializeTransientEvent
     | _ -> testNakedObject.ResolveState.Handle Events.InitializePersistentEvent
@@ -71,28 +81,7 @@ let RemoveAdapterForTest(nakedObject : INakedObject) = ()
 let AggregateAdapterForTest (nakedObject : INakedObject) (prop : PropertyInfo) (obj : Object) : INakedObject = GetOrAddAdapterForTest obj null
 let NotifyUIForTest(nakedObject : INakedObject) = ()
 let loadSpecificationHandler (t : Type) : IObjectSpec = testNakedObjectSpecification
-let mutable updatedCount = 0
-let mutable updatingCount = 0
-let mutable persistedCount = 0
-let mutable persistingCount = 0
 
-
-// todo need to reimplement this on nakedobject mock
-let updated (nakedObject : INakedObject) (sess : ISession) = 
-    updatedCount <- updatedCount + 1
-    ()
-
-let updating (nakedObject : INakedObject) (sess : ISession) = 
-    updatingCount <- updatingCount + 1
-    ()
-
-let persisted (nakedObject : INakedObject) (sess : ISession) = 
-    persistedCount <- persistedCount + 1
-    ()
-
-let persisting (nakedObject : INakedObject) (sess : ISession) = 
-    persistingCount <- persistingCount + 1
-    ()
 
 let handleLoadingTest (nakedObject : INakedObject) = 
     if nakedObject.ResolveState.IsPartResolving() then nakedObject.ResolveState.Handle Events.EndPartResolvingEvent
