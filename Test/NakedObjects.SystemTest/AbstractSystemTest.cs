@@ -26,7 +26,7 @@ namespace NakedObjects.SystemTest {
             config.UsingCodeFirstContext(Activator.CreateInstance<TContext>);
             container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
             container.RegisterType<IMainMenuDefinition, ReflectorTest.NullMenuDfinition>();
-            container.RegisterType<IMenuFactory, ReflectorTest.NullMenuBuilder>();
+            container.RegisterType<IMenuFactory, ReflectorTest.NullMenuFactory>();
         }
 
         #endregion

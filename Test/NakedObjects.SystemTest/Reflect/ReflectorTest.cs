@@ -38,7 +38,7 @@ namespace NakedObjects.Reflect.Test {
 
         protected virtual void RegisterTypes(IUnityContainer container) {
             container.RegisterType<IMainMenuDefinition, NullMenuDfinition>();
-            container.RegisterType<IMenuFactory, NullMenuBuilder>();
+            container.RegisterType<IMenuFactory, NullMenuFactory>();
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(
                 new ContainerControlledLifetimeManager(), new InjectionConstructor());
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
@@ -387,7 +387,7 @@ namespace NakedObjects.Reflect.Test {
 
         #region Nested type: NullMenuBuilder
 
-        public class NullMenuBuilder : IMenuFactory {
+        public class NullMenuFactory : IMenuFactory {
             #region IMenuFactory Members
 
             public IMenu NewMenu(string name) {

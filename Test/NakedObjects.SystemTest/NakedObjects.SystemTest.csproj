@@ -167,6 +167,7 @@
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigator.cs" />
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorAbstract.cs" />
     <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorWithTypeCodeMapper.cs" />
+    <Compile Include="Menus\TestMainMenus.cs" />
     <Compile Include="Reflect\ReflectorTest.cs" />
     <Compile Include="util\DateTimeExtensionsTest.cs" />
     <Compile Include="util\GetTypeFromLoadedAssembliesInternalTest.cs" />
