@@ -17,7 +17,6 @@ using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
 
 namespace NakedObjects.Reflect {
-
     // to do make this configurable so the list of factories can be managed
     // eg need to implement 
 
@@ -26,11 +25,7 @@ namespace NakedObjects.Reflect {
     //    }
 
 
-
-
     public class FacetFactorySet : IFacetFactorySet {
-        private readonly object cacheLock = true;
-
         /// <summary>
         ///     Factories (in the order they were <see cref="RegisterFactory" /> registered)
         /// </summary>
@@ -80,7 +75,7 @@ namespace NakedObjects.Reflect {
             return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindCollectionProperties(candidates)).ToList();
         }
 
-        public IList<PropertyInfo>  FindProperties(IList<PropertyInfo> candidates) {
+        public IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates) {
             return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindProperties(candidates)).ToList();
         }
 
@@ -153,23 +148,19 @@ namespace NakedObjects.Reflect {
         #endregion
 
         public void RegisterFactory(IFacetFactory factory) {
-            lock (cacheLock) {
-                ClearCaches();
-                factoryByFactoryType.Add(factory.GetType(), factory);
-                factories.Add(factory);
-            }
+            ClearCaches();
+            factoryByFactoryType.Add(factory.GetType(), factory);
+            factories.Add(factory);
         }
 
         public void ReplaceAndRegisterFactory(Type oldFactoryType, IFacetFactory newFactory) {
-            lock (cacheLock) {
-                ClearCaches();
+            ClearCaches();
 
-                IFacetFactory oldFactory = factoryByFactoryType[oldFactoryType];
-                factoryByFactoryType.Remove(oldFactoryType);
-                factoryByFactoryType.Add(newFactory.GetType(), newFactory);
+            IFacetFactory oldFactory = factoryByFactoryType[oldFactoryType];
+            factoryByFactoryType.Remove(oldFactoryType);
+            factoryByFactoryType.Add(newFactory.GetType(), newFactory);
 
-                factories[factories.IndexOf(oldFactory)] = newFactory;
-            }
+            factories[factories.IndexOf(oldFactory)] = newFactory;
         }
 
         private IList<IFacetFactory> GetFactoryByFeatureType(FeatureType featureType) {
@@ -184,15 +175,13 @@ namespace NakedObjects.Reflect {
         }
 
         private void CacheByFeatureTypeIfRequired() {
-            lock (cacheLock) {
-                if (factoriesByFeatureType == null) {
-                    factoriesByFeatureType = new Dictionary<FeatureType, IList<IFacetFactory>>();
-                    foreach (IFacetFactory factory in factories) {
-                        foreach (FeatureType featureType in Enum.GetValues(typeof (FeatureType))) {
-                            if (factory.FeatureTypes.HasFlag(featureType)) {
-                                IList<IFacetFactory> factoryList = GetList(factoriesByFeatureType, featureType);
-                                factoryList.Add(factory);
-                            }
+            if (factoriesByFeatureType == null) {
+                factoriesByFeatureType = new Dictionary<FeatureType, IList<IFacetFactory>>();
+                foreach (IFacetFactory factory in factories) {
+                    foreach (FeatureType featureType in Enum.GetValues(typeof (FeatureType))) {
+                        if (factory.FeatureTypes.HasFlag(featureType)) {
+                            IList<IFacetFactory> factoryList = GetList(factoriesByFeatureType, featureType);
+                            factoryList.Add(factory);
                         }
                     }
                 }
@@ -200,26 +189,22 @@ namespace NakedObjects.Reflect {
         }
 
         private void CacheMethodFilteringFacetFactoriesIfRequired() {
-            lock (cacheLock) {
-                if (methodFilteringFactories == null) {
-                    methodFilteringFactories = new List<IMethodFilteringFacetFactory>();
-                    foreach (IFacetFactory facetFactory in factories) {
-                        if (facetFactory is IMethodFilteringFacetFactory) {
-                            methodFilteringFactories.Add(facetFactory as IMethodFilteringFacetFactory);
-                        }
+            if (methodFilteringFactories == null) {
+                methodFilteringFactories = new List<IMethodFilteringFacetFactory>();
+                foreach (IFacetFactory facetFactory in factories) {
+                    if (facetFactory is IMethodFilteringFacetFactory) {
+                        methodFilteringFactories.Add(facetFactory as IMethodFilteringFacetFactory);
                     }
                 }
             }
         }
 
         private void CachePropertyOrCollectionIdentifyingFacetFactoriesIfRequired() {
-            lock (cacheLock) {
-                if (propertyOrCollectionIdentifyingFactories == null) {
-                    propertyOrCollectionIdentifyingFactories = new List<IFacetFactory>();
-                    foreach (IFacetFactory facetFactory in factories) {
-                        if (facetFactory is IPropertyOrCollectionIdentifyingFacetFactory) {
-                            propertyOrCollectionIdentifyingFactories.Add(facetFactory);
-                        }
+            if (propertyOrCollectionIdentifyingFactories == null) {
+                propertyOrCollectionIdentifyingFactories = new List<IFacetFactory>();
+                foreach (IFacetFactory facetFactory in factories) {
+                    if (facetFactory is IPropertyOrCollectionIdentifyingFacetFactory) {
+                        propertyOrCollectionIdentifyingFactories.Add(facetFactory);
                     }
                 }
             }

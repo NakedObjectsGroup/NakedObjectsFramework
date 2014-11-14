@@ -30,17 +30,14 @@ namespace NakedObjects.Core.Component {
         #region IPocoAdapterMap Members
 
         public virtual void Add(object obj, INakedObject adapter) {
-            lock (domainObjects) {
-                domainObjects[obj] = adapter;
-            }
+            domainObjects[obj] = adapter;
+
             // log at end so that if ToString needs adapters they're in maps. 
             Log.DebugFormat("Add instance of {0} as {1}", obj.GetType().FullName, adapter);
         }
 
         public virtual bool ContainsObject(object obj) {
-            lock (domainObjects) {
-                return domainObjects.ContainsKey(obj);
-            }
+            return domainObjects.ContainsKey(obj);
         }
 
         public virtual IEnumerator<INakedObject> GetEnumerator() {
@@ -48,33 +45,28 @@ namespace NakedObjects.Core.Component {
         }
 
         public virtual INakedObject GetObject(object obj) {
-            lock (domainObjects) {
-                if (ContainsObject(obj)) {
-                    return domainObjects[obj];
-                }
-                return null;
+            if (ContainsObject(obj)) {
+                return domainObjects[obj];
             }
+            return null;
         }
 
         public virtual void Reset() {
             Log.Debug("Reset");
-            lock (domainObjects) {
-                domainObjects.Clear();
-            }
+
+            domainObjects.Clear();
         }
 
         public virtual void Shutdown() {
             Log.Debug("Shutdown");
-            lock (domainObjects) {
-                domainObjects.Clear();
-            }
+
+            domainObjects.Clear();
         }
 
         public virtual void Remove(INakedObject nakedObject) {
             Log.DebugFormat("Remove {0}", nakedObject);
-            lock (domainObjects) {
-                domainObjects.Remove(nakedObject.Object);
-            }
+
+            domainObjects.Remove(nakedObject.Object);
         }
 
         IEnumerator IEnumerable.GetEnumerator() {

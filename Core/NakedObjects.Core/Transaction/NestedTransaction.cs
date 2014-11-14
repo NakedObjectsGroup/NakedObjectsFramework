@@ -1,9 +1,13 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -76,7 +80,7 @@ namespace NakedObjects.Core.Transaction {
                 }
             }
             Log.DebugFormat("Add command {0}", command);
-            LockedAdd(commands, command);
+            commands.Add(command);
         }
 
         public virtual void Commit() {
@@ -93,19 +97,21 @@ namespace NakedObjects.Core.Transaction {
 
         public virtual bool Flush() {
             Log.Info("flush transaction " + this);
-            List<IPersistenceCommand> commandsArray = LockedClone(commands);
-            if (commandsArray.Count > 0) {
+           
+            if (commands.Count > 0) {
                 RemoveAllCommands();
-                return objectStore.Flush(commandsArray.ToArray());
+                return objectStore.Flush(commands.ToArray());
             }
             return false;
         }
 
+        #endregion
+
         private void RecursivelyCommitCommands() {
-            List<IPersistenceCommand> commandsArray = LockedClone(commands);
+            var commandsArray = commands.ToArray();
             commands.Clear();
-            if (commandsArray.Count > 0) {
-                objectStore.Execute(commandsArray.ToArray());
+            if (commandsArray.Any()) {
+                objectStore.Execute(commandsArray);
 
                 foreach (IPersistenceCommand command in commandsArray) {
                     if (command is IDestroyObjectCommand) {
@@ -118,26 +124,10 @@ namespace NakedObjects.Core.Transaction {
             }
         }
 
-        #endregion
-
-        private static void LockedAdd<T>(List<T> collection, T toAdd) {
-            lock (collection) {
-                collection.Add(toAdd);
-            }
-        }
-
-        private static List<T> LockedClone<T>(List<T> fromCollection) {
-            var toCollection = new List<T>();
-            lock (fromCollection) {
-                toCollection.AddRange(fromCollection);
-            }
-            return toCollection;
-        }
-
 
         internal virtual void AddNotify(INakedObject nakedObject) {
             Log.DebugFormat("Add notification for {0}", nakedObject);
-            LockedAdd(toNotify, nakedObject);
+            toNotify.Add(nakedObject);
         }
 
         private bool AlreadyHasCommand(Type commandClass, INakedObject onObject) {
@@ -157,27 +147,17 @@ namespace NakedObjects.Core.Transaction {
         }
 
         private IPersistenceCommand GetCommand(Type commandClass, INakedObject onObject) {
-            foreach (IPersistenceCommand command in LockedClone(commands)) {
-                if (command.OnObject().Equals(onObject)) {
-                    if (commandClass.IsAssignableFrom(command.GetType())) {
-                        return command;
-                    }
-                }
-            }
-            return null;
+            return commands.Where(command => command.OnObject().Equals(onObject)).
+                FirstOrDefault(commandClass.IsInstanceOfType);
         }
 
         private void RemoveAllCommands() {
-            lock (commands) {
-                commands.Clear();
-            }
+            commands.Clear();
         }
 
         private void RemoveCommand(Type commandClass, INakedObject onObject) {
-            lock (commands) {
-                IPersistenceCommand toDelete = GetCommand(commandClass, onObject);
-                commands.Remove(toDelete);
-            }
+            IPersistenceCommand toDelete = GetCommand(commandClass, onObject);
+            commands.Remove(toDelete);
         }
 
         private void RemoveCreate(INakedObject onObject) {

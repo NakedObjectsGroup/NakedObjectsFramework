@@ -46,17 +46,13 @@ namespace NakedObjects.Core.Component {
         }
 
         public virtual void ConvertTransientToPersistentOid(IOid oid) {
-            lock (this) {
-                Assert.AssertTrue(oid is SerialOid);
-                var serialOid = (SerialOid) oid;
-                serialOid.MakePersistent(persistentSerialNumber++);
-            }
+            Assert.AssertTrue(oid is SerialOid);
+            var serialOid = (SerialOid) oid;
+            serialOid.MakePersistent(persistentSerialNumber++);
         }
 
         public virtual IOid CreateTransientOid(object obj) {
-            lock (this) {
-                return SerialOid.CreateTransient(metamodel, transientSerialNumber++, obj.GetType().FullName);
-            }
+            return SerialOid.CreateTransient(metamodel, transientSerialNumber++, obj.GetType().FullName);
         }
 
         public IOid RestoreOid(string[] encodedData) {
@@ -64,9 +60,7 @@ namespace NakedObjects.Core.Component {
         }
 
         public IOid CreateOid(string typeName, object[] keys) {
-            lock (this) {
-                return SerialOid.CreateTransient(metamodel, transientSerialNumber++, typeName);
-            }
+            return SerialOid.CreateTransient(metamodel, transientSerialNumber++, typeName);
         }
 
         #endregion
