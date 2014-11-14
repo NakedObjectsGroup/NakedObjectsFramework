@@ -8,5 +8,28 @@
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Component {
-    public class BatchController : IBatchController {}
+    public class BatchController : IBatchController {
+        private readonly IBatchStartPoint batchStartPoint;
+        private readonly INakedObjectsFramework framework;
+
+        public BatchController(INakedObjectsFramework framework, IBatchStartPoint batchStartPoint) {
+            this.framework = framework;
+            this.batchStartPoint = batchStartPoint;
+            framework.Injector.InitDomainObject(batchStartPoint);
+        }
+
+        protected void StartTransaction() {
+            framework.TransactionManager.StartTransaction();
+        }
+
+        protected void EndTransaction() {
+            framework.TransactionManager.EndTransaction();
+        }
+
+        public virtual void Run() {
+            StartTransaction();
+            batchStartPoint.Execute();
+            EndTransaction();
+        }
+    }
 }

@@ -47,19 +47,10 @@ namespace NakedObjects.Async {
             Framework.TransactionManager.StartTransaction();
         }
 
-        protected void EnsureReady() {
-            // Framework.EnsureReady();
-        }
-
-        protected void SetSession() {
-            // Framework.SetSession(new WindowsSession(Thread.CurrentPrincipal));
-        }
-
+    
         protected Action WorkWrapper(Action action) {
             return () => {
                 try {
-                    EnsureReady();
-                    SetSession();
                     StartTransaction();
                     action();
                     EndTransaction();
