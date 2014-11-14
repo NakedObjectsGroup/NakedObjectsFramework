@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
@@ -23,7 +22,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// </summary>
     public class ExecutedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ExecutedAnnotationFacetFactory(IReflector reflector)
-            : base(reflector,FeatureType.Action) {}
+            : base(reflector, FeatureType.Action) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<ExecutedAttribute>(member);

@@ -17,9 +17,9 @@ namespace NakedObjects.Meta.Utils {
     public static class FacetUtils {
         public static string[] SplitOnComma(string toSplit) {
             if (string.IsNullOrEmpty(toSplit)) {
-                return new string[] { };
+                return new string[] {};
             }
-            return toSplit.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+            return toSplit.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
         }
 
         public static bool IsAllowed(ISession session, string[] roles, string[] users) {
@@ -50,7 +50,7 @@ namespace NakedObjects.Meta.Utils {
 
         public static bool AddFacet(IMultiTypedFacet facet) {
             if (facet != null) {
-                ((ISpecificationBuilder)facet.Specification).AddFacet(facet);
+                ((ISpecificationBuilder) facet.Specification).AddFacet(facet);
                 return true;
             }
             return false;

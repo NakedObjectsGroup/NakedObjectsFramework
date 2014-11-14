@@ -63,7 +63,9 @@ namespace NakedObjects.Reflect {
         }
 
         // exposed for testing
-        public IFacetDecoratorSet FacetDecoratorSet { get { return facetDecoratorSet; } }
+        public IFacetDecoratorSet FacetDecoratorSet {
+            get { return facetDecoratorSet; }
+        }
 
         #region IReflector Members
 

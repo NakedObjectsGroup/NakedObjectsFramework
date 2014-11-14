@@ -19,9 +19,9 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
-using NakedObjects.Meta.SpecImmutable;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>

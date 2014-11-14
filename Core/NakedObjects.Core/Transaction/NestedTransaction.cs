@@ -97,7 +97,7 @@ namespace NakedObjects.Core.Transaction {
 
         public virtual bool Flush() {
             Log.Info("flush transaction " + this);
-           
+
             if (commands.Count > 0) {
                 RemoveAllCommands();
                 return objectStore.Flush(commands.ToArray());

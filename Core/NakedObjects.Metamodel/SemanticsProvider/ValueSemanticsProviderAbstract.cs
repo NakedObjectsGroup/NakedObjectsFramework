@@ -26,13 +26,13 @@ namespace NakedObjects.Meta.SemanticsProvider {
         ///     Lazily looked up per <see cref="SpecImmutable" />
         /// </summary>
         protected ValueSemanticsProviderAbstract(Type adapterFacetType,
-            ISpecification holder,
-            Type adaptedType,
-            int typicalLength,
-            bool immutable,
-            bool equalByContent,
-            T defaultValue,
-            IObjectSpecImmutable specImmutable)
+                                                 ISpecification holder,
+                                                 Type adaptedType,
+                                                 int typicalLength,
+                                                 bool immutable,
+                                                 bool equalByContent,
+                                                 T defaultValue,
+                                                 IObjectSpecImmutable specImmutable)
             : base(adapterFacetType, holder) {
             this.adaptedType = adaptedType;
             this.typicalLength = typicalLength;
@@ -56,6 +56,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
             get { return false; }
         }
 
+        #region IValueSemanticsProvider<T> Members
 
         public T DefaultValue {
             get { return defaultValue; }
@@ -113,6 +114,8 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public string TitleWithMaskOf(string mask, T obj) {
             return TitleStringWithMask(mask, obj);
         }
+
+        #endregion
 
         public Type GetAdaptedClass() {
             return adaptedType;

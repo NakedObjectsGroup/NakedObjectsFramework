@@ -172,7 +172,7 @@ namespace NakedObjects.Core.Component {
             }
 
             if (nakedObject.ResolveState.RespondToChangesInPersistentObjects() ||
-                nakedObject.ResolveState.IsTransient()) {}
+                nakedObject.ResolveState.IsTransient()) { }
         }
 
         public void DestroyObject(INakedObject nakedObject) {

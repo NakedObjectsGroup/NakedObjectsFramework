@@ -43,7 +43,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public CallbackMethodsFacetFactory(IReflector reflector)
-            : base(reflector,FeatureType.Objects) {}
+            : base(reflector, FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return prefixes; }

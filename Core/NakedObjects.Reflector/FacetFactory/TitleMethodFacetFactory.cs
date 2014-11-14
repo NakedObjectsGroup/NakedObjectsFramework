@@ -32,7 +32,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public TitleMethodFacetFactory(IReflector reflector)
-            : base(reflector,FeatureType.Objects) {}
+            : base(reflector, FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

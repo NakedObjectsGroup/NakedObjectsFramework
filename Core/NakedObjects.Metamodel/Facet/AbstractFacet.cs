@@ -6,10 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Runtime.Serialization;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.Facet {
     //TODO: rename to AbstractMarkerFacet to avoid confusion with FacetAbstract!
@@ -21,8 +19,5 @@ namespace NakedObjects.Meta.Facet {
         public static Type Type {
             get { return typeof (IAbstractFacet); }
         }
-
-      
-
     }
 }

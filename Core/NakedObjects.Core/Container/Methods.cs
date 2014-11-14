@@ -14,8 +14,6 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Core.Container {
     public static class Methods {
-
-       
         private static readonly ILog Log = LogManager.GetLogger(typeof (Methods));
 
         public static void InjectContainer(object target, object container) {

@@ -30,9 +30,8 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #region ISerializable
 
-
         // The special constructor is used to deserialize values. 
-        public OneToOneAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public OneToOneAssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {}
 
         #endregion
     }

@@ -18,7 +18,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// </summary>
     public class RemoveInitMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         public RemoveInitMethodFacetFactory(IReflector reflector)
-            : base(reflector,FeatureType.Objects) {}
+            : base(reflector, FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return new string[] {}; }

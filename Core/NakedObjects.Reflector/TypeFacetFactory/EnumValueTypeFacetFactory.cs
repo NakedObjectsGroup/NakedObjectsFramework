@@ -23,7 +23,7 @@ namespace NakedObjects.Reflect.TypeFacetFactory {
                 var spec = Reflector.LoadSpecification(type);
                 object semanticsProvider = Activator.CreateInstance(semanticsProviderType, spec, specification);
 
-                var method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
+                var method = typeof (ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
                 return (bool) method.Invoke(null, new object[] {semanticsProvider, specification});
             }
             return false;

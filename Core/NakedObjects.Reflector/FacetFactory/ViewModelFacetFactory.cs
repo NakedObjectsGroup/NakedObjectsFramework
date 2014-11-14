@@ -16,10 +16,9 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-
 namespace NakedObjects.Reflect.FacetFactory {
     public class ViewModelFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ViewModelFacetFactory(IReflector reflector) : base(reflector,FeatureType.Objects) {}
+        public ViewModelFacetFactory(IReflector reflector) : base(reflector, FeatureType.Objects) {}
 
         public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             IFacet facet = null;

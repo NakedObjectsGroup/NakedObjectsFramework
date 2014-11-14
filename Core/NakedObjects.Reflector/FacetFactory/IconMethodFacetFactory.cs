@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
@@ -26,7 +25,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public IconMethodFacetFactory(IReflector reflector)
-            : base(reflector,FeatureType.Objects) {}
+            : base(reflector, FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return prefixes; }

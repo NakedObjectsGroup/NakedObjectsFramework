@@ -193,8 +193,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
 
-        public override IList<PropertyInfo>  FindProperties(IList<PropertyInfo> candidates) {
-       
+        public override IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates) {
             return candidates.Where(property => property.GetGetMethod() != null &&
                                                 AttributeUtils.GetCustomAttribute<NakedObjectsIgnoreAttribute>(property) == null &&
                                                 !Reflector.ClassStrategy.IsTypeUnsupportedByReflector(property.PropertyType) &&

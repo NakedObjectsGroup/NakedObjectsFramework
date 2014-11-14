@@ -14,7 +14,6 @@ using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Meta {
-
     [Serializable]
     public class Metamodel : IMetamodelBuilder {
         private static readonly ILog Log = LogManager.GetLogger(typeof (Metamodel));
@@ -64,6 +63,7 @@ namespace NakedObjects.Meta {
         public IMenuImmutable[] MainMenus {
             get { return cache.MainMenus(); }
         }
+
         #endregion
 
         private IObjectSpecImmutable GetSpecificationFromCache(Type type) {

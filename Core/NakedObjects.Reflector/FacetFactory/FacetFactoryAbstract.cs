@@ -50,11 +50,11 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates) {
-            return new PropertyInfo[]{};
+            return new PropertyInfo[] {};
         }
 
         public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates) {
-            return new PropertyInfo[] { };
+            return new PropertyInfo[] {};
         }
 
         #endregion

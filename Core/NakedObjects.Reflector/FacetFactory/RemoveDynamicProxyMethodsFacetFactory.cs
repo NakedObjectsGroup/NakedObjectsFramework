@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-
 namespace NakedObjects.Reflect.FacetFactory {
     public class RemoveDynamicProxyMethodsFacetFactory : FacetFactoryAbstract {
         private static readonly IList<string> methodsToRemove;

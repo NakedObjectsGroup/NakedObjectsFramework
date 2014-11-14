@@ -9,18 +9,17 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Component;
 using NakedObjects.Core.Spec;
 
-
 namespace NakedObjects.Service {
     public class NakedObjectsFramework : INakedObjectsFramework {
         private readonly IAuthorizationManager authorizationManager;
-        private readonly IMetamodelManager metamodelManager;
         private readonly IContainerInjector injector;
-        private readonly IMessageBroker messageBroker;
         private readonly ILifecycleManager lifecycleManager;
-        private readonly IServicesManager services;
         private readonly INakedObjectManager manager;
+        private readonly IMessageBroker messageBroker;
+        private readonly IMetamodelManager metamodelManager;
         private readonly IObjectPersistor persistor;
         private readonly IReflector reflector;
+        private readonly IServicesManager services;
         private readonly ISession session;
         private readonly ITransactionManager transactionManager;
 
@@ -34,8 +33,8 @@ namespace NakedObjects.Service {
                                      IAuthorizationManager authorizationManager,
                                      IMetamodelManager metamodelManager,
                                      IContainerInjector injector,
-                                     NakedObjectFactory  nakedObjectFactory,
-                                     SpecFactory memberFactory, 
+                                     NakedObjectFactory nakedObjectFactory,
+                                     SpecFactory memberFactory,
                                      ITransactionManager transactionManager) {
             this.messageBroker = messageBroker;
             this.session = session;

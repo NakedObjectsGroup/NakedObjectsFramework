@@ -45,7 +45,6 @@ namespace NakedObjects.Meta.Facet {
 
         #region Nested type: EnumNameComparer
 
-    
         private class EnumNameComparer : IComparer<string> {
             private readonly EnumFacet facet;
 

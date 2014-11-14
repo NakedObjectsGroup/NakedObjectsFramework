@@ -159,7 +159,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             postalTownMember.AddFacet(new MemberOrderFacet("address", "3", postalTownMember));
             var orderSet = OrderSet<MemberPeerStub>.CreateDeweyOrderSet(nameAndAddressMembers);
             //Assert.AreEqual("", orderSet.GroupName);
-           // Assert.AreEqual("", orderSet.GroupFullName);
+            // Assert.AreEqual("", orderSet.GroupFullName);
             //Assert.AreEqual("", orderSet.GroupPath);
         }
 
@@ -184,8 +184,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             streetNameMember.AddFacet(new MemberOrderFacet("address", "2", streetNameMember));
             postalTownMember.AddFacet(new MemberOrderFacet("address", "3", postalTownMember));
             var orderSet = OrderSet<MemberPeerStub>.CreateDeweyOrderSet(nameAndAddressMembers);
-           // Assert.AreEqual(1, orderSet.Children.Count);
-           // Assert.AreEqual(3, orderSet.Size());
+            // Assert.AreEqual(1, orderSet.Children.Count);
+            // Assert.AreEqual(3, orderSet.Size());
         }
     }
 

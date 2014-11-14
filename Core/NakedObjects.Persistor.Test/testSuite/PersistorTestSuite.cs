@@ -14,11 +14,10 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Container;
 using NakedObjects.Core.Resolve;
-using NakedObjects.Core.Util;
+using NUnit.Framework;
 using TestData;
-using Assert = NUnit.Framework.Assert;
+using AdapterUtils = NakedObjects.Core.Util.AdapterUtils;
 
 namespace NakedObjects.Persistor.TestSuite {
     /// <summary>
@@ -260,7 +259,6 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsNotNull(adapter.Version, "should have version");
         }
 
-     
 
         public void ChangeScalarOnPersistentCallsUpdatingUpdated() {
             Person person = ChangeScalarOnPerson(1);
@@ -268,7 +266,6 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, person.GetEvents()["Updated"], "updated");
         }
 
-     
 
         public void ChangeReferenceOnPersistentCallsUpdatingUpdated() {
             Person person = ChangeReferenceOnPerson(7);
@@ -300,7 +297,6 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(countbefore - 1, person1.Relatives.Count());
         }
 
-    
 
         public void RemoveFromCollectionOnPersistentCallsUpdatingUpdated() {
             Person person8 = GetPerson(8);
@@ -314,7 +310,6 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(0, person.Relatives.Count);
         }
 
-    
 
         public void ClearCollectionOnPersistentCallsUpdatingUpdated() {
             Person person = ClearCollectionOnPerson(8);
@@ -494,7 +489,7 @@ namespace NakedObjects.Persistor.TestSuite {
         public void ChangeObjectWithValidate() {
             Person person = CreateNewTransientPerson();
             person.Name = Guid.NewGuid().ToString();
-            person = Save(person).GetDomainObject<Person>();
+            person = AdapterUtils.GetDomainObject<Person>(Save(person));
 
             try {
                 TransactionManager.StartTransaction();
@@ -514,7 +509,7 @@ namespace NakedObjects.Persistor.TestSuite {
             person.FavouriteProduct = product;
             INakedObject personAdapter = Save(person);
             // use new person to avoid EF quirk 
-            person = personAdapter.GetDomainObject<Person>();
+            person = AdapterUtils.GetDomainObject<Person>(personAdapter);
 
             Assert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
@@ -626,7 +621,7 @@ namespace NakedObjects.Persistor.TestSuite {
             person1.Relatives.Add(person2);
             INakedObject person1Adapter = Save(person1);
             // use new person to avoid EF quirk 
-            person1 = person1Adapter.GetDomainObject<Person>();
+            person1 = AdapterUtils.GetDomainObject<Person>(person1Adapter);
             person2 = person1.Relatives.Single();
             Assert.IsTrue(person1Adapter.ResolveState.IsPersistent(), "should be persistent");
             Assert.IsFalse(person1Adapter.Oid.IsTransient, "is transient");
@@ -803,7 +798,7 @@ namespace NakedObjects.Persistor.TestSuite {
         public void InlineObjectHasLoadingLoadedCalled() {
             TransactionManager.StartTransaction();
             INakedObject addressAdapter = GetAdaptedAddress(GetPerson(1));
-            var address = addressAdapter.GetDomainObject<Address>();
+            var address = AdapterUtils.GetDomainObject<Address>(addressAdapter);
             TransactionManager.EndTransaction();
             Assert.AreEqual(1, address.GetEvents()["Loading"], "loading");
             Assert.AreEqual(1, address.GetEvents()["Loaded"], "loaded");
@@ -860,7 +855,6 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.AreEqual(1, address.GetEvents()["Updated"], "updated");
         }
 
-     
 
         public void RefreshResetsObject() {
             Person person1 = GetPerson(1);
@@ -910,7 +904,7 @@ namespace NakedObjects.Persistor.TestSuite {
             person.Name = name;
 
             var adapter = Save(person);
-            person = adapter.GetDomainObject<Person>();
+            person = AdapterUtils.GetDomainObject<Person>(adapter);
 
             Delete(person);
 

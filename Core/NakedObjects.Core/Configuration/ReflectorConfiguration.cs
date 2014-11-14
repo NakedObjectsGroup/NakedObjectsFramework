@@ -12,9 +12,9 @@ using NakedObjects.Architecture.Menu;
 namespace NakedObjects.Core.Configuration {
     public class ReflectorConfiguration : IReflectorConfiguration {
         public ReflectorConfiguration(
-            Type[] typesToIntrospect, 
-            Type[] menuServices, 
-            Type[] contributedActions, 
+            Type[] typesToIntrospect,
+            Type[] menuServices,
+            Type[] contributedActions,
             Type[] systemServices,
             Func<IMenuFactory, IMenu[]> mainMenus = null) {
             TypesToIntrospect = typesToIntrospect;
@@ -31,6 +31,7 @@ namespace NakedObjects.Core.Configuration {
         public Type[] MenuServices { get; private set; }
         public Type[] ContributedActions { get; private set; }
         public Type[] SystemServices { get; private set; }
+
         #endregion
     }
 }

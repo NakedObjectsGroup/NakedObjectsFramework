@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-
 using NakedObjects.Util;
 using MethodInfo = System.Reflection.MethodInfo;
 using PropertyInfo = System.Reflection.PropertyInfo;

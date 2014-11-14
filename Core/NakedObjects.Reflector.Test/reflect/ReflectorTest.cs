@@ -18,15 +18,18 @@ using NakedObjects.Meta;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test {
-
     public class NullMenuFactory : IMenuFactory {
+        #region IMenuFactory Members
+
         public IMenu NewMenu(string name) {
             return null;
         }
 
         public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
-           return null;
+            return null;
         }
+
+        #endregion
     }
 
     public class ReflectorTest {
@@ -36,7 +39,7 @@ namespace NakedObjects.Reflect.Test {
             return c;
         }
 
-       protected virtual void RegisterTypes(IUnityContainer container) {
+        protected virtual void RegisterTypes(IUnityContainer container) {
             container.RegisterType<IMainMenuDefinition, NullMenuDefinition>();
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new InjectionConstructor());
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
@@ -128,10 +131,10 @@ namespace NakedObjects.Reflect.Test {
             //Assert.AreSame(reflector.AllObjectSpecImmutables.First().Type, typeof(object));
         }
 
-        #region Nested type: NullMenuBuilder
+        #region Nested type: NullMenuDefinition
 
         public class NullMenuDefinition : IMainMenuDefinition {
-            #region IMenuBuilder Members
+            #region IMainMenuDefinition Members
 
             public IMenu[] MainMenus(IMenuFactory factory) {
                 return new IMenu[] {};

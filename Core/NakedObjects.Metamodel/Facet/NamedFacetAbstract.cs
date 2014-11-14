@@ -18,6 +18,5 @@ namespace NakedObjects.Meta.Facet {
         public static Type Type {
             get { return typeof (INamedFacet); }
         }
-       
     }
 }

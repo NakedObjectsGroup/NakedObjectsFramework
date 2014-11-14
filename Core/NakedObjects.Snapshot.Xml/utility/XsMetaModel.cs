@@ -1,6 +1,10 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +13,7 @@ using System.Xml.Linq;
 namespace NakedObjects.Snapshot.Xml.Utility {
     public static class XsMetaModel {
         #region xmlns 
-  
+
         // Namespace prefix for W3OrgXmlnsUri.
         // The NamespaceManager  will not allow any namespace to use this prefix.
 
@@ -47,7 +51,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public static readonly XNamespace Xsi = W3OrgXsiUri;
 
-        #endregion 
+        #endregion
 
         // Creates an &lt;xs:schema&gt; element for the document
         // to the provided element, attaching to root of supplied Xsd doc.
@@ -56,7 +60,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         //  - the elementFormDefault is set
         //  - the NOF namespace is set
         //  - the <code>xs:import</code> element referencing the NOF namespace is added  as a child
-  
+
         public static XElement CreateXsSchemaElement(XDocument xsdDoc) {
             if (xsdDoc.Root != null) {
                 throw new ArgumentException("XSD document already has content");
@@ -94,7 +98,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // root element of the document if required,
 
         public static XElement CreateXsElement(XDocument xsdDoc, string localName) {
-       
             var element = new XElement(Xs + localName);
             Helper.RootElementFor(element).SetAttributeValue(XNamespace.Xmlns + W3OrgXsPrefix, Xs.NamespaceName);
 
@@ -225,7 +228,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         }
 
         public static XElement ChildXsElement(XElement parentXsElement, string localName) {
-        
             IEnumerable<XElement> nodeList = parentXsElement.Descendants(Xs + localName);
             if (nodeList.Any()) {
                 return nodeList.First();

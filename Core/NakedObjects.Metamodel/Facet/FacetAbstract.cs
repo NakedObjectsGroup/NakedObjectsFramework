@@ -16,19 +16,14 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public abstract class FacetAbstract : IFacet, IDeserializationCallback {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (FacetAbstract));
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(FacetAbstract));
-        
         private readonly Type facetType;
         private ISpecification holder;
 
         protected FacetAbstract(Type facetType, ISpecification holder) {
             this.facetType = facetType;
             this.holder = holder;
-        }
-
-        public virtual void OnDeserialization(object sender) {
-            Log.DebugFormat("OnDeserialization {0}", GetType());
         }
 
         /// <summary>
@@ -39,6 +34,14 @@ namespace NakedObjects.Meta.Facet {
         protected internal virtual string SpecificationId {
             get { return Specification.Identifier.ToIdentityString(IdentifierDepth.Class); }
         }
+
+        #region IDeserializationCallback Members
+
+        public virtual void OnDeserialization(object sender) {
+            Log.DebugFormat("OnDeserialization {0}", GetType());
+        }
+
+        #endregion
 
         #region IFacet Members
 

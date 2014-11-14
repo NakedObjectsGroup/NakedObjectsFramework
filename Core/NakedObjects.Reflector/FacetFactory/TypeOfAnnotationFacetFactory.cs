@@ -16,7 +16,6 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-
 namespace NakedObjects.Reflect.FacetFactory {
     public class TypeOfAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TypeOfAnnotationFacetFactory(IReflector reflector)

@@ -28,6 +28,8 @@ namespace NakedObjects.Core.Reflect {
             reason = exception != null ? exception.Message : null;
         }
 
+        #region IConsent Members
+
         /// <summary>
         ///     Returns the permission's reason
         /// </summary>
@@ -48,6 +50,8 @@ namespace NakedObjects.Core.Reflect {
         ///     Returns <c>true</c> if this object is NOT giving permission
         /// </summary>
         public abstract bool IsVetoed { get; }
+
+        #endregion
 
         /// <summary>
         ///     Returns an Allow (Allow.Default) object if true; Veto (Veto.Default) if false

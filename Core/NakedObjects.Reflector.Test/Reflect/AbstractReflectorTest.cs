@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
@@ -23,10 +22,10 @@ namespace NakedObjects.Reflect.Test {
         public virtual void SetUp() {
             var classStrategy = new DefaultClassStrategy();
             var cache = new ImmutableInMemorySpecCache();
-            var metamodel = new Meta.Metamodel(classStrategy, cache);
+            var metamodel = new Metamodel(classStrategy, cache);
             var config = new ReflectorConfiguration(new[] {typeof (List<TestPoco>)}, new Type[] {}, new Type[] {}, new Type[] {});
             var servicesConfig = new ServicesConfiguration();
-            var reflector = new Reflector(classStrategy, new FacetFactorySet(), metamodel, config, servicesConfig, null, null, new IFacetDecorator[]{});
+            var reflector = new Reflector(classStrategy, new FacetFactorySet(), metamodel, config, servicesConfig, null, null, new IFacetDecorator[] {});
 
             Specification = LoadSpecification(reflector);
             //reflector.PopulateAssociatedActions(Specification, new Type[] {});

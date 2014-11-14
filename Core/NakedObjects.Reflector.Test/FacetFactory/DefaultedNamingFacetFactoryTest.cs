@@ -35,7 +35,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private DefaultNamingFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (INamedFacet), typeof(IPluralFacet)}; }
+            get { return new[] {typeof (INamedFacet), typeof (IPluralFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {

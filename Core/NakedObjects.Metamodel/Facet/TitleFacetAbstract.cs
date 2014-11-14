@@ -30,7 +30,5 @@ namespace NakedObjects.Meta.Facet {
         public abstract string GetTitle(INakedObject nakedObject);
 
         #endregion
-
-      
     }
 }

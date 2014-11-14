@@ -38,7 +38,7 @@ namespace NakedObjects.Reflect.Test {
         }
     }
 
-    public class TestDomainObject { }
+    public class TestDomainObject {}
 
     [MetadataType(typeof (TestDomainObject2_Metadata))]
     public class TestDomainObject2 : TestDomainObject {

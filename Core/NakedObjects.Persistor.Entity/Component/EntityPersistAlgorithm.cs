@@ -8,12 +8,10 @@
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Resolve;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Persistor.Entity {
-
     //TODO: Rename to something that describes the nature of this algorithm, which is not
     //specific to EF.  This also suggests it should be moved out of this assembly.
     public class EntityPersistAlgorithm : IPersistAlgorithm {

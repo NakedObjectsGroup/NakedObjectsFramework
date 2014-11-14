@@ -17,7 +17,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (UnsupportedParameterTypesMethodFilteringFactory));
 
         public UnsupportedParameterTypesMethodFilteringFactory(IReflector reflector)
-            : base(reflector,FeatureType.Action) {}
+            : base(reflector, FeatureType.Action) {}
 
         #region IMethodFilteringFacetFactory Members
 

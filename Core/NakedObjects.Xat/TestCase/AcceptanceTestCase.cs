@@ -135,7 +135,7 @@ namespace NakedObjects.Xat {
                     InvokeUtils.InvocationException("Exception executing " + property, e);
                 }
             }
-            else {}
+            else { }
         }
 
 

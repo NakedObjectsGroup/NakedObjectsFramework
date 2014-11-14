@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -20,17 +23,17 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public class XmlSnapshot : IXmlSnapshot {
-        private readonly ILifecycleManager lifecycleManager;
-        private readonly INakedObjectManager nakedObjectManager;
-        private readonly IMetamodelManager metamodelManager;
         private static readonly ILog Log = LogManager.GetLogger(typeof (XmlSnapshot));
+        private readonly ILifecycleManager lifecycleManager;
+        private readonly IMetamodelManager metamodelManager;
+        private readonly INakedObjectManager nakedObjectManager;
 
         private readonly Place rootPlace;
 
         private bool topLevelElementWritten;
 
         //  Start a snapshot at the root object, using own namespace manager.
-        public XmlSnapshot(object obj, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) : this(obj, new XmlSchema(), lifecycleManager, nakedObjectManager, metamodelManager) { }
+        public XmlSnapshot(object obj, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) : this(obj, new XmlSchema(), lifecycleManager, nakedObjectManager, metamodelManager) {}
 
         // Start a snapshot at the root object, using supplied namespace manager.
         public XmlSnapshot(object obj, XmlSchema schema, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) {
@@ -57,6 +60,23 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 throw new NakedObjectSystemException(e);
             }
         }
+
+        public XDocument XmlDocument { get; private set; }
+
+        //  The root element of GetXmlDocument(). Returns <code>null</code>
+        //  until the snapshot has actually been built.
+
+        public XElement XmlElement { get; private set; }
+
+        public XDocument XsdDocument { get; private set; }
+
+        //  The root element of GetXsdDocument(). Returns <code>null</code>
+        //  until the snapshot has actually been built.
+
+        public XElement XsdElement { get; private set; }
+        public XmlSchema Schema { get; private set; }
+
+        #region IXmlSnapshot Members
 
         public string Xml {
             get {
@@ -88,20 +108,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         //  
         //  Populated in AppendXml(NakedObject).
         public string SchemaLocationFileName { get; private set; }
-        public XDocument XmlDocument { get; private set; }
-
-        //  The root element of GetXmlDocument(). Returns <code>null</code>
-        //  until the snapshot has actually been built.
-
-        public XElement XmlElement { get; private set; }
-
-        public XDocument XsdDocument { get; private set; }
-
-        //  The root element of GetXsdDocument(). Returns <code>null</code>
-        //  until the snapshot has actually been built.
-
-        public XElement XsdElement { get; private set; }
-        public XmlSchema Schema { get; private set; }
 
         public string TransformedXml(string transform) {
             return TransformXml(transform);
@@ -110,6 +116,25 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         public string TransformedXsd(string transform) {
             return TransformXsd(transform);
         }
+
+        public void Include(string path) {
+            Include(path, null);
+        }
+
+        public void Include(string path, string annotation) {
+            // tokenize into successive fields
+            List<string> fieldNames = path.Split('/').Select(tok => tok.ToLower()).ToList();
+
+            fieldNames.ForEach(s => Log.Debug("include(..): " + DoLog("token", s)));
+
+            Log.Debug("include(..): " + DoLog("fieldNames", fieldNames));
+
+            // navigate first field, from the root.
+            Log.Debug("include(..): invoking includeField");
+            IncludeField(rootPlace, fieldNames, annotation);
+        }
+
+        #endregion
 
         // Start a snapshot at the root object, using own namespace manager.
 
@@ -226,23 +251,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public INakedObject GetObject() {
             return rootPlace.NakedObject;
-        }
-
-        public void Include(string path) {
-            Include(path, null);
-        }
-
-        public void Include(string path, string annotation) {
-            // tokenize into successive fields
-            List<string> fieldNames = path.Split('/').Select(tok => tok.ToLower()).ToList();
-
-            fieldNames.ForEach(s => Log.Debug("include(..): " + DoLog("token", s)));
-
-            Log.Debug("include(..): " + DoLog("fieldNames", fieldNames));
-
-            // navigate first field, from the root.
-            Log.Debug("include(..): invoking includeField");
-            IncludeField(rootPlace, fieldNames, annotation);
         }
 
         //  return true if able to navigate the complete vector of field names

@@ -30,12 +30,6 @@ namespace NakedObjects.Meta.Audit {
         }
 
         // validate all the passed in types to fail at reflection time as far as possible
-        private void Validate() {
-            Assert.AssertTrue(defaultAuditor.FullName + "is not an IAuditor", typeof(IAuditor).IsAssignableFrom(defaultAuditor));
-            if (namespaceAuditors.Any()) {
-                namespaceAuditors.ForEach(kvp => Assert.AssertTrue(kvp.Value.FullName + "is not an IAuditor", typeof(IAuditor).IsAssignableFrom(kvp.Value)));
-            }
-        }
 
         #region IAuditManager Members
 
@@ -88,6 +82,13 @@ namespace NakedObjects.Meta.Audit {
         }
 
         #endregion
+
+        private void Validate() {
+            Assert.AssertTrue(defaultAuditor.FullName + "is not an IAuditor", typeof (IAuditor).IsAssignableFrom(defaultAuditor));
+            if (namespaceAuditors.Any()) {
+                namespaceAuditors.ForEach(kvp => Assert.AssertTrue(kvp.Value.FullName + "is not an IAuditor", typeof (IAuditor).IsAssignableFrom(kvp.Value)));
+            }
+        }
 
         private IAuditor GetAuditor(INakedObject nakedObject, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             return GetNamespaceAuditorFor(nakedObject, lifecycleManager, manager) ?? GetDefaultAuditor(lifecycleManager, manager);

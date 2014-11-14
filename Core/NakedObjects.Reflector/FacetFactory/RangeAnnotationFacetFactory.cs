@@ -32,7 +32,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override bool Process(PropertyInfo property, IMethodRemover methodRemover,
-            ISpecificationBuilder specification) {
+                                     ISpecificationBuilder specification) {
             bool isDate = property.PropertyType.IsAssignableFrom(typeof (DateTime));
             return Process(property, isDate, specification);
         }

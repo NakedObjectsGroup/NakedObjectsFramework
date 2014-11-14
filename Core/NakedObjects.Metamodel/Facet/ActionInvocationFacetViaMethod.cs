@@ -21,10 +21,10 @@ namespace NakedObjects.Meta.Facet {
 
         private readonly MethodInfo actionMethod;
         private readonly IObjectSpecImmutable elementType;
+        private readonly bool isQueryOnly;
         private readonly IObjectSpecImmutable onType;
         private readonly int paramCount;
         private readonly IObjectSpecImmutable returnType;
-        private readonly bool isQueryOnly;
 
         public ActionInvocationFacetViaMethod(MethodInfo method, IObjectSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder, bool isQueryOnly)
             : base(holder) {
@@ -46,6 +46,10 @@ namespace NakedObjects.Meta.Facet {
 
         public override IObjectSpecImmutable ElementType {
             get { return elementType; }
+        }
+
+        public override bool IsQueryOnly {
+            get { return isQueryOnly; }
         }
 
         #region IImperativeFacet Members
@@ -73,10 +77,6 @@ namespace NakedObjects.Meta.Facet {
 
         public override INakedObject Invoke(INakedObject nakedObject, INakedObject[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager) {
             return Invoke(nakedObject, parameters, lifecycleManager, manager, session, nakedObjectManager);
-        }
-
-        public override bool IsQueryOnly {
-            get { return isQueryOnly; }
         }
 
         protected override string ToStringValues() {

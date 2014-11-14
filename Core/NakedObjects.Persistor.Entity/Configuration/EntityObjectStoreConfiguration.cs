@@ -1,3 +1,10 @@
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,7 +21,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStoreConfiguration));
 
         private bool isContextSet;
-      
+
         public EntityObjectStoreConfiguration() {
             EnforceProxies = true;
             RollBackOnError = false;
@@ -26,15 +33,11 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             IsInitializedCheck = () => true;
         }
 
-        public void AssertSetup() {
-            if (!isContextSet) {
-                throw new InitialisationException(@"No context set on EntityObjectStoreConfiguration, must call either ""UsingCodeFirstContext"" or ""UsingEdmxContext""");
-            }
-        }
+        #region IEntityObjectStoreConfiguration Members
 
         public IEnumerable<EntityContextConfiguration> ContextConfiguration {
             get {
-                IEnumerable<CodeFirstEntityContextConfiguration> cfConfigs = DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration { DbContext = f.Item1, PreCachedTypes = f.Item2, NotPersistedTypes = NotPersistedTypes });
+                IEnumerable<CodeFirstEntityContextConfiguration> cfConfigs = DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {DbContext = f.Item1, PreCachedTypes = f.Item2, NotPersistedTypes = NotPersistedTypes});
                 IEnumerable<EntityContextConfiguration> config = PocoConfiguration().Union(cfConfigs);
                 return config;
             }
@@ -167,6 +170,14 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             }
 
             return connectionStrings.Select(cs => cs.Name).ToArray();
+        }
+
+        #endregion
+
+        public void AssertSetup() {
+            if (!isContextSet) {
+                throw new InitialisationException(@"No context set on EntityObjectStoreConfiguration, must call either ""UsingCodeFirstContext"" or ""UsingEdmxContext""");
+            }
         }
 
         #region Nested type: EntityContextConfigurator

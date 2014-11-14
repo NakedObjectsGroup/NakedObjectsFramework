@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections;
@@ -29,33 +32,11 @@ using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Util;
 using NakedObjects.Persistor.Entity.Util;
-
+using NakedObjects.Util;
 
 namespace NakedObjects.Persistor.Entity {
     public class EntityObjectStore : IObjectStore {
-        private readonly IMetamodelManager metamodel;
-        private readonly ISession session;
-        private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStore));
-        private static CreateAdapterDelegate createAdapter;
-        private static CreateAggregatedAdapterDelegate createAggregatedAdapter;
-  
-        
-        private static RemoveAdapterDelegate removeAdapter;
-        private static ReplacePocoDelegate replacePoco;
-
-        private static EventHandler savingChangesHandlerDelegate;
-       
-        private static Action<INakedObject> handleLoaded;
-        private static Func<Type, IObjectSpec> loadSpecification;
-
-        private readonly EntityOidGenerator oidGenerator;
-
-        private IDictionary<EntityContextConfiguration, LocalContext> contexts = new Dictionary<EntityContextConfiguration, LocalContext>();
-        private IContainerInjector injector;
-        private readonly INakedObjectManager manager;
-
         #region Delegates
 
         public delegate INakedObject CreateAdapterDelegate(IOid oid, object domainObject);
@@ -70,6 +51,27 @@ namespace NakedObjects.Persistor.Entity {
 
         #endregion
 
+        private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStore));
+        private static CreateAdapterDelegate createAdapter;
+        private static CreateAggregatedAdapterDelegate createAggregatedAdapter;
+
+
+        private static RemoveAdapterDelegate removeAdapter;
+        private static ReplacePocoDelegate replacePoco;
+
+        private static EventHandler savingChangesHandlerDelegate;
+
+        private static Action<INakedObject> handleLoaded;
+        private static Func<Type, IObjectSpec> loadSpecification;
+        private readonly INakedObjectManager manager;
+        private readonly IMetamodelManager metamodel;
+
+        private readonly EntityOidGenerator oidGenerator;
+        private readonly ISession session;
+
+        private IDictionary<EntityContextConfiguration, LocalContext> contexts = new Dictionary<EntityContextConfiguration, LocalContext>();
+        private IContainerInjector injector;
+
         static EntityObjectStore() {
             MaximumCommitCycles = 10;
             RollBackOnError = true;
@@ -78,7 +80,7 @@ namespace NakedObjects.Persistor.Entity {
             IsInitializedCheck = () => true;
         }
 
-        internal EntityObjectStore(IMetamodelManager metamodel, ISession session,  IContainerInjector injector, INakedObjectManager nakedObjectManager) {
+        internal EntityObjectStore(IMetamodelManager metamodel, ISession session, IContainerInjector injector, INakedObjectManager nakedObjectManager) {
             this.metamodel = metamodel;
             this.session = session;
             this.injector = injector;
@@ -89,7 +91,7 @@ namespace NakedObjects.Persistor.Entity {
             removeAdapter = o => manager.RemoveAdapter(o);
             createAggregatedAdapter = (parent, property, obj) => manager.CreateAggregatedAdapter(parent, parent.Spec.GetProperty(property.Name).Id, obj);
 
-          
+
             handleLoaded = HandleLoadedDefault;
             savingChangesHandlerDelegate = SavingChangesHandler;
             loadSpecification = metamodel.GetSpecification;
@@ -100,7 +102,7 @@ namespace NakedObjects.Persistor.Entity {
             : this(metamodel, session, injector, nakedObjectManager) {
             this.oidGenerator = oidGenerator;
             contexts = config.ContextConfiguration.ToDictionary<EntityContextConfiguration, EntityContextConfiguration, LocalContext>(c => c, c => null);
-        
+
             EnforceProxies = config.EnforceProxies;
             RequireExplicitAssociationOfTypes = config.RequireExplicitAssociationOfTypes;
             RollBackOnError = config.RollBackOnError;
@@ -124,7 +126,7 @@ namespace NakedObjects.Persistor.Entity {
             replacePoco = replacePocoDelegate;
             removeAdapter = removeAdapterDelegate;
             createAggregatedAdapter = createAggregatedAdapterDelegate;
-        
+
             savingChangesHandlerDelegate = savingChangeshandler;
             handleLoaded = handleLoadedTest;
             EnforceProxies = false;
@@ -139,6 +141,285 @@ namespace NakedObjects.Persistor.Entity {
 
         public void SetProxyingAndDeferredLoading(bool newValue) {
             contexts.Values.ForEach(c => SetProxyingAndDeferredLoading(c, newValue));
+        }
+
+        #endregion
+
+        private static bool FirstInitialization { get; set; }
+
+        public static bool EnforceProxies { get; set; }
+
+        public static bool RollBackOnError { get; set; }
+
+        public static int MaximumCommitCycles { get; set; }
+
+        public static Func<bool> IsInitializedCheck { get; set; }
+        public static bool RequireExplicitAssociationOfTypes { get; set; }
+
+        #region IObjectStore Members
+
+        public void LoadComplexTypes(INakedObject nakedObject, bool parentIsGhost) {
+            if (EntityFrameworkKnowsType(nakedObject.Object.GetEntityProxiedType())) {
+                foreach (PropertyInfo pi in GetContext(nakedObject).GetComplexMembers(nakedObject.Object.GetEntityProxiedType())) {
+                    IObjectSpec spec = loadSpecification(pi.PropertyType);
+
+                    // TODO Work out WTH to do here !!
+                    //if (!spec.ContainsFacet<IComplexTypeFacet>()) {
+                    //    Log.InfoFormat("Adding InlineFacet to {0} by convention", spec.FullName);
+                    //    spec.AddFacet(new ComplexTypeFacetConvention(spec));
+                    //}
+                    object complexObject = pi.GetValue(nakedObject.Object, null);
+                    Assert.AssertNotNull("Complex type members should never be null", complexObject);
+                    InjectParentIntoChild(nakedObject.Object, complexObject);
+                    injector.InitDomainObject(complexObject);
+                    createAggregatedAdapter(nakedObject, pi, complexObject);
+                }
+            }
+        }
+
+        public void AbortTransaction() {
+            Log.Debug("AbortTransaction");
+            RollBackContext();
+        }
+
+
+        public ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session) {
+            Log.DebugFormat("CreateCreateObjectCommand : {0}", nakedObject);
+            try {
+                return ExecuteCommand(new EntityCreateObjectCommand(nakedObject, GetContext(nakedObject), session));
+            }
+            catch (OptimisticConcurrencyException oce) {
+                throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = nakedObject};
+            }
+            catch (UpdateException ue) {
+                throw new DataUpdateException(ConcatenateMessages(ue), ue);
+            }
+        }
+
+        public IDestroyObjectCommand CreateDestroyObjectCommand(INakedObject nakedObject) {
+            Log.DebugFormat("CreateDestroyObjectCommand : {0}", nakedObject);
+            try {
+                return ExecuteCommand(new EntityDestroyObjectCommand(nakedObject, GetContext(nakedObject)));
+            }
+            catch (OptimisticConcurrencyException oce) {
+                throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = nakedObject};
+            }
+            catch (UpdateException ue) {
+                throw new DataUpdateException(ConcatenateMessages(ue), ue);
+            }
+        }
+
+        public ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session) {
+            Log.DebugFormat("CreateSaveObjectCommand : {0}", nakedObject);
+            try {
+                return ExecuteCommand(new EntitySaveObjectCommand(nakedObject, GetContext(nakedObject)));
+            }
+            catch (OptimisticConcurrencyException oce) {
+                throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = nakedObject};
+            }
+            catch (UpdateException ue) {
+                throw new DataUpdateException(ConcatenateMessages(ue), ue);
+            }
+        }
+
+        public void EndTransaction() {
+            Log.Debug("EndTransaction");
+
+            try {
+                using (TransactionScope transaction = CreateTransactionScope()) {
+                    RecurseUntilAllChangesApplied(1);
+                    transaction.Complete();
+                }
+                PostSaveWrapUp();
+            }
+            catch (OptimisticConcurrencyException oce) {
+                InvokeErrorFacet(new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = GetSourceNakedObject(oce)});
+            }
+            catch (UpdateException ue) {
+                InvokeErrorFacet(new DataUpdateException(ConcatenateMessages(ue), ue));
+            }
+            catch (Exception e) {
+                Log.ErrorFormat("Unexpected exception while applying changes {0}", e.Message);
+                RollBackContext();
+                throw;
+            }
+            finally {
+                contexts.Values.ForEach(c => c.SaveOrUpdateComplete());
+            }
+        }
+
+        public void Execute(IPersistenceCommand[] commands) {
+            Log.DebugFormat("Execute {0} commands", commands.Length);
+            ExecuteCommands(commands);
+        }
+
+        public bool Flush(IPersistenceCommand[] commands) {
+            Log.DebugFormat("Flush {0} commands", commands.Length);
+            if (commands.Length > 0) {
+                ExecuteCommands(commands);
+                return true;
+            }
+            return false;
+        }
+
+        public IQueryable GetInstances(IObjectSpec spec) {
+            Log.DebugFormat("GetInstances for: {0}", spec);
+            Type type = TypeUtils.GetType(spec.FullName);
+            return GetContext(type).GetObjectSet(type);
+        }
+
+        public INakedObject GetObject(IOid oid, IObjectSpec hint) {
+            Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
+            if (oid is EntityOid) {
+                INakedObject adapter = createAdapter(oid, GetObjectByKey((EntityOid) oid, hint));
+                adapter.UpdateVersion(session, manager);
+                return adapter;
+            }
+            var aggregateOid = oid as AggregateOid;
+            if (aggregateOid != null) {
+                var parentOid = (EntityOid) aggregateOid.ParentOid;
+                string parentType = parentOid.TypeName;
+                IObjectSpec parentSpec = metamodel.GetSpecification(parentType);
+                INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
+
+                return parent.Spec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
+            }
+            throw new NakedObjectSystemException("Unexpected oid type: " + oid.GetType());
+        }
+
+        //public IOid GetOidForService(string name, string typeName) {
+        //    Log.DebugFormat("GetOidForService name: {0}", name);
+        //    return oidGenerator.CreateOid(typeName, new object[] {0});
+        //}
+
+        public bool IsInitialized {
+            get { return IsInitializedCheck(); }
+            set { }
+        }
+
+        public string Name {
+            get { return "Entity Object Store"; }
+        }
+
+
+        //public void RegisterService(string name, IOid oid) {
+        //    Log.DebugFormat("RegisterService name: {0} oid : {1}", name, oid);
+        //    // do nothing 
+        //}
+
+        public void ResolveField(INakedObject nakedObject, IAssociationSpec field) {
+            Log.DebugFormat("ResolveField nakedobject: {0} field: {1}", nakedObject, field);
+            field.GetNakedObject(nakedObject);
+        }
+
+        public int CountField(INakedObject nakedObject, IAssociationSpec associationSpec) {
+            Type type = TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().ValueSpec.FullName);
+            MethodInfo countMethod = GetType().GetMethod("Count").GetGenericMethodDefinition().MakeGenericMethod(type);
+            return (int) countMethod.Invoke(this, new object[] {nakedObject, associationSpec, manager});
+        }
+
+        public INakedObject FindByKeys(Type type, object[] keys) {
+            var eoid = oidGenerator.CreateOid(type.FullName, keys);
+            IObjectSpec hint = loadSpecification(type);
+            return GetObject(eoid, hint);
+        }
+
+        public void ResolveImmediately(INakedObject nakedObject) {
+            Log.DebugFormat("ResolveImmediately nakedobject: {0}", nakedObject);
+            // eagerly load object        
+            nakedObject.ResolveState.Handle(Events.StartResolvingEvent);
+            // only if not proxied
+            Type entityType = nakedObject.Object.GetType();
+
+            if (!TypeUtils.IsEntityProxy(entityType)) {
+                LocalContext currentContext = GetContext(entityType);
+
+                IEnumerable<string> propertynames = currentContext.GetNavigationMembers(entityType).Select(x => x.Name);
+                dynamic objectSet = currentContext.GetObjectSet(entityType);
+
+                foreach (string name in propertynames) {
+                    objectSet = objectSet.Include(name);
+                }
+
+                IList<PropertyInfo> idmembers = currentContext.GetIdMembers(entityType);
+                IList<object> keyValues = ((EntityOid) nakedObject.Oid).Key;
+                Assert.AssertEquals("Member and value counts must match", idmembers.Count, keyValues.Count);
+                IEnumerator<PropertyInfo> idIter = idmembers.GetEnumerator();
+                List<KeyValuePair<string, object>> memberValueMap = keyValues.ToDictionary(x => {
+                    idIter.MoveNext();
+                    return idIter.Current.Name;
+                }).ToList();
+
+                string query = memberValueMap.Aggregate(string.Empty, (s, kvp) => string.Format("{0}it.{1}=@{1}", s.Length == 0 ? s : s + " and ", kvp.Key));
+                ObjectParameter[] parms = memberValueMap.Select(kvp => new ObjectParameter(kvp.Key, kvp.Value)).ToArray();
+
+                First(objectSet.Where(query, parms));
+            }
+            EndResolving(nakedObject);
+            ResolveChildCollections(nakedObject);
+        }
+
+
+        public void StartTransaction() {
+            Log.Debug("StartTransaction");
+            // do nothing 
+        }
+
+
+        public IQueryable<T> GetInstances<T>() where T : class {
+            Log.Debug("GetInstances<T> of: " + typeof (T));
+            return GetContext(typeof (T)).GetQueryableOfDerivedType<T>();
+        }
+
+        public IQueryable GetInstances(Type type) {
+            Log.Debug("GetInstances of: " + type);
+            return GetContext(type).GetQueryableOfDerivedType(type);
+        }
+
+
+        public object CreateInstance(Type type) {
+            Log.Debug("CreateInstance of: " + type);
+            if (type.IsArray) {
+                return Array.CreateInstance(type.GetElementType(), 0);
+            }
+            if (type.IsAbstract) {
+                throw new ModelException(string.Format(Resources.NakedObjects.CannotCreateAbstract, type));
+            }
+            object domainObject = Activator.CreateInstance(type);
+            injector.InitDomainObject(domainObject);
+
+            if (EntityFrameworkKnowsType(type)) {
+                foreach (PropertyInfo pi in GetContext(domainObject).GetComplexMembers(domainObject.GetType())) {
+                    object complexObject = pi.GetValue(domainObject, null);
+                    Assert.AssertNotNull("Complex type members should never be null", complexObject);
+                    injector.InitDomainObject(complexObject);
+                }
+            }
+            return domainObject;
+        }
+
+        public void Reload(INakedObject nakedObject) {
+            Log.Debug("Reload nakedobject: " + nakedObject);
+            Refresh(nakedObject);
+        }
+
+        public T CreateInstance<T>(ILifecycleManager persistor) where T : class {
+            Log.Debug("CreateInstance<T> of: " + typeof (T));
+            return (T) CreateInstance(typeof (T));
+        }
+
+        public PropertyInfo[] GetKeys(Type type) {
+            Log.Debug("GetKeys of: " + type);
+            return GetContext(type.GetEntityProxiedType()).GetIdMembers(type.GetEntityProxiedType());
+        }
+
+        public void Refresh(INakedObject nakedObject) {
+            Log.Debug("Refresh nakedobject: " + nakedObject);
+            if (nakedObject.Spec.GetFacet<IComplexTypeFacet>() == null) {
+                nakedObject.Updating();
+                GetContext(nakedObject.Object.GetType()).WrappedObjectContext.Refresh(RefreshMode.StoreWins, nakedObject.Object);
+                nakedObject.Updated();
+            }
         }
 
         #endregion
@@ -242,7 +523,7 @@ namespace NakedObjects.Persistor.Entity {
         private static void StartResolving(INakedObject nakedObject, LocalContext context) {
             IResolveEvent resolveEvent = (!nakedObject.ResolveState.IsTransient() &&
                                           !context.WrappedObjectContext.ContextOptions.ProxyCreationEnabled) ? Events.StartPartResolvingEvent :
-                                             Events.StartResolvingEvent;
+                Events.StartResolvingEvent;
             nakedObject.ResolveState.Handle(resolveEvent);
         }
 
@@ -320,7 +601,7 @@ namespace NakedObjects.Persistor.Entity {
             return createAdapter(null, trigger);
         }
 
-        private  LocalContext ResetPocoContext(PocoEntityContextConfiguration pocoConfig) {
+        private LocalContext ResetPocoContext(PocoEntityContextConfiguration pocoConfig) {
             try {
                 return new LocalContext(pocoConfig, session) {IsInitialized = true};
             }
@@ -330,7 +611,7 @@ namespace NakedObjects.Persistor.Entity {
             }
         }
 
-        private  LocalContext ResetCodeOnlyContext(CodeFirstEntityContextConfiguration codeOnlyConfig) {
+        private LocalContext ResetCodeOnlyContext(CodeFirstEntityContextConfiguration codeOnlyConfig) {
             try {
                 return new LocalContext(codeOnlyConfig, session);
             }
@@ -447,25 +728,6 @@ namespace NakedObjects.Persistor.Entity {
             }
         }
 
-        public void LoadComplexTypes(INakedObject nakedObject, bool parentIsGhost) {
-            if (EntityFrameworkKnowsType(nakedObject.Object.GetEntityProxiedType())) {
-                foreach (PropertyInfo pi in GetContext(nakedObject).GetComplexMembers(nakedObject.Object.GetEntityProxiedType())) {
-                    IObjectSpec spec = loadSpecification(pi.PropertyType);
-
-                    // TODO Work out WTH to do here !!
-                    //if (!spec.ContainsFacet<IComplexTypeFacet>()) {
-                    //    Log.InfoFormat("Adding InlineFacet to {0} by convention", spec.FullName);
-                    //    spec.AddFacet(new ComplexTypeFacetConvention(spec));
-                    //}
-                    object complexObject = pi.GetValue(nakedObject.Object, null);
-                    Assert.AssertNotNull("Complex type members should never be null", complexObject);
-                    InjectParentIntoChild(nakedObject.Object, complexObject);
-                    injector.InitDomainObject(complexObject);
-                    createAggregatedAdapter(nakedObject, pi, complexObject);
-                }
-            }
-        }
-
         private static void CheckProxies(object objectToCheck) {
             var objectType = objectToCheck.GetType();
             if (!EnforceProxies || TypeUtils.IsSystem(objectType) || TypeUtils.IsMicrosoft(objectType)) {
@@ -538,7 +800,7 @@ namespace NakedObjects.Persistor.Entity {
             List<object> changedEntities = changedOses.Select(x => x.Entity).ToList();
 
             List<object> complexObjects = changedEntities.Select(o => new {Obj = o, Prop = context.GetComplexMembers(o.GetEntityProxiedType())}).
-                                                          SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).ToList();
+                SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).ToList();
 
             return complexObjects.Where(x => x != null).Distinct();
         }
@@ -559,7 +821,6 @@ namespace NakedObjects.Persistor.Entity {
             IEnumerable<INakedObject> adaptedObjects = changedObjects.Where(o => TypeUtils.IsEntityProxy(o.GetType())).Select(domainObject => manager.CreateAdapter(domainObject, null, null)).ToArray();
             adaptedObjects.Where(x => x.ResolveState.IsGhost()).ForEach(ResolveImmediately);
             adaptedObjects.ForEach(ValidateIfRequired);
-           
         }
 
         private static T ExecuteCommand<T>(T command) where T : IPersistenceCommand {
@@ -571,19 +832,61 @@ namespace NakedObjects.Persistor.Entity {
             commands.ForEach(command => command.Execute());
         }
 
+        public void Reset() {
+            Log.Debug("Reset");
+            contexts = contexts.ToDictionary(kvp => kvp.Key, ResetContext);
+            contexts.Values.ForEach(c => c.Manager = manager);
+            FirstInitialization = false; // so validation of types only happens once 
+        }
+
+        private static TransactionScope CreateTransactionScope() {
+            var transactionOptions = new TransactionOptions {IsolationLevel = IsolationLevel.ReadCommitted, Timeout = TimeSpan.MaxValue};
+            return new TransactionScope(TransactionScopeOption.Required, transactionOptions);
+        }
+
+        private void RecurseUntilAllChangesApplied(int depth) {
+            if (depth > MaximumCommitCycles) {
+                string typeNames = contexts.Values.SelectMany(c => c.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Modified).Where(o => o.Entity != null).Select(o => o.Entity.GetEntityProxiedType().FullName)).
+                    Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ", ") + t);
+
+                throw new NakedObjectDomainException(string.Format(Resources.NakedObjects.EntityCommitError, typeNames));
+            }
+            PreSave();
+            Save();
+            if (PostSave()) {
+                RecurseUntilAllChangesApplied(depth + 1);
+            }
+        }
+
+        public int Count<T>(INakedObject nakedObject, IAssociationSpec field, INakedObjectManager manager) where T : class {
+            if (!nakedObject.ResolveState.IsTransient()) {
+                using (var dbContext = new DbContext(GetContext(nakedObject).WrappedObjectContext, false)) {
+                    // check this is an EF collection 
+                    try {
+                        return dbContext.Entry(nakedObject.Object).Collection(field.Id).Query().Cast<T>().Count();
+                    }
+                    catch (ArgumentException) {
+                        // not an EF recognised collection 
+                    }
+                }
+            }
+
+            return field.GetNakedObject(nakedObject).GetAsEnumerable(manager).Count();
+        }
+
         #region Nested type: EntityCreateObjectCommand
 
         private class EntityCreateObjectCommand : ICreateObjectCommand {
             private readonly LocalContext context;
-            private readonly ISession session;
-           
+
             private readonly INakedObject nakedObject;
             private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
+            private readonly ISession session;
 
             public EntityCreateObjectCommand(INakedObject nakedObject, LocalContext context, ISession session) {
                 this.context = context;
                 this.session = session;
-               
+
                 this.nakedObject = nakedObject;
             }
 
@@ -782,7 +1085,7 @@ namespace NakedObjects.Persistor.Entity {
             #region ISaveObjectCommand Members
 
             public void Execute() {
-               // Log.DebugFormat("EntitySaveObjectCommand: pre refresh version in object {0}", nakedObject.GetVersion());
+                // Log.DebugFormat("EntitySaveObjectCommand: pre refresh version in object {0}", nakedObject.GetVersion());
                 Log.DebugFormat("Saving: {0}", nakedObject);
                 context.CurrentUpdateRootObject = nakedObject;
             }
@@ -803,7 +1106,6 @@ namespace NakedObjects.Persistor.Entity {
         #region Nested type: LocalContext
 
         public class LocalContext {
-            private readonly ISession session;
             private readonly List<object> added = new List<object>();
             private readonly IDictionary<Type, Type> baseTypeMap = new Dictionary<Type, Type>();
             private readonly ISet<INakedObject> deletedNakedObjects = new HashSet<INakedObject>();
@@ -811,13 +1113,14 @@ namespace NakedObjects.Persistor.Entity {
             private readonly ISet<Type> notPersistedTypes = new HashSet<Type>();
             private readonly ISet<Type> ownedTypes = new HashSet<Type>();
             private readonly ISet<INakedObject> persistedNakedObjects = new HashSet<INakedObject>();
+            private readonly ISession session;
             private readonly IDictionary<Type, StructuralType> typeToStructuralType = new Dictionary<Type, StructuralType>();
             private List<INakedObject> coUpdating;
             private List<INakedObject> updatingNakedObjects;
 
             private LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session) {
                 this.session = session;
-               
+
                 preCachedTypes.ForEach(t => ownedTypes.Add(t));
                 notPersistedTypes.ForEach(t => this.notPersistedTypes.Add(t));
             }
@@ -985,7 +1288,6 @@ namespace NakedObjects.Persistor.Entity {
                     currentPersistedNakedObjects.ForEach(no => no.Persisted());
                 }
                 finally {
-                   
                     updatingNakedObjects.Clear();
                     coUpdating.Clear();
                 }
@@ -1000,309 +1302,6 @@ namespace NakedObjects.Persistor.Entity {
                 WrappedObjectContext.Dispose();
                 baseTypeMap.Clear();
             }
-        }
-
-        #endregion
-
-        #region INakedObjectStore Members
-
-        private static bool FirstInitialization { get; set; }
-
-        public static bool EnforceProxies { get; set; }
-
-        public static bool RollBackOnError { get; set; }
-
-        public static int MaximumCommitCycles { get; set; }
-
-        public static Func<bool> IsInitializedCheck { get; set; }
-        public static bool RequireExplicitAssociationOfTypes { get; set; }
-
-        public void Reset() {
-            Log.Debug("Reset");
-            contexts = contexts.ToDictionary(kvp => kvp.Key, ResetContext);
-            contexts.Values.ForEach(c => c.Manager = manager);
-            FirstInitialization = false; // so validation of types only happens once 
-        }
-
-        public void AbortTransaction() {
-            Log.Debug("AbortTransaction");
-            RollBackContext();
-        }
-
-
-        public ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session) {
-            Log.DebugFormat("CreateCreateObjectCommand : {0}", nakedObject);
-            try {
-                return ExecuteCommand(new EntityCreateObjectCommand(nakedObject, GetContext(nakedObject), session));
-            }
-            catch (OptimisticConcurrencyException oce) {
-                throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = nakedObject};
-            }
-            catch (UpdateException ue) {
-                throw new DataUpdateException(ConcatenateMessages(ue), ue);
-            }
-        }
-
-        public IDestroyObjectCommand CreateDestroyObjectCommand(INakedObject nakedObject) {
-            Log.DebugFormat("CreateDestroyObjectCommand : {0}", nakedObject);
-            try {
-                return ExecuteCommand(new EntityDestroyObjectCommand(nakedObject, GetContext(nakedObject)));
-            }
-            catch (OptimisticConcurrencyException oce) {
-                throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = nakedObject};
-            }
-            catch (UpdateException ue) {
-                throw new DataUpdateException(ConcatenateMessages(ue), ue);
-            }
-        }
-
-        public ISaveObjectCommand CreateSaveObjectCommand(INakedObject nakedObject, ISession session) {
-            Log.DebugFormat("CreateSaveObjectCommand : {0}", nakedObject);
-            try {
-                return ExecuteCommand(new EntitySaveObjectCommand(nakedObject, GetContext(nakedObject)));
-            }
-            catch (OptimisticConcurrencyException oce) {
-                throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = nakedObject};
-            }
-            catch (UpdateException ue) {
-                throw new DataUpdateException(ConcatenateMessages(ue), ue);
-            }
-        }
-
-        public void EndTransaction() {
-            Log.Debug("EndTransaction");
-
-            try {
-                using (TransactionScope transaction = CreateTransactionScope()) {
-                    RecurseUntilAllChangesApplied(1);
-                    transaction.Complete();
-                }
-                PostSaveWrapUp();
-            }
-            catch (OptimisticConcurrencyException oce) {
-                InvokeErrorFacet(new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObject = GetSourceNakedObject(oce)});
-            }
-            catch (UpdateException ue) {
-                InvokeErrorFacet(new DataUpdateException(ConcatenateMessages(ue), ue));
-            }
-            catch (Exception e) {
-                Log.ErrorFormat("Unexpected exception while applying changes {0}", e.Message);
-                RollBackContext();
-                throw;
-            }
-            finally {
-                contexts.Values.ForEach(c => c.SaveOrUpdateComplete());
-            }
-        }
-
-        public void Execute(IPersistenceCommand[] commands) {
-            Log.DebugFormat("Execute {0} commands", commands.Length);
-            ExecuteCommands(commands);
-        }
-
-        public bool Flush(IPersistenceCommand[] commands) {
-            Log.DebugFormat("Flush {0} commands", commands.Length);
-            if (commands.Length > 0) {
-                ExecuteCommands(commands);
-                return true;
-            }
-            return false;
-        }
-
-        public IQueryable GetInstances(IObjectSpec spec) {
-            Log.DebugFormat("GetInstances for: {0}", spec);
-            Type type = TypeUtils.GetType(spec.FullName);
-            return GetContext(type).GetObjectSet(type);
-        }
-
-        public INakedObject GetObject(IOid oid, IObjectSpec hint) {
-            Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
-            if (oid is EntityOid) {
-                INakedObject adapter = createAdapter(oid, GetObjectByKey((EntityOid) oid, hint));
-                adapter.UpdateVersion(session, manager);
-                return adapter;
-            }
-            var aggregateOid = oid as AggregateOid;
-            if (aggregateOid != null) {
-                var parentOid = (EntityOid) aggregateOid.ParentOid;
-                string parentType = parentOid.TypeName;
-                IObjectSpec parentSpec = metamodel.GetSpecification(parentType);
-                INakedObject parent = createAdapter(parentOid, GetObjectByKey(parentOid, parentSpec));
-
-                return parent.Spec.GetProperty(aggregateOid.FieldName).GetNakedObject(parent);
-            }
-            throw new NakedObjectSystemException("Unexpected oid type: " + oid.GetType());
-        }
-
-        //public IOid GetOidForService(string name, string typeName) {
-        //    Log.DebugFormat("GetOidForService name: {0}", name);
-        //    return oidGenerator.CreateOid(typeName, new object[] {0});
-        //}
-
-        public bool IsInitialized {
-            get { return IsInitializedCheck(); }
-            set { }
-        }
-
-        public string Name {
-            get { return "Entity Object Store"; }
-        }
-
-
-        //public void RegisterService(string name, IOid oid) {
-        //    Log.DebugFormat("RegisterService name: {0} oid : {1}", name, oid);
-        //    // do nothing 
-        //}
-
-        public void ResolveField(INakedObject nakedObject, IAssociationSpec field) {
-            Log.DebugFormat("ResolveField nakedobject: {0} field: {1}", nakedObject, field);
-            field.GetNakedObject(nakedObject);
-        }
-
-        public int CountField(INakedObject nakedObject, IAssociationSpec associationSpec) {
-            Type type = TypeUtils.GetType(associationSpec.GetFacet<IElementTypeFacet>().ValueSpec.FullName);
-            MethodInfo countMethod = GetType().GetMethod("Count").GetGenericMethodDefinition().MakeGenericMethod(type);
-            return (int)countMethod.Invoke(this, new object[] { nakedObject, associationSpec, manager });
-        }
-
-        public INakedObject FindByKeys(Type type, object[] keys) {
-            var eoid = oidGenerator.CreateOid(type.FullName, keys);
-            IObjectSpec hint = loadSpecification(type);
-            return GetObject(eoid, hint);
-        }
-
-        public void ResolveImmediately(INakedObject nakedObject) {
-            Log.DebugFormat("ResolveImmediately nakedobject: {0}", nakedObject);
-            // eagerly load object        
-            nakedObject.ResolveState.Handle(Events.StartResolvingEvent);
-            // only if not proxied
-            Type entityType = nakedObject.Object.GetType();
-
-            if (!TypeUtils.IsEntityProxy(entityType)) {
-                LocalContext currentContext = GetContext(entityType);
-
-                IEnumerable<string> propertynames = currentContext.GetNavigationMembers(entityType).Select(x => x.Name);
-                dynamic objectSet = currentContext.GetObjectSet(entityType);
-
-                foreach (string name in propertynames) {
-                    objectSet = objectSet.Include(name);
-                }
-
-                IList<PropertyInfo> idmembers = currentContext.GetIdMembers(entityType);
-                IList<object> keyValues = ((EntityOid) nakedObject.Oid).Key;
-                Assert.AssertEquals("Member and value counts must match", idmembers.Count, keyValues.Count);
-                IEnumerator<PropertyInfo> idIter = idmembers.GetEnumerator();
-                List<KeyValuePair<string, object>> memberValueMap = keyValues.ToDictionary(x => {
-                    idIter.MoveNext();
-                    return idIter.Current.Name;
-                }).ToList();
-
-                string query = memberValueMap.Aggregate(string.Empty, (s, kvp) => string.Format("{0}it.{1}=@{1}", s.Length == 0 ? s : s + " and ", kvp.Key));
-                ObjectParameter[] parms = memberValueMap.Select(kvp => new ObjectParameter(kvp.Key, kvp.Value)).ToArray();
-
-                First(objectSet.Where(query, parms));
-            }
-            EndResolving(nakedObject);
-            ResolveChildCollections(nakedObject);
-        }
-
-
-        public void StartTransaction() {
-            Log.Debug("StartTransaction");
-            // do nothing 
-        }
-
-       
-
-        public IQueryable<T> GetInstances<T>() where T : class {
-            Log.Debug("GetInstances<T> of: " + typeof (T));
-            return GetContext(typeof (T)).GetQueryableOfDerivedType<T>();
-        }
-
-        public IQueryable GetInstances(Type type) {
-            Log.Debug("GetInstances of: " + type);
-            return GetContext(type).GetQueryableOfDerivedType(type);
-        }
-
-
-        public object CreateInstance(Type type) {
-            Log.Debug("CreateInstance of: " + type);
-            if (type.IsArray) {
-                return Array.CreateInstance(type.GetElementType(), 0);
-            }
-            if (type.IsAbstract) {
-                throw new ModelException(string.Format(Resources.NakedObjects.CannotCreateAbstract, type));
-            }
-            object domainObject = Activator.CreateInstance(type);
-            injector.InitDomainObject(domainObject);
-
-            if (EntityFrameworkKnowsType(type)) {
-                foreach (PropertyInfo pi in GetContext(domainObject).GetComplexMembers(domainObject.GetType())) {
-                    object complexObject = pi.GetValue(domainObject, null);
-                    Assert.AssertNotNull("Complex type members should never be null", complexObject);
-                    injector.InitDomainObject(complexObject);
-                }
-            }
-            return domainObject;
-        }
-
-        public void Reload(INakedObject nakedObject) {
-            Log.Debug("Reload nakedobject: " + nakedObject);
-            Refresh(nakedObject);
-        }
-
-        public T CreateInstance<T>(ILifecycleManager persistor) where T : class {
-            Log.Debug("CreateInstance<T> of: " + typeof (T));
-            return (T) CreateInstance(typeof (T));
-        }
-
-        public PropertyInfo[] GetKeys(Type type) {
-            Log.Debug("GetKeys of: " + type);
-            return GetContext(type.GetEntityProxiedType()).GetIdMembers(type.GetEntityProxiedType());
-        }
-
-        public void Refresh(INakedObject nakedObject) {
-            Log.Debug("Refresh nakedobject: " + nakedObject);
-            if (nakedObject.Spec.GetFacet<IComplexTypeFacet>() == null) {
-                nakedObject.Updating();
-                GetContext(nakedObject.Object.GetType()).WrappedObjectContext.Refresh(RefreshMode.StoreWins, nakedObject.Object);
-                nakedObject.Updated();
-            }
-        }
-
-        private static TransactionScope CreateTransactionScope() {
-            var transactionOptions = new TransactionOptions {IsolationLevel = IsolationLevel.ReadCommitted, Timeout = TimeSpan.MaxValue};
-            return new TransactionScope(TransactionScopeOption.Required, transactionOptions);
-        }
-
-        private void RecurseUntilAllChangesApplied(int depth) {
-            if (depth > MaximumCommitCycles) {
-                string typeNames = contexts.Values.SelectMany(c => c.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Modified).Where(o => o.Entity != null).Select(o => o.Entity.GetEntityProxiedType().FullName)).
-                                            Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ", ") + t);
-
-                throw new NakedObjectDomainException(string.Format(Resources.NakedObjects.EntityCommitError, typeNames));
-            }
-            PreSave();
-            Save();
-            if (PostSave()) {
-                RecurseUntilAllChangesApplied(depth + 1);
-            }
-        }
-
-        public int Count<T>(INakedObject nakedObject, IAssociationSpec field, INakedObjectManager manager) where T : class {
-            if (!nakedObject.ResolveState.IsTransient()) {
-                using (var dbContext = new DbContext(GetContext(nakedObject).WrappedObjectContext, false)) {
-                    // check this is an EF collection 
-                    try {
-                        return dbContext.Entry(nakedObject.Object).Collection(field.Id).Query().Cast<T>().Count();
-                    }
-                    catch (ArgumentException) {
-                        // not an EF recognised collection 
-                    }
-                }
-            }
-
-            return field.GetNakedObject(nakedObject).GetAsEnumerable(manager).Count();
         }
 
         #endregion

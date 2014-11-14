@@ -1,6 +1,10 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -34,7 +38,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             if (uriBase == XsMetaModel.Xsi.NamespaceName) {
                 throw new ArgumentException("Namespace URI reserved for w3.org XML schema-instance namespace.");
             }
-            if (prefix  == XsMetaModel.W3OrgXsiPrefix) {
+            if (prefix == XsMetaModel.W3OrgXsiPrefix) {
                 throw new ArgumentException("Namespace prefix reserved for w3.org XML schema-instance namespace.");
             }
             if (uriBase == NofMetaModel.Nof.NamespaceName) {
@@ -55,6 +59,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // If not specified in the constructor, then {@link #DEFAULT_URI_PREFIX} is used.
 
         public string UriBase { get; private set; }
+        public string Prefix { get; private set; }
 
         // Returns the namespace URI for the class.
         public void SetUri(string fullyQualifiedClassName) {
@@ -76,8 +81,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         // The prefix to the namespace for the application.
 
-        public string Prefix { get; private set; }
-
         // Creates an element with the specified localName, in the appropriate namespace for the NOS.
         //
         // If necessary the namespace definition is added to the root element of the doc used to
@@ -85,7 +88,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // as a child of another element in the same doc.
 
         public XElement CreateElement(XDocument doc, string localName, string fullyQualifiedClassName, string singularName, string pluralName) {
- 
             XNamespace nsUri = GetUri();
 
             var element = new XElement(nsUri + localName);
@@ -173,7 +175,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public XElement CreateXsElementForNofValue(XElement parentXsElementElement, XElement xmlValueElement) {
             // gather details from XML element
-      
+
             var datatype = xmlValueElement.Attribute(NofMetaModel.Nof + "datatype");
             string fieldName = xmlValueElement.Name.LocalName;
 
@@ -440,7 +442,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         //  normally happen) overwrites with supplied URI.
 
         private static void AddNamespace(XElement element, string prefix, string nsUri) {
-           
             XElement rootElement = Helper.RootElementFor(element);
             // see if we have the NS prefix there already
             var existingNsUri = rootElement.Attribute(XNamespace.Xmlns + prefix);

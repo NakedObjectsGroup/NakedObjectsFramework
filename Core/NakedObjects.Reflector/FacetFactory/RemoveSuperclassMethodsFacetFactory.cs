@@ -13,7 +13,6 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
@@ -31,7 +30,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public RemoveSuperclassMethodsFacetFactory(IReflector reflector)
-            : base(reflector,FeatureType.Objects) {}
+            : base(reflector, FeatureType.Objects) {}
 
         private static void InitForType(Type type) {
             if (!typeToMethods.ContainsKey(type)) {

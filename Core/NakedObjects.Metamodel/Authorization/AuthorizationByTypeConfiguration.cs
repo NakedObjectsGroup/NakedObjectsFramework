@@ -33,6 +33,8 @@ namespace NakedObjects.Meta.Authorization {
             }
         }
 
+        #endregion
+
         private static Type ValidateAuthorizer(object typeAuth) {
             Type authInt = typeAuth.GetType().GetInterface("ITypeAuthorizer`1");
             if (authInt == null || authInt.GetGenericArguments().First().IsAbstract) {
@@ -40,7 +42,5 @@ namespace NakedObjects.Meta.Authorization {
             }
             return authInt.GetGenericArguments().First();
         }
-
-        #endregion
     }
 }

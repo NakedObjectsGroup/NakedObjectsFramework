@@ -15,12 +15,8 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public class TypeOfFacetInferredFromArray : FacetAbstract, ITypeOfFacet {
-        
-
         public TypeOfFacetInferredFromArray(ISpecification holder)
-            : base(Type, holder) {
-          
-        }
+            : base(Type, holder) {}
 
         public static Type Type {
             get { return typeof (ITypeOfFacet); }

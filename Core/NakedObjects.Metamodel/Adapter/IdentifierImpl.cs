@@ -1,6 +1,9 @@
-// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
@@ -13,7 +16,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Adapter {
-
     [Serializable]
     public class IdentifierImpl : IIdentifier {
         private readonly string className;
@@ -25,22 +27,22 @@ namespace NakedObjects.Meta.Adapter {
         private string identityString;
 
         public IdentifierImpl(IMetamodel metamodel, string className)
-            : this(metamodel, className, "", new string[0], new string[0], false) { }
+            : this(metamodel, className, "", new string[0], new string[0], false) {}
 
         public IdentifierImpl(IMetamodel metamodel, string className, string fieldName)
-            : this(metamodel, className, fieldName, new string[0], new string[0], true) { }
+            : this(metamodel, className, fieldName, new string[0], new string[0], true) {}
 
         public IdentifierImpl(IMetamodel metamodel, string className, string methodName, ParameterInfo[] parameters)
-            : this(metamodel, className, methodName, parameters.Select(p => p.Name).ToArray(), ToParameterStringArray(parameters.Select(p => p.ParameterType).ToArray()), false) { }
+            : this(metamodel, className, methodName, parameters.Select(p => p.Name).ToArray(), ToParameterStringArray(parameters.Select(p => p.ParameterType).ToArray()), false) {}
 
         public IdentifierImpl(IMetamodel metamodel, string className, string methodName, string[] parameterTypeNames)
-            : this(metamodel, className, methodName, parameterTypeNames.Select(p => "").ToArray(), parameterTypeNames, false) { }
+            : this(metamodel, className, methodName, parameterTypeNames.Select(p => "").ToArray(), parameterTypeNames, false) {}
 
         private IdentifierImpl(IMetamodel metamodel, string className, string fieldName, string[] parameterNames, string[] parameterTypeNames, bool isField) {
             this.className = className;
             name = fieldName;
             parameterTypes = parameterTypeNames;
-            MemberParameterSpecifications =  parameterTypes.Select(x => metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(x))).ToArray();
+            MemberParameterSpecifications = parameterTypes.Select(x => metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(x))).ToArray();
             this.parameterNames = parameterNames;
             this.isField = isField;
         }

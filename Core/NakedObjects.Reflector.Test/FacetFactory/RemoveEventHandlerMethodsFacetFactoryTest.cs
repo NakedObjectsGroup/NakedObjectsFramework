@@ -16,7 +16,6 @@ using NakedObjects.Meta;
 using NakedObjects.Reflect.FacetFactory;
 using NUnit.Framework;
 
-
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestFixture]
     public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTest {
@@ -27,10 +26,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             base.SetUp();
             var classStrategy = new DefaultClassStrategy();
             var cache = new ImmutableInMemorySpecCache();
-            var metamodel = new Meta.Metamodel(classStrategy, cache);
+            var metamodel = new Metamodel(classStrategy, cache);
             var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
             var servicesConfig = new ServicesConfiguration();
-            var reflector = new Reflector(classStrategy, new FacetFactorySet(), metamodel, config, servicesConfig, null, null, new IFacetDecorator[]{});
+            var reflector = new Reflector(classStrategy, new FacetFactorySet(), metamodel, config, servicesConfig, null, null, new IFacetDecorator[] {});
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(reflector);
         }
 

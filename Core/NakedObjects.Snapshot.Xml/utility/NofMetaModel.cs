@@ -1,6 +1,9 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
 using System.Xml.Linq;
@@ -38,7 +41,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public const string NofMetamodelFeatureValue = "value";
 
-
         #region nof 
 
         // Namespace prefix for NofMetamodelNsUri.
@@ -54,10 +56,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public static readonly XNamespace Nof = NofMetamodelNsUri;
 
-        #endregion 
+        #endregion
 
         public static void AddNamespace(XElement element) {
-            Helper.RootElementFor(element).SetAttributeValue(XNamespace.Xmlns + NofMetamodelNsPrefix,  Nof.NamespaceName);
+            Helper.RootElementFor(element).SetAttributeValue(XNamespace.Xmlns + NofMetamodelNsPrefix, Nof.NamespaceName);
         }
 
         // Creates an element in the NOF namespace, appends to parent, and adds NOF
@@ -95,7 +97,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // Sets an attribute of the supplied element with the attribute being in the
         // NOF namespace.
 
-        public static void SetAttribute(XElement element, string attributeName, string attributeValue) {      
+        public static void SetAttribute(XElement element, string attributeName, string attributeValue) {
             element.SetAttributeValue(Nof + attributeName, attributeValue);
         }
 
@@ -139,7 +141,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                                             string fullyQualifiedClassName,
                                             INakedObject collection,
                                             INakedObjectManager manager
-                                            ) {
+            ) {
             SetAttribute(element, "feature", NofMetamodelFeatureCollection);
             SetAttribute(element, "type", prefix + ":" + fullyQualifiedClassName);
             SetAttribute(element, "size", "" + collection.GetAsEnumerable(manager).Count());

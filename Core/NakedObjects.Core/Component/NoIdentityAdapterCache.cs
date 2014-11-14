@@ -13,6 +13,8 @@ namespace NakedObjects.Core.Component {
     public class NoIdentityAdapterCache : INoIdentityAdapterCache {
         private readonly Dictionary<object, INakedObject> adapters = new Dictionary<object, INakedObject>();
 
+        #region INoIdentityAdapterCache Members
+
         public void AddAdapter(INakedObject adapter) {
             adapters[adapter.Object] = adapter;
         }
@@ -27,5 +29,7 @@ namespace NakedObjects.Core.Component {
         public void Reset() {
             adapters.Clear();
         }
+
+        #endregion
     }
 }

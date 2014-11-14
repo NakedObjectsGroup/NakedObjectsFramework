@@ -19,7 +19,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// </summary>
     public class RemoveEventHandlerMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         public RemoveEventHandlerMethodsFacetFactory(IReflector reflector)
-            : base(reflector,FeatureType.Objects) {}
+            : base(reflector, FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return new string[] {}; }
