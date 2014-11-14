@@ -7,15 +7,29 @@
 
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
+<<<<<<< HEAD
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using NakedObjects.Util;
+=======
+>>>>>>> origin/master
 
 namespace NakedObjects.Meta.Menus {
     public class MenuAction : IMenuActionImmutable {
         public MenuAction(IActionSpecImmutable actionSpec, string renamedTo = null) {
             this.Action = actionSpec;
             if (renamedTo == null) {
+<<<<<<< HEAD
+                Name = NameUtils.NaturalName(actionSpec.Identifier.MemberName);  
+            } else {
+=======
                 Name = actionSpec.Identifier.MemberName;
             }
             else {
+>>>>>>> origin/master
                 Name = renamedTo;
             }
         }

@@ -16,6 +16,10 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.Menus {
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/master
     public class Menu : IMenu {
         #region Injected Services
 
@@ -49,6 +53,10 @@ namespace NakedObjects.Meta.Menus {
 
         protected void AddMenuItem(IMenuItemImmutable item) {
             items = items.Add(item); //Only way to add to an immutable collection
+        }
+
+        protected bool HasAction(IActionSpecImmutable action) {
+            return MenuItems.OfType<MenuAction>().Any(mi => mi.Action == action);
         }
 
         #endregion
@@ -105,11 +113,19 @@ namespace NakedObjects.Meta.Menus {
         public void AddOrderableElementsToMenu(IList<IOrderableElement<IActionSpecImmutable>> ordeableElements, Menu toMenu) {
             foreach (var element in ordeableElements) {
                 var action = element.Spec;
+<<<<<<< HEAD
+                if (action != null) {
+                    if (!toMenu.HasAction(action)) {
+                        toMenu.AddMenuItem(new MenuAction(action, null));
+                    }
+                } else if (!string.IsNullOrEmpty(element.GroupFullName)) { //i.e. sub-menu
+=======
                 if (action != null && !toMenu.MenuItems.OfType<MenuAction>().Any(mi => mi.Action == action)) {
                     toMenu.AddMenuItem(new MenuAction(action, null));
                 }
                 else if (element.GroupFullName != null) {
                     //i.e. sub-menu
+>>>>>>> origin/master
                     var sub = CreateMenuImmutableAsSubMenu(element.GroupFullName);
                     AddOrderableElementsToMenu(element.Set, sub);
                 }
