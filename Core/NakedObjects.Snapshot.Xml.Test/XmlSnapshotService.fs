@@ -17,6 +17,8 @@ open NakedObjects.Architecture.Configuration
 open NakedObjects.Core.Util
 open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Configuration
+open NakedObjects.Snapshot.Xml.Service
+
 
 let writetests = false
 let testFiles = @"..\..\testfiles"

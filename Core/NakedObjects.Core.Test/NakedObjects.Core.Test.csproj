@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="Adapter\SerialOidTest.cs" />
     <Compile Include="Adapter\CollectionMementoTest.cs" />
+    <Compile Include="Component\DefaultPersistAlgorithmTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolve\ResolveStateTest.cs" />
     <Compile Include="Util\CopyUtilsTest.cs" />

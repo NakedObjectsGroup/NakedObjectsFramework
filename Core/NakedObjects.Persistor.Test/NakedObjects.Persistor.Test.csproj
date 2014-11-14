@@ -97,9 +97,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="persist\DefaultPersistAlgorithmTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="testSuite\PersistorTestSuite.cs" />
+    <Compile Include="TestSuite\PersistorTestSuite.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj">

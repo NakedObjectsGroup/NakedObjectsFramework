@@ -4,7 +4,7 @@
 
 using NakedObjects.Snapshot.Xml.Utility;
 
-namespace NakedObjects.Snapshot {
+namespace NakedObjects.Snapshot.Xml.Service {
     [Named("XML Snapshot")]
     public class XmlSnapshotService : IXmlSnapshotService {
         #region IXmlSnapshotService Members

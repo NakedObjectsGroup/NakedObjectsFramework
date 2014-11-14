@@ -129,14 +129,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Address.cs" />
-    <Compile Include="Category.cs" />
-    <Compile Include="CodeFirstContext.cs" />
-    <Compile Include="CountryCode.cs" />
-    <Compile Include="DomesticAddress.cs" />
-    <Compile Include="InternationalAddress.cs" />
-    <Compile Include="Person.cs" />
-    <Compile Include="Product.cs" />
+    <Compile Include="TestCodeOnly\Address.cs" />
+    <Compile Include="TestCodeOnly\Category.cs" />
+    <Compile Include="TestCodeOnly\CodeFirstContext.cs" />
+    <Compile Include="TestCodeOnly\CountryCode.cs" />
+    <Compile Include="TestCodeOnly\DomesticAddress.cs" />
+    <Compile Include="TestCodeOnly\InternationalAddress.cs" />
+    <Compile Include="TestCodeOnly\Person.cs" />
+    <Compile Include="TestCodeOnly\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

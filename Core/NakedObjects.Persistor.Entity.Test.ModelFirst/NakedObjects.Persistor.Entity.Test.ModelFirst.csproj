@@ -125,11 +125,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComplexType1.cs" />
-    <Compile Include="Food.cs" />
-    <Compile Include="Fruit.cs" />
-    <Compile Include="NameType.cs" />
-    <Compile Include="Person.cs" />
+    <Compile Include="ModelFirst\ComplexType1.cs" />
+    <Compile Include="ModelFirst\Food.cs" />
+    <Compile Include="ModelFirst\Fruit.cs" />
+    <Compile Include="ModelFirst\NameType.cs" />
+    <Compile Include="ModelFirst\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

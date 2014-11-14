@@ -97,11 +97,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestObject.cs" />
-    <Compile Include="TransformFull.cs" />
-    <Compile Include="TransformRepository.cs" />
-    <Compile Include="TransformSubObject.cs" />
-    <Compile Include="TransformWithSubobject.cs" />
+    <Compile Include="Test\TestObject.cs" />
+    <Compile Include="Test\TransformFull.cs" />
+    <Compile Include="Test\TransformRepository.cs" />
+    <Compile Include="Test\TransformSubObject.cs" />
+    <Compile Include="Test\TransformWithSubobject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

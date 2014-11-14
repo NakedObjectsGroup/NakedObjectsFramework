@@ -98,13 +98,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="service\XmlSnapshotService.cs" />
-    <Compile Include="utility\Helper.cs" />
-    <Compile Include="utility\NofMetaModel.cs" />
-    <Compile Include="utility\Place.cs" />
-    <Compile Include="utility\XmlSchema.cs" />
-    <Compile Include="utility\XmlSnapshot.cs" />
-    <Compile Include="utility\XsMetaModel.cs" />
+    <Compile Include="Service\XmlSnapshotService.cs" />
+    <Compile Include="Utility\Helper.cs" />
+    <Compile Include="Utility\NofMetaModel.cs" />
+    <Compile Include="Utility\Place.cs" />
+    <Compile Include="Utility\XmlSchema.cs" />
+    <Compile Include="Utility\XmlSnapshot.cs" />
+    <Compile Include="Utility\XsMetaModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
