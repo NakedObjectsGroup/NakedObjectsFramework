@@ -151,11 +151,6 @@
       <Project>{3f1e438c-020c-4751-a65a-63c2990d8278}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.FrameworkService\NakedObjects.FrameworkService.csproj">
-      <Name>NakedObjects.FrameworkService</Name>
-      <Project>{7095e1c3-2c43-4802-9930-522e1bbf27c1}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.CodeOnly\NakedObjects.Persistor.Entity.Test.CodeOnly.csproj">
       <Name>NakedObjects.Persistor.Entity.Test.CodeOnly</Name>
       <Project>{55cc4d02-0ee3-481e-8938-6743c2e29fcd}</Project>

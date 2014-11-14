@@ -8,7 +8,7 @@
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Reflect {
+namespace NakedObjects.Core.Reflect {
     public class NakedObjectActionContext {
         public INakedObject Target { get; set; }
         public IActionSpec Action { get; set; }

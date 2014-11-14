@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Adapter;
 using NUnit.Framework;
 
-namespace NakedObjects.Core {
+namespace NakedObjects.Core.Test.Adapter {
     [TestFixture]
     public class SerialOidTest {
         [Test]

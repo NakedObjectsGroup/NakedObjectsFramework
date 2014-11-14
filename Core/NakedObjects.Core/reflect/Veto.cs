@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects.Architecture.Reflect {
+namespace NakedObjects.Core.Reflect {
     public class Veto : ConsentAbstract {
         /// <summary>
         ///     A Veto object with no reason

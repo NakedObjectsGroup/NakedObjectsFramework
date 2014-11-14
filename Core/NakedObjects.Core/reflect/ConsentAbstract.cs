@@ -6,8 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Architecture.Reflect;
 
-namespace NakedObjects.Architecture.Reflect {
+namespace NakedObjects.Core.Reflect {
     public abstract class ConsentAbstract : IConsent {
         private readonly Exception exception;
         private readonly string reason;
@@ -26,8 +27,6 @@ namespace NakedObjects.Architecture.Reflect {
             this.exception = exception;
             reason = exception != null ? exception.Message : null;
         }
-
-        #region IConsent Members
 
         /// <summary>
         ///     Returns the permission's reason
@@ -49,8 +48,6 @@ namespace NakedObjects.Architecture.Reflect {
         ///     Returns <c>true</c> if this object is NOT giving permission
         /// </summary>
         public abstract bool IsVetoed { get; }
-
-        #endregion
 
         /// <summary>
         ///     Returns an Allow (Allow.Default) object if true; Veto (Veto.Default) if false

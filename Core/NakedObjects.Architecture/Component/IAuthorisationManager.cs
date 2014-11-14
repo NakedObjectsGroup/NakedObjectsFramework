@@ -25,7 +25,6 @@ namespace NakedObjects.Architecture.Component {
         ///     returns false.
         /// </summary>
         bool IsEditable(ISession session, ILifecycleManager lifecycleManager, IMetamodelManager manager, INakedObject target, IIdentifier identifier);
-
     }
 
     // Copyright (c) Naked Objects Group Ltd.

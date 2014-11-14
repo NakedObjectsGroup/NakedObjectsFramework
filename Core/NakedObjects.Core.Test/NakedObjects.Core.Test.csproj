@@ -106,11 +106,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="adapter\SerialOidTest.cs" />
-    <Compile Include="persist\CollectionMementoTest.cs" />
+    <Compile Include="Adapter\SerialOidTest.cs" />
+    <Compile Include="Adapter\CollectionMementoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolve\ResolveStateTest.cs" />
-    <Compile Include="util\CopyUtilsTest.cs" />
+    <Compile Include="Util\CopyUtilsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -142,10 +142,6 @@
     <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj">
       <Project>{3F1E438C-020C-4751-A65A-63C2990D8278}</Project>
       <Name>NakedObjects.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.FrameworkService\NakedObjects.FrameworkService.csproj">
-      <Project>{7095E1C3-2C43-4802-9930-522E1BBF27C1}</Project>
-      <Name>NakedObjects.FrameworkService</Name>
     </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj">
       <Project>{3E188CC2-9F88-47F1-A197-22518958AE25}</Project>

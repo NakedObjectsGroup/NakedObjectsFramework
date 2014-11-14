@@ -15,15 +15,16 @@ using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public abstract class ActionParameterSpec : IActionParameterSpec {
+        private readonly IActionParameterSpecImmutable actionParameterSpecImmutable;
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodel;
         private readonly int number;
         private readonly IActionSpec parentAction;
-        private readonly IActionParameterSpecImmutable actionParameterSpecImmutable;
         private readonly IObjectPersistor persistor;
         private readonly ISession session;
 
@@ -60,10 +61,10 @@ namespace NakedObjects.Core.Spec {
 
         public bool IsMultipleChoicesEnabled {
             get {
-                
                 return Spec.IsCollectionOfBoundedSet(ElementSpec) ||
-                Spec.IsCollectionOfEnum(ElementSpec) ||
-                (ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple); }
+                       Spec.IsCollectionOfEnum(ElementSpec) ||
+                       (ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple);
+            }
         }
 
         /// <summary>

@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Runtime.Serialization;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -23,9 +22,7 @@ using NakedObjects.Value;
 using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test {
-
-    public  class AbstractTestWithByteArray {
-
+    public class AbstractTestWithByteArray {
         public virtual object Ba { get; set; }
 
         //public virtual byte[] GetBa(byte[] baparm) {
@@ -33,10 +30,7 @@ namespace NakedObjects.Meta.Test {
         //}
     }
 
-    public class TestWithByteArray : AbstractTestWithByteArray {
-
-    }
-
+    public class TestWithByteArray : AbstractTestWithByteArray {}
 
 
     public class TestService {
@@ -97,6 +91,16 @@ namespace NakedObjects.Meta.Test {
         [DataType(DataType.Password)]
         public virtual string TestString { get; set; }
 
+        //[System.ComponentModel.DataAnnotations.Range(0, 100)]
+        public virtual int? TestInt { get; set; }
+
+        public virtual DateTime TestDateTime { get; set; }
+
+        public virtual TestEnum TestEnum { get; set; }
+
+        [ConcurrencyCheck]
+        public virtual string TestConcurrency { get; set; }
+
         public virtual string[] ChoicesTestString() {
             return new string[] {};
         }
@@ -105,19 +109,9 @@ namespace NakedObjects.Meta.Test {
             return "";
         }
 
-        //[System.ComponentModel.DataAnnotations.Range(0, 100)]
-        public virtual int? TestInt { get; set; }
-
         public virtual string ValidateTestString(string tovalidate) {
             return "";
         }
-
-        public virtual DateTime TestDateTime { get; set; }
-
-        public virtual TestEnum TestEnum { get; set; }
-
-        [ConcurrencyCheck]
-        public virtual string TestConcurrency { get; set; }
 
         public void Persisted() {}
 
@@ -178,13 +172,13 @@ namespace NakedObjects.Meta.Test {
 
 
             var f1 =
-               cache.AllSpecifications().SelectMany(s => s.Fields)
-                   .Select(s => s.Spec)
-                   .Where(s => s != null)
-                   .OfType<OneToOneAssociationSpecImmutable>()
-                   .SelectMany(s => s.GetFacets())
-                   .Select(f => f.GetType().FullName)
-                   .Distinct();
+                cache.AllSpecifications().SelectMany(s => s.Fields)
+                    .Select(s => s.Spec)
+                    .Where(s => s != null)
+                    .OfType<OneToOneAssociationSpecImmutable>()
+                    .SelectMany(s => s.GetFacets())
+                    .Select(f => f.GetType().FullName)
+                    .Distinct();
 
 
             foreach (var f in f1) {
@@ -238,7 +232,6 @@ namespace NakedObjects.Meta.Test {
 
         [Test]
         public void BinarySerializeIntTypes() {
-
             var rc = new ReflectorConfiguration(new[] {typeof (int)}, new Type[] {}, new Type[] {}, new Type[] {});
             const string file = @"c:\testmetadata\metadataint.bin";
             BinarySerialize(rc, file);
@@ -247,16 +240,14 @@ namespace NakedObjects.Meta.Test {
 
         [Test]
         public void BinarySerializeImageTypes() {
-
-            var rc = new ReflectorConfiguration(new[] { typeof(Image) }, new Type[] { }, new Type[] { }, new Type[] { });
+            var rc = new ReflectorConfiguration(new[] {typeof (Image)}, new Type[] {}, new Type[] {}, new Type[] {});
             const string file = @"c:\testmetadata\metadataimg.bin";
             BinarySerialize(rc, file);
         }
 
         [Test]
         public void BinarySerializeBaTypes() {
-
-            var rc = new ReflectorConfiguration(new[] { typeof(AbstractTestWithByteArray) }, new Type[] { }, new Type[] { }, new Type[] { });
+            var rc = new ReflectorConfiguration(new[] {typeof (AbstractTestWithByteArray)}, new Type[] {}, new Type[] {}, new Type[] {});
             const string file = @"c:\testmetadata\metadataba.bin";
             BinarySerialize(rc, file);
         }
@@ -287,7 +278,7 @@ namespace NakedObjects.Meta.Test {
 
 
         [Test]
-        public void BinarySerializeAnnotatedDomainObjectTypes() {    
+        public void BinarySerializeAnnotatedDomainObjectTypes() {
             var rc = new ReflectorConfiguration(new[] {typeof (TestAnnotatedDomainObject)}, new[] {typeof (TestService)},
                 new Type[] {}, new Type[] {});
             const string file = @"c:\testmetadata\metadatatado.bin";
@@ -304,7 +295,7 @@ namespace NakedObjects.Meta.Test {
             Assert.IsTrue(newCache.AllSpecifications().Select(s => s.Fields).All(fs => !fs.Any() || fs.All(f => f != null)), error);
 
             error = newCache.AllSpecifications().Where(s => s.ObjectActions.Any() && s.ObjectActions.Any(f => f == null)).Select(s => s.FullName).Aggregate("", (s, t) => s + " " + t);
-            
+
             Assert.IsTrue(newCache.AllSpecifications().Select(s => s.ObjectActions).All(fs => !fs.Any() || fs.All(f => f != null)), error);
 
             var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new {a, b});
@@ -323,10 +314,10 @@ namespace NakedObjects.Meta.Test {
             }
         }
 
-        #region Nested type: NullMenuBuilder
+        #region Nested type: NullMenuDefinition
 
         public class NullMenuDefinition : IMainMenuDefinition {
-            #region IMenuBuilder Members
+            #region IMainMenuDefinition Members
 
             public IMenu[] MainMenus(IMenuFactory factory) {
                 return new IMenu[] {};
@@ -335,7 +326,13 @@ namespace NakedObjects.Meta.Test {
             #endregion
         }
 
+        #endregion
+
+        #region Nested type: NullMenuFactory
+
         public class NullMenuFactory : IMenuFactory {
+            #region IMenuFactory Members
+
             public IMenu NewMenu(string name) {
                 return null;
             }
@@ -343,6 +340,8 @@ namespace NakedObjects.Meta.Test {
             public ITypedMenu<T> NewMenu<T>(bool addAllActions, string name = null) {
                 return null;
             }
+
+            #endregion
         }
 
         #endregion

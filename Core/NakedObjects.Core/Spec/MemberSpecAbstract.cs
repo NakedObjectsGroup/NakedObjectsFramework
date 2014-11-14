@@ -12,17 +12,18 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Architecture.Reflect {
     public abstract class MemberSpecAbstract : IMemberSpec {
         private readonly string defaultName;
-        private readonly ISpecificationBuilder specification;
         private readonly string id;
         private readonly ILifecycleManager lifecycleManager;
         private readonly IMetamodelManager metamodelManager;
         private readonly ISession session;
+        private readonly ISpecificationBuilder specification;
 
 
         protected internal MemberSpecAbstract(string id, ISpecificationBuilder specification, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
@@ -51,7 +52,7 @@ namespace NakedObjects.Architecture.Reflect {
             get { return metamodelManager; }
         }
 
-        #region INakedObjectMember Members
+        #region IMemberSpec Members
 
         public virtual string Id {
             get { return id; }

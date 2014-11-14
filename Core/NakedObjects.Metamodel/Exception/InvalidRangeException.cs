@@ -8,7 +8,7 @@
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Interactions;
 
-namespace NakedObjects.Meta.Except {
+namespace NakedObjects.Meta {
     /// <summary>
     ///     The interaction is invalid because the input value is outside the specified range.
     /// </summary>

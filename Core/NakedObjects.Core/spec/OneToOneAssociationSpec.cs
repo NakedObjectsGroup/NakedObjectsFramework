@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Resolve;
@@ -191,8 +190,6 @@ namespace NakedObjects.Core.Spec {
             str.Append("type", Spec.ShortName);
             return str.ToString();
         }
-
-     
     }
 
     // Copyright (c) Naked Objects Group Ltd.

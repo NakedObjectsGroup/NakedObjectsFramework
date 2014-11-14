@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 
@@ -16,7 +15,7 @@ namespace NakedObjects.Architecture.Spec {
     ///  The 'metamodel' is made up of various implementations of ISpecification, which, in turn, are largely
     ///  made up of Facets.
     /// </summary>
-    public interface ISpecification  {
+    public interface ISpecification {
         /// <summary>
         ///     Get the list of all facet <see cref="Type" />s that are supported by objects with this specification
         /// </summary>

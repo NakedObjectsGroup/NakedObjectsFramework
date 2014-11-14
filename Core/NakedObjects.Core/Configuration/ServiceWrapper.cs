@@ -7,7 +7,7 @@
 
 using NakedObjects.Architecture.Configuration;
 
-namespace NakedObjects.Core.Service {
+namespace NakedObjects.Core.Configuration {
     public class ServiceWrapper : IServiceWrapper {
         public ServiceWrapper(ServiceType serviceType, object service) {
             ServiceType = serviceType;

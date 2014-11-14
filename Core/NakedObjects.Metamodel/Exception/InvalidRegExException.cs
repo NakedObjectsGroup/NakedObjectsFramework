@@ -8,7 +8,7 @@
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Interactions;
 
-namespace NakedObjects.Meta.Except {
+namespace NakedObjects.Meta {
     /// <summary>
     ///     The interaction is invalid because the input value does not match the specified RegEx.
     /// </summary>

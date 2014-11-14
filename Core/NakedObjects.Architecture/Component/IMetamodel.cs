@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
@@ -15,14 +15,13 @@ namespace NakedObjects.Architecture.Component {
     /// </summary>
     public interface IMetamodel {
         IObjectSpecImmutable[] AllSpecifications { get; }
+        IMenuImmutable[] MainMenus { get; }
 
         // remove this
         IObjectSpecImmutable GetSpecification(Type type);
 
         // remove this
         IObjectSpecImmutable GetSpecification(string name);
-
-        IMenuImmutable[] MainMenus { get; }
     }
 
 

@@ -118,10 +118,6 @@
       <Project>{3F1E438C-020C-4751-A65A-63C2990D8278}</Project>
       <Name>NakedObjects.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.FrameworkService\NakedObjects.FrameworkService.csproj">
-      <Project>{7095E1C3-2C43-4802-9930-522E1BBF27C1}</Project>
-      <Name>NakedObjects.FrameworkService</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />

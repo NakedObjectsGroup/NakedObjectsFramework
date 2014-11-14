@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
@@ -16,7 +16,6 @@ namespace NakedObjects.Architecture.Component {
     /// The Manager takes responsibility to inject these specifications with the necessary framework services.
     /// </summary>
     public interface IMetamodelManager {
-
         IObjectSpec[] AllSpecs { get; }
         IMetamodel Metamodel { get; }
 

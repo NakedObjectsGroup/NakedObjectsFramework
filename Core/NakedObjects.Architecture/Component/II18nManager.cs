@@ -6,10 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Architecture.Component {
-   
-    public interface II18NManager {
-    
-    }
+    public interface II18NManager {}
 
     // Copyright (c) Naked Objects Group Ltd.
 }

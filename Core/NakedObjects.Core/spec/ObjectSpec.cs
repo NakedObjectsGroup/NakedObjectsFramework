@@ -15,13 +15,12 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
-using NakedObjects.Architecture.Menu;
 
 namespace NakedObjects.Core.Spec {
     public class ObjectSpec : IObjectSpec {

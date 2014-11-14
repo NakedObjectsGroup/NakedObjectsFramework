@@ -9,17 +9,18 @@ module NakedObjects.EntityTestSuite
 open NUnit.Framework
 open NakedObjects.Services
 open System
-open NakedObjects.EntityObjectStore
 open NakedObjects.Persistor.TestData
 open NakedObjects.Persistor.TestSuite
 open TestData
 open TestCode
-open NakedObjects.Core.Security
 open System.Security.Principal
 open Microsoft.Practices.Unity
 open NakedObjects.Architecture.Configuration
 open NakedObjects.Core.Configuration
+open NakedObjects.Core.Authentication
 open System.Data.Entity.Core.Objects.DataClasses
+open NakedObjects.Persistor.Entity.Configuration
+open NakedObjects.Persistor.Entity
 
 
 let assemblyName = "NakedObjects.Persistor.Test.Data"

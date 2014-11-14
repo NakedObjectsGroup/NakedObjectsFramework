@@ -347,9 +347,9 @@
     <Compile Include="Resolve\IResolveStateMachine.cs" />
     <Compile Include="Component\IAuthorisationManager.cs" />
     <Compile Include="Spec\ISpecificationBuilder.cs" />
-    <Compile Include="Transaction\ICreateObjectCommand.cs" />
-    <Compile Include="Transaction\IDestroyObjectCommand.cs" />
-    <Compile Include="Transaction\ISaveObjectCommand.cs" />
+    <Compile Include="Persist\ICreateObjectCommand.cs" />
+    <Compile Include="Persist\IDestroyObjectCommand.cs" />
+    <Compile Include="Persist\ISaveObjectCommand.cs" />
     <Compile Include="Transaction\ITransaction.cs" />
     <Compile Include="Spec\IOneToManyAssociationSpec.cs" />
     <Compile Include="Spec\IOneToOneAssociationSpec.cs" />

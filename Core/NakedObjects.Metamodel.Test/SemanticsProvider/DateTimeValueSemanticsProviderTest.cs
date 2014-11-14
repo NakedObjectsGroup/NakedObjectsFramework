@@ -11,7 +11,6 @@ using Moq;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NakedObjects.Meta.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {

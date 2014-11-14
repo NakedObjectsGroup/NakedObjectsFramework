@@ -12,7 +12,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NakedObjects.Meta.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
@@ -30,7 +29,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            holder  = new Mock<ISpecification>().Object;
+            holder = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new EnumValueSemanticsProvider<TestEnum>(spec, holder));
         }
@@ -97,8 +96,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [Test]
         public void TestDecode() {
-
-
             TestEnum decoded = GetValue().FromEncodedString("NakedObjects.Meta.Test.SemanticsProvider.TestEnum:Paris");
             Assert.AreEqual(TestEnum.Paris, decoded);
         }

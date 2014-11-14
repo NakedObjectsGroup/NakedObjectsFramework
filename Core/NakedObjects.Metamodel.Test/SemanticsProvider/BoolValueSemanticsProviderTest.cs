@@ -12,10 +12,10 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.SemanticsProvider;
-using NakedObjects.Meta.Spec;
 using NUnit.Framework;
-using CollectionUtils = NakedObjects.Core.Util.CollectionUtils;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestFixture]

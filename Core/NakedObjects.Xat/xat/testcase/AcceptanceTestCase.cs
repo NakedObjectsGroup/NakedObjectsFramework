@@ -18,17 +18,17 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Security;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Adapter.Map;
+using NakedObjects.Core.Adapter;
+using NakedObjects.Core.Component;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Container;
 using NakedObjects.Core.Fixture;
-using NakedObjects.Core.spec;
+using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.EntityObjectStore;
-using NakedObjects.Managers;
 using NakedObjects.Meta;
+using NakedObjects.Persistor.Entity;
+using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Reflect;
 using NakedObjects.Service;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
@@ -347,7 +347,7 @@ namespace NakedObjects.Xat {
 
             container.RegisterType<IOidGenerator, EntityOidGenerator>(new PerResolveLifetimeManager());
 
-            container.RegisterType<IObjectStore, EntityObjectStore.EntityObjectStore>(new PerResolveLifetimeManager());
+            container.RegisterType<IObjectStore, EntityObjectStore>(new PerResolveLifetimeManager());
             container.RegisterType<IIdentityMap, IdentityMapImpl>(new PerResolveLifetimeManager());
 
             container.RegisterType<ITransactionManager, TransactionManager>(new PerResolveLifetimeManager());

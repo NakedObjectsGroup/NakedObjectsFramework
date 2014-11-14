@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;

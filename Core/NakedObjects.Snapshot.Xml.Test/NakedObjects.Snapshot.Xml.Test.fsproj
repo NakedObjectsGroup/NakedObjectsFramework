@@ -72,11 +72,6 @@
     <None Include="simpleTestData.htm" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NakedObjects.FrameworkService\NakedObjects.FrameworkService.csproj">
-      <Name>NakedObjects.FrameworkService</Name>
-      <Project>{7095e1c3-2c43-4802-9930-522e1bbf27c1}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj">
       <Name>NakedObjects.Persistor.Entity</Name>
       <Project>{3e188cc2-9f88-47f1-a197-22518958ae25}</Project>

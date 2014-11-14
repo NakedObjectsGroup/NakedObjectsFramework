@@ -184,6 +184,7 @@ namespace NakedObjects.Architecture.Spec {
 
         #region Actions
 
+        IMenuImmutable ObjectMenu { get; }
         IActionSpec[] GetRelatedServiceActions();
 
         /// <summary>
@@ -191,7 +192,6 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         IActionSpec[] GetAllActions();
 
-        IMenuImmutable ObjectMenu { get; }
         #endregion
 
         #region Default Provider

@@ -12,10 +12,9 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Core.spec {
+namespace NakedObjects.Core.Spec {
     public class SpecFactory {
         private INakedObjectsFramework framework;
 
@@ -31,10 +30,10 @@ namespace NakedObjects.Core.spec {
                 return new ActionParseableParameterSpec(framework.Metamodel, index, actionSpec, parameterSpecImmutable, framework.Manager, framework.Session, framework.Persistor);
             }
             if (specification.IsObject) {
-                return new OneToOneActionParameterImpl(framework.Metamodel, index, actionSpec, parameterSpecImmutable, framework.Manager, framework.Session, framework.Persistor);
+                return new OneToOneActionParameter(framework.Metamodel, index, actionSpec, parameterSpecImmutable, framework.Manager, framework.Session, framework.Persistor);
             }
             if (specification.IsCollection) {
-                return new OneToManyActionParameterImpl(framework.Metamodel, index, actionSpec, parameterSpecImmutable, framework.Manager, framework.Session, framework.Persistor);
+                return new OneToManyActionParameter(framework.Metamodel, index, actionSpec, parameterSpecImmutable, framework.Manager, framework.Session, framework.Persistor);
             }
             throw new UnknownTypeException(specification);
         }

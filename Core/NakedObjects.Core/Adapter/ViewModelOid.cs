@@ -1,15 +1,18 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.Core.Persist {
+namespace NakedObjects.Core.Adapter {
     public class ViewModelOid : IOid, IEncodedToStrings {
         private readonly IMetamodelManager metamodel;
         private int cachedHashCode;
@@ -21,7 +24,7 @@ namespace NakedObjects.Core.Persist {
             this.metamodel = metamodel;
             IsTransient = false;
             TypeName = TypeNameUtils.EncodeTypeName(spec.FullName);
-            Keys = new[] {System.Guid.NewGuid().ToString()};
+            Keys = new[] {Guid.NewGuid().ToString()};
             CacheState();
         }
 
@@ -31,24 +34,17 @@ namespace NakedObjects.Core.Persist {
             var helper = new StringDecoderHelper(metamodel, strings);
             TypeName = helper.GetNextString();
 
-            Keys = helper.HasNext ? helper.GetNextArray() : new[] {System.Guid.NewGuid().ToString()};
+            Keys = helper.HasNext ? helper.GetNextArray() : new[] {Guid.NewGuid().ToString()};
 
             IsTransient = false;
             CacheState();
         }
 
-        private void CacheState() {
-            cachedHashCode = HashCodeUtils.Seed;
-            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
-            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Keys);
-
-            object keys = Keys.Aggregate((s, t) => s + ":" + t);
-
-            cachedToString = string.Format("{0}VMOID#{1}{2}", IsTransient ? "T" : "", keys, previous == null ? "" : "+");
-        }
-
         public string TypeName { get; private set; }
         public string[] Keys { get; private set; }
+        public bool IsFinal { get; private set; }
+
+        #region IEncodedToStrings Members
 
         public string[] ToEncodedStrings() {
             var helper = new StringEncoderHelper();
@@ -65,27 +61,42 @@ namespace NakedObjects.Core.Persist {
             return ToEncodedStrings();
         }
 
+        #endregion
+
+        #region IOid Members
+
         public void CopyFrom(IOid oid) {}
 
         public IOid Previous {
             get { return previous; }
         }
 
-        public bool IsFinal { get; private set; }
-
         public bool IsTransient { get; private set; }
+
         public bool HasPrevious {
-            get { return previous != null; }  
+            get { return previous != null; }
         }
 
         public IObjectSpec Spec {
             get { return metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
         }
 
-        public void UpdateKeys(string[] newKeys, bool final) { 
-            previous = new ViewModelOid(metamodel, Spec) { Keys = Keys };
+        #endregion
+
+        private void CacheState() {
+            cachedHashCode = HashCodeUtils.Seed;
+            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
+            cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Keys);
+
+            object keys = Keys.Aggregate((s, t) => s + ":" + t);
+
+            cachedToString = string.Format("{0}VMOID#{1}{2}", IsTransient ? "T" : "", keys, previous == null ? "" : "+");
+        }
+
+        public void UpdateKeys(string[] newKeys, bool final) {
+            previous = new ViewModelOid(metamodel, Spec) {Keys = Keys};
             Keys = newKeys; // after old key is saved ! 
-            IsFinal = final; 
+            IsFinal = final;
             CacheState();
         }
 

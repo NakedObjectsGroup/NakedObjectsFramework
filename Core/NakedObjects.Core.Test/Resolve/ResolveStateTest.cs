@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
 using NUnit.Framework;
 
-
 namespace NakedObjects.Core.Test.Resolve {
     [TestFixture]
     public class ResolveStateTest {

@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Reflect;
 
 namespace NakedObjects.Core.Util {
     public static class InteractionUtils {

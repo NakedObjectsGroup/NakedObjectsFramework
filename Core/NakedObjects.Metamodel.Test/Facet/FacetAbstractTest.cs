@@ -10,9 +10,8 @@ using Moq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
-using NUnit.Framework;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Meta.Spec;
+using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.Facet {
     [TestFixture]

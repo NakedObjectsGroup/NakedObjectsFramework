@@ -173,10 +173,6 @@
       <Project>{3F1E438C-020C-4751-A65A-63C2990D8278}</Project>
       <Name>NakedObjects.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.FrameworkService\NakedObjects.FrameworkService.csproj">
-      <Project>{7095E1C3-2C43-4802-9930-522E1BBF27C1}</Project>
-      <Name>NakedObjects.FrameworkService</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj">
       <Project>{51310042-B65B-4480-A8C0-11E6B39C7587}</Project>
       <Name>NakedObjects.Metamodel</Name>

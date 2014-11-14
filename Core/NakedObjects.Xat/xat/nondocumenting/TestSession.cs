@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Security.Principal;
-using NakedObjects.Core.Security;
+using NakedObjects.Core.Authentication;
 
 namespace NakedObjects.Xat {
     // Allow principal to be changed - only for test use 

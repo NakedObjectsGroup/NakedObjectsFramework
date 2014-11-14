@@ -11,7 +11,6 @@ using Moq;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
-using NakedObjects.Meta.Spec;
 using NUnit.Framework;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
@@ -24,7 +23,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.SetUp();
             SetupSpecification(typeof (TimeSpan));
             time = new TimeSpan(8, 13, 0);
-            holder  = new Mock<ISpecification>().Object;
+            holder = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(adapter = new TimeValueSemanticsProvider(spec, holder));
         }

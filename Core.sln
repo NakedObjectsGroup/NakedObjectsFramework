@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Architecture", "Core\NakedObjects.Architecture\NakedObjects.Architecture.csproj", "{BF6D9655-B873-4980-ACE7-A122EA45F045}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Architecture.Test", "Core\NakedObjects.Architecture.Test\NakedObjects.Architecture.Test.csproj", "{299B7A16-5D0F-4D21-9584-50865ADB786F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Core", "Core\NakedObjects.Core\NakedObjects.Core.csproj", "{3F1E438C-020C-4751-A65A-63C2990D8278}"
 EndProject
@@ -49,8 +47,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{DBFA50
 		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.FrameworkService", "Core\NakedObjects.FrameworkService\NakedObjects.FrameworkService.csproj", "{7095E1C3-2C43-4802-9930-522E1BBF27C1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Reflector", "Core\NakedObjects.Reflector\NakedObjects.Reflector.csproj", "{91153C56-313C-426E-8B0D-43FA39BD567A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Reflector.Test", "Core\NakedObjects.Reflector.Test\NakedObjects.Reflector.Test.csproj", "{DD0F2C26-D425-48FF-A22B-3B4E8EFA63C1}"
@@ -73,12 +69,6 @@ Global
 		{BF6D9655-B873-4980-ACE7-A122EA45F045}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF6D9655-B873-4980-ACE7-A122EA45F045}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BF6D9655-B873-4980-ACE7-A122EA45F045}.Release|x86.ActiveCfg = Release|Any CPU
-		{299B7A16-5D0F-4D21-9584-50865ADB786F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{299B7A16-5D0F-4D21-9584-50865ADB786F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{299B7A16-5D0F-4D21-9584-50865ADB786F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{299B7A16-5D0F-4D21-9584-50865ADB786F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{299B7A16-5D0F-4D21-9584-50865ADB786F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{299B7A16-5D0F-4D21-9584-50865ADB786F}.Release|x86.ActiveCfg = Release|Any CPU
 		{3F1E438C-020C-4751-A65A-63C2990D8278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3F1E438C-020C-4751-A65A-63C2990D8278}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F1E438C-020C-4751-A65A-63C2990D8278}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -181,12 +171,6 @@ Global
 		{F84BBFEF-7D09-4A51-B5CC-7BFBD0F56EFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F84BBFEF-7D09-4A51-B5CC-7BFBD0F56EFD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F84BBFEF-7D09-4A51-B5CC-7BFBD0F56EFD}.Release|x86.ActiveCfg = Release|Any CPU
-		{7095E1C3-2C43-4802-9930-522E1BBF27C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7095E1C3-2C43-4802-9930-522E1BBF27C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7095E1C3-2C43-4802-9930-522E1BBF27C1}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7095E1C3-2C43-4802-9930-522E1BBF27C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7095E1C3-2C43-4802-9930-522E1BBF27C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7095E1C3-2C43-4802-9930-522E1BBF27C1}.Release|x86.ActiveCfg = Release|Any CPU
 		{91153C56-313C-426E-8B0D-43FA39BD567A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{91153C56-313C-426E-8B0D-43FA39BD567A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91153C56-313C-426E-8B0D-43FA39BD567A}.Debug|x86.ActiveCfg = Debug|Any CPU

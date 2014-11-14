@@ -8,7 +8,7 @@
 using NakedObjects.Architecture;
 using NakedObjects.Architecture.Interactions;
 
-namespace NakedObjects.Meta.Except {
+namespace NakedObjects.Meta {
     /// <summary>
     ///     The interaction is invalid because the property or action parameter is mandatory
     ///     (eg not annotated with <see cref="OptionallyAttribute" />).

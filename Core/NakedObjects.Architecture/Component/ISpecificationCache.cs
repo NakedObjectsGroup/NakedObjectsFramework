@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Component {
-    public interface ISpecificationCache  {
+    public interface ISpecificationCache {
         IObjectSpecImmutable GetSpecification(string key);
 
         void Clear();

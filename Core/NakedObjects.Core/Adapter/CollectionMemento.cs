@@ -13,8 +13,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Persist;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
@@ -32,8 +30,8 @@ namespace NakedObjects.Core.Adapter {
         #endregion
 
         private readonly ILifecycleManager lifecycleManager;
-        private readonly INakedObjectManager nakedObjectManager;
         private readonly IMetamodelManager metamodel;
+        private readonly INakedObjectManager nakedObjectManager;
         private object[] selectedObjects;
 
         private CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel) {
@@ -47,7 +45,6 @@ namespace NakedObjects.Core.Adapter {
 
         public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, CollectionMemento otherMemento, object[] selectedObjects)
             : this(lifecycleManager, nakedObjectManager, metamodel) {
-           
             Assert.AssertNotNull(otherMemento);
 
             IsPaged = otherMemento.IsPaged;
@@ -60,8 +57,6 @@ namespace NakedObjects.Core.Adapter {
 
         public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, INakedObject target, IActionSpec actionSpec, INakedObject[] parameters)
             : this(lifecycleManager, nakedObjectManager, metamodel) {
-          
-
             Target = target;
             Action = actionSpec;
             Parameters = parameters;
@@ -73,9 +68,6 @@ namespace NakedObjects.Core.Adapter {
 
         public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, string[] strings)
             : this(lifecycleManager, nakedObjectManager, metamodel) {
-          
-
-
             var helper = new StringDecoderHelper(metamodel, strings, true);
             string specName = helper.GetNextString();
             string actionId = helper.GetNextString();

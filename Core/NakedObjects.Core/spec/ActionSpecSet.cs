@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
@@ -46,11 +47,11 @@ namespace NakedObjects.Core.Spec {
             get { return ""; }
         }
 
-        #region IActionSpec Members
-
         public virtual IObjectSpec ElementType {
             get { return null; }
         }
+
+        #region IActionSpec Members
 
         public virtual IActionSpec[] Actions {
             get { return actionsSpec; }
@@ -152,22 +153,6 @@ namespace NakedObjects.Core.Spec {
             return null;
         }
 
-        /// <summary>
-        ///     Does nothing
-        /// </summary>
-        public virtual void AddFacet(IFacet facet) {}
-
-        /// <summary>
-        ///     Does nothing
-        /// </summary>
-        public virtual void AddFacet(IMultiTypedFacet facet) {}
-
-
-        /// <summary>
-        ///     Does nothing
-        /// </summary>
-        public virtual void RemoveFacet(IFacet facet) {}
-
 
         /// <summary>
         ///     Does nothing
@@ -183,11 +168,6 @@ namespace NakedObjects.Core.Spec {
             return false;
         }
 
-
-        /// <summary>
-        ///     Does nothing
-        /// </summary>
-        public virtual void RemoveFacet(Type facetType) {}
 
         public virtual IActionParameterSpec[] Parameters {
             get { return new IActionParameterSpec[0]; }
@@ -222,6 +202,27 @@ namespace NakedObjects.Core.Spec {
         }
 
         #endregion
+
+        /// <summary>
+        ///     Does nothing
+        /// </summary>
+        public virtual void AddFacet(IFacet facet) {}
+
+        /// <summary>
+        ///     Does nothing
+        /// </summary>
+        public virtual void AddFacet(IMultiTypedFacet facet) {}
+
+
+        /// <summary>
+        ///     Does nothing
+        /// </summary>
+        public virtual void RemoveFacet(IFacet facet) {}
+
+        /// <summary>
+        ///     Does nothing
+        /// </summary>
+        public virtual void RemoveFacet(Type facetType) {}
 
         public virtual INakedObject[] GetDefaultParameterValues(INakedObject target) {
             throw new UnexpectedCallException();

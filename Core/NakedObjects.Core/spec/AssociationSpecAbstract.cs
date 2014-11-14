@@ -11,9 +11,9 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 
@@ -24,7 +24,6 @@ namespace NakedObjects.Core.Spec {
 
         protected AssociationSpecAbstract(IMetamodelManager metamodel, IAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager)
             : base(association.Identifier.MemberName, association, session, lifecycleManager, metamodel) {
-       
             Assert.AssertNotNull(manager);
 
             this.manager = manager;
@@ -95,8 +94,6 @@ namespace NakedObjects.Core.Spec {
         public abstract TypeOfDefaultValue GetDefaultType(INakedObject nakedObject);
         public abstract void ToDefault(INakedObject nakedObject);
 
-        #endregion
-
         public override IConsent IsUsable(INakedObject target) {
             bool isPersistent = target.ResolveState.IsPersistent();
             IConsent disabledConsent = IsUsableDeclaratively(isPersistent);
@@ -127,6 +124,8 @@ namespace NakedObjects.Core.Spec {
 
             return GetConsent(reason);
         }
+
+        #endregion
 
         public abstract INakedObject[] GetChoices(INakedObject nakedObject, IDictionary<string, INakedObject> parameterNameValues);
 
