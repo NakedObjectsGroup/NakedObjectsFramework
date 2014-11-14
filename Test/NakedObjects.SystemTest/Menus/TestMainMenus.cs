@@ -161,12 +161,6 @@ namespace NakedObjects.SystemTest.Menus {
 
     #region Classes used in test
 
-    public class MenusDbContext : DbContext {
-        public const string DatabaseName = "TestMenus";
-        public MenusDbContext() : base(DatabaseName) { }
-
-    }
-
     public class LocalMainMenus : IMainMenuDefinition {
 
         public IMenu[] MainMenus(IMenuFactory factory) {
