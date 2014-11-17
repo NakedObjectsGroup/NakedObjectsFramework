@@ -357,6 +357,8 @@ namespace NakedObjects.Xat {
 
             container.RegisterType<ISession>(new PerResolveLifetimeManager(), new InjectionFactory(c => TestSession));
 
+            container.RegisterType<IAsyncFramework, UnityAsyncFramework>();
+
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>();
         }
 

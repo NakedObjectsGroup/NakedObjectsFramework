@@ -5,8 +5,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Architecture.Component {
-    public interface IBatchController {
-        void Run(IBatchStartPoint batchStartPoint);
+using Microsoft.Practices.Unity;
+using NakedObjects.Architecture.Component;
+
+namespace NakedObjects.Core.Component {
+    public class UnityAsyncFramework : IAsyncFramework {
+        private readonly IUnityContainer unityContainer;
+
+        public UnityAsyncFramework(IUnityContainer unityContainer) {
+            this.unityContainer = unityContainer;
+        }
+
+        public INakedObjectsFramework Framework {
+            get { return unityContainer.Resolve<INakedObjectsFramework>(); }
+        }
     }
 }

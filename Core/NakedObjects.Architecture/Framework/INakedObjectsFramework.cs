@@ -35,5 +35,7 @@ namespace NakedObjects {
         IContainerInjector Injector { get; }
 
         ITransactionManager TransactionManager { get; }
+
+        IAsyncFramework AsyncFramework { get; }
     }
 }

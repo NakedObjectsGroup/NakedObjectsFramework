@@ -15,8 +15,8 @@ using AdventureWorksModel;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Async;
 using NakedObjects.Core.Adapter;
+using NakedObjects.Core.Async;
 using NakedObjects.Core.Authentication;
 using NakedObjects.Core.Component;
 using NakedObjects.Core.Configuration;
@@ -31,6 +31,18 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Meta.Menus;
 
 namespace NakedObjects.Batch.Exe {
+    // here to avoid coupling framework to unity
+    public class UnityAsyncFramework : IAsyncFramework {
+        private readonly IUnityContainer unityContainer;
+
+        public UnityAsyncFramework(IUnityContainer unityContainer) {
+            this.unityContainer = unityContainer;
+        }
+
+        public INakedObjectsFramework Framework {
+            get { return unityContainer.Resolve<INakedObjectsFramework>(); }
+        }
+    }
     /// <summary>
     /// Specifies the Unity configuration for the main container.
     /// </summary>
@@ -103,6 +115,8 @@ namespace NakedObjects.Batch.Exe {
         /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container) {
+            AdventureWorksModel.AssemblyHook.EnsureAssemblyLoaded();
+
             var reflectorConfig = new ReflectorConfiguration(Types,
                MenuServices.Select(s => s.GetType()).ToArray(),
                ContributedActions.Select(s => s.GetType()).ToArray(),
@@ -140,6 +154,7 @@ namespace NakedObjects.Batch.Exe {
             container.RegisterType<ISession, WindowsSession>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerResolveLifetimeManager());
+            container.RegisterType<IAsyncFramework, UnityAsyncFramework>(new PerResolveLifetimeManager());
 
             container.RegisterType<IBatchController, BatchController>(new PerResolveLifetimeManager());
 

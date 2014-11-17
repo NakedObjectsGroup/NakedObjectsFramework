@@ -13,7 +13,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Container {
     public class DomainObjectContainerInjector : IContainerInjector {
-        private object container;
+        private IDomainObjectContainer container;
         private bool initialized;
         private List<object> services;
 

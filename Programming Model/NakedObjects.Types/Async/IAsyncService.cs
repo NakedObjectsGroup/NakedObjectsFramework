@@ -22,6 +22,6 @@ namespace NakedObjects.Async {
         ///     object instances.
         /// </summary>
         /// <param name="toRun"></param>
-        Task RunAsync(Action toRun);
+        Task RunAsync(Action<IDomainObjectContainer> toRun);
     }
 }

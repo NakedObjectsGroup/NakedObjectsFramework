@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.Practices.Unity;
+using MyBatch.Exe;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Batch.Exe {
@@ -13,7 +14,7 @@ namespace NakedObjects.Batch.Exe {
         private static void Main(string[] args) {
             UnityActivator.Start();
 
-            UnityConfig.GetConfiguredContainer().Resolve<IBatchController>().Run();
+            UnityConfig.GetConfiguredContainer().Resolve<IBatchController>().Run(new BatchStartPoint());
 
             UnityActivator.Shutdown();
         }

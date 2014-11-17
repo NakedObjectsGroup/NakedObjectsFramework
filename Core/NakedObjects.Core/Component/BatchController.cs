@@ -9,13 +9,10 @@ using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Component {
     public class BatchController : IBatchController {
-        private readonly IBatchStartPoint batchStartPoint;
         private readonly INakedObjectsFramework framework;
 
-        public BatchController(INakedObjectsFramework framework, IBatchStartPoint batchStartPoint) {
+        public BatchController(INakedObjectsFramework framework) {
             this.framework = framework;
-            this.batchStartPoint = batchStartPoint;
-            framework.Injector.InitDomainObject(batchStartPoint);
         }
 
         protected void StartTransaction() {
@@ -26,7 +23,8 @@ namespace NakedObjects.Core.Component {
             framework.TransactionManager.EndTransaction();
         }
 
-        public virtual void Run() {
+        public virtual void Run(IBatchStartPoint batchStartPoint) {
+            framework.Injector.InitDomainObject(batchStartPoint);
             StartTransaction();
             batchStartPoint.Execute();
             EndTransaction();

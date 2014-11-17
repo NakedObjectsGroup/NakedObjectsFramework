@@ -135,6 +135,7 @@
     <Compile Include="Adapter\INakedObject.cs" />
     <Compile Include="Adapter\IOid.cs" />
     <Compile Include="Adapter\PersistableType.cs" />
+    <Compile Include="Component\IAsyncFramework.cs" />
     <Compile Include="Component\IBatchController.cs" />
     <Compile Include="Component\IBatchStartPoint.cs" />
     <Compile Include="Component\IClassStrategy.cs" />

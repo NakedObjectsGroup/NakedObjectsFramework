@@ -22,6 +22,7 @@ namespace NakedObjects.Service {
         private readonly IServicesManager services;
         private readonly ISession session;
         private readonly ITransactionManager transactionManager;
+        private readonly IAsyncFramework asyncFramework;
 
         public NakedObjectsFramework(IMessageBroker messageBroker,
                                      ISession session,
@@ -35,7 +36,8 @@ namespace NakedObjects.Service {
                                      IContainerInjector injector,
                                      NakedObjectFactory nakedObjectFactory,
                                      SpecFactory memberFactory,
-                                     ITransactionManager transactionManager) {
+                                     ITransactionManager transactionManager,
+                                     IAsyncFramework asyncFramework) {
             this.messageBroker = messageBroker;
             this.session = session;
             this.lifecycleManager = lifecycleManager;
@@ -47,6 +49,7 @@ namespace NakedObjects.Service {
             this.metamodelManager = metamodelManager;
             this.injector = injector;
             this.transactionManager = transactionManager;
+            this.asyncFramework = asyncFramework;
             injector.Framework = this;
             memberFactory.Initialize(this);
             nakedObjectFactory.Initialize(metamodelManager, session, lifecycleManager, persistor, manager);
@@ -60,6 +63,10 @@ namespace NakedObjects.Service {
 
         public ITransactionManager TransactionManager {
             get { return transactionManager; }
+        }
+
+        public IAsyncFramework AsyncFramework {
+            get { return asyncFramework; }
         }
 
         public IMessageBroker MessageBroker {

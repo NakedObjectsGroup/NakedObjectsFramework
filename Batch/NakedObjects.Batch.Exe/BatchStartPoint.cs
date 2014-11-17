@@ -6,9 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Component;
+using NakedObjects.Async;
 
 namespace MyBatch.Exe {
     public class BatchStartPoint : IBatchStartPoint {
-        public void Execute() {}
+
+        public IAsyncService AsyncService { private get; set; }
+
+        public void Execute() {
+
+            AsyncService.RunAsync(doc => {
+
+            });
+        }
     }
 }
