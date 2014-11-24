@@ -9,15 +9,15 @@ using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Component {
-    public class UnityAsyncFramework : IAsyncFramework {
+    public class UnityFrameworkResolver : IFrameworkResolver {
         private readonly IUnityContainer unityContainer;
 
-        public UnityAsyncFramework(IUnityContainer unityContainer) {
+        public UnityFrameworkResolver(IUnityContainer unityContainer) {
             this.unityContainer = unityContainer;
         }
 
-        public INakedObjectsFramework Framework {
-            get { return unityContainer.Resolve<INakedObjectsFramework>(); }
+        public INakedObjectsFramework GetFramework() {
+            return unityContainer.Resolve<INakedObjectsFramework>();
         }
     }
 }

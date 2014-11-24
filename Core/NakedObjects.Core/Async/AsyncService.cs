@@ -41,7 +41,7 @@ namespace NakedObjects.Core.Async {
         protected Action WorkWrapper(Action<IDomainObjectContainer> action) {
             return () => {
                 // get a newly resolved copy of the framework
-                var fw = Framework.AsyncFramework.Framework;
+                var fw = Framework.FrameworkResolver.GetFramework();
                 try {                   
                     fw.TransactionManager.StartTransaction();
                     action(new DomainObjectContainer(fw));

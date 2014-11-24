@@ -15,7 +15,8 @@ namespace MyBatch.Exe {
 
         public void Execute() {
 
-            AsyncService.RunAsync(doc => {
+            AsyncService.RunAsync
+                (doc => {
 
             });
         }

@@ -15,6 +15,7 @@ using AdventureWorksModel;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Async;
 using NakedObjects.Core.Authentication;
@@ -23,26 +24,30 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Container;
 using NakedObjects.Core.Spec;
 using NakedObjects.Meta;
+using NakedObjects.Meta.Menus;
 using NakedObjects.Persistor.Entity;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Reflect;
 using NakedObjects.Service;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Meta.Menus;
 
 namespace NakedObjects.Batch.Exe {
     // here to avoid coupling framework to unity
-    public class UnityAsyncFramework : IAsyncFramework {
+    public class UnityFrameworkResolver : IFrameworkResolver {
         private readonly IUnityContainer unityContainer;
 
-        public UnityAsyncFramework(IUnityContainer unityContainer) {
+        public UnityFrameworkResolver(IUnityContainer unityContainer) {
             this.unityContainer = unityContainer;
         }
 
-        public INakedObjectsFramework Framework {
-            get { return unityContainer.Resolve<INakedObjectsFramework>(); }
+        #region IFrameworkResolver Members
+
+        public INakedObjectsFramework GetFramework() {
+            return unityContainer.Resolve<INakedObjectsFramework>();
         }
+
+        #endregion
     }
+
     /// <summary>
     /// Specifies the Unity configuration for the main container.
     /// </summary>
@@ -55,32 +60,24 @@ namespace NakedObjects.Batch.Exe {
 
 
         private static Type[] Types {
-            get {
-                return new Type[] { typeof(EntityCollection<object>), typeof(ObjectQuery<object>) };
-            }
+            get { return new Type[] {typeof (EntityCollection<object>), typeof (ObjectQuery<object>)}; }
         }
 
 
         private static object[] MenuServices {
-            get {
-                return new object[] {
-                };
-            }
+            get { return new object[] {}; }
         }
 
 
         private static object[] ContributedActions {
-            get {
-                return new object[] {
-                };
-            }
+            get { return new object[] {}; }
         }
 
 
         private static object[] SystemServices {
             get {
                 return new object[] {
-                   new AsyncService()
+                    new AsyncService()
                 };
             }
         }
@@ -88,39 +85,30 @@ namespace NakedObjects.Batch.Exe {
         private static EntityObjectStoreConfiguration EntityObjectStore() {
             var config = new EntityObjectStoreConfiguration();
             config.UsingEdmxContext("Model").AssociateTypes(AdventureWorksTypes);
-            config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject) });
+            config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
             return config;
         }
 
         private static Type[] AdventureWorksTypes() {
             var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-            return allTypes.Where(t => t.BaseType == typeof(AWDomainObject) && !t.IsAbstract).ToArray();
+            return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
         }
-
-
 
         #endregion
 
         #region Framework Configuration
-
-        public class NullMenuDefinition : IMainMenuDefinition {
-            public IMenu[] MainMenus(IMenuFactory factory) {
-               return new IMenu[]{};
-            }
-        }
-
 
         /// <summary>Registers the type mappings with the Unity container.</summary>
         /// <param name="container">The unity container to configure.</param>
         /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container) {
-            AdventureWorksModel.AssemblyHook.EnsureAssemblyLoaded();
+            AssemblyHook.EnsureAssemblyLoaded();
 
             var reflectorConfig = new ReflectorConfiguration(Types,
-               MenuServices.Select(s => s.GetType()).ToArray(),
-               ContributedActions.Select(s => s.GetType()).ToArray(),
-               SystemServices.Select(s => s.GetType()).ToArray());
+                MenuServices.Select(s => s.GetType()).ToArray(),
+                ContributedActions.Select(s => s.GetType()).ToArray(),
+                SystemServices.Select(s => s.GetType()).ToArray());
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
 
@@ -154,7 +142,7 @@ namespace NakedObjects.Batch.Exe {
             container.RegisterType<ISession, WindowsSession>(new PerResolveLifetimeManager());
             container.RegisterType<IMessageBroker, MessageBroker>(new PerResolveLifetimeManager());
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerResolveLifetimeManager());
-            container.RegisterType<IAsyncFramework, UnityAsyncFramework>(new PerResolveLifetimeManager());
+            container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>(new PerResolveLifetimeManager());
 
             container.RegisterType<IBatchController, BatchController>(new PerResolveLifetimeManager());
 
@@ -165,6 +153,16 @@ namespace NakedObjects.Batch.Exe {
 
             //Externals
             container.RegisterType<IPrincipal>(new InjectionFactory(c => Thread.CurrentPrincipal));
+        }
+
+        public class NullMenuDefinition : IMainMenuDefinition {
+            #region IMainMenuDefinition Members
+
+            public IMenu[] MainMenus(IMenuFactory factory) {
+                return new IMenu[] {};
+            }
+
+            #endregion
         }
 
         #endregion
@@ -186,6 +184,4 @@ namespace NakedObjects.Batch.Exe {
 
         #endregion
     }
-
-  
 }

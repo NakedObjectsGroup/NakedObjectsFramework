@@ -36,6 +36,6 @@ namespace NakedObjects {
 
         ITransactionManager TransactionManager { get; }
 
-        IAsyncFramework AsyncFramework { get; }
+        IFrameworkResolver FrameworkResolver { get; }
     }
 }
