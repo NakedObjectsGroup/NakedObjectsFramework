@@ -140,7 +140,6 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapter\AbstractVersion.cs" />
     <Compile Include="Adapter\ConcurrencyCheckVersion.cs" />
     <Compile Include="Adapter\IdentityAdapterHashMap.cs" />
     <Compile Include="Adapter\IIdentityAdapterMap.cs" />
@@ -152,7 +151,6 @@
     <Compile Include="Component\PocoAdapterHashMap.cs" />
     <Compile Include="Adapter\NullVersion.cs" />
     <Compile Include="Adapter\PocoAdapter.cs" />
-    <Compile Include="Adapter\SerialNumberVersion.cs" />
     <Compile Include="Adapter\StringDecoderHelper.cs" />
     <Compile Include="Adapter\StringEncoderHelper.cs" />
     <Compile Include="AssemblyInfo.cs" />
@@ -179,9 +177,6 @@
     <Compile Include="Util\CollectionMementoHelper.cs" />
     <Compile Include="Component\DefaultPersistAlgorithm.cs" />
     <Compile Include="Adapter\EntityOid.cs" />
-    <Compile Include="Adapter\SerialOid.cs" />
-    <Compile Include="Component\SimpleOidGenerator.cs" />
-    <Compile Include="Component\TimeBasedOidGenerator.cs" />
     <Compile Include="Exception\TransactionException.cs" />
     <Compile Include="Adapter\AggregateOid.cs" />
     <Compile Include="Adapter\ViewModelOid.cs" />
@@ -276,7 +271,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapter\FileVersion.cs" />
     <Compile Include="Adapter\IClock.cs" />
     <Compile Include="Exception\TitleException.cs" />
     <Compile Include="Authentication\WindowsSession.cs" />

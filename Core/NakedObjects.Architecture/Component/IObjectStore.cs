@@ -29,8 +29,6 @@ namespace NakedObjects.Architecture.Component {
         /// </summary>
         string Name { get; }
 
-        //INakedObjectManager Manager { get; set; }
-
         void AbortTransaction();
 
         /// <summary>
@@ -48,8 +46,6 @@ namespace NakedObjects.Architecture.Component {
         ///     already persistent, should be made persistent by recursively calling this method.
         /// </para>
         ICreateObjectCommand CreateCreateObjectCommand(INakedObject nakedObject, ISession session);
-
-        // void RegisterService(string name, IOid oid);
 
         /// <summary>
         ///     Removes the specified object from the object store. The specified object's data should be removed from
@@ -106,10 +102,6 @@ namespace NakedObjects.Architecture.Component {
 
         void Reload(INakedObject nakedObject);
 
-        /// <summary>
-        ///     Returns the OID for the adapted service
-        /// </summary>
-        //IOid GetOidForService(string name, string typeName);
         void ResolveField(INakedObject nakedObject, IAssociationSpec field);
 
         void ResolveImmediately(INakedObject nakedObject);

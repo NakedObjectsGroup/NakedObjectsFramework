@@ -15,8 +15,6 @@ namespace NakedObjects.Architecture.Adapter {
     ///         initialises from them
     ///     </para>
     /// </remarks>
-    /// <seealso cref="StringEncoderHelper" />
-    /// <seealso cref="StringDecoderHelper" />
     public interface IEncodedToStrings {
         string[] ToEncodedStrings();
         string[] ToShortEncodedStrings();

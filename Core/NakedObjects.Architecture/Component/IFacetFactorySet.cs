@@ -21,7 +21,6 @@ namespace NakedObjects.Architecture.Component {
         IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates);
         IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates);
 
-
         /// <summary>
         ///     Whether this <see cref="MethodInfo" /> is recognized by any of the <see cref="IFacetFactory" />s.
         /// </summary>
@@ -41,10 +40,7 @@ namespace NakedObjects.Architecture.Component {
         /// <param name="type">type to process</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
         /// <param name="specification"> holder to attach facets to</param>
-        /// <returns>
-        ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
-        /// </returns>
-        bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification);
+        void Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification);
 
         /// <summary>
         ///     Delegates to <see cref="IFacetFactory.Process(System.Reflection.MethodInfo,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" />for each appropriate factory.
@@ -53,10 +49,7 @@ namespace NakedObjects.Architecture.Component {
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
         /// <param name="specification"> holder to attach facets to</param>
         /// <param name="featureType">what type of feature the method represents (property, action, collection etc)</param>
-        /// <returns>
-        ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
-        /// </returns>
-        bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType);
+        void Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType);
 
         /// <summary>
         ///     Delegates to <see cref="IFacetFactory.Process(System.Reflection.PropertyInfo,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" />for each appropriate factory.
@@ -65,10 +58,7 @@ namespace NakedObjects.Architecture.Component {
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
         /// <param name="specification"> holder to attach facets to</param>
         /// <param name="featureType">what type of feature the method represents (property, action, collection etc)</param>
-        /// <returns>
-        ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
-        /// </returns>
-        bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType);
+        void Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType);
 
         /// <summary>
         ///     Delegates to <see cref="IFacetFactory.ProcessParams" /> for each appropriate factory.
@@ -76,10 +66,7 @@ namespace NakedObjects.Architecture.Component {
         /// <param name="method">action method to process</param>
         /// <param name="paramNum">zero-based</param>
         /// <param name="specification"> holder to attach facets to</param>
-        /// <returns>
-        ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
-        /// </returns>
-        bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder specification);
+        void ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder specification);
 
         void Init(IReflector reflector);
     }
