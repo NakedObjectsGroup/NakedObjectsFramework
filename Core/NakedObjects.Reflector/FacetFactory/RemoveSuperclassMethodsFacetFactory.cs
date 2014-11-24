@@ -23,16 +23,12 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     Implementation - .Net fails to find methods properly for root class, so we used the saved set.
     /// </para>
     public class RemoveSuperclassMethodsFacetFactory : FacetFactoryAbstract {
-        private static readonly IDictionary<Type, MethodInfo[]> typeToMethods;
+        private readonly IDictionary<Type, MethodInfo[]> typeToMethods = new Dictionary<Type, MethodInfo[]>();
 
-        static RemoveSuperclassMethodsFacetFactory() {
-            typeToMethods = new Dictionary<Type, MethodInfo[]>();
-        }
+        public RemoveSuperclassMethodsFacetFactory()
+            : base(FeatureType.Objects) {}
 
-        public RemoveSuperclassMethodsFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
-
-        private static void InitForType(Type type) {
+        private void InitForType(Type type) {
             if (!typeToMethods.ContainsKey(type)) {
                 typeToMethods.Add(type, type.GetMethods());
             }
@@ -47,7 +43,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Type currentType = type;
             while (currentType != null) {
                 if (TypeUtils.IsSystem(currentType)) {
@@ -55,7 +51,6 @@ namespace NakedObjects.Reflect.FacetFactory {
                 }
                 currentType = currentType.BaseType;
             }
-            return false;
         }
     }
 

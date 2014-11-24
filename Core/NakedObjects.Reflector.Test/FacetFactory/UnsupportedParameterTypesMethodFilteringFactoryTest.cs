@@ -33,7 +33,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             Reflector = new Reflector(classStrategy, new FacetFactorySet(), metamodel, config, servicesConfig, null, null, new IFacetDecorator[] {});
 
-            facetFactory = new UnsupportedParameterTypesMethodFilteringFactory(Reflector);
+            facetFactory = new UnsupportedParameterTypesMethodFilteringFactory();
         }
 
         [TearDown]
@@ -84,52 +84,52 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestActionWithDictionaryParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithDictionaryParameter");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestActionWithGenericParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithGenericParameter");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
 
         [Test]
         public void TestActionWithNoParameters() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithNoParameters");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestActionWithNullableParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithNullableParameter");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
 
         [Test]
         public void TestActionWithOneBadParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithOneBadParameter");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestActionWithOneGoodOneBadParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithOneGoodOneBadParameter");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestActionWithOneGoodParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithOneGoodParameter");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
 
         [Test]
         public void TestActionWithTwoGoodParameter() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (Customer), "ActionWithTwoGoodParameter");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]

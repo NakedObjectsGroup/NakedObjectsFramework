@@ -21,21 +21,21 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="ExecutedAttribute" /> annotation
     /// </summary>
     public class ExecutedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ExecutedAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Action) {}
+        public ExecutedAnnotationFacetFactory()
+            : base(FeatureType.Action) {}
 
-        private static bool Process(MemberInfo member, ISpecification holder) {
+        private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<ExecutedAttribute>(member);
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(method, specification);
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(method, specification);
         }
 
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(property, specification);
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(property, specification);
         }
 
         private static IExecutedFacet Create(ExecutedAttribute attribute, ISpecification holder) {

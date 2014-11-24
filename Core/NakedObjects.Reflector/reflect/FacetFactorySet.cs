@@ -75,8 +75,8 @@ namespace NakedObjects.Reflect {
             return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindCollectionProperties(candidates)).ToList();
         }
 
-        public IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates) {
-            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindProperties(candidates)).ToList();
+        public IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
+            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindProperties(candidates, classStrategy)).ToList();
         }
 
         /// <summary>
@@ -100,36 +100,36 @@ namespace NakedObjects.Reflect {
         ///     for when there are multiple facet factories that search for the
         ///     same prefix.
         /// </para>
-        public bool Filters(MethodInfo method) {
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
             CacheMethodFilteringFacetFactoriesIfRequired();
-            return methodFilteringFactories.Any(factory => factory.Filters(method));
+            return methodFilteringFactories.Any(factory => factory.Filters(method, classStrategy));
         }
 
         public bool Recognizes(MethodInfo method) {
             return Prefixes.Any(prefix => method.Name.StartsWith(prefix));
         }
 
-        public void Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.Objects)) {
-                facetFactory.Process(type, RemoverElseNullRemover(methodRemover), specification);
+                facetFactory.Process(reflector, type, RemoverElseNullRemover(methodRemover), specification);
             }
         }
 
-        public void Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
+        public void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
-                facetFactory.Process(method, RemoverElseNullRemover(methodRemover), specification);
+                facetFactory.Process(reflector, method, RemoverElseNullRemover(methodRemover), specification);
             }
         }
 
-        public void Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
+        public void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
-                facetFactory.Process(property, RemoverElseNullRemover(methodRemover), specification);
+                facetFactory.Process(reflector, property, RemoverElseNullRemover(methodRemover), specification);
             }
         }
 
-        public void ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder specification) {
+        public void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification) {
             foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameter)) {
-                facetFactory.ProcessParams(method, paramNum, specification);
+                facetFactory.ProcessParams(reflector, method, paramNum, specification);
             }
         }
 
@@ -216,93 +216,93 @@ namespace NakedObjects.Reflect {
 
         private void RegisterFactories(IReflector reflector) {
             // must be first, so any Facets created can be replaced by other FacetFactorys later.
-            RegisterFactory(new FallbackFacetFactory(reflector));
-            RegisterFactory(new IteratorFilteringFacetFactory(reflector));
-            RegisterFactory(new UnsupportedParameterTypesMethodFilteringFactory(reflector));
-            RegisterFactory(new RemoveSuperclassMethodsFacetFactory(reflector));
-            RegisterFactory(new RemoveInitMethodFacetFactory(reflector));
-            RegisterFactory(new RemoveDynamicProxyMethodsFacetFactory(reflector));
-            RegisterFactory(new RemoveEventHandlerMethodsFacetFactory(reflector));
-            RegisterFactory(new TypeMarkerFacetFactory(reflector));
+            RegisterFactory(new FallbackFacetFactory());
+            RegisterFactory(new IteratorFilteringFacetFactory());
+            RegisterFactory(new UnsupportedParameterTypesMethodFilteringFactory());
+            RegisterFactory(new RemoveSuperclassMethodsFacetFactory());
+            RegisterFactory(new RemoveInitMethodFacetFactory());
+            RegisterFactory(new RemoveDynamicProxyMethodsFacetFactory());
+            RegisterFactory(new RemoveEventHandlerMethodsFacetFactory());
+            RegisterFactory(new TypeMarkerFacetFactory());
             // must be before any other FacetFactories that install MandatoryFacet.class facets
-            RegisterFactory(new MandatoryDefaultFacetFactory(reflector));
-            RegisterFactory(new PropertyValidateDefaultFacetFactory(reflector));
-            RegisterFactory(new ComplementaryMethodsFilteringFacetFactory(reflector));
-            RegisterFactory(new ActionMethodsFacetFactory(reflector));
-            RegisterFactory(new CollectionFieldMethodsFacetFactory(reflector));
-            RegisterFactory(new PropertyMethodsFacetFactory(reflector));
-            RegisterFactory(new IconMethodFacetFactory(reflector));
-            RegisterFactory(new CallbackMethodsFacetFactory(reflector));
-            RegisterFactory(new TitleMethodFacetFactory(reflector));
-            RegisterFactory(new ValidateObjectFacetFactory(reflector));
-            RegisterFactory(new ActionOrderAnnotationFacetFactory(reflector));
-            RegisterFactory(new ComplexTypeAnnotationFacetFactory(reflector));
-            RegisterFactory(new ViewModelFacetFactory(reflector));
-            RegisterFactory(new BoundedAnnotationFacetFactory(reflector));
-            RegisterFactory(new EnumFacetFactory(reflector));
-            RegisterFactory(new ActionDefaultAnnotationFacetFactory(reflector));
-            RegisterFactory(new PropertyDefaultAnnotationFacetFactory(reflector));
-            RegisterFactory(new DescribedAsAnnotationFacetFactory(reflector));
-            RegisterFactory(new DisabledAnnotationFacetFactory(reflector));
-            RegisterFactory(new PasswordAnnotationFacetFactory(reflector));
-            RegisterFactory(new ExecutedAnnotationFacetFactory(reflector));
-            RegisterFactory(new PotencyAnnotationFacetFactory(reflector));
-            RegisterFactory(new PageSizeAnnotationFacetFactory(reflector));
-            RegisterFactory(new FieldOrderAnnotationFacetFactory(reflector));
-            RegisterFactory(new HiddenAnnotationFacetFactory(reflector));
-            RegisterFactory(new HiddenDefaultMethodFacetFactory(reflector));
-            RegisterFactory(new DisableDefaultMethodFacetFactory(reflector));
-            RegisterFactory(new AuthorizeAnnotationFacetFactory(reflector));
-            RegisterFactory(new ValidateProgrammaticUpdatesAnnotationFacetFactory(reflector));
-            RegisterFactory(new ImmutableAnnotationFacetFactory(reflector));
-            RegisterFactory(new MaxLengthAnnotationFacetFactory(reflector));
-            RegisterFactory(new RangeAnnotationFacetFactory(reflector));
-            RegisterFactory(new MemberOrderAnnotationFacetFactory(reflector));
-            RegisterFactory(new MultiLineAnnotationFacetFactory(reflector));
-            RegisterFactory(new NamedAnnotationFacetFactory(reflector));
-            RegisterFactory(new NotPersistedAnnotationFacetFactory(reflector));
-            RegisterFactory(new ProgramPersistableOnlyAnnotationFacetFactory(reflector));
-            RegisterFactory(new OptionalAnnotationFacetFactory(reflector));
-            RegisterFactory(new RequiredAnnotationFacetFactory(reflector));
-            RegisterFactory(new PluralAnnotationFacetFactory(reflector));
-            RegisterFactory(new DefaultNamingFacetFactory(reflector)); // must come after Named and Plural factories
-            RegisterFactory(new KeyAnnotationFacetFactory(reflector));
-            RegisterFactory(new ConcurrencyCheckAnnotationFacetFactory(reflector));
-            RegisterFactory(new ContributedActionAnnotationFacetFactory(reflector));
-            RegisterFactory(new ExcludeFromFindMenuAnnotationFacetFactory(reflector));
+            RegisterFactory(new MandatoryDefaultFacetFactory());
+            RegisterFactory(new PropertyValidateDefaultFacetFactory());
+            RegisterFactory(new ComplementaryMethodsFilteringFacetFactory());
+            RegisterFactory(new ActionMethodsFacetFactory());
+            RegisterFactory(new CollectionFieldMethodsFacetFactory());
+            RegisterFactory(new PropertyMethodsFacetFactory());
+            RegisterFactory(new IconMethodFacetFactory());
+            RegisterFactory(new CallbackMethodsFacetFactory());
+            RegisterFactory(new TitleMethodFacetFactory());
+            RegisterFactory(new ValidateObjectFacetFactory());
+            RegisterFactory(new ActionOrderAnnotationFacetFactory());
+            RegisterFactory(new ComplexTypeAnnotationFacetFactory());
+            RegisterFactory(new ViewModelFacetFactory());
+            RegisterFactory(new BoundedAnnotationFacetFactory());
+            RegisterFactory(new EnumFacetFactory());
+            RegisterFactory(new ActionDefaultAnnotationFacetFactory());
+            RegisterFactory(new PropertyDefaultAnnotationFacetFactory());
+            RegisterFactory(new DescribedAsAnnotationFacetFactory());
+            RegisterFactory(new DisabledAnnotationFacetFactory());
+            RegisterFactory(new PasswordAnnotationFacetFactory());
+            RegisterFactory(new ExecutedAnnotationFacetFactory());
+            RegisterFactory(new PotencyAnnotationFacetFactory());
+            RegisterFactory(new PageSizeAnnotationFacetFactory());
+            RegisterFactory(new FieldOrderAnnotationFacetFactory());
+            RegisterFactory(new HiddenAnnotationFacetFactory());
+            RegisterFactory(new HiddenDefaultMethodFacetFactory());
+            RegisterFactory(new DisableDefaultMethodFacetFactory());
+            RegisterFactory(new AuthorizeAnnotationFacetFactory());
+            RegisterFactory(new ValidateProgrammaticUpdatesAnnotationFacetFactory());
+            RegisterFactory(new ImmutableAnnotationFacetFactory());
+            RegisterFactory(new MaxLengthAnnotationFacetFactory());
+            RegisterFactory(new RangeAnnotationFacetFactory());
+            RegisterFactory(new MemberOrderAnnotationFacetFactory());
+            RegisterFactory(new MultiLineAnnotationFacetFactory());
+            RegisterFactory(new NamedAnnotationFacetFactory());
+            RegisterFactory(new NotPersistedAnnotationFacetFactory());
+            RegisterFactory(new ProgramPersistableOnlyAnnotationFacetFactory());
+            RegisterFactory(new OptionalAnnotationFacetFactory());
+            RegisterFactory(new RequiredAnnotationFacetFactory());
+            RegisterFactory(new PluralAnnotationFacetFactory());
+            RegisterFactory(new DefaultNamingFacetFactory()); // must come after Named and Plural factories
+            RegisterFactory(new KeyAnnotationFacetFactory());
+            RegisterFactory(new ConcurrencyCheckAnnotationFacetFactory());
+            RegisterFactory(new ContributedActionAnnotationFacetFactory());
+            RegisterFactory(new ExcludeFromFindMenuAnnotationFacetFactory());
             // must come after any facets that install titles
-            RegisterFactory(new MaskAnnotationFacetFactory(reflector));
+            RegisterFactory(new MaskAnnotationFacetFactory());
             // must come after any facets that install titles, and after mask
             // if takes precedence over mask.
-            RegisterFactory(new RegExAnnotationFacetFactory(reflector));
-            RegisterFactory(new TypeOfAnnotationFacetFactory(reflector));
-            RegisterFactory(new TableViewAnnotationFacetFactory(reflector));
-            RegisterFactory(new TypicalLengthDerivedFromTypeFacetFactory(reflector));
-            RegisterFactory(new TypicalLengthAnnotationFacetFactory(reflector));
-            RegisterFactory(new EagerlyAnnotationFacetFactory(reflector));
-            RegisterFactory(new PresentationHintAnnotationFacetFactory(reflector));
-            RegisterFactory(new BooleanValueTypeFacetFactory(reflector));
-            RegisterFactory(new ByteValueTypeFacetFactory(reflector));
-            RegisterFactory(new SbyteValueTypeFacetFactory(reflector));
-            RegisterFactory(new ShortValueTypeFacetFactory(reflector));
-            RegisterFactory(new IntValueTypeFacetFactory(reflector));
-            RegisterFactory(new LongValueTypeFacetFactory(reflector));
-            RegisterFactory(new UShortValueTypeFacetFactory(reflector));
-            RegisterFactory(new UIntValueTypeFacetFactory(reflector));
-            RegisterFactory(new ULongValueTypeFacetFactory(reflector));
-            RegisterFactory(new FloatValueTypeFacetFactory(reflector));
-            RegisterFactory(new DoubleValueTypeFacetFactory(reflector));
-            RegisterFactory(new DecimalValueTypeFacetFactory(reflector));
-            RegisterFactory(new CharValueTypeFacetFactory(reflector));
-            RegisterFactory(new DateTimeValueTypeFacetFactory(reflector));
-            RegisterFactory(new TimeValueTypeFacetFactory(reflector));
-            RegisterFactory(new StringValueTypeFacetFactory(reflector));
-            RegisterFactory(new GuidValueTypeFacetFactory(reflector));
-            RegisterFactory(new EnumValueTypeFacetFactory(reflector));
-            RegisterFactory(new FileAttachmentValueTypeFacetFactory(reflector));
-            RegisterFactory(new ImageValueTypeFacetFactory(reflector));
-            RegisterFactory(new ArrayValueTypeFacetFactory<byte>(reflector));
-            RegisterFactory(new CollectionFacetFactory(reflector)); // written to not trample over TypeOf if already installed
+            RegisterFactory(new RegExAnnotationFacetFactory());
+            RegisterFactory(new TypeOfAnnotationFacetFactory());
+            RegisterFactory(new TableViewAnnotationFacetFactory());
+            RegisterFactory(new TypicalLengthDerivedFromTypeFacetFactory());
+            RegisterFactory(new TypicalLengthAnnotationFacetFactory());
+            RegisterFactory(new EagerlyAnnotationFacetFactory());
+            RegisterFactory(new PresentationHintAnnotationFacetFactory());
+            RegisterFactory(new BooleanValueTypeFacetFactory());
+            RegisterFactory(new ByteValueTypeFacetFactory());
+            RegisterFactory(new SbyteValueTypeFacetFactory());
+            RegisterFactory(new ShortValueTypeFacetFactory());
+            RegisterFactory(new IntValueTypeFacetFactory());
+            RegisterFactory(new LongValueTypeFacetFactory());
+            RegisterFactory(new UShortValueTypeFacetFactory());
+            RegisterFactory(new UIntValueTypeFacetFactory());
+            RegisterFactory(new ULongValueTypeFacetFactory());
+            RegisterFactory(new FloatValueTypeFacetFactory());
+            RegisterFactory(new DoubleValueTypeFacetFactory());
+            RegisterFactory(new DecimalValueTypeFacetFactory());
+            RegisterFactory(new CharValueTypeFacetFactory());
+            RegisterFactory(new DateTimeValueTypeFacetFactory());
+            RegisterFactory(new TimeValueTypeFacetFactory());
+            RegisterFactory(new StringValueTypeFacetFactory());
+            RegisterFactory(new GuidValueTypeFacetFactory());
+            RegisterFactory(new EnumValueTypeFacetFactory());
+            RegisterFactory(new FileAttachmentValueTypeFacetFactory());
+            RegisterFactory(new ImageValueTypeFacetFactory());
+            RegisterFactory(new ArrayValueTypeFacetFactory<byte>());
+            RegisterFactory(new CollectionFacetFactory()); // written to not trample over TypeOf if already installed
         }
     }
 }

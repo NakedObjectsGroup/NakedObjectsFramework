@@ -19,7 +19,7 @@ namespace NakedObjects.Architecture.Component {
     /// </summary>
     public interface IFacetFactorySet {
         IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates);
-        IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates);
+        IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
 
         /// <summary>
         ///     Whether this <see cref="MethodInfo" /> is recognized by any of the <see cref="IFacetFactory" />s.
@@ -32,41 +32,45 @@ namespace NakedObjects.Architecture.Component {
         /// <summary>
         ///     Whether this <see cref="MethodInfo" /> is filtered by any of the <see cref="IFacetFactory" />s.
         /// </summary>
-        bool Filters(MethodInfo method);
+        bool Filters(MethodInfo method, IClassStrategy classStrategy);
 
         /// <summary>
-        ///     Delegates to <see cref="IFacetFactory.Process(System.Type,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" /> for each appropriate factory.
+        ///     Delegates to <see cref="IFacetFactory.Process(NakedObjects.Architecture.Component.IReflector,System.Type,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" /> for each appropriate factory.
         /// </summary>
+        /// <param name="reflector"></param>
         /// <param name="type">type to process</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
         /// <param name="specification"> holder to attach facets to</param>
-        void Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification);
+        void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification);
 
         /// <summary>
-        ///     Delegates to <see cref="IFacetFactory.Process(System.Reflection.MethodInfo,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" />for each appropriate factory.
+        ///     Delegates to <see cref="IFacetFactory.Process(NakedObjects.Architecture.Component.IReflector,System.Reflection.MethodInfo,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" />for each appropriate factory.
         /// </summary>
+        /// <param name="reflector"></param>
         /// <param name="method">method to process</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
         /// <param name="specification"> holder to attach facets to</param>
         /// <param name="featureType">what type of feature the method represents (property, action, collection etc)</param>
-        void Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType);
+        void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType);
 
         /// <summary>
-        ///     Delegates to <see cref="IFacetFactory.Process(System.Reflection.PropertyInfo,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" />for each appropriate factory.
+        ///     Delegates to <see cref="IFacetFactory.Process(NakedObjects.Architecture.Component.IReflector,System.Reflection.PropertyInfo,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" />for each appropriate factory.
         /// </summary>
+        /// <param name="reflector"></param>
         /// <param name="property">property to process</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
         /// <param name="specification"> holder to attach facets to</param>
         /// <param name="featureType">what type of feature the method represents (property, action, collection etc)</param>
-        void Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType);
+        void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType);
 
         /// <summary>
         ///     Delegates to <see cref="IFacetFactory.ProcessParams" /> for each appropriate factory.
         /// </summary>
+        /// <param name="reflector"></param>
         /// <param name="method">action method to process</param>
         /// <param name="paramNum">zero-based</param>
         /// <param name="specification"> holder to attach facets to</param>
-        void ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder specification);
+        void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification);
 
         void Init(IReflector reflector);
     }

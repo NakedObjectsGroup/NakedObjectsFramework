@@ -13,15 +13,11 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class DateTimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public DateTimeValueTypeFacetFactory(IReflector reflector)
-            : base(reflector) {}
-
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (DateTimeValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = Reflector.LoadSpecification(DateTimeValueSemanticsProvider.AdaptedType);
-                return AddValueFacets(new DateTimeValueSemanticsProvider(spec, specification), specification);
+                var spec = reflector.LoadSpecification(DateTimeValueSemanticsProvider.AdaptedType);
+                AddValueFacets(new DateTimeValueSemanticsProvider(spec, specification), specification);
             }
-            return false;
         }
     }
 }

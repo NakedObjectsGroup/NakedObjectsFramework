@@ -13,15 +13,11 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class BooleanValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public BooleanValueTypeFacetFactory(IReflector reflector)
-            : base(reflector) {}
-
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (BooleanValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = Reflector.LoadSpecification(BooleanValueSemanticsProvider.AdaptedType);
-                return AddValueFacets(new BooleanValueSemanticsProvider(spec, specification), specification);
+                var spec = reflector.LoadSpecification(BooleanValueSemanticsProvider.AdaptedType);
+                AddValueFacets(new BooleanValueSemanticsProvider(spec, specification), specification);
             }
-            return false;
         }
     }
 }

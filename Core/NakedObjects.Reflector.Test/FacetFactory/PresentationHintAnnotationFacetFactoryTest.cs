@@ -23,7 +23,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PresentationHintAnnotationFacetFactory(Reflector);
+            facetFactory = new PresentationHintAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -86,21 +86,21 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestPresentationHintAnnotationNotIgnoredForNonStringsProperty() {
             PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             Assert.IsNotNull(Specification.GetFacet(typeof (IPresentationHintFacet)));
         }
 
         [Test]
         public void TestPresentationHintAnnotationNotIgnoredForPrimitiveOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             Assert.IsNotNull(Specification.GetFacet(typeof (IPresentationHintFacet)));
         }
 
         [Test]
         public void TestPresentationHintAnnotationPickedUpOnAction() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
-            facetFactory.Process(method, MethodRemover, Specification);
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
@@ -111,7 +111,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestPresentationHintAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
@@ -121,7 +121,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestPresentationHintAnnotationPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
@@ -132,7 +132,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestPresentationHintAnnotationPickedUpOnCollectionProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Customers");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
@@ -143,7 +143,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestPresentationHintAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);

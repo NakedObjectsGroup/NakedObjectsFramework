@@ -23,7 +23,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new ComplexTypeAnnotationFacetFactory(Reflector);
+            facetFactory = new ComplexTypeAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -60,7 +60,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestImmutableAnnotationPickedUpOnClassAndDefaultsToAlways() {
-            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IComplexTypeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ComplexTypeFacetAnnotation);

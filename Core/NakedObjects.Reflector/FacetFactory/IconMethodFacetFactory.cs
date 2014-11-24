@@ -18,28 +18,25 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class IconMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-        private static readonly string[] prefixes;
+        private static readonly string[] FixedPrefixes = {PrefixesAndRecognisedMethods.IconNameMethod};
 
-        static IconMethodFacetFactory() {
-            prefixes = new[] {PrefixesAndRecognisedMethods.IconNameMethod};
-        }
-
-        public IconMethodFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+        public IconMethodFacetFactory()
+            : base(FeatureType.Objects) {}
 
         public override string[] Prefixes {
-            get { return prefixes; }
+            get { return FixedPrefixes; }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            MethodInfo method = FindMethod(type, MethodType.Object, PrefixesAndRecognisedMethods.IconNameMethod, typeof (string), Type.EmptyTypes);
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.IconNameMethod, typeof(string), Type.EmptyTypes);
             var attribute = type.GetCustomAttributeByReflection<IconNameAttribute>();
             if (method != null) {
                 RemoveMethod(methodRemover, method);
-                return FacetUtils.AddFacet(new IconFacetViaMethod(method, specification, attribute == null ? null : attribute.Value));
+                FacetUtils.AddFacet(new IconFacetViaMethod(method, specification, attribute == null ? null : attribute.Value));
             }
-
-            return FacetUtils.AddFacet(Create(attribute, specification));
+            else {
+                FacetUtils.AddFacet(Create(attribute, specification));
+            }
         }
 
 

@@ -24,7 +24,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ContributedActionAnnotationFacetFactory(Reflector);
+            facetFactory = new ContributedActionAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -78,7 +78,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestNotContributedAnnotationNullByDefault() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IExecutedFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
@@ -87,7 +87,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestNotContributedAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = (INotContributedActionFacet) Specification.GetFacet(typeof (INotContributedActionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotContributedActionFacet);
@@ -100,7 +100,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestNotContributedAnnotationPickedUpWithType() {
             MethodInfo actionMethod = FindMethod(typeof (Customer2), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = (INotContributedActionFacet) Specification.GetFacet(typeof (INotContributedActionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotContributedActionFacet);
@@ -117,7 +117,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestNotContributedAnnotationPickedUpWithTypes() {
             MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = (INotContributedActionFacet) Specification.GetFacet(typeof (INotContributedActionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotContributedActionFacet);

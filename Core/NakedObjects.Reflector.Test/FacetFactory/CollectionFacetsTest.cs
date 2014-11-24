@@ -15,9 +15,10 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NUnit.Framework;
-using CollectionUtils = NakedObjects.Core.Util.CollectionUtils;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestFixture]

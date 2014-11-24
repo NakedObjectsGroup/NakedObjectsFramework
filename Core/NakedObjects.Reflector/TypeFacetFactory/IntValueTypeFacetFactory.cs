@@ -13,15 +13,11 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class IntValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public IntValueTypeFacetFactory(IReflector reflector)
-            : base(reflector) {}
-
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (IntValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = Reflector.LoadSpecification(IntValueSemanticsProvider.AdaptedType);
-                return AddValueFacets(new IntValueSemanticsProvider(spec, specification), specification);
+                var spec = reflector.LoadSpecification(IntValueSemanticsProvider.AdaptedType);
+                AddValueFacets(new IntValueSemanticsProvider(spec, specification), specification);
             }
-            return false;
         }
     }
 }

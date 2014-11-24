@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
@@ -22,20 +23,20 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="NotContributedActionAttribute" /> annotation
     /// </summary>
     public class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ContributedActionAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Action) {}
+        public ContributedActionAnnotationFacetFactory()
+            : base(FeatureType.Action) {}
 
-        private bool Process(MemberInfo member, ISpecification holder) {
+        private void Process(IReflector reflector, MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<NotContributedActionAttribute>(member);
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(reflector, attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(method, specification);
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(reflector, method, specification);
         }
 
-        private INotContributedActionFacet Create(NotContributedActionAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new NotContributedActionFacet(holder, attribute.NotContributedToTypes.Select(t => Reflector.LoadSpecification(t)).ToArray());
+        private INotContributedActionFacet Create(IReflector reflector, NotContributedActionAttribute attribute, ISpecification holder) {
+            return attribute == null ? null : new NotContributedActionFacet(holder, attribute.NotContributedToTypes.Select(reflector.LoadSpecification).Cast<IObjectSpecImmutable>().ToArray());
         }
     }
 }

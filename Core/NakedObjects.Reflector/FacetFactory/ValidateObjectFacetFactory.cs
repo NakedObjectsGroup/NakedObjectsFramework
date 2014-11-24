@@ -23,16 +23,14 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflect.FacetFactory {
     public class ValidateObjectFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ValidateObjectFacetFactory));
-        private static readonly string[] FixedPrefixes;
 
-        static ValidateObjectFacetFactory() {
-            FixedPrefixes = new[] {
-                PrefixesAndRecognisedMethods.ValidatePrefix
-            };
-        }
+        private static readonly string[] FixedPrefixes = {
+            PrefixesAndRecognisedMethods.ValidatePrefix
+        };
 
-        public ValidateObjectFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+
+        public ValidateObjectFacetFactory()
+            : base(FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }
@@ -48,11 +46,11 @@ namespace NakedObjects.Reflect.FacetFactory {
                                        !CollectionUtils.IsQueryable(p.PropertyType));
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Log.DebugFormat("Looking for validate methods for {0}", type);
 
             var methodPeers = new List<ValidateObjectFacet.NakedObjectValidationMethod>();
-            var methods = FindMethods(type, MethodType.Object, PrefixesAndRecognisedMethods.ValidatePrefix, typeof (string));
+            var methods = FindMethods(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ValidatePrefix, typeof(string));
 
             if (methods.Any()) {
                 foreach (var method in methods) {
@@ -68,7 +66,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
 
             var validateFacet = methodPeers.Any() ? (IValidateObjectFacet) new ValidateObjectFacet(specification, methodPeers) : new ValidateObjectFacetNull(specification);
-            return FacetUtils.AddFacet(validateFacet);
+            FacetUtils.AddFacet(validateFacet);
         }
     }
 }

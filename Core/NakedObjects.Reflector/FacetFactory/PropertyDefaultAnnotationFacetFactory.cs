@@ -18,17 +18,17 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class PropertyDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PropertyDefaultAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Property) {}
+        public PropertyDefaultAnnotationFacetFactory()
+            : base(FeatureType.Property) {}
 
 
-        private static bool Process(MemberInfo member, ISpecification holder) {
+        private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<DefaultValueAttribute>(member);
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(property, specification);
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(property, specification);
         }
 
         private static IPropertyDefaultFacet Create(DefaultValueAttribute attribute, ISpecification holder) {

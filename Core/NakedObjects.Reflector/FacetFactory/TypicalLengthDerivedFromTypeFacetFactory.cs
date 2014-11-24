@@ -17,33 +17,32 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class TypicalLengthDerivedFromTypeFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TypicalLengthDerivedFromTypeFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.PropertiesAndParameters) {}
+        public TypicalLengthDerivedFromTypeFacetFactory()
+            : base(FeatureType.PropertiesAndParameters) {}
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return AddFacetDerivedFromTypeIfPresent(specification, property.PropertyType);
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            AddFacetDerivedFromTypeIfPresent(reflector, specification, property.PropertyType);
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Type type = method.ReturnType;
-            return AddFacetDerivedFromTypeIfPresent(specification, type);
+            AddFacetDerivedFromTypeIfPresent(reflector, specification, type);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
-            return AddFacetDerivedFromTypeIfPresent(holder, parameter.ParameterType);
+            AddFacetDerivedFromTypeIfPresent(reflector, holder, parameter.ParameterType);
         }
 
-        private bool AddFacetDerivedFromTypeIfPresent(ISpecification holder, Type type) {
-            ITypicalLengthFacet facet = GetTypicalLengthFacet(type);
+        private void AddFacetDerivedFromTypeIfPresent(IReflector reflector, ISpecification holder, Type type) {
+            ITypicalLengthFacet facet = GetTypicalLengthFacet(reflector, type);
             if (facet != null) {
-                return FacetUtils.AddFacet(new TypicalLengthFacetDerivedFromType(facet, holder));
+                FacetUtils.AddFacet(new TypicalLengthFacetDerivedFromType(facet, holder));
             }
-            return false;
         }
 
-        private ITypicalLengthFacet GetTypicalLengthFacet(Type type) {
-            var paramTypeSpec = Reflector.LoadSpecification(type);
+        private ITypicalLengthFacet GetTypicalLengthFacet(IReflector reflector, Type type) {
+            var paramTypeSpec = reflector.LoadSpecification(type);
             return paramTypeSpec.GetFacet<ITypicalLengthFacet>();
         }
     }

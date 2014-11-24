@@ -17,12 +17,12 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class ImmutableAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ImmutableAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+        public ImmutableAnnotationFacetFactory()
+            : base(FeatureType.Objects) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<ImmutableAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static IImmutableFacet Create(ImmutableAttribute attribute, ISpecification holder) {

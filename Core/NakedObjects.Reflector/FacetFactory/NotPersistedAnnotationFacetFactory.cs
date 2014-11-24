@@ -18,21 +18,21 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class NotPersistedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public NotPersistedAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ObjectsPropertiesAndCollections) {}
+        public NotPersistedAnnotationFacetFactory()
+            : base(FeatureType.ObjectsPropertiesAndCollections) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<NotPersistedAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static bool Process(MemberInfo member, ISpecification holder) {
+        private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<NotPersistedAttribute>(member);
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(property, specification);
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(property, specification);
         }
 
         private static INotPersistedFacet Create(NotPersistedAttribute attribute, ISpecification holder) {

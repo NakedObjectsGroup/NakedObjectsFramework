@@ -19,12 +19,12 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class ConcurrencyCheckAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ConcurrencyCheckAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Property) {}
+        public ConcurrencyCheckAnnotationFacetFactory()
+            : base(FeatureType.Property) {}
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = AttributeUtils.GetCustomAttribute<ConcurrencyCheckAttribute>(property);
-            return FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static IConcurrencyCheckFacet Create(Attribute attribute, ISpecification holder) {

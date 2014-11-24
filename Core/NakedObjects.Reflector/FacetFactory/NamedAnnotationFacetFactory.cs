@@ -25,8 +25,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         private Type currentType;
         private IList<string> namesScratchPad = new List<string>();
 
-        public NamedAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Everything) {}
+        public NamedAnnotationFacetFactory()
+            : base(FeatureType.Everything) {}
 
         public void UpdateScratchPad(Type type) {
             if (currentType != type) {
@@ -35,26 +35,26 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = type.GetCustomAttributeByReflection<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttributeByReflection<NamedAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = AttributeUtils.GetCustomAttribute<DisplayNameAttribute>(method) ?? (Attribute) AttributeUtils.GetCustomAttribute<NamedAttribute>(method);
-            return FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             UpdateScratchPad(property.ReflectedType);
             Attribute attribute = AttributeUtils.GetCustomAttribute<DisplayNameAttribute>(property) ?? (Attribute) AttributeUtils.GetCustomAttribute<NamedAttribute>(property);
-            return FacetUtils.AddFacet(CreateProperty(attribute, specification));
+            FacetUtils.AddFacet(CreateProperty(attribute, specification));
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             Attribute attribute = parameter.GetCustomAttributeByReflection<DisplayNameAttribute>() ?? (Attribute) parameter.GetCustomAttributeByReflection<NamedAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
         private INamedFacet Create(Attribute attribute, ISpecification holder) {

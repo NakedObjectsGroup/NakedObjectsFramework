@@ -22,49 +22,48 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class ComplementaryMethodsFilteringFacetFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (UnsupportedParameterTypesMethodFilteringFactory));
 
+        private static readonly string[] PropertyPrefixes = {
+            PrefixesAndRecognisedMethods.AutoCompletePrefix,
+            PrefixesAndRecognisedMethods.ModifyPrefix,
+            PrefixesAndRecognisedMethods.ClearPrefix,
+            PrefixesAndRecognisedMethods.ChoicesPrefix,
+            PrefixesAndRecognisedMethods.DefaultPrefix,
+            PrefixesAndRecognisedMethods.ValidatePrefix,
+            PrefixesAndRecognisedMethods.HidePrefix,
+            PrefixesAndRecognisedMethods.DisablePrefix
+        };
+
+        private static readonly string[] ActionPrefixes = {
+            PrefixesAndRecognisedMethods.ValidatePrefix,
+            PrefixesAndRecognisedMethods.HidePrefix,
+            PrefixesAndRecognisedMethods.DisablePrefix
+        };
+
+        private static readonly string[] ParameterPrefixes = {
+            PrefixesAndRecognisedMethods.AutoCompletePrefix,
+            PrefixesAndRecognisedMethods.ParameterChoicesPrefix,
+            PrefixesAndRecognisedMethods.ParameterDefaultPrefix,
+            PrefixesAndRecognisedMethods.ValidatePrefix
+        };
+
         /// <summary>
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)
         /// </summary>
-        public ComplementaryMethodsFilteringFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Action) {}
+        public ComplementaryMethodsFilteringFacetFactory()
+            : base(FeatureType.Action) {}
 
         #region IMethodFilteringFacetFactory Members
 
-        public bool Filters(MethodInfo method) {
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
             return IsComplementaryMethod(method);
         }
 
         #endregion
 
         private static bool IsComplementaryMethod(MethodInfo actionMethod) {
-            var propertyPrefixes = new[] {
-                PrefixesAndRecognisedMethods.AutoCompletePrefix,
-                PrefixesAndRecognisedMethods.ModifyPrefix,
-                PrefixesAndRecognisedMethods.ClearPrefix,
-                PrefixesAndRecognisedMethods.ChoicesPrefix,
-                PrefixesAndRecognisedMethods.DefaultPrefix,
-                PrefixesAndRecognisedMethods.ValidatePrefix,
-                PrefixesAndRecognisedMethods.HidePrefix,
-                PrefixesAndRecognisedMethods.DisablePrefix
-            };
-
-            var actionPrefixes = new[] {
-                PrefixesAndRecognisedMethods.ValidatePrefix,
-                PrefixesAndRecognisedMethods.HidePrefix,
-                PrefixesAndRecognisedMethods.DisablePrefix
-            };
-
-            var parameterPrefixes = new[] {
-                PrefixesAndRecognisedMethods.AutoCompletePrefix,
-                PrefixesAndRecognisedMethods.ParameterChoicesPrefix,
-                PrefixesAndRecognisedMethods.ParameterDefaultPrefix,
-                PrefixesAndRecognisedMethods.ValidatePrefix
-            };
-
-
-            return propertyPrefixes.Any(prefix => IsComplementaryPropertyMethod(actionMethod, prefix)) ||
-                   actionPrefixes.Any(prefix => IsComplementaryActionMethod(actionMethod, prefix)) ||
-                   parameterPrefixes.Any(prefix => IsComplementaryParameterMethod(actionMethod, prefix));
+            return PropertyPrefixes.Any(prefix => IsComplementaryPropertyMethod(actionMethod, prefix)) ||
+                   ActionPrefixes.Any(prefix => IsComplementaryActionMethod(actionMethod, prefix)) ||
+                   ParameterPrefixes.Any(prefix => IsComplementaryParameterMethod(actionMethod, prefix));
         }
 
         private static bool IsComplementaryPropertyMethod(MethodInfo actionMethod, string prefix) {
@@ -124,11 +123,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 return false;
             }
 
-            if (typeToCheck.GetProperty(name) != null) {
-                return true;
-            }
-
-            return InheritsProperty(typeToCheck.BaseType, name);
+            return typeToCheck.GetProperty(name) != null || InheritsProperty(typeToCheck.BaseType, name);
         }
 
         private static bool InheritsMethod(Type typeToCheck, string name) {
@@ -136,11 +131,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 return false;
             }
 
-            if (typeToCheck.GetMethod(name) != null) {
-                return true;
-            }
-
-            return InheritsMethod(typeToCheck.BaseType, name);
+            return typeToCheck.GetMethod(name) != null || InheritsMethod(typeToCheck.BaseType, name);
         }
     }
 }

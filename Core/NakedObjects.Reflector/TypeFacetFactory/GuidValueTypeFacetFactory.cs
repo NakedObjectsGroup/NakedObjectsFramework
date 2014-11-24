@@ -13,15 +13,11 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class GuidValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public GuidValueTypeFacetFactory(IReflector reflector)
-            : base(reflector) {}
-
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (GuidValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = Reflector.LoadSpecification(GuidValueSemanticsProvider.AdaptedType);
-                return AddValueFacets(new GuidValueSemanticsProvider(spec, specification), specification);
+                var spec = reflector.LoadSpecification(GuidValueSemanticsProvider.AdaptedType);
+                AddValueFacets(new GuidValueSemanticsProvider(spec, specification), specification);
             }
-            return false;
         }
     }
 }

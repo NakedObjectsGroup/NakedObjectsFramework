@@ -13,7 +13,7 @@ using NakedObjects.Reflect.FacetFactory;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    // TODO place holder for validate facet factory tests !!!
+    // Reflector place holder for validate facet factory tests !!!
     [TestFixture]
     public class ValidateObjectFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ValidateObjectFacetFactory(Reflector);
+            facetFactory = new ValidateObjectFacetFactory();
         }
 
         [TearDown]

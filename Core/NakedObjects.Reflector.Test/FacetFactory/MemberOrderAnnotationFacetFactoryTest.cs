@@ -23,7 +23,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new MemberOrderAnnotationFacetFactory(Reflector);
+            facetFactory = new MemberOrderAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -80,7 +80,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestMemberOrderAnnotationPickedUpOnAction() {
             MethodInfo method = FindMethod(typeof (Customer2), "SomeAction");
-            facetFactory.Process(method, MethodRemover, Specification);
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
@@ -92,7 +92,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestMemberOrderAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
@@ -104,7 +104,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestMemberOrderAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer), "FirstName");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);

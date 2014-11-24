@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ProgramPersistableOnlyAnnotationFacetFactory(Reflector);
+            facetFactory = new ProgramPersistableOnlyAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -59,7 +59,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestProgramPersistableOnlyNotPickup() {
-            facetFactory.Process(typeof (Customer1), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer1), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IProgramPersistableOnlyFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
@@ -67,7 +67,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestProgramPersistableOnlyPickup() {
-            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IProgramPersistableOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ProgramPersistableOnly);

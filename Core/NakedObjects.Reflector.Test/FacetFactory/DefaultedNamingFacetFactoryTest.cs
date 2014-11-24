@@ -13,7 +13,7 @@ using NakedObjects.Reflect.FacetFactory;
 using NUnit.Framework;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
-    // TODO place holder for defaulted naming facet factory tests !!!
+    // Reflector place holder for defaulted naming facet factory tests !!!
     [TestFixture]
     public class DefaultedNamingFacetFactoryTest : AbstractFacetFactoryTest {
         #region Setup/Teardown
@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new DefaultNamingFacetFactory(Reflector);
+            facetFactory = new DefaultNamingFacetFactory();
         }
 
         [TearDown]

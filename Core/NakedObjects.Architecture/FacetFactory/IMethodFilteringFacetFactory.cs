@@ -16,7 +16,7 @@ namespace NakedObjects.Architecture.FacetFactory {
     ///     Used by <see cref="IFacetFactorySet.Filters" />
     /// </para>
     public interface IMethodFilteringFacetFactory : IFacetFactory {
-        bool Filters(MethodInfo method);
+        bool Filters(MethodInfo method, IClassStrategy classStrategy);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

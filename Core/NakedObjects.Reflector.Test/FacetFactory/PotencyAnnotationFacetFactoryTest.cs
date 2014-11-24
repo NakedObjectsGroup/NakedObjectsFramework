@@ -22,7 +22,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PotencyAnnotationFacetFactory(Reflector);
+            facetFactory = new PotencyAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -75,7 +75,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestIdempotentAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IIdempotentFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IdempotentFacet);
@@ -85,7 +85,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestIdempotentPriorityAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IIdempotentFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IdempotentFacet);
@@ -97,7 +97,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestNoAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer2), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IQueryOnlyFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IIdempotentFacet));
@@ -109,7 +109,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestQueryOnlyAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IQueryOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is QueryOnlyFacet);

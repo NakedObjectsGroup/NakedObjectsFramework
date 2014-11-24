@@ -21,16 +21,16 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="PageSizeAttribute" /> annotation
     /// </summary>
     public class PageSizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PageSizeAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Action) {}
+        public PageSizeAnnotationFacetFactory()
+            : base(FeatureType.Action) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<PageSizeAttribute>(member);
             return FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(method, specification);
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(method, specification);
         }
 
         private static IPageSizeFacet Create(PageSizeAttribute attribute, ISpecification holder) {

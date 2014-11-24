@@ -30,7 +30,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new Type[] {}, new Type[] {});
             var servicesConfig = new ServicesConfiguration();
             var reflector = new Reflector(classStrategy, new FacetFactorySet(), metamodel, config, servicesConfig, null, null, new IFacetDecorator[] {});
-            facetFactory = new RemoveEventHandlerMethodsFacetFactory(reflector);
+            facetFactory = new RemoveEventHandlerMethodsFacetFactory();
         }
 
         [TearDown]
@@ -77,7 +77,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestActionWithNoParameters() {
-            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
 
             AssertRemovedCalled(2);
 

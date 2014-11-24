@@ -23,7 +23,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new NotPersistedAnnotationFacetFactory(Reflector);
+            facetFactory = new NotPersistedAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -71,7 +71,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestNotPersistedAnnotationPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (INotPersistedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotPersistedFacet);
@@ -81,7 +81,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestNotPersistedAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer), "FirstName");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (INotPersistedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotPersistedFacet);

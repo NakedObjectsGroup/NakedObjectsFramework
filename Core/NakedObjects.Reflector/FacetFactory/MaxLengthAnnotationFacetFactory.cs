@@ -19,33 +19,33 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class MaxLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MaxLengthAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.ObjectsPropertiesAndParameters) {}
+        public MaxLengthAnnotationFacetFactory()
+            : base(FeatureType.ObjectsPropertiesAndParameters) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = type.GetCustomAttributeByReflection<StringLengthAttribute>() ?? (Attribute) type.GetCustomAttributeByReflection<MaxLengthAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static bool Process(MemberInfo member, ISpecification holder) {
+        private static void Process(MemberInfo member, ISpecification holder) {
             Attribute attribute = AttributeUtils.GetCustomAttribute<StringLengthAttribute>(member) ?? (Attribute) AttributeUtils.GetCustomAttribute<MaxLengthAttribute>(member);
 
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(method, specification);
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(method, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(property, specification);
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(property, specification);
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             Attribute attribute = parameter.GetCustomAttributeByReflection<StringLengthAttribute>() ?? (Attribute) parameter.GetCustomAttributeByReflection<MaxLengthAttribute>();
 
-            return FacetUtils.AddFacet(Create(attribute, holder));
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
         private static IMaxLengthFacet Create(Attribute attribute, ISpecification holder) {

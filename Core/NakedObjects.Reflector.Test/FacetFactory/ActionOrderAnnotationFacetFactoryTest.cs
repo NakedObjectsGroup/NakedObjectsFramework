@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ActionOrderAnnotationFacetFactory(Reflector);
+            facetFactory = new ActionOrderAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -47,7 +47,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestActionOrderAnnotationPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IActionOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionOrderFacetAnnotation);

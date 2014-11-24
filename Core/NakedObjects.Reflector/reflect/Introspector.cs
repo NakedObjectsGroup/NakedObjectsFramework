@@ -112,7 +112,7 @@ namespace NakedObjects.Reflect {
             // Process facets at object level
             // this will also remove some methods, such as the superclass methods.
             var methodRemover = new IntrospectorMethodRemover(methods);
-            FacetFactorySet.Process(introspectedType, methodRemover, spec);
+            FacetFactorySet.Process(reflector, introspectedType, methodRemover, spec);
 
             var typeOfObj = typeof (object);
             if (SuperclassType != null && !TypeUtils.IsSystem(SuperclassType)) {
@@ -209,7 +209,7 @@ namespace NakedObjects.Reflect {
             var collectionSpecs = CreateCollectionSpecs(collectionProperties);
 
             // every other accessor is assumed to be a reference property.
-            var allProperties = FacetFactorySet.FindProperties(properties);
+            var allProperties = FacetFactorySet.FindProperties(properties, reflector.ClassStrategy);
             var refProperties = allProperties.Except(collectionProperties);
             var refSpecs = CreateRefPropertySpecs(refProperties);
 
@@ -231,7 +231,7 @@ namespace NakedObjects.Reflect {
                 var defaultSpec = reflector.LoadSpecification(defaultType);
                 var collection = new OneToManyAssociationSpecImmutable(identifier, returnType, returnSpec, defaultType, defaultSpec);
 
-                FacetFactorySet.Process(property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections);
+                FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections);
                 specs.Add(collection);
             }
             return specs;
@@ -254,7 +254,7 @@ namespace NakedObjects.Reflect {
                 var referenceProperty = new OneToOneAssociationSpecImmutable(identifier, propertyType, propertySpec);
 
                 // Process facets for the property
-                FacetFactorySet.Process(property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Property);
+                FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Property);
                 specs.Add(referenceProperty);
             }
 
@@ -282,7 +282,7 @@ namespace NakedObjects.Reflect {
                 }
 
                 string fullMethodName = actionMethod.Name;
-                if (FacetFactorySet.Filters(actionMethod)) {
+                if (FacetFactorySet.Filters(actionMethod, reflector.ClassStrategy)) {
                     continue;
                 }
 
@@ -304,9 +304,9 @@ namespace NakedObjects.Reflect {
                 var action = new ActionSpecImmutable(identifier, spec, actionParams);
 
                 // Process facets on the action & parameters
-                FacetFactorySet.Process(actionMethod, new IntrospectorMethodRemover(methods), action, FeatureType.Action);
+                FacetFactorySet.Process(reflector, actionMethod, new IntrospectorMethodRemover(methods), action, FeatureType.Action);
                 for (int l = 0; l < actionParams.Length; l++) {
-                    FacetFactorySet.ProcessParams(actionMethod, l, actionParams[l]);
+                    FacetFactorySet.ProcessParams(reflector, actionMethod, l, actionParams[l]);
                 }
 
                 if (actionMethod.ReturnType != typeof (void)) {

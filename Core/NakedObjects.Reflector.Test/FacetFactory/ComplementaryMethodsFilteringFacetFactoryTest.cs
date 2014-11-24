@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ComplementaryMethodsFilteringFacetFactory(Reflector);
+            facetFactory = new ComplementaryMethodsFilteringFacetFactory();
         }
 
         [TearDown]
@@ -401,253 +401,253 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestFiltersAddTo() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (CollectionClass), "AddToACollection");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersChoices() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (PropertyClass), "ChoicesAProperty");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersClear() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (PropertyClass), "ClearAProperty");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersDefault() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (PropertyClass), "DefaultAProperty");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersDisable() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (PropertyClass), "DisableAProperty");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersDisableAction() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (ActionClass), "DisableAnAction");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersHide() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (PropertyClass), "HideAProperty");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersHideAction() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (ActionClass), "HideAnAction");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersModify() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (PropertyClass), "ModifyAProperty");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersParameterChoices() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (ActionClass), "ChoicesAnAction");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersParameterDefault() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (ActionClass), "DefaultAnAction");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersParameterIndexChoices() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (ActionClass), "Choices0AnAction");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersParameterIndexDefault() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (ActionClass), "Default0AnAction");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersParameterIndexValidate() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (ActionClass), "Validate0AnAction");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersParameterValidate() {
             MethodInfo actionMethod = FindMethod(typeof (ActionClass), "ValidateAnAction", new[] {typeof (string)});
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersRemoveFrom() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (CollectionClass), "RemoveFromACollection");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersValidate() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (PropertyClass), "ValidateAProperty");
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersValidateAction() {
             MethodInfo actionMethod = FindMethod(typeof (ActionClass), "ValidateAnAction", new Type[] {});
-            Assert.IsTrue(facetFactory.Filters(actionMethod));
+            Assert.IsTrue(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersValidateAddTo() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (CollectionClass1), "ValidateAddToACollection");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestFiltersValidateRemoveFrom() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (CollectionClass1), "ValidateRemoveFromACollection");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesAddToIfNoBaseCollection() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoCollectionClass), "AddToACollection");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesChoicesIfNoBaseProperty() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoPropertyClass), "ChoicesAProperty");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesClearIfNoBaseProperty() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoPropertyClass), "ClearAProperty");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesDefaultIfNoBaseProperty() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoPropertyClass), "DefaultAProperty");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesDisableActionIfNoAction() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoActionClass), "DisableAnAction");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesDisableIfNoBaseProperty() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoPropertyClass), "DisableAProperty");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesHideActionIfNoAction() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoActionClass), "HideAnAction");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesHideIfNoBaseProperty() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoPropertyClass), "HideAProperty");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesMeaninglessPrefix() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (PropertyClass), "MeaninglessPrefixAProperty");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesMeaninglessPrefixIfNoBaseProperty() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoPropertyClass), "MeaninglessPrefixAProperty");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesModifyIfNoBaseProperty() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoPropertyClass), "ModifyAProperty");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesParameterChoicesIfNoAction() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoActionClass), "ChoicesAnAction");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesParameterDefaultIfNoAction() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoActionClass), "DefaultAnAction");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesParameterIndexChoicesIfNoAction() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoActionClass), "Choices0AnAction");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesParameterIndexDefaultIfNoAction() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoActionClass), "Default0AnAction");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesParameterIndexValidateIfNoAction() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoActionClass), "Validate0AnAction");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesParameterValidateIfNoAction() {
             MethodInfo actionMethod = FindMethod(typeof (NoActionClass), "ValidateAnAction", new[] {typeof (string)});
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesRemoveFromIfNoBaseCollection() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoCollectionClass), "RemoveFromACollection");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesValidateActionIfNoAction() {
             MethodInfo actionMethod = FindMethod(typeof (NoActionClass), "ValidateAnAction", new Type[] {});
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesValidateAddToIfNoBaseCollection() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoCollectionClass1), "ValidateAddToACollection");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesValidateIfNoBaseProperty() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoPropertyClass), "ValidateAProperty");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
 
         [Test]
         public void TestLeavesValidateRemoveFromIfNoBaseCollection() {
             MethodInfo actionMethod = FindMethodIgnoreParms(typeof (NoCollectionClass1), "ValidateRemoveFromACollection");
-            Assert.IsFalse(facetFactory.Filters(actionMethod));
+            Assert.IsFalse(facetFactory.Filters(actionMethod, Reflector.ClassStrategy));
         }
     }
 

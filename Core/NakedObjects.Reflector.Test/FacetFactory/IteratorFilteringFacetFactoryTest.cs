@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new IteratorFilteringFacetFactory(Reflector);
+            facetFactory = new IteratorFilteringFacetFactory();
         }
 
         [TearDown]
@@ -78,7 +78,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestRequestsRemoverToRemoveIteratorMethods() {
             MethodInfo enumeratorMethod = FindMethod(typeof (Customer), "GetEnumerator");
-            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             AssertMethodRemoved(enumeratorMethod);
         }
     }

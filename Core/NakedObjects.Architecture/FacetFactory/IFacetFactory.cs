@@ -27,50 +27,45 @@ namespace NakedObjects.Architecture.FacetFactory {
         /// <summary>
         ///     Process the class, and return the correctly setup annotation if present.
         /// </summary>
+        /// <param name="reflector"></param>
         /// <param name="type">class being processed</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
         /// <param name="specification"> attach the facets to</param>
-        /// <returns>
-        ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
-        /// </returns>
-        bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification);
+      
+        void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification);
 
         /// <summary>
         ///     Process the method, and return the correctly setup annotation if present.
         /// </summary>
+        /// <param name="reflector"></param>
         /// <param name="method">MethodInfo representing the feature being processed</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
         /// <param name="specification"> attach the facets to</param>
-        /// <returns>
-        ///     <c>true</c> if any facets were added and therefore should be removed, <c>false</c> otherwise.
-        ///     Returning true will cause the method to be removed
-        /// </returns>
-        bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification);
+    
+        void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification);
 
         /// <summary>
         ///     Process the property, and return the correctly setup annotation if present.
         /// </summary>
+        /// <param name="reflector"></param>
         /// <param name="property">PropertyInfo representing the feature being processed</param>
         /// <param name="methodRemover">allow any methods of the class to be removed</param>
         /// <param name="specification"> attach the facets to</param>
-        /// <returns>
-        ///     <c>true</c> if any facets were added  <c>false</c> otherwise.
-        /// </returns>
-        bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification);
+      
+        void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification);
 
         /// <summary>
         ///     Process the parameters of the method, and return the correctly setup annotation if present.
         /// </summary>
+        /// <param name="reflector"></param>
         /// <param name="method">MethodInfo representing the feature being processed</param>
         /// <param name="paramNum">zero-based index to the parameter to be processed</param>
         /// <param name="holder">to attach the facets to</param>
-        /// <returns>
-        ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
-        /// </returns>
-        bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder);
+      
+        void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder);
 
         IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates);
 
-        IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates);
+        IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
     }
 }

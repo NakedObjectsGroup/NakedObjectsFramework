@@ -18,43 +18,40 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class TypeOfAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TypeOfAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.CollectionsAndActions) {}
+        public TypeOfAnnotationFacetFactory()
+            : base(FeatureType.CollectionsAndActions) {}
 
-        private bool Process(Type methodReturnType, ISpecification holder) {
+        private void Process(IReflector reflector, Type methodReturnType, ISpecification holder) {
             if (!CollectionUtils.IsCollection(methodReturnType)) {
-                return false;
+                return;
             }
 
             if (methodReturnType.IsArray) {
                 var elementType = methodReturnType.GetElementType();
-                var elementSpec = Reflector.LoadSpecification(elementType);
+                var elementSpec = reflector.LoadSpecification(elementType);
                 FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
-                return FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
+                FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
             }
-
-            if (methodReturnType.IsGenericType) {
+            else if (methodReturnType.IsGenericType) {
                 Type[] actualTypeArguments = methodReturnType.GetGenericArguments();
                 if (actualTypeArguments.Any()) {
                     var elementType = actualTypeArguments.First();
-                    var elementSpec = Reflector.LoadSpecification(elementType);
+                    var elementSpec = reflector.LoadSpecification(elementType);
                     FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
-                    return FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
+                    FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
                 }
             }
-            return false;
         }
 
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return Process(method.ReturnType, specification);
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            Process(reflector, method.ReturnType, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (property.GetGetMethod() != null) {
-                return Process(property.PropertyType, specification);
+                Process(reflector, property.PropertyType, specification);
             }
-            return false;
         }
     }
 }

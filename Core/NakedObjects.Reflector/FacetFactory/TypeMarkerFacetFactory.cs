@@ -20,10 +20,10 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class TypeMarkerFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultNamingFacetFactory));
 
-        public TypeMarkerFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+        public TypeMarkerFacetFactory()
+            : base(FeatureType.Objects) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var facets = new List<IFacet>();
 
             if (IsAbstract(type)) {
@@ -42,7 +42,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new VoidFacet(specification));
             }
 
-            return FacetUtils.AddFacets(facets);
+            FacetUtils.AddFacets(facets);
         }
 
         private static bool IsVoid(Type type) {

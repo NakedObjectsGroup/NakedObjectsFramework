@@ -18,16 +18,15 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     Removes any calls to <c>Init</c>
     /// </summary>
     public class RemoveEventHandlerMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-        public RemoveEventHandlerMethodsFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+        public RemoveEventHandlerMethodsFacetFactory()
+            : base(FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return new string[] {}; }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             FindAndRemoveEventHandlerMethods(type, methodRemover);
-            return false;
         }
 
         private void RemoveIfNotNull(IMethodRemover methodRemover, MethodInfo mi) {

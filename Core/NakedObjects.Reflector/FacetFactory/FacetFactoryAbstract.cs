@@ -16,15 +16,9 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Meta.Facet {
     public abstract class FacetFactoryAbstract : IFacetFactory {
         private readonly FeatureType featureTypes;
-        private readonly IReflector reflector;
 
-        protected FacetFactoryAbstract(IReflector reflector, FeatureType featureTypes) {
-            this.reflector = reflector;
+        protected FacetFactoryAbstract(FeatureType featureTypes) {
             this.featureTypes = featureTypes;
-        }
-
-        public IReflector Reflector {
-            get { return reflector; }
         }
 
         #region IFacetFactory Members
@@ -33,27 +27,19 @@ namespace NakedObjects.Meta.Facet {
             get { return featureTypes; }
         }
 
-        public virtual bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return false;
-        }
+        public virtual void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {}
 
-        public virtual bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return false;
-        }
+        public virtual void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {}
 
-        public virtual bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return false;
-        }
+        public virtual void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {}
 
-        public virtual bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            return false;
-        }
+        public virtual void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {}
 
         public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates) {
             return new PropertyInfo[] {};
         }
 
-        public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates) {
+        public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
             return new PropertyInfo[] {};
         }
 

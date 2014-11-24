@@ -22,7 +22,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ExecutedAnnotationFacetFactory(Reflector);
+            facetFactory = new ExecutedAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -56,7 +56,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestExecutedLocallyAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IExecutedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ExecutedFacetAbstract);
@@ -68,7 +68,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestExecutedRemotelyAnnotationPickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IExecutedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ExecutedFacetAbstract);

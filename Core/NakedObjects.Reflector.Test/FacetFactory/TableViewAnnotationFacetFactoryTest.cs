@@ -24,7 +24,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new TableViewAnnotationFacetFactory(Reflector);
+            facetFactory = new TableViewAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -103,7 +103,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTableViewFacetNotPickedUpOnArray() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Orders");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNull(facet);
         }
@@ -111,7 +111,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTableViewFacetNotPickedUpOnArrayAction() {
             MethodInfo method = FindMethod(typeof (Customer2), "OrdersAction");
-            facetFactory.Process(method, MethodRemover, Specification);
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNull(facet);
         }
@@ -119,7 +119,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTableViewFacetNotPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Orders1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNull(facet);
         }
@@ -127,7 +127,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTableViewFacetNotPickedUpOnCollectionAction() {
             MethodInfo method = FindMethod(typeof (Customer2), "OrdersAction1");
-            facetFactory.Process(method, MethodRemover, Specification);
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNull(facet);
         }
@@ -135,7 +135,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTableViewFacetPickedUpOnArray() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -150,7 +150,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTableViewFacetPickedUpOnArrayAction() {
             MethodInfo method = FindMethod(typeof (Customer1), "OrdersAction");
-            facetFactory.Process(method, MethodRemover, Specification);
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -165,7 +165,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTableViewFacetPickedUpOnCollection() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Orders1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -180,7 +180,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTableViewFacetPickedUpOnCollectionAction() {
             MethodInfo method = FindMethod(typeof (Customer1), "OrdersAction1");
-            facetFactory.Process(method, MethodRemover, Specification);
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -195,7 +195,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTableViewFacetPickedUpOnCollectionActionNoColumns() {
             MethodInfo method = FindMethod(typeof (Customer1), "OrdersAction2");
-            facetFactory.Process(method, MethodRemover, Specification);
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
@@ -208,7 +208,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTableViewFacetPickedUpOnQueryableAction() {
             MethodInfo method = FindMethod(typeof (Customer1), "OrdersAction3");
-            facetFactory.Process(method, MethodRemover, Specification);
+            facetFactory.Process(Reflector, method, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);

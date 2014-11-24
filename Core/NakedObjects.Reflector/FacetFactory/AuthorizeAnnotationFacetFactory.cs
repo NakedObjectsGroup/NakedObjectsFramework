@@ -9,7 +9,6 @@ using System;
 using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
@@ -22,15 +21,13 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class AuthorizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (AuthorizeAnnotationFacetFactory));
 
-        public AuthorizeAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.PropertiesCollectionsAndActions) {}
+        public AuthorizeAnnotationFacetFactory()
+            : base(FeatureType.PropertiesCollectionsAndActions) {}
 
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return false;
-        }
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {}
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var classAttribute = method.DeclaringType.GetCustomAttributeByReflection<AuthorizeActionAttribute>();
             var methodAttribute = AttributeUtils.GetCustomAttribute<AuthorizeActionAttribute>(method);
 
@@ -38,10 +35,10 @@ namespace NakedObjects.Reflect.FacetFactory {
                 Log.WarnFormat("Class and method level AuthorizeAttributes applied to class {0} - ignoring attribute on method {1}", method.DeclaringType.FullName, method.Name);
             }
 
-            return Create(classAttribute ?? methodAttribute, specification);
+            Create(classAttribute ?? methodAttribute, specification);
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var classAttribute = property.DeclaringType.GetCustomAttributeByReflection<AuthorizePropertyAttribute>();
             var propertyAttribute = AttributeUtils.GetCustomAttribute<AuthorizePropertyAttribute>(property);
 
@@ -49,40 +46,28 @@ namespace NakedObjects.Reflect.FacetFactory {
                 Log.WarnFormat("Class and property level AuthorizeAttributes applied to class {0} - ignoring attribute on property {1}", property.DeclaringType.FullName, property.Name);
             }
 
-            return Create(classAttribute ?? propertyAttribute, specification);
+            Create(classAttribute ?? propertyAttribute, specification);
         }
 
-        private static bool Create(AuthorizePropertyAttribute attribute, ISpecification holder) {
-            bool added = false;
-
+        private static void Create(AuthorizePropertyAttribute attribute, ISpecification holder) {
             if (attribute != null) {
                 if (attribute.ViewRoles != null || attribute.ViewUsers != null) {
-                    var facet = new AuthorizationHideForSessionFacet(attribute.ViewRoles, attribute.ViewUsers, holder);
-                    added = FacetUtils.AddFacet(facet);
+                    FacetUtils.AddFacet(new AuthorizationHideForSessionFacet(attribute.ViewRoles, attribute.ViewUsers, holder));
                 }
 
                 if (attribute.EditRoles != null || attribute.EditUsers != null) {
-                    var facet = new AuthorizationDisableForSessionFacet(attribute.EditRoles, attribute.EditUsers, holder);
-                    added |= FacetUtils.AddFacet(facet);
+                    FacetUtils.AddFacet(new AuthorizationDisableForSessionFacet(attribute.EditRoles, attribute.EditUsers, holder));
                 }
             }
-
-            return added;
         }
 
-        private static bool Create(AuthorizeActionAttribute attribute, ISpecification holder) {
-            bool added = false;
-
+        private static void Create(AuthorizeActionAttribute attribute, ISpecification holder) {
             if (attribute != null) {
                 if (attribute.Roles != null || attribute.Users != null) {
-                    IFacet facet = new AuthorizationHideForSessionFacet(attribute.Roles, attribute.Users, holder);
-                    added = FacetUtils.AddFacet(facet);
-                    facet = new AuthorizationDisableForSessionFacet(attribute.Roles, attribute.Users, holder);
-                    added |= FacetUtils.AddFacet(facet);
+                    FacetUtils.AddFacet(new AuthorizationHideForSessionFacet(attribute.Roles, attribute.Users, holder));
+                    FacetUtils.AddFacet(new AuthorizationDisableForSessionFacet(attribute.Roles, attribute.Users, holder));
                 }
             }
-
-            return added;
         }
     }
 }

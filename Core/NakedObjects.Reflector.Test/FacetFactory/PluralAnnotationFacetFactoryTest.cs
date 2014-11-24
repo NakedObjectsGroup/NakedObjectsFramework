@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PluralAnnotationFacetFactory(Reflector);
+            facetFactory = new PluralAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -57,7 +57,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [Test]
         public void TestPluralAnnotationMethodPickedUpOnClass() {
-            facetFactory.Process(typeof (Customer), MethodRemover, Specification);
+            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPluralFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PluralFacetAnnotation);

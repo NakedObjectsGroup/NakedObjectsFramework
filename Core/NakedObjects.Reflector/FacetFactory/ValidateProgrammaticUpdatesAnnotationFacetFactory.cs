@@ -17,12 +17,12 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class ValidateProgrammaticUpdatesAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ValidateProgrammaticUpdatesAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+        public ValidateProgrammaticUpdatesAnnotationFacetFactory()
+            : base(FeatureType.Objects) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<ValidateProgrammaticUpdatesAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static IValidateProgrammaticUpdatesFacet Create(ValidateProgrammaticUpdatesAttribute attribute, ISpecification holder) {

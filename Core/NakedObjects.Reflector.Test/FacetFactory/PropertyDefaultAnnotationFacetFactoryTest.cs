@@ -23,7 +23,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PropertyDefaultAnnotationFacetFactory(Reflector);
+            facetFactory = new PropertyDefaultAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -62,7 +62,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestPropertyDefaultAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Prop");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPropertyDefaultFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyDefaultFacetAnnotation);

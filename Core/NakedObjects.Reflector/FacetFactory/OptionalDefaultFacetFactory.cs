@@ -24,20 +24,20 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     makes everything optional by default. Requiring the use of annotations to indicate mandatoryness.
     /// </para>
     public class OptionalDefaultFacetFactory : FacetFactoryAbstract {
-        public OptionalDefaultFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.PropertiesAndParameters) {}
+        public OptionalDefaultFacetFactory()
+            : base(FeatureType.PropertiesAndParameters) {}
 
-        public override bool Process(MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return FacetUtils.AddFacet(method.ReturnType.IsPrimitive ? CreateMandatory(specification) : CreateOptional(specification));
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            FacetUtils.AddFacet(method.ReturnType.IsPrimitive ? CreateMandatory(specification) : CreateOptional(specification));
         }
 
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            return FacetUtils.AddFacet(property.PropertyType.IsPrimitive || property.GetGetMethod() == null ? CreateMandatory(specification) : CreateOptional(specification));
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            FacetUtils.AddFacet(property.PropertyType.IsPrimitive || property.GetGetMethod() == null ? CreateMandatory(specification) : CreateOptional(specification));
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
-            return FacetUtils.AddFacet(parameter.ParameterType.IsPrimitive ? CreateMandatory(holder) : CreateOptional(holder));
+            FacetUtils.AddFacet(parameter.ParameterType.IsPrimitive ? CreateMandatory(holder) : CreateOptional(holder));
         }
 
         private static IMandatoryFacet CreateOptional(ISpecification holder) {

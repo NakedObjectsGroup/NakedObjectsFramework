@@ -23,7 +23,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new TypeOfAnnotationFacetFactory(Reflector);
+            facetFactory = new TypeOfAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -92,7 +92,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTypeOfFacetInferredForActionWithArrayReturnType() {
             MethodInfo actionMethod = FindMethod(typeof (Customer9), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet typeOfFacet = Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
@@ -107,7 +107,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTypeOfFacetInferredForActionWithGenericCollectionReturnType() {
             MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet typeOfFacet = Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
@@ -121,7 +121,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTypeOfFacetInferredForCollectionWithGenericCollectionReturnType() {
             PropertyInfo property = FindProperty(typeof (Customer4), "Orders");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet typeOfFacet = Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
@@ -135,7 +135,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestTypeOfFacetIsInferredForCollectionFromOrderArray() {
             PropertyInfo property = FindProperty(typeof (Customer10), "Orders");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet typeOfFacet = Specification.GetFacet(typeof (ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);

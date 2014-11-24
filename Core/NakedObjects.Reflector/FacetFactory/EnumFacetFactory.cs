@@ -21,38 +21,37 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class EnumFacetFactory : FacetFactoryAbstract {
-        public EnumFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.PropertiesAndParameters) {}
+        public EnumFacetFactory()
+            : base(FeatureType.PropertiesAndParameters) {}
 
-
-        public override bool Process(PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = AttributeUtils.GetCustomAttribute<EnumDataTypeAttribute>(property);
 
-            return AddEnumFacet(attribute, specification, property.PropertyType);
+            AddEnumFacet(attribute, specification, property.PropertyType);
         }
 
-        private static bool AddEnumFacet(EnumDataTypeAttribute attribute, ISpecification holder, Type typeOfEnum) {
+        private static void AddEnumFacet(EnumDataTypeAttribute attribute, ISpecification holder, Type typeOfEnum) {
             if (attribute != null) {
-                return FacetUtils.AddFacet(Create(attribute, holder));
+                FacetUtils.AddFacet(Create(attribute, holder));
+                return;
             }
 
             Type typeOrNulledType = TypeUtils.GetNulledType(typeOfEnum);
             if (TypeUtils.IsEnum(typeOrNulledType)) {
-                return FacetUtils.AddFacet(new EnumFacet(holder, typeOrNulledType));
+                FacetUtils.AddFacet(new EnumFacet(holder, typeOrNulledType));
+                return;
             }
+
             if (CollectionUtils.IsGenericOfEnum(typeOfEnum)) {
                 Type enumInstanceType = typeOfEnum.GetGenericArguments().First();
-                return FacetUtils.AddFacet(new EnumFacet(holder, enumInstanceType));
+                FacetUtils.AddFacet(new EnumFacet(holder, enumInstanceType));
             }
-
-            return false;
         }
 
-        public override bool ProcessParams(MethodInfo method, int paramNum, ISpecificationBuilder holder) {
+        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttributeByReflection<EnumDataTypeAttribute>();
-
-            return AddEnumFacet(attribute, holder, parameter.ParameterType);
+            AddEnumFacet(attribute, holder, parameter.ParameterType);
         }
 
         private static IEnumFacet Create(EnumDataTypeAttribute attribute, ISpecification holder) {

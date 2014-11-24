@@ -22,7 +22,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new RangeAnnotationFacetFactory(Reflector);
+            facetFactory = new RangeAnnotationFacetFactory();
         }
 
         [TearDown]
@@ -65,7 +65,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestRangeAnnotationPickedUpOnActionParameter() {
             MethodInfo method = FindMethod(typeof (Customer2), "someAction", new[] {typeof (int)});
-            facetFactory.ProcessParams(method, 0, Specification);
+            facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IRangeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RangeFacet);
@@ -77,7 +77,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestRangeAnnotationPickedUpOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Prop");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IRangeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RangeFacet);

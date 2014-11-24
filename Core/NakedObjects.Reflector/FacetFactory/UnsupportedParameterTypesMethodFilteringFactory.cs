@@ -16,12 +16,12 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class UnsupportedParameterTypesMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (UnsupportedParameterTypesMethodFilteringFactory));
 
-        public UnsupportedParameterTypesMethodFilteringFactory(IReflector reflector)
-            : base(reflector, FeatureType.Action) {}
+        public UnsupportedParameterTypesMethodFilteringFactory()
+            : base(FeatureType.Action) {}
 
         #region IMethodFilteringFacetFactory Members
 
-        public bool Filters(MethodInfo method) {
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
             var typeName = method.DeclaringType == null ? "Unknown" : method.DeclaringType.FullName;
 
             if (method.IsGenericMethod) {
@@ -29,13 +29,13 @@ namespace NakedObjects.Reflect.FacetFactory {
                 return true;
             }
 
-            if (Reflector.ClassStrategy.IsTypeUnsupportedByReflector(method.ReturnType)) {
+            if (classStrategy.IsTypeUnsupportedByReflector(method.ReturnType)) {
                 Log.InfoFormat("Ignoring method: {0}.{1} because return type is of type {3}", typeName, method.Name, method.ReturnType);
                 return true;
             }
 
             foreach (ParameterInfo parameterInfo in method.GetParameters()) {
-                if (Reflector.ClassStrategy.IsTypeUnsupportedByReflector(parameterInfo.ParameterType)) {
+                if (classStrategy.IsTypeUnsupportedByReflector(parameterInfo.ParameterType)) {
                     Log.InfoFormat("Ignoring method: {0}.{1} because parameter '{2}' is of type {3}", typeName, method.Name, parameterInfo.Name, parameterInfo.ParameterType);
                     return true;
                 }

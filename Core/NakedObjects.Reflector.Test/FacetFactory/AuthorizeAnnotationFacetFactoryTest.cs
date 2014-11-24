@@ -25,7 +25,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new AuthorizeAnnotationFacetFactory(Reflector);
+            facetFactory = new AuthorizeAnnotationFacetFactory();
 
             mockPersistor = new Mock<ILifecycleManager>();
             persistor = mockPersistor.Object;
@@ -311,7 +311,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionRoleAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action5");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -327,7 +327,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionRoleAuthorizedClass() {
             MethodInfo actionMethod = FindMethod(typeof (Customer13), "Action1");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -343,7 +343,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionRoleAuthorizedClassPriorityOverMethod() {
             MethodInfo actionMethod = FindMethod(typeof (Customer14), "Action1");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -367,7 +367,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionRoleNotAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action5");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -383,7 +383,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionRoleNotAuthorizedClass() {
             MethodInfo actionMethod = FindMethod(typeof (Customer13), "Action1");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -399,7 +399,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionRoleOnlyAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action3");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -415,7 +415,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionRoleOnlyAuthorizedClass() {
             MethodInfo actionMethod = FindMethod(typeof (Customer11), "Action1");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -432,7 +432,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionRoleOnlyNotAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action3");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -448,7 +448,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionRoleOnlyNotAuthorizedClass() {
             MethodInfo actionMethod = FindMethod(typeof (Customer11), "Action1");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -464,7 +464,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionUserAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action5");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -480,7 +480,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionUserAuthorizedClass() {
             MethodInfo actionMethod = FindMethod(typeof (Customer13), "Action1");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -496,7 +496,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionUserNotAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action5");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -512,7 +512,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionUserNotAuthorizedClass() {
             MethodInfo actionMethod = FindMethod(typeof (Customer13), "Action1");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -528,7 +528,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionUserOnlyAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action4");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -544,7 +544,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionUserOnlyAuthorizedClass() {
             MethodInfo actionMethod = FindMethod(typeof (Customer12), "Action1");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -560,7 +560,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionUserOnlyNotAuthorized() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action4");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -576,7 +576,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationActionUserOnlyNotAuthorizedClass() {
             MethodInfo actionMethod = FindMethod(typeof (Customer12), "Action1");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -593,7 +593,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationEditRoleAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property8");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -604,7 +604,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationEditRoleAuthorizedClass() {
             PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -615,7 +615,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationEditRoleNotAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property8");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -626,7 +626,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationEditRoleNotAuthorizedClass() {
             PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -637,7 +637,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationEditUserAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property8");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -648,7 +648,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationEditUserAuthorizedClass() {
             PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -659,7 +659,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationEditUserNotAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property8");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -670,7 +670,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationEditUserNotAuthorizedClass() {
             PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IDisableForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -682,7 +682,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action3");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -693,7 +693,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnClassAll() {
             PropertyInfo property = FindProperty(typeof (Customer9), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -704,7 +704,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnClassEditRole() {
             PropertyInfo property = FindProperty(typeof (Customer5), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -715,7 +715,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnClassEditRoleUser() {
             PropertyInfo property = FindProperty(typeof (Customer8), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -726,7 +726,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnClassEditUser() {
             PropertyInfo property = FindProperty(typeof (Customer6), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -737,7 +737,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnClassForAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer11), "Action1");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -748,7 +748,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnClassViewRole() {
             PropertyInfo property = FindProperty(typeof (Customer3), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -759,7 +759,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnClassViewRoleUser() {
             PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -770,7 +770,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnClassViewUser() {
             PropertyInfo property = FindProperty(typeof (Customer4), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -781,7 +781,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnPropertyAll() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property9");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -792,7 +792,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnPropertyEditRole() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property5");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -803,7 +803,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnPropertyEditRoleUser() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property8");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -814,7 +814,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnPropertyEditUser() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property6");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -825,7 +825,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnPropertyViewRole() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property3");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -836,7 +836,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnPropertyViewRoleUser() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property7");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -848,7 +848,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationPickedUpOnPropertyViewUser() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property4");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNotNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -859,7 +859,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationViewRoleAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property7");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -870,7 +870,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationViewRoleAuthorizedClass() {
             PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -881,7 +881,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationViewRoleNotAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property7");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -892,7 +892,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationViewRoleNotAuthorizedClass() {
             PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -904,7 +904,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationViewUserAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property7");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -916,7 +916,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationViewUserAuthorizedClass() {
             PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -927,7 +927,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationViewUserAuthorizedClassOverProperty() {
             PropertyInfo property = FindProperty(typeof (Customer14), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -942,7 +942,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationViewUserNotAuthorized() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property7");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -953,7 +953,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeAnnotationViewUserNotAuthorizedClass() {
             PropertyInfo property = FindProperty(typeof (Customer7), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             var facet = Specification.GetFacet<IHideForSessionFacet>();
             Assert.IsNotNull(facet);
 
@@ -965,7 +965,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeEmptyAnnotationOnAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action2");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -976,7 +976,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeEmptyAnnotationOnClassForAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer10), "Action1");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -988,7 +988,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeEmptyAnnotationOnClassForProperty() {
             PropertyInfo property = FindProperty(typeof (Customer2), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -999,7 +999,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeEmptyAnnotationOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer), "Property2");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -1010,7 +1010,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeNoAnnotationOnAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action1");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -1021,7 +1021,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeNoAnnotationOnClassForAction() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "Action1");
-            facetFactory.Process(actionMethod, MethodRemover, Specification);
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -1032,7 +1032,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeNoAnnotationOnClassForProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));
@@ -1043,7 +1043,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [Test]
         public void TestAuthorizeNoAnnotationOnProperty() {
             PropertyInfo property = FindProperty(typeof (Customer1), "Property1");
-            facetFactory.Process(property, MethodRemover, Specification);
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof (IDisableForSessionFacet));

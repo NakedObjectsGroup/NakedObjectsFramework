@@ -13,15 +13,11 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class ImageValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public ImageValueTypeFacetFactory(IReflector reflector)
-            : base(reflector) {}
-
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ImageValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = Reflector.LoadSpecification(ImageValueSemanticsProvider.AdaptedType);
-                return AddValueFacets(new ImageValueSemanticsProvider(spec, specification), specification);
+                var spec = reflector.LoadSpecification(ImageValueSemanticsProvider.AdaptedType);
+                AddValueFacets(new ImageValueSemanticsProvider(spec, specification), specification);
             }
-            return false;
         }
     }
 }

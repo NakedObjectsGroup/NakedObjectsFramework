@@ -17,12 +17,12 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class PluralAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PluralAnnotationFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+        public PluralAnnotationFacetFactory()
+            : base(FeatureType.Objects) {}
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<PluralAttribute>();
-            return FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static IPluralFacet Create(PluralAttribute attribute, ISpecification holder) {
