@@ -78,9 +78,6 @@
     <Compile Include="Util\ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Attributes\NakedObjects.Attributes.csproj">
       <Project>{8879084C-BD4A-4AD0-9418-A2C1DFB617D1}</Project>
       <Name>NakedObjects.Attributes</Name>
@@ -93,6 +90,9 @@
       <Project>{F67B7823-5A02-41E0-B0AF-08AC438AA882}</Project>
       <Name>NakedObjects.Types</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />
