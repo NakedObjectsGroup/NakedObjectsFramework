@@ -8,10 +8,10 @@
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Component {
-    public class BatchController : IBatchController {
+    public class BatchRunner : IBatchRunner {
         private readonly INakedObjectsFramework framework;
 
-        public BatchController(INakedObjectsFramework framework) {
+        public BatchRunner(INakedObjectsFramework framework) {
             this.framework = framework;
         }
 

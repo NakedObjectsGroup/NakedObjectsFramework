@@ -137,5 +137,12 @@ namespace NakedObjects {
         ///     Abort the current transaction
         /// </summary>
         void AbortCurrentTransaction();
+
+        /// <summary>
+        /// Get a service by its type. Return null if it doesn't exist.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        T GetService<T>();
     }
 }
