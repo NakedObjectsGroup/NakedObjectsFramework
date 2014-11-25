@@ -19,7 +19,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Spec;
 using NakedObjects.Core.Util;
@@ -1804,8 +1803,8 @@ namespace NakedObjects.Web.Mvc.Html {
                     INakedObject suggestedItem = html.GetSuggestedItem(id, valueNakedObject);
                     string valueId = suggestedItem == null ? string.Empty : html.Framework().GetObjectId(suggestedItem);
 
-                    if (!propertyContext.Target.ResolveState.IsTransient() || MvcIdentityAdapterHashMap.StoringTransientsInSession) {
-                        // only allow drag and drop onto transients if they are stored in session - otherwise  attempt to validate 
+                    if (!propertyContext.Target.ResolveState.IsTransient()) {
+                        // do not only allow drag and drop onto transients - otherwise  attempt to validate 
                         // may depend on missing fields/data. cf check at top of AjaxControllerImpl:ValidateProperty
 
                         string url = html.GenerateUrl("ValidateProperty", "Ajax", new RouteValueDictionary(new {

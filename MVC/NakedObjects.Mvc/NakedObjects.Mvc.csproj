@@ -174,8 +174,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapter\MvcIdentityAdapterHashMap.cs" />
-    <Compile Include="Adapter\MvcPocoAdapterHashMap.cs" />
     <Compile Include="Controllers\AjaxControllerImpl.cs" />
     <Compile Include="Controllers\CustomController.cs" />
     <Compile Include="Controllers\GenericControllerImpl.cs" />

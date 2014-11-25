@@ -40,13 +40,13 @@ namespace NakedObjects.Reflect {
         }
 
         public Reflector(IClassStrategy classStrategy,
-            IMetamodelBuilder metamodel,
-            IReflectorConfiguration config,
-            IServicesConfiguration servicesConfig,
-            IMainMenuDefinition menuDefinition,
-            IMenuFactory menuFactory,
-            IFacetDecorator[] facetDecorators,
-            IFacetFactory[] facetFactories) {
+                         IMetamodelBuilder metamodel,
+                         IReflectorConfiguration config,
+                         IServicesConfiguration servicesConfig,
+                         IMainMenuDefinition menuDefinition,
+                         IMenuFactory menuFactory,
+                         IFacetDecorator[] facetDecorators,
+                         IFacetFactory[] facetFactories) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(config);

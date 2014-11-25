@@ -21,12 +21,9 @@ namespace NakedObjects.Reflect {
             List<IFacetFactory> allFactories = factories.ToList();
             allFactories.Sort();
 
-            Prefixes = allFactories.Where(factory => factory is IMethodPrefixBasedFacetFactory).
-                Cast<IMethodPrefixBasedFacetFactory>().
-                SelectMany(prefixfactory => prefixfactory.Prefixes).
-                ToArray();
+            Prefixes = allFactories.OfType<IMethodPrefixBasedFacetFactory>().SelectMany(prefixfactory => prefixfactory.Prefixes).ToArray();
 
-            foreach (FeatureType featureType in Enum.GetValues(typeof (FeatureType))) {
+            foreach (FeatureType featureType in Enum.GetValues(typeof(FeatureType))) {
                 factoriesByFeatureType[featureType] = allFactories.Where(f => f.FeatureTypes.HasFlag(featureType)).ToList();
             }
 

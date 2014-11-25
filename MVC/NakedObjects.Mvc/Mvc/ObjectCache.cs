@@ -7,7 +7,6 @@ using System.Linq;
 using System.Web;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Adapter.Map;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Web.Mvc.Html;
 
@@ -66,7 +65,7 @@ namespace NakedObjects.Web.Mvc {
         public static void AddToCache(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObject nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
             // only add transients if we are storing transients in the session 
 
-            if ((!nakedObject.ResolveState.IsTransient() || MvcIdentityAdapterHashMap.StoringTransientsInSession) || nakedObject.Spec.IsCollection) {
+            if (!nakedObject.ResolveState.IsTransient() || nakedObject.Spec.IsCollection) {
                 session.ClearPreviousTransients(nakedObject, flag);
                 session.GetCache(flag).AddToCache(framework, nakedObject, url, flag);
             }
@@ -75,7 +74,7 @@ namespace NakedObjects.Web.Mvc {
         public static void AddOrUpdateInCache(this HttpSessionStateBase session, INakedObjectsFramework framework, INakedObject nakedObject, string url, ObjectFlag flag = ObjectFlag.None) {
             // only add transients if we are storing transients in the session 
 
-            if ((!nakedObject.ResolveState.IsTransient() || MvcIdentityAdapterHashMap.StoringTransientsInSession) || nakedObject.Spec.IsCollection) {
+            if (!nakedObject.ResolveState.IsTransient() || nakedObject.Spec.IsCollection) {
                 session.ClearPreviousTransients(nakedObject, flag);
                 session.GetCache(flag).AddOrUpdateInCache(framework, nakedObject, url, flag);
             }
