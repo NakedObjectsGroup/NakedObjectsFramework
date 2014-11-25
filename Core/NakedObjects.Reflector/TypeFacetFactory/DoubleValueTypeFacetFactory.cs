@@ -13,6 +13,10 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class DoubleValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+
+           public DoubleValueTypeFacetFactory(int numericOrder) : base(numericOrder) {
+            
+        }
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (DoubleValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = reflector.LoadSpecification(DoubleValueSemanticsProvider.AdaptedType);

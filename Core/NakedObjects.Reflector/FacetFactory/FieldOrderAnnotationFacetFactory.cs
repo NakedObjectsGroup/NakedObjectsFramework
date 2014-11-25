@@ -17,8 +17,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class FieldOrderAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public FieldOrderAnnotationFacetFactory()
-            : base(FeatureType.Objects) {}
+        public FieldOrderAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<FieldOrderAttribute>();

@@ -17,8 +17,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class ProgramPersistableOnlyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ProgramPersistableOnlyAnnotationFacetFactory()
-            : base(FeatureType.Objects) {}
+        public ProgramPersistableOnlyAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<ProgramPersistableOnlyAttribute>();

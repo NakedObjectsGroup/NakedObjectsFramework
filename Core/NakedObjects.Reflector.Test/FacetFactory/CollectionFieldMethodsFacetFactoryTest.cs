@@ -26,7 +26,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new CollectionFieldMethodsFacetFactory();
+            facetFactory = new CollectionFieldMethodsFacetFactory(0);
         }
 
         [TearDown]

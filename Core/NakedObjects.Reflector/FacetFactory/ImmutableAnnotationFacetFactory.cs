@@ -17,8 +17,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class ImmutableAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ImmutableAnnotationFacetFactory()
-            : base(FeatureType.Objects) {}
+        public ImmutableAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<ImmutableAttribute>();

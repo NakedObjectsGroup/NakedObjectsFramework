@@ -19,8 +19,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class DescribedAsAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public DescribedAsAnnotationFacetFactory()
-            : base(FeatureType.Everything) {}
+        public DescribedAsAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Everything) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = type.GetCustomAttributeByReflection<DescriptionAttribute>() ?? (Attribute) type.GetCustomAttributeByReflection<DescribedAsAttribute>();

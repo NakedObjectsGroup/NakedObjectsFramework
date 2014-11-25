@@ -22,8 +22,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class DefaultNamingFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultNamingFacetFactory));
 
-        public DefaultNamingFacetFactory()
-            : base(FeatureType.Objects) {}
+        public DefaultNamingFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
 
         private string ShortName(Type type) {

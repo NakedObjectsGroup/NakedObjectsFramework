@@ -13,6 +13,10 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class ColorValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+
+           public ColorValueTypeFacetFactory(int numericOrder) : base(numericOrder) {
+            
+        }
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ColorValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = reflector.LoadSpecification(ColorValueSemanticsProvider.AdaptedType);

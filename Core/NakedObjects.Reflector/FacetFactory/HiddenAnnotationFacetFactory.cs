@@ -21,8 +21,8 @@ using MemberInfo = System.Reflection.MemberInfo;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class HiddenAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public HiddenAnnotationFacetFactory()
-            : base(FeatureType.PropertiesCollectionsAndActions) {}
+        public HiddenAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesCollectionsAndActions) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Process(type.GetCustomAttributeByReflection<HiddenAttribute>,

@@ -24,7 +24,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PageSizeAnnotationFacetFactory();
+            facetFactory = new PageSizeAnnotationFacetFactory(0);
         }
 
         [TearDown]
@@ -62,7 +62,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TestDefaultPageSizePickedUp() {
             MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
             var actionPeer = new ActionSpecImmutable(null, null, null);
-            new FallbackFacetFactory().Process(Reflector, actionMethod, MethodRemover, actionPeer);
+            new FallbackFacetFactory(0).Process(Reflector, actionMethod, MethodRemover, actionPeer);
             IFacet facet = actionPeer.GetFacet(typeof (IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetDefault);

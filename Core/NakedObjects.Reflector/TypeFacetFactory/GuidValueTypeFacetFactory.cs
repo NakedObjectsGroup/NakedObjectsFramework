@@ -13,6 +13,10 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class GuidValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+
+           public GuidValueTypeFacetFactory(int numericOrder) : base(numericOrder) {
+            
+        }
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (GuidValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = reflector.LoadSpecification(GuidValueSemanticsProvider.AdaptedType);

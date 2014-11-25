@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ActionOrderAnnotationFacetFactory();
+            facetFactory = new ActionOrderAnnotationFacetFactory(0);
         }
 
         [TearDown]

@@ -17,7 +17,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
     ///     Note - this factory simply removes the class level attribute from the list of methods.  The action and properties look up this attribute directly
     /// </summary>
-    internal class HiddenDefaultMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public class HiddenDefaultMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes;
         private static readonly ILog Log = LogManager.GetLogger(typeof (HiddenDefaultMethodFacetFactory));
 
@@ -28,8 +28,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             };
         }
 
-        public HiddenDefaultMethodFacetFactory()
-            : base(FeatureType.Objects) {}
+        public HiddenDefaultMethodFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
 
         public override string[] Prefixes {

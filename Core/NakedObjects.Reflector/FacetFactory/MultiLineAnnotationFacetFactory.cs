@@ -18,8 +18,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class MultiLineAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MultiLineAnnotationFacetFactory()
-            : base(FeatureType.ObjectsPropertiesAndParameters) {}
+        public MultiLineAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.ObjectsPropertiesAndParameters) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<MultiLineAttribute>();

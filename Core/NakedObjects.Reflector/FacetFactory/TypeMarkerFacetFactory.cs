@@ -20,8 +20,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class TypeMarkerFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (DefaultNamingFacetFactory));
 
-        public TypeMarkerFacetFactory()
-            : base(FeatureType.Objects) {}
+        public TypeMarkerFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var facets = new List<IFacet>();

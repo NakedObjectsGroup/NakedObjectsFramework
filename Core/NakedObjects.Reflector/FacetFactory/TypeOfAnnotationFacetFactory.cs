@@ -18,8 +18,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class TypeOfAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TypeOfAnnotationFacetFactory()
-            : base(FeatureType.CollectionsAndActions) {}
+        public TypeOfAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.CollectionsAndActions) {}
 
         private void Process(IReflector reflector, Type methodReturnType, ISpecification holder) {
             if (!CollectionUtils.IsCollection(methodReturnType)) {

@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ValidateProgrammaticUpdatesAnnotationFacetFactory();
+            facetFactory = new ValidateProgrammaticUpdatesAnnotationFacetFactory(0);
         }
 
         [TearDown]

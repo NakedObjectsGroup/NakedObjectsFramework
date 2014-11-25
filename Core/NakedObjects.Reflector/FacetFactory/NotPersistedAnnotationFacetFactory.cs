@@ -18,8 +18,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class NotPersistedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public NotPersistedAnnotationFacetFactory()
-            : base(FeatureType.ObjectsPropertiesAndCollections) {}
+        public NotPersistedAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.ObjectsPropertiesAndCollections) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<NotPersistedAttribute>();

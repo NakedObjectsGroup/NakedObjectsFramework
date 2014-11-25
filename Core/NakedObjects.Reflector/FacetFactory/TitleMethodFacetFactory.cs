@@ -29,8 +29,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         };
 
 
-        public TitleMethodFacetFactory()
-            : base(FeatureType.Objects) {}
+        public TitleMethodFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

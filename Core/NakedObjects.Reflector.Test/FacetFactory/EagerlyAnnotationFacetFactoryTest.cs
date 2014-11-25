@@ -23,7 +23,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            annotationFacetFactory = new EagerlyAnnotationFacetFactory();
+            annotationFacetFactory = new EagerlyAnnotationFacetFactory(0);
         }
 
         [TearDown]

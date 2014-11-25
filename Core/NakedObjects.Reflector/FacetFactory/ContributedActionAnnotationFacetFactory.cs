@@ -23,8 +23,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="NotContributedActionAttribute" /> annotation
     /// </summary>
     public class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ContributedActionAnnotationFacetFactory()
-            : base(FeatureType.Action) {}
+        public ContributedActionAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Action) {}
 
         private void Process(IReflector reflector, MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<NotContributedActionAttribute>(member);

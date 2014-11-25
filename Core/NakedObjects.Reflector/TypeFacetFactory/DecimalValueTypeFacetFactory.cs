@@ -13,6 +13,10 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class DecimalValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+
+           public DecimalValueTypeFacetFactory(int numericOrder) : base(numericOrder) {
+            
+        }
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (DecimalValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = reflector.LoadSpecification(DecimalValueSemanticsProvider.AdaptedType);

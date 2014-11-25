@@ -20,8 +20,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class OptionalAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (OptionalAnnotationFacetFactory));
 
-        public OptionalAnnotationFacetFactory()
-            : base(FeatureType.PropertiesAndParameters) {}
+        public OptionalAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<OptionallyAttribute>(member);

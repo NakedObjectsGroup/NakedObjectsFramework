@@ -25,8 +25,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         private Type currentType;
         private IList<string> namesScratchPad = new List<string>();
 
-        public NamedAnnotationFacetFactory()
-            : base(FeatureType.Everything) {}
+        public NamedAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Everything) {}
 
         public void UpdateScratchPad(Type type) {
             if (currentType != type) {

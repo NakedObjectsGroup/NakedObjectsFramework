@@ -18,8 +18,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class EagerlyAnnotationFacetFactory : FacetFactoryAbstract {
-        public EagerlyAnnotationFacetFactory()
-            : base(FeatureType.EverythingButParameters) {}
+        public EagerlyAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.EverythingButParameters) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<EagerlyAttribute>();

@@ -16,8 +16,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class UnsupportedParameterTypesMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (UnsupportedParameterTypesMethodFilteringFactory));
 
-        public UnsupportedParameterTypesMethodFilteringFactory()
-            : base(FeatureType.Action) {}
+        public UnsupportedParameterTypesMethodFilteringFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Action) {}
 
         #region IMethodFilteringFacetFactory Members
 

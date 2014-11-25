@@ -41,8 +41,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionMethodsFacetFactory));
 
 
-        public ActionMethodsFacetFactory()
-            : base(FeatureType.ActionsAndParameters) {}
+        public ActionMethodsFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.ActionsAndParameters) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

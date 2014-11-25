@@ -19,8 +19,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class TableViewAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TableViewAnnotationFacetFactory()
-            : base(FeatureType.CollectionsAndActions) {}
+        public TableViewAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.CollectionsAndActions) {}
 
         private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
             if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {

@@ -14,6 +14,10 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+
+           public EnumValueTypeFacetFactory(int numericOrder) : base(numericOrder) {
+            
+        }
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (typeof (Enum).IsAssignableFrom(type)) {
                 Type semanticsProviderType = typeof (EnumValueSemanticsProvider<>).MakeGenericType(type);

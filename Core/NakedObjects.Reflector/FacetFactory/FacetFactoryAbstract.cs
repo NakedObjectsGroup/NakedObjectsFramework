@@ -17,11 +17,14 @@ namespace NakedObjects.Meta.Facet {
     public abstract class FacetFactoryAbstract : IFacetFactory {
         private readonly FeatureType featureTypes;
 
-        protected FacetFactoryAbstract(FeatureType featureTypes) {
+        protected FacetFactoryAbstract(int numericOrder, FeatureType featureTypes) {
+            NumericOrder = numericOrder;
             this.featureTypes = featureTypes;
         }
 
         #region IFacetFactory Members
+
+        public  int NumericOrder { get; private set; }
 
         public virtual FeatureType FeatureTypes {
             get { return featureTypes; }
@@ -44,5 +47,9 @@ namespace NakedObjects.Meta.Facet {
         }
 
         #endregion
+
+        public int CompareTo(IFacetFactory other) {
+            return NumericOrder.CompareTo(other.NumericOrder);
+        }
     }
 }

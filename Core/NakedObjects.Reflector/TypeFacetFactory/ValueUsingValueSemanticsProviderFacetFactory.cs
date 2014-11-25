@@ -14,8 +14,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public abstract class ValueUsingValueSemanticsProviderFacetFactory : FacetFactoryAbstract {
-        protected ValueUsingValueSemanticsProviderFacetFactory()
-            : base(FeatureType.Objects) {}
+        protected ValueUsingValueSemanticsProviderFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
         public static void AddValueFacets<T>(IValueSemanticsProvider<T> semanticsProvider, ISpecification holder) {
             FacetUtils.AddFacet(semanticsProvider as IFacet);

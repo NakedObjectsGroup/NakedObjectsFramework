@@ -14,7 +14,6 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Reflect.FacetFactory;
-using NakedObjects.Reflect.TypeFacetFactory;
 
 namespace NakedObjects.Reflect {
     // to do make this configurable so the list of factories can be managed
@@ -26,14 +25,25 @@ namespace NakedObjects.Reflect {
 
 
     public class FacetFactorySet : IFacetFactorySet {
-        /// <summary>
-        ///     Factories (in the order they were <see cref="RegisterFactory" /> registered)
-        /// </summary>
-        private readonly IList<IFacetFactory> factories = new List<IFacetFactory>();
+        public FacetFactorySet(IFacetFactory[] factories) {
+            List<IFacetFactory> allFactories = factories.ToList();
+            allFactories.Sort();
 
-        // Lazily initialized, then cached. The lists remain in the same order that the factories were registered.
-        private readonly IDictionary<Type, IFacetFactory> factoryByFactoryType = new Dictionary<Type, IFacetFactory>();
-        private IDictionary<FeatureType, IList<IFacetFactory>> factoriesByFeatureType;
+            Prefixes = allFactories.Where(factory => factory is IMethodPrefixBasedFacetFactory).
+                Cast<IMethodPrefixBasedFacetFactory>().
+                SelectMany(prefixfactory => prefixfactory.Prefixes).
+                ToArray();
+
+            foreach (FeatureType featureType in Enum.GetValues(typeof (FeatureType))) {
+                factoriesByFeatureType[featureType] = allFactories.Where(f => f.FeatureTypes.HasFlag(featureType)).ToList();
+            }
+
+            methodFilteringFactories = allFactories.OfType<IMethodFilteringFacetFactory>().ToList();
+            propertyOrCollectionIdentifyingFactories = allFactories.OfType<IPropertyOrCollectionIdentifyingFacetFactory>().ToList();
+        }
+
+
+        private readonly IDictionary<FeatureType, IList<IFacetFactory>> factoriesByFeatureType = new Dictionary<FeatureType, IList<IFacetFactory>>();
 
         /// <summary>
         ///     All registered <see cref="IFacetFactory" />s that implement
@@ -42,9 +52,8 @@ namespace NakedObjects.Reflect {
         /// <para>
         ///     Used within <see cref="IFacetFactorySet.Filters" />
         /// </para>
-        private IList<IMethodFilteringFacetFactory> methodFilteringFactories;
+        private readonly IList<IMethodFilteringFacetFactory> methodFilteringFactories;
 
-        private string[] prefixes;
 
         /// <summary>
         ///     All registered <see cref="IFacetFactory" />s that implement
@@ -54,24 +63,13 @@ namespace NakedObjects.Reflect {
         /// <para>
         ///     Used within <see cref="IFacetFactorySet.Recognizes" />
         /// </para>
-        private IList<IFacetFactory> propertyOrCollectionIdentifyingFactories;
+        private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
 
-        private string[] Prefixes {
-            get {
-                if (prefixes == null) {
-                    prefixes = factories.Where(factory => factory is IMethodPrefixBasedFacetFactory).
-                        Cast<IMethodPrefixBasedFacetFactory>().
-                        SelectMany(prefixfactory => prefixfactory.Prefixes).
-                        ToArray();
-                }
-                return prefixes;
-            }
-        }
+        private string[] Prefixes { get; set; }
 
         #region IFacetFactorySet Members
 
         public IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates) {
-            CachePropertyOrCollectionIdentifyingFacetFactoriesIfRequired();
             return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindCollectionProperties(candidates)).ToList();
         }
 
@@ -101,7 +99,6 @@ namespace NakedObjects.Reflect {
         ///     same prefix.
         /// </para>
         public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
-            CacheMethodFilteringFacetFactoriesIfRequired();
             return methodFilteringFactories.Any(factory => factory.Filters(method, classStrategy));
         }
 
@@ -133,176 +130,105 @@ namespace NakedObjects.Reflect {
             }
         }
 
-        public void Init(IReflector reflector) {
-            RegisterFactories(reflector);
-        }
-
         #endregion
 
-        public void RegisterFactory(IFacetFactory factory) {
-            ClearCaches();
-            factoryByFactoryType.Add(factory.GetType(), factory);
-            factories.Add(factory);
-        }
-
-        public void ReplaceAndRegisterFactory(Type oldFactoryType, IFacetFactory newFactory) {
-            ClearCaches();
-
-            IFacetFactory oldFactory = factoryByFactoryType[oldFactoryType];
-            factoryByFactoryType.Remove(oldFactoryType);
-            factoryByFactoryType.Add(newFactory.GetType(), newFactory);
-
-            factories[factories.IndexOf(oldFactory)] = newFactory;
-        }
-
         private IList<IFacetFactory> GetFactoryByFeatureType(FeatureType featureType) {
-            CacheByFeatureTypeIfRequired();
             return factoriesByFeatureType[featureType];
-        }
-
-        private void ClearCaches() {
-            factoriesByFeatureType = null;
-            methodFilteringFactories = null;
-            propertyOrCollectionIdentifyingFactories = null;
-        }
-
-        private void CacheByFeatureTypeIfRequired() {
-            if (factoriesByFeatureType == null) {
-                factoriesByFeatureType = new Dictionary<FeatureType, IList<IFacetFactory>>();
-                foreach (IFacetFactory factory in factories) {
-                    foreach (FeatureType featureType in Enum.GetValues(typeof (FeatureType))) {
-                        if (factory.FeatureTypes.HasFlag(featureType)) {
-                            IList<IFacetFactory> factoryList = GetList(factoriesByFeatureType, featureType);
-                            factoryList.Add(factory);
-                        }
-                    }
-                }
-            }
-        }
-
-        private void CacheMethodFilteringFacetFactoriesIfRequired() {
-            if (methodFilteringFactories == null) {
-                methodFilteringFactories = new List<IMethodFilteringFacetFactory>();
-                foreach (IFacetFactory facetFactory in factories) {
-                    if (facetFactory is IMethodFilteringFacetFactory) {
-                        methodFilteringFactories.Add(facetFactory as IMethodFilteringFacetFactory);
-                    }
-                }
-            }
-        }
-
-        private void CachePropertyOrCollectionIdentifyingFacetFactoriesIfRequired() {
-            if (propertyOrCollectionIdentifyingFactories == null) {
-                propertyOrCollectionIdentifyingFactories = new List<IFacetFactory>();
-                foreach (IFacetFactory facetFactory in factories) {
-                    if (facetFactory is IPropertyOrCollectionIdentifyingFacetFactory) {
-                        propertyOrCollectionIdentifyingFactories.Add(facetFactory);
-                    }
-                }
-            }
-        }
-
-        private static IList<IFacetFactory> GetList<TKey>(IDictionary<TKey, IList<IFacetFactory>> map, TKey key) {
-            if (!map.ContainsKey(key)) {
-                map.Add(key, new List<IFacetFactory>());
-            }
-            return map[key];
         }
 
         private static IMethodRemover RemoverElseNullRemover(IMethodRemover methodRemover) {
             return methodRemover ?? MethodRemoverConstants.Null;
         }
 
-
-        private void RegisterFactories(IReflector reflector) {
-            // must be first, so any Facets created can be replaced by other FacetFactorys later.
-            RegisterFactory(new FallbackFacetFactory());
-            RegisterFactory(new IteratorFilteringFacetFactory());
-            RegisterFactory(new UnsupportedParameterTypesMethodFilteringFactory());
-            RegisterFactory(new RemoveSuperclassMethodsFacetFactory());
-            RegisterFactory(new RemoveInitMethodFacetFactory());
-            RegisterFactory(new RemoveDynamicProxyMethodsFacetFactory());
-            RegisterFactory(new RemoveEventHandlerMethodsFacetFactory());
-            RegisterFactory(new TypeMarkerFacetFactory());
-            // must be before any other FacetFactories that install MandatoryFacet.class facets
-            RegisterFactory(new MandatoryDefaultFacetFactory());
-            RegisterFactory(new PropertyValidateDefaultFacetFactory());
-            RegisterFactory(new ComplementaryMethodsFilteringFacetFactory());
-            RegisterFactory(new ActionMethodsFacetFactory());
-            RegisterFactory(new CollectionFieldMethodsFacetFactory());
-            RegisterFactory(new PropertyMethodsFacetFactory());
-            RegisterFactory(new IconMethodFacetFactory());
-            RegisterFactory(new CallbackMethodsFacetFactory());
-            RegisterFactory(new TitleMethodFacetFactory());
-            RegisterFactory(new ValidateObjectFacetFactory());
-            RegisterFactory(new ActionOrderAnnotationFacetFactory());
-            RegisterFactory(new ComplexTypeAnnotationFacetFactory());
-            RegisterFactory(new ViewModelFacetFactory());
-            RegisterFactory(new BoundedAnnotationFacetFactory());
-            RegisterFactory(new EnumFacetFactory());
-            RegisterFactory(new ActionDefaultAnnotationFacetFactory());
-            RegisterFactory(new PropertyDefaultAnnotationFacetFactory());
-            RegisterFactory(new DescribedAsAnnotationFacetFactory());
-            RegisterFactory(new DisabledAnnotationFacetFactory());
-            RegisterFactory(new PasswordAnnotationFacetFactory());
-            RegisterFactory(new ExecutedAnnotationFacetFactory());
-            RegisterFactory(new PotencyAnnotationFacetFactory());
-            RegisterFactory(new PageSizeAnnotationFacetFactory());
-            RegisterFactory(new FieldOrderAnnotationFacetFactory());
-            RegisterFactory(new HiddenAnnotationFacetFactory());
-            RegisterFactory(new HiddenDefaultMethodFacetFactory());
-            RegisterFactory(new DisableDefaultMethodFacetFactory());
-            RegisterFactory(new AuthorizeAnnotationFacetFactory());
-            RegisterFactory(new ValidateProgrammaticUpdatesAnnotationFacetFactory());
-            RegisterFactory(new ImmutableAnnotationFacetFactory());
-            RegisterFactory(new MaxLengthAnnotationFacetFactory());
-            RegisterFactory(new RangeAnnotationFacetFactory());
-            RegisterFactory(new MemberOrderAnnotationFacetFactory());
-            RegisterFactory(new MultiLineAnnotationFacetFactory());
-            RegisterFactory(new NamedAnnotationFacetFactory());
-            RegisterFactory(new NotPersistedAnnotationFacetFactory());
-            RegisterFactory(new ProgramPersistableOnlyAnnotationFacetFactory());
-            RegisterFactory(new OptionalAnnotationFacetFactory());
-            RegisterFactory(new RequiredAnnotationFacetFactory());
-            RegisterFactory(new PluralAnnotationFacetFactory());
-            RegisterFactory(new DefaultNamingFacetFactory()); // must come after Named and Plural factories
-            RegisterFactory(new KeyAnnotationFacetFactory());
-            RegisterFactory(new ConcurrencyCheckAnnotationFacetFactory());
-            RegisterFactory(new ContributedActionAnnotationFacetFactory());
-            RegisterFactory(new ExcludeFromFindMenuAnnotationFacetFactory());
-            // must come after any facets that install titles
-            RegisterFactory(new MaskAnnotationFacetFactory());
-            // must come after any facets that install titles, and after mask
-            // if takes precedence over mask.
-            RegisterFactory(new RegExAnnotationFacetFactory());
-            RegisterFactory(new TypeOfAnnotationFacetFactory());
-            RegisterFactory(new TableViewAnnotationFacetFactory());
-            RegisterFactory(new TypicalLengthDerivedFromTypeFacetFactory());
-            RegisterFactory(new TypicalLengthAnnotationFacetFactory());
-            RegisterFactory(new EagerlyAnnotationFacetFactory());
-            RegisterFactory(new PresentationHintAnnotationFacetFactory());
-            RegisterFactory(new BooleanValueTypeFacetFactory());
-            RegisterFactory(new ByteValueTypeFacetFactory());
-            RegisterFactory(new SbyteValueTypeFacetFactory());
-            RegisterFactory(new ShortValueTypeFacetFactory());
-            RegisterFactory(new IntValueTypeFacetFactory());
-            RegisterFactory(new LongValueTypeFacetFactory());
-            RegisterFactory(new UShortValueTypeFacetFactory());
-            RegisterFactory(new UIntValueTypeFacetFactory());
-            RegisterFactory(new ULongValueTypeFacetFactory());
-            RegisterFactory(new FloatValueTypeFacetFactory());
-            RegisterFactory(new DoubleValueTypeFacetFactory());
-            RegisterFactory(new DecimalValueTypeFacetFactory());
-            RegisterFactory(new CharValueTypeFacetFactory());
-            RegisterFactory(new DateTimeValueTypeFacetFactory());
-            RegisterFactory(new TimeValueTypeFacetFactory());
-            RegisterFactory(new StringValueTypeFacetFactory());
-            RegisterFactory(new GuidValueTypeFacetFactory());
-            RegisterFactory(new EnumValueTypeFacetFactory());
-            RegisterFactory(new FileAttachmentValueTypeFacetFactory());
-            RegisterFactory(new ImageValueTypeFacetFactory());
-            RegisterFactory(new ArrayValueTypeFacetFactory<byte>());
-            RegisterFactory(new CollectionFacetFactory()); // written to not trample over TypeOf if already installed
-        }
+        //private void RegisterFactories(IReflector reflector) {
+        //    // must be first, so any Facets created can be replaced by other FacetFactorys later.
+        //    RegisterFactory(new FallbackFacetFactory(0));
+        //    RegisterFactory(new IteratorFilteringFacetFactory(1));
+        //    RegisterFactory(new UnsupportedParameterTypesMethodFilteringFactory(2));
+        //    RegisterFactory(new RemoveSuperclassMethodsFacetFactory(3));
+        //    RegisterFactory(new RemoveInitMethodFacetFactory(4));
+        //    RegisterFactory(new RemoveDynamicProxyMethodsFacetFactory(5));
+        //    RegisterFactory(new RemoveEventHandlerMethodsFacetFactory(6));
+        //    RegisterFactory(new TypeMarkerFacetFactory(7));
+        //    // must be before any other FacetFactories that install MandatoryFacet.class facets
+        //    RegisterFactory(new MandatoryDefaultFacetFactory(8));
+        //    RegisterFactory(new PropertyValidateDefaultFacetFactory(9));
+        //    RegisterFactory(new ComplementaryMethodsFilteringFacetFactory(10));
+        //    RegisterFactory(new ActionMethodsFacetFactory(11));
+        //    RegisterFactory(new CollectionFieldMethodsFacetFactory(12));
+        //    RegisterFactory(new PropertyMethodsFacetFactory(13));
+        //    RegisterFactory(new IconMethodFacetFactory(14));
+        //    RegisterFactory(new CallbackMethodsFacetFactory(15));
+        //    RegisterFactory(new TitleMethodFacetFactory(16));
+        //    RegisterFactory(new ValidateObjectFacetFactory(17));
+        //    RegisterFactory(new ActionOrderAnnotationFacetFactory(18));
+        //    RegisterFactory(new ComplexTypeAnnotationFacetFactory(19));
+        //    RegisterFactory(new ViewModelFacetFactory(20));
+        //    RegisterFactory(new BoundedAnnotationFacetFactory(21));
+        //    RegisterFactory(new EnumFacetFactory(22));
+        //    RegisterFactory(new ActionDefaultAnnotationFacetFactory(23));
+        //    RegisterFactory(new PropertyDefaultAnnotationFacetFactory(24));
+        //    RegisterFactory(new DescribedAsAnnotationFacetFactory(25));
+        //    RegisterFactory(new DisabledAnnotationFacetFactory(26));
+        //    RegisterFactory(new PasswordAnnotationFacetFactory(27));
+        //    RegisterFactory(new ExecutedAnnotationFacetFactory(28));
+        //    RegisterFactory(new PotencyAnnotationFacetFactory(29));
+        //    RegisterFactory(new PageSizeAnnotationFacetFactory(30));
+        //    RegisterFactory(new FieldOrderAnnotationFacetFactory(31));
+        //    RegisterFactory(new HiddenAnnotationFacetFactory(32));
+        //    RegisterFactory(new HiddenDefaultMethodFacetFactory(33));
+        //    RegisterFactory(new DisableDefaultMethodFacetFactory(34));
+        //    RegisterFactory(new AuthorizeAnnotationFacetFactory(35));
+        //    RegisterFactory(new ValidateProgrammaticUpdatesAnnotationFacetFactory(36));
+        //    RegisterFactory(new ImmutableAnnotationFacetFactory(37));
+        //    RegisterFactory(new MaxLengthAnnotationFacetFactory(38));
+        //    RegisterFactory(new RangeAnnotationFacetFactory(39));
+        //    RegisterFactory(new MemberOrderAnnotationFacetFactory(40));
+        //    RegisterFactory(new MultiLineAnnotationFacetFactory(41));
+        //    RegisterFactory(new NamedAnnotationFacetFactory(42));
+        //    RegisterFactory(new NotPersistedAnnotationFacetFactory(43));
+        //    RegisterFactory(new ProgramPersistableOnlyAnnotationFacetFactory(44));
+        //    RegisterFactory(new OptionalAnnotationFacetFactory(45));
+        //    RegisterFactory(new RequiredAnnotationFacetFactory(46));
+        //    RegisterFactory(new PluralAnnotationFacetFactory(47));
+        //    RegisterFactory(new DefaultNamingFacetFactory(48)); // must come after Named and Plural factories
+        //    RegisterFactory(new KeyAnnotationFacetFactory(49));
+        //    RegisterFactory(new ConcurrencyCheckAnnotationFacetFactory(50));
+        //    RegisterFactory(new ContributedActionAnnotationFacetFactory(51));
+        //    RegisterFactory(new ExcludeFromFindMenuAnnotationFacetFactory(52));
+        //    // must come after any facets that install titles
+        //    RegisterFactory(new MaskAnnotationFacetFactory(53));
+        //    // must come after any facets that install titles, and after mask
+        //    // if takes precedence over mask.
+        //    RegisterFactory(new RegExAnnotationFacetFactory(54));
+        //    RegisterFactory(new TypeOfAnnotationFacetFactory(55));
+        //    RegisterFactory(new TableViewAnnotationFacetFactory(56));
+        //    RegisterFactory(new TypicalLengthDerivedFromTypeFacetFactory(57));
+        //    RegisterFactory(new TypicalLengthAnnotationFacetFactory(58));
+        //    RegisterFactory(new EagerlyAnnotationFacetFactory(59));
+        //    RegisterFactory(new PresentationHintAnnotationFacetFactory(60));
+        //    RegisterFactory(new BooleanValueTypeFacetFactory(61));
+        //    RegisterFactory(new ByteValueTypeFacetFactory(62));
+        //    RegisterFactory(new SbyteValueTypeFacetFactory(63));
+        //    RegisterFactory(new ShortValueTypeFacetFactory(64));
+        //    RegisterFactory(new IntValueTypeFacetFactory(65));
+        //    RegisterFactory(new LongValueTypeFacetFactory(66));
+        //    RegisterFactory(new UShortValueTypeFacetFactory(67));
+        //    RegisterFactory(new UIntValueTypeFacetFactory(68));
+        //    RegisterFactory(new ULongValueTypeFacetFactory(69));
+        //    RegisterFactory(new FloatValueTypeFacetFactory(70));
+        //    RegisterFactory(new DoubleValueTypeFacetFactory(71));
+        //    RegisterFactory(new DecimalValueTypeFacetFactory(72));
+        //    RegisterFactory(new CharValueTypeFacetFactory(73));
+        //    RegisterFactory(new DateTimeValueTypeFacetFactory(74));
+        //    RegisterFactory(new TimeValueTypeFacetFactory(75));
+        //    RegisterFactory(new StringValueTypeFacetFactory(76));
+        //    RegisterFactory(new GuidValueTypeFacetFactory(77));
+        //    RegisterFactory(new EnumValueTypeFacetFactory(78));
+        //    RegisterFactory(new FileAttachmentValueTypeFacetFactory(79));
+        //    RegisterFactory(new ImageValueTypeFacetFactory(80));
+        //    RegisterFactory(new ArrayValueTypeFacetFactory<byte>(81));
+        //    RegisterFactory(new CollectionFacetFactory(82)); // written to not trample over TypeOf if already installed
+        //}
     }
 }

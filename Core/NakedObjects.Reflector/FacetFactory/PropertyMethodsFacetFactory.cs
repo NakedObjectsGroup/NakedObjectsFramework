@@ -31,8 +31,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             PrefixesAndRecognisedMethods.ModifyPrefix
         };
 
-        public PropertyMethodsFacetFactory()
-            : base(FeatureType.Property) {}
+        public PropertyMethodsFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Property) {}
 
         public override string[] Prefixes {
             get { return FixedPrefixes; }

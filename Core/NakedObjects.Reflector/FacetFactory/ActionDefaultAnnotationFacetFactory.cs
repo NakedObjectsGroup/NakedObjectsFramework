@@ -17,9 +17,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class ActionDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ActionDefaultAnnotationFacetFactory()
-            : base(FeatureType.ActionParameter) {}
-
+        public ActionDefaultAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.ActionParameter) {}
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];

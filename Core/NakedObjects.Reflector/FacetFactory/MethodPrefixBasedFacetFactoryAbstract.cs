@@ -21,8 +21,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public abstract class MethodPrefixBasedFacetFactoryAbstract : FacetFactoryAbstract, IMethodPrefixBasedFacetFactory {
-        protected MethodPrefixBasedFacetFactoryAbstract(FeatureType featureTypes)
-            : base(featureTypes) {}
+        protected MethodPrefixBasedFacetFactoryAbstract(int numericOrder, FeatureType featureTypes)
+            : base(numericOrder, featureTypes) {}
 
         #region IMethodPrefixBasedFacetFactory Members
 

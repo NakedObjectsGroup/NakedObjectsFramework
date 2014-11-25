@@ -18,8 +18,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class PasswordAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PasswordAnnotationFacetFactory()
-            : base(FeatureType.PropertiesAndParameters) {}
+        public PasswordAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<DataTypeAttribute>(member);

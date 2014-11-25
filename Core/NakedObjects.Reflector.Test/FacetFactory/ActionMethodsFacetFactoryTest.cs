@@ -30,7 +30,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ActionMethodsFacetFactory();
+            facetFactory = new ActionMethodsFacetFactory(0);
         }
 
         [TearDown]

@@ -23,7 +23,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PresentationHintAnnotationFacetFactory();
+            facetFactory = new PresentationHintAnnotationFacetFactory(0);
         }
 
         [TearDown]

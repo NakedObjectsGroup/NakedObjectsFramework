@@ -21,8 +21,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="ExecutedAttribute" /> annotation
     /// </summary>
     public class ExecutedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ExecutedAnnotationFacetFactory()
-            : base(FeatureType.Action) {}
+        public ExecutedAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Action) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<ExecutedAttribute>(member);

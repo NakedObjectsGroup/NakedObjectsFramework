@@ -18,8 +18,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class ComplexTypeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ComplexTypeAnnotationFacetFactory()
-            : base(FeatureType.Objects) {}
+        public ComplexTypeAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute ctAttribute = type.GetCustomAttributeByReflection<ComplexTypeAttribute>();

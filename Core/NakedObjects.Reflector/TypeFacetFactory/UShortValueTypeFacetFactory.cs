@@ -13,6 +13,11 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class UShortValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+
+        public UShortValueTypeFacetFactory(int numericOrder) : base(numericOrder) {
+            
+        }
+
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (UShortValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = reflector.LoadSpecification(UShortValueSemanticsProvider.AdaptedType);

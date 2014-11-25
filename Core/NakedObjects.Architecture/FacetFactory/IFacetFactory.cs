@@ -14,7 +14,13 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.FacetFactory {
-    public interface IFacetFactory {
+    public interface IFacetFactory : IComparable<IFacetFactory> {
+
+        /// <summary>
+        /// To order the factory
+        /// </summary>
+        int NumericOrder { get; }
+
         /// <summary>
         ///     The <see cref="FeatureType" />s that this facet factory can create <see cref="IFacet" />s for.
         /// </summary>

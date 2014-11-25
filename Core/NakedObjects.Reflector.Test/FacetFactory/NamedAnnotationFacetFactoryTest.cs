@@ -25,7 +25,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new NamedAnnotationFacetFactory();
+            facetFactory = new NamedAnnotationFacetFactory(0);
             //BasicConfigurator.Configure(new WarningAppender());
         }
 

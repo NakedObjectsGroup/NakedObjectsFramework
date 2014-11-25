@@ -18,8 +18,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class MaskAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MaskAnnotationFacetFactory()
-            : base(FeatureType.ObjectsPropertiesAndParameters) {}
+        public MaskAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.ObjectsPropertiesAndParameters) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<MaskAttribute>();

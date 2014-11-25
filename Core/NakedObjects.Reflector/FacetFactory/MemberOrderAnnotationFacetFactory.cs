@@ -17,8 +17,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class MemberOrderAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MemberOrderAnnotationFacetFactory()
-            : base(FeatureType.PropertiesCollectionsAndActions) {}
+        public MemberOrderAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesCollectionsAndActions) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<MemberOrderAttribute>(member);

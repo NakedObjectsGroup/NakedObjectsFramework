@@ -18,8 +18,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class PropertyDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PropertyDefaultAnnotationFacetFactory()
-            : base(FeatureType.Property) {}
+        public PropertyDefaultAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Property) {}
 
 
         private static void Process(MemberInfo member, ISpecification holder) {

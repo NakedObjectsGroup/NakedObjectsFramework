@@ -13,6 +13,10 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class StringValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+
+           public StringValueTypeFacetFactory(int numericOrder) : base(numericOrder) {
+            
+        }
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (StringValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = reflector.LoadSpecification(StringValueSemanticsProvider.AdaptedType);

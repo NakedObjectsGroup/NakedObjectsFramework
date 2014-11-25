@@ -17,8 +17,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class TypicalLengthDerivedFromTypeFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TypicalLengthDerivedFromTypeFacetFactory()
-            : base(FeatureType.PropertiesAndParameters) {}
+        public TypicalLengthDerivedFromTypeFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             AddFacetDerivedFromTypeIfPresent(reflector, specification, property.PropertyType);

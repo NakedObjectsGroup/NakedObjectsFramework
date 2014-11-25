@@ -17,8 +17,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class BoundedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public BoundedAnnotationFacetFactory()
-            : base(FeatureType.Objects) {}
+        public BoundedAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<BoundedAttribute>();

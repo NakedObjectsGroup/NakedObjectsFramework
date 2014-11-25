@@ -21,8 +21,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class AuthorizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (AuthorizeAnnotationFacetFactory));
 
-        public AuthorizeAnnotationFacetFactory()
-            : base(FeatureType.PropertiesCollectionsAndActions) {}
+        public AuthorizeAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesCollectionsAndActions) {}
 
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {}

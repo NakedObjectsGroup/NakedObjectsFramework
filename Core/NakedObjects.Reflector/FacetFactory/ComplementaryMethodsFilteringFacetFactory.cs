@@ -49,8 +49,9 @@ namespace NakedObjects.Reflect.FacetFactory {
         /// <summary>
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)
         /// </summary>
-        public ComplementaryMethodsFilteringFacetFactory()
-            : base(FeatureType.Action) {}
+        /// <param name="numericOrder"></param>
+        public ComplementaryMethodsFilteringFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Action) {}
 
         #region IMethodFilteringFacetFactory Members
 

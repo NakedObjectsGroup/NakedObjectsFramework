@@ -22,8 +22,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class RangeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (RangeAnnotationFacetFactory));
 
-        public RangeAnnotationFacetFactory()
-            : base(FeatureType.PropertiesAndParameters) {}
+        public RangeAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
 
         private static bool Process(MemberInfo member, bool isDate, ISpecification specification) {

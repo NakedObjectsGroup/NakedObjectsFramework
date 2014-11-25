@@ -12,8 +12,8 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public abstract class PropertyOrCollectionIdentifyingFacetFactoryAbstract : MethodPrefixBasedFacetFactoryAbstract, IPropertyOrCollectionIdentifyingFacetFactory {
-        protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(FeatureType featureTypes)
-            : base(featureTypes) {}
+        protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(int numericOrder, FeatureType featureTypes)
+            : base(numericOrder, featureTypes) {}
 
         protected static bool IsCollectionOrArray(Type type) {
             return CollectionUtils.IsCollection(type);

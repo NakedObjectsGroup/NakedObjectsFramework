@@ -12,8 +12,8 @@ using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public abstract class AnnotationBasedFacetFactoryAbstract : FacetFactoryAbstract, IAnnotationBasedFacetFactory {
-        protected AnnotationBasedFacetFactoryAbstract(FeatureType featureTypes)
-            : base(featureTypes) {}
+        protected AnnotationBasedFacetFactoryAbstract(int numericOrder, FeatureType featureTypes)
+            : base(numericOrder, featureTypes) {}
 
         /// <summary>
         ///     Always returns <c>false</c> as <see cref="IFacetFactory" />s that look for annotations

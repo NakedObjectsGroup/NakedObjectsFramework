@@ -25,7 +25,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new EnumFacetFactory();
+            facetFactory = new EnumFacetFactory(0);
         }
 
         [TearDown]

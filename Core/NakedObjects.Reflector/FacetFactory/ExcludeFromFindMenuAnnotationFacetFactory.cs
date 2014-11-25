@@ -21,8 +21,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="ExcludeFromFindMenuAttribute" /> annotation
     /// </summary>
     public class ExcludeFromFindMenuAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ExcludeFromFindMenuAnnotationFacetFactory()
-            : base(FeatureType.Action) {}
+        public ExcludeFromFindMenuAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Action) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<ExcludeFromFindMenuAttribute>(member);

@@ -21,8 +21,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="PageSizeAttribute" /> annotation
     /// </summary>
     public class PageSizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PageSizeAnnotationFacetFactory()
-            : base(FeatureType.Action) {}
+        public PageSizeAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Action) {}
 
         private static bool Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<PageSizeAttribute>(member);

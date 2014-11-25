@@ -14,6 +14,7 @@ using NakedObjects.Architecture;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
@@ -40,26 +41,28 @@ namespace NakedObjects.Reflect {
         }
 
         public Reflector(IClassStrategy classStrategy,
-                         IFacetFactorySet facetFactorySet,
                          IMetamodelBuilder metamodel,
                          IReflectorConfiguration config,
                          IServicesConfiguration servicesConfig,
                          IMainMenuDefinition menuDefinition,
                          IMenuFactory menuFactory,
-                         IFacetDecorator[] facetDecorators) {
+                         IFacetDecorator[] facetDecorators,
+                         IFacetFactory[] facetFactories) {
             Assert.AssertNotNull(classStrategy);
-            Assert.AssertNotNull(facetFactorySet);
-
+            Assert.AssertNotNull(metamodel);
+            Assert.AssertNotNull(config);
+            Assert.AssertNotNull(servicesConfig);
+            Assert.AssertNotNull(menuDefinition);
+            Assert.AssertNotNull(menuFactory);
 
             this.classStrategy = classStrategy;
-            this.facetFactorySet = facetFactorySet;
             this.metamodel = metamodel;
             this.config = config;
             this.servicesConfig = servicesConfig;
             this.menuDefinition = menuDefinition;
             this.menuFactory = menuFactory;
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators);
-            facetFactorySet.Init(this);
+            facetFactorySet = new FacetFactorySet(facetFactories);
         }
 
         // exposed for testing

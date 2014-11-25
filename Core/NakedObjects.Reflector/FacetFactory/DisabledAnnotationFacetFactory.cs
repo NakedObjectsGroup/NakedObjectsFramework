@@ -17,8 +17,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class DisabledAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public DisabledAnnotationFacetFactory()
-            : base(FeatureType.PropertiesCollectionsAndActions) {}
+        public DisabledAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesCollectionsAndActions) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<DisabledAttribute>(member);

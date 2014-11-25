@@ -19,8 +19,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class RemoveDynamicProxyMethodsFacetFactory : FacetFactoryAbstract {
         private static readonly string[] MethodsToRemove = {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
 
-        public RemoveDynamicProxyMethodsFacetFactory()
-            : base(FeatureType.ObjectsAndProperties) {}
+        public RemoveDynamicProxyMethodsFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.ObjectsAndProperties) {}
 
         private static bool IsDynamicProxyType(Type type) {
             return type.FullName.StartsWith("System.Data.Entity.DynamicProxies");

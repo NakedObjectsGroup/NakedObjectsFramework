@@ -21,8 +21,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public class RequiredAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof (RequiredAnnotationFacetFactory));
 
-        public RequiredAnnotationFacetFactory()
-            : base(FeatureType.PropertiesAndParameters) {}
+        public RequiredAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = AttributeUtils.GetCustomAttribute<RequiredAttribute>(member);

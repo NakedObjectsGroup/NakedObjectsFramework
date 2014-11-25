@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ComplementaryMethodsFilteringFacetFactory();
+            facetFactory = new ComplementaryMethodsFilteringFacetFactory(0);
         }
 
         [TearDown]

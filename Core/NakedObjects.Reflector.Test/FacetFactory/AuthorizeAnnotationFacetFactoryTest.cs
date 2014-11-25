@@ -25,7 +25,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [SetUp]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new AuthorizeAnnotationFacetFactory();
+            facetFactory = new AuthorizeAnnotationFacetFactory(0);
 
             mockPersistor = new Mock<ILifecycleManager>();
             persistor = mockPersistor.Object;

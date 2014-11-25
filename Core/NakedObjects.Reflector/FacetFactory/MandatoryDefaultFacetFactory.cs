@@ -25,8 +25,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     property or parameter is annotated or otherwise indicated as being optional.
     /// </para>
     public class MandatoryDefaultFacetFactory : FacetFactoryAbstract {
-        public MandatoryDefaultFacetFactory()
-            : base(FeatureType.PropertiesAndParameters) {}
+        public MandatoryDefaultFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.PropertiesAndParameters) {}
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             FacetUtils.AddFacet(Create(specification));

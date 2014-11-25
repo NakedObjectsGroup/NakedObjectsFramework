@@ -13,6 +13,10 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class CharValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+
+           public CharValueTypeFacetFactory(int numericOrder) : base(numericOrder) {
+            
+        }
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (CharValueSemanticsProvider.IsAdaptedType(type)) {
                 var spec = reflector.LoadSpecification(CharValueSemanticsProvider.AdaptedType);

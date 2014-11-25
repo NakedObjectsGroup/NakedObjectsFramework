@@ -18,8 +18,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public class PresentationHintAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PresentationHintAnnotationFacetFactory()
-            : base(FeatureType.Everything) {}
+        public PresentationHintAnnotationFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Everything) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttributeByReflection<PresentationHintAttribute>();
