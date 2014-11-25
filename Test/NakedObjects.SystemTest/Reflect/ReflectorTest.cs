@@ -46,7 +46,6 @@ namespace NakedObjects.Reflect.Test {
             container.RegisterType<IMetamodel, Metamodel>();
             container.RegisterType<IMetamodelBuilder, Metamodel>();
             container.RegisterType<IServicesConfiguration, ServicesConfiguration>();
-            container.RegisterType<IFacetFactorySet, FacetFactorySet>();
         }
 
         [TestMethod]
@@ -78,8 +77,8 @@ namespace NakedObjects.Reflect.Test {
             var reflector = container.Resolve<IReflector>();
             reflector.Reflect();
 
-            var set = ((Reflector) reflector).FacetDecoratorSet;
-            Assert.AreEqual(7, ((FacetDecoratorSet) set).FacetDecorators.Count);
+            dynamic set = ((Reflector) reflector).FacetDecoratorSet;
+            Assert.AreEqual(7, set.FacetDecorators.Count);
         }
 
         public class TestAuthorizer : INamespaceAuthorizer {
