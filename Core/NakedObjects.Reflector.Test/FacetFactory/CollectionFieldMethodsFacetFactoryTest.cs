@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Security.Principal;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;

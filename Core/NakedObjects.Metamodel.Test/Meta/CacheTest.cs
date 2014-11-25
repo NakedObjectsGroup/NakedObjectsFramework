@@ -153,7 +153,6 @@ namespace NakedObjects.Meta.Test {
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(
                 new ContainerControlledLifetimeManager(), new InjectionConstructor());
             container.RegisterType<IClassStrategy, DefaultClassStrategy>();
-            container.RegisterType<IFacetFactorySet, FacetFactorySet>();
             container.RegisterType<IReflector, Reflector>();
             container.RegisterType<IMetamodel, Metamodel>();
             container.RegisterType<IMetamodelBuilder, Metamodel>();

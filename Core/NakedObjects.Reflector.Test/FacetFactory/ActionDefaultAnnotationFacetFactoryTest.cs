@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;

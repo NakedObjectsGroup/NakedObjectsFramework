@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
@@ -27,16 +28,16 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
 
             if (methodReturnType.IsArray) {
-                var elementType = methodReturnType.GetElementType();
-                var elementSpec = reflector.LoadSpecification(elementType);
+                Type elementType = methodReturnType.GetElementType();
+                IObjectSpecBuilder elementSpec = reflector.LoadSpecification(elementType);
                 FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
                 FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
             }
             else if (methodReturnType.IsGenericType) {
                 Type[] actualTypeArguments = methodReturnType.GetGenericArguments();
                 if (actualTypeArguments.Any()) {
-                    var elementType = actualTypeArguments.First();
-                    var elementSpec = reflector.LoadSpecification(elementType);
+                    Type elementType = actualTypeArguments.First();
+                    IObjectSpecBuilder elementSpec = reflector.LoadSpecification(elementType);
                     FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
                     FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
                 }

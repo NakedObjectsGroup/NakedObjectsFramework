@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
@@ -24,8 +25,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         private void ProcessArray(IReflector reflector, Type type, ISpecification holder) {
             FacetUtils.AddFacet(new ArrayFacet(holder));
 
-            var elementType = type.GetElementType();
-            var elementSpec = reflector.LoadSpecification(elementType);
+            Type elementType = type.GetElementType();
+            IObjectSpecBuilder elementSpec = reflector.LoadSpecification(elementType);
             FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
             FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
         }
@@ -49,7 +50,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             var elementTypeFacet = holder.GetFacet<IElementTypeFacet>();
             if (elementTypeFacet == null) {
                 Type collectionElementType = typeof (object);
-                var spec = reflector.LoadSpecification(collectionElementType);
+                IObjectSpecBuilder spec = reflector.LoadSpecification(collectionElementType);
                 FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, spec));
                 FacetUtils.AddFacet(new ElementTypeFacet(holder, collectionElementType, spec));
             }

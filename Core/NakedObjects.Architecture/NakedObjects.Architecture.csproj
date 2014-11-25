@@ -139,7 +139,7 @@
     <Compile Include="Component\IBatchController.cs" />
     <Compile Include="Component\IBatchStartPoint.cs" />
     <Compile Include="Component\IClassStrategy.cs" />
-    <Compile Include="Component\IFacetFactorySet.cs" />
+    <Compile Include="Reflect\IFacetFactorySet.cs" />
     <Compile Include="Component\II18nManager.cs" />
     <Compile Include="Component\IMetamodel.cs" />
     <Compile Include="Component\IMetamodelManager.cs" />
@@ -213,7 +213,7 @@
     <Compile Include="Facet\IDisableForContextFacet.cs" />
     <Compile Include="Facet\IDisableForSessionFacet.cs" />
     <Compile Include="Facet\IFacet.cs" />
-    <Compile Include="FacetFactory\IFacetFactory.cs" />
+    <Compile Include="Component\IFacetFactory.cs" />
     <Compile Include="Menu\IMenu.cs" />
     <Compile Include="Menu\IMenuActionImmutable.cs" />
     <Compile Include="Menu\IMainMenuDefinition.cs" />

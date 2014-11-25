@@ -60,7 +60,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
 
             method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.PersistingMethod, typeof (void), Type.EmptyTypes);
-            MethodInfo oldMethod = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.SavingMethod, typeof(void), Type.EmptyTypes);
+            MethodInfo oldMethod = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.SavingMethod, typeof (void), Type.EmptyTypes);
 
             if (method != null && oldMethod != null) {
                 // cannot have both old and new method types 
@@ -80,8 +80,8 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new PersistingCallbackFacetNull(specification));
             }
 
-            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.PersistedMethod, typeof(void), Type.EmptyTypes);
-            oldMethod = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.SavedMethod, typeof(void), Type.EmptyTypes);
+            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.PersistedMethod, typeof (void), Type.EmptyTypes);
+            oldMethod = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.SavedMethod, typeof (void), Type.EmptyTypes);
 
             if (method != null && oldMethod != null) {
                 // cannot have both old and new method types 
@@ -101,7 +101,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new PersistedCallbackFacetNull(specification));
             }
 
-            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.UpdatingMethod, typeof(void), Type.EmptyTypes);
+            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.UpdatingMethod, typeof (void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
                 facets.Add(new UpdatingCallbackFacetViaMethod(method, specification));
@@ -110,7 +110,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new UpdatingCallbackFacetNull(specification));
             }
 
-            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.UpdatedMethod, typeof(void), Type.EmptyTypes);
+            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.UpdatedMethod, typeof (void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
                 facets.Add(new UpdatedCallbackFacetViaMethod(method, specification));
@@ -119,7 +119,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new UpdatedCallbackFacetNull(specification));
             }
 
-            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.LoadingMethod, typeof(void), Type.EmptyTypes);
+            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.LoadingMethod, typeof (void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
                 facets.Add(new LoadingCallbackFacetViaMethod(method, specification));
@@ -128,7 +128,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new LoadingCallbackFacetNull(specification));
             }
 
-            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.LoadedMethod, typeof(void), Type.EmptyTypes);
+            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.LoadedMethod, typeof (void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
                 facets.Add(new LoadedCallbackFacetViaMethod(method, specification));
@@ -137,7 +137,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new LoadedCallbackFacetNull(specification));
             }
 
-            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.DeletingMethod, typeof(void), Type.EmptyTypes);
+            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.DeletingMethod, typeof (void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
                 facets.Add(new DeletingCallbackFacetViaMethod(method, specification));
@@ -146,7 +146,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new DeletingCallbackFacetNull(specification));
             }
 
-            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.DeletedMethod, typeof(void), Type.EmptyTypes);
+            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.DeletedMethod, typeof (void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
                 facets.Add(new DeletedCallbackFacetViaMethod(method, specification));
@@ -155,7 +155,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new DeletedCallbackFacetNull(specification));
             }
 
-            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.OnUpdatingErrorMethod, typeof(string), new[] { typeof(Exception) });
+            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.OnUpdatingErrorMethod, typeof (string), new[] {typeof (Exception)});
             if (method != null) {
                 methods.Add(method);
                 facets.Add(new OnUpdatingErrorCallbackFacetViaMethod(method, specification));
@@ -164,7 +164,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new OnUpdatingErrorCallbackFacetNull(specification));
             }
 
-            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.OnPersistingErrorMethod, typeof(string), new[] { typeof(Exception) });
+            method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.OnPersistingErrorMethod, typeof (string), new[] {typeof (Exception)});
             if (method != null) {
                 methods.Add(method);
                 facets.Add(new OnPersistingErrorCallbackFacetViaMethod(method, specification));

@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IFacetFactory Members
 
-        public  int NumericOrder { get; private set; }
+        public int NumericOrder { get; private set; }
 
         public virtual FeatureType FeatureTypes {
             get { return featureTypes; }

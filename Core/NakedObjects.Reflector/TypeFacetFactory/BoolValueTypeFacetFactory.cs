@@ -9,17 +9,16 @@ using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class BooleanValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-           public BooleanValueTypeFacetFactory(int numericOrder) : base(numericOrder) {
-            
-        }
+        public BooleanValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (BooleanValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = reflector.LoadSpecification(BooleanValueSemanticsProvider.AdaptedType);
+                IObjectSpecBuilder spec = reflector.LoadSpecification(BooleanValueSemanticsProvider.AdaptedType);
                 AddValueFacets(new BooleanValueSemanticsProvider(spec, specification), specification);
             }
         }

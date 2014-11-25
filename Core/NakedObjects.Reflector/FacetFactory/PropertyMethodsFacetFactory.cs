@@ -79,14 +79,14 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacets(facets);
         }
 
-        private void FindAndRemoveModifyMethod(IReflector reflector, 
-                                               ICollection<IFacet> propertyFacets,
-                                               IMethodRemover methodRemover,
-                                               Type type,
-                                               string capitalizedName,
-                                               Type[] parms,
-                                               ISpecification property) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ModifyPrefix + capitalizedName, typeof(void), parms);
+        private void FindAndRemoveModifyMethod(IReflector reflector,
+            ICollection<IFacet> propertyFacets,
+            IMethodRemover methodRemover,
+            Type type,
+            string capitalizedName,
+            Type[] parms,
+            ISpecification property) {
+            MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ModifyPrefix + capitalizedName, typeof (void), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, property));
@@ -94,7 +94,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveClearMethod(IReflector reflector, ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, string capitalizedName, ISpecification property) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ClearPrefix + capitalizedName, typeof(void), Type.EmptyTypes);
+            MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ClearPrefix + capitalizedName, typeof (void), Type.EmptyTypes);
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 Log.WarnFormat(@"'Clear' method '{0}' has been found on '{1}' : The 'Clear' method is considered obsolete, use 'Modify' instead", PrefixesAndRecognisedMethods.ClearPrefix + capitalizedName, type.FullName);
@@ -104,7 +104,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
 
         private void FindAndRemoveValidateMethod(IReflector reflector, ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, Type[] parms, string capitalizedName, ISpecification property) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ValidatePrefix + capitalizedName, typeof(string), parms);
+            MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ValidatePrefix + capitalizedName, typeof (string), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property));
@@ -115,13 +115,13 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
-        private void FindAndRemoveDefaultMethod(IReflector reflector, 
-                                                ICollection<IFacet> propertyFacets,
-                                                IMethodRemover methodRemover,
-                                                Type type,
-                                                string capitalizedName,
-                                                Type returnType,
-                                                ISpecification property) {
+        private void FindAndRemoveDefaultMethod(IReflector reflector,
+            ICollection<IFacet> propertyFacets,
+            IMethodRemover methodRemover,
+            Type type,
+            string capitalizedName,
+            Type returnType,
+            ISpecification property) {
             MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
             RemoveMethod(methodRemover, method);
             if (method != null) {
@@ -130,15 +130,15 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
-        private void FindAndRemoveChoicesMethod(IReflector reflector, 
-                                                ICollection<IFacet> propertyFacets,
-                                                IMethodRemover methodRemover,
-                                                Type type,
-                                                string capitalizedName,
-                                                Type returnType,
-                                                ISpecification property) {
-                MethodInfo[] methods = FindMethods(reflector, 
-                    type,
+        private void FindAndRemoveChoicesMethod(IReflector reflector,
+            ICollection<IFacet> propertyFacets,
+            IMethodRemover methodRemover,
+            Type type,
+            string capitalizedName,
+            Type returnType,
+            ISpecification property) {
+            MethodInfo[] methods = FindMethods(reflector,
+                type,
                 MethodType.Object,
                 PrefixesAndRecognisedMethods.ChoicesPrefix + capitalizedName,
                 typeof (IEnumerable<>).MakeGenericType(returnType));
@@ -153,19 +153,19 @@ namespace NakedObjects.Reflect.FacetFactory {
             MethodInfo method = methods.FirstOrDefault();
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                var parameterNamesAndTypes = method.GetParameters().Select(p => new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), reflector.LoadSpecification(p.ParameterType))).ToArray();
+                Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes = method.GetParameters().Select(p => new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), reflector.LoadSpecification(p.ParameterType))).ToArray();
                 propertyFacets.Add(new PropertyChoicesFacetx(method, parameterNamesAndTypes, property));
                 AddOrAddToExecutedWhereFacet(method, property);
             }
         }
 
-        private void FindAndRemoveAutoCompleteMethod(IReflector reflector, 
-                                                     ICollection<IFacet> propertyFacets,
-                                                     IMethodRemover methodRemover,
-                                                     Type type,
-                                                     string capitalizedName,
-                                                     Type returnType,
-                                                     ISpecification property) {
+        private void FindAndRemoveAutoCompleteMethod(IReflector reflector,
+            ICollection<IFacet> propertyFacets,
+            IMethodRemover methodRemover,
+            Type type,
+            string capitalizedName,
+            Type returnType,
+            ISpecification property) {
             // only support if property is string or domain type
             if (returnType.IsClass || returnType.IsInterface) {
                 MethodInfo method = FindMethod(reflector,

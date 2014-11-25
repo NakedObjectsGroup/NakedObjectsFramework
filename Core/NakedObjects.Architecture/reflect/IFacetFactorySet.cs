@@ -8,11 +8,11 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.Component {
+namespace NakedObjects.Architecture.Reflect {
     /// <summary>
     /// Mechanism for applying actions to All/Any of the FacetFactories. The implementation
     /// must be set up to know about all the FacetFactories.

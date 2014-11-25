@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
@@ -42,7 +43,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private ITypicalLengthFacet GetTypicalLengthFacet(IReflector reflector, Type type) {
-            var paramTypeSpec = reflector.LoadSpecification(type);
+            IObjectSpecBuilder paramTypeSpec = reflector.LoadSpecification(type);
             return paramTypeSpec.GetFacet<ITypicalLengthFacet>();
         }
     }

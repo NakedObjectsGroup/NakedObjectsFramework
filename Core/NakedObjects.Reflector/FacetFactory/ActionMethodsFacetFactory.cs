@@ -58,13 +58,13 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             Type type = actionMethod.DeclaringType;
             var facets = new List<IFacet>();
-            var onType = reflector.LoadSpecification(type);
-            var returnSpec = reflector.LoadSpecification(actionMethod.ReturnType);
+            IObjectSpecBuilder onType = reflector.LoadSpecification(type);
+            IObjectSpecBuilder returnSpec = reflector.LoadSpecification(actionMethod.ReturnType);
 
             IObjectSpecImmutable elementSpec = null;
-            var isQueryable = false;
+            bool isQueryable = false;
             if (returnSpec != null && returnSpec.IsCollection) {
-                var elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
+                Type elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
                 elementSpec = reflector.LoadSpecification(elementType);
                 isQueryable = returnSpec.GetFacet<ICollectionFacet>().IsQueryable || IsQueryOnly(actionMethod);
             }
@@ -110,10 +110,10 @@ namespace NakedObjects.Reflect.FacetFactory {
                 facets.Add(new NullableFacetAlways(holder));
             }
 
-            var returnSpec = reflector.LoadSpecification(parameter.ParameterType);
+            IObjectSpecBuilder returnSpec = reflector.LoadSpecification(parameter.ParameterType);
 
             if (returnSpec != null && returnSpec.IsCollection) {
-                var elementType = CollectionUtils.ElementType(parameter.ParameterType);
+                Type elementType = CollectionUtils.ElementType(parameter.ParameterType);
                 IObjectSpecImmutable elementSpec = reflector.LoadSpecification(elementType);
                 facets.Add(new ElementTypeFacet(holder, elementType, elementSpec));
             }
@@ -130,7 +130,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveValidMethod(IReflector reflector, ICollection<IFacet> actionFacets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] parms, ISpecification action) {
-            MethodInfo method = FindMethod(reflector, type, methodType, PrefixesAndRecognisedMethods.ValidatePrefix + capitalizedName, typeof(string), parms);
+            MethodInfo method = FindMethod(reflector, type, methodType, PrefixesAndRecognisedMethods.ValidatePrefix + capitalizedName, typeof (string), parms);
             if (method != null) {
                 RemoveMethod(methodRemover, method);
                 actionFacets.Add(new ActionValidationFacet(method, action));
@@ -143,7 +143,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 string paramName = paramNames[i];
 
 
-                MethodInfo methodUsingIndex = FindMethodWithOrWithoutParameters(reflector, 
+                MethodInfo methodUsingIndex = FindMethodWithOrWithoutParameters(reflector,
                     type,
                     MethodType.Object,
                     PrefixesAndRecognisedMethods.ParameterDefaultPrefix + i + capitalizedName,
@@ -206,7 +206,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 MethodInfo methodUsingIndex = methods.FirstOrDefault();
 
                 MethodInfo methodUsingName = FindMethod(
-                    reflector, 
+                    reflector,
                     type,
                     MethodType.Object,
                     PrefixesAndRecognisedMethods.ParameterChoicesPrefix + capitalizedName,
@@ -225,7 +225,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     RemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions 
-                    var parameterNamesAndTypes = methodToUse.GetParameters().Select(p => new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), reflector.LoadSpecification(p.ParameterType))).ToArray();
+                    Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes = methodToUse.GetParameters().Select(p => new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), reflector.LoadSpecification(p.ParameterType))).ToArray();
                     FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes, returnType, parameters[i], isMultiple));
                     AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                 }
@@ -239,7 +239,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 if (paramTypes[i].IsClass || paramTypes[i].IsInterface) {
                     Type returnType = typeof (IQueryable<>).MakeGenericType(paramTypes[i]);
 
-                    MethodInfo method = FindMethod(reflector, 
+                    MethodInfo method = FindMethod(reflector,
                         type,
                         MethodType.Object,
                         PrefixesAndRecognisedMethods.AutoCompletePrefix + i + capitalizedName,
@@ -267,14 +267,14 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         private void FindAndRemoveParametersValidateMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters) {
             for (int i = 0; i < paramTypes.Length; i++) {
-                MethodInfo methodUsingIndex = FindMethod(reflector, 
+                MethodInfo methodUsingIndex = FindMethod(reflector,
                     type,
                     MethodType.Object,
                     PrefixesAndRecognisedMethods.ValidatePrefix + i + capitalizedName,
                     typeof (string),
                     new[] {paramTypes[i]});
 
-                MethodInfo methodUsingName = FindMethod(reflector, 
+                MethodInfo methodUsingName = FindMethod(reflector,
                     type,
                     MethodType.Object,
                     PrefixesAndRecognisedMethods.ValidatePrefix + capitalizedName,

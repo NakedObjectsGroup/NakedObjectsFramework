@@ -9,17 +9,16 @@ using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class ImageValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+        public ImageValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-           public ImageValueTypeFacetFactory(int numericOrder) : base(numericOrder) {
-            
-        }
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ImageValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = reflector.LoadSpecification(ImageValueSemanticsProvider.AdaptedType);
+                IObjectSpecBuilder spec = reflector.LoadSpecification(ImageValueSemanticsProvider.AdaptedType);
                 AddValueFacets(new ImageValueSemanticsProvider(spec, specification), specification);
             }
         }

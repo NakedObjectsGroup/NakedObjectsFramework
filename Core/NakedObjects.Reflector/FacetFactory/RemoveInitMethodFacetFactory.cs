@@ -29,7 +29,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveInitMethod(IReflector reflector, Type type, IMethodRemover methodRemover) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, "Init", typeof(void), Type.EmptyTypes);
+            MethodInfo method = FindMethod(reflector, type, MethodType.Object, "Init", typeof (void), Type.EmptyTypes);
             if (method != null) {
                 RemoveMethod(methodRemover, method);
             }

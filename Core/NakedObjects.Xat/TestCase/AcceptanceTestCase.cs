@@ -315,6 +315,10 @@ namespace NakedObjects.Xat {
             container.RegisterType<IFacetFactory, TypeMarkerFacetFactory>("TypeMarkerFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(7));
             // must be before any other FacetFactories that install MandatoryFacet.class facets
             container.RegisterType<IFacetFactory, MandatoryDefaultFacetFactory>("MandatoryDefaultFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(8));
+           
+            // use this factory for 'optional by default'
+            //container.RegisterType<IFacetFactory, OptionalDefaultFacetFactory>("OptionalDefaultFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(8));
+                  
             container.RegisterType<IFacetFactory, PropertyValidateDefaultFacetFactory>("PropertyValidateDefaultFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(9));
             container.RegisterType<IFacetFactory, ComplementaryMethodsFilteringFacetFactory>("ComplementaryMethodsFilteringFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(10));
             container.RegisterType<IFacetFactory, ActionMethodsFacetFactory>("ActionMethodsFacetFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(11));

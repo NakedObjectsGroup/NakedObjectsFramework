@@ -39,7 +39,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             try {
                 foreach (string methodName in FixedPrefixes) {
-                    MethodInfo methodInfo = FindMethod(reflector, type, MethodType.Object, methodName, typeof(string), Type.EmptyTypes);
+                    MethodInfo methodInfo = FindMethod(reflector, type, MethodType.Object, methodName, typeof (string), Type.EmptyTypes);
                     if (methodInfo != null) {
                         methodRemover.RemoveMethod(methodInfo);
                     }

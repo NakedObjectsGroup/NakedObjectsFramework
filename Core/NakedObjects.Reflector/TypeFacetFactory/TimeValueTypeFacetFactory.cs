@@ -9,17 +9,16 @@ using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class TimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-           public TimeValueTypeFacetFactory(int numericOrder) : base(numericOrder) {
-            
-        }
+        public TimeValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (TimeValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = reflector.LoadSpecification(TimeValueSemanticsProvider.AdaptedType);
+                IObjectSpecBuilder spec = reflector.LoadSpecification(TimeValueSemanticsProvider.AdaptedType);
                 AddValueFacets(new TimeValueSemanticsProvider(spec, specification), specification);
             }
         }

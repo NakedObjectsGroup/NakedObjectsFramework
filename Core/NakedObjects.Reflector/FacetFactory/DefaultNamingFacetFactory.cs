@@ -34,7 +34,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             var facets = new List<IFacet>();
             var namedFacet = specification.GetFacet<INamedFacet>();
             if (namedFacet == null) {
-                var inferredName = NameUtils.NaturalName(ShortName(type));
+                string inferredName = NameUtils.NaturalName(ShortName(type));
                 namedFacet = new NamedFacetInferred(inferredName, specification);
                 facets.Add(namedFacet);
                 Log.InfoFormat("No name facet found inferring name {0}", inferredName);
@@ -42,7 +42,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             var pluralFacet = specification.GetFacet<IPluralFacet>();
             if (pluralFacet == null) {
-                var pluralName = NameUtils.PluralName(namedFacet.Value);
+                string pluralName = NameUtils.PluralName(namedFacet.Value);
                 pluralFacet = new PluralFacetInferred(pluralName, specification);
                 facets.Add(pluralFacet);
                 Log.InfoFormat("No plural facet found inferring name {0}", pluralName);

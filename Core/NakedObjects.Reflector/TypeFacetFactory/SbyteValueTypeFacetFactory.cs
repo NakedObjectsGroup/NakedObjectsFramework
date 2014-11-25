@@ -9,17 +9,16 @@ using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class SbyteValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
+        public SbyteValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
-           public SbyteValueTypeFacetFactory(int numericOrder) : base(numericOrder) {
-            
-        }
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (SbyteValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = reflector.LoadSpecification(SbyteValueSemanticsProvider.AdaptedType);
+                IObjectSpecBuilder spec = reflector.LoadSpecification(SbyteValueSemanticsProvider.AdaptedType);
                 AddValueFacets(new SbyteValueSemanticsProvider(spec, specification), specification);
             }
         }

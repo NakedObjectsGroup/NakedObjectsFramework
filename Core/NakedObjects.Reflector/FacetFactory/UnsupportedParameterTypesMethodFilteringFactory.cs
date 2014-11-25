@@ -22,7 +22,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         #region IMethodFilteringFacetFactory Members
 
         public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
-            var typeName = method.DeclaringType == null ? "Unknown" : method.DeclaringType.FullName;
+            string typeName = method.DeclaringType == null ? "Unknown" : method.DeclaringType.FullName;
 
             if (method.IsGenericMethod) {
                 Log.InfoFormat("Ignoring method: {0}.{1} because it is generic", typeName, method.Name);

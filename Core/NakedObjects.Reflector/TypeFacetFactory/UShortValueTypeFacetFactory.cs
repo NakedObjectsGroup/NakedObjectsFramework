@@ -9,18 +9,16 @@ using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public class UShortValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-
-        public UShortValueTypeFacetFactory(int numericOrder) : base(numericOrder) {
-            
-        }
+        public UShortValueTypeFacetFactory(int numericOrder) : base(numericOrder) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (UShortValueSemanticsProvider.IsAdaptedType(type)) {
-                var spec = reflector.LoadSpecification(UShortValueSemanticsProvider.AdaptedType);
+                IObjectSpecBuilder spec = reflector.LoadSpecification(UShortValueSemanticsProvider.AdaptedType);
                 AddValueFacets(new UShortValueSemanticsProvider(spec, specification), specification);
             }
         }

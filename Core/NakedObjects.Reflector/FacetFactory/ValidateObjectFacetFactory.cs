@@ -37,7 +37,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private bool ContainsField(string name, Type type) {
-            var properties = type.GetProperties();
+            PropertyInfo[] properties = type.GetProperties();
 
             return properties.Any(p => p.Name == name &&
                                        p.GetGetMethod() != null &&
@@ -50,10 +50,10 @@ namespace NakedObjects.Reflect.FacetFactory {
             Log.DebugFormat("Looking for validate methods for {0}", type);
 
             var methodPeers = new List<ValidateObjectFacet.NakedObjectValidationMethod>();
-            var methods = FindMethods(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ValidatePrefix, typeof(string));
+            MethodInfo[] methods = FindMethods(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ValidatePrefix, typeof (string));
 
             if (methods.Any()) {
-                foreach (var method in methods) {
+                foreach (MethodInfo method in methods) {
                     ParameterInfo[] parameters = method.GetParameters();
                     if (parameters.Length >= 2) {
                         bool parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => name[0].ToString().ToUpper() + name.Substring(1)).All(p => ContainsField(p, type));
@@ -65,7 +65,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 }
             }
 
-            var validateFacet = methodPeers.Any() ? (IValidateObjectFacet) new ValidateObjectFacet(specification, methodPeers) : new ValidateObjectFacetNull(specification);
+            IValidateObjectFacet validateFacet = methodPeers.Any() ? (IValidateObjectFacet) new ValidateObjectFacet(specification, methodPeers) : new ValidateObjectFacetNull(specification);
             FacetUtils.AddFacet(validateFacet);
         }
     }

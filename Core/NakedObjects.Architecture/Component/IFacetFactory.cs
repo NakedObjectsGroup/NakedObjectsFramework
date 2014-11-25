@@ -8,12 +8,12 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
-namespace NakedObjects.Architecture.FacetFactory {
+namespace NakedObjects.Architecture.Component {
     public interface IFacetFactory : IComparable<IFacetFactory> {
 
         /// <summary>

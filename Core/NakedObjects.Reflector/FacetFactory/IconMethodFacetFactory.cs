@@ -28,7 +28,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.IconNameMethod, typeof(string), Type.EmptyTypes);
+            MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.IconNameMethod, typeof (string), Type.EmptyTypes);
             var attribute = type.GetCustomAttributeByReflection<IconNameAttribute>();
             if (method != null) {
                 RemoveMethod(methodRemover, method);

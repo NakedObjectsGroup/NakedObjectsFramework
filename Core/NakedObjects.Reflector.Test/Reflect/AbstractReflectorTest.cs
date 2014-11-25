@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta;
