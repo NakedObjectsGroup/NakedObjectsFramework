@@ -118,7 +118,6 @@ namespace NakedObjects.Batch.Exe {
 
             // in architecture
             container.RegisterType<IClassStrategy, DefaultClassStrategy>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IFacetFactorySet, FacetFactorySet>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
             container.RegisterType<IReflector, Reflector>(new ContainerControlledLifetimeManager());
             container.RegisterType<IMetamodel, Metamodel>(new ContainerControlledLifetimeManager());
@@ -144,7 +143,7 @@ namespace NakedObjects.Batch.Exe {
             container.RegisterType<INakedObjectsFramework, NakedObjectsFramework>(new PerResolveLifetimeManager());
             container.RegisterType<IFrameworkResolver, UnityFrameworkResolver>(new PerResolveLifetimeManager());
 
-            container.RegisterType<IBatchController, BatchController>(new PerResolveLifetimeManager());
+            container.RegisterType<IBatchRunner, BatchRunner>(new PerResolveLifetimeManager());
 
 
             //Temporary scaffolding

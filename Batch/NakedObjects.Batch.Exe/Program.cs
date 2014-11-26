@@ -14,7 +14,7 @@ namespace NakedObjects.Batch.Exe {
         private static void Main(string[] args) {
             UnityActivator.Start();
 
-            UnityConfig.GetConfiguredContainer().Resolve<IBatchController>().Run(new BatchStartPoint());
+            UnityConfig.GetConfiguredContainer().Resolve<IBatchRunner>().Run(new BatchStartPoint());
 
             UnityActivator.Shutdown();
         }
