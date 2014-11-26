@@ -31,8 +31,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             PrefixesAndRecognisedMethods.UpdatingMethod,
             PrefixesAndRecognisedMethods.PersistedMethod,
             PrefixesAndRecognisedMethods.PersistingMethod,
-            PrefixesAndRecognisedMethods.SavedMethod,
-            PrefixesAndRecognisedMethods.SavingMethod,
             PrefixesAndRecognisedMethods.CreatedMethod,
             PrefixesAndRecognisedMethods.OnPersistingErrorMethod,
             PrefixesAndRecognisedMethods.OnUpdatingErrorMethod
@@ -60,17 +58,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
 
             method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.PersistingMethod, typeof (void), Type.EmptyTypes);
-            MethodInfo oldMethod = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.SavingMethod, typeof (void), Type.EmptyTypes);
-
-            if (method != null && oldMethod != null) {
-                // cannot have both old and new method types 
-                throw new ModelException(Resources.NakedObjects.PersistingSavingError);
-            }
-
-            if (method == null && oldMethod != null) {
-                Log.WarnFormat("Class {0} still has Saving method - replace with Persisting", type);
-                method = oldMethod;
-            }
 
             if (method != null) {
                 methods.Add(method);
@@ -81,18 +68,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
 
             method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.PersistedMethod, typeof (void), Type.EmptyTypes);
-            oldMethod = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.SavedMethod, typeof (void), Type.EmptyTypes);
-
-            if (method != null && oldMethod != null) {
-                // cannot have both old and new method types 
-                throw new ModelException("Cannot have both Persisted and Saved methods - please remove Saved");
-            }
-
-            if (method == null && oldMethod != null) {
-                Log.WarnFormat("Class {0} still has Saved method - replace with Persisted", type.ToString());
-                method = oldMethod;
-            }
-
+   
             if (method != null) {
                 methods.Add(method);
                 facets.Add(new PersistedCallbackFacetViaMethod(method, specification));

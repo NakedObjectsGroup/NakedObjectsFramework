@@ -25,8 +25,6 @@ namespace NakedObjects.Reflect.FacetFactory {
         public static readonly string ParameterChoicesPrefix;
         public static readonly string PersistedMethod;
         public static readonly string PersistingMethod;
-        public static readonly string SavedMethod;
-        public static readonly string SavingMethod;
         public static readonly string TitleMethod;
         public static readonly string ToStringMethod;
         public static readonly string UpdatedMethod;
@@ -53,8 +51,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             LoadingMethod = "Loading";
             PersistedMethod = "Persisted";
             PersistingMethod = "Persisting";
-            SavedMethod = "Saved";
-            SavingMethod = "Saving";
             UpdatedMethod = "Updated";
             UpdatingMethod = "Updating";
             IconNameMethod = "IconName";

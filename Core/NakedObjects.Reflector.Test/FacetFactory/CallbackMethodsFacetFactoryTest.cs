@@ -276,27 +276,23 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         [Test]
-        public void TestSavedLifecycleMethodPickedUpOn() {
+        public void TestSavedLifecycleMethodNotPickedUpOn() {
             MethodInfo method = FindMethod(typeof (Customer10), "Saved");
             facetFactory.Process(Reflector, typeof (Customer10), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPersistedCallbackFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PersistedCallbackFacetViaMethod);
-            var persistedCallbackFacetViaMethod = (PersistedCallbackFacetViaMethod) facet;
-            Assert.AreEqual(method, persistedCallbackFacetViaMethod.GetMethod());
-            AssertMethodsRemoved(new[] {method});
+            Assert.IsTrue(facet is PersistedCallbackFacetNull);
+          
         }
 
         [Test]
-        public void TestSavingLifecycleMethodPickedUpOn() {
+        public void TestSavingLifecycleMethodNotPickedUpOn() {
             MethodInfo method = FindMethod(typeof (Customer9), "Saving");
             facetFactory.Process(Reflector, typeof (Customer9), MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IPersistingCallbackFacet));
             Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PersistingCallbackFacetViaMethod);
-            var persistingCallbackFacetViaMethod = (PersistingCallbackFacetViaMethod) facet;
-            Assert.AreEqual(method, persistingCallbackFacetViaMethod.GetMethod());
-            AssertMethodsRemoved(new[] {method});
+            Assert.IsTrue(facet is PersistingCallbackFacetNull);
+        
         }
 
         [Test]
