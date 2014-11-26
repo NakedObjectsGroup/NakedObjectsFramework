@@ -92,7 +92,7 @@ namespace NakedObjects.Services {
             if (keyProperty.PropertyType != typeof (int)) {
                 throw new DomainException(string.Format(ProgrammingModel.NoIntegerKey, typeof (T)));
             }
-            T result = Container.FindByKey<T>(key);
+            var result = Container.FindByKey<T>(key);
             if (result == null) {
                 WarnUser(ProgrammingModel.NoMatchSingular);
             }
