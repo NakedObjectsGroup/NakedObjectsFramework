@@ -53,7 +53,9 @@ namespace NakedObjects.Meta.Menus {
         }
 
         protected bool HasAction(IActionSpecImmutable action) {
-            return MenuItems.OfType<MenuAction>().Any(mi => mi.Action == action);
+            bool nativeAction = MenuItems.OfType<MenuAction>().Any(mi => mi.Action == action);
+            if (nativeAction) return true;
+            return MenuItems.OfType<Menu>().Any(m => m.HasAction(action));
         }
 
         #endregion
