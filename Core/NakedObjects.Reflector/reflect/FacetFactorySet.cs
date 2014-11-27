@@ -232,6 +232,7 @@ namespace NakedObjects.Reflect {
             RegisterFactory(new CollectionFieldMethodsFacetFactory(reflector));
             RegisterFactory(new PropertyMethodsFacetFactory(reflector));
             RegisterFactory(new IconMethodFacetFactory(reflector));
+            RegisterFactory(new MenuFacetFactory(reflector));
             RegisterFactory(new CallbackMethodsFacetFactory(reflector));
             RegisterFactory(new TitleMethodFacetFactory(reflector));
             RegisterFactory(new ValidateObjectFacetFactory(reflector));

@@ -126,8 +126,10 @@ namespace NakedObjects.Reflect {
             InstallSpecifications(services, true);
             InstallSpecifications(nonServices, false);
             PopulateAssociatedActions(s1.Union(s2).ToArray());
-            //Main menus installed once rest of metamodel has been built:
+
+            //Menus installed once rest of metamodel has been built:
             InstallMainMenus();
+            InstallObjectMenus();
 
             servicesConfig.AddMenuServices(s1.Select(Activator.CreateInstance).ToArray());
             servicesConfig.AddContributedActions(s2.Select(Activator.CreateInstance).ToArray());
@@ -167,6 +169,12 @@ namespace NakedObjects.Reflect {
             foreach (IMenu menu in menuDefinition.MainMenus(menuFactory)) {
                 metamodel.AddMainMenu(menu);
             }
+        }
+
+        private void InstallObjectMenus() {
+            if (menuDefinition == null) return; //TODO: Remove temporary guard, added to keep tests running without an implementation
+            IEnumerable<IMenuFacet> menuFacets = metamodel.AllSpecifications.Where(s => s.ContainsFacet<IMenuFacet>()).Select(s => s.GetFacet<IMenuFacet>());
+            menuFacets.ForEach(mf => mf.CreateMenu(metamodel));
         }
 
         private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services) {

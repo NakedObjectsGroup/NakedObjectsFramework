@@ -20,6 +20,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public static readonly string IconNameMethod;
         public static readonly string LoadedMethod;
         public static readonly string LoadingMethod;
+        public static readonly string MenuMethod;
         public static readonly string ModifyPrefix;
         public static readonly string ParameterDefaultPrefix;
         public static readonly string ParameterChoicesPrefix;
@@ -58,6 +59,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             UpdatedMethod = "Updated";
             UpdatingMethod = "Updating";
             IconNameMethod = "IconName";
+            MenuMethod = "Menu";
             TitleMethod = "Title";
             ToStringMethod = "ToString";
             GetEnumeratorMethod = "GetEnumerator";

@@ -78,7 +78,6 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public void AddContributedActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> contributedActions) {
             ContributedActions = contributedActions.ToImmutableList();
-            CreateObjectMenu();
         }
 
         public void AddRelatedActions(IList<Tuple<string, string, IList<IOrderableElement<IActionSpecImmutable>>>> relatedActions) {
@@ -211,19 +210,6 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #endregion
 
-        private void CreateObjectMenu() {
-            Menu menu = new Menu(metamodel, "Actions");
-            //First add the native actions
-            menu.AddOrderableElementsToMenu(ObjectActions, menu);
-            //Then add the contributed actions
-            foreach (var ca in ContributedActions) {
-                Menu sub = new Menu(metamodel, ca.Item2); //Item 2 should be friendly name of the contributing service
-                //Item2 is contributing service class name, not used.
-                sub.AddOrderableElementsToMenu(ca.Item3, sub); //Item 3 should be the actions
-                menu.AddAsSubMenu(sub);
-            }
-            ObjectMenu = menu;
-        }
 
         private void DecorateAllFacets(IFacetDecoratorSet decorator) {
             decorator.DecorateAllHoldersFacets(this);

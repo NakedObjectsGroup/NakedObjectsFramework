@@ -150,6 +150,7 @@
     <Compile Include="Exception\ModelException.cs" />
     <Compile Include="Exception\ResolveException.cs" />
     <Compile Include="FacetFactory\MethodType.cs" />
+    <Compile Include="Facet\IMenuFacet.cs" />
     <Compile Include="Facet\IArrayValueFacet.cs" />
     <Compile Include="Facet\IElementTypeFacet.cs" />
     <Compile Include="Facet\IEnumValueFacet.cs" />
