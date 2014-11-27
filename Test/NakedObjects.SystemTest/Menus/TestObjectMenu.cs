@@ -34,7 +34,8 @@ namespace NakedObjects.SystemTest.Menus {
         protected override object[] SystemServices {
             get {
                 return new object[] { 
-                    new SimpleRepository<Foo>() };
+                    new SimpleRepository<Foo>(),
+                new SimpleRepository<Bar>() };
             }
         }
 
@@ -44,20 +45,9 @@ namespace NakedObjects.SystemTest.Menus {
         }
         #endregion
 
+
         [TestMethod]
         public void TestDefaultMenu() {
-            var foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject().Save();
-            var menu = foo.GetMenu();
-
-            menu.AssertItemCountIs(4);
-            
-            var items = menu.AllItems();
-            items[0].AssertIsAction().AssertNameEquals("Action1");
-
-        }
-
-        [TestMethod]
-        public void TestDefaultMenu2() {
             var foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject().Save();
             var menu = foo.GetMenu();
 
@@ -67,6 +57,18 @@ namespace NakedObjects.SystemTest.Menus {
             items[0].AssertIsAction().AssertNameEquals("Action1");
 
         }
+
+        [TestMethod]
+        public void TestSpecifiedMenu() {
+            var foo = GetTestService("Bars").GetAction("New Instance").InvokeReturnObject().Save();
+            var menu = foo.GetMenu();
+
+            menu.AssertItemCountIs(2);
+
+            var items = menu.AllItems();
+            items[0].AssertIsAction().AssertNameEquals("Action2");
+            items[1].AssertIsAction().AssertNameEquals("Renamed1");
+        }
     }
 }
 
@@ -75,7 +77,8 @@ namespace TestObjectMenu {
         public const string DatabaseName = "TestMenus";
         public MenusDbContext() : base(DatabaseName) {}
         
-            public DbSet<Foo> Foo { get; set; }      
+            public DbSet<Foo> Foo { get; set; }
+            public DbSet<Bar> Bar { get; set; }   
         }
 
     public class Foo {
@@ -89,5 +92,23 @@ namespace TestObjectMenu {
 
         public void Action3() { }
      
+    }
+
+    public class Bar {
+
+        [NakedObjectsIgnore]
+        public virtual int Id { get; set; }
+
+        public static void Menu(ITypedMenu<Bar> menu) {
+            menu.AddAction("Action2");
+            menu.AddAction("Action1", "Renamed1");
+        }
+
+        public void Action1() { }
+
+        public void Action2() { }
+
+        public void Action3() { }
+
     }
 }

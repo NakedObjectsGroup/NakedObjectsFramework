@@ -100,7 +100,11 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public string ShortName { get; private set; }
 
-        public IMenuImmutable ObjectMenu { get; private set; }
+        public IMenuImmutable ObjectMenu {
+            get {
+                return this.GetFacet<IMenuFacet>().GetMenu();
+            }
+        }
 
         public IList<IOrderableElement<IActionSpecImmutable>> ObjectActions { get; private set; }
 

@@ -24,20 +24,20 @@ namespace NakedObjects.Reflect.FacetFactory {
             prefixes = new[] {PrefixesAndRecognisedMethods.MenuMethod};
         }
 
-        public MenuFacetFactory(IReflector reflector)
-            : base(reflector, FeatureType.Objects) {}
+        public MenuFacetFactory(int numericOrder)
+            : base(numericOrder, FeatureType.Objects) {}
 
         public override string[] Prefixes {
             get { return prefixes; }
         }
 
-        public override bool Process(Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            MethodInfo method = FindMethod(type, MethodType.Class, PrefixesAndRecognisedMethods.MenuMethod, null, null);
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+            MethodInfo method = FindMethod(reflector, type, MethodType.Class, PrefixesAndRecognisedMethods.MenuMethod, null, null);
             if (method != null) {
                 RemoveMethod(methodRemover, method);
-                return FacetUtils.AddFacet(new MenuFacetViaMethod(method, specification));
+                FacetUtils.AddFacet(new MenuFacetViaMethod(method, specification));
             } else {
-                return FacetUtils.AddFacet(new MenuFacetDefault(specification));
+                FacetUtils.AddFacet(new MenuFacetDefault(specification));
             }
         }
     }

@@ -174,7 +174,6 @@ namespace NakedObjects.Reflect {
         }
 
         private void InstallObjectMenus() {
-            if (menuDefinition == null) return; //TODO: Remove temporary guard, added to keep tests running without an implementation
             IEnumerable<IMenuFacet> menuFacets = metamodel.AllSpecifications.Where(s => s.ContainsFacet<IMenuFacet>()).Select(s => s.GetFacet<IMenuFacet>());
             menuFacets.ForEach(mf => mf.CreateMenu(metamodel));
         }
