@@ -19,9 +19,9 @@ namespace NakedObjects.Meta.SpecImmutable {
         private readonly IObjectSpecImmutable defaultElementSpec;
         private readonly Type defaultElementType;
 
-        public OneToManyAssociationSpecImmutable(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec, Type defaultElementType, IObjectSpecImmutable defaultElementSpec)
-            : base(name, returnType, returnSpec) {
-            this.defaultElementType = defaultElementType;
+        public OneToManyAssociationSpecImmutable(IIdentifier name, Type returnType, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec)
+            : base(name, returnSpec) {
+            this.defaultElementType = defaultElementSpec.Type;
             this.defaultElementSpec = defaultElementSpec;
         }
 
@@ -35,7 +35,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         /// <summary>
         ///     Return the <see cref="IObjectSpec" /> for the  Type that the collection holds.
         /// </summary>
-        public override IObjectSpecImmutable Specification {
+        public override IObjectSpecImmutable ReturnSpec {
             get {
                 var typeOfFacet = GetFacet<IElementTypeFacet>();
                 return typeOfFacet != null ? typeOfFacet.ValueSpec : defaultElementSpec;
@@ -51,7 +51,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public override string ToString() {
-            return "OneToManyAssociation [name=\"" + Identifier + "\",Type=" + Specification + " ]";
+            return "OneToManyAssociation [name=\"" + Identifier + "\",Type=" + ReturnSpec + " ]";
         }
 
         #region ISerializable

@@ -6,12 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Surface.Nof4.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class OidWrapper : IOidSurface {
         private readonly IOid oid;
 
         public OidWrapper(IOid oid) {
+            SurfaceUtils.AssertNotNull(oid, "Oid is null");
+
+
             this.oid = oid;
         }
 

@@ -27,7 +27,7 @@ namespace NakedObjects.Core.Spec {
             Assert.AssertNotNull(manager);
 
             this.manager = manager;
-            spec = MetamodelManager.GetSpecification(association.Specification);
+            spec = MetamodelManager.GetSpecification(association.ReturnSpec);
         }
 
         public virtual bool IsChoicesEnabled {

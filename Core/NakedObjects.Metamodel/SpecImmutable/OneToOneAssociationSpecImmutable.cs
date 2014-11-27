@@ -13,8 +13,8 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public class OneToOneAssociationSpecImmutable : AssociationSpecImmutable {
-        public OneToOneAssociationSpecImmutable(IIdentifier identifier, Type returnType, IObjectSpecImmutable returnSpec)
-            : base(identifier, returnType, returnSpec) {}
+        public OneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable returnSpec)
+            : base(identifier, returnSpec) {}
 
         public override bool IsOneToMany {
             get { return false; }
@@ -25,7 +25,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public override string ToString() {
-            return "Reference Association [name=\"" + Identifier + ", Type=" + Specification + " ]";
+            return "Reference Association [name=\"" + Identifier + ", Type=" + ReturnSpec + " ]";
         }
 
         #region ISerializable

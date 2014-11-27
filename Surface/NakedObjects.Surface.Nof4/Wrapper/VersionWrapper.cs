@@ -7,13 +7,15 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Surface.Nof4.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
     public class VersionWrapper : IVersionSurface {
         private readonly IVersion version;
 
-
         public VersionWrapper(IVersion version) {
+            SurfaceUtils.AssertNotNull(version, "Version is null");
+
             this.version = version;
         }
 

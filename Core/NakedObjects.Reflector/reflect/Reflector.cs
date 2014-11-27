@@ -113,9 +113,8 @@ namespace NakedObjects.Reflect {
         }
 
         public virtual IObjectSpecBuilder LoadSpecification(Type type) {
-            Assert.AssertNotNull(type);
-            Type actualType = classStrategy.GetType(type);
-            return (IObjectSpecBuilder) metamodel.GetSpecification(actualType) ?? LoadSpecificationAndCache(actualType);
+            Assert.AssertNotNull(type);         
+            return (IObjectSpecBuilder) metamodel.GetSpecification(type) ?? LoadSpecificationAndCache(type);
         }
 
         public void Reflect() {
@@ -236,14 +235,16 @@ namespace NakedObjects.Reflect {
         }
 
         private IObjectSpecBuilder LoadSpecificationAndCache(Type type) {
-            IObjectSpecBuilder specification = CreateSpecification(type);
+            var actualType = classStrategy.GetType(type);
+
+            IObjectSpecBuilder specification = CreateSpecification(actualType);
 
             if (specification == null) {
-                throw new ReflectionException("unrecognised type " + type.FullName);
+                throw new ReflectionException("unrecognised type " + actualType.FullName);
             }
 
             // We need the specification available in cache even though not yet fully introspected 
-            metamodel.Add(type, specification);
+            metamodel.Add(actualType, specification);
 
             specification.Introspect(facetDecoratorSet, new Introspector(this, metamodel));
 

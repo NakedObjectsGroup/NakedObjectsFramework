@@ -58,7 +58,7 @@ namespace NakedObjects.Reflect {
                 return type.Namespace + "." + type.Name;
             }
 
-            if (type.IsArray) {
+            if (type.IsArray && !(type.GetElementType().IsValueType || type.GetElementType() == typeof (string))) {
                 return "System.Array";
             }
 

@@ -88,7 +88,7 @@ namespace NakedObjects.Web.Mvc.Html {
             IActionSpec actionSpec = html.Framework().Metamodel.GetActionSpec(actionIm); 
             if (nakedObject == null) {
 
-                IObjectSpecImmutable objectIm = actionIm.Specification; //This is the spec for the service
+                IObjectSpecImmutable objectIm = actionIm.ReturnSpec; //This is the spec for the service
 
                 if (!objectIm.Service) {
                     throw new Exception("Action is not on a known object or service");

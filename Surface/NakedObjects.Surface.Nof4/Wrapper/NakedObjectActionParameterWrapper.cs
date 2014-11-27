@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Surface.Nof4.Utility;
 using NakedObjects.Surface.Utility;
 
 namespace NakedObjects.Surface.Nof4.Wrapper {
@@ -19,6 +20,11 @@ namespace NakedObjects.Surface.Nof4.Wrapper {
         private readonly string overloadedUniqueId;
 
         public NakedObjectActionParameterWrapper(IActionParameterSpec nakedObjectActionParameter, INakedObjectsSurface surface, INakedObjectsFramework framework, string overloadedUniqueId) {
+            SurfaceUtils.AssertNotNull(nakedObjectActionParameter, "Action Parameter is null");
+            SurfaceUtils.AssertNotNull(framework, "framework is null");
+            SurfaceUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
+            SurfaceUtils.AssertNotNull(surface, "surface is null");
+
             this.nakedObjectActionParameter = nakedObjectActionParameter;
             this.framework = framework;
             this.overloadedUniqueId = overloadedUniqueId;

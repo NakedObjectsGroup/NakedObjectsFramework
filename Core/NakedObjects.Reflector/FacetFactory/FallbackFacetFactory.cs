@@ -57,7 +57,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (holder is OneToOneAssociationSpecImmutable) {
                 var association = (OneToOneAssociationSpecImmutable) holder;
                 facets.Add(new MaxLengthFacetZero(holder));
-                DefaultTypicalLength(facets, association.Specification, holder);
+                DefaultTypicalLength(facets, association.ReturnSpec, holder);
                 facets.Add(new MultiLineFacetNone(holder));
             }
 

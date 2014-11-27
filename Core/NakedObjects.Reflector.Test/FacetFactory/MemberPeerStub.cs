@@ -29,7 +29,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new IdentifierNull(this, persistor); }
         }
 
-        public IObjectSpecImmutable Specification { get; private set; }
+        public IObjectSpecImmutable ReturnSpec { get; private set; }
 
         #endregion
 
